@@ -27,7 +27,9 @@ package Gnat2Why.Expr.Loops.Inv is
 
    function Generate_Frame_Condition (Loop_Stmt : Node_Id) return W_Pred_Id;
    --  Compute the frame condition of a loop statement. For now, only consider
-   --  dynamic invariants of modified variables.
+   --  dynamic invariants of modified variables, and the part of the frame
+   --  condition that states that unmodified record subcomponents keep their
+   --  values around the loop.
    --  @param Loop_Stmt considered loop statement.
    --  @return a predicate expression for the loop's frame condition.
 

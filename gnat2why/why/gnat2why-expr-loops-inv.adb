@@ -74,8 +74,8 @@ package body Gnat2Why.Expr.Loops.Inv is
       end case;
    end record;
    --  If only some parts of the object are written, we store their write
-   --  status in Write_Status' additional field. We do not keep track of which
-   --  array indexes are written.
+   --  status in Write_Status additional fields. We do not keep track of
+   --  which array indexes are written.
 
    function Equality_Of_Preserved_Fields
      (Expr     : W_Expr_Id;
@@ -101,28 +101,19 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  Free the memory for Status and set it to null.
    --  @param Status the write status to be freed.
 
-   procedure Update_Status
-     (New_Write      : Node_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      Expected_Kind  : Write_Kind;
-      Expected_Type  : out Entity_Id;
-      Updated_Status : out Write_Status_Access)
+   function New_Status
+     (New_Write      : Entity_Id;
+      Discard_Writes : Boolean;
+      Expected_Kind  : Write_Kind)
+      return Write_Status_Access
    with
-     Pre  => Expected_Kind /= Discard,
-     Post => Updated_Status /= null;
-   --  Update a write status map to account for a new write. It may require
-   --  several updates if New_Write is a complex variable name.
-   --  @param New_Write variable name which has been written.
-   --  @param Loop_Writes map between entities and their write status.
+     Pre => Expected_Kind /= Discard;
+   --  Create a Write_Status for New_Write.
+   --  @param New_Write variable or record field to which we are writing.
    --  @param Expected_Kind expected kind of the updated status.
-   --  @param Expected_Type type of the actual updated object part.
-   --  @param Updated_Status access to New_Write's write status.
-
-   procedure Update_Status
-     (New_Write   : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map);
-   --  Same as before except that Expected_Kind is set to Entire_Object and
-   --  Expected_Type and Updated_Status are discarded.
+   --  @param Discard_Writes True if the writes to the variable should be
+   --         discarded.
+   --  @result an access to a fresh status for New_Write.
 
    procedure One_Level_Update
      (New_Write      : Entity_Id;
@@ -164,19 +155,28 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  Same as before except that Expected_Kind is set to Entire_Object and
    --  Updated_Status is discarded.
 
-   function New_Status
-     (New_Write      : Entity_Id;
-      Discard_Writes : Boolean;
-      Expected_Kind  : Write_Kind)
-      return Write_Status_Access
+   procedure Update_Status
+     (New_Write      : Node_Id;
+      Loop_Writes    : in out Write_Status_Maps.Map;
+      Expected_Kind  : Write_Kind;
+      Expected_Type  : out Entity_Id;
+      Updated_Status : out Write_Status_Access)
    with
-     Pre => Expected_Kind /= Discard;
-   --  Create a Write_Status for New_Write.
-   --  @param New_Write variable or record field to which we are writing.
+     Pre  => Expected_Kind /= Discard,
+     Post => Updated_Status /= null;
+   --  Update a write status map to account for a new write. It may require
+   --  several updates if New_Write is a complex variable name.
+   --  @param New_Write variable name which has been written.
+   --  @param Loop_Writes map between entities and their write status.
    --  @param Expected_Kind expected kind of the updated status.
-   --  @param Discard_Writes True if the writes to the variable should be
-   --         discarded.
-   --  @result an access to a fresh status for New_Write.
+   --  @param Expected_Type type of the actual updated object part.
+   --  @param Updated_Status access to New_Write's write status.
+
+   procedure Update_Status
+     (New_Write   : Node_Id;
+      Loop_Writes : in out Write_Status_Maps.Map);
+   --  Same as before except that Expected_Kind is set to Entire_Object and
+   --  Expected_Type and Updated_Status are discarded.
 
    --------------------
    -- Tree Traversal --
@@ -186,6 +186,23 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  Traverse a loop statement and accumulate potentially written variables.
    --  @param Loop_Stmt considered loop statement.
    --  @return a map between written entities and their write status.
+
+   procedure Process_Call_Statement
+     (Call        : Node_Id;
+      Loop_Writes : in out Write_Status_Maps.Map);
+   --  Update a status map for every variable written by a call statement.
+   --  @param N considered statement.
+   --  @param Loop_Write a map between written entities and their write status.
+
+   procedure Process_Loop_Statement
+     (Loop_Stmt   : Node_Id;
+      Loop_Writes : in out Write_Status_Maps.Map;
+      Keep_Local  : Boolean);
+   --  Traverse a loop statement and update a status map for every variable
+   --  potentially written by the loop.
+   --  @param N considered statement.
+   --  @param Loop_Write a map between written entities and their write status.
+   --  @param Keep_Local False if local variables should be discarded.
 
    procedure Process_Statement
      (N           : Node_Id;
@@ -203,23 +220,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       Keep_Local  : Boolean);
    --  Process every statement of a list.
    --  @param L considered list of statements.
-   --  @param Loop_Write a map between written entities and their write status.
-   --  @param Keep_Local False if local variables should be discarded.
-
-   procedure Process_Call_Statement
-     (Call        : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map);
-   --  Update a status map for every variable written by a call statement.
-   --  @param N considered statement.
-   --  @param Loop_Write a map between written entities and their write status.
-
-   procedure Process_Loop_Statement
-     (Loop_Stmt   : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean);
-   --  Traverse a loop statement and update a status map for every variable
-   --  potentially written by the loop.
-   --  @param N considered statement.
    --  @param Loop_Write a map between written entities and their write status.
    --  @param Keep_Local False if local variables should be discarded.
 
