@@ -57,14 +57,14 @@ deceleration_curve.adb:99:42: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.adb:99:45: info: initialization of "location" proved
 deceleration_curve.adb:100:39: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:100:42: info: initialization of "speed" proved
-deceleration_curve.adb:107:09: medium: precondition might fail (e.g. when Braking_Curve = (end_point => 5001))
+deceleration_curve.adb:107:09: medium: precondition might fail
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:109:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:110:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:111:12: medium: precondition might fail (e.g. when Braking_Curve = (end_point => 5001) and i = 0)
+deceleration_curve.adb:111:12: medium: precondition might fail
 deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved (CVC4: 1 VC)
@@ -129,11 +129,11 @@ section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
 section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
 section_3_5_3.ads:51:53: info: precondition proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination) (e.g. when destination = 1)
+section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
-section_4_6.ads:106:06: medium: contract cases might not be complete (e.g. when an_acknowledge_request_for_shunting_is_displayed_to_the_driver = False and driver_acknowledges = False and driver_isolates_ERTMS_ETCS_on_board_equipment = False and driver_selects_shunting_mode = False and ertms_etcs_level = 0 and ma_ssp_gardient_on_board = False and no_specific_mode_is_required_by_a_mode_profile = False and note_5_conditions_for_shunting_mode = False and priority = 1 and reception_of_information_shunting_granted_by_rbc = False and train_is_at_standstill = False and valid_train_data_is_stored_on_board = False)
-section_4_6.ads:106:06: medium: contract cases might not be disjoint (e.g. when an_acknowledge_request_for_shunting_is_displayed_to_the_driver = False and driver_acknowledges = False and driver_isolates_ERTMS_ETCS_on_board_equipment = False and driver_selects_shunting_mode = False and ertms_etcs_level = 2 and ma_ssp_gardient_on_board = True and no_specific_mode_is_required_by_a_mode_profile = True and note_5_conditions_for_shunting_mode = False and priority = 7 and reception_of_information_shunting_granted_by_rbc = True and train_is_at_standstill = True and valid_train_data_is_stored_on_board = True)
+section_4_6.ads:106:06: medium: contract cases might not be complete
+section_4_6.ads:106:06: medium: contract cases might not be disjoint
 section_4_6.ads:106:55: info: contract case proved (CVC4: 1 VC)
 section_4_6.ads:107:55: info: contract case proved (CVC4: 1 VC)
 section_4_6.ads:108:55: info: contract case proved (CVC4: 1 VC)
@@ -204,14 +204,14 @@ step_function.adb:107:28: medium: loop invariant might fail after first iteratio
 step_function.adb:108:10: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
-step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter (e.g. when SFun1 = (Number_Of_Delimiters => 0) and im = 0)
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved (CVC4: 1 VC)
 step_function.adb:110:56: info: initialization of "i1" proved
 step_function.adb:111:10: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
-step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter (e.g. when SFun2 = (Number_Of_Delimiters => 0) and im = 0)
+step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved (CVC4: 1 VC)
 step_function.adb:113:56: info: initialization of "i2" proved
@@ -222,7 +222,7 @@ step_function.adb:116:15: medium: loop invariant might fail after first iteratio
 step_function.adb:116:27: info: index check proved (CVC4: 1 VC)
 step_function.adb:116:54: info: index check proved (CVC4: 1 VC)
 step_function.adb:119:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:119:10: medium: loop invariant might fail after first iteration (e.g. when SFun1 = (Number_Of_Delimiters => 0) and im = 0)
+step_function.adb:119:10: medium: loop invariant might fail after first iteration
 step_function.adb:120:29: info: initialization of "i1" proved
 step_function.adb:121:33: info: initialization of "im" proved
 step_function.adb:122:30: info: index check proved (CVC4: 1 VC)
@@ -243,7 +243,7 @@ step_function.adb:133:30: info: index check proved (CVC4: 1 VC)
 step_function.adb:133:45: info: initialization of "Merge.Step" proved
 step_function.adb:133:56: info: index check proved (CVC4: 1 VC)
 step_function.adb:134:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:134:10: medium: loop invariant might fail after first iteration (e.g. when SFun2 = (Number_Of_Delimiters => 0) and im = 0)
+step_function.adb:134:10: medium: loop invariant might fail after first iteration
 step_function.adb:135:20: info: initialization of "scan_sfun2" proved
 step_function.adb:137:38: info: initialization of "im" proved
 step_function.adb:138:36: info: index check proved (CVC4: 1 VC)
@@ -333,7 +333,7 @@ step_function.ads:80:53: info: index check proved (CVC4: 1 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 1 VC)
 step_function.ads:95:32: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:95:32: info: initialization of "Merge.Step" proved
-step_function.ads:101:04: medium: postcondition might fail (e.g. when Merge = (Number_Of_Delimiters => 0) and SFun1 = (Number_Of_Delimiters => 0) and SFun2 = (Number_Of_Delimiters => 0))
+step_function.ads:101:04: medium: postcondition might fail
 step_function.ads:101:13: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:101:13: info: initialization of "Merge.Step" proved
 step_function.ads:106:30: info: index check proved (CVC4: 1 VC)
