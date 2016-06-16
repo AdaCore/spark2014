@@ -1735,9 +1735,8 @@ were declared within a protected unit or task unit (see section
       ...
    end P.Pub;
 
-   --  State abstractions of P.Priv, A and B, plus
-   --  the concrete variable X, are split up among
-   --  two state abstractions within P.Pub, R and S
+   --  State abstractions of P.Priv, A and B, plus the concrete variable X,
+   --  are split up among two state abstractions within P.Pub, R and S.
    with P.Pub;
    private package P.Priv --  private unit
      with Abstract_State => ((A with Part_Of => P.Pub.R),
@@ -1786,9 +1785,8 @@ were declared within a protected unit or task unit (see section
                 Depends => (B1 => null);
 
          procedure Init_A2
-           --  We can only refer to Outer.Hidden_State which is
-           --  a constituent of Outer.A2 if the subprogram does
-           --  not also refer to Outer.A2.
+           --  We can only refer to Outer.Hidden_State which is a constituent
+           --  of Outer.A2 if the subprogram does not also refer to Outer.A2.
            with Global  => (Output => Hidden_State),
                 Depends => (Hidden_State => null);
       end Inner;
@@ -1845,7 +1843,7 @@ were declared within a protected unit or task unit (see section
 
    package Outer.Public_Child is
       --  Outer.A1 and Outer.A2 are visible but
-      --  Outer.Hidden_State is not (by the rules of Ada)
+      --  Outer.Hidden_State is not (by the rules of Ada).
       --  The Global and Depends Aspects are in terms
       --  of the encapsulating state abstraction Outer.A2.
       procedure Init_A2_With (Val : in Integer)
@@ -1856,7 +1854,7 @@ were declared within a protected unit or task unit (see section
    package body Outer.Public_Child is
       --  Outer.Hidden is visible here but the
       --  refinement of A2 is not so there are
-      --  no Refined_Global or Refined_Depends
+      --  no Refined_Global or Refined_Depends.
       procedure Init_A2_With (Val : in Integer) is
       begin
          Outer.Init_A2;
@@ -1891,7 +1889,7 @@ were declared within a protected unit or task unit (see section
       --  specification.
 
       --  Here C1 is used so Q1 cannot also be used in
-      --  the aspect specifications of this subprogram
+      --  the aspect specifications of this subprogram.
       procedure Init_Q1
         with Global  => (Output => C1),
              Depends => (C1 => null);
@@ -1976,7 +1974,7 @@ were declared within a protected unit or task unit (see section
       --  will be updated and so we use R.R1 in the
       --  aspect specifications rather than R2.
       --  R2 cannot also be used in the aspect
-      --  specifications of this subprogram
+      --  specifications of this subprogram.
       procedure Private_Op (I, J : in Integer)
         with Global  => (In_Out => R.R1),
              Depends => (R.R1 =>+ (I, J));
