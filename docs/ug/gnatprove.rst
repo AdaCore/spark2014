@@ -34,11 +34,11 @@ install dir>/lib/gnat`` (so that GNAT can find the SPARK lemma library project
 installed with |SPARK|, for details see :ref:`Manual Proof Using SPARK Lemma
 Library`). On Linux/Mac with Bourne shell, use::
 
-  export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
+  export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:<GNAT install dir>/share/gpr:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
 or on Linux/Mac with C shell::
 
-  setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
+  setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:<GNAT install dir>/share/gpr:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
 See below for detailed installation instructions of GPS and |GNATprove|.
 
