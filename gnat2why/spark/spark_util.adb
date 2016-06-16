@@ -3139,11 +3139,11 @@ package body SPARK_Util is
    -------------------------------
 
    function Protected_Type_Definition (E : Entity_Id) return Node_Id is
-      Ptr : constant Node_Id := Parent (E);
+      Decl : constant Node_Id := Parent (E);
+      pragma Assert (Nkind (Decl) = N_Protected_Type_Declaration);
 
    begin
-      pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
-      return Protected_Definition (Ptr);
+      return Protected_Definition (Decl);
    end Protected_Type_Definition;
 
    ---------------------------------
