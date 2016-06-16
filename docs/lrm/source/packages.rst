@@ -676,7 +676,7 @@ There are no verification rules associated with the Abstract_State aspect.
                              (C with External => (Async_Writers,
                                                   Effective_Reads => False))
      --  Three abstract state names are declared A, B & C.
-     --  A and B are internal abstract states
+     --  A and B are internal abstract states.
      --  C is specified as external state which is an external input.
    is
       ...
@@ -686,12 +686,11 @@ There are no verification rules associated with the Abstract_State aspect.
    :linenos:
 
    package Mileage
-     with Abstract_State => (Trip,  -- number of miles so far on this trip
-                                    -- (can be reset to 0).
-                             Total) -- total mileage of vehicle since last factory-reset.
+     with Abstract_State => (Trip,  -- number of miles so far on this trip (can be reset to 0)
+                             Total) -- total mileage of vehicle since last factory-reset
    is
-      function Trip  return Natural;  -- Has an implicit Global => Trip.
-      function Total return Natural;  -- Has an implicit Global => Total.
+      function Trip  return Natural;  -- Has an implicit Global => Trip
+      function Total return Natural;  -- Has an implicit Global => Total
 
       procedure Zero_Trip
         with Global  => (Output => Trip),  -- In the Global and Depends aspects
@@ -889,7 +888,7 @@ of the package.]
 
    package Y
      with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads))),
-          --  Three abstract state names are declared A, B & C.
+          --  Three abstract state names are declared A, B & C
           Initializes    => A
           --  A is initialized during the elaboration of Y.
           --  C is specified as external state with Async_Writers
@@ -2025,7 +2024,7 @@ were declared within a protected unit or task unit (see section
       begin
          R.Op_1 (I);
          Actual_State := J;
-      end Init_Q1;
+      end Private_Op;
    end R.Child;
 
 .. _refined-postcondition:
