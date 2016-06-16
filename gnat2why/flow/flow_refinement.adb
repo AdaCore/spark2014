@@ -449,9 +449,9 @@ package body Flow_Refinement is
       return P;
    end Down_Project;
 
-   ------------------------------
+   -------------------------
    -- Find_In_Initializes --
-   ------------------------------
+   -------------------------
 
    function Find_In_Initializes (E : Entity_Id) return Entity_Id is
       State : constant Entity_Id := Encapsulating_State (E);
