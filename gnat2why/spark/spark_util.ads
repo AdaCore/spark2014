@@ -1071,17 +1071,26 @@ package SPARK_Util is
    --    around Entry_Body, Subprogram_Body and Task_Body.
 
    function Get_Body_Entity (E : Entity_Id) return Entity_Id
-   with Pre  => Nkind (E) in N_Entity and then
-                Ekind (E) in Entry_Kind  |
+   with Pre  => Ekind (E) in Entry_Kind  |
                              E_Function  |
                              E_Procedure |
                              E_Task_Type,
-        Post => (if Present (Get_Body_Entity'Result)
-                 then Ekind (Get_Body_Entity'Result) in Entry_Kind        |
-                                                        E_Function        |
-                                                        E_Procedure       |
-                                                        E_Subprogram_Body |
-                                                        E_Task_Body);
+        Post => No (Get_Body_Entity'Result)
+                  or else
+                (case Ekind (E) is
+                    when E_Entry        =>
+                       Ekind (Get_Body_Entity'Result) = E_Entry,
+                    when E_Entry_Family =>
+                       Ekind (Get_Body_Entity'Result) = E_Entry_Family,
+                    when E_Function     =>
+                       Ekind (Get_Body_Entity'Result) in E_Function |
+                                                         E_Subprogram_Body,
+                    when E_Procedure    =>
+                       Ekind (Get_Body_Entity'Result) in E_Procedure |
+                                                         E_Subprogram_Body,
+                    when E_Task_Type    =>
+                       Ekind (Get_Body_Entity'Result) = E_Task_Body,
+                    when others         => raise Program_Error);
    --  @param E is an entry, subprogram or task
    --  @return the body entity for the given entry/subprogram/task.
    --    This is a wrapper around Entry_Body_Entity, Subprogram_Body_Entity
