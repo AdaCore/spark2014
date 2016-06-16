@@ -450,7 +450,7 @@ package body Flow_Refinement is
    end Down_Project;
 
    ------------------------------
-   -- Find_Node_In_Initializes --
+   -- Find_In_Initializes --
    ------------------------------
 
    function Find_In_Initializes (E : Entity_Id) return Entity_Id is
