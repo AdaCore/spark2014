@@ -138,7 +138,8 @@ package body Gnat2Why.Expr.Loops.Inv is
        and then (if Discard_Writes then
                    Loop_Writes.Element (New_Write).Kind = Discard
                  elsif Expected_Kind = Entire_Object then
-                   Loop_Writes.Element (New_Write).Kind = Entire_Object),
+                   Loop_Writes.Element (New_Write).Kind in
+                     Discard | Entire_Object),
      Contract_Cases =>
        --  When marked as discarded, a variable or record field stays
        --  discarded, as its write status does not matter.
