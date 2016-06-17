@@ -2005,6 +2005,11 @@ package body Flow_Utility is
             Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
             The_CO       : Entity_Id;
          begin
+            pragma Assert
+              (Belongs_To_Concurrent_Object (Subprogram_F) =
+                 (Ekind (Sinfo.Scope (Subprogram)) = E_Protected_Type));
+            --  ??? really needed for internal calls to protected subprograms?
+
             if Belongs_To_Concurrent_Object (Subprogram_F) then
                The_CO := Get_Enclosing_Concurrent_Object (Subprogram_F,
                                                           Callsite);
