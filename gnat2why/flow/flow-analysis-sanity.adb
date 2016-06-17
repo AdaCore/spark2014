@@ -659,7 +659,7 @@ package body Flow.Analysis.Sanity is
             return True;
          end if;
 
-         --  Check if F is a state abstraction that encloses a constituent
+         --  Check if F is a state abstraction that encapsulates a constituent
          --  mentioned in FS.
 
          if Is_Abstract_State (F) then

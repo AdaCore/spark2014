@@ -3215,8 +3215,9 @@ package body Flow.Analysis is
       function Up_Project_Map
         (DM : Dependency_Maps.Map)
          return Dependency_Maps.Map;
-      --  Up projects the constituents that are mentioned in DM until we have
-      --  visibility of the enclosing state abstractions from Depends_Scope.
+      --  Up projects the constituents that are mentioned in DM until we
+      --  have visibility of the encapsulating state abstractions from
+      --  Depends_Scope.
       --
       --  Example:
       --     State1 => (Con1, Con2)

@@ -305,9 +305,9 @@ package body Flow_Generated_Globals.Phase_2 is
    function Fully_Refine (EN : Entity_Name) return Name_Sets.Set;
    --  Returns the most refined constituents of variable or state abstraction
 
-   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name;
-   --  Returns the Entity_Name of the directly enclosing state. If one
-   --  does not exist it returns Null_Entity_Name.
+   function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name;
+   --  Returns the Entity_Name of the directly encapsulating state. If one does
+   --  not exist it returns Null_Entity_Name.
 
    procedure GG_Get_Most_Refined_Globals
      (Subprogram  : Entity_Name;
@@ -331,12 +331,12 @@ package body Flow_Generated_Globals.Phase_2 is
       Processing_Writes : Boolean := False)
    with Pre  => (if not Processing_Writes then Reads.Is_Empty),
         Post => (if not Processing_Writes then Reads.Is_Empty);
-   --  Distinguishes between simple vars and constituents. For constituents, it
-   --  checks if they are visible and if they are NOT we check if their
-   --  enclosing state is. If the enclosing state is visible then return that
-   --  (otherwise repeat the process). When Processing_Writes is set, we also
-   --  check if all constituents are used and if they are not we also add them
-   --  on the Reads set.
+   --  Distinguishes between simple vars and constituents. For constituents,
+   --  it checks if they are visible and if they are NOT we check if their
+   --  encapsulating state is. If the encapsulating state is visible then
+   --  return that (otherwise repeat the process). When Processing_Writes is
+   --  set, we also check if all constituents are used and if they are not we
+   --  also add them on the Reads set.
 
    ----------------------------------------------------------------------
    --  Debug routines
@@ -659,7 +659,7 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             loop
                Var_Entity      := Find_Entity (Var_Name);
-               Enclosing_State := GG_Enclosing_State (Var_Name);
+               Enclosing_State := GG_Encapsulating_State (Var_Name);
 
                if Enclosing_State = Null_Entity_Name
                  or else (Present (Var_Entity)
@@ -1599,7 +1599,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
                begin
                   for Var of All_LHS loop
-                     State := GG_Enclosing_State (Var);
+                     State := GG_Encapsulating_State (Var);
 
                      if State /= Null_Entity_Name then
                         if State_Comp_Map (State).Is_Subset (Of_Set => All_LHS)
@@ -1616,8 +1616,8 @@ package body Flow_Generated_Globals.Phase_2 is
                      end if;
                   end loop;
 
-                  --  Remove constituents whose enclosing state abstraction is
-                  --  not fully initialized.
+                  --  Remove constituents whose encapsulating state abstraction
+                  --  is not fully initialized.
                   Initialized_Vars_And_States.Difference (To_Remove);
                   II.LHS.Difference (To_Remove);
                   II.LHS_Proof.Difference (To_Remove);
@@ -2222,18 +2222,18 @@ package body Flow_Generated_Globals.Phase_2 is
       return Res;
    end Directly_Called_Protected_Objects;
 
-   ------------------------
-   -- GG_Enclosing_State --
-   ------------------------
+   ----------------------------
+   -- GG_Encapsulating_State --
+   ----------------------------
 
-   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name is
+   function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name is
       C : constant Name_Maps.Cursor := Comp_State_Map.Find (EN);
       use Name_Maps;
    begin
       return (if Has_Element (C)
               then Element (C)
               else Null_Entity_Name);
-   end GG_Enclosing_State;
+   end GG_Encapsulating_State;
 
    --------------
    -- GG_Exist --

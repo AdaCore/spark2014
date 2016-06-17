@@ -699,7 +699,7 @@ is
       Scope : Flow_Scope)
       return Flow_Id
    with Pre => Is_Non_Visible_Constituent (F, Scope);
-   --  Returns the Flow_Id of the closest enclosing state of F that
+   --  Returns the Flow_Id of the closest encapsulating state of F that
    --  Is_Visible from Scope.
 
    function Replace_Flow_Ids
