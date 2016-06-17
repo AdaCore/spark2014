@@ -578,12 +578,9 @@ and objects in |SPARK|:
 Real-Time Systems (Annex D)
 ---------------------------
 
-This annex deals almost exclusively with tasking, and so is
-naturally not yet supported in the Release 1 of |SPARK|.
-
-The package ``Ada.Real_Time`` may be used, although the
-function ``Ada.Real_Time.Clock`` is not seen as accessing
-a volatile state.
+|SPARK| supports the parts of the real-time systems annex that comply with the
+Ravenscar profile (see Ada RM D.13). See section
+:ref:`tasks-and-synchronization`.
 
 Distributed Systems (Annex E)
 -----------------------------
