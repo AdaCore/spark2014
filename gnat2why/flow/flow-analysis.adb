@@ -425,36 +425,35 @@ package body Flow.Analysis is
 
          Atr : V_Attributes renames FA.Atr (V);
 
-         Check_Read  : constant Boolean      := Kind in Use_Read | Use_Any;
-         Check_Write : constant Boolean      := Kind in Use_Write | Use_Any;
-         Of_Interest : Boolean               := False;
+         function Of_Interest return Boolean;
+         --  Returns True iff the current vertex contains the variable of
+         --  interest.
+
+         -----------------
+         -- Of_Interest --
+         -----------------
+
+         function Of_Interest return Boolean is
+            Check_Read  : constant Boolean := Kind in Use_Read  | Use_Any;
+            Check_Write : constant Boolean := Kind in Use_Write | Use_Any;
+
+            function Var_Is_In (Vars : Flow_Id_Sets.Set) return Boolean is
+               (Vars.Contains (Var_Normal) or else
+                  (not Precise and then
+                     To_Entire_Variables (Vars).Contains (E_Var_Normal)));
+
+         --  Start of processing for Of_Interest
+
+         begin
+            return
+              (Check_Read  and then Var_Is_In (Atr.Variables_Used))
+                 or else
+              (Check_Write and then Var_Is_In (Atr.Variables_Defined));
+         end Of_Interest;
+
+      --  Start of processing for Proc
 
       begin
-
-         --  First we check if the current vertex contains the
-         --  variable of interest.
-
-         if Check_Read then
-            if Atr.Variables_Used.Contains (Var_Normal) or else
-              (not Precise and then
-                 To_Entire_Variables (Atr.Variables_Used).Contains
-                 (E_Var_Normal))
-            then
-               Of_Interest := True;
-            end if;
-         end if;
-         if Check_Write then
-            if Atr.Variables_Defined.Contains (Var_Normal) or else
-              (not Precise and then
-                 To_Entire_Variables (Atr.Variables_Defined).Contains
-                 (E_Var_Normal))
-            then
-               Of_Interest := True;
-            end if;
-         end if;
-
-         --  If not we stop here.
-
          if not Of_Interest then
             T_Ins := Flow_Graphs.Continue;
             return;
