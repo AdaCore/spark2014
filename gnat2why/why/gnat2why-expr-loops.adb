@@ -442,7 +442,9 @@ package body Gnat2Why.Expr.Loops is
          --  Generate the implicit invariant for the dynamic properties of
          --  objects modified in the loop.
 
-         Dyn_Types_Inv := Generate_Frame_Condition (Stmt);
+         Dyn_Types_Inv :=
+           Generate_Frame_Condition (Stmt,
+             Has_Loop_Invariant => not Loop_Invariants.Is_Empty);
 
          --  Generate the loop invariants VCs
 

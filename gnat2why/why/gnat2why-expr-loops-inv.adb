@@ -189,9 +189,13 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Tree Traversal --
    --------------------
 
-   function Get_Loop_Writes (Loop_Stmt : Node_Id) return Write_Status_Maps.Map;
+   function Get_Loop_Writes
+     (Loop_Stmt          : Node_Id;
+      Has_Loop_Invariant : Boolean)
+      return Write_Status_Maps.Map;
    --  Traverse a loop statement and accumulate potentially written variables.
    --  @param Loop_Stmt considered loop statement.
+   --  @param Has_Loop_Invariant True iff the loop has a loop invariant.
    --  @return a map between written entities and their write status.
 
    procedure Process_Call_Statement
@@ -451,8 +455,13 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Generate_Frame_Condition --
    ------------------------------
 
-   function Generate_Frame_Condition (Loop_Stmt : Node_Id) return W_Pred_Id is
-      Loop_Writes   : constant Map := Get_Loop_Writes (Loop_Stmt);
+   function Generate_Frame_Condition
+     (Loop_Stmt          : Node_Id;
+      Has_Loop_Invariant : Boolean)
+      return W_Pred_Id
+   is
+      Loop_Writes   : constant Map :=
+        Get_Loop_Writes (Loop_Stmt, Has_Loop_Invariant);
       Loop_Id       : constant Entity_Id := Entity (Identifier (Loop_Stmt));
       Scope         : constant Entity_Id := Enclosing_Unit (Loop_Id);
       N             : Node_Id;
@@ -481,7 +490,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  For loops inside a single task, flow analysis returns the
                   --  task object as written. We don't care as single
                   --  tasks can't have (mutable) discriminants and thus cannot
-                  --  be modified from a proof point of view.
+                  --  be modified from a proof point of view. We still want to
+                  --  issue an error if flow analysis returns a task with
+                  --  mutable discriminants that we did not find.
 
                   declare
                      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -529,7 +540,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Conjuncts =>
                     (1 => +Dyn_Types_Inv,
 
-                     --  Compute the dynamic property of Expr
+                     --  Compute the dynamic property of Expr, taking into
+                     --  account its initialization if it corresponds to a
+                     --  variable taken as input in the current subprogram.
 
                      2 => +Compute_Dynamic_Invariant
                        (Expr        => +Expr,
@@ -568,11 +581,21 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Get_Loop_Writes --
    ---------------------
 
-   function Get_Loop_Writes (Loop_Stmt : Node_Id) return Write_Status_Maps.Map
+   function Get_Loop_Writes
+     (Loop_Stmt          : Node_Id;
+      Has_Loop_Invariant : Boolean)
+      return Write_Status_Maps.Map
    is
    begin
+      --  Only try to keep variables declared inside the loop as completely
+      --  written instead of discarded if there is a loop invariant (and this
+      --  will only impact variables declared before the loop invariant).
+      --  Otherwise, there is no meaningful use for these variables in the
+      --  frame condition.
+
       return Loop_Writes : Write_Status_Maps.Map do
-         Process_Loop_Statement (Loop_Stmt, Loop_Writes, Keep_Local => True);
+         Process_Loop_Statement (Loop_Stmt, Loop_Writes,
+                                 Keep_Local => Has_Loop_Invariant);
       end return;
    end Get_Loop_Writes;
 
@@ -848,6 +871,11 @@ package body Gnat2Why.Expr.Loops.Inv is
                  Defining_Identifier (Iterator_Specification (Scheme));
             end if;
 
+            --  For the loop index of the top-level loop, for which Keep_Local
+            --  is True, consider the variable as completely written instead of
+            --  discarded, as this allows stating the dynamic property of the
+            --  loop index in the frame condition.
+
             One_Level_Update (New_Write      => Loop_Param_Ent,
                               Loop_Writes    => Loop_Writes,
                               Discard_Writes => not Keep_Local);
@@ -873,7 +901,8 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Assignment_Statement =>
             Update_Status (Sinfo.Name (N), Loop_Writes);
 
-         --  Record writes on variables local to the block as a Loop_Invariant
+         --  Possibly record writes on variables local to the block (if
+         --  Keep_Local is still True at this point) as a Loop_Invariant
          --  is allowed to appear in a block.
 
          when N_Block_Statement =>
@@ -907,7 +936,36 @@ package body Gnat2Why.Expr.Loops.Inv is
                end loop;
             end;
 
-         --  Discard writes to N if we are not interested in local objects
+         --  Discard writes to N if we are not interested in local objects.
+         --  The goal of passing Keep_Local (starting from value True) from
+         --  the top-level call to Process_Loop_Statement through all calls
+         --  traversing the tree is that we keep stating the dynamic property
+         --  of local variables declared inside the loop before the loop
+         --  invariant, for example:
+         --
+         --  loop
+         --     declare
+         --        X : T := ...
+         --     begin
+         --        pragma Loop_Invariant (...);
+         --        declare
+         --           Y : T := ...
+         --        begin
+         --           ...
+         --        end;
+         --     end;
+         --  end loop;
+         --
+         --  As Keep_Local is True when processing the declaration of X, the
+         --  assignment to X is not discarded. Instead, X is marked as being
+         --  completely written. As a result, the dynamic property of X is
+         --  stated in the generated frame condition, which may be useful.
+         --
+         --  As Keep_Local is False when processing the declaration of Y, the
+         --  assignment to Y is discarded, and so Y is ignored in the generated
+         --  frame condition. This is an optimisation, to avoid generating
+         --  useless frame conditions, as Y cannot be mentioned in the frame
+         --  condition in any meaningful way.
 
          when N_Object_Declaration =>
             declare
@@ -921,26 +979,24 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          when N_Elsif_Part =>
             Process_Statement_List
-              (Then_Statements (N), Loop_Writes, Keep_Local);
+              (Then_Statements (N), Loop_Writes, Keep_Local => False);
 
-         when N_Entry_Call_Statement     |
-              N_Procedure_Call_Statement =>
+         when N_Entry_Call_Statement
+            | N_Procedure_Call_Statement =>
             Process_Call_Statement (N, Loop_Writes);
 
+         --  Discard writes to variables local to a return statement
+
          when N_Extended_Return_Statement =>
-
-            --  Discard writes to variables local to a return statement
-
             One_Level_Update (Return_Statement_Entity (N), Loop_Writes,
                               Discard_Writes => True);
             Process_Statement_List
               (Return_Object_Declarations (N), Loop_Writes,
                Keep_Local => False);
 
+         --  Discard writes to variables local to an if statement
+
          when N_If_Statement =>
-
-            --  Discard writes to variables local to an if statement
-
             Process_Statement_List (Then_Statements (N), Loop_Writes,
                                     Keep_Local => False);
             Process_Statement_List (Else_Statements (N), Loop_Writes,
@@ -951,10 +1007,9 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Handled_Sequence_Of_Statements =>
             Process_Statement_List (Statements (N), Loop_Writes, Keep_Local);
 
+         --  Discard writes to variables local to a local loop statement
+
          when N_Loop_Statement =>
-
-            --  Discard writes to variables local to a loop statement
-
             Process_Loop_Statement (N, Loop_Writes, Keep_Local => False);
 
          when N_Abstract_Subprogram_Declaration |
@@ -1021,11 +1076,21 @@ package body Gnat2Why.Expr.Loops.Inv is
       Loop_Writes : in out Write_Status_Maps.Map;
       Keep_Local  : Boolean)
    is
-      N : Node_Id := First (L);
+      N    : Node_Id := First (L);
+      Keep : Boolean := Keep_Local;
 
    begin
       while Present (N) loop
-         Process_Statement (N, Loop_Writes, Keep_Local);
+
+         --  No need to keep variables declared after the loop invariant,
+         --  as there is no meaningful use of these variables in the frame
+         --  condition.
+
+         if Is_Pragma_Check (N, Name_Loop_Invariant) then
+            Keep := False;
+         end if;
+
+         Process_Statement (N, Loop_Writes, Keep);
          Next (N);
       end loop;
    end Process_Statement_List;
