@@ -469,6 +469,8 @@ package body Flow_Refinement is
          P := Scope (P);
       end loop;
 
+      --  ??? a simple traversal like in Find_Global better fits here
+
       declare
          M : constant Dependency_Maps.Map :=
            Parse_Initializes (Get_Pragma (P, Pragma_Initializes),

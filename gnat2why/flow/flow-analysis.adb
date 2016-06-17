@@ -77,11 +77,17 @@ package body Flow.Analysis is
 
    function Find_Global
      (S : Entity_Id;
-      F : Flow_Id) return Entity_Id;
-   --  Find the given global F in the subprogram declaration of S (or
-   --  in the initializes clause of S). If we can't find it (perhaps
-   --  because of computed globals) we just return S which is a useful
-   --  fallback place to raise an error.
+      F : Flow_Id) return Node_Or_Entity_Id
+   with Pre => Ekind (S) in Entry_Kind     |
+                            E_Function     |
+                            E_Package      |
+                            E_Package_Body |
+                            E_Procedure    |
+                            E_Task_Type;
+   --  Find the global F in the Global, Refined_Global, or Initializes aspect
+   --  of S. If it is not there (perhaps because it comes from computed
+   --  globals) just return S which is a good fallback location for error
+   --  reports.
 
    function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
@@ -207,88 +213,80 @@ package body Flow.Analysis is
 
    function Find_Global
      (S : Entity_Id;
-      F : Flow_Id) return Entity_Id
+      F : Flow_Id) return Node_Or_Entity_Id
    is
-      Needle     : Entity_Id;
-      Haystack_A : Node_Id;
-      Haystack_B : Node_Id;
-      The_Global : Entity_Id := Empty;
-
-      function Find_It (N : Node_Id) return Traverse_Result;
-      --  Checks if N refers to Needle and sets The_Global to N if
-      --  that is the case.
-
-      ----------
-      -- Find --
-      ----------
-
-      function Find_It (N : Node_Id) return Traverse_Result is
-      begin
-         case Nkind (N) is
-            when N_Identifier | N_Expanded_Name =>
-               if Present (Entity (N))
-                 and then Nkind (Entity (N)) in N_Entity  -- ??? workaround
-                 and then Unique_Entity (Entity (N)) = Needle
-               then
-                  The_Global := N;
-                  return Abandon;
-               else
-                  return OK;
-               end if;
-            when others =>
-               return OK;
-         end case;
-      end Find_It;
-
-      procedure Look_For_Global is new Traverse_Proc (Find_It);
-
-   --  Start of processing for Find_Global
-
    begin
-      case Ekind (S) is
-         when E_Package_Body =>
-            Haystack_A := Empty;
-            Haystack_B := Get_Pragma (Spec_Entity (S), Pragma_Initializes);
-
-         when E_Package =>
-            Haystack_A := Empty;
-            Haystack_B := Get_Pragma (S, Pragma_Initializes);
-
-         when Subprogram_Kind | E_Task_Type | E_Entry =>
-            declare
-               Body_E : constant Entity_Id := Get_Body_Entity (S);
-            begin
-               Haystack_A := (if Present (Body_E)
-                              then Get_Pragma (Body_E, Pragma_Refined_Global)
-                              else Empty);
-               Haystack_B := Get_Pragma (S, Pragma_Global);
-            end;
-
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
-
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            Needle := Get_Direct_Mapping_Id (F);
+            declare
+               Target : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               Result : Node_Or_Entity_Id := S;
+               --  Either the fallback entity S or a node that represents F
+               --  in the contract.
 
-            Look_For_Global (Haystack_A);
-            if Present (The_Global) then
-               return The_Global;
-            end if;
+               function Process (N : Node_Id) return Traverse_Result;
+               --  Checks if N refers to Target and sets Resut to N if that is
+               --  the case.
 
-            Look_For_Global (Haystack_B);
-            if Present (The_Global) then
-               return The_Global;
-            else
-               return S;
-            end if;
+               -------------
+               -- Process --
+               -------------
+
+               function Process (N : Node_Id) return Traverse_Result is
+               begin
+                  if Nkind (N) in N_Identifier | N_Expanded_Name
+                    and then Present (Entity (N))
+                    and then Nkind (Entity (N)) in N_Entity
+                    -- ??? workaround or something?
+                    and then Unique_Entity (Entity (N)) = Target
+                  then
+                     Result := N;
+                     return Abandon;
+                  else
+                     return OK;
+                  end if;
+               end Process;
+
+               procedure Traverse is new Traverse_Proc (Process);
+
+            begin
+               case Ekind (S) is
+                  when E_Package_Body =>
+                     Traverse
+                       (Get_Pragma (Spec_Entity (S), Pragma_Initializes));
+
+                  when E_Package =>
+                     Traverse (Get_Pragma (S, Pragma_Initializes));
+
+                  when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
+                     declare
+                        Body_E : constant Entity_Id := Get_Body_Entity (S);
+                     begin
+                        if Present (Body_E) then
+                           Traverse
+                             (Get_Pragma (Body_E, Pragma_Refined_Global));
+                           if Result /= S then
+                              return Result;
+                           end if;
+                        end if;
+                     end;
+
+                     Traverse (Get_Pragma (S, Pragma_Global));
+
+                  when others =>
+                     --  ??? E_Generic_Package, E_Generic_Package?
+                     raise Program_Error;
+               end case;
+
+               return Result;
+            end;
 
          when Magic_String =>
             return S;
 
          when Null_Value | Synthetic_Null_Export =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
+
       end case;
    end Find_Global;
 
