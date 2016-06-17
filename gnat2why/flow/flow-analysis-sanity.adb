@@ -617,11 +617,11 @@ package body Flow.Analysis.Sanity is
         (F  : Flow_Id;
          FS : Flow_Id_Sets.Set)
          return Boolean;
-      --  Checks if F is either directly contained in FS or if F is a
+      --  Returns True iff F is either directly contained in FS or it is a
       --  state abstraction that encloses an element of FS.
-      --  The purpose of this function is to allow user contracts to
-      --  mention either a state abstraction, or the constituents
-      --  thereof when both are visible.
+      --  The purpose of this function is to allow user contracts to mention
+      --  either a state abstraction, or the constituents thereof when both
+      --  are visible.
       --  @param F is the Flow_Id that we look for
       --  @param FS is the Flow_Set in which we look
       --  @return whether FS contains F or a contituent of F
@@ -659,32 +659,32 @@ package body Flow.Analysis.Sanity is
             return True;
          end if;
 
-         --  Check if F is a state abstraction that encloses a
-         --  constituent mentioned in FS.
+         --  Check if F is a state abstraction that encloses a constituent
+         --  mentioned in FS.
 
-         --  If F does not represent a state abstraction then return
-         --  False.
-         if not Is_Abstract_State (F) then
-            return False;
+         if Is_Abstract_State (F) then
+            declare
+               State : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               for Constit of FS loop
+                  if Constit.Kind in Direct_Mapping | Record_Field then
+                     declare
+                        Encapsulator : constant Entity_Id :=
+                          Encapsulating_State
+                            (Get_Direct_Mapping_Id
+                               (Constit));
+
+                     begin
+                        if Present (Encapsulator)
+                          and then Encapsulator = State
+                        then
+                           return True;
+                        end if;
+                     end;
+                  end if;
+               end loop;
+            end;
          end if;
-
-         declare
-            State : constant Node_Id := Get_Direct_Mapping_Id (F);
-         begin
-            for Constit of FS loop
-               if Constit.Kind in Direct_Mapping | Record_Field then
-                  declare
-                     N : constant Node_Id := Get_Direct_Mapping_Id (Constit);
-                  begin
-                     if Present (Encapsulating_State (N))
-                       and then Encapsulating_State (N) = State
-                     then
-                        return True;
-                     end if;
-                  end;
-               end if;
-            end loop;
-         end;
 
          return False;
       end Extended_Set_Contains;
