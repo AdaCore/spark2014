@@ -299,15 +299,16 @@ package body Flow.Analysis is
       F : Flow_Id)
       return Flow_Graphs.Vertex_Id
    is
+      Result : Flow_Graphs.Vertex_Id;
    begin
-      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if Change_Variant (G.Get_Key (V), Normal_Use) = F then
-            return V;
-         end if;
-      end loop;
+      --  Look for either the Initial_Value or Initial_Grouping variant
+      Result := G.Get_Vertex (Change_Variant (F, Initial_Value));
 
-      --  We could not find F's initial vertex
-      return Flow_Graphs.Null_Vertex;
+      if Result = Flow_Graphs.Null_Vertex then
+         return G.Get_Vertex (Change_Variant (F, Initial_Grouping));
+      else
+         return Result;
+      end if;
    end Get_Initial_Vertex;
 
    ----------------------
