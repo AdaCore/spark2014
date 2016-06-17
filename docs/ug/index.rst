@@ -28,6 +28,7 @@ SPARK 2014 User's Guide
 
    getting_started
    introduction
+   install
    spark_mode
    spark_2014
    tutorial

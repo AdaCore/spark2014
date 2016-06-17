@@ -37,6 +37,8 @@ In the rest of this document, we'll simply say |SPARK| to refer to SPARK 2014.
 
 The remainder of this document is structured as follows:
 
+* :ref:`Installation of GNATprove` goes through the installation steps on
+  different platforms.
 * :ref:`Identifying SPARK Code` describes the various means to identify the
   part of the program in |SPARK| that should be analyzed.
 * :ref:`Overview of SPARK Language` provides an overview of the |SPARK|

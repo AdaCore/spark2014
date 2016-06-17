@@ -4566,8 +4566,8 @@ project file, for example:
   end My_Project;
 
 You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
-lemma library project to be found by GNAT compiler, as described in :ref:`How
-to Install GNATprove`.
+lemma library project to be found by GNAT compiler, as described in
+:ref:`Installation of GNATprove`.
 
 You also need to set the environment variable ``SPARK_LEMMAS_OBJECT_DIR`` to
 the absolute path of the object directory where you want compilation and
