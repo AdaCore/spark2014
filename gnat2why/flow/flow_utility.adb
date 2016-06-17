@@ -1953,6 +1953,33 @@ package body Flow_Utility is
 
          V             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
+         procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
+         --  Processing related to parameter of a call
+
+         ----------------------
+         -- Handle_Parameter --
+         ----------------------
+
+         procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
+         begin
+            if not Folding
+              or else Used_Reads.Contains (Direct_Mapping_Id (Formal))
+            then
+               V.Union
+                 (Recurse_On
+                    (Actual,
+                     Consider_Extensions =>
+                       Has_Extensions_Visible (Subprogram) or else
+                     Ekind (Get_Type (Formal, Scope))
+                     in Class_Wide_Kind));
+            end if;
+         end Handle_Parameter;
+
+         procedure Handle_Parameters is new
+           Iterate_Call_Parameters (Handle_Parameter);
+
+      --  Start of processing for Process_Subprogram_Call
+
       begin
          --  Determine the global effects of the called program
 
@@ -2038,38 +2065,7 @@ package body Flow_Utility is
 
          --  Merge the actuals into the set of variables used
 
-         declare
-            Actual : Node_Id;
-            Formal : Entity_Id;
-            Call   : Node_Id;
-            Ptr    : Node_Id;
-         begin
-            Ptr := First (Parameter_Associations (Callsite));
-            while Present (Ptr) loop
-               Actual := (if Nkind (Ptr) = N_Parameter_Association
-                          then Explicit_Actual_Parameter (Ptr)
-                          else Ptr);
-
-               Find_Actual (N      => Actual,
-                            Formal => Formal,
-                            Call   => Call);
-               pragma Assert (Call = Callsite);
-
-               if not Folding
-                 or else Used_Reads.Contains (Direct_Mapping_Id (Formal))
-               then
-                  V.Union
-                    (Recurse_On
-                       (Actual,
-                        Consider_Extensions =>
-                          Has_Extensions_Visible (Subprogram) or else
-                          Ekind (Get_Type (Formal, Scope))
-                            in Class_Wide_Kind));
-               end if;
-
-               Next (Ptr);
-            end loop;
-         end;
+         Handle_Parameters (Callsite);
 
          --  Finally, expand the collected set (if necessary)
 
