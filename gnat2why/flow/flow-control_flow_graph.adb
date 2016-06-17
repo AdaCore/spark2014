@@ -1640,9 +1640,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Add the implicit use of Ada.Real_Time.Clock_Time
       Vars_Used.Include
-        (Get_Flow_Id (To_Entity_Name ("ada__real_time__clock_time"),
-                      Normal_Use,
-                      FA.B_Scope));
+        (Get_Flow_Id (To_Entity_Name ("ada__real_time__clock_time")));
 
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
