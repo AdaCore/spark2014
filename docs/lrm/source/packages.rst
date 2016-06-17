@@ -1732,7 +1732,7 @@ were declared within a protected unit or task unit (see section
    * update of a ``constituent`` of the state abstraction shall be
      treated as an update of the encapsulating state abstraction of
      the ``constituent``.  An update of such a ``constituent`` is
-     regarded as updating its enclosing state abstraction with a self
+     regarded as updating its encapsulating state abstraction with a self
      dependency as it is unknown what other ``constituents`` the state
      abstraction encapsulates.
 
