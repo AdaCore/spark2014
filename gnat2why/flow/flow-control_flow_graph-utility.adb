@@ -299,7 +299,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location               := E_Loc;
 
       if In_Vertex then
-         Tmp_Used := Get_Variable_Set
+         Tmp_Used := Get_Variables
            (Actual,
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,
@@ -697,7 +697,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
-         A.Variables_Used := Get_Variable_Set
+         A.Variables_Used := Get_Variables
            (A.Default_Init_Val,
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,

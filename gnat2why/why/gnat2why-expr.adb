@@ -14051,7 +14051,7 @@ package body Gnat2Why.Expr is
       if Is_Scalar_Type (Ty_Ext) then
          if Has_Default_Aspect (Ty_Ext) then
             Variables.Union
-              (Get_Variable_Set
+              (Get_Variables
                  (N                    => Default_Aspect_Value (Ty_Ext),
                   Scope                => Scope,
                   Local_Constants      => Node_Sets.Empty_Set,
@@ -14076,7 +14076,7 @@ package body Gnat2Why.Expr is
             --  generate get (<Expr>, i1, ...) = <Default_Component_Value>
 
             Variables.Union
-              (Get_Variable_Set
+              (Get_Variables
                  (N                    =>
                       Default_Aspect_Component_Value (Ty_Ext),
                   Scope                => Scope,
@@ -14127,7 +14127,7 @@ package body Gnat2Why.Expr is
                      --  Generate <Expr>.rec__disc1 = Discr
 
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    => Node (Elmt),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
@@ -14141,7 +14141,7 @@ package body Gnat2Why.Expr is
                      --  Generate <Expr>.rec__disc1 = Discr1.default
 
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    =>
                                Discriminant_Default_Value (Field),
                            Scope                => Scope,
@@ -14171,7 +14171,7 @@ package body Gnat2Why.Expr is
                         --   <Expr>.rec__field1 = Field1.default
 
                         Variables.Union
-                          (Get_Variable_Set
+                          (Get_Variables
                              (N                    =>
                                   Expression (Parent (Field)),
                               Scope                => Scope,
@@ -14212,7 +14212,7 @@ package body Gnat2Why.Expr is
             if Present (Default_Init_Expr) then
 
                Variables.Union
-                 (Get_Variable_Set
+                 (Get_Variables
                     (N                    => Default_Init_Expr,
                      Scope                => Scope,
                      Local_Constants      => Node_Sets.Empty_Set,
@@ -14246,7 +14246,7 @@ package body Gnat2Why.Expr is
 
    begin
       Variables.Union
-        (Get_Variable_Set
+        (Get_Variables
            (N                    => Dynamic_Pred_Expr,
             Scope                => Scope,
             Local_Constants      => Node_Sets.Empty_Set,
@@ -14279,7 +14279,7 @@ package body Gnat2Why.Expr is
             Rng : constant Node_Id := Get_Range (Ty_Ext);
          begin
             Variables.Union
-              (Get_Variable_Set
+              (Get_Variables
                  (N                    => Low_Bound (Rng),
                   Scope                => Scope,
                   Local_Constants      => Node_Sets.Empty_Set,
@@ -14287,7 +14287,7 @@ package body Gnat2Why.Expr is
                   Use_Computed_Globals => True,
                   Reduced              => True));
             Variables.Union
-              (Get_Variable_Set
+              (Get_Variables
                  (N                    => High_Bound (Rng),
                   Scope                => Scope,
                   Local_Constants      => Node_Sets.Empty_Set,
@@ -14310,7 +14310,7 @@ package body Gnat2Why.Expr is
                      Rng : constant Node_Id := Get_Range (Etype (Index));
                   begin
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    => Low_Bound (Rng),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
@@ -14318,7 +14318,7 @@ package body Gnat2Why.Expr is
                            Use_Computed_Globals => True,
                            Reduced              => True));
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    => High_Bound (Rng),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
@@ -14342,7 +14342,7 @@ package body Gnat2Why.Expr is
                      Rng       : constant Node_Id := Get_Range (Index);
                   begin
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    => Low_Bound (Rng),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
@@ -14350,7 +14350,7 @@ package body Gnat2Why.Expr is
                            Use_Computed_Globals => True,
                            Reduced              => True));
                      Variables.Union
-                       (Get_Variable_Set
+                       (Get_Variables
                           (N                    => High_Bound (Rng),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
@@ -14376,7 +14376,7 @@ package body Gnat2Why.Expr is
             while Present (Discr) loop
                if Is_Not_Hidden_Discriminant (Discr) then
                   Variables.Union
-                    (Get_Variable_Set
+                    (Get_Variables
                        (N                    => Node (Elmt),
                         Scope                => Scope,
                         Local_Constants      => Node_Sets.Empty_Set,

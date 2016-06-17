@@ -243,15 +243,15 @@ is
    --  Returns True if Scope has visibility of E's body and a Generated Depends
    --  will be produced for E.
 
-   function Get_Function_Set
+   function Get_Functions
      (N                  : Node_Id;
       Include_Predicates : Boolean)
       return Node_Sets.Set with
      Pre => Present (N);
-   --  Collect all functions called in an expression N. If Include_Predicates
-   --  is set, then we also mention implicit calls to predicate functions.
+   --  Collect functions called in an expression N. If Include_Predicates is
+   --  True, then also include implicit calls to predicate functions.
 
-   function Get_Variable_Set
+   function Get_Variables
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
@@ -264,7 +264,7 @@ is
       return Flow_Id_Sets.Set
    with Pre  => (if Fold_Functions then not Allow_Statements),
         Post => (if Reduced
-                 then (for all F of Get_Variable_Set'Result
+                 then (for all F of Get_Variables'Result
                          => F.Kind /= Record_Field));
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
@@ -293,7 +293,7 @@ is
    --       not come from source are expanded out to the variable set of
    --       their initializing expression.
 
-   function Get_Variable_Set
+   function Get_Variables
      (L                            : List_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
@@ -432,7 +432,7 @@ is
    --     - unchecked conversion (for scalars)
    --
    --  Note that the expression(s) in the index or slice can be much more
-   --  general and thus will be processed by Get_Variable_Set.
+   --  general and thus will be processed by Get_Variables.
    --
    --  Note we only support unchecked conversion from and to scalars, i.e.
    --  for things generated from:
@@ -465,10 +465,10 @@ is
    --     Tmp.F.Y -> H
    --
    --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
+   --  Expand_Synthesized_Constants will be passed on to Get_Variables
    --  if necessary.
    --
-   --  Get_Variable_Set will be called with Reduced set to False (as this
+   --  Get_Variables will be called with Reduced set to False (as this
    --  function should never be called when its true...)
 
    function Untangle_Record_Fields
@@ -495,11 +495,11 @@ is
    --     R'Update (X => N)    True            {R.Y, N}
    --
    --  Scope, Local_Constants, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
-   --  if necessary.
+   --  Expand_Synthesized_Constants will be passed on to Get_Variables if
+   --  necessary.
    --
-   --  Get_Variable_Set will be called with Reduced set to False (as this
-   --  function should never be called when it's true...)
+   --  Get_Variables will be called with Reduced set to False (as this function
+   --  should never be called when it's true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;

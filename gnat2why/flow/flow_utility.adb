@@ -282,8 +282,8 @@ package body Flow_Utility is
             when N_In | N_Not_In =>
                --  Membership tests involving type with predicates have the
                --  predicate function appear during GG, but not in phase 2.
-               --  See mirroring code in Get_Variable_Set that deals with
-               --  this as well.
+               --  See mirroring code in Get_Variables that deals with this
+               --  as well.
                if Present (Right_Opnd (N)) then
                   --  x in t
                   P := Right_Opnd (N);
@@ -1047,13 +1047,13 @@ package body Flow_Utility is
       end if;
    end Get_Flow_Id;
 
-   ----------------------
-   -- Get_Function_Set --
-   ----------------------
+   -------------------
+   -- Get_Functions --
+   -------------------
 
-   function Get_Function_Set (N                  : Node_Id;
-                              Include_Predicates : Boolean)
-                              return Node_Sets.Set
+   function Get_Functions (N                  : Node_Id;
+                           Include_Predicates : Boolean)
+                           return Node_Sets.Set
    is
       Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
       Unused : Tasking_Info;
@@ -1064,7 +1064,7 @@ package body Flow_Utility is
          Tasking            => Unused,
          Include_Predicates => Include_Predicates);
       return Funcs;
-   end Get_Function_Set;
+   end Get_Functions;
 
    -----------------
    -- Get_Globals --
@@ -1880,11 +1880,11 @@ package body Flow_Utility is
       return Params;
    end Get_Formals;
 
-   ----------------------
-   -- Get_Variable_Set --
-   ----------------------
+   -------------------
+   -- Get_Variables --
+   -------------------
 
-   function Get_Variable_Set
+   function Get_Variables
      (N                            : Node_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
@@ -1901,7 +1901,7 @@ package body Flow_Utility is
       function Recurse_On (N                   : Node_Id;
                            Consider_Extensions : Boolean := False)
                            return Flow_Id_Sets.Set
-      is (Get_Variable_Set
+      is (Get_Variables
             (N,
              Scope                        => Scope,
              Local_Constants              => Local_Constants,
@@ -2560,7 +2560,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-   --  Start of processing for Get_Variable_Set
+   --  Start of processing for Get_Variables
 
    begin
       Traverse (N);
@@ -2603,9 +2603,9 @@ package body Flow_Utility is
          --  And finally, we remove all local constants
          Remove_Constants (S, Local_Constants);
       end return;
-   end Get_Variable_Set;
+   end Get_Variables;
 
-   function Get_Variable_Set
+   function Get_Variables
      (L                            : List_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
@@ -2622,7 +2622,7 @@ package body Flow_Utility is
       P := First (L);
       while Present (P) loop
          VS.Union
-           (Get_Variable_Set
+           (Get_Variables
               (N                            => P,
                Scope                        => Scope,
                Local_Constants              => Local_Constants,
@@ -2635,7 +2635,7 @@ package body Flow_Utility is
          P := Next (P);
       end loop;
       return VS;
-   end Get_Variable_Set;
+   end Get_Variables;
 
    -----------------
    -- Has_Depends --
@@ -2737,12 +2737,12 @@ package body Flow_Utility is
          return False;
       end if;
 
-      FS := Get_Variable_Set (Expression (Decl),
-                              Scope                => Get_Flow_Scope (E),
-                              Local_Constants      => Node_Sets.Empty_Set,
-                              Fold_Functions       => True,
-                              Use_Computed_Globals => GG_Has_Been_Generated);
-      --  Note that Get_Variable_Set calls Has_Variable_Input when it finds a
+      FS := Get_Variables (Expression (Decl),
+                           Scope                => Get_Flow_Scope (E),
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => True,
+                           Use_Computed_Globals => GG_Has_Been_Generated);
+      --  Note that Get_Variables calls Has_Variable_Input when it finds a
       --  constant. This means that there might be some mutual recursion here
       --  (but this should be fine).
 
@@ -2752,8 +2752,8 @@ package body Flow_Utility is
       end if;
 
       if not GG_Has_Been_Generated
-        and then not Get_Function_Set (Expression (Decl),
-                                       Include_Predicates => False).Is_Empty
+        and then not Get_Functions (Expression (Decl),
+                                    Include_Predicates => False).Is_Empty
       then
          --  Globals have not yet been computed. If we find any function calls
          --  we consider the constant to have variable inputs (this is the safe
@@ -3556,7 +3556,7 @@ package body Flow_Utility is
       --      extensions (i.e. non-normal facets).
 
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
-      is (Get_Variable_Set
+      is (Get_Variables
             (N,
              Scope                        => Scope,
              Local_Constants              => Local_Constants,
@@ -3565,7 +3565,7 @@ package body Flow_Utility is
              Reduced                      => False,
              Allow_Statements             => False,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
-      --  Helpful wrapper for calling Get_Variable_Set.
+      --  Helpful wrapper for calling Get_Variables
 
       function Recurse_On
         (N              : Node_Id;
@@ -4055,7 +4055,7 @@ package body Flow_Utility is
                      Attribute_Old | Attribute_Loop_Entry);
 
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
-      is (Get_Variable_Set
+      is (Get_Variables
             (N,
              Scope                        => Scope,
              Local_Constants              => Local_Constants,
@@ -4406,7 +4406,7 @@ package body Flow_Utility is
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    is
-      --  Fold_Functions (a parameter for Get_Variable_Set) is specified as
+      --  Fold_Functions (a parameter for Get_Variables) is specified as
       --  `false' here because Untangle should only ever be called where we
       --  assign something to something. And you can't assign to function
       --  results (yet).
@@ -4414,7 +4414,7 @@ package body Flow_Utility is
       function Get_Vars_Wrapper (N    : Node_Id;
                                  Fold : Boolean)
                                  return Flow_Id_Sets.Set
-      is (Get_Variable_Set
+      is (Get_Variables
             (N,
              Scope                => Scope,
              Local_Constants      => Local_Constants,

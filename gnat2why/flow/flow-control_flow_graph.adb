@@ -268,26 +268,26 @@ package body Flow.Control_Flow_Graph is
    --
    --  If such a function is used, we do not want W to flow into the final
    --  result of whatever it is doing, however, this is difficult as functions
-   --  are not really processed separately. Instead we are just interested
-   --  in the "set of variables" present in an expression. So instead we have
-   --  a parameter in Get_Variable_Set (Fold_Functions) which, if specified,
-   --  will return simply the set {A, B} instead of {A, B, W} for expressions
+   --  are not really processed separately. Instead we are just interested in
+   --  the "set of variables" present in an expression. So instead we have a
+   --  parameter in Get_Variables (Fold_Functions) which, if specified, will
+   --  return simply the set {A, B} instead of {A, B, W} for expressions
    --  involving calls to Multiply_After_Delay.
    --
    --  However, we need to make sure that all variables are initialized when we
    --  call our function; but the generated vertex for an expression involving
    --  it no longer features W.
    --
-   --  Hence, in all places where we call Get_Variable_Set and fold functions,
-   --  we also remember the node_id of the expression. For example, if we have
-   --  an if statement:
+   --  Hence, in all places where we call Get_Variables and fold functions, we
+   --  also remember the node_id of the expression. For example, if we have an
+   --  if statement:
    --
    --     if Multiply_After_Delay (X, Y, Z) = 0 then
    --        ...
    --
    --  Lets assume the node_id for the statement is 42, and the node_id for
-   --  Condition (42) is 88. When we process Get_Variable_Set (88), we place
-   --  the following into the Folded_Function_Checks map:
+   --  Condition (42) is 88. When we process Get_Variables (88), we place the
+   --  following into the Folded_Function_Checks map:
    --
    --     42 -> {88}
    --
@@ -1489,7 +1489,7 @@ package body Flow.Control_Flow_Graph is
             --  Work out the variables we use. These are the ones already
             --  used by the LHS + everything on the RHS.
             Vars_Used.Union
-              (Get_Variable_Set
+              (Get_Variables
                  (Expression (N),
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -1577,7 +1577,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
            (FA         => FA,
-            Var_Ex_Use => Get_Variable_Set
+            Var_Ex_Use => Get_Variables
               (Expression (N),
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
@@ -1631,7 +1631,7 @@ package body Flow.Control_Flow_Graph is
       Funcs     : Node_Sets.Set;
    begin
       --  Gather variables used in the expression of the delay statement
-      Vars_Used := Get_Variable_Set
+      Vars_Used := Get_Variables
                      (Expression (N),
                       Scope                => FA.B_Scope,
                       Local_Constants      => FA.Local_Constants,
@@ -1715,7 +1715,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (FA         => FA,
-               Var_Ex_Use => Get_Variable_Set
+               Var_Ex_Use => Get_Variables
                  (Condition (N),
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -1879,7 +1879,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
            (FA         => FA,
-            Var_Ex_Use => Get_Variable_Set
+            Var_Ex_Use => Get_Variables
               (Condition (N),
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
@@ -1946,7 +1946,7 @@ package body Flow.Control_Flow_Graph is
                   Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes
                     (FA         => FA,
-                     Var_Ex_Use => Get_Variable_Set
+                     Var_Ex_Use => Get_Variables
                        (Condition (Elsif_Statement),
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
@@ -2286,7 +2286,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (FA         => FA,
-               Var_Ex_Use => Get_Variable_Set
+               Var_Ex_Use => Get_Variables
                  (Condition (Iteration_Scheme (N)),
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -2388,7 +2388,7 @@ package body Flow.Control_Flow_Graph is
                Make_Basic_Attributes
                  (FA         => FA,
                   Var_Def    => Flatten_Variable (LP, FA.B_Scope),
-                  Var_Ex_Use => Get_Variable_Set
+                  Var_Ex_Use => Get_Variables
                     (DSD,
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
@@ -2807,7 +2807,7 @@ package body Flow.Control_Flow_Graph is
             Make_Basic_Attributes
               (FA         => FA,
                Var_Def    => Flatten_Variable (Param, FA.B_Scope),
-               Var_Ex_Use => Get_Variable_Set
+               Var_Ex_Use => Get_Variables
                  (Cont,
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -2912,7 +2912,7 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
                  (FA            => FA,
-                  Var_Use       => Get_Variable_Set
+                  Var_Use       => Get_Variables
                     (Prefix (Reference),
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
@@ -3378,7 +3378,7 @@ package body Flow.Control_Flow_Graph is
                   Make_Basic_Attributes
                     (FA         => FA,
                      Var_Def    => Var_Def,
-                     Var_Ex_Use => Get_Variable_Set
+                     Var_Ex_Use => Get_Variables
                        (Expr,
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
@@ -3431,7 +3431,7 @@ package body Flow.Control_Flow_Graph is
                --  we need to replace all occurrences of T with X (and
                --  all components of T with all components of X)
                --  to produce the correct default initial condition.
-               Variables_Used := Get_Variable_Set
+               Variables_Used := Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -4052,7 +4052,7 @@ package body Flow.Control_Flow_Graph is
                   Direct_Mapping_Id (N),
                   Make_Sink_Vertex_Attributes
                     (FA         => FA,
-                     Var_Use    => Get_Variable_Set
+                     Var_Use    => Get_Variables
                        (Pragma_Argument_Associations (N),
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
@@ -4117,7 +4117,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (Pre),
          Make_Sink_Vertex_Attributes
            (FA              => FA,
-            Var_Use         => Get_Variable_Set
+            Var_Use         => Get_Variables
               (Pre,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
@@ -4410,7 +4410,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (Post),
          Make_Sink_Vertex_Attributes
            (FA               => FA,
-            Var_Use          => Get_Variable_Set
+            Var_Use          => Get_Variables
               (Post,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
@@ -4462,7 +4462,7 @@ package body Flow.Control_Flow_Graph is
               (FA         => FA,
                Var_Def    => Flatten_Variable (FA.Analyzed_Entity,
                                                FA.B_Scope),
-               Var_Ex_Use => Get_Variable_Set
+               Var_Ex_Use => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
@@ -4532,7 +4532,7 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (Cond),
                Make_Basic_Attributes
                  (FA         => FA,
-                  Var_Ex_Use => Get_Variable_Set
+                  Var_Ex_Use => Get_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
@@ -5053,14 +5053,14 @@ package body Flow.Control_Flow_Graph is
       for Expr of Ctx.Folded_Function_Checks (N) loop
          declare
             Unchecked : constant Flow_Id_Sets.Set :=
-              Get_Variable_Set
+              Get_Variables
               (Expr,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not FA.Generating_Globals) -
 
-              Get_Variable_Set
+              Get_Variables
               (Expr,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,

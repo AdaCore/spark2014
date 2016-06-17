@@ -93,28 +93,26 @@ package body Flow.Analysis.Sanity is
          return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
-           (Get_Variable_Set (N,
-                              Scope                        => FA.B_Scope,
-                              Local_Constants              =>
-                                Node_Sets.Empty_Set,
-                              Fold_Functions               => False,
-                              Use_Computed_Globals         => True,
-                              Expand_Synthesized_Constants => True)));
-      --  A helpful wrapper around Get_Variable_Set as it is used in this
-      --  sanity checking procedure.
+           (Get_Variables (N,
+                           Scope                        => FA.B_Scope,
+                           Local_Constants              => Node_Sets.Empty_Set,
+                           Fold_Functions               => False,
+                           Use_Computed_Globals         => True,
+                           Expand_Synthesized_Constants => True)));
+      --  A helpful wrapper around Get_Variables as it is used in this sanity
+      --  checking procedure.
 
       function Simple_Variable_Set
         (L : List_Id)
          return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
-           (Get_Variable_Set (L,
-                              Scope                        => FA.B_Scope,
-                              Local_Constants              =>
-                                Node_Sets.Empty_Set,
-                              Fold_Functions               => False,
-                              Use_Computed_Globals         => True,
-                              Expand_Synthesized_Constants => True)));
+           (Get_Variables (L,
+                           Scope                        => FA.B_Scope,
+                           Local_Constants              => Node_Sets.Empty_Set,
+                           Fold_Functions               => False,
+                           Use_Computed_Globals         => True,
+                           Expand_Synthesized_Constants => True)));
       --  As above.
 
       -------------------------------------

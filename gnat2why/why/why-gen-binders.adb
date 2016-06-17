@@ -88,7 +88,7 @@ package body Why.Gen.Binders is
                                       return W_Expr_Array is
       Scope     : constant Flow_Scope := Get_Flow_Scope (E);
       Variables : constant Flow_Id_Sets.Set :=
-        Get_Variable_Set
+        Get_Variables
           (N                    => E,
            Scope                => Scope,
            Local_Constants      => Node_Sets.Empty_Set,
@@ -140,7 +140,7 @@ package body Why.Gen.Binders is
    is
       Scope     : constant Flow_Scope := Get_Flow_Scope (E);
       Variables : constant Flow_Id_Sets.Set :=
-        Get_Variable_Set
+        Get_Variables
           (N                    => E,
            Scope                => Scope,
            Local_Constants      => Node_Sets.Empty_Set,
