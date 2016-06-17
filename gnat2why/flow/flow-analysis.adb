@@ -1733,7 +1733,8 @@ package body Flow.Analysis is
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Tmp,
                            Tag       => Tag,
-                           Severity  => Warning_Kind);
+                           Severity  => Warning_Kind,
+                           Vertex    => V);
 
                      else
                         Error_Msg_Flow
