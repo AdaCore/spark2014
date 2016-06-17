@@ -1,0 +1,3 @@
+info_messages.adb:11:23: info: range check proved
+info_messages.ads:6:22: info: initialization of "Found" proved
+info_messages.ads:7:22: medium: "Result" might not be initialized in "Search"
