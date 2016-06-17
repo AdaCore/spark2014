@@ -1,2 +1,3 @@
 !large SKIP part of large testsuite
+Darwin DEAD too slow on darwin
 ALL RLIMIT 2000
