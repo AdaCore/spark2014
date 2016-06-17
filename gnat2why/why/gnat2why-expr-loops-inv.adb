@@ -81,12 +81,13 @@ package body Gnat2Why.Expr.Loops.Inv is
      (Expr     : W_Expr_Id;
       At_Entry : W_Expr_Id;
       Expr_Ty  : Entity_Id;
-      Status   : Write_Status_Access)
+      Status   : in out Write_Status_Access)
       return W_Pred_Id
    with
      Pre => Status /= null and then Status.Kind /= Discard;
    --  Compute a predicate which assumes preservation of every unmodified
-   --  part of an expression.
+   --  part of an expression. Status is finalized by the call for sanity
+   --  checking purpose.
    --  @param Expr Why expression at the current loop index.
    --  @param At_Entry Why expression at the loop's entry.
    --  @param Expr_Ty Ada type of Expr.
@@ -246,22 +247,22 @@ package body Gnat2Why.Expr.Loops.Inv is
      (Expr     : W_Expr_Id;
       At_Entry : W_Expr_Id;
       Expr_Ty  : Entity_Id;
-      Status   : Write_Status_Access)
+      Status   : in out Write_Status_Access)
       return W_Pred_Id
    is
+      Preserved_Fields : W_Pred_Id := True_Pred;
    begin
       case Status.Kind is
          when Discard =>
             raise Program_Error;
 
          when Entire_Object =>
-            return True_Pred;
+            Preserved_Fields := True_Pred;
 
          when Record_Fields =>
             declare
                Field            : Entity_Id :=
                  First_Component_Or_Discriminant (Expr_Ty);
-               Preserved_Fields : W_Pred_Id := True_Pred;
 
             begin
                while Present (Field) loop
@@ -298,22 +299,21 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                         if Status.Field_Status.Contains (Field) then
 
-                           --  Look for its preserved subfields
-
-                           Inv := Equality_Of_Preserved_Fields
-                             (Expr     => F_Expr,
-                              At_Entry => F_At_Entry,
-                              Expr_Ty  => F_Expr_Ty,
-                              Status   => Status.Field_Status.Element (Field));
-
-                           --  Remove visited fields for sanity checking
-
                            declare
-                              Old_Status : Write_Status_Access :=
+                              F_Status : Write_Status_Access :=
                                 Status.Field_Status.Element (Field);
                            begin
-                              Finalize (Old_Status);
+
+                              --  Look for its preserved subfields
+
+                              Inv := Equality_Of_Preserved_Fields
+                                (Expr     => F_Expr,
+                                 At_Entry => F_At_Entry,
+                                 Expr_Ty  => F_Expr_Ty,
+                                 Status   => F_Status);
                            end;
+
+                           --  Remove visited fields for sanity checking
 
                            Status.Field_Status.Exclude (Field);
 
@@ -340,8 +340,6 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                pragma Assert (for all E of Status.Field_Status =>
                                 E.Kind = Discard);
-
-               return Preserved_Fields;
             end;
 
          --  For arrays, generate:
@@ -394,35 +392,35 @@ package body Gnat2Why.Expr.Loops.Inv is
                pragma Assert (I = Indices'Last + 1);
 
                declare
-                  E_Expr_Ty  : constant Entity_Id :=
+                  E_Expr_Ty   : constant Entity_Id :=
                     Retysp (Component_Type (Expr_Ty));
-                  E_Expr     : constant W_Expr_Id :=
+                  E_Expr      : constant W_Expr_Id :=
                     New_Array_Access (Empty, Expr, Indices, EW_Term);
-                  E_At_Entry : constant W_Expr_Id :=
+                  E_At_Entry  : constant W_Expr_Id :=
                     New_Array_Access (Empty, At_Entry, Indices, EW_Term);
-                  Preserved_Fields : W_Expr_Id :=
+                  Elmt_Fields : W_Expr_Id :=
                     +Equality_Of_Preserved_Fields
                       (Expr     => E_Expr,
                        At_Entry => E_At_Entry,
                        Expr_Ty  => E_Expr_Ty,
                        Status   => Status.Elmt_Status);
                begin
-                  if +Preserved_Fields /= True_Pred then
-                     Preserved_Fields := New_Conditional
+                  if +Elmt_Fields /= True_Pred then
+                     Elmt_Fields := New_Conditional
                        (Domain    => EW_Pred,
                         Condition => +Range_Expr,
-                        Then_Part => Preserved_Fields,
+                        Then_Part => Elmt_Fields,
                         Typ       => EW_Bool_Type);
 
-                     return New_Universal_Quantif
+                     Preserved_Fields := New_Universal_Quantif
                        (Binders => Vars,
-                        Pred    => +Preserved_Fields);
-                  else
-                     return True_Pred;
+                        Pred    => +Elmt_Fields);
                   end if;
                end;
             end;
       end case;
+      Finalize (Status);
+      return Preserved_Fields;
    end Equality_Of_Preserved_Fields;
 
    --------------
@@ -532,6 +530,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                  Ada_Ent_To_Why.Element (Symbol_Table, N);
                Expr   : constant W_Expr_Id :=
                  Reconstruct_Item (Binder, Ref_Allowed => True);
+               Status : Write_Status_Access := Element (C);
 
             begin
                Dyn_Types_Inv :=
@@ -561,17 +560,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                           (Expr    => N,
                            Loop_Id => Loop_Id),
                         Expr_Ty  => Retysp (Etype (N)),
-                        Status   => Element (C))));
+                        Status   => Status)));
             end;
          end if;
-
-         --  We don't need N's status anymore; finalize it to free the memory
-
-         declare
-            Status : Write_Status_Access := Element (C);
-         begin
-            Finalize (Status);
-         end;
       end loop;
 
       return Dyn_Types_Inv;
@@ -915,8 +906,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Process_Statement_List (Decls, Loop_Writes, Keep_Local);
                end if;
 
-               pragma Assert (Present (HSS));
-               --  ??? why check what was already asserted?
                if Present (HSS) then
                   Process_Statement (HSS, Loop_Writes, Keep_Local);
                end if;
@@ -1062,7 +1051,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          when others =>
             Ada.Text_IO.Put_Line ("[Loops.Inv.Process_Statement] kind ="
                                   & Node_Kind'Image (Nkind (N)));
-            raise Why.Not_Implemented;
+            raise Program_Error;
 
       end case;
    end Process_Statement;
@@ -1168,9 +1157,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  downcasted before being assigned. Just discard it.
 
                   if No (Expected_Field) then
-                     pragma Assert
-                       (Has_Private_Ancestor_Or_Root (Expected_Type));
-
                      declare
                         Discarded_Field : constant Entity_Id :=
                           Original_Record_Component (Updated_Field);
@@ -1279,7 +1265,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          when others =>
             Ada.Text_IO.Put_Line ("[Update_Status] kind ="
                                   & Node_Kind'Image (Nkind (New_Write)));
-            raise Not_Implemented;
+            raise Program_Error;
       end case;
    end Update_Status;
 
