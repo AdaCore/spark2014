@@ -900,15 +900,15 @@ package body Gnat2Why.Expr.Loops.Inv is
             declare
                Decls : constant List_Id := Declarations (N);
                HSS   : constant Node_Id := Handled_Statement_Sequence (N);
+               --  Declarations, which are optional, and statement sequence,
+               --  which is always present.
 
             begin
                if Present (Decls) then
                   Process_Statement_List (Decls, Loop_Writes, Keep_Local);
                end if;
 
-               if Present (HSS) then
-                  Process_Statement (HSS, Loop_Writes, Keep_Local);
-               end if;
+               Process_Statement (HSS, Loop_Writes, Keep_Local);
             end;
 
          --  Discard writes to variables local to a case statement
