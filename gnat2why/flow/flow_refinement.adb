@@ -727,13 +727,18 @@ package body Flow_Refinement is
 
       function Proc (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) = N_Identifier
-           and then Present (Entity (N))
-           and then Ekind (Entity (N)) = E_Abstract_State
-           and then State_Refinement_Is_Visible (Entity (N), Scope)
-         then
-            Found := True;
-            return Abandon;
+         if Nkind (N) = N_Identifier then
+            declare
+               E : constant Entity_Id := Entity (N);
+            begin
+               if Present (E)
+                 and then Ekind (E) = E_Abstract_State
+                 and then State_Refinement_Is_Visible (E, Scope)
+               then
+                  Found := True;
+                  return Abandon;
+               end if;
+            end;
          end if;
 
          --  Keep looking...
