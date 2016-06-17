@@ -581,16 +581,13 @@ package body Flow_Utility is
 
          when Record_Kind | Protected_Kind | Task_Kind =>
             if Debug_Trace_Flatten then
-               case Ekind (T) is
-                  when Record_Kind    =>
-                     Write_Line ("processing record type");
-                  when Protected_Kind =>
-                     Write_Line ("processing protected type");
-                  when Task_Kind      =>
-                     Write_Line ("processing task type");
-                  when others         =>
-                     raise Program_Error;
-               end case;
+               Write_Line ("processing " &
+                             (case Ekind (T) is
+                                 when Protected_Kind => "protected",
+                                 when Record_Kind    => "record",
+                                 when Task_Kind      => "task",
+                                 when others         => raise Program_Error) &
+                             " type");
             end if;
 
             if Ekind (T) in Concurrent_Kind then
