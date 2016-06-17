@@ -2026,7 +2026,10 @@ package body Flow_Utility is
                             Use_Computed_Globals => Use_Computed_Globals,
                             Callsite             => Callsite);
                pragma Assert (Depends.Length in 1 .. 2);
-               Used_Reads := Depends (Direct_Mapping_Id (Subprogram));
+
+               Flow_Id_Sets.Move
+                 (Target => Used_Reads,
+                  Source => Depends (Direct_Mapping_Id (Subprogram)));
             end;
          end if;
 
