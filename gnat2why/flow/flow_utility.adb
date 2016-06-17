@@ -2091,24 +2091,19 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
-               if not Allow_Statements then
-                  --  If we ever get one of these we have a problem -
-                  --  Get_Variable_Set is only really meant to be
-                  --  called on expressions and not on statements.
-                  raise Program_Error;
+            when N_Entry_Call_Statement     |
+                 N_Function_Call            |
+                 N_Procedure_Call_Statement =>
 
-               else
-                  VS.Union (Process_Subprogram_Call (N));
-                  return Skip;
-               end if;
+               pragma Assert (if Nkind (N) in N_Entry_Call_Statement |
+                                              N_Procedure_Call_Statement
+                              then Allow_Statements);
+
+               VS.Union (Process_Subprogram_Call (N));
+               return Skip;
 
             when N_Later_Decl_Item =>
                --  These should allow us to go through package specs and bodies
-               return Skip;
-
-            when N_Function_Call =>
-               VS.Union (Process_Subprogram_Call (N));
                return Skip;
 
             when N_Identifier | N_Expanded_Name =>
