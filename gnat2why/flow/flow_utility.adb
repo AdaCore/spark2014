@@ -1921,7 +1921,7 @@ package body Flow_Utility is
       with Pre => Nkind (Callsite) in N_Entry_Call_Statement |
                                       N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
-      --  entry/function call and add them to the given set.
+      --  entry/subprogram call and add them to the given set.
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Adds each identifier or defining_identifier found to VS, as
@@ -1931,9 +1931,9 @@ package body Flow_Utility is
       --     * a loop parameter
       --     * a constant
 
-      ---------------------------
-      -- Process_Function_Call --
-      ---------------------------
+      -----------------------------
+      -- Process_Subprogram_Call --
+      -----------------------------
 
       function Process_Subprogram_Call
         (Callsite : Node_Id)
@@ -1952,8 +1952,8 @@ package body Flow_Utility is
          Used_Reads    : Flow_Id_Sets.Set;
 
          V             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      begin
 
+      begin
          --  Determine the global effects of the called program
 
          declare
@@ -2071,7 +2071,7 @@ package body Flow_Utility is
             end loop;
          end;
 
-         --  Finally, we expand the collected set (if necessary)
+         --  Finally, expand the collected set (if necessary)
 
          return R : Flow_Id_Sets.Set do
             R := Flow_Id_Sets.Empty_Set;
