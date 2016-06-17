@@ -1032,20 +1032,21 @@ package body Flow_Utility is
       E : constant Entity_Id := Find_Entity (Name);
    begin
       if Present (E) then
-         if Ekind (E) in Type_Kind | E_Constant
-           and then Present (Full_View (E))
-           and then (No (Scope)
-                       or else Is_Visible (Full_View (E), Scope))
-         then
-            return Direct_Mapping_Id (Full_View (E), View);
-         else
-            return Direct_Mapping_Id (E, View);
-         end if;
-      end if;
+         return
+           Direct_Mapping_Id
+             ((if Ekind (E) in Type_Kind | E_Constant
+                 and then Present (Full_View (E))
+                 and then (No (Scope)
+                             or else Is_Visible (Full_View (E), Scope))
+               then Full_View (E)
+               else E),
+              View);
 
-      --  If none can be found, we fall back to the magic
-      --  string.
-      return Magic_String_Id (Name, View);
+      --  If Entity_Id is not known then fall back to the magic string
+
+      else
+         return Magic_String_Id (Name, View);
+      end if;
    end Get_Flow_Id;
 
    ----------------------
