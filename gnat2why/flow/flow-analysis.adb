@@ -461,9 +461,8 @@ package body Flow.Analysis is
             T_Ins := Flow_Graphs.Abort_Traversal;
          end if;
 
-         --  Not all vertices containing the variable are actually
-         --  interesting. We want to deal only with program statements
-         --  and procedure calls.
+         --  Not all vertices containing the variable are actually interesting.
+         --  We want to deal only with program statements and procedure calls.
 
          if (Atr.Is_Program_Node
                or Atr.Is_Precondition
@@ -478,20 +477,20 @@ package body Flow.Analysis is
          elsif Atr.Is_Parameter then
             First_Use := Get_Direct_Mapping_Id (Atr.Parameter_Actual);
          elsif Atr.Is_Global_Parameter then
-            --  If we have a global, the procedure call itself is the
-            --  best location we can provide.
+            --  If we have a global, the procedure call itself is the best
+            --  location we can provide.
             First_Use := Get_Direct_Mapping_Id (Atr.Call_Vertex);
             return;
          else
-            --  If we don't have any of the above, we should keep
-            --  searching for other, more suitable, vertices.
+            --  If we don't have any of the above, we should keep searching for
+            --  other, more suitable, vertices.
             T_Ins := Flow_Graphs.Continue;
             return;
          end if;
 
-         --  We have found a suitable vertex. We can now narrow down
-         --  the location to the individual subexpression which
-         --  contains the variable.
+         --  We have found a suitable vertex. We can now narrow down the
+         --  location to the individual subexpression which contains the
+         --  variable.
 
          case Nkind (First_Use) is
             when N_If_Statement | N_Elsif_Part =>
