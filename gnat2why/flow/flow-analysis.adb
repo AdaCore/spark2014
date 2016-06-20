@@ -1759,7 +1759,7 @@ package body Flow.Analysis is
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
-                        --  This warning is ignored for local constants.
+                        --  This warning is ignored for local constants
                         Get_Name_String (Chars (Defining_Identifier (N)));
                         Adjust_Name_Case (Sloc (N));
 

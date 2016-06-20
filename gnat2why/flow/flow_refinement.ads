@@ -212,14 +212,14 @@ package Flow_Refinement is
    --  Returns True if a refinement is needed for the given subprogram, entry
    --  or task E.
    --
-   --  If no body is present then we return false since we can't decide
-   --  (nor need an answer, since we won't analyze the body).
-   --
    --  If a body is present then we need a refinement if either:
    --     * no global or depends present
    --     * no refined global, but global mentions state with visible
    --       refinement
    --     * ditto for depends and refined depends
+   --
+   --  Otherwise we return false since we can't decide (nor need an answer,
+   --  since we won't analyze the body).
 
    function Nested_Within_Concurrent_Type
      (T : Entity_Id;

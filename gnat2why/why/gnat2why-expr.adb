@@ -600,8 +600,8 @@ package body Gnat2Why.Expr is
      (Expr : Node_Id;
       E    : Entity_Id)
       return Boolean;
-   --  return True if the Expression can "see" the implementation of entity E
-   --  (e.g. the Refined_Post, or the full view, etc)
+   --  Return True if the Expression can "see" the implementation of entity E
+   --  (e.g. the Refined_Post, or the full view, etc.)
 
    -------------------
    -- Apply_Modulus --

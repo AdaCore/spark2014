@@ -591,8 +591,8 @@ package body Flow_Generated_Globals.Phase_2 is
    is
       procedure Most_Refined (Kind   :     Global_Kind;
                               Result : out Name_Sets.Set);
-      --  Compute vertices that can be reached from EN'Kind vertex and are of
-      --  the kind Variable.
+      --  Compute vertices that can be reached from Subprogram'Kind vertex and
+      --  are of the kind Variable.
 
       ------------------
       -- Most_Refined --
