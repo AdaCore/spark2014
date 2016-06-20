@@ -3179,8 +3179,8 @@ package body Flow.Analysis is
 
    procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs) is
 
-      User_Deps        : Dependency_Maps.Map;
-      Actual_Deps      : Dependency_Maps.Map;
+      User_Deps   : Dependency_Maps.Map;
+      Actual_Deps : Dependency_Maps.Map;
 
       Depends_Location : constant Node_Id :=
         (if Has_Depends (FA.Analyzed_Entity) then
@@ -3192,32 +3192,30 @@ package body Flow.Analysis is
       Implicit_Param : Entity_Id;
       --  This set will hold all local parameters of the subprogram
 
-      Depends_Scope    : constant Flow_Scope :=
+      Depends_Scope : constant Flow_Scope :=
         (if Present (FA.Refined_Depends_N) then
             FA.B_Scope
          else
             FA.S_Scope);
-      --  This will be FA.B_Scope if we are checking a Refined_Depends contract
-      --  or FA.S_Scope if we are checking a Depends contract.
+      --  This is body scope if we are checking a Refined_Depends contract or
+      --  spec scope if we are checking a Depends contract.
 
       function Message_Kind (F : Flow_Id) return Msg_Severity;
       --  Returns the severity of the message that we have to emit
       --
       --  In the absence of a user-provided Global contract the user-provided
-      --  Depends contract is utilized to synthesize the Globals. In this case
-      --  and if F is a global variable then the emitted messages are errors
-      --  since users of the subprogram will be assuming wrong Globals.
+      --  Depends contract is used to synthesize the Globals. In this case and
+      --  if F is a global variable the emitted messages are errors since
+      --  subprogram callers will be assuming wrong Globals.
       --
-      --  On the other hand, when there exists a user-provided Global contract
-      --  or when F is not a Global variable, emitted messages are medium
-      --  checks.
+      --  On the other hand, when there is a user-provided Global contract or
+      --  when F is not a Global variable, emitted messages are medium checks.
 
       function Up_Project_Map
         (DM : Dependency_Maps.Map)
          return Dependency_Maps.Map;
-      --  Up projects the constituents that are mentioned in DM until we
-      --  have visibility of the encapsulating state abstractions from
-      --  Depends_Scope.
+      --  Up projects the constituents that are mentioned in DM to their
+      --  encapsulating state abstractions visible from Depends_Scope.
       --
       --  Example:
       --     State1 => (Con1, Con2)
@@ -3228,12 +3226,12 @@ package body Flow.Analysis is
       --       Con3 => (Con4, G)
       --       G    => Con3
       --
-      --     Final DM:
+      --     Up-projected DM:
       --       State1 => (State1, State2, G)
       --       State2 => (State2, G)
       --       G      => State2
       --
-      --  Notice that the self depence of State1 is an indirect consequence of
+      --  Note that the self-depence of State1 is an indirect consequence of
       --  the fact that Con2 is not an Output. So there is an implicit Con2 =>
       --  Con2 dependence.
 
@@ -3348,7 +3346,7 @@ package body Flow.Analysis is
       Params := Get_Formals (FA.Analyzed_Entity);
       Implicit_Param := Get_Implicit_Formal (FA.Analyzed_Entity);
 
-      --  Up project the dependencies
+      --  Up-project the dependencies
       User_Deps   := Up_Project_Map (User_Deps);
       Actual_Deps := Up_Project_Map (FA.Dependency_Map);
 

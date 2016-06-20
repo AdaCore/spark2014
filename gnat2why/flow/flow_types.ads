@@ -210,11 +210,11 @@ package Flow_Types is
 
    function Present (F : Flow_Id) return Boolean
    is (F.Kind /= Null_Value);
-   --  Returns True iff F is not null.
+   --  Returns True iff F is not null
 
    function Synthetic (F : Flow_Id) return Boolean
    is (F.Kind = Synthetic_Null_Export);
-   --  Returns True iff F is a synthesised Flow_Id.
+   --  Returns True iff F is a synthesised Flow_Id
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
@@ -222,7 +222,7 @@ package Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    with Pre => Present (N);
-   --  Create a Flow_Id for the given node or entity.
+   --  Create a Flow_Id for the given node or entity
 
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
@@ -238,7 +238,7 @@ package Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
-   --  Create a Flow_Id for the given record field.
+   --  Create a Flow_Id for the given record field
 
    function Concurrent_Object_Id (N : Node_Id) return Flow_Id
    with Pre => Nkind (N) in N_Entity            |
