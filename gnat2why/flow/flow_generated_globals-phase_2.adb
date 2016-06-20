@@ -760,13 +760,13 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Note_Time (Message : String);
       --  Record timing statistics (but only in timing debug mode)
 
-      procedure Remove_Constants_Without_Variable_Input with
-        Pre => GG_Generated;
-      --  Removes edges leading to constants without variable input
-
       procedure Process_Tasking_Graph;
       --  Do transitive closure of the tasking graph and put the resulting
       --  information back to bag with tasking-related information.
+
+      procedure Remove_Constants_Without_Variable_Input with
+        Pre => GG_Generated;
+      --  Removes edges leading to constants without variable input
 
       ---------------
       -- Add_Edges --
@@ -1963,7 +1963,6 @@ package body Flow_Generated_Globals.Phase_2 is
                end Collect_From;
 
             begin
-
                --  Now graph G is a transitive (but not reflexive!) closure.
                --  We need to explicitly collect objects accessed by the task
                --  itself, and then all subprogram called it calls (directly
@@ -2481,6 +2480,31 @@ package body Flow_Generated_Globals.Phase_2 is
       return Calls_Subprograms_Calling_Current_Task;
    end Is_Current_Task_Called_In_Entry_Body;
 
+   --------------------------
+   -- Register_Task_Object --
+   --------------------------
+
+   procedure Register_Task_Object
+     (Type_Name : Entity_Name;
+      Object    : Task_Object)
+   is
+      C : Task_Instances_Maps.Cursor;
+      --  Cursor with a list of instances of a given task type
+
+      Dummy : Boolean;
+      --  Flag that indicates if a key was inserted or if it already existed in
+      --  a map. It is required by the hashed-maps API, but not used here.
+
+   begin
+      --  Find a list of instances of the task type; if it does not exist then
+      --  initialize with an empty list.
+      Task_Instances.Insert (Key      => Type_Name,
+                             Position => C,
+                             Inserted => Dummy);
+
+      Task_Instances (C).Append (Object);
+   end Register_Task_Object;
+
    ---------------------
    -- Tasking_Objects --
    ---------------------
@@ -2798,30 +2822,5 @@ package body Flow_Generated_Globals.Phase_2 is
          Outdent;
       end loop;
    end Print_Tasking_Info_Bag;
-
-   --------------------------
-   -- Register_Task_Object --
-   --------------------------
-
-   procedure Register_Task_Object
-     (Type_Name : Entity_Name;
-      Object    : Task_Object)
-   is
-      C : Task_Instances_Maps.Cursor;
-      --  Cursor with a list of instances of a given task type
-
-      Dummy : Boolean;
-      --  Flag that indicates if a key was inserted or if it already existed in
-      --  a map. It is required by the hashed-maps API, but not used here.
-
-   begin
-      --  Find a list of instances of the task type; if it does not exist then
-      --  initialize with an empty list.
-      Task_Instances.Insert (Key      => Type_Name,
-                             Position => C,
-                             Inserted => Dummy);
-
-      Task_Instances (C).Append (Object);
-   end Register_Task_Object;
 
 end Flow_Generated_Globals.Phase_2;
