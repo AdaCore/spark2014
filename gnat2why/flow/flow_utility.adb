@@ -3194,34 +3194,33 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
       if Rely_On_Generated_Global (E, Scope) then
-         if Present (Body_E) then
-            declare
-               Depends_N         : constant Node_Id :=
-                 Get_Pragma (E, Pragma_Depends);
+         declare
+            Body_E : constant Entity_Id := Get_Body_Entity (E);
+         begin
+            if Present (Body_E) then
+               declare
+                  Depends_N : constant Node_Id :=
+                    Get_Pragma (E, Pragma_Depends);
 
-               Refined_Depends_N : constant Node_Id :=
-                 Get_Pragma (Body_E, Pragma_Refined_Depends);
+                  Refined_Depends_N : constant Node_Id :=
+                    Get_Pragma (Body_E, Pragma_Refined_Depends);
 
-               B_Scope           : constant Flow_Scope :=
-                 Get_Flow_Scope (Body_E);
-            begin
-               if Present (Depends_N)
-                 and then No (Refined_Depends_N)
-                 and then Mentions_State_With_Visible_Refinement (Depends_N,
-                                                                  B_Scope)
-               then
-                  return True;
-               end if;
-            end;
-         end if;
+               begin
+                  return Present (Depends_N)
+                    and then No (Refined_Depends_N)
+                    and then
+                      Mentions_State_With_Visible_Refinement
+                        (Depends_N, Get_Flow_Scope (Body_E));
+               end;
+            else
+               return False;
+            end if;
+         end;
+      else
+         return False;
       end if;
-
-      --  If we reach here then we must not rely on the generated
-      --  depends.
-      return False;
    end Rely_On_Generated_Depends;
 
    ------------------------------
