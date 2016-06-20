@@ -1241,7 +1241,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      Call_Graph.Add_Edge (V_Caller, V_Callee);
                   end loop;
-                  --  end if;
 
                   --  Pop the caller from the stack
                   Stack.Delete (Caller);
