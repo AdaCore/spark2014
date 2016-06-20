@@ -3070,27 +3070,24 @@ package body Flow_Utility is
       return Boolean
    is
    begin
+      if F.Kind = Direct_Mapping then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            --  Up-projecting makes sense only if the following is True
+            --  ??? use Is_Constituent here
+            return Ekind (E) in E_Abstract_State | E_Constant | E_Variable
+              and then (Present (Encapsulating_State (E))
+                          or else Is_Concurrent_Comp_Or_Disc (F))
+              and then not Is_Visible (E, Scope);
+         end;
+
       --  We can't possibly up-project something that does not correspond to a
       --  direct mapping.
-      if F.Kind /= Direct_Mapping then
+
+      else
          return False;
       end if;
-
-      declare
-         N : constant Node_Id := Get_Direct_Mapping_Id (F);
-      begin
-         --  There is no point in up-projecting if any of the
-         --  following is True.
-         if Ekind (N) not in E_Abstract_State | E_Constant | E_Variable
-           or else (No (Encapsulating_State (N))
-                      and then not Is_Concurrent_Comp_Or_Disc (F))
-           or else Is_Visible (N, Scope)
-         then
-            return False;
-         end if;
-
-         return True;
-      end;
    end Is_Non_Visible_Constituent;
 
    ---------------------------
