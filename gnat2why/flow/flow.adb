@@ -110,7 +110,8 @@ package body Flow is
      (FA_Graphs               : out Analysis_Maps.Map;
       Routines_With_Spec_Only : out Global_Info_Lists.List;
       Generating_Globals      : Boolean)
-   with Post => (if not Generating_Globals then
+   with Pre  => FA_Graphs.Is_Empty and then Routines_With_Spec_Only.Is_Empty,
+        Post => (if not Generating_Globals then
                    Routines_With_Spec_Only.Is_Empty);
    --  Build all flow graphs for the current compilation unit
 
@@ -1430,10 +1431,6 @@ package body Flow is
    --  Start of processing for Build_Graphs_For_Compilation_Unit
 
    begin
-      --  Initialize outputs
-      Routines_With_Spec_Only := Global_Info_Lists.Empty_List;
-      FA_Graphs               := Analysis_Maps.Empty_Map;
-
       Iterate_Entities (Build_Graphs_For_Entity'Access);
    end Build_Graphs_For_Compilation_Unit;
 
