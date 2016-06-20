@@ -1,0 +1,16 @@
+math_utils.adb:12:07: info: assertion proved
+math_utils.adb:15:21: info: initialization of "Result" proved
+math_utils.adb:19:10: info: loop variant proved
+math_utils.adb:20:10: info: assertion proved
+math_utils.adb:21:10: info: loop invariant initialization proved
+math_utils.adb:21:10: info: loop invariant preservation proved
+math_utils.adb:22:42: info: initialization of "Result" proved
+math_utils.adb:22:55: info: index check proved
+math_utils.adb:23:10: info: loop invariant initialization proved
+math_utils.adb:23:10: info: loop invariant preservation proved
+math_utils.adb:24:43: info: initialization of "Result" proved
+math_utils.adb:24:55: info: index check proved
+math_utils.adb:27:07: info: assertion proved
+math_utils.adb:27:41: info: initialization of "Result" proved
+math_utils.adb:29:14: info: initialization of "Result" proved
+math_utils.ads:11:16: medium: postcondition might fail (e.g. when Max'Result = -2147483648 and V = (2 => -2147483648, 1 => -2147483647, others => 0) and V'First = 2 and V'Last = 2)
