@@ -330,11 +330,10 @@ package body Flow_Refinement is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
 
    begin
-      --  To see the refinement we must not be in the Standard scope, there
-      --  must be some body and the body must be visible.
+      --  To see the refinement there must be some body and it must be visible
+      --  (which is never the case if we look from the Standard scope).
       return
-        Present (S)
-        and then Present (Body_E)
+        Present (Body_E)
         and then Is_Visible (Get_Body_Or_Stub (Body_E), S);
    end Subprogram_Refinement_Is_Visible;
 
