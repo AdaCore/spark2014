@@ -267,10 +267,10 @@ package body Flow_Dependency_Maps is
          M := GG_Get_Initializes (P, S);
 
       --  There is neither a user-provided nor a generated initializes aspect
-      --  so we just have an empty dependency map.
+      --  so we just leave the empty dependency map as it is.
 
       else
-         M := Dependency_Maps.Empty_Map;
+         null;
 
       end if;
 
