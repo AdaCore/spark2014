@@ -12111,6 +12111,7 @@ package body Gnat2Why.Expr is
            Pragma_Machine_Attribute              |
            Pragma_Main                           |
            Pragma_Main_Storage                   |
+           Pragma_Max_Queue_Length               |
            Pragma_Memory_Size                    |
            Pragma_No_Body                        |
            Pragma_No_Inline                      |
