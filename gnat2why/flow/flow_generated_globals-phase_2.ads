@@ -172,6 +172,12 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True if subprogram E is potentially blocking or its blocking
    --  status is unknown; returns False if it is known to be nonblocking.
 
+   function Is_Current_Task_Called_In_Entry_Body (E : Entity_Id)
+                                                  return Boolean
+     with Pre => Ekind (E) in E_Entry;
+   --  Returns True if subprogram E has a path connecting it to a call to the
+   --  Current_Task function; returns False if it does not.
+
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;
       Subp : Entity_Name)

@@ -1,1 +1,2 @@
+call_from_sub_in_pt.ads:4:13: high: Current_Task should not be called from a subprogram in entry body "E" (RM C.7(17))
 call_from_sub_in_pt.ads:5:23: info: initialization of "T" proved

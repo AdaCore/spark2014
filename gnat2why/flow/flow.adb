@@ -1569,7 +1569,8 @@ package body Flow is
             end case;
          end if;
 
-         --  Check for potentially blocking operations in protected actions
+         --  Check for potentially blocking operations in protected actions and
+         --  for calls to Current_Task from entry body.
          if FA.Kind = Kind_Subprogram
            and then Convention (FA.Analyzed_Entity) in Convention_Entry |
                                                        Convention_Protected
@@ -1580,6 +1581,21 @@ package body Flow is
                  (FA       => FA,
                   Msg      => "potentially blocking operation " &
                     "in protected operation &",
+                  N        => FA.Analyzed_Entity,
+                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Severity => High_Check_Kind);
+            end if;
+
+            --  We issue an high error message in case the Current_Task
+            --  function is called from an entry body.
+            if Ekind (FA.Analyzed_Entity) = E_Entry
+              and then Is_Current_Task_Called_In_Entry_Body
+                         (FA.Analyzed_Entity)
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "Current_Task should not be called from a " &
+                    "subprogram in entry body & (RM C.7(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Severity => High_Check_Kind);

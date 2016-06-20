@@ -1,0 +1,3 @@
+main_package.ads:6:13: high: Current_Task should not be called from a subprogram in entry body "E" (RM C.7(17))
+p.ads:2:14: warning: subprogram "S1" has no effect
+q.ads:3:18: info: initialization of "T" proved
