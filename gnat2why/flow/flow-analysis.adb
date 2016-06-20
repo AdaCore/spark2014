@@ -3260,49 +3260,56 @@ package body Flow.Analysis is
         (DM : Dependency_Maps.Map)
          return Dependency_Maps.Map
       is
-         States_Written       : Node_Sets.Set       := Node_Sets.Empty_Set;
-         Constituents_Written : Node_Sets.Set       := Node_Sets.Empty_Set;
-         Up_Projected_Map     : Dependency_Maps.Map :=
-           Dependency_Maps.Empty_Map;
-      begin
+         States_Written       : Node_Sets.Set;
+         Constituents_Written : Node_Sets.Set;
+         Up_Projected_Map     : Dependency_Maps.Map;
 
+      begin
          for C in DM.Iterate loop
             declare
-               F_Out  : Flow_Id := Dependency_Maps.Key (C);
+               F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
                F_Deps : Flow_Id_Sets.Set renames DM (C);
                AS     : Flow_Id;
 
                Position : Dependency_Maps.Cursor;
-               Inserted : Boolean;
-               --  Dummy variables required by the maps API
+               --  Position of the mapped dependent entity
+
+               Unused : Boolean;
+               --  Dummy variable required by the maps API
 
             begin
                --  Add output
                if Is_Non_Visible_Constituent (F_Out, Depends_Scope) then
                   AS := Up_Project_Constituent (F_Out, Depends_Scope);
 
-                  --  Add closest enclosing abstract state to the map (if it is
-                  --  not already in it).
+                  --  Add the encapsulating abstract state to the map (if it is
+                  --  not already there).
                   Up_Projected_Map.Insert (Key      => AS,
                                            Position => Position,
-                                           Inserted => Inserted);
+                                           Inserted => Unused);
 
                   --  Taking some notes
                   States_Written.Include (Get_Direct_Mapping_Id (AS));
                   Constituents_Written.Include (Get_Direct_Mapping_Id (F_Out));
-                  F_Out := AS;
                else
                   --  Add output as it is
-                  Up_Projected_Map.Include (F_Out, Flow_Id_Sets.Empty_Set);
+                  Up_Projected_Map.Insert (Key      => F_Out,
+                                           Position => Position,
+                                           Inserted => Unused);
                end if;
 
                --  Add output's dependencies
-               for Dep of F_Deps loop
-                  Up_Projected_Map (F_Out).Include
-                    (if Is_Non_Visible_Constituent (Dep, Depends_Scope)
-                     then Up_Project_Constituent (Dep, Depends_Scope)
-                     else Dep);
-               end loop;
+               declare
+                  Up_Projected_Deps : Flow_Id_Sets.Set renames
+                    Up_Projected_Map (Position);
+               begin
+                  for Dep of F_Deps loop
+                     Up_Projected_Deps.Include
+                       (if Is_Non_Visible_Constituent (Dep, Depends_Scope)
+                          then Up_Project_Constituent (Dep, Depends_Scope)
+                          else Dep);
+                  end loop;
+               end;
             end;
          end loop;
 
@@ -3330,7 +3337,6 @@ package body Flow.Analysis is
    --  Start of processing for Check_Depends_Contract
 
    begin
-
       if No (FA.Depends_N) then
          --  If the user has not specified a dependency relation we have no
          --  work to do.
@@ -3398,12 +3404,17 @@ package body Flow.Analysis is
                --  The null dependency is special: it may not be present in the
                --  user dependency because null => null would be super tedious
                --  to write.
-               if User_Deps.Contains (Null_Flow_Id) then
-                  U_Deps := User_Deps (Null_Flow_Id);
-               else
-                  U_Deps := Flow_Id_Sets.Empty_Set;
-               end if;
+               declare
+                  Null_Dep : constant Dependency_Maps.Cursor :=
+                    User_Deps.Find (Null_Flow_Id);
+               begin
+                  if Dependency_Maps.Has_Element (Null_Dep) then
+                     --  ??? Move should be fine here
+                     U_Deps := User_Deps (Null_Dep);
+                  end if;
+               end;
             elsif User_Deps.Contains (F_Out) then
+               --  ??? repeated search in map
                U_Deps := User_Deps (F_Out);
             elsif F_Out.Kind = Magic_String then
                Global_Required (FA, F_Out);
@@ -3420,7 +3431,6 @@ package body Flow.Analysis is
                   F1       => F_Out,
                   Tag      => Depends_Missing_Clause,
                   Severity => Message_Kind (F_Out));
-               U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
             --  If we mention magic strings anywhere, there is no point in
