@@ -3182,12 +3182,6 @@ package body Flow.Analysis is
       User_Deps   : Dependency_Maps.Map;
       Actual_Deps : Dependency_Maps.Map;
 
-      Depends_Location : constant Node_Id :=
-        (if Has_Depends (FA.Analyzed_Entity) then
-            Get_Pragma (FA.Analyzed_Entity, Pragma_Depends)
-         else
-            FA.Analyzed_Entity);
-
       Params         : Node_Sets.Set;
       Implicit_Param : Entity_Id;
       --  This set will hold all local parameters of the subprogram
@@ -3427,7 +3421,7 @@ package body Flow.Analysis is
                  (FA       => FA,
                   Msg      => "expected to see & on the left-hand-side of" &
                               " a dependency relation",
-                  N        => Depends_Location,
+                  N        => FA.Depends_N,
                   F1       => F_Out,
                   Tag      => Depends_Missing_Clause,
                   Severity => Message_Kind (F_Out));
@@ -3477,7 +3471,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "& cannot appear in Depends",
-                              N        => Depends_Location,
+                              N        => FA.Depends_N,
                               F1       => Missing_Var,
                               Tag      => Depends_Null,
                               Severity => Medium_Check_Kind);
@@ -3485,7 +3479,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "missing dependency ""null => %""",
-                              N        => Depends_Location,
+                              N        => FA.Depends_N,
                               F1       => Missing_Var,
                               Tag      => Depends_Null,
                               Severity => Medium_Check_Kind);
@@ -3550,7 +3544,7 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot appear in Depends",
-                        N        => Depends_Location,
+                        N        => FA.Depends_N,
                         F1       => Wrong_Var,
                         Tag      => Depends_Wrong,
                         Severity => Medium_Check_Kind);
@@ -3558,7 +3552,7 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "incorrect dependency ""null => %""",
-                        N        => Depends_Location,
+                        N        => FA.Depends_N,
                         F1       => Wrong_Var,
                         Tag      => Depends_Wrong,
                         Severity => Medium_Check_Kind);
