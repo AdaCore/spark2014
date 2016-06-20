@@ -4499,18 +4499,10 @@ package body Flow_Utility is
                      New_Typ  : constant Entity_Id        := Etype (N);
                      Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
 
-                     function In_Type (C : Entity_Id) return Boolean;
-
-                     -------------
-                     -- In_Type --
-                     -------------
-
                      function In_Type (C : Entity_Id) return Boolean is
-                     begin
-                        return
-                          (for some Ptr of All_Components (New_Typ) =>
-                             Same_Component (C, Ptr));
-                     end In_Type;
+                       (for some Ptr of All_Components (New_Typ) =>
+                          Same_Component (C, Ptr));
+
                   begin
                      if Is_Tagged_Type (Old_Typ)
                        and then Is_Tagged_Type (New_Typ)
