@@ -718,8 +718,8 @@ package body Flow_Refinement is
       Found : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure that sets Found to True if we find
-      --  a state abstraction whose refinement is visible from Scope.
+      --  Traversal procedure that sets Found to True if we find a state
+      --  abstraction whose refinement is visible from Scope.
 
       ----------
       -- Proc --
