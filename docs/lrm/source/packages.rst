@@ -2448,7 +2448,7 @@ invariant expression shall not have a variable input.]
 
 .. _tu-type_invariants-11:
 
-11. [In determining wether a dispatching call is a call to a boundary
+11. [In determining whether a dispatching call is a call to a boundary
     subprogram or to a subprogram declared outside of the immediate scope of T,
     the statically named callee is used.]
 
