@@ -1307,9 +1307,9 @@ package body Flow is
                           or else Present (Depends_Node)
                         then
                            --  If we have a user-provided Global or Depends
-                           --  contract then we use Get_Globals to get that.
-                           --  Note that in such a case components *_Calls
-                           --  and Local_* will be left as empty sets.
+                           --  contract then we use Get_Globals to parse it. In
+                           --  such a case components *_Calls and Local_* will
+                           --  be left as empty.
                            declare
                               Proof_Ins : Flow_Id_Sets.Set;
                               Reads     : Flow_Id_Sets.Set;
@@ -1347,8 +1347,9 @@ package body Flow is
                            end;
 
                         else
-                           --  Use (Yannick's) Computed Globals info
-                           --  to add a GG entry to the ALI file.
+                           --  Capture (Yannick's) "computed globals"; once
+                           --  they will end up in the ALI file they should be
+                           --  indistinguishable from other globals.
                            declare
                               Reads  : Name_Sets.Set;
                               Writes : Name_Sets.Set;

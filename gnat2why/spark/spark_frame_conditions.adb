@@ -1107,7 +1107,7 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
-      E_Name  : Entity_Name;
+      E_Name : Entity_Name;
 
    begin
       --  Initialize to empty sets
@@ -1131,6 +1131,7 @@ package body SPARK_Frame_Conditions is
       Outputs            := Computed_Writes (E);
 
       --  Add variables written to variables read
+      --  ??? for composite variables fine, but why for simple ones?
       Inputs.Union (Outputs);
    end Collect_Direct_Computed_Globals;
 

@@ -1497,6 +1497,10 @@ package body Flow_Utility is
          else
             Debug ("using Yannick globals");
 
+            --  ??? we should not enter here, Yannick's globals should be
+            --  captured in phase 1 and never touched later; we should also
+            --  do not compute their transitive closure in both phases.
+
             declare
                ALI_Reads  : constant Name_Sets.Set :=
                  Computed_Reads (Subprogram,
