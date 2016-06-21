@@ -341,7 +341,7 @@ package body Flow_Generated_Globals.Phase_2 is
    with Pre  => (if not Processing_Writes then Reads.Is_Empty),
         Post => (if not Processing_Writes then Reads.Is_Empty);
    --  Distinguishes between simple vars and constituents. For constituents,
-   --  it checks if they are visible and if they are NOT we check if their
+   --  it checks if they are visible and if they are NOT it checks if their
    --  encapsulating state is. If the encapsulating state is visible then
    --  return that (otherwise repeat the process). When Processing_Writes is
    --  set, we also check if all constituents are used and if they are not we
@@ -2099,21 +2099,17 @@ package body Flow_Generated_Globals.Phase_2 is
          end loop;
       end if;
 
-      --  Populate the All_Other_Subprograms set
       Subprograms_Without_GG := All_Subprograms - Subprograms_With_GG;
 
-      --  Initialize Global_Graph
+      --  Build the Global_Graph
       Global_Graph := Global_Graphs.Create;
 
-      --  Create all vertices of the Global_Graph
       Create_Vertices;
       Note_Time ("gg_read - vertices added");
 
-      --  Add all edges in the Global_Graph and tasking-related graphs
       Add_Edges;
       Note_Time ("gg_read - edges added");
 
-      --  Edit Proof_Ins
       Edit_Proof_Ins;
       Note_Time ("gg_read - proof ins");
 
