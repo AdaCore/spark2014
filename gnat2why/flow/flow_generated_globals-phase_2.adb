@@ -720,9 +720,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Subprograms_With_GG : Name_Sets.Set;
       --  Subprograms for which a GG entry exists
 
-      Subprograms_Without_GG : Name_Sets.Set;
-      --  Subprograms for which a GG entry does not exist
-
       Subprogram_Info_List : Global_Info_Lists.List;
       --  Information about subprograms from the "generated globals" algorithm
 
@@ -776,6 +773,10 @@ package body Flow_Generated_Globals.Phase_2 is
       ---------------
 
       procedure Add_Edges is
+         Subprograms_Without_GG : constant Name_Sets.Set :=
+           All_Subprograms - Subprograms_With_GG;
+         --  Subprograms for which a GG entry does not exist
+
          Local_Graph : Local_Graphs.Graph;
          --  A graph that represents the hierarchy of subprograms (which
          --  subprogram is nested in which one); used to determine which
@@ -2049,8 +2050,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Note_Time ("gg_read - ALI files read");
 
       Print_ALI_File_Info (Subprogram_Info_List);
-
-      Subprograms_Without_GG := All_Subprograms - Subprograms_With_GG;
 
       --  Build the Global_Graph
       Global_Graph := Global_Graphs.Create;
