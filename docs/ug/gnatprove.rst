@@ -2271,14 +2271,15 @@ for writing loop invariants.
 Automatically Generated Loop Invariants
 ---------------------------------------
 
-In general, |GNATprove| relies on the user to manualy supply the necessary
-information about variables modified by loop statements in the loop invariant. 
-Though variables which are not modified in the loop need not be mentioned in the
-invariant, it is in general necessary to state explicitely the preservation of
-unmodified object parts, such as record fields or array elements. These
-preservation properties form the loop's `frame condition` (see
-:ref:`Loop Invariants`). As it seems obvious, the frame condition is often
-forgotten when writing a loop invariant.
+In general, |GNATprove| relies on the user to manually supply the necessary
+information about variables modified by loop statements in the loop invariant.
+Though variables which are not modified in the loop need not be mentioned in
+the invariant, it is in general necessary to state explicitly the preservation
+of unmodified object parts, such as record fields or array elements. These
+preservation properties form the loop's `frame condition` (see :ref:`Loop
+Invariants`). As it may seem obvious to the user, the frame condition is
+unfortunately often forgotten when writing a loop invariant, leading to
+unprovable checks.
 
 To alleviate this problem, the |GNATprove| tool generates automatically frame
 conditions in some cases. In particular, it is able to infer the preservation of
@@ -2289,6 +2290,15 @@ following loop:
 
 .. literalinclude:: gnatprove_by_example/examples/preserved_fields.adb
    :language: ada
+   :linenos:
+
+Note that despite the complete absence of a loop invariant in the above code,
+|GNATprove| is able to prove that the assertions on lines 19-21 about variable
+``D`` which is modified in the loop are proved, thanks to the generated loop
+invariants:
+
+.. literalinclude:: gnatprove_by_example/results/preserved_fields.prove
+   :language: none
    :linenos:
 
 Note that GNATprove will not generate a frame condition for a record field if

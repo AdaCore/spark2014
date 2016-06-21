@@ -12,13 +12,13 @@ procedure Preserved_Fields with SPARK_Mode is
    end record;
 
    D : R_Array_Record;
-begin
 
+begin
    for I in 1 .. 100 loop
       D.F3 (I).F1 := 0;
       pragma Assert (for all J in 1 .. 100 =>
-                   D.F3 (J).F2 = D.F3'Loop_Entry (J).F2);
+                       D.F3 (J).F2 = D.F3'Loop_Entry (J).F2);
       pragma Assert (D.F4 = D.F4'Loop_Entry);
    end loop;
-   
-end Preserved_Fields; 
+
+end Preserved_Fields;
