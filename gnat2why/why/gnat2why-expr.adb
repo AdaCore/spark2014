@@ -3260,22 +3260,7 @@ package body Gnat2Why.Expr is
                Indices (I) := +Tmp;
                Range_Expr := +New_And_Expr
                  (Left   => +Range_Expr,
-                  Right  =>
-                    New_Range_Expr
-                      (Domain => EW_Pred,
-                       Low    => Insert_Conversion_To_Rep_No_Bool
-                         (EW_Term,
-                          Get_Array_Attr (Domain => EW_Term,
-                                          Expr   => +Expr,
-                                          Attr   => Attribute_First,
-                                          Dim    => I)),
-                       High   => Insert_Conversion_To_Rep_No_Bool
-                         (EW_Term,
-                          Get_Array_Attr (Domain => EW_Term,
-                                          Expr   => +Expr,
-                                          Attr   => Attribute_Last,
-                                          Dim    => I)),
-                       Expr   => +Tmp),
+                  Right  => New_Array_Range_Expr (+Tmp, +Expr, EW_Pred, I),
                   Domain => EW_Pred);
                Next_Index (Index);
                I := I + 1;
@@ -12812,7 +12797,6 @@ package body Gnat2Why.Expr is
       Over_Expr  : Node_Id;    --  Expression over which quantification is done
       Over_Type  : Node_Id;    --  Type used for the quantification
       Quant_Type : Entity_Id;  --  Type of the quantified variable
-      Bound_Expr : Node_Id;    --  Bound expression for the quantification
       Index_Type : Entity_Id;  --  Index type for the quantification
 
       W_Quant_Type : W_Type_Id;  --  Why3 type for the quantified variable
@@ -12938,12 +12922,14 @@ package body Gnat2Why.Expr is
       if Over_Range or Over_Array then
 
          if Over_Array then
-            Bound_Expr := First_Index (Etype (Over_Expr));
-         else
-            Bound_Expr := Over_Expr;
-         end if;
 
-         W_Bound_Expr := Range_Expr (Bound_Expr, +W_Index_Var, Domain, Params);
+            W_Bound_Expr :=
+              New_Array_Range_Expr (+W_Index_Var, W_Over_Expr, Domain, 1);
+         else
+
+            W_Bound_Expr :=
+              Range_Expr (Over_Expr, +W_Index_Var, Domain, Params);
+         end if;
       else
          --  Over_Content or Over_Cursor
          --  Call the appropriate primitive

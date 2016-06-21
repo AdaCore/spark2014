@@ -369,21 +369,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Range_Expr := +New_And_Expr
                     (Left   => +Range_Expr,
                      Right  =>
-                       New_Range_Expr
-                         (Domain => EW_Pred,
-                          Low    => Insert_Conversion_To_Rep_No_Bool
-                            (EW_Term,
-                             Get_Array_Attr (Domain => EW_Term,
-                                             Expr   => +Expr,
-                                             Attr   => Attribute_First,
-                                             Dim    => I)),
-                          High   => Insert_Conversion_To_Rep_No_Bool
-                            (EW_Term,
-                             Get_Array_Attr (Domain => EW_Term,
-                                             Expr   => +Expr,
-                                             Attr   => Attribute_Last,
-                                             Dim    => I)),
-                          Expr   => +Tmp),
+                       New_Array_Range_Expr (+Tmp, +Expr, EW_Pred, I),
                      Domain => EW_Pred);
                   Next_Index (Index);
                   I := I + 1;

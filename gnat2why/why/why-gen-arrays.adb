@@ -1175,6 +1175,37 @@ package body Why.Gen.Arrays is
          Typ      => Ret_Ty);
    end New_Array_Access;
 
+   --------------------------
+   -- New_Array_Range_Expr --
+   --------------------------
+
+   function New_Array_Range_Expr
+     (Index_Expr : W_Expr_Id;
+      Array_Expr : W_Expr_Id;
+      Domain     : EW_Domain;
+      Dim        : Positive)
+     return W_Expr_Id
+   is
+   begin
+      return New_Range_Expr
+             (Domain => Domain,
+              Low    => Insert_Conversion_To_Rep_No_Bool
+                (Prog_Or_Term_Domain (Domain),
+                 Get_Array_Attr (Domain => Prog_Or_Term_Domain (Domain),
+                                 Expr   => Array_Expr,
+                                 Attr   => Attribute_First,
+                                 Dim    => Dim)),
+              High   => Insert_Conversion_To_Rep_No_Bool
+                (Prog_Or_Term_Domain (Domain),
+                 Get_Array_Attr (Domain => Prog_Or_Term_Domain (Domain),
+                                 Expr   => Array_Expr,
+                                 Attr   => Attribute_Last,
+                                 Dim    => Dim)),
+              Expr   => Insert_Conversion_To_Rep_No_Bool
+                (Prog_Or_Term_Domain (Domain),
+                 Index_Expr));
+   end New_Array_Range_Expr;
+
    ----------------------
    -- New_Array_Update --
    ----------------------

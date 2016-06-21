@@ -13,4 +13,4 @@ math_utils.adb:24:55: info: index check proved
 math_utils.adb:27:07: info: assertion proved
 math_utils.adb:27:41: info: initialization of "Result" proved
 math_utils.adb:29:14: info: initialization of "Result" proved
-math_utils.ads:11:16: medium: postcondition might fail (e.g. when Max'Result = -2147483648 and V = (2 => -2147483648, 1 => -2147483647, others => 0) and V'First = 2 and V'Last = 2)
+math_utils.ads:11:16: info: postcondition proved

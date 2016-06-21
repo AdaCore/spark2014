@@ -199,6 +199,20 @@ package Why.Gen.Arrays is
    --  split form. Convert it to the regular unconstrained form, using Old_Ar's
    --  bounds.
 
+   function New_Array_Range_Expr
+     (Index_Expr : W_Expr_Id;
+      Array_Expr : W_Expr_Id;
+      Domain     : EW_Domain;
+      Dim        : Positive)
+      return W_Expr_Id;
+   --  Construct an expression stating that an index is in an array's bound.
+   --  @param Index_Expr expression for the considered index
+   --  @param Array_Expr expression for the array
+   --  @param Domain expected domain of the range expression
+   --  @param Dim considered index in the array
+   --  @param an expression
+   --  <array_expr>.first<dim> <= <index_expr> <= <array_expr>.last<dim>
+
    function New_Array_Update
       (Ada_Node  : Node_Id;
        Ar        : W_Expr_Id;
