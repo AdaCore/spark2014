@@ -155,8 +155,6 @@ package body Flow_Generated_Globals.Phase_1 is
          when Kind_Package | Kind_Package_Body =>
             Package_Info_List.Append (GI);
       end case;
-      --  GG_Exists_Cache.Insert (GI.Name);
-      --  ??? not needed in phase 1?
 
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoints, so it is more efficient to process them separately instead
