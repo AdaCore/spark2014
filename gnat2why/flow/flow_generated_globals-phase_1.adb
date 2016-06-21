@@ -75,11 +75,12 @@ package body Flow_Generated_Globals.Phase_1 is
    Tasking_Info_List : Tasking_Info_Lists.List;
    --  List with tasking objects directly accessed by subprograms
 
-   Subprogram_Info_List : Global_Info_Lists.List;
-   --  Information about subprograms from the "generated globals" algorithm
-
-   Package_Info_List : Global_Info_Lists.List;
-   --  Information about packages from the "generated globals" algorithm
+   Entitiy_Infos : Global_Info_Lists.List;
+   --  Entity-specific information as discovered by their analysis
+   --
+   --  ??? we keep this locally only because in the ALI file we first want to
+   --  have entity-indenpendent info; perhaps we do not care and can safely
+   --  dump information locally for each scope.
 
    type Abstract_State_Constituents is record
       State        : Entity_Name;
@@ -148,13 +149,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Start of processing for GG_Register_Global_Info
 
    begin
-      case GI.Kind is
-         when Kind_Subprogram | Kind_Task =>
-            Subprogram_Info_List.Append (GI);
-
-         when Kind_Package | Kind_Package_Body =>
-            Package_Info_List.Append (GI);
-      end case;
+      Entitiy_Infos.Append (GI);
 
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoints, so it is more efficient to process them separately instead
@@ -315,14 +310,8 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Remote_States => Remote_States);
       Write_To_ALI (V);
 
-      --  Write globals for package and subprograms/tasks
-      for Info of Package_Info_List loop
-         V := (Kind            => EK_Globals,
-               The_Global_Info => Info);
-         Write_To_ALI (V);
-      end loop;
-
-      for Info of Subprogram_Info_List loop
+      --  Write entity-specific info
+      for Info of Entitiy_Infos loop
          V := (Kind            => EK_Globals,
                The_Global_Info => Info);
          Write_To_ALI (V);
