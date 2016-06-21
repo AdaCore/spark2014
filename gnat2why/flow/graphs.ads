@@ -203,6 +203,13 @@ package Graphs is
    with Pre => not G.Is_Frozen and then not G.Contains (V);
    --  Add a new keyed vertex, but do not return its Id.
 
+   procedure Include_Vertex
+     (G : in out Graph;
+      V : Vertex_Key)
+   with Pre => not G.Is_Frozen;
+   --  Add a new keyed vertex if it does not already exists; otherwise do
+   --  nothing.
+
    function Vertex_Hash
      (Element : Vertex_Id) return Ada.Containers.Hash_Type;
    --  Hash a vertex_id (useful for building sets of vertices).

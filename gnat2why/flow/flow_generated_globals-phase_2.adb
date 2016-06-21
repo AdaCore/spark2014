@@ -799,20 +799,16 @@ package body Flow_Generated_Globals.Phase_2 is
             Local_Graph := Local_Graphs.Create;
 
             for Info of Subprogram_Info_List loop
-               if not Local_Graph.Contains (Info.Name) then
-                  --  Create a vertex for the subprogram if one does not
-                  --  already exist.
-                  Local_Graph.Add_Vertex (Info.Name);
-               end if;
+               --  Create a vertex for the subprogram if one does not already
+               --  exist.
+               Local_Graph.Include_Vertex (Info.Name);
 
                --  Create a vertex for every local variable and link it to the
                --  enclosing subprogram.
                for Local_Variable of Info.Local_Variables loop
                   --  Create a vertex for every local variable if one does not
                   --  already exist.
-                  if not Local_Graph.Contains (Local_Variable) then
-                     Local_Graph.Add_Vertex (Local_Variable);
-                  end if;
+                  Local_Graph.Include_Vertex (Local_Variable);
 
                   --  Link enclosing subprogram to local variable
                   Local_Graph.Add_Edge (Info.Name, Local_Variable);
@@ -821,11 +817,9 @@ package body Flow_Generated_Globals.Phase_2 is
                --  Create a vertex for every local subprogram and link it to
                --  the enclosing subprogram.
                for Local_Subprogram of Info.Local_Subprograms loop
-                  if not Local_Graph.Contains (Local_Subprogram) then
-                     --  Create a vertex for every local subprogram if one does
-                     --  not already exist.
-                     Local_Graph.Add_Vertex (Local_Subprogram);
-                  end if;
+                  --  Create a vertex for every local subprogram if one does
+                  --  not already exist.
+                  Local_Graph.Include_Vertex (Local_Subprogram);
 
                   --  Link enclosing subprogram to local subprogram
                   Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
@@ -1025,9 +1019,7 @@ package body Flow_Generated_Globals.Phase_2 is
                            Name => Nam);
 
                      begin
-                        if not Global_Graph.Contains (Target) then
-                           Global_Graph.Add_Vertex (Target);
-                        end if;
+                        Global_Graph.Include_Vertex (Target);
 
                         --  Add edge or do nothing if it already exists
                         Global_Graph.Add_Edge (Source, Target);

@@ -1079,6 +1079,32 @@ package body Graphs is
          when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
          when All_Vertices   => Has_Element (C.VL_Native_Cursor));
 
+   --------------------
+   -- Include_Vertex --
+   --------------------
+
+   procedure Include_Vertex
+     (G : in out Graph;
+      V : Vertex_Key)
+   is
+      Position : Key_To_Id_Maps.Cursor;
+      Inserted : Boolean;
+   begin
+      --  Try to insert a mapping from V to a next available index; if it
+      --  succeeds then the index counter will be incremented by Append.
+      G.Key_To_Id.Insert (Key      => V,
+                          New_Item => G.Vertices.Last_Index + 1,
+                          Position => Position,
+                          Inserted => Inserted);
+
+      if Inserted then
+         G.Vertices.Append ((Key            => V,
+                             In_Neighbours  => VIS.Empty_Set,
+                             Out_Neighbours => EAM.Empty_Map,
+                             Cluster        => Null_Cluster));
+      end if;
+   end Include_Vertex;
+
    ------------
    -- Invert --
    ------------
