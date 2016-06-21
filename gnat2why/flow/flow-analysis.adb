@@ -1953,27 +1953,15 @@ package body Flow.Analysis is
       -- AS_In_Generated_Initializes --
       ---------------------------------
 
-      function AS_In_Generated_Initializes (Var : Flow_Id) return Boolean is
-         E  : constant Entity_Id :=
-           (if Var.Kind in Direct_Mapping | Record_Field
-            then Get_Direct_Mapping_Id (Var)
-            else Empty);
-
-         AS : constant Entity_Id :=
-           (if FA.Kind in Kind_Package | Kind_Package_Body
-            and then Ekind (E) in E_Abstract_State |
-                                  E_Constant       |
-                                  E_Variable
-            then Encapsulating_State (E)
-            else Empty);
-         --  If Var is a constituent of an abstract state, this is the
-         --  Entity_Id of the latter, otherwise is Empty.
-
-      begin
-         return (Present (AS)
-                 and then Mentioned_On_Generated_Initializes
-                   (Direct_Mapping_Id (AS)));
-      end AS_In_Generated_Initializes;
+      function AS_In_Generated_Initializes (Var : Flow_Id)
+        return Boolean is
+        (FA.Kind in Kind_Package | Kind_Package_Body
+            and then Is_Constituent (Var)
+            and then Mentioned_On_Generated_Initializes
+                       (Direct_Mapping_Id
+                          (Encapsulating_State
+                             (Get_Direct_Mapping_Id
+                                (Var)))));
 
       ---------------------
       -- Consider_Vertex --
