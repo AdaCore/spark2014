@@ -379,28 +379,28 @@ package body Flow_Generated_Globals.Phase_2 is
    function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
       Refined : Name_Sets.Set := Name_Sets.Empty_Set;
 
-      procedure Expand (State : Entity_Name);
-      --  Recursively expand state into its constituents
+      procedure Refine (State : Entity_Name);
+      --  Recursively refine state into its constituents
 
       ------------
-      -- Expand --
+      -- Refine --
       ------------
 
-      procedure Expand (State : Entity_Name) is
+      procedure Refine (State : Entity_Name) is
          Constituents : constant Name_Graphs.Cursor :=
            State_Comp_Map.Find (State);
       begin
          if Name_Graphs.Has_Element (Constituents) then
             for Constituent of State_Comp_Map (Constituents) loop
-               Expand (Constituent);
+               Refine (Constituent);
             end loop;
          else
             Refined.Insert (State);
          end if;
-      end Expand;
+      end Refine;
 
    begin
-      Expand (EN);
+      Refine (EN);
 
       return Refined;
    end Fully_Refine;
