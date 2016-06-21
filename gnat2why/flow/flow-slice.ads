@@ -71,8 +71,8 @@ package Flow.Slice is
                            (Definite_Calls or Conditional_Calls).Is_Empty
                 and then Inputs_Proof.Intersection
                            (Inputs or Outputs).Is_Empty;
-   --  Computes the set of globals (and procedure calls) of the given
-   --  subprogram.
+   --  Computes globals (and procedure calls) from the given graphs
+   --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --
    --  Complexity is O(N)
    --  @param FA is the flow graph for which we compute globals

@@ -317,8 +317,8 @@ package body Flow.Slice is
       --  @param Local_Vars is populated with all local variables
       --  @param Local_Subs is populated with all local subprograms
 
-      function Get_Local_Definite_Writes return Node_Sets.Set;
-      --  Returns all local variables of the package that are definitely
+      procedure Get_Local_Definite_Writes;
+      --  Collect local variables of the package that are definitely
       --  initialized once the package has been elaborated.
 
       function Subprograms_Without_Contracts
@@ -681,11 +681,10 @@ package body Flow.Slice is
       -- Get_Local_Definite_Writes --
       -------------------------------
 
-      function Get_Local_Definite_Writes return Node_Sets.Set is
-         Definite_Local_Writes : Node_Sets.Set := Node_Sets.Empty_Set;
-         FS                    : Flow_Id_Sets.Set;
-         V_Initial             : Flow_Graphs.Vertex_Id;
-         Guilty                : Boolean;
+      procedure Get_Local_Definite_Writes is
+         FS        : Flow_Id_Sets.Set;
+         V_Initial : Flow_Graphs.Vertex_Id;
+         Guilty    : Boolean;
       begin
          for LV of Local_Variables loop
             --  We go through all local variables and check if their
@@ -708,11 +707,9 @@ package body Flow.Slice is
             end loop;
 
             if not Guilty then
-               Definite_Local_Writes.Insert (LV);
+               Local_Definite_Writes.Insert (LV);
             end if;
          end loop;
-
-         return Definite_Local_Writes;
       end Get_Local_Definite_Writes;
 
       -----------------------------------
@@ -835,7 +832,8 @@ package body Flow.Slice is
 
       Get_Local_Variables_And_Subprograms (Local_Variables, Local_Subprograms);
 
-      Local_Definite_Writes := Get_Local_Definite_Writes;
+      Get_Local_Definite_Writes;
+      --  ??? what's the point of calling this for subprograms and tasks?
    end Compute_Globals;
 
 end Flow.Slice;
