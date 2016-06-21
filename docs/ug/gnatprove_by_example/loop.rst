@@ -410,6 +410,89 @@ The case of sets and maps is similar to the case of lists. For more complex
 examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
 
+.. _Maximize Loops:
+
+Maximize Loops
+^^^^^^^^^^^^^^
+
+This kind of loops iterates over a collection to search an element of the
+collection that maximizes a given optimality criterion:
+
+ ================  ========================
+ Loop Pattern      Search Optimum to Criterion
+ ================  ========================
+ Proof Objective   Find an element or position that maximizes an optimality
+                   criterion.
+ Loop Behavior     Loops over the collection. Records maximum value of
+                   criterion so far and possibly index that maximizes this criterion.
+ Loop Invariant    Exactly one element encountered so far corresponds to
+                   the recorded maximum over other elements encountered so far.
+ ================  ========================
+
+Consider a procedure ``Search_Arr_Max`` that searches an element maximum value
+in array ``A``:
+
+.. literalinclude:: gnatprove_by_example/examples/search_arr_max.adb
+   :language: ada
+   :linenos:
+
+The loop invariant expresses that all elements up to the current loop index
+``J`` have a value less than ``Max``, and that ``Max`` is the value of one of
+these elements. The last loop invariant gives in fact this element, it is
+``A(Pos)``, but this part of the loop invariant may not be present if the
+position ``Pos`` for the optimum is not recorded. With this loop invariant,
+|GNATprove| is able to prove the postcondition of ``Search_Arr_Max``, namely
+that output parameter ``Max`` is the maximum of the elements in the array, and
+that ``Pos`` is the index of such an element:
+
+.. literalinclude:: gnatprove_by_example/results/search_arr_max.prove
+   :language: none
+
+Consider now a variant of the same search loop over a vector:
+
+.. literalinclude:: gnatprove_by_example/examples/search_vec_max.adb
+   :language: ada
+   :linenos:
+
+Like before, the loop invariant expresses that all elements up to the current
+loop index ``J`` have a value less than ``Max``, and that ``Max`` is the value
+of one of these elements, most precisely the value of ``Element (V, Pos)`` if
+the position ``Pos`` for the optimum is recorded. An additional loop invariant
+is needed here compared to the case of arrays to state that ``Pos`` remains
+within the bounds of the vector. With this loop invariant, |GNATprove| is able
+to prove the postcondition of ``Search_Vec_Max``, namely that output parameter
+``Max`` is the maximum of the elements in the vector, and that ``Pos`` is the
+index of such an element:
+
+.. literalinclude:: gnatprove_by_example/results/search_vec_max.prove
+   :language: none
+
+Similarly, consider a variant of the same search loop over a list:
+
+.. literalinclude:: gnatprove_by_example/examples/search_list_max.adb
+   :language: ada
+   :linenos:
+
+The loop invariant expresses that all elements up to the current cursor ``Cu``
+have a value less than ``Max``, and that ``Max`` is the value of one of these
+elements, most precisely the value of ``Element (L, Pos)`` if the cursor
+``Pos`` for the optimum is recorded.  Like for vectors, an additional loop
+invariant is needed here compared to the case of arrays to state that cursor
+``Pos`` is a valid cursor of the list. A minor difference is that two loop
+invariants now start with ``Max = 0 or else ..`` because the loop invariant is
+stated at the start of the loop (for convenience with the use of
+``First_To_Previous``) which requires this modification. With this loop
+invariant, |GNATprove| is able to prove the postcondition of
+``Search_List_Max``, namely that output parameter ``Max`` is the maximum of the
+elements in the list, and that ``Pos`` is the cursor of such an element:
+
+.. literalinclude:: gnatprove_by_example/results/search_list_max.prove
+   :language: none
+
+The case of sets and maps is similar to the case of lists. For more complex
+examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
+on :ref:`How to Write Loop Invariants`.
+
 .. _Update Loops:
 
 Update Loops
