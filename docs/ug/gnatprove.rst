@@ -2403,7 +2403,7 @@ Note that, although function ``Search`` has a loop, we have not given an
 explicit loop invariant yet, so the default loop invariant of ``True`` will be
 used by |GNATprove|. We are running |GNATprove| with a prover timeout of 60 seconds
 (switch ``--timeout=60``) to get the results presented in the rest of this
-section..
+section.
 
 Proving a Loop Invariant in the First Iteration
 -----------------------------------------------
