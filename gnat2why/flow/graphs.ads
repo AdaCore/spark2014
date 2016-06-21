@@ -198,8 +198,8 @@ package Graphs is
    --  otherwise you lose the vertex!
 
    procedure Add_Vertex
-     (G  : in out Graph;
-      V  : Vertex_Key)
+     (G : in out Graph;
+      V : Vertex_Key)
    with Pre => not G.Is_Frozen and then not G.Contains (V);
    --  Add a new keyed vertex, but do not return its Id.
 

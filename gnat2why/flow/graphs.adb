@@ -124,8 +124,8 @@ package body Graphs is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (G  : in out Graph;
-      V  : Vertex_Key) is
+     (G : in out Graph;
+      V : Vertex_Key) is
    begin
       G.Vertices.Append ((Key            => V,
                           In_Neighbours  => VIS.Empty_Set,
