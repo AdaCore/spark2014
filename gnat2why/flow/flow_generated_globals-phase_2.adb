@@ -897,7 +897,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Create_Local_Graph;
          Note_Time ("gg_read - local graph done");
 
-         --  Go through the Subprogram_Info_List and add edges
+         --  Process subprograms with a GG info
          for Info of Subprogram_Info_List loop
             declare
                type Kinds is record
@@ -973,7 +973,7 @@ package body Flow_Generated_Globals.Phase_2 is
             end;
          end loop;
 
-         --  Add edges for subprograms without a GG entry
+         --  Process subprograms without a GG info
          for N of Subprograms_Without_GG loop
             declare
                Subprogram : constant Entity_Id := Find_Entity (N);
