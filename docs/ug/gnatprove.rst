@@ -2266,6 +2266,36 @@ that contain loops may require the addition of explicit loop
 invariant contracts. This section describes a systematic approach
 for writing loop invariants.
 
+.. _Automatically Generated Loop Invariants:
+
+Automatically Generated Loop Invariants
+---------------------------------------
+
+In general, |GNATprove| relies on the user to manualy supply the necessary
+information about variables modified by loop statements in the loop invariant. 
+Though variables which are not modified in the loop need not be mentioned in the
+invariant, it is in general necessary to state explicitely the preservation of
+unmodified object parts, such as record fields or array elements. These
+preservation properties form the loop's `frame condition` (see
+:ref:`Loop Invariants`). As it seems obvious, the frame condition is often
+forgotten when writing a loop invariant.
+
+To alleviate this problem, the |GNATprove| tool generates automatically frame
+conditions in some cases. In particular, it is able to infer the preservation of
+unmodified fields of record variables. It also handles unmodified fields of
+array components as long as they are preserved at every index in the array.
+As an example, GNATprove does not need any loop invariant to verify the
+following loop:
+
+.. literalinclude:: gnatprove_by_example/examples/preserved_fields.adb
+   :language: ada
+   :linenos:
+
+Note that GNATprove will not generate a frame condition for a record field if
+the record object is modified as a whole either through an assignment or
+through a procedure call, and so, even if the field happens to be preserved
+by the modification.
+
 The Four Properties of a Good Loop Invariant
 --------------------------------------------
 
@@ -2373,7 +2403,7 @@ Note that, although function ``Search`` has a loop, we have not given an
 explicit loop invariant yet, so the default loop invariant of ``True`` will be
 used by |GNATprove|. We are running |GNATprove| with a prover timeout of 60 seconds
 (switch ``--timeout=60``) to get the results presented in the rest of this
-section.
+section..
 
 Proving a Loop Invariant in the First Iteration
 -----------------------------------------------
@@ -3247,8 +3277,11 @@ requires the user to write it, to debug it, and finally to prove it.
 
 * The previous toolset required the insertion of lengthy :ref:`Loop
   Invariants`, totalling 43 loop invariant elements (some of them quite
-  complex), while |GNATprove| currently requires only 7 simple loop invariants
+  complex), while |GNATprove| currently requires only 1 simple loop invariant
   stating which components of a record are not modified in the loop.
+  This is partly due to |GNATprove| now being able to generate loop invariants
+  for unmodified record components (see
+  :ref:`Automatically Generated Loop Invariants`).
 
 * The previous toolset generated a Verification Condition for each path leading
   to a run-time check or an assertion. This lead to the generation of 367 VCs
