@@ -87,8 +87,7 @@ package body Flow_Debug is
    procedure Note_Time (S : String) is
       Now : constant Time := Clock;
    begin
-      Write_Str (S & " (" & To_Duration (Now - The_Time)'Img & ")");
-      Write_Eol;
+      Write_Line (S & " (" & To_Duration (Now - The_Time)'Img & ")");
       The_Time := Now;
    end Note_Time;
 
@@ -99,9 +98,8 @@ package body Flow_Debug is
    procedure Final_Time (S : String) is
       Now : constant Time := Clock;
    begin
-      Write_Str (S & " (total: " &
-                 To_Duration (Now - The_Start_Time)'Img & ")");
-      Write_Eol;
+      Write_Line (S & " (total: " &
+                    To_Duration (Now - The_Start_Time)'Img & ")");
    end Final_Time;
 
    --------------------
