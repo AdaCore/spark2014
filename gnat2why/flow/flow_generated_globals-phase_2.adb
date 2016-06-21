@@ -372,6 +372,9 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
    --  Print Header followed by elements of Set
 
+   procedure Print_ALI_File_Info (Subprograms : Global_Info_Lists.List);
+   --  Print info collected from the ALI files
+
    ---------------------
    -- Fully_Refine --
    ---------------------
@@ -2053,51 +2056,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Note_Time ("gg_read - ALI files read");
 
-      if Debug_Print_Info_Sets_Read then
-         --  Print all GG related info gathered from the ALI files
-         for Info of Subprogram_Info_List loop
-            Write_Eol;
-            Print_Global_Phase_1_Info (Info);
-         end loop;
-
-         for C in State_Comp_Map.Iterate loop
-            declare
-               State        : Entity_Name   renames Key (C);
-               Constituents : Name_Sets.Set renames State_Comp_Map (C);
-            begin
-               Write_Eol;
-               Write_Line ("Abstract state " & To_String (State));
-
-               Write_Line ("Constituents     :");
-               for Name of Constituents loop
-                  Write_Line ("   " & To_String (Name));
-               end loop;
-            end;
-         end loop;
-
-         --  Print all volatile info
-         Write_Eol;
-
-         Write_Line ("Async_Writers    :");
-         for Name of Async_Writers_Vars loop
-            Write_Line ("   " & To_String (Name));
-         end loop;
-
-         Write_Line ("Async_Readers    :");
-         for Name of Async_Readers_Vars loop
-            Write_Line ("   " & To_String (Name));
-         end loop;
-
-         Write_Line ("Effective_Reads  :");
-         for Name of Effective_Reads_Vars loop
-            Write_Line ("   " & To_String (Name));
-         end loop;
-
-         Write_Line ("Effective_Writes :");
-         for Name of Effective_Writes_Vars loop
-            Write_Line ("   " & To_String (Name));
-         end loop;
-      end if;
+      Print_ALI_File_Info (Subprogram_Info_List);
 
       Subprograms_Without_GG := All_Subprograms - Subprograms_With_GG;
 
@@ -2524,6 +2483,59 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------------------------------------------------------------
    --  Debug output routines
    --------------------------------------------------------------------------
+
+   -------------------------
+   -- Print_ALI_File_Info --
+   -------------------------
+
+   procedure Print_ALI_File_Info (Subprograms : Global_Info_Lists.List) is
+   begin
+      if Debug_Print_Info_Sets_Read then
+         --  Print all GG related info gathered from the ALI files
+         for S of Subprograms loop
+            Write_Eol;
+            Print_Global_Phase_1_Info (S);
+         end loop;
+
+         for C in State_Comp_Map.Iterate loop
+            declare
+               State        : Entity_Name   renames Key (C);
+               Constituents : Name_Sets.Set renames State_Comp_Map (C);
+            begin
+               Write_Eol;
+               Write_Line ("Abstract state " & To_String (State));
+
+               Write_Line ("Constituents     :");
+               for Name of Constituents loop
+                  Write_Line ("   " & To_String (Name));
+               end loop;
+            end;
+         end loop;
+
+         --  Print all volatile info
+         Write_Eol;
+
+         Write_Line ("Async_Writers    :");
+         for Name of Async_Writers_Vars loop
+            Write_Line ("   " & To_String (Name));
+         end loop;
+
+         Write_Line ("Async_Readers    :");
+         for Name of Async_Readers_Vars loop
+            Write_Line ("   " & To_String (Name));
+         end loop;
+
+         Write_Line ("Effective_Reads  :");
+         for Name of Effective_Reads_Vars loop
+            Write_Line ("   " & To_String (Name));
+         end loop;
+
+         Write_Line ("Effective_Writes :");
+         for Name of Effective_Writes_Vars loop
+            Write_Line ("   " & To_String (Name));
+         end loop;
+      end if;
+   end Print_ALI_File_Info;
 
    -----------------------------------------
    -- Print_Generated_Initializes_Aspects --
