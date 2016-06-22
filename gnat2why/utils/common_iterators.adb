@@ -33,11 +33,10 @@ package body Common_Iterators is
    is
       EL : constant Elist_Id := Elist_Id (L);
    begin
-      if Present (EL) then
-         return Elist_Wrapper_Cursor (First_Elmt (EL));
-      else
-         return Elist_Wrapper_Cursor (No_Elmt);
-      end if;
+      return
+        Elist_Wrapper_Cursor (if Present (EL)
+                              then First_Elmt (EL)
+                              else No_Elmt);
    end ELW_First;
 
    --------------
@@ -51,11 +50,10 @@ package body Common_Iterators is
       pragma Unreferenced (L);
       E : constant Elmt_Id := Elmt_Id (C);
    begin
-      if Present (E) then
-         return Elist_Wrapper_Cursor (Next_Elmt (E));
-      else
-         return Elist_Wrapper_Cursor (No_Elmt);
-      end if;
+      return
+        Elist_Wrapper_Cursor (if Present (E)
+                              then Next_Elmt (E)
+                              else No_Elmt);
    end ELW_Next;
 
    ---------------------
