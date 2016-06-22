@@ -22,87 +22,80 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
-with Ada.Unchecked_Deallocation;
-with Sem_Util;                   use Sem_Util;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Sem_Util;         use Sem_Util;
 
 package body Common_Containers is
 
-   function Hash (S : Ada.Strings.Unbounded.String_Access)
-                  return Ada.Containers.Hash_Type is
-     (Ada.Strings.Hash (S.all));
-
-   function "=" (Left, Right : Ada.Strings.Unbounded.String_Access) return
-     Boolean is (Left.all = Right.all);
-
-   procedure Free is new Ada.Unchecked_Deallocation
-     (Object => String,
-      Name   => Ada.Strings.Unbounded.String_Access);
-
-   package Intern_Strings_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Ada.Strings.Unbounded.String_Access,
+   package Symbol_To_Entity_Name_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
       Element_Type    => Entity_Name,
-      Hash            => Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
-   package Entity_Name_Maps is new Ada.Containers.Hashed_Maps
+   package Entity_Id_To_Entity_Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Entity_Name,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   package Entity_Name_To_String_Maps is new Ada.Containers.Hashed_Maps
+   package Entity_Name_To_Symbol_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
-      Element_Type    => Ada.Strings.Unbounded.String_Access,
+      Element_Type    => Symbol,
       Hash            => Name_Hash,
       Equivalent_Keys => "=");
 
-   Intern_Strings : Intern_Strings_Maps.Map := Intern_Strings_Maps.Empty_Map;
-   Num            : Entity_Name := 1;
+   Intern_Strings : constant Symbol_Table_Access := Allocate;
 
-   Name_Cache     : Entity_Name_Maps.Map := Entity_Name_Maps.Empty_Map;
-   String_Cache   : Entity_Name_To_String_Maps.Map :=
-     Entity_Name_To_String_Maps.Empty_Map;
+   Num : Any_Entity_Name := 0;
+
+   Symbol_Cache : Symbol_To_Entity_Name_Maps.Map;
+   String_Cache : Entity_Name_To_Symbol_Maps.Map;
+   Name_Cache   : Entity_Id_To_Entity_Name_Maps.Map;
 
    --------------------
    -- To_Entity_Name --
    --------------------
 
    function To_Entity_Name (S : String) return Entity_Name is
-      Tmp : Ada.Strings.Unbounded.String_Access := new String'(S);
-      use Intern_Strings_Maps;
-      C : constant Cursor := Intern_Strings.Find (Tmp);
-      use Entity_Name_To_String_Maps;
+      Sym : constant Symbol := Intern_Strings.Find (S);
+
+      Position : Symbol_To_Entity_Name_Maps.Cursor;
+      Inserted : Boolean;
+
+      Next_Num : constant Entity_Name := Num + 1;
+
    begin
-      if Has_Element (C) then
-         Free (Tmp);
-         return Element (C);
+      Symbol_Cache.Insert (Key       => Sym,
+                           New_Item  => Next_Num,
+                           Position  => Position,
+                           Inserted  => Inserted);
+
+      if Inserted then
+         String_Cache.Insert (Next_Num, Sym);
+
+         Num := Next_Num;
+
+         return Next_Num;
       else
-         declare
-            Rec : constant Entity_Name := Num;
-         begin
-            String_Cache.Insert (Rec, Tmp);
-            Intern_Strings.Insert (Tmp, Rec);
-            Num := Num + 1;
-            return Rec;
-         end;
+         return Symbol_Cache (Position);
       end if;
    end To_Entity_Name;
 
    function To_Entity_Name (E : Entity_Id) return Entity_Name is
-      use Entity_Name_Maps;
-      C : constant Cursor := Name_Cache.Find (E);
+      Position : Entity_Id_To_Entity_Name_Maps.Cursor;
+      Inserted : Boolean;
    begin
-      if Has_Element (C) then
-         return Element (C);
-      else
-         declare
-            Name : constant Entity_Name := To_Entity_Name (Unique_Name (E));
-         begin
-            Name_Cache.Insert (E, Name);
-            return Name;
-         end;
+      Name_Cache.Insert (Key      => E,
+                         New_Item => Entity_Name'Last, -- dummy value
+                         Position => Position,
+                         Inserted => Inserted);
+
+      if Inserted then
+         Name_Cache (Position) := To_Entity_Name (Unique_Name (E));
       end if;
+
+      return Name_Cache (Position);
    end To_Entity_Name;
 
    ---------------
@@ -111,7 +104,7 @@ package body Common_Containers is
 
    function To_String (E : Entity_Name) return String is
    begin
-      return Entity_Name_To_String_Maps.Element (String_Cache, E).all;
+      return Get (String_Cache (E)).all;
    end To_String;
 
    -----------------
