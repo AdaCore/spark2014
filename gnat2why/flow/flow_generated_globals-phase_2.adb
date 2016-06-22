@@ -900,6 +900,7 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          --  Create the Local_Graph
          Create_Local_Graph;
+
          Note_Time ("gg_read - local graph done");
 
          --  Process subprograms with a GG info
@@ -1761,6 +1762,8 @@ package body Flow_Generated_Globals.Phase_2 is
                   Volatile_Vars.Union (V.The_Effective_Writes);
 
                when EK_Globals =>
+                  --  Sets in The_Global_Info are disjoint, so it is more
+                  --  efficient to union them one-by-one than as a union.
                   Globals.Union (V.The_Global_Info.Inputs_Proof);
                   Globals.Union (V.The_Global_Info.Inputs);
                   Globals.Union (V.The_Global_Info.Outputs);
