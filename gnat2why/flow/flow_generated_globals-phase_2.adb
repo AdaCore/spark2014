@@ -51,6 +51,9 @@ use Flow_Generated_Globals.ALI_Serialization;
 
 package body Flow_Generated_Globals.Phase_2 is
 
+   GG_Generated : Boolean := False;
+   --  Set to True by GG_Read once the Global Graph has been generated.
+
    ---------------------------------------------------
    -- Regular expression for predefined subprograms --
    ---------------------------------------------------

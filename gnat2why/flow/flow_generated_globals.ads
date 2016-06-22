@@ -137,7 +137,7 @@ package Flow_Generated_Globals is
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and
-   --  update Null_Global_Info below.
+   --  update Null_Global_Info.
 
    package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Global_Phase_1_Info);
@@ -195,9 +195,6 @@ private
    --  This node will hold the current compilation unit that is being analyzed.
    --  On phase 1 GG_Write_Initialize is responsible for setting the node.
    --  On phase 2 GG_Read is responsible for setting the node.
-
-   GG_Generated      : Boolean   := False;
-   --  Set to True by GG_Read once the Global Graph has been generated.
 
    -------------
    -- GG_Mode --
