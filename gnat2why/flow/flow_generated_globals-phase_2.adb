@@ -82,8 +82,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    Current_Task : constant Entity_Name :=
      To_Entity_Name ("ada__task_identification__current_task");
-   --  This will be used when checking for calls to Current_Task from an entry
-   --  body and protected procedure handlers.
+   --  This will be used when checking for calls to Current_Task
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -2385,24 +2384,13 @@ package body Flow_Generated_Globals.Phase_2 is
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
-   ------------------------------------------
-   -- Is_Current_Task_Called_In_Entry_Body --
-   ------------------------------------------
+   ------------------------
+   -- Calls_Current_Task --
+   ------------------------
 
-   function Is_Current_Task_Called_In_Entry_Body (E : Entity_Id)
+   function Calls_Current_Task (E : Entity_Id)
      return Boolean is
      (Protected_Operation_Call_Graph.Contains (Current_Task)
-         and then Protected_Operation_Call_Graph.Edge_Exists
-                    (To_Entity_Name (E), Current_Task));
-
-   -------------------------------------------------
-   -- Is_Current_Task_Called_In_Interrupt_Handler --
-   -------------------------------------------------
-
-   function Is_Current_Task_Called_In_Interrupt_Handler (E : Entity_Id)
-     return Boolean is
-     (Is_Interrupt_Handler (E)
-         and then Protected_Operation_Call_Graph.Contains (Current_Task)
          and then Protected_Operation_Call_Graph.Edge_Exists
                     (To_Entity_Name (E), Current_Task));
 

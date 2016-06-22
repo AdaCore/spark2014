@@ -1605,8 +1605,7 @@ package body Flow is
             --  We issue a high error message in case the Current_Task function
             --  is called from an entry body.
             if Ekind (FA.Analyzed_Entity) = E_Entry
-              and then Is_Current_Task_Called_In_Entry_Body
-                         (FA.Analyzed_Entity)
+              and then Calls_Current_Task (FA.Analyzed_Entity)
             then
                Error_Msg_Flow
                  (FA       => FA,
@@ -1620,8 +1619,8 @@ package body Flow is
             --  We issue a high error message in case the Current_Task function
             --  is called from a protected procedure handler.
             if Ekind (FA.Analyzed_Entity) = E_Procedure
-              and then Is_Current_Task_Called_In_Interrupt_Handler
-                         (FA.Analyzed_Entity)
+              and then Is_Interrupt_Handler (FA.Analyzed_Entity)
+              and then Calls_Current_Task (FA.Analyzed_Entity)
             then
                Error_Msg_Flow
                  (FA       => FA,
