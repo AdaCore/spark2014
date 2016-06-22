@@ -176,7 +176,7 @@ package body Flow_Generated_Globals.Phase_2 is
      Entity_Name_Graphs.Create;
    --  Call graph rooted at protected operations for detecting potentially
    --  blocking statements or calls to Current_Task from entry body or
-   --  protected procedure handlers.
+   --  interrupt handlers.
    --
    --  Vertices correspond to subprograms and edges correspond to subprogram
    --  calls.
@@ -1178,10 +1178,10 @@ package body Flow_Generated_Globals.Phase_2 is
             Tasking_Call_Graph.Close;
          end Add_Tasking_Edges;
 
-         --  To detect potentially blocking operations and calls to
-         --  Current_Task from entry body or procedure handlers in protected
-         --  actions we create a call graph with vertices corresponding to
-         --  callable entities (i.e. entries, functions and procedures).
+         --  To detect potentially blocking operations in protected actions,
+         --  and calls to Current_Task from entry body or interrupt handlers,
+         --  we create a call graph with vertices corresponding to callable
+         --  entities (i.e. entries, functions and procedures).
 
          Add_Protected_Operation_Edges : declare
             Stack : Name_Sets.Set;
