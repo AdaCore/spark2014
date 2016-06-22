@@ -309,13 +309,10 @@ package body Flow.Slice is
       --  Returns all subprograms that are definitely called
 
       procedure Get_Local_Variables_And_Subprograms
-        (Local_Vars : out Node_Sets.Set;
-         Local_Subs : out Node_Sets.Set);
-      --  Traverses the tree under FA.Analyzed_Entity and gathers all
-      --  object and subprogram declarations and puts them in Local_Vars
-      --  and Local_Subs, respectivelly.
-      --  @param Local_Vars is populated with all local variables
-      --  @param Local_Subs is populated with all local subprograms
+      with Global => (Output => (Local_Variables, Local_Subprograms));
+      --  Traverses the tree under FA.Analyzed_Entity and gathers all object
+      --  and subprogram declarations and puts them in Local_Variables and
+      --  Local_Subprograms, respectively.
 
       procedure Get_Local_Definite_Writes;
       --  Collect local variables of the package that are definitely
@@ -383,21 +380,18 @@ package body Flow.Slice is
       -- Get_Local_Variables_And_Subprograms --
       -----------------------------------------
 
-      procedure Get_Local_Variables_And_Subprograms
-        (Local_Vars : out Node_Sets.Set;
-         Local_Subs : out Node_Sets.Set)
-      is
+      procedure Get_Local_Variables_And_Subprograms is
          function Get_Object_Or_Subprogram_Declaration
            (N : Node_Id)
             return Traverse_Result;
-         --  Picks up entities coming from object and subprogram declarations
-         --  and adds them respectively to Local_Vars and Local_Subs.
+         --  Pick entities coming from object and subprogram declarations and
+         --  add them respectively to Local_Variables and Local_Subprograms.
          --  ??? respect SPARK_Mode => Off
 
          procedure Remove_PO_And_Task_Parts;
-         --  Removes from Local_Vars these variables which are parts of a
-         --  singleton protected object or a singleton task. We don't do
-         --  this when we process tasks.
+         --  Removes from Local_Variables those variables which are Part_Of a
+         --  singleton protected object or a singleton task. We don't do this
+         --  when we process tasks.
 
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
@@ -468,7 +462,7 @@ package body Flow.Slice is
                   if Unique_Defining_Entity (N) /=
                     Unique_Entity (FA.Analyzed_Entity)
                   then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
+                     Local_Subprograms.Include (Unique_Defining_Entity (N));
                      return Skip;
                   end if;
 
@@ -491,7 +485,7 @@ package body Flow.Slice is
                   then
                      return Skip;
                   else
-                     Local_Vars.Insert (Defining_Identifier (N));
+                     Local_Variables.Insert (Defining_Identifier (N));
                   end if;
 
                when N_Object_Declaration =>
@@ -512,7 +506,7 @@ package body Flow.Slice is
                      else
                         case Ekind (E) is
                            when E_Variable =>
-                              Local_Vars.Insert (E);
+                              Local_Variables.Insert (E);
 
                            when E_Constant =>
                               --  ??? there is no point in checking both the
@@ -521,9 +515,10 @@ package body Flow.Slice is
                               if Has_Variable_Input (Direct_Mapping_Id (E))
                               then
                                  --  If the Full_View is present then add that
-                                 Local_Vars.Include (if Present (Full_View (E))
-                                                     then Full_View (E)
-                                                     else E);
+                                 Local_Variables.Include
+                                   (if Present (Full_View (E))
+                                    then Full_View (E)
+                                    else E);
                               end if;
 
                            when others =>
@@ -590,7 +585,7 @@ package body Flow.Slice is
                                        then Entity (Ancestor_Part (AS_N))
                                        else Entity (AS_N));
 
-                              Local_Vars.Insert (AS_E);
+                              Local_Variables.Insert (AS_E);
 
                               Next (AS_N);
                            end loop;
@@ -621,7 +616,7 @@ package body Flow.Slice is
                return;
             end if;
 
-            for Var of Local_Vars loop
+            for Var of Local_Variables loop
                --  Note: deleting a variable while iterating over container
                --  would tamper with cursors, which is not allowed.
                if Is_Part_Of_Concurrent_Object (Var) then
@@ -629,7 +624,7 @@ package body Flow.Slice is
                end if;
             end loop;
 
-            Local_Vars.Difference (Part_Of_Vars);
+            Local_Variables.Difference (Part_Of_Vars);
          end Remove_PO_And_Task_Parts;
 
          procedure Gather_Local_Variables_And_Subprograms is
@@ -638,14 +633,15 @@ package body Flow.Slice is
       --  Start of processing for Get_Local_Variables_And_Subprograms
 
       begin
-         --  Initialize Local_Vars and Local_Subs: collect formal parameters of
-         --  the entry/subprogram/task or state abstractions of the package.
-         Local_Vars :=
+         --  Initialize Local_Variables and Local_Subprograms: collect formal
+         --  parameters of the entry/subprogram/task or state abstractions of
+         --  the package.
+         Local_Variables :=
            (if FA.Kind in Kind_Subprogram | Kind_Task
             then Get_Formals (FA.Analyzed_Entity)
             else Node_Sets.Empty_Set);
 
-         Local_Subs := Node_Sets.Empty_Set;
+         Local_Subprograms := Node_Sets.Empty_Set;
 
          --  Gather local parameters and subprograms
          case FA.Kind is
@@ -672,8 +668,8 @@ package body Flow.Slice is
                end;
          end case;
 
-         --  Remove from Local_Vars the variables which are parts of singelton
-         --  protected objects and singleton tasks.
+         --  Remove from Local_Variables the variables which are parts of
+         --  singelton protected objects and singleton tasks.
          Remove_PO_And_Task_Parts;
       end Get_Local_Variables_And_Subprograms;
 
@@ -830,7 +826,7 @@ package body Flow.Slice is
       Conditional_Calls := Subprograms_Without_Contracts
         (FA.Direct_Calls - Definite_Calls - Proof_Calls);
 
-      Get_Local_Variables_And_Subprograms (Local_Variables, Local_Subprograms);
+      Get_Local_Variables_And_Subprograms;
 
       Get_Local_Definite_Writes;
       --  ??? what's the point of calling this for subprograms and tasks?
