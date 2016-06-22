@@ -180,7 +180,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Is_Current_Task_Called_In_Interrupt_Handler (E : Entity_Id)
                                                          return Boolean
-     with Pre => Ekind (E) in E_Procedure;
+     with Pre => Ekind (E) = E_Procedure;
    --  Returns True iff subprogram E is a protected procedure handler that has
    --  a path connecting it to a call to the Current_Task function.
 
