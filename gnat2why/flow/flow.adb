@@ -1616,6 +1616,22 @@ package body Flow is
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Severity => High_Check_Kind);
             end if;
+
+            --  We issue an high error message in case the Current_Task
+            --  function is called from a protected procedure handler.
+            if Ekind (FA.Analyzed_Entity) = E_Procedure
+              and then Is_Current_Task_Called_In_Interrupt_Handler
+                         (FA.Analyzed_Entity)
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "Current_Task should not be called from " &
+                    "protected procedure handler & (RM C.7(17))",
+                  N        => FA.Analyzed_Entity,
+                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Severity => High_Check_Kind);
+            end if;
+
          end if;
       end loop;
 

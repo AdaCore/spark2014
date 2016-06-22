@@ -1,3 +1,5 @@
+interrupt_handler.ads:11:17: high: Current_Task should not be called from protected procedure handler "P" (RM C.7(17))
+interrupt_handler.ads:12:33: medium: this interrupt might be reserved
 main_package.ads:6:13: high: Current_Task should not be called from a subprogram in entry body "E" (RM C.7(17))
 p.ads:2:14: warning: subprogram "S1" has no effect
 q.ads:3:18: info: initialization of "T" proved

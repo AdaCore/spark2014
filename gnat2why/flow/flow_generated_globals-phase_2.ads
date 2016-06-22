@@ -175,8 +175,14 @@ package Flow_Generated_Globals.Phase_2 is
    function Is_Current_Task_Called_In_Entry_Body (E : Entity_Id)
                                                   return Boolean
      with Pre => Ekind (E) in E_Entry;
-   --  Returns True if subprogram E has a path connecting it to a call to the
-   --  Current_Task function; returns False if it does not.
+   --  Returns True iff subprogram E has a path connecting it to a call to the
+   --  Current_Task function.
+
+   function Is_Current_Task_Called_In_Interrupt_Handler (E : Entity_Id)
+                                                         return Boolean
+     with Pre => Ekind (E) in E_Procedure;
+   --  Returns True iff subprogram E is a protected procedure handler that has
+   --  a path connecting it to a call to the Current_Task function.
 
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;

@@ -80,7 +80,7 @@ package body Flow_Generated_Globals.Phase_2 is
    Current_Task : constant Entity_Name :=
      To_Entity_Name ("ada__task_identification__current_task");
    --  This will be used when checking for calls to Current_Task from an entry
-   --  body.
+   --  body and protected procedure handlers.
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -175,7 +175,8 @@ package body Flow_Generated_Globals.Phase_2 is
    Protected_Operation_Call_Graph : Entity_Name_Graphs.Graph :=
      Entity_Name_Graphs.Create;
    --  Call graph rooted at protected operations for detecting potentially
-   --  blocking statements or calls to Current_Task.
+   --  blocking statements or calls to Current_Task from entry body or
+   --  protected procedure handlers.
    --
    --  Vertices correspond to subprograms and edges correspond to subprogram
    --  calls.
@@ -1178,9 +1179,9 @@ package body Flow_Generated_Globals.Phase_2 is
          end Add_Tasking_Edges;
 
          --  To detect potentially blocking operations and calls to
-         --  Current_Task from entry body in protected actions we create a call
-         --  graph with vertices corresponding to callable entities (i.e.
-         --  entries, functions and procedures).
+         --  Current_Task from entry body or procedure handlers in protected
+         --  actions we create a call graph with vertices corresponding to
+         --  callable entities (i.e. entries, functions and procedures).
 
          Add_Protected_Operation_Edges : declare
             Stack : Name_Sets.Set;
@@ -2383,48 +2384,21 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------------------------------
 
    function Is_Current_Task_Called_In_Entry_Body (E : Entity_Id)
-                                                  return Boolean
-   is
-      EN : constant Entity_Name := To_Entity_Name (E);
-      --  Entity name
+     return Boolean is
+     (Protected_Operation_Call_Graph.Contains (Current_Task)
+         and then Protected_Operation_Call_Graph.Edge_Exists
+                    (To_Entity_Name (E), Current_Task));
 
-      function Calls_Subprograms_Calling_Current_Task return Boolean;
-      --  Check for calls to subprograms who call Current_Task
+   -------------------------------------------------
+   -- Is_Current_Task_Called_In_Interrupt_Handler --
+   -------------------------------------------------
 
-      --------------------------------------------
-      -- Calls_Subprograms_Calling_Current_Task --
-      --------------------------------------------
-
-      function Calls_Subprograms_Calling_Current_Task return Boolean is
-         use Entity_Name_Graphs;
-
-         Caller : constant Vertex_Id :=
-           Protected_Operation_Call_Graph.Get_Vertex (EN);
-         --  Vertex that represents the analysed subprogram
-
-      --  Start of processing for Calls_Subprograms_Calling_Current_Task
-      begin
-         for V of Protected_Operation_Call_Graph.
-           Get_Collection (Caller, Out_Neighbours)
-         loop
-            declare
-               Callee : constant Entity_Name :=
-                 Protected_Operation_Call_Graph.Get_Key (V);
-
-            begin
-               --  We return True if the current Callee is Current_Task
-               if Callee = Current_Task then
-                  return True;
-               end if;
-            end;
-         end loop;
-         return False;
-      end Calls_Subprograms_Calling_Current_Task;
-
-   --  Start of processing for Is_Current_Task_Called_In_Entry_Body
-   begin
-      return Calls_Subprograms_Calling_Current_Task;
-   end Is_Current_Task_Called_In_Entry_Body;
+   function Is_Current_Task_Called_In_Interrupt_Handler (E : Entity_Id)
+     return Boolean is
+     (Is_Interrupt_Handler (E)
+         and then Protected_Operation_Call_Graph.Contains (Current_Task)
+         and then Protected_Operation_Call_Graph.Edge_Exists
+                    (To_Entity_Name (E), Current_Task));
 
    --------------------------
    -- Register_Task_Object --
