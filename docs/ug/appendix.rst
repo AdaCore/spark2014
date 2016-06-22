@@ -954,10 +954,6 @@ Proof Limitations
    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK| Reference
    Manual 9.19 are not yet implemented.
 
-#. The verification condition associated with the Ada rule that it is a bounded
-   error to call the Current_Task function from an entry_body, or an interrupt
-   handler (see Ada RM C.7.1(17/3)) is not yet implemented.
-
 .. _Portability Issues:
 
 Portability Issues
