@@ -23,12 +23,12 @@
 
 with Ada.Strings.Unbounded;
 
-with Einfo;                   use Einfo;
 with Lib.Util;                use Lib.Util;
 with Osint.C;                 use Osint.C;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
 
+with Common_Iterators;        use Common_Iterators;
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 with SPARK2014VSN;            use SPARK2014VSN;
@@ -179,43 +179,39 @@ package body Flow_Generated_Globals.Phase_1 is
                                    Priority => Prio));
    end GG_Register_Protected_Object;
 
-   ----------------------------
-   -- GG_Register_State_Info --
-   ----------------------------
+   ----------------------------------
+   -- GG_Register_State_Refinement --
+   ----------------------------------
 
-   procedure GG_Register_State_Info (DM : Dependency_Maps.Map) is
+   procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
+   is
+      Pkg_Spec : constant Entity_Id := Unique_Entity (Pkg_Body);
    begin
-      for S in DM.Iterate loop
+      for State of Iter (Abstract_States (Pkg_Spec)) loop
+         --  Append an empty container and then populate it
+         State_Constituents.Append
+           ((State        => To_Entity_Name (State),
+             Constituents => Name_Lists.Empty_List));
+
          declare
-            State_F : Flow_Id renames Dependency_Maps.Key (S);
-
-            State_Entity : constant Entity_Id :=
-              Get_Direct_Mapping_Id (State_F);
-
-            State_Name : constant Entity_Name :=
-              To_Entity_Name (State_Entity);
+            New_Constituents : Name_Lists.List renames
+              State_Constituents (State_Constituents.Last).Constituents;
 
          begin
-            --  Append new state info into State_Comp_Map
-            State_Constituents.Append ((State_Name, Name_Lists.Empty_List));
-
-            declare
-               New_Constituents : Name_Lists.List renames
-                 State_Constituents (State_Constituents.Last).Constituents;
-
-            begin
-               for Constituent of DM (S) loop
-                  New_Constituents.Append
-                    (To_Entity_Name (Get_Direct_Mapping_Id (Constituent)));
-               end loop;
-            end;
-
-            --  Check if state is volatile and if it is then add it to the
-            --  appropriate sets.
-            Register_Volatile (State_Entity);
+            for Constituent of Iter (Refinement_Constituents (State)) loop
+               if Nkind (Constituent) = N_Null then
+                  null;
+               else
+                  New_Constituents.Append (To_Entity_Name (Constituent));
+               end if;
+            end loop;
          end;
+
+         --  Check if state is volatile and if it is then add it to the
+         --  appropriate sets.
+         Register_Volatile (State);
       end loop;
-   end GG_Register_State_Info;
+   end GG_Register_State_Refinement;
 
    -----------------------------
    -- GG_Register_Task_Object --

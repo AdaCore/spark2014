@@ -22,7 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;                use Atree;
-with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Einfo;                use Einfo;
 with Sinfo;                use Sinfo;
 
 package Flow_Generated_Globals.Phase_1 is
@@ -31,8 +31,9 @@ package Flow_Generated_Globals.Phase_1 is
    -- Registering --
    -----------------
 
-   procedure GG_Register_State_Info (DM : Dependency_Maps.Map)
-   with Pre  => GG_Mode = GG_Write_Mode,
+   procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
+   with Pre  => GG_Mode = GG_Write_Mode and then
+                Ekind (Pkg_Body) = E_Package_Body,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information related to state abstractions and their
    --  refinements. This will later be used to return the appropriate view

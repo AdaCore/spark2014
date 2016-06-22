@@ -1722,24 +1722,14 @@ package body Flow is
             Indent;
          end if;
 
-         if FA.Kind = Kind_Package_Body then
-            --  Here we use the package's Refined_State aspect (if it exists).
-            --  Note that we process this aspect regardless of whether we
-            --  generate a gg graph or not.
-            declare
-               Refined_State_N : constant Node_Id :=
-                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
-
-            begin
-               if Present (Refined_State_N) then
-                  declare
-                     DM : constant Dependency_Maps.Map :=
-                       Parse_Refined_State (Refined_State_N);
-                  begin
-                     GG_Register_State_Info (DM);
-                  end;
-               end if;
-            end;
+         --  Register abstract state components; if any then there should be
+         --  a Refined_State aspect.
+         --  ??? isn't this just checking if there are any abstract states?
+         if FA.Kind = Kind_Package_Body
+           and then Present (Get_Pragma (FA.Analyzed_Entity,
+                                         Pragma_Refined_State))
+         then
+            GG_Register_State_Refinement (FA.Analyzed_Entity);
          end if;
 
          if FA.GG.Aborted then
