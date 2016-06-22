@@ -13215,7 +13215,14 @@ package body Gnat2Why.Expr is
             --  accounted for in the ancestor part. Ignore them here.
 
             if not Inherited_Discriminant (Association) then
-               Component := Search_Component_By_Name (Typ, Choice);
+
+               --  Use Associated_Node to get the corresponding record
+               --  component.
+
+               pragma Assert (Present (Associated_Node (Choice)));
+
+               Component := Search_Component_By_Name
+                 (Typ, Associated_Node (Choice));
                pragma Assert (Present (Component));
 
                if not Box_Present (Association) then

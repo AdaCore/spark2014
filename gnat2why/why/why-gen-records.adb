@@ -686,6 +686,7 @@ package body Why.Gen.Records is
                            Seen.Include (Orig);
 
                         else
+                           pragma Assert (Is_Tagged_Type (E));
                            Field_From_Index := Field_From_Index + 1;
                            From_Root_Field (Field_From_Index) :=
                              New_Field_Association

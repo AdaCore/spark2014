@@ -605,8 +605,8 @@ package SPARK_Util is
      (Rec  : Entity_Id;
       Comp : Entity_Id) return Entity_Id;
    --  Given a record type entity and a component/discriminant entity, search
-   --  in Rec a component/discriminant entity with the same name. Returns Empty
-   --  if no such component is found.
+   --  in Rec a component/discriminant entity with the same name and the same
+   --  original record component. Returns Empty if no such component is found.
 
    function Is_Ancestor (Anc : Entity_Id; E : Entity_Id) return Boolean is
      (if not Is_Class_Wide_Type (Anc) then Sem_Type.Is_Ancestor (Anc, E)

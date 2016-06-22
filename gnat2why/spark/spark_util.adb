@@ -3326,7 +3326,20 @@ package body SPARK_Util is
    begin
       while Present (Cur_Comp) loop
          if Chars (Cur_Comp) = Chars (Comp) then
-            return Cur_Comp;
+
+            --  We have found a field with the same name. If the type is not
+            --  tagged, we have found the correct component. Otherwise, either
+            --  it has the same Original_Record_Component and it is the field
+            --  we were looking for or it does not and Comp is not in Rec.
+
+            if not Is_Tagged_Type (Rec)
+               or else Original_Record_Component (Cur_Comp) =
+                 Original_Record_Component (Comp)
+            then
+               return Cur_Comp;
+            else
+               return Empty;
+            end if;
          end if;
 
          Next_Component_Or_Discriminant (Cur_Comp);
