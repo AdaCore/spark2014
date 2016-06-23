@@ -821,8 +821,10 @@ package body Flow.Slice is
 
       Get_Local_Variables_And_Subprograms;
 
-      Get_Local_Definite_Writes;
-      --  ??? what's the point of calling this for subprograms and tasks?
+      --  Only needed for packages
+      if FA.Kind in Kind_Package | Kind_Package_Body then
+         Get_Local_Definite_Writes;
+      end if;
    end Compute_Globals;
 
 end Flow.Slice;

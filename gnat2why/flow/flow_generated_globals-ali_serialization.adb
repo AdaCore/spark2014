@@ -151,7 +151,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
       Serialize (A, V.Conditional_Calls,     "calls_conditional");
       Serialize (A, V.Local_Variables,       "local_var");
       Serialize (A, V.Local_Subprograms,     "local_sub");
-      Serialize (A, V.Local_Definite_Writes, "local_init");
+      if V.Kind in Kind_Package | Kind_Package_Body then
+         Serialize (A, V.Local_Definite_Writes, "local_init");
+      end if;
    end Serialize;
 
    procedure Serialize (A : in out Archive; V : in out ALI_Entry) is

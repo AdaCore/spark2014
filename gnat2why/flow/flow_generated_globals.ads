@@ -133,7 +133,7 @@ package Flow_Generated_Globals is
       Conditional_Calls     : Name_Sets.Set; --  Flow/Frontend
       Local_Variables       : Name_Sets.Set; --  Flow
       Local_Subprograms     : Name_Sets.Set; --  Flow
-      Local_Definite_Writes : Name_Sets.Set; --  Flow
+      Local_Definite_Writes : Name_Sets.Set; --  Flow (only for packages)
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and
