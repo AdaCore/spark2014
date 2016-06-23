@@ -1,0 +1,7 @@
+get_out_subtype.adb:2:11: warning: subprogram "Get_Out_Subtype" has no effect
+get_out_subtype.adb:5:07: info: initialization of "Roll_Rate_Desired" proved
+get_out_subtype.adb:6:07: info: initialization of "Pitch_Rate_Desired" proved
+get_out_subtype.adb:7:07: info: initialization of "Yaw_Rate_Desired" proved
+get_out_subtype.adb:27:33: info: range check proved
+get_out_subtype.adb:27:52: info: range check proved
+get_out_subtype.adb:28:33: info: range check proved
