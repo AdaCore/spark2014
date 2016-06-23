@@ -25,7 +25,7 @@ for raw_line in sys.stdin:
     if ".ad" not in raw_line:
         continue
 
-    if " proved" in raw_line:
+    if " proved" in raw_line or "postcondition is stronger" in raw_line:
         proved += val
     elif " might " in raw_line or "precondition is stronger" in raw_line:
         failed += val
