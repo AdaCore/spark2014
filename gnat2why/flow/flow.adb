@@ -1338,12 +1338,12 @@ package body Flow is
                                  Inputs                => To_Name_Set (Reads),
                                  Outputs               => To_Name_Set (Writes),
                                  --  These are left as empty sets
-                                 Proof_Calls           => Name_Sets.Empty_Set,
-                                 Definite_Calls        => Name_Sets.Empty_Set,
-                                 Conditional_Calls     => Name_Sets.Empty_Set,
-                                 Local_Variables       => Name_Sets.Empty_Set,
-                                 Local_Subprograms     => Name_Sets.Empty_Set,
-                                 Local_Definite_Writes => Name_Sets.Empty_Set);
+                                 Proof_Calls           => <>,
+                                 Definite_Calls        => <>,
+                                 Conditional_Calls     => <>,
+                                 Local_Variables       => <>,
+                                 Local_Subprograms     => <>,
+                                 Local_Definite_Writes => <>);
                            end;
 
                         else
@@ -1372,15 +1372,15 @@ package body Flow is
                                     when E_Task_Type => Kind_Task,
                                     when others      => raise Program_Error),
                                  Origin                => Origin_Frontend,
-                                 Inputs_Proof          => Name_Sets.Empty_Set,
+                                 Inputs_Proof          => <>,
                                  Inputs                => Reads,
                                  Outputs               => Writes,
-                                 Proof_Calls           => Name_Sets.Empty_Set,
-                                 Definite_Calls        => Name_Sets.Empty_Set,
+                                 Proof_Calls           => <>,
+                                 Definite_Calls        => <>,
                                  Conditional_Calls     => Calls,
-                                 Local_Variables       => Name_Sets.Empty_Set,
-                                 Local_Subprograms     => Name_Sets.Empty_Set,
-                                 Local_Definite_Writes => Name_Sets.Empty_Set);
+                                 Local_Variables       => <>,
+                                 Local_Subprograms     => <>,
+                                 Local_Definite_Writes => <>);
                            end;
                         end if;
 
