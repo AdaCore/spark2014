@@ -448,17 +448,21 @@ package body Flow.Slice is
 
          begin
             case Nkind (N) is
-               when N_Entry_Body             |
-                    N_Entry_Declaration      |
-                    N_Subprogram_Body        |
+               when N_Entry_Body      |
+                    N_Subprogram_Body |
+                    N_Task_Body       =>
+                  if Unique_Defining_Entity (N) /= FA.Spec_Entity then
+                     return Skip;
+                  end if;
+
+               when N_Entry_Declaration      |
                     N_Subprogram_Declaration |
-                    N_Task_Body              |
                     N_Task_Type_Declaration  =>
                   declare
-                     E : constant Entity_Id := Unique_Defining_Entity (N);
+                     E : constant Entity_Id := Defining_Entity (N);
                   begin
-                     if E /= (FA.Spec_Entity) then
-                        Local_Subprograms.Include (E);
+                     if E /= FA.Spec_Entity then
+                        Local_Subprograms.Insert (E);
                         return Skip;
                      end if;
                   end;
