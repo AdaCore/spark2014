@@ -388,10 +388,10 @@ package body Flow.Slice is
          --  add them respectively to Local_Variables and Local_Subprograms.
          --  ??? respect SPARK_Mode => Off
 
-         procedure Remove_PO_And_Task_Parts;
-         --  Removes from Local_Variables those variables which are Part_Of a
-         --  singleton protected object or a singleton task. We don't do this
-         --  when we process tasks.
+         procedure Delete_PO_And_Task_Parts;
+         --  Delete those of Local_Variables that are Part_Of a singleton
+         --  protected object or a singleton task. We don't do this when
+         --  we process tasks.
 
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
@@ -454,10 +454,14 @@ package body Flow.Slice is
                     N_Subprogram_Declaration |
                     N_Task_Body              |
                     N_Task_Type_Declaration  =>
-                  if Unique_Defining_Entity (N) /= (FA.Spec_Entity) then
-                     Local_Subprograms.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
+                  declare
+                     E : constant Entity_Id := Unique_Defining_Entity (N);
+                  begin
+                     if E /= (FA.Spec_Entity) then
+                        Local_Subprograms.Include (E);
+                        return Skip;
+                     end if;
+                  end;
 
                when N_Generic_Package_Declaration    |
                     N_Generic_Subprogram_Declaration =>
@@ -466,6 +470,7 @@ package body Flow.Slice is
 
                when N_Handled_Sequence_Of_Statements =>
                   --  Skip statements of a nested package's body
+                  --  ???
                   if Nkind (Parent (N)) = N_Package_Body then
                      return Skip;
                   end if;
@@ -488,7 +493,7 @@ package body Flow.Slice is
                      if Hidden_In_Package (E)
                        or else In_Generic_Actual (E)
                      then
-                        --  We do not want to process:
+                        --  We do not want:
                         --
                         --   * formals of nested instantiations,
                         --
@@ -523,38 +528,28 @@ package body Flow.Slice is
                when N_Package_Body      |
                     N_Package_Body_Stub =>
                   declare
-                     Package_Spec : constant Entity_Id :=
-                       (case Nkind (N) is
-                        when N_Package_Body      => Corresponding_Spec (N),
-                        when N_Package_Body_Stub =>
-                          Corresponding_Spec_Of_Stub (N),
-                        when others              => raise Program_Error);
-
-                     AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Package_Spec, Pragma_Abstract_State);
+                     E : constant Entity_Id := Unique_Defining_Entity (N);
                   begin
                      --  Skip bodies of generic packages
-                     if Ekind (Package_Spec) = E_Generic_Package then
-                        return Skip;
-                     end if;
+                     if Ekind (E) = E_Generic_Package
 
-                     --  Skip bodies of packages that are not in SPARK
-                     if not Entity_Body_In_SPARK (Package_Spec) then
-                        return Skip;
-                     end if;
+                       --  and bodies of packages that are not in SPARK
+                       or else not Entity_Body_In_SPARK (E)
 
-                     --  Skip bodies of nested packages that have an abstract
-                     --  state contract.
-                     if Present (AS_Pragma)
-                       and then Unique_Defining_Entity (N) /= FA.Spec_Entity
+                       --  and bodies of nested packages with Abstract_State
+                       --  contract.
+                       or else
+                       (E /= FA.Spec_Entity
+                          and then
+                             Present
+                               (Get_Pragma (E, Pragma_Abstract_State)))
                      then
                         return Skip;
                      end if;
                   end;
 
                when N_Package_Declaration =>
-                  --  State abstractions of nested packages appear as local
-                  --  variables.
+                  --  State abstractions appear as local variables
                   declare
                      AS_Pragma : constant Node_Id :=
                        Get_Pragma (Defining_Entity (N), Pragma_Abstract_State);
@@ -599,26 +594,31 @@ package body Flow.Slice is
          end Get_Object_Or_Subprogram_Declaration;
 
          ------------------------------
-         -- Remove_PO_And_Task_Parts --
+         -- Delete_PO_And_Task_Parts --
          ------------------------------
 
-         procedure Remove_PO_And_Task_Parts is
-            Part_Of_Vars : Node_Sets.Set := Node_Sets.Empty_Set;
+         procedure Delete_PO_And_Task_Parts is
          begin
-            if FA.Kind = Kind_Task then
-               return;
+            if FA.Kind /= Kind_Task then
+               declare
+                  Part_Of_Vars : Node_Lists.List;
+                  --  Containers with variables to be deleted; needed because
+                  --  deleting an element while iterating over container would
+                  --  tamper with cursors.
+
+               begin
+                  for Var of Local_Variables loop
+                     if Is_Part_Of_Concurrent_Object (Var) then
+                        Part_Of_Vars.Append (Var);
+                     end if;
+                  end loop;
+
+                  for V of Part_Of_Vars loop
+                     Local_Variables.Delete (V);
+                  end loop;
+               end;
             end if;
-
-            for Var of Local_Variables loop
-               --  Note: deleting a variable while iterating over container
-               --  would tamper with cursors, which is not allowed.
-               if Is_Part_Of_Concurrent_Object (Var) then
-                  Part_Of_Vars.Insert (Var);
-               end if;
-            end loop;
-
-            Local_Variables.Difference (Part_Of_Vars);
-         end Remove_PO_And_Task_Parts;
+         end Delete_PO_And_Task_Parts;
 
          procedure Gather_Local_Variables_And_Subprograms is
             new Traverse_Proc (Get_Object_Or_Subprogram_Declaration);
@@ -627,8 +627,7 @@ package body Flow.Slice is
 
       begin
          --  Initialize Local_Variables and Local_Subprograms: collect formal
-         --  parameters of the entry/subprogram/task or state abstractions of
-         --  the package.
+         --  parameters of the entry/subprogram/task.
          Local_Variables :=
            (if FA.Kind in Kind_Subprogram | Kind_Task
             then Get_Formals (FA.Analyzed_Entity)
@@ -636,34 +635,25 @@ package body Flow.Slice is
 
          Local_Subprograms := Node_Sets.Empty_Set;
 
-         --  Gather local parameters and subprograms
+         --  Gather local variables and subprograms
          case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
                Gather_Local_Variables_And_Subprograms
                  (Get_Body (FA.Analyzed_Entity));
 
             when Kind_Package | Kind_Package_Body =>
-               declare
-                  Decl : constant Node_Id := Package_Spec (FA.Spec_Entity);
-                  --  Package declaration node
+               Gather_Local_Variables_And_Subprograms
+                 (Package_Spec (FA.Spec_Entity));
 
-                  pragma Assert (Nkind (Decl) in
-                                   N_Package_Declaration         |
-                                   N_Generic_Package_Declaration);
-
-               begin
-                  Gather_Local_Variables_And_Subprograms (Decl);
-
-                  if FA.Kind = Kind_Package_Body then
-                     Gather_Local_Variables_And_Subprograms
-                       (Package_Body (FA.Analyzed_Entity));
-                  end if;
-               end;
+               if FA.Kind = Kind_Package_Body then
+                  Gather_Local_Variables_And_Subprograms
+                    (Package_Body (FA.Analyzed_Entity));
+               end if;
          end case;
 
-         --  Remove from Local_Variables the variables which are parts of
+         --  Delete from Local_Variables the variables which are parts of
          --  singelton protected objects and singleton tasks.
-         Remove_PO_And_Task_Parts;
+         Delete_PO_And_Task_Parts;
       end Get_Local_Variables_And_Subprograms;
 
       -------------------------------
