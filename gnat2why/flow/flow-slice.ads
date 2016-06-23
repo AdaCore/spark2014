@@ -29,9 +29,9 @@ package Flow.Slice is
      (FA      : Flow_Analysis_Graphs;
       V_Final : Flow_Graphs.Vertex_Id)
       return Flow_Id_Sets.Set;
-   --  Compute all inputs the given vertex depends on. For IPFA please
-   --  use the function IPFA_Dependency, which also includes
-   --  dependencies on called subprograms.
+   --  Compute all inputs the given vertex depends on. For IPFA please use the
+   --  function IPFA_Dependency, which also includes dependencies on called
+   --  subprograms.
    --
    --  Complexity is O(N)
 
@@ -39,7 +39,7 @@ package Flow.Slice is
      (FA      : Flow_Analysis_Graphs;
       V_Final : Flow_Graphs.Vertex_Id)
       return Vertex_Sets.Set;
-   --  Compute all inputs the given vertex depends on.
+   --  Compute all inputs the given vertex depends on
    --
    --  Complexity is O(N)
 
@@ -75,22 +75,19 @@ package Flow.Slice is
    --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --
    --  Complexity is O(N)
-   --  @param FA is the flow graph for which we compute globals
-   --  @param Inputs_Proof is the set of global variables read exclusively
-   --    in proof contexts
-   --  @param Inputs is the set global variables read (does not include
-   --    variables read in proof contexts)
-   --  @param Outputs is the set of global variables written (there can
-   --    be an overlap with the Input but not with the Input_Proof)
-   --  @param Proof_Calls is the set of subprograms called exclusively
-   --    in proof contexts
-   --  @param Definite_Calls is the set of subprograms definitely called
-   --  @param Conditionl_Calls is the set of subprograms conditionally
-   --    called
-   --  @param Local_Variables is the set of local variables (this set
-   --    also contains formal paramaters)
-   --  @param Local_Subprograms is the set of all nested subprograms
-   --  @param Local_Definite_Writes is the set of all local variables that
-   --     are definitely initialized once the package has been elaborated.
+   --  @param FA are the flow graphs for which we compute globals
+   --  @param Inputs_Proof are global variables read exclusively in proof
+   --    contexts
+   --  @param Inputs are global variables read (except for variables read in
+   --    proof contexts)
+   --  @param Outputs are global variables written (they may overlap with
+   --    Inputs but not with Inputs_Proof)
+   --  @param Proof_Calls are subprograms called exclusively in proof contexts
+   --  @param Definite_Calls are subprograms definitely called
+   --  @param Conditionl_Calls are subprograms conditionally called
+   --  @param Local_Variables are local variables (including formal paramaters)
+   --  @param Local_Subprograms are nested subprograms
+   --  @param Local_Definite_Writes are local variables that are definitely
+   --    initialized after package elaboration.
 
 end Flow.Slice;

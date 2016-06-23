@@ -116,7 +116,7 @@ package body Flow.Slice is
       V_Final : Flow_Graphs.Vertex_Id)
       return Flow_Id_Sets.Set
    is
-      Tmp  : constant Vertex_Sets.Set :=
+      Tmp : constant Vertex_Sets.Set :=
         Internal_Dependency (FA      => FA,
                              V_Final => V_Final,
                              IPFA    => False);
@@ -316,7 +316,7 @@ package body Flow.Slice is
 
       procedure Get_Local_Definite_Writes;
       --  Collect local variables of the package that are definitely
-      --  initialized once the package has been elaborated.
+      --  initialized after package elaboration.
 
       function Subprograms_Without_Contracts
         (NS : Node_Sets.Set)
@@ -675,9 +675,9 @@ package body Flow.Slice is
          V_Initial : Flow_Graphs.Vertex_Id;
          Guilty    : Boolean;
       begin
+         --  We go through all local variables and check if their corresponding
+         --  'Initial vertex has no Out_Neighbours.
          for LV of Local_Variables loop
-            --  We go through all local variables and check if their
-            --  corresponding 'Initial vertex has no Out_Neighbours.
 
             Guilty := False;  --  Innocent till found guilty
 
