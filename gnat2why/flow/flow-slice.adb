@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Iterators; use Common_Iterators;
 with Flow_Utility;     use Flow_Utility;
-with Nlists;           use Nlists;
 with Sem_Aux;          use Sem_Aux;
 with Sem_Type;         use Sem_Type;
 with Sem_Util;         use Sem_Util;
@@ -562,36 +562,12 @@ package body Flow.Slice is
 
                when N_Package_Declaration =>
                   --  State abstractions appear as local variables
-                  declare
-                     AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Defining_Entity (N), Pragma_Abstract_State);
-
-                     PAA  : Node_Id;
-                     AS_N : Node_Id;
-                     AS_E : Entity_Id;
-                  begin
-                     if Present (AS_Pragma) then
-                        PAA :=
-                          First (Pragma_Argument_Associations (AS_Pragma));
-
-                        --  Check that we don't have Abstract_State => null
-                        if Nkind (Expression (PAA)) /= N_Null then
-                           AS_N := First (Expressions (Expression (PAA)));
-
-                           while Present (AS_N) loop
-                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                       then Entity (Ancestor_Part (AS_N))
-                                       else Entity (AS_N));
-
-                              Local_Variables.Insert (AS_E);
-
-                              Next (AS_N);
-                           end loop;
-                        end if;
+                  for State of Iter (Abstract_States (Defining_Entity (N)))
+                  loop
+                     if not Is_Null_State (State) then
+                        Local_Variables.Insert (State);
                      end if;
-                  end;
-
-                  --  ??? why not skip?
+                  end loop;
 
                when N_Single_Protected_Declaration |
                     N_Single_Task_Declaration      =>
