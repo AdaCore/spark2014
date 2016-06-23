@@ -1034,6 +1034,7 @@ procedure Gnatprove is
          Gnat2Why_Args.Global_Gen_Mode := False;
          Gnat2Why_Args.Warning_Mode := Warning_Mode;
          Gnat2Why_Args.Check_Mode := Configuration.Mode = GPM_Check;
+         Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
          Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
          Gnat2Why_Args.Pedantic := Pedantic;
@@ -1268,6 +1269,8 @@ procedure Gnatprove is
             case Configuration.Mode is
                when GPM_Check =>
                   return "checking of SPARK legality rules";
+               when GPM_Check_All =>
+                  return "checking all of SPARK legality rules";
                when GPM_Flow =>
                   return "analysis of data and information flow";
                when GPM_Prove | GPM_All =>

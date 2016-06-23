@@ -317,35 +317,49 @@ package body Flow_Error_Messages is
                             Inserted => Inserted);
 
       if Inserted then
-         case Severity is
-            when Warning_Kind =>
-               Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
-               Suppressed := Suppr /= No_String;
 
-            when Info_Kind =>
-               Suppressed := Report_Mode = GPR_Fail;
+         --  If we are in mode check_all then we just report messages related
+         --  to marking (filtered by Error_Kind severity) and that is why we
+         --  suppress all the others.
 
-            when Check_Kind =>
-               declare
-                  Is_Annot : Boolean;
-                  Info     : Annotated_Range;
-               begin
-                  Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
-                  if Is_Annot then
-                     Suppr := Info.Reason;
-                  end if;
-               end;
-               Suppressed := Suppr /= No_String;
+         if Check_All_Mode then
+            case Severity is
+               when Error_Kind =>
+                  Suppressed := False;
+               when others =>
+                  Suppressed := True;
+            end case;
+         else
+            case Severity is
+               when Warning_Kind =>
+                  Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
+                  Suppressed := Suppr /= No_String;
 
-            when Error_Kind =>
+               when Info_Kind =>
+                  Suppressed := Report_Mode = GPR_Fail;
+
+               when Check_Kind =>
+                  declare
+                     Is_Annot : Boolean;
+                     Info     : Annotated_Range;
+                  begin
+                     Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+                     if Is_Annot then
+                        Suppr := Info.Reason;
+                     end if;
+                  end;
+                  Suppressed := Suppr /= No_String;
+
+               when Error_Kind =>
                --  Set the error flag if we have an error message. Note
                --  that warnings do not count as errors here, they should
                --  not prevent us going to proof. The errout mechanism
                --  already deals with the warnings-as-errors handling for
                --  the whole unit.
-               Suppressed       := False;
-               Found_Flow_Error := True;
-         end case;
+                  Suppressed       := False;
+                  Found_Flow_Error := True;
+            end case;
+         end if;
 
          --  Print the message except when it's suppressed.
          --  Additionally, if command line argument "--limit-line" was

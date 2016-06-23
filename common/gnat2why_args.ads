@@ -71,6 +71,11 @@ package Gnat2Why_Args is
 
    Check_Mode : Boolean := False;
 
+   --  Check All mode. In this mode, gnat2why will do flow analysis but only
+   --  report check related messages.
+
+   Check_All_Mode : Boolean := False;
+
    --  Flow Analysis mode. In this mode, gnat2why will do only flow analysis
 
    Flow_Analysis_Mode : Boolean := False;

@@ -114,12 +114,15 @@ package Configuration is
       end Prove;
    end Prj_Attr;
 
-   type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
+   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:
-   --  * GPM_Check  : Check SPARK rules
-   --  * GPM_Prove  : Check validity of contracts, proof of subprogram bodies
-   --  * GPM_Flow   : Check validity of Globals, Depends
-   --  * GPM_All    : Union of GPM_Prove and GPM_Flow
+   --  * GPM_Check     : Check SPARK rules
+   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
+   --                    during flow analysis.
+   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
+   --                    bodies.
+   --  * GPM_Flow      : Check validity of Globals, Depends
+   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 

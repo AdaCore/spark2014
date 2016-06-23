@@ -1014,6 +1014,8 @@ ASCII.LF;
             Mode := GPM_Prove;
          elsif CL_Switches.Mode.all = "check" then
             Mode := GPM_Check;
+         elsif CL_Switches.Mode.all = "check_all" then
+            Mode := GPM_Check_All;
          elsif CL_Switches.Mode.all = "flow" then
             Mode := GPM_Flow;
          elsif CL_Switches.Mode.all = "all" then

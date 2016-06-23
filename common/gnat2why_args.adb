@@ -45,6 +45,7 @@ package body Gnat2Why_Args is
    Warning_Mode_Name        : constant String := "warning_mode";
    Global_Gen_Mode_Name     : constant String := "global_gen_mode";
    Check_Mode_Name          : constant String := "check_mode";
+   Check_All_Mode_Name      : constant String := "check_all_mode";
    Flow_Analysis_Mode_Name  : constant String := "flow_analysis_mode";
    Prove_Mode_Name          : constant String := "prove_mode";
    Debug_Mode_Name          : constant String := "debug";
@@ -94,15 +95,16 @@ package body Gnat2Why_Args is
          Append (File_Text, Get_Line (File));
       end loop;
       V := Read (File_Text);
-      Global_Gen_Mode := Get_Opt_Bool (V, Global_Gen_Mode_Name);
-      Check_Mode := Get_Opt_Bool (V, Check_Mode_Name);
-      Flow_Analysis_Mode := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
-      Prove_Mode := Get_Opt_Bool (V, Prove_Mode_Name);
-      Debug_Mode := Get_Opt_Bool (V, Debug_Mode_Name);
-      Debug_Proof_Only := Get_Opt_Bool (V, Prove_Only_Name);
+      Global_Gen_Mode     := Get_Opt_Bool (V, Global_Gen_Mode_Name);
+      Check_Mode          := Get_Opt_Bool (V, Check_Mode_Name);
+      Check_All_Mode      := Get_Opt_Bool (V, Check_All_Mode_Name);
+      Flow_Analysis_Mode  := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
+      Prove_Mode          := Get_Opt_Bool (V, Prove_Mode_Name);
+      Debug_Mode          := Get_Opt_Bool (V, Debug_Mode_Name);
+      Debug_Proof_Only    := Get_Opt_Bool (V, Prove_Only_Name);
       Flow_Advanced_Debug := Get_Opt_Bool (V, Flow_Advanced_Debug_Name);
-      Pedantic := Get_Opt_Bool (V, Pedantic_Name);
-      Ide_Mode := Get_Opt_Bool (V, Ide_Mode_Name);
+      Pedantic            := Get_Opt_Bool (V, Pedantic_Name);
+      Ide_Mode            := Get_Opt_Bool (V, Ide_Mode_Name);
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
@@ -183,6 +185,7 @@ package body Gnat2Why_Args is
 
       Set_Field (Obj, Global_Gen_Mode_Name, Global_Gen_Mode);
       Set_Field (Obj, Check_Mode_Name, Check_Mode);
+      Set_Field (Obj, Check_All_Mode_Name, Check_All_Mode);
       Set_Field (Obj, Flow_Analysis_Mode_Name, Flow_Analysis_Mode);
       Set_Field (Obj, Prove_Mode_Name, Prove_Mode);
       Set_Field (Obj, Prove_Only_Name, Debug_Proof_Only);
