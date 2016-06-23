@@ -414,39 +414,34 @@ package body Flow.Slice is
                S : constant Flow_Scope := Get_Flow_Scope (E);
             begin
                if Present (S) and then S.Part = Private_Part then
-                  null;
+                  declare
+                     Scope_E : constant Entity_Id := Scope (E);
+                  begin
+                     if FA.Kind in Kind_Package | Kind_Package_Body
+                         and then Scope_E = FA.Spec_Entity
+                     then
+                        --  We always consider the private and body part of the
+                        --  Analyzed_Entity itself.
+                        return False;
+                     end if;
+
+                     --  Check if the enclosing scope has an Initializes aspect
+                     --  or has SPARK_Mode => Off.
+                     return Ekind (Scope_E) = E_Package
+                       and then
+                         (Present (Get_Pragma (Scope_E, Pragma_Initializes))
+                          --  Enclosing scope has Initializes
+
+                          or else not Private_Spec_In_SPARK (Scope_E)
+                              --  Enclosing scope has SPARK_Mode => Off
+                         );
+                  end;
 
                --  Not in the private part
 
                else
                   return False;
                end if;
-
-               if FA.Kind in Kind_Package | Kind_Package_Body
-                 and then Unique_Entity (Scope (E)) in
-                            Unique_Entity (FA.Analyzed_Entity) |
-                            Unique_Entity (FA.Spec_Entity)
-               then
-                  --  We always consider the private and body part of the
-                  --  Analyzed_Entity itself.
-                  return False;
-               end if;
-
-               --  Check if the enclosing scope has an Initializes aspect or
-               --  has SPARK_Mode set to Off.
-               declare
-                  Scp : constant Entity_Id := Scope (E);
-               begin
-                  return Ekind (Scp) = E_Package
-                    and then
-                      (Present (Get_Pragma (Scp, Pragma_Initializes))
-                       --  Enclosing scope has Initializes
-
-                       or else not Private_Spec_In_SPARK (Scp)
-                       --  Enclosing scope has SPARK_Mode => Off
-                      );
-               end;
-
             end Hidden_In_Package;
 
          --  Start of processing for Get_Object_Or_Subprogram_Declaration
@@ -459,9 +454,7 @@ package body Flow.Slice is
                     N_Subprogram_Declaration |
                     N_Task_Body              |
                     N_Task_Type_Declaration  =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
+                  if Unique_Defining_Entity (N) /= (FA.Spec_Entity) then
                      Local_Subprograms.Include (Unique_Defining_Entity (N));
                      return Skip;
                   end if;
@@ -478,8 +471,8 @@ package body Flow.Slice is
                   end if;
 
                when N_Loop_Parameter_Specification =>
-                  --  Add variable introduced by for loop (but do not add
-                  --  variables introduced by quantified expressions).
+                  --  Add variable introduced by FOR loop (but not variables
+                  --  introduced by quantified expressions).
                   if Nkind (Parent (N)) /= N_Iteration_Scheme
                     or else Hidden_In_Package (Defining_Identifier (N))
                   then
@@ -553,8 +546,7 @@ package body Flow.Slice is
                      --  Skip bodies of nested packages that have an abstract
                      --  state contract.
                      if Present (AS_Pragma)
-                       and then Unique_Defining_Entity (N) /=
-                                  Unique_Entity (FA.Analyzed_Entity)
+                       and then Unique_Defining_Entity (N) /= FA.Spec_Entity
                      then
                         return Skip;
                      end if;
@@ -565,12 +557,11 @@ package body Flow.Slice is
                   --  variables.
                   declare
                      AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Defining_Entity (N),
-                                   Pragma_Abstract_State);
+                       Get_Pragma (Defining_Entity (N), Pragma_Abstract_State);
 
-                     PAA       : Node_Id;
-                     AS_N      : Node_Id;
-                     AS_E      : Entity_Id;
+                     PAA  : Node_Id;
+                     AS_N : Node_Id;
+                     AS_E : Entity_Id;
                   begin
                      if Present (AS_Pragma) then
                         PAA :=
@@ -592,6 +583,8 @@ package body Flow.Slice is
                         end if;
                      end if;
                   end;
+
+                  --  ??? why not skip?
 
                when N_Single_Protected_Declaration |
                     N_Single_Task_Declaration      =>
