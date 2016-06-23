@@ -2387,82 +2387,77 @@ several points (described below) where, in fact, Ada defines no such checks.
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
-[TBD: Further non-normative wording is needed for the following
-rules to identify cases in which these new verification conditions are
-always trivially satisfied. In implementation terms, these correspond to
-cases where there is no need to invoke the prover(s). For example,
-the verfification condition corresponding to the runtime check on return
-from a "boundary" subprogram that an in-mode parameter satisifies its
-invariant is trivially satisfied because of the rule that a type
-invariant expression shall not have a variable input.]
-
 .. _tu-type_invariants-04:
 
-4. The type invariant expression for a type T shall not include a call to a
-   boundary function for type T. [This often means that a type invariant
-   expression cannot contain calls to functions declared in the visible part of
-   the package in question.]
+4. The type invariant expression for a type T shall not include a call
+   to a boundary function for type T. [This often means that a type
+   invariant expression cannot contain calls to functions declared in
+   the visible part of the package in question.]
+
+.. _tu-type_invariants-ram-01:
+
+**Ramification:** It is a consequence of other rules that upon entry
+to a boundary subprogram for a type T, every part of every input that
+is of type T can be assumed to satisfy T's invariant.
 
 .. _tu-type_invariants-05:
 
-5. [It is a consequence of other rules that upon entry to a boundary subprogram
-   for a type T, every part of every input that is of type T can be assumed to
-   satisfy T's invariant.]
+5. Upon returning from a boundary subprogram for a type T, a
+   verification condition is introduced for every part of every output
+   that is of type T, to ensure that this part satisfies T's
+   invariant.
 
 .. _tu-type_invariants-06:
 
-6. Upon returning from a boundary subprogram for a type T, a verification
-   condition is introduced for every part of every output that is of type T, to
-   ensure that this part satisfies T's invariant.
+6. For every subprogram declared inside the immediate scope of type T,
+   the preceding rule [and ramification] also apply to [any parts of]
+   any global input or output and to [any parts of] any tagged
+   subprogram parameter.
 
 .. _tu-type_invariants-07:
 
-7. For every subprogram declared inside the immediate scope of type T, the
-   preceding two rules also apply to [any parts of] any global input or output
-   and to [any parts of] any tagged subprogram parameter.
+7. When calling a boundary subprogram for a type T or a subprogram
+   declared outside of the immediate scope of T, a verification
+   condition is introduced for every part of every input that is of
+   type T, to ensure that this part satisfies T's invariant. [This
+   verification condition is trivially satisfied if the caller is
+   outside of the immediate scope of T, or if the input in question is
+   subject to rule 5 and constant for the caller. The idea here is to
+   prevent invariant-violating values from "leaking out".]
+
+.. _tu-type_invariants-ram-02:
+
+**Ramification:** It is a consequence of other rules that upon return
+from a boundary subprogram for a type T or a subprogram declared
+outside of the immediate scope of T, every part of every output that
+is of type T can be assumed to satisfy T's invariant.
 
 .. _tu-type_invariants-08:
 
-8. When calling a boundary subprogram for a type T or a subprogram declared
-   outside of the immediate scope of T, a verification condition is introduced
-   for every part of every input that is of type T, to ensure that this part
-   satisfies T's invariant. [This verification condition is trivially satisfied
-   if the caller is outside of the immediate scope of T, or if the input in
-   question is subject to rule 5 and constant for the caller.] [The idea here
-   is to prevent invariant-violating values from "leaking out".]
+8. For every subprogram, the preceding rule [and ramification] also
+   apply to [any parts of] any global input or output and to [any
+   parts of] any tagged subprogram parameter. [The verification
+   condition of rule 6 is trivially satisfied if the caller is outside
+   of the immediate scope of T, or if the input in question is subject
+   to rule 4 and constant for the caller.]
 
-.. _tu-type_invariants-09:
+.. _tu-type_invariants-ram-03:
 
-9. [It is a consequence of other rules that upon return from a boundary
-   subprogram for a type T or a subprogram declared outside of the immediate
-   scope of T, every part of every output that is of type T can be assumed to
-   satisfy T's invariant.]
+**Ramification:** In determining whether a dispatching call is a call
+to a boundary subprogram or to a subprogram declared outside of the
+immediate scope of T, the statically named callee is used.
 
-.. _tu-type_invariants-10:
+.. _tu-type_invariants-ram-04:
 
-10. For every subprogram, the preceding two rules also apply to [any parts of]
-    any global input or output and to [any parts of] any tagged subprogram
-    parameter. [The verification condition of rule 7 is trivially satisfied if
-    the caller is outside of the immediate scope of T, or if the input in
-    question is subject to rule 4 and constant for the caller.]
-
-.. _tu-type_invariants-11:
-
-11. [In determining whether a dispatching call is a call to a boundary
-    subprogram or to a subprogram declared outside of the immediate scope of T,
-    the statically named callee is used.]
-
-.. _tu-type_invariants-12:
-
-12. [It is possible that the underlying tag of a tagged object (at runtime) may
-    differ from the tag of its nominal (compile time) type. Suppose that an
-    object X is (statically) of type T1 (or T1'Class) but has T2'Tag as its
-    underlying tag, and that T2 has one or more components which are not
-    components of T1. Ada does not define runtime checking of type invariants
-    for such "hidden" components of parameters. The rules about tagged inputs
-    and outputs in rules 7 and 10 are introduced in order to deal with
-    technical difficulties that would otherwise arise in the treatment of these
-    hidden components.]
+**Ramification:** It is possible that the underlying tag of a tagged
+object (at runtime) may differ from the tag of its nominal (compile
+time) type. Suppose that an object X is (statically) of type T1 (or
+T1'Class) but has T2'Tag as its underlying tag, and that T2 has one or
+more components which are not components of T1. Ada does not define
+runtime checking of type invariants for such "hidden" components of
+parameters. The rules about tagged inputs and outputs in rules 6 and 8
+are introduced in order to deal with technical difficulties that would
+otherwise arise in the treatment of these hidden components.
 
 .. _default_initial_condition_aspect:
 
