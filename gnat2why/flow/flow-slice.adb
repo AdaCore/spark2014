@@ -480,31 +480,37 @@ package body Flow.Slice is
                   end if;
 
                when N_Loop_Parameter_Specification =>
-                  --  Add variable introduced by FOR loop (but not variables
-                  --  introduced by quantified expressions).
-                  if Nkind (Parent (N)) /= N_Iteration_Scheme
-                    or else Hidden_In_Package (Defining_Identifier (N))
-                  then
-                     return Skip;
-                  else
-                     Local_Variables.Insert (Defining_Identifier (N));
-                  end if;
+                  --  Add variable introduced by FOR loop, but ignore variable
+                  --  introduced by quantified expression (because that
+                  --  expressions cannot define new callable entities for
+                  --  which the variable would act as a global).
+                  declare
+                     E : constant Entity_Id := Defining_Identifier (N);
+                  begin
+                     if Nkind (Parent (N)) = N_Iteration_Scheme
+                       and then not Hidden_In_Package (E)
+                     then
+                        Local_Variables.Insert (E);
+                     end if;
+                  end;
+
+                  return Skip;
 
                when N_Object_Declaration =>
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
                   begin
+                     --  Ignore:
+                     --
+                     --   * formals of nested instantiations,
+                     --
+                     --   * object declarations that occur in the private
+                     --     part of nested packages that have an Initializes
+                     --     aspect.
                      if Hidden_In_Package (E)
                        or else In_Generic_Actual (E)
                      then
-                        --  We do not want:
-                        --
-                        --   * formals of nested instantiations,
-                        --
-                        --   * object declarations that occur in the private
-                        --     part of nested packages that have an Initializes
-                        --     aspect.
-                        return Skip;
+                        null;
                      else
                         case Ekind (E) is
                            when E_Variable =>
@@ -528,6 +534,8 @@ package body Flow.Slice is
                         end case;
                      end if;
                   end;
+
+                  return Skip;
 
                when N_Package_Body      |
                     N_Package_Body_Stub =>
