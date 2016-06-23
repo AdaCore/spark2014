@@ -1,0 +1,1 @@
+main.adb:3:11: medium: "Data" might not be initialized after elaboration of main program "Main"

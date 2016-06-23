@@ -1027,22 +1027,30 @@ package body Flow_Utility is
       Scope : Flow_Scope      := Null_Flow_Scope)
       return Flow_Id
    is
-      E : constant Entity_Id := Find_Entity (Name);
+      E : Entity_Id := Find_Entity (Name);
    begin
       if Present (E) then
-         return
-           Direct_Mapping_Id
-             ((if Ekind (E) in Type_Kind | E_Constant
-                 and then Present (Full_View (E))
-                 and then (No (Scope)
-                             or else Is_Visible (Full_View (E), Scope))
-               then Full_View (E)
-               else E),
-              View);
+         --  We found an entity, now we make some effort to canonicalize.
+         --  First we make sure we use the full view (if present).
+         if Ekind (E) in Type_Kind | E_Constant
+           and then Present (Full_View (E))
+           and then (No (Scope)
+                       or else Is_Visible (Full_View (E), Scope))
+         then
+            E := Full_View (E);
+         end if;
 
-      --  If Entity_Id is not known then fall back to the magic string
+         --  Then also, if this comes from a limited with, we need to use
+         --  the non-limited version.
+         if Ekind (E) = E_Abstract_State
+           and then Present (Non_Limited_View (E))
+         then
+            E := Non_Limited_View (E);
+         end if;
 
+         return Direct_Mapping_Id (E, View);
       else
+         --  If Entity_Id is not known then fall back to the magic string
          return Magic_String_Id (Name, View);
       end if;
    end Get_Flow_Id;
