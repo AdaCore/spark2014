@@ -1,6 +1,6 @@
-With I; use I;
-
 limited with A;
+
+with I; use I;
 
 package C is
 

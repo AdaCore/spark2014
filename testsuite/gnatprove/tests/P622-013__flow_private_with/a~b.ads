@@ -1,7 +1,5 @@
-with A.B; use A.B;
-
-package I is
+package A.B is
 
    function Lire_Data return Boolean;
 
-end I;
+end A.B;

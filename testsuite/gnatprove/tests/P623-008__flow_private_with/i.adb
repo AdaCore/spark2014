@@ -1,8 +1,8 @@
-package body A.B is
+package body I is
 
    function Lire_Data return Boolean is
    begin
-      return Data;
+      return A.Data;
    end Lire_Data;
 
-end A.B;
+end I;
