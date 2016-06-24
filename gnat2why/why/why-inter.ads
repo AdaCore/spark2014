@@ -89,8 +89,8 @@ package Why.Inter is
    --  With_Completion is True if the completion theories for N should be
    --  added too.
 
-   procedure Add_Effect_Imports (P : W_Section_Id;
-                                 S : Name_Sets.Set);
+   procedure Add_Effect_Import (P : W_Section_Id;
+                                N : Entity_Name);
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
@@ -102,9 +102,9 @@ package Why.Inter is
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
 
-   procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
-                                 S : Name_Sets.Set);
-   --  Add all import clauses that are necessary for the given set of variables
+   procedure Add_Effect_Import (T : W_Theory_Declaration_Id;
+                                N : Entity_Name);
+   --  Add import clause that is necessary for the given variable
 
    function Dispatch_Entity (E : Entity_Id) return W_Section_Id;
    --  Given an Ada Entity, return the appropriate Why file to insert the

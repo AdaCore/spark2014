@@ -265,37 +265,32 @@ package body Why.Inter is
       return SS.S;
    end Compute_Module_Set;
 
-   ------------------------
-   -- Add_Effect_Imports --
-   ------------------------
+   -----------------------
+   -- Add_Effect_Import --
+   -----------------------
 
-   procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
-                                 S : Name_Sets.Set)
+   procedure Add_Effect_Import (T : W_Theory_Declaration_Id;
+                                N : Entity_Name)
    is
    begin
-      for Var of S loop
-         if not (Is_Heap_Variable (Var)) then
-            declare
-               S : constant String := Capitalize_First (To_String (Var));
-            begin
-               Add_With_Clause (T,
-                                New_Module (File => No_Name, Name => NID (S)),
-                                EW_Clone_Default);
-            end;
-         end if;
-      end loop;
-   end Add_Effect_Imports;
+      if not Is_Heap_Variable (N) then
+         declare
+            S : constant String := Capitalize_First (To_String (N));
+            --  ??? To_String was already called by Is_Heap_Variable
+         begin
+            Add_With_Clause (T,
+                             New_Module (File => No_Name, Name => NID (S)),
+                             EW_Clone_Default);
+         end;
+      end if;
+   end Add_Effect_Import;
 
-   ------------------------
-   -- Add_Effect_Imports --
-   ------------------------
-
-   procedure Add_Effect_Imports (P : W_Section_Id;
-                                 S : Name_Sets.Set)
+   procedure Add_Effect_Import (P : W_Section_Id;
+                                N : Entity_Name)
    is
    begin
-      Add_Effect_Imports (Why_Sections (P).Cur_Theory, S);
-   end Add_Effect_Imports;
+      Add_Effect_Import (Why_Sections (P).Cur_Theory, N);
+   end Add_Effect_Import;
 
    --------------------------
    -- Add_Extra_Dependency --

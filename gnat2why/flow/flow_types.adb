@@ -1054,6 +1054,21 @@ package body Flow_Types is
       return R;
    end To_Entire_Variables;
 
+   -------------
+   -- To_Name --
+   -------------
+
+   function To_Name (F : Flow_Id) return Entity_Name is
+     (case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            To_Entity_Name (F.Node),
+
+         when Magic_String =>
+            F.Name,
+
+         when others =>
+            raise Program_Error);
+
    -----------------
    -- To_Name_Set --
    -----------------
@@ -1062,20 +1077,7 @@ package body Flow_Types is
       N : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
       for X of S loop
-         case X.Kind is
-            when Direct_Mapping | Record_Field =>
-               declare
-                  E_Name : constant Entity_Name := To_Entity_Name (X.Node);
-               begin
-                  N.Include (E_Name);
-               end;
-
-            when Magic_String =>
-               N.Include (X.Name);
-
-            when Null_Value | Synthetic_Null_Export =>
-               raise Program_Error;
-         end case;
+         N.Include (To_Name (X));
       end loop;
       return N;
    end To_Name_Set;

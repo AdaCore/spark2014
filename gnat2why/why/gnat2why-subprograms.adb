@@ -245,23 +245,22 @@ package body Gnat2Why.Subprograms is
      (T : W_Section_Id;
       E : Entity_Id)
    is
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Sets.Set;
-      Write_Names : Name_Sets.Set;
+      Reads  : Flow_Types.Flow_Id_Sets.Set;
+      Writes : Flow_Types.Flow_Id_Sets.Set;
+
    begin
       --  Collect global variables potentially read and written
-
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                       Classwide  => True,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
-      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
-      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+                                      Reads      => Reads,
+                                      Writes     => Writes);
 
-      Add_Effect_Imports (T, Read_Names);
-      Add_Effect_Imports (T, Write_Names);
+      --  Union reads with writes (essentially just ignore the variant)
+      Reads.Union (Change_Variant (Writes, In_View));
 
+      for N of Reads loop
+         Add_Effect_Import (T, To_Name (N));
+      end loop;
    end Add_Dependencies_For_Effects;
 
    -------------------------------
