@@ -27,9 +27,11 @@ Command Line Invocation
  -k                  Do not stop analysis at the first error
      --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
  -m                  Minimal reanalysis
-     --mode=m        Set the mode of GNATprove (m=check, check_all, flow, prove, all*)
+     --mode=m        Set the mode of GNATprove (m=check, check_all, flow,
+                     prove, all*)
  -q, --quiet         Be quiet/terse
-     --report=r      Set the report mode of GNATprove (r=fail*, all, provers, statistics)
+     --report=r      Set the report mode of GNATprove (r=fail*, all, provers,
+                     statistics)
  -u                  Unique analysis. Only analyze the given units
  -U                  Analyze all units of all projects
  -v, --verbose       Output extra verbose information
@@ -37,22 +39,22 @@ Command Line Invocation
      --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
 
  * Main mode values
+   . check         - Fast partial check for SPARK violations
+   . check_all     - Full check for SPARK violations
+   . flow          - Prove correct initialization and data flow
+   . prove         - Prove absence of run-time errors and contracts
    . all           - Activates all modes (default)
-   . check         - Partial (fast) check SPARK restrictions for code where SPARK_Mode=On
-   . check_all     - Full check SPARK restrictions for code where SPARK_Mode=On
-   . flow          - Prove object initialization and flow contracts
-   . prove         - Prove subprogram contracts and absence of run-time errors
 
  * Report mode values
-   . all           - Report all results of proving checks
    . fail          - Report failures to prove checks (default)
-   . provers       - Same as all, plus information which provers proved the check
+   . all           - Report all results of proving checks
+   . provers       - Same as all, plus prover usage information
    . statistics    - Same as provers, plus timing and steps information
 
  * Warning mode values
+   . off           - Do not issue warnings
    . continue      - Issue warnings and continue (default)
    . error         - Treat warnings as errors
-   . off           - Do not issue warnings
 
  gnatprove advanced switches:
  --no-counterexample Do not generate a counterexample for unproved formulas
@@ -80,10 +82,10 @@ Command Line Invocation
                      paths when needed
 
  * Proof mode values for laziness
-   . all           - Attempt to prove all formulas
-                     (most suited for combination of automatic and manual proof)
    . lazy          - Stop at first unproved formula for each check
                      (most suited for fully automatic proof) (default)
+   . all           - Attempt to prove all formulas
+                     (most suited for combination of automatic and manual proof)
 
  * Prover name values
    (Default prover is cvc4.)

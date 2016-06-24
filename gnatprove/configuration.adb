@@ -144,13 +144,15 @@ ASCII.LF &
 ASCII.LF &
 " -m                  Minimal reanalysis" &
 ASCII.LF &
-"     --mode=m        Set the mode of GNATprove (m=check, check_all, flow, " &
-"prove, all*)"
+"     --mode=m        Set the mode of GNATprove (m=check, check_all, flow," &
+ASCII.LF &
+"                     prove, all*)"
 & ASCII.LF &
 " -q, --quiet         Be quiet/terse" &
 ASCII.LF &
-"     --report=r      Set the report mode of GNATprove " &
-"(r=fail*, all, provers, statistics)"
+"     --report=r      Set the report mode of GNATprove (r=fail*, all, provers,"
+& ASCII.LF &
+"                     statistics)"
 &
 ASCII.LF &
 " -u                  Unique analysis. Only analyze the given units" &
@@ -168,28 +170,24 @@ ASCII.LF &
 ASCII.LF &
 " * Main mode values" &
 ASCII.LF &
+"   . check         - Fast partial check for SPARK violations" &
+ASCII.LF &
+"   . check_all     - Full check for SPARK violations" &
+ASCII.LF &
+"   . flow          - Prove correct initialization and data flow" &
+ASCII.LF &
+"   . prove         - Prove absence of run-time errors and contracts" &
+ASCII.LF &
 "   . all           - Activates all modes (default)" &
-ASCII.LF &
-"   . check         - Partial (fast) check SPARK restrictions for code " &
-"where SPARK_Mode=On" &
-ASCII.LF &
-"   . check_all     - Full check SPARK restrictions for code where " &
-"SPARK_Mode=On" &
-ASCII.LF &
-"   . flow          - Prove object initialization and flow contracts" &
-ASCII.LF &
-"   . prove         - Prove subprogram contracts and absence of run-time " &
-"errors" &
 ASCII.LF &
 ASCII.LF &
 " * Report mode values" &
 ASCII.LF &
-"   . all           - Report all results of proving checks" &
-ASCII.LF &
 "   . fail          - Report failures to prove checks (default)" &
 ASCII.LF &
-"   . provers       - Same as all, plus information which provers proved " &
-"the check" &
+"   . all           - Report all results of proving checks" &
+ASCII.LF &
+"   . provers       - Same as all, plus prover usage information" &
 ASCII.LF &
 "   . statistics    - Same as provers, plus timing and steps information" &
 
@@ -197,11 +195,11 @@ ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &
 ASCII.LF &
+"   . off           - Do not issue warnings" &
+ASCII.LF &
 "   . continue      - Issue warnings and continue (default)" &
 ASCII.LF &
 "   . error         - Treat warnings as errors" &
-ASCII.LF &
-"   . off           - Do not issue warnings" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
@@ -254,14 +252,14 @@ ASCII.LF &
 ASCII.LF &
 " * Proof mode values for laziness" &
 ASCII.LF &
+"   . lazy          - Stop at first unproved formula for each check" &
+ASCII.LF &
+"                     (most suited for fully automatic proof) (default)" &
+ASCII.LF &
 "   . all           - Attempt to prove all formulas" &
 ASCII.LF &
 "                     (most suited for combination of automatic and " &
 "manual proof)" &
-ASCII.LF &
-"   . lazy          - Stop at first unproved formula for each check" &
-ASCII.LF &
-"                     (most suited for fully automatic proof) (default)" &
 ASCII.LF &
 ASCII.LF &
 " * Prover name values" &
