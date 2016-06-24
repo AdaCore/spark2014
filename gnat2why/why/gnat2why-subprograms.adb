@@ -3578,19 +3578,22 @@ package body Gnat2Why.Subprograms is
 
       Add_Dependencies_For_Effects (File, E);
 
-      --  Store an appropriate value for the result identifier in Result_Name
+      declare
+         Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
+         --  Store the result identifier in Result_Name
+      begin
+         if Use_Result_Name then
+            Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+         end if;
 
-      if Ekind (E) = E_Function then
-         Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
-      end if;
+         Generate_Subprogram_Program_Fun (File, E);
 
-      Generate_Subprogram_Program_Fun (File, E);
+         Generate_Axiom_For_Post (File, E);
 
-      Generate_Axiom_For_Post (File, E);
-
-      if Ekind (E) = E_Function then
-         Result_Name := Why_Empty;
-      end if;
+         if Use_Result_Name then
+            Result_Name := Why_Empty;
+         end if;
+      end;
 
       Close_Theory (File,
                     Kind => Axiom_Theory,
