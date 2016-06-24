@@ -242,25 +242,27 @@ package body Flow_Generated_Globals.Phase_1 is
    -----------------------
 
    procedure Register_Volatile (E : Entity_Id) is
-      Name : constant Entity_Name := To_Entity_Name (E);
    begin
       if Has_Volatile (E) then
+         declare
+            Name : constant Entity_Name := To_Entity_Name (E);
+         begin
+            if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
+               Async_Readers_Vars.Include (Name);
 
-         if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
-            Async_Readers_Vars.Include (Name);
-
-            if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
-               Effective_Writes_Vars.Include (Name);
+               if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
+                  Effective_Writes_Vars.Include (Name);
+               end if;
             end if;
-         end if;
 
-         if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
-            Async_Writers_Vars.Include (Name);
+            if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
+               Async_Writers_Vars.Include (Name);
 
-            if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
-               Effective_Reads_Vars.Include (Name);
+               if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
+                  Effective_Reads_Vars.Include (Name);
+               end if;
             end if;
-         end if;
+         end;
       end if;
    end Register_Volatile;
 
