@@ -1703,40 +1703,56 @@ package body Flow_Utility is
                                 Use_Deduced_Globals : Boolean := True;
                                 Keep_Constants      : Boolean := False)
    is
-      Proof_Ins : Flow_Id_Sets.Set;
-      Tmp_In    : Flow_Id_Sets.Set;
-      Tmp_Out   : Flow_Id_Sets.Set;
-      Body_E    : constant Entity_Id  := Get_Body_Entity (Subprogram);
-      S         : constant Flow_Scope :=
+      Unexpanded_Proof_Ins : Flow_Id_Sets.Set;
+      Unexpanded_Reads     : Flow_Id_Sets.Set;
+      Unexpanded_Writes    : Flow_Id_Sets.Set;
+
+      Body_E : constant Entity_Id  := Get_Body_Entity (Subprogram);
+      S      : constant Flow_Scope :=
         Get_Flow_Scope (if Present (Body_E) and then
                           Entity_Body_In_SPARK (Subprogram)
                         then Body_E
                         else Subprogram);
+
+      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
+                        Expanded   : in out Flow_Id_Sets.Set);
+      --  Expand abstract states
+
+      ------------
+      -- Expand --
+      ------------
+      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
+                        Expanded   : in out Flow_Id_Sets.Set)
+      is
+      begin
+         for U of Unexpanded loop
+            Expanded.Union (Expand_Abstract_State (U, not Keep_Constants));
+         end loop;
+      end Expand;
+
+   --  Start of processing for Get_Proof_Globals
 
    begin
       Get_Globals
         (Subprogram             => Subprogram,
          Scope                  => S,
          Classwide              => Classwide,
-         Proof_Ins              => Proof_Ins,
-         Reads                  => Tmp_In,
-         Writes                 => Tmp_Out,
+         Proof_Ins              => Unexpanded_Proof_Ins,
+         Reads                  => Unexpanded_Reads,
+         Writes                 => Unexpanded_Writes,
          Consider_Discriminants => False,
          Use_Deduced_Globals    => Use_Deduced_Globals);
 
-      --  Merge the proof ins with the reads
-      Tmp_In.Union (Proof_Ins);
-
-      --  Expand all variables
-      Reads := Flow_Id_Sets.Empty_Set;
-      for F of Tmp_In loop
-         Reads.Union (Expand_Abstract_State (F, not Keep_Constants));
-      end loop;
-
+      --  Reset outputs
       Writes := Flow_Id_Sets.Empty_Set;
-      for F of Tmp_Out loop
-         Writes.Union (Expand_Abstract_State (F, not Keep_Constants));
-      end loop;
+      Reads  := Flow_Id_Sets.Empty_Set;
+
+      --  Expand all variables; it is more efficent to process Proof_Ins and
+      --  Reads separaterly, because they are disjoint and there is no point
+      --  in computing their union.
+      Expand (Unexpanded_Proof_Ins, Reads);
+      Expand (Unexpanded_Reads,     Reads);
+      Expand (Unexpanded_Writes,    Writes);
    end Get_Proof_Globals;
 
    --------------
