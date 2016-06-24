@@ -1268,9 +1268,9 @@ procedure Gnatprove is
          when GS_Gnat2Why =>
             case Configuration.Mode is
                when GPM_Check =>
-                  return "checking of SPARK legality rules";
+                  return "fast partial checking of SPARK legality rules";
                when GPM_Check_All =>
-                  return "checking all of SPARK legality rules";
+                  return "full checking of SPARK legality rules";
                when GPM_Flow =>
                   return "analysis of data and information flow";
                when GPM_Prove | GPM_All =>
