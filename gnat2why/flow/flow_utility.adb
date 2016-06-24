@@ -1764,16 +1764,16 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Entity_Id
    is
-      E : Entity_Id;
+      E : constant Entity_Id :=
+        (case F.Kind is
+            when Direct_Mapping =>
+               Get_Direct_Mapping_Id (F),
+            when Record_Field =>
+               F.Component.Last_Element,
+            when others =>
+               raise Program_Error);
+
    begin
-      case F.Kind is
-         when Direct_Mapping =>
-            E := Get_Direct_Mapping_Id (F);
-         when Record_Field =>
-            E := F.Component.Last_Element;
-         when others =>
-            raise Program_Error;
-      end case;
       return Get_Type (E, Scope);
    end Get_Type;
 
