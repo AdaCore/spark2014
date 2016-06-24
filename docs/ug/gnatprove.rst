@@ -2909,8 +2909,8 @@ automatically using |GNATprove|.
    valid refinement of the allocator's data. The refinement relation is
    verified only once, as a postcondition of the ``Model`` function. The
    functional contracts on modifying procedures as well as the refinement
-   relation are straightforward and can be verified easily with one prover
-   (CVC4) and a 1 second timeout.
+   relation are straightforward and can be verified easily at level 2 in
+   a few seconds.
 
  * ``List_Allocator`` introduces a free list to access more efficiently the
    first available resource. Here not every possible state of the allocator
@@ -2920,8 +2920,8 @@ automatically using |GNATprove|.
    that must be verified as a postcondition of each modifying procedure. The
    functional contracts on modifying procedures are straightforward but the
    refinement relation is now more complicated, as it needs to account for the
-   implementation of the free list. They can be verified with two provers (CVC4
-   and Z3) and a 60 seconds timeout.
+   implementation of the free list. They can be verified at level 4 in less
+   than one minute overall.
 
  * ``List_Mod_Allocator`` features the same implementation and contracts as
    ``List_Allocator``, but its model is returned by a ghost function like in
@@ -2935,8 +2935,8 @@ automatically using |GNATprove|.
    of the allocator's functional contracts requires induction, which is beyond
    the reach of automatic solvers. The induction scheme is given here manually
    in an auto-active style through calls to ghost procedures.  The whole
-   program can then be verified automatically with CVC4 and Z3 and a 60 seconds
-   timeout.
+   program can then be verified automatically at level 4 in less than one
+   minute overall on an 8-cores machine, or in a few minutes on a single core.
 
 See the relevant sections for more details on :ref:`Ghost Code` and
 :ref:`Manual Proof Using Ghost Code`.
