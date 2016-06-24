@@ -112,24 +112,28 @@ analysis checks the correctness of aspects related to data flow (``Global``,
 these), and verifies the initialization of variables. Proof verifies the
 absence of run-time errors and the correctness of assertions such as ``Pre``
 and ``Post`` aspects.  Using the switch ``--mode=<mode>``, whose possible
-values are ``check``, ``flow``, ``prove`` and ``all``, you can choose which
-analysis is performed:
+values are ``check``, ``check_all``, ``flow``, ``prove`` and ``all``, you can
+choose which analysis is performed:
 
-* In mode ``check``, |GNATprove| partially (fast) checks that the program does
-  not violate |SPARK| restrictions.
+* In mode ``check``, |GNATprove| partially checks that the program does not
+  violate |SPARK| restrictions. The benefit of using this mode prior to mode
+  ``check_all`` is that it is much faster, as it does not require the results
+  of flow analysis.
 
 * In mode ``check_all``, |GNATprove| fully checks that the program does not
-  violate |SPARK| restrictions.
+  violate |SPARK| restrictions, including checks not performed in mode
+  ``check`` like the absence of side-effects in functions. Mode ``check_all``
+  includes mode ``check``.
 
 * In mode ``flow``, |GNATprove| checks that no uninitialized data is read in
   the program, and that the specified data dependencies and flow dependencies
-  are respected in the implementation. Mode ``flow`` includes mode ``check``.
-  This phase is called *flow analysis*.
+  are respected in the implementation. Mode ``flow`` includes mode
+  ``check_all``.  This phase is called *flow analysis*.
 
 * In mode ``prove``, |GNATprove| checks that the program is free from run-time
   errors, and that the specified functional contracts are respected in the
-  implementation. Mode ``prove`` includes mode ``check``, as well as the part
-  of mode ``flow`` which checks that no uninitialized data is read, to
+  implementation. Mode ``prove`` includes mode ``check_all``, as well as the
+  part of mode ``flow`` which checks that no uninitialized data is read, to
   guarantees soundness of the proof results. This phase is called *proof*.
 
 * In the default mode ``all``, |GNATprove| does both flow analysis and proof.
@@ -774,13 +778,13 @@ Effect of Mode on Output
 ------------------------
 
 |GNATprove| can be run in four different modes, as selected with the switch
-``--mode=<mode>``, whose possible values are ``check``, ``flow``, ``prove`` and
-``all`` (see :ref:`Running GNATprove from the Command Line`). The output
-depends on the selected mode.
+``--mode=<mode>``, whose possible values are ``check``, ``check_all``,
+``flow``, ``prove`` and ``all`` (see :ref:`Running GNATprove from the Command
+Line`). The output depends on the selected mode.
 
-In mode ``check`` and ``check_all``, |GNATprove| prints on the standard output
-respectively a partial, but fast, and full list of error messages for violations
-of |SPARK| restrictions on all the code for which ``SPARK_Mode`` is ``On``.
+In modes ``check`` and ``check_all``, |GNATprove| prints on the standard output
+a list of error messages for violations of |SPARK| restrictions on all the code
+for which ``SPARK_Mode`` is ``On``.
 
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
