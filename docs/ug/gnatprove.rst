@@ -115,8 +115,11 @@ and ``Post`` aspects.  Using the switch ``--mode=<mode>``, whose possible
 values are ``check``, ``flow``, ``prove`` and ``all``, you can choose which
 analysis is performed:
 
-* In mode ``check``, |GNATprove| checks that the program does not violate
-  |SPARK| restrictions.
+* In mode ``check``, |GNATprove| partially (fast) checks that the program does
+  not violate |SPARK| restrictions.
+
+* In mode ``check_all``, |GNATprove| fully checks that the program does not
+  violate |SPARK| restrictions.
 
 * In mode ``flow``, |GNATprove| checks that no uninitialized data is read in
   the program, and that the specified data dependencies and flow dependencies
@@ -775,9 +778,9 @@ Effect of Mode on Output
 ``all`` (see :ref:`Running GNATprove from the Command Line`). The output
 depends on the selected mode.
 
-In mode ``check``, |GNATprove| prints on the standard output error messages for
-violations of |SPARK| restrictions on all the code for which ``SPARK_Mode`` is
-``On``.
+In mode ``check`` and ``check_all``, |GNATprove| prints on the standard output
+respectively a partial, but fast, and full list of error messages for violations
+of |SPARK| restrictions on all the code for which ``SPARK_Mode`` is ``On``.
 
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 

@@ -144,7 +144,8 @@ ASCII.LF &
 ASCII.LF &
 " -m                  Minimal reanalysis" &
 ASCII.LF &
-"     --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)"
+"     --mode=m        Set the mode of GNATprove (m=check, check_all, flow, " &
+"prove, all*)"
 & ASCII.LF &
 " -q, --quiet         Be quiet/terse" &
 ASCII.LF &
@@ -169,7 +170,11 @@ ASCII.LF &
 ASCII.LF &
 "   . all           - Activates all modes (default)" &
 ASCII.LF &
-"   . check         - Check SPARK restrictions for code where SPARK_Mode=On" &
+"   . check         - Partial (fast) check SPARK restrictions for code " &
+"where SPARK_Mode=On" &
+ASCII.LF &
+"   . check_all     - Full check SPARK restrictions for code where " &
+"SPARK_Mode=On" &
 ASCII.LF &
 "   . flow          - Prove object initialization and flow contracts" &
 ASCII.LF &

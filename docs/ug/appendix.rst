@@ -27,7 +27,7 @@ Command Line Invocation
  -k                  Do not stop analysis at the first error
      --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
  -m                  Minimal reanalysis
-     --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)
+     --mode=m        Set the mode of GNATprove (m=check, check_all, flow, prove, all*)
  -q, --quiet         Be quiet/terse
      --report=r      Set the report mode of GNATprove (r=fail*, all, provers, statistics)
  -u                  Unique analysis. Only analyze the given units
@@ -38,7 +38,8 @@ Command Line Invocation
 
  * Main mode values
    . all           - Activates all modes (default)
-   . check         - Check SPARK restrictions for code where SPARK_Mode=On
+   . check         - Partial (fast) check SPARK restrictions for code where SPARK_Mode=On
+   . check_all     - Full check SPARK restrictions for code where SPARK_Mode=On
    . flow          - Prove object initialization and flow contracts
    . prove         - Prove subprogram contracts and absence of run-time errors
 
