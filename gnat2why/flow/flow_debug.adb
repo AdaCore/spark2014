@@ -23,7 +23,8 @@
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers;
-with Ada.Real_Time;          use Ada.Real_Time;
+with Ada.Execution_Time;     use Ada.Execution_Time;
+with Ada.Real_Time;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Atree;                  use Atree;
 with Output;                 use Output;
@@ -33,8 +34,8 @@ use type Ada.Containers.Count_Type;
 
 package body Flow_Debug is
 
-   The_Time       : Time;
-   The_Start_Time : Time;
+   The_Time       : CPU_Time;
+   The_Start_Time : CPU_Time;
 
    Temp_String : Unbounded_String;
 
@@ -84,9 +85,11 @@ package body Flow_Debug is
    ---------------
 
    procedure Note_Time (S : String) is
-      Now : constant Time := Clock;
+      Now : constant CPU_Time := Clock;
    begin
-      Write_Line (S & " (" & To_Duration (Now - The_Time)'Img & ")");
+      Write_Line (S & " (" &
+                    Ada.Real_Time.To_Duration (Now - The_Time)'Img &
+                    ")");
       The_Time := Now;
    end Note_Time;
 
@@ -95,10 +98,11 @@ package body Flow_Debug is
    ----------------
 
    procedure Final_Time (S : String) is
-      Now : constant Time := Clock;
+      Now : constant CPU_Time := Clock;
    begin
       Write_Line (S & " (total: " &
-                    To_Duration (Now - The_Start_Time)'Img & ")");
+                    Ada.Real_Time.To_Duration (Now - The_Start_Time)'Img &
+                    ")");
    end Final_Time;
 
    --------------------
