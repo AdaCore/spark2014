@@ -21,9 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package contains debugging code to print various
---  datastructures used by flow analysis in a vaguely human-readable
---  form.
+--  This package contains debugging code to print various datastructures used
+--  by flow analysis in a vaguely human-readable form.
 
 with Common_Containers;    use Common_Containers;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
