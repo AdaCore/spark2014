@@ -13,7 +13,7 @@ algorithm.adb:111:49: medium: overflow check might fail
 algorithm.adb:111:51: info: precondition proved
 algorithm.adb:114:43: info: initialization of "d" proved
 algorithm.adb:150:63: info: range check proved
-algorithm.adb:150:70: medium: overflow check might fail
+algorithm.adb:150:70: info: overflow check proved
 algorithm.adb:154:70: medium: overflow check might fail
 algorithm.adb:184:07: info: assertion proved
 algorithm.adb:186:07: info: precondition proved
@@ -257,7 +257,7 @@ algorithm.adb:544:54: medium: overflow check might fail
 algorithm.adb:544:56: info: initialization of "deltaMag" proved
 algorithm.adb:544:65: info: overflow check proved
 algorithm.adb:544:76: info: overflow check proved
-algorithm.adb:544:87: medium: overflow check might fail
+algorithm.adb:544:87: info: overflow check proved
 algorithm.adb:544:89: info: initialization of "deltaAngle" proved
 algorithm.adb:549:35: info: initialization of "obstacleAvoidDelta" proved
 algorithm.adb:549:54: info: division check proved
