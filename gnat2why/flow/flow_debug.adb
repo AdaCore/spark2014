@@ -76,8 +76,7 @@ package body Flow_Debug is
    begin
       The_Time := Clock;
       The_Start_Time := The_Time;
-      Write_Str (S);
-      Write_Eol;
+      Write_Line (S);
    end Init_Time;
 
    ---------------
