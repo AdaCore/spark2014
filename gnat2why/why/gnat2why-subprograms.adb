@@ -1029,23 +1029,20 @@ package body Gnat2Why.Subprograms is
             then
                --  Special case of effect on protected components
 
-               if Is_Type (Entity) then
-                  pragma Assert (Ekind (Entity) in Protected_Kind);
-                  declare
-                     Binder : constant Item_Type :=
+               declare
+                  Binder : Item_Type;
+               begin
+                  if Is_Type (Entity) then
+                     pragma Assert (Ekind (Entity) in Protected_Kind);
+                     Binder :=
                        Item_Type'(Kind => Prot_Self,
                                   Main => Protected_Self_Binder (Entity));
-                  begin
-                     Effects_Append_Binder_To_Writes (Binder);
-                  end;
-               else
-                  declare
-                     Binder : constant Item_Type :=
-                       Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-                  begin
-                     Effects_Append_Binder_To_Writes (Binder);
-                  end;
-               end if;
+                  else
+                     Binder := Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+                  end if;
+
+                  Effects_Append_Binder_To_Writes (Binder);
+               end;
             else
                Effects_Append_To_Writes
                  (Eff,
@@ -1067,7 +1064,7 @@ package body Gnat2Why.Subprograms is
             Param := First (Params);
             while Present (Param) loop
                declare
-                  B  : constant Item_Type :=
+                  B : constant Item_Type :=
                     Ada_Ent_To_Why.Element
                       (Symbol_Table, Defining_Entity (Param));
                begin
@@ -1095,27 +1092,22 @@ package body Gnat2Why.Subprograms is
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-
-               --  Take into account special case of effect on protected
-               --  components.
-
-               if Is_Type (Entity) then
-                  pragma Assert (Ekind (Entity) in Protected_Kind);
-                  declare
-                     Binder : constant Item_Type :=
+               declare
+                  Binder : Item_Type;
+               begin
+                  --  Special case of effect on protected components
+                  if Is_Type (Entity) then
+                     pragma Assert (Ekind (Entity) in Protected_Kind);
+                     Binder :=
                        Item_Type'(Kind => Prot_Self,
                                   Main => Protected_Self_Binder (Entity));
-                  begin
-                     Effects_Append_Binder_To_Reads (Binder);
-                  end;
-               else
-                  declare
-                     Binder : constant Item_Type :=
+                  else
+                     Binder :=
                        Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-                  begin
-                     Effects_Append_Binder_To_Reads (Binder);
-                  end;
-               end if;
+                  end if;
+
+                  Effects_Append_Binder_To_Reads (Binder);
+               end;
             else
                Effects_Append_To_Reads
                  (Eff,
