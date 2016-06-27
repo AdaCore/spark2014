@@ -338,7 +338,6 @@ package body SPARK_Rewrite is
                   Register_Entity (Defining_Entity (N));
                end if;
 
-            --  ??? how about task stub discriminants?
             when N_Discriminant_Specification |
                  N_Object_Declaration         =>
                Register_Entity (Defining_Entity (N));
