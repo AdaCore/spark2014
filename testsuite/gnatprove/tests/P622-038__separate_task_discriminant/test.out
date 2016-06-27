@@ -1,0 +1,5 @@
+p-tt.adb:10:09: "TT" must be listed in the Global aspect of "Proc" (SPARK RM 6.1.4(13))
+p-tt.adb:14:04: warning: statement has no effect
+p-tt.adb:14:04: warning: unused assignment to "Y"
+p.adb:3:14: medium: "p.tt" might not be initialized before start of tasks of type "TT"
+gnatprove: error during flow analysis and proof
