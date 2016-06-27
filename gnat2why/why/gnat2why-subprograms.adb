@@ -1029,7 +1029,7 @@ package body Gnat2Why.Subprograms is
             then
                --  Special case of effect on protected components
 
-               if Ekind (Entity) in Type_Kind then
+               if Is_Type (Entity) then
                   pragma Assert (Ekind (Entity) in Protected_Kind);
                   declare
                      Binder : constant Item_Type :=
@@ -1099,7 +1099,7 @@ package body Gnat2Why.Subprograms is
                --  Take into account special case of effect on protected
                --  components.
 
-               if Ekind (Entity) in Type_Kind then
+               if Is_Type (Entity) then
                   pragma Assert (Ekind (Entity) in Protected_Kind);
                   declare
                      Binder : constant Item_Type :=
