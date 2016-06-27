@@ -318,15 +318,57 @@ package body SPARK_Rewrite is
             Register_Entity (N);
          end if;
 
-         --  In some cases, an object still needs to be registered although
-         --  it does not appear in an expression. This is the case for example
-         --  for a formal generic constant parameter which is simplified out in
-         --  the generic instance. It may still appear in the effects for the
-         --  instance, and as such should be registered.
+         --  In many places we manipulate objects represented by names which is
+         --  the only way to represent what comes from other compilation units.
+         --  However, we often need to know what the name really represents,
+         --  especially when looking from different contexts. To get this
+         --  information we need a mapping from entity names to entity ids.
+         --
+         --  Here we register objects, loop parameters (but not in quantified
+         --  expressions since nothing can be declared within them),
+         --  discriminants, subprograms parameters (but not stub parameters
+         --  since we essentially process stubs as if they would be ordinary
+         --  definitions).
+         --
+         --  ??? this is quite delicate
 
-         if Nkind (N) = N_Object_Declaration then
-            Register_Entity (Defining_Entity (N));
-         end if;
+         case Nkind (N) is
+            when N_Loop_Parameter_Specification =>
+               if Nkind (Parent (N)) /= N_Quantified_Expression then
+                  Register_Entity (Defining_Entity (N));
+               end if;
+
+            --  ??? how about task stub discriminants?
+            when N_Discriminant_Specification |
+                 N_Object_Declaration         =>
+               Register_Entity (Defining_Entity (N));
+
+            when N_Parameter_Specification =>
+               declare
+                  P : constant Node_Id := Parent (N);
+               begin
+                  case Nkind (P) is
+                     when N_Subprogram_Specification =>
+                        if Nkind (Parent (P)) /= N_Subprogram_Body_Stub then
+                           Register_Entity (Defining_Entity (N));
+                        end if;
+
+                     when N_Access_To_Subprogram_Definition |
+                          N_Entry_Body_Formal_Part          |
+                          N_Entry_Declaration               =>
+                        null;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end;
+
+            when N_Task_Type_Declaration =>
+               Register_Entity (Defining_Entity (N));
+
+            when others =>
+               null;
+         end case;
 
          --  And finally rewrite the node
 
@@ -347,6 +389,12 @@ package body SPARK_Rewrite is
 
             when N_Body_Stub =>
                Rewrite_Nodes (Unit (Library_Unit (N)));
+
+            --  Ignore freeze entities, because front end might not care to set
+            --  all of their fields (such as Scope or Ekind).
+
+            when N_Freeze_Entity =>
+               return Skip;
 
             when others =>
                null;

@@ -95,6 +95,11 @@ package body Flow_Generated_Globals.Phase_1 is
    --  List of abstract states and their constituents, i.e.
    --  abstract_state . {constituents}.
 
+   Current_Lib_Unit : Entity_Id;
+   --  Unique identifier of the top-level entity of the current library unit;
+   --  it is the same for the main compilation unit and its subunits (which are
+   --  processed in the same invocation of gnat2why).
+
    Remote_States : Name_Sets.Set;
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
@@ -119,28 +124,40 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
 
-      procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
-      --  Goes through NS, finds volatiles and remote states and stores them in
-      --  the appropriate sets.
+      procedure Process_Volatiles_And_States
+        (Names      : Name_Sets.Set;
+         Local_Vars : Boolean := False);
+      --  Goes through Names, finds volatiles and remote states and stores them
+      --  in the appropriate containers. Local_Vars should be set to true when
+      --  processing local variables for a run-time check that they do not
+      --  represent remote states.
 
       -----------------------------------
       -- Processs_Volatiles_And_States --
       -----------------------------------
 
-      procedure Process_Volatiles_And_States (NS : Name_Sets.Set) is
+      procedure Process_Volatiles_And_States
+        (Names      : Name_Sets.Set;
+         Local_Vars : Boolean := False) is
       begin
-         for Name of NS loop
+         for Name of Names loop
             declare
                E : constant Entity_Id := Find_Entity (Name);
             begin
+               --  Convert name back to Entity_Id; this should work for
+               --  everything except the special __HEAP name that represent a
+               --  non-existing heap entity.
                if Present (E) then
                   Register_Volatile (E);
 
                   if Ekind (E) = E_Abstract_State
-                    and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
+                    and then Enclosing_Lib_Unit_Entity (E) /= Current_Lib_Unit
                   then
+                     pragma Assert (not Local_Vars);
                      Remote_States.Include (Name);
                   end if;
+               else
+                  pragma Assert (Is_Heap_Variable (Name));
                end if;
             end;
          end loop;
@@ -157,7 +174,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Process_Volatiles_And_States (GI.Inputs_Proof);
       Process_Volatiles_And_States (GI.Inputs);
       Process_Volatiles_And_States (GI.Outputs);
-      Process_Volatiles_And_States (GI.Local_Variables);
+      Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
    end GG_Register_Global_Info;
 
    -----------------------------
@@ -379,8 +396,8 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
 
-      --  Store the current compilation unit on which we are working
-      Current_Comp_Unit := GNAT_Root;
+      --  Store the entity of the current compilation unit
+      Current_Lib_Unit := Unique_Defining_Entity (Unit (GNAT_Root));
    end GG_Write_Initialize;
 
 end Flow_Generated_Globals.Phase_1;

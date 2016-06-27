@@ -2017,8 +2017,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Start of processing for GG_Read
 
    begin
-      Current_Comp_Unit := GNAT_Root;
-      Current_Mode      := GG_Read_Mode;
+      Current_Mode := GG_Read_Mode;
 
       if Debug_GG_Read_Timing then
          Init_Time ("gg_read");

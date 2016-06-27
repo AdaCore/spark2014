@@ -188,13 +188,7 @@ package Flow_Generated_Globals is
    --  Protected object and its priority
 
 private
-
-   Current_Mode      : GG_Mode_T := GG_No_Mode with Ghost;
-
-   Current_Comp_Unit : Node_Id;
-   --  This node will hold the current compilation unit that is being analyzed.
-   --  On phase 1 GG_Write_Initialize is responsible for setting the node.
-   --  On phase 2 GG_Read is responsible for setting the node.
+   Current_Mode  : GG_Mode_T := GG_No_Mode with Ghost;
 
    -------------
    -- GG_Mode --
