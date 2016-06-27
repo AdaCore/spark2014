@@ -202,7 +202,7 @@ package body Gnat2Why.Subprograms is
    procedure Generate_Axiom_For_Post
      (File : W_Section_Id;
       E    : Entity_Id);
-   --  Generate an axiom stating the postcondition of a Subprogram
+   --  Generate an axiom stating the postcondition of a subprogram E
 
    function Check_Ceiling_Protocol
      (Params : Transformation_Params;
@@ -1006,6 +1006,8 @@ package body Gnat2Why.Subprograms is
       procedure Effects_Append_Binder_To_Writes is
          new Effects_Append_Binder (Effects_Append_To_Writes);
 
+   --  Start of processing for Compute_Effects
+
    begin
       --  Collect global variables potentially read and written
 
@@ -1025,9 +1027,7 @@ package body Gnat2Why.Subprograms is
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-
-               --  Take into account special case of effect on protected
-               --  components
+               --  Special case of effect on protected components
 
                if Ekind (Entity) in Type_Kind then
                   pragma Assert (Ekind (Entity) in Protected_Kind);
@@ -1054,9 +1054,9 @@ package body Gnat2Why.Subprograms is
          end;
       end loop;
 
-      --  Add all OUT and IN OUT parameters as potential writes
-      --  If Global_Params is True, use binders from the Symbol_Table.
-      --  Otherwise, use binders from the function declaration.
+      --  Add all OUT and IN OUT parameters as potential writes.
+      --  If Global_Params is True, use binders from the Symbol_Table;
+      --  otherwise, use binders from the function declaration.
 
       if Global_Params then
          declare
@@ -1097,7 +1097,7 @@ package body Gnat2Why.Subprograms is
             then
 
                --  Take into account special case of effect on protected
-               --  components
+               --  components.
 
                if Ekind (Entity) in Type_Kind then
                   pragma Assert (Ekind (Entity) in Protected_Kind);
@@ -3381,8 +3381,8 @@ package body Gnat2Why.Subprograms is
       Dispatch_Post      : W_Pred_Id;
       Refined_Post       : W_Pred_Id;
       Why_Type           : W_Type_Id := Why_Empty;
-   begin
 
+   begin
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
         or else not Is_Non_Recursive_Subprogram (E)
@@ -3404,7 +3404,7 @@ package body Gnat2Why.Subprograms is
          Gen_Marker  => False,
          Ref_Allowed => False);
 
-      --  We fill the map of parameters, so that in the pre and post, we use
+      --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -3425,9 +3425,9 @@ package body Gnat2Why.Subprograms is
                                       Binder);
             elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
-               --  If there is no Ada_Node, this is a binder generated
-               --  from an effect; we add the parameter in the name
-               --  map using its unique name.
+               --  If there is no Ada_Node, this is a binder generated from
+               --  an effect; we add the parameter in the name map using its
+               --  unique name.
 
                Ada_Ent_To_Why.Insert
                  (Symbol_Table,
@@ -3479,7 +3479,7 @@ package body Gnat2Why.Subprograms is
            (Suffix : String;
             Id     : W_Identifier_Id;
             Pre, Post : W_Pred_Id);
-         --  emit the post_axiom with the given axiom_suffix, id, pre and post
+         --  Emit the post_axiom with the given axiom_suffix, id, pre and post
 
          ---------------------
          -- Emit_Post_Axiom --
@@ -3629,8 +3629,8 @@ package body Gnat2Why.Subprograms is
          Gen_Marker  => False,
          Ref_Allowed => True);
 
-      --  We fill the map of parameters, so that in the pre and post, we use
-      --  local names of the parameters, instead of the global names
+      --  We fill the map of parameters, so that in the Pre and Post, we use
+      --  local names of the parameters, instead of the global names.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -3639,8 +3639,8 @@ package body Gnat2Why.Subprograms is
             A : constant Node_Id := Get_Ada_Node_From_Item (Binder);
          begin
 
-            --  If the Ada_Node is empty, it's not an interesting binder
-            --  (e.g. void_param)
+            --  If the Ada_Node is Empty, it's not an interesting binder (e.g.
+            --  void_param).
 
             if Present (A) and then not Is_Type (E) then
                Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
@@ -3753,13 +3753,13 @@ package body Gnat2Why.Subprograms is
                   Domain => EW_Pred);
 
                Effects : constant W_Effects_Id := New_Effects;
-            begin
 
+            begin
                --  A volatile function has an effect, and should not have the
                --  special postcondition which says it's result is equal to the
-               --  logic function
+               --  logic function.
 
-               --  for a volatile function, we need to generate a dummy effect
+               --  For a volatile function, we need to generate a dummy effect
 
                if Is_Volatile_Function (E) then
                   Effects_Append_To_Writes (Effects, Volatile_State);
@@ -3880,9 +3880,9 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-      --  Ekind (E) in E_Procedure | E_Entry
-
       else
+         pragma Assert (Ekind (E) in E_Entry | E_Procedure);
+
          declare
             Dynamic_Prop_Effects : constant W_Pred_Id :=
               Compute_Dynamic_Property_For_Effects (E, Params);
