@@ -1295,8 +1295,8 @@ package body Flow.Control_Flow_Graph is
 
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
       begin
-         --  Setup the n'initial vertex. Initialization is deduced from
-         --  the mode.
+         --  Setup the F'initial vertex. Initialization is deduced from the
+         --  mode.
          Add_Vertex
            (FA,
             Change_Variant (F, Initial_Value),
@@ -1308,7 +1308,7 @@ package body Flow.Control_Flow_Graph is
                              Initial_Atr,
                              FA);
 
-         --  Setup the n'final vertex.
+         --  Setup the F'final vertex.
          Add_Vertex
            (FA,
             Change_Variant (F, Final_Value),
@@ -5988,8 +5988,8 @@ package body Flow.Control_Flow_Graph is
             end if;
       end case;
 
-      --  Collect globals for the analyzed entity and create initial
-      --  and final vertices.
+      --  Collect globals for the analyzed entity and create initial and final
+      --  vertices.
       case FA.Kind is
          when Kind_Subprogram | Kind_Task =>
             if not FA.Generating_Globals then
