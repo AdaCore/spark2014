@@ -856,7 +856,6 @@ package body SPARK_Frame_Conditions is
                         when 'c' =>
                            Constants.Include (Ref_Entity);
                            Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
-
                         when 'm' =>
                            Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
                         when 's' =>
