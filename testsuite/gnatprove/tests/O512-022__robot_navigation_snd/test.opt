@@ -1,1 +1,2 @@
 !large SKIP part of large testsuite
+RLIMIT 1000
