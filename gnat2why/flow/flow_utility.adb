@@ -3891,8 +3891,6 @@ package body Flow_Utility is
 
                Valid_To_Fields : Flow_Id_Sets.Set;
 
-               Tmp_Set : Flow_Id_Sets.Set;
-
                The_Ext : constant Flow_Id :=
                  Map_Root'Update (Facet => Extension_Part);
                The_Tg : constant Flow_Id :=
@@ -3912,9 +3910,7 @@ package body Flow_Utility is
                end if;
 
                Valid_To_Fields := Flow_Id_Sets.Empty_Set;
-               Tmp_Set         := Flatten_Variable (T_To, Scope);
-               --  !!! Tmp_Set is workaround for compiler bug
-               for F of Tmp_Set loop
+               for F of Flatten_Variable (T_To, Scope) loop
                   Valid_To_Fields.Include (Join (Map_Root, F));
                end loop;
 
