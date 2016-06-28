@@ -1,4 +1,4 @@
-package Disr_Type_Missing is
+package Discr_Type_Missing is
 
    type State is (A, B, C);
 
@@ -17,4 +17,4 @@ package Disr_Type_Missing is
         when B => (S => A, X => 1),
         when C => (S => Y, Y => 2));
 
-end Disr_Type_Missing;
+end Discr_Type_Missing;
