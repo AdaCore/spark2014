@@ -1,0 +1,5 @@
+with "polyorb_hi";
+
+project Test is
+  for Main use ("node_a.adb");
+end Test;
