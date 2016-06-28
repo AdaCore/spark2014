@@ -607,6 +607,9 @@ package body Flow_Utility is
                else
                   --  From outside a concurrent object, all that we see is the
                   --  object itself.
+                  if Debug_Trace_Flatten then
+                     Outdent;
+                  end if;
                   return Flow_Id_Sets.To_Set (F);
                end if;
             end if;
