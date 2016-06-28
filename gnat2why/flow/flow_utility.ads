@@ -319,15 +319,14 @@ is
                          Record_Field          |
                          Magic_String          |
                          Synthetic_Null_Export;
-   --  The idea is to take a Flow_Id F and split it up into all relevant
-   --  parts. For example, we might take X.Y and produce X.Y.A and X.Y.B,
-   --  or just X.Y (if we can't see the private part of X.Y's type).
+   --  Splits F into parts. For example, we might take X.Y and produce X.Y.A
+   --  and X.Y.B, or just X.Y (if we can't see the private part of X.Y's type).
    --
-   --  For magic strings and the null export, we simply return a set containing
-   --  just that.
+   --  For magic strings and the null export, we simply return a singleton set
+   --  with just that.
    --
-   --  For null records we return the empty set (but in general you can expect
-   --  at least one element in the result).
+   --  For null records we return the empty set (but otherwise you should get
+   --  a result with at least one element).
    --
    --  For private types we just return F. For private types with discriminant
    --  C we return F.C and F'Private_Part.
