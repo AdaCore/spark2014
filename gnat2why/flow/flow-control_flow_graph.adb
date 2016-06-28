@@ -1201,7 +1201,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       case Ekind (E) is
-         when E_Out_Parameter    =>
+         when E_Out_Parameter =>
             pragma Assert (Kind = Parameter_Kind);
             M := Mode_Out;
 
@@ -1209,15 +1209,15 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Kind = Parameter_Kind);
             M := Mode_In_Out;
 
-         when E_In_Parameter     =>
+         when E_In_Parameter =>
             pragma Assert (Kind = Parameter_Kind);
             M := Mode_In;
 
-         when E_Discriminant     =>
+         when E_Discriminant =>
             pragma Assert (Kind in Discriminant_Kind | Parameter_Kind);
             M := Mode_In;
 
-         when Concurrent_Kind    =>
+         when E_Task_Type | E_Protected_Type =>
             pragma Assert (Kind = Parameter_Kind);
             if Ekind (FA.Analyzed_Entity) = E_Function then
                M := Mode_In;
