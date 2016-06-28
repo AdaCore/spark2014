@@ -1,0 +1,12 @@
+with "polyorb_hi";
+
+project Test is
+  for Main use ("node_a.adb");
+
+  package Compiler renames PolyORB_HI.Compiler;
+  package Builder renames PolyORB_HI.Builder;
+  package Binder renames PolyORB_HI.Binder;
+  package Linker renames PolyORB_HI.Linker;
+  package Check renames PolyORB_HI.Check;
+  package Prove renames PolyORB_HI.Prove;
+end Test;
