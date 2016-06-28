@@ -352,55 +352,33 @@ arbitrary Ada entity or construct.
 Pragma ``SPARK_Mode`` shall be used as a local pragma in only the following
 contexts and has the described semantics:
 
-* When the pragma appears at the start of the visible declarations (preceded
-  only by other pragmas) of a package declaration, it specifies the
-  SPARK_Mode aspect of the visible part of the package. This can also
-  be accomplished via a SPARK_Mode aspect specification as part of the
-  package_specification.
+.. csv-table::
+   :header: "Pragma placement", "Affected construct", "Alternative aspect form"
+   :widths: 3, 1, 1
 
-* When the pragma appears at the start of the visible declarations (preceded
-  only by other pragmas) of a task or protected unit, it specifies the
-  SPARK_Mode aspect of the visible part of the unit. This can also
-  be accomplished via a SPARK_Mode aspect specification as part of the
-  declaration.
-
-* When the pragma appears at the start of the private declarations of a
-  package, a protected unit, or a task unit (only other pragmas can appear
-  between the ``private`` keyword and the ``SPARK_Mode`` pragma), it
-  specifies the SPARK_Mode aspect of the private part. [This cannot be
-  accomplished via an aspect_specification.]
-
-* When the pragma appears immediately at the start of the declarations of a
-  package body (preceded only by other pragmas),
-  it specifies the SPARK_Mode aspect of the body declarations of the package.
-  This can also be accomplished via a SPARK_Mode aspect specification
-  as part of the package_body.
-
-* When the pragma appears at the start of the elaboration statements of
-  a package body (only other pragmas can appear between the ``begin``
-  keyword and the ``SPARK_Mode`` pragma),
-  it specifies the SPARK_Mode aspect of the body
-  statements of the package. [This cannot be accomplished via
-  an aspect_specification.]
-
-* When the pragma appears immediately at the start of the declarations of a
-  protected or task body (preceded only by other pragmas),
-  it specifies the SPARK_Mode aspect of the body.
-  This can also be accomplished via a SPARK_Mode aspect specification
-  as part of the protected or task body.
-
-* When the pragma appears after a subprogram declaration (with only other
-  pragmas intervening), it specifies the SPARK_Mode aspect of the
-  subprogram's specification. This can also be accomplished via a SPARK_Mode
-  aspect_specification as part of the subprogram_declaration.
-  [This does not include the case of a subprogram whose initial declaration
-  is via a subprogram_body_stub. Such a subprogram has only one section
-  because a subunit is not a completion.]
-
-* When the pragma appears at the start of the declarations of a subprogram
-  body (preceded only by other pragmas), it specifies the SPARK_Mode aspect
-  of the subprogram's body. This can also be accomplished via a SPARK_Mode
-  aspect_specification as part of the subprogram_body.
+   "Start of the visible declarations (preceded only by other pragmas) of a
+   package declaration", "Visible part of the package", "As part of the
+   package_specification"
+   "Start of the visible declarations (preceded only by other pragmas) of a task
+   or protected unit", "Visible part of the unit", "As part of the declaration"
+   "Start of the private declarations of a package, a protected unit, or a task
+   unit (only other pragmas can appear between the ``private`` keyword and the
+   ``SPARK_Mode`` pragma)", "Private part", "None"
+   "Immediately at the start of the declarations of a package body (preceded only
+   by other pragmas)", "Body declarations of the package", "As part of the
+   package_body"
+   "Start of the elaboration statements of a package body (only other pragmas can
+   appear between the ``begin`` keyword and the ``SPARK_Mode`` pragma)", "Body
+   statements of the package", "None"
+   "Start of the declarations of a protected or task body (preceded only by other
+   pragmas)", "Body", "As part of the protected or task body"
+   "After a subprogram declaration (with only other pragmas intervening). [This
+   does not include the case of a subprogram whose initial declaration is via a
+   subprogram_body_stub. Such a subprogram has only one section because a subunit
+   is not a completion.]", "Subprogram's specification", "As part of the
+   subprogram_declaration"
+   "Start of the declarations of a subprogram body (preceded only by other
+   pragmas)", "Subprogram's body", "As part of the subprogram_body"
 
 A default argument of On is assumed for any SPARK_Mode pragma or
 aspect_specification for which no argument is explicitly specified.
