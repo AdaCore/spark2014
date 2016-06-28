@@ -1229,26 +1229,29 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Kind in Parameter_Kind           |
                                    Quantified_Variable_Kind |
                                    Variable_Kind);
-            if Kind = Parameter_Kind then
-               if In_Generic_Actual (E) then
-                  case Nkind (Parent (E)) is
-                     when N_Object_Declaration          =>
-                        M := Mode_In;
-                     when N_Object_Renaming_Declaration =>
-                        M := Mode_In_Out;
-                     when others                        =>
-                        raise Why.Unexpected_Node;
-                  end case;
-               elsif Ekind (FA.Analyzed_Entity) = E_Function then
+            case Kind is
+               when Parameter_Kind =>
+                  if In_Generic_Actual (E) then
+                     case Nkind (Parent (E)) is
+                        when N_Object_Declaration          =>
+                           M := Mode_In;
+                        when N_Object_Renaming_Declaration =>
+                           M := Mode_In_Out;
+                        when others                        =>
+                           raise Why.Unexpected_Node;
+                     end case;
+                  elsif Ekind (FA.Analyzed_Entity) = E_Function then
+                     M := Mode_In;
+                  else
+                     M := Mode_In_Out;
+                  end if;
+               when Quantified_Variable_Kind =>
                   M := Mode_In;
-               else
-                  M := Mode_In_Out;
-               end if;
-            elsif Kind = Quantified_Variable_Kind then
-               M := Mode_In;
-            else
-               M := Mode_Invalid;
-            end if;
+               when Variable_Kind =>
+                  M := Mode_Invalid;
+               when others =>
+                  raise Program_Error;
+            end case;
       end case;
 
       declare
