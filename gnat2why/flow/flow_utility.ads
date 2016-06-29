@@ -674,16 +674,6 @@ is
    --  If we can't find what we're looking for, we return either the Unit
    --  itself or the corresponding contract (if it exists).
 
-   function All_Components (E : Entity_Id) return Node_Lists.List
-   with Pre => Nkind (E) = N_Defining_Identifier and then
-               Ekind (E) in Type_Kind;
-   --  Obtain all components of the given entity E, similar to
-   --  {First,Next}_Component_Or_Discriminant, with the difference that any
-   --  components of private ancestors are included.
-   --  @param E a type entity
-   --  @return all component and discriminants of the type or the empty list
-   --    if none exists
-
    function Is_Non_Visible_Constituent
      (F     : Flow_Id;
       Scope : Flow_Scope)

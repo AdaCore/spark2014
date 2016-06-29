@@ -120,6 +120,15 @@ package body Flow_Utility is
       Hash                => Component_Hash,
       Equivalent_Elements => Same_Component);
 
+   function Components (E : Entity_Id) return Node_Lists.List
+   with Pre => Is_Type (E);
+   --  Return components of the given entity E, similar to
+   --  {First,Next}_Component_Or_Discriminant, with the difference that any
+   --  components of private ancestors are included.
+   --  @param E a type entity
+   --  @return all component and discriminants of the type or the empty list
+   --    if none exists
+
    --------------
    -- Add_Loop --
    --------------
@@ -155,74 +164,6 @@ package body Flow_Utility is
               Trim (To_Unbounded_String (S), Whitespace, Whitespace));
       Append (Temp_String, "\n");
    end Add_To_Temp_String;
-
-   --------------------
-   -- All_Components --
-   --------------------
-
-   function All_Components (E : Entity_Id) return Node_Lists.List is
-      Ptr : Entity_Id;
-      T   : Entity_Id          := E;
-      L   : Node_Lists.List    := Node_Lists.Empty_List;
-      S   : Component_Sets.Set := Component_Sets.Empty_Set;
-
-      function Up (E : Entity_Id) return Entity_Id with Pure_Function;
-      --  Get parent type, but don't consider record subtypes' ancestors
-
-      --------
-      -- Up --
-      --------
-
-      function Up (E : Entity_Id) return Entity_Id is
-         A : constant Entity_Id := Etype (E);
-         B : Entity_Id;
-      begin
-         if Ekind (E) = E_Record_Subtype then
-            B := Up (A);
-            if A /= B then
-               return B;
-            else
-               return E;
-            end if;
-         else
-            return A;
-         end if;
-      end Up;
-
-   --  Start of processing for All_Components
-
-   begin
-      if not (Is_Record_Type (E)
-                or else Is_Concurrent_Type (E)
-                or else Is_Incomplete_Or_Private_Type (E)
-                or else Has_Discriminants (E))
-      then
-         --  No components or discriminants to return
-         return L;
-      end if;
-
-      loop
-         Ptr := First_Component_Or_Discriminant (T);
-         while Present (Ptr) loop
-            declare
-               Inserted : Boolean;
-               Unused   : Component_Sets.Cursor;
-            begin
-               S.Insert (New_Item => Ptr,
-                         Position => Unused,
-                         Inserted => Inserted);
-               if Inserted then
-                  L.Append (Ptr);
-               end if;
-            end;
-            Next_Component_Or_Discriminant (Ptr);
-         end loop;
-         exit when Up (T) = T;
-         T := Up (T);
-      end loop;
-
-      return L;
-   end All_Components;
 
    -------------------------------------------
    -- Collect_Functions_And_Read_Locked_POs --
@@ -331,6 +272,74 @@ package body Flow_Utility is
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
      (Component_Graphs.Cluster_Hash
         (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
+
+   ----------------
+   -- Components --
+   ----------------
+
+   function Components (E : Entity_Id) return Node_Lists.List is
+      Ptr : Entity_Id;
+      T   : Entity_Id          := E;
+      L   : Node_Lists.List    := Node_Lists.Empty_List;
+      S   : Component_Sets.Set := Component_Sets.Empty_Set;
+
+      function Up (E : Entity_Id) return Entity_Id with Pure_Function;
+      --  Get parent type, but don't consider record subtypes' ancestors
+
+      --------
+      -- Up --
+      --------
+
+      function Up (E : Entity_Id) return Entity_Id is
+         A : constant Entity_Id := Etype (E);
+         B : Entity_Id;
+      begin
+         if Ekind (E) = E_Record_Subtype then
+            B := Up (A);
+            if A /= B then
+               return B;
+            else
+               return E;
+            end if;
+         else
+            return A;
+         end if;
+      end Up;
+
+   --  Start of processing for All_Components
+
+   begin
+      if not (Is_Record_Type (E)
+                or else Is_Concurrent_Type (E)
+                or else Is_Incomplete_Or_Private_Type (E)
+                or else Has_Discriminants (E))
+      then
+         --  No components or discriminants to return
+         return L;
+      end if;
+
+      loop
+         Ptr := First_Component_Or_Discriminant (T);
+         while Present (Ptr) loop
+            declare
+               Inserted : Boolean;
+               Unused   : Component_Sets.Cursor;
+            begin
+               S.Insert (New_Item => Ptr,
+                         Position => Unused,
+                         Inserted => Inserted);
+               if Inserted then
+                  L.Append (Ptr);
+               end if;
+            end;
+            Next_Component_Or_Discriminant (Ptr);
+         end loop;
+         exit when Up (T) = T;
+         T := Up (T);
+      end loop;
+
+      return L;
+   end Components;
 
    ----------------------------
    -- Contains_Discriminants --
@@ -556,7 +565,7 @@ package body Flow_Utility is
                Root := Full_View (Root);
             end loop;
 
-            for Comp of All_Components (Root) loop
+            for Comp of Components (Root) loop
                Root_Components.Include (Original_Record_Component (Comp));
             end loop;
          end;
@@ -569,7 +578,7 @@ package body Flow_Utility is
             end if;
 
             if Has_Discriminants (T) then
-               for Ptr of All_Components (T) loop
+               for Ptr of Components (T) loop
                   if Is_Visible (Get_Root_Component (Ptr), Scope) then
                      Ids.Include (Add_Component (F, Ptr));
                   else
@@ -616,7 +625,7 @@ package body Flow_Utility is
 
             --  Include classwide types and privates with discriminants
 
-            for Ptr of All_Components (T) loop
+            for Ptr of Components (T) loop
                if Is_Visible (Get_Root_Component (Ptr), Scope) then
                   --  Here we union disjoint sets, so possibly we could
                   --  optimize this.
@@ -3747,7 +3756,7 @@ package body Flow_Utility is
                Missing : Component_Sets.Set := Component_Sets.Empty_Set;
                FS      : Flow_Id_Sets.Set;
             begin
-               for Ptr of All_Components (Map_Type) loop
+               for Ptr of Components (Map_Type) loop
                   Missing.Include (Original_Record_Component (Ptr));
                end loop;
 
@@ -4525,7 +4534,7 @@ package body Flow_Utility is
                      Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
 
                      function In_Type (C : Entity_Id) return Boolean is
-                       (for some Ptr of All_Components (New_Typ) =>
+                       (for some Ptr of Components (New_Typ) =>
                           Same_Component (C, Ptr));
 
                   begin
