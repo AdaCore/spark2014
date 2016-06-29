@@ -591,7 +591,8 @@ is
    with Pre  => Present (N),
         Post => (if Nkind (N) = N_Defining_Identifier and then
                     Ekind (N) = E_Abstract_State
-                 then Get_Type'Result = Standard_Void_Type);
+                 then Get_Type'Result = Standard_Void_Type
+                 else Is_Type (Get_Type'Result));
    --  @param N is the node who's type we need to retrieve
    --  @param Scope is the scope relative to which we retrieve the type
    --  @return the entity corresponding to the type of N. If the full view

@@ -1801,7 +1801,7 @@ package body Flow_Utility is
 
    begin
       T :=
-        (if Nkind (N) in N_Entity
+        (if Nkind (N) = N_Defining_Identifier
            and then Is_Type (N)
          then
             --  If N is of Type_Kind then T is N
@@ -1816,24 +1816,42 @@ package body Flow_Utility is
             --  We don't expect to get any other kind of node
             raise Program_Error);
 
-      while Is_Type (T)
-        and then Present (Full_View (T))
-        and then Is_Visible (Full_View (T), Scope)
-        and then Full_View (T) /= T
-      loop
-         T := Full_View (T);
-      end loop;
+      if T = Standard_Void_Type then
+         pragma Assert (Nkind (N) = N_Defining_Identifier and then
+                        Ekind (N) = E_Abstract_State);
 
-      --  We do not want to return an Itype so we recurse on T's Etype
-      --  if it different to T. If we cannot do any better then we
-      --  will in fact return an Itype.
-      if Is_Itype (T)
-        and then not Is_Nouveau_Type (T)
-      then
-         T := Get_Type (Etype (T), Scope);
+         return T;
+      else
+         declare
+            Fuller_View : Entity_Id;
+         begin
+            loop
+               pragma Loop_Invariant (Is_Type (T));
+
+               Fuller_View := Full_View (T);
+
+               if Present (Fuller_View)
+                 and then Is_Visible (Fuller_View, Scope)
+                 and then Fuller_View /= T
+               then
+                  T := Fuller_View;
+               else
+                  exit;
+               end if;
+            end loop;
+         end;
+
+         --  We do not want to return an Itype so we recurse on T's Etype if
+         --  it different to T. If we cannot do any better then we will in
+         --  fact return an Itype.
+         if Is_Itype (T)
+           and then not Is_Nouveau_Type (T)
+         then
+            T := Get_Type (Etype (T), Scope);
+         end if;
+
+         return T;
       end if;
-
-      return T;
    end Get_Type;
 
    -------------------------
