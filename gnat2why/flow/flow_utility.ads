@@ -85,21 +85,21 @@ is
                Nkind (C2) = N_Defining_Identifier and then
                Ekind (C1) in E_Component | E_Discriminant and then
                Ekind (C2) in E_Component | E_Discriminant;
-   --  Given two record components, checks if one can be considered to be
-   --  the `same' component (for purposes of flow analysis). For example a
-   --  record might contain component x, and its derived record also
-   --  contains this component x (but it is a different entity). This
-   --  function can be used to check for this equivalence.
+   --  Given two record components, checks if one can be considered to be the
+   --  `same' component (for purposes of flow analysis). For example a record
+   --  might contain component x, and its derived record also contains this
+   --  component x (but it is a different entity). This function can be used
+   --  to check for this equivalence.
 
    function Get_Flow_Id
      (Name  : Entity_Name;
       View  : Flow_Id_Variant := Normal_Use;
       Scope : Flow_Scope      := Null_Flow_Scope)
       return Flow_Id;
-   --  Return a suitable Flow_Id for the unique_name of an entity. We
-   --  try our best to get a direct mapping, resorting to the magic
-   --  string only as a last resort. When an entity is found we use
-   --  Scope to determine if we should return its Full_View instead.
+   --  Return a suitable Flow_Id for the unique_name of an entity. We try our
+   --  best to get a direct mapping, resorting to the magic string only as a
+   --  last resort. When an entity is found we use Scope to determine if we
+   --  should return its Full_View instead.
    --  @param Name is the Entity_Name whose corresponding entity we
    --    are looking for
    --  @param View is the view that the returned Flow_Id will have
@@ -308,8 +308,8 @@ is
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
    with Pre => Present (N);
-   --  Return the set of entire variables which are introduced in a
-   --  quantifier under node N.
+   --  Return the set of entire variables which are introduced in a quantifier
+   --  under node N.
 
    function Flatten_Variable
      (F     : Flow_Id;
@@ -518,15 +518,15 @@ is
    function Is_Precondition_Check (N : Node_Id) return Boolean
    with Pre => Nkind (N) = N_Pragma and then
                Get_Pragma_Id (N) = Pragma_Check;
-   --  Given a check pragma, return if this is a precondition check.
+   --  Given a check pragma, return if this is a precondition check
 
    function Contains_Discriminants
      (F : Flow_Id;
       S : Flow_Scope)
       return Boolean
    with Pre => F.Kind in Direct_Mapping | Magic_String;
-   --  Returns true if the flattened variable for F contains at least
-   --  one discriminant.
+   --  Returns true if the flattened variable for F contains at least one
+   --  discriminant.
 
    function Is_Initialized_At_Elaboration (F : Flow_Id;
                                            S : Flow_Scope)
@@ -556,9 +556,8 @@ is
    --  Adds Writes to the set of variables written by the loop entity Loop_E
 
    procedure Freeze_Loop_Info;
-   --  Must be called at the end of flow analysis - this makes it an error
-   --  to use Add_Loop and Add_Loop_Write, and enables the use of
-   --  Get_Loop_Writes.
+   --  Must be called at the end of flow analysis - this makes it an error to
+   --  use Add_Loop and Add_Loop_Write, and enables the use of Get_Loop_Writes.
 
    function Loop_Writes_Known (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Loop;
@@ -567,9 +566,9 @@ is
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
    with Pre => Ekind (E) = E_Loop and then
                Loop_Writes_Known (E);
-   --  Returns the set of variables a given loop *may* write to. Please
-   --  note that if a function returns inside a loop, the name of the
-   --  function will be "written to" and will be returned here.
+   --  Returns the set of variables a given loop *may* write to. Please note
+   --  that if a function returns inside a loop, the name of the function will
+   --  be "written to" and will be returned here.
 
    function Get_Type
      (F     : Flow_Id;
@@ -672,8 +671,8 @@ is
    --  Search_Contract only works with either subprograms and pragma Depends
    --  or packages and pragma Initializes.
    --
-   --  If we can't find what we're looking for, we return either the
-   --  Unit itself or the corresponding contract (if it exists).
+   --  If we can't find what we're looking for, we return either the Unit
+   --  itself or the corresponding contract (if it exists).
 
    function All_Components (E : Entity_Id) return Node_Lists.List
    with Pre => Nkind (E) = N_Defining_Identifier and then
@@ -738,8 +737,8 @@ is
    function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
      Pre => No (T) or else Is_Type (T),
      Ghost;
-   --  Similar to Is_Null_Record_Type, but also returns true if this is a
-   --  null extension of a null record type (or extension).
+   --  Similar to Is_Null_Record_Type, but also returns true if this is a null
+   --  extension of a null record type (or extension).
 
 private
    Init_Done : Boolean := False;
