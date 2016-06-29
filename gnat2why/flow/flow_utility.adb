@@ -1796,9 +1796,11 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Entity_Id
    is
-      --  T will be assigned the type of N
-      T : Entity_Id :=
+      T : Entity_Id;
+      --  Will be assigned the type of N
 
+   begin
+      T :=
         (if Nkind (N) in N_Entity
            and then Is_Type (N)
          then
@@ -1813,11 +1815,6 @@ package body Flow_Utility is
          else
             --  We don't expect to get any other kind of node
             raise Program_Error);
-   begin
-      --  When dealing with a state abstraction just return T
-      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
-         return T;
-      end if;
 
       while Is_Type (T)
         and then Present (Full_View (T))

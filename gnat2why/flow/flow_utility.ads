@@ -34,6 +34,7 @@ with Flow_Types;           use Flow_Types;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Snames;               use Snames;
+with Stand;                use Stand;
 with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
@@ -587,7 +588,10 @@ is
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
-   with Pre => Present (N);
+   with Pre  => Present (N),
+        Post => (if Nkind (N) = N_Defining_Identifier and then
+                    Ekind (N) = E_Abstract_State
+                 then Get_Type'Result = Standard_Void_Type);
    --  @param N is the node who's type we need to retrieve
    --  @param Scope is the scope relative to which we retrieve the type
    --  @return the entity corresponding to the type of N. If the full view
