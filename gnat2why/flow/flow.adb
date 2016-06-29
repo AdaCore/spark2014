@@ -1071,14 +1071,6 @@ package body Flow is
                                       then "(depends found)"
                                       else raise Program_Error));
 
-                  --  Even if aborting we still collect tasking-related info
-                  --  using control flow traversal and register the results.
-                  Control_Flow_Graph.Create (FA);
-
-                  GG_Register_Tasking_Info
-                     (To_Entity_Name (FA.Analyzed_Entity),
-                      FA.Tasking);
-
                   FA.GG.Aborted := True;
                end if;
 
@@ -1147,6 +1139,15 @@ package body Flow is
          end case;
 
          if FA.GG.Aborted then
+
+            --  Even if aborting we still need to collect tasking-related info,
+            --  (using control-flow traversal) and register the results.
+            Control_Flow_Graph.Create (FA);
+
+            GG_Register_Tasking_Info
+              (To_Entity_Name (FA.Spec_Entity),
+               FA.Tasking);
+
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Outdent;
             end if;
