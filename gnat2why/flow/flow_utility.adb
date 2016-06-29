@@ -3862,8 +3862,7 @@ package body Flow_Utility is
                      if not M.Contains (LHS_Ext) then
                         M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
                      end if;
-                     M (LHS_Ext) := M (LHS_Ext).Union (To_Ext);
-                     --  ??? workaround for O812-006
+                     M (LHS_Ext).Union (To_Ext);
                   end if;
                end if;
             end;
@@ -3943,8 +3942,7 @@ package body Flow_Utility is
                      M.Include (The_Ext, Flow_Id_Sets.Empty_Set);
                   end if;
                   Valid_To_Fields.Exclude (The_Ext);
-                  M (The_Ext) := M (The_Ext).Union (Valid_To_Fields);
-                  --  ??? workaround for O812-006
+                  M (The_Ext).Union (Valid_To_Fields);
                end if;
             end;
 
@@ -4033,8 +4031,7 @@ package body Flow_Utility is
                   end loop;
                else
                   for C in M.Iterate loop
-                     M (C) := M (C).Union (FS);
-                     --  ??? workaround for O812-006
+                     M (C).Union (FS);
                   end loop;
                end if;
             end;
