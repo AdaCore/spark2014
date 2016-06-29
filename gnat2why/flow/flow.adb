@@ -1086,6 +1086,8 @@ package body Flow is
                Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
             when Kind_Package =>
+               pragma Assert (Entity_Spec_In_SPARK (FA.Spec_Entity));
+
                if Present (FA.Initializes_N) then
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
@@ -1093,15 +1095,12 @@ package body Flow is
 
                   FA.GG.Aborted := True;
                else
-                  Debug ("Spec in SPARK: ", Entity_Spec_In_SPARK (E));
-
-                  --  We cannot create a GG graph if the spec is not in SPARK
-                  if not Entity_Spec_In_SPARK (E) then
-                     FA.GG.Aborted := True;
-                  end if;
+                  Debug ("Spec in SPARK: ", True);
                end if;
 
             when Kind_Package_Body =>
+               pragma Assert (Entity_Body_In_SPARK (FA.Spec_Entity));
+
                if Present (FA.Initializes_N) then
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
@@ -1111,14 +1110,8 @@ package body Flow is
 
                   FA.GG.Aborted := True;
                else
-                  Debug ("Spec in SPARK: ",
-                         Entity_Spec_In_SPARK (FA.Spec_Entity));
-                  Debug ("Body in SPARK: ",
-                         Entity_Body_In_SPARK (FA.Spec_Entity));
-
-                  if not Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     FA.GG.Aborted := True;
-                  end if;
+                  Debug ("Spec in SPARK: ", True);
+                  Debug ("Body in SPARK: ", True);
                end if;
 
                if Gnat2Why_Args.Flow_Advanced_Debug then
