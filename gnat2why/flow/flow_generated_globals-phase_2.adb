@@ -41,6 +41,7 @@ with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Utility;               use Flow_Utility;

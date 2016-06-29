@@ -55,6 +55,7 @@ with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util;                     use SPARK_Util;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Sprint;                         use Sprint;
 with VC_Kinds;                       use VC_Kinds;
 with Why;
@@ -1268,7 +1269,9 @@ package body Flow is
          case Ekind (E) is
             when E_Entry | E_Function | E_Procedure | E_Task_Type =>
 
-               if SPARK_Util.Analysis_Requested (E, With_Inlined => True) then
+               if SPARK_Util.Subprograms.Analysis_Requested
+                 (E, With_Inlined => True)
+               then
 
                   --  Check for potentially blocking statements in callable
                   --  entities, i.e. entries and subprograms.
@@ -1391,7 +1394,8 @@ package body Flow is
                end if;
 
             when E_Package =>
-               if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
+               if SPARK_Util.Subprograms.Analysis_Requested
+                 (E, With_Inlined => True)
                  and then Entity_Spec_In_SPARK (E)
                  and then not In_Predefined_Unit (E)
                  and then not Is_Wrapper_Package (E)
@@ -1470,7 +1474,8 @@ package body Flow is
       for E of Marked_Entities loop
          --  ??? why Marked_Entities and not Entities_To_Translate?
          if Is_Subprogram (E)
-           and then SPARK_Util.Analysis_Requested (E, With_Inlined => True)
+           and then SPARK_Util.Subprograms.Analysis_Requested
+             (E, With_Inlined => True)
            and then Entity_In_SPARK (E)
          then
             Check_Classwide_Contracts (E, Success);

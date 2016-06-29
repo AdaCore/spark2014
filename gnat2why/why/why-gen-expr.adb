@@ -44,6 +44,8 @@ with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
+with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
+with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
 with Urealp;                  use Urealp;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;

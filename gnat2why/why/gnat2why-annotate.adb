@@ -26,20 +26,22 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-with Aspects;                use Aspects;
+with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
+with Aspects;                      use Aspects;
 with Common_Containers;
-with Einfo;                  use Einfo;
-with Errout;                 use Errout;
+with Einfo;                        use Einfo;
+with Errout;                       use Errout;
 with Gnat2Why_Args;
-with GNAT.Regpat;            use GNAT.Regpat;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
-with Stringt;                use Stringt;
+with GNAT.Regpat;                  use GNAT.Regpat;
+with Namet;                        use Namet;
+with Nlists;                       use Nlists;
+with Sem_Util;                     use Sem_Util;
+with Sinfo;                        use Sinfo;
+with Sinput;                       use Sinput;
+with Snames;                       use Snames;
+with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
+with SPARK_Util.Types;             use SPARK_Util.Types;
+with Stringt;                      use Stringt;
 
 package body Gnat2Why.Annotate is
 
@@ -306,7 +308,7 @@ package body Gnat2Why.Annotate is
                --  Type of the second argument of the Contains function
 
                Cont_Element   : constant Entity_Id :=
-                 SPARK_Util.Get_Iterable_Type_Primitive
+                 SPARK_Util.Types.Get_Iterable_Type_Primitive
                    (Container_Type, Name_Element);
                --  Element primitive of Container_Type
             begin
@@ -345,12 +347,12 @@ package body Gnat2Why.Annotate is
                --  Return type of the model function
 
                Cont_Element   : constant Entity_Id :=
-                 SPARK_Util.Get_Iterable_Type_Primitive
+                 SPARK_Util.Types.Get_Iterable_Type_Primitive
                    (Container_Type, Name_Element);
                --  Element primitive of Container_Type
 
                Model_Element  : constant Entity_Id :=
-                 SPARK_Util.Get_Iterable_Type_Primitive
+                 SPARK_Util.Types.Get_Iterable_Type_Primitive
                    (Model_Type, Name_Element);
                --  Element primitive of Model_Type
             begin

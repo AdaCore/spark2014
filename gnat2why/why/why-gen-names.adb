@@ -28,6 +28,7 @@ with Atree;               use Atree;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;

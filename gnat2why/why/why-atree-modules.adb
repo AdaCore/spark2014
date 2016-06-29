@@ -32,6 +32,7 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
 with Stand;               use Stand;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

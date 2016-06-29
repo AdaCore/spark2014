@@ -32,6 +32,7 @@ with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with String_Utils;           use String_Utils;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;

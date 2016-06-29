@@ -68,6 +68,9 @@ with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Util;                      use SPARK_Util;
+with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
+with SPARK_Util.Types;                use SPARK_Util.Types;
 with Stand;                           use Stand;
 with Switch;                          use Switch;
 with Why;                             use Why;
@@ -483,7 +486,8 @@ package body Gnat2Why.Driver is
       for E of Marked_Entities loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
+               if SPARK_Util.Subprograms.Analysis_Requested
+                 (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
                   for C of Direct_Calls (E) loop

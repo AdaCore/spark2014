@@ -34,6 +34,7 @@ with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
+with SPARK_Util.Types;      use SPARK_Util.Types;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;

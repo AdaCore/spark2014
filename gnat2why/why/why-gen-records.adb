@@ -3438,7 +3438,7 @@ package body Why.Gen.Records is
             --  If Current is not subtype, check whether it has more fields
             --  than Ancestor.
 
-            if not (Ekind (Current) in SPARK_Util.Subtype_Kind) then
+            if not (Ekind (Current) in SPARK_Util.Types.Subtype_Kind) then
                declare
                   Field   : Entity_Id := First_Component (Current);
                   A_Field : Entity_Id;

@@ -30,6 +30,8 @@ with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;

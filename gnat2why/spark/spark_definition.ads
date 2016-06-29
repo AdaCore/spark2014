@@ -40,13 +40,14 @@
 --  violation was detected in the body.
 
 with Ada.Containers.Multiway_Trees;
-with Atree;                 use Atree;
-with Common_Containers;     use Common_Containers;
-with Einfo;                 use Einfo;
-with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with Sinfo;                 use Sinfo;
-with SPARK_Util;            use SPARK_Util;
-with Types;                 use Types;
+with Atree;                             use Atree;
+with Common_Containers;                 use Common_Containers;
+with Einfo;                             use Einfo;
+with GNATCOLL.JSON;                     use GNATCOLL.JSON;
+with Sinfo;                             use Sinfo;
+with SPARK_Util;                        use SPARK_Util;
+with SPARK_Util.Subprograms;            use SPARK_Util.Subprograms;
+with Types;                             use Types;
 
 package SPARK_Definition is
 

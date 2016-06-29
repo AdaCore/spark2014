@@ -27,20 +27,21 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
-with Ada.Directories;       use Ada.Directories;
+with Ada.Directories;           use Ada.Directories;
 with Ada.Float_Text_IO;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Common_Containers;     use Common_Containers;
-with Errout;                use Errout;
-with Flow_Error_Messages;   use Flow_Error_Messages;
-with Gnat2Why.Assumptions;  use Gnat2Why.Assumptions;
-with Gnat2Why_Args;         use Gnat2Why_Args;
-with Osint;                 use Osint;
-with SA_Messages;           use SA_Messages;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with SPARK_Util;            use SPARK_Util;
+with Common_Containers;         use Common_Containers;
+with Errout;                    use Errout;
+with Flow_Error_Messages;       use Flow_Error_Messages;
+with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
+with Gnat2Why_Args;             use Gnat2Why_Args;
+with Osint;                     use Osint;
+with SA_Messages;               use SA_Messages;
+with Sinfo;                     use Sinfo;
+with Sinput;                    use Sinput;
+with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Error_Messages is
 

@@ -36,6 +36,8 @@ with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
 with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with SPARK_Util.Types;            use SPARK_Util.Types;
 with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;

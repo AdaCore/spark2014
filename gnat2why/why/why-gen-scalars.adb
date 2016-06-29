@@ -29,6 +29,7 @@ with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

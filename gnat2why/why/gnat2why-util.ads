@@ -32,6 +32,7 @@ with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Sinfo;                 use Sinfo;
 with SPARK_Util;            use SPARK_Util;
+with SPARK_Util.Types;      use SPARK_Util.Types;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 with VC_Kinds;              use VC_Kinds;

@@ -24,17 +24,19 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Sem_Aux;             use Sem_Aux;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
+with Sem_Aux;                use Sem_Aux;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
 
 with Gnat2Why_Args;
-with SPARK_Util;          use SPARK_Util;
-with VC_Kinds;            use VC_Kinds;
-with Common_Iterators;    use Common_Iterators;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with VC_Kinds;               use VC_Kinds;
+with Common_Iterators;       use Common_Iterators;
 
-with Flow_Error_Messages; use Flow_Error_Messages;
-with Flow_Utility;        use Flow_Utility;
+with Flow_Error_Messages;    use Flow_Error_Messages;
+with Flow_Utility;           use Flow_Utility;
 
 package body Flow.Analysis.Sanity is
 

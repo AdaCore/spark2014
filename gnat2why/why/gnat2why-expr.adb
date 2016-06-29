@@ -49,6 +49,9 @@ with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
 with Ttypes;
 with Uintp;                          use Uintp;
@@ -11418,7 +11421,8 @@ package body Gnat2Why.Expr is
                         begin
                            pragma Assert (Present (Var_Type));
 
-                           if not SPARK_Util.Is_Ancestor (Ty, Var_Type) then
+                           if not SPARK_Util.Types.Is_Ancestor (Ty, Var_Type)
+                           then
                               Tag_Cond := New_Call
                                 (Domain => Domain,
                                  Name => M_Main.Compat_Tags_Id,
@@ -12531,7 +12535,8 @@ package body Gnat2Why.Expr is
          Params      : Transformation_Params) return W_Expr_Id
       is
          Element_E   : constant Entity_Id :=
-           SPARK_Util.Get_Iterable_Type_Primitive (Over_Type, Name_Element);
+           SPARK_Util.Types.Get_Iterable_Type_Primitive
+             (Over_Type, Name_Element);
          Cont_Type   : constant Entity_Id :=
            Etype (First_Entity (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
@@ -12592,7 +12597,7 @@ package body Gnat2Why.Expr is
             --  If there is no Contains annotation to use, use the Has_Element
             --  function of the Iterable aspect.
 
-            Has_Element := SPARK_Util.Get_Iterable_Type_Primitive
+            Has_Element := SPARK_Util.Types.Get_Iterable_Type_Primitive
               (Over_Type, Name_Has_Element);
          else
 
@@ -12751,8 +12756,9 @@ package body Gnat2Why.Expr is
                --  Iteration is directly done on elements, no need for a
                --  temporary variable.
 
-               Index_Type := Etype (SPARK_Util.Get_Iterable_Type_Primitive
-                                    (Over_Type, Name_Element));
+               Index_Type := Etype
+                 (SPARK_Util.Types.Get_Iterable_Type_Primitive
+                    (Over_Type, Name_Element));
                Need_Tmp_Var := False;
             end if;
          end if;

@@ -32,6 +32,7 @@ with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;

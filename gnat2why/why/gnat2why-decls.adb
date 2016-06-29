@@ -23,30 +23,31 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
+with Atree;                        use Atree;
+with Einfo;                        use Einfo;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Namet;                  use Namet;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with SPARK_Definition;       use SPARK_Definition;
+with Gnat2Why.Expr;                use Gnat2Why.Expr;
+with Namet;                        use Namet;
+with Sinfo;                        use Sinfo;
+with Sinput;                       use Sinput;
+with SPARK_Definition;             use SPARK_Definition;
 with SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
-with Ada.Strings;            use Ada.Strings;
-with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
-with String_Utils;           use String_Utils;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Decl;           use Why.Gen.Decl;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Ids;                use Why.Ids;
-with Why.Inter;              use Why.Inter;
-with Why.Sinfo;              use Why.Sinfo;
-with Why.Types;              use Why.Types;
+with SPARK_Util;                   use SPARK_Util;
+with SPARK_Util.External_Axioms;   use SPARK_Util.External_Axioms;
+with Ada.Strings;                  use Ada.Strings;
+with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
+with String_Utils;                 use String_Utils;
+with Why.Atree.Accessors;          use Why.Atree.Accessors;
+with Why.Atree.Builders;           use Why.Atree.Builders;
+with Why.Atree.Modules;            use Why.Atree.Modules;
+with Why.Gen.Binders;              use Why.Gen.Binders;
+with Why.Gen.Decl;                 use Why.Gen.Decl;
+with Why.Gen.Expr;                 use Why.Gen.Expr;
+with Why.Gen.Names;                use Why.Gen.Names;
+with Why.Ids;                      use Why.Ids;
+with Why.Inter;                    use Why.Inter;
+with Why.Sinfo;                    use Why.Sinfo;
+with Why.Types;                    use Why.Types;
 
 package body Gnat2Why.Decls is
 

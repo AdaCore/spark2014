@@ -21,15 +21,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Iterators; use Common_Iterators;
-with Flow_Utility;     use Flow_Utility;
-with Sem_Aux;          use Sem_Aux;
-with Sem_Type;         use Sem_Type;
-with Sem_Util;         use Sem_Util;
-with Sinfo;            use Sinfo;
-with Snames;           use Snames;
-with SPARK_Definition; use SPARK_Definition;
-with SPARK_Util;       use SPARK_Util;
+with Common_Iterators;       use Common_Iterators;
+with Flow_Utility;           use Flow_Utility;
+with Sem_Aux;                use Sem_Aux;
+with Sem_Type;               use Sem_Type;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Why;
 
 package body Flow.Slice is

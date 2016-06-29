@@ -23,28 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
+with Atree;                      use Atree;
 with Flow_Utility;
-with Flow_Types;             use Flow_Types;
-with Namet;                  use Namet;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Xrefs;            use SPARK_Xrefs;
-with String_Utils;           use String_Utils;
+with Flow_Types;                 use Flow_Types;
+with Namet;                      use Namet;
+with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
+with Snames;                     use Snames;
+with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with SPARK_Util.Types;           use SPARK_Util.Types;
+with SPARK_Xrefs;                use SPARK_Xrefs;
+with String_Utils;               use String_Utils;
 with Uintp;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Atree.Mutators;     use Why.Atree.Mutators;
-with Why.Atree.Traversal;    use Why.Atree.Traversal;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Arrays;         use Why.Gen.Arrays;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Atree.Accessors;        use Why.Atree.Accessors;
+with Why.Atree.Builders;         use Why.Atree.Builders;
+with Why.Atree.Modules;          use Why.Atree.Modules;
+with Why.Atree.Mutators;         use Why.Atree.Mutators;
+with Why.Atree.Traversal;        use Why.Atree.Traversal;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Arrays;             use Why.Gen.Arrays;
+with Why.Gen.Expr;               use Why.Gen.Expr;
+with Why.Gen.Names;              use Why.Gen.Names;
 
 ---------------
 -- Why.Inter --
@@ -400,7 +402,7 @@ package body Why.Inter is
             Typ := Retysp (Typ);
 
             if (Is_Record_Type (Typ) or else Is_Private_Type (Typ))
-              and then Ekind (Typ) in SPARK_Util.Subtype_Kind
+              and then Ekind (Typ) in SPARK_Util.Types.Subtype_Kind
             then
                Typ := Etype (Typ);
             else

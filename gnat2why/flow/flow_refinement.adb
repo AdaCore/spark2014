@@ -23,19 +23,21 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Nlists;               use Nlists;
-with Output;               use Output;
-with Sem_Aux;              use Sem_Aux;
-with Sprint;               use Sprint;
-with Stand;                use Stand;
-with Treepr;               use Treepr;
+with Nlists;                 use Nlists;
+with Output;                 use Output;
+with Sem_Aux;                use Sem_Aux;
+with Sprint;                 use Sprint;
+with Stand;                  use Stand;
+with Treepr;                 use Treepr;
 
-with Common_Iterators;     use Common_Iterators;
-with SPARK_Util;           use SPARK_Util;
+with Common_Iterators;       use Common_Iterators;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
-with Flow_Debug;           use Flow_Debug;
-with Flow_Dependency_Maps; use Flow_Dependency_Maps;
-with Flow_Types;           use Flow_Types;
+with Flow_Debug;             use Flow_Debug;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
 
 package body Flow_Refinement is
 

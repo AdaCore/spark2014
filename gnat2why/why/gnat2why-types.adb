@@ -36,6 +36,7 @@ with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
 with Stand;               use Stand;
 with Why;                 use Why;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

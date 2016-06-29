@@ -29,6 +29,7 @@ with Atree;                      use Atree;
 with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Assumptions is
 

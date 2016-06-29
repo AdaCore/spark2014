@@ -35,6 +35,7 @@ with GNAT.String_Split;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Types;          use SPARK_Util.Types;
 
 package body Gnat2Why.Counter_Examples is
 
