@@ -3004,9 +3004,6 @@ package body Flow.Control_Flow_Graph is
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       FS    : Flow_Id_Sets.Set;
 
-      Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
-                                        and then Constant_Present (N);
-
       E : constant Entity_Id := Defining_Identifier (N);
       --  Entity of the object declared by node N
 
@@ -3203,7 +3200,7 @@ package body Flow.Control_Flow_Graph is
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
-      if Is_Constant then
+      if Constant_Present (N) then
          if not In_Generic_Actual (E)
            and then (Present (Expr) or else Is_Imported (E))
          then
