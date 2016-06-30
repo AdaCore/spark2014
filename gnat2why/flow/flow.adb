@@ -1005,8 +1005,6 @@ package body Flow is
             raise Program_Error;
       end case;
 
-      FA.GG.Aborted := False;
-
       Append (FA.Base_Filename, Unique_Name (E));
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1055,49 +1053,41 @@ package body Flow is
          --  flag and do not produce graphs.
          case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
-               if not FA.Is_Generative then
+               FA.GG.Aborted := not FA.Is_Generative;
+
+               if FA.GG.Aborted then
                   Debug ("skipped" & (if Present (FA.Global_N)
                                       then "(global found)"
                                       elsif Present (FA.Depends_N)
                                       then "(depends found)"
                                       else raise Program_Error));
-
-                  FA.GG.Aborted := True;
                end if;
 
                Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
                Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
-            when Kind_Package =>
+            when Kind_Package | Kind_Package_Body =>
                pragma Assert (Entity_Spec_In_SPARK (FA.Spec_Entity));
 
-               if Present (FA.Initializes_N) then
-                  --  There is no need to create a GG graph if the package has
-                  --  an Initializes aspect.
-                  Debug ("skipped (package spec)");
+               --  There is no need to create a GG graph if the package has an
+               --  Initializes aspect.
+               FA.GG.Aborted := Present (FA.Initializes_N);
 
-                  FA.GG.Aborted := True;
+               if FA.GG.Aborted then
+                  Debug ("skipped (package spec)");
+                  if FA.Kind = Kind_Package_Body then
+                     Debug ("skipped (package body)");
+                  end if;
                else
                   Debug ("Spec in SPARK: ", True);
+                  if FA.Kind = Kind_Package_Body then
+                     Debug ("Body in SPARK: ", True);
+                  end if;
                end if;
 
-            when Kind_Package_Body =>
-               pragma Assert (Entity_Body_In_SPARK (FA.Spec_Entity));
-
-               if Present (FA.Initializes_N) then
-                  --  There is no need to create a GG graph if the package has
-                  --  an Initializes aspect.
-
-                  Debug ("skipped (package spec)");
-                  Debug ("skipped (package body)");
-
-                  FA.GG.Aborted := True;
-               else
-                  Debug ("Spec in SPARK: ", True);
-                  Debug ("Body in SPARK: ", True);
-               end if;
-
-               if Gnat2Why_Args.Flow_Advanced_Debug then
+               if Gnat2Why_Args.Flow_Advanced_Debug
+                 and then FA.Kind = Kind_Package_Body
+               then
                   declare
                      Refined_State_N : constant Node_Id :=
                        Get_Pragma (E, Pragma_Refined_State);
@@ -1129,10 +1119,9 @@ package body Flow is
                end if;
          end case;
 
+         --  Even if aborting we still need to collect tasking-related info,
+         --  (using control-flow traversal) and register the results.
          if FA.GG.Aborted then
-
-            --  Even if aborting we still need to collect tasking-related info,
-            --  (using control-flow traversal) and register the results.
             Control_Flow_Graph.Create (FA);
 
             GG_Register_Tasking_Info
