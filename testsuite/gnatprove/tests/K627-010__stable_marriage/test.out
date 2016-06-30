@@ -5,7 +5,7 @@ stable_marriage.adb:10:16: info: initialization of "Seen" proved
 stable_marriage.adb:11:26: info: range check proved
 stable_marriage.adb:12:26: info: index check proved
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
-stable_marriage.adb:15:22: medium: assertion might fail, cannot prove Seen = Group1_Flags'(others => True)) = (for all G1 in Group1_Id => Seen (G1) and then (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when R1 = (64 => 2, others => 0) and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:15:22: medium: assertion might fail, cannot prove Seen = Group1_Flags'(others => True)) = (for all G1 in Group1_Id => Seen (G1) and then (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when R1 = (64 => 63, 1 => 64, others => 0) and Seen = (62 => false, 0 => false, others => true))
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
 stable_marriage.adb:15:43: info: length check proved
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
@@ -17,7 +17,7 @@ stable_marriage.adb:31:16: info: initialization of "Seen" proved
 stable_marriage.adb:32:26: info: range check proved
 stable_marriage.adb:33:26: info: index check proved
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
-stable_marriage.adb:36:22: medium: assertion might fail, cannot prove Seen = Group2_Flags'(others => True)) = (for all G2 in Group2_Id => Seen (G2) and then (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when R2 = (64 => 2, others => 0) and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:36:22: medium: assertion might fail, cannot prove Seen = Group2_Flags'(others => True)) = (for all G2 in Group2_Id => Seen (G2) and then (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when R2 = (64 => 63, 1 => 64, others => 0) and Seen = (62 => false, 0 => false, others => true))
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
 stable_marriage.adb:36:43: info: length check proved
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
@@ -200,9 +200,9 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved
 stable_marriage.adb:399:14: info: initialization of "Result" proved
-stable_marriage.ads:21:14: medium: postcondition might fail, cannot prove Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when Is_Permutation_1'Result = False and R1 = (64 => 2, others => 0))
+stable_marriage.ads:21:14: medium: postcondition might fail, cannot prove Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when Is_Permutation_1'Result = False and R1 = (64 => 3, others => 0))
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) (e.g. when R1 = (2 => 1, 1 => 1, others => 0))
-stable_marriage.ads:33:14: medium: postcondition might fail, cannot prove Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when Is_Permutation_2'Result = False and R2 = (64 => 2, others => 0))
+stable_marriage.ads:33:14: medium: postcondition might fail, cannot prove Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when Is_Permutation_2'Result = False and R2 = (64 => 3, others => 0))
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) (e.g. when R2 = (2 => 1, 1 => 1, others => 0))
 stable_marriage.ads:50:14: medium: postcondition might fail (e.g. when Invert_1'Result = (2 => 64, 1 => 64, others => 0) and R1 = (64 => 2, 0 => 2, others => 1))
 stable_marriage.ads:56:14: medium: postcondition might fail (e.g. when Invert_2'Result = (2 => 64, 1 => 64, others => 0) and R2 = (64 => 2, 0 => 2, others => 1))

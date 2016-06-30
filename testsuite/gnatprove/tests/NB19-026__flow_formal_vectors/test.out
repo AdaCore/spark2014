@@ -173,8 +173,8 @@ indefinite_bounded.adb:85:37: info: initialization of private part of "V" proved
 indefinite_bounded.adb:86:07: info: assertion proved
 indefinite_bounded.adb:86:22: info: precondition proved
 indefinite_bounded.adb:86:36: info: initialization of private part of "V" proved
+indefinite_bounded.adb:88:07: info: assertion proved
 indefinite_bounded.adb:88:22: info: precondition proved
-indefinite_bounded.adb:88:22: medium: assertion might fail, cannot prove Find_Index (V, 0) = No_Index
 indefinite_bounded.adb:88:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:89:07: info: assertion proved
 indefinite_bounded.adb:89:22: info: precondition proved

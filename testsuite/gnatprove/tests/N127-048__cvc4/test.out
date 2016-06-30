@@ -50,13 +50,13 @@ nose_gear.adb:261:11: info: initialization of "Sum2_2_out1" proved
 nose_gear.adb:262:25: info: initialization of "Sum2_2_out1" proved
 nose_gear.adb:264:25: info: initialization of "Sum_3_out1" proved
 nose_gear.adb:270:45: info: initialization of "Left_out1" proved
-nose_gear.adb:270:45: info: range check proved
+nose_gear.adb:270:45: medium: range check might fail
 nose_gear.adb:273:07: info: assertion proved
 nose_gear.adb:273:22: info: initialization of "Left_1_out1" proved
 nose_gear.adb:275:47: info: initialization of "Left_1_out1" proved
 nose_gear.adb:275:47: info: range check proved
 nose_gear.adb:279:47: info: initialization of "Left_2_out1" proved
-nose_gear.adb:279:47: info: range check proved
+nose_gear.adb:279:47: medium: range check might fail
 nose_gear.adb:283:40: info: initialization of "To_uint16_Result_out1" proved
 nose_gear.adb:283:40: info: range check proved
 nose_gear.adb:283:64: medium: overflow check might fail

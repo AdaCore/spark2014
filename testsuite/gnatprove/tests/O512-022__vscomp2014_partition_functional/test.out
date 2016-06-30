@@ -61,10 +61,10 @@ partition_refinement.adb:93:29: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:93:42: info: range check proved
 partition_refinement.adb:93:44: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:100:07: info: assertion proved
+partition_refinement.adb:102:07: info: assertion proved
 partition_refinement.adb:102:22: info: precondition proved
 partition_refinement.adb:102:44: info: precondition proved
 partition_refinement.adb:102:67: info: precondition proved
-partition_refinement.adb:102:91: medium: assertion might fail, cannot prove A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:102:94: info: precondition proved
 partition_refinement.adb:102:112: info: precondition proved
 partition_refinement.adb:105:07: info: assertion proved

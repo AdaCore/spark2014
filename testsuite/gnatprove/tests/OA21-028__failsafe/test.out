@@ -50,7 +50,7 @@ failsafe.adb:52:10: info: assertion proved
 failsafe.adb:54:10: info: assertion proved
 failsafe.adb:58:10: info: assertion proved
 failsafe.adb:62:10: medium: assertion might fail
-failsafe.adb:65:69: info: range check proved
+failsafe.adb:65:69: medium: range check might fail
 failsafe.adb:67:66: info: range check proved
 failsafe.adb:68:78: info: range check proved
 failsafe.adb:73:78: info: range check proved

@@ -496,14 +496,21 @@ procedure Gnatprove is
                                   Theory_Check);
 
       CVC4_Resource : constant array (CVC4_Resource_Kind) of Natural :=
-        (Rewrite         => 0,
-         Bitblast        => 0,
-         CNF             => 0,
-         Parse           => 0,
+        (Parse           => 0,
          Preprocess      => 0,
-         Decision        => 0,
-         BV_SAT_Conflict => 5,
-         others          => 10);
+         Rewrite         => 0,
+
+         Decision        => 1,
+         BV_SAT_Conflict => 1,
+         SAT_Conflict    => 1,
+         Quantifier      => 1,
+         Theory_Check    => 1,
+
+         Bitblast        => 5,
+         CNF             => 5,
+
+         Restart         => 10,
+         Lemma           => 10);
 
       function Flag_Name (R : CVC4_Resource_Kind) return String;
       --  Produce the command-line option for the given resource.
@@ -782,10 +789,12 @@ procedure Gnatprove is
       --    the cvc4 step limit works.
 
       Common_CVC4_Options : constant String :=
-        "--lang=smt2 " &
-        "--stats " &
-        "--no-cbqi " &
-        CVC4_Resource_Step_Flags;
+          "--lang=smt2 " &
+          "--stats " &
+          "--no-cbqi " &
+          "--no-cond-rewrite-quant " &
+          "--boolean-term-conversion-mode=native " &
+          CVC4_Resource_Step_Flags;
 
       procedure Put_Keyval (Key : String; Value : String);
       procedure Put_Keyval (Key : String; Value : Integer);
