@@ -94,8 +94,7 @@ package SPARK_Definition is
    --  ??? Exposing this function seems suspiocious; it is only used by Retysp
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) not in E_Package         |
-                             E_Package_Body    |
+     Pre => Ekind (E) not in E_Package_Body    |
                              E_Protected_Body  |
                              E_Subprogram_Body |
                              E_Task_Body       |

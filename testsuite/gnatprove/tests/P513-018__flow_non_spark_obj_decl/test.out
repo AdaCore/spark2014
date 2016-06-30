@@ -1,0 +1,7 @@
+p.ads:3:04: access type is not allowed in SPARK
+p.ads:3:04: violation of pragma SPARK_Mode at test.adc:1
+p.ads:3:10: access to subprogram is not allowed in SPARK
+p.ads:3:10: violation of pragma SPARK_Mode at test.adc:1
+p.ads:7:23: call through access to function is not allowed in SPARK
+p.ads:7:23: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

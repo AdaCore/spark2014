@@ -4385,7 +4385,9 @@ package body SPARK_Definition is
    procedure Mark_Object_Declaration (N : Node_Id) is
       E : constant Entity_Id := Defining_Entity (N);
    begin
-      Mark_Entity (E);
+      if not In_SPARK (E) then
+         Mark_Violation (N, From => E);
+      end if;
    end Mark_Object_Declaration;
 
    -----------------------
@@ -4522,28 +4524,33 @@ package body SPARK_Definition is
             Vis_Decls  : constant List_Id := Visible_Declarations (Spec);
             Priv_Decls : constant List_Id := Private_Declarations (Spec);
 
-            Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-         begin
+            Save_SPARK_Pragma       : constant Node_Id := Current_SPARK_Pragma;
+            Save_Violation_Detected : constant Boolean := Violation_Detected;
 
-            --  Marking status of package entities, which are never referenced
-            --  by other code, is queried only with Spec_In_SPARK and
-            --  Body_In_SPARK; however, adding them to Entity_Set and later to
-            --  Entities_In_SPARK makes them visible while iterating over
-            --  marked entities and entities in SPARK.
+         begin
+            --  Record the package as a marked entity (which does not imply
+            --  anything about its SPARK status).
 
             Entity_Set.Insert (Id);
 
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-            --  Mark package declaration in SPARK if at least its visible
-            --  declarations have SPARK_Mode => On.
+            --  Record the package as an entity to translate, unless it is
+            --  explicitly marked with SPARK_Mode => Off.
 
             if not SPARK_Pragma_Is (Opt.Off) then
-               Entities_In_SPARK.Include (Id);
                Entity_List.Append (Id);
             end if;
 
-            --  Mark abstract state entities
+            --  Reset violation status to determine if there are any violations
+            --  in the package declaration itself.
+
+            Violation_Detected := False;
+
+            --  Mark abstract state entities, since they may be referenced from
+            --  the outside. If if SPARK_Mode is On | None they they will be
+            --  in SPARK; if SPARK_Mode is Off then they will be not. Same for
+            --  visible declarations.
 
             for State of Iter (Abstract_States (Id)) loop
                if not Is_Null_State (State) then
@@ -4555,8 +4562,17 @@ package body SPARK_Definition is
 
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
+            --  Private declarations cannot be referenced from the outside;
+            --  if SPARK_Mode is Off then just skip them, but the Retysp magic
+            --  relies on their marking status (which is most likely a bug).
+
             Mark_Stmt_Or_Decl_List (Priv_Decls);
 
+            if not Violation_Detected then
+               Entities_In_SPARK.Include (Id);
+            end if;
+
+            Violation_Detected := Save_Violation_Detected;
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end;
 

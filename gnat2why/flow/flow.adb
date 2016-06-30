@@ -1388,8 +1388,10 @@ package body Flow is
                end if;
 
             when E_Package =>
+               --  ??? what does Analysis_Requested mean for a package?
                if SPARK_Util.Subprograms.Analysis_Requested
                  (E, With_Inlined => True)
+                 and then Entity_In_SPARK (E)
                  and then Entity_Spec_In_SPARK (E)
                  and then not In_Predefined_Unit (E)
                  and then not Is_Wrapper_Package (E)
