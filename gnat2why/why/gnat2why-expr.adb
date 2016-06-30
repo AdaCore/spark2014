@@ -12129,6 +12129,7 @@ package body Gnat2Why.Expr is
            Pragma_Ravenscar                      |
            Pragma_Relative_Deadline              |
            Pragma_Remote_Access_Type             |
+           Pragma_Rename_Pragma                  |
            Pragma_Restricted_Run_Time            |
            Pragma_Share_Generic                  |
            Pragma_Shared                         |
