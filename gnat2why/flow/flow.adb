@@ -1133,6 +1133,8 @@ package body Flow is
             end if;
             return FA;
          end if;
+      else
+         FA.GG.Aborted := False;
       end if;
 
       Control_Flow_Graph.Create (FA);
