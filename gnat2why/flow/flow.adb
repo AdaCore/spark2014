@@ -928,15 +928,7 @@ package body Flow is
       FA.CDG                   := Create;
       FA.TDG                   := Create;
       FA.PDG                   := Create;
-      FA.Atr                   := Attribute_Maps.Empty_Map;
-      FA.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
-      FA.Local_Constants       := Node_Sets.Empty_Set;
-      FA.All_Vars              := Flow_Id_Sets.Empty_Set;
-      FA.Loops                 := Node_Sets.Empty_Set;
-      FA.Dependency_Map        := Dependency_Maps.Empty_Map;
       FA.No_Errors_Or_Warnings := True;
-      FA.Direct_Calls          := Node_Sets.Empty_Set;
-      FA.Tasking               := (others => Node_Sets.Empty_Set);
 
       --  Generate Globals (gg) or Flow Analysis (fa)
       FA.Base_Filename := To_Unbounded_String (if Generating_Globals
@@ -1014,7 +1006,6 @@ package body Flow is
       end case;
 
       FA.GG.Aborted := False;
-      FA.GG.Globals := Node_Sets.Empty_Set;
 
       Append (FA.Base_Filename, Unique_Name (E));
 
