@@ -1,0 +1,16 @@
+procedure Main is
+
+   subtype A is Integer range 1 .. 10;
+
+   function F return A with Pre => True;
+
+   function F return A is
+   begin
+      return 5;
+   end F;
+
+   X : constant Integer := F;
+begin
+   pragma Assert (X < 8);
+   pragma Assert (X < 10);
+end Main;

@@ -42,6 +42,7 @@ package Configuration is
       --  ???
 
    end Constants;
+
    package CL_Switches is
 
       --  These are the variables that contain the values of the corresponding
@@ -76,6 +77,7 @@ package Configuration is
       M                 : aliased Boolean;
       Mode              : aliased GNAT.Strings.String_Access;
       No_Counterexample : aliased Boolean;
+      Output_Msg_Only   : aliased Boolean;
       P                 : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
       Pedantic          : aliased Boolean;
@@ -250,6 +252,7 @@ package Configuration is
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
 
-   function Prover_List return String;
+   function Prover_List return String
+   with Pre => not Provers.Is_Empty;
    --  return comma-separated list of provers
 end Configuration;

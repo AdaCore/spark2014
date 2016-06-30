@@ -17,26 +17,28 @@ Command Line Invocation
  -cargs switches are passed to gcc
 
  gnatprove basic switches:
- -aP=p               Add path p to project path
-     --assumptions   Output assumptions information
-     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)
-     --clean         Remove GNATprove intermediate files, and exit
- -f                  Force recompilation/analysis of all units
- -h, --help          Display this usage information
- -jnnn               Use nnn parallel processes (default: 1)
- -k                  Do not stop analysis at the first error
-     --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
- -m                  Minimal reanalysis
-     --mode=m        Set the mode of GNATprove (m=check, check_all, flow,
-                     prove, all*)
- -q, --quiet         Be quiet/terse
-     --report=r      Set the report mode of GNATprove (r=fail*, all, provers,
-                     statistics)
- -u                  Unique analysis. Only analyze the given units
- -U                  Analyze all units of all projects
- -v, --verbose       Output extra verbose information
-     --version       Output version of the tool and exit
-     --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
+ -aP=p                 Add path p to project path
+     --assumptions     Output assumptions information
+     --codepeer=c      Enable or disable CodePeer analysis (c=on,off*)
+     --clean           Remove GNATprove intermediate files, and exit
+ -f                    Force recompilation/analysis of all units
+ -h, --help            Display this usage information
+ -jnnn                 Use nnn parallel processes (default: 1)
+ -k                    Do not stop analysis at the first error
+     --level=n         Set the level of proof (0 = faster* to 4 = more powerful)
+ -m                    Minimal reanalysis
+     --mode=m          Set the mode of GNATprove (m=check, check_all, flow,
+                       prove, all*)
+     --output-msg-only Do not run any provers, output current flow and proof
+                       results
+ -q, --quiet           Be quiet/terse
+     --report=r        Set the report mode of GNATprove (r=fail*, all, provers,
+                       statistics)
+ -u                    Unique analysis. Only analyze the given units
+ -U                    Analyze all units of all projects
+ -v, --verbose         Output extra verbose information
+     --version         Output version of the tool and exit
+     --warnings=w      Set the warning mode of GNATprove (w=off, continue*, error)
 
  * Main mode values
    . check         - Fast partial check for SPARK violations

@@ -625,10 +625,6 @@ ASCII.LF;
       Buf : Unbounded_String := Null_Unbounded_String;
       C : Cursor := First (Provers);
    begin
-      --  prover list is not empty
-
-      pragma Assert (Has_Element (C));
-
       loop
          Append (Buf, Element (C));
          Next (C);
@@ -827,7 +823,8 @@ ASCII.LF;
          Counterexample :=
            not CL_Switches.No_Counterexample
            and then File_System.Install.CVC4_Present
-           and then not Is_Manual_Prover;
+           and then not Is_Manual_Prover
+           and then not CL_Switches.Output_Msg_Only;
       end Postprocess;
 
       ----------------------------
@@ -1002,6 +999,10 @@ ASCII.LF;
          Set_Proof_Mode;
          Set_Provers;
          Limit_Provers;
+
+         if CL_Switches.Output_Msg_Only then
+            Provers.Clear;
+         end if;
       end Set_Level_Timeout_Steps_Provers_Proof_Mode;
 
       --------------
@@ -1457,6 +1458,11 @@ ASCII.LF;
         (Config,
          CL_Switches.No_Counterexample'Access,
          Long_Switch => "--no-counterexample");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Output_Msg_Only'Access,
+         Long_Switch => "--output-msg-only");
 
       Define_Switch
         (Config, CL_Switches.Why3_Conf'Access,

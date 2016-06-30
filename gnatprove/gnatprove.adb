@@ -412,8 +412,10 @@ procedure Gnatprove is
       Args.Append ("--steps");
       Args.Append (Image (Steps, 1));
 
-      Args.Append ("--prover");
-      Args.Append (Prover_List);
+      if not Provers.Is_Empty then
+         Args.Append ("--prover");
+         Args.Append (Prover_List);
+      end if;
 
       Args.Append ("--proof");
       Args.Append (To_String (Proof));
@@ -424,6 +426,7 @@ procedure Gnatprove is
       if Debug then
          Args.Append ("--debug");
       end if;
+
       if Force then
          Args.Append ("--force");
       end if;
