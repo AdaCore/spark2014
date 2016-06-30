@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;                     use Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
+with Common_Iterators;                use Common_Iterators;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
@@ -4560,20 +4561,11 @@ package body SPARK_Definition is
 
             --  Mark abstract state entities
 
-            declare
-               States : constant Elist_Id := Abstract_States (Id);
-               State  : Elmt_Id;
-            begin
-               if Present (States) then
-                  State := First_Elmt (States);
-                  while Present (State)
-                    and then not Is_Null_State (Node (State))
-                  loop
-                     Mark_Entity (Node (State));
-                     Next_Elmt (State);
-                  end loop;
+            for State of Iter (Abstract_States (Id)) loop
+               if not Is_Null_State (State) then
+                  Mark_Entity (State);
                end if;
-            end;
+            end loop;
 
             Mark_Stmt_Or_Decl_List (Vis_Decls);
 
