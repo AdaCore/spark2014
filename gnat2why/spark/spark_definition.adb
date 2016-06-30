@@ -4293,22 +4293,22 @@ package body SPARK_Definition is
    ------------------------
 
    procedure Mark_If_Expression (N : Node_Id) is
-      Condition : constant Node_Id := First (Expressions (N));
-      Then_Expr : constant Node_Id := Next (Condition);
-      Else_Expr : Node_Id;
-
    begin
       Mark_Actions (N, Then_Actions (N));
       Mark_Actions (N, Else_Actions (N));
 
-      Else_Expr := Next (Then_Expr);
+      declare
+         Condition : constant Node_Id := First (Expressions (N));
+         Then_Expr : constant Node_Id := Next (Condition);
+         Else_Expr : constant Node_Id := Next (Then_Expr);
+      begin
+         Mark (Condition);
+         Mark (Then_Expr);
 
-      Mark (Condition);
-      Mark (Then_Expr);
-
-      if Present (Else_Expr) then
-         Mark (Else_Expr);
-      end if;
+         if Present (Else_Expr) then
+            Mark (Else_Expr);
+         end if;
+      end;
    end Mark_If_Expression;
 
    -----------------------
