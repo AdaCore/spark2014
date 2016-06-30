@@ -4388,11 +4388,8 @@ package body SPARK_Definition is
    -- Mark_Number_Declaration --
    -----------------------------
 
-   procedure Mark_Number_Declaration (N : Node_Id) is
-      E : constant Entity_Id := Defining_Entity (N);
-   begin
-      Mark_Entity (E);
-   end Mark_Number_Declaration;
+   procedure Mark_Number_Declaration (N : Node_Id) renames
+     Mark_Object_Declaration;
 
    -----------------------------
    -- Mark_Object_Declaration --
