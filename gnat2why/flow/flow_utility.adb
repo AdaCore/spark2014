@@ -473,211 +473,257 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is
-      T                    : Entity_Id;
-      Ids                  : Flow_Id_Sets.Set;
-      Classwide            : Boolean;
-
-      Contains_Non_Visible : Boolean       := False;
-      Root_Components      : Node_Sets.Set := Node_Sets.Empty_Set;
-
-      subtype Private_Nonrecord_Kind is Private_Kind with
-        Static_Predicate =>
-          Private_Nonrecord_Kind not in E_Record_Type_With_Private |
-                                        E_Record_Subtype_With_Private;
-      --  Kind of non-record private types
-
-      function Get_Root_Component (N : Node_Id) return Node_Id;
-      --  Returns N's equilavent component of the root type. If this is not
-      --  available then N's Original_Record_Component is returned instead.
-      --
-      --  @param N is the component who's equivalent we are looking for
-      --  @return the equivalent component of the root type if one exists
-      --    or the Original_Record_Component of N otherwise.
-
-      ------------------------
-      -- Get_Root_Component --
-      ------------------------
-
-      function Get_Root_Component (N : Node_Id) return Node_Id is
-         ORC : constant Node_Id := Original_Record_Component (N);
-      begin
-         --  If Same_Component is True for one of the Root_Components then
-         --  return that instead.
-         for Comp of Root_Components loop
-            if Same_Component (ORC, Comp) then
-               return Comp;
-            end if;
-         end loop;
-
-         --  No Same_Component found. Fall back to N's
-         --  Original_Record_Component.
-         return ORC;
-      end Get_Root_Component;
-
-   --  Start of processing for Flatten_Variable
-
    begin
-      if Debug_Trace_Flatten then
-         Write_Str ("Flatten: ");
-         Print_Flow_Id (F);
-         Indent;
-      end if;
-
-      if F.Kind not in Direct_Mapping | Record_Field
-        or else F.Facet /= Normal_Part
+      if F.Kind in Direct_Mapping | Record_Field
+        and then F.Facet = Normal_Part
       then
-         if Debug_Trace_Flatten then
-            Outdent;
-         end if;
-         return Flow_Id_Sets.To_Set (F);
-      end if;
-
-      pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
-      T         := Get_Type (F, Scope);
-      Classwide := Ekind (T) in Class_Wide_Kind;
-      while Ekind (T) in Class_Wide_Kind loop
-         T := Get_Type (Etype (T), Scope);
-      end loop;
-
-      if Debug_Trace_Flatten then
-         Write_Str ("Branching on type: ");
-         Sprint_Node_Inline (T);
-         Write_Line (" (" & Ekind (T)'Img & ")");
-      end if;
-
-      --  If we are dealing with a derived type then we want to get to
-      --  the root and then populate the Root_Components set. However,
-      --  we don't want to consider Itypes.
-      if Is_Derived_Type (T) then
-         declare
-            Root : Node_Id := T;
-         begin
-            while (Is_Derived_Type (Root) or else Is_Itype (Root))
-              and then Etype (Root) /= Root
-            loop
-               Root := Etype (Root);
-            end loop;
-
-            --  Make sure we have the Full_View
-            while Is_Private_Type (Root)
-              and then Present (Full_View (Root))
-            loop
-               Root := Full_View (Root);
-            end loop;
-
-            for Comp of Components (Root) loop
-               Root_Components.Include (Original_Record_Component (Comp));
-            end loop;
-         end;
-      end if;
-
-      case Ekind (T) is
-         when Private_Nonrecord_Kind =>
+         --  Special-case abstract state, which lack's a type to branch on
+         if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
             if Debug_Trace_Flatten then
-               Write_Line ("processing private type");
+               Write_Str ("Flatten: ");
+               Print_Flow_Id (F);
             end if;
 
-            if Has_Discriminants (T) then
-               for Ptr of Components (T) loop
-                  if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                     Ids.Include (Add_Component (F, Ptr));
-                  else
-                     Contains_Non_Visible := True;
-                  end if;
+            return Flow_Id_Sets.To_Set (F);
+
+         else
+            declare
+               T : Entity_Id;
+               --  Type of F
+
+               Classwide : Boolean;
+               --  True iff F has a classwide type
+
+               Results : Flow_Id_Sets.Set;
+
+               Contains_Non_Visible : Boolean := False;
+               Root_Components      : Node_Sets.Set;
+
+               subtype Private_Nonrecord_Kind is Private_Kind with
+                 Static_Predicate =>
+                   Private_Nonrecord_Kind not in E_Record_Type_With_Private |
+                                                 E_Record_Subtype_With_Private;
+               --  Non-record private types
+
+               function Get_Root_Component (N : Node_Id) return Node_Id;
+               --  Returns N's equilavent component of the root type. If this
+               --  is not available then N's Original_Record_Component is
+               --  returned instead.
+               --
+               --  @param N is the component who's equivalent we are looking
+               --    for
+               --  @return the equivalent component of the root type if one
+               --    exists or the Original_Record_Component of N otherwise.
+
+               ------------------------
+               -- Get_Root_Component --
+               ------------------------
+
+               function Get_Root_Component (N : Node_Id) return Node_Id is
+                  ORC : constant Node_Id := Original_Record_Component (N);
+               begin
+                  --  If Same_Component is True for one of the Root_Components
+                  --  then return that instead.
+                  for Comp of Root_Components loop
+                     if Same_Component (ORC, Comp) then
+                        return Comp;
+                     end if;
+                  end loop;
+
+                  --  No Same_Component found. Fall back to N's
+                  --  Original_Record_Component.
+                  return ORC;
+               end Get_Root_Component;
+
+            begin
+               if Debug_Trace_Flatten then
+                  Write_Str ("Flatten: ");
+                  Print_Flow_Id (F);
+                  Indent;
+               end if;
+
+               T         := Get_Type (F, Scope);
+               Classwide := Ekind (T) in Class_Wide_Kind;
+               while Ekind (T) in Class_Wide_Kind loop
+                  T := Get_Type (Etype (T), Scope);
                end loop;
-               Ids.Include (F'Update (Facet => Private_Part));
-            else
-               Ids := Flow_Id_Sets.To_Set (F);
-            end if;
 
-         when Record_Kind | Protected_Kind | Task_Kind =>
-            if Debug_Trace_Flatten then
-               Write_Line ("processing " &
-                             (case Ekind (T) is
+               pragma Assert (Is_Type (T));
+
+               if Debug_Trace_Flatten then
+                  Write_Str ("Branching on type: ");
+                  Sprint_Node_Inline (T);
+                  Write_Line (" (" & Ekind (T)'Img & ")");
+               end if;
+
+               --  If we are dealing with a derived type then we want to get to
+               --  the root and then populate the Root_Components set. However,
+               --  we don't want to consider Itypes.
+               if Is_Derived_Type (T) then
+                  declare
+                     Root : Node_Id := T;
+                  begin
+                     while (Is_Derived_Type (Root) or else Is_Itype (Root))
+                       and then Etype (Root) /= Root
+                     loop
+                        Root := Etype (Root);
+                     end loop;
+
+                     --  Make sure we have the Full_View
+                     while Is_Private_Type (Root)
+                       and then Present (Full_View (Root))
+                     loop
+                        Root := Full_View (Root);
+                     end loop;
+
+                     for Comp of Components (Root) loop
+                        Root_Components.Include
+                          (Original_Record_Component (Comp));
+                     end loop;
+                  end;
+               end if;
+
+               case Type_Kind'(Ekind (T)) is
+                  when Private_Nonrecord_Kind =>
+                     if Debug_Trace_Flatten then
+                        Write_Line ("processing private type");
+                     end if;
+
+                     if Has_Discriminants (T) then
+                        for Ptr of Components (T) loop
+                           if Is_Visible (Get_Root_Component (Ptr), Scope) then
+                              Results.Include (Add_Component (F, Ptr));
+                           else
+                              Contains_Non_Visible := True;
+                           end if;
+                        end loop;
+                        Results.Include (F'Update (Facet => Private_Part));
+                     else
+                        Results := Flow_Id_Sets.To_Set (F);
+                     end if;
+
+                  when Record_Kind | Protected_Kind | Task_Kind =>
+                     if Debug_Trace_Flatten then
+                        Write_Line
+                          ("processing " &
+                           (case Ekind (T) is
                                  when Protected_Kind => "protected",
                                  when Record_Kind    => "record",
                                  when Task_Kind      => "task",
                                  when others         => raise Program_Error) &
-                             " type");
-            end if;
+                              " type");
+                     end if;
 
-            if Ekind (T) in Concurrent_Kind then
-               if Nested_Within_Concurrent_Type (T, Scope) then
-                  --  Include constituents that belong to the concurrent object
-                  --  due to a Part_Of.
-                  if Present (Anonymous_Object (T)) then
-                     for C of Iter (Part_Of_Constituents
-                                      (Anonymous_Object (T)))
-                     loop
-                        Ids.Union (Flatten_Variable (Direct_Mapping_Id (C),
-                                                     Scope));
+                     if Ekind (T) in Concurrent_Kind then
+                        if Nested_Within_Concurrent_Type (T, Scope) then
+                           --  Include constituents that belong to the
+                           --  concurrent object due to a Part_Of.
+                           if Present (Anonymous_Object (T)) then
+                              for C of Iter (Part_Of_Constituents
+                                             (Anonymous_Object (T)))
+                              loop
+                                 Results.Union
+                                   (Flatten_Variable (Direct_Mapping_Id (C),
+                                    Scope));
+                              end loop;
+                           end if;
+                        else
+                           --  From outside a concurrent object, all that we
+                           --  see is the object itself.
+                           if Debug_Trace_Flatten then
+                              Outdent;
+                           end if;
+
+                           return Flow_Id_Sets.To_Set (F);
+                        end if;
+                     end if;
+
+                     --  Include classwide types and privates with
+                     --  discriminants.
+
+                     for Ptr of Components (T) loop
+                        if Is_Visible (Get_Root_Component (Ptr), Scope) then
+                           --  Here we union disjoint sets, so possibly we
+                           --  could optimize this.
+                           Results.Union (Flatten_Variable
+                                          ((if Ekind (T) in Concurrent_Kind
+                                             then Direct_Mapping_Id (Ptr)
+                                             else Add_Component (F, Ptr)),
+                                             Scope));
+                        else
+                           Contains_Non_Visible := True;
+                        end if;
                      end loop;
-                  end if;
-               else
-                  --  From outside a concurrent object, all that we see is the
-                  --  object itself.
-                  if Debug_Trace_Flatten then
-                     Outdent;
-                  end if;
-                  return Flow_Id_Sets.To_Set (F);
+
+                     pragma Assert (if Ekind (T) in Private_Kind
+                                    then Contains_Non_Visible);
+
+                     if Contains_Non_Visible then
+                        --  We must have some discriminant, so return
+                        --  X'Private_Part and the discriminants. For
+                        --  simple private types we don't do this split.
+                        if Results.Is_Empty then
+                           Results := Flow_Id_Sets.To_Set (F);
+                        else
+                           Results.Include (F'Update (Facet => Private_Part));
+                        end if;
+                     end if;
+
+                     --  For concurrent types we need to make sure that we
+                     --  never return an empty set. Instead return a singleton
+                     --  set with the type itself.
+                     if Ekind (T) in Concurrent_Kind
+                       and then Results.Is_Empty
+                     then
+                        Results.Include (F);
+                     end if;
+
+                     if Classwide then
+                        --  Ids.Include (F'Update (Facet => The_Tag)); ???
+                        Results.Include (F'Update (Facet => Extension_Part));
+                     end if;
+
+                  when Array_Kind  |
+                       Scalar_Kind =>
+                     if Debug_Trace_Flatten then
+                        Write_Line ("processing scalar or array type");
+                     end if;
+
+                     Results := Flow_Id_Sets.To_Set (F);
+
+                  when Access_Kind =>
+                     --  ??? Pointers come only from globals (hopefully). They
+                     --  should be removed when generating globals and here
+                     --  we should only get the __HEAP entity name should.
+                     if Debug_Trace_Flatten then
+                        Write_Line ("processing access type");
+                     end if;
+
+                     Results := Flow_Id_Sets.To_Set (F);
+
+                  when E_Exception_Type  |
+                       E_Subprogram_Type |
+                       Incomplete_Kind   =>
+
+                     raise Program_Error;
+
+               end case;
+
+               if Debug_Trace_Flatten then
+                  Outdent;
                end if;
-            end if;
 
-            --  Include classwide types and privates with discriminants
+               return Results;
+            end;
+         end if;
+      else
+         if Debug_Trace_Flatten then
+            Write_Str ("Flatten: ");
+            Print_Flow_Id (F);
+         end if;
 
-            for Ptr of Components (T) loop
-               if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                  --  Here we union disjoint sets, so possibly we could
-                  --  optimize this.
-                  Ids.Union (Flatten_Variable
-                               ((if Ekind (T) in Concurrent_Kind
-                                 then Direct_Mapping_Id (Ptr)
-                                 else Add_Component (F, Ptr)),
-                                Scope));
-               else
-                  Contains_Non_Visible := True;
-               end if;
-            end loop;
-
-            if Ekind (T) in Private_Kind or else Contains_Non_Visible then
-               --  We must have some discriminant, so return X'Private_Part
-               --  and the discriminants. For simple private types we don't
-               --  do this split.
-               pragma Assert (Contains_Non_Visible);
-               if Ids.Is_Empty then
-                  Ids := Flow_Id_Sets.To_Set (F);
-               else
-                  Ids.Include (F'Update (Facet => Private_Part));
-               end if;
-            end if;
-
-            --  For concurrent types we need to make sure that we never return
-            --  an empty set. Instead return a singleton set with the type
-            --  itself.
-            if Ekind (T) in Concurrent_Kind
-              and then Ids.Is_Empty
-            then
-               Ids.Include (F);
-            end if;
-
-            if Classwide then
-               --  Ids.Include (F'Update (Facet => The_Tag)); ???
-               Ids.Include (F'Update (Facet => Extension_Part));
-            end if;
-
-         when others =>
-            if Debug_Trace_Flatten then
-               Write_Line ("processing misc type");
-            end if;
-
-            Ids := Flow_Id_Sets.To_Set (F);
-      end case;
-
-      if Debug_Trace_Flatten then
-         Outdent;
+         return Flow_Id_Sets.To_Set (F);
       end if;
-
-      return Ids;
    end Flatten_Variable;
 
    ----------------------

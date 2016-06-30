@@ -344,7 +344,10 @@ is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
-   with Pre => Present (E) and then Nkind (E) in N_Entity;
+   with Pre => Ekind (E) in E_Abstract_State |
+                            E_Function       |
+                            Object_Kind      |
+                            Type_Kind;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
    function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set
