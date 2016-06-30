@@ -1267,7 +1267,7 @@ package body Gnat2Why.Subprograms is
                --  For state abstractions pretend there is no Entity
 
                if Present (Entity)
-                 and then not (Ekind (Entity) = E_Abstract_State)
+                 and then Ekind (Entity) /= E_Abstract_State
                  and then Entity_In_SPARK (Entity)
                then
                   Result (Count) :=
