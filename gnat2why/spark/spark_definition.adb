@@ -3435,12 +3435,10 @@ package body SPARK_Definition is
          --  specific type, in the case of a user-defined classwide type.
 
          elsif Is_Class_Wide_Type (E) then
-            if Nkind (Parent (E)) = N_Subtype_Declaration
-              and then Defining_Entity (Parent (E)) = E
-            then
+            if Ekind (E) = E_Class_Wide_Subtype then
                declare
                   Subty : constant Node_Id := Subtype_Indication (Parent (E));
-                  Ty : Node_Id := Empty;
+                  Ty    : Entity_Id;
                begin
                   case Nkind (Subty) is
                      when N_Attribute_Reference =>
@@ -3459,7 +3457,7 @@ package body SPARK_Definition is
                         raise Program_Error;
                   end case;
 
-                  if Present (Ty) then
+                  if Nkind (Subty) /= N_Subtype_Indication then
                      Set_Specific_Tagged (E, Unique_Entity (Ty));
                   end if;
                end;
