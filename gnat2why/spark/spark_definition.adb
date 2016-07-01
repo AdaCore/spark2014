@@ -3817,6 +3817,16 @@ package body SPARK_Definition is
                end loop;
             end;
 
+            --  Store information about E's components, only for record
+            --  representative types.
+
+            if Is_Record_Type (E)
+              and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+              and then Retysp (E) = E
+            then
+               Init_Component_Info (E);
+            end if;
+
          elsif Is_Record_Type (E) then
 
             if Ekind (E) = E_Record_Subtype
@@ -3907,6 +3917,15 @@ package body SPARK_Definition is
                Full_Views_Not_In_SPARK.Insert (E, Etype (E));
             end if;
 
+            --  Store information about E's components, only for representative
+            --  types.
+
+            if not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+              and then Retysp (E) = E
+            then
+               Init_Component_Info (E);
+            end if;
+
          elsif Is_Access_Type (E) then
             Mark_Violation ("access type", E);
 
@@ -3955,6 +3974,10 @@ package body SPARK_Definition is
                      raise Program_Error;
 
                end case;
+
+               --  Store information about E's components
+               Init_Component_Info_For_Protected_Types (E);
+
             else
                Mark_Violation_In_Tasking (E);
             end if;

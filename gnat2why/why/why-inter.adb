@@ -1198,8 +1198,6 @@ package body Why.Inter is
           and then not No_Comp
       then
          declare
-            Field : constant String :=
-              To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
               Retysp (if Rec /= Empty then Rec
                       elsif Is_Part_Of_Protected_Object (E) then
@@ -1209,6 +1207,11 @@ package body Why.Inter is
               E_Module (if Rec = Empty and then Ekind (E) = E_Discriminant then
                              Root_Record_Type (Ada_N)
                         else Ada_N);
+            Field : constant String :=
+              To_String (WNE_Rec_Comp_Prefix) &
+            (if Is_Tagged_Type (Ada_N)
+             then Full_Name (Original_Record_Component (E))
+             else Get_Name_String (Chars (E)));
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,

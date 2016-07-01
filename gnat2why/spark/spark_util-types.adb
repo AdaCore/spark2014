@@ -35,6 +35,23 @@ with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
 
 package body SPARK_Util.Types is
 
+   package Info_Map_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Info_Maps.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Info_Maps."=");
+
+   Comp_Info : Info_Map_Maps.Map := Info_Map_Maps.Empty_Map;
+   --  This map maps record types and protected types to a map mapping each
+   --  component and each N_Variant node to a Component_Info record. This map
+   --  is populated through calls to Init_Component_Info and
+   --  Init_Component_Info_For_Protected_Types;
+
+   procedure Init_Component_Info (E : Entity_Id; Info : in out Info_Maps.Map);
+   --  Same as Init_Component_Info (E : Entity_Id) except that information
+   --  about E's fields is stored in Info.
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -797,6 +814,23 @@ package body SPARK_Util.Types is
       return N;
    end Find_Predicate_Aspect;
 
+   ------------------------
+   -- Get_Component_Info --
+   ------------------------
+
+   function Get_Component_Info (E : Entity_Id) return Info_Maps.Map is
+      Ty : constant Entity_Id := Retysp (E);
+   begin
+      case Ekind (Ty) is
+         when E_Record_Subtype | E_Record_Subtype_With_Private =>
+            return Comp_Info.Element (Retysp (Etype (Ty)));
+         when E_Record_Type | E_Record_Type_With_Private | Concurrent_Kind =>
+            return Comp_Info.Element (Ty);
+         when others =>
+            return Info_Maps.Empty_Map;
+      end case;
+   end Get_Component_Info;
+
    ------------------------------------
    -- Get_Full_Type_Without_Checking --
    ------------------------------------
@@ -912,15 +946,163 @@ package body SPARK_Util.Types is
         and then Has_Predicates (E)
         and then Present (Static_Discrete_Predicate (E)));
 
+   -------------------------
+   -- Init_Component_Info --
+   -------------------------
+
+   procedure Init_Component_Info (E : Entity_Id; Info : in out Info_Maps.Map)
+   is
+
+      procedure Mark_Component_List
+        (N               : Node_Id;
+         Parent_Var_Part : Node_Id;
+         Parent_Variant  : Node_Id);
+
+      procedure Mark_Variant_Part
+        (N               : Node_Id;
+         Parent_Var_Part : Node_Id;
+         Parent_Variant  : Node_Id);
+
+      -------------------------
+      -- Mark_Component_List --
+      -------------------------
+
+      procedure Mark_Component_List
+        (N               : Node_Id;
+         Parent_Var_Part : Node_Id;
+         Parent_Variant  : Node_Id)
+      is
+         Field : Node_Id := First (Component_Items (N));
+      begin
+         while Present (Field) loop
+            if Nkind (Field) /= N_Pragma
+
+            --  Field may already be in Info if we are initializing info for
+            --  a descendant of E.
+
+              and then not
+                Info.Contains
+                  (Representative_Component (E, Defining_Identifier (Field)))
+            then
+               Info.Insert
+                 (Representative_Component (E, Defining_Identifier (Field)),
+                  Component_Info'(
+                    Parent_Variant  => Parent_Variant,
+                    Parent_Var_Part => Parent_Var_Part));
+            end if;
+            Next (Field);
+         end loop;
+         if Present (Variant_Part (N)) then
+            Mark_Variant_Part (Variant_Part (N),
+                               Parent_Var_Part,
+                               Parent_Variant);
+         end if;
+      end Mark_Component_List;
+
+      -----------------------
+      -- Mark_Variant_Part --
+      -----------------------
+
+      procedure Mark_Variant_Part
+        (N               : Node_Id;
+         Parent_Var_Part : Node_Id;
+         Parent_Variant  : Node_Id)
+      is
+         Var : Node_Id := First (Variants (N));
+
+      begin
+         Info.Insert (N, Component_Info'(
+                      Parent_Variant  => Parent_Variant,
+                      Parent_Var_Part => Parent_Var_Part));
+
+         while Present (Var) loop
+            Mark_Component_List (Component_List (Var), N, Var);
+            Next (Var);
+         end loop;
+      end Mark_Variant_Part;
+
+      Decl_Node : constant Node_Id := Parent (E);
+      Def_Node  : constant Node_Id :=
+        (if Nkind (Decl_Node) = N_Full_Type_Declaration
+         then Type_Definition (Decl_Node)
+         else Empty);
+      Discr : Node_Id :=
+        (if Nkind (Decl_Node) in N_Full_Type_Declaration
+         then First (Discriminant_Specifications (Decl_Node))
+         else Empty);
+      Components : constant Node_Id :=
+        (if Present (Def_Node) then
+             (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                    Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                (if Present (Record_Extension_Part (Def_Node)) then
+                    Component_List (Record_Extension_Part (Def_Node))
+                 else Empty),
+                 when others =>
+                    raise Program_Error)
+         else Empty);
+      Ancestor_Type : constant Entity_Id :=
+        (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
+         else Retysp (Etype (E)));
+
+      --  Start of processing for Init_Component_Info
+
+   begin
+      while Present (Discr) loop
+         Info.Insert
+           (Defining_Identifier (Discr),
+            Component_Info'
+              (Parent_Variant  => Empty,
+               Parent_Var_Part => Empty));
+         Next (Discr);
+      end loop;
+
+      if Present (Components) then
+         Mark_Component_List (Components, Empty, Empty);
+      end if;
+
+      if Ancestor_Type /= E then
+         Init_Component_Info (Ancestor_Type, Info);
+      end if;
+   end Init_Component_Info;
+
+   procedure Init_Component_Info (E : Entity_Id) is
+      Info : Info_Maps.Map;
+   begin
+      pragma Assert (not Comp_Info.Contains (E));
+      Init_Component_Info (E, Info);
+      Comp_Info.Insert (E, Info);
+   end Init_Component_Info;
+
+   ---------------------------------------------
+   -- Init_Component_Info_For_Protected_Types --
+   ---------------------------------------------
+
+   procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
+      Info  : Info_Maps.Map;
+      Field : Entity_Id := First_Entity (E);
+   begin
+      while Present (Field) loop
+         if Ekind (Field) in E_Discriminant | E_Component then
+            Info.Insert
+              (Field,
+               Component_Info'(others => Empty));
+         end if;
+         Next_Entity (Field);
+      end loop;
+      Comp_Info.Insert (E, Info);
+   end Init_Component_Info_For_Protected_Types;
+
    -------------------
    -- Is_Null_Range --
    -------------------
 
    function Is_Null_Range (T : Entity_Id) return Boolean is
      (Is_Discrete_Type (T)
-        and then Has_Static_Scalar_Subtype (T)
-        and then Expr_Value (Low_Bound (Scalar_Range (T))) >
-                 Expr_Value (High_Bound (Scalar_Range (T))));
+      and then Has_Static_Scalar_Subtype (T)
+      and then Expr_Value (Low_Bound (Scalar_Range (T))) >
+          Expr_Value (High_Bound (Scalar_Range (T))));
 
    ------------------------------
    -- Is_Standard_Boolean_Type --
@@ -928,9 +1110,9 @@ package body SPARK_Util.Types is
 
    function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean is
      (E = Standard_Boolean
-        or else
-     (Ekind (E) = E_Enumeration_Subtype
-        and then Etype (E) = Standard_Boolean
+      or else
+        (Ekind (E) = E_Enumeration_Subtype
+         and then Etype (E) = Standard_Boolean
         and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)));
 
    --------------------------
@@ -998,6 +1180,21 @@ package body SPARK_Util.Types is
    begin
       return Protected_Definition (Decl);
    end Protected_Type_Definition;
+
+   ------------------------------
+   -- Representative_Component --
+   ------------------------------
+
+   function Representative_Component
+     (Rec : Entity_Id; Comp : Entity_Id)
+      return Entity_Id
+   is
+     (if Is_Tagged_Type (Rec) then Original_Record_Component (Comp)
+      else Search_Component_By_Name (Root_Record_Type (Rec), Comp));
+   --  Return the original record component on tagged types. On non tagged
+   --  types, original_record_component returns the component in the first
+   --  nouveau type in Rec's ancestors. Get the component form the root type
+   --  in this case.
 
    ---------------------------------
    -- Requires_Interrupt_Priority --

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
 with Common_Containers;          use Common_Containers;
 with Elists;                     use Elists;
 with Flow_Utility;               use Flow_Utility;
@@ -96,38 +95,6 @@ package body Why.Gen.Records is
    --                              (d2 : type_of_discr_d2)
    --  requires { d1 = constr_of_first_discr /\ d2 = constr_of_second_discr }
    --  ensures  { result = x }
-
-   --  For the implementation details: This is one place where we have to look
-   --  at the declaration node to find which discriminant values imply the
-   --  presence of which components. We traverse the N_Component_List of the
-   --  type declaration, and for each component, and for each N_Variant_Part,
-   --  we store a record of type [Component_Info] which contains the N_Variant
-   --  node to which the component/variant part belongs, and the N_Variant_Part
-   --  to which this N_Variant node belongs. In this way, we can easily access
-   --  the discriminant (the Name of the N_Variant_Part) and the discrete
-   --  choice (the Discrete_Choices of the N_Variant) of that component or
-   --  variant part. For variant parts, the field [Ident] is empty, for
-   --  components it contains the corresponding Why identifier.
-
-   --  The map [Comp_Info] maps the component entities and N_Variant_Part nodes
-   --  to their information record. This map is populated at the beginning of
-   --  [Declare_Ada_Record].
-
-   --  We ignore "completely hidden" components of derived record types (see
-   --  also the discussion in einfo.ads and sem_ch3.adb)
-
-   type Component_Info is record
-      Parent_Variant  : Node_Id;
-      Parent_Var_Part : Node_Id;
-      Ident           : W_Identifier_Id;
-   end record;
-
-   package Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Component_Info,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
 
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural;
    --  Counts the number of fields for the Why3 record representing type E that
@@ -317,17 +284,6 @@ package body Why.Gen.Records is
       --  elsewhere (i.e. in the module for the root record type, prefix the
       --  call accordingly and add a conversion.
 
-      procedure Init_Component_Info (E : Entity_Id)
-        with Pre => Is_Record_Type (E);
-      --  @param E record type
-      --  For each subcomponent of E, create an entry in map Comp_Info
-
-      procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
-        with Pre => Is_Concurrent_Type (E);
-      --  @param E the entity of the concurrent type
-      --  For each component and discriminant of E, create an entry in map
-      --  Comp_Info
-
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
          Expr   : W_Term_Id) return W_Pred_Id;
@@ -414,18 +370,15 @@ package body Why.Gen.Records is
       --  @param Is_Ancestor True if generating extraction functions for the
       --     ancestor component, False for the extension component
 
-      Root      : constant Entity_Id := Root_Record_Type (E);
-      Is_Root   : constant Boolean   := Root = E;
-      Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
-      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      Comp_Info : Info_Maps.Map      := Info_Maps.Empty_Map;
-      --  This map maps each component and each N_Variant node to a
-      --  Component_Info record. This map is initialized by a call to
-      --  Init_Component_Info;
+      Root      : constant Entity_Id     := Root_Record_Type (E);
+      Is_Root   : constant Boolean       := Root = E;
+      Ty_Name   : constant W_Name_Id     := To_Name (WNE_Rec_Rep);
+      Abstr_Ty  : constant W_Type_Id     := New_Named_Type (Name => Ty_Name);
+      Comp_Info : constant Info_Maps.Map := Get_Component_Info (E);
 
-      A_Ident  : constant W_Identifier_Id :=
+      A_Ident   : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder : constant Binder_Array :=
+      R_Binder  : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
 
@@ -436,7 +389,7 @@ package body Why.Gen.Records is
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id
       is
          Info : Component_Info :=
-           Comp_Info.Element (Original_Record_Component (Field));
+           Search_Component_In_Info (Comp_Info, E, Field);
          Cond : W_Pred_Id := True_Pred;
 
       begin
@@ -1915,143 +1868,6 @@ package body Why.Gen.Records is
          return +E_Symb (Ty, WNE_Rec_Main);
       end New_Main_Component_Expr;
 
-      -------------------------
-      -- Init_Component_Info --
-      -------------------------
-
-      procedure Init_Component_Info (E : Entity_Id) is
-
-         procedure Mark_Component_List
-           (N               : Node_Id;
-            Parent_Var_Part : Node_Id;
-            Parent_Variant  : Node_Id);
-
-         procedure Mark_Variant_Part
-           (N               : Node_Id;
-            Parent_Var_Part : Node_Id;
-            Parent_Variant  : Node_Id);
-
-         -------------------------
-         -- Mark_Component_List --
-         -------------------------
-
-         procedure Mark_Component_List
-           (N               : Node_Id;
-            Parent_Var_Part : Node_Id;
-            Parent_Variant  : Node_Id)
-         is
-            Field : Node_Id := First (Component_Items (N));
-         begin
-            while Present (Field) loop
-               if Nkind (Field) /= N_Pragma then
-                  Comp_Info.Insert
-                    (Defining_Identifier (Field),
-                     Component_Info'(
-                       Parent_Variant  => Parent_Variant,
-                       Parent_Var_Part => Parent_Var_Part,
-                       Ident           =>
-                         To_Why_Id
-                           (Defining_Identifier (Field),
-                            Local => True)));
-               end if;
-               Next (Field);
-            end loop;
-            if Present (Variant_Part (N)) then
-               Mark_Variant_Part (Variant_Part (N),
-                                  Parent_Var_Part,
-                                  Parent_Variant);
-            end if;
-         end Mark_Component_List;
-
-         -----------------------
-         -- Mark_Variant_Part --
-         -----------------------
-
-         procedure Mark_Variant_Part
-           (N               : Node_Id;
-            Parent_Var_Part : Node_Id;
-            Parent_Variant  : Node_Id)
-         is
-            Var : Node_Id := First (Variants (N));
-         begin
-            Comp_Info.Insert (N, Component_Info'(
-              Parent_Variant  => Parent_Variant,
-              Parent_Var_Part => Parent_Var_Part,
-              Ident           => Why_Empty));
-            while Present (Var) loop
-               Mark_Component_List (Component_List (Var), N, Var);
-               Next (Var);
-            end loop;
-         end Mark_Variant_Part;
-
-         Decl_Node : constant Node_Id := Parent (E);
-         Def_Node  : constant Node_Id :=
-           (if Nkind (Decl_Node) = N_Full_Type_Declaration
-            then Type_Definition (Decl_Node)
-            else Empty);
-         Discr : Node_Id :=
-           (if Nkind (Decl_Node) in N_Full_Type_Declaration
-            then First (Discriminant_Specifications (Decl_Node))
-            else Empty);
-         Components : constant Node_Id :=
-           (if Present (Def_Node) then
-              (case Nkind (Def_Node) is
-                 when N_Record_Definition =>
-                   Component_List (Def_Node),
-                 when N_Derived_Type_Definition =>
-                   (if Present (Record_Extension_Part (Def_Node)) then
-                      Component_List (Record_Extension_Part (Def_Node))
-                    else Empty),
-                 when others =>
-                   raise Program_Error)
-            else Empty);
-         Ancestor_Type : constant Entity_Id :=
-           (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
-            else Retysp (Etype (E)));
-
-      --  Start of processing for Init_Component_Info
-
-      begin
-         while Present (Discr) loop
-            Comp_Info.Insert
-              (Defining_Identifier (Discr),
-               Component_Info'
-                 (Parent_Variant  => Empty,
-                  Parent_Var_Part => Empty,
-                  Ident           =>
-                    To_Why_Id (Defining_Identifier (Discr), Local => True)));
-            Next (Discr);
-         end loop;
-
-         if Present (Components) then
-            Mark_Component_List (Components, Empty, Empty);
-         end if;
-
-         if Ancestor_Type /= E then
-            Init_Component_Info (Ancestor_Type);
-         end if;
-      end Init_Component_Info;
-
-      ---------------------------------------------
-      -- Init_Component_Info_For_Protected_Types --
-      ---------------------------------------------
-
-      procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
-         Field : Entity_Id := First_Entity (E);
-      begin
-         while Present (Field) loop
-            if Ekind (Field) in E_Discriminant | E_Component then
-               Comp_Info.Insert
-                 (Field,
-                  Component_Info'(
-                    Ident  =>
-                      To_Why_Id (Field, Local => True),
-                    others => Empty));
-            end if;
-            Next_Entity (Field);
-         end loop;
-      end Init_Component_Info_For_Protected_Types;
-
       --------------------------------
       -- Transform_Discrete_Choices --
       --------------------------------
@@ -2071,16 +1887,6 @@ package body Why.Gen.Records is
    --  Start of processing for Declare_Ada_Record
 
    begin
-
-      --  ??? rewrite with case statement
-      if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
-         Init_Component_Info (Retysp (Etype (E)));
-      elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
-         Init_Component_Info (E);
-      elsif Ekind (E) in Concurrent_Kind then
-         Init_Component_Info_For_Protected_Types (E);
-      end if;
-
       Declare_Record_Type;
 
       --  We need to delare conversion functions before the protected access

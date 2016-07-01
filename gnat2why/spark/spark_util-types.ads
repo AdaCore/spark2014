@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Sem_Type;
 with Sem_Util;  use Sem_Util;
 with Stand;     use Stand;
@@ -132,6 +133,75 @@ package SPARK_Util.Types is
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds. This includes looking past private types.
+
+   -------------------------
+   -- Component Info Maps --
+   -------------------------
+
+   --  For the implementation details: This is one place where we look
+   --  at the declaration node to find which discriminant values imply the
+   --  presence of which components. We traverse the N_Component_List of the
+   --  type declaration, and for each component, and for each N_Variant_Part,
+   --  we store a record of type [Component_Info] which contains the N_Variant
+   --  node to which the component/variant part belongs, and the N_Variant_Part
+   --  to which this N_Variant node belongs. In this way, we can easily access
+   --  the discriminant (the Name of the N_Variant_Part) and the discrete
+   --  choice (the Discrete_Choices of the N_Variant) of that component or
+   --  variant part.
+
+   --  The map [Comp_Info] maps the component entities and N_Variant_Part nodes
+   --  to their information record. This map is populated during marking.
+
+   --  We ignore "completely hidden" components of derived record types (see
+   --  also the discussion in einfo.ads and sem_ch3.adb)
+
+   type Component_Info is record
+      Parent_Variant  : Node_Id;
+      Parent_Var_Part : Node_Id;
+   end record;
+
+   package Info_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Component_Info,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   function Get_Component_Info (E : Entity_Id) return Info_Maps.Map with
+     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  @param E entity of a type translated as a record in why
+   --  @return E's component info from map Comp_Info
+
+   procedure Init_Component_Info (E : Entity_Id)
+     with Pre => Is_Record_Type (E);
+   --  @param E record type
+   --  For each subcomponent of E, create an entry in map Comp_Info
+
+   procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
+     with Pre => Is_Concurrent_Type (E);
+   --  @param E the entity of the concurrent type
+   --  For each component and discriminant of E, create an entry in map
+   --  Comp_Info
+
+   function Representative_Component
+     (Rec : Entity_Id; Comp : Entity_Id)
+      return Entity_Id
+   with
+      Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  We want to store fields of Rec only once. Therefore, each components is
+   --  stored in a normalized form.
+   --  @param Rec entity of a type translated as a record in why
+   --  @param Comp component of the type or of one of its ancestors
+   --  @return Entity used to refer to Comp in Comp_Info.
+
+   function Search_Component_In_Info
+     (Info : Info_Maps.Map; Rec : Entity_Id; Comp : Entity_Id)
+      return Component_Info
+   is (Info.Element (Representative_Component (Rec, Comp)));
+   --  @param Rec entity of a type translated as a record in why
+   --  @param Info map for Rec
+   --  @param Comp component of Rec or of one of its ancestors
+   --  @return information associated to Comp in Info.
 
    -------------------------------
    -- General Queries For Types --
