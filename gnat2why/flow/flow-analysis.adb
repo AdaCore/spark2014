@@ -3718,76 +3718,77 @@ package body Flow.Analysis is
                            FA.Spec_Entity,
                            Null_Flow_Scope);
 
-   begin  --  Check_Initializes_Contract
+   --  Start of processing for Check_Initializes_Contract
+
+   begin
+      --  We have nothing to do if DM is empty
       if DM.Is_Empty then
-         --  We have nothing to do if DM is empty
          return;
       end if;
 
       declare
-         The_Out             : Flow_Id;
-         The_Ins             : Flow_Id_Sets.Set;
-         All_Contract_Outs   : Flow_Id_Sets.Set;
-         All_Contract_Ins    : Flow_Id_Sets.Set;
-         All_Actual_Ins      : Flow_Id_Sets.Set;
          Found_Uninitialized : Boolean := False;
       begin
-         --  If we are dealing with a library level package then we
-         --  check if everything in the RHS of an initialization_item
-         --  has been initialized.
+         --  If we are dealing with a library level package then we check if
+         --  everything in the RHS of an initialization_item has been
+         --  initialized.
          if Is_Library_Level_Entity (FA.Analyzed_Entity) then
             for C in DM.Iterate loop
-               The_Out := Dependency_Maps.Key (C);
-               The_Ins := Dependency_Maps.Element (C);
-
-               for G of The_Ins loop
-                  if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "% must be initialized at elaboration",
-                        N        => (if Present (FA.Initializes_N)
-                                     then Search_Contract
-                                            (FA.Spec_Entity,
-                                             Pragma_Initializes,
-                                             Get_Direct_Mapping_Id (The_Out),
-                                             Get_Direct_Mapping_Id (G))
-                                     else FA.Spec_Entity),
-                        F1       => G,
-                        Severity => High_Check_Kind,
-                        Tag      => Uninitialized);
-                     Found_Uninitialized := True;
-                  end if;
-               end loop;
+               declare
+                  The_Out : Flow_Id          renames Dependency_Maps.Key (C);
+                  The_Ins : Flow_Id_Sets.Set renames DM (C);
+               begin
+                  for G of The_Ins loop
+                     if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "% must be initialized at elaboration",
+                           N        => (if Present (FA.Initializes_N)
+                                        then Search_Contract
+                                          (FA.Spec_Entity,
+                                           Pragma_Initializes,
+                                           Get_Direct_Mapping_Id (The_Out),
+                                           Get_Direct_Mapping_Id (G))
+                                        else FA.Spec_Entity),
+                           F1       => G,
+                           Severity => High_Check_Kind,
+                           Tag      => Uninitialized);
+                        Found_Uninitialized := True;
+                     end if;
+                  end loop;
+               end;
             end loop;
          end if;
 
+         --  If a variable or state abstraction that has not been mentioned in
+         --  an Initializes aspect was found in the RHS of an
+         --  initialization_item then we don't do any further analysis.
          if Found_Uninitialized then
-            --  If a variable or state abstraction that has not been
-            --  mentioned in an Initializes aspect was found in the
-            --  RHS of an initialization_item then we don't do any
-            --  further analysis.
             return;
          end if;
+      end;
 
-         if No (FA.Initializes_N) then
-            --  If we are dealing with a generated initializes aspect then we
-            --  have no further checks to do.
-            return;
-         end if;
+      --  If we are dealing with a generated initializes aspect then we have no
+      --  more checks to do.
+      if No (FA.Initializes_N) then
+         return;
+      end if;
 
-         for C in DM.Iterate loop
-            The_Out := Dependency_Maps.Key (C);
-            The_Ins := Dependency_Maps.Element (C);
+      for C in DM.Iterate loop
+         declare
+            The_Out : Flow_Id          renames Dependency_Maps.Key (C);
+            The_Ins : Flow_Id_Sets.Set renames DM (C);
 
-            All_Contract_Outs := Flow_Id_Sets.Empty_Set;
-            All_Contract_Ins  := Flow_Id_Sets.Empty_Set;
-            All_Actual_Ins    := Flow_Id_Sets.Empty_Set;
-
+            All_Contract_Outs : Flow_Id_Sets.Set;
+            All_Contract_Ins  : Flow_Id_Sets.Set;
+            All_Actual_Ins    : Flow_Id_Sets.Set;
+         begin
             --  Down project the LHS of an initialization_item
-            All_Contract_Outs := Node_Id_Set_To_Flow_Id_Set
-              (Down_Project
-                 (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (The_Out)),
-                  S    => FA.B_Scope));
+            All_Contract_Outs :=
+              Node_Id_Set_To_Flow_Id_Set
+                (Down_Project
+                   (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (The_Out)),
+                    S    => FA.B_Scope));
 
             --  Down project the RHS of an initialization_item
             for G of The_Ins loop
@@ -3810,8 +3811,8 @@ package body Flow.Analysis is
                end;
             end loop;
 
-            --  Raise medium checks for actual inputs that are not
-            --  mentioned by the Initializes.
+            --  Raise medium checks for actual inputs that are not mentioned by
+            --  the Initializes.
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In)
                  and then not All_Contract_Outs.Contains (Actual_In)
@@ -3844,8 +3845,8 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Raise medium checks for inputs mentioned in the
-            --  Initializes that are not actual inputs.
+            --  Raise medium checks for inputs mentioned in the Initializes
+            --  that are not actual inputs.
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
                   if Is_Variable (Contract_In) then
@@ -3862,26 +3863,24 @@ package body Flow.Analysis is
                         Tag      => Initializes_Wrong,
                         Severity => Medium_Check_Kind);
                   else
-                     --  The input is a constant without variable
-                     --  input.
+                     --  The input is a constant without variable input
                      Error_Msg_Flow
-                      (FA       => FA,
-                       Msg      => "& cannot appear in Initializes",
-                       N        => Search_Contract
-                                     (FA.Spec_Entity,
-                                      Pragma_Initializes,
-                                      Get_Direct_Mapping_Id (The_Out),
-                                      Get_Direct_Mapping_Id (Contract_In)),
-                       F1       => Contract_In,
-                       Tag      => Initializes_Wrong,
-                       Severity => Medium_Check_Kind);
+                       (FA       => FA,
+                        Msg      => "& cannot appear in Initializes",
+                        N        => Search_Contract
+                                      (FA.Spec_Entity,
+                                       Pragma_Initializes,
+                                       Get_Direct_Mapping_Id (The_Out),
+                                       Get_Direct_Mapping_Id (Contract_In)),
+                        F1       => Contract_In,
+                        Tag      => Initializes_Wrong,
+                        Severity => Medium_Check_Kind);
                   end if;
                end if;
             end loop;
 
-            --  Raise medium checks for outputs that are constants and
-            --  should consequently not be mention in an initializes
-            --  aspect.
+            --  Raise medium checks for outputs that are constants and should
+            --  consequently not be mention in an initializes aspect.
             for Contract_Out of All_Contract_Outs loop
                if not Is_Variable (Contract_Out) then
                   --  Output is a constant without variable input
@@ -3897,8 +3896,8 @@ package body Flow.Analysis is
                      Severity => Medium_Check_Kind);
                end if;
             end loop;
-         end loop;
-      end;
+         end;
+      end loop;
    end Check_Initializes_Contract;
 
    -------------------------------------
