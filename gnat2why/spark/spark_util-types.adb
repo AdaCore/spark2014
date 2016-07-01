@@ -1036,9 +1036,9 @@ package body SPARK_Util.Types is
                  when N_Record_Definition =>
                     Component_List (Def_Node),
                  when N_Derived_Type_Definition =>
-                (if Present (Record_Extension_Part (Def_Node)) then
-                    Component_List (Record_Extension_Part (Def_Node))
-                 else Empty),
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
                  when others =>
                     raise Program_Error)
          else Empty);

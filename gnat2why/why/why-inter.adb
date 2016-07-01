@@ -1209,9 +1209,9 @@ package body Why.Inter is
                         else Ada_N);
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) &
-            (if Is_Tagged_Type (Ada_N)
-             then Full_Name (Original_Record_Component (E))
-             else Get_Name_String (Chars (E)));
+              (if Is_Tagged_Type (Ada_N)
+               then Full_Name (Original_Record_Component (E))
+               else Get_Name_String (Chars (E)));
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,
