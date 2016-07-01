@@ -36,6 +36,7 @@ with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;
+with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
@@ -1022,6 +1023,17 @@ package body SPARK_Util.Subprograms is
               ECI (Name, Get_Name_String (Name_Rotate_Right)));
       end;
    end Is_Simple_Shift_Or_Rotate;
+
+   ---------------------------------------
+   -- Is_Volatile_For_Internal_Calls --
+   ---------------------------------------
+
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) = E_Function
+        and then Is_Protected_Type (Scope (E))
+        and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
+   end Is_Volatile_For_Internal_Calls;
 
    -------------------
    -- Might_Be_Main --

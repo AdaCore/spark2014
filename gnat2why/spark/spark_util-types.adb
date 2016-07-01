@@ -29,7 +29,6 @@ with Flow_Utility;                       use Flow_Utility;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
-with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
 
@@ -1123,17 +1122,6 @@ package body SPARK_Util.Types is
      (Is_Array_Type (E)
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
-
-   ---------------------------------------
-   -- Is_Volatile_For_Internal_Calls --
-   ---------------------------------------
-
-   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean is
-   begin
-      return Ekind (E) = E_Function
-        and then Is_Protected_Type (Scope (E))
-        and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
-   end Is_Volatile_For_Internal_Calls;
 
    --------------------
    -- Nth_Index_Type --
