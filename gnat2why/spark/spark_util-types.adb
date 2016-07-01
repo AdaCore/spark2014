@@ -1010,9 +1010,8 @@ package body SPARK_Util.Types is
          Var : Node_Id := First (Variants (N));
 
       begin
-         Info.Insert (N, Component_Info'(
-                      Parent_Variant  => Parent_Variant,
-                      Parent_Var_Part => Parent_Var_Part));
+         Info.Insert (N, Component_Info'(Parent_Variant  => Parent_Variant,
+                                         Parent_Var_Part => Parent_Var_Part));
 
          while Present (Var) loop
             Mark_Component_List (Component_List (Var), N, Var);
@@ -1025,10 +1024,12 @@ package body SPARK_Util.Types is
         (if Nkind (Decl_Node) = N_Full_Type_Declaration
          then Type_Definition (Decl_Node)
          else Empty);
+
       Discr : Node_Id :=
         (if Nkind (Decl_Node) in N_Full_Type_Declaration
          then First (Discriminant_Specifications (Decl_Node))
          else Empty);
+
       Components : constant Node_Id :=
         (if Present (Def_Node) then
              (case Nkind (Def_Node) is
@@ -1041,11 +1042,12 @@ package body SPARK_Util.Types is
                  when others =>
                     raise Program_Error)
          else Empty);
+
       Ancestor_Type : constant Entity_Id :=
         (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
          else Retysp (Etype (E)));
 
-      --  Start of processing for Init_Component_Info
+   --  Start of processing for Init_Component_Info
 
    begin
       while Present (Discr) loop
