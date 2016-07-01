@@ -3265,6 +3265,8 @@ package body SPARK_Definition is
                         Mark (Conseq);
                         Current_Protected_Type := Save_Protected_Type;
                      end;
+                  else
+                     Mark (Conseq);
                   end if;
 
                   Next (Contract_Case);

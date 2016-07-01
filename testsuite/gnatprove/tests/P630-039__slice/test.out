@@ -1,0 +1,9 @@
+bug.ads:12:48: info: index check proved
+bug.ads:12:48: info: overflow check proved
+bug.ads:12:66: info: index check proved
+bug.ads:12:66: info: overflow check proved
+bug.ads:21:33: info: overflow check proved
+bug.ads:21:45: info: precondition proved
+bug.ads:21:54: info: range check proved
+bug.ads:21:64: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = 2147483647 and A'Last = 2147483647)
+bug.ads:35:09: info: precondition proved
