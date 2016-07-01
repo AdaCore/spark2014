@@ -5000,6 +5000,10 @@ package body SPARK_Definition is
 
                   Current_Protected_Type := Save_Protected_Type;
                end;
+
+               if not Violation_Detected then
+                  Bodies_In_SPARK.Insert (Spec);
+               end if;
             end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
