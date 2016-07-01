@@ -642,6 +642,9 @@ package body SPARK_Definition is
    procedure Mark_Package_Body                (N : Node_Id);
    procedure Mark_Package_Declaration         (N : Node_Id);
 
+   procedure Mark_Protected_Body              (N : Node_Id);
+   --  Mark bodies of protected types
+
    procedure Mark_Subprogram_Body             (N : Node_Id);
    --  Mark bodies of functions, procedures, task types and entries
 
@@ -1678,38 +1681,17 @@ package body SPARK_Definition is
          when N_Protected_Body |
               N_Task_Body      =>
             if Is_SPARK_Tasking_Configuration then
-               declare
-                  Spec : constant Entity_Id := Corresponding_Spec (N);
-               begin
-                  if Entity_In_SPARK (Spec) then
-                     case Nkind (N) is
-                        when N_Protected_Body =>
-                           --  For protected entries, functions and procedures
-                           --  detect also violations in the enclosing type,
-                           --  which acts as an implicit argument to these
-                           --  subprograms.
-                           declare
-                              Save_Protected_Type : constant Entity_Id :=
-                                Current_Protected_Type;
-                           begin
-                              Current_Protected_Type := Spec;
+                  case Nkind (N) is
+                     when N_Protected_Body =>
+                        Mark_Protected_Body (N);
 
-                              Mark_Stmt_Or_Decl_List (Declarations (N));
+                     when N_Task_Body =>
+                        Mark_Subprogram_Body (N);
 
-                              Current_Protected_Type := Save_Protected_Type;
-                           end;
+                     when others =>
+                        raise Program_Error;
 
-                        when N_Task_Body =>
-                           Mark_Subprogram_Body (N);
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
-                  else
-                     Mark_Violation (N, From => Spec);
-                  end if;
-               end;
+                  end case;
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -4989,6 +4971,41 @@ package body SPARK_Definition is
             end if;
       end case;
    end Mark_Pragma;
+
+   -------------------------
+   -- Mark_Protected_Body --
+   -------------------------
+
+   procedure Mark_Protected_Body (N : Node_Id) is
+      Spec : constant Entity_Id := Corresponding_Spec (N);
+
+   begin
+      if Entity_In_SPARK (Spec) then
+         declare
+            Def_E : constant Entity_Id := Defining_Entity (N);
+
+            Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+
+         begin
+            Current_SPARK_Pragma := SPARK_Pragma (Def_E);
+
+            if not SPARK_Pragma_Is (Opt.Off) then
+               declare
+                  Save_Protected_Type : constant Entity_Id :=
+                    Current_Protected_Type;
+               begin
+                  Current_Protected_Type := Spec;
+
+                  Mark_Stmt_Or_Decl_List (Declarations (N));
+
+                  Current_Protected_Type := Save_Protected_Type;
+               end;
+            end if;
+
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
+         end;
+      end if;
+   end Mark_Protected_Body;
 
    ----------------------------------
    -- Mark_Simple_Return_Statement --
