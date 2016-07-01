@@ -100,13 +100,13 @@ package SPARK_Util.Subprograms is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => Ekind (E) in E_Function     |
-                              E_Package      |
-                              E_Procedure    |
-                              Entry_Kind     |
-                              Protected_Kind |
-                              Task_Kind
-                 and then not (Classwide and Inherited);
+   with Pre => Ekind (E) in E_Function     |
+                            E_Package      |
+                            E_Procedure    |
+                            Entry_Kind     |
+                            Protected_Kind |
+                            Task_Kind
+               and then not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
