@@ -31,8 +31,8 @@ with Ada.Containers.Vectors;
 with Why.Classes;                        use Why.Classes;
 
 package Why.Atree.Tables is
-   --  This package allows to allocate new Why nodes and to associate
-   --  then with an node Id.
+   --  This package allows to allocate new Why nodes and to associate them with
+   --  a node Id.
 
    function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id with
      Pre  => (Node.Kind /= W_Unused_At_Start),
