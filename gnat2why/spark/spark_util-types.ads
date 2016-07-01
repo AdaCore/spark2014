@@ -178,7 +178,7 @@ package SPARK_Util.Types is
    --  For each subcomponent of E, create an entry in map Comp_Info
 
    procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
-     with Pre => Is_Concurrent_Type (E);
+   with Pre => Is_Concurrent_Type (E);
    --  @param E the entity of the concurrent type
    --  For each component and discriminant of E, create an entry in map
    --  Comp_Info
@@ -246,7 +246,7 @@ package SPARK_Util.Types is
    --  such cases.
 
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
-     with Pre => Present (N);
+   with Pre => Present (N);
    --  Get the type of the given entity. This function looks through
    --  private types and should be used with extreme care.
    --  ??? This function should probably be removed. Its comment says it
@@ -282,11 +282,6 @@ package SPARK_Util.Types is
    --  @param E type
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True
-
-   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram (E);
-   --  @param E any subprogram
-   --  @return True iff E is volatile for internal calls, see SPARK RM 7.1.2
 
    --------------------------------
    -- Queries related to records --
@@ -386,9 +381,9 @@ package SPARK_Util.Types is
    --  @param Dim dimension
    --  @return the static length of dimension Dim of E
 
-   ------------------------------
-   -- Queries related to tasks --
-   ------------------------------
+   -----------------------------------
+   -- Queries related to task types --
+   -----------------------------------
 
    function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    with Pre => Ekind (E) = E_Task_Type;
@@ -426,9 +421,9 @@ package SPARK_Util.Types is
    --  @return the list of visible declarations of the task type, or the empty
    --    list if not available
 
-   ------------------------------------------
-   -- Queries related to protected objects --
-   ------------------------------------------
+   ----------------------------------------
+   -- Queries related to protected types --
+   ----------------------------------------
 
    function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
    with Pre => Is_Protected_Type (E);
