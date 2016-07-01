@@ -25,7 +25,7 @@
 
 with Why.Atree.Tables; use Why.Atree.Tables;
 
-package Why.Atree.Properties is
+package Why.Atree.Properties with Ghost is
 
    function Is_Root (Node_Id : Why_Node_Id) return Boolean;
    function Is_Root (List_Id : Why_Node_List) return Boolean;

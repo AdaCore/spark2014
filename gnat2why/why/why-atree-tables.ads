@@ -54,8 +54,8 @@ package Why.Atree.Tables is
      Post => (Get_Node (Node_Id) = Node);
    --  Assign the given Id to the given Node
 
-   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set;
-   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set;
+   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set with Ghost;
+   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set with Ghost;
 
    procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set) with
      Post => (Node_Id = Why_Empty
