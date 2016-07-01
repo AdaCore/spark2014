@@ -879,11 +879,32 @@ package body Flow is
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
+      FA : Flow_Analysis_Graphs_Root
+        (Kind               => (case Ekind (E) is
+                                when E_Function
+                                   | E_Procedure
+                                   | E_Entry        => Kind_Subprogram,
+                                when E_Task_Type    => Kind_Task,
+                                when E_Package      => Kind_Package,
+                                when E_Package_Body => Kind_Package_Body,
+                                when others         => raise Program_Error),
+         Generating_Globals => Generating_Globals);
+
+      Phase : constant String := (if Generating_Globals
+                                  then "Global generation"
+                                  else "Flow analysis");
+
       procedure Debug (Str : String);
       --  Write debug string
 
       procedure Debug (Str : String; V : Boolean);
       --  Write debug string followed by yes or no, depending on V
+
+      procedure Debug (Condition : Boolean;
+                       Graph     : Flow_Graphs.Graph;
+                       Suffix    : String);
+      --  If Condition is True then dump Graph to file with Suffix file name;
+      --  otherwise, do nothing.
 
       -----------------
       -- Debug --
@@ -901,19 +922,21 @@ package body Flow is
          Debug (Str & (if V then "yes" else "no"));
       end Debug;
 
-      FA : Flow_Analysis_Graphs_Root
-        (Kind               => (case Ekind (E) is
-                                when E_Function
-                                   | E_Procedure
-                                   | E_Entry        => Kind_Subprogram,
-                                when E_Task_Type    => Kind_Task,
-                                when E_Package      => Kind_Package,
-                                when E_Package_Body => Kind_Package_Body,
-                                when others         => raise Program_Error),
-         Generating_Globals => Generating_Globals);
-      Phase : constant String := (if Generating_Globals
-                                  then "Global generation"
-                                  else "Flow analysis");
+      procedure Debug (Condition : Boolean;
+                       Graph     : Flow_Graphs.Graph;
+                       Suffix    : String) is
+      begin
+         if Condition then
+            Print_Graph (Filename          =>
+                           To_String (FA.Base_Filename) & "_" & Suffix,
+                         Analyzed_Entity   => FA.Analyzed_Entity,
+                         G                 => Graph,
+                         M                 => FA.Atr,
+                         Start_Vertex      => FA.Start_Vertex,
+                         Helper_End_Vertex => FA.Helper_End_Vertex,
+                         End_Vertex        => FA.End_Vertex);
+         end if;
+      end Debug;
 
    --  Start of processing for Flow_Analyse_Entity
 
@@ -1158,55 +1181,16 @@ package body Flow is
       end if;
 
       --  Print this graph now in case the other algorithms barf
-      if Debug_Print_CFG then
-         Print_Graph (Filename          =>
-                        To_String (FA.Base_Filename) & "_cfg",
-                      Analyzed_Entity   => FA.Analyzed_Entity,
-                      G                 => FA.CFG,
-                      M                 => FA.Atr,
-                      Start_Vertex      => FA.Start_Vertex,
-                      Helper_End_Vertex => FA.Helper_End_Vertex,
-                      End_Vertex        => FA.End_Vertex);
-      end if;
+      Debug (Debug_Print_CFG, FA.CFG, "cfg");
 
       Control_Dependence_Graph.Create (FA);
-
-      if Debug_Print_Intermediates then
-         Print_Graph (Filename          =>
-                        To_String (FA.Base_Filename) & "_cdg",
-                      Analyzed_Entity   => FA.Analyzed_Entity,
-                      G                 => FA.CDG,
-                      M                 => FA.Atr,
-                      Start_Vertex      => FA.Start_Vertex,
-                      Helper_End_Vertex => FA.Helper_End_Vertex,
-                      End_Vertex        => FA.End_Vertex);
-      end if;
-
       Data_Dependence_Graph.Create (FA);
       Interprocedural.Create (FA);
       Program_Dependence_Graph.Create (FA);
 
-      if Debug_Print_Intermediates then
-         Print_Graph (Filename          =>
-                        To_String (FA.Base_Filename) & "_ddg",
-                      Analyzed_Entity   => FA.Analyzed_Entity,
-                      G                 => FA.DDG,
-                      M                 => FA.Atr,
-                      Start_Vertex      => FA.Start_Vertex,
-                      Helper_End_Vertex => FA.Helper_End_Vertex,
-                      End_Vertex        => FA.End_Vertex);
-      end if;
-
-      if Debug_Print_PDG then
-         Print_Graph (Filename          =>
-                        To_String (FA.Base_Filename) & "_pdg",
-                      Analyzed_Entity   => FA.Analyzed_Entity,
-                      G                 => FA.PDG,
-                      M                 => FA.Atr,
-                      Start_Vertex      => FA.Start_Vertex,
-                      Helper_End_Vertex => FA.Helper_End_Vertex,
-                      End_Vertex        => FA.End_Vertex);
-      end if;
+      Debug (Debug_Print_Intermediates, FA.CDG, "cdg");
+      Debug (Debug_Print_Intermediates, FA.DDG, "ddg");
+      Debug (Debug_Print_PDG,           FA.PDG, "pdg");
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Outdent;
