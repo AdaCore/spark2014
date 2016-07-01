@@ -47,7 +47,6 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Osint;                          use Osint;
 with Output;                         use Output;
-with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
 with Sem_Ch7;                        use Sem_Ch7;
 with Sinfo;                          use Sinfo;
@@ -1366,17 +1365,10 @@ package body Flow is
                  --  confusing.
                then
                   declare
-                     Pkg_Body : constant Entity_Id :=
-                       Defining_Entity (Package_Body (E),
-                                        Empty_On_Errors => True);
-
+                     Pkg_Body : constant Entity_Id := Body_Entity (E);
                   begin
                      if Present (Pkg_Body) then
                         if Entity_Body_In_SPARK (E) then
-                           pragma Assert
-                             (Nkind (Pkg_Body) = N_Defining_Identifier and then
-                                Ekind (Pkg_Body) = E_Package_Body);
-
                            Graph_Start := Pkg_Body;
                         else
                            null;
