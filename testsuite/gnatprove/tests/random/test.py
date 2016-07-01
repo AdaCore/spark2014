@@ -1,7 +1,7 @@
 from test_support import *
 
 # Prove RTE
-prove_all()
+prove_all(no_fail=True)
 
 # Execute test program
 Run(["gprbuild", "-P", "test.gpr"])

@@ -26,6 +26,10 @@ TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
 os.chdir(TESTDIR)
 
+is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*:" +
+                    r" (info|warning|low|medium|high)?(: )?(.*$)")
+is_mark = re.compile(r"@(\w*):(\w*)")
+
 
 def debug_mode():
     return "debug" in os.environ and os.environ["debug"] == "true"
@@ -197,6 +201,33 @@ def check_counterexamples():
                         not_found(f, line)
 
 
+def check_fail(strlist, no_failures_allowed):
+    """ Makes sure that we did not have any failed proof attempts. """
+
+    failures = frozenset(["low", "medium", "high"])
+
+    has_failure = False
+    has_check = False
+
+    for m in map(is_msg.match, strlist):
+        if m is not None:
+            kind = m.group(3)
+            if kind in failures:
+                has_failure = True
+                has_check = True
+                if no_failures_allowed:
+                    print "FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1),
+                                                                m.group(2))
+            elif kind == "info":
+                has_check = True
+
+            elif m.group(3) is None and m.group(4) is None:
+                has_failure = True
+
+    # if not no_failures_allowed and not has_failure and has_check:
+    #     print "YOU SHOULD ENABLE no_fail IN THE TESTSCRIPT"
+
+
 def check_marks(strlist):
     """Checks that marks in source code have a matching result.
 
@@ -227,9 +258,6 @@ def check_marks(strlist):
 
     """
     files = glob.glob("*.ad?")
-    is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*:" +
-                        r" (info|warning|low|medium|high)?(: )?(.*$)")
-    is_mark = re.compile(r"@(\w*):(\w*)")
 
     def get_tag(text):
         """Returns the tag for a given message text, or None if no tag is
@@ -499,11 +527,12 @@ def altergo(src, timeout=10, opt=None):
     print process.out
 
 
-def gnatprove(opt=["-P", "test.gpr"]):
+def gnatprove(opt=["-P", "test.gpr"], no_fail=False):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
     opt: options to give to gnatprove
+    no_fail: if set, then we make sure no unproved checks are in the output
     """
     # generate an empty project file if not present already
     if not os.path.isfile("test.gpr"):
@@ -544,16 +573,20 @@ def gnatprove(opt=["-P", "test.gpr"]):
     # strlist = str.splitlines(process)
 
     check_marks(strlist)
+    check_fail(strlist, no_fail)
     print_sorted(strlist)
 
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout(), mode="all", counterexample=True,
-              prover=default_provers, cache_allowed=True):
+              prover=default_provers, cache_allowed=True,
+              no_fail=False):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
-       option to zero disables steps option
+       option to zero disables steps option.
+
+       If no_fail is passed directly to gnatprove().
     """
     fullopt = ["--report=all", "--warnings=continue"]
     fullopt += ["--assumptions"]
@@ -580,22 +613,23 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    gnatprove(fullopt)
+    gnatprove(fullopt, no_fail)
 
 
-def do_flow(opt=None, procs=parallel_procs):
+def do_flow(opt=None, procs=parallel_procs, no_fail=False):
     """
     Call gnatprove with standard options for flow. We do generate
     verification conditions, but we don't actually try and prove anything
     (hence benchmark mode).
     """
 
-    prove_all(opt, procs=procs, steps=1, counterexample=False, prover=["cvc4"])
+    prove_all(opt, procs=procs, steps=1, counterexample=False,
+              prover=["cvc4"], no_fail=no_fail)
 
 
 def clean():
     """Call gnatprove with standard options to clean proof artifacts"""
-    prove_all(opt=["--clean"])
+    prove_all(opt=["--clean"], no_fail=True)
 
 
 def to_list(arg):

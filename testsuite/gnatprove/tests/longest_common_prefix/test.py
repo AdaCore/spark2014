@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(opt=["-u", "lcp.adb"], steps=8000)
+prove_all(no_fail=True, opt=["-u", "lcp.adb"], steps=8000)

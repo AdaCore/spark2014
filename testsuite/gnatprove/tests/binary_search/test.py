@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(opt=["-u", "binary_search.adb"])
+prove_all(no_fail=True, opt=["-u", "binary_search.adb"])
