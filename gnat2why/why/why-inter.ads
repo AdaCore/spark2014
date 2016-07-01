@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Ordered_Sets;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with Gnat2Why.Util;     use Gnat2Why.Util;
@@ -49,6 +50,9 @@ package Why.Inter is
       Definition_Theory,      --  definition of symbols
       Axiom_Theory,           --  axioms for previously defined symbols
       VC_Generation_Theory);  --  generation of VCs
+
+   package Why_Node_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Why_Node_Id);
 
    function Compute_Module_Set (W : Why_Node_Id) return Why_Node_Sets.Set;
    --  For a given Why node, compute the required modules, to be included to

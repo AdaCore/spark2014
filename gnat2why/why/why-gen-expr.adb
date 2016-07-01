@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
+with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
@@ -107,6 +109,15 @@ package body Why.Gen.Expr is
    --    at the left_most of the tree rooted in N
    --  @return the source_pointer of node N, taking into account "Left_Most"
    --    argument and other special cases
+
+   function Why_Node_Hash (X : Why_Node_Id) return Ada.Containers.Hash_Type is
+     (Ada.Containers.Hash_Type (X));
+
+   package Why_Node_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Why_Node_Id,
+      Element_Type    => Why_Node_Id,
+      Hash            => Why_Node_Hash,
+      Equivalent_Keys => "=");
 
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
