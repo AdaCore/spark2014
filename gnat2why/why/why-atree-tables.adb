@@ -33,20 +33,14 @@ package body Why.Atree.Tables is
    ------------
 
    procedure Append (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
-      use Node_List_Tables;
-      use Why_Node_Lists;
-
-      LI : List_Info := List_Table.Element (List_Id);
+      LI : List_Info renames List_Table (List_Id);
    begin
-      Append (LI.Content, New_Item);
+      LI.Content.Append (New_Item);
       Set_Link (New_Item, Why_Node_Set (List_Id));
 
-      --  Assuming that the list is kind-valid (which should have been
-      --  checked at this point), it is now valid, as it contains at
-      --  least one element.
+      --  Assuming that the list is kind-valid (which should have been checked
+      --  at this point), it is now valid, as it contains at least one element.
       LI.Checked := True;
-
-      Replace_Element (List_Table, List_Id, LI);
    end Append;
 
    -------------
@@ -54,20 +48,14 @@ package body Why.Atree.Tables is
    -------------
 
    procedure Prepend (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
-      use Node_List_Tables;
-      use Why_Node_Lists;
-
-      LI : List_Info := List_Table.Element (List_Id);
+      LI : List_Info renames List_Table (List_Id);
    begin
-      Prepend (LI.Content, New_Item);
+      LI.Content.Prepend (New_Item);
       Set_Link (New_Item, Why_Node_Set (List_Id));
 
-      --  Assuming that the list is kind-valid (which should have been
-      --  checked at this point), it is now valid, as it contains at
-      --  least one element.
+      --  Assuming that the list is kind-valid (which should have been checked
+      --  at this point), it is now valid, as it contains at least one element.
       LI.Checked := True;
-
-      Replace_Element (List_Table, List_Id, LI);
    end Prepend;
 
    ----------------
@@ -75,8 +63,6 @@ package body Why.Atree.Tables is
    ----------------
 
    procedure Initialize is
-      use Node_Tables;
-
       Empty_Node : constant Why_Node (W_Unused_At_Start) :=
                      (Kind     => W_Unused_At_Start,
                       Ada_Node => Empty,
@@ -84,8 +70,8 @@ package body Why.Atree.Tables is
                       Link     => Why_Empty,
                       Checked  => True);
    begin
-      Append (Node_Table, Empty_Node);
-      pragma Assert (To_Index (Last (Node_Table)) = Why_Empty);
+      Node_Table.Append (Empty_Node);
+      pragma Assert (Node_Table.Last_Index = Why_Empty);
    end Initialize;
 
    --------------
@@ -93,14 +79,13 @@ package body Why.Atree.Tables is
    --------------
 
    function New_List return Why_Node_List is
-      use Node_List_Tables;
-      use Why_Node_Lists;
-
-      New_List : List;
-      New_Item : constant List_Info := (False, Why_Empty, New_List);
+      New_Item : constant List_Info :=
+        (Checked => False,
+         Link    => Why_Empty,
+         Content => Why_Node_Lists.Empty_List);
    begin
-      Append (List_Table, New_Item);
-      return To_Index (Last (List_Table));
+      List_Table.Append (New_Item);
+      return List_Table.Last_Index;
    end New_List;
 
    ------------------
@@ -108,12 +93,9 @@ package body Why.Atree.Tables is
    ------------------
 
    function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id is
-      use Node_Tables;
-      Result : Why_Node_Id;
    begin
-      Append (Node_Table, Node);
-      Result := To_Index (Last (Node_Table));
-      return Result;
+      Node_Table.Append (Node);
+      return Node_Table.Last_Index;
    end New_Why_Node_Id;
 
    function New_Why_Node_Id
@@ -137,15 +119,10 @@ package body Why.Atree.Tables is
       Link    : Why_Node_Set) is
    begin
       if Node_Id = Why_Empty then
-         return;
+         null;
+      else
+         Node_Table (Node_Id).Link := Link;
       end if;
-
-      declare
-         Node : Why_Node := Get_Node (Node_Id);
-      begin
-         Node.Link := Link;
-         Set_Node (Node_Id, Node);
-      end;
    end Set_Link;
 
    procedure Set_Link
@@ -166,13 +143,8 @@ package body Why.Atree.Tables is
      (List_Id : Why_Node_List;
       Link    : Why_Node_Set)
    is
-      use Node_List_Tables;
-      use Why_Node_Lists;
-
-      LI : List_Info := List_Table.Element (List_Id);
    begin
-      LI.Link := Link;
-      Replace_Element (List_Table, List_Id, LI);
+      List_Table (List_Id).Link := Link;
    end Set_Link;
 
    procedure Set_Link
@@ -194,9 +166,8 @@ package body Why.Atree.Tables is
    --------------
 
    procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node) is
-      use Node_Tables;
    begin
-      Replace_Element (Node_Table, Node_Id, Node);
+      Node_Table (Node_Id) := Node;
    end Set_Node;
 
    ----------------------------
@@ -207,25 +178,16 @@ package body Why.Atree.Tables is
      (Node_Id : Why_Node_Id;
       Checked : Boolean)
    is
-      use Node_Tables;
-
-      Node : Why_Node := Get_Node (Node_Id);
    begin
-      Node.Checked := Checked;
-      Set_Node (Node_Id, Node);
+      Node_Table (Node_Id).Checked := Checked;
    end Update_Validity_Status;
 
    procedure Update_Validity_Status
      (List_Id : Why_Node_List;
       Checked : Boolean)
    is
-      use Node_List_Tables;
-      use Why_Node_Lists;
-
-      LI : List_Info := List_Table.Element (List_Id);
    begin
-      LI.Checked := Checked;
-      Replace_Element (List_Table, List_Id, LI);
+      List_Table (List_Id).Checked := Checked;
    end Update_Validity_Status;
 
 begin

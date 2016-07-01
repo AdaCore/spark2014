@@ -130,31 +130,31 @@ private
 
    List_Table : Node_List_Tables.Vector;
 
-   function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
-      (Node_Tables.Element (Node_Table, Node_Id));
+   function Get_Node (Node_Id : Why_Node_Id) return Why_Node renames
+     Node_Table.Element;
 
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
-      (Get_Node (Node_Id).Kind);
+     (Node_Table (Node_Id).Kind);
 
    function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set is
-      (Get_Node (Node_Id).Link);
+     (Node_Table (Node_Id).Link);
 
    function Get_Link (List_Id : Why_Node_List) return Why_Node_Set is
-      (Node_List_Tables.Element (List_Table, List_Id).Link);
+     (List_Table (List_Id).Link);
 
    function Option
      (Node  : Why_Node_Id;
       Value : Why_Node_Kind)
-     return Boolean is
-      (Node = Why_Empty or else Get_Kind (Node) = Value);
+      return Boolean is
+     (Node = Why_Empty or else Get_Kind (Node) = Value);
 
    function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List is
-      (Node_List_Tables.Element (List_Table, List_Id).Content);
+     (List_Table (List_Id).Content);
 
    function Is_Empty (List_Id : Why_Node_List) return Boolean is
-      (Why_Node_Lists.Is_Empty (Get_List (List_Id)));
+     (List_Table (List_Id).Content.Is_Empty);
 
    function Is_Checked (List_Id : Why_Node_List) return Boolean is
-      (Node_List_Tables.Element (List_Table, List_Id).Checked);
+     (List_Table (List_Id).Checked);
 
 end Why.Atree.Tables;
