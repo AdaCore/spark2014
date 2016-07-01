@@ -1069,11 +1069,16 @@ package body SPARK_Util.Types is
    end Init_Component_Info;
 
    procedure Init_Component_Info (E : Entity_Id) is
-      Info : Info_Maps.Map;
+      Position : Info_Map_Maps.Cursor;
+      Inserted : Boolean;
    begin
-      pragma Assert (not Comp_Info.Contains (E));
-      Init_Component_Info (E, Info);
-      Comp_Info.Insert (E, Info);
+      Comp_Info.Insert (Key      => E,
+                        Position => Position,
+                        Inserted => Inserted);
+
+      pragma Assert (Inserted);
+
+      Init_Component_Info (E, Comp_Info (Position));
    end Init_Component_Info;
 
    ---------------------------------------------
