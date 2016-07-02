@@ -489,7 +489,7 @@ package body Xtree_Traversal is
          Field : constant Wide_String :=
                    "Get_Node (+" & Node_Param & ")." & Field_Name (FI);
       begin
-         if Is_Why_Id (FI) and Maybe_Null (FI) then
+         if Is_Why_Id (FI) and then Maybe_Null (FI) then
             if Is_List (FI) then
                PL (O, "if not Is_Empty (" & Field & ") then");
             else
@@ -520,7 +520,7 @@ package body Xtree_Traversal is
 
          PL (O, "Relative_Indent (O, -1);");
 
-         if Is_Why_Id (FI) and Maybe_Null (FI) then
+         if Is_Why_Id (FI) and then Maybe_Null (FI) then
             Relative_Indent (O, -3);
             PL (O, "end if;");
          end if;
