@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                       Copyright (C) 2010-2016, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -189,7 +189,7 @@ package body Xtree_Traversal is
    begin
       PL_C (O, Traversal_Proc);
       PL_C (O, "  (" & State_Param & ",");
-      PL_C (O, "   Get_Node  (" & Node_Param & ")." & Field_Name (FI) & ");");
+      PL_C (O, "   Get_Node (" & Node_Param & ")." & Field_Name (FI) & ");");
    end Print_Call_To_Traversal_Proc;
 
    -----------------------------------------
