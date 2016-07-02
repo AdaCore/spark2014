@@ -1252,21 +1252,24 @@ package body Why.Atree.Sprint is
    ----------------
 
    procedure Print_Name (Node : W_Name_Id) is
-      Module    : constant W_Module_Id := Get_Module (Node);
-      Namespace : constant Name_Id := Get_Namespace (Node);
    begin
       if not Get_Infix (Node) then
-         if Module /= Why_Empty
-           and then Get_Name (Module) /= No_Name
-         then
-            Print_Module_Id (Module);
-            P (O, ".");
-         end if;
+         declare
+            Module    : constant W_Module_Id := Get_Module (Node);
+            Namespace : constant Name_Id := Get_Namespace (Node);
+         begin
+            if Module /= Why_Empty
+              and then Get_Name (Module) /= No_Name
+            then
+               Print_Module_Id (Module);
+               P (O, ".");
+            end if;
 
-         if Namespace /= No_Name then
-            P (O, Namespace);
-            P (O, ".");
-         end if;
+            if Namespace /= No_Name then
+               P (O, Namespace);
+               P (O, ".");
+            end if;
+         end;
       end if;
 
       P (O, Get_Symbol (Node));
