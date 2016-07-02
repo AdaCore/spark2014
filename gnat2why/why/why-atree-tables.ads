@@ -37,9 +37,7 @@ package Why.Atree.Tables is
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new Why node in table, and return its Id
 
-   function New_Why_Node_Id
-     (Kind : W_Any_Node)
-      return Why_Node_Id with
+   function New_Why_Node_Id (Kind : W_Any_Node) return Why_Node_Id with
      Post => (Get_Kind (New_Why_Node_Id'Result) = Kind);
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new (uninitialized) Why node in table of the given kind
