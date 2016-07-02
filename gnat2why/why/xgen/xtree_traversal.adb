@@ -37,6 +37,8 @@ package body Xtree_Traversal is
    Control     : constant Wide_String := State_Param & "." & "Control";
    Depth       : constant Wide_String := State_Param & "." & "Depth";
 
+   Node_Renaming : constant Wide_String := "This_Node";
+
    Terminate_Immediately : constant Wide_String := "Terminate_Immediately";
    Abandon_Children      : constant Wide_String := "Abandon_Children";
    Abandon_Siblings      : constant Wide_String := "Abandon_Siblings";
@@ -189,7 +191,7 @@ package body Xtree_Traversal is
    begin
       PL_C (O, Traversal_Proc);
       PL_C (O, "  (" & State_Param & ",");
-      PL_C (O, "   Get_Node (" & Node_Param & ")." & Field_Name (FI) & ");");
+      PL_C (O, "   " & Node_Renaming & "." & Field_Name (FI) & ");");
    end Print_Call_To_Traversal_Proc;
 
    -----------------------------------------
@@ -203,8 +205,6 @@ package body Xtree_Traversal is
    is
       use Node_Lists;
 
-      First_Child : Boolean := True;
-
       procedure Print_Sub_Traversal (Position : Cursor);
       --  Print the calls to traversal for child at Position
 
@@ -216,11 +216,6 @@ package body Xtree_Traversal is
          FI : constant Field_Info := Element (Position);
       begin
          if Is_Why_Id (FI) then
-            if First_Child then
-               NL (O);
-               First_Child := False;
-            end if;
-
             if Is_List (FI) then
                Print_Call_To_Traversal_Proc
                  (O, "Traverse_List", FI, In_Stub);
@@ -244,8 +239,20 @@ package body Xtree_Traversal is
          Return_If_Control (O, Abandon_Siblings);
       end if;
 
-      if Has_Variant_Part (Kind) then
+      if Has_Variant_Part (Kind)
+        and then (for some E of Why_Tree_Info (Kind).Fields => Is_Why_Id (E))
+      then
+         NL (O);
+         PL (O, "declare");
+         Relative_Indent (O, 3);
+         PL (O, Node_Renaming & " : Why_Node " &
+                "renames Get_Node (" & Node_Param & ");");
+         Relative_Indent (O, -3);
+         PL (O, "begin");
+         Relative_Indent (O, 3);
          Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
+         Relative_Indent (O, -3);
+         PL (O, "end;");
       end if;
 
       if not In_Stub then
