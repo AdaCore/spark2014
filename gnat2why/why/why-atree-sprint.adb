@@ -1184,7 +1184,7 @@ package body Why.Atree.Sprint is
       Separator : String := ", ";
       Newline   : Boolean := False)
    is
-      Nodes    : constant Why_Node_Lists.List := Get_List (List_Id);
+      Nodes : constant Why_Node_Lists.List := Get_List (List_Id);
    begin
       Print_List (Nodes, Callback, Separator, Newline);
    end Print_List;
@@ -1620,7 +1620,7 @@ package body Why.Atree.Sprint is
    -- Print_Record_Binder --
    -------------------------
 
-   procedure Print_Record_Binder (Node  : W_Record_Binder_Id)
+   procedure Print_Record_Binder (Node : W_Record_Binder_Id)
    is
    begin
       if Get_Is_Mutable (Node) then
