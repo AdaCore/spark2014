@@ -1234,14 +1234,17 @@ package body Why.Atree.Sprint is
      (Node      : W_Module_Id;
       With_File : Boolean := False)
    is
-      File : constant Name_Id := Get_File (Node);
    begin
-      if With_File
-        and then File /= No_Name
-      then
-         P (O, """");
-         P (O, File);
-         P (O, """.");
+      if With_File then
+         declare
+            File : constant Name_Id := Get_File (Node);
+         begin
+            if File /= No_Name then
+               P (O, """");
+               P (O, File);
+               P (O, """.");
+            end if;
+         end;
       end if;
 
       P (O, Capitalize_First (Get_Name_String (Get_Name (Node))));
