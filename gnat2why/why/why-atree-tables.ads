@@ -80,6 +80,8 @@ package Why.Atree.Tables is
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind;
    --  Get the kind of Node_Id
 
+   function Is_Checked (Node_Id : Why_Node_Id) return Boolean;
+
    function Option
      (Node  : Why_Node_Id;
       Value : Why_Node_Kind)
@@ -133,6 +135,9 @@ private
 
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
      (Node_Table (Node_Id).Kind);
+
+   function Is_Checked (Node_Id : Why_Node_Id) return Boolean is
+     (Node_Table (Node_Id).Checked);
 
    function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set is
      (Node_Table (Node_Id).Link);

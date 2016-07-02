@@ -77,8 +77,8 @@ private
 
    _@Implement_Checks@_
 
-   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
-     (Get_Node (Id).Checked);
+   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean renames
+     Is_Checked;
 
    function OId_Cache_Valid (Id : Why_Node_Id) return Boolean is
      (Id = Why_Empty or else Id_Cache_Valid (Id));
