@@ -73,7 +73,7 @@ package Why.Ids is
    --    this node has a kind that corresponds to the Id subtype; if it is an
    --    option, it can also be empty.
    --
-   --  Two these two properties corresponds three 4 classes of ids:
+   --  These two properties map into 4 classes of ids:
    --  * opaque ids: may not be kind-valid; no builders, accessors or mutators;
    --  * unchecked ids: may not be valid, but are kind-valid; builders with no
    --    params; mutators and accessors;
