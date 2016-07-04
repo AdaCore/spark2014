@@ -99,9 +99,9 @@ list_mod_allocator.adb:85:16: info: precondition proved
 list_mod_allocator.adb:86:13: info: loop invariant initialization proved
 list_mod_allocator.adb:86:13: info: loop invariant preservation proved
 list_mod_allocator.adb:89:13: info: loop invariant initialization proved
-list_mod_allocator.adb:89:13: info: loop invariant preservation proved
 list_mod_allocator.adb:91:28: info: index check proved
 list_mod_allocator.adb:91:65: info: range check proved
+list_mod_allocator.adb:92:24: medium: loop invariant might fail after first iteration, cannot prove Mem (Unseen, E)
 list_mod_allocator.adb:92:37: info: range check proved
 list_mod_allocator.adb:93:13: info: loop invariant initialization proved
 list_mod_allocator.adb:93:13: info: loop invariant preservation proved
