@@ -139,4 +139,35 @@ is
       Value := Value xor Shift_Right (Value, 18);
    end Random;
 
+   --------------------
+   -- Random_Integer --
+   --------------------
+
+   procedure Random_Integer (G     : in out Generator;
+                             Value :    out Integer;
+                             Min   : Integer := Integer'First;
+                             Max   : Integer := Integer'Last)
+   is
+      X : Unsigned_32;
+   begin
+      if Min = Integer'First and Max = Integer'Last then
+         Random (G, X);
+      else
+         declare
+            N    : constant Unsigned_32 :=
+              Unsigned_32 (Integer'Pos (Max) - Integer'Pos (Min) + 1);
+            Slop : constant Unsigned_32 := Unsigned_32'Last rem N + 1;
+         begin
+            loop
+               Random (G, X);
+               exit when Slop = N or else X <= Unsigned_32'Last - Slop;
+            end loop;
+
+            X := X rem N;
+            pragma Assert (X in 0 .. N - 1);
+         end;
+      end if;
+      Value := Integer'Val (Integer'Pos (Min) + Unsigned_32'Pos (X));
+   end Random_Integer;
+
 end Random;

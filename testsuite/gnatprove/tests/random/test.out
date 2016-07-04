@@ -45,7 +45,19 @@ random.adb:136:16: info: initialization of "Value" proved
 random.adb:137:16: info: initialization of "Value" proved
 random.adb:138:16: info: initialization of "Value" proved
 random.adb:139:16: info: initialization of "Value" proved
+random.adb:158:66: info: range check proved
+random.adb:159:61: info: division check proved
+random.adb:163:43: info: initialization of "X" proved
+random.adb:166:18: info: initialization of "X" proved
+random.adb:166:20: info: division check proved
+random.adb:167:13: info: assertion proved
+random.adb:167:28: info: initialization of "X" proved
+random.adb:170:47: info: range check proved
+random.adb:170:66: info: initialization of "X" proved
 random.ads:48:22: info: initialization of "Value" proved
+random.ads:52:30: info: initialization of "Value" proved
+random.ads:56:17: info: initialization of "Value" proved
+random.ads:56:17: info: postcondition proved
 Testing SPARK.Random...
 Everything is OK with Random.
 Testing GNAT.Random_Numbers...

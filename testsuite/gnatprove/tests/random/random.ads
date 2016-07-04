@@ -48,6 +48,14 @@ is
                      Value :    out Unsigned_32);
    --  Return the next number in the sequence.
 
+   procedure Random_Integer (G     : in out Generator;
+                             Value :    out Integer;
+                             Min   : Integer := Integer'First;
+                             Max   : Integer := Integer'Last)
+   with Pre  => Min <= Max,
+        Post => Value in Min .. Max;
+   --  Returns a random integer in the given range.
+
 private
 
    N : constant := 624;
