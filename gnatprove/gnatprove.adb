@@ -1187,6 +1187,8 @@ procedure Gnatprove is
 
       Args.Append ("-sa-messages");
       Args.Append ("-no-preconditions");
+      Args.Append ("-dbg-on");
+      Args.Append ("sm_msg_filter");
 
       --  codepeer subdirs option is relative to the object dir(s), so this is
       --  what we want
