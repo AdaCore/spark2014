@@ -3030,24 +3030,23 @@ package body Flow.Analysis is
    --  Start of processing for Find_Hidden_Unexposed_State
 
    begin
-      if No (Abstract_States (FA.Spec_Entity))
-        and then Enclosing_Package_Has_State (FA.Spec_Entity)
-      then
-         --  If the package does not have an abstract state aspect and
-         --  an enclosing package does introduces a state abstraction
-         --  then issue a medium check per hidden state.
-         Warn_About_Hidden_States (FA.Spec_Entity);
-      end if;
+      if Present (Abstract_States (FA.Spec_Entity)) then
+         --  If the package has an abstract state aspect then issue high
+         --  checks for every constant with variable input that is part of
+         --  the package's hidden state and is not exposed through a state
+         --  abstraction.
+         if Entity_Body_In_SPARK (FA.Spec_Entity) then
+            Warn_About_Unreferenced_Constants (FA.Spec_Entity);
+         end if;
 
-      if Present (Abstract_States (FA.Spec_Entity))
-        and then Present (Body_Entity (FA.Spec_Entity))
-        and then Entity_Body_In_SPARK (FA.Spec_Entity)
-      then
-         --  If the package has an abstract state aspect then issue
-         --  high checks for every constant with variable input that
-         --  is part of the package's hidden state and is not exposed
-         --  through a state abstraction.
-         Warn_About_Unreferenced_Constants (FA.Spec_Entity);
+      else
+         --  If the package does not have an abstract state aspect and an
+         --  enclosing package does introduces a state abstraction then issue
+         --  a medium check per hidden state.
+
+         if Enclosing_Package_Has_State (FA.Spec_Entity) then
+            Warn_About_Hidden_States (FA.Spec_Entity);
+         end if;
       end if;
 
    end Find_Hidden_Unexposed_State;
