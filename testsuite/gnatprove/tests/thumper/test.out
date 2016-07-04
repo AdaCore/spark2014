@@ -495,6 +495,7 @@ network-addresses.ads:25:48: info: initialization of "Result" proved
 network-addresses.ads:25:67: info: initialization of "Status" proved
 network-addresses.ads:39:07: info: initialization of "Text" proved
 network-addresses.ads:40:07: info: initialization of "Character_Count" proved
+network-socket-writer.ads:17:06: warning: no procedure exists that can initialize abstract state "Writer.Output_Message_Stream"
 postgresql.adb:19:22: warning: literal "CONNECTION_BAD" is not referenced
 postgresql.adb:23:07: warning: literal "CONNECTION_STARTED" is not referenced
 postgresql.adb:24:07: warning: literal "CONNECTION_MADE" is not referenced

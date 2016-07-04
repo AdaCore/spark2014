@@ -35,6 +35,7 @@ with Snames;                      use Snames;
 with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
+with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -3040,6 +3041,7 @@ package body Flow.Analysis is
 
       if Present (Abstract_States (FA.Spec_Entity))
         and then Present (Body_Entity (FA.Spec_Entity))
+        and then Entity_Body_In_SPARK (FA.Spec_Entity)
       then
          --  If the package has an abstract state aspect then issue
          --  high checks for every constant with variable input that

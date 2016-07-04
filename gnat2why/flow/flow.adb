@@ -47,8 +47,8 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Osint;                          use Osint;
 with Output;                         use Output;
-with Sem_Util;                       use Sem_Util;
 with Sem_Ch7;                        use Sem_Ch7;
+with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
@@ -1089,8 +1089,6 @@ package body Flow is
                Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
             when Kind_Package | Kind_Package_Body =>
-               pragma Assert (Entity_Spec_In_SPARK (FA.Spec_Entity));
-
                --  There is no need to create a GG graph if the package has an
                --  Initializes aspect.
                FA.GG.Aborted := Present (FA.Initializes_N);
@@ -1357,30 +1355,26 @@ package body Flow is
                if SPARK_Util.Subprograms.Analysis_Requested
                  (E, With_Inlined => True)
                  and then Entity_In_SPARK (E)
-                 and then Entity_Spec_In_SPARK (E)
                  and then not In_Predefined_Unit (E)
                  and then not Is_Wrapper_Package (E)
                  --  Do not generate graphs for wrapper packages of subprogram
                  --  instantiations since messages emitted on them would be
                  --  confusing.
                then
-                  declare
-                     Pkg_Body : constant Entity_Id := Body_Entity (E);
-                  begin
-                     if Present (Pkg_Body) then
-                        if Entity_Body_In_SPARK (E) then
-                           Graph_Start := Pkg_Body;
-                        else
-                           null;
-                           --  ??? warn that we can't flow analyze elaboration?
-                        end if;
-                     elsif Generating_Globals
-                       or else not Unit_Requires_Body (E)
-                     then
-                        Graph_Start := E;
+                  --  In phase 1 build graphs if SPARK_Mode is On | None;
+                  --  in phase 2 only if it is On.
+                  if Generating_Globals then
+                     Graph_Start :=
+                       (if Entity_Body_In_SPARK (E)
+                        then Body_Entity (E)
+                        else E);
+                  else
+                     if Entity_Spec_In_SPARK (E) then
+                        Graph_Start := (if Entity_Body_In_SPARK (E)
+                                        then Body_Entity (E)
+                                        else E);
                      end if;
-                  end;
-
+                  end if;
                end if;
 
             when others =>
@@ -1524,23 +1518,37 @@ package body Flow is
                   end if;
 
                when Kind_Package | Kind_Package_Body =>
-                  --  In "Prove" mode we do not care about hidden
-                  --  unexposed state, ineffective statements, dead
-                  --  code and impossible to initialize state
-                  --  abstractions.
-                  if not Gnat2Why_Args.Prove_Mode then
-                     Analysis.Find_Hidden_Unexposed_State (FA);
-                     Analysis.Find_Ineffective_Statements (FA);
-                     Analysis.Find_Dead_Code (FA);
-                     Analysis.Find_Impossible_To_Initialize_State (FA);
-                  end if;
-                  Analysis.Check_Aliasing (FA);
-                  Analysis.Find_Non_Elaborated_State_Abstractions (FA);
-                  Analysis.Find_Use_Of_Uninitialized_Variables (FA);
-                  Analysis.Check_Initializes_Contract (FA);
-                  if FA.Kind = Kind_Package_Body then
-                     Analysis.Check_Elaborate_Body (FA);
-                  end if;
+                  declare
+                     Have_Full_Package_Code : constant Boolean :=
+                       not Unit_Requires_Body (FA.Spec_Entity,
+                                               Do_Abstract_States => True)
+                       or else Present (Body_Entity (FA.Spec_Entity));
+                     --  Some analysis only makes sense if we have already the
+                     --  full code for a package, i.e. it is not just the spec
+                     --  that needs to be completed by a body.
+
+                  begin
+                     --  In "Prove" mode we do not care about hidden unexposed
+                     --  state, ineffective statements, dead code and
+                     --  impossible to initialize state abstractions.
+                     if not Gnat2Why_Args.Prove_Mode then
+                        Analysis.Find_Ineffective_Statements (FA);
+                        Analysis.Find_Dead_Code (FA);
+                        if Have_Full_Package_Code then
+                           Analysis.Find_Hidden_Unexposed_State (FA);
+                           Analysis.Find_Impossible_To_Initialize_State (FA);
+                        end if;
+                     end if;
+                     Analysis.Check_Aliasing (FA);
+                     Analysis.Find_Non_Elaborated_State_Abstractions (FA);
+                     if Have_Full_Package_Code then
+                        Analysis.Find_Use_Of_Uninitialized_Variables (FA);
+                        Analysis.Check_Initializes_Contract (FA);
+                     end if;
+                     if FA.Kind = Kind_Package_Body then
+                        Analysis.Check_Elaborate_Body (FA);
+                     end if;
+                  end;
             end case;
          end if;
 

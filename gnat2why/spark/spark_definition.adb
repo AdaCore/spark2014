@@ -262,10 +262,18 @@ package body SPARK_Definition is
 
    function Body_Statements_In_SPARK (E : Entity_Id) return Boolean is
    begin
-      return
-        Entity_Body_In_SPARK (E) and then
-        Get_SPARK_Mode_From_Annotation
-          (SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)))) /= Off;
+      if Entity_Body_In_SPARK (E) then
+         declare
+            Prag : constant Node_Id :=
+              SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
+         begin
+            return
+              (if Present (Prag)
+               then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
+         end;
+      else
+         return False;
+      end if;
    end Body_Statements_In_SPARK;
 
    --------------------------
@@ -4468,7 +4476,7 @@ package body SPARK_Definition is
 
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-            if SPARK_Pragma_Is (Opt.On) then
+            if not SPARK_Pragma_Is (Opt.Off) then
 
                declare
                   HSS : constant Node_Id := Handled_Statement_Sequence (N);
@@ -4480,12 +4488,7 @@ package body SPARK_Definition is
 
             end if;
 
-            --  Finally check if SPARK_Mode => On applies to body and no
-            --  violation was detected.
-
-            Current_SPARK_Pragma := SPARK_Pragma (Body_E);
-
-            if SPARK_Pragma_Is (Opt.On) and then not Violation_Detected then
+            if not Violation_Detected then
                Bodies_In_SPARK.Insert (Spec_E);
             end if;
          end if;
@@ -4568,12 +4571,20 @@ package body SPARK_Definition is
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
             --  Private declarations cannot be referenced from the outside;
-            --  if SPARK_Mode is Off then just skip them, but the Retysp magic
-            --  relies on their marking status (which is most likely a bug).
+            --  if SPARK_Mode is Off then should just skip them, but the Retysp
+            --  magic relies on their marking status (which most likely hides
+            --  some underlying problem).
 
             Mark_Stmt_Or_Decl_List (Priv_Decls);
 
-            if not Violation_Detected then
+            --  Finally, if the the package has SPARK_Mode On | None and there
+            --  are no violations then record it as in SPARK.
+
+            Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+            if not SPARK_Pragma_Is (Opt.Off)
+              and then not Violation_Detected
+            then
                Entities_In_SPARK.Include (Id);
             end if;
 
@@ -5671,7 +5682,7 @@ package body SPARK_Definition is
       --  In the usual case where Current_SPARK_Pragma is a pragma node, get
       --  the current mode from the pragma.
 
-       else Mode = Opt.None
+      else Mode = Opt.None
       --  Otherwise there is no applicable pragma, so SPARK_Mode is None
      );
 

@@ -1,0 +1,2 @@
+gnat_bug.ads:16:52: medium: this interrupt might be reserved
+main.adb:5:11: info: ceiling priority protocol is respected
