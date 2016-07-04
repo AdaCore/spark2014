@@ -55,8 +55,6 @@ package body Gnat2Why.Error_Messages is
    function Hash (X : VC_Id) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (X));
 
-   function To_String (M : Message_And_Location) return String;
-
    package Id_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => VC_Id,
       Element_Type    => VC_Info,
@@ -258,7 +256,6 @@ package body Gnat2Why.Error_Messages is
                     Make_Msg_Loc (Loc => Make_CodePeer_Loc (Slc),
                                   Msg => Opt.Msg);
                begin
-                  Ada.Text_IO.Put_Line ("checking for " & To_String (Msg));
                   return Codepeer_Proved.Contains (Msg);
                end;
             else
@@ -440,8 +437,6 @@ package body Gnat2Why.Error_Messages is
             Msg : constant Message_And_Location := Get;
          begin
             if Message (Msg).Check_Result = Statically_Known_Success then
-               Ada.Text_IO.Put_Line
-                 ("adding " & To_String (Msg));
                Codepeer_Proved.Include (Msg);
             end if;
          end;
@@ -849,19 +844,5 @@ package body Gnat2Why.Error_Messages is
    begin
       VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
    end Register_VC_Entity;
-
-   ---------------
-   -- To_String --
-   ---------------
-
-   function To_String (M : Message_And_Location) return String is
-      L : constant Source_Location := Location (M);
-      H : constant Ada.Containers.Hash_Type := Hash (M);
-   begin
-      return File_Name (L) & Line_Number'Image (Line (L)) &
-        SA_Messages.Column_Number'Image (Column (L)) & " " &
-        Message_Kind'Image (Message (M).Kind) &
-        Ada.Containers.Hash_Type'Image (H);
-   end To_String;
 
 end Gnat2Why.Error_Messages;
