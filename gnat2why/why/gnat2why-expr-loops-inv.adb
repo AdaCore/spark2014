@@ -508,11 +508,12 @@ package body Gnat2Why.Expr.Loops.Inv is
       for C in Loop_Writes.Iterate loop
          N := Key (C);
 
-         pragma Assert (Nkind (N) in N_Entity
-                          and then Ekind (N) in Object_Kind
-                          and then Is_Mutable_In_Why (N));
-
          if Element (C).Kind /= Discard then
+
+            pragma Assert (Nkind (N) in N_Entity
+                           and then Ekind (N) in Object_Kind
+                           and then Is_Mutable_In_Why (N));
+
             declare
                Binder : constant Item_Type :=
                  Ada_Ent_To_Why.Element (Symbol_Table, N);
@@ -1091,13 +1092,13 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  can be considered preserved.
 
          when N_Identifier | N_Expanded_Name =>
-
             One_Level_Update
               (New_Write      => Entity (New_Write),
                Loop_Writes    => Loop_Writes,
                Expected_Kind  => Expected_Kind,
-               Discard_Writes => Has_Async_Writers
-                 (Direct_Mapping_Id (Entity (New_Write))),
+               Discard_Writes => Has_Volatile (Entity (New_Write))
+               or else Is_Protected_Component_Or_Discr_Or_Part_Of
+                 (Entity (New_Write)),
                Updated_Status => Updated_Status);
 
             Expected_Type := Retysp (Etype (New_Write));
