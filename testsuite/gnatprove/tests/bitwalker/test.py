@@ -1,2 +1,4 @@
 from test_support import *
-prove_all(steps=50,prover=["cvc4","alt-ergo"])
+prove_all(prover=["cvc4","alt-ergo"],
+          steps=500,
+          counterexample=False)

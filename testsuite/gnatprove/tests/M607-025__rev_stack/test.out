@@ -9,7 +9,7 @@ list.adb:22:16: info: initialization of "S" proved
 list.adb:22:19: info: precondition proved
 list.adb:22:31: info: range check proved
 list.adb:23:10: info: loop invariant initialization proved
-list.adb:23:10: medium: loop invariant might fail after first iteration
+list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
@@ -66,7 +66,7 @@ stack.ads:12:17: info: postcondition proved
 stack.ads:23:14: info: postcondition proved
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
-stack.ads:31:14: medium: postcondition might fail, cannot prove To (S) = To (S)'Old & (1 => X)
+stack.ads:31:14: info: postcondition proved
 stack.ads:31:34: info: range check proved
 stack.ads:39:14: info: postcondition proved
 stack.ads:39:29: info: range check proved

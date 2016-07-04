@@ -3,12 +3,12 @@ bitspec.ads:10:24: info: division check proved
 bitspec.ads:10:24: info: index check proved
 bitspec.ads:10:39: info: division check proved
 bitspec.ads:11:47: info: division check proved
-bitwalker.adb:15:22: medium: assertion might fail, cannot prove Left_Bv < 64
-bitwalker.adb:16:22: medium: assertion might fail, cannot prove 63 - Left_Bv = 63 - Left
+bitwalker.adb:15:07: info: assertion proved
+bitwalker.adb:16:07: info: assertion proved
 bitwalker.adb:16:53: info: range check proved
 bitwalker.adb:19:59: info: range check proved
+bitwalker.adb:23:10: info: assertion proved
 bitwalker.adb:26:31: info: precondition proved
-bitwalker.adb:26:31: medium: assertion might fail, cannot prove Nth_Bv (R, I) = Nth_Bv (Value, I)
 bitwalker.adb:26:47: info: precondition proved
 bitwalker.adb:28:10: medium: assertion might fail
 bitwalker.adb:33:25: medium: assertion might fail, cannot prove Flag = Nth_Bv (R, 63 - Left_Bv)
@@ -56,8 +56,8 @@ bitwalker.adb:110:36: info: overflow check proved
 bitwalker.adb:119:10: info: loop invariant initialization proved
 bitwalker.adb:119:10: info: loop invariant preservation proved
 bitwalker.adb:120:10: info: loop invariant initialization proved
+bitwalker.adb:120:10: info: loop invariant preservation proved
 bitwalker.adb:122:15: info: precondition proved
-bitwalker.adb:122:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr'Loop_Entry, J) = Nth8_Stream (Addr, J)
 bitwalker.adb:122:50: info: precondition proved
 bitwalker.adb:123:10: info: loop invariant initialization proved
 bitwalker.adb:125:15: info: precondition proved
@@ -66,8 +66,8 @@ bitwalker.adb:125:34: info: range check proved
 bitwalker.adb:125:39: info: precondition proved
 bitwalker.adb:125:63: info: range check proved
 bitwalker.adb:126:10: info: loop invariant initialization proved
+bitwalker.adb:126:10: info: loop invariant preservation proved
 bitwalker.adb:128:15: info: precondition proved
-bitwalker.adb:128:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, J) = Nth8_Stream (Addr'Loop_Entry, J)
 bitwalker.adb:128:34: info: range check proved
 bitwalker.adb:128:39: info: precondition proved
 bitwalker.adb:128:69: info: range check proved
@@ -77,8 +77,8 @@ bitwalker.adb:130:47: info: range check proved
 bitwalker.adb:132:10: info: precondition proved
 bitwalker.adb:133:31: info: overflow check proved
 bitwalker.adb:134:25: info: initialization of "Flag" proved
-bitwalker.adb:136:25: medium: assertion might fail, cannot prove Nth8_Stream (Addr, Start + I) = Nth (Value, Len - I - 1)
-bitwalker.adb:136:25: medium: precondition might fail
+bitwalker.adb:136:10: info: assertion proved
+bitwalker.adb:136:25: info: precondition proved
 bitwalker.adb:137:25: info: precondition proved
 bitwalker.adb:137:45: info: range check proved
 bitwalker.adb:138:10: medium: assertion might fail
@@ -92,12 +92,12 @@ bitwalker.adb:152:24: info: precondition proved
 bitwalker.adb:152:32: info: range check proved
 bitwalker.adb:152:37: info: precondition proved
 bitwalker.adb:152:59: info: range check proved
+bitwalker.adb:153:07: info: assertion proved
 bitwalker.adb:153:22: info: precondition proved
-bitwalker.adb:153:22: medium: assertion might fail, cannot prove Eq_Sub (X, 0, Natural (Len_Bv), 64 - Len_Bv)
 bitwalker.adb:153:45: info: range check proved
-bitwalker.adb:153:66: medium: range check might fail
+bitwalker.adb:153:66: info: range check proved
+bitwalker.adb:154:07: info: assertion proved
 bitwalker.adb:154:22: info: precondition proved
-bitwalker.adb:154:22: medium: assertion might fail, cannot prove Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv)
 bitwalker.adb:155:22: medium: assertion might fail, cannot prove X and (MaxValue (Len) - 1)) = X
 bitwalker.adb:155:40: info: range check proved
 bitwalker.adb:167:16: info: precondition proved
@@ -177,7 +177,7 @@ bitwalker.ads:114:20: info: initialization of "Result" proved
 bitwalker.ads:116:26: medium: precondition might fail
 bitwalker.ads:116:45: info: range check proved
 bitwalker.ads:117:22: medium: precondition might fail
-bitwalker.ads:117:45: medium: range check might fail
+bitwalker.ads:117:45: info: range check proved
 bitwalker.ads:123:47: info: precondition proved
 bitwalker.ads:123:55: info: range check proved
 bitwalker.ads:124:16: medium: postcondition might fail
