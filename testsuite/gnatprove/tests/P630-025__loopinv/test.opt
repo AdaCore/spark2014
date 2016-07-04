@@ -1,1 +1,1 @@
-ALL XFAIL failed assertion in loopinv generation (P701-043)
+ALL XFAIL procedure call on record protected component (P704-005)
