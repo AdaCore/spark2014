@@ -188,7 +188,7 @@ proof and can be selected with ``all``.
 Instead of setting individually switches that influence the speed and power of
 proof, one may use the switch ``--level``, which corresponds to predefined
 proof levels, from the faster level 0 (the default value) to the more powerful
-level 5. More precisely, each value of ``--level`` is equivalent to directly
+level 4. More precisely, each value of ``--level`` is equivalent to directly
 setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
@@ -200,9 +200,7 @@ setting a collection of other switches discussed above:
 * ``--level=3`` is equivalent to
   ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,cvc4_alt,z3,altergo --proof=progressive --steps=10000``
-* ``--level=4`` is equivalent to
-  ``--prover=cvc4,cvc4_alt,z3,altergo --proof=progressive --steps=25000``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000``
 
 When ``--timeout=auto`` is used, a value of timeout is set depending on the
 proof level:
@@ -210,7 +208,6 @@ proof level:
 * At levels 0 and 1, ``--timeout=auto`` is equivalent to ``--timeout=1``
 * At levels 2 and 3, ``--timeout=auto`` is equivalent to ``--timeout=10``
 * At level 4, ``--timeout=auto`` is equivalent to ``--timeout=60``
-* At level 5, ``--timeout=auto`` is equivalent to ``--timeout=120``
 
 If both ``--level`` is set and an underlying switch is set (``--prover``,
 ``--steps``, or ``--proof``), the value of the latter takes precedence over the
