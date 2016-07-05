@@ -126,15 +126,12 @@ $(DOC):
 	$(MAKE) -C docs/$@ clean
 
 gnat2why-nightly:
-	$(MAKE) -C gnat2why/why/xgen
 	$(MAKE) -C gnat2why AUTOMATED=1 GPRARGS=$(PROD)
 
 gnat2why:
-	$(MAKE) -C gnat2why/why/xgen
 	$(MAKE) -C gnat2why
 
 coverage:
-	$(MAKE) -C gnat2why/why/xgen
 	$(MAKE) -C gnat2why coverage
 	cd gnat2why/testsuite; ./run-tests -j 5
 
@@ -159,7 +156,6 @@ install-examples:
 	  $(EXAMPLESDIR)/gnatprove_by_example
 
 clean:
-	$(MAKE) -C gnat2why/why/xgen clean
 	$(MAKE) -C gnat2why clean
 	$(MAKE) -C gnatprove clean
 	$(MAKE) -C docs/ug clean

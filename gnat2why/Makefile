@@ -37,6 +37,7 @@ endif
 all: build
 
 setup:
+	$(MAKE) -C why/xgen
 	mkdir -p obj obj-tools ../install/bin
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" \
 	    -e "s^@ADALIB@^$(adalib)^" \
@@ -71,4 +72,5 @@ coverage: setup force
 force:
 
 clean:
+	$(MAKE) -C why/xgen clean
 	-$(RM) obj obj-tools
