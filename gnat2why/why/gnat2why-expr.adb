@@ -12004,6 +12004,7 @@ package body Gnat2Why.Expr is
               Pragma_No_Tagged_Streams            |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
+              Pragma_Secondary_Stack_Size         |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |

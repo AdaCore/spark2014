@@ -135,6 +135,7 @@ Linker_Section      	      Yes
 Overflow_Mode                 Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes
+Secondary_Stack_Size          Yes
 Style_Checks      	      Yes
 Test_Case          	      Yes
 Unmodified                    Yes
