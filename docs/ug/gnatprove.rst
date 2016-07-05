@@ -316,13 +316,13 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
   You then need to copy (or make a symbolic link under unix) the
   <ravenscar-sfp-stm32f4 runtime> directory to the |SPARK| installation, under
-  :file:`<spark-prefix>/libexec/share/spark/runtimes`, for example using `bash`
+  :file:`<spark-prefix>/share/spark/runtimes`, for example using `bash`
   syntax:
 
   .. code-block:: sh
 
     cp -pr $(dirname $(arm-eabi-gnatls -v --RTS=ravenscar-sfp-stm32f4 | grep adalib)) \
-      <spark-prefix>/libexec/share/spark/runtimes
+      <spark-prefix>/share/spark/runtimes
 
   Then if not already present in your project file, you need to add the
   following:
