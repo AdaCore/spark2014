@@ -580,7 +580,7 @@ is
       return Entity_Id
    with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                 F.Facet = Normal_Part,
-        Post => Nkind (Get_Type'Result) = N_Defining_Identifier;
+        Post => Is_Type (Get_Type'Result);
    --  @param F is the Flow_Id who's type we need to retrieve
    --  @param Scope is the scope relative to which we retrieve the type
    --  @return the entity corresponding to the type of F. If the full view
