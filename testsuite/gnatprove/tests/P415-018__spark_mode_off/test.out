@@ -1,0 +1,1 @@
+names.ads:9:22: warning: no procedure exists that can initialize abstract state "Names.Name_Table"
