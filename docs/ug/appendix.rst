@@ -17,83 +17,84 @@ Command Line Invocation
  -cargs switches are passed to gcc
 
  gnatprove basic switches:
- -aP=p               Add path p to project path
-     --assumptions   Output assumptions information
-     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)
-     --clean         Remove GNATprove intermediate files, and exit
- -f                  Force recompilation/analysis of all units
- -h, --help          Display this usage information
- -jnnn               Use nnn parallel processes (default: 1)
- -k                  Do not stop analysis at the first error
-     --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
- -m                  Minimal reanalysis
-     --mode=m        Set the mode of GNATprove (m=check, check_all, flow,
-                     prove, all*)
- -q, --quiet         Be quiet/terse
-     --report=r      Set the report mode of GNATprove (r=fail*, all, provers,
-                     statistics)
- -u                  Unique analysis. Only analyze the given units
- -U                  Analyze all units of all projects
- -v, --verbose       Output extra verbose information
-     --version       Output version of the tool and exit
-     --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
+  -aP=p               Add path p to project path
+      --assumptions   Output assumptions information
+      --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)
+      --clean         Remove GNATprove intermediate files, and exit
+  -f                  Force recompilation/analysis of all units
+  -h, --help          Display this usage information
+  -jnnn               Use nnn parallel processes (default: 1)
+  -k                  Do not stop analysis at the first error
+      --level=n       Set the level of proof (0 = faster* to 5 = more powerful)
+  -m                  Minimal reanalysis
+      --mode=m        Set the mode of GNATprove (m=check, check_all, flow,
+                      prove, all*)
+  -q, --quiet         Be quiet/terse
+      --report=r      Set the report mode of GNATprove (r=fail*, all, provers,
+                      statistics)
+  -u                  Unique analysis. Only analyze the given units
+  -U                  Analyze all units of all projects
+  -v, --verbose       Output extra verbose information
+      --version       Output version of the tool and exit
+      --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
 
- * Main mode values
-   . check         - Fast partial check for SPARK violations
-   . check_all     - Full check for SPARK violations
-   . flow          - Prove correct initialization and data flow
-   . prove         - Prove absence of run-time errors and contracts
-   . all           - Activates all modes (default)
+  * Main mode values
+    . check         - Fast partial check for SPARK violations
+    . check_all     - Full check for SPARK violations
+    . flow          - Prove correct initialization and data flow
+    . prove         - Prove absence of run-time errors and contracts
+    . all           - Activates all modes (default)
 
- * Report mode values
-   . fail          - Report failures to prove checks (default)
-   . all           - Report all results of proving checks
-   . provers       - Same as all, plus prover usage information
-   . statistics    - Same as provers, plus timing and steps information
+  * Report mode values
+    . fail          - Report failures to prove checks (default)
+    . all           - Report all results of proving checks
+    . provers       - Same as all, plus prover usage information
+    . statistics    - Same as provers, plus timing and steps information
 
- * Warning mode values
-   . off           - Do not issue warnings
-   . continue      - Issue warnings and continue (default)
-   . error         - Treat warnings as errors
+  * Warning mode values
+    . off           - Do not issue warnings
+    . continue      - Issue warnings and continue (default)
+    . error         - Treat warnings as errors
 
  gnatprove advanced switches:
- --no-counterexample Do not generate a counterexample for unproved formulas
- -d, --debug         Debug mode
- --dbg-proof-only    Disable flow analysis (possibly unsound results)
- --flow-debug        Extra debugging for flow analysis (requires graphviz)
- --limit-line=s      Limit analysis to given file and line
- --limit-subp=s      Limit analysis to subprogram defined by file and line
- --pedantic          Use a strict interpretation of the Ada standard
- --proof=g[:l]       Set the proof modes for generation of formulas
-                     (g=per_check*, per_path, progressive) (l=lazy*, all)
- --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
- --RTS=dir           Specify the Ada runtime name/location
- --steps=nnn         Set the maximum number of proof steps (prover-specific)
-                     Use value 0 for no steps limit.
- --timeout=s         Set the prover timeout in seconds (s=auto, nnn)
-                     Use value 0 for no timeout.
-                     Use value auto for timeout adjusted to proof level.
- --why3-conf=f       Specify a configuration file for why3
+  --no-counterexample Do not generate a counterexample for unproved formulas
+  -d, --debug         Debug mode
+  --dbg-proof-only    Disable flow analysis (possibly unsound results)
+  --flow-debug        Extra debugging for flow analysis (requires graphviz)
+  --limit-line=s      Limit analysis to given file and line
+  --limit-subp=s      Limit analysis to subprogram defined by file and line
+  --pedantic          Use a strict interpretation of the Ada standard
+  --proof=g[:l]       Set the proof modes for generation of formulas
+                      (g=per_check*, per_path, progressive) (l=lazy*, all)
+  --prover=s[,s]*     Use given provers (s=cvc4*,cvc4_alt,z3,altergo,...)
+  --RTS=dir           Specify the Ada runtime name/location
+  --steps=nnn         Set the maximum number of proof steps (prover-specific)
+                      Use value 0 for no steps limit.
+  --timeout=s         Set the prover timeout in seconds (s=auto, nnn)
+                      Use value 0 for no timeout.
+                      Use value auto for timeout adjusted to proof level.
+  --why3-conf=f       Specify a configuration file for why3
 
- * Proof mode values for generation
-   . per_check     - Generate one formula per check (default)
-   . per_path      - Generate one formula per path for each check
-   . progressive   - Start with one formula per check, then split into
-                     paths when needed
+  * Proof mode values for generation
+    . per_check     - Generate one formula per check (default)
+    . per_path      - Generate one formula per path for each check
+    . progressive   - Start with one formula per check, then split into
+                      paths when needed
 
- * Proof mode values for laziness
-   . lazy          - Stop at first unproved formula for each check
-                     (most suited for fully automatic proof) (default)
-   . all           - Attempt to prove all formulas
-                     (most suited for combination of automatic and manual proof)
+  * Proof mode values for laziness
+    . lazy          - Stop at first unproved formula for each check
+                      (most suited for fully automatic proof) (default)
+    . all           - Attempt to prove all formulas
+                      (most suited for combination of automatic and manual proof)
 
- * Prover name values
-   (Default prover is cvc4.)
-   (Provers marked with [steps] support the --steps switch.)
-   . altergo       - [steps] Use Alt-Ergo
-   . cvc4          - [steps] Use CVC4
-   . z3            - [steps] Use Z3
-   . ...           - Any other prover configured in your .why3.conf file
+  * Prover name values
+    (Default prover is cvc4.)
+    (Provers marked with [steps] support the --steps switch.)
+    . altergo       - [steps] Use Alt-Ergo
+    . cvc4          - [steps] Use CVC4
+    . cvc4_alt      - [steps] Use CVC4 (alternative flags)
+    . z3            - [steps] Use Z3
+    . ...           - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
 
@@ -106,12 +107,13 @@ Installed with |SPARK|
 The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool. By
 default, |GNATprove| uses prover CVC4 only. Switch ``--level`` changes the
 default to use one or more provers depending on the chosen level (see
-:ref:`Running GNATprove from the Command Line`). Switch ``--prover`` allows to
-use another prover, or a list of provers. Prover names ``altergo``, ``cvc4``
-and ``z3`` are used to refer to the versions of provers Alt-Ergo, CVC4 and Z3
-that are installed with the |SPARK| toolset. The string ``alt-ergo`` can also
-be used to refer to Alt-Ergo. More information on Alt-Ergo, CVC4 and Z3 can be
-found on their respective websites:
+:ref:`Running GNATprove from the Command Line`). Switch ``--prover`` allows
+to use another prover, or a list of provers. Prover names ``altergo``,
+``cvc4``, ``'cvc4_alt``, and ``z3`` are used to refer to the versions of
+provers Alt-Ergo, CVC4 and Z3 that are installed with the |SPARK| toolset.
+The string ``alt-ergo`` can also be used to refer to Alt-Ergo. More
+information on Alt-Ergo, CVC4 and Z3 can be found on their respective
+websites:
 
  * Alt-Ergo: http://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.nyu.edu

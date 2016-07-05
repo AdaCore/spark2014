@@ -140,7 +140,7 @@ ASCII.LF &
 " -k                  Do not stop analysis at the first error" &
 ASCII.LF &
 "     --level=n       Set the level of proof " &
-"(0 = faster* to 4 = more powerful)" &
+"(0 = faster* to 5 = more powerful)" &
 ASCII.LF &
 " -m                  Minimal reanalysis" &
 ASCII.LF &
@@ -222,7 +222,7 @@ ASCII.LF &
 ASCII.LF &
 "                     (g=per_check*, per_path, progressive) (l=lazy*, all)" &
 ASCII.LF &
-" --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)" &
+" --prover=s[,s]*     Use given provers (s=cvc4*,cvc4_alt,z3,altergo,...)" &
 ASCII.LF &
 " --RTS=dir           Specify the Ada runtime name/location" &
 ASCII.LF &
@@ -271,6 +271,8 @@ ASCII.LF &
 "   . altergo       - [steps] Use Alt-Ergo" &
 ASCII.LF &
 "   . cvc4          - [steps] Use CVC4" &
+ASCII.LF &
+"   . cvc4_alt      - [steps] Use CVC4 (alternative flags)" &
 ASCII.LF &
 "   . z3            - [steps] Use Z3" &
 ASCII.LF &
@@ -939,17 +941,31 @@ ASCII.LF;
                Steps := 1000;
                Timeout := 10;
 
-               --  Level 4 is equivalent to --prover=cvc4,z3,altergo
+               --  Level 4 is equivalent to --prover=cvc4,cvc4_alt,z3,altergo
                --    --proof=progressive --steps=10000
                --  If --timeout=auto is given, level 4 implies --timeout=60
 
             when 4 =>
                Provers.Append ("cvc4");
+               Provers.Append ("cvc4_alt");
                Provers.Append ("z3");
                Provers.Append ("altergo");
                Proof := Progressive;
                Steps := 10_000;
                Timeout := 60;
+
+               --  Level 5 is equivalent to --prover=cvc4,cvc4_alt,z3,altergo
+               --    --proof=progressive --steps=25000
+               --  If --timeout=auto is given, level 4 implies --timeout=120
+
+            when 5 =>
+               Provers.Append ("cvc4");
+               Provers.Append ("cvc4_alt");
+               Provers.Append ("z3");
+               Provers.Append ("altergo");
+               Proof := Progressive;
+               Steps := 25_000;
+               Timeout := 120;
 
             when others =>
                Abort_Msg (Config,
