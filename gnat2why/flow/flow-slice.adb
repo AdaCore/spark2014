@@ -701,11 +701,30 @@ package body Flow.Slice is
          return Subs_Without_Contracts;
       end Subprograms_Without_Contracts;
 
-      All_Ins, Ordinary_Ins : Node_Sets.Set;
+      Ordinary_Ins : Node_Sets.Set;
 
    --  Start of processing for Compute_Globals
 
    begin
+      --  Detect ordinary inputs, i.e. non-proof ones
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         --  We iterate over vertices in the PDG and collect variables that are
+         --  used on vertices unrelated to proof.
+
+         declare
+            A : V_Attributes renames FA.Atr (V);
+
+         begin
+            if FA.PDG.Get_Key (V).Variant = Final_Value or else A.Is_Proof
+            then
+               null;
+            else
+               Ordinary_Ins.Union
+                 (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
+            end if;
+         end;
+      end loop;
+
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
       Inputs.Clear;
@@ -719,6 +738,7 @@ package body Flow.Slice is
 
             FS : constant Flow_Id_Sets.Set :=
               Flatten_Variable (Direct_Mapping_Id (G), FA.B_Scope);
+            --  ??? why not Flatten_Variable (G, FA.B_Scope)?
 
             V_Initial, V_Final : Flow_Graphs.Vertex_Id;
 
@@ -763,34 +783,15 @@ package body Flow.Slice is
                end if;
 
                if not Is_Written then
-                  All_Ins.Insert (G);
+                  if Ordinary_Ins.Contains (G) then
+                     Inputs.Insert (G);
+                  else
+                     Inputs_Proof.Insert (G);
+                  end if;
                end if;
             end if;
          end;
       end loop;
-
-      --  Detect ordinary inputs, i.e. non-proof ones
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         --  We iterate over vertices in the PDG and remove from the set
-         --  All_Proof_Ins those variables that are used on vertices not
-         --  related to proof.
-
-         declare
-            A : V_Attributes renames FA.Atr (V);
-
-         begin
-            if FA.PDG.Get_Key (V).Variant = Final_Value or else A.Is_Proof
-            then
-               null;
-            else
-               Ordinary_Ins.Union
-                 (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
-            end if;
-         end;
-      end loop;
-
-      Inputs_Proof := All_Ins - Ordinary_Ins;
-      Inputs.Union (All_Ins and Ordinary_Ins);
 
       --  Classify subprogram calls into proof, definite and conditional ones
       Proof_Calls       := Get_Proof_Subprograms;
