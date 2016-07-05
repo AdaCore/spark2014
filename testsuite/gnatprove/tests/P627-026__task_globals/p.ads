@@ -1,5 +1,5 @@
 package P is
 
-   pragma Elaborate_Body;
+   task type TT (X : Integer);
 
 end P;
