@@ -1,0 +1,35 @@
+hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
+hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
+node_a.adb:21:20: info: range check proved
+polyorb_hi-epoch.adb:32:06: warning: unit "System" is not referenced
+polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
+polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:49:04: warning: formal object "Task_Deadline" is not referenced
+polyorb_hi-periodic_task.ads:55:04: warning: formal object "Task_Stack_Size" is not referenced
+polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:65:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:65:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi_generated-deployment.ads:52:06: info: length check proved
+polyorb_hi_generated-deployment.ads:53:08: info: length check proved
+polyorb_hi_generated-deployment.ads:87:06: info: length check proved
+polyorb_hi_generated-deployment.ads:112:06: info: length check proved
+polyorb_hi_generated-deployment.ads:113:08: info: length check proved
+polyorb_hi_generated-deployment.ads:115:08: info: length check proved
+polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
+polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect

@@ -180,12 +180,18 @@ package body SPARK_Rewrite is
    --  static expression when in bounds, otherwise an error should have been
    --  emitted.
 
+   --  Also ignore unanalyzed nodes without Etype, as these correspond to parts
+   --  of the AST that should not be used in GNATprove, typically values under
+   --  Associated_Node or Generic_Associations.
+
    procedure Rewrite_Real_Literal (N : Node_Id) is
       Par : constant Node_Id := Parent (N);
       PK  : constant Node_Kind := Nkind (Par);
    begin
-      if PK in N_Subexpr and then not Is_Static_Expression (Par) then
-         pragma Assert (Present (Etype (N)));
+      if PK in N_Subexpr
+        and then not Is_Static_Expression (Par)
+        and then Present (Etype (N))
+      then
          Check_Non_Static_Context (N);
       end if;
    end Rewrite_Real_Literal;
