@@ -1,0 +1,2 @@
+pragma Initialize_Scalars;
+pragma Suppress (Tampering_Check);
