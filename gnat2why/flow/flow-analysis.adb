@@ -2872,23 +2872,12 @@ package body Flow.Analysis is
       function Enclosing_Package_Has_State (E : Entity_Id) return Boolean is
          Scop : Entity_Id := E;
       begin
-         --  If we reach Standard_Standard then there is no
-         --  enclosing package which has state.
+         loop
+            --  If we find a package then we look if it has abstract state
 
-         while Present (Scop) and then Scop /= Standard_Standard loop
+            pragma Assert (Ekind (Scop) /= E_Generic_Package);
 
-            --  If we find a body then we need to look if the entity
-            --  of the spec has abstract state.
-
-            if Ekind (Scop) = E_Package_Body
-              and then Present (Abstract_States (Spec_Entity (Scop)))
-            then
-               return True;
-
-            --  If we find a spec then we look if it has abstract
-            --  state.
-
-            elsif Is_Package_Or_Generic_Package (Scop)
+            if Ekind (Scop) = E_Package
               and then Present (Abstract_States (Scop))
             then
                return True;
@@ -2903,10 +2892,13 @@ package body Flow.Analysis is
             end if;
 
             Scop := Scope (Scop);
+
+            --  If we reach Standard_Standard then there is no enclosing
+            --  package which has state.
+
+            exit when Scop = Standard_Standard;
          end loop;
 
-         --  If we reach this point then there is no enclosing package
-         --  which has state.
          return False;
       end Enclosing_Package_Has_State;
 
