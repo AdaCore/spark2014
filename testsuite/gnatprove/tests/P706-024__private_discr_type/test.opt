@@ -1,0 +1,1 @@
+ALL XFAIL marking of private type with discriminant (P706-024)
