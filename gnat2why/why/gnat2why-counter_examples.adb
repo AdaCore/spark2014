@@ -184,7 +184,7 @@ package body Gnat2Why.Counter_Examples is
 
       function Get_CNT_Element_Value_And_Attributes
         (CNT_Element : CNT_Element_Ptr;
-         Prefix : Unbounded_String;
+         Prefix      : Unbounded_String;
          Attributes  : in out Names_And_Values.List)
                return Unbounded_String
       is
@@ -214,32 +214,37 @@ package body Gnat2Why.Counter_Examples is
          end if;
 
          declare
-            CNT_Value : constant String :=
+            CNT_Value : constant String  :=
                           To_Lower (To_String (CNT_Element.Value));
             CF        : constant Integer := CNT_Value'First;
             CL        : constant Integer := CNT_Value'Last;
          begin
---           Now that the attributes are dealt with
---           Check if we've got any field, if not we return the
---           value of the node
+            --  Now that the attributes are dealt with,
+            --  check if we've got any field, if not we return the
+            --  value of the node.
+
             if CNT_Element.Fields.Is_Empty then
                if CNT_Value = "true" then
                   return To_Unbounded_String ("True");
-                  --  false
+
+               --  false
                elsif CNT_Value = "false" then
                   return To_Unbounded_String ("False");
-                  --  dont display
+
+               --  dont display
                elsif CNT_Element.Value = Dont_Display then
                   return CNT_Element.Value;
-                  --  enumeration type
+
+               --  enumeration type
                elsif Present (CNT_Element.Entity) then
                   Element_Type := Etype (CNT_Element.Entity);
                   if Is_Enumeration_Type (Element_Type)
                   then
-                     --  ad hoc removal of mk_bool_ref and mk_int_ref
-                     --  We do not know yet where this come from. These
+                     --  ??? ad hoc removal of mk_bool_ref and mk_int_ref.
+                     --  We do not know yet where this comes from. These
                      --  references to mk_int_ref and mk_bool_ref
-                     --  should ideally be removed earlier in the code
+                     --  should ideally be removed earlier in the code.
+
                      if CNT_Value'Length >= 15 and then
                        CNT_Value (CF .. CF + 13) = "(mk_bool__ref "
                      then
@@ -257,8 +262,9 @@ package body Gnat2Why.Counter_Examples is
                                        (To_String (CNT_Element.Value)));
                         begin
                            --  Case for character
+
                            if Is_Character_Type (Element_Type) then
-                              --  TODO do the case for character
+                              --  ??? TODO do the case for character
                               return CNT_Element.Value;
                            else
                               --  Enumeration types that are not character
@@ -284,8 +290,8 @@ package body Gnat2Why.Counter_Examples is
                   else
                      return CNT_Element.Value;
                   end if;
-               else
                --  empty fields but not one of the preceding cases
+               else
                   return CNT_Element.Value;
                end if;
             end if;
