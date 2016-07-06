@@ -242,7 +242,7 @@ auditlog.adb:536:26: info: initialization of "TheFile" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:636
-auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636 (e.g. when ElementID = 0)
+auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636 (e.g. when ElementID = StartUnenrolledTIS)
 auditlog.adb:591:17: info: initialization of "ElementText" proved
 auditlog.adb:591:17: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:601:14: info: initialization of "OK" proved
@@ -1509,7 +1509,7 @@ door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = 0 and DoorAlarm = 1 and ID = 0 and NewDoor = 0 and SystemFault = False)
+door.adb:169:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = Open and DoorAlarm = Silent and ID = StartUnenrolledTIS and NewDoor = Open and SystemFault = False)
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
@@ -1542,7 +1542,7 @@ door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = 0 and DoorAlarm = 1)
+door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = Open and DoorAlarm = Silent)
 door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1610,7 +1610,7 @@ enclave.adb:399:15: medium: precondition might fail
 enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
-enclave.adb:490:06: medium: postcondition might fail (e.g. when Status = 3)
+enclave.adb:490:06: medium: postcondition might fail (e.g. when Status = EnclaveQuiescent)
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
@@ -1664,7 +1664,7 @@ enclave.adb:1108:15: medium: precondition might fail
 enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
-enclave.adb:1206:06: medium: postcondition might fail (e.g. when Status = 8)
+enclave.adb:1206:06: medium: postcondition might fail (e.g. when Status = ShutDown)
 enclave.adb:1215:18: medium: precondition might fail
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
@@ -1674,7 +1674,7 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1409:06: medium: postcondition might fail (e.g. when Status = 6)
+enclave.adb:1409:06: medium: postcondition might fail (e.g. when Status = WaitingStartAdminOp)
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
@@ -1693,16 +1693,16 @@ enclave.adb:1623:12: info: initialization of "LocalStatus" proved
 enclave.adb:1625:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1628:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1631:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1670:31: medium: refined postcondition might fail (e.g. when Status = 4)
+enclave.adb:1670:31: medium: refined postcondition might fail (e.g. when Status = WaitingRemoveAdminTokenFail)
 enclave.adb:1685:21: medium: precondition might fail
 enclave.adb:1704:18: medium: precondition might fail
 enclave.adb:1731:47: medium: "Floppy.Output" might not be written
-enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when LocalStatus = 4 and Status = 3)
+enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when LocalStatus = WaitingRemoveAdminTokenFail and Status = EnclaveQuiescent)
 enclave.adb:1906:18: medium: precondition might fail
 enclave.adb:1912:19: medium: precondition might fail
 enclave.adb:1937:18: medium: precondition might fail
 enclave.adb:1943:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1947:42: medium: range check might fail (e.g. when Status = 3)
+enclave.adb:1947:42: medium: range check might fail (e.g. when Status = EnclaveQuiescent)
 enclave.adb:1949:12: info: initialization of "LocalStatus" proved
 enclave.adb:1952:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1957:13: info: precondition proved (CVC4: 1 VC)
@@ -1712,7 +1712,7 @@ enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
-enclave.adb:2188:09: medium: postcondition might fail (e.g. when Status = 6)
+enclave.adb:2188:09: medium: postcondition might fail (e.g. when Status = WaitingStartAdminOp)
 enclave.adb:2197:21: medium: precondition might fail
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
@@ -2847,7 +2847,7 @@ userentry.adb:923:33: info: initialization of "Status" constituent of "State" pr
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = 5 and Status = 0 and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0))
+userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = WaitingEntry and Status = Quiescent and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0))
 userentry.adb:1197:37: info: range check proved (CVC4: 1 VC)
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)

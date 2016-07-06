@@ -197,7 +197,7 @@ counterexample expected for check at records.adb:435
   trace at records.adb:432 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
   trace at records.adb:435 --> X = (Exists => True, The_Pair => ?)
 counterexample expected for check at records.adb:452
-  trace at records.adb:445 --> P = (Data => (A => 255, B => 255), Command => 0)
+  trace at records.adb:445 --> P = (Data => (A => 255, B => 255), Command => Increment_A)
   trace at records.adb:451 --> R = (A => 255, B => 255)
   trace at records.adb:452 --> R = (A => 255, B => ?)
 counterexample expected for check at records.adb:482

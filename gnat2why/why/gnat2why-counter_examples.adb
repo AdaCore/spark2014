@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Ordered_Maps;
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
@@ -32,10 +33,12 @@ with Atree;                     use Atree;
 with Einfo;                     use Einfo;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;
+with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Types;          use SPARK_Util.Types;
+with Uintp;                     use Uintp;
 
 package body Gnat2Why.Counter_Examples is
 
@@ -182,7 +185,7 @@ package body Gnat2Why.Counter_Examples is
       function Get_CNT_Element_Value_And_Attributes
         (CNT_Element : CNT_Element_Ptr;
          Prefix : Unbounded_String;
-         Attributes : in out Names_And_Values.List)
+         Attributes  : in out Names_And_Values.List)
                return Unbounded_String
       is
          Element_Type : Entity_Id;
@@ -210,16 +213,83 @@ package body Gnat2Why.Counter_Examples is
             end loop;
          end if;
 
-         --  Now that the attributes are dealt with
-         --  Check if we've got any field, if not we return the
-         --  value of the node
-         if CNT_Element.Fields.Is_Empty then
-            return (if CNT_Element.Value = "true"
-                    then To_Unbounded_String ("True")
-                    elsif CNT_Element.Value = "false"
-                    then To_Unbounded_String ("False")
-                    else CNT_Element.Value);
-         end if;
+         declare
+            CNT_Value : constant String :=
+                          To_Lower (To_String (CNT_Element.Value));
+            CF        : constant Integer := CNT_Value'First;
+            CL        : constant Integer := CNT_Value'Last;
+         begin
+--           Now that the attributes are dealt with
+--           Check if we've got any field, if not we return the
+--           value of the node
+            if CNT_Element.Fields.Is_Empty then
+               if CNT_Value = "true" then
+                  return To_Unbounded_String ("True");
+                  --  false
+               elsif CNT_Value = "false" then
+                  return To_Unbounded_String ("False");
+                  --  dont display
+               elsif CNT_Element.Value = Dont_Display then
+                  return CNT_Element.Value;
+                  --  enumeration type
+               elsif Present (CNT_Element.Entity) then
+                  Element_Type := Etype (CNT_Element.Entity);
+                  if Is_Enumeration_Type (Element_Type)
+                  then
+                     --  ad hoc removal of mk_bool_ref and mk_int_ref
+                     --  We do not know yet where this come from. These
+                     --  references to mk_int_ref and mk_bool_ref
+                     --  should ideally be removed earlier in the code
+                     if CNT_Value'Length >= 15 and then
+                       CNT_Value (CF .. CF + 13) = "(mk_bool__ref "
+                     then
+                        return To_Unbounded_String (CNT_Value (
+                                                    CF + 14 .. CL - 1));
+                     elsif CNT_Value'Length >= 14 and then
+                       CNT_Value (CF .. CF + 12) = "(mk_int__ref "
+                     then
+                        return To_Unbounded_String (CNT_Value (
+                                 CF + 13 .. CL - 1));
+                     else
+                        declare
+                           Value : constant Uint :=
+                                     UI_From_Int (Int'Value
+                                       (To_String (CNT_Element.Value)));
+                        begin
+                           --  Case for character
+                           if Is_Character_Type (Element_Type) then
+                              --  TODO do the case for character
+                              return CNT_Element.Value;
+                           else
+                              --  Enumeration types that are not character
+                              begin
+                                 return
+                                   (To_Unbounded_String
+                                      (Source_Name
+                                        (Sem_Util.Get_Enum_Lit_From_Pos
+                                        (Element_Type, Value, No_Location))));
+                              exception
+                              --  Either Get_Enum_Lit_From_Pos
+                              --  is Outside of Bounds or
+                              --  the prover returns a counter-example
+                              --  not Matching The
+                              --  constraints on the enumeration type we gave.
+                              --  We return the int provided by the prover.
+                                 when Constraint_Error =>
+                                    return CNT_Element.Value;
+                              end;
+                           end if;
+                        end;
+                     end if;
+                  else
+                     return CNT_Element.Value;
+                  end if;
+               else
+               --  empty fields but not one of the preceding cases
+                  return CNT_Element.Value;
+               end if;
+            end if;
+         end;
 
          --  If we've got fields, we're dealing with a record:
          --  we know that CNT_Element.Entity is present
@@ -520,7 +590,6 @@ package body Gnat2Why.Counter_Examples is
             --  variable, others to record fields.
 
             --  Split Name into sequence of Part
-
             String_Split.Create (S => Name_Parts,
                                  From => To_String (Elt.Name),
                                  Separators => ".'",

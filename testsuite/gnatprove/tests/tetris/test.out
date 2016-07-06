@@ -56,9 +56,9 @@ tetris_flow.ads:133:57: info: index check proved
 tetris_flow.ads:155:46: info: index check proved
 tetris_flow.ads:167:77: info: range check proved
 tetris_flow.ads:169:77: info: range check proved
-tetris_flow.ads:173:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => -1, Y => 0))
-tetris_flow.ads:174:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => 9, Y => 0))
-tetris_flow.ads:175:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => 0, Y => 49))
+tetris_flow.ads:173:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => -1, Y => 0))
+tetris_flow.ads:174:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => 9, Y => 0))
+tetris_flow.ads:175:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => 0, Y => 49))
 tetris_flow.ads:176:66: info: range check proved
 tetris_flow.ads:178:37: info: initialization of "Success" proved
 tetris_functional.adb:41:33: info: index check proved
@@ -199,9 +199,9 @@ tetris_initial.ads:133:57: info: index check proved
 tetris_initial.ads:152:46: info: index check proved
 tetris_initial.ads:164:77: info: range check proved
 tetris_initial.ads:166:77: info: range check proved
-tetris_initial.ads:170:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => -1, Y => 0))
-tetris_initial.ads:171:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => 9, Y => 0))
-tetris_initial.ads:172:49: medium: range check might fail (e.g. when P = (S => 0, D => 0, X => 0, Y => 49))
+tetris_initial.ads:170:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => -1, Y => 0))
+tetris_initial.ads:171:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => 9, Y => 0))
+tetris_initial.ads:172:49: medium: range check might fail (e.g. when P = (S => Empty, D => North, X => 0, Y => 49))
 tetris_initial.ads:173:66: info: range check proved
 tetris_initial.ads:175:37: info: initialization of "Success" proved
 tetris_integrity.adb:41:33: info: index check proved
