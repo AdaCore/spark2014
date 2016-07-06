@@ -56,7 +56,7 @@ overflow_check.adb:43:32: medium: divide by zero might fail
 overflow_check.adb:43:32: medium: overflow check might fail
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
-range_check.adb:18:12: medium: range check might fail (e.g. when X = 0)
+range_check.adb:18:12: medium: range check might fail (e.g. when X = A)
 range_check.adb:21:04: warning: analyzing unreferenced procedure "Convert_Integer"
 range_check.adb:21:44: info: initialization of "U" proved
 range_check.adb:23:12: medium: range check might fail (e.g. when X = -1)

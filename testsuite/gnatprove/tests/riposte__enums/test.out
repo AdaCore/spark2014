@@ -29,7 +29,7 @@ enums.adb:176:71: info: range check proved
 enums.adb:187:14: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved
 enums.adb:191:50: info: range check proved
-enums.adb:194:29: medium: range check might fail (e.g. when A = 8)
+enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8)
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:206:14: info: initialization of "Tmp.F" proved
 counterexample expected for check at enums.adb:19
