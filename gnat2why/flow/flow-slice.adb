@@ -774,20 +774,23 @@ package body Flow.Slice is
             end loop;
 
             --  Insert global into appropriate containers
-            if Is_Used and Is_Written then
-               Outputs.Insert (G);
-               Inputs.Insert (G);
-            else
-               if not Is_Used then
-                  Outputs.Insert (G);
-               end if;
 
-               if not Is_Written then
+            if Is_Written then
+               Outputs.Insert (G);
+
+               if Is_Used then
+                  Inputs.Insert (G);
+               end if;
+            else
+               if Is_Used then
                   if Ordinary_Ins.Contains (G) then
                      Inputs.Insert (G);
                   else
                      Inputs_Proof.Insert (G);
                   end if;
+               else
+                  --  If not written and not used, then should not be a global
+                  raise Program_Error;
                end if;
             end if;
          end;
