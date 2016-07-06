@@ -719,6 +719,26 @@ package body SPARK_Frame_Conditions is
          Scope_Specs    : Scope_Spec.Map;
          Current_Entity : Any_Entity_Name;
 
+         function Scope_Name_To_Scope_Entity
+           (N : Scope_Name) return Entity_Name;
+         --  Convert low-level numeric representation to symbol
+
+         ---------------------------------
+         --  Scope_Name_To_Scope_Entity --
+         ---------------------------------
+
+         function Scope_Name_To_Scope_Entity
+           (N : Scope_Name) return Entity_Name
+         is
+            C : constant Scope_Spec.Cursor := Scope_Specs.Find (N);
+         begin
+            return
+              Scope_Entities
+                (if Scope_Spec.Has_Element (C)
+                 then Scope_Specs (C)
+                 else N);
+         end Scope_Name_To_Scope_Entity;
+
       --  Start of processing for Walk_SPARK_Tables
 
       begin
@@ -766,109 +786,90 @@ package body SPARK_Frame_Conditions is
          --  Fill in high-level tables from xrefs
 
          Current_Entity := Null_Entity_Name;
-         for F in SPARK_File_Table.First .. SPARK_File_Table.Last loop
-            for S in SPARK_File_Table.Table (F).From_Scope
-              .. SPARK_File_Table.Table (F).To_Scope
-            loop
-               for X in SPARK_Scope_Table.Table (S).From_Xref
-                 .. SPARK_Scope_Table.Table (S).To_Xref
+         for F in SPARK_File_Table.First ..
+                  SPARK_File_Table.Last
+         loop
+            declare
+               Frec : SPARK_File_Record renames SPARK_File_Table.Table (F);
+
+               --  For a subunit, retrieve the file name of the unit instead
+               --  of the file name of the subunit, as only unit names are
+               --  relevant in the generated Why code.
+
+               File_Entity : constant Entity_Name :=
+                 Make_Entity_Name (if Frec.Unit_File_Name /= null
+                                   then Frec.Unit_File_Name
+                                   else Frec.File_Name);
+
+            begin
+               for S in SPARK_File_Table.Table (F).From_Scope ..
+                        SPARK_File_Table.Table (F).To_Scope
                loop
-                  Do_One_Xref : declare
-                     Frec : SPARK_File_Record renames
-                              SPARK_File_Table.Table (F);
+                  declare
                      Srec : SPARK_Scope_Record renames
-                              SPARK_Scope_Table.Table (S);
-                     Xref : SPARK_Xref_Record renames
-                              SPARK_Xref_Table.Table (X);
+                             SPARK_Scope_Table.Table (S);
 
-                     File_Entity : Entity_Name;
-                     Ref_Entity : constant Entity_Name :=
-                                     Make_Entity_Name (Xref.Entity_Name);
-
-                     Ref_Scope     : Scope_Name;
-                     Def_Scope     : Scope_Name;
-                     Ref_Scope_Ent : Entity_Name;
-                     Def_Scope_Ent : Entity_Name;
-
-                  --  Start of processing for Do_One_Xref
+                     Def_Scope_Ent : constant Entity_Name :=
+                       Scope_Name_To_Scope_Entity
+                         (Scope_Name'(File_Num  => Srec.File_Num,
+                                      Scope_Num => Srec.Scope_Num));
+                     --  Scope of the definition
 
                   begin
+                     for X in SPARK_Scope_Table.Table (S).From_Xref ..
+                              SPARK_Scope_Table.Table (S).To_Xref
+                     loop
+                        Do_One_Xref : declare
 
-                     --  For a subunit, retrieve the file name of the unit
-                     --  instead of the file name of the subunit, as only unit
-                     --  names are relevant in the generated Why code.
+                           Xref : SPARK_Xref_Record renames
+                             SPARK_Xref_Table.Table (X);
 
-                     File_Entity :=
-                       Make_Entity_Name (if Frec.Unit_File_Name /= null
-                                         then Frec.Unit_File_Name
-                                         else Frec.File_Name);
+                           Ref_Entity : constant Entity_Name :=
+                             Make_Entity_Name (Xref.Entity_Name);
 
-                     --  Compute the entity for the scope being referenced
+                           Ref_Scope_Ent : constant Entity_Name :=
+                             Scope_Name_To_Scope_Entity
+                               (Scope_Name'(File_Num  => Xref.File_Num,
+                                            Scope_Num => Xref.Scope_Num));
+                           --  Scope being referenced
 
-                     Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
-                                              Scope_Num => Xref.Scope_Num);
+                        begin
+                           --  Register the definition on first occurence of
+                           --  variables.
 
-                     declare
-                        C : constant Scope_Spec.Cursor :=
-                          Scope_Specs.Find (Ref_Scope);
-                     begin
-                        if Scope_Spec.Has_Element (C) then
-                           Ref_Scope := Scope_Specs (C);
-                        end if;
-                     end;
+                           if Current_Entity /= Ref_Entity
+                             and then not Is_Heap_Variable (Ref_Entity)
+                             and then Xref.Rtype in 'c' | 'r' | 'm'
+                           then
+                              Add_To_Map (Defines,
+                                          Def_Scope_Ent,
+                                          Ref_Entity);
+                              File_Defines.Include (Ref_Entity, File_Entity);
+                           end if;
 
-                     Ref_Scope_Ent := Scope_Entities (Ref_Scope);
+                           --  Register xref according to type
 
-                     --  Compute the entity for the scope of the definition
+                           case Xref.Rtype is
+                           when 'r' =>
+                              Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
+                           when 'c' =>
+                              Constants.Include (Ref_Entity);
+                              Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
+                           when 'm' =>
+                              Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
+                           when 's' =>
+                              Add_To_Map (Calls, Ref_Scope_Ent, Ref_Entity);
+                              Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
+                           when others =>
+                              raise Program_Error;
+                           end case;
 
-                     Def_Scope := Scope_Name'(File_Num  => Srec.File_Num,
-                                              Scope_Num => Srec.Scope_Num);
-
-                     declare
-                        C : constant Scope_Spec.Cursor :=
-                          Scope_Specs.Find (Def_Scope);
-                     begin
-                        if Scope_Spec.Has_Element (C) then
-                           Def_Scope := Scope_Specs (C);
-                        end if;
-                     end;
-
-                     Def_Scope_Ent := Scope_Entities (Def_Scope);
-
-                     --  Register the definition on first occurence of
-                     --  variables.
-
-                     if Current_Entity /= Ref_Entity
-                       and then not Is_Heap_Variable (Ref_Entity)
-                       and then Xref.Rtype in 'c' | 'r' | 'm'
-                     then
-                        Add_To_Map (Defines,
-                                    Def_Scope_Ent,
-                                    Ref_Entity);
-                        File_Defines.Include (Ref_Entity, File_Entity);
-                     end if;
-
-                     --  Register xref according to type
-
-                     case Xref.Rtype is
-                        when 'r' =>
-                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
-                        when 'c' =>
-                           Constants.Include (Ref_Entity);
-                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
-                        when 'm' =>
-                           Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
-                        when 's' =>
-                           Add_To_Map (Calls, Ref_Scope_Ent, Ref_Entity);
-                           Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
-                        when others =>
-                           raise Program_Error;
-                     end case;
-
-                     Current_Entity := Ref_Entity;
-                  end Do_One_Xref;
+                           Current_Entity := Ref_Entity;
+                        end Do_One_Xref;
+                     end loop;
+                  end;
                end loop;
-            end loop;
+            end;
          end loop;
       end Walk_SPARK_Tables;
    end Load_SPARK_Xrefs;
