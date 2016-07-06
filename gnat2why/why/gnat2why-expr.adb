@@ -10795,27 +10795,150 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Expon =>
+
+            --  Optimization: try to inline the exponentiation when possible.
+            --  This optimization is primarly intended for floating-points,
+            --  hence we only inline the exponentiation for power between -3
+            --  and 3. Indeed, the Ada RM does not guarantee that beyond those
+            --  values the exponentiation is equal to a specific factorisation
+            --  (float multiplication is commutative but not associative).
+            --  Since the code is mostly generic and the inlining seems to
+            --  help the provers, the optimization is not limited to
+            --  floating-points exponentiation.
+
             declare
-               Left    : constant Node_Id := Left_Opnd (Expr);
-               Right   : constant Node_Id := Right_Opnd (Expr);
-               W_Right : constant W_Expr_Id :=
+               Left      : constant Node_Id := Left_Opnd (Expr);
+               Right     : constant Node_Id := Right_Opnd (Expr);
+               W_Right   : constant W_Expr_Id :=
                  Transform_Expr (Right,
                                  EW_Int_Type,
                                  Domain,
                                  Local_Params);
+               Base_Type : constant W_Type_Id := Base_Why_Type (Left);
+               W_Left    : constant W_Expr_Id :=
+                 Transform_Expr (Left,
+                                 Base_Type,
+                                 Domain,
+                                 Local_Params);
+               Left_Type : constant Entity_Id := Etype (Left);
+
+               One : constant W_Expr_Id :=
+                 (if Has_Modular_Integer_Type (Left_Type) then
+                       New_Modular_Constant (Ada_Node => Expr,
+                                             Value    => Uint_1,
+                                             Typ      => Base_Type)
+                  elsif Has_Signed_Integer_Type (Left_Type) then
+                       New_Integer_Constant (Ada_Node => Expr,
+                                             Value => Uint_1)
+                  elsif Has_Floating_Point_Type (Left_Type) then
+                       New_Real_Constant (Ada_Node => Expr,
+                                          Value => Ureal_1)
+                  else raise Program_Error);
+
+               function Square (X : W_Expr_Id; T : Entity_Id)
+                                return W_Expr_Id is
+                 (New_Op_Expr (Op          => N_Op_Multiply,
+                               Left        => X,
+                               Right       => X,
+                               Left_Type   => T,
+                               Right_Type  => T,
+                               Return_Type => Expr_Type,
+                               Domain      => Domain,
+                               Ada_Node    => Expr));
+
+               function Cube (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id is
+                 (New_Op_Expr (Op          => N_Op_Multiply,
+                               Left        => X,
+                               Right       => Square (X, T),
+                               Left_Type   => T,
+                               Right_Type  => T,
+                               Return_Type => Expr_Type,
+                               Domain      => Domain,
+                               Ada_Node    => Expr));
+
+               function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id;
+               --  Return 1 / X
+               --  Insert a division check depending on the domain
+
+               function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id
+               is
+                  E : constant W_Expr_Id :=
+                    New_Op_Expr (Op          => N_Op_Divide,
+                                 Left        => One,
+                                 Right       => X,
+                                 Left_Type   => T,
+                                 Right_Type  => T,
+                                 Return_Type => Expr_Type,
+                                 Domain      => Domain);
+
+               begin
+                  if Domain = EW_Prog then
+                     declare
+                        Check : constant W_Prog_Id :=
+                          New_Located_Assert
+                            (Ada_Node => Expr,
+                             Pred     =>
+                               +New_Comparison
+                               (Why_Neq,
+                                X,
+                                New_Real_Constant (Value => Ureal_0),
+                                EW_Term),
+                             Reason   => VC_Division_Check,
+                             Kind     => EW_Assert);
+                     begin
+                        return +Sequence (Check, +E);
+                     end;
+                  else
+                     return E;
+                  end if;
+               end Inv;
             begin
-               T := New_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Left        => Transform_Expr (Left,
-                    Base_Why_Type (Left),
-                    Domain,
-                    Local_Params),
-                  Right       => W_Right,
-                  Left_Type   => Etype (Left),
-                  Right_Type  => Etype (Right),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               if Nkind (Right) = N_Integer_Literal then
+                  declare
+                     Exp : constant Uint := Intval (Right);
+                  begin
+                     if UI_Eq (Exp, Uint_0) then
+                        if Domain = EW_Prog then
+                           T := +Sequence (New_Ignore (Prog => +W_Left),
+                                           +One);
+                        else
+                           T := One;
+                        end if;
+                     elsif UI_Eq (Exp, Uint_1) then
+                        T := W_Left;
+                     elsif UI_Eq (Exp, Uint_2) then
+                        T := Square (W_Left, Left_Type);
+                     elsif UI_Eq (Exp, Uint_3) then
+                        T := Cube (W_Left, Left_Type);
+                     elsif UI_Eq (Exp, UI_Negate (Uint_1)) then
+                        T := Inv (W_Left, Left_Type);
+                     elsif UI_Eq (Exp, UI_Negate (Uint_2)) then
+                        T := Inv (Square (W_Left, Left_Type), Left_Type);
+                     elsif UI_Eq (Exp, UI_Negate (Uint_3)) then
+                        T := Inv (Cube (W_Left, Left_Type), Left_Type);
+                     else
+                        T := New_Op_Expr
+                          (Op          => Nkind (Expr),
+                           Left        => W_Left,
+                           Right       => W_Right,
+                           Left_Type   => Left_Type,
+                           Right_Type  => Etype (Right),
+                           Return_Type => Expr_Type,
+                           Domain      => Domain,
+                           Ada_Node    => Expr);
+                     end if;
+                  end;
+               else
+                  T := New_Op_Expr
+                    (Op          => Nkind (Expr),
+                     Left        => W_Left,
+                     Right       => W_Right,
+                     Left_Type   => Etype (Left),
+                     Right_Type  => Etype (Right),
+                     Return_Type => Expr_Type,
+                     Domain      => Domain,
+                     Ada_Node    => Expr);
+               end if;
             end;
 
          when N_Op_Not =>

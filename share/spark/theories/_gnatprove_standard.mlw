@@ -139,9 +139,9 @@ module Floating
   use import real.RealInfix
   use real.Abs as AbsReal
   use export real.Truncate
-  use export real.PowerInt
   use real.MinMax
   use real.FromInt
+  use import int.Int
 
   use floating_point.Rounding
   use floating_point.Single
@@ -185,6 +185,10 @@ module Floating
   lemma round_double_single :
     forall x : real [ round_single x ].
       round_double (round_single x) = round_single x
+
+  (* this function is not the power on real but the implementation
+     defined power on floats *)
+  function power real int : real
 
   use export _gnatprove_standard_th.Floating_Func
 
