@@ -144,6 +144,7 @@ bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail
 bounded_queue_v1.ads:45:25: info: precondition proved
+bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 buffers.adb:8:29: info: length check proved
 buffers.adb:17:32: info: length check proved
 buffers.adb:19:56: info: division check proved
