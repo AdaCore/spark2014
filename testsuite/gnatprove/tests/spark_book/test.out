@@ -89,6 +89,48 @@ bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
+bounded_queue.adb:3:13: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:8:13: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:13:13: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:18:13: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:23:13: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:32: info: division check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:51: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:51: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:39:25: info: index check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:40:34: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:34: info: division check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:53: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:53: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:25:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:31:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:33:18: info: precondition proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:17: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:17: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:24: info: precondition proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
+bounded_queue_example.adb:10:50: info: range check proved
+bounded_queue_example.adb:14:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:16:07: medium: precondition might fail
+bounded_queue_example.adb:16:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:19:07: medium: precondition might fail
+bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
+bounded_queue_example.adb:20:07: warning: no Global contract available for "Put"
+bounded_queue_example.adb:20:12: info: initialization of "Value" proved
+bounded_queue_example.adb:21:07: warning: assuming "New_Line" has no effect on global items
+bounded_queue_example.adb:21:07: warning: no Global contract available for "New_Line"
+bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example.adb:24:42: low: range check might fail
+bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:6:56: info: range check proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
@@ -119,6 +161,21 @@ bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect o
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v1.adb:20:42: low: range check might fail
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
+bounded_queue_example_v2.adb:6:56: info: range check proved
+bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:12:07: medium: precondition might fail
+bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail
+bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v2.adb:16:07: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v2.adb:16:32: info: initialization of "Value" proved
+bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v2.adb:20:42: low: range check might fail
+bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:3:13: info: range check proved
 bounded_queue_v1.adb:8:13: info: range check proved
 bounded_queue_v1.adb:13:13: info: range check proved
@@ -144,6 +201,31 @@ bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail
 bounded_queue_v1.ads:45:25: info: precondition proved
+bounded_queue_v2.adb:3:13: info: range check proved
+bounded_queue_v2.adb:8:13: info: range check proved
+bounded_queue_v2.adb:13:13: info: range check proved
+bounded_queue_v2.adb:18:13: info: range check proved
+bounded_queue_v2.adb:20:32: medium: array index check might fail
+bounded_queue_v2.adb:23:13: info: range check proved
+bounded_queue_v2.adb:25:32: medium: array index check might fail
+bounded_queue_v2.adb:38:32: info: division check proved
+bounded_queue_v2.adb:38:51: info: overflow check proved
+bounded_queue_v2.adb:38:51: info: range check proved
+bounded_queue_v2.adb:39:25: info: index check proved
+bounded_queue_v2.adb:40:34: medium: overflow check might fail
+bounded_queue_v2.adb:47:33: medium: array index check might fail
+bounded_queue_v2.adb:48:34: info: division check proved
+bounded_queue_v2.adb:48:53: info: overflow check proved
+bounded_queue_v2.adb:48:53: info: range check proved
+bounded_queue_v2.adb:49:34: medium: range check might fail
+bounded_queue_v2.ads:25:18: medium: postcondition might fail
+bounded_queue_v2.ads:31:18: medium: postcondition might fail
+bounded_queue_v2.ads:32:50: medium: overflow check might fail
+bounded_queue_v2.ads:33:18: info: precondition proved
+bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
+bounded_queue_v2.ads:39:17: info: initialization of "Item" proved
+bounded_queue_v2.ads:39:17: medium: postcondition might fail
+bounded_queue_v2.ads:39:24: info: precondition proved
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 buffers.adb:8:29: info: length check proved
 buffers.adb:17:32: info: length check proved
