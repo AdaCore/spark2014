@@ -17,7 +17,7 @@ private
 
    type Frame_Buffer
    is limited new Framebuffer_LTDC.Frame_Buffer with record
-      Device : ILI9341.ILI9341_Device (Chip_Select => LCD_CSX'Access);
+      Device : ILI9341.ILI9341_Device (Chip_Select => STM32.Device.PC2'Access);
    end record;
 
 end Framebuffer_ILI9341;
