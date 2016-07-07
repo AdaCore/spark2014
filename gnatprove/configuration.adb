@@ -123,48 +123,52 @@ ASCII.LF &
 ASCII.LF &
 ASCII.LF &
 "gnatprove basic switches:" & ASCII.LF &
-" -aP=p               Add path p to project path" &
+" -aP=p                 Add path p to project path" &
 ASCII.LF &
-"     --assumptions   Output assumptions information" &
+"     --assumptions     Output assumptions information" &
 ASCII.LF &
-"     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)" &
+"     --codepeer=c      Enable or disable CodePeer analysis (c=on,off*)" &
 ASCII.LF &
-"     --clean         Remove GNATprove intermediate files, and exit" &
+"     --clean           Remove GNATprove intermediate files, and exit" &
 ASCII.LF &
-" -f                  Force recompilation/analysis of all units" &
+" -f                    Force recompilation/analysis of all units" &
 ASCII.LF &
-" -h, --help          Display this usage information" &
+" -h, --help            Display this usage information" &
 ASCII.LF &
-" -jnnn               Use nnn parallel processes (default: 1)" &
+" -jnnn                 Use nnn parallel processes (default: 1)" &
 ASCII.LF &
-" -k                  Do not stop analysis at the first error" &
+" -k                    Do not stop analysis at the first error" &
 ASCII.LF &
-"     --level=n       Set the level of proof " &
+"     --level=n         Set the level of proof " &
 "(0 = faster* to 4 = more powerful)" &
 ASCII.LF &
-" -m                  Minimal reanalysis" &
+" -m                    Minimal reanalysis" &
 ASCII.LF &
-"     --mode=m        Set the mode of GNATprove (m=check, check_all, flow," &
+"     --mode=m          Set the mode of GNATprove (m=check, check_all, flow," &
 ASCII.LF &
-"                     prove, all*)"
+"                       prove, all*)"
 & ASCII.LF &
-" -q, --quiet         Be quiet/terse" &
-ASCII.LF &
-"     --report=r      Set the report mode of GNATprove (r=fail*, all, provers,"
+"     --output-msg-only Do not run any provers, output current flow and proof"
 & ASCII.LF &
-"                     statistics)"
+"                       results"
+& ASCII.LF &
+" -q, --quiet           Be quiet/terse" &
+ASCII.LF &
+"     --report=r        Set the report mode of GNATprove (r=fail*, all,"
+& ASCII.LF &
+"                       provers, statistics)"
 &
 ASCII.LF &
-" -u                  Unique analysis. Only analyze the given units" &
+" -u                    Unique analysis. Only analyze the given units" &
 ASCII.LF &
-" -U                  Analyze all units of all projects" &
+" -U                    Analyze all units of all projects" &
 
 ASCII.LF &
-" -v, --verbose       Output extra verbose information" &
+" -v, --verbose         Output extra verbose information" &
 ASCII.LF &
-"     --version       Output version of the tool and exit" &
+"     --version         Output version of the tool and exit" &
 ASCII.LF &
-"     --warnings=w    Set the warning mode of GNATprove " &
+"     --warnings=w      Set the warning mode of GNATprove " &
 "(w=off, continue*, error)" &
 ASCII.LF &
 ASCII.LF &
