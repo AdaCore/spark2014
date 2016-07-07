@@ -455,4 +455,9 @@ package SPARK_Util is
    --  ??? this is only a temporary fix and should be removed once the
    --  underlying problem with First_Sloc is fixed.
 
+   function Char_To_String_Representation (C : Character) return String;
+   --  Converts a character to a 'printable character' for counterex: If the
+   --  character is graphic, returns it. It it is not, return the name of
+   --  the character.
+
 end SPARK_Util;

@@ -33,6 +33,7 @@ with Atree;                     use Atree;
 with Einfo;                     use Einfo;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;
+with Namet;                     use Namet;
 with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
@@ -219,9 +220,8 @@ package body Gnat2Why.Counter_Examples is
             CF        : constant Integer := CNT_Value'First;
             CL        : constant Integer := CNT_Value'Last;
          begin
-            --  Now that the attributes are dealt with,
-            --  check if we've got any field, if not we return the
-            --  value of the node.
+            --  Now that the attributes are dealt with, check if we've got any
+            --  field, if not we return the value of the node.
 
             if CNT_Element.Fields.Is_Empty then
                if CNT_Value = "true" then
@@ -264,8 +264,30 @@ package body Gnat2Why.Counter_Examples is
                            --  Case for character
 
                            if Is_Character_Type (Element_Type) then
-                              --  ??? TODO do the case for character
-                              return CNT_Element.Value;
+                              begin
+
+                                 --  Using the name_table to recover
+                                 --  the character used. We use the decoded
+                                 --  procedure to have a correctly printed char
+                                 Get_Unqualified_Decoded_Name_String (Chars (
+                                   (Sem_Util.Get_Enum_Lit_From_Pos
+                                   (Element_Type, Value, No_Location))));
+                              exception
+                              --  Either Get_Enum_Lit_From_Pos is Outside of
+                              --  Bounds or the prover returns a counterexample
+                              --  not Matching The constraints on the
+                              --  enumeration type we gave. We return the
+                              --  int provided by the prover.
+                                 when Constraint_Error =>
+                                    return CNT_Element.Value;
+                              end;
+                              declare
+                                 C : constant Character :=
+                                       Name_Buffer (2);
+                              begin
+                                 return To_Unbounded_String (
+                                         Char_To_String_Representation (C));
+                              end;
                            else
                               --  Enumeration types that are not character
                               begin
@@ -275,12 +297,11 @@ package body Gnat2Why.Counter_Examples is
                                         (Sem_Util.Get_Enum_Lit_From_Pos
                                         (Element_Type, Value, No_Location))));
                               exception
-                              --  Either Get_Enum_Lit_From_Pos
-                              --  is Outside of Bounds or
-                              --  the prover returns a counter-example
-                              --  not Matching The
-                              --  constraints on the enumeration type we gave.
-                              --  We return the int provided by the prover.
+                              --  Either Get_Enum_Lit_From_Pos is Outside of
+                              --  Bounds or the prover returns a counterexample
+                              --  not Matching The constraints on the
+                              --  enumeration type we gave. We return the
+                              --  int provided by the prover.
                                  when Constraint_Error =>
                                     return CNT_Element.Value;
                               end;
