@@ -314,7 +314,7 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
   This command gives the path to :file:`<ravenscar-sfp-stm32f4 runtime>/adalib`.
 
-  You then need to copy (or make a symbolic link under unix) the
+  You then need to copy (or make a symbolic link under Unix) the
   <ravenscar-sfp-stm32f4 runtime> directory to the |SPARK| installation, under
   :file:`<spark-prefix>/share/spark/runtimes`, for example using `bash`
   syntax:
