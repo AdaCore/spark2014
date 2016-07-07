@@ -1,3 +1,8 @@
+contracts.adb:3:04: warning: analyzing unreferenced procedure "Convert_Integer0"
+contracts.adb:3:45: info: initialization of "U" proved
+contracts.adb:5:12: medium: range check might fail (e.g. when X = -1)
+contracts.adb:8:44: info: initialization of "U" proved
+contracts.adb:12:12: info: range check proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
 discriminant_check.adb:12:13: info: range check proved
 discriminant_check.adb:14:15: medium: discriminant check might fail
