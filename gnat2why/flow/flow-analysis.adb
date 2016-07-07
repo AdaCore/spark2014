@@ -3575,6 +3575,53 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
+   -------------------------------------------
+   -- Check_Consistent_AS_For_Private_Child --
+   -------------------------------------------
+
+   procedure Check_Consistent_AS_For_Private_Child
+     (FA : in out Flow_Analysis_Graphs)
+   is
+   begin
+      if Is_Child_Unit (FA.Spec_Entity)
+        and then Is_Private_Descendant (FA.Spec_Entity)
+        and then Present (Abstract_States (FA.Spec_Entity))
+      then
+         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+            declare
+               Child_State   : constant Entity_Id := State;
+               Encapsulating : constant Entity_Id :=
+                 Encapsulating_State (State);
+
+               Scop : constant Entity_Id := Scope (FA.Spec_Entity);
+
+            begin
+               if Present (Encapsulating)
+                 and then Present (Scop)
+                 and then Present (Abstract_States (Scop))
+               then
+                  for State of Iter (Abstract_States (Scop)) loop
+                     if State /= Encapsulating then
+                        exit;
+                     else
+                        if not Find_In_Refinement (State, Child_State) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "Refinement of % shall mention %",
+                              Severity => Error_Kind,
+                              F1       => Direct_Mapping_Id (Encapsulating),
+                              F2       => Direct_Mapping_Id (Child_State),
+                                 N        => Scop,
+                              SRM_Ref  => "7.2.6(6)");
+                        end if;
+                     end if;
+                  end loop;
+               end if;
+            end;
+         end loop;
+      end if;
+   end Check_Consistent_AS_For_Private_Child;
+
    --------------------------------
    -- Check_Initializes_Contract --
    --------------------------------

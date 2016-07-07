@@ -148,6 +148,12 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Consistent_AS_For_Private_Child
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   --  Check if the refinement of the parent package contains the state of the
+   --  private child with Part_Of aspect.
+
    procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs);
    --  Check each procedure call for aliasing.
    --

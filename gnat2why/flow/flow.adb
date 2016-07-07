@@ -1541,6 +1541,7 @@ package body Flow is
                      end if;
                      Analysis.Check_Aliasing (FA);
                      Analysis.Find_Non_Elaborated_State_Abstractions (FA);
+                     Analysis.Check_Consistent_AS_For_Private_Child (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);

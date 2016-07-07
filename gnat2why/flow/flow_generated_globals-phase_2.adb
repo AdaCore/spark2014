@@ -24,6 +24,7 @@
 with GNAT.Regpat;                use GNAT.Regpat;
 with Serialisation;              use Serialisation;
 with Ada.Containers.Hashed_Sets;
+with Ada.Strings;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
@@ -379,9 +380,9 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Print_ALI_File_Info (Subprograms : Global_Info_Lists.List);
    --  Print info collected from the ALI files
 
-   ---------------------
+   -------------------
    -- Fully_Refine --
-   ---------------------
+   -------------------
 
    function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
       Refined : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -2177,6 +2178,52 @@ package body Flow_Generated_Globals.Phase_2 is
 
       return Res;
    end Directly_Called_Protected_Objects;
+
+   ------------------------
+   -- Find_In_Refinement --
+   ------------------------
+
+   function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
+   is
+      Abstract_State : constant Entity_Name := To_Entity_Name (AS);
+
+      Constituents : constant Name_Graphs.Cursor :=
+        State_Comp_Map.Find (Abstract_State);
+
+   begin
+      --  ??? In the following we brutally check if a constituent is in a
+      --  refinement. This is done with strings because we collect this
+      --  information in a set of Entity_Name elements.
+      if Name_Graphs.Has_Element (Constituents) then
+         for Constituent of State_Comp_Map (Constituents) loop
+            declare
+               use type Ada.Strings.Direction;
+
+               Constituent_To_Find : constant Unbounded_String :=
+                 To_Unbounded_String
+                   (To_String
+                      (To_Entity_Name (C)));
+
+               Constituent_String : constant String :=
+                 Slice (Source => Constituent_To_Find,
+                        Low    => Index (Source  => Constituent_To_Find,
+                                         Pattern => "__",
+                                         Going   => Ada.Strings.Backward),
+                        High   => Length (Constituent_To_Find));
+
+               Current_Constituent : constant Unbounded_String :=
+                 To_Unbounded_String (To_String (Constituent));
+
+            begin
+               if Index (Current_Constituent, Constituent_String) /= 0
+               then
+                  return True;
+               end if;
+            end;
+         end loop;
+      end if;
+      return False;
+   end Find_In_Refinement;
 
    ----------------------------
    -- GG_Encapsulating_State --

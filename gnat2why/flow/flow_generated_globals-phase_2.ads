@@ -61,6 +61,10 @@ package Flow_Generated_Globals.Phase_2 is
    -- Querying --
    --------------
 
+   function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean;
+   --  Returns True iff constituent C is mentioned in the refinement of the
+   --  abstract state AS.
+
    function GG_Has_Been_Generated return Boolean;
    --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
