@@ -235,7 +235,7 @@ package SPARK_Util.Types is
    --  initialization.
    --  @param Typ any type
    --  @param Explicit_Only If True then do not consider attributes
-   --    Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond for this
+   --    Has_DIC and Has_Inherited_DIC for this
    --    type.
    --  @return the Default_Initialization_Kind of Typ
 

@@ -41,7 +41,7 @@ package Flow_Utility.Initialization is
    --  which is the default-initialized expression.
    --  @param F is the Flow_Id whose initialization we look for
    --  @param Explicit_Only If True then ignore attributes
-   --    Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond for this
+   --    Has_DIC and Has_Inherited_DIC for this
    --    type.
    --  @return True iff F is fully default initialized
 

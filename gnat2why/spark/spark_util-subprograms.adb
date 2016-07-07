@@ -1122,7 +1122,7 @@ package body SPARK_Util.Subprograms is
      (Ekind (E) = E_Procedure and then
         (Is_Invariant_Procedure (E)
            or else
-         Is_Default_Init_Cond_Procedure (E)));
+         Is_DIC_Procedure (E)));
 
    --------------
    -- Get_Body --

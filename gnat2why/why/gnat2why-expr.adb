@@ -2346,17 +2346,17 @@ package body Gnat2Why.Expr is
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
-      if (Has_Default_Init_Cond (Ty)
+      if (Has_DIC (Ty)
             or else
-          Has_Inherited_Default_Init_Cond (Ty))
+          Has_Inherited_DIC (Ty))
             and then
-          Present (Default_Init_Cond_Procedure (Ty))
+          Present (DIC_Procedure (Ty))
             and then
           not Is_Private_Type (Ty_Ext)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Default_Init_Cond_Procedure (Ty);
+              DIC_Procedure (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
             Binders           : constant Item_Array :=
@@ -2931,15 +2931,15 @@ package body Gnat2Why.Expr is
       --  If Skip_Last_Cond is False, assume the default initial condition for
       --  Ty, when specified as a boolean expression.
 
-      if (Has_Default_Init_Cond (Ty)
+      if (Has_DIC (Ty)
             or else
-          Has_Inherited_Default_Init_Cond (Ty))
+          Has_Inherited_DIC (Ty))
             and then
-          Present (Default_Init_Cond_Procedure (Ty))
+          Present (DIC_Procedure (Ty))
       then
          declare
             Init_Subp : constant Entity_Id :=
-              Default_Init_Cond_Procedure (Ty);
+              DIC_Procedure (Ty);
             Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Init_Subp);
             Init_Param : constant Entity_Id :=
@@ -14198,15 +14198,15 @@ package body Gnat2Why.Expr is
       --  Assume the default initial condition for Ty, when specified as a
       --  boolean expression.
 
-      if (Has_Default_Init_Cond (Ty)
+      if (Has_DIC (Ty)
             or else
-          Has_Inherited_Default_Init_Cond (Ty))
+          Has_Inherited_DIC (Ty))
            and then
-         Present (Default_Init_Cond_Procedure (Ty))
+         Present (DIC_Procedure (Ty))
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Default_Init_Cond_Procedure (Ty);
+              DIC_Procedure (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
          begin

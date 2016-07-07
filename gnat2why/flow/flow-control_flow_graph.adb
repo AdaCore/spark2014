@@ -3412,12 +3412,12 @@ package body Flow.Control_Flow_Graph is
 
          Funcs : Node_Sets.Set;
       begin
-         if (Has_Default_Init_Cond (Typ)
-               or else Has_Inherited_Default_Init_Cond (Typ))
-           and then Present (Default_Init_Cond_Procedure (Typ))
+         if (Has_DIC (Typ)
+               or else Has_Inherited_DIC (Typ))
+           and then Present (DIC_Procedure (Typ))
          then
             Expr := Get_Expr_From_Check_Only_Proc
-              (Default_Init_Cond_Procedure (Typ));
+              (DIC_Procedure (Typ));
 
             if Present (Expr) then
                --  Note that default initial conditions can make use of
@@ -3443,7 +3443,7 @@ package body Flow.Control_Flow_Graph is
                --  Calculate components of Type and Object
                Components_Of_Type   :=
                  Flatten_Variable (First_Entity
-                                     (Default_Init_Cond_Procedure (Typ)),
+                                     (DIC_Procedure (Typ)),
                                    FA.B_Scope);
                Components_Of_Object :=
                  Flatten_Variable (E, FA.B_Scope);
@@ -3468,7 +3468,7 @@ package body Flow.Control_Flow_Graph is
                     (FA         => FA,
                      Var_Use    => Replace_Flow_Ids
                        (Of_This   => First_Entity
-                                       (Default_Init_Cond_Procedure (Typ)),
+                                       (DIC_Procedure (Typ)),
                         With_This => E,
                         The_Set   => Variables_Used),
                      Sub_Called => Funcs,
@@ -4592,13 +4592,13 @@ package body Flow.Control_Flow_Graph is
       --      Expressions
       --    * check if the full type is as the aspect suggested
       --      and issue a warning if not
-      if Has_Default_Init_Cond (Typ)
-        or else Has_Inherited_Default_Init_Cond (Typ)
+      if Has_DIC (Typ)
+        or else Has_Inherited_DIC (Typ)
       then
-         if Present (Default_Init_Cond_Procedure (Typ)) then
+         if Present (DIC_Procedure (Typ)) then
             declare
                Expr : constant Node_Id := Get_Expr_From_Check_Only_Proc
-                 (Default_Init_Cond_Procedure (Typ));
+                 (DIC_Procedure (Typ));
             begin
                --  Process quantified expressions
                if Present (Expr) then

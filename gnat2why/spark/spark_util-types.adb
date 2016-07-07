@@ -393,26 +393,26 @@ package body SPARK_Util.Types is
       --  fully default initialized component and/or one not fully default
       --  initialized component.
 
-      function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id
-      with Pre => Has_Default_Init_Cond (Typ) or else
-                  Has_Inherited_Default_Init_Cond (Typ);
+      function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id
+      with Pre => Has_DIC (Typ) or else
+                  Has_Inherited_DIC (Typ);
       --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
       --  type.
 
       procedure Process_Component (Rec_Prot_Comp : Entity_Id);
       --  Process component Rec_Prot_Comp of a record or protected type
 
-      ----------------------------------
-      -- Get_Default_Init_Cond_Pragma --
-      ----------------------------------
+      --------------------
+      -- Get_DIC_Pragma --
+      --------------------
 
-      function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id is
+      function Get_DIC_Pragma (Typ : Entity_Id) return Node_Id is
          Par : Entity_Id := Typ;
       begin
-         while Has_Default_Init_Cond (Par)
-           or else Has_Inherited_Default_Init_Cond (Par)
+         while Has_DIC (Par)
+           or else Has_Inherited_DIC (Par)
          loop
-            if Has_Default_Init_Cond (Par) then
+            if Has_DIC (Par) then
                return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
             elsif Is_Private_Type (Par) and then Etype (Par) = Par then
                Par := Etype (Full_View (Par));
@@ -424,7 +424,7 @@ package body SPARK_Util.Types is
          --  We should not reach here
 
          raise Program_Error;
-      end Get_Default_Init_Cond_Pragma;
+      end Get_DIC_Pragma;
 
       -----------------------
       -- Process_Component --
@@ -502,7 +502,7 @@ package body SPARK_Util.Types is
       end if;
 
       --  For some subtypes we have to check for attributes
-      --  Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond on
+      --  Has_DIC and Has_Inherited_DIC on
       --  the base type instead. However, we want to skip Itypes while
       --  doing so.
 
@@ -512,8 +512,8 @@ package body SPARK_Util.Types is
                   or else Is_Itype (B_Type))
 
            --  Stop if we find either of the attributes
-           and then not (Has_Default_Init_Cond (B_Type)
-                           or else Has_Inherited_Default_Init_Cond (B_Type))
+           and then not (Has_DIC (B_Type)
+                           or else Has_Inherited_DIC (B_Type))
 
            --  Stop if we cannot make any progress
            and then not Is_Nouveau_Type (B_Type)
@@ -527,11 +527,11 @@ package body SPARK_Util.Types is
       --  it into account.
 
       if not Explicit_Only
-        and then (Has_Default_Init_Cond (B_Type)
-                    or else Has_Inherited_Default_Init_Cond (B_Type))
+        and then (Has_DIC (B_Type)
+                    or else Has_Inherited_DIC (B_Type))
       then
          declare
-            Prag : constant Node_Id := Get_Default_Init_Cond_Pragma (B_Type);
+            Prag : constant Node_Id := Get_DIC_Pragma (B_Type);
             Expr : Node_Id;
          begin
             --  The pragma has an argument. If NULL, this indicates a value of

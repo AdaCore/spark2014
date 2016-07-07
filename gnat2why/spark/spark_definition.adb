@@ -3505,9 +3505,9 @@ package body SPARK_Definition is
             --  If the type has a Default_Initial_Condition aspect, store the
             --  corresponding procedure in the Delayed_Type_Aspects map.
 
-            if (Has_Default_Init_Cond (E)
-                  or else Has_Inherited_Default_Init_Cond (E))
-              and then Present (Default_Init_Cond_Procedure (E))
+            if (Has_DIC (E)
+                  or else Has_Inherited_DIC (E))
+              and then Present (DIC_Procedure (E))
             then
                declare
                   Delayed_Mapping : constant Node_Id :=
@@ -3516,7 +3516,7 @@ package body SPARK_Definition is
                      else E);
                begin
                   Delayed_Type_Aspects.Include
-                    (Default_Init_Cond_Procedure (E), Delayed_Mapping);
+                    (DIC_Procedure (E), Delayed_Mapping);
                end;
             end if;
          end if;
