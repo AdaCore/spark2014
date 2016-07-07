@@ -1,2 +1,3 @@
+database.ads:51:14: info: postcondition proved
 database.ads:53:41: info: precondition proved
 database.ads:53:50: info: initialization of "Account" proved

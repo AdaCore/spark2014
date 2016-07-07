@@ -10,7 +10,7 @@ maths_pack.adb:21:24: info: initialization of "Half_X" proved
 maths_pack.adb:21:31: medium: overflow check might fail
 maths_pack.adb:21:35: medium: overflow check might fail
 maths_pack.adb:22:14: info: initialization of "Y" proved
-maths_pack.ads:23:16: medium: postcondition might fail
+maths_pack.ads:23:16: medium: postcondition might fail, cannot prove Inv_Sqrt'Result > 0.0
 safety_pack.adb:16:14: info: initialization of "Res" proved
 safety_pack.adb:30:14: info: initialization of "Res" proved
 safety_pack.adb:41:17: info: initialization of "Res" proved

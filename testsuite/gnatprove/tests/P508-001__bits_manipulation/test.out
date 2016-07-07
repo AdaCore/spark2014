@@ -17,9 +17,6 @@ bits_manipulation-functions.adb:16:65: info: range check proved, in instantiatio
 bits_manipulation-functions.adb:16:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:17:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
@@ -28,6 +25,9 @@ bits_manipulation-functions.adb:29:98: info: range check proved, in instantiatio
 bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:30:29: medium: postcondition might fail, cannot prove Shift_Left (Extract_Bits_Inline_Always'Result, From) = (Value and Shift_Left(Make_Mask (Mask_Size (To - From + 1)), From), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:30:29: medium: postcondition might fail, cannot prove Shift_Left (Extract_Bits_Inline_Always'Result, From) = (Value and Shift_Left(Make_Mask (Mask_Size (To - From + 1)), From), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:30:29: medium: postcondition might fail, cannot prove Shift_Left (Extract_Bits_Inline_Always'Result, From) = (Value and Shift_Left(Make_Mask (Mask_Size (To - From + 1)), From), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44

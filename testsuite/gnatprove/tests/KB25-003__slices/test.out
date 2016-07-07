@@ -2,7 +2,7 @@ pack.adb:4:32: info: initialization of "Glob" proved
 pack.adb:4:32: info: length check proved
 pack.adb:4:32: info: range check proved
 pack.adb:12:34: info: length check proved
-pack.adb:12:51: medium: array index check might fail (e.g. when Glob'First = 2 and Glob'Last = 1)
+pack.adb:12:51: medium: array index check might fail (e.g. when Glob'First = 2)
 pack.adb:13:41: info: length check proved
 pack.adb:14:41: info: length check proved
 pack.adb:14:41: info: range check proved
@@ -10,7 +10,7 @@ pack.adb:16:07: info: assertion proved
 pack.adb:17:07: info: assertion proved
 pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1..4 => 42) (e.g. when My_B = (others => 0))
 pack.adb:23:34: info: length check proved
-pack.adb:23:34: medium: range check might fail (e.g. when Glob'First = 2 and Glob'Last = 1)
+pack.adb:23:34: medium: range check might fail (e.g. when Glob'First = 2)
 pack.adb:24:41: info: length check proved
 pack.adb:25:41: info: length check proved
 pack.adb:25:41: info: range check proved
@@ -27,7 +27,7 @@ pack.adb:29:40: info: range check proved
 pack.adb:33:04: warning: analyzing unreferenced procedure "AN21"
 pack.adb:33:14: warning: subprogram "AN21" has no effect
 pack.adb:34:34: info: length check proved
-pack.adb:34:34: medium: range check might fail (e.g. when Glob'First = 2 and Glob'Last = 1)
+pack.adb:34:34: medium: range check might fail (e.g. when Glob'First = 2)
 pack.adb:35:41: info: length check proved
 pack.adb:36:41: info: length check proved
 pack.adb:36:41: info: range check proved
@@ -42,7 +42,7 @@ pack.adb:39:40: info: range check proved
 pack.adb:43:04: warning: analyzing unreferenced procedure "AN22"
 pack.adb:43:14: warning: subprogram "AN22" has no effect
 pack.adb:44:34: info: length check proved
-pack.adb:44:34: medium: range check might fail (e.g. when Glob'First = 2 and Glob'Last = 1)
+pack.adb:44:34: medium: range check might fail (e.g. when Glob'First = 2)
 pack.adb:45:41: info: length check proved
 pack.adb:46:41: info: length check proved
 pack.adb:46:41: info: range check proved
@@ -57,7 +57,7 @@ pack.adb:49:40: info: range check proved
 pack.adb:53:04: warning: analyzing unreferenced procedure "A3"
 pack.adb:53:14: warning: subprogram "A3" has no effect
 pack.adb:54:34: info: length check proved
-pack.adb:54:34: medium: range check might fail (e.g. when Glob'First = 3 and Glob'Last = 2)
+pack.adb:54:34: medium: range check might fail (e.g. when Glob'First = 3)
 pack.adb:59:04: warning: analyzing unreferenced procedure "A4"
 pack.adb:59:14: warning: subprogram "A4" has no effect
 pack.adb:60:34: info: length check proved

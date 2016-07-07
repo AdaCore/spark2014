@@ -12,9 +12,9 @@ fib.adb:13:14: info: initialization of "a" proved
 fib.adb:20:15: warning: unused assignment
 fib.adb:21:15: warning: unused assignment
 fib.adb:26:09: warning: unused assignment
-fib.adb:28:10: medium: loop invariant might fail after first iteration (e.g. when a1 = 0 and b1 = 0 and copy_n1 = 3 and i = 1 and n1 = 4)
-fib.adb:28:10: medium: loop invariant might fail in first iteration (e.g. when a1 = 1 and b1 = 1 and copy_n1 = 3 and i = 2 and n1 = 3)
 fib.adb:28:33: info: initialization of "a1" proved
+fib.adb:28:33: medium: loop invariant might fail after first iteration, cannot prove a1 = Fibonacci(i) (e.g. when a1 = 0 and i = 1)
+fib.adb:28:33: medium: loop invariant might fail in first iteration, cannot prove a1 = Fibonacci(i) (e.g. when a1 = 1 and i = 2)
 fib.adb:28:38: info: precondition proved
 fib.adb:28:48: info: initialization of "i" proved
 fib.adb:29:25: info: initialization of "b1" proved
@@ -34,9 +34,9 @@ fib.adb:36:12: warning: unused assignment
 fib.adb:36:15: info: initialization of "i" proved
 fib.adb:36:17: info: overflow check proved
 fib.adb:38:09: warning: unused assignment
-fib.adb:40:10: medium: loop invariant might fail after first iteration (e.g. when a2 = 0 and b2 = 0 and copy_n2 = 3 and i = 2 and n2 = 3)
-fib.adb:40:10: medium: loop invariant might fail in first iteration (e.g. when a2 = 1 and b2 = 1 and copy_n2 = 3 and i = 2 and n2 = 3)
 fib.adb:40:33: info: initialization of "a2" proved
+fib.adb:40:33: medium: loop invariant might fail after first iteration, cannot prove a2 = Fibonacci(i) (e.g. when a2 = 0 and i = 1)
+fib.adb:40:33: medium: loop invariant might fail in first iteration, cannot prove a2 = Fibonacci(i) (e.g. when a2 = 1 and i = 2)
 fib.adb:40:38: info: precondition proved
 fib.adb:40:48: info: initialization of "i" proved
 fib.adb:41:25: info: initialization of "b2" proved
@@ -110,12 +110,12 @@ fib.adb:103:19: info: initialization of "b1" proved
 fib.adb:103:22: medium: overflow check might fail
 fib.adb:103:24: info: initialization of "p1" proved
 fib.adb:109:14: info: initialization of "k2" proved
-fib.adb:110:10: medium: loop invariant might fail after first iteration
-fib.adb:110:10: medium: loop invariant might fail in first iteration
+fib.adb:110:33: medium: loop invariant might fail after first iteration, cannot prove a2 ** n2 = p2 * (b2 ** k2
 fib.adb:110:44: info: initialization of "p2" proved
 fib.adb:110:50: info: initialization of "b2" proved
 fib.adb:110:56: info: initialization of "k2" proved
 fib.adb:110:69: info: initialization of "k1" proved
+fib.adb:111:27: medium: loop invariant might fail in first iteration, cannot prove p2 <= a2 ** n2
 fib.adb:112:10: info: loop variant proved
 fib.adb:112:44: info: initialization of "k2" proved
 fib.adb:113:14: info: initialization of "k2" proved

@@ -34,8 +34,8 @@ unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition
 unit2.ads:12:14: info: postcondition proved
 unit2.ads:12:32: info: initialization of "X.C2" proved
 unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition (e.g. when X = (C1 => -1, C2 => -1))
-unit2.ads:23:14: medium: postcondition might fail (e.g. when X = (C1 => 1, C2 => 1) and X'Old = (C1 => 0, C2 => 1))
 unit2.ads:23:30: info: overflow check proved
+unit2.ads:23:43: medium: postcondition might fail, cannot prove X.C2 = X.C2'Old + 1 (e.g. when X = (C1 => ?, C2 => 1) and X'Old = (C1 => ?, C2 => 1))
 unit2.ads:23:59: info: overflow check proved
 unit3.adb:13:12: info: precondition proved
 unit3.adb:14:20: medium: overflow check might fail (e.g. when X = (C3 => 2147483647, others => ?))
@@ -54,7 +54,7 @@ unit3.ads:25:36: medium: overflow check might fail (e.g. when X = (C1 => 2147483
 unit3.ads:25:65: medium: overflow check might fail (e.g. when X = (C2 => 2147483647, others => ?))
 unit3.ads:25:94: medium: overflow check might fail (e.g. when X = (C3 => 2147483647, others => ?))
 unit3.ads:26:20: info: postcondition is stronger than class-wide postcondition
-unit3.ads:26:20: medium: postcondition might fail (e.g. when X = (C1 => 1, C2 => 0, C3 => 1) and X'Old = (C1 => 0, C2 => -1, C3 => 1))
 unit3.ads:26:36: info: overflow check proved
 unit3.ads:26:65: info: overflow check proved
+unit3.ads:26:78: medium: postcondition might fail, cannot prove X.C3 = X.C3'Old + 1 (e.g. when X = (C3 => 1, others => ?) and X'Old = (C3 => 1, others => ?))
 unit3.ads:26:94: info: overflow check proved

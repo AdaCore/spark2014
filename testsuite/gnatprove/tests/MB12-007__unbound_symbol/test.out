@@ -13,8 +13,8 @@ pupils.ads:40:17: info: length check proved
 pupils.ads:46:46: info: length check proved
 pupils.ads:76:32: info: length check proved
 pupils.ads:99:44: info: initialization of "Success" proved
-pupils.ads:102:16: medium: postcondition might fail
 pupils.ads:102:25: info: range check proved
+pupils.ads:103:19: medium: postcondition might fail, cannot prove P.PupilEntries (I) = P'Old.PupilEntries (I)
 pupils.ads:103:35: info: index check proved
 pupils.ads:103:60: info: index check proved
 pupils.ads:104:20: info: initialization of "Success" proved

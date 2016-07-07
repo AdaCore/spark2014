@@ -5,7 +5,7 @@ stable_marriage.adb:10:16: info: initialization of "Seen" proved
 stable_marriage.adb:11:26: info: range check proved
 stable_marriage.adb:12:26: info: index check proved
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
-stable_marriage.adb:15:22: medium: assertion might fail, cannot prove Seen = Group1_Flags'(others => True)) = (for all G1 in Group1_Id => Seen (G1) and then (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when R1 = (64 => 63, 1 => 64, others => 0) and Seen = (62 => false, 0 => false, others => true))
+stable_marriage.adb:15:07: medium: assertion might fail (e.g. when Seen = (1 => false, 0 => false, others => true))
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
 stable_marriage.adb:15:43: info: length check proved
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
@@ -17,7 +17,7 @@ stable_marriage.adb:31:16: info: initialization of "Seen" proved
 stable_marriage.adb:32:26: info: range check proved
 stable_marriage.adb:33:26: info: index check proved
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
-stable_marriage.adb:36:22: medium: assertion might fail, cannot prove Seen = Group2_Flags'(others => True)) = (for all G2 in Group2_Id => Seen (G2) and then (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when R2 = (64 => 63, 1 => 64, others => 0) and Seen = (62 => false, 0 => false, others => true))
+stable_marriage.adb:36:07: medium: assertion might fail (e.g. when Seen = (1 => false, 0 => false, others => true))
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
 stable_marriage.adb:36:43: info: length check proved
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
@@ -150,8 +150,8 @@ stable_marriage.adb:335:10: info: assertion proved
 stable_marriage.adb:343:10: info: assertion proved
 stable_marriage.adb:346:29: info: range check proved
 stable_marriage.adb:348:51: info: index check proved
-stable_marriage.adb:350:10: medium: assertion might fail
 stable_marriage.adb:352:24: info: range check proved
+stable_marriage.adb:354:19: medium: assertion might fail, cannot prove not Unmatched_G2_Set (Ranking_1 (G1_Id) (Rank)
 stable_marriage.adb:354:61: info: index check proved
 stable_marriage.adb:355:54: info: index check proved
 stable_marriage.adb:356:33: info: precondition proved
@@ -160,9 +160,9 @@ stable_marriage.adb:358:59: info: index check proved
 stable_marriage.adb:360:10: info: assertion proved
 stable_marriage.adb:362:40: info: range check proved
 stable_marriage.adb:364:61: info: index check proved
-stable_marriage.adb:366:10: medium: assertion might fail
 stable_marriage.adb:368:28: info: range check proved
 stable_marriage.adb:370:46: info: index check proved
+stable_marriage.adb:372:20: medium: assertion might fail, cannot prove Result (Ranking_1 (G1_Id) (Ranking (Proposals_Made (G1_Id)))) = G1_Id
 stable_marriage.adb:373:31: info: range check proved
 stable_marriage.adb:377:29: info: precondition proved
 stable_marriage.adb:380:10: info: loop invariant initialization proved
@@ -200,14 +200,14 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved
 stable_marriage.adb:399:14: info: initialization of "Result" proved
-stable_marriage.ads:21:14: medium: postcondition might fail, cannot prove Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when Is_Permutation_1'Result = False and R1 = (64 => 3, others => 0))
+stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when R1 = (64 => 64, others => 0))
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) (e.g. when R1 = (2 => 1, 1 => 1, others => 0))
-stable_marriage.ads:33:14: medium: postcondition might fail, cannot prove Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when Is_Permutation_2'Result = False and R2 = (64 => 3, others => 0))
+stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when R2 = (64 => 64, others => 0))
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) (e.g. when R2 = (2 => 1, 1 => 1, others => 0))
-stable_marriage.ads:50:14: medium: postcondition might fail (e.g. when Invert_1'Result = (2 => 64, 1 => 64, others => 0) and R1 = (64 => 2, 0 => 2, others => 1))
-stable_marriage.ads:56:14: medium: postcondition might fail (e.g. when Invert_2'Result = (2 => 64, 1 => 64, others => 0) and R2 = (64 => 2, 0 => 2, others => 1))
+stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1 (e.g. when Invert_1'Result = (2 => 64, 1 => 64, others => 0) and R1 = (64 => 2, others => 1))
+stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2 (e.g. when Invert_2'Result = (2 => 64, 1 => 64, others => 0) and R2 = (64 => 2, others => 1))
 stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22) (e.g. when G2_To_G1 = (2 => 1, 1 => 1, others => 0))
-stable_marriage.ads:71:07: medium: postcondition might fail (e.g. when G2_To_G1 = (64 => 2, others => 0) and Invert_Map'Result = (2 => 64, 1 => 64, others => 1))
+stable_marriage.ads:71:36: medium: postcondition might fail, cannot prove G2_To_G1 (Invert_Map'Result (G1)) = G1 (e.g. when G2_To_G1 = (64 => 2, others => 1) and Invert_Map'Result = (2 => 64, 1 => 64, others => 0))
 stable_marriage.ads:77:14: info: postcondition proved
 stable_marriage.ads:78:09: info: precondition proved
 stable_marriage.ads:78:33: info: precondition proved

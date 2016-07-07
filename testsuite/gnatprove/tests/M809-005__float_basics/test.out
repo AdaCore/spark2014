@@ -572,7 +572,7 @@ generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation
 generic_interval_tests.adb:184:18: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:184:22: info: overflow check proved, in instantiation at bar.ads:8
-homothetical.adb:8:14: medium: postcondition might fail
+homothetical.adb:8:14: medium: postcondition might fail, cannot prove adjust2triangle'Result > 0.0
 homothetical.adb:12:21: medium: overflow check might fail
 homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: medium: overflow check might fail
@@ -612,7 +612,7 @@ homothetical.adb:65:22: info: initialization of "upsilon" proved
 homothetical.adb:65:33: medium: overflow check might fail
 homothetical.ads:17:17: info: initialization of "kvmax" proved
 homothetical.ads:18:17: info: initialization of "kamax" proved
-homothetical.ads:24:14: medium: postcondition might fail
 homothetical.ads:25:17: info: initialization of "kvmax" proved
+homothetical.ads:25:17: medium: postcondition might fail, cannot prove kvmax(j) > 0.0
 homothetical.ads:26:17: info: initialization of "kamax" proved
 reduced_02.ads:9:15: info: range check proved

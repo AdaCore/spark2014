@@ -102,9 +102,9 @@ slice_sums.ads:11:34: info: range check proved
 slice_sums.ads:12:31: info: precondition proved
 slice_sums.ads:13:37: info: precondition proved
 slice_sums.ads:14:23: info: precondition proved
-slice_sums.ads:17:14: medium: postcondition might fail
 slice_sums.ads:21:31: info: range check proved
 slice_sums.ads:22:34: info: range check proved
+slice_sums.ads:23:30: medium: postcondition might fail, cannot prove Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_BoundsSlice_Bounds'(Lo => Lo), (Hi => Hi))
 slice_sums.ads:23:31: info: precondition proved
 slice_sums.ads:24:37: info: precondition proved
 slice_sums.ads:25:23: info: precondition proved

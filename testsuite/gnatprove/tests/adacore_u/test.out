@@ -1,9 +1,9 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and I = 0)
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0)
 aliasing.adb:26:23: info: index check proved
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and J = 0)
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0)
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:9:20: info: range check proved
@@ -188,7 +188,7 @@ stack.ads:56:55: info: length check proved
 stack.ads:57:49: info: index check proved
 use_stack.adb:2:11: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:2:11: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
-use_stack.adb:3:10: medium: precondition of main program might fail (e.g. when P_Top = 1)
+use_stack.adb:3:10: medium: precondition of main program might fail
 use_stack.adb:7:06: warning: unused assignment
 use_stack.adb:7:09: info: precondition proved
 use_stack.adb:8:11: info: initialization of "E" proved
@@ -361,13 +361,13 @@ ring_buffer.adb:81:46: info: length check proved, in call inlined at ring_buffer
 ring_buffer.adb:81:46: info: range check proved, in call inlined at ring_buffer.adb:94
 ring_buffer.adb:87:27: info: range check proved
 ring_buffer.adb:89:28: info: range check proved
-ring_buffer.ads:13:14: medium: postcondition might fail
+ring_buffer.ads:13:14: medium: postcondition might fail, cannot prove Valid_Model (Get_Model'result)
 ring_buffer.ads:19:14: medium: postcondition might fail, cannot prove Get_Model = Get_Model'Old & E
 ring_buffer.ads:19:40: info: range check proved
-ring_buffer.ads:23:14: medium: postcondition might fail
+ring_buffer.ads:23:14: medium: postcondition might fail, cannot prove (Valid_Model)
 ring_buffer.ads:23:64: info: range check proved
 ring_buffer.ads:25:25: info: initialization of "E" proved
-ring_buffer.ads:27:14: medium: postcondition might fail
+ring_buffer.ads:27:14: medium: postcondition might fail, cannot prove (Valid_Model)
 ring_buffer.ads:27:30: info: initialization of "E" proved
 ring_buffer.ads:27:32: info: range check proved
 ring_buffer.ads:33:24: medium: postcondition might fail, cannot prove (Valid_Model)

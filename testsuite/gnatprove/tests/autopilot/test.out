@@ -167,4 +167,4 @@ scale.adb:78:30: info: initialization of "V" proved
 scale.adb:79:38: info: initialization of "V" proved
 scale.adb:79:38: info: range check proved
 scale.adb:80:14: info: initialization of "Ans" proved
-scale.ads:16:19: medium: postcondition might fail
+scale.ads:16:19: medium: postcondition might fail, cannot prove -Max <= Scale_Movement'result

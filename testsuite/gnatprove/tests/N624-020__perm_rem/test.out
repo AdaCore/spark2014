@@ -410,7 +410,7 @@ perm.adb:359:10: info: assertion proved
 perm.adb:359:25: info: initialization of "H" proved
 perm.adb:361:12: medium: precondition might fail
 perm.adb:362:14: info: initialization of "H" proved
-perm.ads:11:14: medium: postcondition might fail
+perm.ads:11:14: medium: postcondition might fail, cannot prove Invariant (Remove'result) (e.g. when Remove'Result'First = 1 and Remove'Result'Last = 0 and Remove'Result = (others => 0))
 perm.ads:12:34: info: overflow check proved
 perm.ads:13:37: info: index check proved
 perm.ads:13:57: info: index check proved

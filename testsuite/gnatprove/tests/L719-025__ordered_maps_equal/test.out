@@ -17,8 +17,8 @@ p.ads:23:45: info: precondition proved
 p.ads:24:14: info: postcondition proved
 p.ads:24:14: info: precondition proved
 p.ads:27:13: info: precondition proved
-p.ads:28:14: medium: postcondition might fail (e.g. when K = 2)
 p.ads:28:16: info: precondition proved
 p.ads:29:10: info: precondition proved
 p.ads:29:24: info: precondition proved
 p.ads:29:45: info: precondition proved
+p.ads:29:45: medium: postcondition might fail, cannot prove Strict_Equal (L, L'old)

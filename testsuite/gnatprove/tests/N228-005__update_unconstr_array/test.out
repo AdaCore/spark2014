@@ -15,7 +15,7 @@ update_checks_1.adb:33:27: medium: range check might fail (e.g. when A'First = 2
 update_checks_1.adb:33:27: medium: range check might fail (e.g. when A'First = 9 and A'Last = 8)
 update_checks_1.adb:51:09: info: length check proved
 update_checks_1.adb:51:21: info: range check proved
-update_checks_1.adb:62:10: medium: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1)
+update_checks_1.adb:62:10: medium: array index check might fail (e.g. when A'First = 8 and I = 7)
 update_checks_1.adb:69:18: info: length check proved
 update_checks_1.adb:69:21: info: length check proved
 update_checks_1.adb:69:24: info: range check proved
@@ -36,7 +36,7 @@ update_checks_1.ads:19:32: info: range check proved
 update_checks_1.ads:24:19: info: postcondition proved
 update_checks_1.ads:24:22: info: index check proved
 update_checks_1.ads:27:19: medium: postcondition might fail, cannot prove A (1 .. I) = (1..I => New_Val)
-update_checks_1.ads:27:19: medium: range check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 8)
+update_checks_1.ads:27:19: medium: range check might fail (e.g. when A'First = 10)
 update_checks_1.ads:27:35: info: range check proved
 update_checks_1.ads:30:19: info: postcondition proved
 update_checks_1.ads:30:37: info: range check proved

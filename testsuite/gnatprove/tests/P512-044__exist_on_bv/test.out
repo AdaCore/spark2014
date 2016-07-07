@@ -2,9 +2,9 @@ x86.adb:21:17: warning: subprogram "Prove_Post" has no effect
 x86.adb:36:40: info: initialization of "N2" proved
 x86.adb:36:40: info: initialization of "N2" proved, in call inlined at x86.adb:99
 x86.adb:36:40: medium: assertion might fail, cannot prove N2 <= var2_range_size, in call inlined at x86.adb:99
-x86.adb:45:22: medium: assertion might fail, in call inlined at x86.adb:99
 x86.adb:45:37: info: initialization of "N1" proved
 x86.adb:45:37: info: initialization of "N1" proved, in call inlined at x86.adb:99
+x86.adb:45:37: medium: assertion might fail, cannot prove N1 in 0 .. var1_range_size, in call inlined at x86.adb:99
 x86.adb:46:41: info: initialization of "N2" proved
 x86.adb:46:41: info: initialization of "N2" proved, in call inlined at x86.adb:99
 x86.adb:49:19: medium: assertion might fail, in call inlined at x86.adb:99 (e.g. when var1 = 0 and var1_range_size = 0 and var2 = 0 and var2_range_size = 0)
@@ -23,6 +23,6 @@ x86.adb:82:57: medium: assertion might fail, cannot prove var1 + N1 /= var2 + J,
 x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99
 x86.adb:89:37: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when var1 = 0 and var2 = 9223372036854775808)
 x86.adb:94:34: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when var1 = 0 and var2 = 9223372036854775808)
-x86.ads:16:14: medium: postcondition might fail, cannot prove InRange64'Result = (for some N in Unsigned64 range 0 .. range_size => (var = (bottom + N
+x86.ads:16:14: medium: postcondition might fail (e.g. when bottom = 10413307317647136086 and range_size = 9250393634618998784 and var = 17091348097879681704)
 x86.ads:16:44: info: range check proved
 x86.ads:22:14: info: postcondition proved

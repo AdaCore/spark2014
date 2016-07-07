@@ -275,7 +275,7 @@ aco-math-very_longs.adb:477:104: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:477:120: info: range check proved
 aco-math-very_longs.adb:478:28: info: initialization of "Future_Borrow" proved
 aco-math-very_longs.adb:489:31: medium: array index check might fail (e.g. when J = 2)
-aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat = 256)
+aco-math-very_longs.adb:489:47: medium: range check might fail
 aco-math-very_longs.adb:493:34: info: index check proved
 aco-math-very_longs.adb:493:61: info: index check proved
 aco-math-very_longs.adb:495:17: info: range check proved

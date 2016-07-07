@@ -30,9 +30,9 @@ arrays_of_records.adb:228:29: info: initialization of "Tmp" proved
 arrays_of_records.adb:236:22: medium: postcondition might fail, cannot prove A /= A'old
 arrays_of_records.adb:243:28: info: initialization of "Tmp" proved
 arrays_of_records.adb:244:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:252:22: medium: postcondition might fail
+arrays_of_records.adb:252:22: medium: postcondition might fail, cannot prove A /= A'old
 arrays_of_records.adb:258:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:264:22: medium: postcondition might fail
+arrays_of_records.adb:264:22: medium: postcondition might fail, cannot prove A /= A'old
 arrays_of_records.adb:270:28: info: initialization of "Tmp" proved
 arrays_of_records.adb:276:22: medium: postcondition might fail, cannot prove A /= A'old
 arrays_of_records.adb:282:28: info: initialization of "Tmp" proved

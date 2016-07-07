@@ -188,10 +188,10 @@ is
 
    procedure Swap_Fields_A_2 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => (X.Exists = X'Old.Exists)
                        and (if X.Exists
                               then (X.The_Pair.A = X'Old.The_Pair.B
-                                      and X.The_Pair.B = X'Old.The_Pair.A))
+                                      and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       Tmp : Unsigned_Byte;
    begin
@@ -202,10 +202,10 @@ is
 
    procedure Swap_Fields_A_2_Cut (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => (X.Exists = X'Old.Exists)
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
-                                       and X.The_Pair.B = X'Old.The_Pair.A))
+                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       Tmp   : Unsigned_Byte;
       X_Old : constant Optional_Pair := X;
@@ -293,10 +293,10 @@ is
 
    procedure Swap_Fields_D (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
+          Post    => (X.Exists = X'Old.Exists)
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
-                                       and X.The_Pair.B = X'Old.The_Pair.A))
+                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       X.The_Pair := Pair'(X.The_Pair.B, 5);

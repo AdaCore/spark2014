@@ -18,7 +18,7 @@ t3q5.adb:55:17: info: precondition proved
 t3q5.adb:56:13: info: initialization of "Key" proved
 t3q5.adb:57:39: info: initialization of "Key" proved
 t3q5.adb:59:10: info: loop invariant initialization proved
-t3q5.adb:59:10: medium: loop invariant might fail after first iteration
+t3q5.adb:59:59: medium: loop invariant might fail after first iteration, cannot prove Table (X) <= Table (X + 1)
 t3q5.adb:59:66: info: index check proved
 t3q5.adb:59:81: info: index check proved
 t3q5.adb:59:81: info: overflow check proved

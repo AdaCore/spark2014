@@ -26,6 +26,6 @@ p.ads:21:45: info: precondition proved
 p.ads:22:14: info: postcondition proved
 p.ads:22:14: info: precondition proved
 p.ads:25:13: info: precondition proved
-p.ads:26:14: medium: postcondition might fail
 p.ads:26:16: info: precondition proved
 p.ads:27:27: info: precondition proved
+p.ads:27:27: medium: postcondition might fail, cannot prove Strict_Equal (L, L'old)

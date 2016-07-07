@@ -20,10 +20,10 @@ infoflow.adb:89:47: info: initialization of "OutKeys_V2" proved
 infoflow.adb:89:47: medium: "OutKeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:100:36: info: initialization of "M_V1" proved
-infoflow.adb:101:13: medium: loop invariant might fail after first iteration
-infoflow.adb:101:13: medium: loop invariant might fail in first iteration
+infoflow.adb:103:34: medium: loop invariant might fail after first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
 infoflow.adb:103:40: info: index check proved
 infoflow.adb:103:64: medium: array index check might fail
+infoflow.adb:105:34: medium: loop invariant might fail in first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K - M_V1)
 infoflow.adb:105:40: info: index check proved
 infoflow.adb:105:64: medium: array index check might fail
 infoflow.adb:105:66: info: initialization of "M_V1" proved
@@ -41,10 +41,10 @@ infoflow.adb:109:35: info: initialization of "T_V1" proved
 infoflow.adb:113:07: info: assertion proved
 infoflow.adb:121:28: info: division check proved
 infoflow.adb:122:36: info: initialization of "M_V2" proved
-infoflow.adb:123:13: medium: loop invariant might fail after first iteration
-infoflow.adb:123:13: medium: loop invariant might fail in first iteration
+infoflow.adb:125:34: medium: loop invariant might fail after first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
 infoflow.adb:125:40: info: index check proved
 infoflow.adb:125:64: medium: array index check might fail
+infoflow.adb:127:34: medium: loop invariant might fail in first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K - M_V2)
 infoflow.adb:127:40: info: index check proved
 infoflow.adb:127:64: medium: array index check might fail
 infoflow.adb:127:66: info: initialization of "M_V2" proved
@@ -59,23 +59,23 @@ infoflow.adb:131:24: info: index check proved
 infoflow.adb:131:24: info: overflow check proved
 infoflow.adb:131:32: info: initialization of "M_V2" proved
 infoflow.adb:131:35: info: initialization of "T_V2" proved
-infoflow.adb:139:17: medium: postcondition might fail
 infoflow.adb:140:35: info: division check proved
 infoflow.adb:140:46: info: index check proved
 infoflow.adb:140:60: info: index check proved
 infoflow.adb:140:68: info: division check proved
+infoflow.adb:141:26: medium: postcondition might fail, cannot prove H (K) = H'Old (K - H'Last/2)
 infoflow.adb:141:29: info: index check proved
 infoflow.adb:141:43: info: index check proved
 infoflow.adb:141:51: info: division check proved
 infoflow.adb:147:22: info: division check proved
 infoflow.adb:148:30: info: initialization of "M" proved
-infoflow.adb:149:13: medium: loop invariant might fail after first iteration
-infoflow.adb:149:13: medium: loop invariant might fail in first iteration
 infoflow.adb:150:48: info: index check proved
 infoflow.adb:150:69: info: index check proved
+infoflow.adb:152:34: medium: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M)
 infoflow.adb:152:37: info: index check proved
 infoflow.adb:152:58: info: index check proved
 infoflow.adb:152:60: info: initialization of "M" proved
+infoflow.adb:153:36: medium: loop invariant might fail after first iteration, cannot prove H (K) = H'Loop_Entry (K)
 infoflow.adb:153:39: info: index check proved
 infoflow.adb:153:58: info: index check proved
 infoflow.adb:154:29: info: index check proved
@@ -219,4 +219,3 @@ infoflow.ads:136:27: medium: "A_V1" might not be initialized
 infoflow.ads:136:33: info: index check proved
 infoflow.ads:136:38: medium: "A_V2" might not be initialized
 infoflow.ads:136:44: info: index check proved
-

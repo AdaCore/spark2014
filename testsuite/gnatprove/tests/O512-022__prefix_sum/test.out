@@ -1,10 +1,10 @@
 prefixsum.adb:8:13: info: initialization of "Space" proved
 prefixsum.adb:9:10: info: loop invariant initialization proved
-prefixsum.adb:9:10: medium: loop invariant might fail after first iteration
 prefixsum.adb:10:34: info: initialization of "Space" proved
 prefixsum.adb:10:40: info: range check proved
 prefixsum.adb:15:27: info: division check proved
 prefixsum.adb:22:30: info: division check proved
+prefixsum.adb:25:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'Loop_Entry (K-3)
 prefixsum.adb:25:60: info: index check proved
 prefixsum.adb:26:41: info: index check proved
 prefixsum.adb:26:62: info: index check proved
@@ -14,8 +14,8 @@ prefixsum.adb:33:10: info: loop variant proved
 prefixsum.adb:33:44: info: initialization of "Space" proved
 prefixsum.adb:35:18: info: initialization of "Space" proved
 prefixsum.adb:37:16: info: initialization of "Left" proved
-prefixsum.adb:38:13: medium: loop invariant might fail after first iteration
-prefixsum.adb:38:13: medium: loop invariant might fail in first iteration
+prefixsum.adb:39:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
+prefixsum.adb:39:15: medium: loop invariant might fail in first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum.adb:39:16: info: initialization of "Left" proved
 prefixsum.adb:39:26: info: division check proved
 prefixsum.adb:39:30: info: initialization of "Space" proved
@@ -48,9 +48,9 @@ prefixsum.adb:70:26: info: range check proved
 prefixsum.adb:76:21: info: initialization of "Space" proved
 prefixsum.adb:76:27: info: division check proved
 prefixsum.adb:78:13: info: initialization of "Space" proved
-prefixsum.adb:79:10: medium: loop invariant might fail after first iteration
-prefixsum.adb:79:10: medium: loop invariant might fail in first iteration
 prefixsum.adb:80:14: info: initialization of "Space" proved
+prefixsum.adb:82:13: medium: loop invariant might fail after first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum.adb:82:13: medium: loop invariant might fail in first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum.adb:82:36: info: division check proved
 prefixsum.adb:82:49: info: range check proved
 prefixsum.adb:87:49: info: division check proved
@@ -65,14 +65,14 @@ prefixsum.adb:103:25: info: overflow check proved
 prefixsum.adb:103:29: info: overflow check proved
 prefixsum.adb:103:29: info: range check proved
 prefixsum.adb:104:16: info: initialization of "Right" proved
-prefixsum.adb:105:13: medium: loop invariant might fail after first iteration
-prefixsum.adb:105:13: medium: loop invariant might fail in first iteration
 prefixsum.adb:107:37: info: initialization of "Right" proved
 prefixsum.adb:108:31: info: division check proved
+prefixsum.adb:109:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum.adb:109:66: medium: array index check might fail
 prefixsum.adb:110:34: info: division check proved
 prefixsum.adb:111:47: info: index check proved
 prefixsum.adb:111:49: info: initialization of "Space" proved
+prefixsum.adb:117:15: medium: loop invariant might fail in first iteration, cannot prove Right + 1) mod (Space * 2) = 0
 prefixsum.adb:117:27: info: division check proved
 prefixsum.adb:121:13: info: loop variant proved
 prefixsum.adb:121:47: info: initialization of "Right" proved
@@ -117,22 +117,22 @@ prefixsum.ads:31:25: info: division check proved
 prefixsum.ads:32:28: info: overflow check proved
 prefixsum.ads:32:34: info: index check proved
 prefixsum.ads:36:41: info: initialization of "Output_Space" proved
-prefixsum.ads:38:14: medium: postcondition might fail
 prefixsum.ads:39:17: info: initialization of "Output_Space" proved
 prefixsum.ads:40:17: info: precondition proved
+prefixsum.ads:40:17: medium: postcondition might fail, cannot prove Intermediate_Form (A, A'old)
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:50:08: medium: postcondition might fail
+prefixsum.ads:52:08: medium: postcondition might fail, cannot prove A (1) = Ghost (0)
 prefixsum_expanded.adb:10:13: info: initialization of "Space" proved
 prefixsum_expanded.adb:11:10: info: loop invariant initialization proved
-prefixsum_expanded.adb:11:10: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:11:10: info: loop invariant preservation proved
 prefixsum_expanded.adb:12:34: info: initialization of "Space" proved
 prefixsum_expanded.adb:12:40: info: range check proved
 prefixsum_expanded.adb:52:10: info: loop variant proved
 prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
-prefixsum_expanded.adb:57:13: medium: loop invariant might fail after first iteration
-prefixsum_expanded.adb:57:13: medium: loop invariant might fail in first iteration
+prefixsum_expanded.adb:58:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
+prefixsum_expanded.adb:58:15: medium: loop invariant might fail in first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved
 prefixsum_expanded.adb:58:30: info: initialization of "Space" proved
@@ -160,7 +160,7 @@ prefixsum_expanded.adb:79:39: info: overflow check proved
 prefixsum_expanded.adb:81:19: info: initialization of "Space" proved
 prefixsum_expanded.adb:81:25: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: range check proved
-prefixsum_expanded.adb:84:07: medium: assertion might fail
+prefixsum_expanded.adb:85:10: medium: assertion might fail, cannot prove A (7) = Saved_A (0) + Saved_A (1) + Saved_A (2) + Saved_A (3) + Saved_A (4) + Saved_A (5) + Saved_A (6) + Saved_A (7)
 prefixsum_expanded.adb:102:23: info: initialization of "Space" proved
 prefixsum_expanded.adb:108:26: info: range check proved
 prefixsum_expanded.adb:116:21: info: initialization of "Space" proved
@@ -169,9 +169,9 @@ prefixsum_expanded.adb:117:15: warning: unused assignment
 prefixsum_expanded.adb:118:07: info: assertion proved
 prefixsum_expanded.adb:119:11: info: initialization of "Saved_A" proved
 prefixsum_expanded.adb:135:13: info: initialization of "Space" proved
-prefixsum_expanded.adb:136:10: medium: loop invariant might fail after first iteration
-prefixsum_expanded.adb:136:10: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:137:14: info: initialization of "Space" proved
+prefixsum_expanded.adb:139:13: medium: loop invariant might fail after first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum_expanded.adb:139:13: medium: loop invariant might fail in first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
 prefixsum_expanded.adb:139:36: info: division check proved
 prefixsum_expanded.adb:139:49: medium: range check might fail
 prefixsum_expanded.adb:161:10: info: loop variant proved
@@ -181,14 +181,14 @@ prefixsum_expanded.adb:163:25: info: overflow check proved
 prefixsum_expanded.adb:163:29: info: overflow check proved
 prefixsum_expanded.adb:163:29: info: range check proved
 prefixsum_expanded.adb:164:16: info: initialization of "Right" proved
-prefixsum_expanded.adb:165:13: medium: loop invariant might fail after first iteration
-prefixsum_expanded.adb:165:13: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:167:37: info: initialization of "Right" proved
 prefixsum_expanded.adb:168:31: info: division check proved
+prefixsum_expanded.adb:169:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum_expanded.adb:169:66: medium: array index check might fail
 prefixsum_expanded.adb:170:34: info: division check proved
 prefixsum_expanded.adb:171:47: info: index check proved
 prefixsum_expanded.adb:171:49: info: initialization of "Space" proved
+prefixsum_expanded.adb:177:15: medium: loop invariant might fail in first iteration, cannot prove Right + 1) mod (Space * 2) = 0
 prefixsum_expanded.adb:177:27: info: division check proved
 prefixsum_expanded.adb:181:13: info: loop variant proved
 prefixsum_expanded.adb:181:47: info: initialization of "Right" proved
@@ -214,8 +214,8 @@ prefixsum_expanded.adb:187:34: info: initialization of "Space" proved
 prefixsum_expanded.adb:187:40: info: overflow check proved
 prefixsum_expanded.adb:189:19: info: initialization of "Space" proved
 prefixsum_expanded.adb:189:25: info: division check proved
-prefixsum_expanded.adb:192:07: medium: assertion might fail
 prefixsum_expanded.adb:193:18: info: initialization of "Saved_A" proved
+prefixsum_expanded.adb:195:10: medium: assertion might fail, cannot prove A (1) = Saved_A (0) + Saved_A (7)
 prefixsum_expanded.ads:25:23: info: overflow check proved
 prefixsum_expanded.ads:25:31: info: overflow check proved
 prefixsum_expanded.ads:25:39: info: overflow check proved
@@ -237,9 +237,9 @@ prefixsum_expanded.ads:55:08: info: postcondition proved
 prefixsum_general.adb:9:13: info: initialization of "Space" proved
 prefixsum_general.adb:10:18: info: initialization of "Space" proved
 prefixsum_general.adb:12:10: info: loop invariant initialization proved
-prefixsum_general.adb:12:10: medium: loop invariant might fail after first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:13:26: info: initialization of "Space" proved
+prefixsum_general.adb:15:13: medium: loop invariant might fail after first iteration, cannot prove 2 * Space <= A'length
 prefixsum_general.adb:17:26: info: initialization of "Left" proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved
@@ -250,13 +250,13 @@ prefixsum_general.adb:32:44: info: initialization of "Space" proved
 prefixsum_general.adb:34:16: info: initialization of "Left" proved
 prefixsum_general.adb:34:21: info: overflow check proved
 prefixsum_general.adb:34:23: info: initialization of "Space" proved
-prefixsum_general.adb:35:13: medium: loop invariant might fail after first iteration
-prefixsum_general.adb:35:13: medium: loop invariant might fail in first iteration
 prefixsum_general.adb:36:16: info: initialization of "Left" proved
 prefixsum_general.adb:36:23: info: initialization of "Space" proved
 prefixsum_general.adb:38:25: info: division check proved
+prefixsum_general.adb:44:16: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum_general.adb:44:27: info: division check proved
 prefixsum_general.adb:56:43: info: division check proved
+prefixsum_general.adb:57:20: medium: loop invariant might fail in first iteration, cannot prove A (K) = Summation (A_Old, K + 1 - Space * 2, K)
 prefixsum_general.adb:57:28: info: precondition proved
 prefixsum_general.adb:57:52: medium: range check might fail
 prefixsum_general.adb:58:46: info: division check proved
@@ -333,6 +333,6 @@ prefixsum_general.adb:126:14: info: precondition proved
 prefixsum_general.ads:8:56: info: division check proved
 prefixsum_general.ads:13:14: info: postcondition proved
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
-prefixsum_general.ads:17:14: medium: postcondition might fail
+prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'last)
 prefixsum_general.ads:18:30: info: precondition proved
 prefixsum_general.ads:21:07: warning: unused variable "Ghost"

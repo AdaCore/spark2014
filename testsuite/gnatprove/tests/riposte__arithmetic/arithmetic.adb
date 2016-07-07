@@ -120,8 +120,8 @@ is
       for I in Unsigned_Byte range 0 .. Half_Range loop
          R := I;
          exit when R + R = N or (R + R) + 1 = N;
-         pragma Loop_Invariant  --  @LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
-           (N > R + R + 1 and R in Unsigned_Byte);
+         pragma Loop_Invariant
+           (N > R + R + 1 and R in Unsigned_Byte);  --  @LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
       end loop;
       return R;
    end Halve_B;

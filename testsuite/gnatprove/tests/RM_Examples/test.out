@@ -133,6 +133,6 @@ intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" pro
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved
 intra_unit_elaboration_order_examples.ads:27:50: info: overflow check proved
-initialization_and_elaboration.ads:8:08: medium: initial condition might fail (e.g. when V = 0 and VP = 0)
+initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved
