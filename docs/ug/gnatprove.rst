@@ -288,7 +288,7 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
   If you do that and have in your project file the Target and Runtime
   properties set, then |GNATprove| (starting with version 16.0.1) will find the
-  runtime automatically, e.g:
+  runtime automatically, e.g.:
 
   .. code-block:: ada
 
