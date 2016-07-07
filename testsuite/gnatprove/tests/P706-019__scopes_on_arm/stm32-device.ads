@@ -42,25 +42,10 @@
 --  This file provides declarations for devices on the STM32F42xx MCUs
 --  manufactured by ST Microelectronics.  For example, an STM32F429.
 
-with STM32_SVD;     use STM32_SVD;
-
 with STM32.GPIO; use STM32.GPIO;
-with STM32.SPI;  use STM32.SPI;
 
 package STM32.Device is
 
-   type GPIO_Port_Id is
-     (GPIO_Port_A, GPIO_Port_B, GPIO_Port_C, GPIO_Port_D, GPIO_Port_E,
-      GPIO_Port_F, GPIO_Port_G, GPIO_Port_H, GPIO_Port_I, GPIO_Port_J,
-      GPIO_Port_K)
-     with Size => 4;
-
-   GPIO_C : aliased Internal_GPIO_Port with Import, Volatile, Address => GPIOC_Base;
-
-   PC2  : aliased GPIO_Point := (GPIO_C'Access, 2);
-
-   Internal_SPI_5 : aliased Internal_SPI_Port with Import, Volatile, Address => SPI5_Base;
-
-   SPI_5 : aliased SPI_Port (Internal_SPI_5'Access);
+   PC2 : aliased GPIO_Point;
 
 end STM32.Device;

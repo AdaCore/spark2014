@@ -45,21 +45,12 @@
 --  See the "a-Si TFT LCD Single Chip Driver" specification by ILITEK, file
 --  name "ILI9341_DS_V1.02" for details.
 
-with HAL.SPI;  use HAL.SPI;
 with HAL.GPIO; use HAL.GPIO;
 
 package ILI9341 is
 
    type ILI9341_Device
-     (Port        : not null access SPI_Port'Class;
-      Chip_Select : not null GPIO_Point_Ref)
-   is tagged limited private;
-
-private
-
-   type ILI9341_Device
-     (Port        : not null access SPI_Port'Class;
-      Chip_Select : not null GPIO_Point_Ref)
+     (Chip_Select : not null GPIO_Point_Ref)
    is tagged limited null record;
 
 end ILI9341;
