@@ -1,10 +1,7 @@
-caller.adb:8:22: medium: assertion might fail, cannot prove Evaluate (Pr_T (I)) = 0
 caller.adb:8:38: info: initialization of "I" proved
-caller.adb:9:22: medium: assertion might fail, cannot prove Add2 (R) = 0
 caller.adb:9:28: info: initialization of "R" proved
 caller.ads:11:14: warning: subprogram "Test" has no effect
 caller.ads:13:04: medium: type "Pr_TT" is not fully initialized
-callers_caller.adb:8:22: medium: assertion might fail, cannot prove Add3 (R) = 0
 callers_caller.adb:8:28: info: initialization of "R" proved
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:2:04: info: initialization of "A.X" proved
@@ -14,31 +11,165 @@ dic.adb:3:04: info: initialization of "B.X" proved
 dic.adb:3:04: info: initialization of "B.Y" proved
 dic.adb:5:04: info: initialization of "D.X" proved
 dic.adb:5:04: info: initialization of "D.Y" proved
-dic.adb:11:58: medium: overflow check might fail
-dic.adb:13:63: medium: overflow check might fail
-dic.adb:17:14: medium: overflow check might fail
-dic.ads:9:09: medium: default initial condition might fail (e.g. when G = -1)
 dic.ads:26:14: info: initialization of "C.X" proved
 dic.ads:26:14: info: initialization of "C.Y" proved
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized
 dic2.adb:7:07: info: initialization of "T_Var" proved
 dic2.adb:8:07: info: initialization of "U_Var" proved
-dic2.adb:11:07: info: assertion proved
 dic2.adb:11:22: info: initialization of "T_Var" proved
 dic2.adb:11:30: info: initialization of "R_Var.X" proved
 dic2.adb:11:42: info: initialization of "U_Var" proved
 dic2.adb:11:50: info: initialization of "R_Var.Y" proved
-dic2.ads:2:09: info: default initial condition proved
-dic2.ads:5:09: info: default initial condition proved
 dic2.ads:17:14: warning: subprogram "Test" has no effect
-dic2.ads:20:28: info: range check proved
-dic2.ads:23:28: info: range check proved
 dic3.adb:7:07: info: initialization of "X" proved
 dic3.adb:8:07: info: initialization of "Y" proved
-dic3.adb:10:07: info: assertion proved
 dic3.adb:10:31: info: initialization of "X" proved
 dic3.adb:10:45: info: initialization of "Y" proved
-dic3.ads:2:09: info: default initial condition proved
-dic3.ads:5:09: info: default initial condition proved
 dic3.ads:12:14: warning: subprogram "Test" has no effect
-dic3.ads:15:28: info: range check proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
++==========================================================================+
++==========================================================================+
++==========================================================================+
++==========================================================================+
++==========================================================================+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
+caller.adb
+caller.ads
+caller.ads
+callers_caller.adb
+callers_caller.ads
+dic.adb
+dic.ads
+dic.ads
+dic.ads
+dic2.adb
+dic2.ads
+dic3.adb
+dic3.ads
+dic_test.adb
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+Please include these source files with error report
+Please include these source files with error report
+Please include these source files with error report
+Please include these source files with error report
+Please include these source files with error report
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+compilation abandoned
+compilation abandoned
+compilation abandoned
+compilation abandoned
+compilation abandoned
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+so please double check that the problem can still
+so please double check that the problem can still
+so please double check that the problem can still
+so please double check that the problem can still
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Error detected at system.ads:37:9                                        |
+| Error detected at system.ads:37:9                                        |
+| Error detected at system.ads:37:9                                        |
+| Error detected at system.ads:37:9                                        |
+| Error detected at system.ads:37:9                                        |
+| Error detected at system.ads:37:9                                        |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |

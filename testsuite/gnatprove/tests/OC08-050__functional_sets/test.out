@@ -1,40 +1,40 @@
 allocator.adb:9:04: info: initialization of "Data" constituent of "State" proved
-allocator.adb:9:16: info: length check proved
-allocator.adb:12:39: info: index check proved
-allocator.adb:14:39: info: index check proved
-allocator.adb:21:11: info: precondition proved
-allocator.adb:23:11: info: precondition proved
 allocator.adb:31:10: info: initialization of "Avail" proved
 allocator.adb:32:10: info: initialization of "Alloc" proved
-allocator.adb:36:43: info: precondition proved
 allocator.adb:36:48: info: initialization of "Avail" proved
-allocator.adb:37:43: info: precondition proved
 allocator.adb:37:48: info: initialization of "Alloc" proved
-allocator.adb:39:13: info: loop invariant initialization proved
-allocator.adb:39:13: info: loop invariant preservation proved
-allocator.adb:40:17: info: precondition proved
 allocator.adb:40:30: info: initialization of "Avail" proved
-allocator.adb:42:17: info: precondition proved
 allocator.adb:42:30: info: initialization of "Alloc" proved
-allocator.adb:45:30: info: index check proved
-allocator.adb:46:51: info: range check proved
-allocator.adb:46:75: info: range check proved
-allocator.adb:47:55: info: range check proved
-allocator.adb:47:75: info: range check proved
 allocator.adb:49:33: info: initialization of "Avail" proved
 allocator.adb:49:53: info: initialization of "Alloc" proved
-allocator.adb:62:10: info: loop invariant initialization proved
-allocator.adb:62:10: info: loop invariant preservation proved
-allocator.adb:64:53: info: index check proved
-allocator.adb:71:44: info: index check proved
-allocator.adb:72:16: info: index check proved
-allocator.ads:9:03: info: initial condition proved
 allocator.ads:9:24: info: initialization of "Data" constituent of "State" proved
-allocator.ads:41:44: info: postcondition proved
 allocator.ads:49:21: info: initialization of "Res" proved
-allocator.ads:55:36: info: contract case proved
 allocator.ads:56:11: info: initialization of "Res" proved
-allocator.ads:62:16: info: contract case proved
 allocator.ads:63:36: info: initialization of "Res" proved
-allocator.ads:72:36: info: contract case proved
-allocator.ads:79:16: info: contract case proved
+
+
+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
+allocator.adb
+allocator.ads
+functional_sets.adb
+functional_sets.ads
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+be reproduced with the set of files listed.
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Error detected at allocator.adb:71:17                                    |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |

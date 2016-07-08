@@ -145,9 +145,9 @@ package body Flow_Error_Messages is
 
    Last_Suppressed : Boolean := False;
    Last_Suppr_Str  : String_Id := No_String;
-   --  used by Error_Msg_Flow to suppress continuation messages of suppressed
+   --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
    --  messages. We need to know if a message was suppressed the last time,
-   --  and the suppression reason, if any
+   --  and the suppression reason, if any.
 
    ---------------------
    -- Compute_Message --

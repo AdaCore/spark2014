@@ -1,12 +1,58 @@
 informal_list.ads:3:09: cannot read theory file informal_list.mlw
-informal_list.ads:3:09: cannot read theory file informal_list.mlw
 test.adb:4:17: info: initialization of "A" proved
 test.adb:5:17: info: initialization of "B" proved
 test.adb:6:17: medium: input value of "C" will be used in "Test"
 test.adb:6:17: warning: unused variable "C"
 test.adb:7:17: medium: input value of private part of "D" will be used in "Test"
 test.adb:7:17: warning: unused variable "D"
-test.adb:12:04: info: initialization of private part of "Tmp_D" proved
 test.adb:14:09: high: "Tmp_A" is not initialized
 test.adb:15:09: high: "Tmp_B" is not initialized
+
+
+
+
+
+
++==========================================================================+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
+formal_list.ads
+formal_list.ads
+informal_list.ads
+test.adb
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+Please include these source files with error report
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+compilation abandoned
+compilation abandoned
 gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Error detected at formal_list.ads:18:4                                   |
+| Error detected at formal_list.ads:18:4                                   |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |

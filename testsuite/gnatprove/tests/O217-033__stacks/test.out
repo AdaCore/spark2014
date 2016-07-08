@@ -1,45 +1,35 @@
-stackp.adb:10:24: info: index check proved
-stackp.adb:11:28: info: range check proved
-stackp.adb:16:28: info: range check proved
-stackp.adb:17:19: info: index check proved
-stackp.adb:28:23: info: index check proved
-stackp.adb:29:28: info: range check proved
-stackp.adb:34:28: info: range check proved
-stackp.adb:35:18: info: index check proved
-stackp.adb:40:28: info: range check proved
-stackp.adb:44:29: info: range check proved
-stackp.ads:33:13: info: postcondition proved
-stackp.ads:36:14: info: postcondition proved
 stackp.ads:36:21: info: initialization of "S.Length" proved
 stackp.ads:36:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:38:37: info: initialization of "E" proved
-stackp.ads:39:20: info: postcondition proved
-stackp.ads:39:20: medium: class-wide postcondition might be weaker than overridden one
-stackp.ads:39:34: info: range check proved
-stackp.ads:42:20: info: class-wide postcondition is stronger than overridden one
-stackp.ads:42:20: info: postcondition proved
-stackp.ads:42:54: info: range check proved
-stackp.ads:49:20: medium: postcondition might fail, cannot prove Get_Model (S) = E & Get_Model (S)'old
-stackp.ads:49:38: info: range check proved
-stackp.ads:52:13: info: postcondition proved
-stackp.ads:55:14: info: postcondition proved
 stackp.ads:55:21: info: initialization of "S.First" proved
 stackp.ads:55:21: info: initialization of "S.Length" proved
 stackp.ads:55:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:57:38: info: initialization of "E" proved
-stackp.ads:58:20: medium: class-wide postcondition might be weaker than overridden one
-stackp.ads:58:20: medium: postcondition might fail, cannot prove Get_Model (S) & (1 => E) = Get_Model (S)'old
-stackp.ads:58:34: info: range check proved
-stackp.ads:61:20: medium: class-wide postcondition might be weaker than overridden one
-stackp.ads:61:20: medium: postcondition might fail, cannot prove Get_Model (S) = Get_Model (S)'Old & (1 => E)
-stackp.ads:61:54: info: range check proved
 stackp.ads:65:04: medium: type "Stack_Root" is not fully initialized
 stackp.ads:71:04: medium: type "Stack" is not fully initialized
-stackp.ads:73:15: info: range check proved
 stackp.ads:77:04: medium: type "Buffer" is not fully initialized
-stackp.ads:85:55: info: range check proved
-stackp.ads:86:35: info: range check proved
-stackp.ads:90:20: info: range check proved
-stackp.ads:90:46: info: range check proved
-stackp.ads:90:49: info: range check proved
-stackp.ads:91:20: info: range check proved
+
+
+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
+stackp.adb
+stackp.ads
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+be reproduced with the set of files listed.
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Error detected at stackp.adb:42:21                                       |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |

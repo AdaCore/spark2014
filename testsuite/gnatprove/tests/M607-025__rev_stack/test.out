@@ -1,60 +1,13 @@
-list.adb:15:35: info: precondition proved
-list.adb:16:35: info: precondition proved
 list.adb:18:07: info: initialization of private part of "Res" proved
-list.adb:18:14: info: initialization of private part of "Res" proved
-list.adb:19:07: info: precondition proved
 list.adb:19:14: info: initialization of private part of "Res" proved
-list.adb:22:10: info: precondition proved
 list.adb:22:16: info: initialization of "S" proved
-list.adb:22:19: info: precondition proved
-list.adb:22:31: info: range check proved
-list.adb:23:10: info: loop invariant initialization proved
-list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:23: info: initialization of "S" proved
-list.adb:25:35: info: overflow check proved
-list.adb:25:43: info: overflow check proved
-list.adb:28:35: info: overflow check proved
-list.adb:28:43: info: index check proved
-list.adb:28:43: info: overflow check proved
-list.adb:28:50: info: precondition proved
-list.adb:28:62: info: range check proved
-list.adb:32:10: info: loop invariant initialization proved
-list.adb:32:10: info: loop invariant preservation proved
-list.adb:34:22: info: precondition proved
 list.adb:34:30: info: initialization of private part of "Res" proved
-list.adb:34:40: info: overflow check proved
 list.adb:36:23: info: initialization of "S" proved
-list.adb:36:38: info: overflow check proved
-list.adb:36:42: info: overflow check proved
-list.adb:38:39: info: overflow check proved
-list.adb:38:43: info: overflow check proved
-list.adb:39:34: info: index check proved
 list.adb:39:50: info: initialization of "S" proved
-list.adb:39:64: info: index check proved
-list.adb:41:40: info: overflow check proved
-list.adb:42:20: info: precondition proved
-list.adb:42:34: info: range check proved
-list.adb:42:39: info: precondition proved
-list.adb:42:56: info: overflow check proved
-list.adb:42:60: info: overflow check proved
-list.adb:42:60: info: range check proved
-list.adb:43:10: info: precondition proved
 list.adb:43:18: info: initialization of private part of "Res" proved
-list.adb:43:23: info: precondition proved
 list.adb:43:28: info: initialization of "S" proved
-list.adb:44:10: info: precondition proved
 list.adb:44:15: info: initialization of "S" proved
-list.ads:13:14: info: postcondition proved
-list.ads:13:28: info: precondition proved
-list.ads:13:47: info: precondition proved
-list.ads:14:19: info: precondition proved
-list.ads:14:31: info: range check proved
-list.ads:14:36: info: precondition proved
-list.ads:15:19: info: precondition proved
-list.ads:15:34: info: overflow check proved
-list.ads:15:38: info: overflow check proved
-list.ads:15:38: info: range check proved
-list.ads:15:40: info: precondition proved
 stack.adb:5:47: info: range check proved
 stack.adb:17:22: info: range check proved
 stack.adb:18:19: info: index check proved
@@ -72,3 +25,53 @@ stack.ads:39:14: info: postcondition proved
 stack.ads:39:29: info: range check proved
 stack.ads:39:56: info: overflow check proved
 stack.ads:53:60: info: index check proved
+
+
+
+
+
+
++==========================================================================+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
++===========================GNAT BUG DETECTED==============================+
+list.adb
+list.ads
+list.ads
+main.adb
+stack.ads
+Consider also -gnatd.n switch (see debug.adb).
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+Please include these source files with error report
+be reproduced with the set of files listed.
+be reproduced with the set of files listed.
+compilation abandoned
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Also include sources listed below.                                       |
+| Error detected at a-textio.ads:363:35                                    |
+| Error detected at list.ads:10:4                                          |
+| Include the entire contents of this bug box in the report.               |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |
+| including your customer number #nnn in the subject line.                 |
