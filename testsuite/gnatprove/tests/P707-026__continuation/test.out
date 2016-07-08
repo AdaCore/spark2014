@@ -1,0 +1,36 @@
+pkg.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
+pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2"
+pkg2.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
+
+gnatprove: test.gpr:1:12: warning: file name does not match project name, should be "k2.gpr"
+Summary of SPARK analysis
+=========================
+
+-----------------------------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow   Interval   CodePeer   Provers   Justified   Unproved
+-----------------------------------------------------------------------------------------------------
+Data Dependencies                 .          .          .          .         .           .          .
+Flow Dependencies                 .          .          .          .         .           .          .
+Initialization                    6          2          .          .         .           3          1
+Non-Aliasing                      .          .          .          .         .           .          .
+Run-time Checks                   .          .          .          .         .           .          .
+Assertions                        .          .          .          .         .           .          .
+Functional Contracts              .          .          .          .         .           .          .
+LSP Verification                  .          .          .          .         .           .          .
+-----------------------------------------------------------------------------------------------------
+Total                             6    2 (33%)          .          .         .     3 (50%)    1 (17%)
+
+
+Analyzed 2 units
+in unit pkg, 2 subprograms and packages out of 2 analyzed
+  Pkg at pkg.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+   suppressed messages:
+    pkg.adb:8:4: Suppressing main message should suppress cont line, too
+    pkg.adb:8:4: Suppressing main message should suppress cont line, too
+  Pkg.Foo at pkg.ads:7 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+in unit pkg2, 2 subprograms and packages out of 2 analyzed
+  Pkg2 at pkg2.ads:1 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
+   suppressed messages:
+    pkg2.adb:8:4: Only suppressing continuation line
+  Pkg2.Foo at pkg2.ads:7 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+

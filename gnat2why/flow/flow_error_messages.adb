@@ -143,6 +143,12 @@ package body Flow_Error_Messages is
    Message_Id_Counter : Message_Id := 0;
    No_Message_Id : constant Message_Id := -1;
 
+   Last_Suppressed : Boolean := False;
+   Last_Suppr_Str  : String_Id := No_String;
+   --  used by Error_Msg_Flow to suppress continuation messages of suppressed
+   --  messages. We need to know if a message was suppressed the last time,
+   --  and the suppression reason, if any
+
    ---------------------
    -- Compute_Message --
    ---------------------
@@ -361,6 +367,17 @@ package body Flow_Error_Messages is
             end case;
          end if;
 
+         --  In the case of a continuation message, also take into account the
+         --  result of the last non-continuation message. Do not simply
+         --  take over the result, but merge it with the results of the
+         --  continuation message, so that one can also suppress only the
+         --  continuation message
+
+         if Continuation then
+            Suppressed := Suppressed or Last_Suppressed;
+            Suppr := (if Suppr = No_String then Last_Suppr_Str else Suppr);
+         end if;
+
          --  Print the message except when it's suppressed.
          --  Additionally, if command line argument "--limit-line" was
          --  given, only issue the warning if it is to be emitted on
@@ -382,6 +399,14 @@ package body Flow_Error_Messages is
             Msg_Id     => Msg_Id);
       else
          Suppressed := True;
+      end if;
+
+      --  in case of a non-continuation message, store the suppressed/justified
+      --  info
+
+      if not Continuation then
+         Last_Suppressed := Suppressed;
+         Last_Suppr_Str := Suppr;
       end if;
    end Error_Msg_Flow;
 
