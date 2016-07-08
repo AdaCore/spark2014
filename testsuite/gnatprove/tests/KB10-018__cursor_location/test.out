@@ -1,5 +1,5 @@
 cursor_location.adb:12:56: info: initialization of "Other_Side" proved
-cursor_location.adb:16:07: medium: assertion might fail (e.g. when DU_Available = (1 => true, others => false))
 cursor_location.adb:17:11: info: postcondition proved
-cursor_location.ads:18:09: medium: postcondition might fail (e.g. when DU_Available = (others => false) and Request = (others => false) and Side = Left)
+cursor_location.adb:17:11: medium: assertion might fail, cannot prove not DU_Available (Left) (e.g. when DU_Available = (1 => true, others => false))
+cursor_location.ads:18:10: medium: postcondition might fail, cannot prove DU_Available (Side) (e.g. when DU_Available = (others => false) and Side = Left)
 cursor_location.ads:27:09: info: postcondition proved

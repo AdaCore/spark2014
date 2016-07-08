@@ -3,35 +3,35 @@ admin.adb:39:52: info: length check proved (CVC4: 1 VC)
 admin.adb:42:52: info: length check proved (CVC4: 1 VC)
 admin.adb:45:51: info: length check proved (CVC4: 1 VC)
 admin.adb:48:52: info: length check proved (CVC4: 1 VC)
-admin.adb:67:29: info: index check proved (CVC4: 1 VC)
-admin.adb:67:47: info: index check proved (CVC4: 1 VC)
-admin.adb:79:27: info: index check proved (CVC4: 1 VC)
+admin.adb:67:29: info: index check proved (CVC4: 2 VC)
+admin.adb:67:47: info: index check proved (CVC4: 2 VC)
+admin.adb:79:27: info: index check proved (CVC4: 2 VC)
 admin.adb:119:10: info: loop invariant initialization proved (CVC4: 1 VC)
 admin.adb:119:10: info: loop invariant preservation proved (CVC4: 1 VC)
 admin.adb:119:33: info: initialization of "TheOp" proved
-admin.adb:125:36: info: index check proved (CVC4: 1 VC)
+admin.adb:125:36: info: index check proved (CVC4: 2 VC)
 admin.adb:131:14: info: initialization of "TheOp" proved
 admin.adb:206:64: info: range check proved (CVC4: 1 VC)
 admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:118:22: info: postcondition proved (CVC4: 1 VC)
+admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
 admin.ads:118:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:118:36: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:137:21: info: postcondition proved (CVC4: 1 VC)
+admin.ads:137:21: info: postcondition proved (CVC4: 3 VC)
 admin.ads:138:28: info: precondition proved (CVC4: 2 VC)
 admin.ads:151:21: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:151:21: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:155:22: info: postcondition proved (CVC4: 1 VC)
+admin.ads:155:22: info: postcondition proved (CVC4: 3 VC)
 admin.ads:155:35: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:155:35: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:168:22: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:168:22: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:170:21: info: postcondition proved (CVC4: 1 VC)
+admin.ads:170:21: info: postcondition proved (CVC4: 2 VC)
 admin.ads:170:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:188:22: info: postcondition proved (CVC4: 1 VC)
+admin.ads:188:22: info: postcondition proved (CVC4: 4 VC)
 admin.ads:191:28: info: precondition proved (CVC4: 1 VC)
-admin.ads:206:22: info: postcondition proved (CVC4: 1 VC)
+admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
 admin.ads:233:08: info: length check proved (CVC4: 1 VC)
 admin.ads:233:48: info: length check proved (CVC4: 1 VC)
 admin.ads:235:48: info: length check proved (CVC4: 1 VC)
@@ -51,7 +51,7 @@ admintoken.adb:169:41: info: initialization of "IDCert.Contents" constituent of 
 admintoken.adb:169:41: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.adb:170:41: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:199:30: info: initialization of "TokenOK" proved
-admintoken.adb:199:30: info: refined post proved (CVC4: 1 VC)
+admintoken.adb:199:30: info: refined post proved (CVC4: 4 VC)
 admintoken.adb:199:41: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.adb:200:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
@@ -59,7 +59,7 @@ admintoken.adb:225:37: info: initialization of "Result" proved
 admintoken.adb:225:37: info: length check proved (CVC4: 1 VC)
 admintoken.adb:225:40: info: length check proved (CVC4: 1 VC)
 admintoken.adb:227:23: info: length check proved (CVC4: 1 VC)
-admintoken.adb:227:23: info: range check proved (CVC4: 1 VC)
+admintoken.adb:227:23: info: range check proved (CVC4: 4 VC)
 admintoken.adb:230:17: info: initialization of "Result" proved
 admintoken.adb:249:37: info: initialization of "Description" proved
 admintoken.adb:250:37: info: initialization of "IDValid" proved
@@ -123,7 +123,7 @@ admintoken.adb:560:42: info: initialization of "TokenPresence" constituent of "S
 admintoken.adb:561:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:577:47: info: initialization of "AuthCertContents" proved
 admintoken.adb:581:43: info: initialization of "IDCertContents" proved
-admintoken.ads:66:22: info: postcondition proved (CVC4: 1 VC)
+admintoken.ads:66:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:66:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:66:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:67:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
@@ -132,16 +132,16 @@ admintoken.ads:101:22: info: postcondition proved (CVC4: 1 VC)
 admintoken.ads:118:07: info: initialization of "Description" proved
 admintoken.ads:119:07: info: initialization of "TokenOK" proved
 admintoken.ads:148:22: info: initialization of "TokenOK" proved
-admintoken.ads:148:22: info: postcondition proved (CVC4: 1 VC)
+admintoken.ads:148:22: info: postcondition proved (CVC4: 4 VC)
 admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:22: medium: postcondition might fail (e.g. when AuthCert = (Valid => False) and IDCert = (Valid => False))
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget (e.g. when AuthCert = (Valid => False))
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
@@ -183,13 +183,13 @@ auditlog.adb:177:44: info: range check proved (CVC4: 1 VC)
 auditlog.adb:177:49: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:177:69: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:211:18: info: range check proved (CVC4: 1 VC)
-auditlog.adb:254:40: info: index check proved (CVC4: 1 VC)
+auditlog.adb:254:40: info: index check proved (CVC4: 2 VC)
 auditlog.adb:254:40: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:254:45: info: initialization of "LocalDesc" proved
-auditlog.adb:255:46: info: index check proved (CVC4: 1 VC)
+auditlog.adb:255:46: info: index check proved (CVC4: 2 VC)
 auditlog.adb:255:46: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:259:45: info: initialization of "LocalDesc" proved
-auditlog.adb:260:46: info: index check proved (CVC4: 1 VC)
+auditlog.adb:260:46: info: index check proved (CVC4: 2 VC)
 auditlog.adb:260:46: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:264:14: info: initialization of "LocalDesc" proved
 auditlog.adb:280:07: info: initialization of "Description" proved
@@ -209,7 +209,7 @@ auditlog.adb:359:22: info: initialization of "FirstTime" proved
 auditlog.adb:359:22: info: initialization of "LastTime" proved
 auditlog.adb:359:22: info: initialization of "TimeOK" proved
 auditlog.adb:416:23: info: length check proved (CVC4: 1 VC)
-auditlog.adb:416:23: info: range check proved (CVC4: 1 VC)
+auditlog.adb:416:23: info: range check proved (CVC4: 4 VC)
 auditlog.adb:416:35: info: initialization of "Offset" proved
 auditlog.adb:416:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:417:35: info: initialization of "Offset" proved
@@ -256,15 +256,15 @@ auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:719:22: medium: postcondition might fail (e.g. when CurrentLogFile = 1 and LogFileEntries = (1 => 1, others => 0) and NumberLogEntries = 0 and UsedLogFiles = (Length => 1, others => ?))
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:734:27: medium: postcondition might fail, cannot prove UsedLogFiles.Length = UsedLogFiles'Old.Length (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
 auditlog.adb:780:75: info: range check proved (CVC4: 1 VC)
-auditlog.adb:820:25: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:820:25: info: postcondition proved (CVC4: 2 VC)
 auditlog.adb:848:53: info: range check proved (CVC4: 1 VC)
 auditlog.adb:854:28: info: initialization of "TheFile" proved
 auditlog.adb:859:39: info: initialization of "TheFile" proved
@@ -274,7 +274,7 @@ auditlog.adb:886:44: info: range check proved (CVC4: 1 VC)
 auditlog.adb:900:26: info: initialization of "Description" proved
 auditlog.adb:901:35: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:922:60: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:923:22: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:923:22: info: postcondition proved (CVC4: 4 VC)
 auditlog.adb:928:60: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:936:28: info: initialization of "Head" proved
 auditlog.adb:938:25: info: initialization of "TheFile" proved
@@ -287,14 +287,14 @@ auditlog.adb:951:44: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1008:56: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:1008:61: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1009:39: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1010:19: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:1010:19: info: postcondition proved (CVC4: 2 VC)
 auditlog.adb:1012:56: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1012:61: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1013:39: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1021:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1023:10: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1021:10: info: precondition proved (CVC4: 3 VC)
+auditlog.adb:1023:10: info: precondition proved (CVC4: 3 VC)
 auditlog.adb:1027:28: info: initialization of "TruncateDescription" proved
-auditlog.adb:1031:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1031:07: info: precondition proved (CVC4: 3 VC)
 auditlog.adb:1053:42: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:1054:42: info: initialization of "AuditSystemFault" constituent of "State" proved
 auditlog.adb:1055:42: info: initialization of "CurrentLogFile" constituent of "State" proved
@@ -306,7 +306,7 @@ auditlog.adb:1059:42: info: initialization of "UsedLogFiles.LastI" constituent o
 auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1059:42: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1070:30: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1070:30: info: refined post proved (CVC4: 1 VC)
+auditlog.adb:1070:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1071:30: info: initialization of "NumberLogEntries" constituent of "State" proved
 auditlog.adb:1072:67: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1072:72: info: overflow check proved (CVC4: 1 VC)
@@ -342,7 +342,7 @@ auditlog.adb:1224:13: info: initialization of "LogFilesStatus" constituent of "S
 auditlog.adb:1225:16: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
 auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1232:20: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1232:20: info: range check proved (CVC4: 2 VC)
 auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
 auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
@@ -350,12 +350,12 @@ auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent o
 auditlog.adb:1236:64: medium: range check might fail (e.g. when UsedLogFiles = (LastI => 17, others => ?))
 auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1237:65: medium: range check might fail (e.g. when UsedLogFiles = (Length => 17, others => ?))
-auditlog.adb:1238:26: info: range check proved (CVC4: 1 VC)
+auditlog.adb:1238:26: info: range check proved (CVC4: 2 VC)
 auditlog.adb:1239:32: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1241:43: info: index check proved (CVC4: 1 VC)
+auditlog.adb:1241:43: info: index check proved (CVC4: 2 VC)
 auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1241:69: info: index check proved (CVC4: 1 VC)
+auditlog.adb:1241:69: info: index check proved (CVC4: 2 VC)
 auditlog.adb:1241:69: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
@@ -382,14 +382,14 @@ auditlog.adb:1271:29: info: initialization of "LogFileEntries" constituent of "S
 auditlog.adb:1271:44: info: initialization of "CurrentLogFile" constituent of "State" proved
 auditlog.adb:1274:07: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:1274:07: info: initialization of "NumberLogEntries" constituent of "State" proved
-auditlog.adb:1332:30: info: refined post proved (CVC4: 1 VC)
+auditlog.adb:1332:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1334:67: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1334:72: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1335:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1342:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1342:07: info: precondition proved (CVC4: 2 VC)
 auditlog.adb:1350:10: info: initialization of "OldAlarm" proved
-auditlog.adb:1352:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1411:30: info: refined post proved (CVC4: 1 VC)
+auditlog.adb:1352:10: info: precondition proved (CVC4: 2 VC)
+auditlog.adb:1411:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1413:67: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1413:72: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1414:50: info: overflow check proved (CVC4: 1 VC)
@@ -425,23 +425,23 @@ auditlog.adb:1491:34: info: initialization of "ArchivedFileCount" proved
 auditlog.adb:1491:52: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1492:51: info: initialization of "FileIndexInUsedList" proved
 auditlog.adb:1498:10: info: initialization of "ArchiveFault" proved
-auditlog.adb:1499:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1509:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1499:10: info: precondition proved (CVC4: 2 VC)
+auditlog.adb:1509:07: info: precondition proved (CVC4: 2 VC)
 auditlog.adb:1513:32: info: initialization of "Description" proved
-auditlog.adb:1564:30: info: refined post proved (CVC4: 1 VC)
+auditlog.adb:1564:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1566:67: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1566:72: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1567:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1582:10: info: loop invariant initialization proved (CVC4: 1 VC)
-auditlog.adb:1582:10: info: loop invariant preservation proved (CVC4: 1 VC)
+auditlog.adb:1582:10: info: loop invariant initialization proved (CVC4: 3 VC)
+auditlog.adb:1582:10: info: loop invariant preservation proved (CVC4: 3 VC)
 auditlog.adb:1587:50: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1587:55: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1587:75: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1595:53: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1598:47: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
-auditlog.adb:1611:10: info: precondition proved (CVC4: 1 VC)
-auditlog.adb:1619:07: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1611:10: info: precondition proved (CVC4: 2 VC)
+auditlog.adb:1619:07: info: precondition proved (CVC4: 2 VC)
 auditlog.ads:60:22: info: initialization of "CurrentLogFile" constituent of "State" proved
 auditlog.ads:60:22: info: initialization of "LogFileEntries" constituent of "State" proved
 auditlog.ads:60:22: info: initialization of "NumberLogEntries" constituent of "State" proved
@@ -480,7 +480,7 @@ bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
 bio.adb:175:23: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
-bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 151)
+bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 151)
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
 bio.adb:241:27: info: initialization of "C40b" proved
@@ -748,7 +748,7 @@ cert-attr.adb:47:46: info: initialization of "FullString" proved
 cert-attr.adb:47:46: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:49:23: info: initialization of "FullString" proved
 cert-attr.adb:49:23: info: length check proved (CVC4: 1 VC)
-cert-attr.adb:49:23: info: range check proved (CVC4: 1 VC)
+cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:52:14: info: initialization of "LocalUser" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.ID" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.Name" proved
@@ -825,7 +825,7 @@ cert.adb:71:46: info: initialization of "FullString" proved
 cert.adb:71:46: info: length check proved (CVC4: 1 VC)
 cert.adb:73:23: info: initialization of "FullString" proved
 cert.adb:73:23: info: length check proved (CVC4: 1 VC)
-cert.adb:73:23: info: range check proved (CVC4: 1 VC)
+cert.adb:73:23: info: range check proved (CVC4: 4 VC)
 cert.adb:76:14: info: initialization of "LocalUser" proved
 cert.adb:116:14: info: initialization of "LocalRawData.DataLength" proved
 cert.adb:116:14: info: initialization of "LocalRawData.RawData" proved
@@ -845,7 +845,7 @@ certificatestore.adb:222:26: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:26: medium: "Text" might not be initialized
 certificatestore.adb:222:29: info: initialization of "Str" proved
 certificatestore.adb:222:29: info: length check proved (CVC4: 1 VC)
-certificatestore.adb:222:29: medium: range check might fail (e.g. when Str'First = 3 and Str'Last = 4)
+certificatestore.adb:222:29: medium: range check might fail (e.g. when Str'First = 3)
 certificatestore.adb:222:36: info: initialization of "Length" proved
 certificatestore.adb:223:15: info: initialization of "Length" proved
 certificatestore.adb:223:42: info: initialization of "Text" proved
@@ -870,8 +870,8 @@ certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
 certproc.ads:65:55: info: length check proved (CVC4: 1 VC)
 certtypes.ads:35:22: info: length check proved (CVC4: 1 VC)
-clock.adb:73:11: info: range check proved (CVC4: 1 VC)
-clock.adb:74:12: info: index check proved (CVC4: 1 VC)
+clock.adb:73:11: info: range check proved (CVC4: 2 VC)
+clock.adb:74:12: info: index check proved (CVC4: 2 VC)
 clock.adb:74:54: info: initialization of "V" proved
 clock.adb:74:56: info: division check proved (CVC4: 1 VC)
 clock.adb:75:18: info: initialization of "V" proved
@@ -899,40 +899,40 @@ clock.adb:246:44: info: division check proved (CVC4: 1 VC)
 clock.adb:247:25: info: division check proved (CVC4: 1 VC)
 clock.adb:247:25: info: range check proved (CVC4: 1 VC)
 clock.adb:272:36: info: length check proved (CVC4: 1 VC)
-clock.adb:289:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:289:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:289:24: info: initialization of "LocalText" proved
 clock.adb:290:44: info: division check proved (CVC4: 1 VC)
-clock.adb:294:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:294:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:294:24: info: initialization of "LocalText" proved
 clock.adb:295:45: info: division check proved (CVC4: 1 VC)
 clock.adb:296:32: info: division check proved (CVC4: 1 VC)
-clock.adb:300:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:300:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:300:24: info: initialization of "LocalText" proved
 clock.adb:301:45: info: division check proved (CVC4: 1 VC)
 clock.adb:302:32: info: division check proved (CVC4: 1 VC)
-clock.adb:306:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:306:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:306:24: info: initialization of "LocalText" proved
 clock.adb:307:44: info: division check proved (CVC4: 1 VC)
 clock.adb:311:14: info: initialization of "LocalText" proved
 clock.adb:323:38: info: length check proved (CVC4: 1 VC)
-clock.adb:346:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:346:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:346:24: info: initialization of "LocalText" proved
-clock.adb:351:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:351:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:351:24: info: initialization of "LocalText" proved
-clock.adb:356:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:356:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:356:24: info: initialization of "LocalText" proved
-clock.adb:361:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:361:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:361:24: info: initialization of "LocalText" proved
 clock.adb:362:49: info: division check proved (CVC4: 1 VC)
-clock.adb:366:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:366:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:366:24: info: initialization of "LocalText" proved
 clock.adb:367:50: info: division check proved (CVC4: 1 VC)
 clock.adb:368:32: info: division check proved (CVC4: 1 VC)
-clock.adb:372:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:372:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:372:24: info: initialization of "LocalText" proved
 clock.adb:373:50: info: division check proved (CVC4: 1 VC)
 clock.adb:374:32: info: division check proved (CVC4: 1 VC)
-clock.adb:378:07: info: precondition proved (CVC4: 1 VC)
+clock.adb:378:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:378:24: info: initialization of "LocalText" proved
 clock.adb:379:50: info: division check proved (CVC4: 1 VC)
 clock.adb:380:32: info: division check proved (CVC4: 1 VC)
@@ -988,15 +988,15 @@ configdata.adb:271:51: info: range check proved (CVC4: 1 VC)
 configdata.adb:293:28: info: initialization of "Value" proved
 configdata.adb:295:36: info: initialization of "Success" proved
 configdata.adb:308:16: info: initialization of "Stop" proved
-configdata.adb:313:20: info: range check proved (CVC4: 1 VC)
+configdata.adb:313:20: info: range check proved (CVC4: 2 VC)
 configdata.adb:313:47: info: initialization of "Stop" proved
 configdata.adb:315:19: info: loop invariant initialization proved (CVC4: 1 VC)
 configdata.adb:315:19: info: loop invariant preservation proved (CVC4: 1 VC)
 configdata.adb:315:42: info: initialization of "Stop" proved
 configdata.adb:315:53: info: initialization of "Stop" proved
-configdata.adb:317:48: info: index check proved (CVC4: 1 VC)
+configdata.adb:317:48: info: index check proved (CVC4: 2 VC)
 configdata.adb:317:54: info: initialization of "RawClass" proved
-configdata.adb:317:63: info: index check proved (CVC4: 1 VC)
+configdata.adb:317:63: info: index check proved (CVC4: 2 VC)
 configdata.adb:323:16: info: initialization of "Matched" proved
 configdata.adb:329:21: info: initialization of "Matched" proved
 configdata.adb:342:34: info: initialization of "TheDuration" proved
@@ -1057,15 +1057,15 @@ configdata.adb:681:37: info: initialization of "TheAccessPolicy" proved
 configdata.adb:693:13: info: initialization of "Stop" proved
 configdata.adb:694:12: info: initialization of "TheTitle" proved
 configdata.adb:699:19: info: initialization of "Stop" proved
-configdata.adb:703:23: info: range check proved (CVC4: 1 VC)
+configdata.adb:703:23: info: range check proved (CVC4: 2 VC)
 configdata.adb:703:51: info: initialization of "Stop" proved
 configdata.adb:704:22: info: loop invariant initialization proved (CVC4: 1 VC)
 configdata.adb:704:22: info: loop invariant preservation proved (CVC4: 1 VC)
 configdata.adb:704:45: info: initialization of "Stop" proved
 configdata.adb:704:56: info: initialization of "Stop" proved
-configdata.adb:706:53: info: index check proved (CVC4: 1 VC)
+configdata.adb:706:53: info: index check proved (CVC4: 2 VC)
 configdata.adb:707:24: info: initialization of "RawAccessPolicy" proved
-configdata.adb:707:40: info: index check proved (CVC4: 1 VC)
+configdata.adb:707:40: info: index check proved (CVC4: 2 VC)
 configdata.adb:714:19: info: initialization of "Matched" proved
 configdata.adb:720:24: info: initialization of "Matched" proved
 configdata.adb:739:37: info: initialization of "Success" proved
@@ -1303,13 +1303,13 @@ configuration.adb:102:64: low: range check might fail
 configuration.adb:103:12: low: range check might fail
 configuration.adb:103:58: low: range check might fail
 configuration.adb:104:12: low: range check might fail
-configuration.adb:104:19: info: range check proved (CVC4: 1 VC)
+configuration.adb:104:19: info: range check proved (CVC4: 4 VC)
 configuration.adb:104:64: low: range check might fail
 configuration.adb:105:12: low: range check might fail
-configuration.adb:105:19: info: range check proved (CVC4: 1 VC)
+configuration.adb:105:19: info: range check proved (CVC4: 4 VC)
 configuration.adb:105:62: low: range check might fail
 configuration.adb:106:12: low: range check might fail
-configuration.adb:106:19: info: range check proved (CVC4: 1 VC)
+configuration.adb:106:19: info: range check proved (CVC4: 4 VC)
 configuration.adb:106:62: low: range check might fail
 configuration.adb:107:12: low: range check might fail
 configuration.adb:107:62: low: range check might fail
@@ -1372,7 +1372,7 @@ configuration.adb:179:40: info: initialization of "TheMinPreservedLogSize" prove
 configuration.adb:180:40: info: initialization of "TheAlarmThresholdSize" proved
 configuration.adb:181:40: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:183:17: info: initialization of "Success" proved
-configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
+configuration.adb:185:21: info: precondition proved (CVC4: 2 VC)
 configuration.adb:193:18: medium: precondition might fail
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
@@ -1392,13 +1392,13 @@ display.adb:84:43: info: length check proved (CVC4: 1 VC)
 display.adb:89:43: info: length check proved (CVC4: 1 VC)
 display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at display.adb:188
 display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at display.adb:280
-display.adb:128:11: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:128:11: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:128:37: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:129:10: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:129:10: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at display.adb:280
-display.adb:129:10: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:129:10: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:129:10: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:129:10: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:280
+display.adb:129:10: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:129:10: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:130:38: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
@@ -1412,24 +1412,24 @@ display.adb:132:25: info: initialization of "Result.Text" proved, in call inline
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
 display.adb:132:28: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
 display.adb:134:21: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:137:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:137:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:137:35: info: initialization of "Result.Len" proved
 display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:137:35: info: initialization of "Result.Text" proved
 display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:137:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:138:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:138:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:138:35: info: initialization of "Result.Len" proved
 display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:138:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:138:35: info: initialization of "Result.Text" proved
 display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:138:35: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:139:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:139:30: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:139:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:139:35: info: initialization of "Result.Len" proved
 display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:139:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
@@ -1441,13 +1441,13 @@ display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined
 display.adb:140:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:188
 display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:280
-display.adb:143:11: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:143:11: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:143:37: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:144:10: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:188
+display.adb:144:10: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:280
+display.adb:144:10: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:188
+display.adb:144:10: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:280
 display.adb:145:38: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
@@ -1459,8 +1459,8 @@ display.adb:146:48: info: initialization of "TheMsg.Top.Text" proved, in call in
 display.adb:147:33: info: initialization of "Result.Len" proved
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
-display.adb:148:33: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:148:33: info: index check proved (CVC4: 1 VC), in call inlined at display.adb:280
+display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:188
 display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:280
 display.adb:148:38: info: initialization of "Result.Len" proved
@@ -1503,13 +1503,13 @@ display.adb:306:42: info: initialization of "CurrentlyDisplayed" constituent of 
 display.adb:307:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
 display.adb:307:42: info: initialization of "Sizes.Top" constituent of "State" proved
 display.ads:65:24: info: length check proved (CVC4: 1 VC)
-door.adb:88:22: info: postcondition proved (CVC4: 1 VC)
+door.adb:88:22: info: postcondition proved (CVC4: 4 VC)
 door.adb:113:23: info: initialization of "LocalAlarm" proved
 door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = Open and DoorAlarm = Silent and ID = StartUnenrolledTIS and NewDoor = Open and SystemFault = False)
+door.adb:169:30: medium: refined postcondition might fail (e.g. when CurrentDoor = Open and DoorAlarm = Silent and ID = StartUnenrolledTIS and NewDoor = Open and SystemFault = False)
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
@@ -1521,7 +1521,7 @@ door.adb:249:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:249:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:249:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:249:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:277:30: info: refined post proved (CVC4: 1 VC)
+door.adb:277:30: info: refined post proved (CVC4: 6 VC)
 door.adb:280:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:280:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:280:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1542,7 +1542,7 @@ door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = Open and DoorAlarm = Silent)
+door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and DoorAlarm = Silent)
 door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1565,13 +1565,13 @@ door.adb:414:42: info: initialization of "CurrentDoor" constituent of "State" pr
 door.adb:415:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:416:47: info: initialization of "Latch.State" proved
 door.ads:87:20: info: initialization of "SystemFault" proved
-door.ads:116:22: info: postcondition proved (CVC4: 1 VC)
-door.ads:169:22: info: postcondition proved (CVC4: 1 VC)
+door.ads:116:22: info: postcondition proved (CVC4: 8 VC)
+door.ads:169:22: info: postcondition proved (CVC4: 6 VC)
 door.ads:172:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.ads:172:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.ads:172:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.ads:172:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.ads:213:22: info: postcondition proved (CVC4: 1 VC)
+door.ads:213:22: info: postcondition proved (CVC4: 5 VC)
 door.ads:216:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.ads:216:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.ads:216:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1603,22 +1603,22 @@ enclave.adb:290:28: info: initialization of "Description" proved
 enclave.adb:329:22: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:382:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:394:22: info: initialization of "Status" constituent of "State" proved
-enclave.adb:394:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:394:22: info: postcondition proved (CVC4: 2 VC)
 enclave.adb:396:07: info: assertion proved (CVC4: 1 VC)
 enclave.adb:396:29: info: initialization of "Status" constituent of "State" proved
 enclave.adb:399:15: medium: precondition might fail
 enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
-enclave.adb:490:06: medium: postcondition might fail (e.g. when Status = EnclaveQuiescent)
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
+enclave.adb:500:13: medium: postcondition might fail, cannot prove (AdminToken.authcertvalid)
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
 enclave.adb:528:18: medium: precondition might fail
 enclave.adb:534:13: info: initialization of "TokenOK" proved
-enclave.adb:537:21: info: precondition proved (CVC4: 1 VC)
-enclave.adb:547:48: info: precondition proved (CVC4: 1 VC)
-enclave.adb:553:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:537:21: info: precondition proved (CVC4: 2 VC)
+enclave.adb:547:48: info: precondition proved (CVC4: 3 VC)
+enclave.adb:553:21: info: precondition proved (CVC4: 2 VC)
 enclave.adb:557:31: info: initialization of "Description" proved
 enclave.adb:582:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:597:23: info: initialization of "Status" constituent of "State" proved
@@ -1628,7 +1628,7 @@ enclave.adb:636:39: medium: "Floppy.Output" might not be written
 enclave.adb:674:11: medium: precondition might fail
 enclave.adb:682:18: medium: precondition might fail
 enclave.adb:688:19: medium: precondition might fail
-enclave.adb:691:06: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:691:06: info: postcondition proved (CVC4: 12 VC)
 enclave.adb:702:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:713:18: medium: precondition might fail
 enclave.adb:719:19: info: precondition proved (CVC4: 1 VC)
@@ -1638,7 +1638,7 @@ enclave.adb:774:21: medium: precondition might fail
 enclave.adb:780:37: info: initialization of "TheLog" proved
 enclave.adb:806:36: info: initialization of "Status" constituent of "State" proved
 enclave.adb:831:26: info: initialization of "Status" constituent of "State" proved
-enclave.adb:831:26: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:831:26: info: postcondition proved (CVC4: 4 VC)
 enclave.adb:844:16: info: initialization of "WriteOK" proved
 enclave.adb:846:24: medium: precondition might fail
 enclave.adb:852:24: medium: precondition might fail
@@ -1647,16 +1647,16 @@ enclave.adb:879:15: medium: precondition might fail
 enclave.adb:887:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:889:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:943:27: medium: precondition might fail
-enclave.adb:945:06: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:945:06: info: postcondition proved (CVC4: 7 VC)
 enclave.adb:956:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:990:13: info: initialization of "ConfigDataOK" proved
-enclave.adb:997:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:997:15: info: precondition proved (CVC4: 2 VC)
 enclave.adb:1020:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1048:11: medium: precondition might fail
 enclave.adb:1057:18: medium: precondition might fail
 enclave.adb:1063:19: medium: precondition might fail
 enclave.adb:1072:06: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1072:06: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:1072:06: info: postcondition proved (CVC4: 17 VC)
 enclave.adb:1094:18: medium: precondition might fail
 enclave.adb:1100:19: medium: precondition might fail
 enclave.adb:1105:18: info: precondition proved (CVC4: 1 VC)
@@ -1664,8 +1664,8 @@ enclave.adb:1108:15: medium: precondition might fail
 enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
-enclave.adb:1206:06: medium: postcondition might fail (e.g. when Status = ShutDown)
 enclave.adb:1215:18: medium: precondition might fail
+enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
 enclave.adb:1249:19: medium: precondition might fail
@@ -1674,20 +1674,20 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1409:06: medium: postcondition might fail (e.g. when Status = WaitingStartAdminOp)
+enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
 enclave.adb:1465:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1468:17: info: precondition proved (CVC4: 3 VC)
-enclave.adb:1470:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1473:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1476:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1479:13: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1470:13: info: precondition proved (CVC4: 9 VC)
+enclave.adb:1473:13: info: precondition proved (CVC4: 4 VC)
+enclave.adb:1476:13: info: precondition proved (CVC4: 8 VC)
+enclave.adb:1479:13: info: precondition proved (CVC4: 12 VC)
 enclave.adb:1504:41: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1506:30: info: refined post proved (CVC4: 1 VC)
+enclave.adb:1506:30: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1507:37: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1614:31: info: refined post proved (CVC4: 1 VC)
+enclave.adb:1614:31: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1621:39: info: range check proved (CVC4: 1 VC)
 enclave.adb:1623:12: info: initialization of "LocalStatus" proved
 enclave.adb:1625:13: info: precondition proved (CVC4: 1 VC)
@@ -1704,16 +1704,16 @@ enclave.adb:1937:18: medium: precondition might fail
 enclave.adb:1943:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1947:42: medium: range check might fail (e.g. when Status = EnclaveQuiescent)
 enclave.adb:1949:12: info: initialization of "LocalStatus" proved
-enclave.adb:1952:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1957:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2040:06: info: refined post proved (CVC4: 1 VC)
+enclave.adb:1952:13: info: precondition proved (CVC4: 7 VC)
+enclave.adb:1957:13: info: precondition proved (CVC4: 13 VC)
+enclave.adb:2040:06: info: refined post proved (CVC4: 16 VC)
 enclave.adb:2068:18: medium: precondition might fail
 enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
-enclave.adb:2188:09: medium: postcondition might fail (e.g. when Status = WaitingStartAdminOp)
 enclave.adb:2197:21: medium: precondition might fail
+enclave.adb:2202:13: medium: postcondition might fail, cannot prove Admin.IsDoingOp(TheAdmin) and Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or not Admin.IsDoingOp(TheAdmin)
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
 enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved
@@ -1721,22 +1721,22 @@ enclave.adb:2236:27: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2237:54: info: initialization of "KeyedData.Length" proved
 enclave.adb:2237:54: info: initialization of "KeyedData.Text" proved
 enclave.adb:2239:16: info: initialization of "TheOp" proved
-enclave.adb:2245:21: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2245:21: info: precondition proved (CVC4: 2 VC)
 enclave.adb:2246:42: info: initialization of "TheOp" proved
 enclave.adb:2246:42: info: range check proved (CVC4: 1 VC)
 enclave.adb:2248:24: medium: precondition might fail
 enclave.adb:2252:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2258:24: medium: precondition might fail
 enclave.adb:2262:34: info: initialization of "KeyedData.Text" proved
-enclave.adb:2275:10: info: precondition proved (CVC4: 1 VC)
-enclave.ads:117:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:2275:10: info: precondition proved (CVC4: 9 VC)
+enclave.ads:117:22: info: postcondition proved (CVC4: 3 VC)
 enclave.ads:117:56: info: initialization of "Status" constituent of "State" proved
-enclave.ads:210:22: info: postcondition proved (CVC4: 1 VC)
-enclave.ads:252:22: info: postcondition proved (CVC4: 1 VC)
+enclave.ads:210:22: info: postcondition proved (CVC4: 3 VC)
+enclave.ads:252:22: info: postcondition proved (CVC4: 5 VC)
 enclave.ads:433:25: medium: precondition might fail
 enclave.ads:443:25: medium: precondition might fail
 enclave.ads:449:26: medium: precondition might fail
-enclave.ads:458:13: info: postcondition proved (CVC4: 1 VC)
+enclave.ads:458:13: info: postcondition proved (CVC4: 24 VC)
 enclave.ads:487:25: medium: precondition might fail
 enclave.ads:497:25: medium: precondition might fail
 enclave.ads:503:26: medium: precondition might fail
@@ -1744,7 +1744,7 @@ enclave.ads:516:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:566:25: medium: precondition might fail
 enclave.ads:592:29: medium: precondition might fail
 enclave.ads:598:30: medium: precondition might fail
-enclave.ads:603:13: info: postcondition proved (CVC4: 1 VC)
+enclave.ads:603:13: info: postcondition proved (CVC4: 16 VC)
 enclave.ads:632:29: medium: precondition might fail
 enclave.ads:642:29: medium: precondition might fail
 enclave.ads:648:30: medium: precondition might fail
@@ -1755,11 +1755,11 @@ enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved (CVC4: 1 VC)
 enrolment.adb:71:43: info: length check proved (CVC4: 1 VC)
 enrolment.adb:73:23: info: length check proved (CVC4: 1 VC)
-enrolment.adb:73:23: info: range check proved (CVC4: 1 VC)
+enrolment.adb:73:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:75:17: info: initialization of "Result" proved
 enrolment.adb:93:35: info: initialization of "KeyAdded" proved
 enrolment.adb:94:35: info: initialization of "Description" proved
-enrolment.adb:123:25: info: postcondition proved (CVC4: 1 VC)
+enrolment.adb:123:25: info: postcondition proved (CVC4: 2 VC)
 enrolment.adb:123:42: info: initialization of "KeyAdded" proved
 enrolment.adb:145:16: info: initialization of "Stop" proved
 enrolment.adb:151:25: info: initialization of "TheCert" proved
@@ -1818,7 +1818,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent) (e.g. when DataOK = True)
+enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
@@ -1898,16 +1898,16 @@ keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at 
 keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
 keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
 keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:118:20: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:268
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:276
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:284
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:347
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:355
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:363
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:542
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:694
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:762
+keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:847
 keystore.adb:121:14: info: initialization of "Result" proved
 keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:268
 keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:276
@@ -1928,18 +1928,18 @@ keystore.adb:186:42: info: range check proved (CVC4: 1 VC)
 keystore.adb:186:53: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:186:69: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:190:39: info: length check proved (CVC4: 1 VC)
-keystore.adb:193:13: info: loop invariant initialization proved (CVC4: 1 VC)
-keystore.adb:193:13: info: loop invariant preservation proved (CVC4: 1 VC)
+keystore.adb:193:13: info: loop invariant initialization proved (CVC4: 7 VC)
+keystore.adb:193:13: info: loop invariant preservation proved (CVC4: 7 VC)
 keystore.adb:199:24: info: initialization of "Result" proved
-keystore.adb:199:35: info: index check proved (CVC4: 1 VC)
+keystore.adb:199:35: info: index check proved (CVC4: 2 VC)
 keystore.adb:199:35: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:199:51: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:204:17: info: initialization of "Result" proved
 keystore.adb:216:10: info: initialization of "RetValIni" proved
 keystore.adb:218:51: info: division check proved (CVC4: 1 VC)
 keystore.adb:221:24: info: initialization of "LoopMax" proved
-keystore.adb:222:13: info: loop invariant initialization proved (CVC4: 1 VC)
-keystore.adb:222:13: info: loop invariant preservation proved (CVC4: 1 VC)
+keystore.adb:222:13: info: loop invariant initialization proved (CVC4: 10 VC)
+keystore.adb:222:13: info: loop invariant preservation proved (CVC4: 10 VC)
 keystore.adb:223:16: info: initialization of "LoopMax" proved
 keystore.adb:223:56: info: division check proved (CVC4: 1 VC)
 keystore.adb:224:37: info: initialization of "LoopMax" proved
@@ -1951,7 +1951,7 @@ keystore.adb:229:20: info: initialization of "RetValIni" proved
 keystore.adb:230:20: info: initialization of "RetValFin" proved
 keystore.adb:232:16: info: initialization of "BytesLeft" proved
 keystore.adb:233:48: info: initialization of "BytesLeft" proved
-keystore.adb:236:22: info: precondition proved (CVC4: 1 VC)
+keystore.adb:236:22: info: precondition proved (CVC4: 5 VC)
 keystore.adb:239:29: info: initialization of "Size" proved
 keystore.adb:242:31: info: initialization of "Block" proved
 keystore.adb:243:31: info: initialization of "Size" proved
@@ -2074,7 +2074,7 @@ keystore.ads:172:20: info: initialization of "Signature.SigData" proved
 keystore.ads:172:20: info: initialization of "Signature.SigLength" proved
 keystore.ads:173:20: info: initialization of "Signed" proved
 keystore.ads:202:22: info: initialization of "Added" proved
-keystore.ads:227:22: info: postcondition proved (CVC4: 1 VC)
+keystore.ads:227:22: info: postcondition proved (CVC4: 3 VC)
 keystore.ads:227:23: info: initialization of "Added" proved
 keystore.ads:245:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:245:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
@@ -2086,7 +2086,7 @@ latch.adb:52:42: info: initialization of "LatchTimeout.Day" constituent of "Stat
 latch.adb:52:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
 latch.adb:52:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.adb:52:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.adb:96:30: info: refined post proved (CVC4: 1 VC)
+latch.adb:96:30: info: refined post proved (CVC4: 2 VC)
 latch.adb:112:26: info: initialization of "LocalLatch" proved
 latch.adb:113:18: medium: precondition might fail
 latch.adb:114:32: info: initialization of "ID" proved
@@ -2110,7 +2110,7 @@ latch.adb:193:42: info: initialization of "LatchTimeout.Day" constituent of "Sta
 latch.adb:193:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
 latch.adb:193:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.adb:193:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.ads:106:22: info: postcondition proved (CVC4: 1 VC)
+latch.ads:106:22: info: postcondition proved (CVC4: 3 VC)
 latch.ads:120:28: info: initialization of "SystemFault" proved
 latch.ads:135:22: info: postcondition proved (CVC4: 1 VC)
 latch.ads:135:50: info: initialization of "SystemFault" proved
@@ -2138,7 +2138,7 @@ latchapi.ads:42:19: info: initialization of "Failed" proved
 poll.adb:36:11: info: initialization of "Clock.CurrentTime" proved
 poll.ads:49:24: info: initialization of "SystemFault" proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
-poll.ads:113:13: info: postcondition proved (CVC4: 1 VC)
+poll.ads:113:13: info: postcondition proved (CVC4: 14 VC)
 poll.ads:115:45: info: initialization of "Clock.CurrentTime" proved
 screen.adb:113:06: info: length check proved (CVC4: 1 VC)
 screen.adb:113:07: info: length check proved (CVC4: 1 VC)
@@ -2229,10 +2229,10 @@ screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at sc
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:597
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:603
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:609
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591 (e.g. when ValueStr'First = 3 and ValueStr'Last = 3)
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3 and ValueStr'Last = 3)
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3 and ValueStr'Last = 3)
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3 and ValueStr'Last = 3)
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591 (e.g. when ValueStr'First = 3)
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3)
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3)
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 3)
 screen.adb:440:72: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:591
 screen.adb:440:72: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:597
 screen.adb:440:72: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:603
@@ -2242,9 +2242,9 @@ screen.adb:442:17: info: initialization of "Str" proved, in call inlined at scre
 screen.adb:442:17: info: initialization of "Str" proved, in call inlined at screen.adb:597
 screen.adb:442:17: info: initialization of "Str" proved, in call inlined at screen.adb:603
 screen.adb:442:17: info: initialization of "Str" proved, in call inlined at screen.adb:609
-screen.adb:459:22: info: range check proved (CVC4: 1 VC), in call inlined at screen.adb:621
-screen.adb:459:22: info: range check proved (CVC4: 1 VC), in call inlined at screen.adb:627
-screen.adb:459:22: info: range check proved (CVC4: 1 VC), in call inlined at screen.adb:633
+screen.adb:459:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:621
+screen.adb:459:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:627
+screen.adb:459:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:633
 screen.adb:459:37: info: initialization of "AuthDuration" proved, in call inlined at screen.adb:633
 screen.adb:459:37: info: initialization of "WorkEnd" proved, in call inlined at screen.adb:627
 screen.adb:459:37: info: initialization of "WorkStart" proved, in call inlined at screen.adb:621
@@ -2569,10 +2569,10 @@ tismain.adb:165:40: info: initialization of "Screen.State" proved
 tismain.adb:166:34: info: initialization of "TheAdmin" proved
 tismain.adb:167:34: info: initialization of "TheStats" proved
 tismain.adb:168:43: info: initialization of "UserToken.State" proved
-tismain.adb:209:22: medium: postcondition might fail
 tismain.adb:209:35: info: initialization of "Enclave.State" proved
 tismain.adb:210:33: info: initialization of "KeyStore.State" proved
 tismain.adb:215:42: info: initialization of "TheAdmin" proved
+tismain.adb:220:22: medium: postcondition might fail, cannot prove not Enclave(Enclave.statusiswaitingstartadminop)
 tismain.adb:224:36: info: initialization of "AdminToken.State" proved
 tismain.adb:233:15: info: initialization of "ConfigData.State" proved
 tismain.adb:234:15: info: initialization of "AuditLog.State" proved
@@ -2598,15 +2598,15 @@ tismain.adb:280:43: medium: "UserToken.Output" might not be written
 tismain.adb:556:20: medium: precondition might fail
 tismain.adb:562:21: medium: precondition might fail
 tismain.adb:569:20: medium: precondition might fail
-tismain.adb:602:08: medium: postcondition might fail
 tismain.adb:617:22: medium: precondition might fail
 tismain.adb:623:23: medium: precondition might fail
 tismain.adb:630:22: medium: precondition might fail
-tismain.adb:703:17: info: precondition proved (CVC4: 1 VC)
-tismain.adb:706:17: info: precondition proved (CVC4: 1 VC)
-tismain.adb:710:19: info: precondition proved (CVC4: 1 VC)
-tismain.adb:714:17: info: precondition proved (CVC4: 1 VC)
-tismain.adb:721:17: info: precondition proved (CVC4: 1 VC)
+tismain.adb:643:16: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
+tismain.adb:703:17: info: precondition proved (CVC4: 2 VC)
+tismain.adb:706:17: info: precondition proved (CVC4: 3 VC)
+tismain.adb:710:19: info: precondition proved (CVC4: 6 VC)
+tismain.adb:714:17: info: precondition proved (CVC4: 19 VC)
+tismain.adb:721:17: info: precondition proved (CVC4: 14 VC)
 tismain.adb:742:39: medium: "Alarm.Output" might not be written
 tismain.adb:743:39: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:744:41: medium: "Display.Output" might not be written
@@ -2618,7 +2618,7 @@ tismain.adb:749:43: medium: "UserToken.Output" might not be written
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
-tismain.adb:1118:13: medium: postcondition might fail (e.g. when SystemFault = False)
+tismain.adb:1121:13: medium: postcondition might fail, cannot prove Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault (e.g. when SystemFault = False)
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1156:25: medium: precondition might fail
@@ -2627,7 +2627,7 @@ tismain.adb:1169:25: medium: precondition might fail
 tismain.adb:1203:14: info: initialization of "SystemFault" proved
 tismain.adb:1206:17: info: initialization of "SystemFault" proved
 tismain.adb:1208:13: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1208:13: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1208:13: info: precondition proved (CVC4: 21 VC)
 tismain.adb:1232:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1233:41: info: initialization of "Display.Output" proved
 tismain.adb:1234:38: info: initialization of "Door.State" proved
@@ -2640,10 +2640,10 @@ tismain.adb:1291:41: info: initialization of "Display.Output" proved
 tismain.adb:1292:39: info: initialization of "Latch.Output" proved
 tismain.adb:1293:40: info: initialization of "Screen.Output" proved
 tismain.adb:1294:34: info: initialization of "TheAdmin" proved
-tismain.adb:1346:07: info: loop invariant preservation proved (CVC4: 1 VC)
-tismain.adb:1346:07: medium: loop invariant might fail in first iteration
+tismain.adb:1346:07: info: loop invariant preservation proved (CVC4: 19 VC)
 tismain.adb:1347:23: info: initialization of "Enclave.State" proved
 tismain.adb:1347:57: info: initialization of "KeyStore.State" proved
+tismain.adb:1351:10: medium: loop invariant might fail in first iteration, cannot prove Latch.IsLocked = Latch(Latch.interfac_islocked)
 tismain.adb:1351:15: info: initialization of "Latch.State" proved
 tismain.adb:1353:33: info: initialization of "TheAdmin" proved
 tismain.adb:1354:25: info: initialization of "AdminToken.State" proved
@@ -2665,10 +2665,10 @@ tismain.adb:1397:07: info: initialization of "Screen.State" proved
 tismain.adb:1397:07: info: initialization of "TheAdmin" proved
 tismain.adb:1397:07: info: initialization of "TheStats" proved
 tismain.adb:1397:07: info: initialization of "UserToken.State" proved
-tismain.adb:1397:07: info: precondition proved (CVC4: 1 VC)
+tismain.adb:1397:07: info: precondition proved (CVC4: 19 VC)
 tismain.adb:1399:35: info: initialization of "Enclave.State" proved
 tismain.adb:1401:17: info: initialization of "ShutdownCompleted" proved
-tismain.adb:1403:07: info: assertion proved (CVC4: 1 VC)
+tismain.adb:1403:07: info: assertion proved (CVC4: 20 VC)
 tismain.adb:1404:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1405:23: info: initialization of "Enclave.State" proved
 tismain.adb:1405:57: info: initialization of "KeyStore.State" proved
@@ -2683,7 +2683,7 @@ tismain.adb:1449:23: medium: precondition might fail
 tismain.adb:1456:22: medium: precondition might fail
 tismain.adb:1482:10: info: initialization of "SystemFault" proved
 tismain.adb:1489:18: info: initialization of "AuditLog.State" proved
-tismain.adb:1496:07: info: assertion proved (CVC4: 1 VC)
+tismain.adb:1496:07: info: assertion proved (CVC4: 21 VC)
 tismain.adb:1497:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1497:40: info: initialization of "SystemFault" proved
 tismain.adb:1499:23: info: initialization of "Enclave.State" proved
@@ -2723,7 +2723,7 @@ tokenreader.adb:251:36: info: initialization of "ReaderStatus" constituent of "S
 tokenreader.adb:268:44: info: initialization of "NumberReaders" proved
 tokenreader.adb:271:10: info: initialization of "ResponseCode" proved
 tokenreader.adb:273:13: info: initialization of "NumberReaders" proved
-tokenreader.adb:278:17: info: range check proved (CVC4: 1 VC)
+tokenreader.adb:278:17: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:279:46: info: initialization of "NumberReaders" proved
 tokenreader.adb:279:46: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:281:16: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -2775,14 +2775,14 @@ tokenreader.ads:168:07: info: initialization of "Success" proved
 updates.ads:46:29: info: initialization of "SystemFault" proved
 updates.ads:51:39: info: initialization of "Alarm.Output" proved
 updates.ads:52:39: info: initialization of "Latch.Output" proved
-updates.ads:79:22: info: postcondition proved (CVC4: 1 VC)
+updates.ads:79:22: info: postcondition proved (CVC4: 2 VC)
 updates.ads:82:25: info: initialization of "SystemFault" proved
 updates.ads:95:24: info: initialization of "SystemFault" proved
 updates.ads:100:39: info: initialization of "Alarm.Output" proved
 updates.ads:101:41: info: initialization of "Display.Output" proved
 updates.ads:102:39: info: initialization of "Latch.Output" proved
 updates.ads:103:40: info: initialization of "Screen.Output" proved
-updates.ads:143:22: info: postcondition proved (CVC4: 1 VC)
+updates.ads:143:22: info: postcondition proved (CVC4: 2 VC)
 updates.ads:146:25: info: initialization of "SystemFault" proved
 userentry.adb:56:04: info: initialization of "Status" constituent of "State" proved
 userentry.adb:58:04: info: initialization of "FingerTimeout.Day" constituent of "State" proved
@@ -2798,12 +2798,12 @@ userentry.adb:116:15: medium: precondition might fail
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
 userentry.adb:220:21: medium: precondition might fail
-userentry.adb:229:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:229:21: info: precondition proved (CVC4: 2 VC)
 userentry.adb:244:16: info: initialization of "TokenOK" proved
 userentry.adb:248:24: medium: precondition might fail
-userentry.adb:257:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:257:24: info: precondition proved (CVC4: 2 VC)
 userentry.adb:277:24: medium: precondition might fail
-userentry.adb:287:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:287:24: info: precondition proved (CVC4: 2 VC)
 userentry.adb:291:34: info: initialization of "Description" proved
 userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
@@ -2815,7 +2815,7 @@ userentry.adb:482:48: info: initialization of "FullString" proved
 userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
 userentry.adb:484:26: info: initialization of "FullString" proved
 userentry.adb:484:26: info: length check proved (CVC4: 1 VC)
-userentry.adb:484:26: info: range check proved (CVC4: 1 VC)
+userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
 userentry.adb:493:10: info: initialization of "Result" proved
 userentry.adb:495:17: info: initialization of "Result" proved
 userentry.adb:514:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved
@@ -2841,7 +2841,7 @@ userentry.adb:682:21: medium: precondition might fail
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
-userentry.adb:859:13: medium: postcondition might fail
+userentry.adb:865:14: medium: postcondition might fail, cannot prove (Latch.islocked)'old
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
@@ -2852,9 +2852,9 @@ userentry.adb:1197:37: info: range check proved (CVC4: 1 VC)
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)
 userentry.adb:1207:13: info: precondition proved (CVC4: 1 VC)
-userentry.adb:1211:13: info: precondition proved (CVC4: 1 VC)
+userentry.adb:1211:13: info: precondition proved (CVC4: 5 VC)
 userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
-userentry.ads:264:13: info: postcondition proved (CVC4: 1 VC)
+userentry.ads:264:13: info: postcondition proved (CVC4: 6 VC)
 usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
