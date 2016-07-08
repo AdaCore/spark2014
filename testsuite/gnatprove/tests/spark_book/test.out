@@ -106,13 +106,13 @@ bounded_queue.adb:48:34: info: division check proved, in instantiation at bounde
 bounded_queue.adb:48:53: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:48:53: info: range check proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:25:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:31:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:33:18: info: precondition proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:17: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:24: info: precondition proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue_example.adb:10:50: info: range check proved
@@ -193,13 +193,13 @@ bounded_queue_v1.adb:48:34: info: division check proved
 bounded_queue_v1.adb:48:53: info: overflow check proved
 bounded_queue_v1.adb:48:53: info: range check proved
 bounded_queue_v1.adb:49:34: medium: range check might fail
-bounded_queue_v1.ads:31:18: medium: postcondition might fail
-bounded_queue_v1.ads:37:18: medium: postcondition might fail
+bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue)
+bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue)
 bounded_queue_v1.ads:38:50: medium: overflow check might fail
 bounded_queue_v1.ads:39:18: info: precondition proved
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: medium: postcondition might fail
+bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
 bounded_queue_v1.ads:45:25: info: precondition proved
 bounded_queue_v2.adb:3:13: info: range check proved
 bounded_queue_v2.adb:8:13: info: range check proved
@@ -218,13 +218,13 @@ bounded_queue_v2.adb:48:34: info: division check proved
 bounded_queue_v2.adb:48:53: info: overflow check proved
 bounded_queue_v2.adb:48:53: info: range check proved
 bounded_queue_v2.adb:49:34: medium: range check might fail
-bounded_queue_v2.ads:25:18: medium: postcondition might fail
-bounded_queue_v2.ads:31:18: medium: postcondition might fail
+bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue)
+bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue)
 bounded_queue_v2.ads:32:50: medium: overflow check might fail
 bounded_queue_v2.ads:33:18: info: precondition proved
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
 bounded_queue_v2.ads:39:17: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: medium: postcondition might fail
+bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
 bounded_queue_v2.ads:39:24: info: precondition proved
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 buffers.adb:8:29: info: length check proved

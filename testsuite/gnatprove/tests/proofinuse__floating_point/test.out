@@ -8,8 +8,8 @@ floating_point.adb:19:22: medium: assertion might fail, cannot prove Res >= X
 floating_point.adb:28:24: info: overflow check proved
 floating_point.adb:29:16: info: overflow check proved
 floating_point.adb:29:20: info: overflow check proved
-floating_point.adb:30:07: medium: assertion might fail
 floating_point.adb:30:22: info: initialization of "Res" proved
+floating_point.adb:30:22: medium: assertion might fail, cannot prove Res >= 0.0
 floating_point.adb:40:24: info: division check proved
 floating_point.adb:40:24: info: overflow check proved
 floating_point.adb:41:16: info: division check proved
