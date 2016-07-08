@@ -3,20 +3,6 @@ contracts.adb:3:45: info: initialization of "U" proved
 contracts.adb:5:12: medium: range check might fail (e.g. when X = -1)
 contracts.adb:8:44: info: initialization of "U" proved
 contracts.adb:12:12: info: range check proved
-contracts.adb:15:45: info: initialization of "U" proved
-contracts.adb:17:19: info: postcondition proved
-contracts.adb:17:23: info: initialization of "U" proved
-contracts.adb:20:12: info: range check proved
-contracts.adb:23:04: warning: analyzing unreferenced procedure "Call_Convert_Integer"
-contracts.adb:26:07: info: precondition proved
-contracts.adb:27:14: info: overflow check proved
-contracts.adb:27:14: medium: range check might fail
-contracts.adb:27:16: info: initialization of "Z" proved
-contracts.adb:30:04: warning: analyzing unreferenced procedure "Call_Convert_Integer1"
-contracts.adb:33:07: info: precondition proved
-contracts.adb:34:14: info: overflow check proved
-contracts.adb:34:14: info: range check proved
-contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
 discriminant_check.adb:12:13: info: range check proved
 discriminant_check.adb:14:15: medium: discriminant check might fail
@@ -44,7 +30,7 @@ division_by_zero.adb:34:14: medium: overflow check might fail
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
 index_check.adb:5:16: medium: array index check might fail (e.g. when J = 1 and S = (others => 0) and S'First = 2 and S'Last = 0)
 index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"
-index_check.adb:10:09: medium: array index check might fail (e.g. when J = 1 and S'First = 2)
+index_check.adb:10:09: medium: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0)
 overflow_check.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 overflow_check.adb:9:68: info: initialization of "U" proved
 overflow_check.adb:12:30: medium: overflow check might fail (e.g. when X = -2147483648)

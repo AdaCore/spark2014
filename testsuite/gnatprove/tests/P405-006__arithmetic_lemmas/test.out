@@ -149,9 +149,7 @@ test_arith.adb:202:27: info: overflow check proved
 test_arith.adb:202:27: info: range check proved
 test_arith.adb:207:19: info: initialization of "X" proved
 test_arith.adb:207:19: info: range check proved
-test_arith.adb:207:22: info: initiatest.gpr:1:06: unknown project file: "spark_lemmas"
-gprbuild: "test.gpr" processing failed
-lization of "Y" proved
+test_arith.adb:207:22: info: initialization of "Y" proved
 test_arith.adb:207:22: info: range check proved
 test_arith.adb:207:25: info: initialization of "Z" proved
 test_arith.adb:207:25: info: range check proved
@@ -208,13 +206,3 @@ test_arith.adb:252:18: info: initialization of "X" proved
 test_arith.adb:252:18: info: range check proved
 test_arith.adb:252:21: info: initialization of "Y" proved
 test_arith.adb:252:21: info: range check proved
-Traceback (most recent call last):
-  File "test.py", line 8, in <module>
-    call(["./test_arith"])
-  File "/usr/lib/python2.7/subprocess.py", line 523, in call
-    return Popen(*popenargs, **kwargs).wait()
-  File "/usr/lib/python2.7/subprocess.py", line 711, in __init__
-    errread, errwrite)
-  File "/usr/lib/python2.7/subprocess.py", line 1343, in _execute_child
-    raise child_exception
-OSError: [Errno 2] No such file or directory

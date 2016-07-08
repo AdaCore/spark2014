@@ -1,9 +1,40 @@
+list.adb:12:26: info: range check proved
+list.adb:12:35: info: precondition proved
 list.adb:14:07: info: initialization of private part of "Res" proved
+list.adb:14:14: info: initialization of private part of "Res" proved
+list.adb:15:16: info: precondition proved
+list.adb:15:35: info: precondition proved
+list.adb:16:10: medium: precondition might fail
 list.adb:16:16: medium: private part of "S" might not be initialized
+list.adb:16:19: info: precondition proved
+list.adb:16:31: info: range check proved
+list.adb:19:17: info: precondition proved
+list.adb:19:36: info: precondition proved
+list.adb:20:10: medium: precondition might fail
 list.adb:20:18: info: initialization of private part of "Res" proved
+list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: private part of "S" might not be initialized
+list.adb:21:10: medium: precondition might fail
 list.adb:21:15: medium: private part of "S" might not be initialized
+list.adb:22:10: info: loop invariant initialization proved
+list.adb:22:54: medium: loop invariant might fail after first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1)
+list.adb:22:54: medium: precondition might fail
 list.adb:22:63: info: initialization of private part of "Res" proved
+list.adb:22:68: info: range check proved
+list.adb:22:73: info: precondition proved
+list.adb:22:85: info: precondition proved
+list.adb:22:104: info: range check proved
+list.ads:8:12: medium: range check might fail
+list.ads:12:14: info: postcondition proved
+list.ads:12:28: info: precondition proved
+list.ads:12:47: info: precondition proved
+list.ads:13:17: info: precondition proved
+list.ads:13:29: info: range check proved
+list.ads:13:34: medium: precondition might fail
+list.ads:13:64: info: precondition proved
+list.ads:13:79: info: overflow check proved
+list.ads:13:83: info: overflow check proved
+list.ads:13:83: info: range check proved
 stack.adb:4:47: info: length check proved
 stack.adb:4:47: info: range check proved
 stack.adb:4:47: medium: range check might fail
@@ -16,53 +47,3 @@ stack.adb:32:22: info: range check proved
 stack.ads:23:14: info: precondition proved
 stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when X = 0)
 stack.ads:27:14: info: postcondition proved
-
-
-
-
-
-
-+==========================================================================+
-+==========================================================================+
-+===========================GNAT BUG DETECTED==============================+
-+===========================GNAT BUG DETECTED==============================+
-list.adb
-list.ads
-list.ads
-main.adb
-stack.ads
-Consider also -gnatd.n switch (see debug.adb).
-Consider also -gnatd.n switch (see debug.adb).
-Note that list may not be accurate in some cases,
-Note that list may not be accurate in some cases,
-Please include these source files with error report
-Please include these source files with error report
-be reproduced with the set of files listed.
-be reproduced with the set of files listed.
-compilation abandoned
-compilation abandoned
-gnatprove: error during flow analysis and proof
-so please double check that the problem can still
-so please double check that the problem can still
-| Also include sources listed below.                                       |
-| Also include sources listed below.                                       |
-| Error detected at a-textio.ads:363:35                                    |
-| Error detected at list.ads:9:4                                           |
-| Include the entire contents of this bug box in the report.               |
-| Include the entire contents of this bug box in the report.               |
-| Include the exact command that you entered.                              |
-| Include the exact command that you entered.                              |
-| Please submit a bug report using GNAT Tracker:                           |
-| Please submit a bug report using GNAT Tracker:                           |
-| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
-| Pro 17.0w (19940713) (spark) Assert_Failure sem_util.adb:6068            |
-| Use a subject line meaningful to you and us to track the bug.            |
-| Use a subject line meaningful to you and us to track the bug.            |
-| Use plain ASCII or MIME attachment(s).                                   |
-| Use plain ASCII or MIME attachment(s).                                   |
-| alternatively submit a bug report by email to report@adacore.com,        |
-| alternatively submit a bug report by email to report@adacore.com,        |
-| http://www.adacore.com/gnattracker/ section 'send a report'.             |
-| http://www.adacore.com/gnattracker/ section 'send a report'.             |
-| including your customer number #nnn in the subject line.                 |
-| including your customer number #nnn in the subject line.                 |

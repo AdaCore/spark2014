@@ -41,8 +41,8 @@ mod_lemmas.adb:29:31: info: division check proved
 mod_lemmas.adb:32:42: info: initialization of "Res1" proved
 mod_lemmas.adb:32:48: info: initialization of "Res2" proved
 mod_lemmas.adb:33:14: info: initialization of "Res1" proved
+mod_lemmas.adb:33:14: medium: postcondition might fail
 mod_lemmas.adb:33:32: info: initialization of "Res2" proved
-mod_lemmas.adb:33:32: medium: postcondition might fail, cannot prove Res2 = 0
 mod_lemmas.adb:36:17: info: division check proved
 mod_lemmas.adb:37:20: info: division check proved
 mod_lemmas.adb:40:52: info: initialization of "Res" proved
@@ -63,7 +63,7 @@ mod_lemmas.adb:60:15: info: initialization of "Res1" proved
 mod_lemmas.adb:60:20: info: division check proved
 mod_lemmas.adb:63:65: info: initialization of "Res1" proved
 mod_lemmas.adb:63:71: info: initialization of "Res2" proved
-mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1
+mod_lemmas.adb:64:14: medium: postcondition might fail
 mod_lemmas.adb:64:49: info: initialization of "Res2" proved
 mod_lemmas.adb:64:56: info: initialization of "Res1" proved
 mod_lemmas.adb:64:61: info: overflow check proved
@@ -73,7 +73,7 @@ mod_lemmas.adb:67:30: info: division check proved
 mod_lemmas.adb:68:23: info: division check proved
 mod_lemmas.adb:71:59: info: initialization of "Res1" proved
 mod_lemmas.adb:71:65: info: initialization of "Res2" proved
-mod_lemmas.adb:72:33: medium: postcondition might fail, cannot prove Res2 = Res1
+mod_lemmas.adb:72:14: medium: postcondition might fail
 mod_lemmas.adb:72:50: info: initialization of "Res2" proved
 mod_lemmas.adb:72:57: info: initialization of "Res1" proved
 mod_lemmas.adb:72:62: info: overflow check proved
@@ -298,9 +298,7 @@ mul_lemmas.adb:229:04: info: precondition proved
 mul_lemmas.adb:229:29: info: initialization of "X" proved
 mul_lemmas.adb:229:29: info: range check proved
 mul_lemmas.adb:229:32: info: initialization of "Y" proved
-mul_lemmas.adb:229:32: info: range chetest.gpr:1:06: unknown project file: "spark_lemmas"
-gprbuild: "test.gpr" processing failed
-ck proved
+mul_lemmas.adb:229:32: info: range check proved
 mul_lemmas.adb:229:35: info: initialization of "Z" proved
 mul_lemmas.adb:229:35: info: range check proved
 mul_lemmas.adb:234:04: info: precondition proved
@@ -338,13 +336,3 @@ mul_lemmas.adb:258:30: info: initialization of "Y" proved
 mul_lemmas.adb:258:30: info: range check proved
 spark-arithmetic_lemmas.ads:90:51: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:101:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-Traceback (most recent call last):
-  File "test.py", line 8, in <module>
-    call(["./test_arith"])
-  File "/usr/lib/python2.7/subprocess.py", line 523, in call
-    return Popen(*popenargs, **kwargs).wait()
-  File "/usr/lib/python2.7/subprocess.py", line 711, in __init__
-    errread, errwrite)
-  File "/usr/lib/python2.7/subprocess.py", line 1343, in _execute_child
-    raise child_exception
-OSError: [Errno 2] No such file or directory

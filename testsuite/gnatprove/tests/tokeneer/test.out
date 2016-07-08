@@ -1611,7 +1611,7 @@ enclave.adb:438:33: info: initialization of "Status" constituent of "State" prov
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
-enclave.adb:501:13: medium: postcondition might fail, cannot prove AdminToken.TheAuthCertRole = PrivTypes.guard
+enclave.adb:500:13: medium: postcondition might fail, cannot prove (AdminToken.authcertvalid)
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
 enclave.adb:528:18: medium: precondition might fail
@@ -2714,7 +2714,7 @@ tokenreader.adb:175:56: low: range check might fail (e.g. when FullString = (oth
 tokenreader.adb:180:43: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 7)
 tokenreader.adb:182:23: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 151 and FullString'Last = 156)
+tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 151)
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
@@ -2841,7 +2841,7 @@ userentry.adb:682:21: medium: precondition might fail
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
-userentry.adb:866:16: medium: postcondition might fail, cannot prove not Latch(Latch.islocked)
+userentry.adb:865:14: medium: postcondition might fail, cannot prove (Latch.islocked)'old
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
