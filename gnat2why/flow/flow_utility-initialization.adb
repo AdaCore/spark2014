@@ -38,13 +38,13 @@ package body Flow_Utility.Initialization is
       function Get_Component_From_Aggregate (A : Node_Id;
                                              C : Node_Id)
                                              return Node_Id;
-      --  If we have a record aggregate A like (X => Y, Z => W), this
-      --  returns the value attached to component C, for example if C
-      --  is Z this will return W.
+      --  If we have a record aggregate A like (X => Y, Z => W), this returns
+      --  the value attached to component C, for example if C is Z this will
+      --  return W.
 
       function Get_Simple_Default (E : Entity_Id) return Node_Id;
-      --  Recursively look for simple default values given by
-      --  Default_Value and Default_Component_Value.
+      --  Recursively look for simple default values given by Default_Value and
+      --  Default_Component_Value.
 
       ----------------------------------
       -- Get_Component_From_Aggregate --
@@ -110,8 +110,8 @@ package body Flow_Utility.Initialization is
             return Get_Simple_Default (Etype (Get_Direct_Mapping_Id (F)));
 
          when Record_Field =>
-            --  If the Flow_Id represents the 'Hidden part of a record
-            --  then we do not consider it to be initialized.
+            --  If the Flow_Id represents the 'Hidden part of a record then we
+            --  do not consider it to be initialized.
             if Is_Private_Part (F)
               or else Is_Extension (F)
               or else Is_Record_Tag (F)
@@ -119,16 +119,16 @@ package body Flow_Utility.Initialization is
                return Empty;
             end if;
 
-            --  We need to find the first one with a default
-            --  initialization as that would overwrite any default
-            --  initialization we might find later.
+            --  We need to find the first one with a default initialization as
+            --  that would overwrite any default initialization we might find
+            --  later.
             Comp_Id := 1;
             for Comp of F.Component loop
                N := Expression (Parent (Comp));
                if Present (N) then
-                  --  This is a field with a default initalization.
+                  --  This is a field with a default initalization
 
-                  --  We can try and untangle any record aggregates.
+                  --  We can try and untangle any record aggregates
                   while Comp_Id < Positive (F.Component.Length)
                     and then Nkind (N) = N_Aggregate
                   loop
@@ -144,8 +144,7 @@ package body Flow_Utility.Initialization is
                Comp_Id := Comp_Id + 1;
             end loop;
 
-            --  We need to check if the type itself is always
-            --  initialized.
+            --  We need to check if the type itself is always initialized
             return Get_Simple_Default (Etype (F.Component.Last_Element));
 
          when Magic_String | Synthetic_Null_Export =>
