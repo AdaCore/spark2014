@@ -1,0 +1,2 @@
+This directory contains copies (or symbolic links under Linux) of configurable
+Ada runtimes that are not compatible with GNATprove's default runtime.

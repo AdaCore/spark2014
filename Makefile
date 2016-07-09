@@ -41,6 +41,7 @@ DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
+RUNTIMESDIR=$(GNATPROVEDIR)/runtimes
 DOC=ug lrm
 # Control if gnatprove is built in production or debug mode
 PROD=-XBuild=Production
@@ -98,13 +99,14 @@ install-all:
 
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
-	  $(INCLUDEDIR) $(LIBDIR)
+	  $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
 	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
+	$(CP) share/spark/runtimes/README $(RUNTIMESDIR)
 	@echo "Generate Coq files by preprocessing context files:"
 	$(MAKE) -C include generate
 	$(CP) include/*.ad? $(INCLUDEDIR)
