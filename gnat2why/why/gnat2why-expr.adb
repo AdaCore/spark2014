@@ -14209,12 +14209,26 @@ package body Gnat2Why.Expr is
               DIC_Procedure (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+            Init_Param : constant Entity_Id :=
+              Defining_Entity (First (Parameter_Specifications
+                (Subprogram_Specification (Default_Init_Subp))));
          begin
             if Present (Default_Init_Expr) then
 
                Variables.Union
                  (Get_Variables
                     (N                    => Default_Init_Expr,
+                     Scope                => Scope,
+                     Local_Constants      => Node_Sets.Empty_Set,
+                     Fold_Functions       => False,
+                     Use_Computed_Globals => True,
+                     Reduced              => True));
+
+               --  ??? Remove parameter of DIC procedure. Why is this needed
+               --  now?
+               Variables.Difference
+                 (Get_Variables
+                    (N                    => Init_Param,
                      Scope                => Scope,
                      Local_Constants      => Node_Sets.Empty_Set,
                      Fold_Functions       => False,
