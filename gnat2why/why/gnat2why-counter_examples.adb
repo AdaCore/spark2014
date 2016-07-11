@@ -272,10 +272,10 @@ package body Gnat2Why.Counter_Examples is
                         return To_Unbounded_String
                           (Char_To_String_Representation (Name_Buffer (2)));
 
-                        --  For all enumeration types that are not character,
-                        --  call Get_Enum_Lit_From_Pos to get a corresponding
-                        --  enumeration entity, then Source_Name to get a
-                        --  correctly capitalized enumeration value.
+                     --  For all enumeration types that are not character,
+                     --  call Get_Enum_Lit_From_Pos to get a corresponding
+                     --  enumeratio n entity, then Source_Name to get a
+                     --  correctly capitalized enumeration value.
 
                      else
                         return To_Unbounded_String
@@ -283,10 +283,10 @@ package body Gnat2Why.Counter_Examples is
                            (Element_Type, Value, No_Location)));
                      end if;
 
-                     --  An exception is raised by Get_Enum_Lit_From_Pos
-                     --  if the position Value is outside the bounds of the
-                     --  enumeration. In such a case, return the raw integer
-                     --  returned by the prover.
+                  --  An exception is raised by Get_Enum_Lit_From_Pos if the
+                  --  position Value is outside the bounds of the enumeration.
+                  --  In such a case, return the raw integer returned by the
+                  --  prover.
 
                   exception
                      when Constraint_Error =>
