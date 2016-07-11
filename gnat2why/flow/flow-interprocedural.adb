@@ -204,13 +204,12 @@ package body Flow.Interprocedural is
                   Inputs : Flow_Id_Sets.Set renames Deps (C);
                begin
                   for Input of Inputs loop
-                     --  Output could be a null node, in which case we
-                     --  do not add any edges.
-                     if Present (Output) then
-                        Add_TD_Edge (Input, Output);
-                     else
-                        Add_TD_Edge (Input, Null_Export_Flow_Id);
-                     end if;
+                     --  Output could be a null node, in which case we do not
+                     --  add any edges.
+                     Add_TD_Edge (Input,
+                                  (if Present (Output)
+                                   then Output
+                                   else Null_Export_Flow_Id));
                   end loop;
                end;
             end loop;
