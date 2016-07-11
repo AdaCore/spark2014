@@ -417,6 +417,11 @@ package SPARK_Util is
       Elmts : Why_Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
+   function Char_To_String_Representation (C : Character) return String;
+   --  @param C a character to print in a counterexample
+   --  @return a string representing the character for humans to read, which is
+   --     the character itself if it is a graphic one, otherwise its name.
+
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
      (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
    --  Returns True is unit U is in the standard library, which includes all
@@ -454,10 +459,5 @@ package SPARK_Util is
    --
    --  ??? this is only a temporary fix and should be removed once the
    --  underlying problem with First_Sloc is fixed.
-
-   function Char_To_String_Representation (C : Character) return String;
-   --  Converts a character to a 'printable character' for counterex: If the
-   --  character is graphic, returns it. It it is not, return the name of
-   --  the character.
 
 end SPARK_Util;

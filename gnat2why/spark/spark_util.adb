@@ -338,6 +338,197 @@ package body SPARK_Util is
    end Body_File_Name;
 
    -----------------------------------
+   -- Char_To_String_Representation --
+   -----------------------------------
+
+   function Char_To_String_Representation (C : Character) return String is
+   begin
+      case C is
+
+      --  Graphic characters are printed directly
+
+      when Types.Graphic_Character =>
+         return (1 => S);
+
+      --  Other characters are printed as their enumeration name in the
+      --  Character enumeration in GNAT.
+
+      when NUL                         => return "NUL";
+      when SOH                         => return "SOH";
+      when STX                         => return "STX";
+      when ETX                         => return "ETX";
+      when EOT                         => return "EOT";
+      when ENQ                         => return "ENQ";
+      when ACK                         => return "ACK";
+      when BEL                         => return "BEL";
+      when BS                          => return "BS";
+      when HT                          => return "HT";
+      when LF                          => return "LF";
+      when VT                          => return "VT";
+      when FF                          => return "FF";
+      when CR                          => return "CR";
+      when SO                          => return "SO";
+      when SI                          => return "SI";
+
+      when DLE                         => return "DLE";
+      when DC1                         => return "DC1";
+      when DC2                         => return "DC2";
+      when DC3                         => return "DC3";
+      when DC4                         => return "DC4";
+      when NAK                         => return "NAK";
+      when SYN                         => return "SYN";
+      when ETB                         => return "ETB";
+      when CAN                         => return "CAN";
+      when EM                          => return "EM";
+      when SUB                         => return "SUB";
+      when ESC                         => return "ESC";
+      when FS                          => return "FS";
+      when GS                          => return "GS";
+      when RS                          => return "RS";
+      when US                          => return "US";
+
+      when DEL                         => return "DEL";
+      when Reserved_128                => return "Reserved_128";
+      when Reserved_129                => return "Reserved_129";
+      when BPH                         => return "BPH";
+      when NBH                         => return "NBH";
+      when Reserved_132                => return "Reserved_132";
+      when NEL                         => return "NEL";
+      when SSA                         => return "SSA";
+      when ESA                         => return "ESA";
+      when HTS                         => return "HTS";
+      when HTJ                         => return "HTJ";
+      when VTS                         => return "VTS";
+      when PLD                         => return "PLD";
+      when PLU                         => return "PLU";
+      when RI                          => return "RI";
+      when SS2                         => return "SS2";
+      when SS3                         => return "SS3";
+
+      when DCS                         => return "DCS";
+      when PU1                         => return "PU1";
+      when PU2                         => return "PU2";
+      when STS                         => return "STS";
+      when CCH                         => return "CCH";
+      when MW                          => return "MW";
+      when SPA                         => return "SPA";
+      when EPA                         => return "EPA";
+
+      when SOS                         => return "SOS";
+      when Reserved_153                => return "Reserved_153";
+      when SCI                         => return "SCI";
+      when CSI                         => return "CSI";
+      when ST                          => return "ST";
+      when OSC                         => return "OSC";
+      when PM                          => return "PM";
+      when APC                         => return "APC";
+
+      when No_Break_Space              => return "No_Break_Space";
+      when Inverted_Exclamation        => return "Inverted_Exclamation";
+      when Cent_Sign                   => return "Cent_Sign";
+      when Pound_Sign                  => return "Pound_Sign";
+      when Currency_Sign               => return "Currency_Sign";
+      when Yen_Sign                    => return "Yen_Sign";
+      when Broken_Bar                  => return "Broken_Bar";
+      when Section_Sign                => return "Section_Sign";
+      when Diaeresis                   => return "Diaeresis";
+      when Copyright_Sign              => return "Copyright_Sign";
+      when Feminine_Ordinal_Indicator  => return "Feminine_Ordinal_Indicator";
+      when Left_Angle_Quotation        => return "Left_Angle_Quotation";
+      when Not_Sign                    => return "Not_Sign";
+      when Soft_Hyphen                 => return "Soft_Hyphen";
+      when Registered_Trade_Mark_Sign  => return "Registered_Trade_Mark_Sign";
+      when Macron                      => return "Macron";
+      when Degree_Sign                 => return "Degree_Sign";
+      when Plus_Minus_Sign             => return "Plus_Minus_Sign";
+      when Superscript_Two             => return "Superscript_Two";
+      when Superscript_Three           => return "Superscript_Three";
+      when Acute                       => return "Acute";
+      when Micro_Sign                  => return "Micro_Sign";
+      when Pilcrow_Sign                => return "Pilcrow_Sign";
+      when Middle_Dot                  => return "Middle_Dot";
+      when Cedilla                     => return "Cedilla";
+      when Superscript_One             => return "Superscript_One";
+      when Masculine_Ordinal_Indicator => return "Masculine_Ordinal_Indicator";
+      when Right_Angle_Quotation       => return "Right_Angle_Quotation";
+      when Fraction_One_Quarter        => return "Fraction_One_Quarter";
+      when Fraction_One_Half           => return "Fraction_One_Half";
+      when Fraction_Three_Quarters     => return "Fraction_Three_Quarters";
+      when Inverted_Question           => return "Inverted_Question";
+
+      when UC_A_Grave                  => return "UC_A_Grave";
+      when UC_A_Acute                  => return "UC_A_Acute";
+      when UC_A_Circumflex             => return "UC_A_Circumflex";
+      when UC_A_Tilde                  => return "UC_A_Tilde";
+      when UC_A_Diaeresis              => return "UC_A_Diaeresis";
+      when UC_A_Ring                   => return "UC_A_Ring";
+      when UC_AE_Diphthong             => return "UC_AE_Diphthong";
+      when UC_C_Cedilla                => return "UC_C_Cedilla";
+      when UC_E_Grave                  => return "UC_E_Grave";
+      when UC_E_Acute                  => return "UC_E_Acute";
+      when UC_E_Circumflex             => return "UC_E_Circumflex";
+      when UC_E_Diaeresis              => return "UC_E_Diaeresis";
+      when UC_I_Grave                  => return "UC_I_Grave";
+      when UC_I_Acute                  => return "UC_I_Acute";
+      when UC_I_Circumflex             => return "UC_I_Circumflex";
+      when UC_I_Diaeresis              => return "UC_I_Diaeresis";
+      when UC_Icelandic_Eth            => return "UC_Icelandic_Eth";
+      when UC_N_Tilde                  => return "UC_N_Tilde";
+      when UC_O_Grave                  => return "UC_O_Grave";
+      when UC_O_Acute                  => return "UC_O_Acute";
+      when UC_O_Circumflex             => return "UC_O_Circumflex";
+      when UC_O_Tilde                  => return "UC_O_Tilde";
+      when UC_O_Diaeresis              => return "UC_O_Diaeresis";
+
+      when Multiplication_Sign         => return "Multiplication_Sign";
+
+      when UC_O_Oblique_Stroke         => return "UC_O_Oblique_Stroke";
+      when UC_U_Grave                  => return "UC_U_Grave";
+      when UC_U_Acute                  => return "UC_U_Acute";
+      when UC_U_Circumflex             => return "UC_U_Circumflex";
+      when UC_U_Diaeresis              => return "UC_U_Diaeresis";
+      when UC_Y_Acute                  => return "UC_Y_Acute";
+      when UC_Icelandic_Thorn          => return "UC_Icelandic_Thorn";
+
+      when LC_German_Sharp_S           => return "LC_German_Sharp_S";
+      when LC_A_Grave                  => return "LC_A_Grave";
+      when LC_A_Acute                  => return "LC_A_Acute";
+      when LC_A_Circumflex             => return "LC_A_Circumflex";
+      when LC_A_Tilde                  => return "LC_A_Tilde";
+      when LC_A_Diaeresis              => return "LC_A_Diaeresis";
+      when LC_A_Ring                   => return "LC_A_Ring";
+      when LC_AE_Diphthong             => return "LC_AE_Diphthong";
+      when LC_C_Cedilla                => return "LC_C_Cedilla";
+      when LC_E_Grave                  => return "LC_E_Grave";
+      when LC_E_Acute                  => return "LC_E_Acute";
+      when LC_E_Circumflex             => return "LC_E_Circumflex";
+      when LC_E_Diaeresis              => return "LC_E_Diaeresis";
+      when LC_I_Grave                  => return "LC_I_Grave";
+      when LC_I_Acute                  => return "LC_I_Acute";
+      when LC_I_Circumflex             => return "LC_I_Circumflex";
+      when LC_I_Diaeresis              => return "LC_I_Diaeresis";
+      when LC_Icelandic_Eth            => return "LC_Icelandic_Eth";
+      when LC_N_Tilde                  => return "LC_N_Tilde";
+      when LC_O_Grave                  => return "LC_O_Grave";
+      when LC_O_Acute                  => return "LC_O_Acute";
+      when LC_O_Circumflex             => return "LC_O_Circumflex";
+      when LC_O_Tilde                  => return "LC_O_Tilde";
+      when LC_O_Diaeresis              => return "LC_O_Diaeresis";
+
+      when Division_Sign               => return "Division_Sign";
+
+      when LC_O_Oblique_Stroke         => return "LC_O_Oblique_Stroke";
+      when LC_U_Grave                  => return "LC_U_Grave";
+      when LC_U_Acute                  => return "LC_U_Acute";
+      when LC_U_Circumflex             => return "LC_U_Circumflex";
+      when LC_U_Diaeresis              => return "LC_U_Diaeresis";
+      when LC_Y_Acute                  => return "LC_Y_Acute";
+      when LC_Icelandic_Thorn          => return "LC_Icelandic_Thorn";
+      when LC_Y_Diaeresis              => return "LC_Y_Diaeresis";
+      end case;
+   end Char_To_String_Representation;
+
+   -----------------------------------
    -- Component_Is_Visible_In_SPARK --
    -----------------------------------
 
@@ -1406,199 +1597,5 @@ package body SPARK_Util is
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
                                          renames Is_Part_Of_Protected;
-
-   -----------------------------------
-   -- Char_To_String_Representation --
-   -----------------------------------
-
-   function Char_To_String_Representation (C : Character) return String is
-   begin
-      case C is
-
-      --  Case for graphic character
-      when ' ' .. '~' =>
-         declare
-            S : String (1 .. 1);
-         begin
-            S (1) := C;
-            return S;
-         end;
-
-      --  Case for any non-graphic character
-
-      when NUL => return "NUL";
-      when SOH => return "SOH";
-      when STX => return "STX";
-      when ETX => return "ETX";
-      when EOT => return "EOT";
-      when ENQ => return "ENQ";
-      when ACK => return "ACK";
-      when BEL => return "BEL";
-      when BS  => return "BS";
-      when HT  => return "HT";
-      when LF  => return "LF";
-      when VT  => return "VT";
-      when FF  => return "FF";
-      when CR  => return "CR";
-      when SO  => return "SO";
-      when SI  => return "SI";
-
-      when DLE => return "DLE";
-      when DC1 => return "DC1";
-      when DC2 => return "DC2";
-      when DC3 => return "DC3";
-      when DC4 => return "DC4";
-      when NAK => return "NAK";
-      when SYN => return "SYN";
-      when ETB => return "ETB";
-      when CAN => return "CAN";
-      when EM  => return "EM";
-      when SUB => return "SUB";
-      when ESC => return "ESC";
-      when FS  => return "FS";
-      when GS  => return "GS";
-      when RS  => return "RS";
-      when US  => return "US";
-
-      when DEL          => return "DEL";
-      when Reserved_128 => return "Reserved_128";
-      when Reserved_129 => return "Reserved_129";
-      when BPH => return "BPH";
-      when NBH => return "NBH";
-      when Reserved_132 => return "Reserved_132";
-      when NEL => return "NEL";
-      when SSA => return "SSA";
-      when ESA => return "ESA";
-      when HTS => return "HTS";
-      when HTJ => return "HTJ";
-      when VTS => return "VTS";
-      when PLD => return "PLD";
-      when PLU => return "PLU";
-      when RI => return "RI";
-      when SS2 => return "SS2";
-      when SS3 => return "SS3";
-
-      when DCS => return "DCS";
-      when PU1 => return "PU1";
-      when PU2 => return "PU2";
-      when STS => return "STS";
-      when CCH => return "CCH";
-      when MW => return "MW";
-      when SPA => return "SPA";
-      when EPA => return "EPA";
-
-      when SOS => return "SOS";
-      when Reserved_153 => return "Reserved_153";
-      when SCI => return "SCI";
-      when CSI => return "CSI";
-      when ST => return "ST";
-      when OSC => return "OSC";
-      when PM => return "PM";
-      when APC => return "APC";
-
-      when No_Break_Space => return "No_Break_Space";
-      when Inverted_Exclamation => return "Inverted_Exclamation";
-      when Cent_Sign => return "Cent_Sign";
-      when Pound_Sign => return "Pound_Sign";
-      when Currency_Sign => return "Currency_Sign";
-      when Yen_Sign => return "Yen_Sign";
-      when Broken_Bar => return "Broken_Bar";
-      when Section_Sign => return "Section_Sign";
-      when Diaeresis => return "Diaeresis";
-      when Copyright_Sign => return "Copyright_Sign";
-      when Feminine_Ordinal_Indicator => return "Feminine_Ordinal_Indicator";
-      when Left_Angle_Quotation => return "Left_Angle_Quotation";
-      when Not_Sign => return "Not_Sign";
-      when Soft_Hyphen => return "Soft_Hyphen";
-      when Registered_Trade_Mark_Sign => return "Registered_Trade_Mark_Sign";
-      when Macron => return "Macron";
-      when Degree_Sign => return "Degree_Sign";
-      when Plus_Minus_Sign => return "Plus_Minus_Sign";
-      when Superscript_Two => return "Superscript_Two";
-      when Superscript_Three => return "Superscript_Three";
-      when Acute => return "Acute";
-      when Micro_Sign => return "Micro_Sign";
-      when Pilcrow_Sign => return "Pilcrow_Sign";
-      when Middle_Dot => return "Middle_Dot";
-      when Cedilla => return "Cedilla";
-      when Superscript_One => return "Superscript_One";
-      when Masculine_Ordinal_Indicator => return "Masculine_Ordinal_Indicator";
-      when Right_Angle_Quotation => return "Right_Angle_Quotation";
-      when Fraction_One_Quarter => return "Fraction_One_Quarter";
-      when Fraction_One_Half => return "Fraction_One_Half";
-      when Fraction_Three_Quarters => return "Fraction_Three_Quarters";
-      when Inverted_Question => return "Inverted_Question";
-
-      when UC_A_Grave => return "UC_A_Grave";
-      when UC_A_Acute => return "UC_A_Acute";
-      when UC_A_Circumflex => return "UC_A_Circumflex";
-      when UC_A_Tilde => return "UC_A_Tilde";
-      when UC_A_Diaeresis => return "UC_A_Diaeresis";
-      when UC_A_Ring => return "UC_A_Ring";
-      when UC_AE_Diphthong => return "UC_AE_Diphthong";
-      when UC_C_Cedilla => return "UC_C_Cedilla";
-      when UC_E_Grave => return "UC_E_Grave";
-      when UC_E_Acute => return "UC_E_Acute";
-      when UC_E_Circumflex => return "UC_E_Circumflex";
-      when UC_E_Diaeresis => return "UC_E_Diaeresis";
-      when UC_I_Grave => return "UC_I_Grave";
-      when UC_I_Acute => return "UC_I_Acute";
-      when UC_I_Circumflex => return "UC_I_Circumflex";
-      when UC_I_Diaeresis => return "UC_I_Diaeresis";
-      when UC_Icelandic_Eth => return "UC_Icelandic_Eth";
-      when UC_N_Tilde => return "UC_N_Tilde";
-      when UC_O_Grave => return "UC_O_Grave";
-      when UC_O_Acute => return "UC_O_Acute";
-      when UC_O_Circumflex => return "UC_O_Circumflex";
-      when UC_O_Tilde => return "UC_O_Tilde";
-      when UC_O_Diaeresis => return "UC_O_Diaeresis";
-
-      when Multiplication_Sign => return "Multiplication_Sign";
-
-      when UC_O_Oblique_Stroke => return "UC_O_Oblique_Stroke";
-      when UC_U_Grave => return "UC_U_Grave";
-      when UC_U_Acute => return "UC_U_Acute";
-      when UC_U_Circumflex => return "UC_U_Circumflex";
-      when UC_U_Diaeresis => return "UC_U_Diaeresis";
-      when UC_Y_Acute => return "UC_Y_Acute";
-      when UC_Icelandic_Thorn => return "UC_Icelandic_Thorn";
-
-      when LC_German_Sharp_S => return "LC_German_Sharp_S";
-      when LC_A_Grave => return "LC_A_Grave";
-      when LC_A_Acute => return "LC_A_Acute";
-      when LC_A_Circumflex => return "LC_A_Circumflex";
-      when LC_A_Tilde => return "LC_A_Tilde";
-      when LC_A_Diaeresis => return "LC_A_Diaeresis";
-      when LC_A_Ring => return "LC_A_Ring";
-      when LC_AE_Diphthong => return "LC_AE_Diphthong";
-      when LC_C_Cedilla => return "LC_C_Cedilla";
-      when LC_E_Grave => return "LC_E_Grave";
-      when LC_E_Acute => return "LC_E_Acute";
-      when LC_E_Circumflex => return "LC_E_Circumflex";
-      when LC_E_Diaeresis => return "LC_E_Diaeresis";
-      when LC_I_Grave => return "LC_I_Grave";
-      when LC_I_Acute => return "LC_I_Acute";
-      when LC_I_Circumflex => return "LC_I_Circumflex";
-      when LC_I_Diaeresis => return "LC_I_Diaeresis";
-      when LC_Icelandic_Eth => return "LC_Icelandic_Eth";
-      when LC_N_Tilde => return "LC_N_Tilde";
-      when LC_O_Grave => return "LC_O_Grave";
-      when LC_O_Acute => return "LC_O_Acute";
-      when LC_O_Circumflex => return "LC_O_Circumflex";
-      when LC_O_Tilde => return "LC_O_Tilde";
-      when LC_O_Diaeresis => return "LC_O_Diaeresis";
-
-      when Division_Sign => return "Division_Sign";
-
-      when LC_O_Oblique_Stroke => return "LC_O_Oblique_Stroke";
-      when LC_U_Grave => return "LC_U_Grave";
-      when LC_U_Acute => return "LC_U_Acute";
-      when LC_U_Circumflex => return "LC_U_Circumflex";
-      when LC_U_Diaeresis => return "LC_U_Diaeresis";
-      when LC_Y_Acute => return "LC_Y_Acute";
-      when LC_Icelandic_Thorn => return "LC_Icelandic_Thorn";
-      when LC_Y_Diaeresis => return "LC_Y_Diaeresis";
-      end case;
-   end Char_To_String_Representation;
 
 end SPARK_Util;
