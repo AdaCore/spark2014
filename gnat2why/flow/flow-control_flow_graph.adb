@@ -6432,11 +6432,10 @@ package body Flow.Control_Flow_Graph is
                   Nodes.Append (Union_Id (Visible_Decls));
                end if;
 
-               --  Ok, we need a copy of all variables from the spec +
-               --  initializes. Although this is somewhat
-               --  out-of-place, this is the only place we can
-               --  assemble them easily without re-doing a lot of the
-               --  hard work we've done so far.
+               --  We need a copy of all variables from the spec + initializes.
+               --  Although this is somewhat out-of-place, this is the only
+               --  place we can assemble them easily without re-doing a lot
+               --  of the hard work we've done so far.
                FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
                if Present (Private_Decls) then
