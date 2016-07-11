@@ -1903,6 +1903,45 @@ package body Flow_Utility is
       end if;
    end Get_Type;
 
+   --------------------------
+   -- Get_Explicit_Formals --
+   --------------------------
+
+   function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set is
+      Formal  : Entity_Id;
+      Formals : Node_Sets.Set;
+
+   begin
+      case Ekind (E) is
+         when E_Entry | E_Function | E_Procedure =>
+            --  Collect explicit formal parameters
+            Formal := First_Formal (E);
+            while Present (Formal) loop
+               Formals.Insert (Formal);
+               Next_Formal (Formal);
+            end loop;
+            --  ??? what about discriminants of the enclosing protected type?
+
+         when E_Task_Type =>
+            --  Add discriminants of task as formal parameters
+            if Has_Discriminants (E)
+              or else Has_Unknown_Discriminants (E)
+            then
+               Formal := First_Discriminant (E);
+               while Present (Formal) loop
+                  Formals.Insert (Formal);
+                  Next_Discriminant (Formal);
+               end loop;
+            end if;
+
+         when others =>
+            raise Program_Error;
+
+      end case;
+
+      return Formals;
+   end Get_Explicit_Formals;
+
    -------------------------
    -- Get_Implicit_Formal --
    -------------------------
@@ -1947,43 +1986,16 @@ package body Flow_Utility is
       Entire   : Boolean := True)
       return Node_Sets.Set
    is
-      Param  : Entity_Id;
-      Params : Node_Sets.Set;
-   begin
-      Param := Get_Implicit_Formal (E, Callsite, Entire);
+      Formals  : Node_Sets.Set := Get_Explicit_Formals (E);
+      Implicit : constant Entity_Id :=
+        Get_Implicit_Formal (E, Callsite, Entire);
 
-      if Present (Param) then
-         Params.Insert (Param);
+   begin
+      if Present (Implicit) then
+         Formals.Insert (Implicit);
       end if;
 
-      case Ekind (E) is
-         when E_Entry | E_Function | E_Procedure =>
-            --  Collect explicit formal parameters
-            Param := First_Formal (E);
-            while Present (Param) loop
-               Params.Insert (Param);
-               Next_Formal (Param);
-            end loop;
-            --  ??? what about discriminants of the enclosing protected type?
-
-         when E_Task_Type =>
-            --  Add discriminants of task as formal parameters
-            if Has_Discriminants (E)
-              or else Has_Unknown_Discriminants (E)
-            then
-               Param := First_Discriminant (E);
-               while Present (Param) loop
-                  Params.Insert (Param);
-                  Next_Discriminant (Param);
-               end loop;
-            end if;
-
-         when others =>
-            raise Program_Error;
-
-      end case;
-
-      return Params;
+      return Formals;
    end Get_Formals;
 
    -------------------

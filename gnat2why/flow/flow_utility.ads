@@ -602,6 +602,11 @@ is
    --    of the type is not visible from Scope, then we return the non-full
    --    view.
 
+   function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   --  Returns explicit formals of a subprogram or entry or task type
+   --  discriminants for a task type.
+
    function Get_Implicit_Formal
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
@@ -613,8 +618,9 @@ is
                 then Nkind (Callsite) in N_Entry_Call_Statement     |
                                          N_Function_Call            |
                                          N_Procedure_Call_Statement);
-   --  Returns the protected type for protected subprograms and entries and the
-   --  task type itself for task types; returns Empty for ordinary subprograms.
+   --  Returns implicit formals, i.e. the protected type for protected
+   --  subprograms and entries and the task type itself for task types; returns
+   --  Empty for ordinary subprograms.
    --  @param E is the entity of an entry/task/subprogram
    --  @param Callsite is the place from where the entry/subprogram is called
    --  @param Entire returns the entire object as opposed to a record field
