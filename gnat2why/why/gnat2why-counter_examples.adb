@@ -225,8 +225,6 @@ package body Gnat2Why.Counter_Examples is
             declare
                CNT_Value : constant String  :=
                  To_Lower (To_String (CNT_Element.Value));
-               CF        : constant Integer := CNT_Value'First;
-               CL        : constant Integer := CNT_Value'Last;
 
             begin
                if CNT_Value = "true" then
@@ -245,74 +243,55 @@ package body Gnat2Why.Counter_Examples is
                elsif Present (Element_Type)
                  and then Is_Enumeration_Type (Element_Type)
                then
-                  --  ??? ad hoc removal of mk_bool_ref and mk_int_ref.
-                  --  We do not know yet where this comes from. These
-                  --  references to mk_int_ref and mk_bool_ref
-                  --  should ideally be removed earlier in the code.
+                  declare
+                     Value : constant Uint := UI_From_Int
+                       (Int'Value (To_String (CNT_Element.Value)));
 
-                  if CNT_Value'Length >= 15
-                    and then CNT_Value (CF .. CF + 13) = "(mk_bool__ref "
-                  then
-                     return To_Unbounded_String
-                       (CNT_Value (CF + 14 .. CL - 1));
+                     --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                     --  enumeration entity.
+                     Enum  : constant Entity_Id :=
+                               Sem_Util.Get_Enum_Lit_From_Pos
+                                 (Element_Type, Value, No_Location);
 
-                  elsif CNT_Value'Length >= 14
-                    and then CNT_Value (CF .. CF + 12) = "(mk_int__ref "
-                  then
-                     return To_Unbounded_String
-                       (CNT_Value (CF + 13 .. CL - 1));
+                  begin
+                     --  Special case for characters, which are defined in the
+                     --  standard unit Standard.ASCII, and as such do not have
+                     --  a source code representation.
 
-                  else
-                     declare
-                        Value : constant Uint := UI_From_Int
-                          (Int'Value (To_String (CNT_Element.Value)));
+                     if Is_Character_Type (Element_Type) then
+                        --  Call Get_Unqualified_Decoded_Name_String to get a
+                        --  correctly printed character in Name_Buffer.
 
-                        --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                        --  enumeration entity.
-                        Enum  : constant Entity_Id :=
-                          Sem_Util.Get_Enum_Lit_From_Pos
-                            (Element_Type, Value, No_Location);
+                        Get_Unqualified_Decoded_Name_String (Chars (Enum));
 
-                     begin
-                        --  Special case for characters, which are defined in
-                        --  the standard unit Standard.ASCII, and as such do
-                        --  not have a source code representation.
+                        --  The call to Get_Unqualified_Decoded_Name_String
+                        --  set Name_Buffer to '<char>' where <char> is the
+                        --  character we are interested in. Just retrieve it
+                        --  directly at Name_Buffer(2).
 
-                        if Is_Character_Type (Element_Type) then
-                           --  Call Get_Unqualified_Decoded_Name_String to get
-                           --  a correctly printed character in Name_Buffer.
-
-                           Get_Unqualified_Decoded_Name_String (Chars (Enum));
-
-                           --  The call to Get_Unqualified_Decoded_Name_String
-                           --  set Name_Buffer to '<char>' where <char> is the
-                           --  character we are interested in. Just retrieve it
-                           --  directly at Name_Buffer(2).
-
-                           return To_Unbounded_String
-                             (Char_To_String_Representation (Name_Buffer (2)));
+                        return To_Unbounded_String
+                          (Char_To_String_Representation (Name_Buffer (2)));
 
                         --  For all enumeration types that are not character,
                         --  call Get_Enum_Lit_From_Pos to get a corresponding
                         --  enumeration entity, then Source_Name to get a
                         --  correctly capitalized enumeration value.
 
-                        else
-                           return To_Unbounded_String
-                             (Source_Name (Sem_Util.Get_Enum_Lit_From_Pos
-                               (Element_Type, Value, No_Location)));
-                        end if;
+                     else
+                        return To_Unbounded_String
+                          (Source_Name (Sem_Util.Get_Enum_Lit_From_Pos
+                           (Element_Type, Value, No_Location)));
+                     end if;
 
                      --  An exception is raised by Get_Enum_Lit_From_Pos
                      --  if the position Value is outside the bounds of the
                      --  enumeration. In such a case, return the raw integer
                      --  returned by the prover.
 
-                     exception
-                        when Constraint_Error =>
-                           return CNT_Element.Value;
-                     end;
-                  end if;
+                  exception
+                     when Constraint_Error =>
+                        return CNT_Element.Value;
+                  end;
 
                --  None of the special cases. Return the value of the element.
 

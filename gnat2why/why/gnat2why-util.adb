@@ -289,34 +289,44 @@ package body Gnat2Why.Util is
          return Name_Id_Sets.Empty_Set;
       end if;
 
-      case Ekind (Etype (E)) is
-         when Scalar_Kind =>
-            Labels := Model_Trace;
+      --  This function can be called by translate_variable which can convert
+      --  to ref in the why language for all types. We have to check if the
+      --  why corresponding entity is mutable (the same test is used in the
+      --  translation).
 
-            --  If E's type is directly a native prover type, simply request
-            --  the value of E in the counterexample. This is known by querying
-            --  the kind of type used in Why3 for the entity. If it's not
-            --  abstract, then a builtin Why3 type is used.
+      if Is_Mutable_In_Why (E) then
+         Labels := Model_Trace;
+         Labels.Include (Model_Projected);
+      else
+         case Ekind (Etype (E)) is
+            when Scalar_Kind =>
+               Labels := Model_Trace;
 
-            if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract then
-               Labels.Include (Model);
+               --  If E's type is directly a native prover type, simply request
+               --  the value of E in the counterexample. This is known by
+               --  querying the kind of type used in Why3 for the entity.
+               --  If it's not abstract, then a builtin Why3 type is used.
 
-            --  If E's type needs a projection to a native prover type, request
-            --  the value of the projection of E in the counterexample.
+               if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract then
+                  Labels.Include (Model);
 
-            else
+                  --  If E's type needs a projection to a native prover
+                  --  type, request the value of the projection of E in
+                  --  the counterexample.
+
+               else
+                  Labels.Include (Model_Projected);
+               end if;
+
+            when Record_Kind | Array_Kind =>
+               Labels := Model_Trace;
                Labels.Include (Model_Projected);
-            end if;
 
-         when Record_Kind | Array_Kind =>
-            Labels := Model_Trace;
-            Labels.Include (Model_Projected);
+            when others =>
+               null;
 
-         when others =>
-            null;
-
-      end case;
-
+         end case;
+      end if;
       return Labels;
    end Get_Counterexample_Labels;
 
