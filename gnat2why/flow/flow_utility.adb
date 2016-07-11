@@ -278,67 +278,70 @@ package body Flow_Utility is
    ----------------
 
    function Components (E : Entity_Id) return Node_Lists.List is
-      Ptr : Entity_Id;
-      T   : Entity_Id          := E;
-      L   : Node_Lists.List    := Node_Lists.Empty_List;
-      S   : Component_Sets.Set := Component_Sets.Empty_Set;
-
-      function Up (E : Entity_Id) return Entity_Id with Pure_Function;
-      --  Get parent type, but don't consider record subtypes' ancestors
-
-      --------
-      -- Up --
-      --------
-
-      function Up (E : Entity_Id) return Entity_Id is
-         A : constant Entity_Id := Etype (E);
-         B : Entity_Id;
-      begin
-         if Ekind (E) = E_Record_Subtype then
-            B := Up (A);
-            if A /= B then
-               return B;
-            else
-               return E;
-            end if;
-         else
-            return A;
-         end if;
-      end Up;
-
-   --  Start of processing for All_Components
-
    begin
-      if not (Is_Record_Type (E)
-                or else Is_Concurrent_Type (E)
-                or else Is_Incomplete_Or_Private_Type (E)
-                or else Has_Discriminants (E))
+      if Is_Record_Type (E)
+        or else Is_Concurrent_Type (E)
+        or else Is_Incomplete_Or_Private_Type (E)
+        or else Has_Discriminants (E)
       then
-         --  No components or discriminants to return
-         return L;
-      end if;
+         declare
+            Ptr : Entity_Id;
+            T   : Entity_Id          := E;
+            L   : Node_Lists.List    := Node_Lists.Empty_List;
+            S   : Component_Sets.Set := Component_Sets.Empty_Set;
 
-      loop
-         Ptr := First_Component_Or_Discriminant (T);
-         while Present (Ptr) loop
-            declare
-               Inserted : Boolean;
-               Unused   : Component_Sets.Cursor;
+            function Up (E : Entity_Id) return Entity_Id with Pure_Function;
+            --  Get parent type, but don't consider record subtypes' ancestors
+
+            --------
+            -- Up --
+            --------
+
+            function Up (E : Entity_Id) return Entity_Id is
+               A : constant Entity_Id := Etype (E);
+               B : Entity_Id;
             begin
-               S.Insert (New_Item => Ptr,
-                         Position => Unused,
-                         Inserted => Inserted);
-               if Inserted then
-                  L.Append (Ptr);
+               if Ekind (E) = E_Record_Subtype then
+                  B := Up (A);
+                  if A /= B then
+                     return B;
+                  else
+                     return E;
+                  end if;
+               else
+                  return A;
                end if;
-            end;
-            Next_Component_Or_Discriminant (Ptr);
-         end loop;
-         exit when Up (T) = T;
-         T := Up (T);
-      end loop;
+            end Up;
 
-      return L;
+         begin
+            loop
+               Ptr := First_Component_Or_Discriminant (T);
+               while Present (Ptr) loop
+                  declare
+                     Inserted : Boolean;
+                     Unused   : Component_Sets.Cursor;
+                  begin
+                     S.Insert (New_Item => Ptr,
+                               Position => Unused,
+                               Inserted => Inserted);
+                     if Inserted then
+                        L.Append (Ptr);
+                     end if;
+                  end;
+                  Next_Component_Or_Discriminant (Ptr);
+               end loop;
+               exit when Up (T) = T;
+               T := Up (T);
+            end loop;
+
+            return L;
+         end;
+
+      --  No components or discriminants to return
+
+      else
+         return Node_Lists.Empty_List;
+      end if;
    end Components;
 
    ----------------------------
