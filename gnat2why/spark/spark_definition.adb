@@ -1626,6 +1626,7 @@ package body SPARK_Definition is
                BT : constant Entity_Id := Base_Type (E);
 
             begin
+
                --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with
                --  private types, when the public part of the package is marked
@@ -1635,7 +1636,7 @@ package body SPARK_Definition is
 
                if Is_Private_Type (E)
                  and then Present (Full_View (E))
-                 and then not Is_Full_View (Full_View (E)) -- ??? why needed?
+                 and then not Is_Full_View (Full_View (E)) -- ??? why needed
                then
                   Set_Partial_View (Full_View (E), E);
                end if;
@@ -1649,8 +1650,11 @@ package body SPARK_Definition is
                if Ekind (E) in E_Record_Type | E_Record_Subtype
                  and then Is_Tagged_Type (E)
                  and then (if Ekind (E) = E_Record_Subtype then
-                             not (Present (Cloned_Subtype (E))))
+                               not (Present (Cloned_Subtype (E))))
+                 and then not Is_Class_Wide_Type (E)
+                 and then not Is_Itype (E)
                then
+                  Set_Specific_Tagged (Class_Wide_Type (E), E);
 
                   --  Only mark the classwide type associated to a record type
                   --  if the record type isn't constrained. Otherwise, the
@@ -1661,11 +1665,12 @@ package body SPARK_Definition is
                   then
                      Mark_Entity (Class_Wide_Type (E));
                   end if;
-                  Set_Specific_Tagged (Class_Wide_Type (E), E);
                end if;
 
                if Ekind (E) in E_Protected_Type | E_Task_Type then
+
                   --  Pick SPARK_Mode from the concurrent type definition
+
                   declare
                      Save_SPARK_Pragma : constant Node_Id :=
                        Current_SPARK_Pragma;
@@ -1681,7 +1686,6 @@ package body SPARK_Definition is
                if Is_Itype (BT) then
                   Mark_Entity (BT);
                end if;
-
             end;
 
          --  Supported tasking constructs
@@ -3816,6 +3820,19 @@ package body SPARK_Definition is
               and then Retysp (E) = E
             then
                Init_Component_Info (E);
+            end if;
+
+            --  A derived type cannot have explicit discriminants
+
+            if Nkind (Parent (E)) = N_Private_Extension_Declaration
+              and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
+              and then Present (Discriminant_Specifications (Parent (E)))
+              and then Comes_From_Source (E)
+            then
+               Mark_Violation
+                 ("discriminant on derived type",
+                  Parent (E),
+                  SRM_Reference => "SPARK RM 3.7(2)");
             end if;
 
          elsif Is_Record_Type (E) then
