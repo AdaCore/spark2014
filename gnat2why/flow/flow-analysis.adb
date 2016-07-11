@@ -3325,7 +3325,7 @@ package body Flow.Analysis is
                    Classwide  => False,
                    Depends    => User_Deps);
 
-      --  Populate the Params and Implicit_Params sets
+      --  Populate the Params and Implicit_Param
       Params := Get_Formals (FA.Analyzed_Entity);
       Implicit_Param := Get_Implicit_Formal (FA.Analyzed_Entity);
 
