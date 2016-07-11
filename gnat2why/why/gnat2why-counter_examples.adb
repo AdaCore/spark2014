@@ -190,12 +190,17 @@ package body Gnat2Why.Counter_Examples is
          Attributes  : in out Names_And_Values.List)
          return Unbounded_String
       is
-         Element_Type : Entity_Id;
-      begin
+         Element_Type : constant Entity_Id :=
+           (if Present (CNT_Element.Entity) then
+              Etype (CNT_Element.Entity)
+            else
+              Empty);
 
-         --  We first treat attributes
-         if not CNT_Element.Attributes.Is_Empty
-         then
+      begin
+         --  Fill in first the values of attributes, before the first return
+         --  statement, so that we can ignore attributes in what follows.
+
+         if not CNT_Element.Attributes.Is_Empty then
             for Att in CNT_Element.Attributes.Iterate loop
                declare
                   New_Prefix : constant Unbounded_String :=
@@ -207,121 +212,115 @@ package body Gnat2Why.Counter_Examples is
                        New_Prefix,
                        Attributes);
                begin
-                  if Attr_Value /= Dont_Display
-                  then
+                  if Attr_Value /= Dont_Display then
                      Attributes.Append ((New_Prefix, Attr_Value));
                   end if;
                end;
             end loop;
          end if;
 
-         declare
-            CNT_Value : constant String  :=
-                          To_Lower (To_String (CNT_Element.Value));
-            CF        : constant Integer := CNT_Value'First;
-            CL        : constant Integer := CNT_Value'Last;
-         begin
-            --  Now that the attributes are dealt with, check if we've got any
-            --  field, if not we return the value of the node.
+         --  If no field is set, return the value of the node.
 
-            if CNT_Element.Fields.Is_Empty then
+         if CNT_Element.Fields.Is_Empty then
+            declare
+               CNT_Value : constant String  :=
+                 To_Lower (To_String (CNT_Element.Value));
+               CF        : constant Integer := CNT_Value'First;
+               CL        : constant Integer := CNT_Value'Last;
+
+            begin
                if CNT_Value = "true" then
                   return To_Unbounded_String ("True");
 
-               --  false
                elsif CNT_Value = "false" then
                   return To_Unbounded_String ("False");
 
-               --  dont display
                elsif CNT_Element.Value = Dont_Display then
                   return CNT_Element.Value;
 
-               --  enumeration type
-               elsif Present (CNT_Element.Entity) then
-                  Element_Type := Etype (CNT_Element.Entity);
-                  if Is_Enumeration_Type (Element_Type)
+               --  Special case for enumeration types, to return the value of
+               --  enumeration in Ada instead of the integer position used in
+               --  Why3 to represent that value of enumeration.
+
+               elsif Present (Element_Type)
+                 and then Is_Enumeration_Type (Element_Type)
+               then
+                  --  ??? ad hoc removal of mk_bool_ref and mk_int_ref.
+                  --  We do not know yet where this comes from. These
+                  --  references to mk_int_ref and mk_bool_ref
+                  --  should ideally be removed earlier in the code.
+
+                  if CNT_Value'Length >= 15
+                    and then CNT_Value (CF .. CF + 13) = "(mk_bool__ref "
                   then
-                     --  ??? ad hoc removal of mk_bool_ref and mk_int_ref.
-                     --  We do not know yet where this comes from. These
-                     --  references to mk_int_ref and mk_bool_ref
-                     --  should ideally be removed earlier in the code.
+                     return To_Unbounded_String
+                       (CNT_Value (CF + 14 .. CL - 1));
 
-                     if CNT_Value'Length >= 15 and then
-                       CNT_Value (CF .. CF + 13) = "(mk_bool__ref "
-                     then
-                        return To_Unbounded_String (CNT_Value (
-                                                    CF + 14 .. CL - 1));
-                     elsif CNT_Value'Length >= 14 and then
-                       CNT_Value (CF .. CF + 12) = "(mk_int__ref "
-                     then
-                        return To_Unbounded_String (CNT_Value (
-                                 CF + 13 .. CL - 1));
-                     else
-                        declare
-                           Value : constant Uint :=
-                                     UI_From_Int (Int'Value
-                                       (To_String (CNT_Element.Value)));
-                        begin
-                           --  Case for character
+                  elsif CNT_Value'Length >= 14
+                    and then CNT_Value (CF .. CF + 12) = "(mk_int__ref "
+                  then
+                     return To_Unbounded_String
+                       (CNT_Value (CF + 13 .. CL - 1));
 
-                           if Is_Character_Type (Element_Type) then
-                              begin
-
-                                 --  Using the name_table to recover
-                                 --  the character used. We use the decoded
-                                 --  procedure to have a correctly printed char
-                                 Get_Unqualified_Decoded_Name_String (Chars (
-                                   (Sem_Util.Get_Enum_Lit_From_Pos
-                                   (Element_Type, Value, No_Location))));
-                              exception
-                              --  Either Get_Enum_Lit_From_Pos is Outside of
-                              --  Bounds or the prover returns a counterexample
-                              --  not Matching The constraints on the
-                              --  enumeration type we gave. We return the
-                              --  int provided by the prover.
-                                 when Constraint_Error =>
-                                    return CNT_Element.Value;
-                              end;
-                              declare
-                                 C : constant Character :=
-                                       Name_Buffer (2);
-                              begin
-                                 return To_Unbounded_String (
-                                         Char_To_String_Representation (C));
-                              end;
-                           else
-                              --  Enumeration types that are not character
-                              begin
-                                 return
-                                   (To_Unbounded_String
-                                      (Source_Name
-                                        (Sem_Util.Get_Enum_Lit_From_Pos
-                                        (Element_Type, Value, No_Location))));
-                              exception
-                              --  Either Get_Enum_Lit_From_Pos is Outside of
-                              --  Bounds or the prover returns a counterexample
-                              --  not Matching The constraints on the
-                              --  enumeration type we gave. We return the
-                              --  int provided by the prover.
-                                 when Constraint_Error =>
-                                    return CNT_Element.Value;
-                              end;
-                           end if;
-                        end;
-                     end if;
                   else
-                     return CNT_Element.Value;
+                     declare
+                        Value : constant Uint := UI_From_Int
+                          (Int'Value (To_String (CNT_Element.Value)));
+
+                        --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                        --  enumeration entity.
+                        Enum  : constant Entity_Id :=
+                          Sem_Util.Get_Enum_Lit_From_Pos
+                            (Element_Type, Value, No_Location);
+
+                     begin
+                        --  Special case for characters, which are defined in
+                        --  the standard unit Standard.ASCII, and as such do
+                        --  not have a source code representation.
+
+                        if Is_Character_Type (Element_Type) then
+                           --  Call Get_Unqualified_Decoded_Name_String to get
+                           --  a correctly printed character in Name_Buffer.
+
+                           Get_Unqualified_Decoded_Name_String (Chars (Enum));
+
+                           --  The call to Get_Unqualified_Decoded_Name_String
+                           --  set Name_Buffer to '<char>' where <char> is the
+                           --  character we are interested in. Just retrieve it
+                           --  directly at Name_Buffer(2).
+
+                           return To_Unbounded_String
+                             (Char_To_String_Representation (Name_Buffer (2)));
+
+                        --  For all enumeration types that are not character,
+                        --  call Get_Enum_Lit_From_Pos to get a corresponding
+                        --  enumeration entity, then Source_Name to get a
+                        --  correctly capitalized enumeration value.
+
+                        else
+                           return To_Unbounded_String
+                             (Source_Name (Sem_Util.Get_Enum_Lit_From_Pos
+                               (Element_Type, Value, No_Location)));
+                        end if;
+
+                     --  An exception is raised by Get_Enum_Lit_From_Pos if the
+                     --  position Value is outside the bounds of a character.
+                     --  In such a case, return the raw integer from the
+                     --  prover.
+
+                     exception
+                        when Constraint_Error =>
+                           return CNT_Element.Value;
+                     end;
                   end if;
-               --  empty fields but not one of the preceding cases
+
+               --  None of the special cases. Return the value of the element.
+
                else
                   return CNT_Element.Value;
                end if;
-            end if;
-         end;
-
-         --  If we've got fields, we're dealing with a record:
-         --  we know that CNT_Element.Entity is present
-         Element_Type := Etype (CNT_Element.Entity);
+            end;
+         end if;
 
          --  Check whether the type can have fields or
          --  discriminants
