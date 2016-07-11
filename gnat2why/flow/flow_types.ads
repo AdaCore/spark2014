@@ -135,6 +135,7 @@ package Flow_Types is
       Out_View
       --  For the procedure call parameter vertices.
    );
+   pragma Ordered (Flow_Id_Variant);
 
    type Variable_Facet_T is (Normal_Part,
                              Private_Part,    --  for private types

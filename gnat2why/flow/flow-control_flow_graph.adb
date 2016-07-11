@@ -5883,19 +5883,15 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
-      --  Create the magic null export vertices, initial and final
-      declare
-         F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
-                                                 Initial_Value);
-      begin
-         Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
-      end;
-      declare
-         F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
-                                                 Final_Value);
-      begin
-         Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
-      end;
+      --  Create the magic null export vertices: initial and final
+      for Variant in Initial_Value .. Final_Value loop
+         declare
+            F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
+                                                    Variant);
+         begin
+            Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
+         end;
+      end loop;
 
       --  Create initial and final vertices for the parameters of the analyzed
       --  entity.
