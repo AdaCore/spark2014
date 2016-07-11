@@ -351,8 +351,9 @@ package body SPARK_Util is
          return String'(1 => C);
 
       --  Other characters are printed as their enumeration name in the
-      --  Character enumeration in GNAT. Character'Image is not usable to
-      --  get the names as it fails for character greater than 160.
+      --  Character enumeration in GNAT. Character'Image is not usable to get
+      --  the names as it returns the character itself instead of a name for C
+      --  greater than 160.
 
       when NUL                         => return "NUL";
       when SOH                         => return "SOH";
