@@ -348,7 +348,7 @@ package body SPARK_Util is
       --  Graphic characters are printed directly
 
       when Types.Graphic_Character =>
-         return (1 => S);
+         return String'(1 => S);
 
       --  Other characters are printed as their enumeration name in the
       --  Character enumeration in GNAT.

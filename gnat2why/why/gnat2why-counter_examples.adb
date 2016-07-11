@@ -303,10 +303,10 @@ package body Gnat2Why.Counter_Examples is
                                (Element_Type, Value, No_Location)));
                         end if;
 
-                     --  An exception is raised by Get_Enum_Lit_From_Pos if the
-                     --  position Value is outside the bounds of a character.
-                     --  In such a case, return the raw integer from the
-                     --  prover.
+                     --  An exception is raised by Get_Enum_Lit_From_Pos
+                     --  if the position Value is outside the bounds of the
+                     --  enumeration. In such a case, return the raw integer
+                     --  returned by the prover.
 
                      exception
                         when Constraint_Error =>
