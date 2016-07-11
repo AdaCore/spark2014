@@ -3604,7 +3604,9 @@ package body Flow.Analysis is
                      if State /= Encapsulating then
                         exit;
                      else
-                        if not Find_In_Refinement (State, Child_State) then
+                        if Refinement_Exists (State)
+                          and then not Find_In_Refinement (State, Child_State)
+                        then
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "Refinement of % shall mention %",

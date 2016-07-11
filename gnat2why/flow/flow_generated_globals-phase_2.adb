@@ -2186,43 +2186,12 @@ package body Flow_Generated_Globals.Phase_2 is
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
    is
       Abstract_State : constant Entity_Name := To_Entity_Name (AS);
+      Constituent    : constant Entity_Name := To_Entity_Name (C);
 
       Constituents : constant Name_Graphs.Cursor :=
         State_Comp_Map.Find (Abstract_State);
-
    begin
-      --  ??? In the following we brutally check if a constituent is in a
-      --  refinement. This is done with strings because we collect this
-      --  information in a set of Entity_Name elements.
-      if Name_Graphs.Has_Element (Constituents) then
-         for Constituent of State_Comp_Map (Constituents) loop
-            declare
-               use type Ada.Strings.Direction;
-
-               Constituent_To_Find : constant Unbounded_String :=
-                 To_Unbounded_String
-                   (To_String
-                      (To_Entity_Name (C)));
-
-               Constituent_String : constant String :=
-                 Slice (Source => Constituent_To_Find,
-                        Low    => Index (Source  => Constituent_To_Find,
-                                         Pattern => "__",
-                                         Going   => Ada.Strings.Backward),
-                        High   => Length (Constituent_To_Find));
-
-               Current_Constituent : constant Unbounded_String :=
-                 To_Unbounded_String (To_String (Constituent));
-
-            begin
-               if Index (Current_Constituent, Constituent_String) /= 0
-               then
-                  return True;
-               end if;
-            end;
-         end loop;
-      end if;
-      return False;
+      return (State_Comp_Map (Constituents).Contains (Constituent));
    end Find_In_Refinement;
 
    ----------------------------
@@ -2440,6 +2409,20 @@ package body Flow_Generated_Globals.Phase_2 is
      (Protected_Operation_Call_Graph.Contains (Current_Task)
          and then Protected_Operation_Call_Graph.Edge_Exists
                     (To_Entity_Name (E), Current_Task));
+
+   -----------------------
+   -- Refinement_Exists --
+   -----------------------
+
+   function Refinement_Exists (AS : Entity_Id) return Boolean
+   is
+      Abstract_State : constant Entity_Name := To_Entity_Name (AS);
+
+      Constituents : constant Name_Graphs.Cursor :=
+        State_Comp_Map.Find (Abstract_State);
+   begin
+      return (Name_Graphs.Has_Element (Constituents));
+   end Refinement_Exists;
 
    --------------------------
    -- Register_Task_Object --
