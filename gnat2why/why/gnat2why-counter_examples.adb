@@ -46,10 +46,11 @@ package body Gnat2Why.Counter_Examples is
    Dont_Display : constant Unbounded_String :=
      To_Unbounded_String ("@not_display");
 
-   function Remap_VC_Info (Cntexmp : Cntexample_File_Maps.Map;
-                           VC_File : String;
-                           VC_Line : Logical_Line_Number)
-                              return Cntexample_File_Maps.Map;
+   function Remap_VC_Info
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_File : String;
+      VC_Line : Logical_Line_Number)
+      return Cntexample_File_Maps.Map;
    --  Remap information related to the construct that triggers VC to the
    --  location of this construct.
    --  In Cntexmp, this information is mapped to the field "vc_line" of the
@@ -64,7 +65,7 @@ package body Gnat2Why.Counter_Examples is
      (Element_Decl : Entity_Id;
       Element_File : String;
       Element_Line : Logical_Line_Number)
-                           return Boolean;
+      return Boolean;
    --  Return True if the counterexample element
    --  with given declaration at given position
    --  is uninitialized.
@@ -118,7 +119,7 @@ package body Gnat2Why.Counter_Examples is
    end record;
 
    procedure Build_Pretty_Line
-     (Variables : Variables_Info;
+     (Variables               : Variables_Info;
       Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List);
    --  Build pretty printed JSON array of counterexample elements.
    --  @Variables stores information about values and fields of
@@ -149,7 +150,7 @@ package body Gnat2Why.Counter_Examples is
    -----------------------
 
    procedure Build_Pretty_Line
-     (Variables : Variables_Info;
+     (Variables               : Variables_Info;
       Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List)
    is
       use CNT_Elements;
@@ -167,9 +168,9 @@ package body Gnat2Why.Counter_Examples is
 
       function Get_CNT_Element_Value_And_Attributes
         (CNT_Element : CNT_Element_Ptr;
-         Prefix : Unbounded_String;
-         Attributes : in out Names_And_Values.List)
-               return Unbounded_String;
+         Prefix      : Unbounded_String;
+         Attributes  : in out Names_And_Values.List)
+         return Unbounded_String;
       --  Gets the string value of given variable, record field or
       --  Attribute.
       --  If the value is of record type, the returned value is
@@ -187,7 +188,7 @@ package body Gnat2Why.Counter_Examples is
         (CNT_Element : CNT_Element_Ptr;
          Prefix      : Unbounded_String;
          Attributes  : in out Names_And_Values.List)
-               return Unbounded_String
+         return Unbounded_String
       is
          Element_Type : Entity_Id;
       begin
@@ -353,8 +354,7 @@ package body Gnat2Why.Counter_Examples is
             -- Get_Fields_Descr_Declared --
             -------------------------------
 
-            function Get_Fields_Descr_Declared return Natural
-            is
+            function Get_Fields_Descr_Declared return Natural is
                Res : Natural := 0;
                Comp : Entity_Id :=
                  First_Component_Or_Discriminant
@@ -379,8 +379,8 @@ package body Gnat2Why.Counter_Examples is
             Is_Before : Boolean := False;
             Value : Unbounded_String :=
               To_Unbounded_String ("(");
-         begin
 
+         begin
             --  If the record type of the value has no fields
             --  and discriminats or if there were no
             --  counterexample values for fields and
@@ -464,7 +464,7 @@ package body Gnat2Why.Counter_Examples is
       Var_Name_Cursor : Vars_List.Cursor :=
         Vars_List.First (Variables.Variables_Order);
 
-      --  Start of processing for Build_Pretty_Line
+   --  Start of processing for Build_Pretty_Line
 
    begin
       Pretty_Line_Cntexmp_Arr := Cntexample_Elt_Lists.Empty_List;
@@ -486,8 +486,7 @@ package body Gnat2Why.Counter_Examples is
             procedure Add_CNT (Name, Value : Unbounded_String);
             --  Append a variable cnt to Pretty_Line_Cntexmp_Arr
 
-            procedure Add_CNT (Name, Value : Unbounded_String)
-            is
+            procedure Add_CNT (Name, Value : Unbounded_String) is
             begin
                --  If the value of the variable should not be
                --  displayed in the counterexample, do not display
@@ -499,6 +498,7 @@ package body Gnat2Why.Counter_Examples is
                                      Value => Value));
                end if;
             end Add_CNT;
+
          begin
             Add_CNT (Var_Name, Var_Value);
 
@@ -526,7 +526,7 @@ package body Gnat2Why.Counter_Examples is
         (Name    : String;
          Entity  : Entity_Id;
          Map     : CNT_Element_Map_Ptr)
-               return CNT_Element_Ptr;
+         return CNT_Element_Ptr;
       --  Insert a CNT_Element with given name and entity to
       --  the given map.
       --  If it has already been inserted, return the existing.
@@ -541,12 +541,12 @@ package body Gnat2Why.Counter_Examples is
         (Name    : String;
          Entity  : Entity_Id;
          Map     : CNT_Element_Map_Ptr)
-               return CNT_Element_Ptr
+         return CNT_Element_Ptr
       is
          use CNT_Elements;
          Var : CNT_Element_Ptr;
-      begin
 
+      begin
          if Map.Contains (Name)
          then
             Var := Element (Map.all, Name);
@@ -563,10 +563,9 @@ package body Gnat2Why.Counter_Examples is
          end if;
 
          return Var;
-
       end Insert_CNT_Element;
 
-      --  Start of processing for Build_Variables_Info
+   --  Start of processing for Build_Variables_Info
 
    begin
       for Elt of Line_Cntexmp_Arr loop
@@ -769,15 +768,16 @@ package body Gnat2Why.Counter_Examples is
    -- Create_Pretty_Cntexmp --
    ---------------------------
 
-   function Create_Pretty_Cntexmp (Cntexmp : Cntexample_File_Maps.Map;
-                                   VC_Loc  : Source_Ptr)
-                                   return Cntexample_File_Maps.Map
+   function Create_Pretty_Cntexmp
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return Cntexample_File_Maps.Map
    is
       procedure Create_Pretty_Line
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
-         File : String;
-         Line : Logical_Line_Number;
-         Line_Cntexmp : Cntexample_Elt_Lists.List);
+         File                : String;
+         Line                : Logical_Line_Number;
+         Line_Cntexmp        : Cntexample_Elt_Lists.List);
       --  Pretty prints counterexample model elements at a single source
       --  code location (line).
 
@@ -787,18 +787,17 @@ package body Gnat2Why.Counter_Examples is
 
       procedure Create_Pretty_Line
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
-         File : String;
-         Line : Logical_Line_Number;
-         Line_Cntexmp : Cntexample_Elt_Lists.List)
+         File                : String;
+         Line                : Logical_Line_Number;
+         Line_Cntexmp        : Cntexample_Elt_Lists.List)
       is
-
          use CNT_Elements;
 
          Variables : Variables_Info;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List :=
            Cntexample_Elt_Lists.Empty_List;
 
-         --  Start of processing for Create_Pretty_Line
+      --  Start of processing for Create_Pretty_Line
 
       begin
          Build_Variables_Info (File, Line, Line_Cntexmp, Variables);
@@ -825,7 +824,7 @@ package body Gnat2Why.Counter_Examples is
 
       use Cntexample_File_Maps;
 
-      --  Start of processing for Create_Pretty_Cntexmp
+   --  Start of processing for Create_Pretty_Cntexmp
 
    begin
       for File_C in Remapped_Cntexmp.Iterate loop
@@ -858,9 +857,10 @@ package body Gnat2Why.Counter_Examples is
    ---------------------------
 
    function Get_Cntexmp_One_Liner
-     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr) return String
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return String
    is
-
       function Get_Cntexmp_Line_Str
         (Cntexmp_Line : Cntexample_Elt_Lists.List) return String;
 
@@ -892,6 +892,9 @@ package body Gnat2Why.Counter_Examples is
       File_Cur : constant Cntexample_File_Maps.Cursor := Cntexmp.Find (File);
       Cntexmp_Line : Cntexample_Elt_Lists.List :=
         Cntexample_Elt_Lists.Empty_List;
+
+   --  Start of processing for Get_Cntexmp_One_Liner
+
    begin
       if Cntexample_File_Maps.Has_Element (File_Cur) then
          declare
@@ -927,7 +930,8 @@ package body Gnat2Why.Counter_Examples is
      (Element_Decl : Entity_Id;
       Element_File : String;
       Element_Line : Logical_Line_Number)
-                           return Boolean is
+      return Boolean
+   is
    begin
       --  Counterexample element can be
       --  uninitialized only if its location is
@@ -981,9 +985,7 @@ package body Gnat2Why.Counter_Examples is
    -- Print_CNT_Element_Debug --
    -----------------------------
 
-   function Print_CNT_Element_Debug (El : CNT_Element)
-                                     return String
-   is
+   function Print_CNT_Element_Debug (El : CNT_Element) return String is
       R : Unbounded_String := "[ " & El.Value & " | ";
    begin
       for F in El.Fields.Iterate loop
@@ -1007,19 +1009,20 @@ package body Gnat2Why.Counter_Examples is
    -- Remap_VC_Info --
    -------------------
 
-   function Remap_VC_Info (Cntexmp : Cntexample_File_Maps.Map;
-                           VC_File : String;
-                           VC_Line : Logical_Line_Number)
-                              return Cntexample_File_Maps.Map
+   function Remap_VC_Info
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_File : String;
+      VC_Line : Logical_Line_Number)
+      return Cntexample_File_Maps.Map
    is
 
       Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp.Copy;
       C : constant Cntexample_File_Maps.Cursor :=
         Remapped_Cntexmp.Find (VC_File);
-      --  Start of processing for Remap_VC_Info
+
+   --  Start of processing for Remap_VC_Info
 
    begin
-
       --  Remove information related to the construct triggering VC
       --  Create a copy of Orig_File without information related to the
       --  construct triggering VC and extend New_Cntexmp with a mapping

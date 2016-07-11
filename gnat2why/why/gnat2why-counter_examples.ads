@@ -29,9 +29,10 @@ with VC_Kinds;      use VC_Kinds;
 
 package Gnat2Why.Counter_Examples is
 
-   function Create_Pretty_Cntexmp (Cntexmp : Cntexample_File_Maps.Map;
-                                   VC_Loc  : Source_Ptr)
-                                   return Cntexample_File_Maps.Map;
+   function Create_Pretty_Cntexmp
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return Cntexample_File_Maps.Map;
    --  Create pretty printed counterexample.
    --  Note that deep copy of Cntexmp is made and thus the content of
    --  Cntexmp is not impacted by pretty printing.
@@ -40,12 +41,18 @@ package Gnat2Why.Counter_Examples is
    --  @return pretty printed counterexample.
 
    function Get_Cntexmp_One_Liner
-     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr) return String;
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return String;
    --  Get the part of the counterexample corresponding to the location of
    --  the construct that triggers VC.
 
-   function JSON_Get_Opt (Val : JSON_Value; Field : String;
-                          Opt_Result : JSON_Value) return JSON_Value is
+   function JSON_Get_Opt
+     (Val        : JSON_Value;
+      Field      : String;
+      Opt_Result : JSON_Value)
+      return JSON_Value
+   is
      (if Has_Field (Val, Field) then Get (Val, Field)
       else Opt_Result);
 
