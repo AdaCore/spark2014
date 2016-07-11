@@ -9,6 +9,9 @@ aalias.adb:34:17: info: non-aliasing of formal parameters "B1" and "B2" proved
 aalias.adb:34:17: info: range check proved
 aalias.adb:34:29: info: initialization of "A" proved
 aalias.adb:34:29: info: range check proved
+aconv.adb:22:04: error in inlined body at line 14
+aconv.adb:22:04: error in inlined body at line 15
+aconv.adb:22:04: this conversion between array types is not yet supported
 aconv.adb:22:04: this conversion between array types is not yet supported
 aslice.adb:8:30: info: length check proved
 aslice.adb:9:29: info: length check proved

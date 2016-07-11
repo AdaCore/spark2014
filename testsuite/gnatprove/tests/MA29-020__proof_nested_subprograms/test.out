@@ -1,6 +1,7 @@
 skein.adb:34:14: info: range check proved, in call inlined at skein.adb:139
 skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139
 skein.adb:35:34: info: initialization of "Hash" proved, in call inlined at skein.adb:139
+skein.adb:36:70: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:139
 skein.adb:36:77: info: division check proved, in call inlined at skein.adb:139
 skein.adb:36:77: info: index check proved, in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved, in call inlined at skein.adb:139
@@ -56,7 +57,6 @@ skein.adb:133:29: info: initialization of "Blocks_Done" proved
 skein.adb:134:14: info: initialization of "N" proved
 skein.adb:139:10: info: initialization of "N" proved
 skein.adb:140:44: info: initialization of "Blocks_Done" proved
-skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
 skein.adb:144:25: info: initialization of "X" proved
 skein.adb:146:25: info: initialization of "Blocks_Done" proved
 skein.adb:146:37: medium: range check might fail
