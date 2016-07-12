@@ -1,7 +1,6 @@
 list.adb:15:35: info: precondition proved
 list.adb:16:35: info: precondition proved
 list.adb:18:07: info: initialization of private part of "Res" proved
-list.adb:18:14: info: initialization of private part of "Res" proved
 list.adb:19:07: info: precondition proved
 list.adb:19:14: info: initialization of private part of "Res" proved
 list.adb:22:10: info: precondition proved
@@ -9,10 +8,10 @@ list.adb:22:16: info: initialization of "S" proved
 list.adb:22:19: info: precondition proved
 list.adb:22:31: info: range check proved
 list.adb:23:10: info: loop invariant initialization proved
-list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
+list.adb:28:20: medium: loop invariant might fail after first iteration, cannot prove Model.To (S)(J - First + 1) = Element (L, J)
 list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: index check proved
 list.adb:28:43: info: overflow check proved
