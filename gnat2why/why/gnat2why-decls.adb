@@ -518,7 +518,7 @@ package body Gnat2Why.Decls is
                      Ref_Type => Get_Typ (Var.Main.B_Name)));
             end;
 
-         when Func | Prot_Self =>
+         when Func | Concurrent_Self =>
             raise Program_Error;
          end case;
       end if;

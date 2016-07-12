@@ -867,7 +867,7 @@ package body Gnat2Why.Expr is
                      Def      => +Why_Expr,
                      Context  => +Res);
                end;
-            when Regular | Prot_Self =>
+            when Regular | Concurrent_Self =>
                declare
                   L_Id     : constant W_Identifier_Id :=
                     To_Why_Id (Lvalue, Typ => Why_Ty);
@@ -1650,7 +1650,7 @@ package body Gnat2Why.Expr is
                   end if;
                   Arg_Cnt := Arg_Cnt + 1;
 
-               when Prot_Self =>
+               when Concurrent_Self =>
 
                   declare
                      Prot : constant W_Identifier_Id :=
@@ -3905,7 +3905,7 @@ package body Gnat2Why.Expr is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
       begin
          case Binders (Bind_Cnt).Kind is
-            when Prot_Self =>
+            when Concurrent_Self =>
                null;
             when Regular =>
                if Needs_Temporary_Ref
@@ -4918,7 +4918,7 @@ package body Gnat2Why.Expr is
                                                Context  => +Result);
                end;
 
-            when Func | Prot_Self =>
+            when Func | Concurrent_Self =>
                raise Program_Error;
             end case;
          end;
@@ -11128,7 +11128,7 @@ package body Gnat2Why.Expr is
                   else
                      T := +E.For_Logic.B_Name;
                   end if;
-               when Regular | Prot_Self =>
+               when Regular | Concurrent_Self =>
                   T := +E.Main.B_Name;
                when UCArray =>
                   T := +E.Content.B_Name;

@@ -672,6 +672,12 @@ package body Flow_Refinement is
                --  Discriminants are always initialized
                return True;
 
+            when E_Task_Type      =>
+               --  Task types act as records whose flattened view includes
+               --  discriminants and Part_Of variables; both are always
+               --  initialized.
+               return True;
+
             when others           =>
                Print_Tree_Node (Ent);
                raise Program_Error;

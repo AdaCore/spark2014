@@ -983,7 +983,7 @@ package body Gnat2Why.Subprograms is
       procedure Effects_Append_Binder (Binder : Item_Type)  is
       begin
          case Binder.Kind is
-            when Regular | Prot_Self =>
+            when Regular | Concurrent_Self =>
                if Binder.Main.Mutable then
                   Effects_Append (Eff, Binder.Main.B_Name);
                end if;
@@ -1035,10 +1035,10 @@ package body Gnat2Why.Subprograms is
                   Binder : Item_Type;
                begin
                   if Is_Type (Entity) then
-                     pragma Assert (Ekind (Entity) in Protected_Kind);
+                     pragma Assert (Ekind (Entity) in E_Protected_Type);
                      Binder :=
-                       Item_Type'(Kind => Prot_Self,
-                                  Main => Protected_Self_Binder (Entity));
+                       Item_Type'(Kind => Concurrent_Self,
+                                  Main => Concurrent_Self_Binder (Entity));
                   else
                      Binder := Ada_Ent_To_Why.Element (Symbol_Table, Entity);
                   end if;
@@ -1099,10 +1099,11 @@ package body Gnat2Why.Subprograms is
                begin
                   --  Special case of effect on protected components
                   if Is_Type (Entity) then
-                     pragma Assert (Ekind (Entity) in Protected_Kind);
+                     pragma Assert (Ekind (Entity) in E_Protected_Type |
+                                                      E_Task_Type);
                      Binder :=
-                       Item_Type'(Kind => Prot_Self,
-                                  Main => Protected_Self_Binder (Entity));
+                       Item_Type'(Kind => Concurrent_Self,
+                                  Main => Concurrent_Self_Binder (Entity));
                   else
                      Binder :=
                        Ada_Ent_To_Why.Element (Symbol_Table, Entity);
@@ -1321,7 +1322,7 @@ package body Gnat2Why.Subprograms is
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
-            Result (1) := (Prot_Self, Protected_Self_Binder (Prot));
+            Result (1) := (Concurrent_Self, Concurrent_Self_Binder (Prot));
             Count := 2;
          end;
       end if;
@@ -1821,7 +1822,7 @@ package body Gnat2Why.Subprograms is
             declare
                A : constant Node_Id :=
                  (case Binder.Kind is
-                     when Regular | Prot_Self => Binder.Main.Ada_Node,
+                     when Regular | Concurrent_Self => Binder.Main.Ada_Node,
                      when others  => raise Program_Error);
                --  in parameters should not be split
             begin
@@ -3407,7 +3408,7 @@ package body Gnat2Why.Subprograms is
          declare
             A : constant Node_Id :=
               (case Binder.Kind is
-                  when Regular | Prot_Self => Binder.Main.Ada_Node,
+                  when Regular | Concurrent_Self => Binder.Main.Ada_Node,
                   when others  => raise Program_Error);
             --  in parameters should not be split
          begin
@@ -4076,7 +4077,7 @@ package body Gnat2Why.Subprograms is
          declare
             A : constant Node_Id :=
               (case Binder.Kind is
-                  when Regular | Prot_Self => Binder.Main.Ada_Node,
+                  when Regular | Concurrent_Self => Binder.Main.Ada_Node,
                   when others              => raise Program_Error);
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);

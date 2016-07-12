@@ -59,13 +59,30 @@ package body Why.Gen.Binders is
       return W_Expr_Array;
 
    ----------------------------
+   -- Concurrent_Self_Binder --
+   ----------------------------
+
+   function Concurrent_Self_Binder (Ty : Entity_Id) return Binder_Type is
+   begin
+      return
+        Binder_Type'
+          (B_Name   =>
+             New_Identifier
+               (Name => "self__",
+                Typ  => Type_Of_Node (Ty)),
+           B_Ent    => Null_Entity_Name,
+           Ada_Node => Ty,
+           Mutable  => False);
+   end Concurrent_Self_Binder;
+
+   ----------------------------
    -- Get_Ada_Node_From_Item --
    ----------------------------
 
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id is
    begin
       case B.Kind is
-         when Regular | Prot_Self =>
+         when Regular | Concurrent_Self =>
             return B.Main.Ada_Node;
          when DRecord =>
             if B.Fields.Present then
@@ -235,7 +252,7 @@ package body Why.Gen.Binders is
       begin
          for B of Binders loop
             case B.Kind is
-            when Regular | Prot_Self =>
+            when Regular | Concurrent_Self =>
                Length := Length + 1;
             when UCArray =>
                pragma Assert (B.Content.Mutable);
@@ -265,7 +282,7 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular | Prot_Self =>
+            when Regular | Concurrent_Self =>
                Params (I) := B.Main;
                I := I + 1;
             when UCArray =>
@@ -294,7 +311,7 @@ package body Why.Gen.Binders is
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id is
    begin
       case B.Kind is
-         when Regular | Prot_Self =>
+         when Regular | Concurrent_Self =>
             return Get_Typ (B.Main.B_Name);
          when DRecord =>
             return EW_Abstract (B.Typ);
@@ -314,7 +331,7 @@ package body Why.Gen.Binders is
    begin
       for Index in Arr'Range loop
          case Arr (Index).Kind is
-            when Regular | Prot_Self => Count := Count + 1;
+            when Regular | Concurrent_Self => Count := Count + 1;
             when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
             when DRecord =>
                if Arr (Index).Fields.Present then
@@ -343,7 +360,7 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular | Prot_Self =>
+            when Regular | Concurrent_Self =>
                declare
                   Local_Name : constant String :=
                     (if Present (B.Main.Ada_Node)
@@ -1133,23 +1150,6 @@ package body Why.Gen.Binders is
       end loop;
    end Push_Binders_To_Symbol_Table;
 
-   ---------------------------
-   -- Protected_Self_Binder --
-   ---------------------------
-
-   function Protected_Self_Binder (Prot_Ty : Entity_Id) return Binder_Type is
-   begin
-      return
-        Binder_Type'
-          (B_Name   =>
-             New_Identifier
-               (Name => "self__",
-                Typ  => Type_Of_Node (Prot_Ty)),
-           B_Ent    => Null_Entity_Name,
-           Ada_Node => Prot_Ty,
-           Mutable  => False);
-   end Protected_Self_Binder;
-
    ----------------------
    -- Reconstruct_Item --
    ----------------------
@@ -1163,7 +1163,7 @@ package body Why.Gen.Binders is
    begin
       case E.Kind is
          when Func => raise Program_Error;
-         when Regular | Prot_Self =>
+         when Regular | Concurrent_Self =>
             T := +E.Main.B_Name;
             Needs_Deref := E.Main.Mutable;
          when UCArray =>
@@ -1195,7 +1195,7 @@ package body Why.Gen.Binders is
             Cur : Item_Type renames A (Index);
          begin
             case Cur.Kind is
-               when Regular | Prot_Self =>
+               when Regular | Concurrent_Self =>
                   Result (Count) := Cur.Main;
                   Count := Count + 1;
                when UCArray =>

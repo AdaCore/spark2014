@@ -6080,7 +6080,19 @@ package body Flow.Control_Flow_Graph is
                            else raise Program_Error);
 
                      begin
-                        Create_Initial_And_Final_Vertices (G, Mode, False, FA);
+                        --  ??? if the global represents the current task then
+                        --  we already have vertices for that. When it comes to
+                        --  generated globals task types should be handled in
+                        --  similar way to packages, I think. For now this is
+                        --  just a crude hack.
+                        if G.Kind = Direct_Mapping and then
+                          Get_Direct_Mapping_Id (G) = FA.Analyzed_Entity
+                        then
+                           pragma Assert (FA.Kind = Kind_Task);
+                        else
+                           Create_Initial_And_Final_Vertices
+                             (G, Mode, False, FA);
+                        end if;
                      end;
                   end loop;
                end;

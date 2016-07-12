@@ -62,7 +62,7 @@ package Why.Gen.Binders is
    --  see the comment of the Item_Type type below to see the meaning of this
    --  enum
 
-   type Item_Enum is (Regular, UCArray, DRecord, Func, Prot_Self);
+   type Item_Enum is (Regular, UCArray, DRecord, Func, Concurrent_Self);
 
    type Item_Bounds is record
       First : W_Identifier_Id;
@@ -89,7 +89,7 @@ package Why.Gen.Binders is
 
    type Item_Type (Kind : Item_Enum := Regular) is record
       case Kind is
-         when Regular | Prot_Self =>
+         when Regular | Concurrent_Self =>
             Main      : Binder_Type;
          when UCArray =>
             Content   : Binder_Type;
@@ -115,10 +115,10 @@ package Why.Gen.Binders is
    --  functions where we need different translations when used in programs or
    --  in assertions, and records where we can have up to four objects, a set
    --  of fields, a set of discriminant, a 'Constrained attribute, and a 'Tag
-   --  attribute. The 'Prot_Self' case corresponds to the "self" object used in
-   --  protected subprograms and entries, and can be seen as as "0 to 1"
-   --  mapping. See also the general description of protected types in
-   --  gnat2why.
+   --  attribute. The 'Concurrent_Self' case corresponds to the "self" object
+   --  used in task types, protected subprograms and entries, and can be seen
+   --  as as "0 to 1" mapping. See also the general description of protected
+   --  types in gnat2why.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
@@ -239,11 +239,11 @@ package Why.Gen.Binders is
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
 
-   function Protected_Self_Binder (Prot_Ty : Entity_Id) return Binder_Type
-     with Pre => Ekind (Prot_Ty) in Protected_Kind;
-   --  @param Prot_Ty a protected type entity
+   function Concurrent_Self_Binder (Ty : Entity_Id) return Binder_Type
+     with Pre => Ekind (Ty) in E_Protected_Type | E_Task_Type;
+   --  @param Ty a concurrent type entity
    --  @return a binder type which corresponds to the "self" object of that
-   --    protected type
+   --    concurrent type
 
    function Mk_Tmp_Item_Of_Entity
      (E       : Entity_Id;
