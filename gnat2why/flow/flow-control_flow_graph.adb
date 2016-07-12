@@ -6502,6 +6502,7 @@ package body Flow.Control_Flow_Graph is
       --  to be here.
       if FA.Generating_Globals then
          declare
+            --  ??? this block should operate just on Entity_Ids
             Known_Vars : constant Flow_Id_Sets.Set :=
               To_Entire_Variables (FA.All_Vars);
          begin

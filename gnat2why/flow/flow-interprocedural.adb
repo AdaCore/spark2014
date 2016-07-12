@@ -52,6 +52,7 @@ package body Flow.Interprocedural is
       Parameter : Flow_Id)
       return Flow_Graphs.Vertex_Id is
    begin
+      --   ??? why do we scan all out-neigbhour, can't we just find it in O(1)?
       for V of FA.CDG.Get_Collection (Callsite,
                                       Flow_Graphs.Out_Neighbours)
       loop
@@ -64,6 +65,7 @@ package body Flow.Interprocedural is
                --  actual and formal.
                pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                pragma Assert (F.Kind = Direct_Mapping);
+
                if Parameter.Kind = Direct_Mapping and then
                  Parameter.Variant = F.Variant and then
                  Get_Direct_Mapping_Id (Parameter) =
