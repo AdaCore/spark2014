@@ -244,9 +244,11 @@ package body Flow_Refinement is
          Context := Get_Body_Or_Stub (Context);
 
          case Nkind (Context) is
-            when N_Package_Body   |
-                 N_Protected_Body |
-                 N_Task_Body      =>
+            when N_Package_Body        |
+                 N_Protected_Body      |
+                 N_Protected_Body_Stub |
+                 N_Task_Body           |
+                 N_Task_Body_Stub      =>
 
                return (Ent  => Unique_Defining_Entity (Context),
                        Part => Body_Part);
