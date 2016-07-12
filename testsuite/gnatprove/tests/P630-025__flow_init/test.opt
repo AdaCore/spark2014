@@ -1,1 +1,1 @@
-ALL XFAIL flow analysis exception
+ALL XFAIL crash in proof (P712-008)

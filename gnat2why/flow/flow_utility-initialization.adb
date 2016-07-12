@@ -71,7 +71,13 @@ package body Flow_Utility.Initialization is
 
             N := Next (N);
          end loop;
-         raise Why.Unexpected_Node;
+
+         --  So, we can't find the component we're looking for; this means
+         --  we have some kind of discriminated type with a variant part;
+         --  and we statically know some part is not present. We return
+         --  Empty in this case to gracefully handle it (as flow analyis
+         --  always initializes 'all' components on aggregate assignments).
+         return Empty;
       end Get_Component_From_Aggregate;
 
       ------------------------
