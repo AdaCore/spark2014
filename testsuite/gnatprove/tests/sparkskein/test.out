@@ -1,6 +1,7 @@
 skein.adb:223:14: info: range check proved, in call inlined at skein.adb:865
 skein.adb:224:29: info: index check proved, in call inlined at skein.adb:865
 skein.adb:224:34: info: initialization of "Hash" proved, in call inlined at skein.adb:865
+skein.adb:226:37: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:865
 skein.adb:226:44: info: division check proved, in call inlined at skein.adb:865
 skein.adb:226:44: info: index check proved, in call inlined at skein.adb:865
 skein.adb:227:35: info: range check proved, in call inlined at skein.adb:865
@@ -201,7 +202,6 @@ skein.adb:853:54: info: initialization of "Tmp_B" proved
 skein.adb:859:15: info: initialization of "Byte_Count" proved
 skein.adb:860:14: info: initialization of "N" proved
 skein.adb:865:10: info: initialization of "N" proved
-skein.adb:868:29: info: initialization of "Local_Ctx.X" proved
 skein.adb:879:25: info: initialization of "X" proved
 skein.adb:892:07: info: precondition proved
 skein.adb:892:32: info: initialization of "Ctx.B" proved
