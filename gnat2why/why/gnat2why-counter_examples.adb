@@ -278,9 +278,7 @@ package body Gnat2Why.Counter_Examples is
                      --  correctly capitalized enumeration value.
 
                      else
-                        return To_Unbounded_String
-                          (Source_Name (Sem_Util.Get_Enum_Lit_From_Pos
-                           (Element_Type, Value, No_Location)));
+                        return To_Unbounded_String (Source_Name (Enum));
                      end if;
 
                   --  An exception is raised by Get_Enum_Lit_From_Pos if the

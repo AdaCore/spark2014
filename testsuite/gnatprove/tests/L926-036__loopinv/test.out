@@ -1,8 +1,8 @@
-counters.adb:13:18: medium: overflow check might fail (e.g. when C = (T => 2147483647, others => ?))
-counters.adb:18:21: medium: overflow check might fail (e.g. when C = (C => 2147483647, others => ?))
-counters.adb:21:24: medium: overflow check might fail (e.g. when C = (C => -2147483648, others => ?))
-counters.adb:23:24: medium: overflow check might fail (e.g. when C = (C => 2147483647, others => ?))
-counters.adb:26:21: medium: overflow check might fail (e.g. when C = (C => -2147483648, others => ?))
-counters.adb:29:24: medium: overflow check might fail (e.g. when C = (C => 2147483647, others => ?))
-counters.adb:31:24: medium: overflow check might fail (e.g. when C = (C => -2147483648, others => ?))
+counters.adb:13:18: medium: overflow check might fail
+counters.adb:18:21: medium: overflow check might fail
+counters.adb:21:24: medium: overflow check might fail
+counters.adb:23:24: medium: overflow check might fail
+counters.adb:26:21: medium: overflow check might fail
+counters.adb:29:24: medium: overflow check might fail
+counters.adb:31:24: medium: overflow check might fail
 counters.adb:40:13: info: range check proved

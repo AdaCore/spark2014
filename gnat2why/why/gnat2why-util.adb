@@ -278,8 +278,10 @@ package body Gnat2Why.Util is
         (E, False, Append_To_Name);
 
    begin
-      --  Currently only generate values for scalar, record, and array
-      --  variables in counterexamples.
+      --  Currently generate non-empty set of labels values only for variables
+      --  of scalar, record, and array types.
+      --  For variables of other types, getting counterexample values is not
+      --  supported.
 
       if (not Comes_From_Source (E)
             and then not Comes_From_Source (Parent (E)))
@@ -289,43 +291,52 @@ package body Gnat2Why.Util is
          return Name_Id_Sets.Empty_Set;
       end if;
 
-      --  If E is mutable, it will be translated as a ref in Why3 in
-      --  Translate_Variable. Include the label for model projection so
-      --  that the value of the referenced data is asked in the counterexample.
+      --  Generate counterexample labels for variables of supported types.
+      --  For every supported type, we must be decide whether generate "model"
+      --  or "model_projected" label. If Why3 builtin type is used for E, the
+      --  label "model" can be generated, in other cases the label
+      --  "model_projected" must be generated.
+      --
+      --  Note that the label "model_projected" can be generated in all cases,
+      --  but it introduces extra overhead in the number of logical variables
+      --  in the generated formula.
 
-      if Is_Mutable_In_Why (E) then
-         Labels := Model_Trace;
-         Labels.Include (Model_Projected);
+      case Ekind (Etype (E)) is
+         when Scalar_Kind =>
+            Labels := Model_Trace;
 
-      else
-         case Ekind (Etype (E)) is
-            when Scalar_Kind =>
-               Labels := Model_Trace;
+            --  If the type used in Why3 for the entity is not abstract or
+            --  the entity is not mutable, the type is builtin Why3 type.
 
-               --  If E's type is directly a native prover type, simply request
-               --  the value of E in the counterexample. This is known by
-               --  querying the kind of type used in Why3 for the entity.
-               --  If it's not abstract, then a builtin Why3 type is used.
+            if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract
+              and then not Is_Mutable_In_Why (E)
+            then
+               --  Request directly the value of E in the counterexample.
 
-               if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract then
-                  Labels.Include (Model);
+               Labels.Include (Model);
+            else
+               --  Ask the value of E projected to Why3 builtin type in the
+               --  counterexample.
+               --
+               --  If E is of an abstract type, the value of E is projected to
+               --  the corresponding concrete type using a projection function.
+               --  If E is mutable, it is translated as a ref (a record with
+               --  one mutable field representing the value of E) in Why3 in
+               --  Translate_Variable. The value of E is projected to this
+               --  field (and then further if it is still not of Why3 builting
+               --  type).
 
-               --  If E's type needs a projection to a native prover
-               --  type, request the value of the projection of E in
-               --  the counterexample.
-
-               else
-                  Labels.Include (Model_Projected);
-               end if;
-
-            when Record_Kind | Array_Kind =>
-               Labels := Model_Trace;
                Labels.Include (Model_Projected);
+            end if;
 
-            when others =>
-               null;
-         end case;
-      end if;
+         when Record_Kind | Array_Kind =>
+            Labels := Model_Trace;
+            Labels.Include (Model_Projected);
+
+         when others =>
+            null;
+      end case;
+
       return Labels;
    end Get_Counterexample_Labels;
 
