@@ -5900,14 +5900,12 @@ package body Flow.Control_Flow_Graph is
          when Kind_Task =>
             --  Tasks see themselves as formal "in out" parameters
             --
-            --  This includes:
+            --  This includes, after flattening:
             --    * variables that are Part_Of tasks,
             --    * discriminants of tasks (but these are only considered to be
             --      formal in parameters)
             Create_Initial_And_Final_Vertices
-              ((if Present (Anonymous_Object (FA.Analyzed_Entity))
-                then Anonymous_Object (FA.Analyzed_Entity)
-                else FA.Analyzed_Entity),
+              (FA.Analyzed_Entity,
                Parameter_Kind,
                FA);
 
