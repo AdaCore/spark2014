@@ -508,6 +508,9 @@ package body Flow_Utility is
                                                  E_Record_Subtype_With_Private;
                --  Non-record private types
 
+               procedure Debug (Msg : String);
+               --  Output debug message
+
                function Get_Root_Component (N : Node_Id) return Node_Id;
                --  Returns N's equilavent component of the root type. If this
                --  is not available then N's Original_Record_Component is
@@ -537,6 +540,17 @@ package body Flow_Utility is
                   --  Original_Record_Component.
                   return ORC;
                end Get_Root_Component;
+
+               -----------
+               -- Debug --
+               -----------
+
+               procedure Debug (Msg : String) is
+               begin
+                  if Debug_Trace_Flatten then
+                     Write_Line (Msg);
+                  end if;
+               end Debug;
 
             begin
                if Debug_Trace_Flatten then
@@ -588,9 +602,7 @@ package body Flow_Utility is
 
                case Type_Kind'(Ekind (T)) is
                   when Private_Nonrecord_Kind =>
-                     if Debug_Trace_Flatten then
-                        Write_Line ("processing private type");
-                     end if;
+                     Debug ("processing private type");
 
                      if Has_Discriminants (T) then
                         for Ptr of Components (T) loop
@@ -605,41 +617,54 @@ package body Flow_Utility is
                         Results := Flow_Id_Sets.To_Set (F);
                      end if;
 
-                  when Record_Kind | Protected_Kind | Task_Kind =>
-                     if Debug_Trace_Flatten then
-                        Write_Line
-                          ("processing " &
-                           (case Ekind (T) is
-                                 when Protected_Kind => "protected",
-                                 when Record_Kind    => "record",
-                                 when Task_Kind      => "task",
-                                 when others         => raise Program_Error) &
+                  when Concurrent_Kind =>
+                     Debug ("processing " &
+                            (case Ekind (T) is
+                               when Protected_Kind => "protected",
+                               when Task_Kind      => "task",
+                               when others         => raise Program_Error) &
                               " type");
-                     end if;
 
-                     if Ekind (T) in Concurrent_Kind then
-                        if Nested_Within_Concurrent_Type (T, Scope) then
-                           --  Include constituents that belong to the
-                           --  concurrent object due to a Part_Of.
-                           if Present (Anonymous_Object (T)) then
-                              for C of Iter (Part_Of_Constituents
-                                             (Anonymous_Object (T)))
+                     --  From the inside of a concurrent object include
+                     --  discriminants, components and constituents which are a
+                     --  Part_Of. From the outside all that we see is the
+                     --  object itself.
+
+                     if Nested_Within_Concurrent_Type (T, Scope) then
+                        declare
+                           C : Entity_Id;
+                        begin
+                           C := First_Component_Or_Discriminant (T);
+                           while Present (C) loop
+                              Results.Union
+                                (Flatten_Variable (Direct_Mapping_Id (C),
+                                                   Scope));
+
+                              Next_Component_Or_Discriminant (C);
+                           end loop;
+                        end;
+
+                        declare
+                           Anon_Obj : constant Entity_Id :=
+                             Anonymous_Object (T);
+                        begin
+                           if Present (Anon_Obj) then
+                              for C of Iter (Part_Of_Constituents (Anon_Obj))
                               loop
                                  Results.Union
                                    (Flatten_Variable (Direct_Mapping_Id (C),
                                     Scope));
                               end loop;
                            end if;
-                        else
-                           --  From outside a concurrent object, all that we
-                           --  see is the object itself.
-                           if Debug_Trace_Flatten then
-                              Outdent;
-                           end if;
-
-                           return Flow_Id_Sets.To_Set (F);
-                        end if;
+                        end;
                      end if;
+
+                     --  Concurrent type represents the "current instance", as
+                     --  defined in SPARK RM 6.1.4.
+                     Results.Include (F);
+
+                  when Record_Kind =>
+                     Debug ("processing record type");
 
                      --  Include classwide types and privates with
                      --  discriminants.
@@ -672,15 +697,6 @@ package body Flow_Utility is
                         end if;
                      end if;
 
-                     --  For concurrent types we need to make sure that we
-                     --  never return an empty set. Instead return a singleton
-                     --  set with the type itself.
-                     if Ekind (T) in Concurrent_Kind
-                       and then Results.Is_Empty
-                     then
-                        Results.Include (F);
-                     end if;
-
                      if Classwide then
                         --  Ids.Include (F'Update (Facet => The_Tag)); ???
                         Results.Include (F'Update (Facet => Extension_Part));
@@ -688,9 +704,7 @@ package body Flow_Utility is
 
                   when Array_Kind  |
                        Scalar_Kind =>
-                     if Debug_Trace_Flatten then
-                        Write_Line ("processing scalar or array type");
-                     end if;
+                     Debug ("processing scalar or array type");
 
                      Results := Flow_Id_Sets.To_Set (F);
 
@@ -698,9 +712,7 @@ package body Flow_Utility is
                      --  ??? Pointers come only from globals (hopefully). They
                      --  should be removed when generating globals and here
                      --  we should only get the __HEAP entity name should.
-                     if Debug_Trace_Flatten then
-                        Write_Line ("processing access type");
-                     end if;
+                     Debug ("processing access type");
 
                      Results := Flow_Id_Sets.To_Set (F);
 
