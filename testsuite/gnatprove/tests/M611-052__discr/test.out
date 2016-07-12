@@ -11,7 +11,7 @@ list.adb:19:17: info: precondition proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
 list.adb:20:18: info: initialization of private part of "Res" proved
-list.adb:20:23: medium: precondition might fail 
+list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail
 list.adb:21:15: medium: private part of "S" might not be initialized
