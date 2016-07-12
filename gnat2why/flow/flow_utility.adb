@@ -480,12 +480,13 @@ package body Flow_Utility is
       if F.Kind in Direct_Mapping | Record_Field
         and then F.Facet = Normal_Part
       then
+         if Debug_Trace_Flatten then
+            Write_Str ("Flatten: ");
+            Print_Flow_Id (F);
+         end if;
+
          --  Special-case abstract state, which lack's a type to branch on
          if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-            if Debug_Trace_Flatten then
-               Write_Str ("Flatten: ");
-               Print_Flow_Id (F);
-            end if;
 
             return Flow_Id_Sets.To_Set (F);
 
@@ -554,8 +555,6 @@ package body Flow_Utility is
 
             begin
                if Debug_Trace_Flatten then
-                  Write_Str ("Flatten: ");
-                  Print_Flow_Id (F);
                   Indent;
                end if;
 
