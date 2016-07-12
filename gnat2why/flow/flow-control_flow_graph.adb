@@ -5841,7 +5841,6 @@ package body Flow.Control_Flow_Graph is
    procedure Create (FA : in out Flow_Analysis_Graphs) is
       Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
       The_Context     : Context             := No_Context;
-      Subprogram_Spec : Entity_Id;
       Preconditions   : Node_Lists.List;
       Precon_Block    : Graph_Connections;
       Postcon_Block   : Graph_Connections;
@@ -5851,17 +5850,14 @@ package body Flow.Control_Flow_Graph is
    begin
       case FA.Kind is
          when Kind_Subprogram =>
-            Body_N          := Get_Body (FA.Analyzed_Entity);
-            Preconditions   :=
+            Body_N        := Get_Body (FA.Analyzed_Entity);
+            Preconditions :=
               Get_Precondition_Expressions (FA.Analyzed_Entity);
-
-            Subprogram_Spec := FA.Analyzed_Entity;
 
          when Kind_Task =>
             --  Tasks cannot have pre- or postconditions right now. This is
             --  a matter for the ARG perhaps.
-            Body_N          := Task_Body (FA.Analyzed_Entity);
-            Subprogram_Spec := FA.Analyzed_Entity;
+            Body_N := Task_Body (FA.Analyzed_Entity);
 
          when Kind_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
@@ -6011,7 +6007,7 @@ package body Flow.Control_Flow_Graph is
                   Writes    : Flow_Id_Sets.Set;
                   Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
                begin
-                  Get_Globals (Subprogram => Subprogram_Spec,
+                  Get_Globals (Subprogram => FA.Analyzed_Entity,
                                Scope      => FA.B_Scope,
                                Classwide  => False,
                                Proof_Ins  => Proof_Ins,
