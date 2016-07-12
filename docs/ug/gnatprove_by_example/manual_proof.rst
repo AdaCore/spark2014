@@ -1,3 +1,5 @@
+.. _manual_proof:
+
 Manual Proof Examples
 ---------------------
 
@@ -109,11 +111,11 @@ permutation of the original array.
 A common way to define permutations is to use the number of occurrences of
 elements in the array, defined inductively over the size of its array parameter:
 
-.. literalinclude:: gnatprove_by_example/examples/sort_types.ads
+.. literalinclude:: examples/sort_types.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: gnatprove_by_example/examples/perm.ads
+.. literalinclude:: examples/perm.ads
    :language: ada
    :linenos:
 
@@ -134,7 +136,7 @@ subprogram with the proper arguments is required whenever an instance of the
 axiom is needed, like in manual proofs in an interactive theorem prover. Here
 is how a lemma subprogram can be defined for the desired property of Occ:
 
-.. literalinclude:: gnatprove_by_example/examples/perm-lemma_subprograms.ads
+.. literalinclude:: examples/perm-lemma_subprograms.ads
    :language: ada
 
 This "axiom" can then be used to prove an implementation of the selection
@@ -143,16 +145,16 @@ natural. To achieve that, a loop is introduced. The inductive proof necessary
 to demonstrate the universally quantified formula is then achieved thanks to
 the loop invariant, playing the role of an induction hypothesis:
 
-.. literalinclude:: gnatprove_by_example/examples/sort.adb
+.. literalinclude:: examples/sort.adb
    :language: ada
 
-.. literalinclude:: gnatprove_by_example/examples/sort.ads
+.. literalinclude:: examples/sort.ads
    :language: ada
 
 The procedure Selection_Sort can be verified using |GNATprove|, with the
 default prover CVC4, in less than 1s per verification condition.
 
-.. literalinclude:: gnatprove_by_example/results/sort.prove
+.. literalinclude:: results/sort.prove
    :language: none
 
 To complete the verification of our selection sort, the only remaining issue
@@ -164,13 +166,13 @@ itself to assert the induction hypothesis. Note that the proof of the
 lemma is then conditioned to the termination of the lemma functions, which
 currently cannot be verified by |GNATprove|.
 
-.. literalinclude:: gnatprove_by_example/examples/perm-lemma_subprograms.adb
+.. literalinclude:: examples/perm-lemma_subprograms.adb
    :language: ada
 
 |GNATprove| proves automatically all checks on the final program, with a small
 timeout of 1s for the default automatic prover CVC4.
 
-.. literalinclude:: gnatprove_by_example/results/perm-lemma_subprograms.prove
+.. literalinclude:: results/perm-lemma_subprograms.prove
    :language: none
 
 .. _Manual Proof Using Coq:
@@ -182,14 +184,14 @@ This section presents a simple example where |GNATprove| does not
 prove automatically some checks, which can then be proved with an interactive
 prover like Coq. Here is a simple |SPARK| procedure:
 
-.. literalinclude:: gnatprove_by_example/examples/nonlinear.adb
+.. literalinclude:: examples/nonlinear.adb
    :language: ada
    :linenos:
 
 |GNATprove| does not prove automatically the postcondition of the procedure,
 even when increasing the value of the timeout:
 
-.. literalinclude:: gnatprove_by_example/results/nonlinear.prove
+.. literalinclude:: results/nonlinear.prove
    :language: none
 
 This is expected, as the automatic prover Alt-Ergo used by |GNATprove| has only

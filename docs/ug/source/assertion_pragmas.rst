@@ -1,0 +1,384 @@
+.. _Assertion Pragmas:
+
+Assertion Pragmas
+=================
+
+|SPARK| contains features for directing formal verification with
+|GNATprove|. These features may also be used by other tools, in particular the
+|GNAT Pro| compiler. Assertion pragmas are refinements of pragma ``Assert``
+defined in Ada. For all assertion pragmas, an exception ``Assertion_Error`` is
+raised at run time when the property asserted does not hold, if the program was
+compiled with assertions. The real difference between assertion pragmas is how
+they are used by |GNATprove| during proof.
+
+.. _Pragma Assert:
+
+Pragma ``Assert``
+-----------------
+
+[Ada 2005]
+
+Pragma ``Assert`` is the simplest assertion pragma. |GNATprove| checks that the
+property asserted holds, and uses the information that it holds for analyzing
+code that follows. For example, consider two assertions of the same property
+``X > 0`` in procedure ``Assert_Twice``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/assert_twice.adb
+   :language: ada
+   :linenos:
+
+As expected, the first assertion on line 5 is not provable in absence of a
+suitable precondition for ``Assert_Twice``, but |GNATprove| proves that it
+holds the second time the property is asserted on line 6:
+
+.. literalinclude:: ../gnatprove_by_example/results/assert_twice.prove
+   :language: none
+
+|GNATprove| considers that an execution of ``Assert_Twice`` with ``X <= 0``
+stops at the first assertion that fails. Thus ``X > 0`` when execution reaches
+the second assertion.  This is true if assertions are executed at run time, but
+not if assertions are discarded during compilation. In the latter case,
+unproved assertions should be inspected carefully to ensure that the property
+asserted will indeed hold at run time. This is true of all assertion pragmas,
+which |GNATprove| analyzes like pragma ``Assert`` in that respect.
+
+.. _Pragma Assertion_Policy:
+
+Pragma ``Assertion_Policy``
+---------------------------
+
+[Ada 2005/Ada 2012]
+
+Assertions can be enabled either globally or locally. Here, *assertions* denote
+either :ref:`Assertion Pragmas` of all kinds (among which :ref:`Pragma Assert`)
+or functional contracts of all kinds (among which :ref:`Preconditions` and
+:ref:`Postconditions`).
+
+By default, assertions are ignored in compilation, and can be enabled globally
+by using the compilation switch ``-gnata``. They can be enabled locally by
+using pragma ``Assertion_Policy`` in the program, or globally if the pragma is
+put in a configuration file. They can be enabled for all kinds of assertions or
+specific ones only by using the version of pragma ``Assertion_Policy`` that
+takes named associations which was introduced in Ada 2012.
+
+When used with the standard policies ``Check`` (for enabling assertions) or
+``Ignore`` (for ignoring assertions) , pragma ``Assertion_Policy`` has no
+effect on |GNATprove|. |GNATprove| takes all assertions into account, whatever
+the assertion policy in effect at the point of the assertion. For example,
+consider a code with some assertions enabled and some ignored:
+
+.. literalinclude:: ../gnatprove_by_example/examples/assert_enabled.adb
+   :language: ada
+   :linenos:
+
+Although the postcondition and the second assertion are not executed at run
+time, |GNATprove| analyzes them and issues corresponding messages:
+
+.. literalinclude:: ../gnatprove_by_example/results/assert_enabled.prove
+   :language: none
+
+On the contrary, when used with the GNAT-specific policy ``Disable``, pragma
+``Assertion_Policy`` causes the corresponding assertions to be skipped both
+during execution and analysis with |GNATprove|. For example, consider the same
+code as above where policy ``Ignore`` is replaced with policy ``Disable``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/assert_disabled.adb
+   :language: ada
+   :linenos:
+
+On this program, |GNATprove| does not analyze the postcondition and the second
+assertion, and it does not issue corresponding messages:
+
+.. literalinclude:: ../gnatprove_by_example/results/assert_disabled.prove
+   :language: none
+
+The policy of ``Disable`` should thus be reserved for assertions that are not
+compilable, typically because a given build environment does not define the
+necessary entities.
+
+.. _Loop Invariants:
+
+Loop Invariants
+---------------
+
+[|SPARK|]
+
+Pragma ``Loop_Invariant`` is a special kind of assertion used in
+loops. |GNATprove| performs two checks that ensure that the property asserted
+holds at each iteration of the loop:
+
+1. `loop invariant initialization`: |GNATprove| checks that the property
+   asserted holds during the first iteration of the loop.
+2. `loop invariant preservation`: |GNATprove| checks that the property asserted
+   holds during an arbitrary iteration of the loop, assuming that it held in
+   the previous iteration.
+
+Each of these properties can be independently true or false. For example, in
+the following loop, the loop invariant is false during the first iteration and
+true in all remaining iterations:
+
+.. literalinclude:: ../gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 6-10
+
+Thus, |GNATprove| checks that property 2 holds but not property 1:
+
+.. literalinclude:: ../gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 1,3
+
+Conversely, in the following loop, the loop invariant is true during the first
+iteration and false in all remaining iterations:
+
+.. literalinclude:: ../gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 12-16
+
+Thus, |GNATprove| checks that property 1 holds but not property 2:
+
+.. literalinclude:: ../gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 4,6
+
+The following loop shows a case where the loop invariant holds both during the
+first iteration and all remaining iterations:
+
+.. literalinclude:: ../gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 18-22
+
+|GNATprove| checks here that both properties 1 and 2 hold:
+
+.. literalinclude:: ../gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 7,8
+
+But it is not sufficient that a loop invariant is true for |GNATprove| to prove
+it. The loop invariant should also be `inductive`: it should be precise enough
+that |GNATprove| can check loop invariant preservation by assuming `only` that
+the loop invariant held during the last iteration. For example, the following
+loop is the same as the previous one, except the loop invariant is true but not
+inductive:
+
+.. literalinclude:: ../gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 24-28
+
+|GNATprove| cannot check property 2 on that loop:
+
+.. literalinclude:: ../gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 11,13
+
+The reasoning of |GNATprove| for checking property 2 in that case can be
+summarized as follows:
+
+* Let's take iteration K of the loop, where K > 1 (not the first iteration).
+* Let's assume that the loop invariant held during iteration K-1, so we know
+  that if K-1 > 1 then Prop holds.
+* The previous assumption can be rewritten: if K > 2 then Prop.
+* But all we know is that K > 1, so we cannot deduce Prop.
+
+When a loop modifies a collection, which can be either an array or a container
+(see :ref:`Formal Containers Library`), it is in general necessary to state in
+the loop invariant those parts of the collection that have not been modified up
+to the current iteration. This property called `frame condition` in the
+scientific literature is essential for |GNATprove|, which otherwise must assume
+that all elements in the collection may have been modified. Special care should
+be taken to write adequate frame conditions, as they usually look obvious to
+programmers, and so it is very common to forget to write them and not being
+able to realize what's the problem afterwards. For example, consider the
+following loop invariant expressing that, after ``J`` iterations, the part of
+the boolean array ``Arr`` already seen has been set to ``True``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/array_loops.adb
+   :language: ada
+   :lines: 7-11
+
+|GNATprove| does not prove property 2 in that case:
+
+.. literalinclude:: ../gnatprove_by_example/results/array_loops.prove
+   :language: none
+   :lines: 3,5
+
+The counterexample displayed by |GNATprove| mentions an array ``Arr`` where all
+components would be ``False`` at the end of a loop iteration, which is not
+possible. To make it possible for |GNATprove| to prove that, let's add a loop
+invariant stating that the part of the boolean array ``Arr`` not already seen
+is still set to ``False`` (the frame condition), so that changing ``Arr(J)`` in
+``not Arr(J)`` can only change ``False`` into ``True``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/array_loops.adb
+   :language: ada
+   :lines: 13-18
+
+|GNATprove| is able to prove property 2 with this more precise loop invariant:
+
+.. literalinclude:: ../gnatprove_by_example/results/array_loops.prove
+   :language: none
+   :lines: 9-10,13-14
+
+See :ref:`How to Write Loop Invariants` for further guidelines.
+
+Pragma ``Loop_Invariant`` may appear anywhere at the top level of a loop: it is
+usually added at the start of the loop, but it may be more convenient in some
+cases to add it at the end of the loop, or in the middle of the loop, in cases
+where this simplifies the asserted property. In all cases, |GNATprove| checks
+loop invariant preservation by reasoning on the virtual loop that starts and
+ends at the loop invariant.
+
+It is possible to use multiple loop invariants, which should be grouped
+together without intervening statements or declarations. The resulting complete
+loop invariant is the conjunction of individual ones. The benefits of writing
+multiple loop invariants instead of a conjunction can be improved readability
+and better provability (because |GNATprove| checks each pragma
+``Loop_Invariant`` separately).
+
+Finally, :ref:`Attribute Loop_Entry` and :ref:`Attribute Update` can be very
+useful to express complex loop invariants.
+
+.. note::
+
+   Users that are already familiar with the notion of loop invariant in other
+   proof systems should be aware that loop invariants in |SPARK| are slightly
+   different from the usual ones. In |SPARK|, a loop invariant must hold when
+   execution reaches the corresponding pragma inside the loop. Hence, it needs
+   not hold when the loop is never entered, or when exiting the loop.
+
+.. _Loop Variants:
+
+Loop Variants
+-------------
+
+[|SPARK|]
+
+Pragma ``Loop_Variant`` is a special kind of assertion used in
+loops. |GNATprove| checks that the given scalar value decreases (or increases)
+at each iteration of the loop. Because a scalar value is always bounded by its
+type in Ada, it cannot decrease (or increase) at each iteration an infinite
+number of times, thus one of two outcomes is possible:
+
+1. the loop exits, or
+2. a run-time error occurs.
+
+Therefore, it is possible to prove the termination of loops in |SPARK| programs
+by proving both a loop variant for each plain-loop or while-loop (for-loops
+always terminate in Ada) and the absence of run-time errors.
+
+For example, the while-loops in procedure ``Terminating_Loops`` compute the
+value of ``X - X mod 3`` (or equivalently ``X / 3 * 3``) in variable ``Y``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/terminating_loops.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| is able to prove both loop variants, as well as absence of run-time
+errors in the subprogram, hence that loops terminate:
+
+.. literalinclude:: ../gnatprove_by_example/results/terminating_loops.prove
+   :language: none
+
+Pragma ``Loop_Variant`` may appear anywhere a loop invariant appears. It is
+also possible to use multiple loop variants, which should be grouped together
+with loop invariants. A loop variant may be more complex than a single
+decreasing (or increasing) value, and be given instead by a list of either
+decreasing or increasing values (possibly a mix of both). In that case, the
+order of the list defines the lexicographic order of progress. See |SPARK| RM
+5.5.3 for details.
+
+.. _Pragma Assume:
+
+Pragma ``Assume``
+-----------------
+
+[|SPARK|]
+
+Pragma ``Assume`` is a variant of :ref:`Pragma Assert` that does not require
+|GNATprove| to check that the property holds. This is used to convey trustable
+information to |GNATprove|, in particular properties about external objects
+that |GNATprove| has no control upon. |GNATprove| uses the information that the
+assumed property holds for analyzing code that follows. For example, consider
+an assumption of the property ``X > 0`` in procedure ``Assume_Then_Assert``,
+followed by an assertion of the same property:
+
+.. literalinclude:: ../gnatprove_by_example/examples/assume_then_assert.adb
+   :language: ada
+   :linenos:
+
+As expected, |GNATprove| does not check the property on line 5, but used it to
+prove that the assertion holds on line 6:
+
+.. literalinclude:: ../gnatprove_by_example/results/assume_then_assert.prove
+   :language: none
+
+|GNATprove| considers that an execution of ``Assume_Then_Assert`` with ``X <=
+0`` stops at the assumption on line 5, and it does not issue a message in that
+case because the user explicitly indicated that this case is not possible. Thus
+``X > 0`` when execution reaches the assertion on line 6. This is true if
+assertions (of which assumptions are a special kind) are executed at run time,
+but not if assertions are discarded during compilation. In the latter case,
+assumptions should be inspected carefully to ensure that the property assumed
+will indeed hold at run time. This inspection may be facilitated by passing a
+justification string as the second argument to pragma ``Assume``.
+
+.. _Pragma Assert_And_Cut:
+
+Pragma ``Assert_And_Cut``
+-------------------------
+
+[|SPARK|]
+
+Pragma ``Assert_And_Cut`` is a variant of :ref:`Pragma Assert` that allows
+hiding some information to |GNATprove|. |GNATprove| checks that the property
+asserted holds, and uses *only* the information that it holds for analyzing
+code that follows. For example, consider two assertions of the same property
+``X = 1`` in procedure ``Forgetful_Assert``, separated by a pragma
+``Assert_And_Cut``:
+
+.. literalinclude:: ../gnatprove_by_example/examples/forgetful_assert.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that the assertion on line 7 holds, but it cannot prove that
+the same assertion on line 12 holds:
+
+.. literalinclude:: ../gnatprove_by_example/results/forgetful_assert.prove
+   :language: none
+
+|GNATprove| *forgets* the exact value of ``X`` after line 9. All it knows is
+the information given in pragma ``Assert_And_Cut``, here that ``X > 0``. And
+indeed |GNATprove| proves that such an assertion holds on line 11. But it
+cannot prove the assertion on line 12, and the counterexample displayed
+mentions a possible value of 2 for ``X``, showing indeed that |GNATprove|
+forgot its value of 1.
+
+Pragma ``Assert_And_Cut`` may be useful in two cases:
+
+1. When the automatic provers are overwhelmed with information from the
+   context, pragma ``Assert_And_Cut`` may be used to simplify this context,
+   thus leading to more automatic proofs.
+
+2. When |GNATprove| is proving checks for each path through the subprogram (see
+   switch ``--proof`` in :ref:`Running GNATprove from the Command Line`), and
+   the number of paths is very large, pragma ``Assert_And_Cut`` may be used to
+   reduce the number of paths, thus leading to faster automatic proofs.
+
+   For example, consider procedure ``P`` below, where all that is needed to
+   prove that the code using ``X`` is free from run-time errors is that ``X``
+   is positive. Let's assume that we are running |GNATprove| with switch
+   ``--proof=per_path`` so that a formula is generated for each execution path.
+   Without the pragma, |GNATprove| considers all execution paths through ``P``,
+   which may be many. With the pragma, |GNATprove| only considers the paths
+   from the start of the procedure to the pragma, and the paths from the pragma
+   to the end of the procedure, hence many fewer paths.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure P is
+      X : Integer;
+   begin
+      --  complex computation that sets X
+      pragma Assert_And_Cut (X > 0);
+      --  complex computation that uses X
+   end P;

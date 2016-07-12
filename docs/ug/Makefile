@@ -1,8 +1,13 @@
 # Makefile for Sphinx documentation
 #
 
+# Main mode for generating SPARK User's Guide:
+#  - full for the complete documentation
+#  - core for a core subset of the documentation, suitable for translation in other languages
+MODE ?= full
+
 # You can set these variables from the command line.
-SPHINXOPTS    = -W
+SPHINXOPTS    = -W -t $(MODE)
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = _build

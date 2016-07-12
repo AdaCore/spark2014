@@ -1,3 +1,5 @@
+.. _loop_examples:
+
 Loop Examples
 -------------
 
@@ -18,7 +20,7 @@ table of the following form:
 
 The examples in this section use the types defined in package ``Loop_Types``:
 
-.. literalinclude:: gnatprove_by_example/examples/loop_types.ads
+.. literalinclude:: examples/loop_types.ads
    :language: ada
    :linenos:
 
@@ -28,7 +30,7 @@ The Need for a Loop Invariant
 Consider a simple procedure that increments its integer parameter ``X`` a
 number ``N`` of times:
 
-.. literalinclude:: gnatprove_by_example/examples/increment_loop.adb
+.. literalinclude:: examples/increment_loop.adb
    :language: ada
    :linenos:
 
@@ -39,7 +41,7 @@ given for a single increment in :ref:`Increment`. |GNATprove| does not manage
 to prove either the absence of overflow or the postcondition of
 ``Increment_Loop``:
 
-.. literalinclude:: gnatprove_by_example/results/increment_loop.prove
+.. literalinclude:: results/increment_loop.prove
    :language: none
 
 As described in :ref:`How to Write Loop Invariants`, this is because variable
@@ -47,14 +49,14 @@ As described in :ref:`How to Write Loop Invariants`, this is because variable
 it is stated in a loop invariant. If we add such a loop invariant that
 describes precisely the value of ``X`` in each iteration of the loop:
 
-.. literalinclude:: gnatprove_by_example/examples/increment_loop_inv.adb
+.. literalinclude:: examples/increment_loop_inv.adb
    :language: ada
    :linenos:
 
 then |GNATprove| proves both the absence of overflow and the postcondition of
 ``Increment_Loop_Inv``:
 
-.. literalinclude:: gnatprove_by_example/results/increment_loop_inv.prove
+.. literalinclude:: results/increment_loop_inv.prove
    :language: none
 
 Fortunately, many loops fall into some broad categories for which the loop
@@ -84,7 +86,7 @@ In the simplest case, every element is assigned the same value. For example, in
 procedure ``Init_Arr_Zero`` below, value zero is assigned to every element of
 array ``A``:
 
-.. literalinclude:: gnatprove_by_example/examples/init_arr_zero.adb
+.. literalinclude:: examples/init_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -93,7 +95,7 @@ The loop invariant expresses that all elements up to the current loop index
 prove the postcondition of ``Init_Arr_Zero``, namely that all elements of the
 array have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/init_arr_zero.prove
+.. literalinclude:: results/init_arr_zero.prove
    :language: none
 
 .. note::
@@ -107,7 +109,7 @@ array have value zero:
 
 Consider now a variant of the same initialization loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/init_vec_zero.adb
+.. literalinclude:: examples/init_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -121,12 +123,12 @@ from arrays whose length cannot change. With this loop invariant, |GNATprove|
 is able to prove the postcondition of ``Init_Vec_Zero``, namely that all
 elements of the vector have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/init_vec_zero.prove
+.. literalinclude:: results/init_vec_zero.prove
    :language: none
 
 Similarly, consider a variant of the same initialization loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/init_list_zero.adb
+.. literalinclude:: examples/init_list_zero.adb
    :language: ada
    :linenos:
 
@@ -139,7 +141,7 @@ here even if the length of the list changes. With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Init_List_Zero``, namely
 that all elements of the list have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/init_list_zero.prove
+.. literalinclude:: results/init_list_zero.prove
    :language: none
 
 The case of sets and maps is similar to the case of lists.
@@ -158,7 +160,7 @@ Consider now a case where the value assigned to each element is not the
 same. For example, in procedure ``Init_Arr_Index`` below, each element of array
 ``A`` is assigned the value of its index:
 
-.. literalinclude:: gnatprove_by_example/examples/init_arr_index.adb
+.. literalinclude:: examples/init_arr_index.adb
    :language: ada
    :linenos:
 
@@ -167,7 +169,7 @@ The loop invariant expresses that all elements up to the current loop index
 able to prove the postcondition of ``Init_Arr_Index``, namely that all elements
 of the array have the value of their index:
 
-.. literalinclude:: gnatprove_by_example/results/init_arr_index.prove
+.. literalinclude:: results/init_arr_index.prove
    :language: none
 
 Similarly, variants of ``Init_Vec_Zero`` and ``Init_List_Zero`` that assign a
@@ -195,7 +197,7 @@ In the simplest case, every element is assigned a new value based only on its
 initial value. For example, in procedure ``Map_Arr_Incr`` below, every element
 of array ``A`` is incremented by one:
 
-.. literalinclude:: gnatprove_by_example/examples/map_arr_incr.adb
+.. literalinclude:: examples/map_arr_incr.adb
    :language: ada
    :linenos:
 
@@ -205,12 +207,12 @@ other elements have not been modified (using :ref:`Attribute Loop_Entry`). With
 this combined loop invariant, |GNATprove| is able to prove the postcondition of
 ``Map_Arr_Incr``, namely that all elements of the array have been incremented:
 
-.. literalinclude:: gnatprove_by_example/results/map_arr_incr.prove
+.. literalinclude:: results/map_arr_incr.prove
    :language: none
 
 Consider now a variant of the same initialization loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/map_list_incr.adb
+.. literalinclude:: examples/map_list_incr.adb
    :language: ada
    :linenos:
 
@@ -230,7 +232,7 @@ element in the list at loop entry. With this loop invariant, |GNATprove| is
 able to prove the postcondition of ``Map_List_Incr``, namely that all elements
 of the list have been incremented:
 
-.. literalinclude:: gnatprove_by_example/results/map_list_incr.prove
+.. literalinclude:: results/map_list_incr.prove
    :language: none
 
 .. _Validation Loops:
@@ -255,7 +257,7 @@ from the loop if an invalid value if encountered:
 Consider a procedure ``Validate_Arr_Zero`` that checks that all elements of an
 array ``A`` have value zero:
 
-.. literalinclude:: gnatprove_by_example/examples/validate_arr_zero.adb
+.. literalinclude:: examples/validate_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -264,12 +266,12 @@ The loop invariant expresses that all elements up to the current loop index
 the postcondition of ``Validate_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if all elements of the array have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/validate_arr_zero.prove
+.. literalinclude:: results/validate_arr_zero.prove
    :language: none
 
 Consider now a variant of the same validation loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/validate_vec_zero.adb
+.. literalinclude:: examples/validate_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -282,12 +284,12 @@ able to prove the postcondition of ``Validate_Vec_Zero``, namely that output
 parameter ``Success`` is True if-and-only-if all elements of the vector have
 value zero:
 
-.. literalinclude:: gnatprove_by_example/results/validate_vec_zero.prove
+.. literalinclude:: results/validate_vec_zero.prove
    :language: none
 
 Similarly, consider a variant of the same validation loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/validate_list_zero.adb
+.. literalinclude:: examples/validate_list_zero.adb
    :language: ada
    :linenos:
 
@@ -298,7 +300,7 @@ invariant, |GNATprove| is able to prove the postcondition of
 ``Validate_List_Zero``, namely that output parameter ``Success`` is True
 if-and-only-if all elements of the list have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/validate_list_zero.prove
+.. literalinclude:: results/validate_list_zero.prove
    :language: none
 
 The case of sets and maps is similar to the case of lists.
@@ -322,7 +324,7 @@ logging all invalid values:
 Consider a variant of ``Validate_Arr_Zero`` that keeps validating elements of
 the array after a non-zero element has been encountered:
 
-.. literalinclude:: gnatprove_by_example/examples/validate_full_arr_zero.adb
+.. literalinclude:: examples/validate_full_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -334,7 +336,7 @@ postcondition of ``Validate_Full_Arr_Zero``, which is the same as the
 postcondition of ``Validate_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if all elements of the array have value zero:
 
-.. literalinclude:: gnatprove_by_example/results/validate_full_arr_zero.prove
+.. literalinclude:: results/validate_full_arr_zero.prove
    :language: none
 
 Similarly, variants of ``Validate_Vec_Zero`` and ``Validate_List_Zero`` that
@@ -363,7 +365,7 @@ collection that meets a given search criterion:
 Consider a procedure ``Search_Arr_Zero`` that searches an element with value
 zero in array ``A``:
 
-.. literalinclude:: gnatprove_by_example/examples/search_arr_zero.adb
+.. literalinclude:: examples/search_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -373,12 +375,12 @@ prove the postcondition of ``Search_Arr_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if there is an element of the array that has
 value zero, and that ``Pos`` is the index of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_arr_zero.prove
+.. literalinclude:: results/search_arr_zero.prove
    :language: none
 
 Consider now a variant of the same search loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/search_vec_zero.adb
+.. literalinclude:: examples/search_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -388,12 +390,12 @@ is able to prove the postcondition of ``Search_Vec_Zero``, namely that output
 parameter ``Success`` is True if-and-only-if there is an element of the vector
 that has value zero, and that ``Pos`` is the index of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_vec_zero.prove
+.. literalinclude:: results/search_vec_zero.prove
    :language: none
 
 Similarly, consider a variant of the same search loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/search_list_zero.adb
+.. literalinclude:: examples/search_list_zero.adb
    :language: ada
    :linenos:
 
@@ -403,7 +405,7 @@ the postcondition of ``Search_List_Zero``, namely that output parameter
 ``Success`` is True if-and-only-if there is an element of the list that has
 value zero, and that ``Pos`` is the cursor of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_list_zero.prove
+.. literalinclude:: results/search_list_zero.prove
    :language: none
 
 The case of sets and maps is similar to the case of lists. For more complex
@@ -432,7 +434,7 @@ collection that maximizes a given optimality criterion:
 Consider a procedure ``Search_Arr_Max`` that searches an element maximum value
 in array ``A``:
 
-.. literalinclude:: gnatprove_by_example/examples/search_arr_max.adb
+.. literalinclude:: examples/search_arr_max.adb
    :language: ada
    :linenos:
 
@@ -445,12 +447,12 @@ position ``Pos`` for the optimum is not recorded. With this loop invariant,
 that output parameter ``Max`` is the maximum of the elements in the array, and
 that ``Pos`` is the index of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_arr_max.prove
+.. literalinclude:: results/search_arr_max.prove
    :language: none
 
 Consider now a variant of the same search loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/search_vec_max.adb
+.. literalinclude:: examples/search_vec_max.adb
    :language: ada
    :linenos:
 
@@ -464,12 +466,12 @@ to prove the postcondition of ``Search_Vec_Max``, namely that output parameter
 ``Max`` is the maximum of the elements in the vector, and that ``Pos`` is the
 index of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_vec_max.prove
+.. literalinclude:: results/search_vec_max.prove
    :language: none
 
 Similarly, consider a variant of the same search loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/search_list_max.adb
+.. literalinclude:: examples/search_list_max.adb
    :language: ada
    :linenos:
 
@@ -486,7 +488,7 @@ invariant, |GNATprove| is able to prove the postcondition of
 ``Search_List_Max``, namely that output parameter ``Max`` is the maximum of the
 elements in the list, and that ``Pos`` is the cursor of such an element:
 
-.. literalinclude:: gnatprove_by_example/results/search_list_max.prove
+.. literalinclude:: results/search_list_max.prove
    :language: none
 
 The case of sets and maps is similar to the case of lists. For more complex
@@ -514,7 +516,7 @@ is the one that updates elements based on their value:
 Consider a procedure ``Update_Arr_Zero`` that sets to zero all elements in
 array ``A`` that have a value smaller than a given ``Threshold``:
 
-.. literalinclude:: gnatprove_by_example/examples/update_arr_zero.adb
+.. literalinclude:: examples/update_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -526,12 +528,12 @@ loop invariant, |GNATprove| is able to prove the postcondition of
 ``Threshold`` have been zeroed out, and that other elements have not been
 modified:
 
-.. literalinclude:: gnatprove_by_example/results/update_arr_zero.prove
+.. literalinclude:: results/update_arr_zero.prove
    :language: none
 
 Consider now a variant of the same update loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/update_vec_zero.adb
+.. literalinclude:: examples/update_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -544,12 +546,12 @@ or greater than ``Threshold``, and that the length of ``V`` is not modified
 (like in ``Init_Vec_Zero``). With this loop invariant, |GNATprove| is able to
 prove the postcondition of ``Update_Vec_Zero``:
 
-.. literalinclude:: gnatprove_by_example/results/update_vec_zero.prove
+.. literalinclude:: results/update_vec_zero.prove
    :language: none
 
 Similarly, consider a variant of the same update loop over a list:
 
-.. literalinclude:: gnatprove_by_example/examples/update_list_zero.adb
+.. literalinclude:: examples/update_list_zero.adb
    :language: ada
    :linenos:
 
@@ -572,7 +574,7 @@ With this loop invariant, |GNATprove| is able to prove the postcondition of
 ``Threshold`` have been zeroed out, and that other elements have not been
 modified:
 
-.. literalinclude:: gnatprove_by_example/results/update_list_zero.prove
+.. literalinclude:: results/update_list_zero.prove
                     :language: none
 
 The case of sets and maps is similar to the case of lists.
@@ -592,7 +594,7 @@ elements based on their position:
 Consider a procedure ``Update_Range_Arr_Zero`` that sets to zero all elements
 in array ``A`` between indexes ``First`` and ``Last``:
 
-.. literalinclude:: gnatprove_by_example/examples/update_range_arr_zero.adb
+.. literalinclude:: examples/update_range_arr_zero.adb
    :language: ada
    :linenos:
 
@@ -605,12 +607,12 @@ namely that all elements between ``First`` and ``Last`` have been zeroed out,
 and that other elements have not been modified (using a combination of
 :ref:`Attribute Old` and :ref:`Attribute Update`):
 
-.. literalinclude:: gnatprove_by_example/results/update_range_arr_zero.prove
+.. literalinclude:: results/update_range_arr_zero.prove
    :language: none
 
 Consider now a variant of the same update loop over a vector:
 
-.. literalinclude:: gnatprove_by_example/examples/update_range_vec_zero.adb
+.. literalinclude:: examples/update_range_vec_zero.adb
    :language: ada
    :linenos:
 
@@ -623,7 +625,7 @@ zeroed out, and that the length of ``V`` is not modified (like in
 ``Init_Vec_Zero``). With this loop invariant, |GNATprove| is able to prove the
 postcondition of ``Update_Range_Vec_Zero``:
 
-.. literalinclude:: gnatprove_by_example/results/update_range_vec_zero.prove
+.. literalinclude:: results/update_range_vec_zero.prove
    :language: none
 
 We don't show here a variant of the same update loop over a list, which
