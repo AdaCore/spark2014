@@ -2667,10 +2667,11 @@ proofs. In general, one should increase the level of proof (up to level 4)
 until no more automatic proofs can be obtained.
 
 As described in the section about :ref:`Running GNATprove from the Command
-Line`, switch ``--level`` is equivalent to setting directly various lower level
-switches like ``--timeout`` and ``--prover``. Hence, one can also set more
-powerful (and thus leading to longer proof time) values for the individual
-switches rather than using the predefined combinations set through ``--level``.
+Line`, switch ``--level`` is equivalent to setting directly various lower
+level switches like ``--steps``, ``--prover``, and ``--proof``. Hence, one
+can also set more powerful (and thus leading to longer proof time) values
+for the individual switches rather than using the predefined combinations
+set through ``--level``.
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
