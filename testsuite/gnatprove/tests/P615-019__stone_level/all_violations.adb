@@ -21,4 +21,10 @@ package body All_Violations is
       return X + 1;
    end Increment_And_Log;
 
+   procedure Call_Increment_And_Log is
+      X : Integer;
+   begin
+      X := Increment_And_Log (10);
+   end Call_Increment_And_Log;
+
 end All_Violations;
