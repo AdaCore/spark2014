@@ -3,7 +3,7 @@ list.adb:12:35: info: precondition proved
 list.adb:14:07: info: initialization of private part of "Res" proved
 list.adb:15:16: info: precondition proved
 list.adb:15:35: info: precondition proved
-list.adb:16:10: medium: precondition might fail
+list.adb:16:10: medium: precondition might fail (e.g. when S = (N => ?, Top => 1, Content => (others => 0)))
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
@@ -11,9 +11,9 @@ list.adb:19:17: info: precondition proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
 list.adb:20:18: info: initialization of private part of "Res" proved
-list.adb:20:23: medium: precondition might fail
+list.adb:20:23: medium: precondition might fail (e.g. when S = (N => ?, Top => 0, Content => (others => 0)))
 list.adb:20:28: medium: private part of "S" might not be initialized
-list.adb:21:10: medium: precondition might fail
+list.adb:21:10: medium: precondition might fail (e.g. when S = (N => ?, Top => 0, Content => (others => 0)))
 list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:54: medium: loop invariant might fail after first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: loop invariant might fail in first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1)
@@ -44,5 +44,5 @@ stack.adb:20:22: info: range check proved
 stack.adb:21:19: info: index check proved
 stack.adb:32:22: info: range check proved
 stack.ads:23:14: info: precondition proved
-stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when X = 0)
+stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (N => ?, Top => 1, Content => (others => 0)) and X = 0)
 stack.ads:27:14: info: postcondition proved

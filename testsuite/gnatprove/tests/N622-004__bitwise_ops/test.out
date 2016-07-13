@@ -4,7 +4,7 @@ aco-math-very_longs.adb:39:31: info: range check proved
 aco-math-very_longs.adb:39:34: info: range check proved
 aco-math-very_longs.adb:39:52: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
-aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
+aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => ?, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
 aco-math-very_longs.adb:49:26: info: length check proved
 aco-math-very_longs.adb:49:29: info: length check proved
 aco-math-very_longs.adb:52:52: info: index check proved
@@ -20,7 +20,7 @@ aco-math-very_longs.adb:62:37: info: range check proved
 aco-math-very_longs.adb:62:40: info: range check proved
 aco-math-very_longs.adb:62:58: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
-aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
+aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => ?, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1)
 aco-math-very_longs.adb:72:26: info: length check proved
 aco-math-very_longs.adb:72:29: info: length check proved
 aco-math-very_longs.adb:75:55: info: index check proved
@@ -134,7 +134,7 @@ aco-math-very_longs.adb:262:63: info: initialization of "Temp" proved
 aco-math-very_longs.adb:266:14: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:270:13: info: range check proved
 aco-math-very_longs.adb:271:42: info: range check proved
-aco-math-very_longs.adb:271:42: medium: overflow check might fail
+aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => ?, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 2147483647 and R = (Octet_Length => ?, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 aco-math-very_longs.adb:279:26: info: length check proved
 aco-math-very_longs.adb:279:29: info: length check proved
 aco-math-very_longs.adb:285:56: info: index check proved
@@ -167,14 +167,14 @@ aco-math-very_longs.adb:316:58: info: range check proved
 aco-math-very_longs.adb:317:42: info: range check proved
 aco-math-very_longs.adb:323:24: info: range check proved
 aco-math-very_longs.adb:326:19: info: postcondition proved
-aco-math-very_longs.adb:326:45: medium: array index check might fail (e.g. when Get_MSD'Result = 2)
+aco-math-very_longs.adb:326:45: medium: array index check might fail (e.g. when Get_MSD'Result = 2 and Number = (Octet_Length => ?, Long_Digits => (2 => 1, 1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1)
 aco-math-very_longs.adb:327:47: medium: overflow check might fail (e.g. when Get_MSD'Result = 2147483647)
 aco-math-very_longs.adb:327:100: info: index check proved
 aco-math-very_longs.adb:332:35: info: index check proved
 aco-math-very_longs.adb:336:13: info: loop invariant initialization proved
 aco-math-very_longs.adb:336:13: info: loop invariant preservation proved
 aco-math-very_longs.adb:336:54: info: initialization of "Digit_Index" proved
-aco-math-very_longs.adb:336:54: medium: array index check might fail (e.g. when Digit_Index = 2)
+aco-math-very_longs.adb:336:54: medium: array index check might fail (e.g. when Digit_Index = 2 and Number = (Octet_Length => ?, Long_Digits => (2 => 1, 1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1)
 aco-math-very_longs.adb:336:92: medium: overflow check might fail (e.g. when I = 2147483647)
 aco-math-very_longs.adb:336:145: info: index check proved
 aco-math-very_longs.adb:337:13: info: loop invariant initialization proved
@@ -186,7 +186,7 @@ aco-math-very_longs.adb:339:17: info: initialization of "Digit_Index" proved
 aco-math-very_longs.adb:355:17: info: initialization of "Distance" proved
 aco-math-very_longs.adb:359:33: info: range check proved
 aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" proved
-aco-math-very_longs.adb:362:60: medium: overflow check might fail
+aco-math-very_longs.adb:362:60: medium: overflow check might fail (e.g. when Number = (Octet_Length => ?, Long_Digits => (others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2147483647)
 aco-math-very_longs.adb:368:29: info: length check proved
 aco-math-very_longs.adb:368:32: info: length check proved
 aco-math-very_longs.adb:371:77: info: index check proved
@@ -386,7 +386,7 @@ aco-math-very_longs.ads:72:16: info: postcondition proved
 aco-math-very_longs.ads:72:57: info: overflow check proved
 aco-math-very_longs.ads:75:70: info: initialization of "Quotient.Long_Digits" proved
 aco-math-very_longs.ads:75:96: info: initialization of "Remainder.Long_Digits" proved
-aco-math-very_longs.ads:81:45: medium: overflow check might fail
+aco-math-very_longs.ads:81:45: medium: overflow check might fail (e.g. when Divisor = (Octet_Length => ?, Long_Digits => (others => 0)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1073741824)
 aco-math-very_longs.ads:90:16: info: postcondition proved
 aco-math-very_longs.ads:96:16: info: postcondition proved
 aco-math-very_longs.ads:114:67: info: index check proved

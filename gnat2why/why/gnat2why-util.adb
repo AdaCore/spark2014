@@ -301,41 +301,50 @@ package body Gnat2Why.Util is
       --  but it introduces extra overhead in the number of logical variables
       --  in the generated formula.
 
-      case Ekind (Etype (E)) is
-         when Scalar_Kind =>
-            Labels := Model_Trace;
+      declare
+         --  Taking the full_view of the type to be able to match private
+         --  type in the same way as other types because the current intended
+         --  behavior is to print private types as if they were public.
 
-            --  If the type used in Why3 for the entity is not abstract or
-            --  the entity is not mutable, the type is builtin Why3 type.
+         E_Type : constant Entity_Id :=
+                    Get_Full_Type_Without_Checking (Etype (E));
+      begin
+         case Ekind (E_Type) is
+            when Scalar_Kind =>
+               Labels := Model_Trace;
 
-            if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract
-              and then not Is_Mutable_In_Why (E)
-            then
-               --  Request directly the value of E in the counterexample.
+               --  If the type used in Why3 for the entity is not abstract or
+               --  the entity is not mutable, the type is builtin Why3 type.
 
-               Labels.Include (Model);
-            else
-               --  Ask the value of E projected to Why3 builtin type in the
-               --  counterexample.
-               --
-               --  If E is of an abstract type, the value of E is projected to
-               --  the corresponding concrete type using a projection function.
-               --  If E is mutable, it is translated as a ref (a record with
-               --  one mutable field representing the value of E) in Why3 in
-               --  Translate_Variable. The value of E is projected to this
-               --  field (and then further if it is still not of Why3 builting
-               --  type).
+               if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract
+                 and then not Is_Mutable_In_Why (E)
+               then
+                  --  Request directly the value of E in the counterexample.
 
+                  Labels.Include (Model);
+               else
+                  --  Ask the value of E projected to Why3 builtin type in the
+                  --  counterexample.
+                  --
+                  --  If E is of an abstract type, the value of E is projected
+                  --  to the corresponding concrete type using a projection
+                  --  function. If E is mutable, it is translated as a ref
+                  --  (a record with one mutable field representing the value
+                  --  of E) in Why3 in Translate_Variable. The value of E is
+                  --  projected to this field (and then further if it is still
+                  --  not of Why3 Builting type).
+
+                  Labels.Include (Model_Projected);
+               end if;
+
+            when Record_Kind | Array_Kind =>
+               Labels := Model_Trace;
                Labels.Include (Model_Projected);
-            end if;
-
-         when Record_Kind | Array_Kind =>
-            Labels := Model_Trace;
-            Labels.Include (Model_Projected);
 
          when others =>
             null;
-      end case;
+         end case;
+      end;
 
       return Labels;
    end Get_Counterexample_Labels;
