@@ -712,6 +712,21 @@ package body Flow_Types is
       and then Nkind (F.Node) in N_Entity
       and then Ekind (F.Node) in E_Function | E_Operator);
 
+   ----------------------
+   -- Is_Loop_Variable --
+   ----------------------
+
+   function Is_Loop_Variable (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            return Nkind (F.Node) in N_Entity and then
+              Ekind (F.Node) = E_Loop_Parameter;
+         when others =>
+            return False;
+      end case;
+   end Is_Loop_Variable;
+
    ---------------------
    -- Magic_String_Id --
    ---------------------

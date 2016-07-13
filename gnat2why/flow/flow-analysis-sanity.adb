@@ -419,8 +419,8 @@ package body Flow.Analysis.Sanity is
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or else Synthetic (F))
-                 and then FA.Kind in Kind_Package | Kind_Package_Body
+               if FA.Kind in Kind_Package | Kind_Package_Body and then
+                 not (FA.All_Vars.Contains (F) or else Synthetic (F))
                then
 
                   --  We have a write to a variable a package knows
@@ -436,7 +436,8 @@ package body Flow.Analysis.Sanity is
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => Error_Kind,
                            F1       => Entire_Variable (Var),
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Vertex   => V);
 
                      when Magic_String =>
                         Global_Required (FA, Var);
@@ -475,7 +476,7 @@ package body Flow.Analysis.Sanity is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "cannot write & during" &
-                                        " elaboration of &",
+                                       " elaboration of &",
                            SRM_Ref  => "7.7.1(6)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => Error_Kind,

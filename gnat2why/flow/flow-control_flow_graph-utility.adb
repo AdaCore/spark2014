@@ -726,15 +726,27 @@ package body Flow.Control_Flow_Graph.Utility is
       return V_Attributes
    is
       A : V_Attributes;
+
+      Split_State : constant Flow_Id_Sets.Set :=
+        Flatten_Variable (The_State, Scope);
+
+      Split_Inputs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
+      --  We will get a relation from an initializes like X => Y. But X and
+      --  Y may be records, and so we need to split up both the state and
+      --  the list of inputs.
+      for Input of Inputs loop
+         Split_Inputs.Union (Flatten_Variable (Input, Scope));
+      end loop;
+
       A := Make_Basic_Attributes
         (FA         => FA,
-         Var_Def    => Flow_Id_Sets.To_Set (The_State),
-         Var_Ex_Use => Inputs,
+         Var_Def    => Split_State,
+         Var_Ex_Use => Split_Inputs,
          Var_Im_Use =>
            (if Is_Initialized_At_Elaboration (The_State, Scope)
               and then Is_Initialized_In_Specification (The_State, Scope)
-            then Flow_Id_Sets.To_Set (The_State)
+            then Split_State
             else Flow_Id_Sets.Empty_Set),
          Loops      => Loops,
          E_Loc      => E_Loc);

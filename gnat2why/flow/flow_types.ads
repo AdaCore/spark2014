@@ -421,6 +421,10 @@ package Flow_Types is
    --  Checks if F is a function entity (and thus used to capture the
    --  function's return value).
 
+   function Is_Loop_Variable (F : Flow_Id) return Boolean;
+   --  Checks if F comes from a quantifier or loop. Returns False otherwise
+   --  or if we don't know for sure.
+
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;

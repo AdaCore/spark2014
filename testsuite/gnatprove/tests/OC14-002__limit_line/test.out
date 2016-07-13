@@ -1,1 +1,1 @@
-gnatprove: error during flow analysis and proof
+list_allocator.adb:230:09: info: assertion proved

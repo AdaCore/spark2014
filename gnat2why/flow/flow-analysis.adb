@@ -4500,10 +4500,20 @@ package body Flow.Analysis is
          return;
       end if;
 
-      --  We only apply this check to a package without Elaborate_Body.
-      if Has_Pragma_Elaborate_Body (FA.Spec_Entity) then
-         return;
-      end if;
+      --  We only apply this check to a package without Elaborate_Body. We
+      --  do need to go up the tree as only the top-level package has this
+      --  pragma applied.
+      declare
+         Ptr : Entity_Id := FA.Spec_Entity;
+      begin
+         while Present (Ptr) and then not Has_Pragma_Elaborate_Body (Ptr) loop
+            Ptr := Scope (Ptr);
+            pragma Assert (if Present (Ptr) then Nkind (Ptr) in N_Entity);
+         end loop;
+         if Present (Ptr) and then Has_Pragma_Elaborate_Body (Ptr) then
+            return;
+         end if;
+      end;
 
       --  We only check packages that are in spec files. This tests if the
       --  package in question is nested in a body or not.
@@ -4528,19 +4538,23 @@ package body Flow.Analysis is
       --  We only check variables that we claim to initialize (either
       --  because we said so or because flow thinks so), since otherwise
       --  their use will be flagged as a potentially uninitialized read.
+
       Visible_Vars := Flow_Id_Sets.Empty_Set;
       declare
          C : Flow_Id_Sets.Cursor := FA.Spec_Vars.First;
          --  Cursor for iteration over container that is a component of a
          --  discriminated record. Such components cannot be iterated with
          --  FOR loop.
-
       begin
          while Flow_Id_Sets.Has_Element (C) loop
             declare
                Var : Flow_Id renames FA.Spec_Vars (C);
             begin
-               if Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
+               if Is_Loop_Variable (Var) then
+                  --  We do not check loop variables that are part of our
+                  --  local context.
+                  null;
+               elsif Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
                  not Is_Constant (Var)
                then
                   Visible_Vars.Insert (Var);
