@@ -153,7 +153,7 @@ package Configuration is
    Mode              : GP_Mode;
    Warning_Mode      : Opt.Warning_Mode_Type;
    Caching           : Boolean;
-   --  enable caching thrrough memcached
+   --  enable caching through memcached
    Benchmark_Mode    : Boolean;
    --  replace prover binaries by fake binaries to allow extracting VCs
    Report            : Report_Mode_Type;
