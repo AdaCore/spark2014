@@ -1,3 +1,2 @@
 from test_support import *
-
-prove_all(steps=1, prover=["cvc4"])
+prove_all(prover=["cvc4"], procs=4, counterexample=False)

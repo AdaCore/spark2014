@@ -107,7 +107,7 @@ perm.adb:130:45: info: index check proved
 perm.adb:130:45: info: overflow check proved
 perm.adb:135:35: info: precondition proved
 perm.adb:136:35: info: precondition proved
-perm.adb:138:46: medium: assertion might fail, cannot prove A (J) = B (J)
+perm.adb:138:07: info: assertion proved
 perm.adb:138:49: info: index check proved
 perm.adb:138:57: info: index check proved
 perm.adb:139:07: info: assertion proved
@@ -240,8 +240,8 @@ perm.adb:244:63: info: range check proved
 perm.adb:245:25: info: precondition proved
 perm.adb:245:33: info: precondition proved
 perm.adb:245:44: info: initialization of "Ib" proved
-perm.adb:246:22: info: assertion proved
 perm.adb:247:25: info: precondition proved
+perm.adb:247:25: medium: assertion might fail, cannot prove Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.adb:247:34: info: precondition proved
 perm.adb:247:45: info: range check proved
 perm.adb:247:50: info: precondition proved
@@ -410,7 +410,7 @@ perm.adb:359:10: info: assertion proved
 perm.adb:359:25: info: initialization of "H" proved
 perm.adb:361:12: medium: precondition might fail
 perm.adb:362:14: info: initialization of "H" proved
-perm.ads:11:14: medium: postcondition might fail, cannot prove Invariant (Remove'result) (e.g. when Remove'Result'First = 1 and Remove'Result'Last = 0 and Remove'Result = (others => 0))
+perm.ads:11:14: medium: postcondition might fail, cannot prove Invariant (Remove'result)
 perm.ads:12:34: info: overflow check proved
 perm.ads:13:37: info: index check proved
 perm.ads:13:57: info: index check proved
@@ -421,8 +421,8 @@ perm.ads:15:32: info: overflow check proved
 perm.ads:15:44: info: index check proved
 perm.ads:15:44: info: overflow check proved
 perm.ads:15:66: info: index check proved
+perm.ads:20:14: info: postcondition proved
 perm.ads:21:17: info: precondition proved
-perm.ads:21:17: medium: postcondition might fail, cannot prove Remove (Remove (A, I1), I2 - 1) = Remove (Remove (A, I2), I1)
 perm.ads:21:25: info: precondition proved
 perm.ads:21:44: info: range check proved
 perm.ads:22:19: info: precondition proved

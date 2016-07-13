@@ -1,5 +1,5 @@
 p.adb:9:13: info: loop invariant preservation proved
-p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F = (3 => 2, 0 => 2, others => 1) and Saved = (3 => 1, 2 => 2, 0 => 1, others => 0))
+p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F = (others => 2) and Saved = (1 => 1, 0 => 1, others => -2))
 partition_refinement.adb:11:43: info: precondition proved
 partition_refinement.adb:12:20: info: precondition proved
 partition_refinement.adb:13:13: info: initialization of "P_Elem.Count" proved

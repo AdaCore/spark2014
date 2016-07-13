@@ -50,7 +50,7 @@ failsafe.adb:52:10: info: assertion proved
 failsafe.adb:54:10: info: assertion proved
 failsafe.adb:58:10: info: assertion proved
 failsafe.adb:65:27: medium: assertion might fail, cannot prove Battery_Level_At(Current_Time - Time_Slot(Counter)) >= Battery_Threshold
-failsafe.adb:65:69: medium: range check might fail
+failsafe.adb:65:69: info: range check proved
 failsafe.adb:67:66: info: range check proved
 failsafe.adb:68:78: info: range check proved
 failsafe.adb:73:78: info: range check proved

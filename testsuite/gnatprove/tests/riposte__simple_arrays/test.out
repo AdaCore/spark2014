@@ -19,7 +19,7 @@ simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B (
 simple_arrays.adb:68:27: info: initialization of "B" proved
 simple_arrays.adb:73:13: info: initialization of "B" proved
 simple_arrays.adb:81:13: info: postcondition proved
-simple_arrays.adb:89:22: medium: assertion might fail, cannot prove A'Update (1 => 5,  N => 6) = A'update (e.g. when A = (-2147483649 => 6, -2147483648 => 7, 1 => 6, others => 0) and N = 1)
+simple_arrays.adb:89:22: medium: assertion might fail, cannot prove A'Update (1 => 5,  N => 6) = A'update (e.g. when A = (1 => 6, others => 0) and N = 1)
 simple_arrays.adb:101:22: info: postcondition proved
 simple_arrays.adb:116:22: info: postcondition proved
 simple_arrays.adb:127:22: info: postcondition proved

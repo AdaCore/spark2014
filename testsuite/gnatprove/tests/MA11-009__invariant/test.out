@@ -7,7 +7,7 @@ kmp.adb:14:17: info: initialization of "J" proved
 kmp.adb:14:17: medium: loop invariant might fail after first iteration, cannot prove J in P'range
 kmp.adb:14:34: info: initialization of "I" proved
 kmp.adb:16:17: medium: loop invariant might fail after first iteration, cannot prove P (I - J .. J) = P (0..R12b)
-kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..R12b)
+kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..R12b) (e.g. when P = (others => 0) and P'First = -1 and P'Last = 0)
 kmp.adb:16:17: medium: range check might fail (e.g. when P = (others => 0) and P'First = 0 and P'Last = 1)
 kmp.adb:16:20: info: initialization of "I" proved
 kmp.adb:16:22: medium: overflow check might fail
