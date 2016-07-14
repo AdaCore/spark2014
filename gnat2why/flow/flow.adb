@@ -1224,10 +1224,11 @@ package body Flow is
 
       begin
          case Ekind (E) is
-            when E_Entry | E_Function | E_Procedure | E_Task_Type =>
+            when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
 
                if SPARK_Util.Subprograms.Analysis_Requested
                  (E, With_Inlined => True)
+                 and then Entity_In_SPARK (E)
                then
 
                   --  Check for potentially blocking statements in callable
@@ -1376,6 +1377,10 @@ package body Flow is
                      end if;
                   end if;
                end if;
+
+            when E_Protected_Type =>
+               --   ??? perhaps we should do something, but now we don't
+               null;
 
             when others =>
                raise Program_Error;

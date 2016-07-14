@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Multiway_Trees;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;                     use Ada.Text_IO;
 with Aspects;                         use Aspects;
@@ -179,19 +180,192 @@ package body SPARK_Definition is
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
 
-   Entity_Tree : Node_Trees.Tree;
-   --  Hierarchical container with entities processed by the flow analysis,
-   --  i.e. packages, subprograms, entries and task types. The hierarchy of
-   --  its contents mirrors the hierarchy of the analyzed code; the ordering of
-   --  siblings is that packages go first and subprograms/entries/task types go
-   --  after them.
+   package Scope_Trees is
 
-   Current_Scope       : Node_Trees.Cursor := Entity_Tree.Root;
-   First_Non_Pkg_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
-   --  Cursors to the current package/subprogram/entry/task type (which are the
-   --  entities processed by the flow analyzis) and to the first non-package
-   --  inserted under the current scope (sibling packages goes first and then
-   --  go other entities).
+      package Node_Trees is new Ada.Containers.Multiway_Trees
+        (Element_Type => Entity_Id,
+         "="          => "=");
+
+      subtype Tree_Cursor is Node_Trees.Cursor;
+      --  Type for saving/restoring the above cursors
+
+      subtype Container_Scope is Entity_Kind
+      with Static_Predicate => Container_Scope in Entry_Kind       |
+                                                  E_Function       |
+                                                  E_Package        |
+                                                  E_Procedure      |
+                                                  E_Protected_Type |
+                                                  E_Task_Type;
+
+      procedure Enter_Spec (E : Entity_Id)
+      with Pre => Ekind (E) in Container_Scope;
+      --  Create new scope in the scope tree
+
+      procedure Enter_Body (Spec_E : Entity_Id)
+      with Pre => Ekind (Spec_E) in Container_Scope;
+      --  Forward Current_Scope to the spec of E; called when marking bodies
+
+      function Save return Tree_Cursor;
+      --  Returns a copy of the cursor to first non-pkg child
+
+      procedure Restore (Old : Tree_Cursor);
+      --  Restore current tree cursor for a copy; if Is_Package is false and
+      --  we are in the first non-package child of the current scope then cache
+      --  it.
+
+      procedure Iterate
+        (Process : not null access procedure (E : Entity_Id));
+      --  Post-order iterate over the hierarchical container with entities
+      --  processed by the flow analysis, i.e. packages, functions, procedures,
+      --  entries, task types and protected types.
+
+      function In_Root_Scope return Boolean with Ghost;
+      --  Returs True iff Current scope points to the root of the node tree
+
+   private
+      Entity_Tree : Node_Trees.Tree;
+      --  Hierarchical container with entities processed by the flow analysis,
+      --  i.e. packages, subprograms, entries and task types. The hierarchy of
+      --  its contents mirrors the hierarchy of the analyzed code; the ordering
+      --  of siblings is that packages go first and subprograms/entries/task
+      --  types go after them.
+
+      Current_Scope       : Node_Trees.Cursor := Entity_Tree.Root;
+      First_Non_Pkg_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
+      --  Cursors to the current package/subprogram/entry/task type (which
+      --  are the entities processed by the flow analyzis) and to the first
+      --  non-package inserted under the current scope (sibling packages goes
+      --  first and then go other entities).
+   end Scope_Trees;
+
+   package body Scope_Trees is
+
+      ----------------
+      -- Enter_Body --
+      ----------------
+
+      procedure Enter_Body (Spec_E : Entity_Id) is
+      begin
+         --  First forward the current scope
+         Current_Scope := Node_Trees.First_Child (Current_Scope);
+         loop
+            pragma Loop_Invariant (Node_Trees.Has_Element (Current_Scope));
+            if Entity_Tree (Current_Scope) = Spec_E then
+               exit;
+            end if;
+            Node_Trees.Next_Sibling (Current_Scope);
+         end loop;
+
+         --  Then the first non-pkg scope
+         First_Non_Pkg_Scope := Node_Trees.First_Child (Current_Scope);
+         while Node_Trees.Has_Element (First_Non_Pkg_Scope)
+           and then
+             Ekind (Node_Trees.Element (First_Non_Pkg_Scope)) = E_Package
+         loop
+            Node_Trees.Next_Sibling (First_Non_Pkg_Scope);
+         end loop;
+      end Enter_Body;
+
+      ----------------
+      -- Enter_Spec --
+      ----------------
+
+      procedure Enter_Spec (E : Entity_Id) is
+      begin
+         Entity_Tree.Insert_Child
+           (Parent   => Current_Scope,
+            Before   => (if Ekind (E) = E_Package
+                         then First_Non_Pkg_Scope
+                         else Node_Trees.No_Element),
+            New_Item => E,
+            Position => Current_Scope);
+         First_Non_Pkg_Scope := Node_Trees.No_Element;
+      end Enter_Spec;
+
+      -------------------
+      -- In_Root_Scope --
+      -------------------
+
+      function In_Root_Scope return Boolean is
+         use type Node_Trees.Cursor;
+      begin
+         return Current_Scope = Entity_Tree.Root;
+      end In_Root_Scope;
+
+      -------------
+      -- Iterate --
+      -------------
+
+      procedure Iterate
+        (Process : not null access procedure (E : Entity_Id))
+      is
+
+         procedure Iterate_Subtree (Subtree : Node_Trees.Cursor);
+
+         ---------------------
+         -- Iterate_Subtree --
+         ---------------------
+
+         procedure Iterate_Subtree (Subtree : Node_Trees.Cursor) is
+            Debug_Tree_Traversal : constant Boolean := False;
+            --  Display the entity name as the entity tree is traversed
+
+         begin
+            --  This is a helper function to recursively iterate over all the
+            --  nodes in a subtree, in depth-first fashion. It first visits the
+            --  children and then the root.
+
+            Node_Trees.Iterate_Children (Parent  => Subtree,
+                                         Process => Iterate_Subtree'Access);
+            Process (Scope_Trees.Entity_Tree (Subtree));
+
+            if Debug_Tree_Traversal then
+               Ada.Text_IO.Put
+                 (Ada.Containers.Count_Type'Image
+                    (Node_Trees.Depth (Subtree)));
+               Ada.Text_IO.Put (" ");
+               Ada.Text_IO.Put_Line
+                 (To_String
+                    (To_Entity_Name (Scope_Trees.Entity_Tree (Subtree))));
+            end if;
+         end Iterate_Subtree;
+
+         --  Start of processing for Iterate_Entities
+
+      begin
+         Node_Trees.Iterate_Children (Parent  => Scope_Trees.Entity_Tree.Root,
+                                      Process => Iterate_Subtree'Access);
+      end Iterate;
+
+      -------------
+      -- Restore --
+      -------------
+
+      procedure Restore (Old : Tree_Cursor)
+      is
+         Is_Package : constant Boolean :=
+           (Ekind (Entity_Tree (Current_Scope)) = E_Package);
+
+         use type Node_Trees.Cursor;
+      begin
+         First_Non_Pkg_Scope :=
+           (if not Is_Package
+              and then Old = Node_Trees.No_Element
+            then Current_Scope
+            else Old);
+         Current_Scope := Node_Trees.Parent (Current_Scope);
+      end Restore;
+
+      ----------
+      -- Save --
+      ----------
+
+      function Save return Tree_Cursor is
+      begin
+         return First_Non_Pkg_Scope;
+      end Save;
+
+   end Scope_Trees;
 
    Entities_In_SPARK : Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
@@ -1674,10 +1848,18 @@ package body SPARK_Definition is
                   declare
                      Save_SPARK_Pragma : constant Node_Id :=
                        Current_SPARK_Pragma;
+
+                     Scopes : constant Scope_Trees.Tree_Cursor :=
+                       Scope_Trees.Save;
+
                   begin
+                     Scope_Trees.Enter_Spec (E);
+
                      Current_SPARK_Pragma := SPARK_Pragma (E);
                      Mark_Entity (E);
                      Current_SPARK_Pragma := Save_SPARK_Pragma;
+
+                     Scope_Trees.Restore (Scopes);
                   end;
                else
                   Mark_Entity (E);
@@ -2461,7 +2643,7 @@ package body SPARK_Definition is
       CU        : constant Node_Id := Parent (N);
       Context_N : Node_Id;
 
-      use type Node_Lists.Cursor, Node_Trees.Cursor;
+      use type Node_Lists.Cursor;
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may
@@ -2559,7 +2741,7 @@ package body SPARK_Definition is
       --  Ensure that global variables are restored to their initial values
       pragma Assert (No (Current_Protected_Type));
       pragma Assert (No (Current_Delayed_Aspect_Type));
-      pragma Assert (Current_Scope = Entity_Tree.Root);
+      pragma Assert (Scope_Trees.In_Root_Scope);
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -4004,11 +4186,6 @@ package body SPARK_Definition is
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
-      Save_Scope         : constant Node_Trees.Cursor := Current_Scope;
-      Save_Non_Pkg_Scope : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
-
-      use type Node_Trees.Cursor;
-
    --  Start of processing for Mark_Entity
 
    begin
@@ -4091,19 +4268,6 @@ package body SPARK_Definition is
 
       Entity_Set.Insert (E);
 
-      if Ekind (E) in E_Entry     |
-                      E_Function  |
-                      E_Procedure |
-                      E_Task_Type
-      then
-         Entity_Tree.Insert_Child
-           (Parent   => Current_Scope,
-            Before   => Node_Trees.No_Element,
-            New_Item => E,
-            Position => Current_Scope);
-         First_Non_Pkg_Scope := Node_Trees.No_Element;
-      end if;
-
       --  If the entity is declared in the scope of SPARK_Mode => Off, then
       --  do not consider whether it could be in SPARK or not. An exception to
       --  this rule is abstract state, which has to be added to the Entity_List
@@ -4114,14 +4278,6 @@ package body SPARK_Definition is
         and then Ekind (E) /= E_Abstract_State
       then
          Current_SPARK_Pragma := Save_SPARK_Pragma;
-         First_Non_Pkg_Scope  := (if Save_Non_Pkg_Scope = Node_Trees.No_Element
-                                    and then Ekind (E) in E_Entry     |
-                                                          E_Function  |
-                                                          E_Procedure |
-                                                          E_Task_Type
-                                  then Current_Scope
-                                  else Save_Non_Pkg_Scope);
-         Current_Scope        := Save_Scope;
          return;
       end if;
 
@@ -4211,14 +4367,6 @@ package body SPARK_Definition is
       --  Restore SPARK_Mode pragma
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
-      First_Non_Pkg_Scope  := (if Save_Non_Pkg_Scope = Node_Trees.No_Element
-                                 and then Ekind (E) in E_Entry     |
-                                                       E_Function  |
-                                                       E_Procedure |
-                                                       E_Task_Type
-                               then Current_Scope
-                               else Save_Non_Pkg_Scope);
-      Current_Scope        := Save_Scope;
    end Mark_Entity;
 
    ------------------------------------
@@ -4433,8 +4581,8 @@ package body SPARK_Definition is
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
       Save_SPARK_Pragma  : constant Node_Id := Current_SPARK_Pragma;
-      Save_Scope         : constant Node_Trees.Cursor := Current_Scope;
-      Save_Non_Pkg_Scope : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
+
+      Scopes : constant Scope_Trees.Tree_Cursor := Scope_Trees.Save;
 
    begin
       --  Do not analyze generic bodies
@@ -4446,24 +4594,7 @@ package body SPARK_Definition is
       --  Set the current scope to the corresponding spec; this is where any
       --  nested entities are attached, no matter if they are defined in spec
       --  or body.
-      --
-      --  First rewind the current scope to the spec of this package
-      Current_Scope := Node_Trees.First_Child (Current_Scope);
-      loop
-         pragma Assert (Node_Trees.Has_Element (Current_Scope));
-         if Entity_Tree (Current_Scope) = Spec_E then
-            exit;
-         end if;
-         Node_Trees.Next_Sibling (Current_Scope);
-      end loop;
-
-      --  Then fast-forward the Last_Package
-      First_Non_Pkg_Scope := Node_Trees.First_Child (Current_Scope);
-      while Node_Trees.Has_Element (First_Non_Pkg_Scope)
-        and then Ekind (Node_Trees.Element (First_Non_Pkg_Scope)) = E_Package
-      loop
-         Node_Trees.Next_Sibling (First_Non_Pkg_Scope);
-      end loop;
+      Scope_Trees.Enter_Body (Spec_E);
 
       --  Do not analyze bodies for packages with external axioms. Only check
       --  that their SPARK_Mode is Off.
@@ -4519,8 +4650,7 @@ package body SPARK_Definition is
       end if;
 
       --  Restore hierarchical cursors
-      First_Non_Pkg_Scope := Save_Non_Pkg_Scope;
-      Current_Scope := Save_Scope;
+      Scope_Trees.Restore (Scopes);
 
    end Mark_Package_Body;
 
@@ -4530,16 +4660,10 @@ package body SPARK_Definition is
 
    procedure Mark_Package_Declaration (N : Node_Id) is
       Id           : constant Entity_Id := Defining_Entity (N);
-      Save_Scope   : constant Node_Trees.Cursor := Current_Scope;
-      Save_Non_Pkg : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
+      Scopes       : constant Scope_Trees.Tree_Cursor := Scope_Trees.Save;
 
    begin
-      Entity_Tree.Insert_Child
-        (Parent   => Current_Scope,
-         Before   => First_Non_Pkg_Scope,
-         New_Item => Id,
-         Position => Current_Scope);
-      First_Non_Pkg_Scope := Node_Trees.No_Element;
+      Scope_Trees.Enter_Spec (Id);
 
       if Entity_In_Ext_Axioms (Id) then
 
@@ -4615,8 +4739,7 @@ package body SPARK_Definition is
 
       end if;
 
-      First_Non_Pkg_Scope := Save_Non_Pkg;
-      Current_Scope := Save_Scope;
+      Scope_Trees.Restore (Scopes);
 
    end Mark_Package_Declaration;
 
@@ -5026,12 +5149,18 @@ package body SPARK_Definition is
                declare
                   Save_Protected_Type : constant Entity_Id :=
                     Current_Protected_Type;
+
+                  Scopes : constant Scope_Trees.Tree_Cursor :=
+                    Scope_Trees.Save;
+
                begin
+                  Scope_Trees.Enter_Body (Spec);
                   Current_Protected_Type := Spec;
 
                   Mark_Stmt_Or_Decl_List (Declarations (N));
 
                   Current_Protected_Type := Save_Protected_Type;
+                  Scope_Trees.Restore (Scopes);
                end;
 
                if not Violation_Detected then
@@ -5210,6 +5339,8 @@ package body SPARK_Definition is
       --  Saves the information that SPARK_Mode is On for the body, for use
       --  later in the subprogram.
 
+      Scopes : constant Scope_Trees.Tree_Cursor := Scope_Trees.Save;
+
    --  Start of processing for Mark_Subprogram_Body
 
    begin
@@ -5294,6 +5425,16 @@ package body SPARK_Definition is
                end case;
             end if;
 
+            --  Ignore bodies of predicate functions, because front end may put
+            --  them in different lexical scope than the spec (this is either
+            --  a bug or a neccessity because of freezing) ???.
+            --
+            --  Anyway, this is safe to ignore them because it is syntactically
+            --  impossible for them to act as scopes for declarations.
+            if not In_Pred_Function_Body then
+               Scope_Trees.Enter_Body (E);
+            end if;
+
             --  Mark Actual_Subtypes of parameters if any
 
             declare
@@ -5351,6 +5492,7 @@ package body SPARK_Definition is
                declare
                   C : constant Entity_Id :=
                     Contract (Defining_Entity (Specification (N)));
+                  --  ??? Def_E
                begin
                   if Present (C) then
                      declare
@@ -5401,6 +5543,10 @@ package body SPARK_Definition is
                   Bodies_In_SPARK.Insert (E);
                end if;
             end if;
+
+            if not In_Pred_Function_Body then
+               Scope_Trees.Restore (Scopes);
+            end if;
          end if;
 
          Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
@@ -5444,7 +5590,11 @@ package body SPARK_Definition is
             Save_Delayed_Aspect_Type : constant Entity_Id :=
               Current_Delayed_Aspect_Type;
 
+            Scopes : constant Scope_Trees.Tree_Cursor := Scope_Trees.Save;
+
          begin
+            Scope_Trees.Enter_Spec (E);
+
             if In_Pred_Function_Decl then
                Current_Delayed_Aspect_Type := Etype (First_Formal (E));
 
@@ -5467,6 +5617,8 @@ package body SPARK_Definition is
             end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
+
+            Scope_Trees.Restore (Scopes);
          end;
       end if;
 
@@ -5780,6 +5932,10 @@ package body SPARK_Definition is
    --  Iterators
    ----------------------------------------------------------------------
 
+   procedure Iterate_Entities
+     (Process : not null access procedure (E : Entity_Id))
+      renames Scope_Trees.Iterate;
+
    ------------------
    -- First_Cursor --
    ------------------
@@ -5839,50 +5995,5 @@ package body SPARK_Definition is
 
          when Marked_Entities =>
             Node_Sets.Element (C.Marked_Entities_Cursor));
-
-   -----------------------
-   -- Postorder_Iterate --
-   -----------------------
-
-   procedure Iterate_Entities
-     (Process : not null access procedure (E : Entity_Id))
-   is
-
-      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor);
-
-      ---------------------
-      -- Iterate_Subtree --
-      ---------------------
-
-      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor) is
-         Debug_Tree_Traversal : constant Boolean := False;
-         --  Display the entity name as the entity tree is traversed
-
-      begin
-         --  This is a helper function to recursively iterate over all the
-         --  nodes in a subtree, in depth-first fashion. It first visits the
-         --  children and then the root.
-
-         Node_Trees.Iterate_Children (Parent  => Subtree,
-                                      Process => Iterate_Subtree'Access);
-         Process (Entity_Tree (Subtree));
-
-         if Debug_Tree_Traversal then
-            Ada.Text_IO.Put
-              (Ada.Containers.Count_Type'Image (Node_Trees.Depth (Subtree)));
-            for J in 1 .. Node_Trees.Depth (Subtree) loop
-               Ada.Text_IO.Put (" ");
-            end loop;
-            Ada.Text_IO.Put_Line
-              (To_String (To_Entity_Name (Entity_Tree (Subtree))));
-         end if;
-      end Iterate_Subtree;
-
-   --  Start of processing for Iterate_Entities
-
-   begin
-      Node_Trees.Iterate_Children (Parent  => Entity_Tree.Root,
-                                   Process => Iterate_Subtree'Access);
-   end Iterate_Entities;
 
 end SPARK_Definition;

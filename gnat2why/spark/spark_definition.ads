@@ -39,7 +39,6 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
-with Ada.Containers.Multiway_Trees;
 with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
 with Einfo;                             use Einfo;
@@ -178,10 +177,6 @@ package SPARK_Definition is
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------
-
-   package Node_Trees is new Ada.Containers.Multiway_Trees
-     (Element_Type => Entity_Id,
-      "="          => "=");
 
    procedure Iterate_Entities
      (Process : not null access procedure (E : Entity_Id));
