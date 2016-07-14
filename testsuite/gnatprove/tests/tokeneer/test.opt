@@ -1,1 +1,2 @@
 NT DEAD too slow on windows
+ALL XFAIL -j is not deterministic right now (P712-023)
