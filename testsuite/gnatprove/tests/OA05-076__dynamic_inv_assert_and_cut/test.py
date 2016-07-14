@@ -1,6 +1,13 @@
 from test_support import *
 
-prove_all(level=1, steps=None,
+# The original ticket mentioned an issue in only Mont_Exp_Window, and
+# indeed this code is only a subset of all the code in lsc-bignum from the
+# upstream git repository.
+#
+# A huge amount of time is spent in gnatwhy3; to be investigated.
+
+prove_all(steps=1,
           counterexample=False,
           prover=["cvc4"],
-          procs=4)
+          procs=4,
+          opt=["--limit-subp=lsc-bignum.ads:176"])

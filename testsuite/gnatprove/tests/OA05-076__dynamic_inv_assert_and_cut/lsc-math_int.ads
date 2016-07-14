@@ -1,4 +1,4 @@
-with Interfaces;
+with LSC.Types;
 
 package LSC.Math_Int
 is
@@ -43,10 +43,10 @@ is
    function From_Integer (A : Integer) return Math_Int
      with Ghost, Import, Global => null;
 
-   function From_Word32 (A : Interfaces.Unsigned_32) return Math_Int
+   function From_Word32 (A : Types.Word32) return Math_Int
      with Ghost, Import, Global => null;
 
-   function From_Word64 (A : Interfaces.Unsigned_64) return Math_Int
+   function From_Word64 (A : Types.Word64) return Math_Int
      with Ghost, Import, Global => null;
 
 private

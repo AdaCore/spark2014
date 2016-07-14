@@ -1,3 +1,39 @@
+-------------------------------------------------------------------------------
+-- This file is part of libsparkcrypto.
+--
+-- Copyright (C) 2011, Stefan Berghofer
+-- Copyright (C) 2011, secunet Security Networks AG
+-- All rights reserved.
+--
+-- Redistribution  and  use  in  source  and  binary  forms,  with  or  without
+-- modification, are permitted provided that the following conditions are met:
+--
+--    * Redistributions of source code must retain the above copyright notice,
+--      this list of conditions and the following disclaimer.
+--
+--    * Redistributions in binary form must reproduce the above copyright
+--      notice, this list of conditions and the following disclaimer in the
+--      documentation and/or other materials provided with the distribution.
+--
+--    * Neither the name of the author nor the names of its contributors may be
+--      used to endorse or promote products derived from this software without
+--      specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE  COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-- AND ANY  EXPRESS OR IMPLIED WARRANTIES,  INCLUDING, BUT NOT LIMITED  TO, THE
+-- IMPLIED WARRANTIES OF  MERCHANTABILITY AND FITNESS FOR  A PARTICULAR PURPOSE
+-- ARE  DISCLAIMED. IN  NO EVENT  SHALL  THE COPYRIGHT  HOLDER OR  CONTRIBUTORS
+-- BE  LIABLE FOR  ANY  DIRECT, INDIRECT,  INCIDENTAL,  SPECIAL, EXEMPLARY,  OR
+-- CONSEQUENTIAL  DAMAGES  (INCLUDING,  BUT  NOT  LIMITED  TO,  PROCUREMENT  OF
+-- SUBSTITUTE GOODS  OR SERVICES; LOSS  OF USE,  DATA, OR PROFITS;  OR BUSINESS
+-- INTERRUPTION)  HOWEVER CAUSED  AND ON  ANY THEORY  OF LIABILITY,  WHETHER IN
+-- CONTRACT,  STRICT LIABILITY,  OR  TORT (INCLUDING  NEGLIGENCE OR  OTHERWISE)
+-- ARISING IN ANY WAY  OUT OF THE USE OF THIS SOFTWARE, EVEN  IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+-------------------------------------------------------------------------------
+
+with Interfaces;
+
 package body LSC.Bignum
 is
 
@@ -62,11 +98,11 @@ is
 
    ----------------------------------------------------------------------------
 
-   function Word_Of_Boolean (B : Boolean) return Interfaces.Unsigned_32
+   function Word_Of_Boolean (B : Boolean) return Types.Word32
      with Post =>
        Math_Int.From_Word32 (Word_Of_Boolean'Result) = Num_Of_Boolean (B)
    is
-      Result : Interfaces.Unsigned_32;
+      Result : Types.Word32;
    begin
       if B then
          Result := 1;
@@ -155,13 +191,13 @@ is
    ----------------------------------------------------------------------------
 
    procedure Single_Add_Mult_Mult
-     (A       : in out Interfaces.Unsigned_32;
-      V       : in     Interfaces.Unsigned_32;
-      W       : in     Interfaces.Unsigned_32;
-      X       : in     Interfaces.Unsigned_32;
-      Y       : in     Interfaces.Unsigned_32;
-      Carry1  : in out Interfaces.Unsigned_32;
-      Carry2  : in out Interfaces.Unsigned_32)
+     (A       : in out Types.Word32;
+      V       : in     Types.Word32;
+      W       : in     Types.Word32;
+      X       : in     Types.Word32;
+      Y       : in     Types.Word32;
+      Carry1  : in out Types.Word32;
+      Carry2  : in out Types.Word32)
      with
        Depends =>
          (A =>+ (V, W, X, Y, Carry1),
@@ -176,23 +212,23 @@ is
          Base * (Math_Int.From_Word32 (Carry1) +
            Base * Math_Int.From_Word32 (Carry2))
    is
-      Mult1, Mult2, Temp : Interfaces.Unsigned_64;
+      Mult1, Mult2, Temp : Types.Word64;
    begin
-      Mult1 := Interfaces.Unsigned_64 (V) * Interfaces.Unsigned_64 (W);
-      Mult2 := Interfaces.Unsigned_64 (X) * Interfaces.Unsigned_64 (Y);
+      Mult1 := Types.Word64 (V) * Types.Word64 (W);
+      Mult2 := Types.Word64 (X) * Types.Word64 (Y);
       Temp :=
-        Interfaces.Unsigned_64 (A) +
-        Interfaces.Unsigned_64 (Carry1) +
-        (Mult1 and Interfaces.Unsigned_64 (Interfaces.Unsigned_32'Last)) +
-        (Mult2 and Interfaces.Unsigned_64 (Interfaces.Unsigned_32'Last));
-      A := Interfaces.Unsigned_32 (Temp and Interfaces.Unsigned_64 (Interfaces.Unsigned_32'Last));
+        Types.Word64 (A) +
+        Types.Word64 (Carry1) +
+        (Mult1 and Types.Word64 (Types.Word32'Last)) +
+        (Mult2 and Types.Word64 (Types.Word32'Last));
+      A := Types.Word32 (Temp and Types.Word64 (Types.Word32'Last));
       Temp :=
-        Interfaces.Unsigned_64 (Carry2) +
+        Types.Word64 (Carry2) +
         Interfaces.Shift_Right (Mult1, 32) +
         Interfaces.Shift_Right (Mult2, 32) +
         Interfaces.Shift_Right (Temp, 32);
-      Carry1 := Interfaces.Unsigned_32 (Temp and Interfaces.Unsigned_64 (Interfaces.Unsigned_32'Last));
-      Carry2 := Interfaces.Unsigned_32 (Interfaces.Shift_Right (Temp, 32));
+      Carry1 := Types.Word32 (Temp and Types.Word64 (Types.Word32'Last));
+      Carry2 := Types.Word32 (Interfaces.Shift_Right (Temp, 32));
    end Single_Add_Mult_Mult;
 
    ----------------------------------------------------------------------------
@@ -205,10 +241,10 @@ is
       B_First : in     Natural;
       C       : in     Big_Int;
       C_First : in     Natural;
-      X       : in     Interfaces.Unsigned_32;
-      Y       : in     Interfaces.Unsigned_32;
-      Carry1  : in out Interfaces.Unsigned_32;
-      Carry2  : in out Interfaces.Unsigned_32)
+      X       : in     Types.Word32;
+      Y       : in     Types.Word32;
+      Carry1  : in out Types.Word32;
+      Carry2  : in out Types.Word32)
      with
        Depends =>
          ((A, Carry1, Carry2) =>
@@ -233,7 +269,7 @@ is
          Base ** (A_Last - A_First + 1) * (Math_Int.From_Word32 (Carry1) +
            Base * Math_Int.From_Word32 (Carry2))
    is
-      Temp : Interfaces.Unsigned_32;
+      Temp : Types.Word32;
    begin
       for I in Natural range A_First .. A_Last
       loop
@@ -287,10 +323,10 @@ is
       C_First : in     Natural;
       M       : in     Big_Int;
       M_First : in     Natural;
-      M_Inv   : in     Interfaces.Unsigned_32)
+      M_Inv   : in     Types.Word32)
    is
       Carry : Boolean;
-      Carry1, Carry2, A_MSW, BI, U : Interfaces.Unsigned_32;
+      Carry1, Carry2, A_MSW, BI, U : Types.Word32;
    begin
       Initialize (A, A_First, A_Last);
       A_MSW := 0;
@@ -355,12 +391,12 @@ is
    function Bit_Set
      (A       : Big_Int;
       A_First : Natural;
-      I       : Interfaces.Unsigned_64)
+      I       : Types.Word64)
      return Boolean
      with
        Pre =>
          A_First in A'Range and then
-         I / 32 <= Interfaces.Unsigned_64 (A'Last - A_First),
+         I / 32 <= Types.Word64 (A'Last - A_First),
        Post =>
          Bit_Set'Result =
          ((A (A_First + Natural (I / 32)) and
@@ -396,11 +432,11 @@ is
       Aux4_First : in     Natural;
       R          : in     Big_Int;
       R_First    : in     Natural;
-      M_Inv      : in     Interfaces.Unsigned_32)
+      M_Inv      : in     Types.Word32)
    is
       J, L, S : Natural;
-      I : Interfaces.Unsigned_64;
-      W : Interfaces.Unsigned_32;
+      I : Types.Word64;
+      W : Types.Word32;
    begin
       L := A_Last - A_First;
 
@@ -485,7 +521,7 @@ is
                 Num_Of_Big_Int (M, M_First, L + 1))));
       end loop;
 
-      I := (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32 - 1;
+      I := (Types.Word64 (E_Last - E_First) + 1) * 32 - 1;
 
       loop
          pragma Loop_Invariant
@@ -509,7 +545,7 @@ is
                 Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) *
                 Base ** (L + 1) mod
                 Num_Of_Big_Int (M, M_First, L + 1))) and
-            I < (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32);
+            I < (Types.Word64 (E_Last - E_First) + 1) * 32);
 
          if Bit_Set (E, E_First, I) then
             W := 1;
@@ -546,12 +582,12 @@ is
                   W mod 2 = 1 and 0 <= S and S < J and J <= K + 1 and
                   Math_Int.From_Integer (J) <=
                   Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1) and
-                  I < (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32);
+                  I < (Types.Word64 (E_Last - E_First) + 1) * 32);
 
                -- FIXME workaround for [N410-033]
-               exit when not (J <= K and Interfaces.Unsigned_64 (J) <= I);
+               exit when not (J <= K and Types.Word64 (J) <= I);
 
-               if Bit_Set (E, E_First, I - Interfaces.Unsigned_64 (J)) then
+               if Bit_Set (E, E_First, I - Types.Word64 (J)) then
                   W := Interfaces.Shift_Left (W, J - S) or 1;
                   S := J;
                end if;
@@ -593,7 +629,7 @@ is
                   W mod 2 = 1 and 0 <= S and S <= K + 1 and S'Loop_Entry = S and
                   Math_Int.From_Integer (S) <=
                   Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1) and
-                  I < (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32);
+                  I < (Types.Word64 (E_Last - E_First) + 1) * 32);
 
                Mont_Mult
                  (A, A_First, A_Last,
@@ -632,7 +668,7 @@ is
                   W mod 2 = 1 and 0 <= S and S <= K + 1 and S'Loop_Entry = S and
                   Math_Int.From_Integer (S) <=
                   Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1) and
-                  I < (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32);
+                  I < (Types.Word64 (E_Last - E_First) + 1) * 32);
             end loop;
 
             Mont_Mult
@@ -676,11 +712,11 @@ is
                 Num_Of_Big_Int (M, M_First, L + 1))) and
             Math_Int.From_Integer (S) <=
             Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1) and
-            I < (Interfaces.Unsigned_64 (E_Last - E_First) + 1) * 32);
+            I < (Types.Word64 (E_Last - E_First) + 1) * 32);
 
-         exit when I < Interfaces.Unsigned_64 (S);
+         exit when I < Types.Word64 (S);
 
-         I := I - Interfaces.Unsigned_64 (S);
+         I := I - Types.Word64 (S);
       end loop;
 
       Mont_Mult
