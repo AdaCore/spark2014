@@ -682,8 +682,9 @@ package body Flow_Utility is
                         end if;
                      end loop;
 
-                     pragma Assert (if Ekind (T) in Private_Kind
-                                    then Contains_Non_Visible);
+                     if Ekind (T) in Private_Kind then
+                        Contains_Non_Visible := True;
+                     end if;
 
                      if Contains_Non_Visible then
                         --  We must have some discriminant, so return
