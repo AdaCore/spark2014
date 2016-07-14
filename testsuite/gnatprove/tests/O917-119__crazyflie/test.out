@@ -60,12 +60,9 @@ crtp_pack.ads:138:07: info: initialization of "Packet.Port" proved
 crtp_pack.ads:138:07: info: initialization of "Packet.Raw" proved
 crtp_pack.ads:138:07: info: initialization of "Packet.Reserved" proved
 crtp_pack.ads:138:07: info: initialization of "Packet.Size" proved
-crtp_pack.ads:142:14: warning: subprogram "D27s" has no effect
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
-crtp_pack.ads:145:07: warning: unused variable "Time_To_Wait"
 crtp_pack.ads:160:14: info: initialization of "Is_Connected" proved
-crtp_pack.ads:167:12: high: Bla must be initialized at elaboration
-crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized after elaboration of main program "CRTP_Tx_Task"
+crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized before start of tasks of type "CRTP_Tx_Task"
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_2" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167

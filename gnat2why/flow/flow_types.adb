@@ -304,6 +304,7 @@ package body Flow_Types is
             return Is_Part_Of_Concurrent_Object (E)
               or else Ekind (Scope (E)) = E_Protected_Type
               or else (Is_Discriminant (F)
+                       and then F.Kind = Direct_Mapping
                        and then Ekind (Scope (E)) = E_Task_Type);
          end;
 

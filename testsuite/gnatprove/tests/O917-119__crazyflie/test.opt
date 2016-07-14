@@ -1,1 +1,1 @@
-ALL XFAIL spurious error on generic instantiation
+ALL XAIL now crashes in proof instead of flow
