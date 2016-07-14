@@ -1185,6 +1185,10 @@ procedure Gnatprove is
          Args.Append (Project_File);
       end if;
 
+      for Var of CL_Switches.X loop
+         Args.Append (Var);
+      end loop;
+
       Args.Append ("-level");
       Args.Append ("max");
 
