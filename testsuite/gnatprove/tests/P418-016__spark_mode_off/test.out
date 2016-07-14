@@ -1,1 +1,1 @@
-lexer.adb:18:06: info: discriminant check proved
+lexer.adb:18:06: info: discriminant check proved (CVC4: 1 VC)

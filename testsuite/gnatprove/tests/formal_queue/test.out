@@ -1,27 +1,27 @@
 queue.adb:6:07: info: initialization of private part of "R" proved
-queue.adb:6:19: info: precondition proved
-queue.adb:8:07: info: precondition proved
+queue.adb:6:19: info: precondition proved (CVC4: 1 VC)
+queue.adb:8:07: info: precondition proved (CVC4: 1 VC)
 queue.adb:8:20: info: initialization of private part of "R" proved
 queue.adb:9:14: info: initialization of private part of "R" proved
 queue.adb:13:07: info: initialization of private part of "R" proved
-queue.adb:13:19: info: precondition proved
-queue.adb:15:07: info: precondition proved
+queue.adb:13:19: info: precondition proved (CVC4: 1 VC)
+queue.adb:15:07: info: precondition proved (CVC4: 1 VC)
 queue.adb:15:16: info: initialization of private part of "R" proved
 queue.adb:16:14: info: initialization of private part of "R" proved
-queue.adb:21:14: info: precondition proved
-queue.ads:27:19: info: precondition proved
-queue.ads:28:19: info: postcondition proved
-queue.ads:28:19: info: precondition proved
-queue.ads:31:19: info: precondition proved
-queue.ads:32:19: info: postcondition proved
-queue.ads:32:19: info: precondition proved
-queue.ads:32:46: info: precondition proved
-queue.ads:32:68: info: precondition proved
-queue.ads:35:19: info: precondition proved
-queue.ads:36:19: info: postcondition proved
-queue.ads:36:19: info: precondition proved
-queue.ads:37:19: info: precondition proved
-queue.ads:38:19: info: precondition proved
-queue.ads:38:33: info: precondition proved
-queue.ads:39:21: info: precondition proved
-queue.ads:39:43: info: precondition proved
+queue.adb:21:14: info: precondition proved (CVC4: 1 VC)
+queue.ads:27:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:28:19: info: postcondition proved (CVC4: 1 VC)
+queue.ads:28:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:31:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:32:19: info: postcondition proved (CVC4: 1 VC)
+queue.ads:32:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:32:46: info: precondition proved (CVC4: 1 VC)
+queue.ads:32:68: info: precondition proved (CVC4: 1 VC)
+queue.ads:35:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:36:19: info: postcondition proved (CVC4: 3 VC)
+queue.ads:36:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:37:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:38:19: info: precondition proved (CVC4: 1 VC)
+queue.ads:38:33: info: precondition proved (CVC4: 1 VC)
+queue.ads:39:21: info: precondition proved (CVC4: 1 VC)
+queue.ads:39:43: info: precondition proved (CVC4: 1 VC)

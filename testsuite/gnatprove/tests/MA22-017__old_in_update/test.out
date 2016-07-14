@@ -1,4 +1,4 @@
-upd.adb:4:14: info: postcondition proved
-upd.adb:9:15: info: length check proved
+upd.adb:4:14: info: postcondition proved (CVC4: 1 VC)
+upd.adb:9:15: info: length check proved (CVC4: 1 VC)
 upd.adb:11:12: info: initialization of "A" proved
 upd.adb:12:12: info: initialization of "A" proved

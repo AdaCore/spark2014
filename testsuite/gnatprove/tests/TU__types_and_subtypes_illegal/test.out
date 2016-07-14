@@ -1,6 +1,6 @@
 types_and_subtypes_illegal.ads:16:12: warning: unused variable "One_To_Ten"
-types_and_subtypes_illegal_2.adb:12:14: info: overflow check proved
-types_and_subtypes_illegal_2.adb:12:18: info: overflow check proved
+types_and_subtypes_illegal_2.adb:12:14: info: overflow check proved (CVC4: 1 VC)
+types_and_subtypes_illegal_2.adb:12:18: info: overflow check proved (CVC4: 1 VC)
 types_and_subtypes_illegal_2.ads:4:08: medium: constant without variable input "B" cannot appear in Initializes
 types_and_subtypes_illegal_2.ads:4:34: medium: constant without variable input "A" cannot appear in Initializes
 types_and_subtypes_illegal_2.ads:8:13: medium: constant without variable input "A" cannot appear in Globals

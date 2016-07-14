@@ -1,8 +1,8 @@
-arrays.adb:4:34: info: length check proved
+arrays.adb:4:34: info: length check proved (CVC4: 1 VC)
 arrays.adb:6:14: info: initialization of "Arr" proved
 arrays.adb:7:14: info: initialization of "Arr" proved
 arrays.adb:8:14: info: initialization of "Arr" proved
-arrays.adb:8:26: info: overflow check proved
+arrays.adb:8:26: info: overflow check proved (CVC4: 1 VC)
 arrays.adb:9:14: info: initialization of "Arr" proved
 arrays.adb:32:14: info: initialization of "Arr" proved
 arrays.adb:33:14: info: initialization of "Arr" proved
@@ -15,55 +15,55 @@ arrays.adb:54:14: info: initialization of "Arr" proved
 arrays.adb:55:14: info: initialization of "Arr" proved
 arrays.adb:56:14: info: initialization of "Arr" proved
 arrays.adb:57:14: info: initialization of "Arr" proved
-arrays.adb:62:21: info: length check proved
+arrays.adb:62:21: info: length check proved (CVC4: 1 VC)
 arrays.adb:63:12: info: initialization of "A" proved
-arrays.adb:68:21: info: length check proved
+arrays.adb:68:21: info: length check proved (CVC4: 1 VC)
 arrays.adb:69:12: info: initialization of "A" proved
 arrays.adb:77:15: info: initialization of "Tmp" proved
 arrays.adb:83:14: info: initialization of "Arr" proved
 arrays.adb:84:14: info: initialization of "Arr" proved
 arrays.adb:85:14: info: initialization of "Arr" proved
-arrays.adb:90:10: info: index check proved
-arrays.ads:5:34: info: length check proved
-arrays.ads:14:19: info: postcondition proved
-arrays.ads:15:31: info: length check proved
-arrays.ads:16:51: info: overflow check proved
-arrays.ads:23:19: info: postcondition proved
-arrays.ads:31:19: info: postcondition proved
-arrays.ads:35:19: info: postcondition proved
-arrays.ads:39:19: info: postcondition proved
-arrays.ads:45:19: info: postcondition proved
-arrays.ads:49:19: info: postcondition proved
-arrays.ads:53:19: info: postcondition proved
+arrays.adb:90:10: info: index check proved (CVC4: 2 VC)
+arrays.ads:5:34: info: length check proved (CVC4: 1 VC)
+arrays.ads:14:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:15:31: info: length check proved (CVC4: 1 VC)
+arrays.ads:16:51: info: overflow check proved (CVC4: 1 VC)
+arrays.ads:23:19: info: postcondition proved (CVC4: 2 VC)
+arrays.ads:31:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:35:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:39:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:45:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:49:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:53:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:56:29: info: initialization of "A" proved
 arrays.ads:57:19: info: initialization of "A" proved
-arrays.ads:57:19: info: postcondition proved
-arrays.ads:57:32: info: length check proved
+arrays.ads:57:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:57:32: info: length check proved (CVC4: 1 VC)
 arrays.ads:60:30: info: initialization of "A" proved
 arrays.ads:61:19: info: initialization of "A" proved
-arrays.ads:61:19: info: postcondition proved
-arrays.ads:61:32: info: length check proved
-arrays.ads:65:19: info: postcondition proved
-arrays.ads:69:19: info: postcondition proved
-arrays.ads:75:19: info: postcondition proved
-arrays.ads:75:37: info: range check proved
+arrays.ads:61:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:61:32: info: length check proved (CVC4: 1 VC)
+arrays.ads:65:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:69:19: info: postcondition proved (CVC4: 1 VC)
+arrays.ads:75:19: info: postcondition proved (altergo: 1 VC)
+arrays.ads:75:37: info: range check proved (CVC4: 1 VC)
 records.adb:21:27: medium: range check might fail (e.g. when New_Data = -1)
 records.adb:33:20: medium: overflow check might fail (e.g. when R = (S1 => 2147483647, others => ?))
 records.adb:34:20: medium: range check might fail (e.g. when R = (S3 => 1, others => ?))
-records.adb:39:20: info: overflow check proved
-records.adb:40:20: info: range check proved
-records.ads:13:19: info: postcondition proved
-records.ads:17:19: info: postcondition proved
-records.ads:21:19: info: postcondition proved
-records.ads:21:42: info: range check proved
-records.ads:25:19: info: postcondition proved
-records.ads:29:19: info: postcondition proved
-records.ads:29:51: info: overflow check proved
-records.ads:29:51: info: range check proved
-records.ads:30:51: info: range check proved
-records.ads:36:19: info: postcondition proved
-records.ads:36:51: info: overflow check proved
-records.ads:36:51: info: range check proved
-records.ads:37:51: info: range check proved
-records.ads:41:19: info: postcondition proved
-records.ads:45:19: info: postcondition proved
+records.adb:39:20: info: overflow check proved (CVC4: 1 VC)
+records.adb:40:20: info: range check proved (CVC4: 1 VC)
+records.ads:13:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:17:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:21:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:21:42: info: range check proved (CVC4: 1 VC)
+records.ads:25:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:29:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:29:51: info: overflow check proved (CVC4: 1 VC)
+records.ads:29:51: info: range check proved (CVC4: 1 VC)
+records.ads:30:51: info: range check proved (CVC4: 1 VC)
+records.ads:36:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:36:51: info: overflow check proved (CVC4: 1 VC)
+records.ads:36:51: info: range check proved (CVC4: 1 VC)
+records.ads:37:51: info: range check proved (CVC4: 1 VC)
+records.ads:41:19: info: postcondition proved (CVC4: 1 VC)
+records.ads:45:19: info: postcondition proved (CVC4: 1 VC)

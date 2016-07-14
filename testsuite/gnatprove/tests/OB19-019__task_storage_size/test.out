@@ -1,11 +1,11 @@
 aspect.adb:7:20: info: initialization of "X" proved
-aspect.ads:3:14: info: nontermination of task proved
+aspect.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 aspect.ads:3:22: warning: pragma "Storage_Size" ignored (not yet supported)
 prag.adb:7:20: info: initialization of "X" proved
-prag.ads:3:14: info: nontermination of task proved
+prag.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 prag.ads:4:06: warning: pragma "Storage_Size" ignored (not yet supported)
 rep.adb:7:20: info: initialization of "X" proved
-rep.ads:3:14: info: nontermination of task proved
+rep.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 ss_default.ads:5:38: attribute "STORAGE_SIZE" is not permitted in SPARK
 ss_default.ads:7:22: attribute "STORAGE_SIZE" is not permitted in SPARK
 ss_defined.ads:3:24: warning: pragma "Storage_Size" ignored (not yet supported)

@@ -1,34 +1,34 @@
-records.adb:7:19: info: postcondition proved
+records.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:13:14: info: initialization of "R.A" proved
 records.adb:13:14: info: initialization of "R.B" proved
-records.adb:17:19: info: postcondition proved
+records.adb:17:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:23:14: info: initialization of "R.A" proved
 records.adb:23:14: info: initialization of "R.B" proved
-records.adb:27:19: info: postcondition proved
+records.adb:27:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:33:14: info: initialization of "R.A" proved
 records.adb:33:14: info: initialization of "R.B" proved
-records.adb:37:19: info: postcondition proved
+records.adb:37:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:42:14: info: initialization of "R.A" proved
 records.adb:42:14: info: initialization of "R.B" proved
-records.adb:46:19: info: postcondition proved
-records.adb:57:19: info: postcondition proved
-records.adb:61:29: info: range check proved
-records.adb:62:29: info: range check proved
-records.adb:66:19: info: postcondition proved
-records.adb:76:15: info: precondition proved
+records.adb:46:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:57:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:61:29: info: range check proved (CVC4: 1 VC)
+records.adb:62:29: info: range check proved (CVC4: 1 VC)
+records.adb:66:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:76:15: info: precondition proved (CVC4: 2 VC)
 records.adb:81:14: info: initialization of "R.A" proved
 records.adb:81:14: info: initialization of "R.B" proved
 records.adb:87:25: medium: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B) (e.g. when A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0))
-records.adb:95:15: info: precondition proved
+records.adb:95:15: info: precondition proved (CVC4: 2 VC)
 records.adb:100:14: info: initialization of "R.A" proved
 records.adb:100:14: info: initialization of "R.B" proved
-records.adb:104:19: info: postcondition proved
-records.adb:112:19: info: postcondition proved
+records.adb:104:19: info: postcondition proved (CVC4: 2 VC)
+records.adb:112:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:120:19: medium: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Null_Pair = (A => 0, B => 0))
 records.adb:130:25: info: initialization of "Dst.Exists" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.B" proved
-records.adb:133:22: info: postcondition proved
+records.adb:133:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:133:32: info: initialization of "Dst.Exists" proved
 records.adb:133:32: info: initialization of "Dst.The_Pair.A" proved
 records.adb:133:32: info: initialization of "Dst.The_Pair.B" proved
@@ -40,45 +40,45 @@ records.adb:143:32: info: initialization of "Dst.Exists" proved
 records.adb:143:32: info: initialization of "Dst.The_Pair.A" proved
 records.adb:143:32: info: initialization of "Dst.The_Pair.B" proved
 records.adb:151:32: info: initialization of "Dst.Exists" proved
-records.adb:153:22: info: postcondition proved
+records.adb:153:22: info: postcondition proved (CVC4: 3 VC)
 records.adb:153:36: info: initialization of "Dst.Exists" proved
 records.adb:164:32: info: initialization of "Dst.Exists" proved
 records.adb:166:22: info: initialization of "Dst.Exists" proved
 records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 1, B => 0)))
-records.adb:177:22: info: postcondition proved
+records.adb:177:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:186:23: info: initialization of "Tmp" proved
 records.adb:194:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => ?, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?)))
 records.adb:200:23: info: initialization of "Tmp" proved
 records.adb:208:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => ?, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?)))
-records.adb:214:07: info: assertion proved
+records.adb:214:07: info: assertion proved (CVC4: 2 VC)
 records.adb:215:36: info: initialization of "Tmp" proved
-records.adb:217:07: info: assertion proved
+records.adb:217:07: info: assertion proved (CVC4: 2 VC)
 records.adb:220:16: info: initialization of "Tmp" proved
 records.adb:221:23: info: initialization of "Tmp" proved
-records.adb:226:22: info: postcondition proved
+records.adb:226:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:236:26: info: initialization of "Tmp" proved
-records.adb:242:22: info: postcondition proved
+records.adb:242:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:250:23: info: initialization of "Tmp" proved
 records.adb:255:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:264:23: info: initialization of "Tmp" proved
 records.adb:269:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
 records.adb:279:26: info: initialization of "Tmp" proved
-records.adb:285:22: info: postcondition proved
+records.adb:285:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:299:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => ?, The_Pair => (A => ?, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
-records.adb:308:19: info: postcondition proved
+records.adb:308:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:315:14: info: initialization of "Tmp.Exists" proved
 records.adb:315:14: info: initialization of "Tmp.The_Pair.A" proved
 records.adb:315:14: info: initialization of "Tmp.The_Pair.B" proved
 records.adb:322:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)))
-records.adb:328:27: info: range check proved
+records.adb:328:27: info: range check proved (CVC4: 1 VC)
 records.adb:329:14: info: initialization of "Tmp.Exists" proved
 records.adb:329:14: info: initialization of "Tmp.The_Pair.A" proved
 records.adb:329:14: info: initialization of "Tmp.The_Pair.B" proved
-records.adb:334:22: info: postcondition proved
-records.adb:344:22: info: postcondition proved
-records.adb:351:19: info: postcondition proved
-records.adb:358:19: info: postcondition proved
-records.adb:365:19: info: postcondition proved
+records.adb:334:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:344:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:351:19: info: postcondition proved (CVC4: 2 VC)
+records.adb:358:19: info: postcondition proved (CVC4: 2 VC)
+records.adb:365:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:375:14: info: initialization of "R.Exists" proved
 records.adb:375:14: info: initialization of "R.The_Pair.A" proved
 records.adb:375:14: info: initialization of "R.The_Pair.B" proved
@@ -86,7 +86,7 @@ records.adb:379:19: medium: postcondition might fail, cannot prove Make_Optional
 records.adb:389:14: info: initialization of "R.Exists" proved
 records.adb:389:14: info: initialization of "R.The_Pair.A" proved
 records.adb:389:14: info: initialization of "R.The_Pair.B" proved
-records.adb:393:19: info: postcondition proved
+records.adb:393:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:401:14: info: initialization of "R.Exists" proved
 records.adb:401:14: info: initialization of "R.The_Pair.A" proved
 records.adb:401:14: info: initialization of "R.The_Pair.B" proved
@@ -103,16 +103,16 @@ records.adb:452:20: info: initialization of "R.A" proved
 records.adb:452:24: medium: range check might fail (e.g. when R = (A => 255, B => ?))
 records.adb:459:14: info: initialization of "R.A" proved
 records.adb:459:14: info: initialization of "R.B" proved
-records.adb:465:22: info: postcondition proved
-records.adb:473:07: info: assertion proved
+records.adb:465:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:473:07: info: assertion proved (CVC4: 1 VC)
 records.adb:482:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1)
-records.adb:490:07: info: assertion proved
-records.adb:500:19: info: postcondition proved
+records.adb:490:07: info: assertion proved (CVC4: 1 VC)
+records.adb:500:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:503:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0)))
-records.adb:513:22: info: postcondition proved
-records.adb:522:19: info: postcondition proved
+records.adb:513:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:522:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:533:22: medium: assertion might fail, cannot prove F_Of_Pair (PairPair'(A => 5), (B => 5))
-stack.ads:35:54: info: length check proved
+stack.ads:35:54: info: length check proved (CVC4: 1 VC)
 counterexample expected for check at records.adb:87
   trace at records.adb:84 --> A = (A => 255, B => 0) and B = (A => 0, B => 0)
   trace at records.adb:87 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)

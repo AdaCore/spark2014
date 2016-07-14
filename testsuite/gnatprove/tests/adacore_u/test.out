@@ -1,83 +1,83 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-aliasing.adb:26:16: info: index check proved
+aliasing.adb:26:16: info: index check proved (CVC4: 2 VC)
 aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0)
-aliasing.adb:26:23: info: index check proved
+aliasing.adb:26:23: info: index check proved (CVC4: 2 VC)
 aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0)
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
-search_array.adb:9:20: info: range check proved
+search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
 search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = NUL)
 use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = NUL and W = (others => 0) and W'First = 1 and W'Last = 0)
 gnatprove: error during flow analysis and proof
-p.adb:13:41: info: index check proved
-p.adb:14:16: info: index check proved
-p.adb:16:16: info: index check proved
-p.adb:16:25: info: index check proved
-p.adb:16:28: info: overflow check proved
-p.adb:22:31: info: index check proved
-p.adb:22:31: info: overflow check proved
+p.adb:13:41: info: index check proved (CVC4: 2 VC)
+p.adb:14:16: info: index check proved (CVC4: 2 VC)
+p.adb:16:16: info: index check proved (CVC4: 2 VC)
+p.adb:16:25: info: index check proved (CVC4: 2 VC)
+p.adb:16:28: info: overflow check proved (CVC4: 1 VC)
+p.adb:22:31: info: index check proved (CVC4: 2 VC)
+p.adb:22:31: info: overflow check proved (CVC4: 1 VC)
 p.adb:24:10: info: initialization of "Threshold" proved
-p.adb:24:10: info: precondition proved
-p.adb:54:10: info: loop invariant initialization proved
-p.adb:54:10: info: loop invariant preservation proved
-p.adb:54:65: info: index check proved
-p.adb:56:07: info: raise statement proved unreachable
-p.adb:65:20: info: discriminant check proved
-p.adb:70:14: info: discriminant check proved
+p.adb:24:10: info: precondition proved (CVC4: 2 VC)
+p.adb:54:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:54:10: info: loop invariant preservation proved (CVC4: 1 VC)
+p.adb:54:65: info: index check proved (CVC4: 2 VC)
+p.adb:56:07: info: raise statement proved unreachable (CVC4: 2 VC)
+p.adb:65:20: info: discriminant check proved (CVC4: 1 VC)
+p.adb:70:14: info: discriminant check proved (CVC4: 1 VC)
 p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = 0)
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:88:30: medium: overflow check might fail (e.g. when Beginning = 2147483647)
-p.adb:89:20: info: postcondition proved
+p.adb:89:20: info: postcondition proved (CVC4: 2 VC)
 p.adb:89:41: medium: overflow check might fail (e.g. when A = (0 => 1, others => 0) and A'First = -2147483648 and A'Last = 0)
-p.adb:93:16: info: index check proved
-p.adb:94:23: info: index check proved
-p.adb:99:42: info: range check proved
+p.adb:93:16: info: index check proved (CVC4: 2 VC)
+p.adb:94:23: info: index check proved (CVC4: 2 VC)
+p.adb:99:42: info: range check proved (CVC4: 1 VC)
 p.adb:99:42: medium: overflow check might fail (e.g. when Beginning = -2147483648 and Current_Index = 0)
-p.adb:107:10: info: loop invariant initialization proved
-p.adb:107:10: info: loop invariant preservation proved
+p.adb:107:10: info: loop invariant initialization proved (CVC4: 2 VC)
+p.adb:107:10: info: loop invariant preservation proved (CVC4: 2 VC)
 p.adb:107:33: info: initialization of "Beginning" proved
-p.adb:107:43: info: overflow check proved
+p.adb:107:43: info: overflow check proved (CVC4: 2 VC)
 p.adb:108:10: info: initialization of "Beginning" proved
 p.adb:108:10: info: initialization of "Max" proved
 p.adb:108:10: info: initialization of "Size_Of_Seq" proved
-p.adb:108:10: info: precondition proved
+p.adb:108:10: info: precondition proved (CVC4: 4 VC)
 p.adb:109:13: info: initialization of "End_Of_Seq" proved
-p.adb:110:35: info: range check proved
+p.adb:110:35: info: range check proved (CVC4: 1 VC)
 p.adb:110:41: info: initialization of "Size_Of_Seq" proved
 p.adb:110:54: info: initialization of "Biggest_Seq" proved
 p.adb:113:14: info: initialization of "Biggest_Seq" proved
 p.adb:119:16: medium: "A" might not be initialized
-p.adb:119:19: info: range check proved
-p.adb:124:37: info: index check proved
-p.adb:126:10: info: index check proved
-p.adb:126:19: info: index check proved
-p.adb:127:10: info: index check proved
-p.adb:131:07: info: range check proved
-p.adb:134:34: info: overflow check proved
-p.adb:135:10: info: precondition proved
+p.adb:119:19: info: range check proved (CVC4: 1 VC)
+p.adb:124:37: info: index check proved (CVC4: 2 VC)
+p.adb:126:10: info: index check proved (CVC4: 2 VC)
+p.adb:126:19: info: index check proved (CVC4: 2 VC)
+p.adb:127:10: info: index check proved (CVC4: 2 VC)
+p.adb:131:07: info: range check proved (CVC4: 2 VC)
+p.adb:134:34: info: overflow check proved (CVC4: 1 VC)
+p.adb:135:10: info: precondition proved (CVC4: 5 VC)
 p.adb:135:16: info: initialization of "A" proved
-p.adb:135:24: info: overflow check proved
+p.adb:135:24: info: overflow check proved (CVC4: 1 VC)
 p.adb:137:14: info: initialization of "A" proved
 p.ads:6:28: medium: "Result" might not be initialized in "Search_Array"
 p.ads:7:28: info: initialization of "Found" proved
 p.ads:20:28: info: initialization of "Result.Content" proved
 p.ads:25:28: info: initialization of "Result" proved
-p.ads:26:42: info: index check proved
+p.ads:26:42: info: index check proved (CVC4: 2 VC)
 p.ads:35:20: medium: "A" might not be initialized in "Init"
-lists.adb:5:28: info: discriminant check proved
-lists.adb:13:19: info: discriminant check proved
-lists.ads:10:14: info: postcondition proved
-lists.ads:26:46: info: discriminant check proved
+lists.adb:5:28: info: discriminant check proved (CVC4: 1 VC)
+lists.adb:13:19: info: discriminant check proved (CVC4: 1 VC)
+lists.ads:10:14: info: postcondition proved (CVC4: 1 VC)
+lists.ads:26:46: info: discriminant check proved (CVC4: 1 VC)
 p.adb:2:04: warning: variable "Memory" is read but never assigned
 p.adb:12:45: info: initialization of "Addr" proved, in call inlined at p.adb:26
-p.adb:12:52: info: overflow check proved, in call inlined at p.adb:20
-p.adb:12:52: info: overflow check proved, in call inlined at p.adb:23
-p.adb:12:52: info: overflow check proved, in call inlined at p.adb:24
-p.adb:12:52: info: overflow check proved, in call inlined at p.adb:26
+p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:20
+p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:23
+p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:24
+p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:26
 p.adb:14:28: info: initialization of "Value" proved
 p.adb:14:28: info: initialization of "Value" proved, in call inlined at p.adb:20
 p.adb:14:28: info: initialization of "Value" proved, in call inlined at p.adb:23
@@ -94,66 +94,66 @@ p.adb:17:17: info: initialization of "Value" proved, in call inlined at p.adb:23
 p.adb:17:17: info: initialization of "Value" proved, in call inlined at p.adb:24
 p.adb:17:17: info: initialization of "Value" proved, in call inlined at p.adb:26
 p.adb:21:22: info: initialization of "Size" proved
-p.adb:22:60: info: overflow check proved
-p.adb:22:64: info: overflow check proved
+p.adb:22:60: info: overflow check proved (CVC4: 1 VC)
+p.adb:22:64: info: overflow check proved (CVC4: 1 VC)
 p.adb:24:31: info: initialization of "Size" proved
-p.adb:24:36: info: overflow check proved
+p.adb:24:36: info: overflow check proved (CVC4: 1 VC)
 p.adb:25:30: info: initialization of "Addr" proved
-p.adb:25:52: info: overflow check proved
+p.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 p.adb:25:54: info: initialization of "Size" proved
-p.adb:26:31: info: overflow check proved
+p.adb:26:31: info: overflow check proved (CVC4: 1 VC)
 p.adb:26:32: info: initialization of "Size" proved
-p.adb:32:17: info: overflow check proved
-p.adb:34:17: info: overflow check proved
-p.adb:36:17: info: overflow check proved
+p.adb:32:17: info: overflow check proved (CVC4: 1 VC)
+p.adb:34:17: info: overflow check proved (CVC4: 1 VC)
+p.adb:36:17: info: overflow check proved (CVC4: 1 VC)
 p.ads:11:14: info: initialization of "Addr" proved
 p.ads:11:14: info: initialization of "Data1" proved
 p.ads:11:14: info: initialization of "Data2" proved
 p.ads:11:14: info: initialization of "Size" proved
-p.ads:14:06: info: disjoint contract cases proved
+p.ads:14:06: info: disjoint contract cases proved (CVC4: 1 VC)
 p.ads:14:06: medium: contract cases might not be complete (e.g. when X = 0)
-p.ads:14:41: info: contract case proved
-p.ads:15:43: info: contract case proved
-p.ads:16:34: info: contract case proved
-p.ads:17:35: info: contract case proved
-stacks.adb:5:10: info: raise statement proved unreachable
-stacks.adb:8:22: info: range check proved
-stacks.adb:9:19: info: index check proved
-stacks.ads:8:14: info: postcondition proved
-stacks.ads:27:52: info: index check proved
+p.ads:14:41: info: contract case proved (CVC4: 1 VC)
+p.ads:15:43: info: contract case proved (CVC4: 1 VC)
+p.ads:16:34: info: contract case proved (CVC4: 1 VC)
+p.ads:17:35: info: contract case proved (CVC4: 1 VC)
+stacks.adb:5:10: info: raise statement proved unreachable (CVC4: 1 VC)
+stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
+stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
+stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
+stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
 communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0) and Address'First = 1 and Address'Last = 0)
 communication.adb:19:25: medium: array index check might fail
 communication.adb:20:32: medium: overflow check might fail
 communication.adb:21:24: medium: overflow check might fail
-communication.adb:22:32: info: overflow check proved
-communication.adb:22:43: info: overflow check proved
+communication.adb:22:32: info: overflow check proved (CVC4: 1 VC)
+communication.adb:22:43: info: overflow check proved (CVC4: 1 VC)
 communication.adb:22:43: medium: array index check might fail
-communication.adb:23:34: info: overflow check proved
-communication.adb:25:32: info: index check proved
-communication.adb:25:32: info: overflow check proved
-communication.adb:26:34: info: overflow check proved
+communication.adb:23:34: info: overflow check proved (CVC4: 1 VC)
+communication.adb:25:32: info: index check proved (CVC4: 2 VC)
+communication.adb:25:32: info: overflow check proved (CVC4: 1 VC)
+communication.adb:26:34: info: overflow check proved (CVC4: 1 VC)
 communication.adb:35:30: medium: array index check might fail
-communication.adb:36:34: info: range check proved
-communication.adb:39:30: info: index check proved
-communication.adb:40:34: info: range check proved
-communication.adb:41:32: info: overflow check proved
+communication.adb:36:34: info: range check proved (CVC4: 1 VC)
+communication.adb:39:30: info: index check proved (CVC4: 2 VC)
+communication.adb:40:34: info: range check proved (CVC4: 1 VC)
+communication.adb:41:32: info: overflow check proved (CVC4: 1 VC)
 communication.ads:10:23: info: initialization of "Message" proved
 communication.ads:15:26: info: initialization of "E" proved
 communication.ads:16:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
-communication.ads:18:07: info: range check proved
+communication.ads:18:07: info: range check proved (CVC4: 2 VC)
 communication.ads:19:07: medium: type "Buffer" is not fully initialized
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
-counting.adb:13:38: info: overflow check proved
+counting.adb:13:38: info: overflow check proved (CVC4: 1 VC)
 counting.adb:18:35: info: initialization of "Red_Counter" constituent of "State" proved
-counting.adb:24:34: info: overflow check proved
+counting.adb:24:34: info: overflow check proved (CVC4: 1 VC)
 counting.ads:6:16: info: initialization of "Black_Counter" constituent of "State" proved
-counting.ads:6:16: info: postcondition proved
-counting.ads:9:14: info: postcondition proved
-counting.ads:9:52: info: overflow check proved
+counting.ads:6:16: info: postcondition proved (CVC4: 1 VC)
+counting.ads:9:14: info: postcondition proved (CVC4: 1 VC)
+counting.ads:9:52: info: overflow check proved (CVC4: 1 VC)
 counting.ads:14:16: info: initialization of "Red_Counter" constituent of "State" proved
-counting.ads:14:16: info: postcondition proved
-counting.ads:17:14: info: postcondition proved
-counting.ads:17:48: info: overflow check proved
+counting.ads:14:16: info: postcondition proved (CVC4: 1 VC)
+counting.ads:17:14: info: postcondition proved (CVC4: 1 VC)
+counting.ads:17:48: info: overflow check proved (CVC4: 1 VC)
 counting.ads:20:14: info: initialization of "Black_Counter" constituent of "State" proved
 counting.ads:20:14: info: initialization of "Red_Counter" constituent of "State" proved
 data_package.adb:9:17: info: initialization of "Data.Field_1" proved
@@ -163,214 +163,214 @@ data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
 stack.adb:9:21: medium: array index check might fail (e.g. when Top = 0)
-stack.adb:10:18: info: range check proved
+stack.adb:10:18: info: range check proved (CVC4: 1 VC)
 stack.adb:14:18: medium: range check might fail (e.g. when Top = 100)
-stack.adb:15:16: info: index check proved
+stack.adb:15:16: info: index check proved (CVC4: 2 VC)
 stack.adb:24:23: medium: array index check might fail (e.g. when B_Top = 0)
-stack.adb:25:22: info: range check proved
+stack.adb:25:22: info: range check proved (CVC4: 1 VC)
 stack.adb:32:22: medium: range check might fail (e.g. when B_Top = 100)
-stack.adb:33:18: info: index check proved
-stack.adb:41:22: info: range check proved
-stack.adb:42:18: info: index check proved
-stack.adb:44:54: info: length check proved
-stack.adb:45:48: info: index check proved
-stack.adb:54:22: info: range check proved
-stack.adb:55:18: info: index check proved
+stack.adb:33:18: info: index check proved (CVC4: 2 VC)
+stack.adb:41:22: info: range check proved (CVC4: 1 VC)
+stack.adb:42:18: info: index check proved (CVC4: 2 VC)
+stack.adb:44:54: info: length check proved (CVC4: 1 VC)
+stack.adb:45:48: info: index check proved (CVC4: 2 VC)
+stack.adb:54:22: info: range check proved (CVC4: 1 VC)
+stack.adb:55:18: info: index check proved (CVC4: 2 VC)
 stack.ads:1:51: warning: no procedure exists that can initialize abstract state "Stack.The_Stack"
 stack.ads:1:62: warning: no procedure exists that can initialize abstract state "Stack.P_Stack"
 stack.ads:12:20: info: initialization of "E" proved
 stack.ads:22:21: info: initialization of "E" proved
-stack.ads:30:14: info: postcondition proved
-stack.ads:31:58: info: precondition proved
-stack.ads:39:14: info: postcondition proved
-stack.ads:40:61: info: precondition proved
-stack.ads:56:55: info: length check proved
-stack.ads:57:49: info: index check proved
+stack.ads:30:14: info: postcondition proved (CVC4: 3 VC)
+stack.ads:31:58: info: precondition proved (CVC4: 1 VC)
+stack.ads:39:14: info: postcondition proved (CVC4: 3 VC)
+stack.ads:40:61: info: precondition proved (CVC4: 1 VC)
+stack.ads:56:55: info: length check proved (CVC4: 1 VC)
+stack.ads:57:49: info: index check proved (CVC4: 2 VC)
 use_stack.adb:2:11: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:2:11: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:3:10: medium: precondition of main program might fail
 use_stack.adb:7:06: warning: unused assignment
-use_stack.adb:7:09: info: precondition proved
+use_stack.adb:7:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:8:11: info: initialization of "E" proved
-use_stack.adb:9:19: info: precondition proved
+use_stack.adb:9:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F (e.g. when E = 1 and F = 1)
 use_stack.adb:9:26: info: initialization of "E" proved
-use_stack.adb:9:31: info: precondition proved
+use_stack.adb:9:31: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:9:38: info: initialization of "F" proved
 use_stack.adb:10:06: warning: unused assignment
-use_stack.adb:10:09: info: precondition proved
+use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:11:11: info: initialization of "E" proved
-use_stack.adb:12:04: info: assertion proved
-use_stack.adb:12:19: info: precondition proved
+use_stack.adb:12:04: info: assertion proved (CVC4: 1 VC)
+use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:27: info: initialization of "E" proved
-use_stack.adb:12:32: info: precondition proved
+use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:40: info: initialization of "F" proved
-p_max_array.adb:4:34: info: length check proved
-p_max_array.adb:8:10: info: loop invariant initialization proved
-p_max_array.adb:8:10: info: loop invariant preservation proved
+p_max_array.adb:4:34: info: length check proved (CVC4: 1 VC)
+p_max_array.adb:8:10: info: loop invariant initialization proved (CVC4: 2 VC)
+p_max_array.adb:8:10: info: loop invariant preservation proved (CVC4: 2 VC)
 p_max_array.adb:8:33: info: initialization of "J" proved
-p_max_array.adb:9:10: info: loop invariant initialization proved
-p_max_array.adb:9:10: info: loop invariant preservation proved
+p_max_array.adb:9:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:9:10: info: loop invariant preservation proved (CVC4: 1 VC)
 p_max_array.adb:9:33: info: initialization of "J" proved
-p_max_array.adb:9:39: info: overflow check proved
-p_max_array.adb:9:49: info: overflow check proved
-p_max_array.adb:10:24: info: index check proved
+p_max_array.adb:9:39: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:9:49: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:10:24: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:10:24: info: initialization of "J" proved
 p_max_array.adb:11:19: info: initialization of "R" proved
 p_max_array.adb:13:19: info: initialization of "R" proved
-p_max_array.adb:13:25: info: index check proved
+p_max_array.adb:13:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:13:25: info: initialization of "J" proved
 p_max_array.adb:15:15: info: initialization of "J" proved
-p_max_array.adb:15:17: info: overflow check proved
+p_max_array.adb:15:17: info: overflow check proved (CVC4: 1 VC)
 p_max_array.adb:17:14: info: initialization of "R" proved
-p_max_array.adb:21:34: info: length check proved
-p_max_array.adb:25:10: info: loop invariant initialization proved
-p_max_array.adb:25:10: info: loop invariant preservation proved
+p_max_array.adb:21:34: info: length check proved (CVC4: 1 VC)
+p_max_array.adb:25:10: info: loop invariant initialization proved (CVC4: 2 VC)
+p_max_array.adb:25:10: info: loop invariant preservation proved (CVC4: 2 VC)
 p_max_array.adb:25:33: info: initialization of "J" proved
-p_max_array.adb:26:10: info: loop invariant initialization proved
-p_max_array.adb:26:10: info: loop invariant preservation proved
+p_max_array.adb:26:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:26:10: info: loop invariant preservation proved (CVC4: 1 VC)
 p_max_array.adb:26:33: info: initialization of "J" proved
-p_max_array.adb:26:39: info: overflow check proved
-p_max_array.adb:26:49: info: overflow check proved
-p_max_array.adb:27:10: info: loop invariant initialization proved
-p_max_array.adb:27:10: info: loop invariant preservation proved
-p_max_array.adb:28:40: info: overflow check proved
-p_max_array.adb:29:24: info: index check proved
-p_max_array.adb:29:34: info: overflow check proved
-p_max_array.adb:29:44: info: index check proved
-p_max_array.adb:29:44: info: overflow check proved
-p_max_array.adb:30:25: info: index check proved
-p_max_array.adb:30:33: info: index check proved
+p_max_array.adb:26:39: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:26:49: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:27:10: info: loop invariant initialization proved (CVC4: 2 VC)
+p_max_array.adb:27:10: info: loop invariant preservation proved (Z3: 2 VC)
+p_max_array.adb:28:40: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:29:24: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:29:34: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:29:44: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:29:44: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:30:25: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:30:33: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:31:23: info: initialization of "R" proved
-p_max_array.adb:31:26: info: index check proved
-p_max_array.adb:31:36: info: overflow check proved
-p_max_array.adb:31:46: info: index check proved
-p_max_array.adb:31:46: info: overflow check proved
-p_max_array.adb:32:24: info: index check proved
+p_max_array.adb:31:26: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:31:36: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:31:46: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:31:46: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:32:24: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:32:24: info: initialization of "J" proved
 p_max_array.adb:33:19: info: initialization of "R" proved
 p_max_array.adb:35:19: info: initialization of "R" proved
-p_max_array.adb:35:25: info: index check proved
+p_max_array.adb:35:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:35:25: info: initialization of "J" proved
 p_max_array.adb:37:15: info: initialization of "J" proved
-p_max_array.adb:37:17: info: overflow check proved
+p_max_array.adb:37:17: info: overflow check proved (CVC4: 1 VC)
 p_max_array.adb:39:14: info: initialization of "R" proved
-p_max_array.adb:46:10: info: loop invariant initialization proved
-p_max_array.adb:46:10: info: loop invariant preservation proved
+p_max_array.adb:46:10: info: loop invariant initialization proved (CVC4: 2 VC)
+p_max_array.adb:46:10: info: loop invariant preservation proved (CVC4: 2 VC)
 p_max_array.adb:46:33: info: initialization of "J" proved
-p_max_array.adb:47:10: info: loop invariant initialization proved
-p_max_array.adb:47:10: info: loop invariant preservation proved
+p_max_array.adb:47:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:47:10: info: loop invariant preservation proved (CVC4: 1 VC)
 p_max_array.adb:47:33: info: initialization of "J" proved
-p_max_array.adb:47:39: info: overflow check proved
-p_max_array.adb:47:49: info: overflow check proved
-p_max_array.adb:48:10: info: loop invariant initialization proved
-p_max_array.adb:48:10: info: loop invariant preservation proved
-p_max_array.adb:49:40: info: overflow check proved
-p_max_array.adb:50:35: info: index check proved
-p_max_array.adb:50:45: info: overflow check proved
-p_max_array.adb:50:55: info: index check proved
-p_max_array.adb:50:55: info: overflow check proved
-p_max_array.adb:51:25: info: index check proved
-p_max_array.adb:51:44: info: index check proved
-p_max_array.adb:52:26: info: index check proved
-p_max_array.adb:52:36: info: overflow check proved
-p_max_array.adb:52:46: info: index check proved
-p_max_array.adb:52:46: info: overflow check proved
-p_max_array.adb:53:10: info: loop invariant initialization proved
-p_max_array.adb:53:10: info: loop invariant preservation proved
-p_max_array.adb:54:44: info: index check proved
-p_max_array.adb:54:63: info: index check proved
-p_max_array.adb:55:24: info: index check proved
+p_max_array.adb:47:39: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:47:49: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:48:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:48:10: info: loop invariant preservation proved (CVC4: 2 VC)
+p_max_array.adb:49:40: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:50:35: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:50:45: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:50:55: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:50:55: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:51:25: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:51:44: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:52:26: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:52:36: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:52:46: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:52:46: info: overflow check proved (CVC4: 1 VC)
+p_max_array.adb:53:10: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:53:10: info: loop invariant preservation proved (CVC4: 1 VC)
+p_max_array.adb:54:44: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:54:63: info: index check proved (CVC4: 2 VC)
+p_max_array.adb:55:24: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:55:24: info: initialization of "J" proved
-p_max_array.adb:56:25: info: index check proved
+p_max_array.adb:56:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:56:25: info: initialization of "J" proved
 p_max_array.adb:58:15: info: initialization of "J" proved
-p_max_array.adb:58:17: info: overflow check proved
-p_max_array.ads:10:14: info: postcondition proved
-p_max_array.ads:11:24: info: index check proved
-p_max_array.ads:11:34: info: overflow check proved
-p_max_array.ads:11:44: info: index check proved
-p_max_array.ads:11:44: info: overflow check proved
-p_max_array.ads:12:42: info: index check proved
-p_max_array.ads:12:50: info: index check proved
-p_max_array.ads:13:43: info: index check proved
-p_max_array.ads:13:53: info: overflow check proved
-p_max_array.ads:13:63: info: index check proved
-p_max_array.ads:13:63: info: overflow check proved
-p_max_array.ads:17:14: info: postcondition proved
-p_max_array.ads:18:28: info: index check proved
-p_max_array.ads:18:38: info: overflow check proved
-p_max_array.ads:18:48: info: index check proved
-p_max_array.ads:18:48: info: overflow check proved
-p_max_array.ads:19:25: info: index check proved
-p_max_array.ads:19:37: info: index check proved
-p_max_array.ads:20:26: info: index check proved
-p_max_array.ads:20:36: info: overflow check proved
-p_max_array.ads:20:46: info: index check proved
-p_max_array.ads:20:46: info: overflow check proved
-ring_buffer.adb:12:59: info: index check proved
-ring_buffer.adb:14:70: info: index check proved
-ring_buffer.adb:21:47: info: index check proved
-ring_buffer.adb:23:58: info: index check proved
-ring_buffer.adb:27:07: info: range check proved
-ring_buffer.adb:29:16: info: range check proved
-ring_buffer.adb:31:18: info: length check proved
+p_max_array.adb:58:17: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:10:14: info: postcondition proved (CVC4: 1 VC; Z3: 1 VC)
+p_max_array.ads:11:24: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:11:34: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:11:44: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:11:44: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:12:42: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:12:50: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:13:43: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:13:53: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:13:63: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:13:63: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:17:14: info: postcondition proved (CVC4: 2 VC)
+p_max_array.ads:18:28: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:18:38: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:18:48: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:18:48: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:19:25: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:19:37: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:20:26: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:20:36: info: overflow check proved (CVC4: 1 VC)
+p_max_array.ads:20:46: info: index check proved (CVC4: 2 VC)
+p_max_array.ads:20:46: info: overflow check proved (CVC4: 1 VC)
+ring_buffer.adb:12:59: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:14:70: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:21:47: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:23:58: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:27:07: info: range check proved (CVC4: 2 VC)
+ring_buffer.adb:29:16: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:31:18: info: length check proved (CVC4: 1 VC)
 ring_buffer.adb:31:18: medium: "R" might not be initialized
-ring_buffer.adb:32:09: info: length check proved
-ring_buffer.adb:32:09: info: range check proved
+ring_buffer.adb:32:09: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:32:09: info: range check proved (CVC4: 4 VC)
 ring_buffer.adb:33:27: info: initialization of "R" proved
-ring_buffer.adb:33:27: info: length check proved
-ring_buffer.adb:33:30: info: length check proved
-ring_buffer.adb:33:30: info: range check proved
+ring_buffer.adb:33:27: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:33:30: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:33:30: info: range check proved (CVC4: 4 VC)
 ring_buffer.adb:34:14: info: initialization of "R" proved
-ring_buffer.adb:41:25: info: index check proved
-ring_buffer.adb:43:37: info: index check proved
-ring_buffer.adb:45:24: info: range check proved
-ring_buffer.adb:46:07: info: assertion proved
-ring_buffer.adb:47:35: info: index check proved
-ring_buffer.adb:47:51: info: overflow check proved
-ring_buffer.adb:47:59: info: index check proved
-ring_buffer.adb:48:07: info: assertion proved
-ring_buffer.adb:49:35: info: index check proved
-ring_buffer.adb:49:51: info: overflow check proved
-ring_buffer.adb:49:62: info: overflow check proved
-ring_buffer.adb:49:70: info: index check proved
-ring_buffer.adb:49:70: info: overflow check proved
-ring_buffer.adb:50:07: info: assertion proved
-ring_buffer.adb:50:65: info: index check proved
-ring_buffer.adb:50:73: info: index check proved
+ring_buffer.adb:41:25: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:43:37: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:45:24: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:46:07: info: assertion proved (CVC4: 1 VC)
+ring_buffer.adb:47:35: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:47:51: info: overflow check proved (CVC4: 1 VC)
+ring_buffer.adb:47:59: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:48:07: info: assertion proved (CVC4: 1 VC)
+ring_buffer.adb:49:35: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:49:51: info: overflow check proved (CVC4: 1 VC)
+ring_buffer.adb:49:62: info: overflow check proved (CVC4: 1 VC)
+ring_buffer.adb:49:70: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:49:70: info: overflow check proved (CVC4: 1 VC)
+ring_buffer.adb:50:07: info: assertion proved (CVC4: 1 VC)
+ring_buffer.adb:50:65: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:50:73: info: index check proved (CVC4: 2 VC)
 ring_buffer.adb:51:22: medium: assertion might fail, cannot prove Get_Model (Length) = E
-ring_buffer.adb:51:33: info: index check proved
-ring_buffer.adb:56:13: info: discriminant check proved
-ring_buffer.adb:56:30: info: range check proved
-ring_buffer.adb:56:40: info: length check proved
-ring_buffer.adb:56:49: info: length check proved
-ring_buffer.adb:56:49: info: range check proved
-ring_buffer.adb:58:25: info: index check proved
-ring_buffer.adb:60:37: info: index check proved
-ring_buffer.adb:62:24: info: range check proved
-ring_buffer.adb:67:13: info: discriminant check proved
-ring_buffer.adb:67:30: info: range check proved
-ring_buffer.adb:67:40: info: length check proved
-ring_buffer.adb:67:40: info: range check proved
-ring_buffer.adb:69:24: info: range check proved
-ring_buffer.adb:71:25: info: range check proved
-ring_buffer.adb:81:19: info: discriminant check proved, in call inlined at ring_buffer.adb:94
-ring_buffer.adb:81:36: info: range check proved, in call inlined at ring_buffer.adb:94
-ring_buffer.adb:81:46: info: length check proved, in call inlined at ring_buffer.adb:94
-ring_buffer.adb:81:46: info: range check proved, in call inlined at ring_buffer.adb:94
-ring_buffer.adb:87:27: info: range check proved
-ring_buffer.adb:89:28: info: range check proved
+ring_buffer.adb:51:33: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:56:13: info: discriminant check proved (CVC4: 1 VC)
+ring_buffer.adb:56:30: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:56:40: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:56:49: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:56:49: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:58:25: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:60:37: info: index check proved (CVC4: 2 VC)
+ring_buffer.adb:62:24: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:67:13: info: discriminant check proved (CVC4: 1 VC)
+ring_buffer.adb:67:30: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:67:40: info: length check proved (CVC4: 1 VC)
+ring_buffer.adb:67:40: info: range check proved (CVC4: 4 VC)
+ring_buffer.adb:69:24: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:71:25: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:81:19: info: discriminant check proved (CVC4: 1 VC), in call inlined at ring_buffer.adb:94
+ring_buffer.adb:81:36: info: range check proved (CVC4: 1 VC), in call inlined at ring_buffer.adb:94
+ring_buffer.adb:81:46: info: length check proved (CVC4: 1 VC), in call inlined at ring_buffer.adb:94
+ring_buffer.adb:81:46: info: range check proved (CVC4: 4 VC), in call inlined at ring_buffer.adb:94
+ring_buffer.adb:87:27: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:89:28: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:13:14: medium: postcondition might fail, cannot prove Valid_Model (Get_Model'result)
 ring_buffer.ads:19:14: medium: postcondition might fail, cannot prove Get_Model = Get_Model'Old & E
-ring_buffer.ads:19:40: info: range check proved
+ring_buffer.ads:19:40: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:23:14: medium: postcondition might fail, cannot prove (Valid_Model)
-ring_buffer.ads:23:64: info: range check proved
+ring_buffer.ads:23:64: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:25:25: info: initialization of "E" proved
 ring_buffer.ads:27:14: medium: postcondition might fail, cannot prove (Valid_Model)
 ring_buffer.ads:27:30: info: initialization of "E" proved
-ring_buffer.ads:27:32: info: range check proved
+ring_buffer.ads:27:32: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:33:24: medium: postcondition might fail, cannot prove (Valid_Model)
 ring_buffer.ads:35:24: medium: contract case might fail
-ring_buffer.ads:35:29: info: range check proved
-ring_buffer.ads:36:24: info: contract case proved
+ring_buffer.ads:35:29: info: range check proved (CVC4: 1 VC)
+ring_buffer.ads:36:24: info: contract case proved (CVC4: 2 VC)

@@ -1,17 +1,17 @@
-model.adb:61:10: info: loop invariant initialization proved
-model.adb:61:10: info: loop invariant preservation proved
-model.adb:63:36: info: index check proved
+model.adb:61:10: info: loop invariant initialization proved (CVC4: 1 VC)
+model.adb:61:10: info: loop invariant preservation proved (CVC4: 1 VC)
+model.adb:63:36: info: index check proved (CVC4: 2 VC)
 model.adb:64:20: info: initialization of "AV" proved
-model.adb:64:41: info: range check proved
+model.adb:64:41: info: range check proved (CVC4: 1 VC)
 model.adb:66:35: info: initialization of "AV" proved
-model.adb:71:10: info: loop invariant initialization proved
-model.adb:71:10: info: loop invariant preservation proved
-model.adb:73:62: info: index check proved
+model.adb:71:10: info: loop invariant initialization proved (CVC4: 2 VC)
+model.adb:71:10: info: loop invariant preservation proved (CVC4: 2 VC)
+model.adb:73:62: info: index check proved (CVC4: 2 VC)
 model.adb:74:20: info: initialization of "AV" proved
 model.adb:74:28: info: initialization of "CFV" proved
-model.adb:74:56: info: range check proved
-model.adb:76:60: info: index check proved
-model.adb:77:54: info: range check proved
+model.adb:74:56: info: range check proved (CVC4: 1 VC)
+model.adb:76:60: info: index check proved (CVC4: 2 VC)
+model.adb:77:54: info: range check proved (CVC4: 1 VC)
 model.adb:79:20: info: initialization of "CFV" proved
 model.adb:81:18: info: initialization of "CFV" proved
 model.adb:85:25: info: initialization of "Act.Owned_Action_Data" proved
@@ -22,14 +22,14 @@ model.adb:86:23: info: initialization of "Act.Owned_Flow_Data" proved
 model.adb:86:28: info: initialization of "CFV" proved
 model.adb:87:14: info: initialization of "Act.Owned_Action_Data" proved
 model.adb:87:14: info: initialization of "Act.Owned_Flow_Data" proved
-model.ads:37:14: info: postcondition proved
-model.ads:41:14: info: postcondition proved
-model.ads:64:14: info: postcondition proved
-model.ads:69:14: info: postcondition proved
-model.ads:83:06: info: length check proved
-model.ads:100:06: info: length check proved
-model.ads:111:14: info: postcondition proved
-model.ads:115:14: info: postcondition proved
-model.ads:141:14: info: postcondition proved
-model.ads:147:14: info: postcondition proved
-model.ads:163:06: info: postcondition proved
+model.ads:37:14: info: postcondition proved (CVC4: 1 VC)
+model.ads:41:14: info: postcondition proved (CVC4: 1 VC)
+model.ads:64:14: info: postcondition proved (CVC4: 1 VC)
+model.ads:69:14: info: postcondition proved (CVC4: 1 VC)
+model.ads:83:06: info: length check proved (CVC4: 1 VC)
+model.ads:100:06: info: length check proved (CVC4: 1 VC)
+model.ads:111:14: info: postcondition proved (CVC4: 2 VC)
+model.ads:115:14: info: postcondition proved (CVC4: 2 VC)
+model.ads:141:14: info: postcondition proved (CVC4: 2 VC)
+model.ads:147:14: info: postcondition proved (CVC4: 2 VC)
+model.ads:163:06: info: postcondition proved (CVC4: 2 VC)

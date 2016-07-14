@@ -8,12 +8,12 @@ depends_legal_2.adb:17:18: info: initialization of "Par1.B" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.X" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.Y" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.Z" proved
-depends_legal_2.adb:17:38: info: range check proved
+depends_legal_2.adb:17:38: info: range check proved (CVC4: 1 VC)
 depends_legal_2.adb:37:33: info: initialization of "Rec1.A" constituent of "State" proved
 depends_legal_2.adb:37:33: info: initialization of "Rec1.B" constituent of "State" proved
 depends_legal_2.adb:37:33: info: initialization of "Rec1.X" constituent of "State" proved
 depends_legal_2.adb:37:33: info: initialization of "Rec1.Y" constituent of "State" proved
 depends_legal_2.adb:37:33: info: initialization of "Rec1.Z" constituent of "State" proved
-depends_legal_2.adb:43:15: info: discriminant check proved
-depends_legal_2.adb:45:15: info: discriminant check proved
+depends_legal_2.adb:43:15: info: discriminant check proved (CVC4: 1 VC)
+depends_legal_2.adb:45:15: info: discriminant check proved (CVC4: 1 VC)
 depends_legal_2.adb:48:12: medium: discriminant check might fail (e.g. when Par2 = (A => 0, B => 0, others => ?))

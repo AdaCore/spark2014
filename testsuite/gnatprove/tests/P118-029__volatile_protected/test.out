@@ -3,7 +3,7 @@ concurrency_example_fixed_bis.adb:28:20: info: initialization of "Wakeup" proved
 concurrency_example_fixed_bis.adb:29:22: info: initialization of "Wakeup" proved
 concurrency_example_fixed_bis.adb:40:20: info: initialization of "Wakeup" proved
 concurrency_example_fixed_bis.adb:41:22: info: initialization of "Wakeup" proved
-concurrency_example_fixed_bis.ads:13:09: info: ceiling priority protocol is respected
-concurrency_example_fixed_bis.ads:13:09: info: nontermination of task proved
-concurrency_example_fixed_bis.ads:14:09: info: ceiling priority protocol is respected
-concurrency_example_fixed_bis.ads:14:09: info: nontermination of task proved
+concurrency_example_fixed_bis.ads:13:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+concurrency_example_fixed_bis.ads:13:09: info: nontermination of task proved (CVC4: 1 VC)
+concurrency_example_fixed_bis.ads:14:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+concurrency_example_fixed_bis.ads:14:09: info: nontermination of task proved (CVC4: 1 VC)

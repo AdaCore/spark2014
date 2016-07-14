@@ -1,28 +1,28 @@
-pricing.adb:17:11: info: range check proved
-pricing.adb:18:10: info: loop invariant initialization proved
-pricing.adb:18:10: info: loop invariant preservation proved
-pricing.adb:19:21: info: range check proved
-pricing.adb:19:56: info: overflow check proved
+pricing.adb:17:11: info: range check proved (CVC4: 2 VC)
+pricing.adb:18:10: info: loop invariant initialization proved (CVC4: 1 VC)
+pricing.adb:18:10: info: loop invariant preservation proved (CVC4: 1 VC)
+pricing.adb:19:21: info: range check proved (CVC4: 2 VC)
+pricing.adb:19:56: info: overflow check proved (CVC4: 1 VC)
 pricing.adb:20:16: info: initialization of "Total" proved
-pricing.adb:20:44: info: index check proved
+pricing.adb:20:44: info: index check proved (CVC4: 2 VC)
 pricing.adb:21:28: info: initialization of "Total" proved
 pricing.adb:23:14: info: initialization of "Total" proved
-pricing.ads:20:14: info: postcondition proved
-pricing.ads:28:14: info: postcondition proved
-pricing.ads:28:23: info: range check proved
-pricing.ads:29:62: info: index check proved
-sat.adb:14:12: info: range check proved
-sat.adb:19:12: info: overflow check proved
-sat.adb:20:12: info: overflow check proved
-sat.adb:20:12: info: range check proved
-sat.ads:15:06: info: complete contract cases proved
-sat.ads:15:06: info: disjoint contract cases proved
-sat.ads:15:41: info: contract case proved
-sat.ads:16:41: info: contract case proved
-sat.ads:19:06: info: complete contract cases proved
-sat.ads:19:06: info: disjoint contract cases proved
-sat.ads:19:27: info: overflow check proved
-sat.ads:19:41: info: contract case proved
-sat.ads:19:60: info: overflow check proved
-sat.ads:20:27: info: overflow check proved
-sat.ads:20:41: info: contract case proved
+pricing.ads:20:14: info: postcondition proved (CVC4: 1 VC)
+pricing.ads:28:14: info: postcondition proved (CVC4: 1 VC)
+pricing.ads:28:23: info: range check proved (CVC4: 2 VC)
+pricing.ads:29:62: info: index check proved (CVC4: 2 VC)
+sat.adb:14:12: info: range check proved (CVC4: 1 VC)
+sat.adb:19:12: info: overflow check proved (altergo: 1 VC)
+sat.adb:20:12: info: overflow check proved (CVC4: 1 VC)
+sat.adb:20:12: info: range check proved (Z3: 1 VC)
+sat.ads:15:06: info: complete contract cases proved (CVC4: 1 VC)
+sat.ads:15:06: info: disjoint contract cases proved (CVC4: 1 VC)
+sat.ads:15:41: info: contract case proved (CVC4: 1 VC)
+sat.ads:16:41: info: contract case proved (CVC4: 1 VC)
+sat.ads:19:06: info: complete contract cases proved (CVC4: 1 VC)
+sat.ads:19:06: info: disjoint contract cases proved (CVC4: 1 VC)
+sat.ads:19:27: info: overflow check proved (altergo: 1 VC)
+sat.ads:19:41: info: contract case proved (CVC4: 1 VC)
+sat.ads:19:60: info: overflow check proved (CVC4: 1 VC)
+sat.ads:20:27: info: overflow check proved (altergo: 1 VC)
+sat.ads:20:41: info: contract case proved (CVC4: 1 VC)

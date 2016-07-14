@@ -1,6 +1,6 @@
-q.adb:2:13: info: range check proved
-q.adb:7:16: info: discriminant check proved
-q.adb:9:16: info: discriminant check proved
+q.adb:2:13: info: range check proved (CVC4: 1 VC)
+q.adb:7:16: info: discriminant check proved (CVC4: 1 VC)
+q.adb:9:16: info: discriminant check proved (CVC4: 1 VC)
 q.adb:11:14: info: initialization of "Res.A" proved
 q.adb:11:14: info: initialization of "Res.C" proved
 q.adb:16:09: medium: discriminant check might fail

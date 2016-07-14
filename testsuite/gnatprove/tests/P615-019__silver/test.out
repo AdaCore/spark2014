@@ -2,23 +2,23 @@ contracts.adb:3:04: warning: analyzing unreferenced procedure "Convert_Integer0"
 contracts.adb:3:45: info: initialization of "U" proved
 contracts.adb:5:12: medium: range check might fail (e.g. when X = -1)
 contracts.adb:8:44: info: initialization of "U" proved
-contracts.adb:12:12: info: range check proved
+contracts.adb:12:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:15:45: info: initialization of "U" proved
-contracts.adb:17:19: info: postcondition proved
+contracts.adb:17:19: info: postcondition proved (CVC4: 1 VC)
 contracts.adb:17:23: info: initialization of "U" proved
-contracts.adb:20:12: info: range check proved
+contracts.adb:20:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:23:04: warning: analyzing unreferenced procedure "Call_Convert_Integer"
-contracts.adb:26:07: info: precondition proved
-contracts.adb:27:14: info: overflow check proved
+contracts.adb:26:07: info: precondition proved (CVC4: 1 VC)
+contracts.adb:27:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:27:14: medium: range check might fail
 contracts.adb:27:16: info: initialization of "Z" proved
 contracts.adb:30:04: warning: analyzing unreferenced procedure "Call_Convert_Integer1"
-contracts.adb:33:07: info: precondition proved
-contracts.adb:34:14: info: overflow check proved
-contracts.adb:34:14: info: range check proved
+contracts.adb:33:07: info: precondition proved (CVC4: 1 VC)
+contracts.adb:34:14: info: overflow check proved (CVC4: 1 VC)
+contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
 contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
-discriminant_check.adb:12:13: info: range check proved
+discriminant_check.adb:12:13: info: range check proved (CVC4: 1 VC)
 discriminant_check.adb:14:15: medium: discriminant check might fail
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail

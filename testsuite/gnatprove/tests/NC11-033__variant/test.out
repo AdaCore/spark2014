@@ -1,7 +1,7 @@
-variants.adb:4:14: info: range check proved
+variants.adb:4:14: info: range check proved (CVC4: 1 VC)
 variants.adb:6:15: medium: discriminant check might fail
-variants.adb:7:15: info: discriminant check proved
-variants.ads:13:20: info: range check proved
-variants.ads:14:20: info: range check proved
+variants.adb:7:15: info: discriminant check proved (CVC4: 1 VC)
+variants.ads:13:20: info: range check proved (CVC4: 1 VC)
+variants.ads:14:20: info: range check proved (CVC4: 1 VC)
 variants.ads:16:27: warning: unused initial value of "Y"
 variants.ads:16:42: info: initialization of "Z.E" proved

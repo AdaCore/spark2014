@@ -3,7 +3,7 @@ c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:65:44: info: length check proved
+c3900050.ads:65:44: info: length check proved (CVC4: 1 VC)
 c3900053.adb:108:38: info: initialization of "Alarm" proved
 c3900053.adb:109:19: medium: precondition might fail
 c3900053.adb:112:18: info: initialization of "Alarm" proved
@@ -27,7 +27,7 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:67:44: info: length check proved
+c3900060.ads:67:44: info: length check proved (CVC4: 1 VC)
 c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:113:38: info: initialization of private part of "Medium_Alarm" proved
 c3900063.adb:114:19: medium: precondition might fail
@@ -108,8 +108,8 @@ c392008_0.adb:11:46: medium: range check might fail
 c392008_0.adb:17:46: medium: overflow check might fail
 c392008_0.adb:17:46: medium: range check might fail
 c392008_0.adb:27:46: medium: range check might fail
-c392008_0.adb:33:46: info: overflow check proved
-c392008_0.adb:33:46: info: range check proved
+c392008_0.adb:33:46: info: overflow check proved (CVC4: 1 VC)
+c392008_0.adb:33:46: info: range check proved (CVC4: 1 VC)
 c392008_0.adb:33:48: info: initialization of "Interest_On_Account" proved
 c392008_0.adb:39:28: info: initialization of "Initial_Deposit" proved
 c392008_0.ads:159:30: warning: unused initial value of "A"
@@ -120,34 +120,34 @@ c392008_2.adb:12:57: info: initialization of "Interest_On_Account" proved
 c392008_2.adb:19:28: info: initialization of "Initial_Deposit" proved
 c392008_2.ads:24:14: class-wide input "Current_Rate" must also be a class-wide input of overridden subprogram "Open" at c392008_1.ads:17 (SPARK RM 6.1.6)
 cc1311a.adb:39:11: medium: constant with variable input "DEFAULT_VALUE" might not be initialized after elaboration of main program "CC1311A"
-cc1311a.adb:98:14: info: length check proved, in instantiation at cc1311a.adb:387
-cc1311a.adb:98:26: info: length check proved, in instantiation at cc1311a.adb:387
-cc1311a.adb:101:22: info: precondition proved, in instantiation at cc1311a.adb:387
-cc1311a.adb:134:14: info: length check proved, in instantiation at cc1311a.adb:396
-cc1311a.adb:134:26: info: length check proved, in instantiation at cc1311a.adb:396
-cc1311a.adb:137:22: info: precondition proved, in instantiation at cc1311a.adb:396
-cc1311a.adb:164:18: info: length check proved, in instantiation at cc1311a.adb:405
-cc1311a.adb:164:29: info: length check proved, in instantiation at cc1311a.adb:405
-cc1311a.adb:194:11: info: length check proved, in instantiation at cc1311a.adb:414
+cc1311a.adb:98:14: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:387
+cc1311a.adb:98:26: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:387
+cc1311a.adb:101:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:387
+cc1311a.adb:134:14: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:396
+cc1311a.adb:134:26: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:396
+cc1311a.adb:137:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:396
+cc1311a.adb:164:18: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:405
+cc1311a.adb:164:29: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:405
+cc1311a.adb:194:11: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:414
 cc1311a.adb:196:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414
-cc1311a.adb:196:30: info: length check proved, in instantiation at cc1311a.adb:414
-cc1311a.adb:199:22: info: precondition proved, in instantiation at cc1311a.adb:414
-cc1311a.adb:230:11: info: length check proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:196:30: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:414
+cc1311a.adb:199:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:414
+cc1311a.adb:230:11: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:423
 cc1311a.adb:232:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:423
-cc1311a.adb:232:30: info: length check proved, in instantiation at cc1311a.adb:423
-cc1311a.adb:235:22: info: precondition proved, in instantiation at cc1311a.adb:423
-cc1311a.adb:265:11: info: length check proved, in instantiation at cc1311a.adb:432
+cc1311a.adb:232:30: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:423
+cc1311a.adb:235:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:423
+cc1311a.adb:265:11: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:432
 cc1311a.adb:266:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
-cc1311a.adb:266:33: info: length check proved, in instantiation at cc1311a.adb:432
-cc1311a.adb:290:14: info: range check proved, in instantiation at cc1311a.adb:442
-cc1311a.adb:291:22: info: precondition proved, in instantiation at cc1311a.adb:442
-cc1311a.adb:303:22: info: precondition proved, in instantiation at cc1311a.adb:443
+cc1311a.adb:266:33: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:432
+cc1311a.adb:290:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
+cc1311a.adb:291:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
+cc1311a.adb:303:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
 cc1311a.adb:318:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
-cc1311a.adb:330:11: info: range check proved, in instantiation at cc1311a.adb:446
+cc1311a.adb:330:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
 cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
-cc1311a.adb:332:23: info: precondition proved, in instantiation at cc1311a.adb:446
+cc1311a.adb:332:23: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
 cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
-cc1311a.adb:347:22: info: precondition proved, in instantiation at cc1311a.adb:447
+cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
 cc1311a.adb:380:25: info: initialization of "OUTPUT" proved
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNC" has no effect

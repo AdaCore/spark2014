@@ -63,19 +63,19 @@ tests.adb:295:25: info: initialization of "Tmp2.Y" proved
 tests.adb:296:25: info: initialization of "Tmp.B.Round" proved
 tests.adb:297:25: info: initialization of "Tmp.A.Y" proved
 tests.adb:301:23: info: initialization of "X" proved
-tests.adb:313:38: info: length check proved
-tests.adb:315:13: info: discriminant check proved
+tests.adb:313:38: info: length check proved (CVC4: 1 VC)
+tests.adb:315:13: info: discriminant check proved (CVC4: 1 VC)
 tests.adb:315:13: info: initialization of "A" proved
 tests.adb:316:16: info: initialization of "A" proved
 tests.adb:320:23: info: initialization of "X" proved
-tests.adb:334:20: info: range check proved
+tests.adb:334:20: info: range check proved (CVC4: 1 VC)
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
-tests.adb:336:19: info: discriminant check proved
-tests.adb:336:19: info: range check proved
+tests.adb:336:19: info: discriminant check proved (CVC4: 1 VC)
+tests.adb:336:19: info: range check proved (CVC4: 1 VC)
 tests.adb:340:23: info: initialization of "R" proved
-tests.adb:352:14: info: range check proved
-tests.adb:352:24: info: discriminant check proved
-tests.adb:355:09: info: discriminant check proved
+tests.adb:352:14: info: range check proved (CVC4: 1 VC)
+tests.adb:352:24: info: discriminant check proved (CVC4: 1 VC)
+tests.adb:355:09: info: discriminant check proved (CVC4: 1 VC)
 tests.adb:356:15: info: initialization of "B.X" proved
 tests.adb:360:23: info: initialization of "N" proved
 tests.adb:361:23: info: initialization of "M" proved
@@ -91,8 +91,8 @@ tests.adb:381:23: info: initialization of "N" proved
 tests.adb:387:12: info: initialization of "Tmp.X" proved
 tests.adb:387:12: info: initialization of "Tmp.Y" proved
 tests.adb:393:23: info: initialization of "B" proved
-tests.adb:398:37: info: range check proved
-tests.adb:401:15: info: discriminant check proved
+tests.adb:398:37: info: range check proved (CVC4: 1 VC)
+tests.adb:401:15: info: discriminant check proved (CVC4: 1 VC)
 tests.adb:402:18: info: initialization of private part of "X" proved
 tests.adb:408:23: info: initialization of "N" proved
 tests.adb:409:23: info: initialization of "M" proved
@@ -104,7 +104,7 @@ tests.adb:419:45: info: initialization of "X.X" proved
 tests.adb:419:45: info: initialization of "X.Y" proved
 tests.adb:420:43: info: initialization of "Y.X" proved
 tests.adb:420:43: info: initialization of "Y.Y" proved
-tests.adb:420:43: info: tag check proved
+tests.adb:420:43: info: tag check proved (CVC4: 1 VC)
 tests.adb:422:12: info: initialization of "Y.X" proved
 tests.adb:422:12: info: initialization of "Y.Y" proved
 tests.adb:422:12: info: initialization of extension of "Y" proved
@@ -169,6 +169,6 @@ tests.adb:629:33: info: initialization of "W2.Y" proved
 tests.adb:629:33: info: initialization of extension of "W2" proved
 tests.adb:632:30: medium: tag check might fail
 untangle.adb:43:08: medium: discriminant check might fail
-untangle.adb:43:14: info: precondition proved
+untangle.adb:43:14: info: precondition proved (CVC4: 1 VC)
 untangle.adb:43:14: medium: array index check might fail
 untangle.adb:43:14: medium: precondition might fail

@@ -1,1 +1,1 @@
-barrier.ads:5:51: info: range check proved
+barrier.ads:5:51: info: range check proved (CVC4: 1 VC)

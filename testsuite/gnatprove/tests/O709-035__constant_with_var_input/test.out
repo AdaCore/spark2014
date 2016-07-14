@@ -1,6 +1,6 @@
-cst.ads:5:13: info: length check proved
+cst.ads:5:13: info: length check proved (CVC4: 1 VC)
 cst.ads:7:28: info: initialization of "X" proved
-use_cst.adb:13:12: info: precondition proved
+use_cst.adb:13:12: info: precondition proved (CVC4: 1 VC)
 use_cst.ads:4:14: warning: subprogram "P" has no effect
 use_indirect_cst.adb:5:14: warning: subprogram "Local" has no effect
-use_indirect_cst.adb:10:04: info: precondition proved
+use_indirect_cst.adb:10:04: info: precondition proved (CVC4: 1 VC)

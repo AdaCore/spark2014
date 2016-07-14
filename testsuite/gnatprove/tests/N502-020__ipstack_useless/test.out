@@ -10,7 +10,7 @@ cascade.adb:15:13: info: initialization of "T1" proved
 cascade.adb:17:10: warning: unused assignment
 cascade.adb:19:07: warning: unused assignment
 cascade.adb:19:10: info: initialization of "T2" proved
-cascade.adb:19:13: info: overflow check proved
+cascade.adb:19:13: info: overflow check proved (CVC4: 1 VC)
 cascade.adb:19:15: info: initialization of "T1" proved
 cascade.adb:20:07: warning: unused assignment
 cascade.adb:20:12: medium: overflow check might fail (e.g. when T3 = 1073741824)

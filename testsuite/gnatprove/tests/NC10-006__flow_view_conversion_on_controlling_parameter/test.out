@@ -12,9 +12,9 @@ foo.adb:22:23: info: initialization of "Log" proved
 foo.adb:22:23: info: initialization of extension of "Log" proved
 foo.adb:26:07: info: initialization of "Log" proved
 foo.adb:26:07: info: initialization of extension of "Log" proved
-foo.adb:26:10: info: precondition proved
+foo.adb:26:10: info: precondition proved (CVC4: 1 VC)
 foo.adb:29:23: info: initialization of "Log.Tmp" proved
 foo.adb:29:23: info: initialization of extension of "Log" proved
 foo.adb:33:07: info: initialization of "Log.Tmp" proved
 foo.adb:33:07: info: initialization of extension of "Log" proved
-foo.adb:33:10: info: precondition proved
+foo.adb:33:10: info: precondition proved (CVC4: 1 VC)

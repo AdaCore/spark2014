@@ -1,5 +1,5 @@
 over.adb:7:20: medium: overflow check might fail (e.g. when X = 100 and Y = 28)
-over.adb:7:25: info: range check proved
-over.adb:9:19: info: overflow check proved
-over.adb:9:19: info: range check proved
+over.adb:7:25: info: range check proved (CVC4: 1 VC)
+over.adb:9:19: info: overflow check proved (CVC4: 1 VC)
+over.adb:9:19: info: range check proved (CVC4: 1 VC)
 over.adb:11:14: info: initialization of "Res" proved

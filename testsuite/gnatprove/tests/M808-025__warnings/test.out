@@ -27,7 +27,7 @@ p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:04: info: assertion proved
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof
 
@@ -43,7 +43,7 @@ p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:04: info: assertion proved
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
@@ -55,7 +55,7 @@ p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:04: info: assertion proved
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
 Do not issue any compilation warnings, issue flow warnings and continue:
@@ -66,7 +66,7 @@ p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:04: info: assertion proved
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
 Issue all compilation warnings, do not issue flow warnings and continue:
@@ -114,7 +114,7 @@ p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
-p.adb:18:04: info: assertion proved[#7]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
 completed 1 out of 1 (100%)...
 gnatprove: error during flow analysis and proof
@@ -131,7 +131,7 @@ p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
-p.adb:18:04: info: assertion proved[#7]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
 completed 1 out of 1 (100%)...
 
@@ -144,7 +144,7 @@ p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
-p.adb:18:04: info: assertion proved[#7]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
 completed 1 out of 1 (100%)...
 
@@ -156,7 +156,7 @@ p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
 p.adb:15:12: info: initialization of "X" proved[#4]
 p.adb:17:09: info: initialization of "X" proved[#5]
-p.adb:18:04: info: assertion proved[#7]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#7]
 p.adb:18:19: info: initialization of "X" proved[#6]
 completed 1 out of 1 (100%)...
 
@@ -183,7 +183,7 @@ p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:04: info: assertion proved
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 Summary of SPARK analysis
 =========================

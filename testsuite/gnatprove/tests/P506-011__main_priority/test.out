@@ -1,1 +1,1 @@
-fakemain.adb:4:36: info: range check proved
+fakemain.adb:4:36: info: range check proved (CVC4: 2 VC)

@@ -588,7 +588,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
        If no_fail is passed directly to gnatprove().
     """
-    fullopt = ["--report=all", "--warnings=continue"]
+    fullopt = ["--report=provers", "--warnings=continue"]
     fullopt += ["--assumptions"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]

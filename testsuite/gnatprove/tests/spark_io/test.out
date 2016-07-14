@@ -1,139 +1,139 @@
 copy.adb:42:14: medium: precondition of main program might fail
-copy.adb:62:07: info: loop invariant initialization proved
-copy.adb:62:07: info: loop invariant preservation proved
-copy.adb:66:10: info: precondition proved
-copy.adb:68:10: info: precondition proved
+copy.adb:62:07: info: loop invariant initialization proved (CVC4: 3 VC)
+copy.adb:62:07: info: loop invariant preservation proved (CVC4: 3 VC)
+copy.adb:66:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:68:10: info: precondition proved (CVC4: 2 VC)
 copy.adb:77:09: info: initialization of "Last" proved
 copy.adb:81:45: info: initialization of "Last" proved
-copy.adb:84:13: info: precondition proved
+copy.adb:84:13: info: precondition proved (CVC4: 1 VC)
 copy.adb:86:31: info: initialization of "Response" proved
-copy.adb:86:31: info: range check proved
-copy.adb:92:22: info: precondition proved
-copy.adb:92:51: info: range check proved
+copy.adb:86:31: info: range check proved (CVC4: 4 VC)
+copy.adb:92:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:92:51: info: range check proved (CVC4: 1 VC)
 copy.adb:92:53: info: initialization of "Response" proved
-copy.adb:92:53: info: range check proved
-copy.adb:93:32: info: range check proved
-copy.adb:95:22: info: precondition proved
-copy.adb:101:22: info: precondition proved
-copy.adb:101:51: info: range check proved
+copy.adb:92:53: info: range check proved (CVC4: 4 VC)
+copy.adb:93:32: info: range check proved (CVC4: 1 VC)
+copy.adb:95:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:101:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:101:51: info: range check proved (CVC4: 1 VC)
 copy.adb:101:53: info: initialization of "Response" proved
-copy.adb:101:53: info: range check proved
-copy.adb:102:32: info: range check proved
-copy.adb:104:22: info: precondition proved
-copy.adb:110:22: info: precondition proved
-copy.adb:113:22: info: precondition proved
-copy.adb:122:13: info: precondition proved
-copy.adb:124:13: info: precondition proved
-copy.adb:133:07: info: loop invariant initialization proved
-copy.adb:133:07: info: loop invariant preservation proved
-copy.adb:140:10: info: precondition proved
-copy.adb:142:10: info: precondition proved
+copy.adb:101:53: info: range check proved (CVC4: 4 VC)
+copy.adb:102:32: info: range check proved (CVC4: 1 VC)
+copy.adb:104:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:110:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:113:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:122:13: info: precondition proved (CVC4: 1 VC)
+copy.adb:124:13: info: precondition proved (CVC4: 2 VC)
+copy.adb:133:07: info: loop invariant initialization proved (CVC4: 6 VC)
+copy.adb:133:07: info: loop invariant preservation proved (CVC4: 6 VC)
+copy.adb:140:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:142:10: info: precondition proved (CVC4: 2 VC)
 copy.adb:151:09: info: initialization of "Last" proved
 copy.adb:154:45: info: initialization of "Last" proved
-copy.adb:157:13: info: precondition proved
+copy.adb:157:13: info: precondition proved (CVC4: 1 VC)
 copy.adb:159:33: info: initialization of "Response" proved
-copy.adb:159:33: info: range check proved
-copy.adb:165:22: info: precondition proved
-copy.adb:166:32: info: range check proved
+copy.adb:159:33: info: range check proved (CVC4: 4 VC)
+copy.adb:165:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:166:32: info: range check proved (CVC4: 1 VC)
 copy.adb:166:34: info: initialization of "Response" proved
-copy.adb:166:34: info: range check proved
-copy.adb:168:22: info: precondition proved
-copy.adb:174:22: info: precondition proved
-copy.adb:175:32: info: range check proved
+copy.adb:166:34: info: range check proved (CVC4: 4 VC)
+copy.adb:168:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:174:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:175:32: info: range check proved (CVC4: 1 VC)
 copy.adb:175:34: info: initialization of "Response" proved
-copy.adb:175:34: info: range check proved
-copy.adb:177:22: info: precondition proved
-copy.adb:182:22: info: precondition proved
-copy.adb:182:44: info: range check proved
+copy.adb:175:34: info: range check proved (CVC4: 4 VC)
+copy.adb:177:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:182:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:182:44: info: range check proved (CVC4: 1 VC)
 copy.adb:182:46: info: initialization of "Response" proved
-copy.adb:182:46: info: range check proved
-copy.adb:183:32: info: range check proved
-copy.adb:186:22: info: precondition proved
-copy.adb:188:22: info: precondition proved
-copy.adb:194:22: info: loop invariant initialization proved
-copy.adb:194:22: info: loop invariant preservation proved
+copy.adb:182:46: info: range check proved (CVC4: 4 VC)
+copy.adb:183:32: info: range check proved (CVC4: 1 VC)
+copy.adb:186:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:188:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:194:22: info: loop invariant initialization proved (CVC4: 3 VC)
+copy.adb:194:22: info: loop invariant preservation proved (CVC4: 3 VC)
 copy.adb:202:25: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:202:55: info: overflow check proved
-copy.adb:202:55: info: range check proved
-copy.adb:206:30: info: range check proved
+copy.adb:202:55: info: overflow check proved (CVC4: 1 VC)
+copy.adb:202:55: info: range check proved (CVC4: 1 VC)
+copy.adb:206:30: info: range check proved (CVC4: 4 VC)
 copy.adb:207:31: info: initialization of "Yes_No" proved
-copy.adb:207:31: info: range check proved
+copy.adb:207:31: info: range check proved (CVC4: 4 VC)
 copy.adb:207:55: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:210:34: info: range check proved
+copy.adb:210:34: info: range check proved (CVC4: 4 VC)
 copy.adb:211:31: info: initialization of "Yes_No" proved
-copy.adb:211:31: info: range check proved
+copy.adb:211:31: info: range check proved (CVC4: 4 VC)
 copy.adb:211:55: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:213:31: info: precondition proved
+copy.adb:213:31: info: precondition proved (CVC4: 1 VC)
 copy.adb:215:49: info: initialization of "Response" proved
-copy.adb:215:49: info: range check proved
-copy.adb:220:34: info: precondition proved
-copy.adb:221:43: info: range check proved
+copy.adb:215:49: info: range check proved (CVC4: 4 VC)
+copy.adb:220:34: info: precondition proved (CVC4: 1 VC)
+copy.adb:221:43: info: range check proved (CVC4: 1 VC)
 copy.adb:221:45: info: initialization of "Response" proved
-copy.adb:221:45: info: range check proved
-copy.adb:224:34: info: precondition proved
-copy.adb:232:31: info: precondition proved
-copy.adb:234:31: info: precondition proved
-copy.adb:243:22: info: precondition proved
-copy.adb:246:22: info: precondition proved
-copy.adb:249:19: info: precondition proved
-copy.adb:256:13: info: precondition proved
-copy.adb:259:13: info: precondition proved
-copy.adb:262:10: info: precondition proved
-copy.adb:269:14: info: precondition proved
-copy.adb:270:07: info: loop invariant initialization proved
-copy.adb:270:07: info: loop invariant preservation proved
-copy.adb:278:07: info: precondition proved
-copy.adb:281:13: info: precondition proved
+copy.adb:221:45: info: range check proved (CVC4: 4 VC)
+copy.adb:224:34: info: precondition proved (CVC4: 2 VC)
+copy.adb:232:31: info: precondition proved (CVC4: 1 VC)
+copy.adb:234:31: info: precondition proved (CVC4: 2 VC)
+copy.adb:243:22: info: precondition proved (CVC4: 1 VC)
+copy.adb:246:22: info: precondition proved (CVC4: 2 VC)
+copy.adb:249:19: info: precondition proved (CVC4: 2 VC)
+copy.adb:256:13: info: precondition proved (CVC4: 1 VC)
+copy.adb:259:13: info: precondition proved (CVC4: 2 VC)
+copy.adb:262:10: info: precondition proved (CVC4: 2 VC)
+copy.adb:269:14: info: precondition proved (CVC4: 2 VC)
+copy.adb:270:07: info: loop invariant initialization proved (CVC4: 8 VC)
+copy.adb:270:07: info: loop invariant preservation proved (CVC4: 8 VC)
+copy.adb:278:07: info: precondition proved (CVC4: 2 VC)
+copy.adb:281:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:281:31: info: initialization of "C.Item" proved
-copy.adb:281:32: info: discriminant check proved
+copy.adb:281:32: info: discriminant check proved (CVC4: 1 VC)
 copy.adb:282:20: info: initialization of "Count_Limit_Reached" proved
 copy.adb:283:19: info: initialization of "Count" proved
 copy.adb:284:28: info: initialization of "Count" proved
-copy.adb:284:34: info: overflow check proved
-copy.adb:291:16: info: precondition proved
+copy.adb:284:34: info: overflow check proved (CVC4: 1 VC)
+copy.adb:291:16: info: precondition proved (CVC4: 1 VC)
 copy.adb:292:73: low: range check might fail
-copy.adb:293:19: info: precondition proved
-copy.adb:296:16: info: precondition proved
-copy.adb:298:16: info: precondition proved
-copy.adb:299:16: info: precondition proved
-copy.adb:305:13: info: precondition proved
+copy.adb:293:19: info: precondition proved (CVC4: 1 VC)
+copy.adb:296:16: info: precondition proved (CVC4: 2 VC)
+copy.adb:298:16: info: precondition proved (CVC4: 2 VC)
+copy.adb:299:16: info: precondition proved (CVC4: 2 VC)
+copy.adb:305:13: info: precondition proved (CVC4: 1 VC)
 copy.adb:305:55: low: range check might fail
-copy.adb:306:23: info: precondition proved
-copy.adb:309:13: info: precondition proved
-copy.adb:311:13: info: precondition proved
-copy.adb:312:13: info: precondition proved
+copy.adb:306:23: info: precondition proved (CVC4: 1 VC)
+copy.adb:309:13: info: precondition proved (CVC4: 2 VC)
+copy.adb:311:13: info: precondition proved (CVC4: 2 VC)
+copy.adb:312:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:318:11: info: initialization of "Count_Limit_Reached" proved
-copy.adb:320:10: info: precondition proved
+copy.adb:320:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:320:15: info: initialization of "Count" proved
-copy.adb:323:10: info: precondition proved
-copy.adb:327:10: info: precondition proved
-copy.adb:331:10: info: precondition proved
-copy.adb:335:10: info: precondition proved
-copy.adb:340:07: info: precondition proved
-copy.adb:343:07: info: precondition proved
-copy.adb:347:07: info: precondition proved
+copy.adb:323:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:327:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:331:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:335:10: info: precondition proved (CVC4: 1 VC)
+copy.adb:340:07: info: precondition proved (CVC4: 1 VC)
+copy.adb:343:07: info: precondition proved (CVC4: 2 VC)
+copy.adb:347:07: info: precondition proved (CVC4: 2 VC)
 echo.adb:32:18: medium: precondition of main program might fail
-echo.adb:37:07: info: loop invariant initialization proved
-echo.adb:37:07: info: loop invariant preservation proved
-echo.adb:38:07: info: precondition proved
-echo.adb:41:13: info: precondition proved
+echo.adb:37:07: info: loop invariant initialization proved (CVC4: 1 VC)
+echo.adb:37:07: info: loop invariant preservation proved (CVC4: 1 VC)
+echo.adb:38:07: info: precondition proved (CVC4: 1 VC)
+echo.adb:41:13: info: precondition proved (CVC4: 1 VC)
 echo.adb:41:18: info: initialization of "C.Item" proved
-echo.adb:41:19: info: discriminant check proved
-echo.adb:44:16: info: precondition proved
-echo.adb:51:13: info: precondition proved
+echo.adb:41:19: info: discriminant check proved (CVC4: 1 VC)
+echo.adb:44:16: info: precondition proved (CVC4: 2 VC)
+echo.adb:51:13: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:32:18: medium: precondition of main program might fail
-echo_1.adb:38:14: info: precondition proved
-echo_1.adb:39:07: info: loop invariant initialization proved
-echo_1.adb:39:07: info: loop invariant preservation proved
-echo_1.adb:42:07: info: precondition proved
-echo_1.adb:45:13: info: precondition proved
+echo_1.adb:38:14: info: precondition proved (CVC4: 2 VC)
+echo_1.adb:39:07: info: loop invariant initialization proved (CVC4: 3 VC)
+echo_1.adb:39:07: info: loop invariant preservation proved (CVC4: 3 VC)
+echo_1.adb:42:07: info: precondition proved (CVC4: 2 VC)
+echo_1.adb:45:13: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:45:35: info: initialization of "C.Item" proved
-echo_1.adb:45:36: info: discriminant check proved
-echo_1.adb:48:16: info: precondition proved
-echo_1.adb:55:13: info: precondition proved
+echo_1.adb:45:36: info: discriminant check proved (CVC4: 1 VC)
+echo_1.adb:48:16: info: precondition proved (CVC4: 2 VC)
+echo_1.adb:55:13: info: precondition proved (CVC4: 2 VC)
 hello_world.adb:31:13: medium: precondition of main program might fail
-hello_world.adb:35:04: info: precondition proved
-hello_world.adb:37:07: info: precondition proved
+hello_world.adb:35:04: info: precondition proved (CVC4: 1 VC)
+hello_world.adb:37:07: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:29:08: medium: initial condition might fail
 spark-text_io.ads:29:42: info: initialization of "Standard_Input.File" proved
 spark-text_io.ads:29:42: info: initialization of "Standard_Input.Sort" proved
@@ -153,64 +153,64 @@ spark-text_io.ads:81:04: info: initialization of "Standard_Output.Status" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error.File" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error.Sort" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error.Status" proved
-spark-text_io.ads:134:31: info: precondition proved
-spark-text_io.ads:139:12: info: precondition proved
-spark-text_io.ads:139:43: info: precondition proved
-spark-text_io.ads:342:51: info: precondition proved
-spark-text_io.ads:390:51: info: precondition proved
-spark-text_io.ads:422:51: info: precondition proved
-spark-text_io.ads:423:30: info: precondition proved
-spark-text_io.ads:424:54: info: precondition proved
-spark-text_io.ads:438:25: info: precondition proved
-spark-text_io.ads:439:31: info: precondition proved
-spark-text_io.ads:455:25: info: precondition proved
-spark-text_io.ads:456:30: info: precondition proved
-spark-text_io.ads:457:54: info: precondition proved
-spark-text_io.ads:471:31: info: precondition proved
-spark-text_io.ads:509:51: info: precondition proved
-spark-text_io.ads:519:31: info: precondition proved
-spark-text_io.ads:576:51: info: precondition proved
-spark-text_io.ads:595:51: info: precondition proved
+spark-text_io.ads:134:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:139:12: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:139:43: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:342:51: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:390:51: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:422:51: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:423:30: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:424:54: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:438:25: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:439:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:455:25: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:456:30: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:457:54: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:471:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:509:51: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:519:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:576:51: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:595:51: info: precondition proved (CVC4: 1 VC)
 use_enum_io.adb:32:18: medium: precondition of main program might fail
-use_enum_io.adb:37:07: info: loop invariant initialization proved
-use_enum_io.adb:37:07: info: loop invariant preservation proved
-use_enum_io.adb:40:10: info: precondition proved
-use_enum_io.adb:44:07: info: precondition proved
-use_enum_io.adb:47:10: info: precondition proved
-use_enum_io.adb:51:14: info: precondition proved
-use_enum_io.adb:54:10: info: precondition proved
+use_enum_io.adb:37:07: info: loop invariant initialization proved (CVC4: 2 VC)
+use_enum_io.adb:37:07: info: loop invariant preservation proved (CVC4: 2 VC)
+use_enum_io.adb:40:10: info: precondition proved (CVC4: 2 VC)
+use_enum_io.adb:44:07: info: precondition proved (CVC4: 1 VC)
+use_enum_io.adb:47:10: info: precondition proved (CVC4: 2 VC)
+use_enum_io.adb:51:14: info: precondition proved (CVC4: 1 VC)
+use_enum_io.adb:54:10: info: precondition proved (CVC4: 2 VC)
 use_float_io.adb:32:18: medium: precondition of main program might fail
-use_float_io.adb:38:19: info: range check proved
-use_float_io.adb:38:22: info: overflow check proved
-use_float_io.adb:39:07: info: loop invariant initialization proved
-use_float_io.adb:39:07: info: loop invariant preservation proved
-use_float_io.adb:42:10: info: precondition proved
-use_float_io.adb:46:07: info: precondition proved
-use_float_io.adb:49:10: info: precondition proved
-use_float_io.adb:53:07: info: precondition proved
+use_float_io.adb:38:19: info: range check proved (CVC4: 2 VC)
+use_float_io.adb:38:22: info: overflow check proved (CVC4: 2 VC)
+use_float_io.adb:39:07: info: loop invariant initialization proved (CVC4: 2 VC)
+use_float_io.adb:39:07: info: loop invariant preservation proved (CVC4: 2 VC)
+use_float_io.adb:42:10: info: precondition proved (CVC4: 2 VC)
+use_float_io.adb:46:07: info: precondition proved (CVC4: 1 VC)
+use_float_io.adb:49:10: info: precondition proved (CVC4: 2 VC)
+use_float_io.adb:53:07: info: precondition proved (CVC4: 1 VC)
 use_float_io.adb:53:20: info: initialization of "F" proved
-use_float_io.adb:56:10: info: precondition proved
+use_float_io.adb:56:10: info: precondition proved (CVC4: 2 VC)
 use_int_io.adb:32:18: medium: precondition of main program might fail
-use_int_io.adb:37:07: info: loop invariant initialization proved
-use_int_io.adb:37:07: info: loop invariant preservation proved
-use_int_io.adb:40:10: info: precondition proved
-use_int_io.adb:42:13: info: precondition proved
-use_int_io.adb:46:16: info: precondition proved
-use_int_io.adb:50:13: info: precondition proved
-use_int_io.adb:54:10: info: precondition proved
+use_int_io.adb:37:07: info: loop invariant initialization proved (CVC4: 2 VC)
+use_int_io.adb:37:07: info: loop invariant preservation proved (CVC4: 2 VC)
+use_int_io.adb:40:10: info: precondition proved (CVC4: 1 VC)
+use_int_io.adb:42:13: info: precondition proved (CVC4: 1 VC)
+use_int_io.adb:46:16: info: precondition proved (CVC4: 2 VC)
+use_int_io.adb:50:13: info: precondition proved (CVC4: 2 VC)
+use_int_io.adb:54:10: info: precondition proved (CVC4: 2 VC)
 use_int_io_1.adb:32:18: medium: precondition of main program might fail
-use_int_io_1.adb:37:07: info: loop invariant initialization proved
-use_int_io_1.adb:37:07: info: loop invariant preservation proved
-use_int_io_1.adb:40:10: info: precondition proved
-use_int_io_1.adb:42:10: info: precondition proved
-use_int_io_1.adb:47:10: info: precondition proved
-use_int_io_1.adb:49:10: info: precondition proved
-use_int_io_1.adb:56:10: info: precondition proved
+use_int_io_1.adb:37:07: info: loop invariant initialization proved (CVC4: 2 VC)
+use_int_io_1.adb:37:07: info: loop invariant preservation proved (CVC4: 2 VC)
+use_int_io_1.adb:40:10: info: precondition proved (CVC4: 1 VC)
+use_int_io_1.adb:42:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_1.adb:47:10: info: precondition proved (CVC4: 1 VC)
+use_int_io_1.adb:49:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_1.adb:56:10: info: precondition proved (CVC4: 2 VC)
 use_int_io_2.adb:32:18: medium: precondition of main program might fail
-use_int_io_2.adb:37:07: info: loop invariant initialization proved
-use_int_io_2.adb:37:07: info: loop invariant preservation proved
-use_int_io_2.adb:40:10: info: precondition proved
-use_int_io_2.adb:44:07: info: precondition proved
-use_int_io_2.adb:47:10: info: precondition proved
-use_int_io_2.adb:51:07: info: precondition proved
-use_int_io_2.adb:54:10: info: precondition proved
+use_int_io_2.adb:37:07: info: loop invariant initialization proved (CVC4: 2 VC)
+use_int_io_2.adb:37:07: info: loop invariant preservation proved (CVC4: 2 VC)
+use_int_io_2.adb:40:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_2.adb:44:07: info: precondition proved (CVC4: 1 VC)
+use_int_io_2.adb:47:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_2.adb:51:07: info: precondition proved (CVC4: 1 VC)
+use_int_io_2.adb:54:10: info: precondition proved (CVC4: 2 VC)

@@ -4,7 +4,7 @@ bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_o
 bit_converter.adb:27:13: info: initialization of "Bits" proved
 bit_converter.adb:27:21: info: initialization of "Bit" proved
 bit_converter.adb:30:15: info: initialization of "Bits" proved
-bit_converter.adb:31:39: info: index check proved
+bit_converter.adb:31:39: info: index check proved (CVC4: 2 VC)
 bit_converter.adb:32:15: info: initialization of "Bits" proved
 bit_converter.adb:32:23: info: initialization of "Bit" proved
 bit_converter.adb:35:12: info: initialization of "Bits" proved

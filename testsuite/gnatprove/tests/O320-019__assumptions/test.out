@@ -1,11 +1,11 @@
-full.adb:9:16: info: overflow check proved
-full.adb:14:12: info: precondition proved
-full.ads:11:20: info: postcondition proved
-full.ads:11:36: info: overflow check proved
-full.ads:16:22: info: postcondition proved
-my_pack.adb:15:07: info: precondition proved
-my_pack.ads:16:22: info: postcondition proved
-my_pack.ads:16:36: info: overflow check proved
+full.adb:9:16: info: overflow check proved (CVC4: 1 VC)
+full.adb:14:12: info: precondition proved (CVC4: 1 VC)
+full.ads:11:20: info: postcondition proved (CVC4: 1 VC)
+full.ads:11:36: info: overflow check proved (CVC4: 1 VC)
+full.ads:16:22: info: postcondition proved (CVC4: 1 VC)
+my_pack.adb:15:07: info: precondition proved (CVC4: 1 VC)
+my_pack.ads:16:22: info: postcondition proved (CVC4: 1 VC)
+my_pack.ads:16:36: info: overflow check proved (CVC4: 1 VC)
 
 
 

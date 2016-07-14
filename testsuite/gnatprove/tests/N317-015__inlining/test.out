@@ -8,16 +8,16 @@ array_arith.adb:18:12: info: initialization of "X" proved
 array_arith.adb:19:12: info: initialization of "X" proved
 array_arith.adb:20:12: info: initialization of "X" proved
 array_arith.adb:21:13: info: initialization of "X" proved
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:32
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:33
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:34
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:35
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:36
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:37
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:38
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:39
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:40
-array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:41
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:32
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:33
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:34
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:35
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:36
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:37
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:38
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:39
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:40
+array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:32
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:33
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:34
@@ -72,16 +72,16 @@ array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at ar
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:85
 array_arith.adb:73:12: medium: "X" might not be initialized, in call inlined at array_arith.adb:76
 array_arith.ads:8:20: info: initialization of "X" proved
-array_arith.ads:9:14: info: postcondition proved
+array_arith.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:9:35: info: initialization of "X" proved
 array_arith.ads:11:21: info: initialization of "X" proved
-array_arith.ads:12:14: info: postcondition proved
+array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when X = (others => 0))
 array_arith.ads:17:20: info: initialization of "X" proved
-array_arith.ads:18:14: info: postcondition proved
+array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: info: initialization of "X" proved
 ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.adb:54
@@ -91,19 +91,19 @@ ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:45:26: info: initialization of "X" proved
-ident.adb:46:07: info: assertion proved
+ident.adb:46:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:46:22: info: initialization of "Res" proved
 ident.adb:46:28: info: initialization of "X" proved
 ident.adb:47:23: info: initialization of "X" proved
-ident.adb:48:07: info: assertion proved
+ident.adb:48:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:48:22: info: initialization of "Res" proved
 ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
-ident.adb:53:07: info: assertion proved
+ident.adb:53:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:53:22: info: initialization of "Y" proved
-ident.adb:55:07: info: assertion proved
+ident.adb:55:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
@@ -112,33 +112,33 @@ incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = 2147483
 incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = 2147483647)
-incr_expr_fun.adb:16:07: info: assertion proved
+incr_expr_fun.adb:16:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:16:32: info: initialization of "X" proved
-incr_expr_fun.adb:16:39: info: overflow check proved
-incr_expr_fun.adb:17:07: info: assertion proved
+incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:17:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:17:36: info: initialization of "X" proved
-incr_expr_fun.adb:17:43: info: overflow check proved
-incr_expr_fun.adb:18:07: info: assertion proved
+incr_expr_fun.adb:17:43: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:18:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:18:37: info: initialization of "X" proved
-incr_expr_fun.adb:18:44: info: overflow check proved
-incr_expr_fun.adb:19:07: info: assertion proved
+incr_expr_fun.adb:18:44: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:19:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:19:37: info: initialization of "X" proved
-incr_expr_fun.adb:19:44: info: overflow check proved
-incr_expr_fun.adb:20:07: info: assertion proved
+incr_expr_fun.adb:19:44: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:20:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:20:33: info: initialization of "X" proved
-incr_expr_fun.adb:20:40: info: overflow check proved
-incr_expr_fun.adb:21:07: info: assertion proved
+incr_expr_fun.adb:20:40: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:21:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:21:38: info: initialization of "X" proved
-incr_expr_fun.adb:21:45: info: overflow check proved
-incr_expr_fun.adb:22:07: info: assertion proved
+incr_expr_fun.adb:21:45: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:22:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:22:38: info: initialization of "X" proved
-incr_expr_fun.adb:22:45: info: overflow check proved
-incr_expr_fun.adb:23:07: info: assertion proved
+incr_expr_fun.adb:22:45: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:23:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:23:33: info: initialization of "X" proved
-incr_expr_fun.adb:23:40: info: overflow check proved
-incr_expr_fun.adb:24:07: info: assertion proved
+incr_expr_fun.adb:23:40: info: overflow check proved (CVC4: 1 VC)
+incr_expr_fun.adb:24:07: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:38: info: initialization of "X" proved
-incr_expr_fun.adb:24:45: info: overflow check proved
+incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect

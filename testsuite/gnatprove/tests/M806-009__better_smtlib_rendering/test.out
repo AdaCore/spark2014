@@ -1,1 +1,1 @@
-foo.adb:6:17: info: postcondition proved
+foo.adb:6:17: info: postcondition proved (CVC4: 4 VC)

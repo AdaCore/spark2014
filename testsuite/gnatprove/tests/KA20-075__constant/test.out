@@ -1,36 +1,36 @@
-const.adb:7:07: info: assertion proved
-const.adb:8:07: info: assertion proved
-const.adb:10:07: info: assertion proved
-const.adb:11:07: info: assertion proved
-const.adb:12:07: info: assertion proved
-const.adb:13:07: info: assertion proved
-const.adb:16:07: info: assertion proved
-const.adb:17:07: info: assertion proved
-const.adb:18:07: info: assertion proved
-const.adb:19:07: info: assertion proved
-const.adb:23:07: info: assertion proved
-const.adb:24:07: info: assertion proved
-const.adb:25:07: info: assertion proved
-const.adb:26:07: info: assertion proved
-const.adb:27:07: info: assertion proved
-const.adb:28:07: info: assertion proved
-const.adb:32:07: info: assertion proved
-const.adb:33:07: info: assertion proved
-const.adb:34:07: info: assertion proved
-const.adb:35:07: info: assertion proved
-const.adb:36:07: info: assertion proved
-const.adb:37:07: info: assertion proved
+const.adb:7:07: info: assertion proved (CVC4: 1 VC)
+const.adb:8:07: info: assertion proved (CVC4: 1 VC)
+const.adb:10:07: info: assertion proved (CVC4: 1 VC)
+const.adb:11:07: info: assertion proved (CVC4: 1 VC)
+const.adb:12:07: info: assertion proved (CVC4: 1 VC)
+const.adb:13:07: info: assertion proved (CVC4: 1 VC)
+const.adb:16:07: info: assertion proved (CVC4: 1 VC)
+const.adb:17:07: info: assertion proved (CVC4: 1 VC)
+const.adb:18:07: info: assertion proved (CVC4: 1 VC)
+const.adb:19:07: info: assertion proved (CVC4: 1 VC)
+const.adb:23:07: info: assertion proved (CVC4: 1 VC)
+const.adb:24:07: info: assertion proved (CVC4: 1 VC)
+const.adb:25:07: info: assertion proved (CVC4: 1 VC)
+const.adb:26:07: info: assertion proved (CVC4: 1 VC)
+const.adb:27:07: info: assertion proved (CVC4: 1 VC)
+const.adb:28:07: info: assertion proved (CVC4: 1 VC)
+const.adb:32:07: info: assertion proved (CVC4: 1 VC)
+const.adb:33:07: info: assertion proved (CVC4: 1 VC)
+const.adb:34:07: info: assertion proved (CVC4: 1 VC)
+const.adb:35:07: info: assertion proved (CVC4: 1 VC)
+const.adb:36:07: info: assertion proved (CVC4: 1 VC)
+const.adb:37:07: info: assertion proved (CVC4: 1 VC)
 const.adb:41:22: medium: assertion might fail, cannot prove O = 1 (e.g. when O = 0)
 const.adb:42:22: medium: assertion might fail, cannot prove P = 1 (e.g. when P = 0)
-const.ads:9:24: info: length check proved
-const.ads:10:27: info: length check proved
-const.ads:12:24: info: length check proved
-const.ads:13:27: info: length check proved
-const.ads:24:30: info: overflow check proved
-const.ads:24:35: info: overflow check proved
-const.ads:28:30: info: overflow check proved
-const.ads:28:35: info: overflow check proved
-const.ads:32:30: info: overflow check proved
-const.ads:32:39: info: overflow check proved
+const.ads:9:24: info: length check proved (CVC4: 1 VC)
+const.ads:10:27: info: length check proved (CVC4: 1 VC)
+const.ads:12:24: info: length check proved (CVC4: 1 VC)
+const.ads:13:27: info: length check proved (CVC4: 1 VC)
+const.ads:24:30: info: overflow check proved (CVC4: 1 VC)
+const.ads:24:35: info: overflow check proved (CVC4: 1 VC)
+const.ads:28:30: info: overflow check proved (CVC4: 1 VC)
+const.ads:28:35: info: overflow check proved (CVC4: 1 VC)
+const.ads:32:30: info: overflow check proved (CVC4: 1 VC)
+const.ads:32:39: info: overflow check proved (CVC4: 1 VC)
 const.ads:37:32: info: initialization of "O" proved
 const.ads:39:14: warning: subprogram "Test" has no effect

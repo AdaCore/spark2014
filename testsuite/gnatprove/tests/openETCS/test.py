@@ -16,4 +16,4 @@ for f in sorted(files):
               steps=None,
               level=proof_level.get(f, default_level),
               counterexample=False,
-              opt=["--report=provers", "-u", f])
+              opt=["-u", f])

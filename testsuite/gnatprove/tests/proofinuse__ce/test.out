@@ -1,6 +1,6 @@
-counter_examples.adb:8:38: info: overflow check proved
+counter_examples.adb:8:38: info: overflow check proved (CVC4: 1 VC)
 counter_examples.adb:9:16: medium: overflow check might fail
-counter_examples.adb:17:24: info: division check proved
+counter_examples.adb:17:24: info: division check proved (CVC4: 1 VC)
 counter_examples.adb:18:07: warning: statement has no effect
 counter_examples.adb:19:25: info: initialization of "Res" proved
 counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32)

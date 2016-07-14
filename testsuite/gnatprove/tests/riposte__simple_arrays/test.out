@@ -1,48 +1,48 @@
-simple_arrays.adb:19:07: info: assertion proved
+simple_arrays.adb:19:07: info: assertion proved (CVC4: 2 VC)
 simple_arrays.adb:24:49: info: initialization of "A" proved
 simple_arrays.adb:27:22: info: initialization of "A" proved
-simple_arrays.adb:27:22: info: postcondition proved
+simple_arrays.adb:27:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:34:55: info: initialization of "A" proved
 simple_arrays.adb:37:22: info: initialization of "A" proved
-simple_arrays.adb:37:22: info: postcondition proved
-simple_arrays.adb:42:10: info: loop invariant initialization proved
-simple_arrays.adb:42:10: info: loop invariant preservation proved
-simple_arrays.adb:43:21: info: range check proved
+simple_arrays.adb:37:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:42:10: info: loop invariant initialization proved (CVC4: 1 VC)
+simple_arrays.adb:42:10: info: loop invariant preservation proved (CVC4: 1 VC)
+simple_arrays.adb:43:21: info: range check proved (CVC4: 2 VC)
 simple_arrays.adb:43:62: info: initialization of "A" proved
 simple_arrays.adb:43:62: medium: "A" might not be initialized
 simple_arrays.adb:49:42: info: initialization of "B" proved
-simple_arrays.adb:53:23: info: postcondition proved
+simple_arrays.adb:53:23: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:53:27: info: initialization of "B" proved
 simple_arrays.adb:58:12: info: initialization of "B" proved
 simple_arrays.adb:63:53: info: initialization of "B" proved
 simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B (e.g. when A = (0 => 0, others => 1) and B = (others => 0))
 simple_arrays.adb:68:27: info: initialization of "B" proved
 simple_arrays.adb:73:13: info: initialization of "B" proved
-simple_arrays.adb:81:13: info: postcondition proved
-simple_arrays.adb:89:22: medium: assertion might fail, cannot prove A'Update (1 => 5,  N => 6) = A'update (e.g. when A = (1 => 6, others => 0) and N = 1)
-simple_arrays.adb:101:22: info: postcondition proved
-simple_arrays.adb:116:22: info: postcondition proved
-simple_arrays.adb:127:22: info: postcondition proved
-simple_arrays.adb:142:22: info: postcondition proved
-simple_arrays.adb:152:07: info: assertion proved
-simple_arrays.adb:157:07: info: assertion proved
-simple_arrays.adb:162:07: info: assertion proved
-simple_arrays.adb:179:22: info: postcondition proved
-simple_arrays.adb:192:07: info: assertion proved
-simple_arrays.adb:204:07: info: assertion proved
-simple_arrays.adb:216:07: info: assertion proved
-simple_arrays.adb:228:07: info: assertion proved
-simple_arrays.adb:241:07: info: assertion proved
-simple_arrays.adb:255:07: info: assertion proved
-simple_arrays.adb:270:07: info: assertion proved
-simple_arrays.adb:286:07: info: assertion proved
-simple_arrays.adb:303:07: info: assertion proved
-simple_arrays.adb:321:07: info: assertion proved
-simple_arrays.adb:340:07: info: assertion proved
-simple_arrays.adb:360:22: info: postcondition proved
-simple_arrays.adb:376:07: info: assertion proved
-simple_arrays.adb:385:07: info: assertion proved
-simple_arrays.adb:393:07: info: assertion proved
+simple_arrays.adb:81:13: info: postcondition proved (CVC4: 3 VC)
+simple_arrays.adb:89:22: medium: assertion might fail, cannot prove A'Update (1 => 5,  N => 6) = A'update (e.g. when A = (-2147483649 => 6, -2147483648 => 7, 1 => 6, others => 0) and N = 1)
+simple_arrays.adb:101:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:116:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:127:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:142:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:152:07: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:157:07: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:162:07: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:179:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:192:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:204:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:216:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:228:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:241:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:255:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:270:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:286:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:303:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:321:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:340:07: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:360:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:376:07: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:385:07: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:393:07: info: assertion proved (CVC4: 1 VC)
 simple_arrays.adb:405:22: medium: assertion might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (0 => 1, others => 0))
 simple_arrays.adb:412:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (0 => 1, others => 0) and I = Elem_0)
 simple_arrays.adb:418:22: medium: postcondition might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (others => 0))

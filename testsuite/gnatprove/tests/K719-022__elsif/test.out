@@ -1,2 +1,2 @@
-minus.ads:4:14: info: postcondition proved
-minus.ads:8:14: info: postcondition proved
+minus.ads:4:14: info: postcondition proved (CVC4: 1 VC)
+minus.ads:8:14: info: postcondition proved (CVC4: 1 VC)

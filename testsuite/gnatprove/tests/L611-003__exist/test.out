@@ -1,14 +1,14 @@
-stack.adb:4:30: info: precondition proved
-stack.adb:6:12: info: index check proved
+stack.adb:4:30: info: precondition proved (CVC4: 1 VC)
+stack.adb:6:12: info: index check proved (CVC4: 2 VC)
 stack.adb:7:12: medium: precondition might fail (e.g. when T = (others => 0))
-stack.adb:13:10: info: loop invariant initialization proved
-stack.adb:13:10: info: loop invariant preservation proved
-stack.adb:14:30: info: index check proved
-stack.ads:19:12: info: postcondition proved
-stack.ads:22:38: info: precondition proved
-stack.ads:23:12: info: postcondition proved
-stack.ads:32:24: info: index check proved
-stack.ads:35:16: info: range check proved
-stack.ads:36:11: info: index check proved
-stack.ads:37:18: info: range check proved
-stack.ads:38:13: info: index check proved
+stack.adb:13:10: info: loop invariant initialization proved (CVC4: 1 VC)
+stack.adb:13:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stack.adb:14:30: info: index check proved (CVC4: 2 VC)
+stack.ads:19:12: info: postcondition proved (CVC4: 1 VC)
+stack.ads:22:38: info: precondition proved (CVC4: 1 VC)
+stack.ads:23:12: info: postcondition proved (CVC4: 2 VC)
+stack.ads:32:24: info: index check proved (CVC4: 2 VC)
+stack.ads:35:16: info: range check proved (CVC4: 2 VC)
+stack.ads:36:11: info: index check proved (CVC4: 4 VC)
+stack.ads:37:18: info: range check proved (CVC4: 2 VC)
+stack.ads:38:13: info: index check proved (CVC4: 2 VC)

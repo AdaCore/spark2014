@@ -1,5 +1,5 @@
-p.adb:7:21: info: range check proved
-p.adb:17:21: info: range check proved
+p.adb:7:21: info: range check proved (CVC4: 2 VC)
+p.adb:17:21: info: range check proved (CVC4: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
 Summary of SPARK analysis
 =========================
@@ -78,8 +78,8 @@ absence of run-time errors of P fully established
 effects on parameters and Global variables of P.Op fully established
 absence of run-time errors of P.Op fully established
 
-p.adb:7:21: info: range check proved
-p.adb:17:21: info: range check proved
+p.adb:7:21: info: range check proved (CVC4: 2 VC)
+p.adb:17:21: info: range check proved (CVC4: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
 Summary of SPARK analysis
 =========================

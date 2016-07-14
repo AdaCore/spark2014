@@ -16,4 +16,4 @@ task_non_term.adb:22:17: medium: overflow check might fail (e.g. when A = -21474
 task_non_term.adb:22:19: info: initialization of "F" proved
 task_non_term.adb:23:15: info: initialization of "Tmp" proved
 task_non_term.ads:2:09: medium: the task might terminate, which is not allowed in SPARK
-task_non_term.ads:3:09: info: nontermination of task proved
+task_non_term.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)

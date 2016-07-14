@@ -2,13 +2,13 @@ const.adb:3:10: medium: overflow check might fail (e.g. when A = -2147483648 and
 const.adb:3:14: medium: overflow check might fail
 const.adb:3:18: medium: overflow check might fail
 const.adb:3:22: medium: overflow check might fail
-const.adb:3:26: info: overflow check proved
+const.adb:3:26: info: overflow check proved (CVC4: 1 VC)
 const.adb:3:30: medium: overflow check might fail
-const.adb:3:34: info: overflow check proved
-const.adb:3:38: info: overflow check proved
-const.ads:10:33: info: precondition proved
-const.ads:12:33: info: precondition proved
-const.ads:15:33: info: precondition proved
+const.adb:3:34: info: overflow check proved (CVC4: 1 VC)
+const.adb:3:38: info: overflow check proved (CVC4: 1 VC)
+const.ads:10:33: info: precondition proved (CVC4: 1 VC)
+const.ads:12:33: info: precondition proved (CVC4: 1 VC)
+const.ads:15:33: info: precondition proved (CVC4: 1 VC)
 const2.adb:2:08: all constituents must be declared before body at line 5
 const2.adb:2:08: body "Get_V" declared at line 5 freezes the contract of "Const2"
 const2.adb:2:35: "V2" is undefined
@@ -17,7 +17,7 @@ gnatprove: error during generation of Global contracts
 const3.adb:3:19: info: initialization of "F" proved
 const3.adb:4:19: info: initialization of "L" proved
 const3.adb:5:19: info: initialization of "R" proved
-const3.adb:14:12: info: range check proved
+const3.adb:14:12: info: range check proved (CVC4: 2 VC)
 const3.adb:18:04: warning: unused variable "A"
 const3.adb:20:22: info: initialization of "F" proved
 const3.adb:21:22: info: initialization of "L" proved
@@ -35,4 +35,4 @@ const4.ads:18:14: info: initialization of "H" constituent of "State" proved
 other.adb:4:49: medium: overflow check might fail (e.g. when C = -1 and V = -2147483648)
 other.ads:4:04: info: initialization of "V" proved
 other.ads:6:28: info: initialization of "V" proved
-other.ads:21:21: info: postcondition proved
+other.ads:21:21: info: postcondition proved (CVC4: 1 VC)

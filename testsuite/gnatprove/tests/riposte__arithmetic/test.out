@@ -1,23 +1,23 @@
-arithmetic.adb:7:19: info: postcondition proved
-arithmetic.adb:7:38: info: overflow check proved
+arithmetic.adb:7:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:7:38: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = -2147483648 and B = 1)
-arithmetic.adb:14:19: info: postcondition proved
-arithmetic.adb:14:39: info: overflow check proved
+arithmetic.adb:14:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:14:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = -2147483648)
-arithmetic.adb:21:19: info: postcondition proved
-arithmetic.adb:21:41: info: overflow check proved
+arithmetic.adb:21:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:21:41: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:24:16: medium: overflow check might fail
 arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
-arithmetic.adb:32:11: info: range check proved
+arithmetic.adb:32:11: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:33:15: info: initialization of "R" proved
-arithmetic.adb:33:17: info: overflow check proved
-arithmetic.adb:34:10: info: loop invariant initialization proved
-arithmetic.adb:34:10: info: loop invariant preservation proved
+arithmetic.adb:33:17: info: overflow check proved (CVC4: 1 VC; Z3: 1 VC)
+arithmetic.adb:34:10: info: loop invariant initialization proved (CVC4: 1 VC)
+arithmetic.adb:34:10: info: loop invariant preservation proved (CVC4: 1 VC)
 arithmetic.adb:34:33: info: initialization of "R" proved
-arithmetic.adb:34:48: info: overflow check proved
+arithmetic.adb:34:48: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:37:14: info: initialization of "R" proved
-arithmetic.adb:45:14: info: overflow check proved
-arithmetic.adb:45:14: info: range check proved
+arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:46:14: info: initialization of "R" proved
 arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C
 arithmetic.adb:59:31: medium: overflow check might fail
@@ -26,104 +26,104 @@ arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C
 arithmetic.adb:71:24: medium: overflow check might fail
 arithmetic.adb:71:31: info: initialization of "C" proved
 arithmetic.adb:76:21: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
-arithmetic.adb:77:19: info: postcondition proved
-arithmetic.adb:77:35: info: overflow check proved
-arithmetic.adb:83:14: info: range check proved
+arithmetic.adb:77:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:77:35: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:83:14: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:84:32: info: initialization of "R" proved
-arithmetic.adb:84:32: info: overflow check proved
-arithmetic.adb:85:13: info: loop invariant initialization proved
-arithmetic.adb:85:13: info: loop invariant preservation proved
+arithmetic.adb:84:32: info: overflow check proved (CVC4: 2 VC)
+arithmetic.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
+arithmetic.adb:85:13: info: loop invariant preservation proved (CVC4: 1 VC)
 arithmetic.adb:85:36: info: initialization of "R" proved
-arithmetic.adb:85:42: info: overflow check proved
-arithmetic.adb:88:14: info: range check proved
+arithmetic.adb:85:42: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:88:14: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:89:32: info: initialization of "R" proved
-arithmetic.adb:89:32: info: overflow check proved
-arithmetic.adb:90:13: info: loop invariant initialization proved
-arithmetic.adb:90:13: info: loop invariant preservation proved
+arithmetic.adb:89:32: info: overflow check proved (CVC4: 2 VC)
+arithmetic.adb:90:13: info: loop invariant initialization proved (CVC4: 1 VC)
+arithmetic.adb:90:13: info: loop invariant preservation proved (CVC4: 1 VC)
 arithmetic.adb:90:36: info: initialization of "R" proved
-arithmetic.adb:90:42: info: overflow check proved
+arithmetic.adb:90:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:93:14: info: initialization of "R" proved
-arithmetic.adb:97:19: info: postcondition proved
-arithmetic.adb:103:07: info: assertion proved
+arithmetic.adb:97:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:103:07: info: assertion proved (CVC4: 1 VC)
 arithmetic.adb:106:20: info: initialization of "R" proved
-arithmetic.adb:107:10: info: loop invariant initialization proved
-arithmetic.adb:107:10: info: loop invariant preservation proved
+arithmetic.adb:107:10: info: loop invariant initialization proved (CVC4: 2 VC)
+arithmetic.adb:107:10: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:107:33: info: initialization of "R" proved
 arithmetic.adb:109:14: info: initialization of "R" proved
 arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 0 and N = 2)
-arithmetic.adb:119:07: info: assertion proved
+arithmetic.adb:119:07: info: assertion proved (CVC4: 1 VC)
 arithmetic.adb:122:20: info: initialization of "R" proved
-arithmetic.adb:123:10: info: loop invariant initialization proved
+arithmetic.adb:123:10: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:124:13: medium: loop invariant might fail after first iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
 arithmetic.adb:124:17: info: initialization of "R" proved
 arithmetic.adb:126:14: info: initialization of "R" proved
-arithmetic.adb:130:19: info: postcondition proved
-arithmetic.adb:136:07: info: assertion proved
+arithmetic.adb:130:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:136:07: info: assertion proved (CVC4: 1 VC)
 arithmetic.adb:139:20: info: initialization of "R" proved
-arithmetic.adb:140:10: info: loop invariant initialization proved
-arithmetic.adb:140:10: info: loop invariant preservation proved
+arithmetic.adb:140:10: info: loop invariant initialization proved (CVC4: 3 VC)
+arithmetic.adb:140:10: info: loop invariant preservation proved (CVC4: 3 VC)
 arithmetic.adb:140:33: info: initialization of "R" proved
 arithmetic.adb:144:14: info: initialization of "R" proved
-arithmetic.adb:148:19: info: postcondition proved
-arithmetic.adb:148:38: info: division check proved
+arithmetic.adb:148:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:148:38: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:155:20: info: initialization of "R" proved
-arithmetic.adb:156:10: info: loop invariant initialization proved
-arithmetic.adb:156:10: info: loop invariant preservation proved
+arithmetic.adb:156:10: info: loop invariant initialization proved (CVC4: 3 VC)
+arithmetic.adb:156:10: info: loop invariant preservation proved (CVC4: 3 VC)
 arithmetic.adb:156:33: info: initialization of "R" proved
 arithmetic.adb:160:14: info: initialization of "R" proved
-arithmetic.adb:164:19: info: postcondition proved
-arithmetic.adb:164:39: info: overflow check proved
-arithmetic.adb:169:24: info: range check proved
-arithmetic.adb:171:24: info: range check proved
+arithmetic.adb:164:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:164:39: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:169:24: info: range check proved (CVC4: 1 VC)
+arithmetic.adb:171:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:171:24: medium: overflow check might fail (e.g. when N = -2147483648)
 arithmetic.adb:173:14: info: initialization of "R" proved
-arithmetic.adb:178:19: info: postcondition proved
-arithmetic.adb:178:39: info: overflow check proved
-arithmetic.adb:183:24: info: range check proved
-arithmetic.adb:185:24: info: overflow check proved
-arithmetic.adb:185:24: info: range check proved
+arithmetic.adb:178:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:178:39: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:183:24: info: range check proved (CVC4: 1 VC)
+arithmetic.adb:185:24: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:185:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:187:14: info: initialization of "R" proved
-arithmetic.adb:191:19: info: postcondition proved
-arithmetic.adb:191:39: info: overflow check proved
-arithmetic.adb:194:14: info: range check proved
+arithmetic.adb:191:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:191:39: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:194:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: medium: overflow check might fail (e.g. when N = -2147483648)
 arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N
-arithmetic.adb:201:16: info: division check proved
+arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N
-arithmetic.adb:208:16: info: division check proved
+arithmetic.adb:208:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A
-arithmetic.adb:218:16: info: division check proved
+arithmetic.adb:218:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
 arithmetic.adb:226:36: medium: assertion might fail, cannot prove N / 10 < 0 (e.g. when N = -1)
-arithmetic.adb:226:38: info: division check proved
+arithmetic.adb:226:38: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A
-arithmetic.adb:237:16: info: division check proved
-arithmetic.adb:244:19: info: postcondition proved
+arithmetic.adb:237:16: info: division check proved (CVC4: 1 VC)
+arithmetic.adb:244:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:244:39: medium: overflow check might fail
-arithmetic.adb:244:45: info: division check proved
+arithmetic.adb:244:45: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:244:45: medium: overflow check might fail
-arithmetic.adb:244:50: info: overflow check proved
-arithmetic.adb:244:55: info: overflow check proved
-arithmetic.adb:247:16: info: division check proved
+arithmetic.adb:244:50: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:244:55: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:247:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = -128 and B = -1)
-arithmetic.adb:257:17: info: overflow check proved
+arithmetic.adb:257:17: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:257:22: medium: divide by zero might fail
-arithmetic.adb:257:30: info: division check proved
+arithmetic.adb:257:30: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:257:37: medium: overflow check might fail
-arithmetic.adb:266:07: info: assertion proved
-arithmetic.adb:266:26: info: division check proved
+arithmetic.adb:266:07: info: assertion proved (Z3: 1 VC)
+arithmetic.adb:266:26: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0
-arithmetic.adb:277:26: info: division check proved
-arithmetic.adb:283:19: info: postcondition proved
-arithmetic.adb:288:29: info: range check proved
-arithmetic.adb:288:34: info: overflow check proved
-arithmetic.adb:288:42: info: overflow check proved
-arithmetic.adb:288:47: info: division check proved
+arithmetic.adb:277:26: info: division check proved (CVC4: 1 VC)
+arithmetic.adb:283:19: info: postcondition proved (CVC4: 2 VC)
+arithmetic.adb:288:29: info: range check proved (CVC4: 1 VC)
+arithmetic.adb:288:34: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:288:42: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:288:47: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:293:22: medium: postcondition might fail, cannot prove IsPositive_Wrong'Result = 0 (e.g. when IsPositive_Wrong'Result = 1)
-arithmetic.adb:298:29: info: range check proved
-arithmetic.adb:298:34: info: overflow check proved
-arithmetic.adb:298:42: info: overflow check proved
-arithmetic.adb:298:47: info: division check proved
+arithmetic.adb:298:29: info: range check proved (CVC4: 1 VC)
+arithmetic.adb:298:34: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:298:42: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:298:47: info: division check proved (CVC4: 1 VC)
 counterexample expected for check at arithmetic.adb:10
   trace at arithmetic.adb:6 --> A = -2147483648 and B = 1
   trace at arithmetic.adb:10 --> A = -2147483648 and B = 1

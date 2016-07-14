@@ -1,45 +1,47 @@
-stackp.adb:10:24: info: index check proved
-stackp.adb:11:28: info: range check proved
-stackp.adb:16:28: info: range check proved
-stackp.adb:17:19: info: index check proved
-stackp.adb:28:23: info: index check proved
-stackp.adb:29:28: info: range check proved
-stackp.adb:34:28: info: range check proved
-stackp.adb:35:18: info: index check proved
-stackp.adb:40:28: info: range check proved
-stackp.adb:44:29: info: range check proved
-stackp.ads:33:13: info: postcondition proved
-stackp.ads:36:14: info: postcondition proved
+stackp.adb:10:24: info: index check proved (CVC4: 2 VC)
+stackp.adb:11:28: info: range check proved (CVC4: 1 VC)
+stackp.adb:16:28: info: range check proved (CVC4: 1 VC)
+stackp.adb:17:19: info: index check proved (CVC4: 2 VC)
+stackp.adb:28:23: info: index check proved (CVC4: 2 VC)
+stackp.adb:29:28: info: range check proved (CVC4: 1 VC)
+stackp.adb:34:28: info: range check proved (CVC4: 1 VC)
+stackp.adb:35:18: info: index check proved (CVC4: 2 VC)
+stackp.adb:40:28: info: range check proved (CVC4: 1 VC)
+stackp.adb:44:29: info: range check proved (CVC4: 1 VC)
+stackp.ads:33:13: info: postcondition proved (CVC4: 1 VC)
+stackp.ads:36:14: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:36:21: info: initialization of "S.Length" proved
 stackp.ads:36:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:38:37: info: initialization of "E" proved
-stackp.ads:39:20: info: class-wide postcondition is stronger than overridden one
-stackp.ads:39:20: info: postcondition proved
-stackp.ads:39:34: info: range check proved
-stackp.ads:42:20: info: class-wide postcondition is stronger than overridden one
-stackp.ads:42:20: info: postcondition proved
-stackp.ads:42:54: info: range check proved
+stackp.ads:39:20: info: postcondition proved (altergo: 1 VC)
+stackp.ads:39:20: medium: class-wide postcondition might be weaker than overridden one
+stackp.ads:39:34: info: range check proved (CVC4: 1 VC)
+stackp.ads:42:20: info: class-wide postcondition is stronger than overridden one (altergo: 1 VC)
+stackp.ads:42:20: info: postcondition proved (altergo: 1 VC)
+stackp.ads:42:54: info: range check proved (CVC4: 1 VC)
 stackp.ads:49:20: medium: postcondition might fail, cannot prove Get_Model (S) = E & Get_Model (S)'old
-stackp.ads:49:38: info: range check proved
-stackp.ads:52:13: info: postcondition proved
-stackp.ads:55:14: info: postcondition proved
+stackp.ads:49:38: info: range check proved (CVC4: 1 VC)
+stackp.ads:52:13: info: postcondition proved (CVC4: 1 VC)
+stackp.ads:55:14: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:55:21: info: initialization of "S.First" proved
 stackp.ads:55:21: info: initialization of "S.Length" proved
 stackp.ads:55:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:57:38: info: initialization of "E" proved
 stackp.ads:58:20: medium: class-wide postcondition might be weaker than overridden one
 stackp.ads:58:20: medium: postcondition might fail, cannot prove Get_Model (S) & (1 => E) = Get_Model (S)'old
-stackp.ads:58:34: info: range check proved
+stackp.ads:58:34: info: range check proved (CVC4: 1 VC)
 stackp.ads:61:20: medium: class-wide postcondition might be weaker than overridden one
 stackp.ads:61:20: medium: postcondition might fail, cannot prove Get_Model (S) = Get_Model (S)'Old & (1 => E)
-stackp.ads:61:54: info: range check proved
+stackp.ads:61:54: info: range check proved (CVC4: 1 VC)
 stackp.ads:65:04: medium: type "Stack_Root" is not fully initialized
 stackp.ads:71:04: medium: type "Stack" is not fully initialized
-stackp.ads:73:15: info: range check proved
+stackp.ads:73:15: info: range check proved (CVC4: 1 VC)
+stackp.ads:73:15: info: range check proved (CVC4: 4 VC)
 stackp.ads:77:04: medium: type "Buffer" is not fully initialized
-stackp.ads:85:55: info: range check proved
-stackp.ads:86:35: info: range check proved
-stackp.ads:90:20: info: range check proved
-stackp.ads:90:46: info: range check proved
-stackp.ads:90:49: info: range check proved
-stackp.ads:91:20: info: range check proved
+stackp.ads:85:55: info: range check proved (CVC4: 1 VC)
+stackp.ads:86:35: info: range check proved (CVC4: 1 VC)
+stackp.ads:90:20: info: range check proved (CVC4: 4 VC)
+stackp.ads:90:46: info: range check proved (CVC4: 1 VC)
+stackp.ads:90:49: info: range check proved (CVC4: 4 VC)
+stackp.ads:91:20: info: range check proved (CVC4: 1 VC)
+stackp.ads:91:20: info: range check proved (CVC4: 4 VC)

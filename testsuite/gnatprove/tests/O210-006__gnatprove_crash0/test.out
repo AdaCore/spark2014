@@ -1,4 +1,4 @@
 main.adb:11:30: info: initialization of "D.M_Array" proved
-main.adb:13:17: info: length check proved
-main.adb:13:20: info: length check proved
-main.adb:16:20: info: range check proved
+main.adb:13:17: info: length check proved (CVC4: 1 VC)
+main.adb:13:20: info: length check proved (CVC4: 1 VC)
+main.adb:16:20: info: range check proved (CVC4: 1 VC)

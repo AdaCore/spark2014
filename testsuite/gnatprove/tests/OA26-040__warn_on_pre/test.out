@@ -1,2 +1,2 @@
 badpre.adb:2:11: warning: subprogram "Badpre" has no effect
-badpre.adb:5:11: info: postcondition proved
+badpre.adb:5:11: info: postcondition proved (CVC4: 1 VC)

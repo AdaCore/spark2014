@@ -1,34 +1,34 @@
 main.adb:8:37: info: initialization of "The_Sink" proved
-skp-subjects.adb:7:06: info: length check proved
-skp-subjects.adb:12:06: info: length check proved
-skp-subjects.adb:39:70: info: length check proved
-skp-subjects.adb:91:47: info: length check proved
-skp-subjects.adb:128:47: info: length check proved
-skp-subjects.adb:160:47: info: length check proved
-skp-subjects.adb:197:47: info: length check proved
-skp-subjects.adb:233:46: info: length check proved
-skp-subjects.adb:292:47: info: length check proved
-skp-subjects.adb:323:46: info: length check proved
-skp-subjects.adb:382:47: info: length check proved
-skp-subjects.adb:399:07: info: assertion proved
-skp-subjects.adb:413:23: info: refined post proved
-skp-subjects.adb:413:48: info: division check proved
-skp-subjects.adb:416:07: info: assertion proved
-skp-subjects.adb:416:53: info: division check proved
-skp-subjects.adb:417:07: info: assertion proved
-skp-subjects.adb:417:53: info: division check proved
-skp-subjects.adb:418:07: info: assertion proved
-skp-subjects.adb:418:53: info: division check proved
-skp-subjects.adb:419:07: info: assertion proved
-skp-subjects.adb:419:53: info: division check proved
-skp-subjects.adb:420:07: info: assertion proved
-skp-subjects.adb:420:53: info: division check proved
-skp-subjects.adb:421:07: info: assertion proved
-skp-subjects.adb:421:53: info: division check proved
-skp-subjects.adb:422:07: info: assertion proved
-skp-subjects.adb:422:53: info: division check proved
-skp-subjects.adb:426:07: info: assertion proved
-skp-subjects.adb:428:50: info: division check proved
-skp-subjects.ads:49:17: info: postcondition proved
-skp-subjects.ads:49:42: info: division check proved
-skp-subjects.ads:57:17: info: postcondition proved
+skp-subjects.adb:7:06: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:12:06: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:39:70: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:91:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:128:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:160:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:197:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:233:46: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:292:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:323:46: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:382:47: info: length check proved (CVC4: 1 VC)
+skp-subjects.adb:399:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:413:23: info: refined post proved (CVC4: 1 VC)
+skp-subjects.adb:413:48: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:416:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:416:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:417:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:417:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:418:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:418:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:419:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:419:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:420:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:420:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:421:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:421:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:422:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:422:53: info: division check proved (CVC4: 1 VC)
+skp-subjects.adb:426:07: info: assertion proved (CVC4: 1 VC)
+skp-subjects.adb:428:50: info: division check proved (CVC4: 1 VC)
+skp-subjects.ads:49:17: info: postcondition proved (CVC4: 1 VC)
+skp-subjects.ads:49:42: info: division check proved (CVC4: 1 VC)
+skp-subjects.ads:57:17: info: postcondition proved (CVC4: 1 VC)

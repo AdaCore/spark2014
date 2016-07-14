@@ -1,4 +1,4 @@
-testtarg.adb:5:04: info: assertion proved
-testtarg.adb:6:04: info: assertion proved
-testtarg.adb:7:04: info: assertion proved
-testtarg.adb:8:04: info: assertion proved
+testtarg.adb:5:04: info: assertion proved (CVC4: 1 VC)
+testtarg.adb:6:04: info: assertion proved (CVC4: 1 VC)
+testtarg.adb:7:04: info: assertion proved (CVC4: 1 VC)
+testtarg.adb:8:04: info: assertion proved (CVC4: 1 VC)

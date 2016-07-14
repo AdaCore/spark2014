@@ -1,10 +1,10 @@
-flight_manager.adb:12:11: info: postcondition proved
+flight_manager.adb:12:11: info: postcondition proved (CVC4: 1 VC)
 flight_manager.adb:13:24: medium: overflow check might fail
-flight_manager.adb:13:46: info: division check proved
-flight_manager.adb:13:46: info: overflow check proved
+flight_manager.adb:13:46: info: division check proved (CVC4: 1 VC)
+flight_manager.adb:13:46: info: overflow check proved (Interval)
 flight_manager.adb:19:21: medium: overflow check might fail
-flight_manager.adb:19:43: info: division check proved
-flight_manager.adb:19:43: info: overflow check proved
+flight_manager.adb:19:43: info: division check proved (CVC4: 1 VC)
+flight_manager.adb:19:43: info: overflow check proved (Interval)
 flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:36:53: medium: overflow check might fail
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized

@@ -1,10 +1,10 @@
-data.adb:18:10: info: loop invariant initialization proved
-data.adb:18:10: info: loop invariant preservation proved
-data.adb:18:67: info: index check proved
-data.adb:18:82: info: index check proved
-data.adb:20:60: info: index check proved
-data.adb:20:71: info: index check proved
+data.adb:18:10: info: loop invariant initialization proved (CVC4: 4 VC)
+data.adb:18:10: info: loop invariant preservation proved (CVC4: 4 VC)
+data.adb:18:67: info: index check proved (CVC4: 2 VC)
+data.adb:18:82: info: index check proved (CVC4: 2 VC)
+data.adb:20:60: info: index check proved (CVC4: 2 VC)
+data.adb:20:71: info: index check proved (CVC4: 2 VC)
 data.ads:6:30: warning: "X" is not modified, could be IN
 data.ads:7:39: medium: postcondition might fail, cannot prove X(I) = not X'Old(I) (e.g. when X'Old = (1 => true, others => false))
 data.ads:9:39: medium: postcondition might fail, cannot prove X(I) = not X'Old(I) (e.g. when X'Old = (10 => true, others => false))
-data.ads:14:14: info: postcondition proved
+data.ads:14:14: info: postcondition proved (CVC4: 2 VC)
