@@ -3,7 +3,7 @@ very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:19:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:29:48: medium: range check might fail
+very_longs-divide.adb:29:48: medium: range check might fail (e.g. when Dividend = (Length => ?, Long_Digits => (others => 0)) and Dividend.Long_Digits'First = 1 and Dividend.Long_Digits'Last = 65536)
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:07: info: range check proved (CVC4: 1 VC)
@@ -259,8 +259,8 @@ very_longs.adb:211:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:215:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:217:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:221:10: info: range check proved (CVC4: 1 VC)
-very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Digit_Count = 2 and Index = 1 and Number_Of_Digits'Result = 2)
-very_longs.adb:225:45: medium: array index check might fail (e.g. when Number_Of_Digits'Result = 2)
+very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Digit_Count = 2 and Index = 1 and Number = (Length => ?, Long_Digits => (1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
+very_longs.adb:225:45: medium: array index check might fail (e.g. when Number = (Length => ?, Long_Digits => (2 => 1, 1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
 very_longs.adb:227:36: info: index check proved (CVC4: 2 VC)
 very_longs.adb:233:33: info: index check proved (CVC4: 4 VC)
 very_longs.adb:234:28: info: range check proved (CVC4: 2 VC)
@@ -318,7 +318,7 @@ very_longs.adb:319:64: info: initialization of "Temp" proved
 very_longs.adb:320:39: info: initialization of "Temp" proved
 very_longs.adb:324:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:328:13: info: range check proved (CVC4: 1 VC)
-very_longs.adb:329:36: medium: range check might fail
+very_longs.adb:329:36: medium: range check might fail (e.g. when L = (Length => ?, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 65536 and R = (Length => ?, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 very_longs.adb:337:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:337:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:343:52: info: index check proved (CVC4: 2 VC)
