@@ -422,7 +422,6 @@ package body Gnat2Why.Error_Messages is
       if not Exists (File_Name)
         or else Kind (File_Name) /= Ordinary_File
       then
-         Ada.Text_IO.Put_Line ("did not find result file " & File_Name);
          return;
       end if;
       CP_File_Present := True;
