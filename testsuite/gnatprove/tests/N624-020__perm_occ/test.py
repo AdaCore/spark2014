@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(no_fail=False)
+prove_all(no_fail=True)

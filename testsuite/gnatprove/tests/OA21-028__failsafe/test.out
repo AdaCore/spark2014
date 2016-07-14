@@ -42,7 +42,7 @@ failsafe.adb:26:13: info: loop invariant preservation proved (CVC4: 1 VC)
 failsafe.adb:26:36: info: initialization of "Res" proved
 failsafe.adb:28:17: info: initialization of "Res" proved
 failsafe.adb:38:07: info: assertion proved (CVC4: 1 VC)
-failsafe.adb:39:07: info: assertion proved (altergo: 1 VC)
+failsafe.adb:39:07: info: assertion proved (CVC4: 1 VC)
 failsafe.adb:41:07: info: assertion proved (CVC4: 1 VC)
 failsafe.adb:49:31: info: range check proved (CVC4: 1 VC)
 failsafe.adb:50:10: info: assertion proved (CVC4: 1 VC)
@@ -50,7 +50,7 @@ failsafe.adb:52:10: info: assertion proved (CVC4: 1 VC)
 failsafe.adb:54:10: info: assertion proved (Z3: 1 VC)
 failsafe.adb:58:10: info: assertion proved (CVC4: 1 VC)
 failsafe.adb:65:27: medium: assertion might fail, cannot prove Battery_Level_At(Current_Time - Time_Slot(Counter)) >= Battery_Threshold
-failsafe.adb:65:69: medium: range check might fail
+failsafe.adb:65:69: info: range check proved (CVC4: 2 VC)
 failsafe.adb:67:66: info: range check proved (CVC4: 1 VC)
 failsafe.adb:68:78: info: range check proved (CVC4: 2 VC)
 failsafe.adb:73:78: info: range check proved (CVC4: 2 VC)
