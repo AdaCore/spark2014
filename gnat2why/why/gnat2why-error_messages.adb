@@ -210,8 +210,6 @@ package body Gnat2Why.Error_Messages is
             when VC_Precondition
                | VC_Precondition_Main
                | VC_Postcondition
-               | VC_Predicate_Check
-               | VC_Predicate_Check_On_Default_Value
                | VC_Initial_Condition
                | VC_Default_Initial_Condition
                | VC_Refined_Post
@@ -238,7 +236,11 @@ package body Gnat2Why.Error_Messages is
                  VC_Trivial_Weaker_Pre        |
                  VC_Stronger_Post             |
                  VC_Weaker_Classwide_Pre      |
-                 VC_Stronger_Classwide_Post  =>
+                 VC_Stronger_Classwide_Post   |
+                 VC_Predicate_Check           |
+                 VC_Predicate_Check_On_Default_Value
+
+               =>
                return (OK => False);
          end case;
       end Make_Codepeer_Msg;
