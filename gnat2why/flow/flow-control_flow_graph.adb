@@ -1770,7 +1770,7 @@ package body Flow.Control_Flow_Graph is
       while Nkind (Ret_Object) /= N_Object_Declaration
         or else not Is_Return_Object (Defining_Identifier (Ret_Object))
       loop
-         Ret_Object := Next (Ret_Object);
+         Next (Ret_Object);
          pragma Assert (Present (Ret_Object));
       end loop;
       Ret_Object := Defining_Identifier (Ret_Object);
@@ -4876,7 +4876,7 @@ package body Flow.Control_Flow_Graph is
             Outs.Append (V);
          end if;
          --  Go to the next statement
-         P := Next (P);
+         Next (P);
       end loop;
 
       if Belongs_To_Protected_Object (Called_Thing_F) then
@@ -4946,7 +4946,7 @@ package body Flow.Control_Flow_Graph is
                Statement_List.Append (Union_Id (P));
 
          end case;
-         P := Next (P);
+         Next (P);
       end loop;
 
       --  Produce the joined up list.
