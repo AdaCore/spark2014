@@ -8,4 +8,10 @@ is
       A (5) := False;
    end Test;
 
+   procedure Dynamic (A, B : Integer) is
+      type Arr is array (Positive range A .. B) of Boolean; --@RANGE_CHECK:FAIL
+   begin
+      null;
+   end Dynamic;
+
 end Foo;
