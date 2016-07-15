@@ -1255,17 +1255,10 @@ package body Flow is
                      Graph_Start := E;
                   elsif Generating_Globals then
                      declare
-                        Scope        : constant Flow_Scope :=
-                          Get_Flow_Scope (E);
-                        Global_Node  : constant Node_Id :=
-                          Get_Contract_Node (E, Scope, Global_Contract);
-                        Depends_Node : constant Node_Id :=
-                          Get_Contract_Node (E, Scope, Depends_Contract);
-
                         Global_Info : Global_Phase_1_Info;
                      begin
-                        if Present (Global_Node)
-                          or else Present (Depends_Node)
+                        if Present (Get_Pragma (E, Pragma_Global))
+                          or else Present (Get_Pragma (E, Pragma_Depends))
                         then
                            --  If we have a user-provided Global or Depends
                            --  contract then we use Get_Globals to parse it. In
@@ -1276,13 +1269,14 @@ package body Flow is
                               Reads     : Flow_Id_Sets.Set;
                               Writes    : Flow_Id_Sets.Set;
                            begin
-                              Get_Globals (Subprogram          => E,
-                                           Scope               => Scope,
-                                           Classwide           => False,
-                                           Proof_Ins           => Proof_Ins,
-                                           Reads               => Reads,
-                                           Writes              => Writes,
-                                           Use_Deduced_Globals => False);
+                              Get_Globals
+                                (Subprogram          => E,
+                                 Scope               => Get_Flow_Scope (E),
+                                 Classwide           => False,
+                                 Proof_Ins           => Proof_Ins,
+                                 Reads               => Reads,
+                                 Writes              => Writes,
+                                 Use_Deduced_Globals => False);
 
                               Global_Info := Global_Phase_1_Info'
                                 (Name                  => To_Entity_Name (E),
