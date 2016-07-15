@@ -1,4 +1,4 @@
-project K2 is
+project Test is
 
    for Source_Dirs use (".");
    for Object_Dir use "obj";
@@ -8,4 +8,4 @@ project K2 is
       --  except reasons for body") and an error occurs.
       for Default_Switches ("Ada") use ("-gnatw.e.Y");
    end Compiler;
-end K2;
+end Test;

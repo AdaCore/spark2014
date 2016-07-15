@@ -1,8 +1,6 @@
 pkg.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
 pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2"
 pkg2.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
-
-gnatprove: test.gpr:1:12: warning: file name does not match project name, should be "k2.gpr"
 Summary of SPARK analysis
 =========================
 
