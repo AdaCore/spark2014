@@ -68,6 +68,7 @@ package Gnat2Why.Error_Messages is
 
    procedure Emit_Proof_Result
      (Node       : Node_Id;
+      Id         : VC_Id;
       Kind       : VC_Kind;
       Proved     : Boolean;
       E          : Entity_Id;

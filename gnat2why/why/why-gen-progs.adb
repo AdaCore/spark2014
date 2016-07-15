@@ -38,10 +38,13 @@ package body Why.Gen.Progs is
 
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
-      Check_Kind : Range_Check_Kind) is
+      Check_Kind : Range_Check_Kind)
+   is
+      Id : constant VC_Id := Register_VC (Ada_Node, Current_Subp);
    begin
       Emit_Proof_Result
         (Ada_Node,
+         Id,
          To_VC_Kind (Check_Kind),
          True,
          Current_Subp,

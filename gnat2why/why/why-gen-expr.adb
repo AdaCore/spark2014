@@ -3371,6 +3371,7 @@ package body Why.Gen.Expr is
       if CodePeer_Has_Proved (Sloc, Reason) then
          Emit_Proof_Result
            (N,
+            Id,
             Reason,
             True,
             Current_Subp,

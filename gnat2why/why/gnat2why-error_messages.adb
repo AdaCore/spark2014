@@ -275,6 +275,7 @@ package body Gnat2Why.Error_Messages is
 
    procedure Emit_Proof_Result
      (Node       : Node_Id;
+      Id         : VC_Id;
       Kind       : VC_Kind;
       Proved     : Boolean;
       E          : Entity_Id;
@@ -380,6 +381,9 @@ package body Gnat2Why.Error_Messages is
    --  Start of processing for Emit_Proof_Result
 
    begin
+      if Proved then
+         Mark_VC_As_Proved_For_Entity (Id, Kind, E);
+      end if;
       Error_Msg_Proof
         (Node,
          Msg,
@@ -656,13 +660,11 @@ package body Gnat2Why.Error_Messages is
          Node   : constant Node_Id :=
            (if Present (Rec.Extra_Info) then Rec.Extra_Info else VC.Node);
       begin
-         if Rec.Result then
-            Mark_VC_As_Proved_For_Entity (Rec.Id, Rec.Kind, VC.Entity);
-         end if;
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
          Errout.Error_Msg_Strlen := Extra_Text'Length;
          Emit_Proof_Result
            (Node        => Node,
+            Id          => Rec.Id,
             Kind        => Rec.Kind,
             Proved      => Rec.Result,
             E           => VC.Entity,
