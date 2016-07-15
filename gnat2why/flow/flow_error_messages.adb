@@ -54,6 +54,11 @@ package body Flow_Error_Messages is
    type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
 
+   function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
+   --  Returns True if command line argument "--limit-line" was not given,
+   --  or if the sloc in argument corresponds to the line specified by the
+   --  "--limit-line" argument.
+
    function Compute_Message
      (Msg  : String;
       N    : Node_Id;
@@ -283,32 +288,6 @@ package body Flow_Error_Messages is
       Suppr  : String_Id  := No_String;
       Msg_Id : Message_Id := No_Message_Id;
 
-      function Is_Specified_Line return Boolean;
-      --  Returns True if command line argument "--limit-line" was not
-      --  given, or if the message currently being processed is to
-      --  be emitted on the line specified by the "--limit-line"
-      --  argument.
-
-      -----------------------
-      -- Is_Specified_Line --
-      -----------------------
-
-      function Is_Specified_Line return Boolean is
-      begin
-         if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
-            return True;
-         else
-            declare
-               File : constant String := File_Name (Slc);
-               Line : constant Physical_Line_Number :=
-                 Get_Physical_Line_Number (Slc);
-            begin
-               return To_String (Gnat2Why_Args.Limit_Line) =
-                 File & ":" & Image (Value => Positive (Line), Min_Width => 1);
-            end;
-         end if;
-      end Is_Specified_Line;
-
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
@@ -383,7 +362,7 @@ package body Flow_Error_Messages is
          --  given, only issue the warning if it is to be emitted on
          --  the specified line (errors are emitted anyway).
 
-         if not Suppressed and then Is_Specified_Line then
+         if not Suppressed and then Is_Specified_Line (Slc) then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity, Continuation);
          end if;
 
@@ -542,6 +521,17 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Proof
 
    begin
+
+      --  Proof (why3) will only report messages that are relevant wrt
+      --  limit-line option, but Interval and CodePeer messages will be
+      --  issued for all lines. So we add this extra filter here.
+
+      if How_Proved in PC_Interval | PC_Codepeer
+        and then not Is_Specified_Line (Slc)
+      then
+         return;
+      end if;
+
       --  The call to Check_Is_Annotated needs to happen on all paths, even
       --  though we only need the info in the Check_Kind path. The reason is
       --  that also in the Info_Kind case, we want to know whether the check
@@ -627,6 +617,26 @@ package body Flow_Error_Messages is
    --------------------
 
    function Get_Proof_JSON return JSON_Array is (Proof_Msgs);
+
+   -----------------------
+   -- Is_Specified_Line --
+   -----------------------
+
+   function Is_Specified_Line (Slc : Source_Ptr) return Boolean is
+   begin
+      if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
+         return True;
+      else
+         declare
+            File : constant String := File_Name (Slc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Slc);
+         begin
+            return To_String (Gnat2Why_Args.Limit_Line) =
+              File & ":" & Image (Value => Positive (Line), Min_Width => 1);
+         end;
+      end if;
+   end Is_Specified_Line;
 
    ------------------------
    -- Msg_Kind_To_String --
