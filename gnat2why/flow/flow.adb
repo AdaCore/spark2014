@@ -1236,7 +1236,7 @@ package body Flow is
                   --  ??? also analyze spec
 
                   if Generating_Globals
-                     and then Ekind (E) in E_Entry | E_Function | E_Procedure
+                     and then Ekind (E) /= E_Task_Type
                      and then Entity_Body_In_SPARK (E)
                   then
                      declare
