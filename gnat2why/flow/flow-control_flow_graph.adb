@@ -36,6 +36,7 @@ with Stand;                              use Stand;
 with Treepr;                             use Treepr;
 with Uintp;                              use Uintp;
 
+with Common_Iterators;                   use Common_Iterators;
 with Hashing;                            use Hashing;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util;                         use SPARK_Util;
@@ -3574,76 +3575,50 @@ package body Flow.Control_Flow_Graph is
       Spec_E      : constant Entity_Id :=
         Defining_Unit_Name (Specification (N));
 
-      AS_Pragma   : constant Node_Id :=
-        Get_Pragma (Spec_E,
-                    Pragma_Abstract_State);
+      pragma Assert (Spec_E = Defining_Entity (N));
 
       Init_Pragma : constant Node_Id :=
-        Get_Pragma (Spec_E,
-                    Pragma_Initializes);
-   begin
+        Get_Pragma (Spec_E, Pragma_Initializes);
 
+   begin
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
 
-      if Present (AS_Pragma) then
-         declare
-            PAA : Node_Id;
-            AS  : Node_Id;
-         begin
-            PAA := First (Pragma_Argument_Associations (AS_Pragma));
+      for State of Iter (Abstract_States (Spec_E)) loop
+         if not Is_Null_State (State) then
+            --  Creating 'Initial and 'Final vertices for every state
+            --  abstraction and setting Is_Export to True if the
+            --  corresponding entity is initialized.
+            declare
+               Final_F_Id : constant Flow_Id :=
+                 Change_Variant (Direct_Mapping_Id (State), Final_Value);
 
-            if Nkind (Expression (PAA)) /= N_Null then
-               AS := First (Expressions (Expression (PAA)));
-               while Present (AS) loop
-                  --  Creating 'Initial and 'Final vertices for every
-                  --  state abstraction and setting Is_Export to True
-                  --  if the corresponding entity is initialized.
-                  declare
-                     New_E      : constant Entity_Id :=
-                       (if Nkind (AS) = N_Extension_Aggregate then
-                           Entity (Ancestor_Part (AS))
-                        else
-                           Entity (AS));
+               Final_V_Id : Flow_Graphs.Vertex_Id :=
+                 FA.CFG.Get_Vertex (Final_F_Id);
+            begin
+               --  Both the Refined_State aspect of the Analyzed_Entity and the
+               --  Abstract_State aspect of the nested packages add vertices
+               --  for state abstractions so we have to be careful not to add
+               --  something that already exists.
+               if Final_V_Id = Flow_Graphs.Null_Vertex then
+                  Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
 
-                     Final_F_Id : constant Flow_Id :=
-                       Change_Variant (Direct_Mapping_Id (New_E),
-                                       Final_Value);
+                  Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
-                     Final_V_Id : Flow_Graphs.Vertex_Id :=
-                       FA.CFG.Get_Vertex (Final_F_Id);
-                  begin
-                     --  Both the Refined_State aspect of the Analyzed_Entity
-                     --  and the Abstract_State aspect of the nested packages
-                     --  add vertices for state abstractions so we have to be
-                     --  careful not to add something that already exists.
-                     if Final_V_Id = Flow_Graphs.Null_Vertex then
-                        Create_Initial_And_Final_Vertices
-                          (New_E, Variable_Kind, FA);
-
-                        Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
-
-                        if Ekind (FA.Analyzed_Entity) in E_Package |
-                                                         E_Package_Body
-                        then
-                           declare
-                              Final_Atr : V_Attributes renames
-                                FA.Atr (Final_V_Id);
-                           begin
-                              Final_Atr.Is_Export := Final_Atr.Is_Export
-                                or else Is_Initialized_At_Elaboration
-                                          (New_E,
-                                           FA.B_Scope);
-                           end;
-                        end if;
-                     end if;
-                  end;
-
-                  Next (AS);
-               end loop;
-            end if;
-         end;
-      end if;
+                  if FA.Kind in Kind_Package | Kind_Package_Body
+                  then
+                     declare
+                        Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+                     begin
+                        Final_Atr.Is_Export := Final_Atr.Is_Export
+                          or else
+                            Is_Initialized_At_Elaboration (State, FA.B_Scope);
+                     end;
+                  end if;
+               end if;
+            end;
+         end if;
+      end loop;
 
       --  Traverse visible and private part of the specs and link them up.
 
@@ -3661,7 +3636,7 @@ package body Flow.Control_Flow_Graph is
            and then Private_Spec_In_SPARK (Defining_Entity (N))
          then
             --  We only process the private declarations if there is no
-            --  initializes pragma and if the private declarations are
+            --  pragma Initializes and if the private declarations are
             --  actually in SPARK.
             Process_Statement_List (Private_Decls, FA, CM, Ctx);
 
