@@ -829,6 +829,7 @@ ASCII.LF;
            and then File_System.Install.CVC4_Present
            and then not Is_Manual_Prover
            and then not CL_Switches.Output_Msg_Only;
+         CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
       end Postprocess;
 
       ----------------------------
