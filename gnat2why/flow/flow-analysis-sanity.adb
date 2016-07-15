@@ -24,9 +24,11 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
 
 with Gnat2Why_Args;
 with SPARK_Util;             use SPARK_Util;
@@ -940,5 +942,105 @@ package body Flow.Analysis.Sanity is
          end if;
       end loop;
    end Check_Generated_Refined_Global;
+
+   procedure Check_Part_Of
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
+   is
+
+      procedure Detect_Constant_With_Variable_Input (E : Entity_Id);
+      --  If entity E is a non deferred constant with variable input which does
+      --  not have a Part_Of indicator then we issue an Error message.
+
+      -----------------------------------------
+      -- Detect_Constant_With_Variable_Input --
+      -----------------------------------------
+
+      procedure Detect_Constant_With_Variable_Input (E : Entity_Id)
+      is
+         function Is_Deferred_Constant (E : Entity_Id) return Boolean
+         is (Is_Full_View (E) or else Present (Full_View (E)));
+      begin
+         if Ekind (E) = E_Constant
+           and then Has_Variable_Input (Direct_Mapping_Id (E))
+           and then not Present (Get_Pragma (E, Pragma_Part_Of))
+           and then not Is_Deferred_Constant (E)
+         then
+            Sane := False;
+
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "indicator Part_Of is required in this context: " &
+                 "& is declared in the private part of package &",
+               SRM_Ref  => "7.2.6(2)",
+               N        => E,
+               Severity => Error_Kind,
+               F1       => Direct_Mapping_Id (E),
+               F2       => Direct_Mapping_Id (FA.Spec_Entity));
+         end if;
+      end Detect_Constant_With_Variable_Input;
+
+      Current_Element : Node_Or_Entity_Id;
+
+   --  Start of processing for Check_Part_Of
+
+   begin
+      Sane := True;
+
+      --  We make sure we are looking at a package specification with a state
+      --  abstractione otherwise the item cannot act as a Part_Of constituent.
+
+      if not (Ekind (FA.Spec_Entity) = E_Package
+        and then Nkind (Parent (FA.Spec_Entity)) = N_Package_Specification
+        and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State)))
+      then
+         return;
+      end if;
+
+      Current_Element := First (Private_Declarations
+                                (Parent (FA.Spec_Entity)));
+      while Present (Current_Element) loop
+
+         case Nkind (Current_Element) is
+            when N_Object_Declaration =>
+               --  Current_Element is declared immidiately within the private
+               --  part.
+
+               Detect_Constant_With_Variable_Input
+                 (Defining_Identifier (Current_Element));
+
+            when N_Package_Declaration =>
+               --  Current_Element is a package declared immediately within the
+               --  privat part.
+
+               declare
+                  Nested_Spec : constant Entity_Id :=
+                    Specification (Current_Element);
+
+                  Visible_Decls : constant List_Id :=
+                    Visible_Declarations (Nested_Spec);
+
+                  Visible_Element : Node_Or_Entity_Id := First (Visible_Decls);
+
+               begin
+                  --  Loop over the visible state(s) of the package
+                  while Present (Visible_Element) loop
+                     if Nkind (Visible_Element) = N_Object_Declaration then
+                        Detect_Constant_With_Variable_Input
+                          (Defining_Identifier (Visible_Element));
+                     end if;
+
+                     Next (Visible_Element);
+                  end loop;
+               end;
+
+            when others =>
+               null;
+         end case;
+
+         Next (Current_Element);
+      end loop;
+
+   end Check_Part_Of;
 
 end Flow.Analysis.Sanity;
