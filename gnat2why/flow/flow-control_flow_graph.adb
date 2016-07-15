@@ -5888,36 +5888,11 @@ package body Flow.Control_Flow_Graph is
          when Kind_Package | Kind_Package_Body =>
             --  Create initial and final vertices for the package's state
             --  abstractions.
-            declare
-               AS_Pragma : constant Node_Id :=
-                 Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
-
-               PAA       : Node_Id;
-               AS_N      : Node_Id;
-               AS_E      : Entity_Id;
-            begin
-               if Present (AS_Pragma) then
-                  PAA := First (Pragma_Argument_Associations (AS_Pragma));
-
-                  --  Check that we don't have Abstract_State => null
-                  if Nkind (Expression (PAA)) /= N_Null then
-                     AS_N := First (Expressions (Expression (PAA)));
-
-                     while Present (AS_N) loop
-                        AS_E := Entity (if Nkind (AS_N) = N_Extension_Aggregate
-                                        then Ancestor_Part (AS_N)
-                                        else AS_N);
-
-                        Create_Initial_And_Final_Vertices
-                          (AS_E,
-                           Variable_Kind,
-                           FA);
-
-                        Next (AS_N);
-                     end loop;
-                  end if;
+            for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+               if not Is_Null_State (State) then
+                  Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
                end if;
-            end;
+            end loop;
 
             if Is_Generic_Instance (FA.Spec_Entity) then
                declare
