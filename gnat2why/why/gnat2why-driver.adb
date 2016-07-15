@@ -458,7 +458,8 @@ package body Gnat2Why.Driver is
 
          --  Start the translation to Why
 
-         if not Gnat2Why_Args.Flow_Analysis_Mode
+         if not Gnat2Why_Args.Check_All_Mode
+           and then not Gnat2Why_Args.Flow_Analysis_Mode
            and then Is_In_Analyzed_Files (N)
          then
             Proof_Done := True;

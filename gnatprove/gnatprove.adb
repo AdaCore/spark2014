@@ -579,7 +579,8 @@ procedure Gnatprove is
       end case;
 
       if Status /= 0
-        and then Configuration.Mode = GPM_Check
+        and then (Configuration.Mode = GPM_Check
+                  or else Configuration.Mode = GPM_Check_All)
       then
          Status := 0;
       end if;
