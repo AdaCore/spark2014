@@ -988,7 +988,7 @@ package body Flow.Analysis.Sanity is
       Sane := True;
 
       --  We make sure we are looking at a package specification with a state
-      --  abstractione otherwise the item cannot act as a Part_Of constituent.
+      --  abstraction otherwise the item cannot act as a Part_Of constituent.
 
       if not (Ekind (FA.Spec_Entity) = E_Package
         and then Nkind (Parent (FA.Spec_Entity)) = N_Package_Specification
@@ -1011,7 +1011,7 @@ package body Flow.Analysis.Sanity is
 
             when N_Package_Declaration =>
                --  Current_Element is a package declared immediately within the
-               --  privat part.
+               --  private part.
 
                declare
                   Nested_Spec : constant Entity_Id :=
