@@ -864,7 +864,7 @@ package body Flow_Generated_Globals.Phase_2 is
             --  establish a link between a subprogram and a variable.
 
             if Key_A.Kind in Proof_Ins | Inputs | Outputs
-                 and then Key_B.Kind = Variable
+              and then Key_B.Kind = Variable
             then
                declare
                   use type Local_Graphs.Vertex_Id;
@@ -984,68 +984,71 @@ package body Flow_Generated_Globals.Phase_2 is
          for N of Subprograms_Without_GG loop
             declare
                Subprogram : constant Entity_Id := Find_Entity (N);
-
-               FS_Proof_Ins, FS_Reads, FS_Writes : Flow_Id_Sets.Set;
-
-               procedure Add_Edges_For_FS
-                 (FS          : Flow_Id_Sets.Set;
-                  Source_Kind : Global_Kind);
-               --  Adds an edge from From to every Flow_Id in FS
-
-               ----------------------
-               -- Add_Edges_For_FS --
-               ----------------------
-
-               procedure Add_Edges_For_FS
-                 (FS          : Flow_Id_Sets.Set;
-                  Source_Kind : Global_Kind)
-               is
-                  subtype Source_Global is Global_Id (Source_Kind);
-
-                  Source : Source_Global;
-
-               begin
-                  Source.Name := N;
-
-                  for F of FS loop
-                     declare
-                        Nam : constant Entity_Name :=
-                          (case F.Kind is
-                              when Direct_Mapping |
-                                   Record_Field   =>
-                                 To_Entity_Name (Get_Direct_Mapping_Id (F)),
-
-                              when Magic_String =>
-                                 F.Name,
-
-                              when others =>
-                                 raise Program_Error);
-
-                        Target : constant Global_Id (Variable) :=
-                          (Kind => Variable,
-                           Name => Nam);
-
-                     begin
-                        Global_Graph.Include_Vertex (Target);
-
-                        --  Add edge or do nothing if it already exists
-                        Global_Graph.Add_Edge (Source, Target);
-                     end;
-                  end loop;
-               end Add_Edges_For_FS;
-
             begin
                if Present (Subprogram) then
-                  Get_Globals (Subprogram => Subprogram,
-                               Scope      => Get_Flow_Scope (Subprogram),
-                               Classwide  => False,
-                               Proof_Ins  => FS_Proof_Ins,
-                               Reads      => FS_Reads,
-                               Writes     => FS_Writes);
+                  declare
+                     FS_Proof_Ins, FS_Reads, FS_Writes : Flow_Id_Sets.Set;
 
-                  Add_Edges_For_FS (FS_Proof_Ins, Proof_Ins);
-                  Add_Edges_For_FS (FS_Reads,     Inputs);
-                  Add_Edges_For_FS (FS_Writes,    Outputs);
+                     procedure Add_Edges_For_FS
+                       (FS          : Flow_Id_Sets.Set;
+                        Source_Kind : Global_Kind);
+                     --  Adds an edge from From to every Flow_Id in FS
+
+                     ----------------------
+                     -- Add_Edges_For_FS --
+                     ----------------------
+
+                     procedure Add_Edges_For_FS
+                       (FS          : Flow_Id_Sets.Set;
+                        Source_Kind : Global_Kind)
+                     is
+                        subtype Source_Global is Global_Id (Source_Kind);
+
+                        Source : Source_Global;
+
+                     begin
+                        Source.Name := N;
+
+                        for F of FS loop
+                           declare
+                              Nam : constant Entity_Name :=
+                                (case F.Kind is
+                                    when Direct_Mapping |
+                                         Record_Field   =>
+                                       To_Entity_Name
+                                         (Get_Direct_Mapping_Id (F)),
+
+                                    when Magic_String =>
+                                       F.Name,
+
+                                    when others =>
+                                       raise Program_Error);
+
+                              Target : constant Global_Id (Variable) :=
+                                (Kind => Variable,
+                                 Name => Nam);
+
+                           begin
+                              Global_Graph.Include_Vertex (Target);
+
+                              --  Add edge or do nothing if it already exists
+                              Global_Graph.Add_Edge (Source, Target);
+                           end;
+                        end loop;
+                     end Add_Edges_For_FS;
+
+                  begin
+                     Get_Globals (Subprogram => Subprogram,
+                                  Scope      => Get_Flow_Scope (Subprogram),
+                                  Classwide  => False,
+                                  Proof_Ins  => FS_Proof_Ins,
+                                  Reads      => FS_Reads,
+                                  Writes     => FS_Writes);
+
+                     Add_Edges_For_FS (FS_Proof_Ins, Proof_Ins);
+                     Add_Edges_For_FS (FS_Reads,     Inputs);
+                     Add_Edges_For_FS (FS_Writes,    Outputs);
+                  end;
                end if;
             end;
          end loop;
