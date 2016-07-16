@@ -956,22 +956,22 @@ package body Flow_Generated_Globals.Phase_2 is
                Connect (Info.Inputs,       (1 => (Inputs,    Variable)));
                Connect (Info.Outputs,      (1 => (Outputs,   Variable)));
 
-               --  Connect the subprogram's Proof_Ins vertex to the callee's
-               --  Ins and Proof_Ins vertices.
+               --  For proof calls connect the subprogram's Proof_Ins vertex to
+               --  the callee's Ins and Proof_Ins vertices.
                Connect (Info.Proof_Calls,
                         (1 => (Proof_Ins, Proof_Ins),
                          2 => (Proof_Ins, Inputs)));
 
-               --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
-               --  respectively to the callee's Proof_Ins, Ins and Outs
-               --  vertices.
+               --  For definite calls connect the subprogram's Proof_Ins, Ins
+               --  and Outs vertices respectively to the callee's Proof_Ins,
+               --  Ins and Outs vertices.
                Connect (Info.Definite_Calls,
                         (1 => (Proof_Ins, Proof_Ins),
                          2 => (Inputs,    Inputs),
                          3 => (Outputs,   Outputs)));
 
-               --  As above but also add an edge from the subprogram's Ins
-               --  vertex to the callee's Outs vertex.
+               --  For conditional calls do as above, but also add an edge from
+               --  the subprogram's Ins vertex to the callee's Outs vertex.
                Connect (Info.Conditional_Calls,
                         (1 => (Proof_Ins, Proof_Ins),
                          2 => (Inputs,    Inputs),
