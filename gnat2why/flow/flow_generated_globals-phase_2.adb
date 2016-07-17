@@ -2004,8 +2004,7 @@ package body Flow_Generated_Globals.Phase_2 is
                  and then Ekind (Const) = E_Constant
                  and then not Has_Variable_Input (Direct_Mapping_Id (Const))
                then
-                  --  Remove all edges going in and out of a constant without
-                  --  variable input.
+                  --  Remove all incoming edges
                   declare
                      Const_V : constant Vertex_Id :=
                        Global_Graph.Get_Vertex (Global_Id'(Kind => Variable,
