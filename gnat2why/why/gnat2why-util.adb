@@ -307,7 +307,7 @@ package body Gnat2Why.Util is
          --  behavior is to print private types as if they were public.
 
          E_Type : constant Entity_Id :=
-                    Get_Full_Type_Without_Checking (Etype (E));
+                    Retysp (Etype (E));
       begin
          case Ekind (E_Type) is
             when Scalar_Kind =>
