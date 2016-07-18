@@ -943,14 +943,70 @@ package body Flow.Analysis.Sanity is
       end loop;
    end Check_Generated_Refined_Global;
 
+   -------------------
+   -- Check_Part_Of --
+   -------------------
+
    procedure Check_Part_Of
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
 
+      procedure Check (E : in out Node_Or_Entity_Id);
+      --  We make the check for each entity E we are interested in:
+      --  * either a constant with variable input declared immidiately within
+      --    the private part of the package
+      --  * or a package declared immidiately within the private part of the
+      --    package
+      --
+      --  In particular, in case E is an object declaration we detect if it is
+      --  a constant with variable input, if it is a package declaration we
+      --  recursively check the same for each of its visible variables.
+
       procedure Detect_Constant_With_Variable_Input (E : Entity_Id);
       --  If entity E is a non deferred constant with variable input which does
       --  not have a Part_Of indicator then we issue an Error message.
+
+      -----------
+      -- Check --
+      -----------
+
+      procedure Check (E : in out Node_Or_Entity_Id)
+      is
+      begin
+         while Present (E) loop
+            case Nkind (E) is
+               when N_Object_Declaration =>
+                  --  E is declared immidiately within the private part
+
+                  Detect_Constant_With_Variable_Input
+                    (Defining_Identifier (E));
+
+               when N_Package_Declaration =>
+                  --  E is a package declared immediately within the private
+                  --  part.
+
+                  declare
+                     Nested_Spec : constant Entity_Id :=
+                       Specification (E);
+
+                     Visible_Decls : constant List_Id :=
+                       Visible_Declarations (Nested_Spec);
+
+                     Visible_Element : Node_Or_Entity_Id :=
+                       First (Visible_Decls);
+
+                  begin
+                     Check (Visible_Element);
+                  end;
+
+               when others =>
+                  null;
+            end case;
+
+            Next (E);
+         end loop;
+      end Check;
 
       -----------------------------------------
       -- Detect_Constant_With_Variable_Input --
@@ -999,47 +1055,8 @@ package body Flow.Analysis.Sanity is
 
       Current_Element := First (Private_Declarations
                                 (Parent (FA.Spec_Entity)));
-      while Present (Current_Element) loop
 
-         case Nkind (Current_Element) is
-            when N_Object_Declaration =>
-               --  Current_Element is declared immidiately within the private
-               --  part.
-
-               Detect_Constant_With_Variable_Input
-                 (Defining_Identifier (Current_Element));
-
-            when N_Package_Declaration =>
-               --  Current_Element is a package declared immediately within the
-               --  private part.
-
-               declare
-                  Nested_Spec : constant Entity_Id :=
-                    Specification (Current_Element);
-
-                  Visible_Decls : constant List_Id :=
-                    Visible_Declarations (Nested_Spec);
-
-                  Visible_Element : Node_Or_Entity_Id := First (Visible_Decls);
-
-               begin
-                  --  Loop over the visible state(s) of the package
-                  while Present (Visible_Element) loop
-                     if Nkind (Visible_Element) = N_Object_Declaration then
-                        Detect_Constant_With_Variable_Input
-                          (Defining_Identifier (Visible_Element));
-                     end if;
-
-                     Next (Visible_Element);
-                  end loop;
-               end;
-
-            when others =>
-               null;
-         end case;
-
-         Next (Current_Element);
-      end loop;
+      Check (Current_Element);
 
    end Check_Part_Of;
 

@@ -22,6 +22,13 @@ private
         with Abstract_State => (Bla2 with Part_Of => Bla)
       is
          Max6 : constant Natural := V_Ext; -- needs Part_Of
+         package Q is
+            Max7 : constant Natural := V_Ext; -- needs Part_Of
+            package S is
+               Max8 : constant Natural := V_Ext; -- needs Part_Of
+               Max9 : constant Natural := V_Ext; -- needs Part_Of
+            end S;
+         end Q;
       end R;
    end Ring_Buffer;
 
