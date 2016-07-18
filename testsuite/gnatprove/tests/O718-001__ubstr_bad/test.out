@@ -1,0 +1,9 @@
+aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:59: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:10
+main.adb:16:04: info: initialization of "N" proved
+main.adb:18:30: info: initialization of "Tag_V" proved
+main.adb:21:15: info: initialization of "Tag_V" proved
+main.adb:26:30: info: precondition proved (CVC4: 1 VC)
+main.adb:26:89: info: initialization of "N" proved
+main.adb:29:21: info: initialization of "Tag_V" proved
+main.adb:30:30: info: precondition proved (CVC4: 1 VC)
+main.adb:30:47: info: initialization of "Tag_V" proved
