@@ -1295,7 +1295,7 @@ package body SPARK_Util is
 
             if Present (Corresponding_Discriminant (Comp)) then
                Comp     := Corresponding_Discriminant (Comp);
-               Cur_Type := Scope (Comp);
+               Cur_Type := Retysp (Scope (Comp));
 
             --  Otherwise, just climb the type derivation/subtyping chain
 
@@ -1303,7 +1303,9 @@ package body SPARK_Util is
                declare
                   Old_Type : constant Entity_Id := Cur_Type;
                begin
-                  Cur_Type := Retysp (Etype (Cur_Type));
+                  Cur_Type := (if Full_View_Not_In_SPARK (Cur_Type)
+                               then Get_First_Ancestor_In_SPARK (Cur_Type)
+                               else Retysp (Etype (Cur_Type)));
                   pragma Assert (Cur_Type /= Old_Type);
                   Comp := Search_Component_By_Name (Cur_Type, Comp);
                end;

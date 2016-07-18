@@ -19,14 +19,14 @@ module Ada__containers__formal_hashed_maps__map
   use Ada__containers__hash_type
   use Ada__containers__count_type
 
-  type __split_discrs = { rec__capacity : Ada__containers__count_type.count_type;
-                          rec__modulus : Ada__containers__hash_type.hash_type }
+  type __split_discrs = { rec__ada__containers__formal_hashed_maps__map__capacity : Ada__containers__count_type.count_type;
+                          rec__ada__containers__formal_hashed_maps__map__modulus : Ada__containers__hash_type.hash_type }
 
   type __split_discrs__ref = { mutable __split_discrs__content : __split_discrs }
   val __split_discrs__havoc (x : __split_discrs__ref) : unit
      writes { x }
 
-  type __split_fields = { rec__main__ : __private }
+  type __split_fields = { rec__ada__containers__formal_hashed_maps__map : __private }
 
   type __split_fields__ref = { mutable __split_fields__content : __split_fields }
   val __split_fields__havoc (x : __split_fields__ref) : unit
@@ -39,10 +39,10 @@ module Ada__containers__formal_hashed_maps__map
      writes { x }
 
   predicate map_inv "inline" (l : map) =
-     l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity; rec__modulus = l.__split_discrs.rec__modulus }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
+     l = { __split_discrs = { rec__ada__containers__formal_hashed_maps__map__capacity = l.__split_discrs.rec__ada__containers__formal_hashed_maps__map__capacity; rec__ada__containers__formal_hashed_maps__map__modulus = l.__split_discrs.rec__ada__containers__formal_hashed_maps__map__modulus }; __split_fields = { rec__ada__containers__formal_hashed_maps__map = l.__split_fields.rec__ada__containers__formal_hashed_maps__map } }
 
    function capacity  (co : map) : int =
-          Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
+          Ada__containers__count_type.to_rep (rec__ada__containers__formal_hashed_maps__map__capacity (__split_discrs co))
 
   function bool_eq map map : bool
   function user_eq map map : bool
@@ -985,10 +985,10 @@ module Ada__containers__formal_hashed_maps__capacity
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
 
-  function capacity__logic (co : map) : Ada__containers__count_type.count_type = rec__capacity (__split_discrs co)
+  function capacity__logic (co : map) : Ada__containers__count_type.count_type = rec__ada__containers__formal_hashed_maps__map__capacity (__split_discrs co)
 
   val capacity (co : map) : Ada__containers__count_type.count_type
-    ensures { result = rec__capacity (__split_discrs co) }
+    ensures { result = rec__ada__containers__formal_hashed_maps__map__capacity (__split_discrs co) }
 end
 
 module Ada__containers__formal_hashed_maps__reserve_capacity
@@ -997,7 +997,7 @@ module Ada__containers__formal_hashed_maps__reserve_capacity
   use import Ada__containers__formal_hashed_maps__map
 
   val reserve_capacity (co:Ada__containers__formal_hashed_maps__map.__split_fields__ref) (cap : Ada__containers__formal_hashed_maps__map.__split_discrs) (c : int) : unit
-    requires { Ada__containers__count_type.to_rep cap.rec__capacity >= c }
+    requires { Ada__containers__count_type.to_rep cap.rec__ada__containers__formal_hashed_maps__map__capacity >= c }
     ensures { co.Ada__containers__formal_hashed_maps__map.__split_fields__content = old co.Ada__containers__formal_hashed_maps__map.__split_fields__content }
 end
 

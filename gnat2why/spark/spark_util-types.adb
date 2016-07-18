@@ -34,12 +34,16 @@ with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
 
 package body SPARK_Util.Types is
 
+   type Record_Info is record
+      Components    : Node_Sets.Set;
+      Variant_Info  : Info_Maps.Map;
+   end record;
+
    package Info_Map_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
-      Element_Type    => Info_Maps.Map,
+      Element_Type    => Record_Info,
       Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Info_Maps."=");
+      Equivalent_Keys => "=");
 
    Comp_Info : Info_Map_Maps.Map := Info_Map_Maps.Empty_Map;
    --  This map maps record types and protected types to a map mapping each
@@ -47,9 +51,19 @@ package body SPARK_Util.Types is
    --  is populated through calls to Init_Component_Info and
    --  Init_Component_Info_For_Protected_Types;
 
-   procedure Init_Component_Info (E : Entity_Id; Info : in out Info_Maps.Map);
+   procedure Init_Component_Info
+     (E    : Entity_Id;
+      Info : in out Record_Info);
    --  Same as Init_Component_Info (E : Entity_Id) except that information
    --  about E's fields is stored in Info.
+   --  @param E record type
+   --  @param Info information that should be updated
+
+   function Search_Component_In_Info
+     (Info : Node_Sets.Set;
+      Comp : Entity_Id)
+      return Entity_Id
+     with Pre => Ekind (Comp) in E_Component | Type_Kind;
 
    ---------------------------------------------
    -- Queries related to representative types --
@@ -244,6 +258,15 @@ package body SPARK_Util.Types is
       end if;
    end Check_Needed_On_Conversion;
 
+   ----------------------------------
+   -- Component_Is_Visible_In_Type --
+   ----------------------------------
+
+   function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
+   is
+     (Ekind (Comp) in E_Discriminant | E_Component
+      and then Present (Search_Component_By_Name (Rec, Comp)));
+
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
    ---------------------------------------
@@ -290,27 +313,10 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
-      Field : Entity_Id;
       Count : Natural := 0;
 
    begin
-      if Has_Record_Type (E) or else Is_Protected_Type (E) then
-         Field := First_Component (E);
-         while Present (Field) loop
-            if not Is_Tag (Field)
-              and then Component_Is_Visible_In_SPARK (Field)
-            then
-               Count := Count + 1;
-            end if;
-            Next_Component (Field);
-         end loop;
-      end if;
-
-      --  Add one field for private types whose components are not visible.
-
-      if Has_Private_Fields (E) then
-         Count := Count + 1;
-      end if;
+      Count := Natural (Get_Component_Set (E).Length);
 
       --  Add one field for tagged types to represent the unknown extension
       --  components. The field for the tag itself is stored directly in the
@@ -318,13 +324,6 @@ package body SPARK_Util.Types is
 
       if Is_Tagged_Type (E) then
          Count := Count + 1;
-
-         --  Add one field for record types with a private ancestor, whose
-         --  components are not visible.
-
-         if Has_Private_Ancestor_Or_Root (E) then
-            Count := Count + 1;
-         end if;
       end if;
 
       if Is_Protected_Type (E) then
@@ -813,22 +812,17 @@ package body SPARK_Util.Types is
       return N;
    end Find_Predicate_Aspect;
 
-   ------------------------
-   -- Get_Component_Info --
-   ------------------------
+   -----------------------
+   -- Get_Component_Set --
+   -----------------------
 
-   function Get_Component_Info (E : Entity_Id) return Info_Maps.Map is
-      Ty : constant Entity_Id := Retysp (E);
+   function Get_Component_Set (E : Entity_Id) return Node_Sets.Set is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (E)
+                then Get_Specific_Type_From_Classwide (E) else E);
    begin
-      case Ekind (Ty) is
-         when E_Record_Subtype | E_Record_Subtype_With_Private =>
-            return Comp_Info.Element (Retysp (Etype (Ty)));
-         when E_Record_Type | E_Record_Type_With_Private | Concurrent_Kind =>
-            return Comp_Info.Element (Ty);
-         when others =>
-            return Info_Maps.Empty_Map;
-      end case;
-   end Get_Component_Info;
+      return Comp_Info.Element (Ty).Components;
+   end Get_Component_Set;
 
    ------------------------------------
    -- Get_Full_Type_Without_Checking --
@@ -874,6 +868,23 @@ package body SPARK_Util.Types is
       end if;
    end Get_Specific_Type_From_Classwide;
 
+   ----------------------
+   -- Get_Variant_Info --
+   ----------------------
+
+   function Get_Variant_Info (E : Entity_Id) return Info_Maps.Map is
+      Ty : constant Entity_Id := Retysp (E);
+   begin
+      case Ekind (Ty) is
+         when E_Record_Subtype | E_Record_Subtype_With_Private =>
+            return Comp_Info.Element (Retysp (Etype (Ty))).Variant_Info;
+         when E_Record_Type | E_Record_Type_With_Private | Concurrent_Kind =>
+            return Comp_Info.Element (Ty).Variant_Info;
+         when others =>
+            return Info_Maps.Empty_Map;
+      end case;
+   end Get_Variant_Info;
+
    ----------------------------------
    -- Has_Private_Ancestor_Or_Root --
    ----------------------------------
@@ -913,27 +924,29 @@ package body SPARK_Util.Types is
    ------------------------
 
    function Has_Private_Fields (E : Entity_Id) return Boolean is
-      Ancestor : Entity_Id := E;
+      Ty : constant Entity_Id := Retysp (E);
    begin
-      if not Full_View_Not_In_SPARK (E) then
+      if not Full_View_Not_In_SPARK (Ty) then
          return False;
       end if;
 
-      if Is_Task_Type (E) then
-         return True;
+      --  Subtypes don't have private fields of their own.
+
+      if Ekind (Ty) in Subtype_Kind then
+         return False;
       end if;
 
-      --  Go to the first new type in E's hierarchy
+      --  Derived non-tagged types cannot have private fields of their own.
 
-      while Ekind (Ancestor) in Subtype_Kind loop
-         pragma Assert (Full_View_Not_In_SPARK (Ancestor));
-         pragma Assert (Ancestor /= Get_First_Ancestor_In_SPARK (Ancestor));
-         Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
-      end loop;
+      if not Is_Tagged_Type (Ty)
+        and then Get_First_Ancestor_In_SPARK (Ty) /= Ty
+      then
+         return False;
+      end if;
 
-      --  Return True if it is a private type
+      --  Return True if Ty is a private type
 
-      return Ekind (Ancestor) in Private_Kind;
+      return Ekind (Ty) in Private_Kind;
    end Has_Private_Fields;
 
    -----------------------------------
@@ -949,7 +962,9 @@ package body SPARK_Util.Types is
    -- Init_Component_Info --
    -------------------------
 
-   procedure Init_Component_Info (E : Entity_Id; Info : in out Info_Maps.Map)
+   procedure Init_Component_Info
+     (E    : Entity_Id;
+      Info : in out Record_Info)
    is
 
       procedure Mark_Component_List
@@ -974,17 +989,9 @@ package body SPARK_Util.Types is
          Field : Node_Id := First (Component_Items (N));
       begin
          while Present (Field) loop
-            if Nkind (Field) /= N_Pragma
-
-            --  Field may already be in Info if we are initializing info for
-            --  a descendant of E.
-
-              and then not
-                Info.Contains
-                  (Representative_Component (E, Defining_Identifier (Field)))
-            then
-               Info.Insert
-                 (Representative_Component (E, Defining_Identifier (Field)),
+            if Nkind (Field) /= N_Pragma then
+               Info.Variant_Info.Insert
+                 (Defining_Identifier (Field),
                   Component_Info'(
                     Parent_Variant  => Parent_Variant,
                     Parent_Var_Part => Parent_Var_Part));
@@ -1010,8 +1017,9 @@ package body SPARK_Util.Types is
          Var : Node_Id := First (Variants (N));
 
       begin
-         Info.Insert (N, Component_Info'(Parent_Variant  => Parent_Variant,
-                                         Parent_Var_Part => Parent_Var_Part));
+         Info.Variant_Info.Insert
+           (N, Component_Info'(Parent_Variant  => Parent_Variant,
+                               Parent_Var_Part => Parent_Var_Part));
 
          while Present (Var) loop
             Mark_Component_List (Component_List (Var), N, Var);
@@ -1051,7 +1059,7 @@ package body SPARK_Util.Types is
 
    begin
       while Present (Discr) loop
-         Info.Insert
+         Info.Variant_Info.Insert
            (Defining_Identifier (Discr),
             Component_Info'
               (Parent_Variant  => Empty,
@@ -1062,6 +1070,31 @@ package body SPARK_Util.Types is
       if Present (Components) then
          Mark_Component_List (Components, Empty, Empty);
       end if;
+
+      --  We only store in Components the fisrt version of a field that we
+      --  encounter so that its type is as specialized as possible.
+
+      declare
+         Comp : Node_Id := First_Component (E);
+      begin
+         while Present (Comp) loop
+            if Component_Is_Visible_In_SPARK (Comp)
+              and then No (Search_Component_In_Info (Info.Components, Comp))
+            then
+               Info.Components.Insert (Comp);
+            end if;
+            Next_Component (Comp);
+         end loop;
+      end;
+
+      --  If the type has private fields that are not visible in SPARK, add the
+      --  type to the list of components to model these fields.
+
+      if Has_Private_Fields (E) then
+         Info.Components.Insert (E);
+      end if;
+
+      --  Add components of ancestor types.
 
       if Ancestor_Type /= E then
          Init_Component_Info (Ancestor_Type, Info);
@@ -1078,7 +1111,27 @@ package body SPARK_Util.Types is
 
       pragma Assert (Inserted);
 
-      Init_Component_Info (E, Comp_Info (Position));
+      --  We can only initialize Variant_Info on new type definitions. For
+      --  subtypes, we copy the parent's Components and update the fields
+      --  to take the most precise ones from the subtype.
+
+      if Ekind (E) in Subtype_Kind then
+         for Field of Get_Component_Set (Etype (E)) loop
+
+            --  If field is hidden in Etype (E), copy it to E
+
+            if Ekind (Field) in Type_Kind
+              or else No (Search_Component_By_Name (E, Field))
+            then
+               Comp_Info (Position).Components.Insert (Field);
+            else
+               Comp_Info (Position).Components.Insert
+                 (Search_Component_By_Name (E, Field));
+            end if;
+         end loop;
+      else
+         Init_Component_Info (E, Comp_Info (Position));
+      end if;
    end Init_Component_Info;
 
    ---------------------------------------------
@@ -1087,6 +1140,7 @@ package body SPARK_Util.Types is
 
    procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
       Info  : Info_Maps.Map;
+      Comps : Node_Sets.Set;
       Field : Entity_Id := First_Entity (E);
    begin
       while Present (Field) loop
@@ -1095,9 +1149,19 @@ package body SPARK_Util.Types is
               (Field,
                Component_Info'(others => Empty));
          end if;
+
+         if Ekind (Field) = E_Component then
+            pragma Assert (Component_Is_Visible_In_SPARK (Field));
+            Comps.Insert (Field);
+         end if;
          Next_Entity (Field);
       end loop;
-      Comp_Info.Insert (E, Info);
+
+      if Has_Private_Fields (E) then
+         Comps.Insert (E);
+      end if;
+
+      Comp_Info.Insert (E, (Variant_Info => Info, Components => Comps));
    end Init_Component_Info_For_Protected_Types;
 
    -------------------
@@ -1152,6 +1216,39 @@ package body SPARK_Util.Types is
       return Etype (Index);
    end Nth_Index_Type;
 
+   --------------------------
+   -- Original_Declaration --
+   --------------------------
+
+   function Original_Declaration (Comp : Entity_Id) return Entity_Id
+   is
+     (if Ekind (Comp) in Type_Kind then Comp
+      elsif Is_Tagged_Type (Retysp (Scope (Comp)))
+      then Retysp (Scope (Original_Record_Component (Comp)))
+      else Root_Record_Type (Scope (Comp)));
+
+   ---------------------------------------
+   -- Private_Declarations_Of_Prot_Type --
+   ---------------------------------------
+
+   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
+   is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
+
+   ---------------------------------------
+   -- Private_Declarations_Of_Task_Type --
+   ---------------------------------------
+
+   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   is
+      Def : constant Node_Id := Task_Type_Definition (E);
+   begin
+      if Present (Def) then
+         return Private_Declarations (Def);
+      else
+         return Empty_List;
+      end if;
+   end Private_Declarations_Of_Task_Type;
+
    --------------------
    -- Protected_Body --
    --------------------
@@ -1175,21 +1272,6 @@ package body SPARK_Util.Types is
    begin
       return Protected_Definition (Decl);
    end Protected_Type_Definition;
-
-   ------------------------------
-   -- Representative_Component --
-   ------------------------------
-
-   function Representative_Component
-     (Rec : Entity_Id; Comp : Entity_Id)
-      return Entity_Id
-   is
-     (if Is_Tagged_Type (Rec) then Original_Record_Component (Comp)
-      else Search_Component_By_Name (Root_Record_Type (Rec), Comp));
-   --  Return the original record component on tagged types. On non tagged
-   --  types, original_record_component returns the component in the first
-   --  nouveau type in Rec's ancestors. Get the component form the root type
-   --  in this case.
 
    ---------------------------------
    -- Requires_Interrupt_Priority --
@@ -1267,8 +1349,62 @@ package body SPARK_Util.Types is
          end if;
       end loop;
 
-      return Result;
+      return Retysp (Result);
    end Root_Record_Type;
+
+   ------------------------------
+   -- Search_Component_In_Info --
+   ------------------------------
+
+   function Search_Component_In_Info
+     (Info : Node_Sets.Set;
+      Comp : Entity_Id)
+       return Entity_Id
+   is
+   begin
+      for Cur_Comp of Info loop
+         if Chars (Cur_Comp) = Chars (Comp) then
+
+            --  We have found a field with the same name. If the type is not
+            --  tagged, we have found the correct component. Otherwise, either
+            --  it has the same Original_Record_Component and it is the field
+            --  we were looking for or it does not and we continue searching.
+
+            if not Is_Tagged_Type (Scope (Comp))
+              or else (Ekind (Comp) in Type_Kind
+                       and then Ekind (Cur_Comp) in Type_Kind
+                       and then Comp = Cur_Comp)
+              or else (Ekind (Comp) = E_Component
+                       and then Ekind (Cur_Comp) = E_Component
+                       and then Original_Record_Component (Cur_Comp) =
+                           Original_Record_Component (Comp))
+            then
+               return Cur_Comp;
+            end if;
+         end if;
+      end loop;
+      return Empty;
+   end Search_Component_In_Info;
+
+   ------------------------------
+   -- Search_Component_In_Type --
+   ------------------------------
+
+   function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
+   is
+   begin
+      if Ekind (Comp) = E_In_Parameter then
+
+         return Search_Component_By_Name (Rec, Comp);
+      elsif Ekind (Comp) = E_Discriminant then
+         return Root_Record_Component (Comp);
+      else
+         pragma Assert (Ekind (Comp) = E_Component
+                        or else Ekind (Comp) in Type_Kind);
+
+         return Search_Component_In_Info (Get_Component_Set (Rec), Comp);
+      end if;
+   end Search_Component_In_Type;
 
    -------------------------
    -- Static_Array_Length --
@@ -1342,27 +1478,5 @@ package body SPARK_Util.Types is
          return Empty_List;
       end if;
    end Visible_Declarations_Of_Task_Type;
-
-   ---------------------------------------
-   -- Private_Declarations_Of_Prot_Type --
-   ---------------------------------------
-
-   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
-   is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
-
-   ---------------------------------------
-   -- Private_Declarations_Of_Task_Type --
-   ---------------------------------------
-
-   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
-   is
-      Def : constant Node_Id := Task_Type_Definition (E);
-   begin
-      if Present (Def) then
-         return Private_Declarations (Def);
-      else
-         return Empty_List;
-      end if;
-   end Private_Declarations_Of_Task_Type;
 
 end SPARK_Util.Types;

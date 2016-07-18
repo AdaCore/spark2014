@@ -8837,10 +8837,8 @@ package body Gnat2Why.Expr is
                else
                   declare
 
-                     Name : constant W_Identifier_Id := New_Identifier
-                       (Name   => Short_Name (Component) & "__first__bit",
-                        Module => E_Module (Etype (Prefix (Var))),
-                        Domain => EW_Term);
+                     Name : constant W_Identifier_Id :=
+                       E_Symb (Component, WNE_Attr_First_Bit);
 
                   begin
                      return New_Call (Ada_Node => Expr,
@@ -8876,10 +8874,8 @@ package body Gnat2Why.Expr is
                else
                   declare
 
-                     Name : constant W_Identifier_Id := New_Identifier
-                       (Name   => Short_Name (Component) & "__last__bit",
-                        Module => E_Module (Etype (Prefix (Var))),
-                        Domain => EW_Term);
+                     Name : constant W_Identifier_Id :=
+                       E_Symb (Component, WNE_Attr_Last_Bit);
 
                   begin
                      return New_Call (Ada_Node => Expr,
@@ -8909,10 +8905,8 @@ package body Gnat2Why.Expr is
                   end if;
                else
                   declare
-                     Name : constant W_Identifier_Id := New_Identifier
-                       (Name   => Short_Name (Component) & "__position",
-                        Module => E_Module (Etype (Prefix (Var))),
-                        Domain => EW_Term);
+                     Name : constant W_Identifier_Id :=
+                       E_Symb (Component, WNE_Attr_Position);
 
                   begin
                      return New_Call (Ada_Node => Expr,
@@ -10114,20 +10108,14 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
                Tmp : constant W_Expr_Id := New_Temp_For_Expr (Anc_Expr);
-               Anc_Num_Discrs : constant Natural :=
-                 (if Has_Discriminants (Anc_Ty) then
-                    Natural (Number_Discriminants (Anc_Ty))
-                  else 0);
                pragma Assert (if Has_Private_Ancestor (Anc_Ty)
                               then Has_Private_Ancestor (Expr_Type));
                Anc_Num_Fields : constant Natural :=
-                 Count_Why_Regular_Fields (Expr_Type) - Assocs'Length - 1;
+                 Count_Why_Regular_Fields (Anc_Ty) - 1;
 
-               --  The number of missing fields from the aggregate minus the
-               --  extension.
+               --  The number of fields in the ancestor type minus the tag.
 
-               Anc_Discr_Assocs : W_Field_Association_Array
-                                    (1 .. Anc_Num_Discrs);
+               Anc_Discr_Expr   : W_Expr_Id;
                Anc_Field_Assocs : W_Field_Association_Array
                                     (1 .. Anc_Num_Fields);
 
@@ -10137,14 +10125,15 @@ package body Gnat2Why.Expr is
                   Expr         => Tmp,
                   Anc_Ty       => Anc_Ty,
                   Ty           => Expr_Type,
-                  Discr_Assocs => Anc_Discr_Assocs,
+                  Discr_Expr   => Anc_Discr_Expr,
                   Field_Assocs => Anc_Field_Assocs);
                T :=
                  New_Ada_Record_Aggregate
                    (Domain       => Domain,
-                    Discr_Assocs => Anc_Discr_Assocs,
+                    Discr_Expr   => Anc_Discr_Expr,
                     Field_Assocs => Anc_Field_Assocs & Assocs,
-                    Ty           => Expr_Type);
+                    Ty           => Expr_Type,
+                    Anc_Ty       => Anc_Ty);
                T := Binding_For_Temp (Domain   => Domain,
                                       Tmp      => Tmp,
                                       Context  => T);
@@ -13229,7 +13218,7 @@ package body Gnat2Why.Expr is
 
                pragma Assert (Present (Associated_Node (Choice)));
 
-               Component := Search_Component_By_Name
+               Component := Search_Component_In_Type
                  (Typ, Associated_Node (Choice));
                pragma Assert (Present (Component));
 
@@ -13260,13 +13249,14 @@ package body Gnat2Why.Expr is
                if Ekind (Component) = E_Discriminant then
                   Discr_Assoc (Discr_Index) := New_Field_Association
                     (Domain => Domain,
-                     Field  => To_Why_Id (Component),
+                     Field  => To_Why_Id
+                       (Component, Rec => Root_Record_Type (Typ)),
                      Value  => Expr);
                   Discr_Index := Discr_Index + 1;
                else
                   Field_Assoc (Field_Index) := New_Field_Association
                     (Domain => Domain,
-                     Field  => To_Why_Id (Component),
+                     Field  => To_Why_Id (Component, Rec => Typ),
                      Value  => Expr);
                   Field_Index := Field_Index + 1;
                end if;

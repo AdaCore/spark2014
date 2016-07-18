@@ -215,26 +215,12 @@ package Why.Gen.Names is
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
-      --  Name of the Why3 field representing invisible private components in
-      --  a private type.
-      WNE_Rec_Main,  --  rec__main__
-
       --  Name of the Why3 field representing extension components in a tagged
       --  type or a class-wide type.
       WNE_Rec_Extension,  --  rec__ext__
 
-      --  Name of the Why3 field representing invisible ancestor components in
-      --  record with a private ancestor.
-      WNE_Rec_Ancestor,  --  rec__anc__
-
-      --  Suffix of the above main field, to be used in related functions
-      WNE_Rec_Main_Suffix,  --  main__
-
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__
-
-      --  Suffix of the above ancestor field, to be used in related functions
-      WNE_Rec_Ancestor_Suffix,  --  anc__
 
       --  Name of the record type in a representative record theory
       WNE_Rec_Rep,
@@ -246,10 +232,6 @@ package Why.Gen.Names is
       --  special extension field rec__ext__ in the derived type, to generate
       --  a value of the special extension field rec__ext__ in the root type.
       WNE_Hide_Extension,  --  hide_ext__
-
-      --  Name of the function hiding ancestor components in a derived tagged
-      --  type with private ancestor
-      WNE_Hide_Ancestor,  --  hide_anc__
 
       --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,
@@ -280,10 +262,6 @@ package Why.Gen.Names is
       --  Prefix for name of functions which extract the value of an extension
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,
-
-      --  Prefix for name of functions which extract the value of an ancestor
-      --  component from the ancestor field of a value of the derived type.
-      WNE_Ancestor_Prefix,
 
       --  Name of module containing the functions which correspond to the
       --  dispatching version of a primitive operation of a tagged type.

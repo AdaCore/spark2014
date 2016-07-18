@@ -175,7 +175,7 @@ module Sums__slice_bounds
 
  (* Fields for record type *)
  type __split_fields  =
-  { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
+  { rec__sums__slice_bounds__lo : Sums__index.index; rec__sums__slice_bounds__hi : Sums__extended_index.extended_index }
 
  type __split_fields__ref = { mutable __split_fields__content : __split_fields }
  val __split_fields__havoc (x : __split_fields__ref) : unit
@@ -190,37 +190,37 @@ module Sums__slice_bounds
    writes { x }
 
  (* Helper function *)
- function _rec__lo "inline" (b : slice_bounds) : int =
-   	  Sums__index.to_rep (rec__lo (__split_fields (b)))
+ function _rec__sums__slice_bounds__lo "inline" (b : slice_bounds) : int =
+   	  Sums__index.to_rep (rec__sums__slice_bounds__lo (__split_fields (b)))
 
  (* Helper function *)
- function _rec__hi "inline" (b : slice_bounds) : int =
-   	  Sums__extended_index.to_rep (rec__hi (__split_fields (b)))
+ function _rec__sums__slice_bounds__hi "inline" (b : slice_bounds) : int =
+   	  Sums__extended_index.to_rep (rec__sums__slice_bounds__hi (__split_fields (b)))
 
  (* Condition to be allowed to access Lo *)
- predicate lo__pred  (a : slice_bounds) =
+ predicate sums__slice_bounds__lo__pred  (a : slice_bounds) =
   true
 
- val rec__lo_
+ val rec__sums__slice_bounds__lo_
    (a : slice_bounds)  :Sums__index.index
-  requires { lo__pred a }
-  ensures  { result = a.__split_fields.rec__lo }
+  requires { sums__slice_bounds__lo__pred a }
+  ensures  { result = a.__split_fields.rec__sums__slice_bounds__lo }
 
 
  (* Condition to be allowed to access Hi *)
- predicate hi__pred  (a : slice_bounds) =
+ predicate sums__slice_bounds__hi__pred  (a : slice_bounds) =
   true
 
- val rec__hi_
+ val rec__sums__slice_bounds__hi_
    (a : slice_bounds)  :Sums__extended_index.extended_index
-  requires { hi__pred a }
-  ensures  { result = a.__split_fields.rec__hi }
+  requires { sums__slice_bounds__hi__pred a }
+  ensures  { result = a.__split_fields.rec__sums__slice_bounds__hi }
 
 
  (* Equality function over slice_bounds *)
  function bool_eq  (a : slice_bounds) (b : slice_bounds) : bool =
-  if  a.__split_fields.rec__lo = b.__split_fields.rec__lo /\
-      a.__split_fields.rec__hi = b.__split_fields.rec__hi then True else False
+  if  a.__split_fields.rec__sums__slice_bounds__lo = b.__split_fields.rec__sums__slice_bounds__lo /\
+      a.__split_fields.rec__sums__slice_bounds__hi = b.__split_fields.rec__sums__slice_bounds__hi then True else False
 
  function dummy : slice_bounds
 end
@@ -250,34 +250,34 @@ module Sums__sum
       [sum__logic v b].
       Standard__integer.in_range (sum__logic v b) /\
       (* Case of the empty slice *)
-      (_rec__lo b > _rec__hi b -> _sum v b = 0) /\
+      (_rec__sums__slice_bounds__lo b > _rec__sums__slice_bounds__hi b -> _sum v b = 0) /\
 
       (* Case of a non-empty slice  *)
-      (first v <= _rec__lo b <= _rec__hi b <= last v ->
+      (first v <= _rec__sums__slice_bounds__lo b <= _rec__sums__slice_bounds__hi b <= last v ->
 
          (* If the slice only contains one element *)
-         (_rec__lo b = _rec__hi b -> _sum v b = _get v (_rec__lo b)) /\
+         (_rec__sums__slice_bounds__lo b = _rec__sums__slice_bounds__hi b -> _sum v b = _get v (_rec__sums__slice_bounds__lo b)) /\
 
          (* Link to smaller slices of the same vector *)
          (forall b1 : slice_bounds [sum__logic v b1].
 
              (* Ending at the same index *)
-             ((_rec__hi b1 = _rec__hi b /\ _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
+             ((_rec__sums__slice_bounds__hi b1 = _rec__sums__slice_bounds__hi b /\ _rec__sums__slice_bounds__lo b < _rec__sums__slice_bounds__lo b1 <= _rec__sums__slice_bounds__hi b) ->
               let b2 = {__split_fields =
-	      	         {rec__lo = rec__lo (__split_fields b);
-                          rec__hi = Sums__extended_index.of_rep ((_rec__lo b1) - 1)}} in
+	      	         {rec__sums__slice_bounds__lo = rec__sums__slice_bounds__lo (__split_fields b);
+                          rec__sums__slice_bounds__hi = Sums__extended_index.of_rep ((_rec__sums__slice_bounds__lo b1) - 1)}} in
                  _sum v b = _sum v b1 + _sum v b2) /\
              (* Sartind at the same index *)
-             ((_rec__lo b1 = _rec__lo b /\ _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
+             ((_rec__sums__slice_bounds__lo b1 = _rec__sums__slice_bounds__lo b /\ _rec__sums__slice_bounds__lo b <= _rec__sums__slice_bounds__hi b1 < _rec__sums__slice_bounds__hi b) ->
               let b2 = {__split_fields =
-	      	         {rec__lo = Sums__index.of_rep ((_rec__hi b1) + 1);
-                          rec__hi = rec__hi (__split_fields b)}} in
+	      	         {rec__sums__slice_bounds__lo = Sums__index.of_rep ((_rec__sums__slice_bounds__hi b1) + 1);
+                          rec__sums__slice_bounds__hi = rec__sums__slice_bounds__hi (__split_fields b)}} in
                  _sum v b = _sum v b1 + _sum v b2)))
 
  (* Program partial function with a precondition for sum *)
  val sum (x : vector) (bounds : slice_bounds)  :int
-  requires { _rec__lo bounds > _rec__hi bounds \/
-             first x <= _rec__lo bounds /\ _rec__hi bounds <= last x }
+  requires { _rec__sums__slice_bounds__lo bounds > _rec__sums__slice_bounds__hi bounds \/
+             first x <= _rec__sums__slice_bounds__lo bounds /\ _rec__sums__slice_bounds__hi bounds <= last x }
   ensures  { result = sum__logic x bounds }
 
 end

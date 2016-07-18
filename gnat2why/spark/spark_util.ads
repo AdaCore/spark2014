@@ -272,6 +272,7 @@ package SPARK_Util is
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
+   --  In particular returns empty on hidden components.
 
    --------------------------------
    -- Queries related to pragmas --

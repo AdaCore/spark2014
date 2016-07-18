@@ -1194,24 +1194,20 @@ package body Why.Inter is
       --  expressed wrt to their record.
 
       if (Ekind (E) in E_Component | E_Discriminant
-            or else Is_Part_Of_Protected_Object (E))
+          or else Is_Part_Of_Protected_Object (E)
+          or else Rec /= Empty)
           and then not No_Comp
       then
+         pragma Assert (Rec /= Empty);
          declare
-            Ada_N : constant Node_Id :=
-              Retysp (if Rec /= Empty then Rec
-                      elsif Is_Part_Of_Protected_Object (E) then
-                           Etype (Get_Enclosing_Concurrent_Object (E))
-                      else Scope (E));
-            Module : constant W_Module_Id :=
-              E_Module (if Rec = Empty and then Ekind (E) = E_Discriminant then
-                             Root_Record_Type (Ada_N)
-                        else Ada_N);
-            Field : constant String :=
-              To_String (WNE_Rec_Comp_Prefix) &
-              (if Is_Tagged_Type (Ada_N)
-               then Full_Name (Original_Record_Component (E))
-               else Get_Name_String (Chars (E)));
+            Ada_N  : constant Node_Id := Retysp (Rec);
+            Module : constant W_Module_Id := E_Module (Ada_N);
+            Orig   : constant Entity_Id :=
+              (if Ekind (E) in E_Component | E_Discriminant | Type_Kind
+               then Representative_Component (E)
+               else E);
+            Field  : constant String :=
+              To_String (WNE_Rec_Comp_Prefix) & (Full_Name (Orig));
          begin
             if Local then
                return New_Identifier (Ada_Node => Ada_N,

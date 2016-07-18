@@ -676,7 +676,6 @@ package body Why.Gen.Names is
    function To_String (W : Why_Name_Enum) return String is
      (case W is
          when WNE_Aggregate_Def_Suffix => "__aggregate_def",
-         when WNE_Ancestor_Prefix      => "extract_anc__",
          when WNE_Array_Component_Type => "component_type",
          when WNE_Array_Type           => "__t",
          when WNE_Attr_Constrained     => "attr__constrained",
@@ -691,10 +690,8 @@ package body Why.Gen.Names is
          when WNE_Hide_Extension       => "hide_ext__",
          when WNE_No_Return_Module     => "No_Return",
          when WNE_Rec_Rep              => "__rep",
-         when WNE_Rec_Ancestor_Suffix  => "anc__",
          when WNE_Rec_Comp_Prefix      => "rec__",
          when WNE_Rec_Extension_Suffix => "ext__",
-         when WNE_Rec_Main_Suffix      => "main__",
          when WNE_Refine_Module        => "Refine",
          when WNE_Ref                  => "__ref",
 
@@ -753,7 +750,6 @@ package body Why.Gen.Names is
               WNE_Float_Round                |
               WNE_Float_Round_Tmp            |
               WNE_Float_Succ                 |
-              WNE_Hide_Ancestor              |
               WNE_Index_Dynamic_Property     |
               WNE_Index_Dynamic_Property_2   |
               WNE_Index_Dynamic_Property_3   |
@@ -769,9 +765,7 @@ package body Why.Gen.Names is
               WNE_Range_Check_Fun_BV_Int     |
               WNE_Range_Pred                 |
               WNE_Range_Pred_BV_Int          |
-              WNE_Rec_Ancestor               |
               WNE_Rec_Extension              |
-              WNE_Rec_Main                   |
               WNE_Tag                        |
               WNE_To_Array                   |
               WNE_To_Base                    |

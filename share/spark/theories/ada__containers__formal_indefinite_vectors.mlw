@@ -123,13 +123,13 @@ module Ada__containers__formal_indefinite_vectors__vector
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
   use        Ada__containers__formal_indefinite_vectors__capacity_range
 
-  type __split_discrs = {rec__capacity : Ada__containers__formal_indefinite_vectors__capacity_range.capacity_range}
+  type __split_discrs = {rec__ada__containers__formal_indefinite_vectors__vector__capacity : Ada__containers__formal_indefinite_vectors__capacity_range.capacity_range}
 
   type __split_discrs__ref = { mutable __split_discrs__content : __split_discrs }
   val __split_discrs__havoc (x : __split_discrs__ref) : unit
      writes { x }
 
-  type __split_fields = { rec__main__ : __private }
+  type __split_fields = { rec__ada__containers__formal_indefinite_vectors__vector : __private }
 
   type __split_fields__ref = { mutable __split_fields__content : __split_fields }
   val __split_fields__havoc (x : __split_fields__ref) : unit
@@ -142,14 +142,14 @@ module Ada__containers__formal_indefinite_vectors__vector
      writes { x }
 
   predicate vector_inv "inline" (l : vector) =
-     l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
+     l = { __split_discrs = { rec__ada__containers__formal_indefinite_vectors__vector__capacity = l.__split_discrs.rec__ada__containers__formal_indefinite_vectors__vector__capacity }; __split_fields = { rec__ada__containers__formal_indefinite_vectors__vector = l.__split_fields.rec__ada__containers__formal_indefinite_vectors__vector } }
 
   (* value of discriminant Capacity is called "initial_capacity" to distinguish from function
      Capacity, which might be different in the unbounded case *)
   function initial_capacity "inline"
     (v : vector)
   : int
-  = Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (rec__capacity (__split_discrs v))
+  = Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (rec__ada__containers__formal_indefinite_vectors__vector__capacity (__split_discrs v))
 
   function bool_eq vector vector : bool
   function user_eq vector vector : bool
@@ -325,7 +325,7 @@ module Ada__containers__formal_indefinite_vectors__reserve_capacity
   use import Ada__containers__formal_indefinite_vectors__Oeq__2
 
   val reserve_capacity (v:Ada__containers__formal_indefinite_vectors__vector.__split_fields__ref) (v_cap : Ada__containers__formal_indefinite_vectors__vector.__split_discrs) (cap : int) : unit
-    requires { Ada__containers__formal_indefinite_vectors__bounded.bounded -> cap <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep v_cap.rec__capacity }
+    requires { Ada__containers__formal_indefinite_vectors__bounded.bounded -> cap <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep v_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
     writes   { v }
     reads    { v }
     ensures  { let rec_v = {Ada__containers__formal_indefinite_vectors__vector.__split_fields = v.Ada__containers__formal_indefinite_vectors__vector.__split_fields__content;
@@ -384,7 +384,7 @@ module Ada__containers__formal_indefinite_vectors__assign
 
   val assign (target:Ada__containers__formal_indefinite_vectors__vector.__split_fields__ref) (t_cap : Ada__containers__formal_indefinite_vectors__vector.__split_discrs) (source : vector) : unit
     requires { Ada__containers__formal_indefinite_vectors__bounded.bounded ->
-                 length_ source <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep t_cap.rec__capacity }
+                 length_ source <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep t_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
     writes   { target }
     reads    { target }
     ensures  { let rec_t = {Ada__containers__formal_indefinite_vectors__vector.__split_fields = target.Ada__containers__formal_indefinite_vectors__vector.__split_fields__content;

@@ -1442,8 +1442,15 @@ package body Why.Atree.Modules is
       ---------------------------
 
       procedure Insert_Object_Symbols (E : Entity_Id) is
-         M    : constant W_Module_Id := E_Module (E);
-         Name : constant String := Short_Name (E);
+         Rec  : constant Entity_Id :=
+           (if Ekind (E) in E_Component | E_Discriminant
+            then Scope (E)
+            else E);
+         M    : constant W_Module_Id := E_Module (Rec);
+         Name : constant String :=
+           (if Ekind (E) in E_Component | E_Discriminant
+            then Full_Name (Representative_Component (E))
+            else Short_Name (E));
 
       begin
          Insert_Symbol
@@ -1908,13 +1915,6 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => Ty));
                Insert_Symbol
-                 (E, WNE_Rec_Main,
-                  New_Identifier
-                    (Symbol => NID ("rec__main__"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Private_Type));
-               Insert_Symbol
                  (E, WNE_Rec_Split_Discrs,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Rec_Split_Discrs)),
@@ -1953,23 +1953,6 @@ package body Why.Atree.Modules is
                     (E, WNE_Rec_Extension,
                      New_Identifier
                        (Symbol => NID ("rec__ext__"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Private_Type));
-               end if;
-
-               if Has_Private_Ancestor_Or_Root (E) then
-                  Insert_Symbol
-                    (E, WNE_Rec_Ancestor,
-                     New_Identifier
-                       (Symbol => NID ("rec__anc__"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Private_Type));
-                  Insert_Symbol
-                    (E, WNE_Hide_Ancestor,
-                     New_Identifier
-                       (Symbol => NID ("hide_anc__"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Private_Type));

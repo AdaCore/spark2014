@@ -167,13 +167,31 @@ package SPARK_Util.Types is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   function Get_Component_Info (E : Entity_Id) return Info_Maps.Map with
+   function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
+   with
+       Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+   --  @param Rec is a record type or a protected type
+   --  @param Comp component of the record type or of one of its ancestors
+   --  @result True if Comp is visible in Rec, that is, it has not been hidden
+   --          by a pragma SPARK_Mode (Off), a private derivation, or a
+   --          discriminant constraint.
+
+   function Get_Variant_Info (E : Entity_Id) return Info_Maps.Map with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E's component info from map Comp_Info
 
+   function Get_Component_Set (E : Entity_Id) return Node_Sets.Set with
+     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  @param E entity of a type translated as a record in why
+   --  @return E the set of E's components. It also includes components which
+   --  have been defined in E's ancestors but are hidden in E. Components that
+   --  are not in SPARK are modeled by the type entity of the first ancestor of
+   --  E in which they exist. Components have the most precise possible type.
+
    procedure Init_Component_Info (E : Entity_Id)
-     with Pre => Is_Record_Type (E);
+     with Pre => Ekind (E) in Record_Kind | Private_Kind;
    --  @param E record type
    --  For each subcomponent of E, create an entry in map Comp_Info
 
@@ -183,25 +201,26 @@ package SPARK_Util.Types is
    --  For each component and discriminant of E, create an entry in map
    --  Comp_Info
 
-   function Representative_Component
-     (Rec : Entity_Id; Comp : Entity_Id)
-      return Entity_Id
+   function Original_Declaration (Comp : Entity_Id) return Entity_Id
    with
-      Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind;
-   --  We want to store fields of Rec only once. Therefore, each components is
-   --  stored in a normalized form.
-   --  @param Rec entity of a type translated as a record in why
-   --  @param Comp component of the type or of one of its ancestors
-   --  @return Entity used to refer to Comp in Comp_Info.
+       Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+   --  @param Comp component of the record type or of one of its ancestors
+   --  @result the first type in the derivation of Scope (Comp) in which Comp
+   --          appears.
 
-   function Search_Component_In_Info
-     (Info : Info_Maps.Map; Rec : Entity_Id; Comp : Entity_Id)
-      return Component_Info
-   is (Info.Element (Representative_Component (Rec, Comp)));
-   --  @param Rec entity of a type translated as a record in why
-   --  @param Info map for Rec
-   --  @param Comp component of Rec or of one of its ancestors
-   --  @return information associated to Comp in Info.
+   function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
+   with
+       Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
+     and Ekind (Comp) in
+     E_Discriminant | E_Component | Type_Kind | E_In_Parameter;
+   --  @param Rec is a record type or a protected type
+   --  @param Comp component of the record type or of one of its ancestors
+   --  @return the corresponding component stored in Rec's component
+   --          information if any and empty otherwise.
+   --          Also supports hidden components.
+
+   function Representative_Component (Comp : Entity_Id) return Entity_Id is
+      (Search_Component_In_Type (Original_Declaration (Comp), Comp));
 
    -------------------------------
    -- General Queries For Types --
@@ -340,7 +359,7 @@ package SPARK_Util.Types is
    --  @param E any type
    --  @return True iff E's translation into Why3 requires the use of a main
    --     field to represent invisible fields that are not derived from an
-   --     ancestor (E's first ancestor which is a "nouveau" type is private).
+   --     ancestor.
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id;
    --  Given a record type (or private type whose implementation is a record

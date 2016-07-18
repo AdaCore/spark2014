@@ -3997,8 +3997,6 @@ package body SPARK_Definition is
             --  representative types.
 
             if not Violation_Detected
-              and then Is_Record_Type (E)
-              and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
               and then Retysp (E) = E
             then
                Init_Component_Info (E);
@@ -4110,10 +4108,7 @@ package body SPARK_Definition is
             --  Store information about E's components, only for representative
             --  types.
 
-            if not Violation_Detected
-              and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
-              and then Retysp (E) = E
-            then
+            if not Violation_Detected and then Retysp (E) = E then
                Init_Component_Info (E);
             end if;
 

@@ -103,7 +103,7 @@ package body Gnat2Why.External_Axioms is
    --  package with external axioms.
 
    function Get_Instance_Name (E : Entity_Id) return String is
-     (Capitalize_First (Full_Name (E)));
+     (Full_Name (E));
    --  Returns the name of a package instance entity
 
    function Get_Label_List (E : Entity_Id) return List_Id;
@@ -411,7 +411,7 @@ package body Gnat2Why.External_Axioms is
                                         Subst_Length : in out Natural) is
          CurLabs  : Node_Id := First (Labs);
       begin
-         Subst_Length := Subst_Length + 2;
+         Subst_Length := Subst_Length + 3;
          while Present (CurLabs) loop
             declare
                K : constant Entity_Kind :=
@@ -746,7 +746,8 @@ package body Gnat2Why.External_Axioms is
            (Domain   => EW_Prog,
             From     => NID (Capitalize_First (Generic_Name) & "__"),
             To       => W_Any_Node_Id
-              (New_Identifier (Name => Instance_Name & "__")));
+              (New_Identifier (Name =>
+                                   Capitalize_First (Instance_Name) & "__")));
 
          Subst_Cur := Subst_Cur + 1;
 
@@ -760,6 +761,17 @@ package body Gnat2Why.External_Axioms is
             From     => NID ("""" & Generic_Name & """."),
             To       => W_Any_Node_Id
               (New_Identifier (Name => "")));
+
+         Subst_Cur := Subst_Cur + 1;
+
+         --  Rename record_component in the copy.
+         --  Replace: rec__<Generic_Name> by: rec__<Instance_Name>
+
+         Subst (Subst_Cur) := New_Custom_Substitution
+           (Domain   => EW_Prog,
+            From     => NID ("rec__" & Generic_Name),
+            To       => W_Any_Node_Id
+              (New_Identifier (Name => "rec__" & Instance_Name)));
 
          Subst_Cur := Subst_Cur + 1;
       end Compute_Substitution_Package;
