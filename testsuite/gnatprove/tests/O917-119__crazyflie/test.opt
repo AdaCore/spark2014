@@ -1,1 +1,1 @@
-ALL XAIL now crashes in proof instead of flow
+ALL XFAIL P718-002 crash in proof
