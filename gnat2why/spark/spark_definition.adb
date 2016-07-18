@@ -3687,24 +3687,24 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
+         end if;
 
-            --  If the type has a Default_Initial_Condition aspect, store the
-            --  corresponding procedure in the Delayed_Type_Aspects map.
+         --  If the type has a Default_Initial_Condition aspect, store the
+         --  corresponding procedure in the Delayed_Type_Aspects map.
 
-            if (Has_DIC (E)
-                  or else Has_Inherited_DIC (E))
-              and then Present (DIC_Procedure (E))
-            then
-               declare
-                  Delayed_Mapping : constant Node_Id :=
-                    (if Present (Current_SPARK_Pragma)
-                     then Current_SPARK_Pragma
-                     else E);
-               begin
-                  Delayed_Type_Aspects.Include
-                    (DIC_Procedure (E), Delayed_Mapping);
-               end;
-            end if;
+         if (Has_DIC (E)
+             or else Has_Inherited_DIC (E))
+           and then Present (DIC_Procedure (E))
+         then
+            declare
+               Delayed_Mapping : constant Node_Id :=
+                 (if Present (Current_SPARK_Pragma)
+                  then Current_SPARK_Pragma
+                  else E);
+            begin
+               Delayed_Type_Aspects.Include
+                 (DIC_Procedure (E), Delayed_Mapping);
+            end;
          end if;
 
          --  Record position of where to insert concurrent type on the
