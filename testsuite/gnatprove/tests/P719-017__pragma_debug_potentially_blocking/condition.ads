@@ -1,0 +1,1 @@
+function Condition return Boolean;
