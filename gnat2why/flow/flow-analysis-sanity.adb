@@ -977,7 +977,7 @@ package body Flow.Analysis.Sanity is
          while Present (E) loop
             case Nkind (E) is
                when N_Object_Declaration =>
-                  --  E is declared immidiately within the private part
+                  --  E is declared immediately within the private part
 
                   Detect_Constant_With_Variable_Input
                     (Defining_Identifier (E));
