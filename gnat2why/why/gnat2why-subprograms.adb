@@ -3381,6 +3381,7 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
         or else not Is_Non_Recursive_Subprogram (E)
+        or else (Is_Volatile_Function (E) and not Is_Protected_Subprogram (E))
       then
          return;
       end if;
@@ -3750,13 +3751,18 @@ package body Gnat2Why.Subprograms is
                Effects : constant W_Effects_Id := New_Effects;
 
             begin
+
                --  A volatile function has an effect, and should not have the
                --  special postcondition which says it's result is equal to the
                --  logic function.
 
-               --  For a volatile function, we need to generate a dummy effect
+               --  For a volatile function that is not protected, we need to
+               --  generate a dummy effect. Protected functions are OK, they
+               --  already have their own state (the protected object)
 
-               if Is_Volatile_Function (E) then
+               if Is_Volatile_Function (E)
+                 and then not Is_Protected_Subprogram (E)
+               then
                   Effects_Append_To_Writes (Effects, Volatile_State);
                else
                   Param_Post :=
@@ -3831,7 +3837,9 @@ package body Gnat2Why.Subprograms is
                end;
             end if;
 
-            if Is_Volatile_Function (E) then
+            if Is_Volatile_Function (E)
+              and then not Is_Protected_Subprogram (E)
+            then
                Emit
                  (File,
                   New_Global_Ref_Declaration
@@ -4058,9 +4066,13 @@ package body Gnat2Why.Subprograms is
       --  If the entity's body is not in SPARK,
       --  or if the function does not return, do not generate axiom.
 
-      if not Entity_Body_Compatible_With_SPARK (E) or else No_Return (E) then
+      if not Entity_Body_Compatible_With_SPARK (E)
+        or else No_Return (E)
+        or else
+          (Is_Volatile_Function (E) and then not Is_Protected_Subprogram (E))
+      then
          Close_Theory (File,
-                       Kind => Standalone_Theory);
+                       Kind => Definition_Theory);
          Result_Name := Why_Empty;
          return;
       end if;
@@ -4249,7 +4261,12 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      if Ekind (E) = E_Function then
+      --  No logic function is created for volatile functions The function's
+      --  effects are model by an effect on the program function.
+
+      if Ekind (E) = E_Function
+        and then (if Is_Volatile_Function (E) then Is_Protected_Subprogram (E))
+      then
          Why_Type := Type_Of_Node (Etype (E));
 
          declare
@@ -4305,6 +4322,8 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
+         Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
+      elsif Ekind (E) = E_Function then
          Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
       else
          Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
