@@ -624,7 +624,7 @@ procedure Gnatprove is
             Args.Append ("-m");
          end if;
 
-         if IDE_Progress_Bar then
+         if IDE_Mode then
             Args.Append ("-d");
          end if;
 
@@ -715,7 +715,7 @@ procedure Gnatprove is
       Close (Obj_Dir_File);
 
       Args.Append (Obj_Dir_Fn);
-      if Configuration.Assumptions then
+      if CL_Switches.Assumptions then
          Args.Append ("--assumptions");
          if Limit_Subp.all /= "" then
             Args.Append ("--limit-subp=" & Limit_Subp.all);
@@ -1050,8 +1050,8 @@ procedure Gnatprove is
          Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
          Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
-         Gnat2Why_Args.Pedantic := Pedantic;
-         Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
+         Gnat2Why_Args.Ide_Mode := IDE_Mode;
+         Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
          Gnat2Why_Args.Limit_Line :=

@@ -141,11 +141,9 @@ package Configuration is
    Debug_Proof_Only  : Boolean;
    Continue_On_Error : Boolean;
    All_Projects      : Boolean;
-   Pedantic          : Boolean;
-   IDE_Progress_Bar  : Boolean;
+   IDE_Mode          : Boolean;
    Limit_Line        : GNAT.Strings.String_Access;
    Limit_Subp        : GNAT.Strings.String_Access;
-   Assumptions       : Boolean;
    Only_Given        : Boolean;
    CodePeer          : Boolean;
    RTS_Dir           : GNAT.Strings.String_Access;
