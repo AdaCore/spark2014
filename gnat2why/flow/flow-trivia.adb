@@ -23,11 +23,7 @@
 
 package body Flow.Trivia is
 
-   function Direct_Calls (E : Entity_Id) return Node_Sets.Set
-   is
-   begin
-      pragma Assert (FA_Graphs.Contains (E));
-      return FA_Graphs (E).Direct_Calls;
-   end Direct_Calls;
+   function Direct_Calls (E : Entity_Id) return Node_Sets.Set is
+     (FA_Graphs (E).Direct_Calls);
 
 end Flow.Trivia;
