@@ -23,7 +23,8 @@ Command Line Invocation
      --clean           Remove GNATprove intermediate files, and exit
  -f                    Force recompilation/analysis of all units
  -h, --help            Display this usage information
- -jnnn                 Use nnn parallel processes (default: 1)
+ -j N                  Use N parallel processes (default: 1; N=0 will use all
+                       cores of the machine)
  -k                    Do not stop analysis at the first error
      --level=n         Set the level of proof (0 = faster* to 4 = more powerful)
  -m                    Minimal reanalysis

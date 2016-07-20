@@ -135,7 +135,8 @@ ASCII.LF &
 ASCII.LF &
 " -h, --help            Display this usage information" &
 ASCII.LF &
-" -jnnn                 Use nnn parallel processes (default: 1)" &
+" -j N                  Use N parallel processes (default: 1; N=0 will use " &
+"                       all cores of the machine)" &
 ASCII.LF &
 " -k                    Do not stop analysis at the first error" &
 ASCII.LF &
