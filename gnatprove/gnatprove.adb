@@ -214,7 +214,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Prepend ("-k");
       end if;
 
-      if Force or else Is_Manual_Prover then
+      if Force or else Is_Manual_Prover or else CL_Switches.Replay then
          Args.Prepend ("-f");
       end if;
 
@@ -431,6 +431,10 @@ procedure Gnatprove with SPARK_Mode is
 
       if not Lazy then
          Args.Append ("--prove-all");
+      end if;
+
+      if CL_Switches.Replay then
+         Args.Append ("--replay");
       end if;
 
       Args.Append ("-j");

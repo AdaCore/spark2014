@@ -92,6 +92,7 @@ package Configuration is
       Proof             : aliased GNAT.Strings.String_Access;
       Prover            : aliased GNAT.Strings.String_Access;
       Q                 : aliased Boolean;
+      Replay            : aliased Boolean;
       Report            : aliased GNAT.Strings.String_Access;
       RTS               : aliased GNAT.Strings.String_Access;
       Steps             : aliased Integer;

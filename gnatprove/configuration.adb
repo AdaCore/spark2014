@@ -677,6 +677,9 @@ ASCII.LF;
       --  if not on the PATH, remove cvc4/z3 from provers list. If the provers
       --  list becomes empty, add alt-ergo
 
+      procedure Sanity_Checking;
+      --  Check the command line flags for conflicting flags
+
       ----------
       -- Init --
       ----------
@@ -771,6 +774,7 @@ ASCII.LF;
 
       procedure Postprocess is
       begin
+         Sanity_Checking;
          File_System.Install.Z3_Present :=
            GNAT.OS_Lib.Locate_Exec_On_Path ("z3") /= null;
          File_System.Install.CVC4_Present :=
@@ -885,6 +889,24 @@ ASCII.LF;
             end;
          end if;
       end Process_Limit_Switches;
+
+      ---------------------
+      -- Sanity_Checking --
+      ---------------------
+
+      procedure Sanity_Checking is
+      begin
+         if (CL_Switches.Output_Msg_Only and CL_Switches.Replay)
+           or else (CL_Switches.Output_Msg_Only and CL_Switches.F)
+           or else (CL_Switches.F and CL_Switches.Output_Msg_Only)
+         then
+            Abort_Msg
+              (Config,
+               "only one switch out of -f, --output-msg-only and --replay" &
+                 " should be provided to gnatprove",
+               With_Help => False);
+         end if;
+      end Sanity_Checking;
 
       -------------------------------------
       -- Set_Level_Timeout_Steps_Provers --
@@ -1384,6 +1406,11 @@ ASCII.LF;
         (Config,
          CL_Switches.Pedantic'Access,
          Long_Switch => "--pedantic");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Replay'Access,
+         Long_Switch => "--replay");
 
       Define_Switch
         (Config,
