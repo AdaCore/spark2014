@@ -130,14 +130,16 @@ to a subprogram declared in a particular file at a particular line.
 A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the option ``--timeout``, one can change the maximal
-time that is allocated to each prover to prove each check or assertion.
-Using the option ``--steps`` (default: not used explicitly but
-set by default proof level, see switch ``--level`` below), one can set the
-maximum number of reasoning steps that the prover is allowed to perform before
-giving up. The ``steps`` option should be used when predictable results are
-required, because the results with a timeout may differ depending on the
-computing power or current load of the machine. The option ``-j`` activates
-parallel compilation and parallel proofs.
+time that is allocated to each prover to prove each check or assertion.  Using
+the option ``--steps`` (default: not used explicitly but set by default proof
+level, see switch ``--level`` below), one can set the maximum number of
+reasoning steps that the prover is allowed to perform before giving up. The
+``steps`` option should be used when predictable results are required, because
+the results with a timeout may differ depending on the computing power or
+current load of the machine. The option ``-j`` activates parallel compilation
+and parallel proofs. With ``-jnnn``, at most nnn cores can be used in
+parallel. With the special value ``-j0``, at most N cores can be used in
+parallel, when N is the number of cores on the machine.
 
 .. note::
 
