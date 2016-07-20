@@ -1,2 +1,3 @@
 !large SKIP part of large testsuite
 NT XFAIL sporadic failures on windows (P613-010)
+inverse-prover DEAD ordering diffs (see P720-001)
