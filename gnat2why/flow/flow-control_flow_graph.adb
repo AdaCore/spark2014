@@ -5848,7 +5848,7 @@ package body Flow.Control_Flow_Graph is
       --  Create the magic start, helper end and end vertices
       --
       --  The start vertex has the entity's location, because it is
-      --  convenient to way to generate error messages thay apply to the
+      --  convenient place to put error messages thay apply to the
       --  whole subprogram/package/body.
       Add_Vertex (FA, Null_Attributes'Update (Error_Location => Body_N),
                   FA.Start_Vertex);
@@ -6182,7 +6182,7 @@ package body Flow.Control_Flow_Graph is
             Process_Quantified_Expressions
               (Statements (Handled_Statement_Sequence (Body_N)),
                FA, Connection_Map, The_Context);
-            --  ?? O429-046 look into entry barriers
+            --  ??? O429-046 look into entry barriers
 
          when Kind_Task =>
             Process_Quantified_Expressions
