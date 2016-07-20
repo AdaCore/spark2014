@@ -150,10 +150,13 @@ package SPARK_Util is
    -----------------------------------------
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id with
-     Post => (if Present (Enclosing_Unit'Result) then
-                  Ekind (Enclosing_Unit'Result) in
-                  E_Function | E_Procedure | E_Entry | E_Protected_Type
-                    | E_Task_Type | E_Package);
+     Post => (if Present (Enclosing_Unit'Result)
+              then Ekind (Enclosing_Unit'Result) in E_Function
+                                                  | E_Procedure
+                                                  | Entry_Kind
+                                                  | E_Protected_Type
+                                                  | E_Task_Type
+                                                  | E_Package);
    --  Returns the entity of the package, subprogram, entry, protected object,
    --  or task enclosing E, if any. Returns Empty otherwise.
 
@@ -210,11 +213,11 @@ package SPARK_Util is
      (E : Entity_Id;
       A : Pragma_Id) return Boolean
      with Pre => Has_Volatile (E) and then
-     Ekind (E) /= E_Constant and then
-     A in Pragma_Async_Readers
-       | Pragma_Async_Writers
-         | Pragma_Effective_Reads
-           | Pragma_Effective_Writes;
+                 Ekind (E) /= E_Constant and then
+                 A in Pragma_Async_Readers
+                    | Pragma_Async_Writers
+                    | Pragma_Effective_Reads
+                    | Pragma_Effective_Writes;
    --  @param E an external state or a volatile object
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
@@ -349,10 +352,10 @@ package SPARK_Util is
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id
      with Pre  => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call,
-     Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
-     Ekind (Get_Called_Entity'Result) in E_Function  |
-     E_Procedure |
-       Entry_Kind;
+          Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
+                  Ekind (Get_Called_Entity'Result) in E_Function  |
+                                                      E_Procedure |
+                                                      Entry_Kind;
    --  @param N a call statement
    --  @return the subprogram or entry called
    --  ??? this duplicates a private function front end Get_Function_Id
@@ -361,16 +364,16 @@ package SPARK_Util is
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
      with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
-       N_Parameter_Association    |
-         N_Procedure_Call_Statement |
-           N_Entry_Call_Statement     |
-             N_Unchecked_Type_Conversion;
+                                            N_Parameter_Association    |
+                                            N_Procedure_Call_Statement |
+                                            N_Entry_Call_Statement     |
+                                            N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call
    --  @return the corresponding formal parameter
 
    function Get_Range (N : Node_Id) return Node_Id
      with Post => Present (Low_Bound (Get_Range'Result)) and then
-     Present (High_Bound (Get_Range'Result));
+                  Present (High_Bound (Get_Range'Result));
    --  @param N more or less any node which has some kind of range, e.g. a
    --     scalar type entity or occurrence, a variable of such type, the type
    --     declaration or a subtype indication.
