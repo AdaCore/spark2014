@@ -905,6 +905,12 @@ package body Flow is
       --  If Condition is True then dump Graph to file with Suffix file name;
       --  otherwise, do nothing.
 
+      procedure Debug_GG_Source;
+      --  Dump information about the source of GG information; only in phase 1
+
+      procedure Debug_GG_Tasking_Info;
+      --  Dump results of generated tasking-related information
+
       -----------------
       -- Debug --
       -----------------
@@ -936,6 +942,92 @@ package body Flow is
                          End_Vertex        => FA.End_Vertex);
          end if;
       end Debug;
+
+      ---------------------
+      -- Debug_GG_Source --
+      ---------------------
+
+      procedure Debug_GG_Source is
+      begin
+         if Gnat2Why_Args.Flow_Advanced_Debug
+           and then FA.Generating_Globals
+         then
+            case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+               if FA.GG.Aborted then
+                  Debug ("skipped" & (if Present (FA.Global_N)
+                         then "(global found)"
+                         elsif Present (FA.Depends_N)
+                         then "(depends found)"
+                         else raise Program_Error));
+               end if;
+
+               Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
+               Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
+
+            when Kind_Package | Kind_Package_Body =>
+
+               if FA.GG.Aborted then
+                  Debug ("skipped (package spec)");
+                  if FA.Kind = Kind_Package_Body then
+                     Debug ("skipped (package body)");
+                  end if;
+               else
+                  Debug ("Spec in SPARK: ", True);
+                  if FA.Kind = Kind_Package_Body then
+                     Debug ("Body in SPARK: ", True);
+                  end if;
+               end if;
+
+               if FA.Kind = Kind_Package_Body then
+                  declare
+                     Refined_State_N : constant Node_Id :=
+                       Get_Pragma (E, Pragma_Refined_State);
+
+                     DM : Dependency_Maps.Map;
+                  begin
+                     if Present (Refined_State_N) then
+                        Write_Line ("Refinement found: yes");
+
+                        DM := Parse_Refined_State (Refined_State_N);
+
+                        for State in DM.Iterate loop
+                           Write_Line ("State       :");
+                           Indent;
+                           Print_Flow_Id (Dependency_Maps.Key (State));
+                           Outdent;
+                           Write_Line ("Constituents:");
+                           Indent;
+                           for Constituent of DM (State) loop
+                              Print_Flow_Id (Constituent);
+                           end loop;
+                           Outdent;
+                        end loop;
+
+                     else
+                        Write_Line ("Refinement found: no");
+                     end if;
+                  end;
+               end if;
+            end case;
+         end if;
+      end Debug_GG_Source;
+
+      --------------------------
+      -- Debug_GG_Tasking_Info --
+      --------------------------
+
+      procedure Debug_GG_Tasking_Info is
+      begin
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            for Kind in Tasking_Info_Kind loop
+               if not FA.Tasking (Kind).Is_Empty then
+                  Write_Str (Kind'Img & ": ");
+                  Print_Node_Set (FA.Tasking (Kind));
+               end if;
+            end loop;
+         end if;
+      end Debug_GG_Tasking_Info;
 
    --  Start of processing for Flow_Analyse_Entity
 
@@ -1015,7 +1107,7 @@ package body Flow is
 
             Append (FA.Base_Filename, "pkg_body_");
 
-            FA.Initializes_N := Get_Pragma (Spec_Entity (E),
+            FA.Initializes_N := Get_Pragma (FA.Spec_Entity,
                                             Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
@@ -1070,93 +1162,14 @@ package body Flow is
          end if;
       end if;
 
-      if FA.Generating_Globals then
-         --  If we already have all the needed contracts then we set Aborted
-         --  flag and do not produce graphs.
-         case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-               FA.GG.Aborted := not FA.Is_Generative;
+      --  If we already have all the needed contracts then we set Aborted flag
+      --  and do not produce graphs.
+      FA.GG.Aborted := Generating_Globals and then not FA.Is_Generative;
 
-               if FA.GG.Aborted then
-                  Debug ("skipped" & (if Present (FA.Global_N)
-                                      then "(global found)"
-                                      elsif Present (FA.Depends_N)
-                                      then "(depends found)"
-                                      else raise Program_Error));
-               end if;
+      Debug_GG_Source;
 
-               Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
-               Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
-
-            when Kind_Package | Kind_Package_Body =>
-               --  There is no need to create a GG graph if the package has an
-               --  Initializes aspect.
-               FA.GG.Aborted := Present (FA.Initializes_N);
-
-               if FA.GG.Aborted then
-                  Debug ("skipped (package spec)");
-                  if FA.Kind = Kind_Package_Body then
-                     Debug ("skipped (package body)");
-                  end if;
-               else
-                  Debug ("Spec in SPARK: ", True);
-                  if FA.Kind = Kind_Package_Body then
-                     Debug ("Body in SPARK: ", True);
-                  end if;
-               end if;
-
-               if Gnat2Why_Args.Flow_Advanced_Debug
-                 and then FA.Kind = Kind_Package_Body
-               then
-                  declare
-                     Refined_State_N : constant Node_Id :=
-                       Get_Pragma (E, Pragma_Refined_State);
-
-                     DM : Dependency_Maps.Map;
-                  begin
-                     if Present (Refined_State_N) then
-                        Write_Line ("Refinement found: yes");
-
-                        DM := Parse_Refined_State (Refined_State_N);
-
-                        for State in DM.Iterate loop
-                           Write_Line ("State       :");
-                           Indent;
-                           Print_Flow_Id (Dependency_Maps.Key (State));
-                           Outdent;
-                           Write_Line ("Constituents:");
-                           Indent;
-                           for Constituent of DM (State) loop
-                              Print_Flow_Id (Constituent);
-                           end loop;
-                           Outdent;
-                        end loop;
-
-                     else
-                        Write_Line ("Refinement found: no");
-                     end if;
-                  end;
-               end if;
-         end case;
-
-         --  Even if aborting we still need to collect tasking-related info,
-         --  (using control-flow traversal) and register the results.
-         if FA.GG.Aborted then
-            Control_Flow_Graph.Create (FA);
-
-            GG_Register_Tasking_Info
-              (To_Entity_Name (FA.Spec_Entity),
-               FA.Tasking);
-
-            if Gnat2Why_Args.Flow_Advanced_Debug then
-               Outdent;
-            end if;
-            return FA;
-         end if;
-      else
-         FA.GG.Aborted := False;
-      end if;
-
+      --  Even if aborting we still need to collect tasking-related info,
+      --  (using control-flow traversal) and register the results.
       Control_Flow_Graph.Create (FA);
 
       --  Register tasking-related information; ignore packages because they
@@ -1164,30 +1177,25 @@ package body Flow is
       if FA.Generating_Globals
         and then FA.Kind in Kind_Subprogram | Kind_Task
       then
+         Debug_GG_Tasking_Info;
+
          GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
                                    FA.Tasking);
-      end if;
-
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-         for Kind in Tasking_Info_Kind loop
-            if not FA.Tasking (Kind).Is_Empty then
-               Write_Str (Kind'Img & ": ");
-               Print_Node_Set (FA.Tasking (Kind));
-            end if;
-         end loop;
       end if;
 
       --  Print this graph now in case the other algorithms barf
       Debug (Debug_Print_CFG, FA.CFG, "cfg");
 
-      Control_Dependence_Graph.Create (FA);
-      Data_Dependence_Graph.Create (FA);
-      Interprocedural.Create (FA);
-      Program_Dependence_Graph.Create (FA);
+      if not FA.GG.Aborted then
+         Control_Dependence_Graph.Create (FA);
+         Data_Dependence_Graph.Create (FA);
+         Interprocedural.Create (FA);
+         Program_Dependence_Graph.Create (FA);
 
-      Debug (Debug_Print_Intermediates, FA.CDG, "cdg");
-      Debug (Debug_Print_Intermediates, FA.DDG, "ddg");
-      Debug (Debug_Print_PDG,           FA.PDG, "pdg");
+         Debug (Debug_Print_Intermediates, FA.CDG, "cdg");
+         Debug (Debug_Print_Intermediates, FA.DDG, "ddg");
+         Debug (Debug_Print_PDG,           FA.PDG, "pdg");
+      end if;
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Outdent;
