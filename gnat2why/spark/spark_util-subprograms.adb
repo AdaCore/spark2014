@@ -188,12 +188,21 @@ package body SPARK_Util.Subprograms is
             end if;
 
             if Present (Contr) then
-               Prag := (case Name is
-                        when Name_Precondition  |
-                             Name_Postcondition |
-                             Name_Refined_Post  => Pre_Post_Conditions (Contr),
-                        when Name_Initial_Condition => Classifications (Contr),
-                        when others => Contract_Test_Cases (Contr));
+               Prag :=
+                 (case Name is
+                     when Name_Precondition  |
+                          Name_Postcondition |
+                          Name_Refined_Post  =>
+                        Pre_Post_Conditions (Contr),
+
+                     when Name_Initial_Condition =>
+                        Classifications (Contr),
+
+                     when Name_Contract_Cases =>
+                        Contract_Test_Cases (Contr),
+
+                     when others =>
+                        raise Program_Error);
 
                while Present (Prag) loop
                   if Chars (Pragma_Identifier (Prag)) = Name
