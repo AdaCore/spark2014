@@ -28,19 +28,30 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
-package Print_Table is
+package Print_Table with SPARK_Mode is
+   Max_Size : constant Natural := 1000;
 
    type Alignment_Type is (Left_Align, Right_Align, Centered);
 
    type Cell is record
       Content : Unbounded_String;
       Align   : Alignment_Type;
-   end record;
+   end record with
+     Dynamic_Predicate => Length (Content) <= Max_Size;
 
-   type Table is array (Natural range <>, Natural range <>)
+   type Table_Content is array (Natural range <>, Natural range <>)
      of Cell;
 
-   function Create_Table (Lines, Cols : Natural) return Table;
+   type Table (L, C : Natural) is record
+      Content  : Table_Content (1 .. L, 1 .. C);
+      Cur_Line : Positive;
+      Cur_Col  : Positive;
+   end record with
+     Dynamic_Predicate => L <= Max_Size and then C <= Max_Size and then
+     Cur_Line <= L + 1 and then Cur_Col <= C + 1;
+
+   function Create_Table (Lines, Cols : Natural) return Table
+   with Pre => Lines <= Max_Size and Cols <= Max_Size;
    --  create a table and set the current cell to the upper-left cell.
    --  @param Lines
    --  @param Cols
@@ -49,7 +60,9 @@ package Print_Table is
    procedure Put_Cell
      (T     : in out Table;
       S     : String;
-      Align : Alignment_Type := Right_Align);
+      Align : Alignment_Type := Right_Align)
+     with Pre => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
+     and then S'Length <= Max_Size;
    --  print a string into the current cell of the table, and move to the next
    --  cell. Note that this does not move to the next line, you need to call
    --  New_Line below after printing to the last cell of a line.
@@ -60,14 +73,16 @@ package Print_Table is
    procedure Put_Cell
      (T     : in out Table;
       S     : Natural;
-      Align : Alignment_Type := Right_Align);
+      Align : Alignment_Type := Right_Align)
+   with Pre => T.Cur_Line <= T.L and then T.Cur_Col <= T.C;
    --  same as Put_Cell for strings, but for numbers; if S is 0, prints a dot
    --  instead
    --  @param T the table which contains the cell
    --  @param S the number to be printed
    --  @param Align the selected alignment for this cell
 
-   procedure New_Line (T : in out Table);
+   procedure New_Line (T : in out Table)
+   with Pre => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L;
    --  make sure that the current cell is the last cell of the line, and then
    --  set the current cell to the first cell of the next line
    --  @param T the table, this parameter is used only to check that the table

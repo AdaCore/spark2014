@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;   use Ada.Directories;
+with Ada.Strings.Hash;
 with GNAT.Strings;
 with Gnat2Why_Args;     use Gnat2Why_Args;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
@@ -33,6 +35,12 @@ with Opt;
 with String_Utils;      use String_Utils;
 
 package Configuration is
+
+   package Dir_Name_Sets is new Ada.Containers.Indefinite_Hashed_Sets
+     (Element_Type        => String,
+      Hash                => Ada.Strings.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
 
    package Constants is
       --  This package contains constants that influence the behavior of

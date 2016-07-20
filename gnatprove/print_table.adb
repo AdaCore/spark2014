@@ -23,23 +23,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Print_Table is
-
-   Cur_Line : Positive := 1;
-   Cur_Col  : Positive := 1;
+package body Print_Table with SPARK_Mode is
 
    ------------------
    -- Create_Table --
    ------------------
 
    function Create_Table (Lines, Cols : Natural) return Table is
-      T : constant Table (1 .. Lines, 1 .. Cols) :=
+      T : constant Table_Content (1 .. Lines, 1 .. Cols) :=
         (others => (others => Cell'(Content => Null_Unbounded_String,
                                     Align   => Right_Align)));
    begin
-      Cur_Line := 1;
-      Cur_Col := 1;
-      return T;
+      return (Lines, Cols, T, 1, 1);
    end Create_Table;
 
    --------------
@@ -50,9 +45,10 @@ package body Print_Table is
                        S     : String;
                        Align : Alignment_Type := Right_Align) is
    begin
-      T (Cur_Line, Cur_Col) := Cell'(Content => To_Unbounded_String (S),
-                                     Align   => Align);
-      Cur_Col := Cur_Col + 1;
+      T.Content (T.Cur_Line, T.Cur_Col) :=
+        Cell'(Content => To_Unbounded_String (S),
+              Align   => Align);
+      T.Cur_Col := T.Cur_Col + 1;
    end Put_Cell;
 
    procedure Put_Cell (T     : in out Table;
@@ -72,20 +68,23 @@ package body Print_Table is
 
    procedure New_Line (T : in out Table) is
    begin
-      pragma Assert (Cur_Col = T'Last (2) + 1);
-      Cur_Line := Cur_Line + 1;
-      Cur_Col := 1;
+      pragma Assert (T.Cur_Col = T.Content'Last (2) + 1);
+      T.Cur_Line := T.Cur_Line + 1;
+      T.Cur_Col := 1;
    end New_Line;
 
    procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table) is
-      type Width_Array is array (T'Range (2)) of Natural;
+      type Width_Array is array (T.Content'Range (2)) of Natural;
       Max_Width   : Width_Array := (others => 10);
       Total_Width : Natural := 0;
 
       procedure Compute_Max_Width;
       --  compute the maximum width for each column, minimum width is 10
 
-      function Fit_Cell (C : Cell; Width : Natural) return String;
+      function Fit_Cell (C : Cell; Width : Natural) return String with
+        Pre => Width <= Max_Size + 3
+        and then Length (C.Content) <= Max_Size
+        and then Length (C.Content) <= Width;
       --  @param C The cell
       --  @param Width the desired width
       --  @return a string of length Width, where the content of cell C has
@@ -100,19 +99,44 @@ package body Print_Table is
 
       procedure Compute_Max_Width is
       begin
-         for Line in T'Range (1) loop
-            for Col in T'Range (2) loop
+         for Line in T.Content'Range (1) loop
+            pragma Loop_Invariant
+              (for all L in T.Content'Range (1) =>
+                   (if L < Line then
+                        (for all C in T.Content'Range (2) =>
+                               Length (T.Content (L, C).Content) + 3 <=
+                           Max_Width (C))));
+            pragma Loop_Invariant
+              (for all C in T.Content'Range (2) =>
+                   Max_Width (C) <= Max_Size + 3);
+            for Col in T.Content'Range (2) loop
                declare
                   Len : constant Natural :=
-                    Length (T (Line, Col).Content) + 3;
+                    Length (T.Content (Line, Col).Content) + 3;
                begin
                   if Max_Width (Col) < Len then
                      Max_Width (Col) := Len;
                   end if;
                end;
+               pragma Loop_Invariant
+                 (for all L in T.Content'Range (1) =>
+                      (if L < Line then
+                           (for all C in T.Content'Range (2) =>
+                                  Length (T.Content (L, C).Content) + 3 <=
+                              Max_Width (C))));
+               pragma Loop_Invariant
+                 (for all C in T.Content'Range (2) =>
+                      (if C <= Col then
+                            Length (T.Content (Line, C).Content) + 3 <=
+                         Max_Width (C)));
+               pragma Loop_Invariant
+                 (for all C in T.Content'Range (2) =>
+                      Max_Width (C) <= Max_Size + 3);
             end loop;
          end loop;
          for Col in Max_Width'Range loop
+            pragma Loop_Invariant
+              (Total_Width <= (Col - Max_Width'First) * (Max_Size + 3));
             Total_Width := Total_Width + Max_Width (Col);
          end loop;
       end Compute_Max_Width;
@@ -152,13 +176,16 @@ package body Print_Table is
    begin
       Compute_Max_Width;
       Put_Dash_Line;
-      for Line in T'Range (1) loop
-         for Col in T'Range (2) loop
-            Ada.Text_IO.Put (H,
-                             Fit_Cell (T (Line, Col), Max_Width (Col)));
+      for Line in T.Content'Range (1) loop
+         for Col in T.Content'Range (2) loop
+            Ada.Text_IO.Put
+              (H,
+               Fit_Cell (T.Content (Line, Col), Max_Width (Col)));
          end loop;
          Ada.Text_IO.New_Line (H);
-         if Line = T'First (1) or else Line = T'Last (1) - 1 then
+         if Line = T.Content'First (1)
+           or else Line = T.Content'Last (1) - 1
+         then
             Put_Dash_Line;
          end if;
       end loop;

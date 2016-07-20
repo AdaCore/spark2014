@@ -65,11 +65,9 @@
 --      on the same units, even when sources have not changed so analysis is
 --      not done on these units.
 
-with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
-with Ada.Strings.Hash;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with Ada.Strings.Unbounded;
@@ -85,7 +83,7 @@ with GNATCOLL.VFS;               use GNATCOLL.VFS;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with String_Utils;               use String_Utils;
 
-procedure Gnatprove is
+procedure Gnatprove with SPARK_Mode is
 
    type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
 
@@ -686,13 +684,7 @@ procedure Gnatprove is
          --  a set and only doing something if there item was really inserted.
          --  This is more robust than relying on Obj_Path being sorted.
 
-         package Dir_Name_Sets is new Ada.Containers.Indefinite_Hashed_Sets
-           (Element_Type        => String,
-            Hash                => Ada.Strings.Hash,
-            Equivalent_Elements => "=",
-            "="                 => "=");
-
-         Dir_Names_Seen : Dir_Name_Sets.Set;
+         Dir_Names_Seen : Configuration.Dir_Name_Sets.Set;
 
          Inserted : Boolean;
          Unused   : Dir_Name_Sets.Cursor;
