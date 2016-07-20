@@ -3,3 +3,4 @@ Darwin DEAD test takes too long on Darwin (use of -j4 does not help due to other
 assertions DEAD too slow for run assertions
 inverse-prover DEAD too slow
 !large SKIP part of large testsuite
+RLIMIT 1000
