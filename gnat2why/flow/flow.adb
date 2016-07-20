@@ -1722,11 +1722,7 @@ package body Flow is
             GG_Register_State_Refinement (FA.Analyzed_Entity);
          end if;
 
-         if FA.GG.Aborted then
-            if Gnat2Why_Args.Flow_Advanced_Debug then
-               Write_Line ("aborted earlier");
-            end if;
-         else
+         if FA.Is_Generative then
             declare
                Inputs_Proof          : Node_Sets.Set;
                Inputs                : Node_Sets.Set;
@@ -1802,7 +1798,10 @@ package body Flow is
 
                GG_Register_Global_Info (GI => Global_Info);
             end;
-
+         else
+            if Gnat2Why_Args.Flow_Advanced_Debug then
+               Write_Line ("aborted because contracts are given by the user");
+            end if;
          end if;
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
