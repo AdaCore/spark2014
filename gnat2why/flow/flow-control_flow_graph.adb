@@ -5841,7 +5841,7 @@ package body Flow.Control_Flow_Graph is
 
          when Kind_Package_Body =>
             Body_N := Package_Body (FA.Analyzed_Entity);
-            Spec_N := Package_Specification (Corresponding_Spec (Body_N));
+            Spec_N := Package_Specification (FA.Spec_Entity);
 
       end case;
 
