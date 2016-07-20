@@ -26,7 +26,7 @@ package PolyORB_HI_Generated.Activity is
        (1000),
       Task_Deadline => Ada.Real_Time.Milliseconds
        (1000),
-      Task_Priority => 42, --  XXX System.Default_Priority,
+      Task_Priority => System.Default_Priority, --  XXX System.Default_Priority,
       Task_Stack_Size => 13952,
       Job => RMAAadl_Task1_Job);
 
@@ -43,7 +43,7 @@ package PolyORB_HI_Generated.Activity is
        (500),
       Dispatch_Offset => Ada.Real_Time.Milliseconds
        (100),
-      Task_Priority => 42, --  XXX System.Default_Priority,
+      Task_Priority => System.Default_Priority, --  XXX System.Default_Priority,
       Task_Stack_Size => 13952,
       Job => RMAAadl_Task2_Job);
 
