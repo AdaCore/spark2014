@@ -2,8 +2,6 @@ from test_support import *
 from time import sleep
 import glob
 
-conf_file = "test.whyconf"
-
 proof = """admit.
 
 Qed.
@@ -18,15 +16,14 @@ def edit_proof():
         file.write(content)
 
 
-write_why3_config_file_with_coq(conf_file)
 prove_all(counterexample=False)
 print "======================================="
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False)
 print "======================================="
 edit_proof()
 # workaround for caching problem
 touch("greatest_common_divisor.adb")
 sleep(2)
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False)
 print "======================================="
 prove_all(counterexample=False)

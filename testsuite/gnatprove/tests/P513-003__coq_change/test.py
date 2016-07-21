@@ -3,8 +3,6 @@ from test_support import *
 from time import sleep
 import glob
 
-conf_file = "test.whyconf"
-
 proof = """
 Open Scope Z_scope.
 
@@ -32,15 +30,14 @@ def edit_file():
     copyfile(new_file, ads_file)
 
 
-write_why3_config_file_with_coq(conf_file)
 prove_all(prover=["cvc4"], counterexample=False)
 print "======================================="
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
 edit_proof()
 print "======================================="
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
 print "======================================="
 edit_file()
 sleep(4)
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
 prove_all(counterexample=False)

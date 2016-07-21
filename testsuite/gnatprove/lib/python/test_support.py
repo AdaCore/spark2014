@@ -698,34 +698,6 @@ def touch(fname, times=None):
         os.utime(fname, times)
 
 
-def write_why3_config_file_with_coq(fname):
-    """write a standard why config file with a prover definition for Coq
-
-    PARAMETERS
-    fname: a string corresponding to a filename
-    times: optional paramter so set the access time
-    """
-    installdir = spark_install_path()
-    driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
-    driverfile = os.path.join(driverdir, 'coq.drv')
-    commandline = "coqtop -batch -R %o/why3_libs/coq_tactic Why3" +\
-                  " -R %o/why3_libs/coq Why3 -l %f"
-    conf_content = """[main]
-magic = 14
-
-[prover]
-command = "%s"
-driver = "%s"
-in_place = false
-interactive = true
-name = "Coq"
-shortcut = "coq"
-version = "8.4pl6"
-""" % (commandline, driverfile)
-    with open(fname, "w") as file:
-        file.write(conf_content)
-
-
 def check_all_spark(result_file, expected_len):
     """Using a gnatprove result file, check that all subprograms, entries, task
        bodies and packages of that unit are in SPARK. Also check that there are

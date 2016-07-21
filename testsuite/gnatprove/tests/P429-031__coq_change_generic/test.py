@@ -3,8 +3,6 @@ from test_support import *
 from time import sleep
 import glob
 
-conf_file = "test.whyconf"
-
 proof = """admit.
 
 Qed.
@@ -18,17 +16,16 @@ def edit_proof(num):
     with open(proof_file, 'w') as file:
         file.write(content)
 
-write_why3_config_file_with_coq(conf_file)
 prove_all(prover=["cvc4"], counterexample=False)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
 edit_proof(1)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
 edit_proof(2)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--why3-conf=" + conf_file, "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
 print "======================================="
 prove_all(counterexample=False)
