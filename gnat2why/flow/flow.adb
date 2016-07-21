@@ -1263,8 +1263,44 @@ package body Flow is
                      Graph_Start := E;
                   elsif Generating_Globals then
                      declare
-                        Global_Info : Global_Phase_1_Info;
+                        Global_Info    : Global_Phase_1_Info;
+                        Contract_Calls : Node_Sets.Set;
                      begin
+                        --  Collect calls in contracts
+                        if Ekind (E) /= E_Task_Type then
+                           declare
+                              procedure Collect_Calls (Expr : Node_Id)
+                              with Global => (In_Out => Contract_Calls);
+                              --  Collect function calls in expression Expr and
+                              --  put them into Contract_Calls.
+
+                              ------------------
+                              -- Collect_Calls --
+                              ------------------
+
+                              procedure Collect_Calls (Expr : Node_Id) is
+                              begin
+                                 Contract_Calls.Union
+                                   (Get_Functions
+                                      (Expr,
+                                       Include_Predicates => True));
+                              end Collect_Calls;
+
+                           begin
+                              for Expr of Get_Precondition_Expressions (E) loop
+                                 Collect_Calls (Expr);
+                              end loop;
+
+                              for Expr of
+                                Get_Postcondition_Expressions
+                                  (E,
+                                   Refined => False)
+                              loop
+                                 Collect_Calls (Expr);
+                              end loop;
+                           end;
+                        end if;
+
                         if Present (Get_Pragma (E, Pragma_Global))
                           or else Present (Get_Pragma (E, Pragma_Depends))
                         then
@@ -1349,6 +1385,7 @@ package body Flow is
 
                         Generate_Globals_From_Spec (Global_Info);
 
+                        GG_Register_Direct_Calls (E, Contract_Calls);
                      end;
                   end if;
                end if;
@@ -1802,6 +1839,14 @@ package body Flow is
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Write_Line ("aborted because contracts are given by the user");
             end if;
+         end if;
+
+         --  Register direct calls without splitting them into proof, definite
+         --  and conditional; this is necessary because splitting looses calls
+         --  to protected subprograms, which are handled as just accesses to
+         --  global variables.
+         if FA.Kind in Kind_Task | Kind_Subprogram then
+            GG_Register_Direct_Calls (FA.Analyzed_Entity, FA.Direct_Calls);
          end if;
 
          if Gnat2Why_Args.Flow_Advanced_Debug then

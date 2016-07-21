@@ -104,6 +104,17 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
+   type Direct_Calls is record
+      Caller  : Entity_Name;
+      Callees : Name_Lists.List;
+   end record;
+
+   package Direct_Call_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Direct_Calls);
+
+   Direct_Calls_List : Direct_Call_Lists.List;
+   --  Container with direct calls for subprograms, entries and tasks types
+
    ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
@@ -117,6 +128,25 @@ package body Flow_Generated_Globals.Phase_1 is
    procedure Register_Volatile (E : Entity_Id);
    --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
+
+   ------------------------------
+   -- GG_Register_Direct_Calls --
+   ------------------------------
+
+   procedure GG_Register_Direct_Calls (E : Entity_Id; Calls : Node_Sets.Set) is
+   begin
+      Direct_Calls_List.Append ((Caller  => To_Entity_Name (E),
+                                 Callees => <>));
+
+      declare
+         Callees : Name_Lists.List renames
+           Direct_Calls_List (Direct_Calls_List.Last).Callees;
+      begin
+         for Call of Calls loop
+            Callees.Append (To_Entity_Name (Call));
+         end loop;
+      end;
+   end GG_Register_Direct_Calls;
 
    -----------------------------
    -- GG_Register_Global_Info --
@@ -344,6 +374,13 @@ package body Flow_Generated_Globals.Phase_1 is
       V := (Kind                        => EK_Nonblocking,
             The_Nonblocking_Subprograms => Nonblocking_Subprograms);
       Write_To_ALI (V);
+
+      for Direct_Calls of Direct_Calls_List loop
+         V := (Kind        => EK_Direct_Calls,
+               The_Caller  => Direct_Calls.Caller,
+               The_Callees => Direct_Calls.Callees);
+         Write_To_ALI (V);
+      end loop;
 
       for Subprogram of Tasking_Info_List loop
          V := (Kind             => EK_Tasking_Info,

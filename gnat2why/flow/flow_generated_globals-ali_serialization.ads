@@ -37,7 +37,8 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Protected_Instance,
                            EK_Task_Instance,
                            EK_Tasking_Info,
-                           EK_Nonblocking);
+                           EK_Nonblocking,
+                           EK_Direct_Calls);
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Similar to Tasking_Info_Bag, but with sets of object names
@@ -69,6 +70,9 @@ package Flow_Generated_Globals.ALI_Serialization is
             The_Tasking_Info            : Name_Tasking_Info;
          when EK_Nonblocking =>
             The_Nonblocking_Subprograms : Name_Lists.List;
+         when EK_Direct_Calls =>
+            The_Caller                  : Entity_Name;
+            The_Callees                 : Name_Lists.List;
       end case;
    end record;
    --  IMPORTANT: If you change this, then also update the serialisation

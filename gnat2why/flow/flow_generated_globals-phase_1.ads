@@ -31,6 +31,19 @@ package Flow_Generated_Globals.Phase_1 is
    -- Registering --
    -----------------
 
+   procedure GG_Register_Direct_Calls (E : Entity_Id; Calls : Node_Sets.Set)
+   with Pre  => GG_Mode = GG_Write_Mode and then
+                Ekind (E) in Entry_Kind  |
+                             E_Function  |
+                             E_Procedure |
+                             E_Task_Type and then
+                (for all C of Calls => Ekind (C) in Entry_Kind |
+                                                    E_Function |
+                                                    E_Procedure),
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register direct calls without caring if they are proof-only, definite or
+   --  conditional.
+
    procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
    with Pre  => GG_Mode = GG_Write_Mode and then
                 Ekind (Pkg_Body) = E_Package_Body,

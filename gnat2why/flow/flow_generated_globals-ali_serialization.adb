@@ -73,7 +73,11 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 others     => <>),
 
       EK_Nonblocking        => (Kind   => EK_Nonblocking,
-                                others => <>)
+                                others => <>),
+
+      EK_Direct_Calls       => (Kind       => EK_Direct_Calls,
+                                The_Caller => Invalid_Entity_Name,
+                                others     => <>)
      );
    --  Dummy value required only for the serialization API
 
@@ -232,6 +236,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Nonblocking =>
             Serialize (A, V.The_Nonblocking_Subprograms);
+
+         when EK_Direct_Calls =>
+            Serialize (A, V.The_Caller);
+            Serialize (A, V.The_Callees);
       end case;
 
    exception

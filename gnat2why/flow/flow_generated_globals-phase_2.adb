@@ -206,6 +206,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  and protected procedures) in current compilation unit and is cut at
    --  protected operations.
 
+   Direct_Calls : Name_Graphs.Map;
+   --  Map from names of subprograms, entries and task types to subprograms and
+   --  entries that they call.
+   --  ??? perhaps a map from entity names to lists (and not sets) is better,
+   --  but for now let's be consistent with Flow.Slice.Compute_Globals which
+   --  returns a set.
+
    use type Entity_Name_Graphs.Vertex_Id;
 
    Nonblocking_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -352,6 +359,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  set, we also check if all constituents are used and if they are not we
    --  also add them on the Reads set.
 
+   function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
+   --  Returns callees of a Caller
+
    ----------------------------------------------------------------------
    --  Debug routines
    ----------------------------------------------------------------------
@@ -412,6 +422,18 @@ package body Flow_Generated_Globals.Phase_2 is
 
       return Refined;
    end Fully_Refine;
+
+   ---------------------
+   -- Generated_Calls --
+   ---------------------
+
+   function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set is
+      C : constant Name_Graphs.Cursor := Direct_Calls.Find (Caller);
+   begin
+      return (if Name_Graphs.Has_Element (C)
+              then Direct_Calls (C)
+              else Name_Sets.Empty_Set);
+   end Generated_Calls;
 
    -------------------------------
    -- GG_Get_State_Abstractions --
@@ -1163,7 +1185,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  ??? how about subprogram with SPEC with SPARK_Mode => On,
                   --  but BODY with SPARK_Mode => Off, especially those which
                   --  call another subprogram in its contract?
-                  for Callee of Computed_Calls (Caller) loop
+                  for Callee of Generated_Calls (Caller) loop
                      --  Get vertex for the callee
                      V_Callee := Tasking_Call_Graph.Get_Vertex (Callee);
 
@@ -1233,7 +1255,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                begin
                   --  Add callees of the caller into the graph
-                  for Callee of Computed_Calls (Caller) loop
+                  for Callee of Generated_Calls (Caller) loop
                      --  Get vertex for the callee
                      V_Callee := Call_Graph.Get_Vertex (Callee);
 
@@ -1303,7 +1325,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Call graph vertices for the caller and the callee
 
                begin
-                  for Callee of Computed_Calls (Caller) loop
+                  for Callee of Generated_Calls (Caller) loop
                      --  Get vertex for the callee
                      V_Callee := Call_Graph.Get_Vertex (Callee);
 
@@ -1841,6 +1863,27 @@ package body Flow_Generated_Globals.Phase_2 is
                           (V.The_Nonblocking_Subprograms (C));
 
                         Name_Lists.Next (C);
+                     end loop;
+                  end;
+
+               when EK_Direct_Calls =>
+                  declare
+                     Caller : Name_Graphs.Cursor;
+                     --  Position of the caller in the direct calls graph
+
+                     Inserted : Boolean;
+
+                     Callee : Name_Lists.Cursor := V.The_Callees.First;
+                  begin
+                     Direct_Calls.Insert (Key      => V.The_Caller,
+                                          Position => Caller,
+                                          Inserted => Inserted);
+
+                     pragma Assert (Inserted);
+
+                     while Name_Lists.Has_Element (Callee) loop
+                        Direct_Calls (Caller).Insert (V.The_Callees (Callee));
+                        Name_Lists.Next (Callee);
                      end loop;
                   end;
             end case;
