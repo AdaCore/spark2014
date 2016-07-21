@@ -448,7 +448,7 @@ package body Graphs is
    --  Start of processing for Conditional_Close
 
    begin
-      --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
+      --  IMPORTANT NOTE: This current implementation takes advantage of
       --  the inefficient (in terms of space) implementation of Close - we
       --  effectively cache the entire graph hence we can actually get away
       --  with modifying it in the visitor procedure. If we get around to
