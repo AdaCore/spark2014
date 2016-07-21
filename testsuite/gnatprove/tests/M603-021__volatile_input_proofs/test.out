@@ -1,5 +1,3 @@
-port.adb:7:04: warning: types for unchecked conversion have different sizes
-port.adb:9:04: warning: types for unchecked conversion have different sizes
 port.adb:29:16: medium: range check might fail
 port.adb:29:19: info: initialization of "Tmp" proved
 port.adb:39:10: info: initialization of "T" proved

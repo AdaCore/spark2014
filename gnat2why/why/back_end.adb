@@ -27,6 +27,7 @@
 
 with Adabkend;
 with Elists;
+with Errout;
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
 with Namet;
@@ -51,8 +52,12 @@ package body Back_End is
 
    procedure Call_Back_End (Mode : Back_End_Mode_Type) is
       pragma Unreferenced (Mode);
-
       use type Opt.Warning_Mode_Type;
+
+      Save_Warning_Mode : constant Opt.Warning_Mode_Type := Opt.Warning_Mode;
+      --  Save original frontend warning mode for restoration before returning
+      --  from Call_Back_End, as various checks which may issue warnings are
+      --  performed after that.
 
    begin
       --  Since the back end is called with all tables locked, first unlock any
@@ -71,11 +76,29 @@ package body Back_End is
       --  warnings. Change that setting in the second mode to the expected
       --  warning mode for flow analysis and proof.
 
+      Errout.Finalize (Last_Call => False);
+      if Errout.Compilation_Errors then
+         return;
+      end if;
+      Errout.Reset_Warnings;
+
       if not Gnat2Why_Args.Global_Gen_Mode then
          Opt.Warning_Mode := Gnat2Why_Args.Warning_Mode;
       end if;
 
       GNAT2Why_BE.Call_Back_End;
+
+      Errout.Finalize (Last_Call => False);
+      if Errout.Compilation_Errors then
+         return;
+      end if;
+      Errout.Reset_Warnings;
+
+      --  Restore the original frontend warning mode
+
+      if not Gnat2Why_Args.Global_Gen_Mode then
+         Opt.Warning_Mode := Save_Warning_Mode;
+      end if;
 
       --  Make sure to lock any unlocked tables again before returning
 

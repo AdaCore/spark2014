@@ -1,2 +1,1 @@
 typconv.adb:4:33: info: initialization of "Y" proved
-typconv.adb:5:04: warning: types for unchecked conversion have different sizes

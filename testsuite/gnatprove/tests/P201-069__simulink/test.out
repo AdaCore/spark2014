@@ -62,10 +62,6 @@ errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1
 errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
 errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
-simulink_functions.adb:48:04: warning: types for unchecked conversion have different sizes
-simulink_functions.adb:50:04: warning: types for unchecked conversion have different sizes
-simulink_functions.adb:52:04: warning: types for unchecked conversion have different sizes
-simulink_functions.adb:54:04: warning: types for unchecked conversion have different sizes
 simulink_functions.adb:234:40: medium: overflow check might fail
 simulink_functions.adb:234:51: info: division check proved (CVC4: 1 VC)
 simulink_functions.adb:234:51: info: overflow check proved (CVC4: 1 VC)
