@@ -428,6 +428,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--replay");
       end if;
 
+      if CL_Switches.Benchmark then
+         Args.Append ("--benchmark");
+      end if;
+
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 

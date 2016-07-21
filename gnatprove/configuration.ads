@@ -161,8 +161,6 @@ package Configuration is
    Warning_Mode      : Opt.Warning_Mode_Type;
    Caching           : Boolean;
    --  enable caching through memcached
-   Benchmark_Mode    : Boolean;
-   --  replace prover binaries by fake binaries to allow extracting VCs
    Report            : Report_Mode_Type;
    Proof             : Proof_Mode;
    Lazy              : Boolean;

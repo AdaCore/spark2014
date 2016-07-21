@@ -793,7 +793,6 @@ ASCII.LF;
          Limit_Line := CL_Switches.Limit_Line;
          Limit_Subp := CL_Switches.Limit_Subp;
          Caching := CL_Switches.Cache;
-         Benchmark_Mode := CL_Switches.Benchmark;
          Why3_Config_File := CL_Switches.Why3_Conf;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
