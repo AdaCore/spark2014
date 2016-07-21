@@ -3175,7 +3175,7 @@ package body SPARK_Definition is
             --  subprogram is not in SPARK.
 
             if not In_SPARK (Etype (Id)) then
-               Mark_Violation (Result_Definition (N), From => Etype (Id));
+               Mark_Violation (Id, From => Etype (Id));
             end if;
          end Mark_Function_Specification;
 
@@ -3863,7 +3863,7 @@ package body SPARK_Definition is
 
                while Present (Index) loop
                   if not In_SPARK (Etype (Index)) then
-                     Mark_Violation (E, From => Etype (Index));
+                     Mark_Violation (Index, From => Etype (Index));
                   end if;
                   Next_Index (Index);
                end loop;

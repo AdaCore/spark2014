@@ -1,3 +1,5 @@
+mode_off.ads:3:28: subtype of "Integer" is not allowed in SPARK
+mode_off.ads:3:28: violation of aspect SPARK_Mode at mode_on.ads:2
 mode_on.ads:3:04: "My_Array" is not allowed in SPARK
 mode_on.ads:3:04: violation of aspect SPARK_Mode at line 2
 mode_on.ads:4:04: "My_Scalar" is not allowed in SPARK
