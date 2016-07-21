@@ -135,7 +135,7 @@ package Common_Containers is
       "="                 => "=");
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;
-   --  Takes a set of Node_Ids and returns a set of Entity_Names.
+   --  Takes a set of Node_Ids and returns a set of Entity_Names
 
 private
 
