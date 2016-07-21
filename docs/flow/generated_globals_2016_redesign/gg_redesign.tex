@@ -107,7 +107,7 @@ frame condition analysis from tasking analysis is an orthogonal issue.
 
 \item A limited form of the closure will be computed in phase 1 (to
   generate refined globals), but we only store calls to external procedures
-  (internal calls have been summarized), and access to abstract state.
+  (internal calls have been summarized), and accesses to abstract state.
 
 \item Stripping of locals for nested procedures can also be done in phase 1
   instead of phase 2. We can also annotate semi-refined computed globals
@@ -232,7 +232,7 @@ During phase 1 we construct the following information for P and Q:
   \begin{tabular}{ll}
     Variables R & \\
     Variables W & \\
-    Calls       & P2 (Remote) \\
+    Calls       & P2 (External) \\
     Maybe       & \\
   \end{tabular}
 
@@ -248,7 +248,7 @@ During phase 1 we construct the following information for P and Q:
   \begin{tabular}{ll}
     Variables R & \\
     Variables W & \\
-    Calls       & P4 (Remote) \\
+    Calls       & P4 (External) \\
     Maybe       & \\
   \end{tabular}
 
@@ -454,8 +454,8 @@ variables we do not use).
 \newpage
 \subsection{Intra-package analysis}
 Overall idea: nested packages get a partial closure first, and the phase 1
-partial closure will only be based on that. Any upwards calls are just
-another remote call.
+partial closure is based only on that. Any upwards calls are just
+another external call.
 
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -580,7 +580,7 @@ Next we move to the enclosing package P. Downward calls are local calls.
 \end{figure}
 
 \noindent
-The final, refined globals for package P this are thus:
+The final, refined globals for package P are thus:
 
 \begin{center}
   \begin{tabular}{lll}
@@ -613,7 +613,7 @@ good news.
 \pagebreak
 \noindent
 For package Q, we can save this extra state so that we have slightly more
-meaningful results when analysing Q in phase 2. However this step could be
+meaningful results when analysing Q in phase 2. However, this step could be
 skipped. This is not as precise as the best possible human annotation, but
 it is not far off.
 
