@@ -179,7 +179,7 @@ package body Flow_Utility is
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
-      --  corresponding Flow_Id; for protected functions store the
+      --  corresponding Entity_Id; for protected functions store the
       --  read-locked protected object.
 
       procedure Process_Type (E : Entity_Id);
