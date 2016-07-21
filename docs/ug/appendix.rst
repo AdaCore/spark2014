@@ -187,48 +187,11 @@ library of theorems inside these commands with ``%o/user/<prover_name>``.
 Coq
 ---
 
-When manual proof is needed, one possibility is to use the interactive prover
-Coq. For this you can install or compile your version of Coq on your system,
-it is recommended to also install an appropriate editor (for instance
-CoqIDE or ProofGeneral). Even if running ``why3config --detect-provers``
-outputs:
-
-    ``Found prover Coq version X, but Why3 wasn't compiled with support for it``
-
-you can still use Coq on |SPARK| VCs. To do so, you just have to add the
-following lines to your ``.why3.conf``::
-
-    [prover]
-    command = "coqtop -batch -I %l/coq-tactic -R %o/why3_libs/coq Why3 -l %f"
-    driver = "${install_dir}/share/why3/drivers/coq_gnatprove.drv"
-    editor = "${editor}"
-    in_place = false
-    interactive = true
-    name = "Coq"
-    shortcut = "coq"
-    version = "X"
-
-For this to work:
-
-- ``coqtop`` must be in your executable path (alternatively you can provide the
-  full path to ``coqtop``);
-
-- ``${install_dir}`` should be the directory where you installed |SPARK|;
-
-- ``${editor}`` must be a previously defined editor in ``.why3.conf``,
-  here are the configurations for the two commonly used editors for Coq,
-  ``CoqIDE`` and ``Proof General``::
-
-    [editor proofgeneral-coq]
-    command = "emacs --exec \\\"(push '(\\\"%o/why3_libs/coq\\\" \\\"Why3\\\") coq-load-path)\\\" %f"
-    name = "Emacs/ProofGeneral/Coq"
-
-    [editor coqide]
-    command = "coqide -I %l/coq-tactic -R %o/why3_libs/coq Why3 %f"
-    name = "CoqIDE"
-
-
-- replace the version by your Coq version (e.g. ``version = "8.4pl3"``)
+``gnatprove`` has support for the Coq interactive prover, even though Coq is
+not part of the |SPARK| distribution. If you want to use Coq with |SPARK|, you
+need to install it yourself on your system and put it in your ``PATH``
+environment variable. Then, you can simply provide ``--prover=coq`` to
+``gnatprove``.
 
 .. _Project Attributes:
 
