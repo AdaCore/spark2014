@@ -466,6 +466,11 @@ project. For example, if a generic unit is instantiated twice, selecting
 apply proof to the two corresponding subprograms in instances of the generic
 unit.
 
+The menus :menuselection:`SPARK --> Examine ...` open a panel which allows
+setting various switches for |GNATprove|'s analysis. The main choice offered in
+this panel is to select the mode of analysis, among modes ``check``,
+``check_all`` and ``flow`` (the default).
+
 The menus :menuselection:`SPARK --> Prove ...` open a panel which allows
 setting various switches for |GNATprove|'s analysis. By default, this panel
 offers a few simple choices, like the proof level (see description of switch
