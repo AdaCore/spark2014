@@ -213,31 +213,6 @@ procedure SPARK_CodePeer_Wrapper is
       Set_Path_From_Gnatls (Proj_Env.all, "codepeer-gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, +Subdir);
       Tree.Load (Project, Proj_Env, Recompute_View => True);
-
-      --  Enforce restrictions:
-      --  - no project hierarchy
-      --  - a single source directory
-      --  - no naming scheme
-
-      if Has_Imported_Projects (Tree.Root_Project) then
-         Error ("project dependencies not supported, exiting.");
-      end if;
-
-      if Source_Dirs (Tree.Root_Project, True)'Length > 1 then
-         Error ("multiple source directories not supported, exiting.");
-      end if;
-
-      if Attribute_Value
-           (Tree.Root_Project,
-            Implementation_Suffix_Attribute, "Ada") /= ".adb"
-        or else Attribute_Value
-           (Tree.Root_Project, Impl_Suffix_Attribute, "Ada") /= ".adb"
-        or else Attribute_Indexes
-           (Tree.Root_Project, Body_Attribute)'Length /= 0
-      then
-         Error ("custom naming scheme not supported, exiting.");
-      end if;
-
    exception
       when others =>
          Error ("cannot parse project file " & Project.Display_Base_Name);
