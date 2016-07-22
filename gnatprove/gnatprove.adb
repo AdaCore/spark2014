@@ -858,14 +858,18 @@ procedure Gnatprove with SPARK_Mode is
       pragma Unreferenced (Proj);
       Args : String_Lists.List;
    begin
+
+      if Project_File /= "" then
+         Args.Append ("-P");
+         Args.Append (Project_File);
+      end if;
+
       if Verbose then
-         Args.Append ("-v");
-      else
-         Args.Append ("-quiet");
+         Args.Append ("-verbose");
       end if;
 
       if Parallel > 1 then
-         Args.Append ("-jobs");
+         Args.Append ("-j");
          Args.Append (Image (Parallel, Min_Width => 1));
       end if;
 
@@ -873,24 +877,9 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-U");
       end if;
 
-      if Project_File /= "" then
-         Args.Append ("-P");
-         Args.Append (Project_File);
-      end if;
-
       for Var of CL_Switches.X loop
          Args.Append (Var);
       end loop;
-
-      Args.Append ("-level");
-      Args.Append ("max");
-
-      Args.Append ("-sa-messages");
-      Args.Append ("-no-preconditions");
-
-      --  codepeer subdirs option is relative to the object dir(s), so this is
-      --  what we want
-      Args.Append ("--subdirs=gnatprove/codepeer");
 
       if not CL_Switches.GPR_Project_Path.Is_Empty then
          for S of CL_Switches.GPR_Project_Path loop
@@ -900,7 +889,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       Call_With_Status
-        (Command   => "codepeer",
+        (Command   => "spark_codepeer_wrapper",
          Arguments => Args,
          Status    => Status,
          Verbose   => Verbose);
