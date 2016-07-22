@@ -523,6 +523,7 @@ begin
    Append_Arg ("-dbg-vn-limit");
    Append_Arg ("60000");
    Append_Arg ("-no-presumptions");
+   Append_Arg ("-no-db-msgs");
 
    Normalize_Arguments (Args);
 
