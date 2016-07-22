@@ -384,6 +384,12 @@ package SPARK_Util is
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
+   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean;
+   --  @param N expression
+   --  @return True iff N is either directly an out or in out actual parameter,
+   --     or under one or multiple type conversions, where the most enclosing
+   --     type conversion is an out or in out actual parameter.
+
    function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean;
    --  @param N expression node or Empty
    --  @return True iff N is the argument to a call to a frontend-generated

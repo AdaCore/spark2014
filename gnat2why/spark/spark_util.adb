@@ -991,6 +991,31 @@ package body SPARK_Util is
                False);
    end Is_Action;
 
+   ------------------------------------------
+   -- Is_Converted_Actual_Output_Parameter --
+   ------------------------------------------
+
+   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean
+   is
+      Formal : Entity_Id;
+      Call   : Node_Id;
+      Conv   : Node_Id;
+
+   begin
+      --  Find the most enclosing type conversion node
+
+      Conv := N;
+      while Nkind (Parent (Conv)) = N_Type_Conversion loop
+         Conv := Parent (Conv);
+      end loop;
+
+      --  Check if this node is an out or in out actual parameter
+
+      Find_Actual (Conv, Formal, Call);
+      return Present (Formal)
+        and then Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter;
+   end Is_Converted_Actual_Output_Parameter;
+
    ---------------------------------------
    -- Is_Call_Arg_To_Predicate_Function --
    ---------------------------------------

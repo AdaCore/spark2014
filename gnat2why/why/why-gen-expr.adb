@@ -1610,11 +1610,15 @@ package body Why.Gen.Expr is
 
    begin
       --  If the check is a range check on a floating-point type, and we can
-      --  determine that the expression is always within bounds, then issue a
-      --  check always true.
+      --  determine that the expression is always within bounds, then issue
+      --  a check always true. Do not apply this optimization to actual
+      --  parameters of calls, as Determine_Range_R does not work for out and
+      --  in out parameters, as it will return the range of the actual based
+      --  on its type rather than based on the type of the formal parameter.
 
       if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)
+        and then not Is_Converted_Actual_Output_Parameter (Ada_Node)
       then
          declare
             Tlo : constant Node_Id := Type_Low_Bound  (Range_Type);

@@ -24,6 +24,6 @@ procedure Get_Out_Subtype (X, Y, Z : Float) is
    Yaw_Rate_Desired    : T_Rate  := 0.0;
 
 begin
-   Controller_Get_Desired_Rate (Roll_Rate_Desired, Pitch_Rate_Desired,
-                                Yaw_Rate_Desired);
+   Controller_Get_Desired_Rate (Roll_Rate_Desired, Float(Pitch_Rate_Desired),
+                                T_Rate(Yaw_Rate_Desired));
 end Get_Out_Subtype;
