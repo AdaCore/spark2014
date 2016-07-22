@@ -36,30 +36,8 @@ rewrite BV_Gen.mod1_out.
 (* no overflow in (arg1 / arg2) * arg2 *)
 { exact no_ovfl_div_mul. }
 
-(* rewrite goal *)
-split.
-
 (* res <= arg1 *)
-* unfold ule.
-  exact res_le_arg1.
-
-(* arg1 - res < arg2 *)
-* unfold ult.
-  rewrite to_uint_sub.
-  rewrite BV_Gen.mod1_out by auto with zarith. (* res_le_arg1 used here *)
-  rewrite pre, to_uint_mul, to_uint_udiv.
-  unfold EuclideanDivision.div.
-  case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
-  rewrite BV_Gen.mod1_out.
-
-  (* arg1 - (arg1 / arg2) * arg2 < arg2 *)
-  + pose (Z.mul_succ_div_gt (to_uint arg1) (to_uint arg2) arg2_pos).
-    replace (Z.succ (to_uint arg1 / to_uint arg2)) with (to_uint arg1 / to_uint arg2 + 1) in l0 by auto with zarith.
-    rewrite Int.Mul_distr_l in l0.
-    replace (to_uint arg2 * (to_uint arg1 / to_uint arg2)) with ((to_uint arg1 / to_uint arg2) * to_uint arg2) in l0 by auto with zarith.
-    auto with zarith.
-
-  (* no overflow in (arg1 / arg2) * arg2 *)
-  + exact no_ovfl_div_mul.
+unfold ule.
+exact res_le_arg1.
 
 Qed.

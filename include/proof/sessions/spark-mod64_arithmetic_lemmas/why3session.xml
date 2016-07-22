@@ -739,18 +739,18 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__package_def" sum="68d85ea08773c83fbb28b61054b5d437" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="ca8c12a006618c7c9bc6b23b6548e3bb" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="steplimitexceeded" time="0.26"/></proof>
@@ -761,24 +761,30 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__subprogram_def" sum="184a1ded51e7ff0cd7092392e8c6c43b" expanded="true">
+<theory name="Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__subprogram_def" sum="d73ee43a1d3cd89f0c90d62a7b9181af" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="steplimitexceeded" time="0.27"/></proof>
-  <proof prover="1"><result status="timeout" time="20.78"/></proof>
-  <proof prover="2"><result status="timeout" time="15.81"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"><result status="valid" time="1.10"/></proof>
+  <proof prover="0" timelimit="0"><result status="steplimitexceeded" time="0.17"/></proof>
+  <proof prover="1" timelimit="0" steplimit="1250000"><result status="unknown" time="0.69" steps="0"/></proof>
+  <proof prover="2" timelimit="0" steplimit="35000"><result status="highfailure" time="4.40"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"><result status="valid" time="1.09"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <proof prover="0" timelimit="0"><result status="steplimitexceeded" time="0.18"/></proof>
+  <proof prover="1" timelimit="0" steplimit="1250000"><result status="unknown" time="0.74" steps="0"/></proof>
+  <proof prover="2" timelimit="0" steplimit="35000"><result status="highfailure" time="2.33"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp1.v"><result status="valid" time="1.15"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="7a2799b1cec71bed814eecd6900bd0b2" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.08" steps="0"/></proof>
   </goal>
@@ -791,7 +797,7 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="e7ee0d384e983bbd3f9fb93d3d945b7c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>
@@ -806,7 +812,7 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="b4f008a77f46475b26ea455c0bfc92c4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
   </goal>
@@ -821,7 +827,7 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="ac92d9fa56e94b2e2d65cfce82d08f6b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
   </goal>
@@ -839,7 +845,7 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_then_div_is_ident__subprogram_def" sum="d639b3c1f60fbe543e69d8499bc90553" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>
@@ -857,7 +863,7 @@
 </theory>
 <theory name="Spark__mod64_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="699dfebf4f7a3a67b01b3eed3412df94" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>

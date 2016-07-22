@@ -74,7 +74,14 @@ is
       Scale_Num   : Nat;
       Scale_Denom : Pos;
       Res         : Int)
-   is null;
+   is
+   begin
+      if Res >= 0 then
+         pragma Assert (abs (Res) <= abs (Val));
+      else
+         pragma Assert (abs (Res) <= abs (Val));
+      end if;
+   end Lemma_Mult_Scale;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;

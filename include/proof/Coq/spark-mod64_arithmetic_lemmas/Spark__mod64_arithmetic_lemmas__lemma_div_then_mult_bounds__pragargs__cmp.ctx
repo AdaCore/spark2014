@@ -664,9 +664,9 @@ Parameter attr__ATTRIBUTE_ADDRESS2: Z.
 (* Why3 goal *)
 Theorem WP_parameter_def : ((in_range arg2)
                             /\ (res = (mul (udiv arg1 arg2) arg2))) ->
-                           (*      Post => Res <= Arg1 and then Arg1 - Res < Arg2;                                                                      *)
-                           (*              ^ spark-mod_arithmetic_lemmas.ads:96:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
-                           ((ule res arg1) /\ (ult (sub arg1 res) arg2)).
+                           (*      Post => Res <= Arg1 and then                                                                                         *)
+                           (*              ^ spark-mod_arithmetic_lemmas.ads:57:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
+                           (ule res arg1).
 
 #define SPARK_MAX_UINT_PLUS1 18446744073709551616
-#include "lemma_modular_div_then_mult_bounds.prf"
+#include "lemma_modular_div_then_mult_bounds_part1.prf"
