@@ -78,7 +78,7 @@ package body Back_End is
 
       Errout.Finalize (Last_Call => False);
       if Errout.Compilation_Errors then
-         return;
+         goto Unlock;
       end if;
       Errout.Reset_Warnings;
 
@@ -90,7 +90,7 @@ package body Back_End is
 
       Errout.Finalize (Last_Call => False);
       if Errout.Compilation_Errors then
-         return;
+         goto Unlock;
       end if;
       Errout.Reset_Warnings;
 
@@ -100,6 +100,7 @@ package body Back_End is
          Opt.Warning_Mode := Save_Warning_Mode;
       end if;
 
+   <<Unlock>>
       --  Make sure to lock any unlocked tables again before returning
 
       Namet.Lock;
