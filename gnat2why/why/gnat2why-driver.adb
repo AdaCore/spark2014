@@ -487,8 +487,7 @@ package body Gnat2Why.Driver is
       for E of Marked_Entities loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if SPARK_Util.Subprograms.Analysis_Requested
-                 (E, With_Inlined => True)
+               if Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
                   for C of Direct_Calls (E) loop
