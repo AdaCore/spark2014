@@ -3394,6 +3394,9 @@ package body Why.Gen.Expr is
 
       Set.Include (New_Shape_Label (Node => N));
       Set.Include (Keep_On_Simp);
+      --  Stop_Intro is added so that transformations in Why3 do not introduce
+      --  past it. It enables us to retrieve all counterex variables from the
+      --  goal
       Set.Include (Stop_Intro);
       if Reason = VC_Postcondition then
          Set.Include (Model_VC_Post);
