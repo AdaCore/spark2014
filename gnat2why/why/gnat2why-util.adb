@@ -277,19 +277,30 @@ package body Gnat2Why.Util is
       Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
 
+      E_Type : constant Entity_Id := Retysp (Etype (E));
+      --  Taking the full_view of the type to be able to match private
+      --  type in the same way as other types because the current intended
+      --  behavior is to print private types as if they were public.
+
    begin
       --  Currently generate non-empty set of labels values only for variables
-      --  of scalar, record, and array types.
-      --  For variables of other types, getting counterexample values is not
-      --  supported.
+      --  of scalar, record, and array types. For variables of other types,
+      --  getting counterexample values is not supported.
 
       if (not Comes_From_Source (E)
             and then not Comes_From_Source (Parent (E)))
         or else
           Is_Floating_Point_Type (Etype (E))
       then
-         return Name_Id_Sets.Empty_Set;
-      end if;
+         Labels := Name_Id_Sets.Empty_Set;
+
+      --  Generate counterexample labels for a function result. As function
+      --  results are translated as refs, we must generate a "model_projected"
+      --  label.
+
+      elsif Ekind (E) = E_Function then
+         Labels := Model_Trace;
+         Labels.Include (Model_Projected);
 
       --  Generate counterexample labels for variables of supported types.
       --  For every supported type, we must be decide whether generate "model"
@@ -301,25 +312,7 @@ package body Gnat2Why.Util is
       --  but it introduces extra overhead in the number of logical variables
       --  in the generated formula.
 
-      --  Particular case for function result. We always generate a ref for
-      --  function result and we should generate a model_projected. Cannot be
-      --  in the same case as everything else because Etype of an E_function
-      --  is its return type.
-
-      if Ekind (E) = E_Function then
-         Labels := Model_Trace;
-         Labels.Include (Model_Projected);
-         return Labels;
-      end if;
-
-      declare
-         --  Taking the full_view of the type to be able to match private
-         --  type in the same way as other types because the current intended
-         --  behavior is to print private types as if they were public.
-
-         E_Type : constant Entity_Id :=
-                    Retysp (Etype (E));
-      begin
+      else
          case Ekind (E_Type) is
             when Scalar_Kind =>
                Labels := Model_Trace;
@@ -355,7 +348,7 @@ package body Gnat2Why.Util is
          when others =>
             null;
          end case;
-      end;
+      end if;
 
       return Labels;
    end Get_Counterexample_Labels;
