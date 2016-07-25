@@ -1,0 +1,2 @@
+p.adb:6:14: info: initialization of "X" proved
+p.ads:3:12: warning: unused variable "T"
