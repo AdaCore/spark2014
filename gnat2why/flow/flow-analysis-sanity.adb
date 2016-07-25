@@ -31,6 +31,7 @@ with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 
 with Gnat2Why_Args;
+with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -952,7 +953,7 @@ package body Flow.Analysis.Sanity is
       Sane :    out Boolean)
    is
 
-      procedure Check (E : in out Node_Or_Entity_Id);
+      procedure Check (E : Node_Or_Entity_Id);
       --  We make the check for each entity E we are interested in:
       --  * either a constant with variable input declared immidiately within
       --    the private part of the package
@@ -971,40 +972,48 @@ package body Flow.Analysis.Sanity is
       -- Check --
       -----------
 
-      procedure Check (E : in out Node_Or_Entity_Id)
+      procedure Check (E : Node_Or_Entity_Id)
       is
+         Ent : Entity_Id := E;
       begin
-         while Present (E) loop
-            case Nkind (E) is
+         while Present (Ent) loop
+            case Nkind (Ent) is
                when N_Object_Declaration =>
-                  --  E is declared immediately within the private part
+                  --  Ent is declared immediately within the private part
 
                   Detect_Constant_With_Variable_Input
-                    (Defining_Identifier (E));
+                    (Defining_Identifier (Ent));
 
                when N_Package_Declaration =>
-                  --  E is a package declared immediately within the private
+                  --  Ent is a package declared immediately within the private
                   --  part.
 
                   declare
                      Nested_Spec : constant Entity_Id :=
-                       Specification (E);
+                       Specification (Ent);
 
                      Visible_Decls : constant List_Id :=
                        Visible_Declarations (Nested_Spec);
 
-                     Visible_Element : Node_Or_Entity_Id :=
+                     Visible_Element : constant Node_Or_Entity_Id :=
                        First (Visible_Decls);
 
                   begin
-                     Check (Visible_Element);
+                     if Entity_Spec_In_SPARK
+                          (Defining_Unit_Name
+                             (Specification (Ent)))
+                     then
+                        Check (Visible_Element);
+                     else
+                        return;
+                     end if;
                   end;
 
                when others =>
                   null;
             end case;
 
-            Next (E);
+            Next (Ent);
          end loop;
       end Check;
 
@@ -1048,6 +1057,7 @@ package body Flow.Analysis.Sanity is
 
       if not (Ekind (FA.Spec_Entity) = E_Package
         and then Nkind (Parent (FA.Spec_Entity)) = N_Package_Specification
+        and then Entity_Spec_In_SPARK (FA.Spec_Entity)
         and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State)))
       then
          return;
