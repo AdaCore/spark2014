@@ -644,15 +644,24 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     gnatprove(fullopt, no_fail)
 
 
-def do_flow(opt=None, procs=parallel_procs, no_fail=False):
+def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all"):
     """
     Call gnatprove with standard options for flow. We do generate
-    verification conditions, but we don't actually try and prove anything
-    (hence benchmark mode).
+    verification conditions, but we don't actually try very hard to
+    prove anything.
     """
 
     prove_all(opt, procs=procs, steps=1, counterexample=False,
-              prover=["cvc4"], no_fail=no_fail)
+              prover=["cvc4"], no_fail=no_fail, mode=mode)
+
+
+def do_flow_only(opt=None, procs=parallel_procs, no_fail=False):
+    """
+    Similar to do_flow, but we disable VCG. Should only be used for flow
+    tests that take an undue amount of time.
+    """
+
+    do_flow(opt, procs, no_fail, mode="flow")
 
 
 def clean():
