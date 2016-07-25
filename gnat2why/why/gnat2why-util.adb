@@ -301,6 +301,17 @@ package body Gnat2Why.Util is
       --  but it introduces extra overhead in the number of logical variables
       --  in the generated formula.
 
+      --  Particular case for function result. We always generate a ref for
+      --  function result and we should generate a model_projected. Cannot be
+      --  in the same case as everything else because Etype of an E_function
+      --  is its return type.
+
+      if Ekind (E) = E_Function then
+         Labels := Model_Trace;
+         Labels.Include (Model_Projected);
+         return Labels;
+      end if;
+
       declare
          --  Taking the full_view of the type to be able to match private
          --  type in the same way as other types because the current intended

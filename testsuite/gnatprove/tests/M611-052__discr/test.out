@@ -15,8 +15,8 @@ list.adb:20:23: medium: precondition might fail (e.g. when S = (N => ?, Top => 0
 list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail (e.g. when S = (N => ?, Top => 0, Content => (others => 0)))
 list.adb:21:15: medium: private part of "S" might not be initialized
-list.adb:22:54: medium: loop invariant might fail after first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1)
-list.adb:22:54: medium: loop invariant might fail in first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1)
+list.adb:22:54: medium: loop invariant might fail after first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) (e.g. when I = 2)
+list.adb:22:54: medium: loop invariant might fail in first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) (e.g. when I = 1)
 list.adb:22:54: medium: precondition might fail
 list.adb:22:63: info: initialization of private part of "Res" proved
 list.adb:22:68: info: range check proved (CVC4: 1 VC)
@@ -36,10 +36,10 @@ list.ads:13:83: info: overflow check proved (CVC4: 1 VC)
 list.ads:13:83: info: range check proved (CVC4: 1 VC)
 stack.adb:4:47: info: length check proved (CVC4: 1 VC)
 stack.adb:4:47: info: range check proved (CVC4: 1 VC)
-stack.adb:4:47: medium: range check might fail
+stack.adb:4:47: medium: range check might fail (e.g. when S = (N => ?, Top => 1, Content => (others => 0)) and S.Content'First = 1 and S.Content'Last = 0)
 stack.adb:5:55: info: length check proved (CVC4: 1 VC)
 stack.adb:5:55: info: range check proved (CVC4: 1 VC)
-stack.adb:5:55: medium: range check might fail
+stack.adb:5:55: medium: range check might fail (e.g. when S = (N => ?, Top => 2, Content => (others => 0)) and S.Content'First = 1 and S.Content'Last = 0)
 stack.adb:20:22: info: range check proved (CVC4: 1 VC)
 stack.adb:21:19: info: index check proved (CVC4: 2 VC)
 stack.adb:32:22: info: range check proved (CVC4: 1 VC)

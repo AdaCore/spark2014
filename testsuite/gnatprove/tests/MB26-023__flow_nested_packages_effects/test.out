@@ -14,7 +14,7 @@ outer.adb:49:58: medium: overflow check might fail (e.g. when X = -2147483648 an
 outer.adb:63:10: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
 outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved
 outer.adb:69:36: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
-outer.adb:69:46: medium: overflow check might fail
+outer.adb:69:46: medium: overflow check might fail (e.g. when Deep_Ref = -1 and Deep_Var = -2147483648)
 outer.adb:70:07: info: initialization of "Z" constituent of "Inner_State_2" proved
 outer.adb:75:10: info: initialization of "Deep_Ref" constituent of "Deep_State" proved
 outer.adb:84:12: info: initialization of "X" constituent of "Outer.State" proved

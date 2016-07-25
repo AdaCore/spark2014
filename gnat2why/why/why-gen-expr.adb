@@ -3394,6 +3394,7 @@ package body Why.Gen.Expr is
 
       Set.Include (New_Shape_Label (Node => N));
       Set.Include (Keep_On_Simp);
+      Set.Include (Stop_Intro);
       if Reason = VC_Postcondition then
          Set.Include (Model_VC_Post);
       else

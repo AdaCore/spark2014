@@ -200,9 +200,9 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved (CVC4: 4 VC)
 stable_marriage.adb:399:14: info: initialization of "Result" proved
-stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when R1 = (64 => 64, others => 0))
+stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when Is_Permutation_1'Result = True and R1 = (64 => 64, others => 0))
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) (e.g. when R1 = (2 => 1, 1 => 1, others => 0))
-stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when R2 = (64 => 64, others => 0))
+stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when Is_Permutation_2'Result = True and R2 = (64 => 64, others => 0))
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) (e.g. when R2 = (2 => 1, 1 => 1, others => 0))
 stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1 (e.g. when Invert_1'Result = (2 => 64, 1 => 64, others => 0) and R1 = (64 => 2, others => 1))
 stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2 (e.g. when Invert_2'Result = (2 => 64, 1 => 64, others => 0) and R2 = (64 => 2, others => 1))

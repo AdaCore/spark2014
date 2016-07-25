@@ -2150,7 +2150,8 @@ package body Gnat2Why.Subprograms is
          Emit
            (File,
             New_Global_Ref_Declaration
-              (Name     => Result_Name,
+              (Ada_Node => E,
+               Name     => Result_Name,
                Labels   => Get_Counterexample_Labels (E),
                Ref_Type => Type_Of_Node (Etype (E))));
       end if;
@@ -3096,7 +3097,8 @@ package body Gnat2Why.Subprograms is
             Emit
               (File,
                New_Global_Ref_Declaration
-                 (Name     => Result_Name,
+                 (Ada_Node => E,
+                  Name     => Result_Name,
                   Labels   => Get_Counterexample_Labels (E),
                   Ref_Type => Type_Of_Node (Etype (E))));
          end if;
