@@ -3380,28 +3380,28 @@ package body Why.Gen.Expr is
             True,
             Current_Subp,
             How_Proved => PC_Codepeer);
-         Set.Include (GP_Already_Proved);
+         Set.Insert (GP_Already_Proved);
       end if;
-      Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
-      Set.Include (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-      Set.Include (Location_Lab);
+      Set.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
+      Set.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
+      Set.Insert (Location_Lab);
 
       --  Do not generate comment labels in Why3 to facilitate debugging
 
       if not Gnat2Why_Args.Debug_Mode then
-         Set.Include (New_Comment_Label (N, Location_Lab, Reason));
+         Set.Insert (New_Comment_Label (N, Location_Lab, Reason));
       end if;
 
-      Set.Include (New_Shape_Label (Node => N));
-      Set.Include (Keep_On_Simp);
+      Set.Insert (New_Shape_Label (Node => N));
+      Set.Insert (Keep_On_Simp);
       --  Stop_Intro is added so that transformations in Why3 do not introduce
       --  past it. It enables us to retrieve all counterex variables from the
       --  goal.
-      Set.Include (Stop_Intro);
+      Set.Insert (Stop_Intro);
       if Reason = VC_Postcondition then
-         Set.Include (Model_VC_Post);
+         Set.Insert (Model_VC_Post);
       else
-         Set.Include (Model_VC);
+         Set.Insert (Model_VC);
       end if;
       return Set;
    end New_VC_Labels;
