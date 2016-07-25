@@ -30,9 +30,17 @@ package body Print_Table with SPARK_Mode is
    ------------------
 
    function Create_Table (Lines, Cols : Natural) return Table is
+      pragma Assert (Length (Null_Unbounded_String) = 0);
+      pragma Annotate (GNATprove, False_Positive, "assertion might fail",
+                       "Null_Unbounded_String represents the null String.");
+
       T : constant Table_Content (1 .. Lines, 1 .. Cols) :=
         (others => (others => Cell'(Content => Null_Unbounded_String,
                                     Align   => Right_Align)));
+      pragma Annotate (GNATprove, False_Positive, "length check might fail",
+                       String'("The tool does not track properly the value of"
+                         & " length of array components of array"
+                         & " aggregates."));
    begin
       return (Lines, Cols, T, 1, 1);
    end Create_Table;
@@ -45,6 +53,11 @@ package body Print_Table with SPARK_Mode is
                        S     : String;
                        Align : Alignment_Type := Right_Align) is
    begin
+      pragma Assert (Length (To_Unbounded_String (S)) = S'Length);
+      pragma Annotate (GNATprove, False_Positive, "assertion might fail",
+                       String'("To_Unbounded_String (S) returns an"
+                         & " Unbounded_String that represents S."));
+
       T.Content (T.Cur_Line, T.Cur_Col) :=
         Cell'(Content => To_Unbounded_String (S),
               Align   => Align);
@@ -58,6 +71,10 @@ package body Print_Table with SPARK_Mode is
       if S = 0 then
          Put_Cell (T, " .", Align);
       else
+         pragma Assert (Integer'Image (S)'Length <= 10);
+         pragma Annotate (GNATprove, False_Positive, "assertion might fail",
+                          "Natural fits in 10 digits in 64bits machines.");
+
          Put_Cell (T, Integer'Image (S), Align);
       end if;
    end Put_Cell;

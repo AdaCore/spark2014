@@ -42,16 +42,18 @@ package Print_Table with SPARK_Mode is
    type Table_Content is array (Natural range <>, Natural range <>)
      of Cell;
 
-   type Table (L, C : Natural) is record
+   subtype Less_Than_Max_Size is Natural range 0 .. Max_Size;
+
+   type Table (L, C : Less_Than_Max_Size) is record
       Content  : Table_Content (1 .. L, 1 .. C);
       Cur_Line : Positive;
       Cur_Col  : Positive;
-   end record with
-     Dynamic_Predicate => L <= Max_Size and then C <= Max_Size and then
-     Cur_Line <= L + 1 and then Cur_Col <= C + 1;
+   end record;
 
    function Create_Table (Lines, Cols : Natural) return Table
-   with Pre => Lines <= Max_Size and Cols <= Max_Size;
+   with
+     Global => null,
+     Pre    => Lines <= Max_Size and Cols <= Max_Size;
    --  create a table and set the current cell to the upper-left cell.
    --  @param Lines
    --  @param Cols
@@ -61,7 +63,9 @@ package Print_Table with SPARK_Mode is
      (T     : in out Table;
       S     : String;
       Align : Alignment_Type := Right_Align)
-     with Pre => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
+   with
+     Global => null,
+     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
      and then S'Length <= Max_Size;
    --  print a string into the current cell of the table, and move to the next
    --  cell. Note that this does not move to the next line, you need to call
@@ -74,7 +78,9 @@ package Print_Table with SPARK_Mode is
      (T     : in out Table;
       S     : Natural;
       Align : Alignment_Type := Right_Align)
-   with Pre => T.Cur_Line <= T.L and then T.Cur_Col <= T.C;
+   with
+     Global => null,
+     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C;
    --  same as Put_Cell for strings, but for numbers; if S is 0, prints a dot
    --  instead
    --  @param T the table which contains the cell
@@ -82,13 +88,17 @@ package Print_Table with SPARK_Mode is
    --  @param Align the selected alignment for this cell
 
    procedure New_Line (T : in out Table)
-   with Pre => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L;
+   with
+     Global => null,
+     Pre    => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L;
    --  make sure that the current cell is the last cell of the line, and then
    --  set the current cell to the first cell of the next line
    --  @param T the table, this parameter is used only to check that the table
    --           has the expected number of columns.
 
-   procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table);
+   procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table)
+   with
+     Global => null;
    --  print the table T, nicely aligned, to the file H. The first line is
    --  considered a table header, so special markup is put there. Also, the
    --  last line is considered a summary, so special markup can apply.
