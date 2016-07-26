@@ -1001,13 +1001,12 @@ package body Flow.Analysis.Sanity is
                      Nested_Spec : constant Entity_Id := Specification (E);
 
                   begin
-                     if not Entity_Spec_In_SPARK
-                              (Defining_Unit_Name (Nested_Spec))
+                     if Entity_Spec_In_SPARK (Defining_Unit_Name (Nested_Spec))
                      then
+                        Check (Visible_Declarations (Nested_Spec));
+                     else
                         return;
                      end if;
-
-                     Check (Visible_Declarations (Nested_Spec));
                   end;
 
                when others =>
@@ -1054,13 +1053,11 @@ package body Flow.Analysis.Sanity is
       --  We make sure we are looking at a package specification with a state
       --  abstraction otherwise the item cannot act as a Part_Of constituent.
 
-      if not (Ekind (FA.Spec_Entity) = E_Package
-        and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State)))
+      if Ekind (FA.Spec_Entity) = E_Package
+        and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State))
       then
-         return;
+         Check (Private_Declarations (Package_Specification (FA.Spec_Entity)));
       end if;
-
-      Check (Private_Declarations (Package_Specification (FA.Spec_Entity)));
 
    end Check_Part_Of;
 
