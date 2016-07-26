@@ -953,16 +953,23 @@ package body Flow.Analysis.Sanity is
       Sane :    out Boolean)
    is
 
-      procedure Check (E : Node_Or_Entity_Id);
-      --  We make the check for each entity E we are interested in:
-      --  * either a constant with variable input declared immidiately within
-      --    the private part of the package
-      --  * or a package declared immidiately within the private part of the
-      --    package
+      procedure Check (L : List_Id);
+      --  We perform the check for the elements of a list L, which can be the
+      --  list of either private or visible declarations of a package. In more
+      --  detail: because we want to detect any non deferred constant with
+      --  variable inputs declared immediately within the private part of a
+      --  package or in the visible part of a package declared in the private
+      --  part of another package, then, depending on these two cases, L will
+      --  be:
+      --  * the list of private declarations, if the package under analysis
+      --    has a private part.
+      --  * the list of visible declarations, if the package under analysis
+      --    is present in the list of private declarations of another package.
       --
-      --  In particular, in case E is an object declaration we detect if it is
-      --  a constant with variable input, if it is a package declaration we
-      --  recursively check the same for each of its visible variables.
+      --  For each element E of the list L, in case E is an object declaration
+      --  we detect if it is a constant with variable input, if it is a package
+      --  declaration we recursively check the same for each of its visible
+      --  variables.
 
       procedure Detect_Constant_With_Variable_Input (E : Entity_Id);
       --  If entity E is a non deferred constant with variable input which does
@@ -972,48 +979,42 @@ package body Flow.Analysis.Sanity is
       -- Check --
       -----------
 
-      procedure Check (E : Node_Or_Entity_Id)
+      procedure Check (L : List_Id)
       is
-         Ent : Entity_Id := E;
+         E : Entity_Id := First (L);
       begin
-         while Present (Ent) loop
-            case Nkind (Ent) is
+         while Present (E) loop
+            case Nkind (E) is
                when N_Object_Declaration =>
-                  --  Ent is declared immediately within the private part
+                  --  E is an object declared immediately within the private
+                  --  part and we detect if is a constant with variable input.
 
                   Detect_Constant_With_Variable_Input
-                    (Defining_Identifier (Ent));
+                    (Defining_Identifier (E));
 
                when N_Package_Declaration =>
-                  --  Ent is a package declared immediately within the private
-                  --  part.
+                  --  E is a package declared immediately within the private
+                  --  part. If it is in SPARK, we recursively check its visible
+                  --  declarations.
 
                   declare
-                     Nested_Spec : constant Entity_Id :=
-                       Specification (Ent);
-
-                     Visible_Decls : constant List_Id :=
-                       Visible_Declarations (Nested_Spec);
-
-                     Visible_Element : constant Node_Or_Entity_Id :=
-                       First (Visible_Decls);
+                     Nested_Spec : constant Entity_Id := Specification (E);
 
                   begin
-                     if Entity_Spec_In_SPARK
-                          (Defining_Unit_Name
-                             (Specification (Ent)))
+                     if not Entity_Spec_In_SPARK
+                              (Defining_Unit_Name (Nested_Spec))
                      then
-                        Check (Visible_Element);
-                     else
                         return;
                      end if;
+
+                     Check (Visible_Declarations (Nested_Spec));
                   end;
 
                when others =>
                   null;
             end case;
 
-            Next (Ent);
+            Next (E);
          end loop;
       end Check;
 
@@ -1045,8 +1046,6 @@ package body Flow.Analysis.Sanity is
          end if;
       end Detect_Constant_With_Variable_Input;
 
-      Current_Element : Node_Or_Entity_Id;
-
    --  Start of processing for Check_Part_Of
 
    begin
@@ -1056,17 +1055,12 @@ package body Flow.Analysis.Sanity is
       --  abstraction otherwise the item cannot act as a Part_Of constituent.
 
       if not (Ekind (FA.Spec_Entity) = E_Package
-        and then Nkind (Parent (FA.Spec_Entity)) = N_Package_Specification
-        and then Entity_Spec_In_SPARK (FA.Spec_Entity)
         and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State)))
       then
          return;
       end if;
 
-      Current_Element := First (Private_Declarations
-                                (Parent (FA.Spec_Entity)));
-
-      Check (Current_Element);
+      Check (Private_Declarations (Package_Specification (FA.Spec_Entity)));
 
    end Check_Part_Of;
 
