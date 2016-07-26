@@ -1004,8 +1004,6 @@ package body Flow.Analysis.Sanity is
                      if Entity_Spec_In_SPARK (Defining_Unit_Name (Nested_Spec))
                      then
                         Check (Visible_Declarations (Nested_Spec));
-                     else
-                        return;
                      end if;
                   end;
 
