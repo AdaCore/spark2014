@@ -212,8 +212,8 @@ package body Flow_Utility is
       begin
          case Nkind (N) is
             when N_Identifier =>
-               if Present (Entity (N)) and then
-                 Ekind (Entity (N)) = E_Function
+               if Present (Entity (N))
+                 and then Ekind (Entity (N)) = E_Function
                then
                   Functions_Called.Include (Entity (N));
                end if;
