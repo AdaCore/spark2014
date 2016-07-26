@@ -110,16 +110,18 @@ package body SPARK_Util.Types is
       Typ : Entity_Id := T;
 
    begin
-      --  If T has not been marked yet, return it
+      --  Itypes may not be marked. Use their Etype.
 
-      if not Entity_Marked (T) then
-         return T;
+      if Is_Itype (Typ) and then not Entity_Marked (Typ) then
+         Typ := Etype (Typ);
       end if;
+
+      pragma Assert (Entity_Marked (Typ));
 
       --  If T is not in SPARK, go through the Partial_View chain to find its
       --  first view in SPARK if any.
 
-      if not Entity_In_SPARK (T) then
+      if not Entity_In_SPARK (Typ) then
          loop
             --  If we find a partial view in SPARK, we return it
 
@@ -143,7 +145,7 @@ package body SPARK_Util.Types is
       --  the Full_View chain until the last type in SPARK is found. This code
       --  is largely inspired from the body of Einfo.Underlying_Type.
 
-      elsif Full_View_Not_In_SPARK (T) then
+      elsif Full_View_Not_In_SPARK (Typ) then
          loop
             --  If Full_View (Typ) is in SPARK, use it. Otherwise, we have
             --  found the last type in SPARK in T's chain of Full_View.

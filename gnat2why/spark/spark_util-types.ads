@@ -79,6 +79,7 @@ package SPARK_Util.Types is
    with Pre => Is_Type (T);
    --  @param T any type
    --  @return the "Representative Type in SPARK" of type T
+   --  It should only be called on marked type entities (except for Itypes).
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind
    with Pre => Is_Type (T);

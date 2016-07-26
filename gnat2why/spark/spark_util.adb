@@ -1286,7 +1286,7 @@ package body SPARK_Util is
       --  If E is the component of a root type, return it
 
       if Root = Rec_Type then
-         return E;
+         return Search_Component_By_Name (Rec_Type, E);
       end if;
 
       --  In the component case, it is enough to simply search for the matching

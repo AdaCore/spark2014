@@ -811,6 +811,13 @@ package body SPARK_Definition is
    --  Returns whether the entity E is in SPARK; computes this information by
    --  calling Mark_Entity, which is very cheap.
 
+   function Retysp_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  Returns whether the representive type of the entity E is in SPARK;
+   --  computes this information by calling Mark_Entity, which is very cheap.
+   --  Theoretically, it is equivalent to In_SPARK (Retyps (E)) except that
+   --  Retysp can only be called on Marked entities
+
    procedure Mark_Entity (E : Entity_Id);
    --  Push entity E on the stack, mark E, and pop E from the stack. Always
    --  adds E to the set of Entity_Set as a result. If no violation was
@@ -1206,11 +1213,11 @@ package body SPARK_Definition is
             if not Is_Update_Aggregate (N)
               and then not Is_Special_Multidim_Update_Aggr (N)
             then
+               Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
                if not Aggregate_Is_Fully_Initialized (N) then
                   Mark_Violation ("aggregate not fully defined", N,
                                   SRM_Reference => "SPARK RM 4.3");
                end if;
-               Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
@@ -1286,11 +1293,11 @@ package body SPARK_Definition is
             Mark_Extended_Return_Statement (N);
 
          when N_Extension_Aggregate =>
+            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
             if not Aggregate_Is_Fully_Initialized (N) then
                Mark_Violation ("extension aggregate not fully defined", N,
                                SRM_Reference => "SPARK RM 4.3");
             end if;
-            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
 
             if Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
               and then Is_Type (Entity (Ancestor_Part (N)))
@@ -1553,7 +1560,7 @@ package body SPARK_Definition is
             --  full view is not in SPARK.
 
             if not Is_Private_Type (Etype (Prefix (N)))
-              or else In_SPARK (Retysp (Etype (Prefix (N))))
+              or else Retysp_In_SPARK (Etype (Prefix (N)))
             then
                Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
             elsif Ekind (Entity (Selector_Name (N))) /= E_Discriminant then
@@ -2091,7 +2098,8 @@ package body SPARK_Definition is
 
       if Nkind (N) in N_Has_Etype
         and then Present (Etype (N))
-        and then not In_SPARK (Etype (N))
+        and then Is_Type (Etype (N))
+        and then not Retysp_In_SPARK (Etype (N))
       then
          Mark_Violation (N, From => Etype (N));
       end if;
@@ -2798,7 +2806,7 @@ package body SPARK_Definition is
          Expr : constant Node_Id   := Expression (N);
          T    : constant Entity_Id := Etype (E);
       begin
-         if not In_SPARK (T) then
+         if not Retysp_In_SPARK (T) then
             Mark_Violation (N, From => T);
          end if;
 
@@ -2849,7 +2857,7 @@ package body SPARK_Definition is
          --  The object is in SPARK if-and-only-if its type is in SPARK and
          --  its initialization expression, if any, is in SPARK.
 
-         if not In_SPARK (T) then
+         if not Retysp_In_SPARK (T) then
             Mark_Violation (Def, From => T);
          end if;
 
@@ -3091,7 +3099,7 @@ package body SPARK_Definition is
       procedure Mark_Parameter_Entity (E : Entity_Id) is
          T : constant Entity_Id := Etype (E);
       begin
-         if not In_SPARK (T) then
+         if not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
          end if;
       end Mark_Parameter_Entity;
@@ -3174,7 +3182,7 @@ package body SPARK_Definition is
             --  If the result type of a subprogram is not in SPARK, then the
             --  subprogram is not in SPARK.
 
-            if not In_SPARK (Etype (Id)) then
+            if not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
             end if;
          end Mark_Function_Specification;
@@ -3575,8 +3583,7 @@ package body SPARK_Definition is
          if not Is_Nouveau_Type (E)
            and then Underlying_Type (Etype (E)) /= E
          then
-            Mark_Entity (Etype (E));
-            if not Entity_In_SPARK (Retysp (Etype (E))) then
+            if not Retysp_In_SPARK (Etype (E)) then
                Mark_Violation (E, From => Retysp (Etype (E)));
             end if;
          end if;
@@ -3674,8 +3681,7 @@ package body SPARK_Definition is
                   --  underlying type as this underlying type may not be in
                   --  SPARK.
                begin
-                  Mark_Entity (Utype);
-                  if not Entity_In_SPARK (Utype) then
+                  if not In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
                        (E, (if Is_Nouveau_Type (E) then E
                         else Retysp (Etype (E))));
@@ -3958,7 +3964,7 @@ package body SPARK_Definition is
                Specific_Type : constant Entity_Id :=
                  Get_Specific_Type_From_Classwide (E);
             begin
-               if not In_SPARK (Specific_Type) then
+               if not Retysp_In_SPARK (Specific_Type) then
                   Mark_Violation (E, From => Specific_Type);
 
                --  Constrained class-wide types are not supported yet as it is
@@ -5826,12 +5832,22 @@ package body SPARK_Definition is
      (Id : Entity_Id;
       N  : Node_Id)
    is
-      Typ : constant Entity_Id := Retysp (Id);
    begin
-      if not In_SPARK (Typ) then
-         Mark_Violation (N, From => Typ);
+      if not Retysp_In_SPARK (Id) then
+         Mark_Violation (N, From => Retysp (Id));
       end if;
    end Mark_Most_Underlying_Type_In_SPARK;
+
+   --------------
+   -- In_SPARK --
+   --------------
+
+   function Retysp_In_SPARK (E : Entity_Id) return Boolean is
+   begin
+      Mark_Entity (E);
+      Mark_Entity (Retysp (E));
+      return Entities_In_SPARK.Contains (Retysp (E));
+   end Retysp_In_SPARK;
 
    ---------------------
    -- SPARK_Pragma_Is --
