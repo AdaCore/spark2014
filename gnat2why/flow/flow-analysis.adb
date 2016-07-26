@@ -2981,7 +2981,7 @@ package body Flow.Analysis is
 
                if Ekind (Hidden_State) in Object_Kind
                  and then Is_Constant_Object (Hidden_State)
-                 and then Has_Variable_Input (F)
+                 and then Has_Variable_Input (Hidden_State)
                  and then not All_Constituents.Contains (F)
                then
                   Error_Msg_Flow

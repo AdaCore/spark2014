@@ -822,8 +822,7 @@ package body Gnat2Why.Util is
         and then SPARK_Definition.Is_Loop_Entity (E)
         and then not SPARK_Definition.Is_Actions_Entity (E)
       then
-         return Flow_Utility.Has_Variable_Input
-           (Flow_Types.Direct_Mapping_Id (E));
+         return Flow_Utility.Has_Variable_Input (E);
 
       --  We special case any volatile with async writers: they are always
       --  mutable (even if they are, for example, in parameters). Constants

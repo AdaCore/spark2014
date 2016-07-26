@@ -715,15 +715,12 @@ is
    --  ??? this function is inefficient and its uses should be probably
    --  replaced with a call to Ada.Containers.Hashed_Sets.Replace_Element
 
-   function Has_Variable_Input (F : Flow_Id) return Boolean
-   with Pre => F.Kind in Direct_Mapping | Record_Field;
-   --  Returns True if F corresponds to a constant with variable
-   --  input. If this function is called before the globals graph has
-   --  been generated then the results might not be perfectly accurate
-   --  (this means that some constant that might not actually have
-   --  variable input will be reported as having variable input).
-   --  @param F is the Flow_Id which we check for variable input
-   --  @return True iff F is a constant with variable input
+   function Has_Variable_Input (V : Entity_Id) return Boolean;
+   --  Returns True if V is a constant with variable input.
+   --
+   --  If called before the globals graph has been generated then the results
+   --  might not be accurate (this means that some constant that might not
+   --  actually have variable input will be reported as having variable input).
 
    function Is_Variable (F : Flow_Id) return Boolean;
    --  Returns True if F is either not a constant or is a constant

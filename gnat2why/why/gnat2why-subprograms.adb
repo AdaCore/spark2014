@@ -281,7 +281,7 @@ package body Gnat2Why.Subprograms is
          if Present (N)
            and then Nkind (N) in N_Entity
            and then Ekind (N) = E_Constant
-           and then not Has_Variable_Input (Direct_Mapping_Id (N))
+           and then not Has_Variable_Input (N)
            and then not Is_Declared_In_Unit (N, Scope)
          then
             Assume_Declaration_Of_Entity

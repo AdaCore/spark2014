@@ -1025,7 +1025,7 @@ package body Flow.Analysis.Sanity is
          is (Is_Full_View (E) or else Present (Full_View (E)));
       begin
          if Ekind (E) = E_Constant
-           and then Has_Variable_Input (Direct_Mapping_Id (E))
+           and then Has_Variable_Input (E)
            and then not Present (Get_Pragma (E, Pragma_Part_Of))
            and then not Is_Deferred_Constant (E)
          then

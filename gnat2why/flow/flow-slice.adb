@@ -521,7 +521,7 @@ package body Flow.Slice is
                               --  ??? there is no point in checking both the
                               --  partial and the full views; also no need to
                               --  include the full view for the second time.
-                              if Has_Variable_Input (Direct_Mapping_Id (E))
+                              if Has_Variable_Input (E)
                               then
                                  --  If the Full_View is present then add that
                                  Local_Variables.Include

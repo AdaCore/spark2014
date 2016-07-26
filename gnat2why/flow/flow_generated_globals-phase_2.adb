@@ -2109,7 +2109,7 @@ package body Flow_Generated_Globals.Phase_2 is
             begin
                if Present (Const)
                  and then Ekind (Const) = E_Constant
-                 and then not Has_Variable_Input (Direct_Mapping_Id (Const))
+                 and then not Has_Variable_Input (Const)
                then
                   --  Remove all incoming edges
                   declare

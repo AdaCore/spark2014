@@ -2269,8 +2269,7 @@ package body Flow_Utility is
                            end;
 
                         elsif Local_Constants.Contains (Entity (N))
-                          or else Has_Variable_Input
-                                    (Direct_Mapping_Id (Entity (N)))
+                          or else Has_Variable_Input (Entity (N))
                         then
                            --  If this constant:
                            --    * comes from source and is in Local_Constants
@@ -2380,8 +2379,7 @@ package body Flow_Utility is
 
                         if Ekind (E) /= E_Constant
                           or else Local_Constants.Contains (E)
-                          or else Has_Variable_Input
-                                    (Direct_Mapping_Id (Unique_Entity (E)))
+                          or else Has_Variable_Input (Unique_Entity (E))
                         then
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -2813,9 +2811,8 @@ package body Flow_Utility is
    -- Has_Variable_Input --
    ------------------------
 
-   function Has_Variable_Input (F : Flow_Id) return Boolean is
-
-      E    : Entity_Id := Get_Direct_Mapping_Id (F);
+   function Has_Variable_Input (V : Entity_Id) return Boolean is
+      E    : Entity_Id := V;
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
 
@@ -3254,14 +3251,20 @@ package body Flow_Utility is
 
    function Is_Variable (F : Flow_Id) return Boolean is
    begin
-      if F.Kind not in Direct_Mapping | Record_Field then
-         --  Consider anything that is not a Direct_Mapping or a
-         --  Record_Field to be a variable.
+      if F.Kind in Direct_Mapping | Record_Field then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            return not Is_Constant_Object (E)
+              or else Has_Variable_Input (E);
+         end;
+
+      --  Consider anything that is not a Direct_Mapping or a Record_Field to
+      --  be a variable.
+
+      else
          return True;
       end if;
-
-      return not Is_Constant_Object (Get_Direct_Mapping_Id (F))
-        or else Has_Variable_Input (F);
    end Is_Variable;
 
    -----------------------
@@ -3390,7 +3393,7 @@ package body Flow_Utility is
                begin
                   if Ekind (E) = E_Constant
                     and then not Skip.Contains (E)
-                    and then not Has_Variable_Input (F)
+                    and then not Has_Variable_Input (E)
                     and then (In_Generic_Actual (E)
                               or else not Only_Generic_Formals)
                   then

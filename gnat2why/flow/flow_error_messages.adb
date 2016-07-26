@@ -822,7 +822,7 @@ package body Flow_Error_Messages is
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
                   then
                      Append (R, "constant with");
-                     if not Has_Variable_Input (F) then
+                     if not Has_Variable_Input (Get_Direct_Mapping_Id (F)) then
                         Append (R, "out");
                      end if;
                      Append (R, " variable input ");
