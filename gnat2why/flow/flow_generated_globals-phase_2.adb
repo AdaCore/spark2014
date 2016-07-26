@@ -23,7 +23,7 @@
 
 with GNAT.Regpat;                use GNAT.Regpat;
 with Serialisation;              use Serialisation;
-with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
@@ -1391,17 +1391,13 @@ package body Flow_Generated_Globals.Phase_2 is
             declare
                use Global_Graphs;
 
-               package Vertex_Sets is new Ada.Containers.Hashed_Sets
-                 (Element_Type        => Global_Graphs.Vertex_Id,
-                  Hash                => Global_Graphs.Vertex_Hash,
-                  Equivalent_Elements => Global_Graphs."=",
-                  "="                 => Global_Graphs."=");
+               package Vertex_Lists is new Ada.Containers.Doubly_Linked_Lists
+                 (Element_Type => Global_Graphs.Vertex_Id);
 
                function Get_Variable_Neighbours
                  (Start : Vertex_Id)
-                  return Vertex_Sets.Set;
-               --  Returns a set of all Neighbours of Start that correspond to
-               --  variables.
+                  return Vertex_Lists.List;
+               --  Returns those neighbours of Start that represent variables
 
                function Needs_Editing (V : Vertex_Id) return Boolean with
                  Pre => Global_Graph.Get_Key (V).Kind = Variable;
@@ -1424,19 +1420,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
                function Get_Variable_Neighbours
                  (Start : Vertex_Id)
-                  return Vertex_Sets.Set
+                  return Vertex_Lists.List
                is
-                  VS : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+                  Result : Vertex_Lists.List;
                begin
                   for V of Global_Graph.Get_Collection (Start,
                                                         Out_Neighbours)
                   loop
                      if Global_Graph.Get_Key (V).Kind = Variable then
-                        VS.Insert (V);
+                        Result.Append (V);
                      end if;
                   end loop;
 
-                  return VS;
+                  return Result;
                end Get_Variable_Neighbours;
 
                -------------------
@@ -1449,9 +1445,9 @@ package body Flow_Generated_Globals.Phase_2 is
                     or else Global_Graph.Edge_Exists (V_Outs, V);
                end Needs_Editing;
 
-               Proof_Ins : constant Vertex_Sets.Set :=
+               Proof_Ins : constant Vertex_Lists.List :=
                  Get_Variable_Neighbours (V_Proof_Ins);
-               --  Explicit copy of vertex set is required because while
+               --  Explicit copy of vertices is required because while
                --  editing the graph we tamper with its internal cursors.
 
             begin
