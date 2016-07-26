@@ -883,12 +883,12 @@ stabilizer_pack.adb:142:40: info: initialization of "Euler_Roll_Actual" constitu
 stabilizer_pack.adb:143:40: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
 stabilizer_pack.adb:144:40: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
 stabilizer_pack.adb:147:40: info: range check proved (Interval)
-stabilizer_pack.adb:148:36: info: range check proved (Interval)
-stabilizer_pack.adb:148:55: info: range check proved (Interval)
-stabilizer_pack.adb:149:36: info: range check proved (Interval)
+stabilizer_pack.adb:148:36: medium: range check might fail
+stabilizer_pack.adb:148:55: medium: range check might fail
+stabilizer_pack.adb:149:36: medium: range check might fail
 stabilizer_pack.adb:165:30: info: range check proved (Interval)
 stabilizer_pack.adb:168:44: info: range check proved (Interval)
-stabilizer_pack.adb:185:55: info: range check proved (Interval)
+stabilizer_pack.adb:185:55: medium: range check might fail
 stabilizer_pack.adb:189:10: info: initialization of "LPS25H_Data_Valid" proved
 stabilizer_pack.adb:190:17: info: range check proved (CVC4: 1 VC)
 stabilizer_pack.adb:190:31: info: overflow check proved (Interval)
@@ -944,8 +944,8 @@ stabilizer_pack.adb:271:57: info: initialization of "Alt_Hold_PID_Out" proved
 stabilizer_pack.adb:276:30: info: overflow check proved (Interval)
 stabilizer_pack.adb:277:39: info: initialization of "C28b" proved
 stabilizer_pack.adb:277:62: info: initialization of "Raw_Thrust" proved
-stabilizer_pack.adb:317:33: info: range check proved (Interval)
-stabilizer_pack.adb:318:33: info: range check proved (Interval)
+stabilizer_pack.adb:317:33: medium: range check might fail
+stabilizer_pack.adb:318:33: medium: range check might fail
 stabilizer_pack.adb:362:55: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.ads:87:14: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.ads:87:14: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
