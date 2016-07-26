@@ -31,6 +31,7 @@ with Errout;                          use Errout;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
+with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Type;                        use Sem_Type;
@@ -2604,12 +2605,8 @@ package body Flow_Utility is
                        Attribute_Terminated =>
                      --  Add the implicit use of
                      --  Ada.Task_Identification.Tasking_State
-                     VS.Include
-                       (Get_Flow_Id
-                          (To_Entity_Name
-                             ("ada__task_identification__tasking_state"),
-                           Normal_Use,
-                           Scope));
+                     VS.Include (Direct_Mapping_Id
+                                   (RTE (RE_Tasking_State)));
 
                   when others =>
                      null;
