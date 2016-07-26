@@ -765,11 +765,9 @@ package body Flow_Generated_Globals.Phase_2 is
       --  the Tasking_Graph.
 
       procedure Edit_Proof_Ins;
-      --  A variable cannot be simultaneously a Proof_In and an Input of a
-      --  subprogram. In this case we remove the Proof_In edge. Furthermore,
-      --  a variable cannot be simultaneously a Proof_In and an Output (but
-      --  not an input). In this case we change the Proof_In variable into
-      --  an Input.
+      --  A variable that is both a Proof_In and an Input of a subprogram
+      --  becomes only an Input; similarly, a variable that is both a
+      --  Proof_In and and Output (but not an Input) becomes an Input-Output.
 
       function Graph_File_Prefix return String;
       --  Returns a debug filename prefix based on name of the current
