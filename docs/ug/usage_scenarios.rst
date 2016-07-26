@@ -109,12 +109,12 @@ With Proof Only
 |GNATprove| can be used to prove the complete absence of possible run-time
 errors corresponding to:
 
-* raising exception ``Constraint_Error`` at run time,
+* all possible explicit raising of exceptions in the program,
+
+* raising exception ``Constraint_Error`` at run time, and
 
 * all possible failures of assertions corresponding to raising exception
-  ``Assert_Error`` at run time, and
-
-* all possible explicit raising of exceptions in the program.
+  ``Assert_Error`` at run time.
 
 AoRTE is important for ensuring safety in all possible operational conditions
 for safety-critical software (including boundary conditions, or abnormal
@@ -863,14 +863,14 @@ errors:
 
 * all possible reads of uninitialized data
 
+* all possible explicit raise of exceptions in the program
+
 * all possible run-time errors except raising exception ``Storage_Error``,
   corresponding to raising exception ``Program_Error``, ``Constraint_Error`` or
   ``Tasking_Error`` at run time
 
 * all possible failures of assertions corresponding to raising exception
   ``Assert_Error`` at run time
-
-* all possible explicit raise of exceptions in the program
 
 When parts of the program are not in |SPARK| (for example, in Ada or C), the
 results of |GNATprove|'s analysis depend on assumptions on the correct behavior
