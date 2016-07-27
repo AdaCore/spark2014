@@ -231,7 +231,7 @@ package body Flow_Utility is
                if Present (Right_Opnd (N)) then
                   --  x in t
                   P := Right_Opnd (N);
-                  if Nkind (P) = N_Identifier
+                  if Nkind (P) in N_Identifier | N_Expanded_Name
                     and then Ekind (Entity (P)) in Type_Kind
                   then
                      Process_Type (Get_Type (P, Scope));
@@ -240,7 +240,7 @@ package body Flow_Utility is
                   --  x in t | 1 .. y | u
                   P := First (Alternatives (N));
                   while Present (P) loop
-                     if Nkind (P) = N_Identifier
+                     if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Ekind (Entity (P)) in Type_Kind
                      then
                         Process_Type (Get_Type (P, Scope));
@@ -2659,7 +2659,7 @@ package body Flow_Utility is
                   if Present (Right_Opnd (N)) then
                      --  x in t
                      P := Right_Opnd (N);
-                     if Nkind (P) = N_Identifier
+                     if Nkind (P) in N_Identifier | N_Expanded_Name
                         and then Ekind (Entity (P)) in Type_Kind
                      then
                         Process_Type (Get_Type (P, Scope));
@@ -2668,7 +2668,7 @@ package body Flow_Utility is
                      --  x in t | 1 .. y | u
                      P := First (Alternatives (N));
                      while Present (P) loop
-                        if Nkind (P) = N_Identifier
+                        if Nkind (P) in N_Identifier | N_Expanded_Name
                           and then Ekind (Entity (P)) in Type_Kind
                         then
                            Process_Type (Get_Type (P, Scope));
@@ -2709,7 +2709,7 @@ package body Flow_Utility is
                        and then Is_Action (N)
                      then
                         case Nkind (Expression (N)) is
-                           when N_Identifier =>
+                           when N_Identifier | N_Expanded_Name =>
                               S.Include
                                 (F'Update
                                    (Node => Unique_Entity

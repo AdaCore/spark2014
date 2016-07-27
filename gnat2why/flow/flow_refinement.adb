@@ -736,7 +736,7 @@ package body Flow_Refinement is
 
       function Proc (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) = N_Identifier then
+         if Nkind (N) in N_Identifier | N_Expanded_Name then
             declare
                E : constant Entity_Id := Entity (N);
             begin
