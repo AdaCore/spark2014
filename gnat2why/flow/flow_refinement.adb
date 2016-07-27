@@ -459,7 +459,7 @@ package body Flow_Refinement is
       Target_Ent : constant Entity_Id :=
         (if Present (State) and then Scope (E) = Scope (State)
          then State
-         else Unique_Entity (E));
+         else Unique_Entity (E)); --  ??? why unique entity?
       --  What we are searching for. Either the entity itself, or, if this
       --  entity is a constituent of an abstract state of its immediately
       --  enclosing package, that abstract state.
@@ -787,21 +787,24 @@ package body Flow_Refinement is
          begin
             return
               --  1) No Global and no Depends aspect
-              (No (Global_N) and then No (Depends_N)) or else
+              (No (Global_N) and then No (Depends_N))
+
+                or else
 
               --  2) Global refers to state abstraction with visible refinement
-              --     but no Refined_Global.
+              --     but no Refined_Global is present.
               (Present (Global_N) and then
                  No (Refined_Global_N) and then
-                 No (Refined_Depends_N) and then
-                 Mentions_State_With_Visible_Refinement (Global_N,
-                                                         B_Scope)) or else
+                 No (Refined_Depends_N) and then  -- ???
+                 Mentions_State_With_Visible_Refinement (Global_N, B_Scope))
+
+                or else
 
               --  3) Depends refers to state abstraction with visible
-              --     refinement but no Refined_Depends.
+              --     refinement but no Refined_Depends is present.
               (Present (Depends_N) and then
                  No (Refined_Depends_N) and then
-                 No (Refined_Global_N) and then
+                 No (Refined_Global_N) and then  -- ???
                  Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
          end;
       end if;

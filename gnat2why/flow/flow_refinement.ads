@@ -123,7 +123,7 @@ package Flow_Refinement is
    function Is_Visible (Target_Scope : Flow_Scope;
                         S            : Flow_Scope)
                         return Boolean;
-   --  Returns True if Target_Scope is visible from the scope S
+   --  Returns True iff Target_Scope is visible from the scope S
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Present (N);
@@ -179,17 +179,20 @@ package Flow_Refinement is
    --
    --  This is really an internal function, but as its useful for debug and
    --  trace it has been made visible.
+   --  ??? this should be moved to Functions and renamed to Enclosing_Scope
+   --  (since Get is meaningless and Flow repeats the type of parameter)
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Part = Body_Part;
    --  Returns the flow scope of the enclosing package or concurrent object if
    --  it exists and the null scope otherwise.
+   --  ??? this should be merged into Get_Enclosing_Body_Flow_Scope
 
    function Is_Initialized_At_Elaboration
      (E : Entity_Id;
       S : Flow_Scope)
-      return Boolean with
-     Pre => Present (E);
+      return Boolean
+   with Pre => Present (E);
    --  Checks if the given entity E is initialized at elaboration, as seen
    --  from scope S. For example if you have a nested package where:
    --
@@ -213,12 +216,12 @@ package Flow_Refinement is
    --  or task E.
    --
    --  If a body is present then we need a refinement if either:
-   --     * no global or depends present
-   --     * no refined global, but global mentions state with visible
-   --       refinement
-   --     * ditto for depends and refined depends
+   --     * no Global and no Depends is present
+   --     * Global mentions state with visible refinement but no Refined_Global
+   --       is present
+   --     * ditto for Depends and Refined_Depends
    --
-   --  Otherwise we return false since we can't decide (nor need an answer,
+   --  Otherwise returns False since we can't decide (nor need an answer,
    --  since we won't analyze the body).
 
    function Nested_Within_Concurrent_Type
@@ -226,6 +229,6 @@ package Flow_Refinement is
       S : Flow_Scope)
       return Boolean
    with Pre => Ekind (T) in Concurrent_Kind;
-   --  Returns True iff S is nested inside concurrent type T
+   --  Returns True iff S is nested inside a concurrent type T
 
 end Flow_Refinement;
