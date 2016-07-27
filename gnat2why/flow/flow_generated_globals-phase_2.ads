@@ -182,14 +182,14 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Is_Recursive (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Procedure | E_Function;
-   --  Returns True iff subprogram E has a path connecting it to itself, i.e.
-   --  is a recursive subprogram.
+   --  Returns True iff subprogram E calls (directly or indirectly) itself,
+   --  i.e. is a recursive subprogram.
 
    function Calls_Current_Task (E : Entity_Id)
                                 return Boolean
    with Pre => Ekind (E) in E_Entry | E_Procedure;
-   --  Returns True iff subprogram E has a path connecting it to a call to the
-   --  Current_Task function.
+   --  Returns True iff subprogram E calls (directly or indirectly) function
+   --  Ada.Task_Identification.Current_Task.
 
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;
