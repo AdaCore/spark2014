@@ -1,5 +1,6 @@
-# This Makefile is used to build and install GNATprove and its sub-components,
-# at the exception of prover CVC4, which should be separately built/installed.
+# This Makefile is used to build and install GNATprove and its
+# sub-components, at the exception of provers CVC4 and Z3, which should be
+# separately built/installed.
 #
 # To build gnat2why, you need:
 #  . a working GNAT compiler
