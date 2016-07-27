@@ -367,7 +367,7 @@ package body SPARK_Util.Types is
       --  Directly store the attr__constrained and __tag fields in the record,
       --  as these fields cannot be modified after object creation.
 
-      if not Is_Constrained (E) and then Has_Defaulted_Discriminants (E) then
+      if Has_Defaulted_Discriminants (E) then
          Count := Count + 1;
       end if;
 

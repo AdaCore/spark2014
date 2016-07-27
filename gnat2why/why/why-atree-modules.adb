@@ -1959,13 +1959,7 @@ package body Why.Atree.Modules is
                         Typ    => EW_Private_Type));
                end if;
 
-               if (not Is_Constrained (E)
-                   and then Has_Defaulted_Discriminants (E))
-                 --  ???
-                 or else
-                   (not Is_Constrained (Root)
-                    and then Has_Defaulted_Discriminants (Root))
-               then
+               if Has_Defaulted_Discriminants (E) then
                   Insert_Symbol
                     (E, WNE_Attr_Constrained,
                      New_Identifier

@@ -745,16 +745,6 @@ package body Gnat2Why.Expr is
                                 Get_Typ (Binder.Discrs.Binder.B_Name)));
 
                         pragma Assert (Binder.Constr.Present);
-
-                        Res := Sequence
-                          (Res,
-                           New_Assume_Statement
-                           (Ada_Node => N,
-                            Pred     =>
-                              New_Call
-                                (Name => Why_Eq,
-                                 Typ => EW_Bool_Type,
-                                 Args => (+Binder.Constr.Id, +False_Term))));
                      else
                         Res := Sequence
                           (Res,
@@ -771,8 +761,22 @@ package body Gnat2Why.Expr is
                                         (Domain => EW_Prog,
                                          Name   => +Tmp_Var,
                                          Ty     => Binder.Typ)))));
+                     end if;
 
-                        pragma Assert (not Binder.Constr.Present);
+                     if Binder.Constr.Present then
+
+                        Res := Sequence
+                          (Res,
+                           New_Assume_Statement
+                           (Ada_Node => N,
+                            Pred     =>
+                              New_Call
+                                (Name => Why_Eq,
+                                 Typ => EW_Bool_Type,
+                                 Args => (+Binder.Constr.Id,
+                                          (if Binder.Discrs.Binder.Mutable
+                                           then +False_Term
+                                           else +True_Term)))));
                      end if;
                   end if;
 
@@ -2725,9 +2729,7 @@ package body Gnat2Why.Expr is
             --  if Ty_Ext as default discrs, generate
             --     <Expr>.is_constrained = False
 
-            if Has_Defaulted_Discriminants (Ty_Ext) and then
-              not Is_Constrained (Ty_Ext)
-            then
+            if Has_Defaulted_Discriminants (Ty_Ext) then
                --  The variable is not constrained.
 
                Assumption :=
@@ -2742,7 +2744,8 @@ package body Gnat2Why.Expr is
                           Domain   => EW_Term,
                           Name     => Tmp,
                           Ty       => Ty_Ext),
-                       2 => +False_Term));
+                       2 => (if Is_Constrained (Ty_Ext) then +True_Term
+                             else +False_Term)));
             end if;
 
             --  if Ty_Ext is tagged, generate
@@ -3203,6 +3206,19 @@ package body Gnat2Why.Expr is
                                                 Expr   => +Expr,
                                                 Params => Params),
             Typ       => EW_Bool_Type);
+
+         if Has_Defaulted_Discriminants (Ty_Ext) then
+            T := +New_And_Expr (Left   => +T,
+                                Right  => New_Comparison
+                                  (Symbol => Why_Eq,
+                                   Left   => New_Is_Constrained_Access
+                                     (Domain  => EW_Term,
+                                      Name    => +Expr,
+                                      Ty      => Ty_Ext),
+                                   Right  => +True_Term,
+                                   Domain => EW_Pred),
+                                Domain => EW_Pred);
+         end if;
       else
          T := True_Pred;
       end if;
@@ -3293,7 +3309,6 @@ package body Gnat2Why.Expr is
             --  constrained then 'Constrained returns false on them.
 
             if Has_Defaulted_Discriminants (Retysp (Component_Type (Ty_Ext)))
-              and then not Is_Constrained (Retysp (Component_Type (Ty_Ext)))
             then
                T_Comp := New_And_Expr
                  (Left   => +T_Comp,
@@ -3311,7 +3326,9 @@ package body Gnat2Why.Expr is
                                  New_Array_Access
                                    (Empty, +Expr, Indices, EW_Term),
                                Ty       => Component_Type (Ty_Ext)),
-                          2 => +False_Term)),
+                          2 => (if Is_Constrained
+                                (Retysp (Component_Type (Ty_Ext)))
+                                then +True_Term else +False_Term))),
                   Domain => EW_Pred);
             end if;
 
@@ -3406,7 +3423,6 @@ package body Gnat2Why.Expr is
                   --  not constrained then 'Constrained returns false on them.
 
                   if Has_Defaulted_Discriminants (Retysp (Etype (Field)))
-                    and then not Is_Constrained (Retysp (Etype (Field)))
                   then
                      T_Comp := +New_And_Expr
                        (Left   => +T_Comp,
@@ -3422,7 +3438,9 @@ package body Gnat2Why.Expr is
                                          Domain   => EW_Term,
                                          Name     => R_Acc,
                                          Ty       => Retysp (Etype (Field))),
-                                2 => +False_Term)),
+                                2 => (if Is_Constrained
+                                      (Retysp (Etype (Field)))
+                                      then +True_Term else +False_Term))),
                         Domain => EW_Pred);
                   end if;
 
@@ -13738,7 +13756,7 @@ package body Gnat2Why.Expr is
                  +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
                             +Call);
 
-               if Nb_Of_Refs = 0 and then Nb_Of_Lets = 0 then
+               if Nb_Of_Refs = 0 then
                   return +Call;
                else
                   return Insert_Ref_Context

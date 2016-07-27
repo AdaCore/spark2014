@@ -403,12 +403,7 @@ package body Why.Gen.Records is
             else 0);
          Num_E_Fields    : constant Natural := Count_Why_Regular_Fields (E);
          Num_Root_Fields : constant Natural := Count_Why_Regular_Fields (Root);
-         Is_Mutable_E    : constant Boolean :=
-           not Is_Constrained (E)
-           and then Has_Defaulted_Discriminants (E);
-         Is_Mutable_Root : constant Boolean :=
-           not Is_Constrained (Root)
-           and then Has_Defaulted_Discriminants (Root);
+         Is_Mutable_E    : constant Boolean := Has_Defaulted_Discriminants (E);
          Num_E_All       : constant Natural := Count_Why_Top_Level_Fields (E);
          Num_Root_All    : constant Natural :=
            Count_Why_Top_Level_Fields (Root);
@@ -662,8 +657,6 @@ package body Why.Gen.Records is
 
          --  Step 3. Copy or generate the attr__constrained field
 
-         --  Step 3.1. Deal with the Constrained attribute of the current type
-
          --  If type E is not constrained and it has default discriminant
          --  values, then a value may be constrained or not, depending on
          --  whether it was declared with explicit values for the discriminants
@@ -671,7 +664,7 @@ package body Why.Gen.Records is
          --  which must be copied between the root type and the current type.
 
          if Is_Mutable_E then
-            pragma Assert (Is_Mutable_Root);
+            pragma Assert (Has_Defaulted_Discriminants (Root));
 
             From_Index := From_Index + 1;
             From_Root_Aggr (From_Index) :=
@@ -697,22 +690,6 @@ package body Why.Gen.Records is
                      (Name  => +A_Ident,
                       Field => To_Ident (WNE_Attr_Constrained),
                       Typ   => EW_Bool_Type));
-
-         --  Step 3.2. Deal with the Constrained attribute of the root type
-
-         --  If type E is constrained or it does not have default discriminant
-         --  values, then a value of type E is always constrained. The root
-         --  type may still have a field attr__constrained however, in which
-         --  case we set it to true.
-
-         elsif Is_Mutable_Root then
-            To_Index := To_Index + 1;
-            To_Root_Aggr (To_Index) :=
-              New_Field_Association
-                (Domain => EW_Term,
-                 Field  => +New_Attribute_Expr
-                   (Root, EW_Term, Attribute_Constrained),
-                 Value  => +True_Term);
          end if;
 
          --  Step 4. Copy the tag field of tagged types
@@ -1215,9 +1192,7 @@ package body Why.Gen.Records is
               Natural (Number_Discriminants (E))
             else 0);
          Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
-         Is_Mutable : constant Boolean :=
-           (not Is_Constrained (E)
-            and then Has_Defaulted_Discriminants (E));
+         Is_Mutable : constant Boolean := Has_Defaulted_Discriminants (E);
          Num_All    : constant Natural := Count_Why_Top_Level_Fields (E);
 
          Binders_D  : Binder_Array (1 .. Num_Discrs);
@@ -2353,10 +2328,16 @@ package body Why.Gen.Records is
          Assocs (Index) := Assoc;
       end if;
 
-      --  The Constrained attribute is never set, as the type of an aggregate
-      --  is always a constrained type.
+      if Has_Defaulted_Discriminants (Ty) then
+         pragma Assert (Is_Constrained (Ty));
 
-      pragma Assert (Is_Constrained (Ty));
+         Assoc := New_Field_Association
+           (Domain => Domain,
+            Field  => E_Symb (Ty, WNE_Attr_Constrained),
+            Value  => +True_Pred);
+         Index := Index + 1;
+         Assocs (Index) := Assoc;
+      end if;
 
       if Is_Tagged_Type (Ty) then
          Assoc := New_Field_Association
@@ -2599,9 +2580,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
    begin
-      if Has_Defaulted_Discriminants (Ty)
-        and then not Is_Constrained (Ty)
-      then
+      if Has_Defaulted_Discriminants (Ty) then
          return New_Call
            (Ada_Node => Ada_Node,
             Name     => +New_Attribute_Expr
@@ -2655,7 +2634,9 @@ package body Why.Gen.Records is
       if Has_Constrained then
          declare
             Value : constant W_Expr_Id :=
-              (if From_Expr = Why_Empty then +False_Term
+              (if From_Expr = Why_Empty then
+                 (if Is_Constrained (Ty) then +True_Term
+                  else +False_Term)
                else New_Is_Constrained_Access
                  (Domain => Domain,
                   Name   => From_Expr,
@@ -2741,11 +2722,19 @@ package body Why.Gen.Records is
          return E;
       end if;
 
-      --  We do not handle types with discriminants yet which can have less
-      --  fields than their parent.
+      --  If E has discriminants and components whose type depends on this
+      --  discriminant, it has no older parent with the same fields.
 
       if Has_Discriminants (Current) then
-         return Current;
+         for Field of Get_Component_Set (Current) loop
+            if Ekind (Field) = E_Component
+              and then Retysp (Etype (Search_Component_In_Type
+                               (Original_Declaration (Field), Field)))
+              /= Retysp (Etype (Field))
+            then
+               return Current;
+            end if;
+         end loop;
       end if;
 
       --  If E is not tagged then the root type has the same fields as E.
@@ -2877,7 +2866,7 @@ package body Why.Gen.Records is
 
       --  Store association for the 'Constrained attribute
 
-      if not Is_Constrained (Ty) and then Has_Defaulted_Discriminants (Ty) then
+      if Has_Defaulted_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
            (Domain => EW_Term,
             Field  => +New_Attribute_Expr (Ty     => Ty,

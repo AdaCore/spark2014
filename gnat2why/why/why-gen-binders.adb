@@ -606,7 +606,7 @@ package body Why.Gen.Binders is
                                  Mutable  => Unconstr));
             end if;
 
-            if Unconstr then
+            if Has_Defaulted_Discriminants (Ty) then
                Result.Constr :=
                  (Present => True,
                   Id      =>

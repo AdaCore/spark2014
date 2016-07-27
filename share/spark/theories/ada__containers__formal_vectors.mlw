@@ -118,7 +118,7 @@ module Ada__containers__formal_vectors__capacity_range
 end
 
 (* type Vector *)
-module Ada__containers__formal_vectors__vector
+module Ada__containers__formal_vectors__vector__rep
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__index_type_helper
@@ -136,7 +136,18 @@ module Ada__containers__formal_vectors__vector
   val __split_fields__havoc (x : __split_fields__ref) : unit
      writes { x }
 
-  type vector = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+  type __rep = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  function bool_eq __rep __rep : bool
+  function user_eq __rep __rep : bool
+  function to_base (x : __rep) : __rep = x
+  function of_base (x : __rep) : __rep = x
+end
+
+module Ada__containers__formal_vectors__vector
+  use export Ada__containers__formal_vectors__vector__rep
+
+  type vector = __rep
 
   type vector__ref = { mutable vector__content : vector }
   val vector__havoc (x : vector__ref) : unit
@@ -151,10 +162,7 @@ module Ada__containers__formal_vectors__vector
     (v : vector)
   : int
   = Ada__containers__formal_vectors__capacity_range.to_rep (rec__ada__containers__formal_vectors__vector__capacity (__split_discrs v))
-
-  function bool_eq vector vector : bool
-  function user_eq vector vector : bool
-end
+end 
 
 (* function Capacity *)
 module Ada__containers__formal_vectors__capacity
