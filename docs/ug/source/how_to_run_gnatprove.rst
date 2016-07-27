@@ -82,12 +82,17 @@ When given a list of files, each of which contains a compilation unit,
 |GNATprove| will analyze those units (including bodies and subunits)
 plus the specifications and bodies of units on which they depend.
 
-Two options modify this behavior:
+Two switches modify this behavior:
 
-* With option ``-u``, the bodies of dependent units are ignored, so only the
+* With switch ``-u``, the bodies of dependent units are ignored, so only the
   given units and the specifications of dependent units are analyzed.
 
-* With option ``-U``, all units of all projects are analyzed.
+* With switch ``-U``, all units of all projects are analyzed. Without this
+  switch, |GNATprove| is run on all main files in the project, and all files
+  they depend on (recursively). Both main files in the root project and in
+  projects that are included in the root project are considered. With this
+  switch, |GNATprove| is run on all files in all projects. On a project that
+  has neither main files nor includes other projects, both are equivalent.
 
 |GNATprove| consists of two distinct analyses, flow analysis and proof. Flow
 analysis checks the correctness of aspects related to data flow (``Global``,
