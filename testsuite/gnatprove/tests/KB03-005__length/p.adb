@@ -2,7 +2,7 @@ procedure P is
    type Vec is array (Integer range <>) of Integer;
    subtype Vec_10_Sub is Vec (0 .. 10);
 
-   procedure Nothing  (X : Vec_10_Sub) is
+   procedure Nothing  (X : Vec_10_Sub) with Global => null is
    begin
       null;
    end Nothing;
