@@ -1,9 +1,6 @@
+with Q;
 package body P is
 
-   function F return Boolean is
-      X : Integer := 0;
-   begin
-      return X in T;
-   end;
+   function F return Boolean is (Q.S);
 
 end P;

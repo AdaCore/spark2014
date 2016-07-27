@@ -189,6 +189,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  affected by user's annotations. Unlike Global_Graph, it contains
    --  no objects.
 
+   Subprogram_Call_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
+   --  Call graph rooted at analyzed subprograms for detecting if a subprogram
+   --  is recursive.
+
    Tasking_Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
    --  Call graph for detecting ownership conflicts between tasks
    --
@@ -1275,6 +1280,71 @@ package body Flow_Generated_Globals.Phase_2 is
             --  Close the call graph; for an empty graph it will be a no-op
             Call_Graph.Close;
          end Add_Protected_Operation_Edges;
+
+         --  To detect if a subprogram is recursive we create a call graph
+         --  where vertices correspond to subprograms and edges to subprogram
+         --  calls.
+
+         Add_Subprogram_Edges : declare
+            Stack : Name_Sets.Set;
+            --  We collect called subprograms and use them as seeds to grow the
+            --  graph.
+
+            Call_Graph : Entity_Name_Graphs.Graph renames
+              Subprogram_Call_Graph;
+            --  A short alias for a long name
+
+         begin
+            for E of Marked_Entities loop
+               if Ekind (E) in E_Function | E_Procedure
+                 and then Entity_Body_In_SPARK (E)
+               then
+                  declare
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                  begin
+                     Stack.Insert (E_Name);
+                     Call_Graph.Add_Vertex (E_Name);
+                  end;
+               end if;
+            end loop;
+
+            --  Then create a call graph for them
+            while not Stack.Is_Empty loop
+
+               declare
+                  Caller : constant Entity_Name := Stack (Stack.First);
+                  --  Name of the caller
+
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Call_Graph.Get_Vertex (Caller);
+
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+               begin
+                  --  Add callees of the caller into the graph
+                  for Callee of Generated_Calls (Caller) loop
+                     --  Get vertex for the callee
+                     V_Callee := Call_Graph.Get_Vertex (Callee);
+
+                     --  If there is no vertex for the callee then create
+                     --  one and put the callee on the stack.
+                     if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                        Call_Graph.Add_Vertex (Callee, V_Callee);
+                        Stack.Insert (Callee);
+                     end if;
+
+                     Call_Graph.Add_Edge (V_Caller, V_Callee);
+                  end loop;
+
+                  --  Pop the caller from the stack
+                  Stack.Delete (Caller);
+               end;
+            end loop;
+
+            --  Close the call graph
+            Call_Graph.Close;
+         end Add_Subprogram_Edges;
 
          Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
@@ -2438,6 +2508,14 @@ package body Flow_Generated_Globals.Phase_2 is
       return (not Nonblocking_Subprograms.Contains (EN))
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
+
+   -----------------------------
+   -- Is_Recursive_Subprogram --
+   -----------------------------
+
+   function Is_Recursive_Subprogram (E : Entity_Id) return Boolean is
+     (Subprogram_Call_Graph.Edge_Exists (To_Entity_Name (E),
+                                         To_Entity_Name (E)));
 
    ------------------------
    -- Calls_Current_Task --

@@ -180,9 +180,14 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True if subprogram E is potentially blocking or its blocking
    --  status is unknown; returns False if it is known to be nonblocking.
 
+   function Is_Recursive_Subprogram (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Procedure | E_Function;
+   --  Returns True iff subprogram E has a path connecting it to itself, i.e.
+   --  is a recursive subprogram.
+
    function Calls_Current_Task (E : Entity_Id)
                                 return Boolean
-     with Pre => Ekind (E) in E_Entry | E_Procedure;
+   with Pre => Ekind (E) in E_Entry | E_Procedure;
    --  Returns True iff subprogram E has a path connecting it to a call to the
    --  Current_Task function.
 
