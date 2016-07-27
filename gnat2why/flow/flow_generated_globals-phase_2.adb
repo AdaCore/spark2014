@@ -2512,17 +2512,17 @@ package body Flow_Generated_Globals.Phase_2 is
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
-   -----------------------------
-   -- Is_Recursive_Subprogram --
-   -----------------------------
+   ------------------
+   -- Is_Recursive --
+   ------------------
 
-   function Is_Recursive_Subprogram (E : Entity_Id) return Boolean is
+   function Is_Recursive (E : Entity_Id) return Boolean is
       EN : constant Entity_Name := To_Entity_Name (E);
    begin
       return
         Subprogram_Call_Graph.Contains (EN)
         and then Subprogram_Call_Graph.Edge_Exists (EN, EN);
-   end Is_Recursive_Subprogram;
+   end Is_Recursive;
 
    ------------------------
    -- Calls_Current_Task --
