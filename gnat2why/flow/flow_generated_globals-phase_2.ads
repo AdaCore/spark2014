@@ -181,14 +181,16 @@ package Flow_Generated_Globals.Phase_2 is
    --  status is unknown; returns False if it is known to be nonblocking.
 
    function Is_Recursive (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Procedure | E_Function;
+   with Pre => GG_Has_Been_Generated and then
+               Ekind (E) in E_Procedure | E_Function;
    --  Returns True iff subprogram E calls (directly or indirectly) itself,
    --  i.e. is a recursive subprogram.
 
    function Calls_Current_Task (E : Entity_Id)
                                 return Boolean
-   with Pre => Ekind (E) = E_Entry or else
-               (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E));
+   with Pre => GG_Has_Been_Generated and then
+               (Ekind (E) = E_Entry or else
+                (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
