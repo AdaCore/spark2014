@@ -204,7 +204,7 @@ procedure Do_Checks is
       subtype A2 is A1(0 .. 10);
    begin
       case Branch is
-         
+
          --  logical operator on array
          when 100 =>
             declare
@@ -332,12 +332,12 @@ procedure Do_Checks is
             begin
                P (X, Y);
             end;
-            
+
          --  Ada RM 4.6(43): type conversion mapping multiple discriminants to
          --  same discriminant. Illegal cases moved to other test.
          when 1002 | 1003 =>
             null;
-            
+
          -- Ada RM 4.6(45): conversion to constrained discriminated type
          when 1004 =>
             declare
@@ -398,8 +398,8 @@ procedure Do_Checks is
                begin
                   Y := X;
                end;
-               X : R1(0) := (J => 0);
-               Y : R3    := (J => 10, Arr => (others => True));
+               X : R1 := (J => 0);
+               Y : R3 := (J => 10, Arr => (others => True));
             begin
                P (R3(X), Y);  -- @DISCRIMINANT_CHECK:FAIL
             end;

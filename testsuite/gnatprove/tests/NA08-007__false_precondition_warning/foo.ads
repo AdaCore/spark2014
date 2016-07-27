@@ -1,7 +1,7 @@
 package Foo
 is
 
-   type Arr is array (Positive range 0 .. 100) of Boolean;
+   type Arr is array (Natural range 0 .. 100) of Boolean;
 
    procedure Test (A : in out Arr)
    with Pre => A'Length = 100,

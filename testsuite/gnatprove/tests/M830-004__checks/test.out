@@ -131,11 +131,10 @@ do_checks.adb:390:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:390:19: info: initialization of "X.Arr" proved
 do_checks.adb:397:29: warning: "X" is not modified, could be IN
 do_checks.adb:397:44: info: initialization of "Y.Arr" proved
-do_checks.adb:401:23: info: range check proved (CVC4: 1 VC)
-do_checks.adb:401:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:402:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:402:46: info: length check proved (CVC4: 1 VC)
+do_checks.adb:402:26: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:402:43: info: length check proved (CVC4: 1 VC)
 do_checks.adb:404:16: info: precondition proved (CVC4: 1 VC)
+do_checks.adb:404:22: info: initialization of "X.Arr" proved
 do_checks.adb:404:22: medium: discriminant check might fail
 do_checks.adb:408:29: warning: "X" is not modified, could be IN
 do_checks.adb:408:44: info: initialization of "Y.Arr" proved

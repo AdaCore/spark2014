@@ -9,7 +9,7 @@ is
    end Test;
 
    procedure Dynamic (A, B : Integer) is
-      type Arr is array (Positive range A .. B) of Boolean; --@RANGE_CHECK:FAIL
+      type Arr is array (Positive range A .. B) of Boolean;
    begin
       null;
    end Dynamic;
