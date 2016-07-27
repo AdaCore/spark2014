@@ -4041,6 +4041,7 @@ package body SPARK_Definition is
                      if not Is_Tag (Field)
                        and then Is_Object (Field)
                        and then not In_SPARK (Typ)
+                       and then Component_Is_Visible_In_SPARK (Field)
                      then
                         Mark_Violation (Field, From => Typ);
                      end if;
