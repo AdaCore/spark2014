@@ -1629,7 +1629,7 @@ package body Flow is
             end if;
 
             --  We issue a high error message in case the Current_Task function
-            --  is called from a protected procedure handler.
+            --  is called from an interrupt handler.
             if Ekind (FA.Analyzed_Entity) = E_Procedure
               and then Is_Interrupt_Handler (FA.Analyzed_Entity)
               and then Calls_Current_Task (FA.Analyzed_Entity)
