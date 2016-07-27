@@ -28,3 +28,4 @@ benchmark_script/data
 benchmark_script/bench
 gnat2why/why/xgen/b__xtree.ad?
 testsuite/gnatprove/temp
+include/proof/Coq/*/*.v
