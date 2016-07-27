@@ -19,6 +19,8 @@ package Dispatch_In_Contract with SPARK_Mode is
    function Less_Than_Max (O : Child) return Boolean is
       (O.F1 < Integer'Last or else O.F2 < Integer'Last);
 
+   procedure Incr (O : in out Child);
+
    procedure Incr2 (O : in out Child) with
      Pre'Class => Less_Than_Max (O);
 

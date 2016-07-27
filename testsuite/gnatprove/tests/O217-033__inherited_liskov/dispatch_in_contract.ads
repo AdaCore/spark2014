@@ -21,4 +21,7 @@ package Dispatch_In_Contract with SPARK_Mode is
 
    procedure Incr (O : in out Child) with
      Pre'Class => Less_Than_Max (O);
+
+   procedure Incr2 (O : in out Child);
+
 end Dispatch_In_Contract;

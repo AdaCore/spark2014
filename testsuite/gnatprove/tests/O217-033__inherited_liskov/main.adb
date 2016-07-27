@@ -6,6 +6,6 @@ begin
    if Dummy = 1 then
       C1.Incr;  --  @PRECONDITION:FAIL
    else
-      C2.Incr2; --  @PRECONDITION:PASS
+      C2.Incr2; --  @PRECONDITION:FAIL
    end if;
 end Main;

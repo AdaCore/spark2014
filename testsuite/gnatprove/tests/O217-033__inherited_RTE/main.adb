@@ -8,7 +8,7 @@ begin
    elsif Dummy = 1 then
       C1.Incr2; --@PRECONDITION:FAIL
    elsif Dummy = 2 then
-      C2.Incr; --@PRECONDITION:FAIL
+      C2.Incr; --@PRECONDITION:PASS
    else
       C2.Incr2; --@PRECONDITION:PASS
    end if;
