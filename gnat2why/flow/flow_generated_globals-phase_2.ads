@@ -187,7 +187,8 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Calls_Current_Task (E : Entity_Id)
                                 return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Procedure;
+   with Pre => Ekind (E) = E_Entry or else
+               (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E));
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
