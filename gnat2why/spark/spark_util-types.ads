@@ -345,6 +345,7 @@ package SPARK_Util.Types is
    with Pre => Is_Class_Wide_Type (E);
    --  Returns the specific type associated with a class wide type.
    --  If E's Etype is a fullview, returns its partial view instead.
+   --  For classwide subtypes, return their Etype's specific type.
    --  ??? This should make the mechanism with the extra table
    --  Specific_Tagged_Types redundant, except the detection that a type is
    --  a full view is currently not available soon enough.

@@ -861,7 +861,9 @@ package body SPARK_Util.Types is
 
    function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
    is
-      S : constant Entity_Id := Etype (E);
+      S : constant Entity_Id :=
+        (if Ekind (E) = E_Class_Wide_Subtype then Etype (Etype (E))
+         else Etype (E));
    begin
       if Is_Full_View (S) then
          return Partial_View (S);
