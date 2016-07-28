@@ -111,15 +111,23 @@ package body Configuration is
    --  @return True iff one alternate prover is "coq"
 
    Usage_Message : constant String :=
-     "-Pproj [files] [switches] [-cargs switches]";
+     "-Pproj [switches] [-cargs switches]";
 
    --  Hidden switches: --ide-progress-bar
    Help_Message : constant String :=
+ASCII.LF &
 "proj is a GNAT project file" &
 ASCII.LF &
-"files is one or more file names" &
-ASCII.LF &
 "-cargs switches are passed to gcc" &
+ASCII.LF &
+ASCII.LF &
+"All main units in proj are analyzed by default. Switches to change this:" &
+ASCII.LF &
+" -u [files]            Analyze only the given files" &
+ASCII.LF &
+"    [files]            Analyze given files and all dependencies" &
+ASCII.LF &
+" -U                    Analyze all files (including unused) of all projects" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove basic switches:" & ASCII.LF &
@@ -160,11 +168,6 @@ ASCII.LF &
 & ASCII.LF &
 "                       provers, statistics)"
 &
-ASCII.LF &
-" -u                    Unique analysis. Only analyze the given units" &
-ASCII.LF &
-" -U                    Analyze all units of all projects" &
-
 ASCII.LF &
 " -v, --verbose         Output extra verbose information" &
 ASCII.LF &

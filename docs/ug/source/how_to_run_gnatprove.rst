@@ -78,30 +78,50 @@ In the appendix, section :ref:`Command Line Invocation`, you can find an
 exhaustive list of switches; here we only give an overview over the most common
 uses. Note that |GNATprove| cannot be run without a project file.
 
-When given a list of files, each of which contains a compilation unit,
-|GNATprove| will analyze those units (including bodies and subunits)
-plus the specifications and bodies of units on which they depend.
+There are essentially three common ways you can select the files which will
+be analyzed by |GNATprove|:
 
-Two switches modify this behavior:
+* Analyze everything::
 
-* With switch ``-u``, the bodies of dependent units are ignored, so only the
-  given units and the specifications of dependent units are analyzed.
+     gnatprove -P <project-file.gpr> -U
 
-* With switch ``-U``, all units of all projects are analyzed. Without this
-  switch, |GNATprove| is run on all main files in the project, and all files
-  they depend on (recursively). Both main files in the root project and in
-  projects that are included in the root project are considered. With this
-  switch, |GNATprove| is run on all files in all projects. On a project that
-  has neither main files nor includes other projects, both are equivalent.
+  With switch ``-U``, all units of all projects in the project tree are
+  analyzed. This includes units that are not used yet.
 
-|GNATprove| consists of two distinct analyses, flow analysis and proof. Flow
-analysis checks the correctness of aspects related to data flow (``Global``,
-``Depends``, ``Abstract_State``, ``Initializes``, and refinement versions of
-these), and verifies the initialization of variables. Proof verifies the
-absence of run-time errors and the correctness of assertions such as ``Pre``
-and ``Post`` aspects.  Using the switch ``--mode=<mode>``, whose possible
-values are ``check``, ``check_all``, ``flow``, ``prove`` and ``all``, you can
-choose which analysis is performed:
+  This is usually what you want to use for an overnight analysis of a
+  complex project.
+
+* Analyze this project::
+
+     gnatprove -P <project-file.gpr>
+
+  All main units in the project and all units they (recursively) depend on
+  are analyzed. If there are no main units specified, analyze all files in
+  the project.
+
+  This is what you want to use for the analysis of a particular executable
+  only, or if you want to analyze different executables within a complex
+  project with different options.
+
+* Analyze files::
+
+     gnatprove -P <project-file.gpr> [-u] FILES...
+
+  If ``-u`` is specified, we only analyze the given files. If ``-u`` is not
+  specified, we also analyze all units these files (recursively) depend on.
+
+  This is intended for the day-to-day command-line or IDE use of
+  |GNATprove| when implementing a project.
+
+|GNATprove| consists of two distinct analyses, flow analysis and proof.
+Flow analysis checks the correctness of aspects related to data flow
+(``Global``, ``Depends``, ``Abstract_State``, ``Initializes``, and
+refinement versions of these), and verifies the initialization of
+variables. Proof verifies the absence of run-time errors and the
+correctness of assertions such as ``Pre`` and ``Post`` aspects. Using the
+switch ``--mode=<mode>``, whose possible values are ``check``,
+``check_all``, ``flow``, ``prove`` and ``all``, you can choose which
+analysis is performed:
 
 * In mode ``check``, |GNATprove| partially checks that the program does not
   violate |SPARK| restrictions. The benefit of using this mode prior to mode

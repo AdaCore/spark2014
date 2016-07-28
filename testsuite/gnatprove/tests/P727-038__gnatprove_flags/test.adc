@@ -1,0 +1,4 @@
+pragma SPARK_Mode (On);
+pragma Profile (Ravenscar);
+pragma Partition_Elaboration_Policy (Sequential);
+pragma Warnings (Off, "subprogram * has no effect");
