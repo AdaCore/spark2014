@@ -56,9 +56,8 @@ package Flow_Generated_Globals.Phase_1 is
    procedure GG_Register_Global_Info (GI : Global_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register information needed later to compute globals. The argument
-   --  is produced by Flow.Slice.Compute_Globals. It also stores information
-   --  related to volatiles and remote states.
+   --  Register information needed later to compute globals. It also stores
+   --  information related to volatiles and remote states.
 
    procedure GG_Register_Nonblocking (EN : Entity_Name)
    with Pre  => GG_Mode = GG_Write_Mode,
