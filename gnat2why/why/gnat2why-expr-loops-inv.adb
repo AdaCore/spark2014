@@ -28,6 +28,7 @@ with Ada.Unchecked_Deallocation;
 with Common_Containers;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
+with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
@@ -253,6 +254,66 @@ package body Gnat2Why.Expr.Loops.Inv is
       return W_Pred_Id
    is
       Preserved_Fields : W_Pred_Id := True_Pred;
+
+      procedure Handle_Field (Field : Entity_Id);
+      --  Generate the appropriate equality if the field is preserved and calls
+      --  Equality_Of_Preserved_Fields recursively otherwise.
+
+      procedure Handle_Field (Field : Entity_Id) is
+         F_Expr_Ty  : constant Entity_Id :=
+           Retysp (Etype (Field));
+         F_Expr     : constant W_Expr_Id :=
+           New_Ada_Record_Access (Ada_Node => Empty,
+                                  Name     => Expr,
+                                  Domain   => EW_Term,
+                                  Field    => Field,
+                                  Ty       => Expr_Ty);
+         F_At_Entry : constant W_Expr_Id :=
+           New_Ada_Record_Access (Ada_Node => Empty,
+                                  Name     => At_Entry,
+                                  Domain   => EW_Term,
+                                  Field    => Field,
+                                  Ty       => Expr_Ty);
+         Inv        : W_Pred_Id;
+
+      begin
+         --  Field is modified
+
+         if Status.Field_Status.Contains (Field) then
+
+            declare
+               F_Status : Write_Status_Access :=
+                 Status.Field_Status.Element (Field);
+            begin
+
+               --  Look for its preserved subfields
+
+               Inv := Equality_Of_Preserved_Fields
+                 (Expr     => F_Expr,
+                  At_Entry => F_At_Entry,
+                  Expr_Ty  => F_Expr_Ty,
+                  Status   => F_Status);
+            end;
+
+            --  Remove visited fields for sanity checking
+
+            Status.Field_Status.Exclude (Field);
+
+            --  Field is preserved
+
+         else
+            Inv := +New_Comparison (Symbol => Why_Eq,
+                                    Left   => F_Expr,
+                                    Right  => F_At_Entry,
+                                    Domain => EW_Pred);
+         end if;
+
+         Preserved_Fields :=
+           +New_And_Expr (Left   => +Preserved_Fields,
+                          Right  => +Inv,
+                          Domain => EW_Pred);
+      end Handle_Field;
+
    begin
       case Status.Kind is
          when Discard =>
@@ -262,87 +323,42 @@ package body Gnat2Why.Expr.Loops.Inv is
             Preserved_Fields := True_Pred;
 
          when Record_Fields =>
-            declare
-               Field            : Entity_Id :=
-                 First_Component_Or_Discriminant (Expr_Ty);
 
-            begin
-               while Present (Field) loop
+            --  Only consider fields which are mutable, hence not discriminants
+            --  of types without default discriminants or of constrained types.
 
-                  --  Only consider fields which are visible in SPARK and are
-                  --  mutable, hence not discriminants of types without default
-                  --  discriminants or of constrained types.
+            if Has_Discriminants (Expr_Ty)
+              and then Has_Defaulted_Discriminants (Expr_Ty)
+              and then not Is_Constrained (Expr_Ty)
+            then
+               declare
+                  Discr : Entity_Id := First_Discriminant (Expr_Ty);
+               begin
 
-                  if Component_Is_Visible_In_SPARK (Field)
-                    and then (Ekind (Field) /= E_Discriminant
-                                or else
-                             (Has_Defaulted_Discriminants (Expr_Ty)
-                                and then not Is_Constrained (Expr_Ty)))
-                  then
-                     declare
-                        F_Expr_Ty  : constant Entity_Id :=
-                          Retysp (Etype (Field));
-                        F_Expr     : constant W_Expr_Id :=
-                          New_Ada_Record_Access (Ada_Node => Empty,
-                                                 Name     => Expr,
-                                                 Domain   => EW_Term,
-                                                 Field    => Field,
-                                                 Ty       => Expr_Ty);
-                        F_At_Entry : constant W_Expr_Id :=
-                          New_Ada_Record_Access (Ada_Node => Empty,
-                                                 Name     => At_Entry,
-                                                 Domain   => EW_Term,
-                                                 Field    => Field,
-                                                 Ty       => Expr_Ty);
-                        Inv        : W_Pred_Id;
+                  while Present (Discr) loop
 
-                     begin
-                        --  Field is modified
+                     if not Is_Completely_Hidden (Discr) then
+                        Handle_Field (Discr);
+                     end if;
 
-                        if Status.Field_Status.Contains (Field) then
+                     Discr := Next_Discriminant (Discr);
+                  end loop;
+               end;
+            end if;
 
-                           declare
-                              F_Status : Write_Status_Access :=
-                                Status.Field_Status.Element (Field);
-                           begin
+            for Field of Get_Component_Set (Expr_Ty) loop
 
-                              --  Look for its preserved subfields
+               --  Only consider fields which are visible in Expr_Ty.
 
-                              Inv := Equality_Of_Preserved_Fields
-                                (Expr     => F_Expr,
-                                 At_Entry => F_At_Entry,
-                                 Expr_Ty  => F_Expr_Ty,
-                                 Status   => F_Status);
-                           end;
+               if Component_Is_Visible_In_Type (Expr_Ty, Field) then
+                  Handle_Field (Field);
+               end if;
+            end loop;
 
-                           --  Remove visited fields for sanity checking
+            --  Sanity checking: all the non-visited fields are discarded
 
-                           Status.Field_Status.Exclude (Field);
-
-                        --  Field is preserved
-
-                        else
-                           Inv := +New_Comparison (Symbol => Why_Eq,
-                                                   Left   => F_Expr,
-                                                   Right  => F_At_Entry,
-                                                   Domain => EW_Pred);
-                        end if;
-
-                        Preserved_Fields :=
-                          +New_And_Expr (Left   => +Preserved_Fields,
-                                         Right  => +Inv,
-                                         Domain => EW_Pred);
-                     end;
-                  end if;
-
-                  Field := Next_Component_Or_Discriminant (Field);
-               end loop;
-
-               --  Sanity checking: all the non-visited fields are discarded
-
-               pragma Assert (for all E of Status.Field_Status =>
-                                E.Kind = Discard);
-            end;
+            pragma Assert (for all E of Status.Field_Status =>
+                             E.Kind = Discard);
 
          --  For arrays, generate:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->

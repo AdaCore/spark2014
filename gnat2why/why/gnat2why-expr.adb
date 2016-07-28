@@ -2156,7 +2156,7 @@ package body Gnat2Why.Expr is
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id := (if Has_Discriminants (Ty_Ext)
+            Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
                                   or else Has_Unknown_Discriminants (Ty_Ext)
                                   then First_Discriminant (Ty_Ext)
                                   else Empty);
@@ -2174,20 +2174,20 @@ package body Gnat2Why.Expr is
             --  let tmp1 = Discr1 in         <if Ty_Ext is constrained>
             --  Also fills Post with { result.discr1 = tmp1 /\ .. }
 
-            while Present (Field) loop
-               if not Is_Completely_Hidden (Field) then
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
 
                   Tmps (I) := New_Temp_Identifier
-                    (Field, Type_Of_Node (Etype (Field)));
+                    (Discr, Type_Of_Node (Etype (Discr)));
 
                   --  As discriminants may occur in bounds of types of other
                   --  fields and bounds of default values, store them in the
                   --  Symbol_Table.
 
                   declare
-                     Base_Field : constant Entity_Id :=
-                       (if Is_Base_Type (Ty_Ext) then Field
-                        else Original_Record_Component (Field));
+                     Base_Discr : constant Entity_Id :=
+                       (if Is_Base_Type (Ty_Ext) then Discr
+                        else Original_Record_Component (Discr));
                      --  Defaults are declared in base types, so they relate
                      --  to discriminants declared in base types.
                   begin
@@ -2195,13 +2195,13 @@ package body Gnat2Why.Expr is
                      --  We need entities of discrimiants for bounds of
                      --  component types...
 
-                     Insert_Entity (Field, Tmps (I));
+                     Insert_Entity (Discr, Tmps (I));
 
                      --  and entities of discrimiants of the base type for
                      --  bounds of defaults...
 
                      if not Is_Base_Type (Ty_Ext) then
-                        Insert_Entity (Base_Field, Tmps (I));
+                        Insert_Entity (Base_Discr, Tmps (I));
                      end if;
                   end;
 
@@ -2214,7 +2214,7 @@ package body Gnat2Why.Expr is
                          (Domain        => EW_Prog,
                           Params        => Params,
                           Expr          => Node (Elmt),
-                          Expected_Type => Type_Of_Node (Etype (Field)));
+                          Expected_Type => Type_Of_Node (Etype (Discr)));
                      Next_Elmt (Elmt);
                   else
                      pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
@@ -2225,8 +2225,8 @@ package body Gnat2Why.Expr is
                      Binds (I) :=
                        Transform_Expr
                          (Expr          =>
-                            Discriminant_Default_Value (Field),
-                          Expected_Type => Type_Of_Node (Etype (Field)),
+                            Discriminant_Default_Value (Discr),
+                          Expected_Type => Type_Of_Node (Etype (Discr)),
                           Domain        => EW_Prog,
                           Params        => Params);
                   end if;
@@ -2245,13 +2245,13 @@ package body Gnat2Why.Expr is
                               Domain   => EW_Term,
                               Name     =>
                                 +New_Result_Ident (EW_Abstract (Ty_Ext)),
-                              Field    => Field,
+                              Field    => Discr,
                               Ty       => Ty_Ext),
-                           To     => Type_Of_Node (Etype (Field))),
+                           To     => Type_Of_Node (Etype (Discr))),
                         Domain => EW_Pred),
                      Domain => EW_Pred);
                end if;
-               Next_Discriminant (Field);
+               Next_Discriminant (Discr);
                I := I + 1;
             end loop;
 
@@ -2262,10 +2262,8 @@ package body Gnat2Why.Expr is
             --  /\ ..
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
-               Field := First_Component (Ty_Ext);
-
-               while Present (Field) loop
-                  if Component_Is_Visible_In_SPARK (Field) then
+               for Field of Get_Component_Set (Ty_Ext) loop
+                  if Component_Is_Visible_In_Type (Ty_Ext, Field) then
 
                      if Present (Expression (Parent (Field))) then
 
@@ -2303,8 +2301,6 @@ package body Gnat2Why.Expr is
                            Right => +T_Comp);
                      end if;
                   end if;
-
-                  Next_Component (Field);
                end loop;
             end if;
 
@@ -2714,7 +2710,7 @@ package body Gnat2Why.Expr is
             Binds  : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field  : Node_Id := (if Has_Discriminants (Ty_Ext)
+            Discr  : Node_Id := (if Has_Discriminants (Ty_Ext)
                                  or else Has_Unknown_Discriminants (Ty_Ext)
                                  then First_Discriminant (Ty_Ext)
                                  else Empty);
@@ -2770,26 +2766,26 @@ package body Gnat2Why.Expr is
             --  <Expr>.rec__disc1 = Discr1.default <if Ty_Ext is unconstrained>
             --  <Expr>.rec__disc1 = Discr1 /\ ..   <if Ty_Ext is constrained>
 
-            while Present (Field) loop
-               if not Is_Completely_Hidden (Field) then
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
 
                   Tmps (I) := New_Temp_Identifier
-                    (Field, Type_Of_Node (Etype (Field)));
+                    (Discr, Type_Of_Node (Etype (Discr)));
 
                   Binds (I) := Insert_Simple_Conversion
                     (Domain => EW_Term,
                      Expr   => New_Ada_Record_Access
-                       (Empty, EW_Term, R_Expr, Field, Ty_Ext),
-                     To     => Type_Of_Node (Etype (Field)));
+                       (Empty, EW_Term, R_Expr, Discr, Ty_Ext),
+                     To     => Type_Of_Node (Etype (Discr)));
 
                   --  As discriminants may occur in bounds of types of other
                   --  fields and bounds of default values, store them in the
                   --  Symbol_Table.
 
                   declare
-                     Base_Field : constant Entity_Id :=
-                       (if Is_Base_Type (Ty_Ext) then Field
-                        else Original_Record_Component (Field));
+                     Base_Discr : constant Entity_Id :=
+                       (if Is_Base_Type (Ty_Ext) then Discr
+                        else Original_Record_Component (Discr));
                      --  Defaults are declared in base types, so they relate
                      --  to discriminants declared in base types.
                   begin
@@ -2797,13 +2793,13 @@ package body Gnat2Why.Expr is
                      --  We need entities of discrimiants for bounds of
                      --  component types...
 
-                     Insert_Entity (Field, Tmps (I));
+                     Insert_Entity (Discr, Tmps (I));
 
                      --  and entities of discrimiants of the base type for
                      --  bounds of defaults
 
                      if not Is_Base_Type (Ty_Ext) then
-                        Insert_Entity (Base_Field, Tmps (I));
+                        Insert_Entity (Base_Discr, Tmps (I));
                      end if;
                   end;
 
@@ -2822,7 +2818,7 @@ package body Gnat2Why.Expr is
                                 Params        => Params,
                                 Expr          => Node (Elmt),
                                 Expected_Type =>
-                                  Type_Of_Node (Etype (Field))),
+                                  Type_Of_Node (Etype (Discr))),
                              Domain => EW_Pred),
                           Domain => EW_Pred);
                      Next_Elmt (Elmt);
@@ -2839,16 +2835,16 @@ package body Gnat2Why.Expr is
                              Left   => Binds (I),
                              Right  => Transform_Expr
                                (Expr          =>
-                                    Discriminant_Default_Value (Field),
+                                    Discriminant_Default_Value (Discr),
                                 Expected_Type =>
-                                  Type_Of_Node (Etype (Field)),
+                                  Type_Of_Node (Etype (Discr)),
                                 Domain        => EW_Term,
                                 Params        => Params),
                              Domain => EW_Pred),
                           Domain => EW_Pred);
                   end if;
                end if;
-               Next_Discriminant (Field);
+               Next_Discriminant (Discr);
                I := I + 1;
             end loop;
 
@@ -2859,10 +2855,8 @@ package body Gnat2Why.Expr is
             --  /\ ..
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
-               Field := First_Component (Ty_Ext);
-
-               while Present (Field) loop
-                  if Component_Is_Visible_In_SPARK (Field) then
+               for Field of Get_Component_Set (Ty_Ext) loop
+                  if Component_Is_Visible_In_Type (Ty_Ext, Field) then
                      if Present (Expression (Parent (Field))) then
 
                         --  if Field has a default expression, use it.
@@ -2911,8 +2905,6 @@ package body Gnat2Why.Expr is
                            Domain => EW_Pred);
                      end if;
                   end if;
-
-                  Next_Component (Field);
                end loop;
             end if;
 
@@ -3353,9 +3345,7 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      elsif (Is_Record_Type (Ty_Ext) and then not Is_String_Type (Ty_Ext))
-        or else Is_Private_Type (Ty_Ext)
-      then
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
          --  Generates:
          --  (check_for_f1 <Expr> -> Dynamic_Invariant <Expr>.rec__f1)
@@ -3375,7 +3365,7 @@ package body Gnat2Why.Expr is
               (if Has_Discriminants (Ty_Ext) then
                  Natural (Number_Discriminants (Ty_Ext))
                else 0);
-            Field   : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
+            Discr   : Node_Id := First_Discriminant (Ty_Ext);
             T_Comp  : W_Pred_Id;
             T_Guard : W_Pred_Id;
             F_Expr  : W_Expr_Id;
@@ -3384,22 +3374,50 @@ package body Gnat2Why.Expr is
             Binds   : W_Expr_Array (1 .. Discrs);
             I       : Positive := 1;
          begin
-            while Present (Field) loop
-               if (Is_Record_Type (Ty_Ext)
-                   and then Component_Is_Visible_In_SPARK (Field))
-                 or else (Ekind (Field) = E_Discriminant
-                          and then Is_Not_Hidden_Discriminant (Field))
+            while Present (Discr) loop
+               if Is_Not_Hidden_Discriminant (Discr) then
+
+                  R_Acc := New_Ada_Record_Access
+                    (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
+
+                  Tmps (I) := New_Temp_Identifier
+                    (Discr, EW_Abstract (Etype (Discr)));
+                  Binds (I) := R_Acc;
+                  Insert_Entity (Discr, Tmps (I));
+
+                  --  Recursively call Compute_Dynamic_Invariant on the
+                  --  discriminant.
+
+                  T_Comp :=
+                    Compute_Dynamic_Invariant
+                      (Expr          => +R_Acc,
+                       Ty            => Etype (Discr),
+                       Initialized   => Initialized,
+                       Only_Var      => False_Term,
+                       Top_Predicate => True_Term,
+                       Params        => Params,
+                       Use_Pred      => Use_Pred);
+
+                  if T = True_Pred then
+                     T := +T_Comp;
+                  else
+                     T := +New_And_Then_Expr (Left   => +T,
+                                              Right  => +T_Comp,
+                                              Domain => EW_Pred);
+                  end if;
+               end if;
+
+               Next_Discriminant (Discr);
+               I := I + 1;
+            end loop;
+
+            for Field of Get_Component_Set (Ty_Ext) loop
+               if Ekind (Field) = E_Component
+                 and then Component_Is_Visible_In_Type (Ty_Ext, Field)
                then
 
                   R_Acc := New_Ada_Record_Access
                     (Empty, EW_Term, R_Expr, Field, Ty_Ext);
-
-                  if Ekind (Field) = E_Discriminant then
-                     Tmps (I) := New_Temp_Identifier
-                       (Field, EW_Abstract (Etype (Field)));
-                     Binds (I) := R_Acc;
-                     Insert_Entity (Field, Tmps (I));
-                  end if;
 
                   --  Recursively call Compute_Dynamic_Invariant on the record
                   --  components. Additional parameters are unchanged expect
@@ -3445,10 +3463,8 @@ package body Gnat2Why.Expr is
                   end if;
 
                   if T_Comp /= True_Pred then
-                     T_Guard := (if Ekind (Field) = E_Discriminant
-                                 then True_Pred
-                                 else +New_Ada_Record_Check_For_Field
-                                   (Empty, EW_Pred, R_Expr, Field, Ty_Ext));
+                     T_Guard := +New_Ada_Record_Check_For_Field
+                       (Empty, EW_Pred, R_Expr, Field, Ty_Ext);
 
                      F_Expr  := New_Conditional (Domain    => EW_Pred,
                                                  Condition => +T_Guard,
@@ -3463,9 +3479,6 @@ package body Gnat2Why.Expr is
                      end if;
                   end if;
                end if;
-
-               Next_Component_Or_Discriminant (Field);
-               I := I + 1;
             end loop;
 
             if T /= True_Pred then
@@ -9589,7 +9602,6 @@ package body Gnat2Why.Expr is
 
                   when E_Record_Type | E_Record_Subtype =>
                      declare
-                        Comp : Node_Id := First_Component (Ent);
                         Typ  : Node_Id;
                      begin
                         --  For each component_definition that is a non-static
@@ -9598,23 +9610,25 @@ package body Gnat2Why.Expr is
                         --  is not necessary to do that check on discriminants,
                         --  as the type of discriminants are directly
                         --  subtype_marks, not subtype_indications.
+                        --  ??? what about invisible components?
 
-                        while Present (Comp) loop
-                           Typ := Subtype_Indication
-                                    (Component_Definition (Parent (Comp)));
+                        for Comp of Get_Component_Set (Ent) loop
+                           if Component_Is_Visible_In_Type (Ent, Comp) then
+                              Typ := Subtype_Indication
+                                (Component_Definition (Parent (Comp)));
 
-                           if Present (Typ)
-                             and then Nkind (Typ) = N_Subtype_Indication
-                             and then Comes_From_Source (Typ)
-                           then
-                              R := Sequence
-                                (Check_Subtype_Indication
-                                   (Params   => Body_Params,
-                                    N        => Typ,
-                                    Sub_Type => Etype (Comp)),
-                                 R);
+                              if Present (Typ)
+                                and then Nkind (Typ) = N_Subtype_Indication
+                                and then Comes_From_Source (Typ)
+                              then
+                                 R := Sequence
+                                   (Check_Subtype_Indication
+                                      (Params   => Body_Params,
+                                       N        => Typ,
+                                       Sub_Type => Etype (Comp)),
+                                    R);
+                              end if;
                            end if;
-                           Next_Component (Comp);
                         end loop;
                      end;
 
@@ -14114,7 +14128,7 @@ package body Gnat2Why.Expr is
          --  /\ ..
 
          declare
-            Field  : Node_Id := (if Has_Discriminants (Ty_Ext)
+            Discr  : Node_Id := (if Has_Discriminants (Ty_Ext)
                                  or else Has_Unknown_Discriminants (Ty_Ext)
                                  then First_Discriminant (Ty_Ext)
                                  else Empty);
@@ -14129,8 +14143,8 @@ package body Gnat2Why.Expr is
             --  <Expr>.rec__disc1 = Discr1.default <if Ty_Ext is unconstrained>
             --  <Expr>.rec__disc1 = Discr1 /\ ..   <if Ty_Ext is constrained>
 
-            while Present (Field) loop
-               if not Is_Completely_Hidden (Field) then
+            while Present (Discr) loop
+               if not Is_Completely_Hidden (Discr) then
 
                   if Is_Constrained (Ty_Ext) then
 
@@ -14153,7 +14167,7 @@ package body Gnat2Why.Expr is
                      Variables.Union
                        (Get_Variables
                           (N                    =>
-                               Discriminant_Default_Value (Field),
+                               Discriminant_Default_Value (Discr),
                            Scope                => Scope,
                            Local_Constants      => Node_Sets.Empty_Set,
                            Fold_Functions       => False,
@@ -14161,7 +14175,7 @@ package body Gnat2Why.Expr is
                            Reduced              => True));
                   end if;
                end if;
-               Next_Discriminant (Field);
+               Next_Discriminant (Discr);
             end loop;
 
             --  Go through other fields to create the expression
@@ -14171,10 +14185,9 @@ package body Gnat2Why.Expr is
             --  /\ ..
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
-               Field := First_Component (Ty_Ext);
 
-               while Present (Field) loop
-                  if Component_Is_Visible_In_SPARK (Field) then
+               for Field of Get_Component_Set (Ty_Ext) loop
+                  if Component_Is_Visible_In_Type (Ty_Ext, Field) then
                      if Present (Expression (Parent (Field))) then
 
                         --  if Field has a default expression, use it.
@@ -14197,8 +14210,6 @@ package body Gnat2Why.Expr is
                         Variables_In_Default_Init (Etype (Field), Variables);
                      end if;
                   end if;
-
-                  Next_Component (Field);
                end loop;
             end if;
          end;
@@ -14387,27 +14398,32 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif Has_Discriminants (Ty_Ext)
-        and then Is_Constrained (Ty_Ext)
-      then
+      elsif Has_Discriminants (Ty_Ext) then
 
          --  Variables coming from the record's discriminants
 
          declare
             Discr : Entity_Id := First_Discriminant (Ty_Ext);
-            Elmt  : Elmt_Id := First_Elmt (Stored_Constraint (Ty_Ext));
+            Elmt  : Elmt_Id :=
+              (if Is_Constrained (Ty_Ext) then
+                    First_Elmt (Stored_Constraint (Ty_Ext))
+               else No_Elmt);
          begin
             while Present (Discr) loop
                if Is_Not_Hidden_Discriminant (Discr) then
-                  Variables.Union
-                    (Get_Variables
-                       (N                    => Node (Elmt),
-                        Scope                => Scope,
-                        Local_Constants      => Node_Sets.Empty_Set,
-                        Fold_Functions       => False,
-                        Use_Computed_Globals => True,
-                        Reduced              => True));
-                  Next_Elmt (Elmt);
+                  if Is_Constrained (Ty_Ext) then
+                     Variables.Union
+                       (Get_Variables
+                          (N                    => Node (Elmt),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                     Next_Elmt (Elmt);
+                  end if;
+
+                  Variables_In_Dynamic_Invariant (Etype (Discr), Variables);
                end if;
                Next_Discriminant (Discr);
             end loop;
@@ -14426,35 +14442,15 @@ package body Gnat2Why.Expr is
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
 
-         --  Generates:
-         --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-         --    Dynamic_Invariant (get <Expr> i1 .. in)
-
          Variables_In_Dynamic_Invariant (Component_Type (Ty_Ext), Variables);
 
       elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
-         --  Generates:
-         --  (check_for_f1 <Expr> -> Dynamic_Invariant <Expr>.rec__f1)
-         --  /\ .. /\ (check_for_fn <Expr> -> Dynamic_Invariant <Expr>.rec__fn)
-         --  As discriminants may occur in bounds of types of other fields,
-         --  store them in the Symbol_Table.
-
-         declare
-            Field : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
-         begin
-            while Present (Field) loop
-               if (Is_Record_Type (Ty_Ext)
-                   and then Component_Is_Visible_In_SPARK (Field))
-                   or else (Ekind (Field) = E_Discriminant
-                            and then Is_Not_Hidden_Discriminant (Field))
-               then
-                  Variables_In_Dynamic_Invariant (Etype (Field), Variables);
-               end if;
-
-               Next_Component_Or_Discriminant (Field);
-            end loop;
-         end;
+         for Field of Get_Component_Set (Ty_Ext) loop
+            if Component_Is_Visible_In_Type (Ty_Ext, Field) then
+               Variables_In_Dynamic_Invariant (Etype (Field), Variables);
+            end if;
+         end loop;
       end if;
    end Variables_In_Dynamic_Invariant;
 
