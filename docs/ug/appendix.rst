@@ -892,10 +892,6 @@ Proof Limitations
 #. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
 
-#. Calls to primitive operations of the tagged type being defined are not
-   supported in classwide preconditions. GNATprove does not raise an
-   error, but results of proof may be incorrect.
-
 #. Constants declared in loops before the loop invariant are handled as
    variables by the tool. This means in particular that any information
    about their values needed after the loop invariant must be stated explicitly
