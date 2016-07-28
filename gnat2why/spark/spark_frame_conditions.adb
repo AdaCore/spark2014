@@ -92,9 +92,6 @@ package body SPARK_Frame_Conditions is
    Callers      : Name_Graphs.Map;  --  Callers for each subprogram
    Calls        : Name_Graphs.Map;  --  Subprograms called in each subprogram
 
-   Non_Rec_Subp : Name_Sets.Set;
-   --  All non-recursive subprograms containing at least one call
-
    Protected_Operations : Name_Sets.Set;
    --  All protected operations, i.e. entries, protected functions and
    --  protected procedures.
@@ -560,30 +557,6 @@ package body SPARK_Frame_Conditions is
    function Is_Constant (Ent : Entity_Name) return Boolean
      renames Constants.Contains;
 
-   ---------------------------------
-   -- Is_Non_Recursive_Subprogram --
-   ---------------------------------
-
-   function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean is
-      E_Alias : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name  : constant Entity_Name := To_Entity_Name (E);
-   begin
-      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
-      --  those, instead return false.
-
-      if Is_Abstract_Subprogram (E_Alias) then
-         return False;
-      end if;
-
-      --  A subprogram is non-recursive if either it contains no call or its
-      --  Entity_Name has been stored in Non_Rec_Subp.
-
-      return not Calls.Contains (E_Name)
-        or else Calls (E_Name).Is_Empty
-        or else Non_Rec_Subp.Contains (E_Name);
-   end Is_Non_Recursive_Subprogram;
-
    ----------------------------
    -- Is_Protected_Operation --
    ----------------------------
@@ -1021,23 +994,6 @@ package body SPARK_Frame_Conditions is
          Set_Default_To_Empty (Reads,   Scopes);
          Set_Default_To_Empty (Callers, Scopes);
          Set_Default_To_Empty (Calls,   Scopes);
-
-         --  Collect non-recursive subprograms
-         --
-         --  A subprogram is non-recursive if it is alone in its strongly
-         --  connected component and if it does not call itself directly.
-
-         for C of Cur_SCCs loop
-            if C.Length = 1 then
-               declare
-                  E : constant Entity_Name := C (1);
-               begin
-                  if not Calls (E).Contains (E) then
-                     Non_Rec_Subp.Insert (E);
-                  end if;
-               end;
-            end if;
-         end loop;
 
          --  Iterate on SCCs
 

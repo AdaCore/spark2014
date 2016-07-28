@@ -116,9 +116,6 @@ package SPARK_Frame_Conditions is
    --  If Current_Unit_Only is set then we only want the direct calls and
    --  globals.
 
-   function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
-   --  Return True if E is not a (mutually) recursive subprogram
-
    function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
    --  Return True if E_Name refers to entry or protected subprogram
 

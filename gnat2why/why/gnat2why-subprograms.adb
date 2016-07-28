@@ -1805,7 +1805,7 @@ package body Gnat2Why.Subprograms is
       --  If Functon_Entity is recursive, it is not inlined as it may interfere
       --  with its verification.
 
-      elsif not Is_Non_Recursive_Subprogram (Function_Entity) then
+      elsif Is_Recursive (Function_Entity) then
          Error_Msg_N
            ("?recursive function cannot be inlined for proof",
             Function_Entity);
@@ -3382,7 +3382,7 @@ package body Gnat2Why.Subprograms is
    begin
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
-        or else not Is_Non_Recursive_Subprogram (E)
+        or else Is_Recursive (E)
         or else (Is_Volatile_Function (E) and not Is_Protected_Subprogram (E))
       then
          return;
@@ -4154,7 +4154,7 @@ package body Gnat2Why.Subprograms is
          --    axiom f__def:
          --      forall x:natural. f x = of_int (to_int(largest_int) + 1)
 
-         if not Is_Non_Recursive_Subprogram (E)
+         if Is_Recursive (E)
            or else not Has_Scalar_Type (Etype (E))
            or else Use_Split_Form_For_Type (Etype (E))
          then
