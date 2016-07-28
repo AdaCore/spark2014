@@ -1066,17 +1066,17 @@ package body SPARK_Frame_Conditions is
       E_Name : Entity_Name;
 
    begin
-      --  Initialize to empty sets
-      Inputs             := Name_Sets.Empty_Set;
-      Outputs            := Name_Sets.Empty_Set;
-      Called_Subprograms := Name_Sets.Empty_Set;
-
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
       if Ekind (E) in E_Function | E_Procedure | E_Entry
         and then Is_Abstract_Subprogram (E_Alias)
       then
+         --  Initialize to empty sets and return
+         Inputs             := Name_Sets.Empty_Set;
+         Outputs            := Name_Sets.Empty_Set;
+         Called_Subprograms := Name_Sets.Empty_Set;
+
          return;
       end if;
 
