@@ -173,8 +173,7 @@ package body Why.Gen.Records is
      (P : W_Section_Id;
       E : Entity_Id)
    is
-      Ancestor : constant Entity_Id :=
-        Oldest_Parent_With_Same_Fields (E);
+      Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
    begin
       --  Empty record types and clones do not require a representative
       --  theory.
@@ -185,7 +184,7 @@ package body Why.Gen.Records is
          return;
       end if;
 
-      --  If E has an ancestor with the same fields, use its representative.
+      --  If E has an ancestor with the same fields, use its representative
 
       if Ancestor /= E then
          return;
@@ -234,7 +233,7 @@ package body Why.Gen.Records is
       --  Generate the boolean equality function for the record type
 
       procedure Declare_Extraction_Functions (Components : Node_Lists.List);
-      --  @param Components The list of components to hide
+      --  @param Components the list of components to hide
 
       procedure Declare_Extraction_Functions_For_Extension;
       --  For each extension component <comp> of the current type (i.e.
@@ -280,14 +279,14 @@ package body Why.Gen.Records is
          return W_Pred_Id;
       --  Given a record field, return the a call to its discrimant check
       --  predicate, with the given argument. If that predicate is defined
-      --  elsewhere (i.e. in the module for the root record type, prefix the
+      --  elsewhere (i.e. in the module for the root record type) prefix the
       --  call accordingly and add a conversion.
 
       function Extract_Extension_Fun return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension component
+      --  Return the name of the extract function for an extension component
 
       function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
-      --  Returns the name of the special field representing extension
+      --  Return the name of the special field representing extension
       --  components.
 
       function Extract_Fun
@@ -295,7 +294,7 @@ package body Why.Gen.Records is
          Rec   : Entity_Id;
          Local : Boolean := True)
          return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension
+      --  Return the name of the extract function for an extension
 
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
@@ -351,8 +350,7 @@ package body Why.Gen.Records is
                   then
                     Compute_Others_Choice (Info, Discr)
                   else
-                    +Transform_Discrete_Choices
-                      (Info.Parent_Variant, Discr));
+                    +Transform_Discrete_Choices (Info.Parent_Variant, Discr));
             begin
                Cond :=
                  +New_And_Then_Expr
@@ -2130,11 +2128,9 @@ package body Why.Gen.Records is
    ---------------------------
 
    function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id is
-      Ancestor : constant Entity_Id :=
-        Oldest_Parent_With_Same_Fields (E);
+      Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
       Name     : constant String :=
         Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-
    begin
       return New_Module (File => No_Name,
                          Name => NID (Name));
@@ -2771,17 +2767,16 @@ package body Why.Gen.Records is
          end loop;
       end if;
 
-      --  If E is not tagged then the root type has the same fields as E.
+      --  If E is not tagged then the root type has the same fields as E
 
       if not Is_Tagged_Type (Current) then
          return Root_Record_Type (Current);
-      else
 
+      else
          --  Otherwise, we follow the Etype link until we find a type with
          --  more fields.
 
          loop
-
             --  If Current is private, its fullview is not in SPARK. Thus, it
             --  is considered to have private fields of its own.
 
@@ -2811,7 +2806,7 @@ package body Why.Gen.Records is
             --  If Current is not subtype, check whether it has more fields
             --  than Ancestor.
 
-            if not (Ekind (Current) in SPARK_Util.Types.Subtype_Kind) then
+            if Ekind (Current) not in SPARK_Util.Types.Subtype_Kind then
                for Field of Get_Component_Set (Current) loop
 
                   --  If Field is not in Ancestor, we are done.
@@ -2877,8 +2872,8 @@ package body Why.Gen.Records is
    is
       Associations : W_Field_Association_Array (A'Range);
       Index        : Positive := A'First;
-   begin
 
+   begin
       --  Store association for the top-level field for fields
 
       if Count_Why_Regular_Fields (Ty) > 0 then
@@ -2944,8 +2939,8 @@ package body Why.Gen.Records is
       Ty     : constant Entity_Id := I.Typ;
       Values : W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty));
       Index  : Positive := 1;
-   begin
 
+   begin
       --  Store association for the top-level field for fields
 
       if I.Fields.Present then
@@ -3018,7 +3013,7 @@ package body Why.Gen.Records is
          then
             Result := Retysp (Etype (Result));
 
-         --   Result is not a cloned record type
+         --  Result is not a cloned record type
 
          else
             raise Program_Error;
@@ -3058,6 +3053,9 @@ package body Why.Gen.Records is
         and then not Has_Discriminants (E)
       then
          return True;
+
+      --  The default is that we don't consider a type as a clone
+
       else
          return False;
       end if;
