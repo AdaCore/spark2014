@@ -2529,11 +2529,10 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Calls_Current_Task --
    ------------------------
 
-   function Calls_Current_Task (E : Entity_Id)
-     return Boolean is
+   function Calls_Current_Task (E : Entity_Id) return Boolean is
      (Protected_Operation_Call_Graph.Contains (Current_Task)
-         and then Protected_Operation_Call_Graph.Edge_Exists
-                    (To_Entity_Name (E), Current_Task));
+        and then Protected_Operation_Call_Graph.Edge_Exists
+          (To_Entity_Name (E), Current_Task));
 
    -----------------------
    -- Refinement_Exists --
@@ -2719,11 +2718,11 @@ package body Flow_Generated_Globals.Phase_2 is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Proof_Ins      => To_String (G_Id.Name) & "'Proof_Ins",
-              when Inputs         => To_String (G_Id.Name) & "'Inputs",
-              when Outputs        => To_String (G_Id.Name) & "'Outputs",
-              when Variable       => To_String (G_Id.Name),
-              when Null_Global_Id => raise Program_Error);
+               when Proof_Ins      => To_String (G_Id.Name) & "'Proof_Ins",
+               when Inputs         => To_String (G_Id.Name) & "'Inputs",
+               when Outputs        => To_String (G_Id.Name) & "'Outputs",
+               when Variable       => To_String (G_Id.Name),
+               when Null_Global_Id => raise Program_Error);
 
          Rv : constant Node_Display_Info := Node_Display_Info'
            (Show        => True,
@@ -2783,10 +2782,10 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info) is
    begin
       Write_Line ((case Info.Kind is
-                   when Kind_Subprogram                  => "Subprogram ",
-                   when Kind_Task                        => "Task ",
-                   when Kind_Package | Kind_Package_Body => "Package ")
-        & To_String (Info.Name));
+                      when Kind_Subprogram                  => "Subprogram ",
+                      when Kind_Task                        => "Task ",
+                      when Kind_Package | Kind_Package_Body => "Package ")
+                    & To_String (Info.Name));
 
       Print_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
       Print_Name_Set ("Inputs               :", Info.Inputs);
