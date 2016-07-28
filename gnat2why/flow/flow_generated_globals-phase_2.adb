@@ -24,8 +24,6 @@
 with GNAT.Regpat;                use GNAT.Regpat;
 with Serialisation;              use Serialisation;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings;
-with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 
@@ -1752,11 +1750,6 @@ package body Flow_Generated_Globals.Phase_2 is
          ALI_File_Name_Str : constant String :=
            Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
 
-         Sanitized_Name : constant String :=
-           To_String (Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
-                            Left   => Null_Set,
-                            Right  => To_Set (ASCII.NUL)));
-
          ALI_File : Ada.Text_IO.File_Type;
 
          type GG_Parsing_Status is (Before, Started, Finished);
@@ -1783,7 +1776,7 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             Close (ALI_File);
             Abort_With_Message
-              ("Corrupted ali file detected (" & Sanitized_Name & "): " &
+              ("Corrupted ali file detected (" & ALI_File_Name_Str & "): " &
                  Msg &
                  ". Call gnatprove with ""--clean"".");
          end Corrupted_ALI_File;
@@ -2138,34 +2131,10 @@ package body Flow_Generated_Globals.Phase_2 is
          Init_Time ("gg_read");
       end if;
 
-      --  Go through all ALI files and populate the Subprogram_Info_List
-      declare
-         Read_Files : String_Sets.Set;
-         Nam        : Unbounded_String;
-
-         Inserted : Boolean;
-         Dummy    : String_Sets.Cursor;
-      begin
-         for Index in ALIs.First .. ALIs.Last loop
-            --  ??? The ALI table seems to incldue some entries twice, but that
-            --  is because some of them are null-terminated. See O714-006; this
-            --  is the workaround for now.
-            Nam := To_Unbounded_String
-              (Get_Name_String (Full_Lib_File_Name
-               (ALIs.Table (Index).Afile)));
-            Nam := Trim (Source => Nam,
-                         Left   => Null_Set,
-                         Right  => To_Set (ASCII.NUL));
-
-            Read_Files.Insert (New_Item => To_String (Nam),
-                               Position => Dummy,
-                               Inserted => Inserted);
-
-            if Inserted then
-               Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
-            end if;
-         end loop;
-      end;
+      --  Load information from all ALI files
+      for Index in ALIs.First .. ALIs.Last loop
+         Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
+      end loop;
 
       Note_Time ("gg_read - ALI files read");
 
