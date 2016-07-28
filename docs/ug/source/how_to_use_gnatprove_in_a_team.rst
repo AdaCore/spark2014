@@ -216,6 +216,8 @@ are useless and result in a warning by |GNATprove|. Like other warnings emitted
 by |GNATprove|, this warning is treated like an error if the switch
 ``--warnings=error`` is set.
 
+.. _Indirect Justification with Pragma Assume:
+
 Indirect Justification with Pragma Assume
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

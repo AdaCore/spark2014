@@ -95,6 +95,67 @@ passed in arguments, as follows:
    --  the following assertion is proved automatically:
    pragma Assert (R1 <= R2);
 
+.. _Manual Proof Using User Lemmas:
+
+Manual Proof Using User Lemmas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the property to prove is not part of the :ref:`SPARK Lemma Library`, then a
+user can easily add it as a separate lemma in her program. For example, suppose
+you need to have a proof that a fix list of numbers are prime numbers. This can
+be expressed easily in a lemma as follows:
+
+.. code-block:: ada
+
+   function Is_Prime (N : Positive) return Boolean is
+     (for all J in Positive range 2 .. N - 1 => N mod J /= 0);
+
+   procedure Number_Is_Prime (N : Positive)
+   with
+     Ghost,
+     Global => null,
+     Pre  => N in 15486209 | 15487001 | 15487469,
+     Post => Is_Prime (N);
+
+Using the lemma is simply a call to the ghost procedure ``Number_Is_Prime``:
+
+.. code-block:: ada
+
+   Number_Is_Prime (15486209);
+   --  at this program point, the prover knows that 15486209 is prime, so
+   --  the following assertion is proved automatically:
+   pragma Assert (Is_Prime (15486209));
+
+Note that the lemma here has a precondition, which you will need to prove when
+calling it. For example, the following incorrect call to the lemma will be
+detected as a precondition check failure:
+
+.. code-block:: ada
+
+   Number_Is_Prime (10);  --  check message issued here
+
+Then, the lemma procedure can be either implemented as a null procedure, in
+which case |GNATprove| will issue a check message about the unproved
+postcondition, which can be justified (see :ref:`Justifying Check Messages`) or
+proved with Coq (see :ref:`Manual Proof Using Coq`):
+
+.. code-block:: ada
+
+   procedure Number_Is_Prime (N : Positive) is null;
+
+Or it can be implemented as a normal procedure body with a single assumption:
+
+.. code-block:: ada
+
+   procedure Number_Is_Prime (N : Positive) is
+   begin
+      pragma Assume (Is_Prime (N));
+   end Number_Is_Prime;
+
+Or it can be implemented in some cases as a normal procedure body with ghost
+code to achieve fully automatic proof, see :ref:`Manual Proof Using Ghost
+Code`.
+
 .. _Manual Proof Using Ghost Code:
 
 Manual Proof Using Ghost Code

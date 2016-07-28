@@ -109,39 +109,14 @@ In that case, a user may either:
 
 * add in the code a call to a lemma from the SPARK lemma library (see details
   in :ref:`Manual Proof Using SPARK Lemma Library`), or
+* add in the code a call to a user lemma (see details in :ref:`Manual Proof
+  Using User Lemmas`), or
+* add an assumption in the code (see details in :ref:`Indirect Justification
+  with Pragma Assume`), or
+* add a justification in the code (see details in :ref:`Direct Justification
+  with Pragma Annotate`), or
 * manually review the unproved checks and record that they can be trusted
-  (for example by storing the result of |GNATprove| under version control),
-  or
-* add an assumption in the code to help the prover, in the form of a
-  ``pragma Assume``. |GNATprove| assumes it holds, so does not attempt to
-  prove it, and uses it in subsequent code. The assumption can be manually
-  reviewed like mentioned above, and marking it as an assumption in the
-  code helps documenting it, or
-* define and call a lemma which makes the missing property available.
-
-The last is a technique which is a combination of expression functions and
-``pragma Assume``. For example the below code is currently not provable
-with Alt-Ergo using the default setup:
-
-   .. literalinclude:: ../lemmas/example1.adb
-      :language: ada
-      :linenos:
-
-This code can be made provable by using a lemma. All VCs for this function
-are easily proved, showing that the lemma holds in all cases.
-
-   .. literalinclude:: ../lemmas/lemmas.ads
-      :language: ada
-      :linenos:
-
-Note the postcondition on the expression function ensures that VCs are
-generated showing it is always valid. The lemma can then be used though an
-assumption (although it is planned to extend ``pragma Assert`` to support
-this pattern):
-
-   .. literalinclude:: ../lemmas/example2.adb
-      :language: ada
-      :linenos:
+  (for example by storing the result of |GNATprove| under version control).
 
 In the future, |GNATprove| may provide a `user view` of the formula passed to
 the prover, for advanced users to inspect. This view would express in an
