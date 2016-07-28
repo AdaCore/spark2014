@@ -535,5 +535,4 @@ is
    end Aggregate_In_Quantifier;
 
    pragma Warnings (On, "* has no effect");
-   pragma Warnings (On, "* might not be initialized *");
 end Records;
