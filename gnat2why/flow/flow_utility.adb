@@ -1244,8 +1244,8 @@ package body Flow_Utility is
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id);
-            --  Add the given global to the reads, writes or proof_in
-            --  list, depending on the mode.
+            --  Add the given global to Reads, Writes or Proof_Ins, depending
+            --  on the mode.
 
             -------------
             -- Process --
