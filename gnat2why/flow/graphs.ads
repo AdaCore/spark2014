@@ -341,7 +341,8 @@ package Graphs is
    ----------------------------------------------------------------------
 
    procedure New_Cluster (G : in out Graph;
-                          C :    out Cluster_Id);
+                          C :    out Cluster_Id)
+   with Post => C /= Null_Cluster;
    --  Create a new cluster that vertices can be a member of.
    --
    --  Complexity is O(1).
