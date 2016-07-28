@@ -3800,6 +3800,9 @@ package body Gnat2Why.Subprograms is
             if Present (Expr_Fun_N)
               and then Entity_Body_In_SPARK (E)
               and then not No_Return (E)
+              and then
+                (not Is_Volatile_Function (E)
+                 or else Is_Protected_Subprogram (E))
             then
                declare
                   Use_Base  : constant Boolean :=
