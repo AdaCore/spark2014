@@ -864,7 +864,9 @@ package body Flow.Control_Flow_Graph is
       Outs     : in out Vertex_Vectors.Vector;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
-      Ctx      : in out Context);
+      Ctx      : in out Context)
+   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
+                                   N_Entry_Call_Statement;
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are appended to Ins and Outs.
