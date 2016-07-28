@@ -109,7 +109,6 @@ package body Why.Gen.Records is
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
-   --  @param Theory the theory in which to insert the type declaration
    --  @param E the type entity to translate
 
    procedure Declare_Conversion_Check_Function
@@ -214,14 +213,6 @@ package body Why.Gen.Records is
      (P : W_Section_Id;
       E : Entity_Id)
    is
-      procedure Declare_Record_Type;
-      --  Declare the record type
-
-      procedure Declare_Protected_Access_Functions;
-      --  For each record field, declare an access program function, whose
-      --  result is the same as the record field access, but there is a
-      --  precondition (when needed).
-
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id;
       --  Compute the discriminant check for an access to the given field, as a
       --  predicate which can be used as a precondition.
@@ -240,35 +231,8 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
 
-      function Discriminant_Check_Pred_Call
-        (Field : Entity_Id;
-         Arg   : W_Identifier_Id) return W_Pred_Id;
-      --  Given a record field, return the a call to its discrimant check
-      --  predicate, with the given argument. If that predicate is defined
-      --  elsewhere (i.e. in the module for the root record type, prefix the
-      --  call accordingly and add a conversion.
-
-      function Transform_Discrete_Choices
-        (Case_N : Node_Id;
-         Expr   : W_Term_Id) return W_Pred_Id;
-      --  Wrapper for the function in Gnat2Why.Expr
-
-      function Extract_Fun
-        (Field : Entity_Id;
-         Rec   : Entity_Id;
-         Local : Boolean := True) return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension
-
-      function Extract_Extension_Fun return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension component
-
-      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
-      --  Returns the name of the special field representing extension
-      --  components.
-
-      ----------------------------------
-      -- Declare_Extraction_Functions --
-      ----------------------------------
+      procedure Declare_Extraction_Functions (Components  : Node_Lists.List);
+      --  @param Components The list of components to hide
 
       procedure Declare_Extraction_Functions_For_Extension;
       --  For each extension component <comp> of the current type (i.e.
@@ -300,8 +264,43 @@ package body Why.Gen.Records is
       --  derived type had a constrained discriminant. These axioms are no
       --  longer generated.
 
-      procedure Declare_Extraction_Functions (Components  : Node_Lists.List);
-      --  @param Components The list of components to hide
+      procedure Declare_Protected_Access_Functions;
+      --  For each record field, declare an access program function, whose
+      --  result is the same as the record field access, but there is a
+      --  precondition (when needed).
+
+      procedure Declare_Record_Type;
+      --  Declare the record type
+
+      function Discriminant_Check_Pred_Call
+        (Field : Entity_Id;
+         Arg   : W_Identifier_Id) return W_Pred_Id;
+      --  Given a record field, return the a call to its discrimant check
+      --  predicate, with the given argument. If that predicate is defined
+      --  elsewhere (i.e. in the module for the root record type, prefix the
+      --  call accordingly and add a conversion.
+
+      function Extract_Extension_Fun return W_Identifier_Id;
+      --  Returns the name of the extract function for an extension component
+
+      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
+      --  Returns the name of the special field representing extension
+      --  components.
+
+      function Extract_Fun
+        (Field : Entity_Id;
+         Rec   : Entity_Id;
+         Local : Boolean := True) return W_Identifier_Id;
+      --  Returns the name of the extract function for an extension
+
+      function Transform_Discrete_Choices
+        (Case_N : Node_Id;
+         Expr   : W_Term_Id) return W_Pred_Id;
+      --  Wrapper for the function in Gnat2Why.Expr
+
+      ---------------------
+      -- Local Variables --
+      ---------------------
 
       Root      : constant Entity_Id     := Root_Record_Type (E);
       Is_Root   : constant Boolean       := Root = E;
@@ -750,150 +749,6 @@ package body Why.Gen.Records is
 
       end Declare_Conversion_Functions;
 
-      ----------------------------------
-      -- Declare_Extraction_Functions --
-      ----------------------------------
-
-      procedure Declare_Extraction_Functions
-        (Components  : Node_Lists.List)
-      is
-         X_Ident         : constant W_Identifier_Id :=
-           New_Identifier (Name => "x", Typ => EW_Private_Type);
-         Binder          : constant Binder_Array :=
-           (1 => (B_Name => X_Ident,
-                  others => <>));
-         Hide_Name       : constant W_Identifier_Id :=
-           To_Ident (WNE_Hide_Extension);
-         Extract_Func    : constant W_Identifier_Id := Extract_Extension_Fun;
-         Num_Hide_Params : constant Natural :=
-           Natural (Components.Length)
-           + 1;  --  for the extension field of the current type
-         Hide_Binders    : Binder_Array (1 .. Num_Hide_Params);
-         Index           : Natural := 0;
-
-      begin
-
-         for Field of Components loop
-            Index := Index + 1;
-            Hide_Binders (Index) :=
-              (B_Name =>
-                 New_Identifier (Name => Short_Name (Field),
-                                 Typ  => W_Type_Of_Component (Field)),
-               others => <>);
-         end loop;
-
-         --  the extension field in the current type is also part of the
-         --  extension field in the root type
-
-         Index := Index + 1;
-         Hide_Binders (Index) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
-            others => <>);
-
-         pragma Assert (Index = Num_Hide_Params);
-
-         --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
-         --                       : __private
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => Hide_Name,
-                  Binders     => Hide_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Private_Type));
-
-         for Field of Components loop
-
-            --  function extract__<comp> (x : __private) : <typ>
-
-            --  If an extraction function is already present in the base type
-            --  or parent type of E, then the extraction function is a renaming
-            --  of the base type's extraction function.
-
-            declare
-               Has_Definition : constant Boolean :=
-                 Original_Declaration (Field) /= E;
-               --  Field has a definition if its first declaration is not E
-
-               Definition     : constant W_Expr_Id :=
-                 (if Has_Definition then
-                     New_Call
-                    (Domain   => EW_Term,
-                     Name     =>
-                       Extract_Fun (Field,
-                         Rec   => Original_Declaration (Field),
-                         Local => False),
-                     Binders  => Binder,
-                     Typ      => W_Type_Of_Component (Field))
-                  else Why_Empty);
-            begin
-               Emit (P,
-                     New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => Extract_Fun (Field, Rec => E),
-                        Binders     => Binder,
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => W_Type_Of_Component (Field),
-                        Def         => Definition));
-            end;
-
-            --  Declare an axiom for the extraction function stating:
-            --  forall .... extract__<comp> (hide__ext (...)) = comp
-
-            Emit (P,
-                  New_Guarded_Axiom
-                    (Name     =>
-                       NID (Get_Name_String (Get_Symbol
-                         (Get_Name (Extract_Fun (Field, Rec => E))))
-                         & "__conv"),
-                     Binders  => Hide_Binders,
-                     Def      => +New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Call
-                          (Domain  => EW_Term,
-                           Name    => Extract_Fun (Field, Rec => E),
-                           Args    =>
-                             (1 => New_Call
-                                  (Domain  => EW_Term,
-                                   Name    => Hide_Name,
-                                   Binders => Hide_Binders,
-                                   Typ     => EW_Private_Type)),
-                           Typ     => W_Type_Of_Component (Field)),
-                        Right  => +New_Identifier
-                          (Name => Short_Name (Field),
-                           Typ  => W_Type_Of_Component (Field)),
-                        Domain => EW_Term)));
-
-         end loop;
-
-         --  function extract__ext__ (x : __private) : __private
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => Extract_Func,
-                  Binders     => Binder,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Private_Type));
-      end Declare_Extraction_Functions;
-
-      ------------------------------------------------
-      -- Declare_Extraction_Functions_For_Extension --
-      ------------------------------------------------
-
-      procedure Declare_Extraction_Functions_For_Extension is
-         Comps : Node_Lists.List;
-      begin
-         for Field of Get_Component_Set (E) loop
-            if No (Search_Component_In_Type (Root, Field)) then
-               Comps.Append (Field);
-            end if;
-         end loop;
-
-         Declare_Extraction_Functions (Components  => Comps);
-      end Declare_Extraction_Functions_For_Extension;
-
       -------------------------------
       -- Declare_Equality_Function --
       -------------------------------
@@ -1082,6 +937,150 @@ package body Why.Gen.Records is
                   Labels      => Name_Id_Sets.Empty_Set));
          end if;
       end Declare_Equality_Function;
+
+      ----------------------------------
+      -- Declare_Extraction_Functions --
+      ----------------------------------
+
+      procedure Declare_Extraction_Functions
+        (Components  : Node_Lists.List)
+      is
+         X_Ident         : constant W_Identifier_Id :=
+           New_Identifier (Name => "x", Typ => EW_Private_Type);
+         Binder          : constant Binder_Array :=
+           (1 => (B_Name => X_Ident,
+                  others => <>));
+         Hide_Name       : constant W_Identifier_Id :=
+           To_Ident (WNE_Hide_Extension);
+         Extract_Func    : constant W_Identifier_Id := Extract_Extension_Fun;
+         Num_Hide_Params : constant Natural :=
+           Natural (Components.Length)
+           + 1;  --  for the extension field of the current type
+         Hide_Binders    : Binder_Array (1 .. Num_Hide_Params);
+         Index           : Natural := 0;
+
+      begin
+
+         for Field of Components loop
+            Index := Index + 1;
+            Hide_Binders (Index) :=
+              (B_Name =>
+                 New_Identifier (Name => Short_Name (Field),
+                                 Typ  => W_Type_Of_Component (Field)),
+               others => <>);
+         end loop;
+
+         --  the extension field in the current type is also part of the
+         --  extension field in the root type
+
+         Index := Index + 1;
+         Hide_Binders (Index) :=
+           (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
+            others => <>);
+
+         pragma Assert (Index = Num_Hide_Params);
+
+         --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
+         --                       : __private
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Hide_Name,
+                  Binders     => Hide_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Private_Type));
+
+         for Field of Components loop
+
+            --  function extract__<comp> (x : __private) : <typ>
+
+            --  If an extraction function is already present in the base type
+            --  or parent type of E, then the extraction function is a renaming
+            --  of the base type's extraction function.
+
+            declare
+               Has_Definition : constant Boolean :=
+                 Original_Declaration (Field) /= E;
+               --  Field has a definition if its first declaration is not E
+
+               Definition     : constant W_Expr_Id :=
+                 (if Has_Definition then
+                     New_Call
+                    (Domain   => EW_Term,
+                     Name     =>
+                       Extract_Fun (Field,
+                         Rec   => Original_Declaration (Field),
+                         Local => False),
+                     Binders  => Binder,
+                     Typ      => W_Type_Of_Component (Field))
+                  else Why_Empty);
+            begin
+               Emit (P,
+                     New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        => Extract_Fun (Field, Rec => E),
+                        Binders     => Binder,
+                        Labels      => Name_Id_Sets.Empty_Set,
+                        Return_Type => W_Type_Of_Component (Field),
+                        Def         => Definition));
+            end;
+
+            --  Declare an axiom for the extraction function stating:
+            --  forall .... extract__<comp> (hide__ext (...)) = comp
+
+            Emit (P,
+                  New_Guarded_Axiom
+                    (Name     =>
+                       NID (Get_Name_String (Get_Symbol
+                         (Get_Name (Extract_Fun (Field, Rec => E))))
+                         & "__conv"),
+                     Binders  => Hide_Binders,
+                     Def      => +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Call
+                          (Domain  => EW_Term,
+                           Name    => Extract_Fun (Field, Rec => E),
+                           Args    =>
+                             (1 => New_Call
+                                  (Domain  => EW_Term,
+                                   Name    => Hide_Name,
+                                   Binders => Hide_Binders,
+                                   Typ     => EW_Private_Type)),
+                           Typ     => W_Type_Of_Component (Field)),
+                        Right  => +New_Identifier
+                          (Name => Short_Name (Field),
+                           Typ  => W_Type_Of_Component (Field)),
+                        Domain => EW_Term)));
+
+         end loop;
+
+         --  function extract__ext__ (x : __private) : __private
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Extract_Func,
+                  Binders     => Binder,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Private_Type));
+      end Declare_Extraction_Functions;
+
+      ------------------------------------------------
+      -- Declare_Extraction_Functions_For_Extension --
+      ------------------------------------------------
+
+      procedure Declare_Extraction_Functions_For_Extension is
+         Comps : Node_Lists.List;
+      begin
+         for Field of Get_Component_Set (E) loop
+            if No (Search_Component_In_Type (Root, Field)) then
+               Comps.Append (Field);
+            end if;
+         end loop;
+
+         Declare_Extraction_Functions (Components  => Comps);
+      end Declare_Extraction_Functions_For_Extension;
 
       ----------------------------------------
       -- Declare_Protected_Access_Functions --
@@ -1379,6 +1378,16 @@ package body Why.Gen.Records is
               Args => (1 => +Arg));
       end Discriminant_Check_Pred_Call;
 
+      ---------------------------
+      -- Extract_Extension_Fun --
+      ---------------------------
+
+      function Extract_Extension_Fun return W_Identifier_Id is
+      begin
+         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
+                                        To_String (WNE_Rec_Extension_Suffix));
+      end Extract_Extension_Fun;
+
       -----------------
       -- Extract_Fun --
       -----------------
@@ -1397,16 +1406,6 @@ package body Why.Gen.Records is
             Module =>
               (if Local then Why_Empty else E_Module (Rec)));
       end Extract_Fun;
-
-      ---------------------------
-      -- Extract_Extension_Fun --
-      ---------------------------
-
-      function Extract_Extension_Fun return W_Identifier_Id is
-      begin
-         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
-                                        To_String (WNE_Rec_Extension_Suffix));
-      end Extract_Extension_Fun;
 
       ----------------------------------
       -- New_Extension_Component_Expr --
@@ -1434,7 +1433,7 @@ package body Why.Gen.Records is
             Params       => Logic_Params);
       end Transform_Discrete_Choices;
 
-   --  Start of processing for Declare_Ada_Record
+   --  Start of processing for Declare_Rep_Record_Type
 
    begin
       Declare_Record_Type;
