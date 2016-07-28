@@ -1,0 +1,2 @@
+main.adb:5:04: info: assertion proved (CVC4: 1 VC)
+main.adb:5:19: info: precondition proved (CVC4: 1 VC)
