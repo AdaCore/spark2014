@@ -132,7 +132,8 @@ package body Why.Gen.Records is
    function Discriminant_Check_Pred_Name
      (E     : Entity_Id;
       Field : Entity_Id;
-      Local : Boolean) return W_Identifier_Id;
+      Local : Boolean)
+      return W_Identifier_Id;
    --  Given a record field, return the name of its discrimant check
    --  predicate. If Local is true, do not prefix the identifier.
    --  If the current record type is not a root type, return the name of the
@@ -219,7 +220,8 @@ package body Why.Gen.Records is
 
       function Compute_Others_Choice
         (Info  : Component_Info;
-         Discr : W_Term_Id) return W_Pred_Id;
+         Discr : W_Term_Id)
+         return W_Pred_Id;
       --  Compute (part of) the discriminant check for one discriminant in the
       --  special case where the N_Discrete_Choice is actually an
       --  N_Others_Choice.
@@ -231,7 +233,7 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
 
-      procedure Declare_Extraction_Functions (Components  : Node_Lists.List);
+      procedure Declare_Extraction_Functions (Components : Node_Lists.List);
       --  @param Components The list of components to hide
 
       procedure Declare_Extraction_Functions_For_Extension;
@@ -274,7 +276,8 @@ package body Why.Gen.Records is
 
       function Discriminant_Check_Pred_Call
         (Field : Entity_Id;
-         Arg   : W_Identifier_Id) return W_Pred_Id;
+         Arg   : W_Identifier_Id)
+         return W_Pred_Id;
       --  Given a record field, return the a call to its discrimant check
       --  predicate, with the given argument. If that predicate is defined
       --  elsewhere (i.e. in the module for the root record type, prefix the
@@ -290,12 +293,14 @@ package body Why.Gen.Records is
       function Extract_Fun
         (Field : Entity_Id;
          Rec   : Entity_Id;
-         Local : Boolean := True) return W_Identifier_Id;
+         Local : Boolean := True)
+         return W_Identifier_Id;
       --  Returns the name of the extract function for an extension
 
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
-         Expr   : W_Term_Id) return W_Pred_Id;
+         Expr   : W_Term_Id)
+         return W_Pred_Id;
       --  Wrapper for the function in Gnat2Why.Expr
 
       ---------------------
@@ -365,8 +370,10 @@ package body Why.Gen.Records is
       -- Compute_Others_Choice --
       ---------------------------
 
-      function Compute_Others_Choice (Info  : Component_Info;
-                                      Discr : W_Term_Id) return W_Pred_Id
+      function Compute_Others_Choice
+        (Info  : Component_Info;
+         Discr : W_Term_Id)
+         return W_Pred_Id
       is
          Var_Part : constant Node_Id := Info.Parent_Var_Part;
          Var      : Node_Id := First (Variants (Var_Part));
@@ -754,6 +761,7 @@ package body Why.Gen.Records is
       -------------------------------
 
       procedure Declare_Equality_Function is
+
          B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
@@ -770,6 +778,10 @@ package body Why.Gen.Records is
          --  @param Field_Type ada type of the component, it can be empty if
          --         Is_Private is True
          --  @return Equality of field_id from A and B.
+
+         ------------------------
+         -- New_Field_Equality --
+         ------------------------
 
          function New_Field_Equality
            (Field_Id, Enclosing_Id : W_Identifier_Id;
@@ -817,6 +829,8 @@ package body Why.Gen.Records is
                      not Is_Record_Type (Field_Type));
             end if;
          end New_Field_Equality;
+
+      --  Start of processing for Declare_Equality_Function
 
       begin
          if not Is_Limited_View (E) then
@@ -942,9 +956,7 @@ package body Why.Gen.Records is
       -- Declare_Extraction_Functions --
       ----------------------------------
 
-      procedure Declare_Extraction_Functions
-        (Components  : Node_Lists.List)
-      is
+      procedure Declare_Extraction_Functions (Components : Node_Lists.List) is
          X_Ident         : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => EW_Private_Type);
          Binder          : constant Binder_Array :=
@@ -960,7 +972,6 @@ package body Why.Gen.Records is
          Index           : Natural := 0;
 
       begin
-
          for Field of Components loop
             Index := Index + 1;
             Hide_Binders (Index) :=
@@ -1087,6 +1098,7 @@ package body Why.Gen.Records is
       ----------------------------------------
 
       procedure Declare_Protected_Access_Functions is
+
          procedure Declare_Protected_Access_Function (Field : Entity_Id);
          --  Declare a program access function for a field, whose precondition
          --  is Discriminant_Check_Pred_Name. Note that [Precond] has been
@@ -1094,6 +1106,10 @@ package body Why.Gen.Records is
          --  has been defined here or in the root type. In the case of a
          --  discriminant, the precondition is simply "true".
          --  @param Field a record field or disciminant.
+
+         ---------------------------------------
+         -- Declare_Protected_Access_Function --
+         ---------------------------------------
 
          procedure Declare_Protected_Access_Function (Field : Entity_Id) is
             Why_Name  : constant W_Identifier_Id :=
@@ -1134,6 +1150,8 @@ package body Why.Gen.Records is
                      Pre         => Precond,
                      Post        => Post));
          end Declare_Protected_Access_Function;
+
+      --  Start of processing for Declare_Protected_Access_Functions
 
       begin
          --  Generate program access functions for discriminants
@@ -1370,7 +1388,8 @@ package body Why.Gen.Records is
 
       function Discriminant_Check_Pred_Call
         (Field : Entity_Id;
-         Arg   : W_Identifier_Id) return W_Pred_Id is
+         Arg   : W_Identifier_Id)
+         return W_Pred_Id is
       begin
          return
            New_Call
@@ -1395,7 +1414,8 @@ package body Why.Gen.Records is
       function Extract_Fun
         (Field : Entity_Id;
          Rec   : Entity_Id;
-         Local : Boolean := True) return W_Identifier_Id
+         Local : Boolean := True)
+         return W_Identifier_Id
       is
          Prefix : constant Why_Name_Enum := WNE_Extract_Prefix;
       begin
@@ -1423,7 +1443,9 @@ package body Why.Gen.Records is
 
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
-         Expr   : W_Term_Id) return W_Pred_Id is
+         Expr   : W_Term_Id)
+         return W_Pred_Id
+      is
       begin
          return +Gnat2Why.Expr.Transform_Discrete_Choices
            (Choices      => Discrete_Choices (Case_N),
@@ -1473,6 +1495,7 @@ package body Why.Gen.Records is
 
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
+
    end Declare_Rep_Record_Type;
 
    ------------------------
@@ -1632,6 +1655,7 @@ package body Why.Gen.Records is
 
       Declare_Attributes (P, E, Ty_Name);
       Declare_Component_Attributes (P, E);
+
    end Declare_Ada_Record;
 
    ------------------------
@@ -1650,7 +1674,6 @@ package body Why.Gen.Records is
         (1 => (B_Name => A_Ident,
                others => <>));
    begin
-
       --  The value size is defined as a logic constant
 
       Emit (P,
@@ -1777,7 +1800,6 @@ package body Why.Gen.Records is
                           Name     => NID ("object__alignment_axiom"),
                           Def      => Object_Alignment_Axiom));
       end;
-
    end Declare_Attributes;
 
    ----------------------------------
@@ -1791,6 +1813,10 @@ package body Why.Gen.Records is
       procedure Declare_Attribute_For_Field (Field : Entity_Id);
       --  Declare attributes for Field only.
       --  @param Field component of discriminant of E
+
+      ---------------------------------
+      -- Declare_Attribute_For_Field --
+      ---------------------------------
 
       procedure Declare_Attribute_For_Field (Field : Entity_Id) is
          Axiom : constant String :=
@@ -1835,7 +1861,6 @@ package body Why.Gen.Records is
                             Right  => Zero,
                             Domain => EW_Term);
       begin
-
          Emit (P,
                New_Function_Decl
                  (Domain      => EW_Term,
@@ -1875,6 +1900,8 @@ package body Why.Gen.Records is
                           Def      => Position_Axiom));
 
       end Declare_Attribute_For_Field;
+
+   --  Start of processing for Declare_Component_Attributes
 
    begin
       if Has_Discriminants (E) then
@@ -1929,6 +1956,7 @@ package body Why.Gen.Records is
       Check_Pred : W_Pred_Id := True_Pred;
       Count      : Natural := 1;
       Pre_Cond   : W_Pred_Id;
+
    begin
       R_Binder (Num_Discr + 1) :=
         Binder_Type'(B_Name => A_Ident,
@@ -1936,6 +1964,7 @@ package body Why.Gen.Records is
       Args (Num_Discr + 1) := +A_Ident;
       Count := 1;
       Discr := First_Discriminant (E);
+
       while Present (Discr) loop
          if Is_Not_Hidden_Discriminant (Discr) then
             Args (Count) := +To_Why_Id
@@ -1972,6 +2001,7 @@ package body Why.Gen.Records is
          end if;
          Next_Discriminant (Discr);
       end loop;
+
       Emit (Section,
             New_Function_Decl
               (Domain  => EW_Pred,
@@ -2000,10 +2030,10 @@ package body Why.Gen.Records is
    function Discriminant_Check_Pred_Name
      (E     : Entity_Id;
       Field : Entity_Id;
-      Local : Boolean) return W_Identifier_Id
+      Local : Boolean)
+      return W_Identifier_Id
    is
       Orig : constant Entity_Id := Representative_Component (Field);
-
       Name : constant String := Full_Name (Orig) & "__pred";
    begin
       if Local then
@@ -2117,7 +2147,8 @@ package body Why.Gen.Records is
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id) return W_Prog_Id
+      Expr     : W_Prog_Id)
+      return W_Prog_Id
    is
       Root : constant Entity_Id := Root_Record_Type (Check_Ty);
    begin
@@ -2165,7 +2196,8 @@ package body Why.Gen.Records is
    function Insert_Tag_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id) return W_Prog_Id
+      Expr     : W_Prog_Id)
+      return W_Prog_Id
    is
       Root  : constant Entity_Id := Root_Record_Type (Check_Ty);
       Id    : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
@@ -2254,7 +2286,8 @@ package body Why.Gen.Records is
       Discr_Expr   : W_Expr_Id;
       Field_Assocs : W_Field_Association_Array;
       Ty           : Entity_Id;
-      Anc_Ty       : Entity_Id := Empty) return W_Expr_Id
+      Anc_Ty       : Entity_Id := Empty)
+      return W_Expr_Id
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
       Num_Discr  : constant Natural :=
@@ -2371,7 +2404,8 @@ package body Why.Gen.Records is
       Domain       : EW_Domain;
       Discr_Assocs : W_Field_Association_Array;
       Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id) return W_Expr_Id
+      Ty           : Entity_Id)
+      return W_Expr_Id
    is
       Discr_Expr : W_Expr_Id := Why_Empty;
       Num_Discr  : constant Natural :=
@@ -2397,7 +2431,8 @@ package body Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id) return W_Expr_Id
+      Ty       : Entity_Id)
+      return W_Expr_Id
    is
    begin
       return
@@ -2798,7 +2833,8 @@ package body Why.Gen.Records is
 
    function Prepare_Args_For_Subtype_Check
      (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id) return W_Expr_Array
+      Expr     : W_Expr_Id)
+      return W_Expr_Array
    is
       Num_Discr : constant Natural :=
         (if Has_Discriminants (Check_Ty) then
@@ -2897,8 +2933,10 @@ package body Why.Gen.Records is
    -- Record_From_Split_Form --
    ----------------------------
 
-   function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
-                                    return W_Expr_Id
+   function Record_From_Split_Form
+     (I           : Item_Type;
+      Ref_Allowed : Boolean)
+      return W_Expr_Id
    is
       E      : constant Entity_Id :=
         (if I.Fields.Present then I.Fields.Binder.Ada_Node
@@ -2996,7 +3034,6 @@ package body Why.Gen.Records is
 
    function Record_Type_Is_Clone (E : Entity_Id) return Boolean is
    begin
-
       --  Classwide types are translated as clones of their specific types
 
       if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then

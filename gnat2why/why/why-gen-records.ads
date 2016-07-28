@@ -81,7 +81,8 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id) return W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the cases where a record
    --  field is present in an Ada record.
    --  @param Ada_Node
@@ -97,7 +98,8 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Value    : W_Expr_Id) return W_Expr_Id;
+      Value    : W_Expr_Id)
+      return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the update to an Ada
    --  record field. Emit all necessary checks.
    --  Note that this function does not generate an assignment, instead it
@@ -120,7 +122,8 @@ package Why.Gen.Records is
       Domain       : EW_Domain;
       Discr_Assocs : W_Field_Association_Array;
       Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id) return W_Expr_Id;
+      Ty           : Entity_Id)
+      return W_Expr_Id;
    --  Generate a record aggregate of ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
 
@@ -130,7 +133,8 @@ package Why.Gen.Records is
       Discr_Expr   : W_Expr_Id;
       Field_Assocs : W_Field_Association_Array;
       Ty           : Entity_Id;
-      Anc_Ty       : Entity_Id := Empty) return W_Expr_Id;
+      Anc_Ty       : Entity_Id := Empty)
+      return W_Expr_Id;
    --  @param Ada_Node    node for the aggregate if any
    --  @param Domain      domain for the translation
    --  @param Discr_Expr  expression for the whole top-level field for
@@ -232,13 +236,15 @@ package Why.Gen.Records is
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id) return W_Prog_Id;
+      Expr     : W_Prog_Id)
+      return W_Prog_Id;
    --  Given a record subtype and an expression, add a call to the subtype
    --  discriminant check function, to generate a discriminant check.
 
    function Prepare_Args_For_Subtype_Check
      (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id) return W_Expr_Array;
+      Expr     : W_Expr_Id)
+      return W_Expr_Array;
    --  Given a record type, compute the argument array that can be used
    --  together with its subtype check predicate of program function. The
    --  last argument is actually the given expression itself.
@@ -246,12 +252,15 @@ package Why.Gen.Records is
    function Insert_Tag_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id) return W_Prog_Id;
+      Expr     : W_Prog_Id)
+      return W_Prog_Id;
    --  Given a record subtype and an expression, add a call to compatible_tag
    --  function to generate a tag check.
 
-   function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
-                                    return W_Expr_Id
+   function Record_From_Split_Form
+     (I           : Item_Type;
+      Ref_Allowed : Boolean)
+      return W_Expr_Id
    with
        Pre => I.Kind = DRecord;
    --  Reconstructs a complete record from an item in split form.
