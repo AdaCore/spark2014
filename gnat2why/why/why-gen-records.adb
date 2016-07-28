@@ -1590,19 +1590,15 @@ package body Why.Gen.Records is
          return;
       end if;
 
-      --  ??? We probably still need a way to tell that the right conversion
-      --  function from this records subtype should go through the clone.
-
       if Record_Type_Is_Clone (E) then
 
          --  This type is simply a copy of an existing type, we re-export the
-         --  corresponding module and generate trivial conversion functions,
-         --  then return.
+         --  corresponding module and then return.
 
          declare
             Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
          begin
-            Add_Use_For_Entity (P, Clone, EW_Export, With_Completion => False);
+            Add_With_Clause (P, E_Module (Clone), EW_Export);
 
             --  If the copy has the same name as the original, do not redefine
             --  the type name.
@@ -2754,12 +2750,14 @@ package body Why.Gen.Records is
 
       --  If E has discriminants and components whose type depends on this
       --  discriminant, it has no older parent with the same fields.
+      --  To check if the type of a component depends on a discriminant, we
+      --  search for components which do not have the same type as their
+      --  first introduction.
 
       if Has_Discriminants (Current) then
          for Field of Get_Component_Set (Current) loop
             if Ekind (Field) = E_Component
-              and then Retysp (Etype (Search_Component_In_Type
-                               (Original_Declaration (Field), Field)))
+              and then Retysp (Etype (Representative_Component (Field)))
               /= Retysp (Etype (Field))
             then
                return Current;
@@ -2796,8 +2794,9 @@ package body Why.Gen.Records is
                Ancestor := Retysp (Etype (Current));
             end if;
 
-            --  If we have found a type which is not a derived type, we are
-            --  done.
+            --  At this point we have reached as high as we could in the
+            --  hierarchy (or derived types and subtypes) while staying in
+            --  SPARK.
 
             if Ancestor = Current then
                return Current;
@@ -3039,7 +3038,7 @@ package body Why.Gen.Records is
       elsif Count_Why_Top_Level_Fields (E) = 0 then
          return False;
 
-      --  Subtypes with a cloned_subtype with the same name are clones
+      --  Subtypes with a cloned_subtype are clones
 
       elsif Ekind (E) = E_Record_Subtype
         and then Present (Cloned_Subtype (E))
@@ -3059,9 +3058,6 @@ package body Why.Gen.Records is
       else
          return False;
       end if;
-
-      --  ??? We may be missing a case when a type is cloned twice and get the
-      --  name of the first type back.
    end Record_Type_Is_Clone;
 
 end Why.Gen.Records;
