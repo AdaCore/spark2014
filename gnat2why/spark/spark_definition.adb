@@ -1589,6 +1589,18 @@ package body SPARK_Definition is
                Mark_Violation (N, From  => Etype (Prefix (N)));
             end if;
 
+            --  Check if the component is visible in SPARK. If it is not,
+            --  report the error on the prefix type to avoid polluting the
+            --  output when the type is in a part with SPARK_Mode (On).
+
+            if not Violation_Detected
+              and then not Is_Access_Type (Etype (Prefix (N)))
+              and then not
+                Component_Is_Visible_In_SPARK (Entity (Selector_Name (N)))
+            then
+               Mark_Violation (N, From  => Etype (Prefix (N)));
+            end if;
+
             Mark (Prefix (N));
             Mark (Selector_Name (N));
 
