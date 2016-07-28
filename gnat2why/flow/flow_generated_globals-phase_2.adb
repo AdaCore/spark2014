@@ -1300,7 +1300,8 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             for E of Marked_Entities loop
                if Ekind (E) in E_Function | E_Procedure
-                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_In_SPARK (E)
+                 --  ??? perhaps also check Entity_Spec_In_SPARK (E)
                then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
