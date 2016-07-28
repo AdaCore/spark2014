@@ -3365,7 +3365,10 @@ package body Gnat2Why.Expr is
               (if Has_Discriminants (Ty_Ext) then
                  Natural (Number_Discriminants (Ty_Ext))
                else 0);
-            Discr   : Node_Id := First_Discriminant (Ty_Ext);
+            Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
+                                  or else Has_Unknown_Discriminants (Ty_Ext)
+                                  then First_Discriminant (Ty_Ext)
+                                  else Empty);
             T_Comp  : W_Pred_Id;
             T_Guard : W_Pred_Id;
             F_Expr  : W_Expr_Id;
@@ -8021,7 +8024,10 @@ package body Gnat2Why.Expr is
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
-            Discr : Node_Id := First_Discriminant (Ty);
+            Discr : Node_Id := (if Has_Discriminants (Ty)
+                                or else Has_Unknown_Discriminants (Ty)
+                                then First_Discriminant (Ty)
+                                else Empty);
             D_Ty  : constant Entity_Id :=
               (if Full_View_Not_In_SPARK (Ty) then
                     Get_First_Ancestor_In_SPARK (Ty)
@@ -9407,7 +9413,10 @@ package body Gnat2Why.Expr is
            and then Present (Stored_Constraint (Ent))
          then
             declare
-               Discr : Entity_Id := First_Discriminant (Base);
+               Discr : Entity_Id := (if Has_Discriminants (Base)
+                                     or else Has_Unknown_Discriminants (Base)
+                                     then First_Discriminant (Base)
+                                     else Empty);
                Elmt  : Elmt_Id :=
                  First_Elmt (Stored_Constraint (Ent));
             begin
