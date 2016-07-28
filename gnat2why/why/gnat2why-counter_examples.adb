@@ -338,7 +338,7 @@ package body Gnat2Why.Counter_Examples is
             begin
                while Present (Comp) loop
                   Res := Res + 1;
-                  Next_Component (Comp);
+                  Next_Component_Or_Discriminant (Comp);
                end loop;
 
                return Res;
@@ -407,7 +407,7 @@ package body Gnat2Why.Counter_Examples is
                         end if;
                      end;
                   end if;
-                  Next_Component (Decl_Field_Discr);
+                  Next_Component_Or_Discriminant (Decl_Field_Discr);
                end;
             end loop;
 
