@@ -4636,27 +4636,37 @@ package body SPARK_Definition is
          --  Only analyze package body when SPARK_Mode /= Off
 
          if not SPARK_Pragma_Is (Opt.Off) then
-            Mark_Stmt_Or_Decl_List (Declarations (N));
 
-            --  Only analyze package body statements in SPARK_Mode => On
+            declare
+               Save_Violation_Detected : constant Boolean :=
+                 Violation_Detected;
+            begin
+               Violation_Detected := False;
 
-            Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
+               Mark_Stmt_Or_Decl_List (Declarations (N));
 
-            if not SPARK_Pragma_Is (Opt.Off) then
+               --  Only analyze package body statements when SPARK_Mode /= Off
 
-               declare
-                  HSS : constant Node_Id := Handled_Statement_Sequence (N);
-               begin
-                  if Present (HSS) then
-                     Mark (HSS);
-                  end if;
-               end;
+               Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-            end if;
+               if not SPARK_Pragma_Is (Opt.Off) then
 
-            if not Violation_Detected then
-               Bodies_In_SPARK.Insert (Spec_E);
-            end if;
+                  declare
+                     HSS : constant Node_Id := Handled_Statement_Sequence (N);
+                  begin
+                     if Present (HSS) then
+                        Mark (HSS);
+                     end if;
+                  end;
+
+               end if;
+
+               if not Violation_Detected then
+                  Bodies_In_SPARK.Insert (Spec_E);
+               end if;
+
+               Violation_Detected := Save_Violation_Detected;
+            end;
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -5167,19 +5177,25 @@ package body SPARK_Definition is
                   Scopes : constant Scope_Trees.Tree_Cursor :=
                     Scope_Trees.Save;
 
+                  Save_Violation_Detected : constant Boolean :=
+                    Violation_Detected;
+
                begin
                   Scope_Trees.Enter_Body (Spec);
                   Current_Protected_Type := Spec;
+                  Violation_Detected := False;
 
                   Mark_Stmt_Or_Decl_List (Declarations (N));
 
+                  if not Violation_Detected then
+                     Bodies_In_SPARK.Insert (Spec);
+                  end if;
+
+                  Violation_Detected := Save_Violation_Detected;
                   Current_Protected_Type := Save_Protected_Type;
                   Scope_Trees.Restore (Scopes);
                end;
 
-               if not Violation_Detected then
-                  Bodies_In_SPARK.Insert (Spec);
-               end if;
             end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
