@@ -655,10 +655,11 @@ is
                             Object_Kind;
    --  Checks if extensions are visible for this particular entity. Note that
    --  if we give it a function, then we always return false, since this refers
-   --  to the return of the function, not to the subprogram's aspect.
+   --  to the 'Result of the function, not to the subprogram's aspect.
    --
    --  To check if a subprogram has the aspect, use the function
    --  Has_Extensions_Visible_Aspect from Flow_Tree_Utilities instead.
+   --  ??? there is no such a function and even no such a package
 
    function Extensions_Visible (F     : Flow_Id;
                                 Scope : Flow_Scope)
@@ -669,7 +670,7 @@ is
                                                           E_Protected_Type |
                                                           E_Task_Type      |
                                                           Object_Kind);
-   --  As above, but using a flow_id.
+   --  As above, but using a Flow_Id
 
    function Search_Contract (Unit     : Node_Id;
                              Contract : Pragma_Id;
