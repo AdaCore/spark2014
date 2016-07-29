@@ -234,9 +234,58 @@ overflow in the assignment statement below can be justified as follows:
    :lines: 8-13
 
 Using pragma ``Assume`` is more powerful than using pragma ``Annotate``, as the
-property assumed may be used to prove more than one check. Thus, indirect
-justifications with pragma ``Assume`` should be inspected with even more care
-than direct justifications with pragma ``Annotate``.
+property assumed may be used to prove more than one check. Thus, one should in
+general use pragma ``Annotate`` rather than pragma ``Assume`` to justify simple
+runtime checks. There are some cases though where using a pragma ``Assume`` may
+be preferred. In particular:
+
+* To keep assumptions local:
+
+  .. code-block:: ada
+
+      pragma Assume (<External_Call's precondition>,
+                     "because for these internal reasons I know it holds");
+      External_Call;
+
+  If the precondition of ``External_Call`` changes, it may not be valid anymore 
+  to assume it here, though the assumption will stay True for the same reasons
+  it used to be. Incompatible changes in the precondition of ``External_Call``
+  will lead to a failure in the proof of External_Call's precondition.
+
+* To sum up what is expected from the outside world so that it can be reviewed
+  easily:
+
+  .. code-block:: ada
+
+      External_Find (A, E, X);
+      pragma Assume (X = 0 or (X in A'Range and A (X) = E),
+                     "because of the documentation of External_Find");
+
+  Maintenance and review is easier with a single pragma ``Assume`` than if it is
+  spread out into various pragmas ``Annotate``. If the information is required
+  at several places, the pragma ``Assume`` can be factorized into a procedure:
+
+  .. code-block:: ada
+
+      function External_Find_Assumption (A : Array, E : Element, X : Index) return Boolean
+      is (X = 0 or (X in A'Range and A (X) = E))
+      with Ghost;
+
+      procedure Assume_External_Find_Assumption (A : Array, E : Element, X : Index) with
+       Ghost,
+       Post => External_Find_Assumption (A, E, X)
+      is
+         pragma Assume (External_Find_Assumption (A, E, X),
+                        "because of the documentation of External_Find");
+      end Assume_External_Find_Assumption;
+
+      External_Find (A, E, X);
+      Assume_External_Find_Assumption (A, E, X);
+
+In general, assumptions should be kept as small as possible (only assume what
+is needed for the code to work). Indirect justifications with pragma
+``Assume`` should be carefully inspected as they can easily introduce errors
+in the verification process.
 
 .. _Managing Assumptions:
 
