@@ -1283,12 +1283,16 @@ package body SPARK_Definition is
             Mark_Violation ("code statement", N);
 
          when N_Component_Association =>
+
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
 
             if not Box_Present (N) then
                Mark (Expression (N));
             end if;
+
+         when N_Iterated_Component_Association =>
+            Mark_Violation ("iterated associations", N);
 
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
