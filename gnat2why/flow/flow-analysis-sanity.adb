@@ -484,7 +484,8 @@ package body Flow.Analysis.Sanity is
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => Error_Kind,
                            F1       => Var,
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Vertex   => V);
 
                      else
                         Error_Msg_Flow
@@ -497,7 +498,8 @@ package body Flow.Analysis.Sanity is
                                         then A.Parameter_Formal
                                         else Var),
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag      => Illegal_Update);
+                           Tag      => Illegal_Update,
+                           Vertex   => V);
                      end if;
 
                      Sane := False;
