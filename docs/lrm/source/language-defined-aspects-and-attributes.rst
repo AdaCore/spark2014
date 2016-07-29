@@ -226,8 +226,9 @@ S'Succ				      Yes
 S'Tag				      No		     No tags
 X'Tag				      No		     No tags
 T'Terminated			      Yes
+System'To_Address 		      Yes
 S'Truncation			      Yes
-S'Unbiased_Rounding 		      Yes
+S'Truncation			      Yes
 X'Unchecked_Access  		      No		     No access types or aliases
 X'Update            		      Yes
 S'Val				      Yes
