@@ -1585,6 +1585,11 @@ package body Gnat2Why.Expr is
          -------------------
 
          procedure Compute_Param (Formal : Entity_Id; Actual : Node_Id) is
+            Simple_Actual : constant Boolean :=
+              Nkind (Actual) in N_Identifier | N_Expanded_Name
+                and then not
+              Is_Protected_Component_Or_Discr (Entity (Actual));
+
          begin
             case Binders (Bind_Cnt).Kind is
                when Regular =>
@@ -1700,7 +1705,7 @@ package body Gnat2Why.Expr is
 
                      --  The actual is in split form iff it is an identifier.
 
-                     if Nkind (Actual) in N_Identifier | N_Expanded_Name then
+                     if Simple_Actual then
                         declare
                            Actual_Binder : constant Item_Type :=
                              Ada_Ent_To_Why.Element
@@ -1925,8 +1930,7 @@ package body Gnat2Why.Expr is
                         else Transform_Expr (Actual, Domain, Params));
                      Need_Ref : constant Boolean :=
                        Get_Type_Kind (Actual_Type) = EW_Abstract
-                       or else not (Nkind (Actual) in N_Identifier |
-                                    N_Expanded_Name);
+                       or else not Simple_Actual;
                   begin
                      if Need_Ref then
                         if Get_Type_Kind (Actual_Type) = EW_Abstract then
@@ -3937,6 +3941,11 @@ package body Gnat2Why.Expr is
       -------------------
 
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
+         Simple_Actual : constant Boolean :=
+           Nkind (Actual) in N_Identifier | N_Expanded_Name
+             and then not
+           Is_Protected_Component_Or_Discr (Entity (Actual));
+
       begin
          case Binders (Bind_Cnt).Kind is
             when Concurrent_Self =>
@@ -4075,8 +4084,7 @@ package body Gnat2Why.Expr is
 
             when UCArray =>
                if Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
-                 or else not (Nkind (Actual) in N_Identifier |
-                              N_Expanded_Name)
+                 or else not Simple_Actual
                then
                   declare
                      --  Types:
@@ -4191,7 +4199,7 @@ package body Gnat2Why.Expr is
                end if;
 
             when DRecord =>
-               if not (Nkind (Actual) in N_Identifier | N_Expanded_Name
+               if not (Simple_Actual
                        and then Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
                                          Type_Of_Node (Actual)))
                then
@@ -4202,7 +4210,7 @@ package body Gnat2Why.Expr is
                        Type_Of_Node (Actual);
 
                      Actual_Is_Split         : constant Boolean :=
-                       Nkind (Actual) in N_Identifier | N_Expanded_Name;
+                       Simple_Actual;
                      --  The actual is split if and only if it is an
                      --  identifier.
 
@@ -4703,14 +4711,19 @@ package body Gnat2Why.Expr is
    function Needs_Temporary_Ref
      (Actual     : Node_Id;
       Formal     : Entity_Id;
-      Typ_Formal : W_Type_Id) return Boolean is
+      Typ_Formal : W_Type_Id) return Boolean
+   is
+      Simple_Actual : constant Boolean :=
+        Nkind (Actual) in N_Identifier | N_Expanded_Name
+          and then not
+        Is_Protected_Component_Or_Discr (Entity (Actual));
    begin
       --  Temporary refs are needed for out or in out parameters that
       --  need a conversion or who are not an identifier.
       case Ekind (Formal) is
          when E_In_Out_Parameter | E_Out_Parameter =>
             return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
-              or else Nkind (Actual) not in N_Identifier | N_Expanded_Name;
+              or else not Simple_Actual;
          when E_In_Parameter =>
             return Has_Async_Writers (Direct_Mapping_Id (Formal));
          when others =>
@@ -11239,8 +11252,8 @@ package body Gnat2Why.Expr is
          T :=
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
-      elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent)
-      then
+
+      elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
          declare
             Obj_Or_Ty : constant Entity_Id :=
               Get_Enclosing_Concurrent_Object (Ent);
