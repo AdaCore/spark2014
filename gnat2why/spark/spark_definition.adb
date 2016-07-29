@@ -4594,7 +4594,7 @@ package body SPARK_Definition is
       Body_E : constant Entity_Id := Defining_Entity (N);
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
-      Save_SPARK_Pragma  : constant Node_Id := Current_SPARK_Pragma;
+      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
       Scopes : constant Scope_Trees.Tree_Cursor := Scope_Trees.Save;
 
