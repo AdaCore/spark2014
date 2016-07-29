@@ -81,7 +81,7 @@ package Gnat2Why.Annotate is
    --    GNATprove            is a fixed identifier
    --    Iterable_For_Proof   is a fixed identifier
    --    Kind                 must be one of "Model" or "Contains"
-   --    E                    is a function entity.
+   --    E                    is a function entity
 
    --  If Kind is "Model" then E must have the following signature:
    --    function Get_Model (C : Container_Type) return Model_Type;
@@ -104,14 +104,14 @@ package Gnat2Why.Annotate is
    --  using the provided Contains function.
 
    --  A pragma Annotate for Inline_For_Proof has the following form:
-   --    pragma Annotate (GNATprove, Itnline_For_Proof, Entity => E);
+   --    pragma Annotate (GNATprove, Inline_For_Proof, Entity => E);
 
    --  where
    --    GNATprove           is a fixed identifier
-   --    Itnline_For_Proof   is a fixed identifier
-   --    E                   is a function entity.
+   --    Inline_For_Proof    is a fixed identifier
+   --    E                   is a function entity
 
-   --  If  E must have the following signature:
+   --  and E must have the following signature:
    --    function E (...) return ... with
    --      Post => E'Result = Expr;
 
