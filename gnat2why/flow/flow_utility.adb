@@ -2125,6 +2125,11 @@ package body Flow_Utility is
                          Reads               => Global_Reads,
                          Writes              => Global_Writes,
                          Use_Deduced_Globals => Use_Computed_Globals);
+            if Reduced then
+               Proof_Reads   := To_Entire_Variables (Proof_Reads);
+               Global_Reads  := To_Entire_Variables (Global_Reads);
+               Global_Writes := To_Entire_Variables (Global_Writes);
+            end if;
             if not Fold_Functions then
                Global_Reads.Union (Proof_Reads);
             end if;
@@ -2144,7 +2149,11 @@ package body Flow_Utility is
             if Belongs_To_Concurrent_Object (Subprogram_F) then
                The_CO := Get_Enclosing_Concurrent_Object (Subprogram_F,
                                                           Callsite);
-               V.Union (Flatten_Variable (The_CO, Scope));
+               if Reduced then
+                  V.Include (Direct_Mapping_Id (Unique_Entity (The_CO)));
+               else
+                  V.Union (Flatten_Variable (The_CO, Scope));
+               end if;
             end if;
          end;
 
@@ -2320,13 +2329,13 @@ package body Flow_Utility is
                                             (Unique_Entity (E)));
                            else
                               VS.Union (Flatten_Variable (E, Scope));
-                           end if;
-                           if Consider_Extensions
-                             and then Extensions_Visible (E, Scope)
-                           then
-                              VS.Include (Direct_Mapping_Id
-                                            (Unique_Entity (E),
-                                             Facet => Extension_Part));
+                              if Consider_Extensions
+                                and then Extensions_Visible (E, Scope)
+                              then
+                                 VS.Include (Direct_Mapping_Id
+                                               (Unique_Entity (E),
+                                                Facet => Extension_Part));
+                              end if;
                            end if;
                         end;
 
@@ -2386,13 +2395,13 @@ package body Flow_Utility is
                                             (Unique_Entity (E)));
                            else
                               VS.Union (Flatten_Variable (E, Scope));
-                           end if;
-                           if Consider_Extensions
-                             and then Extensions_Visible (E, Scope)
-                           then
-                              VS.Include (Direct_Mapping_Id
-                                            (Unique_Entity (E),
-                                             Facet => Extension_Part));
+                              if Consider_Extensions
+                                and then Extensions_Visible (E, Scope)
+                              then
+                                 VS.Include (Direct_Mapping_Id
+                                               (Unique_Entity (E),
+                                                Facet => Extension_Part));
+                              end if;
                            end if;
                         end if;
                      end;
@@ -2641,6 +2650,10 @@ package body Flow_Utility is
                         Writes              => GO,
                         Use_Deduced_Globals => Use_Computed_Globals);
                      pragma Assert (GO.Is_Empty);
+                     if Reduced then
+                        GP := To_Entire_Variables (GP);
+                        GI := To_Entire_Variables (GI);
+                     end if;
 
                      declare
                         Effects : constant Flow_Id_Sets.Set := GP or GI;
@@ -2649,7 +2662,6 @@ package body Flow_Utility is
                            VS.Include (Change_Variant (F, Normal_Use));
                         end loop;
                      end;
-
                   end Process_Type;
 
                   P : Node_Id;
