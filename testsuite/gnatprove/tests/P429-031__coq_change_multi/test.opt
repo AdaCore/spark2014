@@ -1,2 +1,1 @@
 coq REQUIRED
-ALL XFAIL not yet fixed (P519-002)
