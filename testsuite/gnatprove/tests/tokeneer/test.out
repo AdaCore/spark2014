@@ -259,7 +259,7 @@ auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:734:27: medium: postcondition might fail, cannot prove UsedLogFiles.Length = UsedLogFiles'Old.Length (e.g. when UsedLogFiles = (Length => 0, others => ?))
+auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1 (e.g. when CurrentLogFile = 1 and LogFileEntries = (1 => 1024, others => 0))
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
@@ -466,11 +466,11 @@ bio.adb:122:25: info: initialization of "C27b" proved, in call inlined at bio.ad
 bio.adb:122:25: info: initialization of "C4b" proved
 bio.adb:127:14: info: initialization of "Result" proved
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 1 and FullString'Last = 1)
-bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 1 and FullString'Last = 1)
+bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 1 and FullString'Last = 1 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
+bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 1 and FullString'Last = 1 and TheCodeName = BioApiOk)
 bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:183
 bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 2)
-bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 2)
+bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 2 and ReturnValue = 0)
 bio.adb:167:56: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 2)
 bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.adb:183
 bio.adb:173:42: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
@@ -480,7 +480,7 @@ bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
 bio.adb:175:23: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
-bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 151)
+bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2)
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
 bio.adb:241:27: info: initialization of "C40b" proved
@@ -739,7 +739,7 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" 
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
-cert-attr.adb:38:09: low: range check might fail (e.g. when FullString'First = -2147483639 and FullString'Last = -2147483639)
+cert-attr.adb:38:09: low: range check might fail (e.g. when FullString'First = 2147483639 and FullString'Last = 2147483639)
 cert-attr.adb:39:09: low: range check might fail (e.g. when FullString'First = -2147483627 and FullString'Last = -2147483627)
 cert-attr.adb:40:09: low: range check might fail (e.g. when FullString'First = 1 and FullString'Last = 1)
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
@@ -816,7 +816,7 @@ cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
-cert.adb:63:09: low: range check might fail (e.g. when FullString'First = -2147483639 and FullString'Last = -2147483639)
+cert.adb:63:09: low: range check might fail (e.g. when FullString'First = 2147483639 and FullString'Last = 2147483639)
 cert.adb:64:09: low: range check might fail (e.g. when FullString'First = -2147483627 and FullString'Last = -2147483627)
 cert.adb:65:09: low: range check might fail (e.g. when FullString'First = 1 and FullString'Last = 1)
 cert.adb:71:43: info: initialization of "LocalUser" proved
@@ -839,7 +839,7 @@ certificatestore.adb:46:04: info: initialization of "StoreFile" constituent of "
 certificatestore.adb:190:35: info: initialization of "Success" proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
-certificatestore.adb:221:31: medium: range check might fail
+certificatestore.adb:221:31: medium: range check might fail (e.g. when Str'First = 1 and Str'Last = 0)
 certificatestore.adb:222:18: info: initialization of "Length" proved
 certificatestore.adb:222:26: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:26: medium: "Text" might not be initialized
@@ -1290,17 +1290,17 @@ configdata.ads:247:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Year" proved
 configuration.adb:99:57: info: division check proved (CVC4: 1 VC)
-configuration.adb:99:63: low: range check might fail
-configuration.adb:100:12: low: range check might fail
+configuration.adb:99:63: low: range check might fail (e.g. when TheAlarmSilentDuration = 10)
+configuration.adb:100:12: low: range check might fail (e.g. when TheLatchUnlockDuration = 10)
 configuration.adb:100:59: info: division check proved (CVC4: 1 VC)
 configuration.adb:100:65: low: range check might fail
-configuration.adb:101:12: low: range check might fail
+configuration.adb:101:12: low: range check might fail (e.g. when TheTokenRemovalDuration = 20)
 configuration.adb:101:60: info: division check proved (CVC4: 1 VC)
 configuration.adb:101:66: low: range check might fail
-configuration.adb:102:12: low: range check might fail
+configuration.adb:102:12: low: range check might fail (e.g. when TheFingerWaitDuration = 20)
 configuration.adb:102:58: info: division check proved (CVC4: 1 VC)
 configuration.adb:102:64: low: range check might fail
-configuration.adb:103:12: low: range check might fail
+configuration.adb:103:12: low: range check might fail (e.g. when TheEnclaveClearance = Unmarked)
 configuration.adb:103:58: low: range check might fail
 configuration.adb:104:12: low: range check might fail
 configuration.adb:104:19: info: range check proved (CVC4: 4 VC)
@@ -1583,9 +1583,9 @@ doorapi.adb:48:10: info: initialization of "CommsIsOK" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Data" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Length" proved
 doorapi.adb:52:46: info: initialization of "Msg" proved
-doorapi.adb:54:28: medium: precondition might fail
+doorapi.adb:54:28: medium: precondition might fail (e.g. when StateDict = (others => 0) and StateDict'First = 2 and StateDict'Last = 1)
 doorapi.adb:56:25: info: initialization of "StateDict" proved
-doorapi.adb:57:32: medium: precondition might fail
+doorapi.adb:57:32: medium: precondition might fail (e.g. when StateDict = (others => 0) and StateDict'First = 2 and StateDict'Last = 1)
 doorapi.adb:58:47: info: initialization of "StateDict" proved
 doorapi.adb:61:13: info: initialization of "IsOp" proved
 doorapi.adb:62:16: info: initialization of "IsClosed" proved
@@ -1611,7 +1611,7 @@ enclave.adb:438:33: info: initialization of "Status" constituent of "State" prov
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
-enclave.adb:501:13: medium: postcondition might fail, cannot prove AdminToken.TheAuthCertRole = PrivTypes.guard
+enclave.adb:499:11: medium: postcondition might fail, cannot prove (AdminToken.isgood)
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
 enclave.adb:528:18: medium: precondition might fail
@@ -1665,7 +1665,7 @@ enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
 enclave.adb:1215:18: medium: precondition might fail
-enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly
+enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly (e.g. when Status = ShutDown)
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
 enclave.adb:1249:19: medium: precondition might fail
@@ -1674,7 +1674,7 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
+enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin) (e.g. when Status = EnclaveQuiescent)
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
@@ -1713,7 +1713,7 @@ enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
 enclave.adb:2197:21: medium: precondition might fail
-enclave.adb:2202:13: medium: postcondition might fail, cannot prove Admin.IsDoingOp(TheAdmin) and Admin.TheCurrentOp(TheAdmin) = Admin.OverrideLock) or not Admin.IsDoingOp(TheAdmin)
+enclave.adb:2199:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
 enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved
@@ -1748,9 +1748,9 @@ enclave.ads:603:13: info: postcondition proved (CVC4: 16 VC)
 enclave.ads:632:29: medium: precondition might fail
 enclave.ads:642:29: medium: precondition might fail
 enclave.ads:648:30: medium: precondition might fail
-enrolment.adb:66:66: low: range check might fail
+enrolment.adb:66:66: low: range check might fail (e.g. when CertNo = 1)
 enrolment.adb:67:55: low: range check might fail
-enrolment.adb:67:63: low: range check might fail
+enrolment.adb:67:63: low: range check might fail (e.g. when Detail = (others => 0) and Detail'First = 1 and Detail'Last = 2147483614)
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved (CVC4: 1 VC)
 enrolment.adb:71:43: info: length check proved (CVC4: 1 VC)
@@ -1818,7 +1818,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
+enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent) (e.g. when DataOK = True)
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
@@ -1838,12 +1838,12 @@ keyboard.ads:77:20: info: initialization of "Data.Text" proved
 keystore-interfac.ads:111:42: info: length check proved (CVC4: 1 VC)
 keystore.adb:58:06: info: length check proved (CVC4: 1 VC)
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:268
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:284
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276 (e.g. when RetValUpd = HostMemory)
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:284 (e.g. when RetValFin = HostMemory)
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:347
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:355
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:363
-keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:542
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:355 (e.g. when RetValDo = HostMemory)
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:363 (e.g. when RetValFin = HostMemory)
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:542 (e.g. when RetVal = HostMemory)
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:694
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:762
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:847
@@ -2434,7 +2434,7 @@ screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at sc
 screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:824
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806 (e.g. when Data'First = 3 and Data'Last = 2)
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Data'First = 3 and Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
 screen.adb:785:17: info: initialization of "Result" proved
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:806
@@ -2572,7 +2572,7 @@ tismain.adb:168:43: info: initialization of "UserToken.State" proved
 tismain.adb:209:35: info: initialization of "Enclave.State" proved
 tismain.adb:210:33: info: initialization of "KeyStore.State" proved
 tismain.adb:215:42: info: initialization of "TheAdmin" proved
-tismain.adb:221:22: medium: postcondition might fail, cannot prove not Enclave(Enclave.statusiswaitingfinishadminop)
+tismain.adb:218:22: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) /= PrivTypes.guard
 tismain.adb:224:36: info: initialization of "AdminToken.State" proved
 tismain.adb:233:15: info: initialization of "ConfigData.State" proved
 tismain.adb:234:15: info: initialization of "AuditLog.State" proved
@@ -2601,7 +2601,7 @@ tismain.adb:569:20: medium: precondition might fail
 tismain.adb:617:22: medium: precondition might fail
 tismain.adb:623:23: medium: precondition might fail
 tismain.adb:630:22: medium: precondition might fail
-tismain.adb:643:16: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
+tismain.adb:637:14: medium: postcondition might fail, cannot prove not Admin.IsPresent(TheAdmin)
 tismain.adb:703:17: info: precondition proved (CVC4: 2 VC)
 tismain.adb:706:17: info: precondition proved (CVC4: 3 VC)
 tismain.adb:710:19: info: precondition proved (CVC4: 6 VC)
@@ -2706,15 +2706,15 @@ tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:164:07: info: no contextual analysis of "MakeDescription" (nested subprogram)
-tokenreader.adb:173:47: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2147483646)
-tokenreader.adb:174:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
+tokenreader.adb:173:47: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2147483646 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
+tokenreader.adb:174:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2 and TheCodeName = Success)
 tokenreader.adb:174:55: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
-tokenreader.adb:175:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
+tokenreader.adb:175:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2 and ResponseCode = 0)
 tokenreader.adb:175:56: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
 tokenreader.adb:180:43: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 7)
 tokenreader.adb:182:23: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 151 and FullString'Last = 156)
+tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 151)
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
@@ -2809,7 +2809,7 @@ userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:476:15: low: range check might fail (e.g. when FullString'First = 2147483632 and FullString'Last = 2147483632)
+userentry.adb:476:15: low: range check might fail (e.g. when AchievedFAR = 0 and FullString'First = 2147483632 and FullString'Last = 2147483632)
 userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
 userentry.adb:482:48: info: initialization of "FullString" proved
 userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
@@ -2841,7 +2841,7 @@ userentry.adb:682:21: medium: precondition might fail
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
-userentry.adb:866:16: medium: postcondition might fail, cannot prove not Latch(Latch.islocked)
+userentry.adb:865:14: medium: postcondition might fail, cannot prove (Latch.islocked)'old
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
