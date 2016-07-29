@@ -1,1 +1,1 @@
-ALL XFAIL procedure call on record protected component (P704-005)
+ALL XFAIL crash in flow, and then in proof (P712-008)
