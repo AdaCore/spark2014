@@ -52,11 +52,7 @@ Reserved Words
 
 .. _tu-reserved_words-01:
 
-1. The following reserved words shall not appear in |SPARK| program text
-   other than in comments:
-
-   * **access**, or
-
-   * **aliased**.
+1. The reserved word **access** shall not appear in |SPARK| program text
+   other than in comments.
 
 .. _etu-reserved_words:
