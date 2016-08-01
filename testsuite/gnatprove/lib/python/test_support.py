@@ -600,7 +600,7 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False):
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout(), mode="all", counterexample=True,
-              prover=default_provers, cache_allowed=True,
+              prover=default_provers, cache_allowed=True, report="provers",
               level=None,
               no_fail=False):
     """Call gnatprove with standard options.
@@ -610,7 +610,8 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
        If no_fail is passed directly to gnatprove().
     """
-    fullopt = ["--report=provers", "--warnings=continue"]
+    fullopt = ["--warnings=continue"]
+    fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
