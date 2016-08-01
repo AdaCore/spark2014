@@ -2368,6 +2368,7 @@ package body Gnat2Why.Subprograms is
          then
             Discr_N := First_Discriminant (E);
          end if;
+
          while Present (Discr_N) loop
             declare
                Discr_W : constant Discr :=
@@ -2452,6 +2453,8 @@ package body Gnat2Why.Subprograms is
                Binders => (1 .. 0 => <>),
                Labels  => Name_Id_Sets.Empty_Set,
                Return_Type => Get_Typ (Self_Name)));
+
+      --  ??? Where is the call to Push_Scope?
 
       Prepare_Discr;
 
@@ -2562,7 +2565,6 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-
       Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
@@ -2687,6 +2689,7 @@ package body Gnat2Why.Subprograms is
          else
             if Is_Entry (E)
               and then Present (Body_N)
+              and then Entity_Body_In_SPARK (E)
               and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
             then
                declare
@@ -2709,6 +2712,7 @@ package body Gnat2Why.Subprograms is
             end if;
             Stmt := New_Assume_Statement (Pred => Pre);
          end if;
+
          return
            Sequence
              (New_Comment
@@ -2901,6 +2905,7 @@ package body Gnat2Why.Subprograms is
       begin
          if Is_Entry (E)
            and then Present (Body_N)
+           and then Entity_Body_In_SPARK (E)
            and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
          then
             Pre :=
@@ -2909,6 +2914,7 @@ package body Gnat2Why.Subprograms is
                           (Condition (Entry_Body_Formal_Part (Body_N)),
                            EW_Bool_Type, EW_Pred, Params));
          end if;
+
          return
            Sequence
              (New_Comment
@@ -3048,7 +3054,6 @@ package body Gnat2Why.Subprograms is
          declare
             CPT : constant Entity_Id := Containing_Protected_Type (E);
          begin
-
             --  The Ada_Node is important here, because that's how we detect
             --  occurrences of "self" in a term later.
 
