@@ -84,8 +84,6 @@ array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: info: initialization of "X" proved
 ident.adb:6:42: info: initialization of "Y" proved
-ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.adb:54
-ident.adb:35:12: info: initialization of "X" proved, in call inlined at ident.adb:52
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
@@ -101,8 +99,10 @@ ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
+ident.adb:52:07: info: initialization of "X" proved
 ident.adb:53:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:53:22: info: initialization of "Y" proved
+ident.adb:54:07: info: initialization of "X" proved
 ident.adb:55:07: info: assertion proved (CVC4: 1 VC)
 ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved

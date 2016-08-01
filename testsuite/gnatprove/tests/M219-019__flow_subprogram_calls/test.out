@@ -28,7 +28,7 @@ test.adb:179:18: warning: unused assignment, in call inlined at test.adb:190
 test.adb:179:21: high: "Counter" is not initialized, in call inlined at test.adb:190
 test.adb:182:17: info: initialization of "Counter" proved
 test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
-test.adb:185:21: info: initialization of "N" proved, in call inlined at test.adb:191
+test.adb:191:07: info: initialization of "N" proved
 test.adb:195:30: info: initialization of "B" proved
 test.adb:211:12: info: initialization of "S" proved
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect

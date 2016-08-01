@@ -57,6 +57,7 @@ skein.adb:133:29: info: initialization of "Blocks_Done" proved
 skein.adb:134:14: info: initialization of "N" proved
 skein.adb:139:10: info: initialization of "N" proved
 skein.adb:140:44: info: initialization of "Blocks_Done" proved
+skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
 skein.adb:144:25: info: initialization of "X" proved
 skein.adb:146:25: info: initialization of "Blocks_Done" proved
 skein.adb:146:37: medium: range check might fail
@@ -77,14 +78,14 @@ SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
-Initialization 27 27 . . . . .
+Initialization 28 28 . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 28 . . . 24 . 4
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 55 27 (49%) . . 24 (44%) . 4 (7%)
+Total 56 28 (50%) . . 24 (43%) . 4 (7%)
 
 
 Analyzed 1 unit
@@ -105,4 +106,3 @@ effects on parameters and Global variables of Skein.Skein_Start_New_Type fully e
  Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
-

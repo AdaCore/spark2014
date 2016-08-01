@@ -1,5 +1,5 @@
-shift_main.adb:7:27: info: initialization of "A" proved, in call inlined at shift_main.adb:32
-shift_main.adb:12:26: info: initialization of "A" proved, in call inlined at shift_main.adb:33
-shift_main.adb:17:27: info: initialization of "A" proved, in call inlined at shift_main.adb:34
-shift_main.adb:22:28: info: initialization of "A" proved, in call inlined at shift_main.adb:35
-shift_main.adb:27:38: info: initialization of "A" proved, in call inlined at shift_main.adb:36
+shift_main.adb:32:09: info: initialization of "A" proved
+shift_main.adb:33:09: info: initialization of "A" proved
+shift_main.adb:34:09: info: initialization of "A" proved
+shift_main.adb:35:09: info: initialization of "A" proved
+shift_main.adb:36:09: info: initialization of "A" proved

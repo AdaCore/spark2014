@@ -73,6 +73,7 @@ c392004_2.ads:12:21: info: initialization of "The_Car.Convertible" proved
 c392004_2.ads:12:21: info: initialization of private part of "The_Car" proved
 c392004_2.ads:16:21: info: initialization of "The_Limo.Convertible" proved
 c392004_2.ads:16:21: info: initialization of private part of "The_Limo" proved
+c392008.adb:57:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:57:17: high: "B_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Overdraft_Fee" is not initialized
@@ -83,6 +84,7 @@ c392008.adb:61:08: info: initialization of "B_Acct.Current_Balance" proved
 c392008.adb:62:08: info: initialization of "C_Acct.Current_Balance" proved
 c392008.adb:63:08: info: initialization of "IC_Acct.Current_Balance" proved
 c392008.adb:65:13: medium: precondition might fail
+c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
 c392008.adb:69:21: info: initialization of "B_Acct.Current_Balance" proved
 c392008.adb:70:21: info: initialization of "C_Acct.Current_Balance" proved
 c392008.adb:70:21: info: initialization of "C_Acct.Overdraft_Fee" proved
@@ -93,6 +95,7 @@ c392008.adb:74:08: info: initialization of "B_Acct.Current_Balance" proved
 c392008.adb:75:08: info: initialization of "C_Acct.Current_Balance" proved
 c392008.adb:76:08: info: initialization of "IC_Acct.Current_Balance" proved
 c392008.adb:78:13: medium: precondition might fail
+c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
 c392008.adb:82:34: info: initialization of "B_Acct.Current_Balance" proved
 c392008.adb:83:34: info: initialization of "C_Acct.Current_Balance" proved
 c392008.adb:83:34: info: initialization of "C_Acct.Overdraft_Fee" proved
@@ -139,13 +142,17 @@ cc1311a.adb:235:22: info: precondition proved (CVC4: 1 VC), in instantiation at 
 cc1311a.adb:265:11: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:432
 cc1311a.adb:266:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
 cc1311a.adb:266:33: info: length check proved (CVC4: 3 VC), in instantiation at cc1311a.adb:432
+cc1311a.adb:279:17: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:441
 cc1311a.adb:290:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
 cc1311a.adb:291:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
+cc1311a.adb:302:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
 cc1311a.adb:303:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
+cc1311a.adb:317:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:445
 cc1311a.adb:318:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
 cc1311a.adb:330:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
 cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
 cc1311a.adb:332:23: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
+cc1311a.adb:345:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
 cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
