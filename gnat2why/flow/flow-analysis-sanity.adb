@@ -213,9 +213,10 @@ package body Flow.Analysis.Sanity is
 
       begin
          case Nkind (N) is
-            when N_Subprogram_Body       |
-                 N_Package_Specification |
-                 N_Package_Body          =>
+            when N_Subprogram_Body
+               | N_Package_Specification
+               | N_Package_Body
+            =>
 
                --  We do not want to process declarations of any nested
                --  subprograms or packages. These will be analyzed by their
@@ -227,9 +228,10 @@ package body Flow.Analysis.Sanity is
                   return Skip;
                end if;
 
-            when N_Full_Type_Declaration         |
-                 N_Subtype_Declaration           |
-                 N_Private_Extension_Declaration =>
+            when N_Full_Type_Declaration
+               | N_Subtype_Declaration
+               | N_Private_Extension_Declaration
+            =>
                declare
                   E          : constant Entity_Id := Defining_Identifier (N);
                   P          : constant Entity_Id := Predicate_Function (E);
@@ -315,8 +317,9 @@ package body Flow.Analysis.Sanity is
 
                         return Skip;
 
-                     when N_Delta_Constraint  |
-                          N_Digits_Constraint =>
+                     when N_Delta_Constraint
+                        | N_Digits_Constraint
+                     =>
 
                         --  Ada LRM requires these constraints to be
                         --  static, so no further action required here.
@@ -328,8 +331,9 @@ package body Flow.Analysis.Sanity is
                   end case;
                end;
 
-            when N_Component_Declaration      |
-                 N_Discriminant_Specification =>
+            when N_Component_Declaration
+               | N_Discriminant_Specification
+            =>
 
                if Present (Expression (N)) then
                   declare
@@ -430,7 +434,9 @@ package body Flow.Analysis.Sanity is
                   --  nothing about. This is always an illegal update.
 
                   case F.Kind is
-                     when Direct_Mapping | Record_Field =>
+                     when Direct_Mapping
+                        | Record_Field
+                     =>
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "cannot write & during" &
@@ -564,7 +570,9 @@ package body Flow.Analysis.Sanity is
                   --  Here we are dealing with a missing global
 
                   case F.Kind is
-                     when Direct_Mapping | Record_Field =>
+                     when Direct_Mapping
+                        | Record_Field
+                     =>
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "& must be listed in the " &

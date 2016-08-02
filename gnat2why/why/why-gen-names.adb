@@ -201,7 +201,9 @@ package body Why.Gen.Names is
                      raise Program_Error;
                   end if;
 
-               when EW_Abstract | EW_Split =>
+               when EW_Abstract
+                  | EW_Split
+               =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
@@ -218,7 +220,9 @@ package body Why.Gen.Names is
                   end;
             end case;
 
-         when EW_Abstract | EW_Split =>
+         when EW_Abstract
+            | EW_Split
+         =>
             case To_Kind is
                when EW_Builtin =>
                   declare
@@ -248,7 +252,9 @@ package body Why.Gen.Names is
 
                --  Case of a conversion between two record or private types
 
-               when EW_Abstract | EW_Split =>
+               when EW_Abstract
+                  | EW_Split
+               =>
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
@@ -702,81 +708,83 @@ package body Why.Gen.Names is
 
          --  please use these only in conjunction with E_Symb function
 
-         when WNE_Array_Base_Range_Pred      |
-              WNE_Array_Base_Range_Pred_2    |
-              WNE_Array_Base_Range_Pred_3    |
-              WNE_Array_Base_Range_Pred_4    |
-              WNE_Array_Elts                 |
-              WNE_Attr_Address               |
-              WNE_Attr_First_2               |
-              WNE_Attr_First_3               |
-              WNE_Attr_First_4               |
-              WNE_Attr_First_Bit             |
-              WNE_Attr_Image                 |
-              WNE_Attr_Last_2                |
-              WNE_Attr_Last_3                |
-              WNE_Attr_Last_4                |
-              WNE_Attr_Last_Bit              |
-              WNE_Attr_Length                |
-              WNE_Attr_Length_2              |
-              WNE_Attr_Length_3              |
-              WNE_Attr_Length_4              |
-              WNE_Attr_Modulus               |
-              WNE_Attr_Object_Alignment      |
-              WNE_Attr_Object_Component_Size |
-              WNE_Attr_Object_Size           |
-              WNE_Attr_Position              |
-              WNE_Attr_Small                 |
-              WNE_Attr_Value                 |
-              WNE_Attr_Value_Alignment       |
-              WNE_Attr_Value_Component_Size  |
-              WNE_Attr_Value_Size            |
-              WNE_Bool_Eq                    |
-              WNE_Check_Not_First            |
-              WNE_Check_Not_Last             |
-              WNE_Default_Init               |
-              WNE_Dispatch_Eq                |
-              WNE_Dummy                      |
-              WNE_Dynamic_Invariant          |
-              WNE_Dynamic_Predicate          |
-              WNE_Dynamic_Property           |
-              WNE_Dynamic_Property_BV_Int    |
-              WNE_Fixed_Point_Div            |
-              WNE_Fixed_Point_Div_Int        |
-              WNE_Fixed_Point_Div_Result_Int |
-              WNE_Fixed_Point_Mult           |
-              WNE_Fixed_Point_Mult_Int       |
-              WNE_Float_Pred                 |
-              WNE_Float_Round                |
-              WNE_Float_Round_Tmp            |
-              WNE_Float_Succ                 |
-              WNE_Index_Dynamic_Property     |
-              WNE_Index_Dynamic_Property_2   |
-              WNE_Index_Dynamic_Property_3   |
-              WNE_Index_Dynamic_Property_4   |
-              WNE_Of_Array                   |
-              WNE_Of_Base                    |
-              WNE_Of_BitVector               |
-              WNE_Of_Fixed                   |
-              WNE_Of_Int                     |
-              WNE_Of_Real                    |
-              WNE_Of_Rep                     |
-              WNE_Range_Check_Fun            |
-              WNE_Range_Check_Fun_BV_Int     |
-              WNE_Range_Pred                 |
-              WNE_Range_Pred_BV_Int          |
-              WNE_Rec_Extension              |
-              WNE_Tag                        |
-              WNE_To_Array                   |
-              WNE_To_Base                    |
-              WNE_To_BitVector               |
-              WNE_To_Fixed                   |
-              WNE_To_Int                     |
-              WNE_To_Int_2                   |
-              WNE_To_Int_3                   |
-              WNE_To_Int_4                   |
-              WNE_To_Real                    |
-              WNE_To_Rep                     => raise Program_Error);
+         when WNE_Array_Base_Range_Pred
+            | WNE_Array_Base_Range_Pred_2
+            | WNE_Array_Base_Range_Pred_3
+            | WNE_Array_Base_Range_Pred_4
+            | WNE_Array_Elts
+            | WNE_Attr_Address
+            | WNE_Attr_First_2
+            | WNE_Attr_First_3
+            | WNE_Attr_First_4
+            | WNE_Attr_First_Bit
+            | WNE_Attr_Image
+            | WNE_Attr_Last_2
+            | WNE_Attr_Last_3
+            | WNE_Attr_Last_4
+            | WNE_Attr_Last_Bit
+            | WNE_Attr_Length
+            | WNE_Attr_Length_2
+            | WNE_Attr_Length_3
+            | WNE_Attr_Length_4
+            | WNE_Attr_Modulus
+            | WNE_Attr_Object_Alignment
+            | WNE_Attr_Object_Component_Size
+            | WNE_Attr_Object_Size
+            | WNE_Attr_Position
+            | WNE_Attr_Small
+            | WNE_Attr_Value
+            | WNE_Attr_Value_Alignment
+            | WNE_Attr_Value_Component_Size
+            | WNE_Attr_Value_Size
+            | WNE_Bool_Eq
+            | WNE_Check_Not_First
+            | WNE_Check_Not_Last
+            | WNE_Default_Init
+            | WNE_Dispatch_Eq
+            | WNE_Dummy
+            | WNE_Dynamic_Invariant
+            | WNE_Dynamic_Predicate
+            | WNE_Dynamic_Property
+            | WNE_Dynamic_Property_BV_Int
+            | WNE_Fixed_Point_Div
+            | WNE_Fixed_Point_Div_Int
+            | WNE_Fixed_Point_Div_Result_Int
+            | WNE_Fixed_Point_Mult
+            | WNE_Fixed_Point_Mult_Int
+            | WNE_Float_Pred
+            | WNE_Float_Round
+            | WNE_Float_Round_Tmp
+            | WNE_Float_Succ
+            | WNE_Index_Dynamic_Property
+            | WNE_Index_Dynamic_Property_2
+            | WNE_Index_Dynamic_Property_3
+            | WNE_Index_Dynamic_Property_4
+            | WNE_Of_Array
+            | WNE_Of_Base
+            | WNE_Of_BitVector
+            | WNE_Of_Fixed
+            | WNE_Of_Int
+            | WNE_Of_Real
+            | WNE_Of_Rep
+            | WNE_Range_Check_Fun
+            | WNE_Range_Check_Fun_BV_Int
+            | WNE_Range_Pred
+            | WNE_Range_Pred_BV_Int
+            | WNE_Rec_Extension
+            | WNE_Tag
+            | WNE_To_Array
+            | WNE_To_Base
+            | WNE_To_BitVector
+            | WNE_To_Fixed
+            | WNE_To_Int
+            | WNE_To_Int_2
+            | WNE_To_Int_3
+            | WNE_To_Int_4
+            | WNE_To_Real
+            | WNE_To_Rep
+         =>
+            raise Program_Error);
 
    --------------
    -- To_Ident --
@@ -850,10 +858,16 @@ package body Why.Gen.Names is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          case R is
-            when RCK_Range_Not_First | RCK_Overflow_Not_First =>
+            when RCK_Range_Not_First
+               | RCK_Overflow_Not_First
+            =>
                return M_Boolean.Check_Not_First;
-            when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
+
+            when RCK_Range_Not_Last
+               | RCK_Overflow_Not_Last
+            =>
                return M_Boolean.Check_Not_Last;
+
             when others =>
                return M_Boolean.Range_Check;
          end case;
@@ -861,9 +875,13 @@ package body Why.Gen.Names is
          declare
             Name : constant Why_Name_Enum :=
               (case R is
-                  when RCK_Range_Not_First | RCK_Overflow_Not_First =>
+                  when RCK_Range_Not_First
+                     | RCK_Overflow_Not_First
+                  =>
                      WNE_Check_Not_First,
-                  when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
+                  when RCK_Range_Not_Last
+                     | RCK_Overflow_Not_Last
+                  =>
                      WNE_Check_Not_Last,
                   when others =>
                      WNE_Range_Check_Fun);

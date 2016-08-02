@@ -1136,7 +1136,6 @@ package body Why.Gen.Arrays is
 
          when others =>
             raise Program_Error;
-
       end case;
    end Get_Entity_Of_Variable;
 

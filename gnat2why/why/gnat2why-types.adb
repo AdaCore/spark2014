@@ -513,10 +513,13 @@ package body Gnat2Why.Types is
 
             when E_Record_Type
                | E_Record_Subtype
-               | Concurrent_Kind =>
+               | Concurrent_Kind
+            =>
                Declare_Ada_Record (File, E);
 
-            when E_Class_Wide_Type | E_Class_Wide_Subtype =>
+            when E_Class_Wide_Type
+               | E_Class_Wide_Subtype
+            =>
                Add_Use_For_Entity (File, Specific_Tagged (E),
                                    EW_Export, With_Completion => False);
 

@@ -166,12 +166,12 @@ package body SPARK_Util.Subprograms is
 
    begin
       case Name is
-         when Name_Precondition      |
-              Name_Postcondition     |
-              Name_Refined_Post      |
-              Name_Contract_Cases    |
-              Name_Initial_Condition =>
-
+         when Name_Precondition
+            | Name_Postcondition
+            | Name_Refined_Post
+            | Name_Contract_Cases
+            | Name_Initial_Condition
+         =>
             if Name = Name_Refined_Post then
                if Ekind (E) in Subprogram_Kind
                  and then Present (Subprogram_Body (E))
@@ -215,7 +215,9 @@ package body SPARK_Util.Subprograms is
                end loop;
             end if;
 
-         when Name_Global | Name_Depends =>
+         when Name_Global
+            | Name_Depends
+         =>
             raise Why.Not_Implemented;
 
          when others =>
@@ -292,7 +294,9 @@ package body SPARK_Util.Subprograms is
          Param := First (Params);
          while Present (Param) loop
             case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
-               when E_Out_Parameter | E_In_Out_Parameter =>
+               when E_Out_Parameter
+                  | E_In_Out_Parameter
+               =>
                   return False;
                when E_In_Parameter =>
                   null;
@@ -775,14 +779,14 @@ package body SPARK_Util.Subprograms is
          --  Check_Potentially_Blocking_Operation but immediately rejects
          --  all kinds of the select statement.
          case Nkind (N) is
-            when N_Abort_Statement        |
-                 N_Accept_Statement       |
-                 N_Asynchronous_Select    |
-                 N_Conditional_Entry_Call |
-                 N_Delay_Statement        |
-                 N_Selective_Accept       |
-                 N_Timed_Entry_Call       =>
-
+            when N_Abort_Statement
+               | N_Accept_Statement
+               | N_Asynchronous_Select
+               | N_Conditional_Entry_Call
+               | N_Delay_Statement
+               | N_Selective_Accept
+               | N_Timed_Entry_Call
+            =>
                Potentially_Blocking_Statement_Found := True;
                return Abandon;
 
@@ -790,7 +794,6 @@ package body SPARK_Util.Subprograms is
             --  entry calls. It is best to check the call convention.
 
             when N_Entry_Call_Statement =>
-
                if Convention (Entity (Selector_Name (Name (N)))) =
                  Convention_Entry
                then
@@ -807,9 +810,9 @@ package body SPARK_Util.Subprograms is
             --  Put/Get, by looking at the name of their first formal
             --  parameter. In phase 2 we only have names like "put__2"
             --  and "put__3".
-            when N_Procedure_Call_Statement |
-                 N_Function_Call =>
-
+            when N_Procedure_Call_Statement
+               | N_Function_Call
+            =>
                if Is_Predefined_Potentially_Blocking (Get_Called_Entity (N))
                then
                   Potentially_Blocking_Statement_Found := True;
@@ -963,7 +966,6 @@ package body SPARK_Util.Subprograms is
 
          --  Detect subprograms declared in scope of a protected type
          when Subprogram_Kind =>
-
             Scop := Scope (E);
             while Present (Scop) loop
                if Ekind (Scop) in E_Protected_Type then
@@ -976,7 +978,6 @@ package body SPARK_Util.Subprograms is
 
          when others =>
             return False;
-
       end case;
    end Is_Protected_Subprogram;
 
@@ -1141,8 +1142,8 @@ package body SPARK_Util.Subprograms is
    begin
       return (case Ekind (E) is
                  when Entry_Kind       => Entry_Body (E),
-                 when E_Function |
-                      E_Procedure      => Subprogram_Body (E),
+                 when E_Function
+                    | E_Procedure      => Subprogram_Body (E),
                  when E_Protected_Type => Protected_Body (E),
                  when E_Task_Type      => Task_Body (E),
                  when others           => raise Program_Error);

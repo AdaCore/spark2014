@@ -226,21 +226,20 @@ package body Gnat2Why.Error_Messages is
                        SA_Message'(SA_Messages.Assertion_Check,
                                    Statically_Known_Success));
 
-            when VC_Length_Check              |
-                 VC_Ceiling_Interrupt         |
-                 VC_Interrupt_Reserved        |
-                 VC_Ceiling_Priority_Protocol |
-                 VC_Task_Termination          |
-                 VC_Raise                     |
-                 VC_Weaker_Pre                |
-                 VC_Trivial_Weaker_Pre        |
-                 VC_Stronger_Post             |
-                 VC_Weaker_Classwide_Pre      |
-                 VC_Stronger_Classwide_Post   |
-                 VC_Predicate_Check           |
-                 VC_Predicate_Check_On_Default_Value
-
-               =>
+            when VC_Length_Check
+               | VC_Ceiling_Interrupt
+               | VC_Interrupt_Reserved
+               | VC_Ceiling_Priority_Protocol
+               | VC_Task_Termination
+               | VC_Raise
+               | VC_Weaker_Pre
+               | VC_Trivial_Weaker_Pre
+               | VC_Stronger_Post
+               | VC_Weaker_Classwide_Pre
+               | VC_Stronger_Classwide_Post
+               | VC_Predicate_Check
+               | VC_Predicate_Check_On_Default_Value
+            =>
                return (OK => False);
          end case;
       end Make_Codepeer_Msg;
@@ -542,9 +541,9 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition might fail";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Entry_Call_Statement     |
-                               N_Function_Call            |
-                               N_Procedure_Call_Statement
+            if Nkind (Node) in N_Entry_Call_Statement
+                             | N_Function_Call
+                             | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
                return
@@ -782,9 +781,9 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition proved";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Entry_Call_Statement     |
-                               N_Function_Call            |
-                               N_Procedure_Call_Statement
+            if Nkind (Node) in N_Entry_Call_Statement
+                             | N_Function_Call
+                             | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
                return "call to nonreturning procedure never executed";

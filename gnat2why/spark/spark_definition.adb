@@ -1058,10 +1058,11 @@ package body SPARK_Definition is
                --  declarations before the last invariant/variant.
 
                case Nkind (N) is
-                  when N_Full_Type_Declaration         |
-                       N_Private_Extension_Declaration |
-                       N_Private_Type_Declaration      |
-                       N_Subtype_Declaration           =>
+                  when N_Full_Type_Declaration
+                     | N_Private_Extension_Declaration
+                     | N_Private_Type_Declaration
+                     | N_Subtype_Declaration
+                  =>
                      declare
                         E : constant Entity_Id := Defining_Entity (N);
                      begin
@@ -1069,6 +1070,7 @@ package body SPARK_Definition is
                            Loop_Entity_Set.Insert (E);
                         end if;
                      end;
+
                   when N_Object_Declaration =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N))) then
                         --  Store scalar entities defined in loops before the
@@ -1080,13 +1082,18 @@ package body SPARK_Definition is
                           ("non-scalar object declared before loop-invariant",
                            N);
                      end if;
+
                   when N_Loop_Statement =>
                      Mark_Unsupported
                        ("nested loop before loop-invariant", N);
+
                   when N_Package_Declaration =>
                      Mark_Unsupported
                        ("nested packages before loop-invariant", N);
-                  when N_Subprogram_Declaration | N_Subprogram_Body =>
+
+                  when N_Subprogram_Declaration
+                     | N_Subprogram_Body
+                  =>
                      Mark_Unsupported
                        ("nested subprogram before loop-invariant", N);
 
@@ -1108,6 +1115,7 @@ package body SPARK_Definition is
                      end;
                      Check_Loop_Invariant_Placement
                        (Else_Statements (N), True);
+
                   when N_Case_Statement =>
                      declare
                         Cases : constant List_Id := Alternatives (N);
@@ -1119,11 +1127,13 @@ package body SPARK_Definition is
                            Next (Cur);
                         end loop;
                      end;
+
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
                        (Return_Object_Declarations (N), True);
                      Check_Loop_Invariant_Placement
                        (Statements (Handled_Statement_Sequence (N)), True);
+
                   when others => null;
                end case;
             end if;
@@ -1267,8 +1277,9 @@ package body SPARK_Definition is
             Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
-         when N_Case_Expression |
-              N_Case_Statement  =>
+         when N_Case_Expression
+            | N_Case_Statement
+         =>
             Mark (Expression (N));
             Mark_List (Alternatives (N));
 
@@ -1283,7 +1294,6 @@ package body SPARK_Definition is
             Mark_Violation ("code statement", N);
 
          when N_Component_Association =>
-
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
 
@@ -1676,9 +1686,9 @@ package body SPARK_Definition is
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
 
-         when N_Type_Conversion           |
-              N_Unchecked_Type_Conversion =>
-
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
             --  Source unchecked type conversion nodes were rewritten as such
             --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
             --  instance of Unchecked_Conversion as the Original_Node of the
@@ -1833,13 +1843,13 @@ package body SPARK_Definition is
          --  being marked multiple times in various client units, which leads
          --  to multiple definitions in Why3 for the same type.
 
-         when N_Full_Type_Declaration         |
-              N_Private_Extension_Declaration |
-              N_Private_Type_Declaration      |
-              N_Protected_Type_Declaration    |
-              N_Subtype_Declaration           |
-              N_Task_Type_Declaration         =>
-
+         when N_Full_Type_Declaration
+            | N_Private_Extension_Declaration
+            | N_Private_Type_Declaration
+            | N_Protected_Type_Declaration
+            | N_Subtype_Declaration
+            | N_Task_Type_Declaration
+         =>
             declare
                E  : constant Entity_Id := Defining_Entity (N);
                BT : constant Entity_Id := Base_Type (E);
@@ -1917,8 +1927,9 @@ package body SPARK_Definition is
 
          --  Supported tasking constructs
 
-         when N_Protected_Body |
-              N_Task_Body      =>
+         when N_Protected_Body
+            | N_Task_Body
+         =>
             if Is_SPARK_Tasking_Configuration then
                   case Nkind (N) is
                      when N_Protected_Body =>
@@ -1935,8 +1946,9 @@ package body SPARK_Definition is
                Mark_Violation_In_Tasking (N);
             end if;
 
-         when N_Protected_Body_Stub |
-              N_Task_Body_Stub      =>
+         when N_Protected_Body_Stub
+            | N_Task_Body_Stub
+         =>
             if Is_SPARK_Tasking_Configuration then
                Mark (Get_Body_From_Stub (N));
             else
@@ -1960,58 +1972,60 @@ package body SPARK_Definition is
 
          --  Unsupported tasking constructs
 
-         when N_Abort_Statement          |
-              N_Accept_Statement         |
-              N_Asynchronous_Select      |
-              N_Conditional_Entry_Call   |
-              N_Delay_Relative_Statement |
-              N_Requeue_Statement        |
-              N_Selective_Accept         |
-              N_Timed_Entry_Call         =>
+         when N_Abort_Statement
+            | N_Accept_Statement
+            | N_Asynchronous_Select
+            | N_Conditional_Entry_Call
+            | N_Delay_Relative_Statement
+            | N_Requeue_Statement
+            | N_Selective_Accept
+            | N_Timed_Entry_Call
+         =>
             Mark_Violation ("tasking", N);
 
          --  The following kinds can be safely ignored by marking
 
-         when N_At_Clause                              |
-              N_Attribute_Definition_Clause            |
-              N_Character_Literal                      |
-              N_Enumeration_Representation_Clause      |
-              N_Exception_Declaration                  |
-              N_Exception_Renaming_Declaration         |
-              N_Formal_Object_Declaration              |
-              N_Formal_Package_Declaration             |
-              N_Formal_Subprogram_Declaration          |
-              N_Formal_Type_Declaration                |
-              N_Freeze_Entity                          |
-              N_Freeze_Generic_Entity                  |
-              N_Function_Instantiation                 |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Package_Declaration            |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Generic_Procedure_Renaming_Declaration |
-              N_Generic_Subprogram_Declaration         |
-              N_Implicit_Label_Declaration             |
-              N_Incomplete_Type_Declaration            |
-              N_Itype_Reference                        |
-              N_Label                                  |
-              N_Null_Statement                         |
-              N_Operator_Symbol                        |
-              N_Others_Choice                          |
-              N_Package_Instantiation                  |
-              N_Package_Renaming_Declaration           |
-              N_Procedure_Instantiation                |
-              N_Record_Representation_Clause           |
-              N_String_Literal                         |
-              N_Subprogram_Renaming_Declaration        |
-              N_Use_Package_Clause                     |
-              N_With_Clause                            |
-              N_Use_Type_Clause                        |
-              N_Validate_Unchecked_Conversion          =>
+         when N_At_Clause
+            | N_Attribute_Definition_Clause
+            | N_Character_Literal
+            | N_Enumeration_Representation_Clause
+            | N_Exception_Declaration
+            | N_Exception_Renaming_Declaration
+            | N_Formal_Object_Declaration
+            | N_Formal_Package_Declaration
+            | N_Formal_Subprogram_Declaration
+            | N_Formal_Type_Declaration
+            | N_Freeze_Entity
+            | N_Freeze_Generic_Entity
+            | N_Function_Instantiation
+            | N_Generic_Function_Renaming_Declaration
+            | N_Generic_Package_Declaration
+            | N_Generic_Package_Renaming_Declaration
+            | N_Generic_Procedure_Renaming_Declaration
+            | N_Generic_Subprogram_Declaration
+            | N_Implicit_Label_Declaration
+            | N_Incomplete_Type_Declaration
+            | N_Itype_Reference
+            | N_Label
+            | N_Null_Statement
+            | N_Operator_Symbol
+            | N_Others_Choice
+            | N_Package_Instantiation
+            | N_Package_Renaming_Declaration
+            | N_Procedure_Instantiation
+            | N_Record_Representation_Clause
+            | N_String_Literal
+            | N_Subprogram_Renaming_Declaration
+            | N_Use_Package_Clause
+            | N_With_Clause
+            | N_Use_Type_Clause
+            | N_Validate_Unchecked_Conversion
+         =>
             null;
 
-         when N_Real_Literal |
-           N_Integer_Literal =>
-
+         when N_Real_Literal
+            | N_Integer_Literal
+         =>
             --  If a literal is the result of the front-end
             --  rewriting a static attribute, then we mark
             --  the original node.
@@ -2030,93 +2044,96 @@ package body SPARK_Definition is
 
          --  The following nodes are rewritten by semantic analysis
 
-         when N_Expression_Function          |
-              N_Single_Protected_Declaration |
-              N_Single_Task_Declaration      =>
+         when N_Expression_Function
+            | N_Single_Protected_Declaration
+            | N_Single_Task_Declaration
+         =>
             raise Program_Error;
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Expression_With_Actions |
-              N_Compound_Statement      |
-              N_Unchecked_Expression    =>
+         when N_Expression_With_Actions
+            | N_Compound_Statement
+            | N_Unchecked_Expression
+         =>
             raise Program_Error;
 
          --  Mark should not be called on other kinds
 
-         when N_Abortable_Part                         |
-              N_Accept_Alternative                     |
-              N_Access_Definition                      |
-              N_Access_Function_Definition             |
-              N_Access_Procedure_Definition            |
-              N_Access_To_Object_Definition            |
-              N_Aspect_Specification                   |
-              N_Compilation_Unit                       |
-              N_Compilation_Unit_Aux                   |
-              N_Component_Clause                       |
-              N_Component_Definition                   |
-              N_Component_List                         |
-              N_Constrained_Array_Definition           |
-              N_Contract                               |
-              N_Decimal_Fixed_Point_Definition         |
-              N_Defining_Character_Literal             |
-              N_Defining_Identifier                    |
-              N_Defining_Operator_Symbol               |
-              N_Defining_Program_Unit_Name             |
-              N_Delay_Alternative                      |
-              N_Delta_Constraint                       |
-              N_Derived_Type_Definition                |
-              N_Designator                             |
-              N_Digits_Constraint                      |
-              N_Discriminant_Association               |
-              N_Discriminant_Specification             |
-              N_Function_Specification                 |
-              N_Iteration_Scheme                       |
-              N_Loop_Parameter_Specification           |
-              N_Elsif_Part                             |
-              N_Empty                                  |
-              N_Entry_Body_Formal_Part                 |
-              N_Enumeration_Type_Definition            |
-              N_Entry_Call_Alternative                 |
-              N_Entry_Index_Specification              |
-              N_Error                                  |
-              N_Exception_Handler                      |
-              N_Floating_Point_Definition              |
-              N_Formal_Decimal_Fixed_Point_Definition  |
-              N_Formal_Derived_Type_Definition         |
-              N_Formal_Discrete_Type_Definition        |
-              N_Formal_Floating_Point_Definition       |
-              N_Formal_Incomplete_Type_Definition      |
-              N_Formal_Modular_Type_Definition         |
-              N_Formal_Ordinary_Fixed_Point_Definition |
-              N_Formal_Private_Type_Definition         |
-              N_Formal_Signed_Integer_Type_Definition  |
-              N_Generic_Association                    |
-              N_Index_Or_Discriminant_Constraint       |
-              N_Mod_Clause                             |
-              N_Modular_Type_Definition                |
-              N_Ordinary_Fixed_Point_Definition        |
-              N_Parameter_Specification                |
-              N_Pragma_Argument_Association            |
-              N_Package_Specification                  |
-              N_Procedure_Specification                |
-              N_Protected_Definition                   |
-              N_Push_Pop_xxx_Label                     |
-              N_Range_Constraint                       |
-              N_Real_Range_Specification               |
-              N_Record_Definition                      |
-              N_SCIL_Dispatch_Table_Tag_Init           |
-              N_SCIL_Dispatching_Call                  |
-              N_SCIL_Membership_Test                   |
-              N_Signed_Integer_Type_Definition         |
-              N_Subunit                                |
-              N_Task_Definition                        |
-              N_Terminate_Alternative                  |
-              N_Triggering_Alternative                 |
-              N_Unconstrained_Array_Definition         |
-              N_Unused_At_Start                        |
-              N_Unused_At_End                          |
-              N_Variant                                =>
+         when N_Abortable_Part
+            | N_Accept_Alternative
+            | N_Access_Definition
+            | N_Access_Function_Definition
+            | N_Access_Procedure_Definition
+            | N_Access_To_Object_Definition
+            | N_Aspect_Specification
+            | N_Compilation_Unit
+            | N_Compilation_Unit_Aux
+            | N_Component_Clause
+            | N_Component_Definition
+            | N_Component_List
+            | N_Constrained_Array_Definition
+            | N_Contract
+            | N_Decimal_Fixed_Point_Definition
+            | N_Defining_Character_Literal
+            | N_Defining_Identifier
+            | N_Defining_Operator_Symbol
+            | N_Defining_Program_Unit_Name
+            | N_Delay_Alternative
+            | N_Delta_Constraint
+            | N_Derived_Type_Definition
+            | N_Designator
+            | N_Digits_Constraint
+            | N_Discriminant_Association
+            | N_Discriminant_Specification
+            | N_Function_Specification
+            | N_Iteration_Scheme
+            | N_Loop_Parameter_Specification
+            | N_Elsif_Part
+            | N_Empty
+            | N_Entry_Body_Formal_Part
+            | N_Enumeration_Type_Definition
+            | N_Entry_Call_Alternative
+            | N_Entry_Index_Specification
+            | N_Error
+            | N_Exception_Handler
+            | N_Floating_Point_Definition
+            | N_Formal_Decimal_Fixed_Point_Definition
+            | N_Formal_Derived_Type_Definition
+            | N_Formal_Discrete_Type_Definition
+            | N_Formal_Floating_Point_Definition
+            | N_Formal_Incomplete_Type_Definition
+            | N_Formal_Modular_Type_Definition
+            | N_Formal_Ordinary_Fixed_Point_Definition
+            | N_Formal_Private_Type_Definition
+            | N_Formal_Signed_Integer_Type_Definition
+            | N_Generic_Association
+            | N_Index_Or_Discriminant_Constraint
+            | N_Mod_Clause
+            | N_Modular_Type_Definition
+            | N_Ordinary_Fixed_Point_Definition
+            | N_Parameter_Specification
+            | N_Pragma_Argument_Association
+            | N_Package_Specification
+            | N_Procedure_Specification
+            | N_Protected_Definition
+            | N_Push_Pop_xxx_Label
+            | N_Range_Constraint
+            | N_Real_Range_Specification
+            | N_Record_Definition
+            | N_SCIL_Dispatch_Table_Tag_Init
+            | N_SCIL_Dispatching_Call
+            | N_SCIL_Membership_Test
+            | N_Signed_Integer_Type_Definition
+            | N_Subunit
+            | N_Task_Definition
+            | N_Terminate_Alternative
+            | N_Triggering_Alternative
+            | N_Unconstrained_Array_Definition
+            | N_Unused_At_Start
+            | N_Unused_At_End
+            | N_Variant
+         =>
             raise Program_Error;
       end case;
    end Mark;
@@ -2146,8 +2163,9 @@ package body SPARK_Definition is
             --  when translating to Why.
 
             case Nkind (N) is
-               when N_Subtype_Declaration   |
-                    N_Full_Type_Declaration =>
+               when N_Subtype_Declaration
+                  | N_Full_Type_Declaration
+               =>
                   null;
 
                when N_Object_Declaration =>
@@ -2157,8 +2175,9 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Null_Statement |
-                    N_Freeze_Entity  =>
+               when N_Null_Statement
+                  | N_Freeze_Entity
+               =>
                   null;
 
                when N_Pragma =>
@@ -2959,12 +2978,12 @@ package body SPARK_Definition is
 
                   Declare_In_Package_With_External_Axioms
                     (Visible_Declarations (Specification (Decl)));
-               elsif Nkind (Decl) in N_Full_Type_Declaration         |
-                                     N_Private_Type_Declaration      |
-                                     N_Private_Extension_Declaration |
-                                     N_Subtype_Declaration           |
-                                     N_Subprogram_Declaration        |
-                                     N_Object_Declaration
+               elsif Nkind (Decl) in N_Full_Type_Declaration
+                                   | N_Private_Type_Declaration
+                                   | N_Private_Extension_Declaration
+                                   | N_Subtype_Declaration
+                                   | N_Subprogram_Declaration
+                                   | N_Object_Declaration
                then
                   Id := Defining_Entity (Decl);
 
@@ -5715,8 +5734,9 @@ package body SPARK_Definition is
                   null;
                end if;
 
-            when N_Digits_Constraint |
-                 N_Delta_Constraint  =>
+            when N_Digits_Constraint
+               | N_Delta_Constraint
+            =>
                null;
 
             when others =>  --  TO DO ???

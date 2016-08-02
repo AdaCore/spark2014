@@ -606,11 +606,11 @@ ASCII.LF;
    function To_String (P : Proof_Mode) return String is
    begin
       case P is
-         when No_WP => return "no_wp";
-         when All_Split => return "all_split";
+         when No_WP       => return "no_wp";
+         when All_Split   => return "all_split";
          when Progressive => return "progressive";
-         when Per_Path => return "per_path";
-         when Per_Check => return "per_check";
+         when Per_Path    => return "per_path";
+         when Per_Check   => return "per_check";
       end case;
    end To_String;
 
@@ -1597,19 +1597,19 @@ ASCII.LF;
             Info    : constant File_Info := Tree.Info (File_VF);
          begin
             case Unit_Part (Info) is
-            when Unit_Body =>
-               null;
-            when Unit_Spec =>
-               declare
-                  Other_VF : constant Virtual_File :=
-                    Tree.Other_File (File_VF);
-               begin
-                  if Is_Regular_File (Other_VF) then
-                     CL_Switches.File_List.Replace_Element
-                       (Cursor,
-                        String (Base_Name (Other_VF)));
-                  end if;
-               end;
+               when Unit_Body =>
+                  null;
+               when Unit_Spec =>
+                  declare
+                     Other_VF : constant Virtual_File :=
+                       Tree.Other_File (File_VF);
+                  begin
+                     if Is_Regular_File (Other_VF) then
+                        CL_Switches.File_List.Replace_Element
+                          (Cursor,
+                           String (Base_Name (Other_VF)));
+                     end if;
+                  end;
                when Unit_Separate =>
 
                   --  Here we try to find the proper unit to which belongs

@@ -444,22 +444,22 @@ procedure SPARK_Report is
             | Illegal_Update
             | Non_Volatile_Function_With_Volatile_Effects
             | Volatile_Function_Without_Volatile_Effects
-            | Side_Effects =>
-
+            | Side_Effects
+         =>
             return Data_Dep;
 
          when  Impossible_To_Initialize_State
             | Initializes_Wrong
             | Uninitialized
-            | Default_Initialization_Missmatch =>
-
+            | Default_Initialization_Missmatch
+         =>
             return Init;
 
          when Depends_Null
             | Depends_Missing
             | Depends_Missing_Clause
-            | Depends_Wrong =>
-
+            | Depends_Wrong
+         =>
             return Flow_Dep;
 
          when Dead_Code
@@ -472,8 +472,8 @@ procedure SPARK_Report is
             | Reference_To_Non_CAE_Variable
             | Stable
             | Unused
-            | Unused_Initial_Value =>
-
+            | Unused_Initial_Value
+         =>
             return No_Entry;
       end case;
    end Flow_Kind_To_Summary;

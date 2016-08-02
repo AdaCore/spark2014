@@ -938,9 +938,10 @@ package body Gnat2Why.Counter_Examples is
                     and then No_Default_Init;
                end;
 
-               --  Uninitialized function argument
-            when N_Formal_Object_Declaration |
-                 N_Parameter_Specification   =>
+            --  Uninitialized function argument
+            when N_Formal_Object_Declaration
+               | N_Parameter_Specification
+            =>
                return
                  Out_Present (Parent (Element_Decl))
                  and then

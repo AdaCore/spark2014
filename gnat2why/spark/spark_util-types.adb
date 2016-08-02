@@ -880,9 +880,14 @@ package body SPARK_Util.Types is
       Ty : constant Entity_Id := Retysp (E);
    begin
       case Ekind (Ty) is
-         when E_Record_Subtype | E_Record_Subtype_With_Private =>
+         when E_Record_Subtype
+            | E_Record_Subtype_With_Private
+         =>
             return Comp_Info.Element (Retysp (Etype (Ty))).Variant_Info;
-         when E_Record_Type | E_Record_Type_With_Private | Concurrent_Kind =>
+         when E_Record_Type
+            | E_Record_Type_With_Private
+            | Concurrent_Kind
+         =>
             return Comp_Info.Element (Ty).Variant_Info;
          when others =>
             return Info_Maps.Empty_Map;

@@ -138,7 +138,10 @@ package body Gnat2Why.Driver is
    procedure Complete_Declaration (E : Entity_Id) is
    begin
       case Ekind (E) is
-         when E_Entry | E_Function | E_Procedure =>
+         when E_Entry
+            | E_Function
+            | E_Procedure
+         =>
             if Is_Translated_Subprogram (E) then
                declare
                   File : constant W_Section_Id :=
@@ -294,7 +297,9 @@ package body Gnat2Why.Driver is
       --      Analysis_Requested (E, With_Inlined => False) and then
       --      Entity_Spec_In_SPARK (E)
       case Ekind (E) is
-         when Subprogram_Kind | Entry_Kind =>
+         when Subprogram_Kind
+            | Entry_Kind
+         =>
             if Analysis_Requested (E, With_Inlined => False)
               and then Entity_Spec_In_SPARK (E)
 
@@ -347,9 +352,9 @@ package body Gnat2Why.Driver is
             then
                Generate_VCs_For_Protected_Type (WF_Main, E);
             end if;
+
          when others =>
             null;
-
       end case;
    end Do_Generate_VCs;
 
@@ -735,7 +740,6 @@ package body Gnat2Why.Driver is
 
    begin
       case Ekind (E) is
-
          when Type_Kind =>
 
             --  For a type with partial and full view, both entities will be
@@ -815,7 +819,10 @@ package body Gnat2Why.Driver is
 
          --  Generate a logic function for Ada subprograms
 
-         when E_Entry | E_Function | E_Procedure =>
+         when E_Entry
+            | E_Function
+            | E_Procedure
+         =>
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
@@ -872,10 +879,12 @@ package body Gnat2Why.Driver is
    begin
       while Present (Decl) loop
          case Nkind (Decl) is
-            when N_Full_Type_Declaration |
-                 N_Subtype_Declaration   |
-                 N_Object_Declaration    =>
+            when N_Full_Type_Declaration
+               | N_Subtype_Declaration
+               | N_Object_Declaration
+            =>
                Translate_Standard_Entity (Defining_Entity (Decl));
+
             when others =>
                null;
          end case;

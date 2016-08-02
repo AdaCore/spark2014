@@ -983,12 +983,16 @@ package body Gnat2Why.Subprograms is
       procedure Effects_Append_Binder (Binder : Item_Type)  is
       begin
          case Binder.Kind is
-            when Regular | Concurrent_Self =>
+            when Regular
+               | Concurrent_Self
+            =>
                if Binder.Main.Mutable then
                   Effects_Append (Eff, Binder.Main.B_Name);
                end if;
+
             when UCArray =>
                Effects_Append (Eff, Binder.Content.B_Name);
+
             when DRecord =>
                if Binder.Fields.Present then
                   Effects_Append (Eff, Binder.Fields.Binder.B_Name);
@@ -998,7 +1002,8 @@ package body Gnat2Why.Subprograms is
                then
                   Effects_Append (Eff, Binder.Discrs.Binder.B_Name);
                end if;
-            when Func    => raise Program_Error;
+
+            when Func => raise Program_Error;
          end case;
       end Effects_Append_Binder;
 

@@ -257,13 +257,15 @@ package body Why.Gen.Expr is
 
          when W_While_Loop
             | W_Assignment
-            | W_Assert =>
+            | W_Assert
+         =>
             return EW_Unit_Type;
 
          when W_Connection
             | W_Not
             | W_Universal_Quantif
-            | W_Existential_Quantif =>
+            | W_Existential_Quantif
+         =>
             return EW_Bool_Type;
 
          when W_Identifier =>
@@ -1224,7 +1226,9 @@ package body Why.Gen.Expr is
          --  expressions or variables assigned to, which require range
          --  checking.
 
-         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
             Check_Type := Etype (Par);
 
          when N_Qualified_Expression =>
@@ -1236,10 +1240,11 @@ package body Why.Gen.Expr is
 
          --  For a call, retrieve the type for the corresponding argument
 
-         when N_Function_Call            |
-              N_Procedure_Call_Statement |
-              N_Entry_Call_Statement     |
-              N_Parameter_Association    =>
+         when N_Function_Call
+            | N_Procedure_Call_Statement
+            | N_Entry_Call_Statement
+            | N_Parameter_Association
+         =>
             declare
                Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
             begin
@@ -1455,8 +1460,9 @@ package body Why.Gen.Expr is
                raise Program_Error;
             end case;
 
-         when N_Component_Declaration | N_Discriminant_Specification =>
-
+         when N_Component_Declaration
+            | N_Discriminant_Specification
+         =>
             --  We expect range checks on defaults of record fields and
             --  discriminants.
 
@@ -2324,14 +2330,17 @@ package body Why.Gen.Expr is
                return New_Discrete_Constant
                  (Value => Expr_Value (String_Literal_Low_Bound (Ty)),
                   Typ   => BT);
+
             when Attribute_Length =>
                return New_Integer_Constant
                  (Value => String_Literal_Length (Ty));
+
             when Attribute_Last =>
                return New_Discrete_Constant
                  (Value => Expr_Value (String_Literal_Low_Bound (Ty)) +
                     String_Literal_Length (Ty) - 1,
                   Typ   => BT);
+
             when others =>
                raise Program_Error;
             end case;
@@ -2687,12 +2696,13 @@ package body Why.Gen.Expr is
       while Present (Node_It) loop
          case Nkind (Node_It) is
 
-         when N_Subprogram_Body                |
-              N_Subprogram_Specification       |
-              N_Expression_Function            |
-              N_Package_Body                   |
-              N_Package_Specification          |
-              N_Generic_Subprogram_Declaration =>
+         when N_Subprogram_Body
+            | N_Subprogram_Specification
+            | N_Expression_Function
+            | N_Package_Body
+            | N_Package_Specification
+            | N_Generic_Subprogram_Declaration
+         =>
             exit;
 
          when N_Loop_Statement =>
@@ -2720,24 +2730,32 @@ package body Why.Gen.Expr is
                  & "_" & Buf;
             end if;
 
-         when N_Case_Statement | N_Case_Expression =>
+         when N_Case_Statement
+            | N_Case_Expression
+         =>
             Buf := "case" & Label_Append (Buf);
 
-         when N_If_Statement | N_If_Expression =>
+         when N_If_Statement
+            | N_If_Expression
+         =>
             Buf := "if" & Label_Append (Buf);
 
          when N_Enumeration_Representation_Clause =>
             Buf := Get_Name_String (Chars (Identifier (Node_It)))
               & "_rep" & Label_Append (Buf);
+
          when N_At_Clause =>
             Buf := Get_Name_String (Chars (Identifier (Node_It)))
               & "_at" & Label_Append (Buf);
+
          when N_Record_Representation_Clause =>
             Buf := Get_Name_String (Chars (Identifier (Node_It)))
               & "_" & Buf;
+
          when N_Component_Clause =>
             Buf := Get_Name_String (Chars (Component_Name (Node_It)))
               & "_rep" & Label_Append (Buf);
+
          when N_Mod_Clause =>
             Buf := "modrep" & Label_Append (Buf);
 
@@ -2751,45 +2769,64 @@ package body Why.Gen.Expr is
 
          when N_Op_Add =>
             Buf := "add" & Label_Append (Buf);
+
          when N_Op_Concat =>
             Buf := "concat" & Label_Append (Buf);
+
          when N_Op_Expon =>
             Buf := "exp" & Label_Append (Buf);
+
          when N_Op_Subtract =>
             Buf := "sub" & Label_Append (Buf);
+
          when N_Op_Divide =>
             Buf := "div" & Label_Append (Buf);
+
          when N_Op_Mod =>
             Buf := "mod" & Label_Append (Buf);
+
          when N_Op_Multiply =>
             Buf := "mult" & Label_Append (Buf);
+
          when N_Op_Rem =>
             Buf := "rem" & Label_Append (Buf);
+
          when N_Op_And =>
             Buf := "and" & Label_Append (Buf);
+
          when N_Op_Compare =>
             Buf := "cmp" & Label_Append (Buf);
+
          when N_Op_Or =>
             Buf := "or" & Label_Append (Buf);
+
          when N_Op_Xor =>
             Buf := "xor" & Label_Append (Buf);
 
          when N_Op_Rotate_Left =>
             Buf := "rol" & Label_Append (Buf);
+
          when N_Op_Rotate_Right =>
             Buf := "ror" & Label_Append (Buf);
+
          when N_Op_Shift_Left =>
             Buf := "lsl" & Label_Append (Buf);
+
          when N_Op_Shift_Right =>
             Buf := "lsr" & Label_Append (Buf);
+
          when N_Op_Shift_Right_Arithmetic =>
             Buf := "asr" & Label_Append (Buf);
+
          when N_Op_Abs =>
             Buf := "abs" & Label_Append (Buf);
+
          when N_Op_Minus =>
             Buf := "minus" & Label_Append (Buf);
+
          when N_Op_Not =>
             Buf := "not" & Label_Append (Buf);
+
          when N_Op_Plus =>
             Buf := "plus" & Label_Append (Buf);
 
@@ -2802,6 +2839,7 @@ package body Why.Gen.Expr is
 
          when N_And_Then =>
             Buf := "andthen" & Label_Append (Buf);
+
          when N_Or_Else =>
             Buf := "orelse" & Label_Append (Buf);
 
@@ -2849,10 +2887,11 @@ package body Why.Gen.Expr is
             Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
               & "_ind" & Label_Append (Buf);
 
-         when N_Formal_Type_Declaration    |
-              N_Implicit_Label_Declaration |
-              N_Object_Declaration         |
-              N_Formal_Object_Declaration  =>
+         when N_Formal_Type_Declaration
+            | N_Implicit_Label_Declaration
+            | N_Object_Declaration
+            | N_Formal_Object_Declaration
+         =>
             declare
                I_Name : constant Name_Id := Chars (Defining_Identifier
                                                    (Node_It));
@@ -2864,11 +2903,12 @@ package body Why.Gen.Expr is
                Buf := Name_Str & "decl" & Label_Append (Buf);
             end;
 
-         when N_Full_Type_Declaration       |
-              N_Incomplete_Type_Declaration |
-              N_Protected_Type_Declaration  |
-              N_Private_Type_Declaration    |
-              N_Subtype_Declaration         =>
+         when N_Full_Type_Declaration
+            | N_Incomplete_Type_Declaration
+            | N_Protected_Type_Declaration
+            | N_Private_Type_Declaration
+            | N_Subtype_Declaration
+         =>
             Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
               & "_def" & Label_Append (Buf);
 
@@ -2926,7 +2966,9 @@ package body Why.Gen.Expr is
                                 (Chars (Name (Node_It)))
                               else "") & Label_Append (Buf);
 
-         when N_Simple_Return_Statement | N_Extended_Return_Statement =>
+         when N_Simple_Return_Statement
+            | N_Extended_Return_Statement
+         =>
             Buf := "return" & Label_Append (Buf);
 
          when N_Exit_Statement =>

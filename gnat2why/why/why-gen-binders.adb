@@ -82,17 +82,22 @@ package body Why.Gen.Binders is
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id is
    begin
       case B.Kind is
-         when Regular | Concurrent_Self =>
+         when Regular
+            | Concurrent_Self
+         =>
             return B.Main.Ada_Node;
+
          when DRecord =>
             if B.Fields.Present then
                return B.Fields.Binder.Ada_Node;
             else
                return B.Discrs.Binder.Ada_Node;
             end if;
+
          when UCArray =>
             return B.Content.Ada_Node;
-         when Func    =>
+
+         when Func =>
             raise Program_Error;
       end case;
    end Get_Ada_Node_From_Item;
@@ -252,23 +257,29 @@ package body Why.Gen.Binders is
       begin
          for B of Binders loop
             case B.Kind is
-            when Regular | Concurrent_Self =>
-               Length := Length + 1;
-            when UCArray =>
-               pragma Assert (B.Content.Mutable);
-               Length := Length + 1;
-            when DRecord =>
-               pragma Assert
-                 ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
-                  or else (B.Fields.Present
-                    and then B.Fields.Binder.Mutable));
-               if B.Discrs.Present and then B.Discrs.Binder.Mutable then
+               when Regular
+                  | Concurrent_Self
+               =>
                   Length := Length + 1;
-               end if;
-               if B.Fields.Present and then B.Fields.Binder.Mutable then
+
+               when UCArray =>
+                  pragma Assert (B.Content.Mutable);
                   Length := Length + 1;
-               end if;
-            when Func => raise Program_Error;
+
+               when DRecord =>
+                  pragma Assert
+                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
+                       or else
+                     (B.Fields.Present
+                       and then B.Fields.Binder.Mutable));
+                  if B.Discrs.Present and then B.Discrs.Binder.Mutable then
+                     Length := Length + 1;
+                  end if;
+                  if B.Fields.Present and then B.Fields.Binder.Mutable then
+                     Length := Length + 1;
+                  end if;
+
+               when Func => raise Program_Error;
             end case;
          end loop;
          return Length;
@@ -282,12 +293,16 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular | Concurrent_Self =>
+            when Regular
+               | Concurrent_Self
+            =>
                Params (I) := B.Main;
                I := I + 1;
+
             when UCArray =>
                Params (I) := B.Content;
                I := I + 1;
+
             when DRecord =>
                if B.Discrs.Present and then B.Discrs.Binder.Mutable then
                   Params (I) := B.Discrs.Binder;
@@ -297,6 +312,7 @@ package body Why.Gen.Binders is
                   Params (I) := B.Fields.Binder;
                   I := I + 1;
                end if;
+
             when Func => raise Program_Error;
          end case;
       end loop;
@@ -311,12 +327,17 @@ package body Why.Gen.Binders is
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id is
    begin
       case B.Kind is
-         when Regular | Concurrent_Self =>
+         when Regular
+            | Concurrent_Self
+         =>
             return Get_Typ (B.Main.B_Name);
+
          when DRecord =>
             return EW_Abstract (B.Typ);
+
          when UCArray =>
             return Get_Typ (B.Content.B_Name);
+
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
       end case;
@@ -331,8 +352,14 @@ package body Why.Gen.Binders is
    begin
       for Index in Arr'Range loop
          case Arr (Index).Kind is
-            when Regular | Concurrent_Self => Count := Count + 1;
-            when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
+            when Regular
+               | Concurrent_Self
+            =>
+               Count := Count + 1;
+
+            when UCArray =>
+               Count := Count + 1 + 2 * Arr (Index).Dim;
+
             when DRecord =>
                if Arr (Index).Fields.Present then
                   Count := Count + 1;
@@ -346,7 +373,8 @@ package body Why.Gen.Binders is
                if Arr (Index).Tag.Present then
                   Count := Count + 1;
                end if;
-            when Func    => raise Program_Error;
+
+            when Func => raise Program_Error;
          end case;
       end loop;
       return Count;
@@ -360,7 +388,9 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular | Concurrent_Self =>
+            when Regular
+               | Concurrent_Self
+            =>
                declare
                   Local_Name : constant String :=
                     (if Present (B.Main.Ada_Node)
@@ -374,6 +404,7 @@ package body Why.Gen.Binders is
                        Name     => Local_Name,
                        Typ      => Get_Typ (B.Main.B_Name));
                end;
+
             when UCArray =>
                declare
                   Local_Name : constant String :=
@@ -386,6 +417,7 @@ package body Why.Gen.Binders is
                        Name     => Local_Name,
                        Typ      => Get_Typ (B.Content.B_Name));
                end;
+
             when DRecord =>
                declare
                   Local_Name : constant String :=
@@ -412,6 +444,7 @@ package body Why.Gen.Binders is
                           Typ      => Get_Typ (B.Fields.Binder.B_Name));
                   end if;
                end;
+
             when Func => raise Program_Error;
          end case;
       end loop;
@@ -1163,12 +1196,17 @@ package body Why.Gen.Binders is
    begin
       case E.Kind is
          when Func => raise Program_Error;
-         when Regular | Concurrent_Self =>
+
+         when Regular
+            | Concurrent_Self
+         =>
             T := +E.Main.B_Name;
             Needs_Deref := E.Main.Mutable;
+
          when UCArray =>
             T := +E.Content.B_Name;
             Needs_Deref := E.Content.Mutable;
+
          when DRecord =>
             T := Record_From_Split_Form (E, Ref_Allowed);
       end case;
@@ -1195,9 +1233,12 @@ package body Why.Gen.Binders is
             Cur : Item_Type renames A (Index);
          begin
             case Cur.Kind is
-               when Regular | Concurrent_Self =>
+               when Regular
+                  | Concurrent_Self
+               =>
                   Result (Count) := Cur.Main;
                   Count := Count + 1;
+
                when UCArray =>
                   Result (Count) := Cur.Content;
                   Count := Count + 1;
@@ -1210,6 +1251,7 @@ package body Why.Gen.Binders is
                         others => <>);
                      Count := Count + 2;
                   end loop;
+
                when DRecord =>
                   if Cur.Fields.Present then
                      Result (Count) := Cur.Fields.Binder;
@@ -1231,7 +1273,8 @@ package body Why.Gen.Binders is
                         others => <>);
                      Count := Count + 1;
                   end if;
-               when Func    =>
+
+               when Func =>
                   raise Program_Error;
             end case;
          end;

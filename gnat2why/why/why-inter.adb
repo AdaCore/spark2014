@@ -379,8 +379,11 @@ package body Why.Inter is
       Kind : constant EW_Type := Get_Type_Kind (W);
    begin
       case Kind is
-         when EW_Abstract | EW_Split =>
+         when EW_Abstract
+            | EW_Split
+         =>
             return Base_Why_Type (Get_Ada_Node (+W));
+
          when others =>
             return W;
       end case;
@@ -645,7 +648,10 @@ package body Why.Inter is
          when Entry_Kind =>
             return WF_Context;
 
-         when E_Function | E_Procedure | E_Subprogram_Body =>
+         when E_Function
+            | E_Procedure
+            | E_Subprogram_Body
+         =>
             declare
                Decl_E : constant Entity_Id := Unique_Entity (E);
             begin

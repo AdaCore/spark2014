@@ -274,8 +274,9 @@ package body SPARK_Rewrite is
                   when Subprogram_Kind =>
                      begin
                         case Nkind (Parent (Parent (E))) is
-                           when N_Subprogram_Body        |
-                                N_Subprogram_Declaration =>
+                           when N_Subprogram_Body
+                              | N_Subprogram_Declaration
+                           =>
                               Register_Entity (E);
 
                            when others =>
@@ -286,12 +287,14 @@ package body SPARK_Rewrite is
                   when E_Entry =>
                      Register_Entity (E);
 
-                  when E_Constant |
-                       E_Variable =>
+                  when E_Constant
+                     | E_Variable
+                  =>
                      begin
                         case Nkind (Parent (E)) is
-                           when N_Object_Declaration     |
-                                N_Iterator_Specification =>
+                           when N_Object_Declaration
+                              | N_Iterator_Specification
+                           =>
                               Register_Entity (E);
 
                            when others =>
@@ -299,9 +302,10 @@ package body SPARK_Rewrite is
                         end case;
                      end;
 
-                  when E_Abstract_State |
-                       E_Loop_Parameter |
-                       Formal_Kind      =>
+                  when E_Abstract_State
+                     | E_Loop_Parameter
+                     | Formal_Kind
+                  =>
                      Register_Entity (E);
 
                   when others =>
@@ -344,8 +348,9 @@ package body SPARK_Rewrite is
                   Register_Entity (Defining_Entity (N));
                end if;
 
-            when N_Discriminant_Specification |
-                 N_Object_Declaration         =>
+            when N_Discriminant_Specification
+               | N_Object_Declaration
+            =>
                Register_Entity (Defining_Entity (N));
 
             when N_Parameter_Specification =>
@@ -381,7 +386,9 @@ package body SPARK_Rewrite is
             when N_Real_Literal =>
                Rewrite_Real_Literal (N);
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier
+               | N_Expanded_Name
+            =>
                Rewrite_Identifier (N);
 
             when N_Subprogram_Call =>

@@ -61,9 +61,9 @@ package body Why.Images is
    function Img (Ty : EW_Type) return String is
    begin
       case Ty is
-         when EW_Builtin => return "builtin";
+         when EW_Builtin  => return "builtin";
          when EW_Abstract => return "[abstract node]";
-         when EW_Split => return "[split node]";
+         when EW_Split    => return "[split node]";
       end case;
    end Img;
 
@@ -382,6 +382,7 @@ package body Why.Images is
             else
                P (O, "true");
             end if;
+
          when EW_False =>
             if Domain in EW_Prog | EW_Term | EW_Pterm then
                P (O, "False");
@@ -419,10 +420,13 @@ package body Why.Images is
       case Value is
          when EW_Term =>
             P (O, "[term]");
+
          when EW_Pred =>
             P (O, "[predicate]");
+
          when EW_Prog =>
             P (O, "[program]");
+
          when EW_Pterm =>
             P (O, "[program term]");
       end case;
@@ -433,8 +437,10 @@ package body Why.Images is
       case Value is
          when EW_Import        =>
             P (O, "import");
+
          when EW_Export        =>
             P (O, "export");
+
          when EW_Clone_Default =>
             P (O, "      ");  --  for alignment of include declarations
       end case;
@@ -451,6 +457,7 @@ package body Why.Images is
             else
                P (O, "theory");
             end if;
+
          when EW_Module =>
             P (O, "module");
       end case;
@@ -461,14 +468,19 @@ package body Why.Images is
       case Value is
          when EW_Type_Subst =>
             P (O, "type");
+
          when EW_Function   =>
             P (O, "function");
+
          when EW_Predicate  =>
             P (O, "predicate");
+
          when EW_Namepace   =>
             P (O, "namespace");
+
          when EW_Lemma      =>
             P (O, "lemma");
+
          when EW_Goal       =>
             P (O, "goal");
       end case;
@@ -479,8 +491,10 @@ package body Why.Images is
       case Value is
          when EW_Assert =>
             P (O, "assert");
+
          when EW_Check =>
             P (O, "check");
+
          when EW_Assume =>
             P (O, "assume");
       end case;

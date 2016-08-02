@@ -346,19 +346,22 @@ package body Why.Atree.Sprint is
          end;
       else
          case Get_Domain (+Node) is
-         when EW_Term | EW_Pred | EW_Pterm =>
-            Print_Node (+Name);
-            P (O, " ");
-            Print_List (+Args, Separator => " ");
+            when EW_Term
+               | EW_Pred
+               | EW_Pterm
+            =>
+               Print_Node (+Name);
+               P (O, " ");
+               Print_List (+Args, Separator => " ");
 
-         when EW_Prog =>
-            Print_Node (+Name);
+            when EW_Prog =>
+               Print_Node (+Name);
 
-            if not Is_Empty (+Args) then
-               P (O, "(");
-               Print_List (+Args, Separator =>  ") (");
-               P (O, ")");
-            end if;
+               if not Is_Empty (+Args) then
+                  P (O, "(");
+                  Print_List (+Args, Separator =>  ") (");
+                  P (O, ")");
+               end if;
          end case;
 
       end if;
@@ -881,7 +884,9 @@ package body Why.Atree.Sprint is
       Def         : constant W_Expr_Id := Get_Def (Node);
    begin
       case Get_Domain (+Node) is
-         when EW_Term | EW_Pterm =>
+         when EW_Term
+            | EW_Pterm
+         =>
             P (O, "function ");
 
             Print_Node (+Name);
@@ -1342,13 +1347,14 @@ package body Why.Atree.Sprint is
       end if;
 
       case N_Kind is
-         when W_Raise |
-              W_While_Loop |
-              W_Abstract_Expr |
-              W_Any_Expr |
-              W_Assert |
-              W_Assignment |
-              W_Binding_Ref =>
+         when W_Raise
+            | W_While_Loop
+            | W_Abstract_Expr
+            | W_Any_Expr
+            | W_Assert
+            | W_Assignment
+            | W_Binding_Ref
+         =>
             --  Nodes where the location tag has to be printed and when it can
             --  be printed before the nodes.
             --  Note that the location tag has to be printed also inside the

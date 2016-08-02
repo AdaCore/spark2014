@@ -752,19 +752,22 @@ package body SPARK_Util is
    function Get_Range (N : Node_Id) return Node_Id is
    begin
       case Nkind (N) is
-         when N_Range                           |
-              N_Real_Range_Specification        |
-              N_Signed_Integer_Type_Definition  |
-              N_Modular_Type_Definition         |
-              N_Floating_Point_Definition       |
-              N_Ordinary_Fixed_Point_Definition |
-              N_Decimal_Fixed_Point_Definition  =>
+         when N_Range
+            | N_Real_Range_Specification
+            | N_Signed_Integer_Type_Definition
+            | N_Modular_Type_Definition
+            | N_Floating_Point_Definition
+            | N_Ordinary_Fixed_Point_Definition
+            | N_Decimal_Fixed_Point_Definition
+         =>
             return N;
 
          when N_Subtype_Indication =>
             return Range_Expression (Constraint (N));
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier
+            | N_Expanded_Name
+         =>
             return Get_Range (Entity (N));
 
          when N_Defining_Identifier =>
@@ -887,24 +890,24 @@ package body SPARK_Util is
       Root := Unit (CU);
 
       case Nkind (Root) is
-         when N_Package_Body    |
-              N_Subprogram_Body =>
-
+         when N_Package_Body
+            | N_Subprogram_Body
+         =>
             return Is_Main_Cunit (Root);
 
-         when N_Package_Declaration            |
-              N_Generic_Package_Declaration    |
-              N_Subprogram_Declaration         |
-              N_Generic_Subprogram_Declaration =>
-
+         when N_Package_Declaration
+            | N_Generic_Package_Declaration
+            | N_Subprogram_Declaration
+            | N_Generic_Subprogram_Declaration
+         =>
             return False;
 
-         when N_Package_Renaming_Declaration           |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Subprogram_Renaming_Declaration        |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Procedure_Renaming_Declaration =>
-
+         when N_Package_Renaming_Declaration
+            | N_Generic_Package_Renaming_Declaration
+            | N_Subprogram_Renaming_Declaration
+            | N_Generic_Function_Renaming_Declaration
+            | N_Generic_Procedure_Renaming_Declaration
+         =>
             return False;
 
          when others =>
@@ -928,25 +931,25 @@ package body SPARK_Util is
       Root := Unit (CU);
 
       case Nkind (Root) is
-         when N_Package_Body    |
-              N_Subprogram_Body =>
-
+         when N_Package_Body
+            | N_Subprogram_Body
+         =>
             return False;
 
-         when N_Package_Declaration            |
-              N_Generic_Package_Declaration    |
-              N_Subprogram_Declaration         |
-              N_Generic_Subprogram_Declaration =>
-
+         when N_Package_Declaration
+            | N_Generic_Package_Declaration
+            | N_Subprogram_Declaration
+            | N_Generic_Subprogram_Declaration
+         =>
             return Is_Main_Cunit (Root)
               or else Is_Spec_Unit_Of_Main_Unit (Root);
 
-         when N_Package_Renaming_Declaration           |
-              N_Generic_Package_Renaming_Declaration   |
-              N_Subprogram_Renaming_Declaration        |
-              N_Generic_Function_Renaming_Declaration  |
-              N_Generic_Procedure_Renaming_Declaration =>
-
+         when N_Package_Renaming_Declaration
+            | N_Generic_Package_Renaming_Declaration
+            | N_Subprogram_Renaming_Declaration
+            | N_Generic_Function_Renaming_Declaration
+            | N_Generic_Procedure_Renaming_Declaration
+         =>
             return False;
 
          when others =>

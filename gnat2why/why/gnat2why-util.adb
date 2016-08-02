@@ -341,7 +341,9 @@ package body Gnat2Why.Util is
                   Labels.Include (Model_Projected);
                end if;
 
-            when Record_Kind | Array_Kind =>
+            when Record_Kind
+               | Array_Kind
+            =>
                Labels := Model_Trace;
                Labels.Include (Model_Projected);
 

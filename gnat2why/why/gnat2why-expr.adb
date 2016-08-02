@@ -807,6 +807,7 @@ package body Gnat2Why.Expr is
                      Def      => +Why_Expr,
                      Context  => +Res);
                end;
+
             when UCArray =>
 
                --  For objects in array split form, we produce:
@@ -871,7 +872,10 @@ package body Gnat2Why.Expr is
                      Def      => +Why_Expr,
                      Context  => +Res);
                end;
-            when Regular | Concurrent_Self =>
+
+            when Regular
+               | Concurrent_Self
+            =>
                declare
                   L_Id     : constant W_Identifier_Id :=
                     To_Why_Id (Lvalue, Typ => Why_Ty);
@@ -933,6 +937,7 @@ package body Gnat2Why.Expr is
                      end;
                   end if;
                end;
+
             when Func =>
                raise Program_Error;
             end case;
@@ -1355,8 +1360,7 @@ package body Gnat2Why.Expr is
 
             when others =>
                raise Unexpected_Node;
-
-         end  case;
+         end case;
       end Branch_Expr;
 
       Match_Domain : constant EW_Domain :=
@@ -1660,7 +1664,6 @@ package body Gnat2Why.Expr is
                   Arg_Cnt := Arg_Cnt + 1;
 
                when Concurrent_Self =>
-
                   declare
                      Prot : constant W_Identifier_Id :=
                        Binders (Bind_Cnt).Main.B_Name;
@@ -1987,6 +1990,7 @@ package body Gnat2Why.Expr is
                         Arg_Cnt := Arg_Cnt + 2;
                      end loop;
                   end;
+
                when Func    =>
                   raise Program_Error;
             end case;
@@ -3671,16 +3675,23 @@ package body Gnat2Why.Expr is
       Is_Range : Boolean;
    begin
       case Nkind (Choice) is
-         when N_Subtype_Indication | N_Range =>
+         when N_Subtype_Indication
+            | N_Range
+         =>
             Is_Range := True;
-         when N_Identifier | N_Expanded_Name =>
+
+         when N_Identifier
+            | N_Expanded_Name
+         =>
             if Is_Type (Entity (Choice)) then
                Is_Range := True;
             else
                Is_Range := False;
             end if;
+
          when N_Others_Choice =>
             Is_Range := True;
+
          when others =>
             Is_Range := False;
       end case;
@@ -3772,7 +3783,9 @@ package body Gnat2Why.Expr is
          when N_Type_Conversion =>
             return Expected_Type_Of_Prefix (Expression (N));
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier
+            | N_Expanded_Name
+         =>
             declare
                Ent : constant Entity_Id := Entity (N);
             begin
@@ -3783,6 +3796,7 @@ package body Gnat2Why.Expr is
                     (Ada_Ent_To_Why.Element (Symbol_Table, Ent));
                end if;
             end;
+
          when N_Slice =>
             return EW_Abstract (Unique_Entity (Etype (N)));
 
@@ -3950,6 +3964,7 @@ package body Gnat2Why.Expr is
          case Binders (Bind_Cnt).Kind is
             when Concurrent_Self =>
                null;
+
             when Regular =>
                if Needs_Temporary_Ref
                  (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
@@ -4476,6 +4491,7 @@ package body Gnat2Why.Expr is
                      Let_Index := Let_Index + 1;
                   end;
                end if;
+
             when Func    => raise Program_Error;
          end case;
 
@@ -4721,11 +4737,15 @@ package body Gnat2Why.Expr is
       --  Temporary refs are needed for out or in out parameters that
       --  need a conversion or who are not an identifier.
       case Ekind (Formal) is
-         when E_In_Out_Parameter | E_Out_Parameter =>
+         when E_In_Out_Parameter
+            | E_Out_Parameter
+         =>
             return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
               or else not Simple_Actual;
+
          when E_In_Parameter =>
             return Has_Async_Writers (Direct_Mapping_Id (Formal));
+
          when others =>
             raise Program_Error;
       end case;
@@ -4784,10 +4804,14 @@ package body Gnat2Why.Expr is
          Expr : in out W_Prog_Id) is
       begin
          case Nkind (N) is
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier
+               | N_Expanded_Name
+            =>
                null;
 
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
                   N := Expression (N);
                   Expr :=
                     +Insert_Simple_Conversion
@@ -4795,7 +4819,10 @@ package body Gnat2Why.Expr is
                        Expr   => +Expr,
                        To     => Type_Of_Node (Etype (N)));
 
-            when N_Selected_Component | N_Indexed_Component | N_Slice =>
+            when N_Selected_Component
+               | N_Indexed_Component
+               | N_Slice
+            =>
                declare
                   Prefix_Type : constant W_Type_Id :=
                     Expected_Type_Of_Prefix (Prefix (N));
@@ -4965,7 +4992,9 @@ package body Gnat2Why.Expr is
                                                Context  => +Result);
                end;
 
-            when Func | Concurrent_Self =>
+            when Func
+               | Concurrent_Self
+            =>
                raise Program_Error;
             end case;
          end;
@@ -5160,10 +5189,7 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-         when N_Op_Minus =>
-
-            --  unary minus
-
+         when N_Op_Minus =>  --  unary minus
             declare
                Typ : constant W_Type_Id := Base_Why_Type (Right_Type);
 
@@ -5208,10 +5234,7 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when N_Op_Plus =>
-
-            --  unary plus
-
+         when N_Op_Plus =>  --  unary plus
             T := Right;
 
          when N_Op_Abs =>
@@ -5231,7 +5254,9 @@ package body Gnat2Why.Expr is
                     Typ     => Typ);
             end;
 
-         when N_Op_Add | N_Op_Subtract =>
+         when N_Op_Add
+            | N_Op_Subtract
+         =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types
             declare
@@ -5470,7 +5495,9 @@ package body Gnat2Why.Expr is
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
-         when N_Op_Rem | N_Op_Mod =>
+         when N_Op_Rem
+            | N_Op_Mod
+         =>
             declare
                Base : constant W_Type_Id :=
                  Base_Why_Type (Left_Type, Right_Type);
@@ -5566,7 +5593,10 @@ package body Gnat2Why.Expr is
                end if;
             end if;
 
-         when N_Op_And | N_Op_Or | N_Op_Xor =>
+         when N_Op_And
+            | N_Op_Or
+            | N_Op_Xor
+         =>
             if Has_Array_Type (Left_Type) then
                T := Transform_Array_Logical_Op
                  (Op        => Op,
@@ -5619,7 +5649,6 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Op_Concat =>
-
             T := Transform_Concatenation
               (Left               => Left,
                Right              => Right,
@@ -5797,8 +5826,9 @@ package body Gnat2Why.Expr is
       Result : W_Expr_Id;
    begin
       case Nkind (N) is
-         when N_Selected_Component | N_Identifier =>
-
+         when N_Selected_Component
+            | N_Identifier
+         =>
             --  In fact identifiers can refer to components in the case of
             --  protected objects. But this is the only case, and we assert
             --  this here.
@@ -6084,8 +6114,9 @@ package body Gnat2Why.Expr is
             --  treatment would factor out the code of Transform_Declaration
             --  to possibly generate an assumption here.
 
-            when N_Subtype_Declaration   |
-                 N_Full_Type_Declaration =>
+            when N_Subtype_Declaration
+               | N_Full_Type_Declaration
+            =>
                null;
 
             when N_Object_Declaration =>
@@ -6109,7 +6140,8 @@ package body Gnat2Why.Expr is
                end;
 
             when N_Null_Statement
-               | N_Freeze_Entity =>
+               | N_Freeze_Entity
+            =>
                null;
 
             when N_Pragma =>
@@ -6148,8 +6180,9 @@ package body Gnat2Why.Expr is
             --  treatment would factor out the code of Transform_Declaration
             --  to possibly generate an assumption here.
 
-            when N_Subtype_Declaration   |
-                 N_Full_Type_Declaration =>
+            when N_Subtype_Declaration
+               | N_Full_Type_Declaration
+            =>
                null;
 
             when N_Object_Declaration =>
@@ -6165,7 +6198,8 @@ package body Gnat2Why.Expr is
                   Id);
 
             when N_Null_Statement
-               | N_Freeze_Entity =>
+               | N_Freeze_Entity
+            =>
                null;
 
             when N_Pragma =>
@@ -7198,6 +7232,7 @@ package body Gnat2Why.Expr is
                                              Expr   => Indexes (Integer (Dim))
                                             );
                         end;
+
                      when N_Aggregate =>
                         pragma Assert (Dim < Num_Dim and then Dim = 1);
 
@@ -7252,6 +7287,7 @@ package body Gnat2Why.Expr is
 
                            Rng_Expr := Conjunct;
                         end;
+
                      when others =>
                         Arg_Choice :=
                           +Ada_Ent_To_Why.Element (Args, Choice).Main.B_Name;
@@ -7728,7 +7764,7 @@ package body Gnat2Why.Expr is
             when N_Op_And => Array_Theory.Andb,
             when N_Op_Or  => Array_Theory.Orb,
             when N_Op_Xor => Array_Theory.Xorb,
-            when others => raise Program_Error);
+            when others   => raise Program_Error);
 
       Left_Length  : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => Left_Expr, Dim => 1);
@@ -8210,8 +8246,9 @@ package body Gnat2Why.Expr is
          when Attribute_Old =>
             T := Transform_Attribute_Old (Var, Domain, Params);
 
-         when Attribute_Pred | Attribute_Succ =>
-
+         when Attribute_Pred
+            | Attribute_Succ
+         =>
             --  'Succ and 'Pred on floating-point types are modelled as calls
             --  to logic functions next_representable and prev_representable
             --  for the corresponding type. The value of these functions should
@@ -8331,7 +8368,10 @@ package body Gnat2Why.Expr is
                                     Params);
             end;
 
-         when Attribute_First | Attribute_Last | Attribute_Length =>
+         when Attribute_First
+            | Attribute_Last
+            | Attribute_Length
+         =>
             declare
                Ty_Ent : constant Entity_Id :=
                  Unique_Entity (Etype (Var));
@@ -8680,10 +8720,11 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         when Attribute_Ceiling    |
-              Attribute_Floor      |
-              Attribute_Rounding   |
-              Attribute_Truncation =>
+         when Attribute_Ceiling
+            | Attribute_Floor
+            | Attribute_Rounding
+            | Attribute_Truncation
+         =>
             declare
                Arg  : constant W_Expr_Id :=
                         Transform_Expr (First (Expressions (Expr)),
@@ -8731,7 +8772,9 @@ package body Gnat2Why.Expr is
                                  Typ      => Base);
             end;
 
-         when Attribute_Min | Attribute_Max =>
+         when Attribute_Min
+            | Attribute_Max
+         =>
             declare
                Ada_Ty : constant Entity_Id := Etype (Expr);
                Base : constant W_Type_Id := Base_Why_Type (Ada_Ty);
@@ -9557,7 +9600,9 @@ package body Gnat2Why.Expr is
 
             end;
 
-         when N_Subtype_Declaration | N_Full_Type_Declaration =>
+         when N_Subtype_Declaration
+            | N_Full_Type_Declaration
+         =>
             declare
                Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
                Base : Entity_Id := Get_Base_Type (Decl);
@@ -9622,7 +9667,9 @@ package body Gnat2Why.Expr is
                         end if;
                      end;
 
-                  when E_Record_Type | E_Record_Subtype =>
+                  when E_Record_Type
+                     | E_Record_Subtype
+                  =>
                      declare
                         Typ  : Node_Id;
                      begin
@@ -9672,7 +9719,7 @@ package body Gnat2Why.Expr is
                      | E_Protected_Type
                      | E_Task_Type
                      | E_Task_Subtype
-                     =>
+                  =>
                      null;
 
                   when others =>
@@ -9687,7 +9734,9 @@ package body Gnat2Why.Expr is
          when N_Pragma =>
             R := Transform_Pragma (Decl, Force => False);
 
-         when N_Raise_xxx_Error | N_Raise_Statement =>
+         when N_Raise_xxx_Error
+            | N_Raise_Statement
+         =>
             R := Transform_Raise (Decl);
 
          when N_Package_Declaration =>
@@ -10266,7 +10315,9 @@ package body Gnat2Why.Expr is
                T := +Id;
             end;
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier
+            | N_Expanded_Name
+         =>
             T := Transform_Identifier (Local_Params, Expr,
                                        Entity (Expr),
                                        Domain);
@@ -10353,8 +10404,10 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-         when N_Op_Minus | N_Op_Plus | N_Op_Abs =>
-
+         when N_Op_Minus
+            | N_Op_Plus
+            | N_Op_Abs
+         =>
             --  unary minus
             --  unary plus
 
@@ -10372,7 +10425,9 @@ package body Gnat2Why.Expr is
                   Ada_Node    => Expr);
             end;
 
-         when N_Op_Add | N_Op_Subtract =>
+         when N_Op_Add
+            | N_Op_Subtract
+         =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types.
             declare
@@ -10401,7 +10456,9 @@ package body Gnat2Why.Expr is
                   Ada_Node    => Expr);
             end;
 
-         when N_Op_Multiply | N_Op_Divide =>
+         when N_Op_Multiply
+            | N_Op_Divide
+         =>
             --  The arguments of arithmetic functions have to be of base
             --  scalar types.
             declare
@@ -10453,7 +10510,9 @@ package body Gnat2Why.Expr is
                   Ada_Node    => Expr);
             end;
 
-         when N_Op_Rem | N_Op_Mod =>
+         when N_Op_Rem
+            | N_Op_Mod
+         =>
             declare
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
@@ -10546,8 +10605,10 @@ package body Gnat2Why.Expr is
                   Ada_Node    => Expr);
             end if;
 
-         when N_Op_And | N_Op_Or | N_Op_Xor =>
-
+         when N_Op_And
+            | N_Op_Or
+            | N_Op_Xor
+         =>
             if Has_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Subdomain : constant EW_Domain :=
@@ -10714,9 +10775,9 @@ package body Gnat2Why.Expr is
                       Typ       => Get_Type (Then_Expr));
             end;
 
-         when N_Qualified_Expression |
-              N_Type_Conversion      =>
-
+         when N_Qualified_Expression
+            | N_Type_Conversion
+         =>
             --  When converting between elementary types, only require that the
             --  converted expression is translated into a value of the expected
             --  base type. Necessary checks, rounding and conversions will
@@ -10806,7 +10867,9 @@ package body Gnat2Why.Expr is
                T := Transform_Function_Call (Expr, Domain, Local_Params);
             end if;
 
-         when N_Indexed_Component | N_Selected_Component =>
+         when N_Indexed_Component
+            | N_Selected_Component
+         =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
                                      (Prefix (Expr), Domain, Local_Params),
@@ -11171,12 +11234,16 @@ package body Gnat2Why.Expr is
                   else
                      T := +E.For_Logic.B_Name;
                   end if;
-               when Regular | Concurrent_Self =>
+
+               when Regular
+                  | Concurrent_Self
+               =>
                   T := +E.Main.B_Name;
+
                when UCArray =>
                   T := +E.Content.B_Name;
-               when DRecord =>
 
+               when DRecord =>
                   T := Record_From_Split_Form (E, Params.Ref_Allowed);
                   Is_Deref := True;
 
@@ -11899,7 +11966,9 @@ package body Gnat2Why.Expr is
          --  Precondition and Postcondition (for those pragmas declared in
          --  a subprogram body), these pragmas are translated elsewhere.
 
-         when Pragma_Precondition | Pragma_Postcondition =>
+         when Pragma_Precondition
+            | Pragma_Postcondition
+         =>
             if Force then
                declare
                   Expr   : constant Node_Id :=
@@ -11925,7 +11994,9 @@ package body Gnat2Why.Expr is
                return +Void;
             end if;
 
-         when Pragma_Interrupt_Priority | Pragma_Priority =>
+         when Pragma_Interrupt_Priority
+            | Pragma_Priority
+         =>
             return Transform_Priority_Pragmas (Prag);
 
          --  Pragma Inspection_Point is ignored, but we insert a call to a
@@ -11940,7 +12011,8 @@ package body Gnat2Why.Expr is
 
          when Pragma_Invariant
             | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class =>
+            | Pragma_Type_Invariant_Class
+         =>
             return +Void;
 
          --  ??? Currently ignored, see NA03-001
@@ -11967,105 +12039,107 @@ package body Gnat2Why.Expr is
          --  "Yes".
          --  Note: pragma Assert is transformed into an
          --  instance of pragma Check by the front-end.
-         when Pragma_Assertion_Policy             |
-              Pragma_Atomic                       |
-              Pragma_Atomic_Components            |
-              Pragma_Attach_Handler               |
-              Pragma_Convention                   |
-              Pragma_Elaborate                    |
-              Pragma_Elaborate_All                |
-              Pragma_Elaborate_Body               |
-              Pragma_Export                       |
-              Pragma_Import                       |
-              Pragma_Independent                  |
-              Pragma_Independent_Components       |
-              Pragma_Inline                       |
-              Pragma_Linker_Options               |
-              Pragma_List                         |
-              Pragma_No_Return                    |
-              Pragma_Normalize_Scalars            |
-              Pragma_Optimize                     |
-              Pragma_Pack                         |
-              Pragma_Page                         |
-              Pragma_Partition_Elaboration_Policy |
-              Pragma_Preelaborable_Initialization |
-              Pragma_Preelaborate                 |
-              Pragma_Profile                      |
-              Pragma_Pure                         |
-              Pragma_Restrictions                 |
-              Pragma_Reviewable                   |
-              Pragma_Suppress                     |
-              Pragma_Unsuppress                   |
-              Pragma_Volatile                     |
-              Pragma_Volatile_Components          |
-              Pragma_Volatile_Full_Access         |
+         when Pragma_Assertion_Policy
+            | Pragma_Atomic
+            | Pragma_Atomic_Components
+            | Pragma_Attach_Handler
+            | Pragma_Convention
+            | Pragma_Elaborate
+            | Pragma_Elaborate_All
+            | Pragma_Elaborate_Body
+            | Pragma_Export
+            | Pragma_Import
+            | Pragma_Independent
+            | Pragma_Independent_Components
+            | Pragma_Inline
+            | Pragma_Linker_Options
+            | Pragma_List
+            | Pragma_No_Return
+            | Pragma_Normalize_Scalars
+            | Pragma_Optimize
+            | Pragma_Pack
+            | Pragma_Page
+            | Pragma_Partition_Elaboration_Policy
+            | Pragma_Preelaborable_Initialization
+            | Pragma_Preelaborate
+            | Pragma_Profile
+            | Pragma_Pure
+            | Pragma_Restrictions
+            | Pragma_Reviewable
+            | Pragma_Suppress
+            | Pragma_Unsuppress
+            | Pragma_Volatile
+            | Pragma_Volatile_Components
+            | Pragma_Volatile_Full_Access
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes", whose effect on proof is taken care of somewhere else.
          --  Note: pragmas Assert_And_Cut, Assume, and
          --  Loop_Invariant are transformed into instances of
          --  pragma Check by the front-end.
-              Pragma_Abstract_State               |
-              Pragma_Assume_No_Invalid_Values     |
-              Pragma_Async_Readers                |
-              Pragma_Async_Writers                |
-              Pragma_Constant_After_Elaboration   |
-              Pragma_Contract_Cases               |
-              Pragma_Depends                      |
-              Pragma_Default_Initial_Condition    |
-              Pragma_Effective_Reads              |
-              Pragma_Effective_Writes             |
-              Pragma_Ghost                        |
-              Pragma_Global                       |
-              Pragma_Initializes                  |
-              Pragma_Initial_Condition            |
-              Pragma_Loop_Variant                 |
-              Pragma_Part_Of                      |
-              Pragma_Refined_Depends              |
-              Pragma_Refined_Global               |
-              Pragma_Refined_Post                 |
-              Pragma_Refined_State                |
-              Pragma_SPARK_Mode                   |
-              Pragma_Unevaluated_Use_Of_Old       |
-              Pragma_Volatile_Function            |
+            | Pragma_Abstract_State
+            | Pragma_Assume_No_Invalid_Values
+            | Pragma_Async_Readers
+            | Pragma_Async_Writers
+            | Pragma_Constant_After_Elaboration
+            | Pragma_Contract_Cases
+            | Pragma_Depends
+            | Pragma_Default_Initial_Condition
+            | Pragma_Effective_Reads
+            | Pragma_Effective_Writes
+            | Pragma_Ghost
+            | Pragma_Global
+            | Pragma_Initializes
+            | Pragma_Initial_Condition
+            | Pragma_Loop_Variant
+            | Pragma_Part_Of
+            | Pragma_Refined_Depends
+            | Pragma_Refined_Global
+            | Pragma_Refined_Post
+            | Pragma_Refined_State
+            | Pragma_SPARK_Mode
+            | Pragma_Unevaluated_Use_Of_Old
+            | Pragma_Volatile_Function
 
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
          --  Note: pragma Debug is removed by the front-end.
-              Pragma_Ada_83                       |
-              Pragma_Ada_95                       |
-              Pragma_Ada_05                       |
-              Pragma_Ada_2005                     |
-              Pragma_Ada_12                       |
-              Pragma_Ada_2012                     |
-              Pragma_Annotate                     |
-              Pragma_Check_Policy                 |
-              Pragma_Ignore_Pragma                |
-              Pragma_Inline_Always                |
-              Pragma_Linker_Section               |
-              Pragma_No_Elaboration_Code_All      |
-              Pragma_No_Tagged_Streams            |
-              Pragma_Pure_Function                |
-              Pragma_Restriction_Warnings         |
-              Pragma_Secondary_Stack_Size         |
-              Pragma_Style_Checks                 |
-              Pragma_Test_Case                    |
-              Pragma_Unmodified                   |
-              Pragma_Unreferenced                 |
-              Pragma_Unused                       |
-              Pragma_Validity_Checks              |
-              Pragma_Warnings                     |
-              Pragma_Weak_External                =>
+            | Pragma_Ada_83
+            | Pragma_Ada_95
+            | Pragma_Ada_05
+            | Pragma_Ada_2005
+            | Pragma_Ada_12
+            | Pragma_Ada_2012
+            | Pragma_Annotate
+            | Pragma_Check_Policy
+            | Pragma_Ignore_Pragma
+            | Pragma_Inline_Always
+            | Pragma_Linker_Section
+            | Pragma_No_Elaboration_Code_All
+            | Pragma_No_Tagged_Streams
+            | Pragma_Pure_Function
+            | Pragma_Restriction_Warnings
+            | Pragma_Secondary_Stack_Size
+            | Pragma_Style_Checks
+            | Pragma_Test_Case
+            | Pragma_Unmodified
+            | Pragma_Unreferenced
+            | Pragma_Unused
+            | Pragma_Validity_Checks
+            | Pragma_Warnings
+            | Pragma_Weak_External
+         =>
             return +Void;
 
          --  Group 1d - pragma that are re-written and/or removed
          --  by the front-end in GNATprove, so they should
          --  never be seen here.
-         when Pragma_Assert                       |
-              Pragma_Assert_And_Cut               |
-              Pragma_Assume                       |
-              Pragma_Debug                        |
-              Pragma_Loop_Invariant               =>
+         when Pragma_Assert
+            | Pragma_Assert_And_Cut
+            | Pragma_Assume
+            | Pragma_Debug
+            | Pragma_Loop_Invariant
+         =>
             raise Program_Error;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than
@@ -12077,150 +12151,151 @@ package body Gnat2Why.Expr is
          --  ignored or to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
-         when Pragma_Abort_Defer                 |
-           Pragma_Allow_Integer_Address          |
-           Pragma_Attribute_Definition           |
-           Pragma_C_Pass_By_Copy                 |
-           Pragma_Check_Float_Overflow           |
-           Pragma_Check_Name                     |
-           Pragma_Comment                        |
-           Pragma_Common_Object                  |
-           Pragma_Compile_Time_Error             |
-           Pragma_Compile_Time_Warning           |
-           Pragma_Compiler_Unit                  |
-           Pragma_Compiler_Unit_Warning          |
-           Pragma_Complete_Representation        |
-           Pragma_Complex_Representation         |
-           Pragma_Component_Alignment            |
-           Pragma_Controlled                     |
-           Pragma_Convention_Identifier          |
-           Pragma_CPP_Class                      |
-           Pragma_CPP_Constructor                |
-           Pragma_CPP_Virtual                    |
-           Pragma_CPP_Vtable                     |
-           Pragma_CPU                            |
-           Pragma_Debug_Policy                   |
-           Pragma_Default_Scalar_Storage_Order   |
-           Pragma_Default_Storage_Pool           |
-           Pragma_Detect_Blocking                |
-           Pragma_Disable_Atomic_Synchronization |
-           Pragma_Dispatching_Domain             |
-           Pragma_Elaboration_Checks             |
-           Pragma_Eliminate                      |
-           Pragma_Enable_Atomic_Synchronization  |
-           Pragma_Export_Function                |
-           Pragma_Export_Object                  |
-           Pragma_Export_Procedure               |
-           Pragma_Export_Value                   |
-           Pragma_Export_Valued_Procedure        |
-           Pragma_Extend_System                  |
-           Pragma_Extensions_Allowed             |
-           Pragma_External                       |
-           Pragma_External_Name_Casing           |
-           Pragma_Fast_Math                      |
-           Pragma_Favor_Top_Level                |
-           Pragma_Finalize_Storage_Only          |
-           Pragma_Ident                          |
-           Pragma_Implementation_Defined         |
-           Pragma_Implemented                    |
-           Pragma_Implicit_Packing               |
-           Pragma_Import_Function                |
-           Pragma_Import_Object                  |
-           Pragma_Import_Procedure               |
-           Pragma_Import_Valued_Procedure        |
-           Pragma_Initialize_Scalars             |
-           Pragma_Inline_Generic                 |
-           Pragma_Interface                      |
-           Pragma_Interface_Name                 |
-           Pragma_Interrupt_Handler              |
-           Pragma_Interrupt_State                |
-           Pragma_Keep_Names                     |
-           Pragma_License                        |
-           Pragma_Link_With                      |
-           Pragma_Linker_Alias                   |
-           Pragma_Linker_Constructor             |
-           Pragma_Linker_Destructor              |
-           Pragma_Loop_Optimize                  |
-           Pragma_Machine_Attribute              |
-           Pragma_Main                           |
-           Pragma_Main_Storage                   |
-           Pragma_Max_Queue_Length               |
-           Pragma_Memory_Size                    |
-           Pragma_No_Body                        |
-           Pragma_No_Inline                      |
-           Pragma_No_Run_Time                    |
-           Pragma_No_Strict_Aliasing             |
-           Pragma_Obsolescent                    |
-           Pragma_Optimize_Alignment             |
-           Pragma_Ordered                        |
-           Pragma_Overriding_Renamings           |
-           Pragma_Passive                        |
-           Pragma_Persistent_BSS                 |
-           Pragma_Polling                        |
-           Pragma_Post                           |
-           Pragma_Post_Class                     |
-           Pragma_Pre                            |
-           Pragma_Predicate                      |
-           Pragma_Predicate_Failure              |
-           Pragma_Prefix_Exception_Messages      |
-           Pragma_Pre_Class                      |
-           Pragma_Priority_Specific_Dispatching  |
-           Pragma_Profile_Warnings               |
-           Pragma_Propagate_Exceptions           |
-           Pragma_Provide_Shift_Operators        |
-           Pragma_Psect_Object                   |
-           Pragma_Rational                       |
-           Pragma_Ravenscar                      |
-           Pragma_Relative_Deadline              |
-           Pragma_Remote_Access_Type             |
-           Pragma_Rename_Pragma                  |
-           Pragma_Restricted_Run_Time            |
-           Pragma_Share_Generic                  |
-           Pragma_Shared                         |
-           Pragma_Short_Circuit_And_Or           |
-           Pragma_Short_Descriptors              |
-           Pragma_Simple_Storage_Pool_Type       |
-           Pragma_Source_File_Name               |
-           Pragma_Source_File_Name_Project       |
-           Pragma_Source_Reference               |
-           Pragma_Static_Elaboration_Desired     |
-           Pragma_Storage_Unit                   |
-           Pragma_Stream_Convert                 |
-           Pragma_Subtitle                       |
-           Pragma_Suppress_All                   |
-           Pragma_Suppress_Debug_Info            |
-           Pragma_Suppress_Exception_Locations   |
-           Pragma_Suppress_Initialization        |
-           Pragma_System_Name                    |
-           Pragma_Task_Info                      |
-           Pragma_Task_Name                      |
-           Pragma_Task_Storage                   |
-           Pragma_Thread_Local_Storage           |
-           Pragma_Time_Slice                     |
-           Pragma_Title                          |
-           Pragma_Unchecked_Union                |
-           Pragma_Unimplemented_Unit             |
-           Pragma_Universal_Aliasing             |
-           Pragma_Universal_Data                 |
-           Pragma_Unreferenced_Objects           |
-           Pragma_Unreserve_All_Interrupts       |
-           Pragma_Use_VADS_Size                  |
-           Pragma_Warning_As_Error               |
-           Pragma_Wide_Character_Encoding        |
+         when Pragma_Abort_Defer
+            | Pragma_Allow_Integer_Address
+            | Pragma_Attribute_Definition
+            | Pragma_C_Pass_By_Copy
+            | Pragma_Check_Float_Overflow
+            | Pragma_Check_Name
+            | Pragma_Comment
+            | Pragma_Common_Object
+            | Pragma_Compile_Time_Error
+            | Pragma_Compile_Time_Warning
+            | Pragma_Compiler_Unit
+            | Pragma_Compiler_Unit_Warning
+            | Pragma_Complete_Representation
+            | Pragma_Complex_Representation
+            | Pragma_Component_Alignment
+            | Pragma_Controlled
+            | Pragma_Convention_Identifier
+            | Pragma_CPP_Class
+            | Pragma_CPP_Constructor
+            | Pragma_CPP_Virtual
+            | Pragma_CPP_Vtable
+            | Pragma_CPU
+            | Pragma_Debug_Policy
+            | Pragma_Default_Scalar_Storage_Order
+            | Pragma_Default_Storage_Pool
+            | Pragma_Detect_Blocking
+            | Pragma_Disable_Atomic_Synchronization
+            | Pragma_Dispatching_Domain
+            | Pragma_Elaboration_Checks
+            | Pragma_Eliminate
+            | Pragma_Enable_Atomic_Synchronization
+            | Pragma_Export_Function
+            | Pragma_Export_Object
+            | Pragma_Export_Procedure
+            | Pragma_Export_Value
+            | Pragma_Export_Valued_Procedure
+            | Pragma_Extend_System
+            | Pragma_Extensions_Allowed
+            | Pragma_External
+            | Pragma_External_Name_Casing
+            | Pragma_Fast_Math
+            | Pragma_Favor_Top_Level
+            | Pragma_Finalize_Storage_Only
+            | Pragma_Ident
+            | Pragma_Implementation_Defined
+            | Pragma_Implemented
+            | Pragma_Implicit_Packing
+            | Pragma_Import_Function
+            | Pragma_Import_Object
+            | Pragma_Import_Procedure
+            | Pragma_Import_Valued_Procedure
+            | Pragma_Initialize_Scalars
+            | Pragma_Inline_Generic
+            | Pragma_Interface
+            | Pragma_Interface_Name
+            | Pragma_Interrupt_Handler
+            | Pragma_Interrupt_State
+            | Pragma_Keep_Names
+            | Pragma_License
+            | Pragma_Link_With
+            | Pragma_Linker_Alias
+            | Pragma_Linker_Constructor
+            | Pragma_Linker_Destructor
+            | Pragma_Loop_Optimize
+            | Pragma_Machine_Attribute
+            | Pragma_Main
+            | Pragma_Main_Storage
+            | Pragma_Max_Queue_Length
+            | Pragma_Memory_Size
+            | Pragma_No_Body
+            | Pragma_No_Inline
+            | Pragma_No_Run_Time
+            | Pragma_No_Strict_Aliasing
+            | Pragma_Obsolescent
+            | Pragma_Optimize_Alignment
+            | Pragma_Ordered
+            | Pragma_Overriding_Renamings
+            | Pragma_Passive
+            | Pragma_Persistent_BSS
+            | Pragma_Polling
+            | Pragma_Post
+            | Pragma_Post_Class
+            | Pragma_Pre
+            | Pragma_Predicate
+            | Pragma_Predicate_Failure
+            | Pragma_Prefix_Exception_Messages
+            | Pragma_Pre_Class
+            | Pragma_Priority_Specific_Dispatching
+            | Pragma_Profile_Warnings
+            | Pragma_Propagate_Exceptions
+            | Pragma_Provide_Shift_Operators
+            | Pragma_Psect_Object
+            | Pragma_Rational
+            | Pragma_Ravenscar
+            | Pragma_Relative_Deadline
+            | Pragma_Remote_Access_Type
+            | Pragma_Rename_Pragma
+            | Pragma_Restricted_Run_Time
+            | Pragma_Share_Generic
+            | Pragma_Shared
+            | Pragma_Short_Circuit_And_Or
+            | Pragma_Short_Descriptors
+            | Pragma_Simple_Storage_Pool_Type
+            | Pragma_Source_File_Name
+            | Pragma_Source_File_Name_Project
+            | Pragma_Source_Reference
+            | Pragma_Static_Elaboration_Desired
+            | Pragma_Storage_Unit
+            | Pragma_Stream_Convert
+            | Pragma_Subtitle
+            | Pragma_Suppress_All
+            | Pragma_Suppress_Debug_Info
+            | Pragma_Suppress_Exception_Locations
+            | Pragma_Suppress_Initialization
+            | Pragma_System_Name
+            | Pragma_Task_Info
+            | Pragma_Task_Name
+            | Pragma_Task_Storage
+            | Pragma_Thread_Local_Storage
+            | Pragma_Time_Slice
+            | Pragma_Title
+            | Pragma_Unchecked_Union
+            | Pragma_Unimplemented_Unit
+            | Pragma_Universal_Aliasing
+            | Pragma_Universal_Data
+            | Pragma_Unreferenced_Objects
+            | Pragma_Unreserve_All_Interrupts
+            | Pragma_Use_VADS_Size
+            | Pragma_Warning_As_Error
+            | Pragma_Wide_Character_Encoding
 
-           --  Group 2b - Ada RM pragmas
-           Pragma_Discard_Names                  |
-           Pragma_Locking_Policy                 |
-           Pragma_Queuing_Policy                 |
-           Pragma_Task_Dispatching_Policy        |
-           Pragma_All_Calls_Remote               |
-           Pragma_Asynchronous                   |
-           Pragma_Remote_Call_Interface          |
-           Pragma_Remote_Types                   |
-           Pragma_Shared_Passive                 |
-           Pragma_Lock_Free                      |
-           Pragma_Storage_Size                   =>
+         --  Group 2b - Ada RM pragmas
 
+            | Pragma_Discard_Names
+            | Pragma_Locking_Policy
+            | Pragma_Queuing_Policy
+            | Pragma_Task_Dispatching_Policy
+            | Pragma_All_Calls_Remote
+            | Pragma_Asynchronous
+            | Pragma_Remote_Call_Interface
+            | Pragma_Remote_Types
+            | Pragma_Shared_Passive
+            | Pragma_Lock_Free
+            | Pragma_Storage_Size
+         =>
             return +Void;
       end case;
    end Transform_Pragma;
@@ -13637,11 +13712,12 @@ package body Gnat2Why.Expr is
       Assert_And_Cut := Why_Empty;
 
       case Nkind (Stmt_Or_Decl) is
-         when N_Label | N_Null_Statement =>
+         when N_Label
+            | N_Null_Statement
+         =>
             return +Void;
 
          when N_Assignment_Statement =>
-
             return Transform_Assignment_Statement (Stmt_Or_Decl);
 
          --  Translate a return statement by raising the predefined exception
@@ -13722,7 +13798,9 @@ package body Gnat2Why.Expr is
                return Sequence (Expr, Raise_Stmt);
             end;
 
-         when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+         when N_Procedure_Call_Statement
+            | N_Entry_Call_Statement
+         =>
             declare
                Nb_Of_Refs : Natural;
                Nb_Of_Lets : Natural;
@@ -13866,9 +13944,10 @@ package body Gnat2Why.Expr is
                     Domain    => EW_Prog);
             end;
 
-         when N_Object_Declaration    |
-              N_Subtype_Declaration   |
-              N_Full_Type_Declaration =>
+         when N_Object_Declaration
+            | N_Subtype_Declaration
+            | N_Full_Type_Declaration
+         =>
             return Transform_Declaration (Stmt_Or_Decl);
 
          when N_Loop_Statement =>
@@ -13903,7 +13982,9 @@ package body Gnat2Why.Expr is
 
             return Transform_Pragma (Stmt_Or_Decl, Force => False);
 
-         when N_Raise_xxx_Error | N_Raise_Statement =>
+         when N_Raise_xxx_Error
+            | N_Raise_Statement
+         =>
             return Transform_Raise (Stmt_Or_Decl);
 
          --  Freeze nodes do not have any impact on proof
@@ -13940,7 +14021,8 @@ package body Gnat2Why.Expr is
             | N_Subprogram_Declaration
             | N_Use_Package_Clause
             | N_Use_Type_Clause
-            | N_Validate_Unchecked_Conversion =>
+            | N_Validate_Unchecked_Conversion
+         =>
             return +Void;
 
          --  delay statements can be ignored for proof

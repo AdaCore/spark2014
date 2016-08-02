@@ -248,12 +248,18 @@ package body Flow.Analysis.Antialiasing is
       function Down_One_Level (N : Node_Id) return Node_Id is
       begin
          case Nkind (N) is
-            when N_Indexed_Component | N_Slice | N_Selected_Component =>
+            when N_Indexed_Component
+               | N_Slice
+               | N_Selected_Component
+            =>
                return Prefix (N);
-            when N_Type_Conversion |
-                 N_Unchecked_Type_Conversion |
-                 N_Qualified_Expression =>
+
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+               | N_Qualified_Expression
+            =>
                return Expression (N);
+
             when others =>
                raise Program_Error;
          end case;
@@ -559,7 +565,9 @@ package body Flow.Analysis.Antialiasing is
             --  that the type is by-reference. See O916-007.
             return Is_Elementary_Type (Etype (F));
 
-         when E_In_Out_Parameter | E_Out_Parameter =>
+         when E_In_Out_Parameter
+            | E_Out_Parameter
+         =>
             return False;
 
          when others =>
@@ -589,7 +597,9 @@ package body Flow.Analysis.Antialiasing is
          when Impossible =>
             return;
 
-         when Possible_Aliasing | Definite_Aliasing =>
+         when Possible_Aliasing
+            | Definite_Aliasing
+         =>
             null;
 
          when No_Aliasing =>
@@ -613,7 +623,9 @@ package body Flow.Analysis.Antialiasing is
          when Definite_Aliasing =>
             Append (Msg, " are aliased");
 
-         when Impossible | No_Aliasing =>
+         when Impossible
+            | No_Aliasing
+         =>
             Append (Msg, " proved");
       end case;
 
@@ -739,11 +751,13 @@ package body Flow.Analysis.Antialiasing is
                            B        => Get_Direct_Mapping_Id (R),
                            A_Formal => Formal,
                            B_Formal => Empty);
+
                      when Magic_String =>
                         --  If we don't have a name for the global, by
                         --  definition we can't possibly reference it in a
                         --  parameter.
                         null;
+
                      when others =>
                         raise Why.Unexpected_Node;
                   end case;
@@ -759,11 +773,13 @@ package body Flow.Analysis.Antialiasing is
                      B        => Get_Direct_Mapping_Id (W),
                      A_Formal => Formal,
                      B_Formal => Empty);
+
                when Magic_String =>
                   --  If we don't have a name for the global, by
                   --  definition we can't possibly reference it in a
                   --  parameter.
                   null;
+
                when others =>
                   raise Why.Unexpected_Node;
             end case;

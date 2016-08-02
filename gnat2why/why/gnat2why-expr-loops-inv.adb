@@ -440,7 +440,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       end if;
 
       case Status.Kind is
-         when Entire_Object | Discard =>
+         when Entire_Object
+            | Discard
+         =>
             null;
          when Record_Fields =>
             for E of Status.Field_Status loop
@@ -976,7 +978,8 @@ package body Gnat2Why.Expr.Loops.Inv is
               (Then_Statements (N), Loop_Writes, Keep_Local => False);
 
          when N_Entry_Call_Statement
-            | N_Procedure_Call_Statement =>
+            | N_Procedure_Call_Statement
+         =>
             Process_Call_Statement (N, Loop_Writes);
 
          --  Discard writes to variables local to a return statement
@@ -1006,58 +1009,58 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Loop_Statement =>
             Process_Loop_Statement (N, Loop_Writes, Keep_Local => False);
 
-         when N_Abstract_Subprogram_Declaration |
-              N_Delay_Relative_Statement        |
-              N_Delay_Until_Statement           |
-              N_Exception_Declaration           |
-              N_Exception_Renaming_Declaration  |
-              N_Exit_Statement                  |
-              N_Freeze_Entity                   |
-              N_Freeze_Generic_Entity           |
-              N_Full_Type_Declaration           |
-              N_Generic_Instantiation           |
-              N_Generic_Package_Declaration     |
-              N_Generic_Renaming_Declaration    |
-              N_Generic_Subprogram_Declaration  |
-              N_Implicit_Label_Declaration      |
-              N_Incomplete_Type_Declaration     |
-              N_Itype_Reference                 |
-              N_Label                           |
-              N_Null_Statement                  |
-              N_Number_Declaration              |
-              N_Object_Renaming_Declaration     |
-              N_Package_Body                    |
-              N_Package_Body_Stub               |
-              N_Package_Declaration             |
-              N_Package_Renaming_Declaration    |
-              N_Pragma                          |
-              N_Private_Extension_Declaration   |
-              N_Private_Type_Declaration        |
-              N_Protected_Body                  |
-              N_Protected_Body_Stub             |
-              N_Protected_Type_Declaration      |
-              N_Raise_Statement                 |
-              N_Raise_xxx_Error                 |
-              N_Representation_Clause           |
-              N_Simple_Return_Statement         |
-              N_Subprogram_Body                 |
-              N_Subprogram_Body_Stub            |
-              N_Subprogram_Declaration          |
-              N_Subprogram_Renaming_Declaration |
-              N_Subtype_Declaration             |
-              N_Task_Body                       |
-              N_Task_Body_Stub                  |
-              N_Task_Type_Declaration           |
-              N_Use_Package_Clause              |
-              N_Use_Type_Clause                 |
-              N_Validate_Unchecked_Conversion =>
+         when N_Abstract_Subprogram_Declaration
+            | N_Delay_Relative_Statement
+            | N_Delay_Until_Statement
+            | N_Exception_Declaration
+            | N_Exception_Renaming_Declaration
+            | N_Exit_Statement
+            | N_Freeze_Entity
+            | N_Freeze_Generic_Entity
+            | N_Full_Type_Declaration
+            | N_Generic_Instantiation
+            | N_Generic_Package_Declaration
+            | N_Generic_Renaming_Declaration
+            | N_Generic_Subprogram_Declaration
+            | N_Implicit_Label_Declaration
+            | N_Incomplete_Type_Declaration
+            | N_Itype_Reference
+            | N_Label
+            | N_Null_Statement
+            | N_Number_Declaration
+            | N_Object_Renaming_Declaration
+            | N_Package_Body
+            | N_Package_Body_Stub
+            | N_Package_Declaration
+            | N_Package_Renaming_Declaration
+            | N_pragma
+            | N_Private_Extension_Declaration
+            | N_Private_Type_Declaration
+            | N_Protected_Body
+            | N_Protected_Body_Stub
+            | N_Protected_Type_Declaration
+            | N_Raise_Statement
+            | N_Raise_Xxx_Error
+            | N_Representation_Clause
+            | N_Simple_Return_Statement
+            | N_Subprogram_Body
+            | N_Subprogram_Body_Stub
+            | N_Subprogram_Declaration
+            | N_Subprogram_Renaming_Declaration
+            | N_Subtype_Declaration
+            | N_Task_Body
+            | N_Task_Body_Stub
+            | N_Task_Type_Declaration
+            | N_Use_Package_Clause
+            | N_Use_Type_Clause
+            | N_Validate_Unchecked_Conversion
+         =>
             null;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Loops.Inv.Process_Statement] kind ="
                                   & Node_Kind'Image (Nkind (N)));
             raise Program_Error;
-
       end case;
    end Process_Statement;
 
@@ -1107,7 +1110,9 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  asynchronous writers, it is discarded so that none of its parts
          --  can be considered preserved.
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier
+            | N_Expanded_Name
+         =>
             One_Level_Update
               (New_Write      => Entity (New_Write),
                Loop_Writes    => Loop_Writes,
@@ -1119,8 +1124,9 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             Expected_Type := Retysp (Etype (New_Write));
 
-         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
             Update_Status (New_Write      => Expression (New_Write),
                            Loop_Writes    => Loop_Writes,
                            Expected_Kind  => Expected_Kind,
@@ -1200,8 +1206,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                end;
             end if;
 
-         when N_Indexed_Component | N_Slice =>
-
+         when N_Indexed_Component
+            | N_Slice
+         =>
             --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
             --  to Array_Elmts to create a status for it.
 

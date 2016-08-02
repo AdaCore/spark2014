@@ -204,7 +204,8 @@ package body Gnat2Why.External_Axioms is
                   when N_Subtype_Declaration
                      | N_Private_Type_Declaration
                      | N_Subprogram_Declaration
-                     | N_Object_Declaration =>
+                     | N_Object_Declaration
+                  =>
                      declare
                         E : constant Entity_Id := Defining_Entity (N);
                      begin
