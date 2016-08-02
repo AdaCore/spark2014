@@ -3052,19 +3052,19 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
       function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set;
-      --  Returns the set of all flow ids that are mentioned in the
-      --  package's initializes aspect.
+      --  Returns the set of all flow ids that are mentioned in the package's
+      --  initializes aspect.
 
       function Outputs_Of_Procedures return Flow_Id_Sets.Set;
-      --  Returns the set of all flow ids that are pure outputs (not
-      --  In_Outs) of procedures.
+      --  Returns the set of all flow ids that are pure outputs (not In_Outs)
+      --  of procedures.
 
       ---------------------------------------
       -- Initialized_By_Initializes_Aspect --
       ---------------------------------------
 
       function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set is
-         FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          DM : constant Dependency_Maps.Map :=
            Parse_Initializes (FA.Initializes_N, FA.Spec_Entity, FA.S_Scope);
@@ -3074,11 +3074,11 @@ package body Flow.Analysis is
             declare
                The_Out : Flow_Id renames Dependency_Maps.Key (C);
             begin
-               FS.Insert (The_Out);
+               Initialized.Insert (The_Out);
             end;
          end loop;
 
-         return FS;
+         return Initialized;
       end Initialized_By_Initializes_Aspect;
 
       ---------------------------
@@ -3086,9 +3086,9 @@ package body Flow.Analysis is
       ---------------------------
 
       function Outputs_Of_Procedures return Flow_Id_Sets.Set is
-         E    : Entity_Id;
-         Scop : constant Flow_Scope := FA.S_Scope;
-         FS   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         E       : Entity_Id;
+         Scop    : constant Flow_Scope := FA.S_Scope;
+         Outputs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
          E := First_Entity (FA.Spec_Entity);
          while Present (E) loop
@@ -3105,14 +3105,13 @@ package body Flow.Analysis is
                                Reads      => Reads,
                                Writes     => Writes);
 
-                  --  If the Flow_Id is an Output (and not an Input)
-                  --  of the procedure then include it to FS.
+                  --  If the Flow_Id is an Output (and not an Input) of the
+                  --  procedure then include it in Outputs.
 
                   for Write of Writes loop
-                     if not Reads.Contains (Change_Variant (Write,
-                                                            In_View))
+                     if not Reads.Contains (Change_Variant (Write, In_View))
                      then
-                        FS.Include (Change_Variant (Write, Normal_Use));
+                        Outputs.Include (Change_Variant (Write, Normal_Use));
                      end if;
                   end loop;
                end;
@@ -3121,7 +3120,7 @@ package body Flow.Analysis is
             Next_Entity (E);
          end loop;
 
-         return FS;
+         return Outputs;
       end Outputs_Of_Procedures;
 
       --  All flow ids that are or can potentially be initialized.
