@@ -330,7 +330,6 @@ control_structures.adb:7:11: medium: "Default_Base" might not be initialized aft
 control_structures.adb:7:11: medium: "Default_Width" might not be initialized after elaboration of main program "Control_Structures"
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
-control_structures.adb:26:26: info: initialization of "Temperature" proved, in call inlined at control_structures.adb:184
 control_structures.adb:31:08: medium: overflow check might fail
 control_structures.adb:31:23: medium: overflow check might fail
 control_structures.adb:31:25: medium: overflow check might fail
@@ -434,6 +433,7 @@ control_structures.adb:178:39: info: initialization of "A" proved
 control_structures.adb:178:44: info: initialization of "B" proved
 control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:179:26: warning: no Global contract available for "Put"
+control_structures.adb:184:07: info: initialization of "Temperature" proved
 control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
 datebook.adb:45:09: info: length check proved (CVC4: 1 VC)
@@ -535,7 +535,7 @@ dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved (CVC4: 12 VC)
 dates.adb:45:09: info: length check proved (CVC4: 1 VC)
-dates.adb:49:10: info: initialization of "C8b" proved
+dates.adb:49:10: info: initialization of "C9b" proved
 dates.adb:54:14: info: initialization of "Length" proved
 dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
@@ -545,7 +545,7 @@ dates.adb:85:53: info: range check proved (CVC4: 1 VC)
 dates.adb:99:47: info: range check proved (CVC4: 1 VC)
 dates.adb:102:54: info: range check proved (CVC4: 1 VC)
 dates.adb:105:53: info: range check proved (CVC4: 1 VC)
-dates.adb:142:10: info: initialization of "C19b" proved
+dates.adb:142:10: info: initialization of "C23b" proved
 dates.adb:224:14: info: range check proved (CVC4: 2 VC)
 dates.adb:224:47: info: initialization of "Steps" proved
 dates.adb:230:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -803,7 +803,6 @@ generic_searchers.ads:17:41: info: initialization of "Result" proved, in instant
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
 good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
-good_types.adb:13:20: info: initialization of "Wall_Thickness" proved, in call inlined at good_types.adb:22
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:20:11: warning: assuming "Get" has no effect on global items
@@ -814,6 +813,7 @@ good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: overflow check proved (Interval)
 good_types.adb:22:25: medium: range check might fail
 good_types.adb:22:31: info: overflow check proved (Interval)
+good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
 good_types.adb:23:11: info: initialization of "Default_Aft" proved
 good_types.adb:23:11: info: initialization of "Default_Exp" proved
 good_types.adb:23:11: info: initialization of "Default_Fore" proved
@@ -890,38 +890,38 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
-operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:16:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:16:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
+operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:30:10: info: initialization of "C3b" proved
+operator_overload.adb:30:10: info: initialization of "C5b" proved
+operator_overload.adb:30:10: info: initialization of "P1.X_Coord" proved
+operator_overload.adb:30:10: info: initialization of "P1.Y_Coord" proved
+operator_overload.adb:30:10: info: initialization of "P2.X_Coord" proved
+operator_overload.adb:30:10: info: initialization of "P2.Y_Coord" proved
 operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:37:07: info: initialization of "C8b" proved
+operator_overload.adb:37:07: info: initialization of "C12b" proved
+operator_overload.adb:37:07: info: initialization of "P1.X_Coord" proved
+operator_overload.adb:37:07: info: initialization of "P1.Y_Coord" proved
+operator_overload.adb:37:07: info: initialization of "P2.X_Coord" proved
+operator_overload.adb:37:07: info: initialization of "P2.Y_Coord" proved
 operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items

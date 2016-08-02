@@ -68,8 +68,6 @@ skein.adb:646:29: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.adb:646:29: info: initialization of "Ctx.X" proved
 skein.adb:647:61: info: initialization of "Cfg" proved
 skein.adb:647:61: info: length check proved (CVC4: 1 VC)
-skein.adb:689:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:724
-skein.adb:689:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:764
 skein.adb:691:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:724
 skein.adb:691:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:764
 skein.adb:693:26: info: initialization of "Dst" proved
@@ -114,6 +112,7 @@ skein.adb:707:23: info: initialization of "Src" proved, in call inlined at skein
 skein.adb:707:23: info: initialization of "Src" proved, in call inlined at skein.adb:764
 skein.adb:718:11: info: initialization of "Msg_Byte_Count" proved
 skein.adb:722:42: info: range check proved (CVC4: 1 VC)
+skein.adb:724:13: info: initialization of "Current_Msg_Offset" proved
 skein.adb:724:48: info: initialization of "N" proved
 skein.adb:725:35: info: initialization of "Msg_Byte_Count" proved
 skein.adb:725:52: info: initialization of "N" proved
@@ -133,6 +132,7 @@ skein.adb:754:35: info: initialization of "Msg_Byte_Count" proved
 skein.adb:754:56: info: initialization of "Bytes_Hashed" proved
 skein.adb:756:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:756:56: info: initialization of "Bytes_Hashed" proved
+skein.adb:764:07: info: initialization of "Current_Msg_Offset" proved
 skein.adb:764:07: info: initialization of "Msg_Byte_Count" proved
 skein.adb:788:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:814
 skein.adb:789:18: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:814
@@ -202,6 +202,7 @@ skein.adb:853:54: info: initialization of "Tmp_B" proved
 skein.adb:859:15: info: initialization of "Byte_Count" proved
 skein.adb:860:14: info: initialization of "N" proved
 skein.adb:865:10: info: initialization of "N" proved
+skein.adb:868:29: info: initialization of "Local_Ctx.X" proved
 skein.adb:879:25: info: initialization of "X" proved
 skein.adb:892:07: info: precondition proved (CVC4: 6 VC)
 skein.adb:892:32: info: initialization of "Ctx.B" proved
