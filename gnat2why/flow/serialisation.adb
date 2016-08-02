@@ -282,8 +282,27 @@ package body Serialisation is
    -- Serialize_Discrete --
    ------------------------
 
-   procedure Serialize_Discrete (A : in out Archive; V : in out T) is
+   procedure Serialize_Discrete
+     (A     : in out Archive;
+      V     : in out T;
+      Label : String := "")
+   is
+      Label_Str : Unbounded_String;
    begin
+      if Label /= "" then
+         case A.Kind is
+            when Input =>
+               Serialize (A, Label_Str);
+               if Label_Str /= Label then
+                  raise Parse_Error with "malformed set label";
+               end if;
+
+            when Output =>
+               Label_Str := To_Unbounded_String (Label);
+               Serialize (A, Label_Str);
+         end case;
+      end if;
+
       case A.Kind is
          when Input =>
             if A.Content.Is_Empty then

@@ -124,7 +124,9 @@ package Serialisation is
 
    generic
       type T is (<>);
-   procedure Serialize_Discrete (A : in out Archive; V : in out T);
+   procedure Serialize_Discrete (A     : in out Archive;
+                                 V     : in out T;
+                                 Label : String := "");
    --  Serialisation for any discrete type (ultimately using 'Image and 'Value)
    --  of the given type T.
 
