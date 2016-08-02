@@ -26,6 +26,7 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Nlists;                         use Nlists;
 with Sinfo;                          use Sinfo;
+with SPARK_Util;                     use SPARK_Util;
 with Treepr;                         use Treepr;
 with Why;
 
@@ -276,13 +277,12 @@ package body Flow_Dependency_Maps is
 
       --  Add any external state abstractions with Async_Writers property to
       --  the dependency map (even if they are not in the user's annotations).
-      --  This ensures that constituents that are not volatile and have
-      --  Async_Writers are also initialized.
+      --  This ensures that constituents that are volatile with Async_Writers
+      --  flavour are also initialized.
       if Present (Abstr_States) then
          declare
             State_Elmt : Elmt_Id;
             State      : Entity_Id;
-            State_F    : Flow_Id;
 
             Position : Dependency_Maps.Cursor;
             Inserted : Boolean;
@@ -296,12 +296,12 @@ package body Flow_Dependency_Maps is
 
             if not Is_Null_State (State) then
                loop
-                  State_F := Direct_Mapping_Id (State);
-
-                  if Has_Async_Writers (State_F) then
+                  if Has_Volatile (State)
+                    and then Has_Volatile_Flavor (State, Pragma_Async_Writers)
+                  then
                      --  Try to insert an empty set, do nothing if another
                      --  value is already in the map.
-                     M.Insert (Key      => State_F,
+                     M.Insert (Key      => Direct_Mapping_Id (State),
                                Position => Position,
                                Inserted => Inserted);
                   end if;
