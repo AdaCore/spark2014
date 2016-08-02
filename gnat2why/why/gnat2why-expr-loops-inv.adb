@@ -1033,14 +1033,14 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Package_Body_Stub
             | N_Package_Declaration
             | N_Package_Renaming_Declaration
-            | N_pragma
+            | N_Pragma
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
             | N_Protected_Body
             | N_Protected_Body_Stub
             | N_Protected_Type_Declaration
             | N_Raise_Statement
-            | N_Raise_Xxx_Error
+            | N_Raise_xxx_Error
             | N_Representation_Clause
             | N_Simple_Return_Statement
             | N_Subprogram_Body
