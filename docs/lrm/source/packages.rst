@@ -421,7 +421,7 @@ Async_Writers aspect specification.
 
    * the expression of a type conversion occurring in a non-interfering context; or
 
-   * the expression in a delay statement.
+   * the expression in a ``delay_statement``.
 
    [The attributes listed above all have the property that when their prefix
    denotes an object, evaluation of the attribute involves evaluation of only
