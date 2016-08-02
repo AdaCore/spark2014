@@ -419,7 +419,9 @@ Async_Writers aspect specification.
      either Address, Alignment, Component_Size, First_Bit, Last_Bit, Position,
      Size, or Storage_Size; or
 
-   * the expression of a type conversion occurring in a non-interfering context.
+   * the expression of a type conversion occurring in a non-interfering context; or
+
+   * the expression in a delay statement.
 
    [The attributes listed above all have the property that when their prefix
    denotes an object, evaluation of the attribute involves evaluation of only
