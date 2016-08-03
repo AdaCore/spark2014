@@ -901,8 +901,8 @@ operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in cal
 operator_overload.adb:17:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
