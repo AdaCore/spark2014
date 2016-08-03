@@ -5455,151 +5455,164 @@ package body SPARK_Definition is
                      and then Present (Get_Expression_Function (E))
                      and then not SPARK_Pragma_Is (Opt.Off))
          then
-
-            --  Issue warning on unreferenced local subprograms, which are
-            --  analyzed anyway, unless the subprogram is marked with pragma
-            --  Unreferenced.
-
-            if Is_Local_Subprogram_Always_Inlined (E)
-              and then not Referenced (E)
-              and then not Has_Unreferenced (E)
-              and then Emit_Warning_Info_Messages
-            then
-               case Ekind (E) is
-               when E_Function =>
-                  Error_Msg_NE ("?analyzing unreferenced function &", N, E);
-
-               when E_Procedure =>
-                  Error_Msg_NE ("?analyzing unreferenced procedure &", N, E);
-
-               when others =>
-                  raise Program_Error;
-
-               end case;
-            end if;
-
-            --  Ignore bodies of predicate functions, because front end may put
-            --  them in different lexical scope than the spec (this is either
-            --  a bug or a neccessity because of freezing) ???.
-            --
-            --  Anyway, this is safe to ignore them because it is syntactically
-            --  impossible for them to act as scopes for declarations.
-            if not In_Pred_Function_Body then
-               Scope_Trees.Enter_Body (E);
-            end if;
-
-            --  Mark Actual_Subtypes of parameters if any
-
             declare
-               Formals    : constant List_Id :=
-                 (if Nkind (N) = N_Task_Body
-                  then No_List
-                  else Parameter_Specifications
-                    (if Nkind (N) = N_Entry_Body
-                     then Entry_Body_Formal_Part (N)
-                     else Specification (N)));
-               Param_Spec : Node_Id;
-               Formal     : Node_Id;
-               Sub        : Node_Id;
+               Save_Violation_Detected : constant Boolean :=
+                 Violation_Detected;
             begin
-               Param_Spec := First (Formals);
-               while Present (Param_Spec) loop
-                  Formal := Defining_Identifier (Param_Spec);
-                  Sub := Actual_Subtype (Formal);
-                  if Present (Sub)
-                    and then not In_SPARK (Sub)
-                  then
-                     Mark_Violation (Formal, From => Sub);
-                  end if;
-                  Next (Param_Spec);
-               end loop;
-            end;
+               Violation_Detected := False;
 
-            --  Mark task discriminants
+               --  Issue warning on unreferenced local subprograms, which are
+               --  analyzed anyway, unless the subprogram is marked with pragma
+               --  Unreferenced.
 
-            if Nkind (N) = N_Task_Body
-              and then Has_Discriminants (E)
-            then
+               if Is_Local_Subprogram_Always_Inlined (E)
+                 and then not Referenced (E)
+                 and then not Has_Unreferenced (E)
+                 and then Emit_Warning_Info_Messages
+               then
+                  case Ekind (E) is
+                  when E_Function =>
+                     Error_Msg_NE ("?analyzing unreferenced function &", N, E);
+
+                  when E_Procedure =>
+                     Error_Msg_NE
+                       ("?analyzing unreferenced procedure &", N, E);
+
+                  when others =>
+                     raise Program_Error;
+
+                  end case;
+               end if;
+
+               --  Ignore bodies of predicate functions, because front end may
+               --  put them in different lexical scope than the spec (this is
+               --  either a bug or a neccessity because of freezing) ???.
+               --
+               --  Anyway, this is safe to ignore them because it is
+               --  syntactically impossible for them to act as scopes
+               --  for declarations.
+               if not In_Pred_Function_Body then
+                  Scope_Trees.Enter_Body (E);
+               end if;
+
+               --  Mark Actual_Subtypes of parameters if any
+
                declare
-                  Disc : Entity_Id := First_Discriminant (E);
+                  Formals    : constant List_Id :=
+                    (if Nkind (N) = N_Task_Body
+                     then No_List
+                     else Parameter_Specifications
+                       (if Nkind (N) = N_Entry_Body
+                        then Entry_Body_Formal_Part (N)
+                        else Specification (N)));
+                  Param_Spec : Node_Id;
+                  Formal     : Node_Id;
+                  Sub        : Node_Id;
                begin
-                  while Present (Disc) loop
-                     Mark_Entity (Disc);
-                     Next_Discriminant (Disc);
+                  Param_Spec := First (Formals);
+                  while Present (Param_Spec) loop
+                     Formal := Defining_Identifier (Param_Spec);
+                     Sub := Actual_Subtype (Formal);
+                     if Present (Sub)
+                       and then not In_SPARK (Sub)
+                     then
+                        Mark_Violation (Formal, From => Sub);
+                     end if;
+                     Next (Param_Spec);
                   end loop;
                end;
-            end if;
 
-            --  Mark entry barrier
+               --  Mark task discriminants
 
-            if Nkind (E) = N_Entry_Body then
-               --  Entry barriers in Ravenscar are always of N_Identifier kind
-               Mark_Identifier_Or_Expanded_Name
-                 (Condition (Entry_Body_Formal_Part (N)));
-            end if;
-
-            --  For subprogram bodies (but not other subprogram-like nodes
-            --  which are also processed by this procedure) mark Refined_Post
-            --  aspect if present.
-            if Nkind (N) = N_Subprogram_Body then
-               declare
-                  C : constant Entity_Id :=
-                    Contract (Defining_Entity (Specification (N)));
-                  --  ??? Def_E
-               begin
-                  if Present (C) then
-                     declare
-                        Prag : Node_Id := Pre_Post_Conditions (C);
-                     begin
-                        while Present (Prag) loop
-                           if Get_Pragma_Id (Prag) = Pragma_Refined_Post
-                           then
-                              Mark (Expression (First (
-                                    Pragma_Argument_Associations (Prag))));
-                           end if;
-                           Prag := Next_Pragma (Prag);
-                        end loop;
-                     end;
-                  end if;
-               end;
-            end if;
-
-            --  Detect violations in the body itself
-
-            Mark_Stmt_Or_Decl_List (Declarations (N));
-            Mark (Handled_Statement_Sequence (N));
-
-            --  If a violation was detected on a predicate function, then the
-            --  type to which the predicate applies is not in SPARK. Remove it
-            --  from the set Entities_In_SPARK if already marked in SPARK.
-
-            if Violation_Detected then
-               if In_Pred_Function_Body then
-                  Entities_In_SPARK.Exclude (Current_Delayed_Aspect_Type);
-               end if;
-
-            else
-               --  If no violation was detected on an expression function body,
-               --  mark it as compatible with SPARK, so that its body gets
-               --  translated into an axiom for analysis of its callers.
-
-               if Ekind (E) = E_Function
-                 and then Present (Get_Expression_Function (E))
+               if Nkind (N) = N_Task_Body
+                 and then Has_Discriminants (E)
                then
-                  Bodies_Compatible_With_SPARK.Insert (E);
+                  declare
+                     Disc : Entity_Id := First_Discriminant (E);
+                  begin
+                     while Present (Disc) loop
+                        Mark_Entity (Disc);
+                        Next_Discriminant (Disc);
+                     end loop;
+                  end;
                end if;
 
-               --  If no violation was detected and SPARK_Mode is On for the
-               --  body, then mark the body for translation to Why3.
+               --  Mark entry barrier
 
-               if SPARK_Pragma_Is_On then
-                  Bodies_In_SPARK.Insert (E);
+               if Nkind (E) = N_Entry_Body then
+                  --  Entry barriers in Ravenscar are always of N_Identifier
+                  --  kind.
+                  Mark_Identifier_Or_Expanded_Name
+                    (Condition (Entry_Body_Formal_Part (N)));
                end if;
-            end if;
 
-            if not In_Pred_Function_Body then
-               Scope_Trees.Restore (Scopes);
-            end if;
+               --  For subprogram bodies (but not other subprogram-like
+               --  nodes which are also processed by this procedure) mark
+               --  Refined_Post aspect if present.
+               if Nkind (N) = N_Subprogram_Body then
+                  declare
+                     C : constant Entity_Id :=
+                       Contract (Defining_Entity (Specification (N)));
+                     --  ??? Def_E
+                  begin
+                     if Present (C) then
+                        declare
+                           Prag : Node_Id := Pre_Post_Conditions (C);
+                        begin
+                           while Present (Prag) loop
+                              if Get_Pragma_Id (Prag) = Pragma_Refined_Post
+                              then
+                                 Mark (Expression (First (
+                                       Pragma_Argument_Associations (Prag))));
+                              end if;
+                              Prag := Next_Pragma (Prag);
+                           end loop;
+                        end;
+                     end if;
+                  end;
+               end if;
+
+               --  Detect violations in the body itself
+
+               Mark_Stmt_Or_Decl_List (Declarations (N));
+               Mark (Handled_Statement_Sequence (N));
+
+               --  If a violation was detected on a predicate function, then
+               --  the type to which the predicate applies is not in SPARK.
+               --  Remove it from the set Entities_In_SPARK if already marked
+               --  in SPARK.
+
+               if Violation_Detected then
+                  if In_Pred_Function_Body then
+                     Entities_In_SPARK.Exclude (Current_Delayed_Aspect_Type);
+                  end if;
+
+               else
+                  --  If no violation was detected on an expression function
+                  --  body, mark it as compatible with SPARK, so that its
+                  --  body gets translated into an axiom for analysis of
+                  --  its callers.
+
+                  if Ekind (E) = E_Function
+                    and then Present (Get_Expression_Function (E))
+                  then
+                     Bodies_Compatible_With_SPARK.Insert (E);
+                  end if;
+
+                  --  If no violation was detected and SPARK_Mode is On for the
+                  --  body, then mark the body for translation to Why3.
+
+                  if SPARK_Pragma_Is_On then
+                     Bodies_In_SPARK.Insert (E);
+                  end if;
+               end if;
+
+               if not In_Pred_Function_Body then
+                  Scope_Trees.Restore (Scopes);
+               end if;
+
+               Violation_Detected := Save_Violation_Detected;
+            end;
          end if;
 
          Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
