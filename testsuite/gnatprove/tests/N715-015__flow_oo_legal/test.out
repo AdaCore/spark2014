@@ -1,3 +1,46 @@
+main.adb:8:11: info: initialization of "Professionals.State" proved
+main.adb:11:52: info: initialization of "Kenny" proved
+main.adb:29:14: info: initialization of "Professionals.State" proved
+main.adb:34:13: info: initialization of "Professionals.State" proved
+main.adb:34:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:34:27: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
+main.adb:35:13: info: initialization of "Professionals.State" proved
+main.adb:35:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:35:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:35:20: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
+main.adb:38:13: info: initialization of "Professionals.State" proved
+main.adb:38:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:38:27: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
+main.adb:39:13: info: initialization of "Professionals.State" proved
+main.adb:39:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:39:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:39:20: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
+main.adb:42:13: info: initialization of "Professionals.State" proved
+main.adb:42:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:42:27: info: initialization of "Rambo" proved, in call inlined at main.adb:70
+main.adb:43:13: info: initialization of "Professionals.State" proved
+main.adb:43:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:43:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:43:20: info: initialization of "Rambo" proved, in call inlined at main.adb:70
+main.adb:46:13: info: initialization of "Professionals.State" proved
+main.adb:46:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:46:27: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
+main.adb:47:13: info: initialization of "Professionals.State" proved
+main.adb:47:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
+main.adb:47:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:47:20: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
+main.adb:54:07: medium: precondition might fail, in call inlined at main.adb:71
+main.adb:54:35: info: initialization of "Rambo" proved, in call inlined at main.adb:71
+main.adb:55:35: info: initialization of "Uni_Student" proved, in call inlined at main.adb:71
+main.adb:57:07: medium: precondition might fail, in call inlined at main.adb:71
+main.adb:57:35: info: initialization of "Dr_House" proved, in call inlined at main.adb:71
+main.adb:58:35: info: initialization of "Kenny" proved, in call inlined at main.adb:71
+main.adb:58:35: warning: unused assignment to "Kenny", in call inlined at main.adb:71
+main.adb:61:14: warning: subprogram "Print_Everyone" has no effect
+main.adb:63:14: info: initialization of "Uni_Student" proved, in call inlined at main.adb:72
+main.adb:64:14: info: initialization of "ZeroCool" proved, in call inlined at main.adb:72
+main.adb:65:14: info: initialization of "Rambo" proved, in call inlined at main.adb:72
+main.adb:66:14: info: initialization of "Dr_House" proved, in call inlined at main.adb:72
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
 professionals.adb:37:40: low: range check might fail
