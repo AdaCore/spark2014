@@ -666,8 +666,6 @@ package body Flow.Slice is
                V_Initial := FA.PDG.Get_Vertex
                  (Change_Variant (Comp, Initial_Value));
 
-               pragma Assert (V_Initial /= Flow_Graphs.Null_Vertex);
-
                if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
                   Guilty := True;
                   exit;
