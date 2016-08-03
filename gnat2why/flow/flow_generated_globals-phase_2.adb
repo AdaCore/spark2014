@@ -515,7 +515,6 @@ package body Flow_Generated_Globals.Phase_2 is
             LHS_Scope : constant Flow_Scope := (Ent  => E,
                                                 Part => Visible_Part);
 
-            DM : Dependency_Maps.Map;
             II : Initializes_Info renames Initializes_Aspects_Map (EN);
 
             All_LHS_UP   : Name_Sets.Set;
@@ -577,16 +576,17 @@ package body Flow_Generated_Globals.Phase_2 is
             FS_LHS.Difference (To_Remove);
             FS_LHS_Proof.Difference (To_Remove);
 
-            --  Add regular variables
-            for F of FS_LHS loop
-               DM.Insert (F, FS_RHS);
-            end loop;
-            --  Add proof variables
-            for F of FS_LHS_Proof loop
-               DM.Insert (F, FS_RHS_Proof);
-            end loop;
+            return DM : Dependency_Maps.Map do
+               --  Add regular variables
+               for F of FS_LHS loop
+                  DM.Insert (F, FS_RHS);
+               end loop;
 
-            return DM;
+               --  Add proof variables
+               for F of FS_LHS_Proof loop
+                  DM.Insert (F, FS_RHS_Proof);
+               end loop;
+            end return;
          end;
 
       --  If we have no info for this package then we also did not generate the
