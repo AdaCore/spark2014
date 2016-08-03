@@ -1547,7 +1547,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   LHS_Proof => <>,
                   RHS       => P.Inputs,
                   RHS_Proof => P.Inputs_Proof);
-               --  The new name dependency map for package P.
+               --  The new name dependency map for package P
                --
                --  LHS and LHS_Proof represent the left hand side of the
                --  generated initializes aspect. RHS and RHS_Proof represent
@@ -1557,8 +1557,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                LV        : Name_Sets.Set := Name_Sets.Empty_Set;
                LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
-               --  Flow id sets of local variables/states and local proof
-               --  variables/states.
+               --  Local variables/states and local proof variables/states
 
                ODC       : Name_Sets.Set := Name_Sets.Empty_Set;
                --  Outputs of Definite Calls
