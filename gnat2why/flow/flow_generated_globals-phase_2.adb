@@ -1637,7 +1637,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   end;
                end loop;
 
-               --  Remove local variables from the sets since they should not
+               --  Remove local variables from the RHSs since they should not
                --  appear in Initializes aspects.
                II.RHS.Difference (P.Local_Variables);
                II.RHS_Proof.Difference (P.Local_Variables);
