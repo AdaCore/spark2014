@@ -1676,22 +1676,19 @@ package body Flow_Generated_Globals.Phase_2 is
                II.RHS.Difference (P.Local_Variables);
                II.RHS_Proof.Difference (P.Local_Variables);
 
-               --  Add LHS and LHS_Proof to the Initialized_Vars_And_States set
-               Initialized_Vars_And_States.Union (II.LHS);
-               Initialized_Vars_And_States.Union (II.LHS_Proof);
-
                --  Add state abstractions to Initialized_Vars_And_States when
                --  all constituents are initialized and remove constituents of
                --  state abstractions that are not fully initialized.
                declare
-                  All_LHS   : constant Name_Sets.Set := II.LHS or II.LHS_Proof;
-                  State     : Any_Entity_Name;
-                  To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
+                  All_LHS : constant Name_Sets.Set := II.LHS or II.LHS_Proof;
+                  State   : Any_Entity_Name;
                begin
                   for Var of All_LHS loop
                      State := GG_Encapsulating_State (Var);
 
-                     if State /= Null_Entity_Name then
+                     if State = Null_Entity_Name then
+                        Initialized_Vars_And_States.Include (Var);
+                     else
                         if State_Comp_Map (State).Is_Subset (Of_Set => All_LHS)
                         then
                            --  All constituents are initialized so we add the
@@ -1701,16 +1698,11 @@ package body Flow_Generated_Globals.Phase_2 is
                            --  At least one constituent is not initialized so
                            --  there is no point in considering the current
                            --  constituent alone as being initialized.
-                           To_Remove.Insert (Var);
+                           II.LHS.Exclude (Var);
+                           II.LHS_Proof.Exclude (Var);
                         end if;
                      end if;
                   end loop;
-
-                  --  Remove constituents whose encapsulating state abstraction
-                  --  is not fully initialized.
-                  Initialized_Vars_And_States.Difference (To_Remove);
-                  II.LHS.Difference (To_Remove);
-                  II.LHS_Proof.Difference (To_Remove);
                end;
 
                --  Insert II into Initializes_Aspects_Map
