@@ -1555,54 +1555,38 @@ package body Flow_Generated_Globals.Phase_2 is
                --  they are initialized with package inputs and proof inputs,
                --  respectively.
 
-               LV       : Name_Sets.Set;
-               LV_Proof : Name_Sets.Set;
-               --  Local variables/states and local proof variables/states
+               Local_Non_Ghost_Vars : Name_Sets.Set;
+               --  Local non-proof variables/states
 
-               ODC      : Name_Sets.Set;
+               ODC : Name_Sets.Set;
                --  Outputs of Definite Calls
 
-               procedure Split_Ghosts
-                 (Vars   : Name_Sets.Set;
-                  Ghost  : in out Name_Sets.Set;
-                  Normal : in out Name_Sets.Set);
-               --  Splits Vars into Ghost and Normal variables
-
-               ------------------
-               -- Split_Ghosts --
-               ------------------
-
-               procedure Split_Ghosts
-                 (Vars   : Name_Sets.Set;
-                  Ghost  : in out Name_Sets.Set;
-                  Normal : in out Name_Sets.Set)
-               is
-               begin
-                  for Var of Vars loop
-                     declare
-                        E : constant Entity_Id := Find_Entity (Var);
-                     begin
-                        if Present (E)
-                          and then Is_Ghost_Entity (E)
-                        then
-                           Ghost.Insert (Var);
-                        else
-                           Normal.Insert (Var);
-                        end if;
-                     end;
-                  end loop;
-               end Split_Ghosts;
-
-            --  Start of processing for Generate_Initializes_Aspects
-
             begin
-               --  Split local variables to ghost and normal variables; same
-               --  for local definite writes.
-               Split_Ghosts (P.Local_Variables,       LV_Proof,     LV);
-               Split_Ghosts (P.Local_Definite_Writes, II.LHS_Proof, II.LHS);
-               --  ??? for non-visible entities this is inprecise; also, work
-               --  is repeated because Local_Definite_Writes is a subset of
-               --  Local_Variables.
+               --  Collect local non-ghost variables
+               for Var of P.Local_Variables loop
+                  --  ??? for non-visible entities this is imprecise
+                  declare
+                     E : constant Entity_Id := Find_Entity (Var);
+                  begin
+                     if Present (E)
+                       and then Is_Ghost_Entity (E)
+                     then
+                        null;
+                     else
+                        Local_Non_Ghost_Vars.Insert (Var);
+                     end if;
+                  end;
+               end loop;
+
+               --  Split local definite writes to ghost and normal variables
+               --  re-using classification already done for local variables.
+               for Var of P.Local_Definite_Writes loop
+                  if Local_Non_Ghost_Vars.Contains (Var) then
+                     II.LHS.Insert (Var);
+                  else
+                     II.LHS_Proof.Insert (Var);
+                  end if;
+               end loop;
 
                --  Add the intersection of pure outputs (outputs that are not
                --  also read) of definite calls and local variables to LHS.
@@ -1627,7 +1611,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      end if;
                   end;
                end loop;
-               II.LHS.Union (LV and ODC);
+               II.LHS.Union (Local_Non_Ghost_Vars and ODC);
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
