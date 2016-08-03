@@ -660,17 +660,27 @@ package body Flow.Slice is
 
             Guilty := False;  --  Innocent till found guilty
 
-            FS := Flatten_Variable (LV, FA.B_Scope);
+            if Is_Null_State (LV)
+              or else (Ekind (LV) = E_Abstract_State
+                       and then Has_Null_Refinement (LV))
+            then
+               --  Null abstract states and abstract states with null
+               --  refinements are trivially initialized but are not
+               --  detected by the condition in the else branch. (??? why?)
+               pragma Assert (not Guilty);
+            else
+               FS := Flatten_Variable (LV, FA.B_Scope);
 
-            for Comp of FS loop
-               V_Initial := FA.PDG.Get_Vertex
-                 (Change_Variant (Comp, Initial_Value));
+               for Comp of FS loop
+                  V_Initial := FA.PDG.Get_Vertex
+                    (Change_Variant (Comp, Initial_Value));
 
-               if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
-                  Guilty := True;
-                  exit;
-               end if;
-            end loop;
+                  if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
+                     Guilty := True;
+                     exit;
+                  end if;
+               end loop;
+            end if;
 
             if not Guilty then
                Local_Definite_Writes.Insert (LV);
