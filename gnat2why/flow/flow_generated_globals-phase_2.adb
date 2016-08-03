@@ -288,10 +288,10 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
 
    type Initializes_Info is record
-      LHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-      LHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
-      RHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-      RHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
+      LHS       : Name_Sets.Set;
+      LHS_Proof : Name_Sets.Set;
+      RHS       : Name_Sets.Set;
+      RHS_Proof : Name_Sets.Set;
    end record;
 
    package Initializes_Aspects_Maps is new Ada.Containers.Hashed_Maps
@@ -300,13 +300,12 @@ package body Flow_Generated_Globals.Phase_2 is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   Initializes_Aspects_Map : Initializes_Aspects_Maps.Map :=
-     Initializes_Aspects_Maps.Empty_Map;
+   Initializes_Aspects_Map : Initializes_Aspects_Maps.Map;
 
-   Initialized_Vars_And_States : Name_Sets.Set := Name_Sets.Empty_Set;
+   Initialized_Vars_And_States : Name_Sets.Set;
    --  Variables and state abstractions know to be initialized
 
-   Package_To_Locals_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   Package_To_Locals_Map : Name_Graphs.Map;
    --  package -> {local variables}
    --
    --  This maps packages to their local variables
@@ -315,11 +314,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Volatile information
    ----------------------------------------------------------------------
 
-   Volatile_Vars         : Name_Sets.Set := Name_Sets.Empty_Set;
-   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   Volatile_Vars         : Name_Sets.Set;
+   Async_Writers_Vars    : Name_Sets.Set;
+   Async_Readers_Vars    : Name_Sets.Set;
+   Effective_Reads_Vars  : Name_Sets.Set;
+   Effective_Writes_Vars : Name_Sets.Set;
    --  Volatile variables; Volatile_Vars is a union of the four other sets
 
    ----------------------------------------------------------------------
@@ -398,7 +397,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -------------------
 
    function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-      Refined : Name_Sets.Set := Name_Sets.Empty_Set;
+      Refined : Name_Sets.Set;
 
       procedure Refine (State : Entity_Name);
       --  Recursively refine state into its constituents
