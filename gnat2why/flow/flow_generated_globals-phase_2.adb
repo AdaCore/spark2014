@@ -419,6 +419,8 @@ package body Flow_Generated_Globals.Phase_2 is
          end if;
       end Refine;
 
+   --  Start of processing for Fully_Refine
+
    begin
       Refine (EN);
 
