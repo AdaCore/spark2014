@@ -294,7 +294,7 @@ package body Serialisation is
             when Input =>
                Serialize (A, Label_Str);
                if Label_Str /= Label then
-                  raise Parse_Error with "malformed set label";
+                  raise Parse_Error with "malformed label";
                end if;
 
             when Output =>
@@ -436,7 +436,7 @@ package body Serialisation is
             when Input =>
                Serialize (A, Label_Str);
                if Label_Str /= Label then
-                  raise Parse_Error with "malformed set label";
+                  raise Parse_Error with "malformed label";
                end if;
 
             when Output =>
