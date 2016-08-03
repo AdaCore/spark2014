@@ -1542,19 +1542,17 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          for P of Package_Info_List loop
             declare
-               II        : Initializes_Info;
-               --  The new name dependency map for package P
-
-               LHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-               LHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
-               --  LHS and LHS_Proof combined will represent the left hand side
-               --  of the generated initializes aspect.
-
-               RHS       : Name_Sets.Set := P.Inputs;
-               RHS_Proof : Name_Sets.Set := P.Inputs_Proof;
-               --  RHS and RHS_Proof combined will represent the right
-               --  hand side of the generated initializes aspect; they
-               --  are initialized with package inputs and proof inputs,
+               II : Initializes_Info :=
+                 (LHS       => <>,
+                  LHS_Proof => <>,
+                  RHS       => P.Inputs,
+                  RHS_Proof => P.Inputs_Proof);
+               --  The new name dependency map for package P.
+               --
+               --  LHS and LHS_Proof represent the left hand side of the
+               --  generated initializes aspect. RHS and RHS_Proof represent
+               --  the right hand side of the generated initializes aspect;
+               --  they are initialized with package inputs and proof inputs,
                --  respectively.
 
                LV        : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -1613,8 +1611,8 @@ package body Flow_Generated_Globals.Phase_2 is
                        and then State_Comp_Map (Local_State).Is_Empty
                      then
                         Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                                    LHS_Proof,
-                                                    LHS);
+                                                    II.LHS_Proof,
+                                                    II.LHS);
                      end if;
                   end;
                end loop;
@@ -1623,8 +1621,8 @@ package body Flow_Generated_Globals.Phase_2 is
                --  depending on whether they are ghosts or not.
                for Local_Definite_Write of P.Local_Definite_Writes loop
                   Add_To_Proof_Or_Normal_Set (Local_Definite_Write,
-                                              LHS_Proof,
-                                              LHS);
+                                              II.LHS_Proof,
+                                              II.LHS);
                end loop;
 
                --  Add the intersection of pure outputs (outputs that are not
@@ -1644,13 +1642,13 @@ package body Flow_Generated_Globals.Phase_2 is
                            Reads       => Reads,
                            Writes      => Writes);
 
-                        RHS_Proof.Union (Proof_Reads);
-                        RHS.Union (Reads);
+                        II.RHS_Proof.Union (Proof_Reads);
+                        II.RHS.Union (Reads);
                         ODC.Union (Writes - Reads);
                      end if;
                   end;
                end loop;
-               LHS.Union (LV and ODC);
+               II.LHS.Union (LV and ODC);
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
@@ -1667,23 +1665,17 @@ package body Flow_Generated_Globals.Phase_2 is
                            Reads       => Reads,
                            Writes      => Writes);
 
-                        RHS_Proof.Union (Proof_Reads);
-                        RHS.Union (Reads);
-                        RHS.Union (Writes);
+                        II.RHS_Proof.Union (Proof_Reads);
+                        II.RHS.Union (Reads);
+                        II.RHS.Union (Writes);
                      end if;
                   end;
                end loop;
 
                --  Remove local variables from the sets since they should not
                --  appear in Initializes aspects.
-               RHS.Difference (P.Local_Variables);
-               RHS_Proof.Difference (P.Local_Variables);
-
-               --  Assign II
-               II := (LHS       => LHS,
-                      LHS_Proof => LHS_Proof,
-                      RHS       => RHS,
-                      RHS_Proof => RHS_Proof);
+               II.RHS.Difference (P.Local_Variables);
+               II.RHS_Proof.Difference (P.Local_Variables);
 
                --  Add LHS and LHS_Proof to the Initialized_Vars_And_States set
                Initialized_Vars_And_States.Union (II.LHS);
@@ -1693,7 +1685,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --  all constituents are initialized and remove constituents of
                --  state abstractions that are not fully initialized.
                declare
-                  All_LHS   : constant Name_Sets.Set := LHS or LHS_Proof;
+                  All_LHS   : constant Name_Sets.Set := II.LHS or II.LHS_Proof;
                   State     : Any_Entity_Name;
                   To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
                begin
