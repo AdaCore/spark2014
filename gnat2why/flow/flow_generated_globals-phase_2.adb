@@ -1562,51 +1562,47 @@ package body Flow_Generated_Globals.Phase_2 is
                ODC      : Name_Sets.Set;
                --  Outputs of Definite Calls
 
-               procedure Add_To_Proof_Or_Normal_Set
-                 (EN         : Entity_Name;
-                  Proof_Set  : in out Name_Sets.Set;
-                  Normal_Set : in out Name_Sets.Set);
-               --  Adds EN to either Proof_Set or Normal_Set depending on
-               --  whether it is a ghost entity or not.
+               procedure Split_Ghosts
+                 (Vars   : Name_Sets.Set;
+                  Ghost  : in out Name_Sets.Set;
+                  Normal : in out Name_Sets.Set);
+               --  Splits Vars into Ghost and Normal variables
 
-               --------------------------------
-               -- Add_To_Proof_Or_Normal_Set --
-               --------------------------------
+               ------------------
+               -- Split_Ghosts --
+               ------------------
 
-               procedure Add_To_Proof_Or_Normal_Set
-                 (EN         : Entity_Name;
-                  Proof_Set  : in out Name_Sets.Set;
-                  Normal_Set : in out Name_Sets.Set)
+               procedure Split_Ghosts
+                 (Vars   : Name_Sets.Set;
+                  Ghost  : in out Name_Sets.Set;
+                  Normal : in out Name_Sets.Set)
                is
-                  E : constant Entity_Id := Find_Entity (EN);
                begin
-                  if Present (E)
-                    and then Is_Ghost_Entity (E)
-                  then
-                     Proof_Set.Insert (EN);
-                  else
-                     Normal_Set.Insert (EN);
-                  end if;
-               end Add_To_Proof_Or_Normal_Set;
+                  for Var of Vars loop
+                     declare
+                        E : constant Entity_Id := Find_Entity (Var);
+                     begin
+                        if Present (E)
+                          and then Is_Ghost_Entity (E)
+                        then
+                           Ghost.Insert (Var);
+                        else
+                           Normal.Insert (Var);
+                        end if;
+                     end;
+                  end loop;
+               end Split_Ghosts;
 
             --  Start of processing for Generate_Initializes_Aspects
 
             begin
-               --  Add local variables to either LV_Proof or LV depending on
-               --  whether they are ghosts or not.
-               for Local_Variable of P.Local_Variables loop
-                  Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                              LV_Proof,
-                                              LV);
-               end loop;
-
-               --  Add definite local writes to either LHS_Proof or LHS
-               --  depending on whether they are ghosts or not.
-               for Local_Definite_Write of P.Local_Definite_Writes loop
-                  Add_To_Proof_Or_Normal_Set (Local_Definite_Write,
-                                              II.LHS_Proof,
-                                              II.LHS);
-               end loop;
+               --  Split local variables to ghost and normal variables; same
+               --  for local definite writes.
+               Split_Ghosts (P.Local_Variables,       LV_Proof,     LV);
+               Split_Ghosts (P.Local_Definite_Writes, II.LHS_Proof, II.LHS);
+               --  ??? for non-visible entities this is inprecise; also, work
+               --  is repeated because Local_Definite_Writes is a subset of
+               --  Local_Variables.
 
                --  Add the intersection of pure outputs (outputs that are not
                --  also read) of definite calls and local variables to LHS.
