@@ -1555,11 +1555,11 @@ package body Flow_Generated_Globals.Phase_2 is
                --  they are initialized with package inputs and proof inputs,
                --  respectively.
 
-               LV        : Name_Sets.Set := Name_Sets.Empty_Set;
-               LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
+               LV       : Name_Sets.Set;
+               LV_Proof : Name_Sets.Set;
                --  Local variables/states and local proof variables/states
 
-               ODC       : Name_Sets.Set := Name_Sets.Empty_Set;
+               ODC      : Name_Sets.Set;
                --  Outputs of Definite Calls
 
                procedure Add_To_Proof_Or_Normal_Set
