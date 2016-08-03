@@ -5828,20 +5828,22 @@ package body Gnat2Why.Expr is
       case Nkind (N) is
          when N_Selected_Component
             | N_Identifier
+            | N_Expanded_Name
          =>
             --  In fact identifiers can refer to components in the case of
             --  protected objects. But this is the only case, and we assert
             --  this here.
 
             pragma Assert
-              (if Nkind (N) = N_Identifier
+              (if Nkind (N) in N_Identifier | N_Expanded_Name
                then Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (N)));
 
             --  The code should never update a discrimiant by assigning to it.
 
             declare
                Selector : constant Entity_Id :=
-                 (if Nkind (N) = N_Identifier then Entity (N)
+                 (if Nkind (N) in N_Identifier | N_Expanded_Name
+                  then Entity (N)
                   else Entity (Selector_Name (N)));
             begin
                pragma Assert (Ekind (Selector) /= E_Discriminant);
