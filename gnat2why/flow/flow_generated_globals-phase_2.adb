@@ -295,9 +295,9 @@ package body Flow_Generated_Globals.Phase_2 is
    end record;
 
    package Initializes_Aspects_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
+     (Key_Type        => Entity_Name,
       Element_Type    => Initializes_Info,
-      Hash            => Node_Hash,
+      Hash            => Name_Hash,
       Equivalent_Keys => "=");
 
    Initializes_Aspects_Map : Initializes_Aspects_Maps.Map;
@@ -504,8 +504,11 @@ package body Flow_Generated_Globals.Phase_2 is
       S : Flow_Scope)
       return Dependency_Maps.Map
    is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Package entity name
+
    begin
-      if GG_Exists.Packages.Contains (To_Entity_Name (E)) then
+      if GG_Exists.Packages.Contains (EN) then
          --  Retrieve the relevant Name_Dependency_Map, up project it to S and
          --  then convert it into a Dependency_Map.
          declare
@@ -513,7 +516,7 @@ package body Flow_Generated_Globals.Phase_2 is
                                                 Part => Visible_Part);
 
             DM : Dependency_Maps.Map;
-            II : Initializes_Info renames Initializes_Aspects_Map (E);
+            II : Initializes_Info renames Initializes_Aspects_Map (EN);
 
             All_LHS_UP   : Name_Sets.Set;
             LHS_UP       : Name_Sets.Set;
@@ -1536,215 +1539,196 @@ package body Flow_Generated_Globals.Phase_2 is
       ----------------------------------
 
       procedure Generate_Initializes_Aspects is
-         procedure Add_To_Proof_Or_Normal_Set
-           (EN         : Entity_Name;
-            Proof_Set  : in out Name_Sets.Set;
-            Normal_Set : in out Name_Sets.Set);
-         --  Adds EN to either Proof_Set or Normal_Set depending on whether it
-         --  is a ghost entity or not.
-
-         --------------------------------
-         -- Add_To_Proof_Or_Normal_Set --
-         --------------------------------
-
-         procedure Add_To_Proof_Or_Normal_Set
-           (EN         : Entity_Name;
-            Proof_Set  : in out Name_Sets.Set;
-            Normal_Set : in out Name_Sets.Set)
-         is
-            E : constant Entity_Id := Find_Entity (EN);
-         begin
-            if Present (E)
-              and then Is_Ghost_Entity (E)
-            then
-               Proof_Set.Insert (EN);
-            else
-               Normal_Set.Insert (EN);
-            end if;
-         end Add_To_Proof_Or_Normal_Set;
-
-      --  Start of processing for Generate_Initializes_Aspects
-
       begin
          for P of Package_Info_List loop
-            --  We only need generated Initializes aspect for the packages
-            --  in the current compilation unit and those referenced from
-            --  the current compilation unit (to know what globals of other
-            --  packages are initialized at elaboration time).
-            --
-            --  ??? checking if the mapping from Entity_Name to Entity_Id is
-            --  know is an over-approximation of the above condition.
             declare
-               E : constant Entity_Id := Find_Entity (P.Name);
+               II        : Initializes_Info;
+               --  The new name dependency map for package P
+
+               LHS       : Name_Sets.Set := Name_Sets.Empty_Set;
+               LHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
+               --  LHS and LHS_Proof combined will represent the left hand side
+               --  of the generated initializes aspect.
+
+               RHS       : Name_Sets.Set := P.Inputs;
+               RHS_Proof : Name_Sets.Set := P.Inputs_Proof;
+               --  RHS and RHS_Proof combined will represent the right
+               --  hand side of the generated initializes aspect; they
+               --  are initialized with package inputs and proof inputs,
+               --  respectively.
+
+               LV        : Name_Sets.Set := Name_Sets.Empty_Set;
+               LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
+               --  Flow id sets of local variables/states and local proof
+               --  variables/states.
+
+               ODC       : Name_Sets.Set := Name_Sets.Empty_Set;
+               --  Outputs of Definite Calls
+
+               procedure Add_To_Proof_Or_Normal_Set
+                 (EN         : Entity_Name;
+                  Proof_Set  : in out Name_Sets.Set;
+                  Normal_Set : in out Name_Sets.Set);
+               --  Adds EN to either Proof_Set or Normal_Set depending on
+               --  whether it is a ghost entity or not.
+
+               --------------------------------
+               -- Add_To_Proof_Or_Normal_Set --
+               --------------------------------
+
+               procedure Add_To_Proof_Or_Normal_Set
+                 (EN         : Entity_Name;
+                  Proof_Set  : in out Name_Sets.Set;
+                  Normal_Set : in out Name_Sets.Set)
+               is
+                  E : constant Entity_Id := Find_Entity (EN);
+               begin
+                  if Present (E)
+                    and then Is_Ghost_Entity (E)
+                  then
+                     Proof_Set.Insert (EN);
+                  else
+                     Normal_Set.Insert (EN);
+                  end if;
+               end Add_To_Proof_Or_Normal_Set;
+
+            --  Start of processing for Generate_Initializes_Aspects
+
             begin
-               if Present (E) then
+               --  Add local variables to either LV_Proof or LV depending on
+               --  whether they are ghosts or not.
+               for Local_Variable of P.Local_Variables loop
+                  Add_To_Proof_Or_Normal_Set (Local_Variable,
+                                              LV_Proof,
+                                              LV);
+
+                  --  Add local state abstractions with null refinements to the
+                  --  list of local definite writes since they are trivially
+                  --  initialized.
                   declare
-                     II        : Initializes_Info;
-                     --  The new name dependency map for package P
-
-                     LHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-                     LHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
-                     --  LHS and LHS_Proof combined will represent the left
-                     --  hand side of the generated initializes aspect.
-
-                     RHS       : Name_Sets.Set := P.Inputs;
-                     RHS_Proof : Name_Sets.Set := P.Inputs_Proof;
-                     --  RHS and RHS_Proof combined will represent the right
-                     --  hand side of the generated initializes aspect; they
-                     --  are initialized with package inputs and proof inputs,
-                     --  respectively.
-
-                     LV        : Name_Sets.Set := Name_Sets.Empty_Set;
-                     LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
-                     --  Flow id sets of local variables/states and local proof
-                     --  variables/states.
-
-                     ODC       : Name_Sets.Set := Name_Sets.Empty_Set;
-                     --  Outputs of Definite Calls
-
+                     Local_State : constant Name_Graphs.Cursor :=
+                       State_Comp_Map.Find (Local_Variable);
                   begin
-                     --  Add local variables to either LV_Proof or LV depending
-                     --  on whether they are ghosts or not.
-                     for Local_Variable of P.Local_Variables loop
+                     if Name_Graphs.Has_Element (Local_State)
+                       and then State_Comp_Map (Local_State).Is_Empty
+                     then
                         Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                                    LV_Proof,
-                                                    LV);
-
-                        --  Add local state abstractions with null refinements
-                        --  to the list of local definite writes since they are
-                        --  trivially initialized.
-                        declare
-                           Local_State : constant Name_Graphs.Cursor :=
-                             State_Comp_Map.Find (Local_Variable);
-                        begin
-                           if Name_Graphs.Has_Element (Local_State)
-                             and then State_Comp_Map (Local_State).Is_Empty
-                           then
-                              Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                                          LHS_Proof,
-                                                          LHS);
-                           end if;
-                        end;
-                     end loop;
-
-                     --  Add definite local writes to either LHS_Proof or LHS
-                     --  depending on whether they are ghosts or not.
-                     for Local_Definite_Write of P.Local_Definite_Writes loop
-                        Add_To_Proof_Or_Normal_Set (Local_Definite_Write,
                                                     LHS_Proof,
                                                     LHS);
-                     end loop;
-
-                     --  Add the intersection of pure outputs (outputs that are
-                     --  not also read) of definite calls and local variables
-                     --  to LHS. Additionally, add Reads and Proof_Reads of
-                     --  definite calls to RHS and RHS_Proof respectively.
-                     for Definite_Call of P.Definite_Calls loop
-                        declare
-                           Proof_Reads : Name_Sets.Set;
-                           Reads       : Name_Sets.Set;
-                           Writes      : Name_Sets.Set;
-                        begin
-                           if GG_Exists.Subprograms.Contains (Definite_Call)
-                           then
-                              GG_Get_Most_Refined_Globals
-                                (Subprogram  => Definite_Call,
-                                 Proof_Reads => Proof_Reads,
-                                 Reads       => Reads,
-                                 Writes      => Writes);
-
-                              RHS_Proof.Union (Proof_Reads);
-                              RHS.Union (Reads);
-                              ODC.Union (Writes - Reads);
-                           end if;
-                        end;
-                     end loop;
-                     LHS.Union (LV and ODC);
-
-                     --  Add Reads and Writes of conditional calls to the RHS
-                     --  set and their Proof_Reads to the RHS_Proof set.
-                     for Conditional_Call of P.Conditional_Calls loop
-                        declare
-                           Proof_Reads : Name_Sets.Set;
-                           Reads       : Name_Sets.Set;
-                           Writes      : Name_Sets.Set;
-                        begin
-                           if GG_Exists.Subprograms.Contains (Conditional_Call)
-                           then
-                              GG_Get_Most_Refined_Globals
-                                (Subprogram  => Conditional_Call,
-                                 Proof_Reads => Proof_Reads,
-                                 Reads       => Reads,
-                                 Writes      => Writes);
-
-                              RHS_Proof.Union (Proof_Reads);
-                              RHS.Union (Reads);
-                              RHS.Union (Writes);
-                           end if;
-                        end;
-                     end loop;
-
-                     --  Remove local variables from the sets since they should
-                     --  not appear in Initializes aspects.
-                     RHS.Difference (P.Local_Variables);
-                     RHS_Proof.Difference (P.Local_Variables);
-
-                     --  Assign II
-                     II := (LHS       => LHS,
-                            LHS_Proof => LHS_Proof,
-                            RHS       => RHS,
-                            RHS_Proof => RHS_Proof);
-
-                     --  Add LHS and LHS_Proof to the
-                     --  Initialized_Vars_And_States set
-                     Initialized_Vars_And_States.Union (II.LHS);
-                     Initialized_Vars_And_States.Union (II.LHS_Proof);
-
-                     --  Add state abstractions to Initialized_Vars_And_States
-                     --  when all constituents are initialized and remove
-                     --  constituents of state abstractions that are not
-                     --  fully initialized.
-                     declare
-                        All_LHS   : constant Name_Sets.Set := LHS or LHS_Proof;
-                        State     : Any_Entity_Name;
-                        To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
-                     begin
-                        for Var of All_LHS loop
-                           State := GG_Encapsulating_State (Var);
-
-                           if State /= Null_Entity_Name then
-                              if State_Comp_Map (State).Is_Subset
-                                (Of_Set => All_LHS)
-                              then
-                                 --  All constituents are initialized so we add
-                                 --  the entire abstract state.
-                                 Initialized_Vars_And_States.Include (State);
-                              else
-                                 --  At least one constituent is not
-                                 --  initialized so there is no point in
-                                 --  considering the current constituent
-                                 --  alone as being initialized.
-                                 To_Remove.Insert (Var);
-                              end if;
-                           end if;
-                        end loop;
-
-                        --  Remove constituents whose encapsulating state
-                        --  abstraction is not fully initialized.
-                        Initialized_Vars_And_States.Difference (To_Remove);
-                        II.LHS.Difference (To_Remove);
-                        II.LHS_Proof.Difference (To_Remove);
-                     end;
-
-                     --  Insert II into Initializes_Aspects_Map
-                     Initializes_Aspects_Map.Insert (E, II);
+                     end if;
                   end;
+               end loop;
 
-                  --  This is a convenient place to populate the
-                  --  Package_To_Locals_Map.
-                  Package_To_Locals_Map.Insert (P.Name, P.Local_Variables);
-               end if;
+               --  Add definite local writes to either LHS_Proof or LHS
+               --  depending on whether they are ghosts or not.
+               for Local_Definite_Write of P.Local_Definite_Writes loop
+                  Add_To_Proof_Or_Normal_Set (Local_Definite_Write,
+                                              LHS_Proof,
+                                              LHS);
+               end loop;
+
+               --  Add the intersection of pure outputs (outputs that are not
+               --  also read) of definite calls and local variables to LHS.
+               --  Additionally, add Reads and Proof_Reads of definite calls
+               --  to RHS and RHS_Proof respectively.
+               for Definite_Call of P.Definite_Calls loop
+                  declare
+                     Proof_Reads : Name_Sets.Set;
+                     Reads       : Name_Sets.Set;
+                     Writes      : Name_Sets.Set;
+                  begin
+                     if GG_Exists.Subprograms.Contains (Definite_Call) then
+                        GG_Get_Most_Refined_Globals
+                          (Subprogram  => Definite_Call,
+                           Proof_Reads => Proof_Reads,
+                           Reads       => Reads,
+                           Writes      => Writes);
+
+                        RHS_Proof.Union (Proof_Reads);
+                        RHS.Union (Reads);
+                        ODC.Union (Writes - Reads);
+                     end if;
+                  end;
+               end loop;
+               LHS.Union (LV and ODC);
+
+               --  Add Reads and Writes of conditional calls to the RHS set and
+               --  their Proof_Reads to the RHS_Proof set.
+               for Conditional_Call of P.Conditional_Calls loop
+                  declare
+                     Proof_Reads : Name_Sets.Set;
+                     Reads       : Name_Sets.Set;
+                     Writes      : Name_Sets.Set;
+                  begin
+                     if GG_Exists.Subprograms.Contains (Conditional_Call) then
+                        GG_Get_Most_Refined_Globals
+                          (Subprogram  => Conditional_Call,
+                           Proof_Reads => Proof_Reads,
+                           Reads       => Reads,
+                           Writes      => Writes);
+
+                        RHS_Proof.Union (Proof_Reads);
+                        RHS.Union (Reads);
+                        RHS.Union (Writes);
+                     end if;
+                  end;
+               end loop;
+
+               --  Remove local variables from the sets since they should not
+               --  appear in Initializes aspects.
+               RHS.Difference (P.Local_Variables);
+               RHS_Proof.Difference (P.Local_Variables);
+
+               --  Assign II
+               II := (LHS       => LHS,
+                      LHS_Proof => LHS_Proof,
+                      RHS       => RHS,
+                      RHS_Proof => RHS_Proof);
+
+               --  Add LHS and LHS_Proof to the Initialized_Vars_And_States set
+               Initialized_Vars_And_States.Union (II.LHS);
+               Initialized_Vars_And_States.Union (II.LHS_Proof);
+
+               --  Add state abstractions to Initialized_Vars_And_States when
+               --  all constituents are initialized and remove constituents of
+               --  state abstractions that are not fully initialized.
+               declare
+                  All_LHS   : constant Name_Sets.Set := LHS or LHS_Proof;
+                  State     : Any_Entity_Name;
+                  To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
+               begin
+                  for Var of All_LHS loop
+                     State := GG_Encapsulating_State (Var);
+
+                     if State /= Null_Entity_Name then
+                        if State_Comp_Map (State).Is_Subset (Of_Set => All_LHS)
+                        then
+                           --  All constituents are initialized so we add the
+                           --  entire abstract state.
+                           Initialized_Vars_And_States.Include (State);
+                        else
+                           --  At least one constituent is not initialized so
+                           --  there is no point in considering the current
+                           --  constituent alone as being initialized.
+                           To_Remove.Insert (Var);
+                        end if;
+                     end if;
+                  end loop;
+
+                  --  Remove constituents whose encapsulating state abstraction
+                  --  is not fully initialized.
+                  Initialized_Vars_And_States.Difference (To_Remove);
+                  II.LHS.Difference (To_Remove);
+                  II.LHS_Proof.Difference (To_Remove);
+               end;
+
+               --  Insert II into Initializes_Aspects_Map
+               Initializes_Aspects_Map.Insert (P.Name, II);
             end;
+
+            --  This is a convenient place to populate the
+            --  Package_To_Locals_Map.
+            Package_To_Locals_Map.Insert (P.Name, P.Local_Variables);
          end loop;
 
          if Debug_Print_Generated_Initializes then
@@ -2645,12 +2629,12 @@ package body Flow_Generated_Globals.Phase_2 is
       Write_Line ("Synthesized initializes aspects:");
       for Init in Initializes_Aspects_Map.Iterate loop
          declare
-            Pkg : Entity_Id        renames Initializes_Aspects_Maps.Key (Init);
+            Pkg : Entity_Name      renames Initializes_Aspects_Maps.Key (Init);
             II  : Initializes_Info renames Initializes_Aspects_Map (Init);
 
          begin
             Indent;
-            Write_Line ("Package " & Unique_Name (Pkg)  & ":");
+            Write_Line ("Package " & To_String (Pkg)  & ":");
             Indent;
             Print_Name_Set ("LHS      : ", II.LHS);
             Print_Name_Set ("LHS_Proof: ", II.LHS_Proof);
