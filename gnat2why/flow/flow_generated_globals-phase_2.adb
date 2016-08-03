@@ -1558,9 +1558,6 @@ package body Flow_Generated_Globals.Phase_2 is
                Local_Non_Ghost_Vars : Name_Sets.Set;
                --  Local non-proof variables/states
 
-               ODC : Name_Sets.Set;
-               --  Outputs of Definite Calls
-
             begin
                --  Collect local non-ghost variables
                for Var of P.Local_Variables loop
@@ -1592,26 +1589,31 @@ package body Flow_Generated_Globals.Phase_2 is
                --  also read) of definite calls and local variables to LHS.
                --  Additionally, add Reads and Proof_Reads of definite calls
                --  to RHS and RHS_Proof respectively.
-               for Definite_Call of P.Definite_Calls loop
-                  declare
-                     Proof_Reads : Name_Sets.Set;
-                     Reads       : Name_Sets.Set;
-                     Writes      : Name_Sets.Set;
-                  begin
-                     if GG_Exists.Subprograms.Contains (Definite_Call) then
-                        GG_Get_Most_Refined_Globals
-                          (Subprogram  => Definite_Call,
-                           Proof_Reads => Proof_Reads,
-                           Reads       => Reads,
-                           Writes      => Writes);
+               declare
+                  Outputs : Name_Sets.Set;
+                  --  Outputs of Definite Calls
+               begin
+                  for Definite_Call of P.Definite_Calls loop
+                     declare
+                        Proof_Reads : Name_Sets.Set;
+                        Reads       : Name_Sets.Set;
+                        Writes      : Name_Sets.Set;
+                     begin
+                        if GG_Exists.Subprograms.Contains (Definite_Call) then
+                           GG_Get_Most_Refined_Globals
+                             (Subprogram  => Definite_Call,
+                              Proof_Reads => Proof_Reads,
+                              Reads       => Reads,
+                              Writes      => Writes);
 
-                        II.RHS_Proof.Union (Proof_Reads);
-                        II.RHS.Union (Reads);
-                        ODC.Union (Writes - Reads);
-                     end if;
-                  end;
-               end loop;
-               II.LHS.Union (Local_Non_Ghost_Vars and ODC);
+                           II.RHS_Proof.Union (Proof_Reads);
+                           II.RHS.Union (Reads);
+                           Outputs.Union (Writes - Reads);
+                        end if;
+                     end;
+                  end loop;
+                  II.LHS.Union (Local_Non_Ghost_Vars and Outputs);
+               end;
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
