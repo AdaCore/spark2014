@@ -5,7 +5,7 @@ Appendix
 ********
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :numbered: 3
 
    appendix/command_line_invocation
@@ -16,4 +16,5 @@ Appendix
    appendix/gnatprove_limitations
    appendix/portability_issues
    appendix/semantics_of_floating_point_operations
+   appendix/quality_assurance
 
