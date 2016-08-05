@@ -172,9 +172,6 @@ is
          E : constant Name_Entry := Element (Entry_Table, N);
          L : constant Positive   := E.Length;
       begin
-         pragma Annotate (GNATprove, False_Positive,
-                          """S"" might not be initialized",
-                          "it obviously is");
          return S : String (1 .. L) do
             for I in Positive range 1 .. L loop
                S (I) := Element (Char_Table,
@@ -182,6 +179,9 @@ is
                pragma Loop_Invariant (Invariant);
             end loop;
          end return;
+         pragma Annotate (GNATprove, False_Positive,
+                          """S"" might not be initialized",
+                          "it obviously is");
       end;
    end To_String;
 

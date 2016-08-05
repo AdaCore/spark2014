@@ -1,6 +1,5 @@
 package body Records
 is
-   pragma Annotate (Gnatprove, False_Positive, "might not be initialized", "");
    pragma Warnings (Off, "* has no effect");
 
    function Init_A return Pair
@@ -153,6 +152,7 @@ is
           Post    => (Src.Exists = Dst.Exists)  --  @POSTCONDITION:PASS
                         and (if Src.Exists then Dst = Src)
    is
+      pragma Annotate (Gnatprove, False_Positive, "might not be initialized", "");
    begin
       Dst.Exists := Src.Exists;
       if Src.Exists then
@@ -165,6 +165,7 @@ is
      with Depends => (Dst => Src),
           Post    => Dst = Src  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
+      pragma Annotate (Gnatprove, False_Positive, "might not be initialized", "");
    begin
       Dst.Exists := Src.Exists;
       if Src.Exists then

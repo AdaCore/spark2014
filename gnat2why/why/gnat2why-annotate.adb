@@ -84,8 +84,13 @@ package body Gnat2Why.Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      Range_Node      : Node_Id);
-   --  Insert the node range into the sorted vector of node ranges
+      Range_Node      : Node_Id;
+      Whole           : Boolean);
+   --  Insert a certain range into the sorted vector of node ranges, with
+   --  [prgma] as the corresponding pragma. The range is computed as follows.
+   --  If [Whole] is true the entire range of the node is considered. If
+   --  [Whole] is false, only the range First_Sloc (Range_Node) .. Pragma_Sloc
+   --  is inserted.
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -461,9 +466,10 @@ package body Gnat2Why.Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      Range_Node      : Node_Id)
+      Range_Node      : Node_Id;
+      Whole           : Boolean)
    is
-      First_Sloc, Last_Sloc : Source_Ptr;
+      Left_Sloc, Right_Sloc : Source_Ptr;
    begin
 
       if No (Range_Node) then
@@ -480,18 +486,24 @@ package body Gnat2Why.Annotate is
         and then Present (Corresponding_Spec (Range_Node))
       then
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
-                                Specification (Range_Node));
+                                Specification (Range_Node), Whole => True);
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
-                                Handled_Statement_Sequence (Range_Node));
+                                Handled_Statement_Sequence (Range_Node),
+                                Whole => True);
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
                                 Declarations (Range_Node));
          Insert_With_Next (Prgma, Kind, Pattern, Reason,
                            Parent (Parent (Corresponding_Spec (Range_Node))));
          return;
       end if;
-      Sloc_Range (Range_Node, First_Sloc, Last_Sloc);
+      if Whole then
+         Sloc_Range (Range_Node, Left_Sloc, Right_Sloc);
+      else
+         Left_Sloc := First_Sloc (Range_Node);
+         Right_Sloc := First_Sloc (Prgma);
+      end if;
       Insert_Annotate_Range
-        (Prgma, Kind, Pattern, Reason, First_Sloc, Last_Sloc);
+        (Prgma, Kind, Pattern, Reason, Left_Sloc, Right_Sloc);
    end Insert_Annotate_Range;
 
    procedure Insert_Annotate_Range
@@ -546,10 +558,12 @@ package body Gnat2Why.Annotate is
    is
       Node : Node_Id := First_Node;
    begin
-      Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node);
+      Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
+                             Whole => True);
       Next (Node);
       while Present (Node) and then not Comes_From_Source (Node) loop
-         Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node);
+         Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
+                                Whole => True);
          Next (Node);
       end loop;
    end Insert_With_Next;
@@ -592,7 +606,8 @@ package body Gnat2Why.Annotate is
       if Consider_Next then
          Insert_With_Next (N, Kind, Pattern, Reason, Preceding);
       else
-         Insert_Annotate_Range (N, Kind, Pattern, Reason, Preceding);
+         Insert_Annotate_Range (N, Kind, Pattern, Reason, Preceding,
+                                Whole => False);
       end if;
    end Mark_Pragma_Annotate;
 
