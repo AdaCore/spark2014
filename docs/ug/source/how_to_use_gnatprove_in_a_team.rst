@@ -191,8 +191,9 @@ reason may be present in a |GNATprove| report.
 Placement rules are as follows: in a statement list or declaration list, pragma
 ``Annotate`` applies to the preceding item in the list, ignoring other pragma
 ``Annotate``. If there is no preceding item, the pragma applies to the
-enclosing construct. For example, if the pragma is the first element of a
-statement list, the pragma will apply to all statements of the statement list.
+enclosing construct. For example, if the pragma is the first element of the
+then-branch of an if-statement, it will apply to condition in the
+if-statement.
 
 If the preceding or enclosing construct is a subprogram
 body, the pragma applies to both the subprogram body and the spec including its
