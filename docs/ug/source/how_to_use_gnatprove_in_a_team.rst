@@ -200,6 +200,19 @@ body, the pragma applies to both the subprogram body and the spec including its
 contract. This allows to place a justification for a check message issued by
 |GNATprove| either on the spec when it is relevant for callers:
 
+As a point of caution, the following placements of pragma Annotate will apply
+the pragma to a possibly large range of source lines:
+
+* when the pragma appears in a statement list after a block, it will apply to
+  the entire block (e.g. an if statement including all branches, or a loop
+  including the loop body).
+* when the pragma appears directly after a subprogram body, it will apply to
+  the entire body and the spec of the subprogram.
+
+Users should take care to not justify checks which were not intended to be
+justified, when placing pragma Annotate in such places.
+
+
 .. literalinclude:: ../gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 4-7
