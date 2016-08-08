@@ -1,0 +1,198 @@
+decadriver.adb:35:11: info: length check proved (CVC4: 1 VC)
+decadriver.adb:72:13: info: initialization of "Error" proved
+decadriver.adb:73:32: info: initialization of "Size" proved
+decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:74:61: info: initialization of "Size" proved
+decadriver.adb:75:18: info: length check proved (CVC4: 1 VC)
+decadriver.adb:75:45: info: length check proved (CVC4: 1 VC)
+decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
+decadriver.adb:75:58: info: initialization of "Size" proved
+decadriver.adb:78:22: info: length check proved (CVC4: 1 VC)
+decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
+decadriver.adb:84:34: medium: range check might fail
+decadriver.adb:113:35: info: initialization of "RX_FINFO_Reg.RXFLEN" proved
+decadriver.adb:113:56: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:113:56: info: range check proved (CVC4: 1 VC)
+decadriver.adb:114:35: info: initialization of "RX_FINFO_Reg.RXFLE" proved
+decadriver.adb:114:55: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:116:10: info: assertion proved (CVC4: 1 VC)
+decadriver.adb:116:25: info: initialization of "Frame_Length" proved
+decadriver.adb:118:13: info: initialization of "Frame_Length" proved
+decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)
+decadriver.adb:125:37: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
+decadriver.adb:131:34: info: initialization of "Next_Idx" proved
+decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
+decadriver.adb:131:43: medium: predicate check might fail
+decadriver.adb:131:56: info: initialization of "Frame_Length" proved
+decadriver.adb:133:38: medium: predicate check might fail
+decadriver.adb:133:47: info: initialization of "Next_Idx" proved
+decadriver.adb:133:50: info: initialization of "Frame_Length" proved
+decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
+decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
+decadriver.adb:134:47: info: initialization of "Next_Idx" proved
+decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
+decadriver.adb:135:47: info: initialization of "Next_Idx" proved
+decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
+decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:156:35: medium: predicate check might fail
+decadriver.adb:156:44: info: initialization of "Next_Idx" proved
+decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
+decadriver.adb:157:44: info: initialization of "Next_Idx" proved
+decadriver.adb:158:35: info: predicate check proved (CVC4: 1 VC)
+decadriver.adb:158:44: info: initialization of "Next_Idx" proved
+decadriver.adb:189:23: info: precondition proved (CVC4: 4 VC)
+decadriver.adb:197:23: medium: precondition might fail
+decadriver.adb:210:26: info: initialization of "Result" proved
+decadriver.adb:250:46: info: initialization of "Word" proved
+decadriver.adb:250:51: info: range check proved (CVC4: 2 VC)
+decadriver.adb:251:34: info: initialization of "Word" proved
+decadriver.adb:252:46: info: initialization of "Word" proved
+decadriver.adb:252:51: info: range check proved (CVC4: 2 VC)
+decadriver.adb:260:34: info: initialization of "Word" proved
+decadriver.adb:260:39: info: range check proved (CVC4: 2 VC)
+decadriver.adb:267:56: info: range check proved (CVC4: 1 VC)
+decadriver.adb:272:36: info: length check proved (CVC4: 1 VC)
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ARX2INIT" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ARXSLP" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ATXSLP" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.KHZCLKDIV" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.LDERUNE" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.PKTSEQ" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.PLLSYN" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_1" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_2" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_3" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_4" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.SNOZE" proved
+decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.SNOZR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MAAT" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MAFFREJ" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MCPLLLL" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MCPLOCK" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MESYNCR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MGPIOIRQ" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MHPDWARN" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MLDEDONE" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MLDEERR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRFPLLLL" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXDFR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXFCE" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXFCG" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXOVRR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPHD" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPHE" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPRD" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPTO" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXRFSL" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXRFTO" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXSFDD" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXSFDTO" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MSLP2INIT" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXBERR" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXFRB" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXFRS" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXPHS" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXPRS" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_1" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_2" proved
+decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_3" proved
+decadriver.adb:325:38: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
+decadriver.adb:325:60: info: division check proved (CVC4: 1 VC)
+decadriver.adb:333:55: info: range check proved (CVC4: 1 VC)
+decadriver.adb:336:43: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
+decadriver.adb:352:35: info: initialization of "SFD_Timeout" proved
+decadriver.adb:382:46: info: range check proved (CVC4: 1 VC)
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAAT" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAFFREJ" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MCPLLLL" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MCPLOCK" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MESYNCR" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MGPIOIRQ" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MHPDWARN" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MLDEDONE" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MLDEERR" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRFPLLLL" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXDFR" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXFCE" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXFCG" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXOVRR" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPHD" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPHE" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPRD" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPTO" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXRFSL" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXRFTO" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXSFDD" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXSFDTO" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MSLP2INIT" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXBERR" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXFRB" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXFRS" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXPHS" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXPRS" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_1" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_2" proved
+decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_3" proved
+decadriver.adb:509:13: info: initialization of "SYS_STATUS_Reg.RXRFTO" proved
+decadriver.adb:511:24: info: precondition proved (CVC4: 1 VC)
+decadriver.adb:516:13: info: initialization of "SYS_STATUS_Reg.RXSFDTO" proved
+decadriver.adb:518:24: info: precondition proved (CVC4: 1 VC)
+decadriver.adb:523:13: info: initialization of "SYS_STATUS_Reg.RXRFSL" proved
+decadriver.adb:525:24: info: precondition proved (CVC4: 1 VC)
+decadriver.adb:530:13: info: initialization of "SYS_STATUS_Reg.RXDFR" proved
+decadriver.adb:532:16: info: initialization of "SYS_STATUS_Reg.RXFCG" proved
+decadriver.adb:536:19: info: initialization of "SYS_STATUS_Reg.RXFCE" proved
+decadriver.adb:538:27: info: precondition proved (CVC4: 1 VC)
+decadriver.adb:546:13: info: initialization of "SYS_STATUS_Reg.TXFRS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.AAT" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.AFFREJ" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.CLKPLL_LL" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.CPLOCK" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.ESYNCR" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.GPIOIRQ" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.HPDWARN" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.HSRBP" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.ICRBP" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.IRQS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.LDEDONE" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.LDEERR" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RFPLL_LL" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXDFR" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXFCE" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXFCG" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXOVRR" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPHD" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPHE" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPRD" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPREJ" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPTO" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRFSL" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRFTO" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRSCS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXSFDD" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXSFDTO" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.Reserved_1" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.Reserved_2" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.SLP2INIT" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXBERR" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXFRB" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXFRS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPHS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPRS" proved
+decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPUTE" proved
+decadriver.ads:81:19: info: initialization of "Size" proved
+decadriver.ads:82:19: info: initialization of "Error" proved
+decadriver.ads:88:21: info: initialization of "Error" proved
+decadriver.ads:89:23: medium: postcondition might fail, cannot prove Size in 1 .. DW1000.Constants.rx_buffer_length (e.g. when Error = No_Error and Size = 0)
+decadriver.ads:90:23: info: initialization of "Size" proved
+decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Frames_Count'Result <= 2 (e.g. when Pending_Frames_Count'Result = 3)
+decadriver.ads:115:28: info: initialization of "Result" proved
+decadriver.ads:120:17: info: postcondition proved (CVC4: 1 VC)
+decadriver.ads:120:38: info: initialization of "Result" proved
+decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
+decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
+decadriver.ads:210:27: info: initialization of "Result" proved
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
+decadriver.ads:331:17: medium: ceiling priority protocol might not be respected
+decadriver.ads:332:49: medium: this interrupt might be reserved
