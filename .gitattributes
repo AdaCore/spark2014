@@ -41,3 +41,4 @@ include/*.adb no-precommit-check
 
 *.ads diff=ada
 *.adb diff=ada
+*.docx diff=docx
