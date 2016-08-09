@@ -34,6 +34,7 @@ with Binderr;
 with Call;
 with Common_Containers;               use Common_Containers;
 with Debug;                           use Debug;
+with Debug.Timing;                    use Debug.Timing;
 with Einfo;                           use Einfo;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
@@ -363,10 +364,10 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      N         : constant Node_Id := Unit (GNAT_Root);
-      Base_Name : constant String :=
-          File_Name_Without_Suffix
-            (Get_Name_String (Unit_File_Name (Main_Unit)));
+      N          : constant Node_Id := Unit (GNAT_Root);
+      Base_Name  : constant String :=
+        File_Name_Without_Suffix
+          (Get_Name_String (Unit_File_Name (Main_Unit)));
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -383,7 +384,10 @@ package body Gnat2Why.Driver is
       --  anywhere in the unit
       Proof_Done : Boolean := False;
 
+      Timing     : Time_Token;
    begin
+      Timing_Start (Timing);
+
       if Is_Generic_Unit (Unique_Defining_Entity (N))
         and then Analysis_Requested (Unique_Defining_Entity (N),
                                      With_Inlined => False)
@@ -424,6 +428,7 @@ package body Gnat2Why.Driver is
       --  comes last.
 
       Mark_All_Compilation_Units;
+      Timing_Phase_Completed (Timing, "marking");
 
       --  Set up the flow tree utility package.
 
@@ -450,15 +455,18 @@ package body Gnat2Why.Driver is
 
          --  Compute basic globals
          Compute_Global_Effects;
+         Timing_Phase_Completed (Timing, "globals (basic)");
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
+         Timing_Phase_Completed (Timing, "globals (advanced)");
 
          --  Do some flow analysis
 
          if not Gnat2Why_Args.Debug_Proof_Only then
             Flow_Analyse_CUnit (GNAT_Root);
             Generate_Assumptions;
+            Timing_Phase_Completed (Timing, "flow analysis");
          end if;
 
          --  Start the translation to Why
@@ -469,14 +477,19 @@ package body Gnat2Why.Driver is
          then
             Proof_Done := True;
             Load_Codepeer_Results;
+            Timing_Phase_Completed (Timing, "codepeer results");
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
+            Timing_Phase_Completed (Timing, "init_why_sections");
             Translate_Standard_Package;
+            Timing_Phase_Completed (Timing, "translation of standard");
             Translate_CUnit;
+            Timing_Phase_Completed (Timing, "translation of compilation unit");
             Run_Gnatwhy3;
             if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
+            Timing_Phase_Completed (Timing, "proof");
          end if;
          Create_JSON_File (Proof_Done);
       end if;

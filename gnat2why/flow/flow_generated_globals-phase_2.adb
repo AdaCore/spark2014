@@ -35,6 +35,7 @@ with Sem_Util;                   use Sem_Util;
 with Snames;                     use Snames;
 
 with Call;                       use Call;
+with Debug.Timing;               use Debug.Timing;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Definition;           use SPARK_Definition;
@@ -42,7 +43,6 @@ with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
-with Flow_Debug;                 use Flow_Debug;
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
 
@@ -756,6 +756,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Package_Info_List : Global_Info_Lists.List;
       --  Information about packages from the "generated globals" algorithm
+
+      Timing : Time_Token;
+      --  In case we print timing information
 
       procedure Add_Edges;
       --  Takes the Subprogram_Info_List and generates edges in the
@@ -1956,7 +1959,7 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Note_Time (Message : String) is
       begin
          if Debug_GG_Read_Timing then
-            Flow_Debug.Note_Time (Message);
+            Timing_Phase_Completed (Timing, Message);
          end if;
       end Note_Time;
 
@@ -2077,9 +2080,7 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       Current_Mode := GG_Read_Mode;
 
-      if Debug_GG_Read_Timing then
-         Init_Time ("gg_read");
-      end if;
+      Timing_Start (Timing);
 
       --  Load information from all ALI files
       for Index in ALIs.First .. ALIs.Last loop
@@ -2126,10 +2127,7 @@ package body Flow_Generated_Globals.Phase_2 is
       Process_Tasking_Graph;
       Print_Tasking_Info_Bag (GG_Phase_2);
 
-      if Debug_GG_Read_Timing then
-         Final_Time ("gg_read");
-      end if;
-
+      Note_Time ("gg_read - end");
    end GG_Read;
 
    --------------------------------------------------------------------------
