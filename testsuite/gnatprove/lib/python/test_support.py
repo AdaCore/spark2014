@@ -544,12 +544,14 @@ def strip_provers_output_from_testout():
             f.write(content)
 
 
-def gnatprove(opt=["-P", "test.gpr"], no_fail=False):
+def gnatprove(opt=["-P", "test.gpr"], no_fail=False, subdue_flow=False):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
     opt: options to give to gnatprove
     no_fail: if set, then we make sure no unproved checks are in the output
+    subdue_flow: if set, then we silence a bunch of flow warnings and the
+                 check about unused globals (so we can set no_fail)
     """
     # generate an empty project file if not present already
     if not os.path.isfile("test.gpr"):
@@ -565,6 +567,13 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False):
             f_adc.write('pragma SPARK_Mode (On);\n')
             f_adc.write('pragma Profile (Ravenscar);\n')
             f_adc.write('pragma Partition_Elaboration_Policy (Sequential);\n')
+            if subdue_flow:
+                for w in ("unused assignment",
+                          "unused assignment to *",
+                          "statement has no effect",
+                          "unused initial value of *",
+                          "* is not modified, could be INPUT"):
+                    f_adc.write("pragma Warnings (Off, \"%s\");\n" % w)
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
@@ -592,6 +601,9 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False):
     if inverse_prover():
         strlist = [strip_provers_output(s) for s in strlist]
         strip_provers_output_from_testout()
+    if subdue_flow:
+        strlist = [s for s in strlist
+                   if "low: unused global" not in s]
 
     check_marks(strlist)
     check_fail(strlist, no_fail)
@@ -602,13 +614,14 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout(), mode="all", counterexample=True,
               prover=default_provers, cache_allowed=True, report="provers",
               level=None,
-              no_fail=False):
+              no_fail=False,
+              subdue_flow=False):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
        option to zero disables steps option.
 
-       If no_fail is passed directly to gnatprove().
+       If no_fail and subdue_flow are passed directly to gnatprove().
     """
     fullopt = ["--warnings=continue"]
     fullopt += ["--report=%s" % (report)]
@@ -642,7 +655,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    gnatprove(fullopt, no_fail)
+    gnatprove(fullopt, no_fail, subdue_flow)
 
 
 def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all"):
