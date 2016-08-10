@@ -46,6 +46,12 @@ package Debug.Timing is
    --  Return the history so far as a mapping {string -> float} with
    --  elapsed phases (the string) and how long they took (the float).
 
+   procedure External_Timing (T : in out Time_Token;
+                              S : String;
+                              Time : Float);
+   --  inject a timing that comes from another source than this package. This
+   --  allows to integrate timings from spawned processes into the output
+
 private
 
    use Ada.Execution_Time;

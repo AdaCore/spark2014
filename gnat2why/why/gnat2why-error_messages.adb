@@ -600,7 +600,7 @@ package body Gnat2Why.Error_Messages is
    -- Parse_Why3_Results --
    ------------------------
 
-   procedure Parse_Why3_Results (S : String) is
+   procedure Parse_Why3_Results (S : String; Timing : in out Time_Token) is
 
       --  See the file gnat_report.mli for a description of the format that we
       --  parse here.
@@ -625,6 +625,7 @@ package body Gnat2Why.Error_Messages is
 
       procedure Handle_Result (V : JSON_Value);
       procedure Handle_Error (Msg : String; Internal : Boolean);
+      procedure Handle_Timings (V : JSON_Value);
 
       ------------------
       -- Handle_Error --
@@ -676,6 +677,22 @@ package body Gnat2Why.Error_Messages is
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
 
+      -------------------
+      -- Handle_Timing --
+      -------------------
+
+      procedure Handle_Timings (V : JSON_Value) is
+         procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value);
+
+         procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value) is
+         begin
+            External_Timing (Timing, Name, Get (Value));
+         end Timing_Entry;
+
+      begin
+         Map_JSON_Object (V, Timing_Entry'Access);
+      end Handle_Timings;
+
       -----------------------------
       -- Parse_Why3_Prove_Result --
       -----------------------------
@@ -723,6 +740,9 @@ package body Gnat2Why.Error_Messages is
             begin
                Handle_Error (Msg, Internal);
             end;
+         end if;
+         if Has_Field (File, "timings") then
+            Handle_Timings (Get (File, "timings"));
          end if;
          for Index in 1 .. Length (Results) loop
             Handle_Result (Get (Results, Index));

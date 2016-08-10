@@ -38,6 +38,18 @@ package body Debug.Timing is
    --  Convert deci-seconds to a float.
 
    ---------------------
+   -- External_Timing --
+   ---------------------
+
+   procedure External_Timing (T : in out Time_Token;
+                              S : String;
+                              Time : Float) is
+   begin
+      T.History.Append ((Name   => To_Unbounded_String (S),
+                         Length => Deci_Seconds (Time * 10.0)));
+   end External_Timing;
+
+   ---------------------
    -- To_Deci_Seconds --
    ---------------------
 

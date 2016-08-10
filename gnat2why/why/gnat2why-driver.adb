@@ -637,7 +637,8 @@ package body Gnat2Why.Driver is
                Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
                Err_To_Out => False,
                Input      => "",
-               Status     => Status'Access));
+               Status     => Status'Access),
+            Timing);
          Set_Directory (Old_Dir);
       end if;
    end Run_Gnatwhy3;
