@@ -132,6 +132,14 @@ package body Gnat2Why.Driver is
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
 
+   ----------------------
+   -- Global Variables --
+   ----------------------
+
+   Timing     : Time_Token;
+   --  this variable stores the timing results of the various phases in
+   --  gnat2why
+
    --------------------------
    -- Complete_Declaration --
    --------------------------
@@ -201,6 +209,8 @@ package body Gnat2Why.Driver is
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);
+
+      Set_Field (Full, "timings", Timing_History (Timing));
 
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
@@ -384,7 +394,6 @@ package body Gnat2Why.Driver is
       --  anywhere in the unit
       Proof_Done : Boolean := False;
 
-      Timing     : Time_Token;
    begin
       Timing_Start (Timing);
 
