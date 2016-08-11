@@ -557,12 +557,12 @@ package body Flow.Analysis.Sanity is
          declare
             A : V_Attributes renames FA.Atr (V);
 
-            All_Vars : constant Ordered_Flow_Id_Sets.Set :=
+            Variables_Referenced : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
 
             F : Flow_Id;
          begin
-            for Var of All_Vars loop
+            for Var of Variables_Referenced loop
                F := Change_Variant (Var, Normal_Use);
 
                if not (FA.All_Vars.Contains (F) or else Synthetic (F)) then
