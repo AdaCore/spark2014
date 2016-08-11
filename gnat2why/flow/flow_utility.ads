@@ -177,8 +177,7 @@ is
    with Pre  => Ekind (Subprogram) in E_Entry     |
                                       E_Function  |
                                       E_Procedure |
-                                      E_Task_Type and then
-                Is_Visible (Subprogram, Scope),
+                                      E_Task_Type,
         Post => (for all G of Proof_Ins => G.Variant = In_View) and then
                 (for all G of Reads     => G.Variant = In_View) and then
                 (for all G of Writes    => G.Variant = Out_View);

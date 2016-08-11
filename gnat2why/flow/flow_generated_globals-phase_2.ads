@@ -97,7 +97,6 @@ package Flow_Generated_Globals.Phase_2 is
                              E_Function  |
                              E_Procedure |
                              E_Task_Type and then
-                Is_Visible (E, S) and then
                 GG_Exist (E),
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
