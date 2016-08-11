@@ -177,8 +177,8 @@ package body Flow.Analysis.Sanity is
             case Nkind (N) is
                when N_Indexed_Component =>
                   declare
-                     Renamed_Indexes : constant List_Id :=
-                       Expressions (N);
+                     Renamed_Indexes : constant List_Id := Expressions (N);
+
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
                        Simple_Variable_Set (Renamed_Indexes);
                   begin
@@ -189,8 +189,8 @@ package body Flow.Analysis.Sanity is
 
                when N_Slice =>
                   declare
-                     Renamed_Slice : constant Node_Id :=
-                       Discrete_Range (N);
+                     Renamed_Slice : constant Node_Id := Discrete_Range (N);
+
                      Deps : constant Ordered_Flow_Id_Sets.Set :=
                        Simple_Variable_Set (Renamed_Slice);
                   begin
