@@ -150,7 +150,7 @@ package body Flow_Classwide is
                    Reads      => My_Reads,
                    Writes     => My_Write);
 
-      --  A Global or Global’Class aspect specification G2 is said to be a
+      --  A Global or Global'Class aspect specification G2 is said to be a
       --  valid overriding of another such specification, G1, if the
       --  following conditions are met:
 
