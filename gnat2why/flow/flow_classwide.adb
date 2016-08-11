@@ -449,23 +449,24 @@ package body Flow_Classwide is
       Scope : constant Flow_Scope := Get_Flow_Scope (E);
    begin
       Valid := True;
-      if not Has_Controlling_Formal_Or_Result (E) then
-         return;
-      end if;
 
-      if No (Overridden_Operation (E)) then
+      if Has_Controlling_Formal_Or_Result (E) then
+         if Present (Overridden_Operation (E)) then
+
+            Check_Classwide_Global (E, Scope, Valid);
+
+            if Valid then
+               Check_Classwide_Depends (E, Scope, Valid);
+            end if;
+
          --  This subprogram is not overriding, hence there can't be a problem
          --  currently. (Since we assume both global'class and depends'class
          --  are equal to their non-class-wide versions.)
-         return;
-      end if;
 
-      Check_Classwide_Global (E, Scope, Valid);
-      if not Valid then
-         return;
+         else
+            null;
+         end if;
       end if;
-
-      Check_Classwide_Depends (E, Scope, Valid);
    end Check_Classwide_Contracts;
 
 end Flow_Classwide;
