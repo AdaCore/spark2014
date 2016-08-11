@@ -195,8 +195,8 @@ package body Why.Gen.Binders is
             --  For state abstractions pretend there is no Entity
 
             C : constant Ada_Ent_To_Why.Cursor :=
-              (if Use_Ent then
-                    Ada_Ent_To_Why.Find (Symbol_Table, Entity)
+              (if Use_Ent
+               then Ada_Ent_To_Why.Find (Symbol_Table, Entity)
                else Ada_Ent_To_Why.Find (Symbol_Table, V));
 
          begin
