@@ -657,7 +657,7 @@ package body Flow_Generated_Globals.Phase_2 is
          end loop;
       end Most_Refined;
 
-      --  Start of processing for GG_Get_Most_Refined_Globals
+   --  Start of processing for GG_Get_Most_Refined_Globals
 
    begin
       Most_Refined (Kind => Proof_Ins, Result => Proof_Reads);
