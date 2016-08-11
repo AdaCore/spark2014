@@ -161,8 +161,8 @@ package Flow_Refinement is
    with Pre  => (for all V of Vars => Nkind (V) = N_Defining_Identifier),
         Post => (for all V of Down_Project'Result =>
                    Nkind (V) = N_Defining_Identifier);
-   --  Given a set of variables and a scope, recursively expand all abstract
-   --  state where its refinement is visible in S.
+   --  Given a set of variables and a scope, recursively expand abstract states
+   --  whose refinement is visible in S.
 
    function Find_In_Initializes (E : Entity_Id) return Entity_Id
    with Pre  => Present (E),
