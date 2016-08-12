@@ -483,13 +483,11 @@ package body Flow_Refinement is
          for Initialized_Var in M.Iterate loop
             declare
                F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
-               N : constant Node_Id :=
-                 (if F.Kind in Direct_Mapping | Record_Field
-                  then Get_Direct_Mapping_Id (F)
-                  else Empty);
             begin
-               if N = Target_Ent then
-                  return N;
+               if F.Kind in Direct_Mapping | Record_Field
+                 and then Get_Direct_Mapping_Id (F) = Target_Ent
+               then
+                  return Target_Ent;
                end if;
             end;
          end loop;
