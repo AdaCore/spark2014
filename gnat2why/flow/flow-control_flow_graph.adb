@@ -3513,38 +3513,29 @@ package body Flow.Control_Flow_Graph is
       --  'Initial and 'Final vertices for an entity that is mentioned in an
       --  Initializes aspect, we have to set Is_Export on the corresponding
       --  'Final vertices.
-      declare
-         Entity_In_Inizializes : constant Entity_Id :=
-           Find_In_Initializes (E);
-      begin
-         if Present (Entity_In_Inizializes)
-           and then
-             FA.Kind in Kind_Package | Kind_Package_Body
-         then
+      if FA.Kind in Kind_Package | Kind_Package_Body
+        and then Present (Find_In_Initializes (E))
+      then
+         for F of Flatten_Variable (E, FA.B_Scope) loop
+            declare
+               Final_F_Id : constant Flow_Id :=
+                 Change_Variant (F, Final_Value);
 
-            FS := Flatten_Variable (E, FA.B_Scope);
-            for F of FS loop
-               declare
-                  Final_F_Id : constant Flow_Id :=
-                    Change_Variant (F, Final_Value);
+               Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                 FA.CFG.Get_Vertex (Final_F_Id);
+            begin
+               if Final_V_Id /= Flow_Graphs.Null_Vertex then
+                  declare
+                     Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
 
-                  Final_V_Id : constant Flow_Graphs.Vertex_Id :=
-                    FA.CFG.Get_Vertex (Final_F_Id);
-               begin
-                  if Final_V_Id /= Flow_Graphs.Null_Vertex then
-                     declare
-                        Final_Atr  : V_Attributes renames FA.Atr (Final_V_Id);
-
-                     begin
-                        Final_Atr.Is_Export := Final_Atr.Is_Export
-                          or else Is_Initialized_At_Elaboration
-                            (E, FA.B_Scope);
-                     end;
-                  end if;
-               end;
-            end loop;
-         end if;
-      end;
+                  begin
+                     Final_Atr.Is_Export := Final_Atr.Is_Export
+                       or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
+                  end;
+               end if;
+            end;
+         end loop;
+      end if;
 
       --  In phase 1 we count task instances (which can be only declared at
       --  library level because of the Ravenscar profile restrictions) and
