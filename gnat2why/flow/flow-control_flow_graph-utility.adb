@@ -633,7 +633,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            A.Is_Initialized    := not Uninit
+            A.Is_Initialized := not Uninit
               and then Mode in Initialized_Global_Modes;
 
             if Is_Discriminant (F)
