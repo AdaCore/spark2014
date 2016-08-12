@@ -1422,7 +1422,7 @@ package body Flow is
                null;
 
             when others =>
-               raise Program_Error;
+               null;
          end case;
 
          if Present (Graph_Start) then
@@ -1448,7 +1448,9 @@ package body Flow is
    --  Start of processing for Build_Graphs_For_Compilation_Unit
 
    begin
-      Iterate_Entities (Build_Graphs_For_Entity'Access);
+      for E of Marked_Entities loop
+         Build_Graphs_For_Entity (E);
+      end loop;
    end Build_Graphs_For_Compilation_Unit;
 
    ------------------------

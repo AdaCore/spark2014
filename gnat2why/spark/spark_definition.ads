@@ -178,12 +178,6 @@ package SPARK_Definition is
    --  Marked entity collections
    ----------------------------------------------------------------------
 
-   procedure Iterate_Entities
-     (Process : not null access procedure (E : Entity_Id));
-   --  Post-order iterate over the hierarchical container with entities
-   --  processed by the flow analysis, i.e. packages, subprograms, entries
-   --  and task types.
-
    type Entity_Collection is
      (Entities_To_Translate,
       Marked_Entities)
