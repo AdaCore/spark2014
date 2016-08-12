@@ -1083,7 +1083,6 @@ package body Flow is
 
             FA.Is_Generative := Refinement_Needed (E);
 
-            FA.No_Effects := False;
             if Ekind (E) = E_Function then
                FA.Function_Side_Effects_Present := False;
             end if;
