@@ -651,12 +651,9 @@ package body Flow.Control_Flow_Graph.Utility is
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
          when Final_Value =>
-            A.Is_Export := Mode in Exported_Global_Modes;
-
-            if Is_Bound (F) then
-               --  Array bounds are not exported.
-               A.Is_Export := False;
-            end if;
+            --  Array bounds are not exported.
+            A.Is_Export := Mode in Exported_Global_Modes
+              and then not Is_Bound (F);
 
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
