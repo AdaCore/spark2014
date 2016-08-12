@@ -3005,7 +3005,6 @@ package body Flow.Control_Flow_Graph is
    is
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-      FS    : Flow_Id_Sets.Set;
 
       E : constant Entity_Id := Defining_Identifier (N);
       --  Entity of the object declared by node N
@@ -3239,9 +3238,8 @@ package body Flow.Control_Flow_Graph is
       if No (Expr) then
          --  We have no initializing expression so we fall back to the default
          --  initialization (if any).
-         FS := Flatten_Variable (E, FA.B_Scope);
 
-         for F of FS loop
+         for F of Flatten_Variable (E, FA.B_Scope) loop
             if Is_Default_Initialized (F) then
                Add_Vertex
                  (FA,
@@ -3275,9 +3273,9 @@ package body Flow.Control_Flow_Graph is
               Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
                 and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
-         begin
-            FS := Flatten_Variable (E, FA.B_Scope);
+            FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
 
+         begin
             --  Initialize the set of defined variables with all compononents
             --  of the flattened view and add extra elements for bounds.
             Var_Def := FS;
