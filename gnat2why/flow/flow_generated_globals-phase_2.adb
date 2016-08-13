@@ -504,18 +504,19 @@ package body Flow_Generated_Globals.Phase_2 is
       S : Flow_Scope)
       return Dependency_Maps.Map
    is
-      EN : constant Entity_Name := To_Entity_Name (E);
-      --  Package entity name
+      C : constant Initializes_Aspects_Maps.Cursor :=
+        Initializes_Aspects_Map.Find (To_Entity_Name (E));
+      --  Position of the Initializes aspect for E, if any
 
    begin
-      if GG_Exists.Packages.Contains (EN) then
+      if Initializes_Aspects_Maps.Has_Element (C) then
          --  Retrieve the relevant Name_Dependency_Map, up project it to S and
          --  then convert it into a Dependency_Map.
          declare
             LHS_Scope : constant Flow_Scope := (Ent  => E,
                                                 Part => Visible_Part);
 
-            II : Initializes_Info renames Initializes_Aspects_Map (EN);
+            II : Initializes_Info renames Initializes_Aspects_Map (C);
 
             All_LHS_UP   : Name_Sets.Set;
             LHS_UP       : Name_Sets.Set;
