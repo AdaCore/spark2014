@@ -834,7 +834,6 @@ package body SPARK_Util.Types is
       if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
          return T;
       else
-         pragma Assert (Nkind (T) in N_Entity);
          pragma Assert (Is_Type (T));
          if Present (Full_View (T)) then
             return Full_View (T);
