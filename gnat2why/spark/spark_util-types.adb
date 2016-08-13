@@ -1408,8 +1408,7 @@ package body SPARK_Util.Types is
       elsif Ekind (Comp) = E_Discriminant then
          return Root_Record_Component (Comp);
       else
-         pragma Assert (Ekind (Comp) = E_Component
-                        or else Ekind (Comp) in Type_Kind);
+         pragma Assert (Ekind (Comp) in E_Component | Type_Kind);
 
          return Search_Component_In_Info (Get_Component_Set (Rec), Comp);
       end if;
