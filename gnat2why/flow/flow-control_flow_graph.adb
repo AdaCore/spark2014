@@ -6053,9 +6053,10 @@ package body Flow.Control_Flow_Graph is
             --  Such globals are global inputs *only*, as packages are only
             --  allowed to initialize their own state.
             declare
-               Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-               --  An entity might be used to derive more than one of our
-               --  states, so make sure to only add each global once.
+               Global_Ins : Flow_Id_Sets.Set;
+               --  An entity might occur on several RHS of Initializes aspect,
+               --  so first collect all of them and then process with no
+               --  repetition.
 
                DM : constant Dependency_Maps.Map :=
                  Parse_Initializes (FA.Initializes_N,
@@ -6065,37 +6066,29 @@ package body Flow.Control_Flow_Graph is
                for C in DM.Iterate loop
                   declare
                      The_Out : Flow_Id renames Dependency_Maps.Key (C);
-                     The_In  : Flow_Id_Sets.Set renames DM (C);
-
-                     Inserted : Boolean;
-                     Unused   : Flow_Id_Sets.Cursor;
+                     The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   begin
-                     for G of The_In loop
-                        --  We have already introduced initial and final
-                        --  vertices for formals of generics so skip them.
-                        if G.Kind in Direct_Mapping | Record_Field
-                          and then not In_Generic_Actual
-                                         (Get_Direct_Mapping_Id (G))
-                        then
-                           Global_Ins.Insert (New_Item => G,
-                                              Position => Unused,
-                                              Inserted => Inserted);
-
-                           if Inserted then
-                              Create_Initial_And_Final_Vertices
-                                (F             => G,
-                                 Mode          => Mode_In,
-                                 Uninitialized => False,
-                                 FA            => FA);
-                           end if;
-                        end if;
-                     end loop;
+                     Global_Ins.Union (The_Ins);
 
                      if Present (The_Out) then
                         Package_Writes.Include (The_Out);
                      end if;
                   end;
+               end loop;
+
+               for G of Global_Ins loop
+                  --  We have already introduced initial and final vertices for
+                  --  formals of generics so skip them.
+                  if G.Kind in Direct_Mapping | Record_Field
+                    and then not In_Generic_Actual (Get_Direct_Mapping_Id (G))
+                  then
+                     Create_Initial_And_Final_Vertices
+                       (F             => G,
+                        Mode          => Mode_In,
+                        Uninitialized => False,
+                        FA            => FA);
+                  end if;
                end loop;
             end;
 
