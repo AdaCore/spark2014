@@ -1419,13 +1419,13 @@ package body SPARK_Util.Types is
    -------------------------
 
    function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint is
-      F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
-
    begin
       if Ekind (E) = E_String_Literal_Subtype then
          return String_Literal_Length (E);
       else
          declare
+            F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
+
             Rng   : constant Node_Id := Get_Range (F_Index);
             First : constant Uint := Expr_Value (Low_Bound (Rng));
             Last  : constant Uint := Expr_Value (High_Bound (Rng));
