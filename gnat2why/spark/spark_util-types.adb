@@ -1154,12 +1154,13 @@ package body SPARK_Util.Types is
             Info.Insert
               (Field,
                Component_Info'(others => Empty));
+
+            if Ekind (Field) = E_Component then
+               pragma Assert (Component_Is_Visible_In_SPARK (Field));
+               Comps.Insert (Field);
+            end if;
          end if;
 
-         if Ekind (Field) = E_Component then
-            pragma Assert (Component_Is_Visible_In_SPARK (Field));
-            Comps.Insert (Field);
-         end if;
          Next_Entity (Field);
       end loop;
 
