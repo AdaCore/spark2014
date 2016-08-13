@@ -823,7 +823,7 @@ package body SPARK_Util.Types is
         Retysp (if Is_Class_Wide_Type (E)
                 then Get_Specific_Type_From_Classwide (E) else E);
    begin
-      return Comp_Info.Element (Ty).Components;
+      return Comp_Info (Ty).Components;
    end Get_Component_Set;
 
    ------------------------------------
@@ -883,12 +883,12 @@ package body SPARK_Util.Types is
          when E_Record_Subtype
             | E_Record_Subtype_With_Private
          =>
-            return Comp_Info.Element (Retysp (Etype (Ty))).Variant_Info;
+            return Comp_Info (Retysp (Etype (Ty))).Variant_Info;
          when E_Record_Type
             | E_Record_Type_With_Private
             | Concurrent_Kind
          =>
-            return Comp_Info.Element (Ty).Variant_Info;
+            return Comp_Info (Ty).Variant_Info;
          when others =>
             return Info_Maps.Empty_Map;
       end case;
