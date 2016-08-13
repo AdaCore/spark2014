@@ -8229,10 +8229,10 @@ package body Gnat2Why.Expr is
       use type Opt.Ada_Version_Type;
 
    begin
-      --  The attributes supported here must be a subset
-      --  of those supported by a language as a whole.
-      --  This case statement must therefore maintain that relationship
-      --  with that in SPARK_Definition.Mark_Attribute_Reference
+      --  The attributes supported here must be a subset of those
+      --  supported by a language as a whole. This case statement
+      --  must therefore maintain that relationship with that in
+      --  SPARK_Definition.Mark_Attribute_Reference.
       case Attr_Id is
          when Attribute_Result =>
             if Params.Phase in Generate_VCs | Generate_For_Body then
@@ -8543,28 +8543,31 @@ package body Gnat2Why.Expr is
                     (Domain => EW_Term,
                      Expr   =>
                        New_Call (Ada_Node => Expr,
-                           Domain   => Domain,
-                           Name     => M_Int_Div.Mod_Id,
-                           Args     =>
+                           Domain => Domain,
+                           Name   => M_Int_Div.Mod_Id,
+                           Args   =>
                              (1 => Transform_Expr (Arg,
-                              EW_Int_Type,
-                              Domain,
-                              Params),
+                                                   EW_Int_Type,
+                                                   Domain,
+                                                   Params),
                               2 =>
                                 (if Get_EW_Type (Var) = EW_Builtin then
                                  --  if we're builtin, i.e., not abstract,
                                  --  we use standard modulus from why theory
-                                    +MF_BVs (Base_Why_Type (Var)).
-                                   Two_Power_Size
+                                   +MF_BVs (Base_Why_Type (Var)).Two_Power_Size
+
                                  else
                                  --  else we refer to the attribute modulus
-                                    Insert_Simple_Conversion
-                                   (Domain => EW_Term,
-                                    Expr   => New_Attribute_Expr
-                                      (Etype (Var), Domain, Attribute_Modulus),
+                                   Insert_Simple_Conversion
+                                     (Domain => EW_Term,
+                                      Expr   =>
+                                        New_Attribute_Expr
+                                          (Etype (Var),
+                                           Domain,
+                                           Attribute_Modulus),
                                        To     => EW_Int_Type))),
                                  Typ   => EW_Int_Type),
-                     To   => Target_Type);
+                     To     => Target_Type);
                end if;
             end;
 
@@ -8580,7 +8583,8 @@ package body Gnat2Why.Expr is
                              (1 => Transform_Expr (First (Expressions (Expr)),
                                                    Base_Why_Type (Var),
                                                    Domain,
-                              Params)));
+                                                   Params)));
+
             T := New_Call (Ada_Node => Expr,
                            Domain   => Domain,
                            Name     => To_String_Id,
@@ -8624,10 +8628,8 @@ package body Gnat2Why.Expr is
                     Transform_Expr (Var, Domain, Params);
                begin
                   if Has_Array_Type (Etype (Var)) and then
-                    not Has_Static_Array_Type (Etype (Var))
-                    and then
-                      not Has_Static_Array_Type
-                        (Get_Ada_Node (+Get_Type (Arg)))
+                    not Has_Static_Array_Type (Etype (Var)) and then
+                    not Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
                     and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
                   then
                      Arg := Array_Convert_To_Base (Domain, Arg);
@@ -8739,7 +8741,7 @@ package body Gnat2Why.Expr is
                               elsif Attr_Id = Attribute_Floor then
                                  M_Floating.Floor
                               elsif Attr_Id = Attribute_Rounding then
-                                M_Floating.Round
+                                 M_Floating.Round
                               else M_Floating.Truncate);
             begin
                T := New_Call (Ada_Node => Expr,
@@ -8913,8 +8915,7 @@ package body Gnat2Why.Expr is
 
          when Attribute_First_Bit =>
             declare
-               Component : constant Entity_Id :=
-                 Entity (Selector_Name (Var));
+               Component : constant Entity_Id := Entity (Selector_Name (Var));
 
             begin
                if Present (Component_Clause (Component))
@@ -8931,7 +8932,6 @@ package body Gnat2Why.Expr is
                      Normalized_First_Bit (Component));
                else
                   declare
-
                      Name : constant W_Identifier_Id :=
                        E_Symb (Component, WNE_Attr_First_Bit);
 
@@ -8946,8 +8946,7 @@ package body Gnat2Why.Expr is
 
          when Attribute_Last_Bit =>
             declare
-               Component : constant Entity_Id :=
-                 Entity (Selector_Name (Var));
+               Component : constant Entity_Id := Entity (Selector_Name (Var));
 
             begin
                if Present (Component_Clause (Component))
@@ -8968,7 +8967,6 @@ package body Gnat2Why.Expr is
 
                else
                   declare
-
                      Name : constant W_Identifier_Id :=
                        E_Symb (Component, WNE_Attr_Last_Bit);
 
@@ -8983,8 +8981,8 @@ package body Gnat2Why.Expr is
 
          when Attribute_Position =>
             declare
-               Component : constant Entity_Id :=
-                 Entity (Selector_Name (Var));
+               Component : constant Entity_Id := Entity (Selector_Name (Var));
+
             begin
                if Present (Component_Clause (Component)) then
                   if Opt.Ada_Version >= Opt.Ada_2005
