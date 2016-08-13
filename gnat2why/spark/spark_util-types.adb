@@ -315,11 +315,9 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
-      Count : Natural := 0;
+      Count : Natural := Natural (Get_Component_Set (E).Length);
 
    begin
-      Count := Natural (Get_Component_Set (E).Length);
-
       --  Add one field for tagged types to represent the unknown extension
       --  components. The field for the tag itself is stored directly in the
       --  Why3 record.
