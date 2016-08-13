@@ -35,8 +35,8 @@ with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
 package body SPARK_Util.Types is
 
    type Record_Info is record
-      Components    : Node_Sets.Set;
-      Variant_Info  : Info_Maps.Map;
+      Components   : Node_Sets.Set;
+      Variant_Info : Info_Maps.Map;
    end record;
 
    package Info_Map_Maps is new Ada.Containers.Hashed_Maps
