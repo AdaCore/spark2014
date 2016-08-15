@@ -176,6 +176,14 @@ package SPARK_Util is
    --  @return True iff the name to use in Why3 (returned by Full_Name) does
    --     not correspond to unique name in GNAT AST.
 
+   function Full_Source_Name (E : Entity_Id) return String
+     with Pre => Present (E) and then Nkind (E) in N_Has_Chars;
+   --  Intented for use in debug output only
+   --
+   --  @param E any entity
+   --  @return The qualified name of E as it appears in the source code, i.e.
+   --          with "." as the scope separator.
+
    function Is_Declared_In_Unit
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean;

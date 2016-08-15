@@ -40,6 +40,7 @@ with Errout;                          use Errout;
 with Flow;                            use Flow;
 with Flow.Trivia;                     use Flow.Trivia;
 with Flow_Error_Messages;             use Flow_Error_Messages;
+with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with GNAT.Expect;
@@ -449,6 +450,21 @@ package body Gnat2Why.Driver is
       if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
          return;
       end if;
+
+      --  Build hierarchical representation of scopes in the current
+      --  compilation unit. This may require two traversals: for spec and body.
+      declare
+         Lib_Unit : constant Node_Id := Library_Unit (GNAT_Root);
+      begin
+         --  If both spec and body of the current compilation unit are present
+         --  then traverse spec first.
+         if Present (Lib_Unit) and then Lib_Unit /= GNAT_Root then
+            Flow_Generated_Globals.Traversal.Build_Tree (Lib_Unit);
+         end if;
+
+         --  Then traverse body (or spec if no body is present)
+         Flow_Generated_Globals.Traversal.Build_Tree (GNAT_Root);
+      end;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 

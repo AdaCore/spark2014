@@ -36,6 +36,7 @@ with Flow.Slice;                     use Flow.Slice;
 with Flow_Classwide;                 use Flow_Classwide;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
+with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1; use Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
@@ -1447,9 +1448,8 @@ package body Flow is
    --  Start of processing for Build_Graphs_For_Compilation_Unit
 
    begin
-      for E of Marked_Entities loop
-         Build_Graphs_For_Entity (E);
-      end loop;
+      Flow_Generated_Globals.Traversal.Iterate
+        (Build_Graphs_For_Entity'Access);
    end Build_Graphs_For_Compilation_Unit;
 
    ------------------------
