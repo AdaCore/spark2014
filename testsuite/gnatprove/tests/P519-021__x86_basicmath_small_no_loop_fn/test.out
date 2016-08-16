@@ -1,0 +1,120 @@
+basicmath_small.adb:28:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:28:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:29:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:29:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:49:10: info: initialization of "RSI" proved
+basicmath_small.adb:49:10: info: precondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:55:13: info: initialization of "RSI" proved
+basicmath_small.adb:75:35: info: initialization of "SignFlag" proved
+basicmath_small.adb:82:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:89:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:89:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:90:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:90:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:113:26: info: initialization of "XMM1" proved
+basicmath_small.adb:116:44: info: initialization of "XMM1" proved
+basicmath_small.adb:136:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:143:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:143:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:144:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:144:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:166:27: info: initialization of "XMM1" proved
+basicmath_small.adb:169:44: info: initialization of "XMM1" proved
+basicmath_small.adb:189:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:195:39: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:196:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:197:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:198:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:199:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:200:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:201:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:202:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:203:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:204:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:205:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:206:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:207:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:208:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:209:34: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:302:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:302:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:397:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:397:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:492:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:492:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:587:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:587:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:642:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:642:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:643:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:643:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:672:13: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:672:13: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:673:13: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:673:13: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:698:16: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:698:16: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:699:16: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:699:16: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:720:19: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:720:19: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:721:19: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:721:19: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:779:22: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:779:22: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:918:07: info: precondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1042:10: info: loop invariant initialization proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1042:10: info: loop invariant preservation proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1053:27: info: initialization of "RCX" proved
+basicmath_small.adb:1056:47: info: initialization of "RCX" proved
+basicmath_small.adb:1059:24: info: initialization of "RCX" proved
+basicmath_small.adb:1065:41: info: initialization of "RCX" proved
+basicmath_small.adb:1066:41: info: initialization of "RCX" proved
+basicmath_small.adb:1067:41: info: initialization of "RCX" proved
+basicmath_small.adb:1068:35: info: initialization of "SignFlag" proved
+basicmath_small.adb:1069:37: info: initialization of "RCX" proved
+basicmath_small.adb:1075:21: info: initialization of "CarryFlag" proved
+basicmath_small.adb:1078:37: info: initialization of "RCX" proved
+basicmath_small.adb:1088:24: info: initialization of "ZeroFlag" proved
+basicmath_small.adb:1094:39: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1095:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1096:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1097:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1098:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1099:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1100:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1101:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.adb:1102:29: info: range check proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:18:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:22:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:26:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:30:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:33:31: info: initialization of "RSI" proved
+basicmath_small.ads:34:31: info: initialization of "ZeroFlag" proved
+basicmath_small.ads:34:45: info: initialization of "SignFlag" proved
+basicmath_small.ads:34:59: info: initialization of "CarryFlag" proved
+basicmath_small.ads:34:74: info: initialization of "OverflowFlag" proved
+basicmath_small.ads:37:14: info: postcondition proved (CVC4_CBQI: 2 VC)
+basicmath_small.ads:50:31: info: initialization of "XMM0" proved
+basicmath_small.ads:50:41: info: initialization of "XMM1" proved
+basicmath_small.ads:50:51: info: initialization of "ZeroFlag" proved
+basicmath_small.ads:52:14: info: postcondition proved (CVC4_CBQI: 2 VC)
+basicmath_small.ads:61:31: info: initialization of "XMM0" proved
+basicmath_small.ads:61:41: info: initialization of "XMM1" proved
+basicmath_small.ads:61:51: info: initialization of "ZeroFlag" proved
+basicmath_small.ads:63:14: info: postcondition proved (CVC4_CBQI: 2 VC)
+basicmath_small.ads:82:17: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
+basicmath_small.ads:99:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:103:17: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:106:31: info: initialization of "RCX" proved
+basicmath_small.ads:107:31: info: initialization of "ZeroFlag" proved
+basicmath_small.ads:107:45: info: initialization of "SignFlag" proved
+basicmath_small.ads:107:59: info: initialization of "CarryFlag" proved
+basicmath_small.ads:107:74: info: initialization of "OverflowFlag" proved
+basicmath_small.ads:109:14: info: postcondition proved (CVC4_CBQI: 1 VC)
+basicmath_small.ads:115:27: info: initialization of "ZeroFlag" proved
+basicmath_small.ads:115:41: info: initialization of "SignFlag" proved
+basicmath_small.ads:115:55: info: initialization of "CarryFlag" proved
+basicmath_small.ads:115:70: info: initialization of "OverflowFlag" proved
+basicmath_small.ads:119:17: info: postcondition proved (CVC4_CBQI: 10 VC)
+x86.ads:577:48: info: length check proved (CVC4_CBQI: 1 VC)
