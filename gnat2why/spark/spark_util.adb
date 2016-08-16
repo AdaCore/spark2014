@@ -751,7 +751,7 @@ package body SPARK_Util is
    ---------------------------------
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
-      Formal : Entity_Id := Empty;
+      Formal : Entity_Id;
 
       procedure Check_Call_Param
         (Some_Formal : Entity_Id;
@@ -775,23 +775,21 @@ package body SPARK_Util is
       procedure Find_Expr_In_Call_Params is new
         Iterate_Call_Parameters (Check_Call_Param);
 
-      Par : constant Node_Id :=
-        (if Nkind (Parent (Actual)) = N_Unchecked_Type_Conversion
-           and then Comes_From_Source (Parent (Actual))
-         then Original_Node (Parent (Actual)) else Parent (Actual));
+      Act_Par      : constant Node_Id := Parent (Actual);
+      Real_Act_Par : constant Node_Id :=
+        (if Nkind (Act_Par) = N_Unchecked_Type_Conversion
+           and then Comes_From_Source (Act_Par)
+         then Original_Node (Act_Par) else Act_Par);
       --  N_Unchecked_Type_Conversion coming from source are handled using
       --  their original node.
 
    --  Start of processing for Get_Formal_From_Actual
 
    begin
-      if Nkind (Par) = N_Parameter_Association then
-         Find_Expr_In_Call_Params (Parent (Par));
-      else
-         Find_Expr_In_Call_Params (Par);
-      end if;
-
-      pragma Assert (Present (Formal));
+      Find_Expr_In_Call_Params
+        (if Nkind (Real_Act_Par) = N_Parameter_Association
+         then Parent (Real_Act_Par)
+         else Real_Act_Par);
 
       return Formal;
    end Get_Formal_From_Actual;
@@ -822,16 +820,13 @@ package body SPARK_Util is
             return Get_Range (Entity (N));
 
          when N_Defining_Identifier =>
-            case Ekind (N) is
-               when Scalar_Kind =>
-                  return Get_Range (Scalar_Range (N));
-
-               when Object_Kind =>
-                  return Get_Range (Scalar_Range (Etype (N)));
-
-               when others =>
-                  raise Program_Error;
-            end case;
+            return
+              Get_Range
+                (Scalar_Range
+                   (case Ekind (N) is
+                    when Scalar_Kind => N,
+                    when Object_Kind => Etype (N),
+                    when others      => raise Program_Error));
 
          when others =>
             raise Program_Error;
