@@ -560,7 +560,7 @@ package body SPARK_Util is
       S : Entity_Id;
 
    begin
-      --  Go to unique entity to avoid bodies.
+      --  Go to unique entity to avoid bodies
 
       S := Unique_Entity (Scope (E));
 
@@ -568,11 +568,11 @@ package body SPARK_Util is
          if Ekind (S) in E_Function | E_Entry | E_Procedure | E_Package
            | E_Protected_Type | E_Task_Type
          then
-            --  We have found the enclosing unit, return it.
+            --  We have found the enclosing unit, return it
 
             return S;
          else
-            --  Go to the next scope.
+            --  Go to the next scope
 
             S := Unique_Entity (Scope (S));
          end if;
