@@ -1224,9 +1224,11 @@ package body SPARK_Util is
    -------------------------------
 
    function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
-     (Present (Corresponding_Body (N))
-        and then Is_Main_Cunit
-          (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
+      B : constant Node_Id := Corresponding_Body (N);
+   begin
+      return Present (B)
+        and then Is_Main_Cunit (Unit (Enclosing_Lib_Unit_Node (B)));
+   end Is_Spec_Unit_Of_Main_Unit;
 
    ----------------------------
    -- Iterate_Call_Arguments --
