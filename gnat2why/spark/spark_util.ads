@@ -239,7 +239,7 @@ package SPARK_Util is
 
    function Is_Package_State (E : Entity_Id) return Boolean;
    --  @param E any entity
-   --  @return True iff E is an abstract state or a package level variable
+   --  @return True iff E is an abstract state or a package-level variable
 
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean;
    --  @param E an object entity
