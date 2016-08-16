@@ -869,8 +869,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       if Parallel > 1 then
-         Args.Append ("-j");
-         Args.Append (Image (Parallel, Min_Width => 1));
+         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
       end if;
 
       if All_Projects then
