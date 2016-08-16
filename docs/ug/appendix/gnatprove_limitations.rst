@@ -117,8 +117,8 @@ Proof Limitations
 #. The following attributes are not yet supported in proof: Adjacent, Aft,
    Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
    Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
-   Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Size,
-   Small, Unbiased_Rounding, Version, Wide_Image, Wide_Value, Wide_Width,
+   Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
+   Unbiased_Rounding, Version, Wide_Image, Wide_Value, Wide_Width,
    Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width, Width.
 
    The attributes First_Bit, Last_Bit and Position are supported but if there is
