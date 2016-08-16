@@ -99,10 +99,8 @@ decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_2" proved
 decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_3" proved
 decadriver.adb:325:38: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
 decadriver.adb:325:60: info: division check proved (CVC4: 1 VC)
-decadriver.adb:333:55: info: range check proved (CVC4: 1 VC)
 decadriver.adb:336:43: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
 decadriver.adb:352:35: info: initialization of "SFD_Timeout" proved
-decadriver.adb:382:46: info: range check proved (CVC4: 1 VC)
 decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAAT" proved
 decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAFFREJ" proved
 decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MCPLLLL" proved
