@@ -115,13 +115,16 @@ Proof Limitations
    the value.
 
 #. The following attributes are not yet supported in proof: Address, Adjacent,
-   Aft, Alignment, Bit_Order, Body_Version, Component_Size, Copy_Sign,
-   Definite, Denorm, First_Bit, First_Valid, Fore, Last_Bit, Last_Valid, Machine,
-   all Machine_* attributes, Model, all Model_* attributes, Partition_Id,
-   Position, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling,
-   Size, Small, Unbiased_Rounding, Version, Wide_Image, Wide_Value,
-   Wide_Width, Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width,
-   Width.
+   Aft, Alignment, Bit_Order, Body_Version, Component_Size, Copy_Sign, Definite,
+   Denorm, First_Valid, Fore, Last_Valid, Machine, all Machine_* attributes,
+   Model, all Model_* attributes, Partition_Id, Remainder, Round, Safe_First,
+   Safe_Last, Scale, Scaling, Size, Small, Unbiased_Rounding, Version,
+   Wide_Image, Wide_Value, Wide_Width, Wide_Wide_Image, Wide_Wide_Value,
+   Wide_Wide_Width, Width.
+
+   The attributes First_Bit, Last_Bit and Position are supported but if there is
+   no record representation clause then we assume that their value is
+   nonnegative.
 
 #. The 'Update attribute on multidimensional unconstrained arrays is not
    yet fully supported in proof. Checks might be missing so currently an
