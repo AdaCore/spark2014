@@ -3563,10 +3563,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Spec_E      : constant Entity_Id :=
-        Defining_Unit_Name (Specification (N));
-
-      pragma Assert (Spec_E = Defining_Entity (N));
+      Spec_E : constant Entity_Id := Defining_Entity (N);
 
       Init_Pragma : constant Node_Id :=
         Get_Pragma (Spec_E, Pragma_Initializes);
@@ -3623,7 +3620,7 @@ package body Flow.Control_Flow_Graph is
 
          if No (Init_Pragma)
            and then Present (Private_Decls)
-           and then Private_Spec_In_SPARK (Defining_Entity (N))
+           and then Private_Spec_In_SPARK (Spec_E)
          then
             --  We only process the private declarations if there is no
             --  pragma Initializes and if the private declarations are
