@@ -3565,9 +3565,6 @@ package body Flow.Control_Flow_Graph is
    is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
-      Init_Pragma : constant Node_Id :=
-        Get_Pragma (Spec_E, Pragma_Initializes);
-
    begin
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
@@ -3614,6 +3611,9 @@ package body Flow.Control_Flow_Graph is
 
          Visible_Decls : constant List_Id := Visible_Declarations (Spec);
          Private_Decls : constant List_Id := Private_Declarations (Spec);
+
+         Init_Pragma : constant Node_Id :=
+           Get_Pragma (Spec_E, Pragma_Initializes);
 
       begin
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
