@@ -152,9 +152,20 @@ is
                        Nth (X, J) = Nth (Unsigned_64 (0), J));
       pragma Assert (Eq_Sub (X, 0, Natural (Len_Bv), Natural (64 - Len_Bv)));
       pragma Assert (Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv));
-      pragma Assert ((X and (MaxValue (Len) - 1)) = X);
+      pragma Assert_And_Cut ((X and (MaxValue (Len) - 1)) = X);
       return Void;
    end LemmaFunction;
+
+   function LemmaFunction2 (X : Unsigned_64; Len : Integer) return Unit is
+      Len_Bv : constant Unsigned_64 := Unsigned_64 (Len);
+   begin
+      pragma Assert ((X and (MaxValue (Len) - 1)) = X);
+      pragma Assert (Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv));
+      pragma Assert (Eq_Sub (X, 0, Natural (Len_Bv), Natural (64 - Len_Bv)));
+      pragma Assert (for all J in Len .. Len + (64 - Len) - 1 =>
+                       Nth (X, J) = Nth (Unsigned_64 (0), J));
+      return Void;
+   end LemmaFunction2;
 
    procedure PeekThenPoke (Start, Len : Natural;
                            Addr       : in out Byte_Sequence;
@@ -177,14 +188,16 @@ is
            Nth8_Stream (Addr, I) = Nth8_Stream (AddrOld, I));
    end PeekThenPoke;
 
+
    procedure PokeThenPeek (Start, Len : Natural;
                            Addr : in out Byte_Sequence;
                            Value : Unsigned_64;
                            Result : out Unsigned_64)
    is
       PokeResult : Integer;
+      V : Unit with Ghost;
    begin
-      pragma Assert (for all I in Len .. 63 => not Nth (Value, I));
+      V := LemmaFunction2 (Value, Len);
 
       Poke (Start, Len, Addr, Value, PokeResult);
 

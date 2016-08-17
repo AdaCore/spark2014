@@ -124,6 +124,13 @@ is
        Post => LemmaFunction'Result = Void and then
                X < MaxValue (Len);
 
+   function LemmaFunction2 (X : Unsigned_64; Len : Integer) return Unit
+     with
+       Ghost,
+       Pre  => Len in 0 .. 63 and then X < MaxValue (Len),
+       Post => LemmaFunction2'Result = Void and then
+               (for all I in Len .. 63 => not Nth (X, I));
+
    procedure PeekThenPoke (Start, Len : Natural;
                            Addr       : in out Byte_Sequence;
                            Result     : out Integer)
@@ -152,6 +159,6 @@ is
          Start + Len <= Addr'Length and then
          Value < MaxValue (Len),
        Post =>
-         Result = Value;
+          Result = Value;
 
 end Bitwalker;
