@@ -3133,8 +3133,8 @@ package body Flow.Analysis is
       Collect_Procedure_Outputs;
 
       --  Issue error for every non-null abstract state that does not have
-      --  Async_Writers we emit a warning, is not mentioned in an Initializes
-      --  aspect and is not a pure output of any externally visible procedure.
+      --  Async_Writers, is not mentioned in an Initializes aspect and is not
+      --  a pure output of any externally visible procedure.
 
       for State of Iter (Abstract_States (FA.Spec_Entity)) loop
          if not Trivially_Initialized (State)
