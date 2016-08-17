@@ -3594,10 +3594,9 @@ package body Flow.Control_Flow_Graph is
                if Final_V_Id = Flow_Graphs.Null_Vertex then
                   Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
 
-                  Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
+                  if FA.Kind in Kind_Package | Kind_Package_Body then
+                     Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
-                  if FA.Kind in Kind_Package | Kind_Package_Body
-                  then
                      declare
                         Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
                      begin
