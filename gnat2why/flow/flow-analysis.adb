@@ -3051,44 +3051,39 @@ package body Flow.Analysis is
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
    is
-      function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set;
-      --  Returns the set of all flow ids that are mentioned in the package's
-      --  initializes aspect.
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Initializes_N, FA.Spec_Entity, FA.S_Scope);
 
-      function Outputs_Of_Procedures return Flow_Id_Sets.Set;
-      --  Returns the set of all flow ids that are pure outputs (not In_Outs)
-      --  of procedures.
+      Outputs_Of_Procs : Flow_Id_Sets.Set;
+      --  Abstracts states that are written by procedures declared in package
+      --  specification.
 
-      ---------------------------------------
-      -- Initialized_By_Initializes_Aspect --
-      ---------------------------------------
+      function Initialized_By_Initializes (F : Flow_Id) return Boolean
+      with Pre => Is_Abstract_State (F);
+      --  Returns True iff F is initialized by the Initializess aspect (either
+      --  generated or provided by the user).
 
-      function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set is
-         Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      procedure Collect_Procedure_Outputs
+      with Global => (Output => Outputs_Of_Procs);
+      --  Populate Outputs_Of_Procs
 
-         DM : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Initializes_N, FA.Spec_Entity, FA.S_Scope);
-      begin
+      function Trivially_Initialized (E : Entity_Id) return Boolean
+      with Pre => Ekind (E) = E_Abstract_State;
+      --  Returns True iff E is its declaration says it is initialized
 
-         for C in DM.Iterate loop
-            declare
-               The_Out : Flow_Id renames Dependency_Maps.Key (C);
-            begin
-               Initialized.Insert (The_Out);
-            end;
-         end loop;
+      --------------------------------
+      -- Initialized_By_Initializes --
+      --------------------------------
 
-         return Initialized;
-      end Initialized_By_Initializes_Aspect;
+      function Initialized_By_Initializes (F : Flow_Id) return Boolean
+        renames DM.Contains;
 
-      ---------------------------
-      -- Outputs_Of_Procedures --
-      ---------------------------
+      -------------------------------
+      -- Collect_Procedure_Outputs --
+      -------------------------------
 
-      function Outputs_Of_Procedures return Flow_Id_Sets.Set is
-         E       : Entity_Id;
-         Scop    : constant Flow_Scope := FA.S_Scope;
-         Outputs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      procedure Collect_Procedure_Outputs is
+         E : Entity_Id;
       begin
          E := First_Entity (FA.Spec_Entity);
          while Present (E) loop
@@ -3099,7 +3094,7 @@ package body Flow.Analysis is
                   Writes    : Flow_Id_Sets.Set;
                begin
                   Get_Globals (Subprogram => E,
-                               Scope      => Scop,
+                               Scope      => FA.S_Scope,
                                Classwide  => False,
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
@@ -3109,9 +3104,14 @@ package body Flow.Analysis is
                   --  procedure then include it in Outputs.
 
                   for Write of Writes loop
-                     if not Reads.Contains (Change_Variant (Write, In_View))
+                     if Is_Abstract_State (Write)
+                       and then not
+                         Trivially_Initialized (Get_Direct_Mapping_Id (Write))
+                       and then not
+                         Reads.Contains (Change_Variant (Write, In_View))
                      then
-                        Outputs.Include (Change_Variant (Write, Normal_Use));
+                        Outputs_Of_Procs.Include
+                          (Change_Variant (Write, Normal_Use));
                      end if;
                   end loop;
                end;
@@ -3119,30 +3119,28 @@ package body Flow.Analysis is
 
             Next_Entity (E);
          end loop;
+      end Collect_Procedure_Outputs;
 
-         return Outputs;
-      end Outputs_Of_Procedures;
-
-      --  All flow ids that are or can potentially be initialized.
-      Initializable : constant Flow_Id_Sets.Set :=
-        Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
+      function Trivially_Initialized (E : Entity_Id) return Boolean is
+        (Is_Null_State (E)
+           or else
+         (Has_Volatile (E)
+            and then Has_Volatile_Flavor (E, Pragma_Async_Writers)));
 
    --  Start of processing for Find_Impossible_To_Initialize_State
 
    begin
+      Collect_Procedure_Outputs;
+
+      --  Issue error for every non-null abstract state that does not have
+      --  Async_Writers we emit a warning, is not mentioned in an Initializes
+      --  aspect and is not a pure output of any externally visible procedure.
+
       for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-         if not Is_Null_State (State)
-           and then not Initializable.Contains (Direct_Mapping_Id (State))
-           and then not Has_Async_Writers (Direct_Mapping_Id (State),
-                                           FA.B_Scope)
+         if not Trivially_Initialized (State)
+           and then not Initialized_By_Initializes (Direct_Mapping_Id (State))
+           and then not Outputs_Of_Procs.Contains (Direct_Mapping_Id (State))
          then
-            --  For every (non-null) state abstraction that is not
-            --  mentioned in an Initializes aspect, is not a pure output of
-            --  any procedure and does not have Async_Writers we emit a
-            --  warning.
-
-            --  ??? FS: why do we special case async_writers?
-
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "no procedure exists that can initialize " &
