@@ -64,8 +64,7 @@ package Flow_Refinement is
    subtype Scope_Id is Entity_Id
    with Dynamic_Predicate =>
      (if Present (Scope_Id)
-      then Nkind (Scope_Id) = N_Defining_Identifier and then
-           Ekind (Scope_Id) in E_Generic_Package |
+      then Ekind (Scope_Id) in E_Generic_Package |
                                E_Package         |
                                E_Protected_Type  |
                                E_Task_Type);
