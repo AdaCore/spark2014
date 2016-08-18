@@ -434,7 +434,7 @@ package body Flow.Slice is
                           --  Enclosing scope has Initializes
 
                           or else not Private_Spec_In_SPARK (Scope_E)
-                              --  Enclosing scope has SPARK_Mode => Off
+                          --  Enclosing scope has SPARK_Mode => Off
                          );
                   end;
 
@@ -491,15 +491,15 @@ package body Flow.Slice is
                   --  introduced by quantified expression (because that
                   --  expressions cannot define new callable entities for
                   --  which the variable would act as a global).
-                  declare
-                     E : constant Entity_Id := Defining_Identifier (N);
-                  begin
-                     if Nkind (Parent (N)) = N_Iteration_Scheme
-                       and then not Hidden_In_Package (E)
-                     then
-                        Local_Variables.Insert (E);
-                     end if;
-                  end;
+                  if Nkind (Parent (N)) = N_Iteration_Scheme then
+                     declare
+                        E : constant Entity_Id := Defining_Identifier (N);
+                     begin
+                        if not Hidden_In_Package (E) then
+                           Local_Variables.Insert (E);
+                        end if;
+                     end;
+                  end if;
 
                   return Skip;
 
