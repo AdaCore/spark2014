@@ -644,7 +644,6 @@ package body Flow.Slice is
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
-         FS        : Flow_Id_Sets.Set;
          V_Initial : Flow_Graphs.Vertex_Id;
          Guilty    : Boolean;
       begin
@@ -663,9 +662,7 @@ package body Flow.Slice is
                --  detected by the condition in the else branch. (??? why?)
                pragma Assert (not Guilty);
             else
-               FS := Flatten_Variable (LV, FA.B_Scope);
-
-               for Comp of FS loop
+               for Comp of Flatten_Variable (LV, FA.B_Scope) loop
                   V_Initial := FA.PDG.Get_Vertex
                     (Change_Variant (Comp, Initial_Value));
 
