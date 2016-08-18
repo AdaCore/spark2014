@@ -3813,50 +3813,44 @@ package body Flow.Control_Flow_Graph is
 
       function Find_Execution_Kind return Execution_Kind_T is
       begin
-         if Get_Pragma_Id (N) /= Pragma_Check then
+         if Get_Pragma_Id (N) = Pragma_Check then
+            declare
+               Arg1 : constant Node_Id :=
+                 First (Pragma_Argument_Associations (N));
+
+               Was_Assertion : constant Boolean :=
+                 (Present (Arg1)
+                  and then Nkind (Expression (Arg1)) = N_Identifier
+                  and then Chars (Expression (Arg1)) = Name_Assert);
+               --  True if this pragma is a rewritten assert pragma
+
+               function Is_Statically_False return Boolean;
+               --  Checks if the rewritten assertion has a statically-false
+               --  argument.
+
+               -------------------------
+               -- Is_Statically_False --
+               -------------------------
+
+               function Is_Statically_False return Boolean is
+                  Arg2 : constant Node_Id := Next (Arg1);
+               begin
+                  return
+                    Present (Arg2)
+                      and then Nkind (Expression (Arg2)) = N_Identifier
+                      and then Entity (Expression (Arg2)) = Standard_False;
+               end Is_Statically_False;
+
+            begin
+               return (if Was_Assertion
+                         and then Is_Statically_False
+                       then Abnormal_Termination
+                       else Normal_Execution);
+            end;
+
+         else
             return Normal_Execution;
          end if;
-
-         declare
-            PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
-
-            function Was_Assertion return Boolean;
-            --  Checks if this pragma is a rewritten assert pragma.
-
-            function Is_Statically_False return Boolean;
-            --  Checks if the rewritten assertion has a
-            --  statically-false argument.
-
-            -------------------
-            -- Was_Assertion --
-            -------------------
-
-            function Was_Assertion return Boolean is
-              (Present (PAA)
-                 and then Nkind (Expression (PAA)) = N_Identifier
-                 and then Get_Name_String (Chars (Expression (PAA))) =
-                            "assert");
-
-            -------------------------
-            -- Is_Statically_False --
-            -------------------------
-
-            function Is_Statically_False return Boolean is
-              (Present (Next (PAA))
-                 and then Nkind (Expression (Next (PAA))) =
-                            N_Identifier
-                 and then Entity (Expression (Next (PAA))) =
-                            Standard_False);
-
-         begin
-            if Was_Assertion
-              and then Is_Statically_False
-            then
-               return Abnormal_Termination;
-            else
-               return Normal_Execution;
-            end if;
-         end;
       end Find_Execution_Kind;
 
       ---------
