@@ -3664,43 +3664,12 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      function Find_Node (E : Entity_Id) return Node_Id
-        with Post => Nkind (Find_Node'Result) in
-                       N_Defining_Identifier  |
-                       N_Identifier           |
-                       N_Expanded_Name        |
-                       N_Component_Association;
-      --  Looks through the initializes aspect on FA.Analyzed_Entity
-      --  and returns the node which represents the
-      --  initialization_item where E is the LHS.
-      --
-      --  In the case of
-      --     Initializes => (X,
-      --  we return the node for X (N_Identifier | N_Expanded_Name).
-      --
-      --  In the case of
-      --     Initializes => (X => Y
-      --  we return the node for => (N_Component_Association).
+      Package_Spec : constant Entity_Id := Unique_Defining_Entity (N);
 
-      Package_Spec : constant Entity_Id :=
-        (case Nkind (N) is
-         when N_Package_Body      => Corresponding_Spec (N),
-         when N_Package_Body_Stub => Corresponding_Spec_Of_Stub (N),
-         when others              => raise Program_Error);
+      Has_Abstract_States : constant Boolean :=
+        Present (Get_Pragma (Package_Spec, Pragma_Abstract_State));
 
-      Abstract_State_Aspect : constant Node_Id :=
-        Get_Pragma (Package_Spec,
-                    Pragma_Abstract_State);
-
-      Initializes_Aspect : constant Node_Id :=
-        Get_Pragma (Package_Spec,
-                    Pragma_Initializes);
-
-      Pkg_Body : constant Node_Id :=
-        (case Nkind (N) is
-         when N_Package_Body      => N,
-         when N_Package_Body_Stub => Parent (Corresponding_Body (N)),
-         when others              => raise Program_Error);
+      Pkg_Body : constant Node_Id := Package_Body (Package_Spec);
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
@@ -3715,50 +3684,16 @@ package body Flow.Control_Flow_Graph is
       --  the stub is placed instead.
 
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (Initializes_Aspect,
+        Parse_Initializes (Get_Pragma (Package_Spec, Pragma_Initializes),
                            Package_Spec,
                            Initializes_Scope);
-
-      ---------------
-      -- Find_Node --
-      ---------------
-
-      function Find_Node (E : Entity_Id) return Node_Id is
-         F : Flow_Id;
-         N : Node_Id;
-      begin
-         for Initialized_Var in DM.Iterate loop
-            F := Dependency_Maps.Key (Initialized_Var);
-            N := (if F.Kind in Direct_Mapping | Record_Field
-                  then Get_Direct_Mapping_Id (F)
-                  else Empty);
-
-            if N = E then
-               return N;
-            end if;
-         end loop;
-
-         --  We should never reach here!
-         raise Program_Error;
-      end Find_Node;
 
       V : Flow_Graphs.Vertex_Id;
 
    --  Start of processing for Do_Package_Body_Or_Stub
 
    begin
-
-      if Nkind (Parent (Parent (Package_Spec))) = N_Generic_Package_Declaration
-        and then not Is_Generic_Instance (Package_Spec)
-      then
-         --  We skip generic package bodies that do not belong to
-         --  instantiations.
-         Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-         CM.Insert (Union_Id (N), Trivial_Connection (V));
-         return;
-      end if;
-
-      if (Present (Abstract_State_Aspect) and then DM.Is_Empty)
+      if (Has_Abstract_States and then DM.Is_Empty)
         or else (DM.Is_Empty
                    and then not Entity_Body_In_SPARK (Package_Spec))
       then
@@ -3776,7 +3711,7 @@ package body Flow.Control_Flow_Graph is
          return;
       end if;
 
-      if No (Abstract_State_Aspect)
+      if not Has_Abstract_States
         and then Entity_Body_In_SPARK (Package_Spec)
       then
          --  Traverse package body declarations.
@@ -3804,13 +3739,14 @@ package body Flow.Control_Flow_Graph is
                   The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   Init_Item : constant Node_Id :=
-                    Find_Node (Get_Direct_Mapping_Id (The_Out));
+                    Get_Direct_Mapping_Id (The_Out);
+
                begin
                   Verts.Append (Union_Id (Init_Item));
 
                   Add_Vertex
                     (FA,
-                     Direct_Mapping_Id (Init_Item),
+                     The_Out,
                      Make_Package_Initialization_Attributes
                        (FA        => FA,
                         The_State => The_Out,
@@ -3828,7 +3764,7 @@ package body Flow.Control_Flow_Graph is
                   Nodes => Verts,
                   Block => Initializes_CM);
 
-            if No (Abstract_State_Aspect)
+            if not Has_Abstract_States
               and then Entity_Body_In_SPARK (Package_Spec)
             then
                --  We connect the Declarations of the body to the
@@ -4987,7 +4923,23 @@ package body Flow.Control_Flow_Graph is
 
          when N_Package_Body      |
               N_Package_Body_Stub =>
-            Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
+            --  Skip generic package bodies
+            case Ekind (Unique_Defining_Entity (N)) is
+               when E_Generic_Package =>
+                  declare
+                     V : Flow_Graphs.Vertex_Id;
+                  begin
+                     Add_Vertex (FA, Direct_Mapping_Id (N),
+                                 Null_Node_Attributes, V);
+                     CM.Insert (Union_Id (N), Trivial_Connection (V));
+                  end;
+
+               when E_Package =>
+                  Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
+
+               when others =>
+                  raise Program_Error;
+            end case;
 
          when N_Package_Declaration =>
             Do_Package_Declaration (N, FA, CM, Ctx);
