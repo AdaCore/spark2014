@@ -3666,8 +3666,10 @@ package body Flow.Control_Flow_Graph is
    is
       Package_Spec : constant Entity_Id := Unique_Defining_Entity (N);
 
-      Has_Abstract_States : constant Boolean :=
-        Present (Get_Pragma (Package_Spec, Pragma_Abstract_State));
+      Elaboration_Has_Effect : constant Boolean :=
+        No (Get_Pragma (Package_Spec, Pragma_Abstract_State))
+          and then
+        Entity_Body_In_SPARK (Package_Spec);
 
       Pkg_Body : constant Node_Id := Package_Body (Package_Spec);
 
@@ -3693,105 +3695,90 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Package_Body_Or_Stub
 
    begin
-      if (Has_Abstract_States and then DM.Is_Empty)
-        or else (DM.Is_Empty
-                   and then not Entity_Body_In_SPARK (Package_Spec))
-      then
-         --  We create a null vertex when:
-         --
-         --    1) we have an Abstract_State aspect and no state is
-         --       initialized (then the package elaboration will have no
-         --       observable effect on the enclosing package)
-         --
-         --    2) no state is initialized and the body of the package is not
-         --       in SPARK.
+      --  If neither elaboration or Initializes has any effect then create only
+      --  a null vertex.
 
+      if DM.Is_Empty and then not Elaboration_Has_Effect then
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Insert (Union_Id (N), Trivial_Connection (V));
-         return;
-      end if;
 
-      if not Has_Abstract_States
-        and then Entity_Body_In_SPARK (Package_Spec)
-      then
-         --  Traverse package body declarations.
-         Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
+      else
+         if Elaboration_Has_Effect then
+            --  Traverse package body declarations
+            Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
 
-         Copy_Connections (CM,
-                           Dst => Union_Id (N),
-                           Src => Union_Id (Pkg_Body_Declarations));
-      end if;
+            Copy_Connections (CM,
+                              Dst => Union_Id (N),
+                              Src => Union_Id (Pkg_Body_Declarations));
+         end if;
 
-      if not DM.Is_Empty then
-         --  When we encounter the package body (or its stub) and
-         --  after we have created vertices for the variables in the
-         --  body's declarations, we know that the package has been
-         --  elaborated. We need to apply the Initializes aspect at
-         --  this point.
+         --  The package has been now elaborated and vertices for the variables
+         --  in the package body declarations are created. Now apply the
+         --  Initializes aspect, if present.
 
-         declare
-            Verts          : Union_Lists.List := Union_Lists.Empty_List;
-            Initializes_CM : Graph_Connections;
-         begin
-            for C in DM.Iterate loop
-               declare
-                  The_Out : Flow_Id          renames Dependency_Maps.Key (C);
-                  The_Ins : Flow_Id_Sets.Set renames DM (C);
+         if not DM.Is_Empty then
+            declare
+               Verts          : Union_Lists.List := Union_Lists.Empty_List;
+               Initializes_CM : Graph_Connections;
+            begin
+               for C in DM.Iterate loop
+                  declare
+                     The_Out : Flow_Id renames Dependency_Maps.Key (C);
+                     The_Ins : Flow_Id_Sets.Set renames DM (C);
 
-                  Init_Item : constant Node_Id :=
-                    Get_Direct_Mapping_Id (The_Out);
+                     Init_Item : constant Node_Id :=
+                       Get_Direct_Mapping_Id (The_Out);
 
-               begin
-                  Verts.Append (Union_Id (Init_Item));
+                  begin
+                     Verts.Append (Union_Id (Init_Item));
 
-                  Add_Vertex
+                     Add_Vertex
+                       (FA,
+                        The_Out,
+                        Make_Package_Initialization_Attributes
+                          (FA        => FA,
+                           The_State => The_Out,
+                           Inputs    => The_Ins,
+                           Scope     => FA.B_Scope,
+                           Loops     => Ctx.Current_Loops,
+                           E_Loc     => Init_Item),
+                        V);
+                     CM.Insert (Union_Id (Init_Item), Trivial_Connection (V));
+                  end;
+               end loop;
+
+               Join (FA    => FA,
+                     CM    => CM,
+                     Nodes => Verts,
+                     Block => Initializes_CM);
+
+               if Elaboration_Has_Effect then
+                  --  We connect the Declarations of the body to the
+                  --  Initializes_CM.
+                  Linkup
                     (FA,
-                     The_Out,
-                     Make_Package_Initialization_Attributes
-                       (FA        => FA,
-                        The_State => The_Out,
-                        Inputs    => The_Ins,
-                        Scope     => FA.B_Scope,
-                        Loops     => Ctx.Current_Loops,
-                        E_Loc     => Init_Item),
-                     V);
-                  CM.Insert (Union_Id (Init_Item), Trivial_Connection (V));
-               end;
-            end loop;
+                     CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
+                     CM (Verts.First_Element).Standard_Entry);
 
-            Join (FA    => FA,
-                  CM    => CM,
-                  Nodes => Verts,
-                  Block => Initializes_CM);
-
-            if not Has_Abstract_States
-              and then Entity_Body_In_SPARK (Package_Spec)
-            then
-               --  We connect the Declarations of the body to the
-               --  Initializes_CM.
-               Linkup
-                 (FA,
-                  CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
-                  CM (Verts.First_Element).Standard_Entry);
-
-               --  We set the standard entry of N to the standard entry of
-               --  the body's declarations and the standard exists of N to the
-               --  standard exists of the last element in the Verts union list.
-               --  ??? this overwrites the CM entry for N
-               CM (Union_Id (N)) :=
-                 Graph_Connections'
-                   (Standard_Entry => CM.Element
-                      (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
-                    Standard_Exits => CM.Element
-                      (Verts.Last_Element).Standard_Exits);
-            else
-               --  Since we do not process any declarations all we
-               --  have to do is to connect N to the Initializes_CM.
-               CM.Insert (Union_Id (N), Initializes_CM);
-            end if;
-         end;
+                  --  We set the standard entry of N to the standard entry
+                  --  of the body's declarations and the standard exists of N
+                  --  to the standard exists of the last element in the Verts
+                  --  union list.
+                  --  ??? this overwrites the CM entry for N
+                  CM (Union_Id (N)) :=
+                    Graph_Connections'
+                      (Standard_Entry => CM.Element
+                         (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
+                       Standard_Exits => CM.Element
+                         (Verts.Last_Element).Standard_Exits);
+               else
+                  --  Since we do not process any declarations all we have to
+                  --  do is to connect N to the Initializes_CM.
+                  CM.Insert (Union_Id (N), Initializes_CM);
+               end if;
+            end;
+         end if;
       end if;
-
    end Do_Package_Body_Or_Stub;
 
    ---------------
