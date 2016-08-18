@@ -414,35 +414,24 @@ package body Flow.Slice is
             function Hidden_In_Package (E : Entity_Id) return Boolean is
                S : constant Flow_Scope := Get_Flow_Scope (E);
             begin
-               if Present (S) and then S.Part = Private_Part then
-                  declare
-                     Scope_E : constant Entity_Id := Scope (E);
-                  begin
-                     if FA.Kind in Kind_Package | Kind_Package_Body
-                         and then Scope_E = FA.Spec_Entity
-                     then
-                        --  We always consider the private and body part of the
-                        --  Analyzed_Entity itself.
-                        return False;
-                     end if;
+               return
+                 Present (S)
+                 and then S.Part = Private_Part
+                 and then not (FA.Kind in Kind_Package | Kind_Package_Body
+                               and then S.Ent = FA.Spec_Entity)
+                 --  Always consider the private and body parts of the
+                 --  Analyzed_Entity itself.
 
-                     --  Check if the enclosing scope has an Initializes aspect
-                     --  or has SPARK_Mode => Off.
-                     return Ekind (Scope_E) = E_Package
-                       and then
-                         (Present (Get_Pragma (Scope_E, Pragma_Initializes))
-                          --  Enclosing scope has Initializes
+                 --  Check if the enclosing scope has an Initializes aspect
+                 --  or has SPARK_Mode => Off.
+                 and then Ekind (S.Ent) = E_Package
+                 and then
+                   (Present (Get_Pragma (S.Ent, Pragma_Initializes))
+                    --  Enclosing scope has Initializes
 
-                          or else not Private_Spec_In_SPARK (Scope_E)
-                          --  Enclosing scope has SPARK_Mode => Off
-                         );
-                  end;
-
-               --  Not in the private part
-
-               else
-                  return False;
-               end if;
+                    or else not Private_Spec_In_SPARK (S.Ent)
+                    --  Enclosing scope has SPARK_Mode => Off
+                   );
             end Hidden_In_Package;
 
          --  Start of processing for Get_Object_Or_Subprogram_Declaration
