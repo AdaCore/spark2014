@@ -661,25 +661,14 @@ package body Flow.Slice is
             --  Out_Neighbours.
 
             else
-               declare
-                  Guilty    : Boolean := False;  --  Innocent till found guilty
-                  V_Initial : Flow_Graphs.Vertex_Id;
-
-               begin
-                  for Comp of Flatten_Variable (LV, FA.B_Scope) loop
-                     V_Initial := FA.PDG.Get_Vertex
-                       (Change_Variant (Comp, Initial_Value));
-
-                     if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
-                        Guilty := True;
-                        exit;
-                     end if;
-                  end loop;
-
-                  if not Guilty then
-                     Local_Definite_Writes.Insert (LV);
-                  end if;
-               end;
+               if not
+                 (for some Comp of Flatten_Variable (LV, FA.B_Scope) =>
+                    FA.PDG.Out_Neighbour_Count
+                      (FA.PDG.Get_Vertex
+                         (Change_Variant (Comp, Initial_Value))) /= 0)
+               then
+                  Local_Definite_Writes.Insert (LV);
+               end if;
             end if;
          end loop;
       end Get_Local_Definite_Writes;
