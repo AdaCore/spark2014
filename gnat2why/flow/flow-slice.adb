@@ -468,6 +468,12 @@ package body Flow.Slice is
                      end if;
                   end;
 
+               when N_Subprogram_Body_Stub =>
+                  if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
+                     Local_Subprograms.Insert (Defining_Entity (N));
+                     return Skip;
+                  end if;
+
                when N_Generic_Package_Declaration    |
                     N_Generic_Subprogram_Declaration =>
                   --  Skip generic declarations
