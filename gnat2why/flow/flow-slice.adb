@@ -644,37 +644,42 @@ package body Flow.Slice is
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
-         V_Initial : Flow_Graphs.Vertex_Id;
-         Guilty    : Boolean;
       begin
-         --  We go through all local variables and check if their corresponding
-         --  'Initial vertex has no Out_Neighbours.
+         --  Detect initialized local variables
          for LV of Local_Variables loop
 
-            Guilty := False;  --  Innocent till found guilty
-
+            --  Null abstract states and abstract states with null refinements
+            --  are trivially initialized but are not detected by the condition
+            --  in the else branch. (??? why?)
             if Is_Null_State (LV)
               or else (Ekind (LV) = E_Abstract_State
                        and then Has_Null_Refinement (LV))
             then
-               --  Null abstract states and abstract states with null
-               --  refinements are trivially initialized but are not
-               --  detected by the condition in the else branch. (??? why?)
-               pragma Assert (not Guilty);
-            else
-               for Comp of Flatten_Variable (LV, FA.B_Scope) loop
-                  V_Initial := FA.PDG.Get_Vertex
-                    (Change_Variant (Comp, Initial_Value));
-
-                  if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
-                     Guilty := True;
-                     exit;
-                  end if;
-               end loop;
-            end if;
-
-            if not Guilty then
                Local_Definite_Writes.Insert (LV);
+
+            --  Check if the corresponding 'Initial vertex has no
+            --  Out_Neighbours.
+
+            else
+               declare
+                  Guilty    : Boolean := False;  --  Innocent till found guilty
+                  V_Initial : Flow_Graphs.Vertex_Id;
+
+               begin
+                  for Comp of Flatten_Variable (LV, FA.B_Scope) loop
+                     V_Initial := FA.PDG.Get_Vertex
+                       (Change_Variant (Comp, Initial_Value));
+
+                     if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
+                        Guilty := True;
+                        exit;
+                     end if;
+                  end loop;
+
+                  if not Guilty then
+                     Local_Definite_Writes.Insert (LV);
+                  end if;
+               end;
             end if;
          end loop;
       end Get_Local_Definite_Writes;
