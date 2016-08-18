@@ -484,9 +484,8 @@ package body Flow.Slice is
                      declare
                         E : constant Entity_Id := Defining_Identifier (N);
                      begin
-                        if not Hidden_In_Package (E) then
-                           Local_Variables.Insert (E);
-                        end if;
+                        pragma Assert (not Hidden_In_Package (E));
+                        Local_Variables.Insert (E);
                      end;
                   end if;
 
