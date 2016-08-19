@@ -402,37 +402,52 @@ package body Flow.Slice is
            (N : Node_Id)
             return Traverse_Result
          is
-            function Hidden_In_Package (E : Entity_Id) return Boolean;
-            --  Returns True if E is either declared in the private part of a
-            --  package that has an Initializes aspect or in the private part
-            --  of a package that has SPARK_Mode => Off.
+            function Exposed_As_State (E : Entity_Id) return Boolean
+            with Pre => Ekind (E) in E_Constant
+                                   | E_Variable
+                                   | E_Loop_Parameter;
+            --  Returns True if E is either declared in the analyzed entity
+            --  (either directly in its scope or in a nested declare block), or
+            --  in a nested package (expcept for its package body statements
+            --  which are not traversed) and thus is like other variables of
+            --  the enclosing entity.
+            --
+            --  ??? what if it is already exposed as a part of (nested)
+            --  abstract state?
 
             -----------------------
-            -- Hidden_In_Package --
+            -- Exposed_As_State --
             -----------------------
 
-            function Hidden_In_Package (E : Entity_Id) return Boolean is
-               S : constant Flow_Scope := Get_Flow_Scope (E);
+            function Exposed_As_State (E : Entity_Id) return Boolean is
+               S : constant Entity_Id := Scope (E);
             begin
-               return
-                 Present (S)
-                 and then S.Part = Private_Part
-                 and then not (FA.Kind in Kind_Package | Kind_Package_Body
-                               and then S.Ent = FA.Spec_Entity)
-                 --  Always consider the private and body parts of the
-                 --  Analyzed_Entity itself.
+               if Ekind (S) = E_Package then
+                  if S = FA.Spec_Entity then
+                     return True;
+                  else
+                     declare
+                        Scop : constant Flow_Scope := Get_Flow_Scope (E);
 
-                 --  Check if the enclosing scope has an Initializes aspect
-                 --  or has SPARK_Mode => Off.
-                 and then Ekind (S.Ent) = E_Package
-                 and then
-                   (Present (Get_Pragma (S.Ent, Pragma_Initializes))
-                    --  Enclosing scope has Initializes
+                        pragma Assert (Scop.Ent = S);
 
-                    or else not Private_Spec_In_SPARK (S.Ent)
-                    --  Enclosing scope has SPARK_Mode => Off
-                   );
-            end Hidden_In_Package;
+                     begin
+                        return
+                          (case Scop.Part is
+                              when Visible_Part =>
+                                 True,
+                              when Private_Part =>
+                                 Private_Spec_In_SPARK (Scop.Ent),
+                              when Body_Part    =>
+                                 Entity_Body_In_SPARK (Scop.Ent),
+                              when Null_Part    =>
+                                 raise Program_Error);
+                     end;
+                  end if;
+               else
+                  return True;
+               end if;
+            end Exposed_As_State;
 
          --  Start of processing for Get_Object_Or_Subprogram_Declaration
 
@@ -484,7 +499,7 @@ package body Flow.Slice is
                      declare
                         E : constant Entity_Id := Defining_Identifier (N);
                      begin
-                        pragma Assert (not Hidden_In_Package (E));
+                        pragma Assert (Exposed_As_State (E));
                         Local_Variables.Insert (E);
                      end;
                   end if;
@@ -502,11 +517,10 @@ package body Flow.Slice is
                      --   * object declarations that occur in the private
                      --     part of nested packages that have an Initializes
                      --     aspect.
-                     if Hidden_In_Package (E)
-                       or else In_Generic_Actual (E)
+
+                     if not In_Generic_Actual (E)
+                       and then Exposed_As_State (E)
                      then
-                        null;
-                     else
                         case Ekind (E) is
                            when E_Variable =>
                               Local_Variables.Insert (E);

@@ -4,5 +4,6 @@ outer.adb:6:10: info: initialization of "Visible_Var" proved
 outer.adb:16:52: medium: overflow check might fail (e.g. when Private_Var = -1 and Visible_Var = -2147483648)
 outer.adb:16:66: medium: overflow check might fail
 outer.adb:22:20: info: initialization of "Body_Var" proved
+outer.adb:22:20: info: initialization of "Private_Var" proved
 outer.adb:22:20: info: initialization of "Visible_Var" proved
 outer.ads:2:17: info: initialization of "Arg" proved

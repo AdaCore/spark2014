@@ -3612,19 +3612,13 @@ package body Flow.Control_Flow_Graph is
          Visible_Decls : constant List_Id := Visible_Declarations (Spec);
          Private_Decls : constant List_Id := Private_Declarations (Spec);
 
-         Init_Pragma : constant Node_Id :=
-           Get_Pragma (Spec_E, Pragma_Initializes);
-
       begin
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
 
-         if No (Init_Pragma)
-           and then Present (Private_Decls)
+         --  Process the private declarations if they are present and in SPARK
+         if Present (Private_Decls)
            and then Private_Spec_In_SPARK (Spec_E)
          then
-            --  We only process the private declarations if there is no
-            --  pragma Initializes and if the private declarations are
-            --  actually in SPARK.
             Process_Statement_List (Private_Decls, FA, CM, Ctx);
 
             --  Link the visible declarations to the private declarations
@@ -3643,9 +3637,11 @@ package body Flow.Control_Flow_Graph is
                     (Union_Id (Visible_Decls)).Standard_Entry,
                   Standard_Exits => CM.Element
                     (Union_Id (Private_Decls)).Standard_Exits));
+
+         --  We have only processed the visible declarations so we just copy
+         --  the connections of N from Visible_Decls.
+
          else
-            --  We have only processed the visible declarations so we just copy
-            --  the connections of N from Visible_Decls.
             Copy_Connections (CM,
                               Dst => Union_Id (N),
                               Src => Union_Id (Visible_Decls));
