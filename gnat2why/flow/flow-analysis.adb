@@ -4457,6 +4457,10 @@ package body Flow.Analysis is
       --  Emit a high check for all publically visible variables modified
       --  at this vertex.
 
+      -------------
+      -- Visitor --
+      -------------
+
       procedure Visitor (V  : Vertex_Id;
                          TV : out Simple_Traversal_Instruction)
       is
@@ -4490,6 +4494,9 @@ package body Flow.Analysis is
             end if;
          end loop;
       end Visitor;
+
+   --  Start of processing for Check_Elaborate_Body
+
    begin
       --  We only do this check when we use the gnat static elaboration
       --  model, since otherwise the front-end has a much more brutal
