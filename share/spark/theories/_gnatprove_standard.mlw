@@ -288,11 +288,11 @@ module Boolean
 end
 
 (* The following theories care about the *contents* of Arrays, and defines
-   access and update functions. It does not care about properties of bounds.
-   However, boolean equality and sliding needs array bounds as *input*. These
-   functions are independent of the representation of
-   constrained/unconstrained arrays. This also means that there is some
-   special circuitry in gnat2why to actually call these functions.
+   access and update functions. They do not care about properties of bounds.
+   However, boolean equality and sliding needs array bounds as *inputs*. These
+   functions are independent of the representation of constrained/unconstrained
+   arrays. This also means that there is some special circuitry in gnat2why to
+   actually call these functions.
 
    For Boolean equality, the arguments are, in order:
     - the first array
@@ -300,17 +300,17 @@ end
     - the second array
     - for each dimension, first and last
 
-  Boolean equality is true when all dimensions of the two arrays are of the
-  same length, and the arrays contain the same elements in their valid range
-  (note that access needs to be slided when the bounds do not coincide, but
-  the length is the same)
+  Boolean equality returns true when all dimensions of the two arrays are of
+  the same length, and the arrays contain the same elements in their valid
+  range (note that access needs to be slided when the bounds do not coincide,
+  but the length is still the same).
 
   For sliding, the arguments are, in order:
     - the array
     - for each dimension, the old and new value of first
 
   Sliding shifts the elements of the array according to the difference between
-  the old and new value of first
+  the old and new value of first.
 
 *)
 module Array__Index
@@ -346,16 +346,16 @@ module Array__1
   function bool_eq map I1.t I1.t map I1.t I1.t : bool
   meta "encoding : lskept" function bool_eq
 
-   axiom T__ada_array___equal_def:
-     forall a:map.
-     forall af : I1.t. forall al : I1.t.
-     forall b:map.
-     forall bf : I1.t. forall bl : I1.t [bool_eq a af al b bf bl].
-         ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl)
-          /\ (forall i:I1.t[get a i].
-                (I1.le af i /\ I1.le i al) ->
-                (get a i = get b (I1.add (I1.sub bf af) i))))
-         <-> bool_eq a af al b bf bl = True
+  axiom T__ada_array___equal_def:
+    forall a:map.
+    forall af : I1.t. forall al : I1.t.
+    forall b:map.
+    forall bf : I1.t. forall bl : I1.t [bool_eq a af al b bf bl].
+        ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl)
+         /\ (forall i:I1.t[get a i].
+               (I1.le af i /\ I1.le i al) ->
+               (get a i = get b (I1.add (I1.sub bf af) i))))
+        <-> bool_eq a af al b bf bl = True
 
   function slide map I1.t I1.t : map
   meta "encoding : lskept" function slide

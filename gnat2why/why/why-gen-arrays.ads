@@ -51,8 +51,8 @@ package Why.Gen.Arrays is
    --
    --  There is also a predicate to express boolean equality.
    --
-   --  See the file _gnatprove_standard.mlw, the theories Array_N for N =
-   --  1,2,3,4 to see this Why model.
+   --  See the file _gnatprove_standard.mlw, the theories Array__N for N =
+   --  1,2,3,... to see this Why model.
    --
    --  The Why model of constrained array types consists of this map type,
    --  along with two constants "first" and "last" that model the bounds of
@@ -111,7 +111,7 @@ package Why.Gen.Arrays is
    --
    --  Equality on arrays is simply translated by a call to the generic
    --  "bool_eq" function, which requires explicit passing of the bounds. See
-   --  "Accessing the bounds".
+   --  "Accessing bounds".
    --
    --  Conversions
    --  -----------
@@ -121,7 +121,7 @@ package Why.Gen.Arrays is
    --  bounds for the constrained object are provided as constants. Sliding
    --  will take place, and possibly a check inserted.
    --
-   --  A conversion between constrained objects is a no-op except for sliding
+   --  A conversion between constrained objects is a no-op except for sliding,
    --  if necessary.
    --
    --  A conversion from constrained objects to an unconstrained type requires
@@ -139,7 +139,7 @@ package Why.Gen.Arrays is
       Dim     : Positive;
       Arg_Ind : in out Positive);
    --  Add an argument for the corresponding attribute of the array. See
-   --  alse [Get_Array_Attr]. Add_Attr_Arg will work with constrained and
+   --  also [Get_Array_Attr]. Add_Attr_Arg will work with constrained and
    --  unconstrained arrays.
 
    procedure Add_Attr_Arg
@@ -155,45 +155,45 @@ package Why.Gen.Arrays is
    procedure Declare_Ada_Array
      (File : W_Section_Id;
       E    : Entity_Id);
-   --  Introduce all the necessary declarations for an Ada array declaration
-   --  Und_Ent is the entity which contains the relevant type information (the
-   --  underlying type)
+   --  Introduce all the necessary declarations for an Ada array declaration;
+   --  E is the entity which contains the relevant type information (the
+   --  underlying type).
 
    function New_Array_Access
      (Ada_Node  : Node_Id;
       Ar        : W_Expr_Id;
       Index     : W_Expr_Array;
       Domain    : EW_Domain) return W_Expr_Id;
-   --  Generate an expr that corresponds to an array access.
+   --  Generate an expr that corresponds to an array access
 
    function Array_Convert_To_Base
-     (Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain;
+      Ar     : W_Expr_Id) return W_Expr_Id
    with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Abstract;
    --  "Ar" must be a Why expression of unconstrained array type. Convert it to
    --  the "split" view of UC arrays
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain;
+      Ar     : W_Expr_Id) return W_Expr_Id
    with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Split;
    --  "Ar" must be a Why expression of unconstrained array type, in split
    --  form. Convert it to the regular unconstrained form.
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Target    : Entity_Id;
-      Ar        : W_Expr_Id;
-      First     : W_Expr_Id;
-      Last      : W_Expr_Id) return W_Expr_Id;
+     (Domain : EW_Domain;
+      Target : Entity_Id;
+      Ar     : W_Expr_Id;
+      First  : W_Expr_Id;
+      Last   : W_Expr_Id) return W_Expr_Id;
    --  This variant can be used when we need to build an unconstrained array,
    --  but "Ar" is not in split form. We need to provide the target type and
    --  first/last expressions explicitly.
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Old_Ar    : W_Expr_Id;
-      New_Base  : W_Expr_Id) return W_Expr_Id
+     (Domain   : EW_Domain;
+      Old_Ar   : W_Expr_Id;
+      New_Base : W_Expr_Id) return W_Expr_Id
    with Pre => Get_Type_Kind (Get_Type (New_Base)) = EW_Split;
    --  "New_Base" must be a Why expression of unconstrained array type, in
    --  split form. Convert it to the regular unconstrained form, using Old_Ar's
@@ -219,12 +219,13 @@ package Why.Gen.Arrays is
        Index     : W_Expr_Array;
        Value     : W_Expr_Id;
        Domain    : EW_Domain) return W_Expr_Id;
+   --  ???
 
    function New_Bounds_Equality
-     (Left_Arr   : W_Expr_Id;
-      Right_Arr  : W_Expr_Id;
-      Dim        : Positive) return W_Pred_Id;
-   --  @param Left_Arr array expression whose bounds should be compared to
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id;
+   --  @param Left_Arr array expression whose bounds should be compared
    --  @param Right_Arr
    --  @param Dim number of dimensions in the arrays
    --  @return a predicate of the form:
@@ -233,10 +234,10 @@ package Why.Gen.Arrays is
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
    function New_Element_Equality
-     (Ada_Node   : Node_Id := Empty;
-      Left_Arr   : W_Expr_Id;
-      Right_Arr  : W_Expr_Id;
-      Index      : W_Expr_Array) return W_Pred_Id;
+     (Ada_Node  : Node_Id := Empty;
+      Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Index     : W_Expr_Array) return W_Pred_Id;
    --  Return a predicate of the form:
    --
    --    <left_arr>[<index>] = <right_arr>[<index>]
@@ -247,11 +248,11 @@ package Why.Gen.Arrays is
       Expr    : W_Expr_Id;
       Arg_Ind : in out Positive);
    --  Add an argument just for the "map" of the array. For constrained arrays,
-   --  this is the identity, for unconstrained arrays, this corresponds to the
-   --  selection of the corresponding field.
+   --  it is an identity; for unconstrained arrays, it corresponds to the
+   --  selection of the corresponding components.
 
    function Build_Length_Expr
-     (Domain : EW_Domain;
+     (Domain      : EW_Domain;
       First, Last : W_Expr_Id;
       Typ         : W_Type_Id := EW_Int_Type)
       return W_Expr_Id;
@@ -285,9 +286,9 @@ package Why.Gen.Arrays is
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
      with Pre => Get_Type_Kind (Get_Type (E)) = EW_Split;
-   --  Return the ada entity associated to an array expression in split form.
+   --  Return the Ada entity associated to an array expression in split form.
    --  There is always one or we cannot reach to the object's bounds.
-   --  @param E Why expression for which we want an ada entity
+   --  @param E Why expression for which we want an ada entity.
    --  @result Ada entity associated to E that can be used to find its bounds.
 
    function Get_Array_Attr
@@ -322,14 +323,14 @@ package Why.Gen.Arrays is
      (Domain : EW_Domain;
       Args   : W_Expr_Array;
       Typ    : W_Type_Id) return W_Expr_Id;
-   --  return a call to the concat function in Why array theory
+   --  Return a call to the concat function in Why array theory
 
    function New_Singleton_Call
      (Typ    : Node_Id;
       Domain : EW_Domain;
       Elt    : W_Expr_Id;
       Pos    : W_Expr_Id) return W_Expr_Id;
-   --  return a call to the singleton function in Why array theory
+   --  Return a call to the singleton function in Why array theory
 
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id;
    --  @param E the entity of type array
