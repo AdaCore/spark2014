@@ -81,6 +81,7 @@ package body Why.Gen.Arrays is
       Item   : Item_Type;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id;
+   --  ???
 
    function Prepare_Indices_Substitutions
      (Section     : W_Section_Id;
@@ -668,6 +669,7 @@ package body Why.Gen.Arrays is
         (Kind      : Why_Name_Enum;
          Value     : Uint;
          Typ       : W_Type_Id);
+      --  ???
 
       -----------------------
       -- Declare_Attribute --
@@ -1222,8 +1224,8 @@ package body Why.Gen.Arrays is
       Name      : constant W_Identifier_Id :=
         Get_Array_Theory (Ty_Entity).Set;
    begin
-      if Is_Static_Array_Type (Ty_Entity) or else
-        Get_Type_Kind (W_Ty) = EW_Split
+      if Is_Static_Array_Type (Ty_Entity)
+        or else Get_Type_Kind (W_Ty) = EW_Split
       then
          return
            New_Call
@@ -1436,10 +1438,10 @@ package body Why.Gen.Arrays is
    is
       Typ : constant Entity_Id := Retysp (Etype (E));
 
-      Dim : constant Positive :=
-        Positive (Number_Dimensions (Typ));
+      Dim : constant Positive := Positive (Number_Dimensions (Typ));
 
       Subst : W_Clone_Substitution_Array (1 .. Dim * 7 + 1);
+      --  ??? why 7
 
    begin
       Module := New_Module (File => No_Name,
@@ -1525,7 +1527,7 @@ package body Why.Gen.Arrays is
       end if;
 
       --  If Name was inserted it means that the theory is not present:
-      --  Let's create it.
+      --  let's create it.
 
       if not Register_Only then
          Create_Rep_Array_Theory (File, E, Name, Module);
