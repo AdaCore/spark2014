@@ -1,0 +1,13 @@
+-- Ada restrictions to be supported by the PolyORB-HI/Ada, for the "SPARK"
+-- pseudo-target
+
+pragma Profile (Ravenscar);                              -- D.13.1
+--  Activate the Ravenscar profile
+
+pragma Partition_Elaboration_Policy (Sequential);        -- H.6 (3)
+--  This policy eases task initial synchronization and the bootstrap
+--  of the VM, see Ada 2005 Rationale for more details). (Not yet
+--  supported by GNAT for Native platforms)
+
+--  pragma SPARK_Mode (On);
+--  Activate SPARK

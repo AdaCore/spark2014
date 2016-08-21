@@ -1,0 +1,21 @@
+--  Ada restrictions to be supported by the PolyORB HI, for HI targets
+
+pragma Profile (Ravenscar);                              -- D.13.1
+
+pragma Restrictions (No_Dependence => Ada.Finalization); -- 13.12.1 (12)
+--  No controlled types, cannot be enforced for native compilers
+--  because of the s-tpoben file.
+
+--  pragma Restrictions (No_Dependence => Ada.Streams);      -- 13.12.1 (12)
+--  No implicit dependency on Ada.Tags and other object oriented
+--  compiler units. Cannot be enforced for native platforms because of
+--  the g-socket file
+
+--  pragma Restrictions (No_Exception_Handlers);             -- GNAT specific
+--  Implied by GNAT Pro 5.03a1 for High-Integrity, for the Ravenscar
+--  run-time,  cannot be enforced for native compilers because of the
+--  s-tpoben file.
+
+--  pragma Restrictions (No_Secondary_Stack);                -- GNAT specific
+--  No unconstrained objects, including arrays, but also forbids
+--  string concatenation. (GNAT specific)
