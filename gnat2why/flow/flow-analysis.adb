@@ -3104,9 +3104,9 @@ package body Flow.Analysis is
                   --  procedure then include it in Outputs.
 
                   for Write of Writes loop
+                     --  ??? we should only care about abstract states of the
+                     --  package that we are analyzing.
                      if Is_Abstract_State (Write)
-                       and then not
-                         Trivially_Initialized (Get_Direct_Mapping_Id (Write))
                        and then not
                          Reads.Contains (Change_Variant (Write, In_View))
                      then
