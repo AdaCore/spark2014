@@ -4425,7 +4425,9 @@ package body SPARK_Definition is
    begin
       --  Do not analyze generic bodies
 
-      if Ekind (Spec_E) = E_Generic_Package then
+      if Ekind (Spec_E) = E_Generic_Package
+        or else not Entity_In_SPARK (Spec_E)
+      then
          return;
       end if;
 

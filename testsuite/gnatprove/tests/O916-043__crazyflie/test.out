@@ -15,58 +15,11 @@ crtp_pack.ads:185:09: tasking in SPARK requires sequential elaboration (SPARK RM
 crtp_pack.ads:185:09: violation of pragma SPARK_Mode at gnat.adc:2
 crtp_pack.ads:191:09: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
 crtp_pack.ads:191:09: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:27:46: "Log_TOC" is not allowed in SPARK
-log_pack.adb:27:46: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:29:10: "Log_Groups_Index" is not allowed in SPARK
-log_pack.adb:29:10: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:36:07: "Log_Group" is not allowed in SPARK
-log_pack.adb:36:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:36:28: "Log_Groups_Index" is not allowed in SPARK
-log_pack.adb:36:28: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:37:09: info: no contextual analysis of "String_To_Log_Name" (body not seen yet)
-log_pack.adb:38:07: "Log_Group" is not allowed in SPARK
-log_pack.adb:38:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:38:28: "Log_Groups_Index" is not allowed in SPARK
-log_pack.adb:38:28: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:40:19: "Log_Groups_Index" is not allowed in SPARK
-log_pack.adb:40:19: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:41:07: "Log_TOC" is not allowed in SPARK
-log_pack.adb:41:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:41:36: "Log_Groups_Index" is not allowed in SPARK
-log_pack.adb:41:36: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:64:30: "Log_Group" is not allowed in SPARK
-log_pack.adb:64:30: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:72:07: "Log_Variable" is not allowed in SPARK
-log_pack.adb:72:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:74:07: "Log_Variable" is not allowed in SPARK
-log_pack.adb:74:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:75:07: "Log_Variable" is not allowed in SPARK
-log_pack.adb:75:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:76:07: "Log_Variable" is not allowed in SPARK
-log_pack.adb:76:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:77:07: "Log_Variable" is not allowed in SPARK
-log_pack.adb:77:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:79:07: "Log_Group" is not allowed in SPARK
-log_pack.adb:79:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:83:31: "Log_TOC" is not allowed in SPARK
-log_pack.adb:83:31: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:87:07: "Log_TOC" is not allowed in SPARK
-log_pack.adb:87:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:87:39: "Log_TOC" is not allowed in SPARK
-log_pack.adb:87:39: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:94:07: info: no contextual analysis of "Log_CRTP_Handler" (nested function instantiation)
 log_pack.adb:102:13: info: no contextual analysis of "Log_TOC_Process" (body not seen yet)
 log_pack.adb:104:13: info: no contextual analysis of "Log_Control_Process" (body not seen yet)
 log_pack.adb:111:07: info: no contextual analysis of "Log_TOC_Process" (nested function instantiation)
-log_pack.adb:125:36: attribute "Enum_Rep" is not permitted in SPARK
-log_pack.adb:128:25: attribute "Enum_Rep" is not permitted in SPARK
-log_pack.adb:135:16: "Log_TOC" is not allowed in SPARK
-log_pack.adb:135:16: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:158:28: "Log_TOC" is not allowed in SPARK
-log_pack.adb:158:28: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:165:57: "Log_Variable" is not allowed in SPARK
-log_pack.adb:165:57: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:168:39: attribute "Enum_Rep" is not permitted in SPARK
 log_pack.adb:170:19: info: no contextual analysis of "Append_Raw_Data_Variable_Name_To_Packet" (body not seen yet)
 log_pack.adb:184:07: info: no contextual analysis of "Log_Control_Process" (nested function instantiation)
 log_pack.adb:197:23: info: no contextual analysis of "Log_Create_Block" (body not seen yet)
@@ -76,86 +29,14 @@ log_pack.adb:207:23: info: no contextual analysis of "Log_Start_Block" (body not
 log_pack.adb:211:23: info: no contextual analysis of "Log_Stop_Block" (body not seen yet)
 log_pack.adb:213:13: info: no contextual analysis of "Log_Reset" (body not seen yet)
 log_pack.adb:222:04: info: no contextual analysis of "Log_Create_Block" (multiple returns)
-log_pack.adb:225:07: access type is not allowed in SPARK
-log_pack.adb:225:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:225:15: access to "Log_Block" is not allowed in SPARK
-log_pack.adb:225:15: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:234:14: implicit dereference is not allowed in SPARK
-log_pack.adb:234:14: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:238:07: implicit dereference is not allowed in SPARK
-log_pack.adb:238:07: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:243:04: info: no contextual analysis of "Log_Delete_Block" (multiple returns)
-log_pack.adb:244:07: access type is not allowed in SPARK
-log_pack.adb:244:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:244:19: access to "Log_Block" is not allowed in SPARK
-log_pack.adb:244:19: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:256:07: implicit dereference is not allowed in SPARK
-log_pack.adb:256:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:260:23: implicit dereference is not allowed in SPARK
-log_pack.adb:260:23: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:265:04: info: no contextual analysis of "Log_Append_To_Block" (multiple returns)
-log_pack.adb:273:07: access type is not allowed in SPARK
-log_pack.adb:273:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:273:22: access to "Log_Block" is not allowed in SPARK
-log_pack.adb:273:22: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:284:10: implicit dereference is not allowed in SPARK
-log_pack.adb:284:10: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:297:10: access type is not allowed in SPARK
-log_pack.adb:297:10: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:297:33: access to "Log_Variable" is not allowed in SPARK
-log_pack.adb:297:33: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:301:37: info: no contextual analysis of "Calculate_Block_Length" (body not seen yet)
 log_pack.adb:323:13: info: no contextual analysis of "Append_Log_Variable_To_Block" (body not seen yet)
 log_pack.adb:330:04: info: no contextual analysis of "Log_Start_Block" (multiple returns)
-log_pack.adb:333:07: access type is not allowed in SPARK
-log_pack.adb:333:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:333:19: access to "Log_Block" is not allowed in SPARK
-log_pack.adb:333:19: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:345:26: implicit dereference is not allowed in SPARK
-log_pack.adb:345:26: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:346:10: implicit dereference is not allowed in SPARK
-log_pack.adb:346:10: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:347:10: implicit dereference is not allowed in SPARK
-log_pack.adb:347:10: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:348:34: implicit dereference is not allowed in SPARK
-log_pack.adb:348:34: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:349:34: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:349:34: volatile function call as actual is not allowed in SPARK (7.1.3(11))
-log_pack.adb:350:34: "Timing_Event_Handler" is not allowed in SPARK
-log_pack.adb:350:34: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:359:04: info: no contextual analysis of "Log_Stop_Block" (multiple returns)
-log_pack.adb:360:07: access type is not allowed in SPARK
-log_pack.adb:360:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:360:19: access to "Log_Block" is not allowed in SPARK
-log_pack.adb:360:19: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:372:23: implicit dereference is not allowed in SPARK
-log_pack.adb:372:23: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:391:07: access type is not allowed in SPARK
-log_pack.adb:391:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:391:23: access to "Log_Variable" is not allowed in SPARK
-log_pack.adb:391:23: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:422:07: info: no contextual analysis of "Append_Raw_Data_Variable_Name_To_Packet" (nested function instantiation)
-log_pack.adb:428:12: "Log_Group" is not allowed in SPARK
-log_pack.adb:428:12: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:428:29: "Log_Group" is not allowed in SPARK
-log_pack.adb:428:29: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:429:29: "Log_Variable" is not allowed in SPARK
-log_pack.adb:429:29: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:429:49: "Log_Variable" is not allowed in SPARK
-log_pack.adb:429:49: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:433:53: "Complete_Name" is not allowed in SPARK
-log_pack.adb:433:53: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:441:07: access type is not allowed in SPARK
-log_pack.adb:441:07: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:441:22: access to "Log_Variable" is not allowed in SPARK
-log_pack.adb:441:22: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:446:54: implicit dereference is not allowed in SPARK
-log_pack.adb:446:54: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:455:07: info: no contextual analysis of "Get_Log_Time_Stamp" (nested function instantiation)
-log_pack.adb:461:47: call to a volatile function in interfering context is not allowed in SPARK
-log_pack.adb:461:47: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.adb:470:04: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
-log_pack.adb:470:04: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:525:22: warning: variable "Value" is read but never assigned
 log_pack.adb:535:22: warning: variable "Value" is read but never assigned
 log_pack.adb:545:22: warning: variable "Value" is read but never assigned
