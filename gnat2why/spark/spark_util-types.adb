@@ -1077,7 +1077,7 @@ package body SPARK_Util.Types is
          Mark_Component_List (Components, Empty, Empty);
       end if;
 
-      --  We only store in Components the fisrt version of a field that we
+      --  We only store in Components the first version of a field that we
       --  encounter so that its type is as specialized as possible.
 
       declare
