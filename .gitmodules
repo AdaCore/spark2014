@@ -1,12 +1,12 @@
 [submodule "why3"]
 	path = why3
-	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/why3.git
+	url = git+ssh://git.adacore.com/why3.git
 [submodule "alt-ergo"]
 	path = alt-ergo
-	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/alt-ergo.git
+	url = git+ssh://git.adacore.com/alt-ergo.git
 [submodule "cvc4"]
 	path = cvc4
-	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/cvc4.git
+	url = git+ssh://git.adacore.com/cvc4.git
 [submodule "z3"]
 	path = z3
-	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/z3.git
+	url = git+ssh://git.adacore.com/z3.git
