@@ -69,6 +69,7 @@ with Sinput;                          use Sinput;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
+with SPARK_Register;                  use SPARK_Register;
 with SPARK_Util;                      use SPARK_Util;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
@@ -388,6 +389,9 @@ package body Gnat2Why.Driver is
       procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Rewrite_Compilation_Unit);
 
+      procedure Register_All_Entities is new Sem.Walk_Library_Items
+        (Action => Register_Compilation_Unit);
+
       procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Mark_Compilation_Unit);
 
@@ -431,6 +435,9 @@ package body Gnat2Why.Driver is
       --  that facilitates analysis.
 
       Rewrite_All_Compilation_Units;
+
+      --  Then register mappings from entity names to entity ids
+      Register_All_Entities;
 
       --  Mark all compilation units as "in SPARK / not in SPARK", in
       --  the same order that they were processed by the frontend. Bodies

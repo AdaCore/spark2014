@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         S P A R K _ R E W R I T E                        --
+--                        S P A R K _ R E G I S T E R                       --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -23,13 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Perform initial rewrites of the tree before any analysis
+--  Register mapping between entity names and entity ids
 
 with Types; use Types;
 
-package SPARK_Rewrite is
+package SPARK_Register is
 
-   procedure Rewrite_Compilation_Unit (N : Node_Id);
-   --  Perform rewritings of a single compilation unit
+   procedure Register_Compilation_Unit (N : Node_Id);
+   --  Register entity names in a single compilation unit
 
-end SPARK_Rewrite;
+end SPARK_Register;
