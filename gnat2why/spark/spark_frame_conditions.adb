@@ -454,10 +454,13 @@ package body SPARK_Frame_Conditions is
       Include_Constants : Boolean) return Name_Sets.Set
    is
       E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+        (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
+
+      pragma Assert (if Is_Entry (E) then No (Alias (E)));
+      --  Alias is always empty for entries
 
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -495,10 +498,13 @@ package body SPARK_Frame_Conditions is
 
    function Computed_Writes (E : Entity_Id) return Name_Sets.Set is
       E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+        (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
+
+      pragma Assert (if Is_Entry (E) then No (Alias (E)));
+      --  Alias is always empty for entries
 
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -1058,10 +1064,13 @@ package body SPARK_Frame_Conditions is
       Called_Subprograms : out Name_Sets.Set)
    is
       E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+        (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
+
+      pragma Assert (if Is_Entry (E) then No (Alias (E)));
+      --  Alias is always empty for entries
 
       E_Name : Entity_Name;
 
