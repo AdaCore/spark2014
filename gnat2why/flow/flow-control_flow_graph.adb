@@ -557,7 +557,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
-   --  Simply calls Process_Statement_List.
+   --  Simply calls Process_Statement_List
 
    procedure Do_If_Statement
      (N   : Node_Id;
@@ -746,7 +746,7 @@ package body Flow.Control_Flow_Graph is
       FA   : in out Flow_Analysis_Graphs;
       CM   : in out Connection_Maps.Map;
       Ctx  : in out Context);
-   --  Deals with the given postcondition expression.
+   --  Deals with the given postcondition expression
    --  ??? can be merged with Do_Precondition
 
    procedure Do_Precondition
@@ -754,7 +754,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
-   --  Deals with the given precondition expression.
+   --  Deals with the given precondition expression
    --  ??? can be merged with Do_Postcondition
 
    procedure Do_Simple_Return_Statement
@@ -824,7 +824,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
-   --  As above but operates on a single node.
+   --  As above but operates on a single node
 
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
@@ -897,11 +897,11 @@ package body Flow.Control_Flow_Graph is
    --  without errors.
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
-   --  Remove all null vertices from the control flow graph.
+   --  Remove all null vertices from the control flow graph
 
    function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Pragma;
-   --  Check if flow analysis cares about this particular pragma.
+   --  Check if flow analysis cares about this particular pragma
 
    ------------------------------------------------------------
    --  Local procedures and functions
@@ -1017,7 +1017,7 @@ package body Flow.Control_Flow_Graph is
          declare
             V : Flow_Graphs.Vertex_Id;
          begin
-            --  We had a null sequence so we need to produce a null node.
+            --  We had a null sequence so we need to produce a null node
             Add_Vertex (FA, Null_Node_Attributes, V);
             Block := (Standard_Entry => V,
                       Standard_Exits => To_Set (V));
@@ -1107,9 +1107,9 @@ package body Flow.Control_Flow_Graph is
                when Magic_String | Synthetic_Null_Export =>
                   null;
                when Direct_Mapping | Record_Field =>
-                  --  Only proceed if we don't have this vertex yet.
+                  --  Only proceed if we don't have this vertex yet
                   if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
-                     --  Create vertex.
+                     --  Create vertex
                      Add_Vertex
                        (FA,
                         F,
@@ -1183,7 +1183,7 @@ package body Flow.Control_Flow_Graph is
                              Initial_Atr,
                              FA);
 
-         --  Setup the n'final vertex.
+         --  Setup the n'final vertex
          Add_Vertex
            (FA,
             Change_Variant (F, Final_Value),
@@ -1201,7 +1201,7 @@ package body Flow.Control_Flow_Graph is
         and then (Ekind (E) = E_Constant
                     and then not FA.Local_Constants.Contains (E))
       then
-         --  We ignore non-local constants (for now).
+         --  We ignore non-local constants (for now)
          return;
       end if;
 
@@ -1316,7 +1316,7 @@ package body Flow.Control_Flow_Graph is
                              Initial_Atr,
                              FA);
 
-         --  Setup the F'final vertex.
+         --  Setup the F'final vertex
          Add_Vertex
            (FA,
             Change_Variant (F, Final_Value),
@@ -1418,7 +1418,7 @@ package body Flow.Control_Flow_Graph is
                Missing.Include (Map_Root'Update (Facet => Extension_Part));
             end if;
 
-            --  Split out the assignment over a number of vertices.
+            --  Split out the assignment over a number of vertices
             for C in M.Iterate loop
                declare
                   Output : Flow_Id          renames Flow_Id_Maps.Key (C);
@@ -1483,7 +1483,7 @@ package body Flow.Control_Flow_Graph is
             Vars_Used    : Flow_Id_Sets.Set;
             Vars_Proof   : Flow_Id_Sets.Set;
          begin
-            --  Work out which variables we define.
+            --  Work out which variables we define
             Untangle_Assignment_Target
               (N                    => Name (N),
                Scope                => FA.B_Scope,
@@ -1512,7 +1512,7 @@ package body Flow.Control_Flow_Graph is
                Ctx.Folded_Function_Checks (N).Insert (Name (N));
             end if;
 
-            --  Produce the vertex.
+            --  Produce the vertex
             Add_Vertex
               (FA,
                Direct_Mapping_Id (N),
@@ -1683,15 +1683,15 @@ package body Flow.Control_Flow_Graph is
       L     : Node_Id := N;
       Funcs : Node_Sets.Set;
    begin
-      --  Go up the tree until we find the loop we are exiting from.
+      --  Go up the tree until we find the loop we are exiting from
       if No (Name (N)) then
-         --  We just need to find the enclosing loop.
+         --  We just need to find the enclosing loop
          loop
             L := Parent (L);
             exit when Nkind (L) = N_Loop_Statement;
          end loop;
       else
-         --  We have a named loop, which we need to find.
+         --  We have a named loop, which we need to find
          loop
             L := Parent (L);
             exit when Nkind (L) = N_Loop_Statement and then
@@ -1763,7 +1763,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Null_Node_Attributes,
          V);
-      --  Control flows in, but we do not flow out again.
+      --  Control flows in, but we do not flow out again
       CM.Insert (Union_Id (N),
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
@@ -1875,7 +1875,7 @@ package body Flow.Control_Flow_Graph is
       Elsif_Statement : Node_Id;
       Funcs           : Node_Sets.Set;
    begin
-      --  We have a vertex for the if statement itself.
+      --  We have a vertex for the if statement itself
       Collect_Functions_And_Read_Locked_POs
         (Condition (N),
          Functions_Called   => Funcs,
@@ -1902,7 +1902,7 @@ package body Flow.Control_Flow_Graph is
                  Graph_Connections'(Standard_Entry => V,
                                     Standard_Exits => Empty_Set));
 
-      --  We hang the if part off that.
+      --  We hang the if part off that
       Process_Statement_List (If_Part, FA, CM, Ctx);
       Linkup (FA, V, CM (Union_Id (If_Part)).Standard_Entry);
       CM (Union_Id (N)).Standard_Exits.Union
@@ -2018,7 +2018,7 @@ package body Flow.Control_Flow_Graph is
       is (Defining_Identifier
             (Loop_Parameter_Specification (Iteration_Scheme (N))))
       with Pre => Is_For_Loop (N);
-      --  Obtain the entity of a for loops loop parameter.
+      --  Obtain the entity of a for loops loop parameter
 
       function Get_Loop_Name (N : Node_Id) return Entity_Id
       is (Entity (Identifier (N)));
@@ -2026,10 +2026,10 @@ package body Flow.Control_Flow_Graph is
 
       function Get_Loop_Range (N : Node_Id) return Node_Id
       with Pre => Is_For_Loop (N);
-      --  Return the range given for loop.
+      --  Return the range given for loop
 
       function Loop_Might_Exit_Early (N : Node_Id) return Boolean;
-      --  Return true if the loop contains an exit or return statement.
+      --  Return true if the loop contains an exit or return statement
 
       procedure Do_Loop;
       --  Helper procedure to deal with normal loops.
@@ -2201,8 +2201,8 @@ package body Flow.Control_Flow_Graph is
          is
          begin
             case Nkind (N) is
-               when N_Simple_Return_Statement |
-                 N_Extended_Return_Statement =>
+               when N_Simple_Return_Statement   |
+                    N_Extended_Return_Statement =>
                   Contains_Return := True;
                   return Abandon;
                when others =>
@@ -2218,7 +2218,7 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Loop
 
       begin
-         --  Check if we have a return statement.
+         --  Check if we have a return statement
          Find_Return (N);
 
          --  We have a null vertex for the loop, as we have no
@@ -2228,7 +2228,7 @@ package body Flow.Control_Flow_Graph is
                      Null_Node_Attributes,
                      V);
 
-         --  Entry point for the loop is V.
+         --  Entry point for the loop is V
          CM (Union_Id (N)).Standard_Entry := V;
 
          --  Exit from the loop is at the end of the loop, i.e. we are
@@ -2359,7 +2359,7 @@ package body Flow.Control_Flow_Graph is
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
-            --  We need to make sure the loop is executed at least once.
+            --  We need to make sure the loop is executed at least once
 
             Add_Vertex
               (FA,
@@ -2371,7 +2371,7 @@ package body Flow.Control_Flow_Graph is
                   E_Loc   => N),
                V);
 
-            --  Flow goes into the first statement and out the loop vertex.
+            --  Flow goes into the first statement and out the loop vertex
             CM (Union_Id (N)).Standard_Entry :=
               CM (Union_Id (Statements (N))).Standard_Entry;
             CM (Union_Id (N)).Standard_Exits.Include (V);
@@ -2383,7 +2383,7 @@ package body Flow.Control_Flow_Graph is
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
          else
-            --  We don't know if the loop will be executed or not.
+            --  We don't know if the loop will be executed or not
             Collect_Functions_And_Read_Locked_POs
               (DSD,
                Functions_Called   => Funcs,
@@ -2531,7 +2531,7 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-            --  Construct the variable we're possibly fully defining.
+            --  Construct the variable we're possibly fully defining
             case Nkind (Prefix (N)) is
                when N_Identifier | N_Expanded_Name =>
                   F := Direct_Mapping_Id
@@ -2630,7 +2630,7 @@ package body Flow.Control_Flow_Graph is
             procedure Check_Defined
               (V  : Flow_Graphs.Vertex_Id;
                Tv : out Flow_Graphs.Simple_Traversal_Instruction);
-            --  Visitor to ensure all paths define T (and do not use it).
+            --  Visitor to ensure all paths define T (and do not use it)
 
             procedure Check_Unused
               (V  : Flow_Graphs.Vertex_Id;
@@ -2842,7 +2842,7 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Loop_Statement
 
    begin
-      --  Start with a blank slate for the loops entry and exit.
+      --  Start with a blank slate for the loops entry and exit
       CM.Insert (Union_Id (N), No_Connections);
 
       --  Construct graph for the loop body. Please note that early
@@ -2860,26 +2860,26 @@ package body Flow.Control_Flow_Graph is
       declare
          Outer_Loop : constant Entity_Id := Ctx.Active_Loop;
       begin
-         --  We can't use 'Update here as we may modify Ctx.
+         --  We can't use 'Update here as we may modify Ctx
          Ctx.Active_Loop := Loop_Id;
          Process_Statement_List (Statements (N), FA, CM, Ctx);
          Ctx.Active_Loop := Outer_Loop;
       end;
 
       if No (I_Scheme) then
-         --  We have a general (possibly infinite) loop.
+         --  We have a general (possibly infinite) loop
          Do_Loop;
 
       elsif Present (Condition (I_Scheme)) then
-         --  We have a while loop.
+         --  We have a while loop
          Do_While_Loop;
 
       elsif Present (Loop_Parameter_Specification (I_Scheme)) then
-         --  This is a normal for loop over a type or range.
+         --  This is a normal for loop over a type or range
          Do_For_Loop (Fully_Initialized);
 
       elsif Present (Iterator_Specification (I_Scheme)) then
-         --  This is a `in' or `of' loop over some container.
+         --  This is a `in' or `of' loop over some container
          Do_Iterator_Loop;
 
       else
@@ -2913,7 +2913,7 @@ package body Flow.Control_Flow_Graph is
          V              : Flow_Graphs.Vertex_Id;
          Block          : Graph_Connections;
       begin
-         --  We stick all loop entry references on a list of nodes.
+         --  We stick all loop entry references on a list of nodes
          for Reference of Ctx.Entry_References (Loop_Id) loop
             Add_Vertex
               (FA,
@@ -2935,7 +2935,7 @@ package body Flow.Control_Flow_Graph is
             Augmented_Loop.Append (Union_Id (Reference));
          end loop;
 
-         --  Then we stick the actual loop at the end.
+         --  Then we stick the actual loop at the end
          Augmented_Loop.Append (Union_Id (N));
 
          --  And connect up the dots, and finally replacing the
@@ -2950,7 +2950,7 @@ package body Flow.Control_Flow_Graph is
       Ctx.Entry_References.Delete (Loop_Id);
       Ctx.Current_Loops.Delete (Loop_Id);
 
-      --  Finally, we can update the loop information in Flow_Utility.
+      --  Finally, we can update the loop information in Flow_Utility
 
       Add_Loop (Loop_Id);
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -3230,7 +3230,7 @@ package body Flow.Control_Flow_Graph is
          return;
       end if;
 
-      --  First, we need a 'initial and 'final vertex for this object.
+      --  First, we need a 'initial and 'final vertex for this object
       Create_Initial_And_Final_Vertices (E,
                                          Variable_Kind,
                                          FA);
@@ -3264,7 +3264,7 @@ package body Flow.Control_Flow_Graph is
          end if;
 
       else
-         --  We have a variable declaration with an initialization.
+         --  We have a variable declaration with an initialization
          declare
             Var_Def : Flow_Id_Sets.Set;
             Funcs   : Node_Sets.Set;
@@ -3604,7 +3604,7 @@ package body Flow.Control_Flow_Graph is
          end if;
       end loop;
 
-      --  Traverse visible and private part of the specs and link them up.
+      --  Traverse visible and private part of the specs and link them up
 
       declare
          Spec : constant Node_Id := Specification (N);
@@ -3943,7 +3943,7 @@ package body Flow.Control_Flow_Graph is
          end case;
 
       else
-         --  Otherwise we produce a null vertex.
+         --  Otherwise we produce a null vertex
          Add_Vertex (FA, Null_Node_Attributes, V);
 
          --  Pragma Inspection_Point is also ignored, but we insert a call
@@ -3958,7 +3958,7 @@ package body Flow.Control_Flow_Graph is
 
       CM.Insert (Union_Id (N), Trivial_Connection (V));
 
-      --  We make a note of 'Loop_Entry uses.
+      --  We make a note of 'Loop_Entry uses
       if Get_Pragma_Id (N) in Pragma_Check          |
                               Pragma_Loop_Variant   |
                               Pragma_Loop_Invariant
@@ -3982,7 +3982,7 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
-      --  We just need to check for uninitialized variables.
+      --  We just need to check for uninitialized variables
       Collect_Functions_And_Read_Locked_POs
         (Pre,
          Functions_Called   => Funcs,
@@ -4090,10 +4090,10 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Call_Statement
 
    begin
-      --  Add a cluster to help pretty printing.
+      --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
 
-      --  A vertex for the actual call.
+      --  A vertex for the actual call
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
@@ -4106,7 +4106,7 @@ package body Flow.Control_Flow_Graph is
          V);
       FA.CFG.Set_Cluster (V, C);
 
-      --  Deal with the subprogram's parameters.
+      --  Deal with the subprogram's parameters
       Process_Parameter_Associations (N,
                                       Ins,
                                       Outs,
@@ -4224,7 +4224,7 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      --  We now build the connection map for this sequence.
+      --  We now build the connection map for this sequence
       declare
          use Vertex_Vectors;
          Combined_List : constant Vertex_Vectors.Vector :=
@@ -4275,7 +4275,7 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
-      --  We only need to check for uninitialized variables.
+      --  We only need to check for uninitialized variables
       Collect_Functions_And_Read_Locked_POs
         (Post,
          Functions_Called   => Funcs,
@@ -4319,13 +4319,13 @@ package body Flow.Control_Flow_Graph is
 
    begin
       if No (Expr) then
-         --  We have a return for a procedure.
+         --  We have a return for a procedure
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Make_Aux_Vertex_Attributes (E_Loc => N),
                      V);
       else
-         --  We have a function return.
+         --  We have a function return
          Collect_Functions_And_Read_Locked_POs
            (Expr,
             Functions_Called   => Funcs,
@@ -4352,12 +4352,12 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks (N).Insert (Expr);
       end if;
 
-      --  Control flows in, but we do not flow out again.
+      --  Control flows in, but we do not flow out again
       CM.Insert (Union_Id (N),
                   Graph_Connections'(Standard_Entry => V,
                                      Standard_Exits => Empty_Set));
 
-      --  Instead we link this vertex directly to the helper end vertex.
+      --  Instead we link this vertex directly to the helper end vertex
       Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Simple_Return_Statement;
 

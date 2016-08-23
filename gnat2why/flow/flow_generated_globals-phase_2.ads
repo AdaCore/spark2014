@@ -186,8 +186,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff subprogram E calls (directly or indirectly) itself,
    --  i.e. is a recursive subprogram.
 
-   function Calls_Current_Task (E : Entity_Id)
-                                return Boolean
+   function Calls_Current_Task (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
                (Ekind (E) = E_Entry or else
                 (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));

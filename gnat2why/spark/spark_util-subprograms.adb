@@ -612,7 +612,7 @@ package body SPARK_Util.Subprograms is
          --  For 1 the result is Ada/Interfaces/System or user-defined,
          --  Etc.
          --
-         --  Aspect Pure_Function is ment to improve performance when using
+         --  Aspect Pure_Function is meant to improve performance when using
          --  this function as an array.
 
          ----------------
