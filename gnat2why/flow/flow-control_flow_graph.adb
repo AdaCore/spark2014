@@ -2012,7 +2012,7 @@ package body Flow.Control_Flow_Graph is
             and then Present (Iteration_Scheme (N))
             and then Present (Loop_Parameter_Specification
                                 (Iteration_Scheme (N))));
-      --  Check if the given loop is a simlpe for loop.
+      --  Check if the given loop is a simple for loop
 
       function Get_Loop_Variable (N : Node_Id) return Entity_Id
       is (Defining_Identifier
@@ -2022,7 +2022,7 @@ package body Flow.Control_Flow_Graph is
 
       function Get_Loop_Name (N : Node_Id) return Entity_Id
       is (Entity (Identifier (N)));
-      --  Obtain the entity of loop's label.
+      --  Obtain the entity of loop's label
 
       function Get_Loop_Range (N : Node_Id) return Node_Id
       with Pre => Is_For_Loop (N);
@@ -2886,7 +2886,7 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end if;
 
-      --  If we need an init vertex, we add it before the loop itself.
+      --  If we need an init vertex, we add it before the loop itself
       if not Fully_Initialized.Is_Empty then
          declare
             V : Flow_Graphs.Vertex_Id;
