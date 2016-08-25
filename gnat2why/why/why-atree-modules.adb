@@ -107,6 +107,7 @@ package body Why.Atree.Modules is
                 (Ada_Node => E,
                  File     => No_Name,
                  Name     => NID (Full_Name (E)));
+            --  ??? why New_Mode is called with E and not E2?
          begin
             Entity_Modules.Insert (E2, Why_Node_Id (M));
             return M;
