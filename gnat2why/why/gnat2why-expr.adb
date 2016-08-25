@@ -13154,7 +13154,7 @@ package body Gnat2Why.Expr is
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
                       Variables => (1 => W_Index_Var),
-                      Labels    => Name_Id_Sets.Empty_Set,
+                      Labels    => Get_Counterexample_Labels (Quant_Var),
                       Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else

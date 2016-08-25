@@ -148,7 +148,7 @@ package body Why.Atree.Sprint is
    procedure Print_Try_Block (Node : W_Try_Block_Id);
    procedure Print_Type (Node : W_Type_Id);
    procedure Print_Type_Decl (Node : W_Type_Decl_Id);
-   procedure Print_Universal_Quantif (Node : W_Universal_Quantif_Id);
+   procedure Print_Universal_Quantif (Node   : W_Universal_Quantif_Id);
    procedure Print_While_Loop (Node : W_While_Loop_Id);
 
    procedure Print_Inner_Sequence (N : Why_Node_Id);
@@ -1912,16 +1912,31 @@ package body Why.Atree.Sprint is
    -- Print_Universal_Quantif --
    ------------------------------
 
-   procedure Print_Universal_Quantif (Node : W_Universal_Quantif_Id) is
+   procedure Print_Universal_Quantif (Node   : W_Universal_Quantif_Id) is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
+      Labels         : constant Name_Id_Set := Get_Labels (Node);
       Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId := Get_Triggers (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);
       Forall_Sequence : constant Boolean :=
         Get_Kind (+Pred) = W_Universal_Quantif;
+      use Why_Node_Lists;
    begin
       P (O, "(forall ");
       Print_List (+Variables, Separator => " ");
+
+      --  ??? Only temporary variables that do not come from source are
+      --  quantified under the same forall. Otherwise, there is only one
+      --  variable per forall.
+      --  The good method to do that would be to have labels associated to
+      --  variables but it might be too painful.
+
+      if Length (Get_List (+Variables)) <= 1
+        and Comes_From_Source (Get_Ada_Node (+Node))
+      then
+         P (O, " ");
+         P (O, Labels, As_String => True);
+      end if;
       P (O, " : ");
       Print_Node (+Var_Type);
 

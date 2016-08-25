@@ -396,9 +396,6 @@ package Why.Atree.Modules is
    Model_VC_Post     : Name_Id;
    GP_Already_Proved : Name_Id;
    Keep_On_Simp      : Name_Id;
-   --  Stop_Intro is used to indicate to transformation intro_premises in Why3
-   --  not to introduce past it.
-   Stop_Intro        : Name_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package

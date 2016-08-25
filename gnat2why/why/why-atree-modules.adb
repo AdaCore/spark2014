@@ -1343,7 +1343,6 @@ package body Why.Atree.Modules is
       Model_VC_Post     := NID (Model_VC_Post_Label);
       GP_Already_Proved := NID (GP_Already_Proved_Marker);
       Keep_On_Simp      := NID (Keep_On_Simp_Marker);
-      Stop_Intro        := NID (Stop_Intro_Marker);
    end Init_Labels;
 
    ----------------------

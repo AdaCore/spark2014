@@ -79,7 +79,7 @@ array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when X = (others => 0))
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 9 and X = (others => 0))
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: info: initialization of "X" proved
