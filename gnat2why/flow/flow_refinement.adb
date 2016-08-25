@@ -205,7 +205,11 @@ package body Flow_Refinement is
          end if;
       end if;
 
-      if Is_Private_Descendant (S.Ent) then
+      if Is_Private_Descendant (S.Ent)
+        and then Scope (S.Ent) /= Standard_Standard
+      then
+         --  The extra check for standard might seem pointless, but in
+         --  theory its possible to have a top-level private package.
          Enclosing_Scope.Part := Private_Part;
       end if;
 
