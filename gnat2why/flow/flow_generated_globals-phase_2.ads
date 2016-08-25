@@ -182,7 +182,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Is_Recursive (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Procedure | E_Function;
+               Ekind (E) in E_Entry | E_Procedure | E_Function;
    --  Returns True iff subprogram E calls (directly or indirectly) itself,
    --  i.e. is a recursive subprogram.
 

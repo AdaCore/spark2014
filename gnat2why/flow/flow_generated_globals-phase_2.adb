@@ -1302,7 +1302,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          begin
             for E of Marked_Entities loop
-               if Ekind (E) in E_Function | E_Procedure
+               if Ekind (E) in E_Function | E_Procedure | E_Entry
                  and then Entity_In_SPARK (E)
                  --  ??? perhaps also check Entity_Spec_In_SPARK (E)
                then
