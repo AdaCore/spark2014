@@ -165,12 +165,15 @@ package body Flow_Generated_Globals.Traversal is
                declare
                   E : constant Entity_Id := Unique_Defining_Entity (N);
                begin
-                  --  Skip bodies of generic packages and subprograms
+                  --  Skip bodies of generic packages and subprograms; also
+                  --  subprograms that front-end generates to analyze default
+                  --  expressions, see Mark_Subprogram_Body for details.
                   if (Nkind (N) = N_Package_Body and then
                         Ekind (E) = E_Generic_Package)
                     or else
                       (Nkind (N) = N_Subprogram_Body and then
-                       Is_Generic_Subprogram (E))
+                       (Is_Generic_Subprogram (E) or else
+                        (Is_Eliminated (E) and not Comes_From_Source (E))))
                   then
                      return;
                   end if;
