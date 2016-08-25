@@ -44,12 +44,13 @@ setup:
 	    -e "s^@PREFIX@^$(prefix)^" \
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
-	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl sinfo.ads treeprs.adt nmake.adt`; \
+	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl sinfo.ads treeprs.adt nmake.adt xsnamest.adb`; \
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
 	done
-	cd obj-tools && gnatmake -q xtreeprs xnmake && \
-	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj
+	cd obj-tools && gnatmake -q xtreeprs xnmake xsnamest && \
+	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj && \
+	./xsnamest && mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb
 ifeq ($(USE_LN),true)
 	cd obj && ln -sf ../gnat_src/*.ad[sb] .
 else
@@ -58,7 +59,6 @@ endif
 	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
 	  ada.ads gnat.ads interfac.ads && \
 	$(RM) `ls *.ad[sb] | grep '^.-'` && \
-	$(RM) `cat ../gnat_src/MANIFEST.gnat_util` && \
 	mv -f ada_get_targ.adb get_targ.adb
 
 build: setup force

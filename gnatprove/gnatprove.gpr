@@ -1,5 +1,5 @@
 with "gnatcoll";
-with "gnat_util";
+with "gnat_minimal";
 
 project GNATprove is
 
