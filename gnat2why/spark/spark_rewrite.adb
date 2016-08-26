@@ -47,7 +47,8 @@ package body SPARK_Rewrite is
    --  Replace identifiers by their compile-time known constant value when
    --  possible.
 
-   procedure Rewrite_Subprogram_Instantiation (N : Node_Id);
+   procedure Rewrite_Subprogram_Instantiation (N : Node_Id)
+   with Pre => Nkind (N) in N_Subprogram_Instantiation;
    --  Replace names in instances of generic subprograms with names of
    --  the original subprograms; we prefer the original names when outputting
    --  error messages and generating Why code.
@@ -202,44 +203,48 @@ package body SPARK_Rewrite is
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id) is
 
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
-      Wrapper_Package_Spec_Decls : constant List_Id :=
-        Visible_Declarations (Specification (Instance_Spec (N)));
+      --  ??? how about homonyms?
 
-      function First_Subprogram_Declaration return Node_Id with
-        Post => Present (First_Subprogram_Declaration'Result) and then
-                Nkind (First_Subprogram_Declaration'Result) =
-                  N_Subprogram_Declaration;
-      --  Return first subprogram declaration in a list of visible declarations
-      --  of the wrapper package specification.
+      Wrapper_Package : constant Entity_Id :=
+        Defining_Entity (Instance_Spec (N));
 
-      ----------------------------------
-      -- First_Subprogram_Declaration --
-      ----------------------------------
+      pragma Assert (Ekind (Wrapper_Package) = E_Package);
 
-      function First_Subprogram_Declaration return Node_Id is
-         First_Subp_Decl : Node_Id := First (Wrapper_Package_Spec_Decls);
+      function Wrapped_Instance return Entity_Id
+      with Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
+      --  Returns entity of the wrapped instance
+
+      ----------------------
+      -- Wrapped_Instance --
+      ----------------------
+
+      function Wrapped_Instance return Entity_Id is
+         E : Entity_Id;
+
       begin
-
          --  The first/next entity chain of a generic subprogram instance
          --  contains all generic formal parameters, followed by the
          --  subprogram declaration. Go directly to that declaration by
          --  skipping the formal part.
+         E := First_Entity (Wrapper_Package);
 
-         while Nkind (First_Subp_Decl) /= N_Subprogram_Declaration
          loop
-            Next (First_Subp_Decl);
+            pragma Loop_Invariant (Present (E));
+
+            if Is_Subprogram (E)
+              and then not Is_Generic_Actual_Subprogram (E)
+            then
+               return E;
+            end if;
+
+            Next_Entity (E);
          end loop;
-
-         return First_Subp_Decl;
-      end First_Subprogram_Declaration;
-
-      Internal_Instance : constant Node_Id := First_Subprogram_Declaration;
+      end Wrapped_Instance;
 
    --  Start of processing for Rewrite_Subprogram_Instantiation
 
    begin
-      Set_Chars (Defining_Unit_Name (Specification (Internal_Instance)),
-                 Orig_Name_Id);
+      Set_Chars (Wrapped_Instance, Orig_Name_Id);
    end Rewrite_Subprogram_Instantiation;
 
    ------------------------------
