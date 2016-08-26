@@ -122,7 +122,7 @@ package body SPARK_Register is
          end if;
 
          --  Explicitly traverse procedure calls rewritten as null statements
-         if Nkind (N) = N_Null_Statement
+         if Nkind (N) in N_Null_Statement | N_Block_Statement
            and then Nkind (Original_Node (N)) = N_Procedure_Call_Statement
          then
             Process_Tree (Original_Node (N));
