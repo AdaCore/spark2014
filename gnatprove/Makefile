@@ -6,15 +6,14 @@ setup:
 	   cp ../gnat2why/gnat_src/$$f obj; \
 	done
 
-build: force
+build:
 	gprbuild -j0 -P gnatprove.gpr
 
 PROD=-XBuild=Production
 
-nightly: force
+nightly:
 	gprbuild -j0 -P gnatprove.gpr $(PROD)
 
-force:
-
 clean:
+	gprclean -P gnatprove.gpr -r
 	rm -rf obj
