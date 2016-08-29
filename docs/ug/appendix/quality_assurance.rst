@@ -142,7 +142,7 @@ CVC4
 
 History: CVC4 is the fourth in the Cooperating Validity Checker family of tools, which dates back to `1996 <http://cvc4.cs.nyu.edu/web/#History_of_CVC>`_, but does not directly incorporate code from any previous version. CVC4 development started in 2012.
 
-Track record: Very good results in various `SMT competitions <http://smtcomp.sourceforge.net>`_.
+Track record: Very good results in various `SMT competitions <http://smtcomp.sourceforge.net>`_. Used in `TNO tool <http://torxakis.esi.nl/>`_.
 
 Relationship with AdaCore/Altran: AdaCore and Altran have provided bug reports, feature requests and small fixes to the CVC4 team, in particular related to a deterministic resource limiting switch.
 
