@@ -1925,12 +1925,12 @@ package body Why.Atree.Sprint is
       P (O, "(forall ");
       Print_List (+Variables, Separator => " ");
 
-      --  Only temporary variables that do not come from source are quantified
-      --  under the same forall. Otherwise, there is only one variable per
-      --  forall.
-      --  The good method to do that would be to have labels associated to
-      --  variables but it might be too painful.
-
+      --  Labels generated for foralls binding several variables are always
+      --  faulty because the label is on the forall not on the variables. If we
+      --  have several variables, they were introduced by gnat2why and do not
+      --  come from source, so we dont want to label them for counterexamples.
+      --  Even if one of the variables in question is from source we have no
+      --  way to know on which variable is the label.
       if Length (Get_List (+Variables)) <= 1
         and Comes_From_Source (Get_Ada_Node (+Node))
       then
