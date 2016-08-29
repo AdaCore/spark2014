@@ -1925,9 +1925,9 @@ package body Why.Atree.Sprint is
       P (O, "(forall ");
       Print_List (+Variables, Separator => " ");
 
-      --  ??? Only temporary variables that do not come from source are
-      --  quantified under the same forall. Otherwise, there is only one
-      --  variable per forall.
+      --  Only temporary variables that do not come from source are quantified
+      --  under the same forall. Otherwise, there is only one variable per
+      --  forall.
       --  The good method to do that would be to have labels associated to
       --  variables but it might be too painful.
 
