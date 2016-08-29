@@ -35,7 +35,7 @@ project GNATprove is
       case Build is
          when "Debug" =>
             for Default_Switches ("Ada") use
-               Common_Switches & ("-O0", "-gnata", "-gnatwae", "-gnatVa");
+               Common_Switches & ("-Og", "-gnata", "-gnatwae", "-gnatVa");
          when "Production" =>
             for Default_Switches ("Ada") use
                Common_Switches & ("-O2", "-gnatn");
