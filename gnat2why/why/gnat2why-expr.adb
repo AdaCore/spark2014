@@ -9739,107 +9739,124 @@ package body Gnat2Why.Expr is
          =>
             R := Transform_Raise (Decl);
 
-         when N_Package_Declaration =>
-            --  Assume dynamic property of local variables
+         when N_Package_Body | N_Package_Declaration =>
+
+            --  Assume dynamic property of local variables.
+            --  This should only be done when the nested package has been
+            --  elaborated.
             --  ??? What about local variables of nested packages?
 
             declare
                E : constant Entity_Id := Unique_Defining_Entity (Decl);
-
-               Init_Map : constant Dependency_Maps.Map :=
-                 Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
-                                    E,
-                                    Get_Flow_Scope (E));
-
-               Vars : Name_Sets.Set := GG_Get_Local_Variables (E);
-               --  Local variables declared in E and not initialized by E
-
-               procedure Assume_Declaration
-                 (Obj         : Entity_Name;
-                  Initialized : Boolean);
-
-               ------------------------
-               -- Assume_Declaration --
-               ------------------------
-
-               procedure Assume_Declaration
-                 (Obj         : Entity_Name;
-                  Initialized : Boolean)
-               is
-                  Entity : constant Entity_Id := Find_Entity (Obj);
-
-               begin
-                  if Present (Entity)
-                    and then Nkind (Entity) in N_Entity
-                    and then (Is_Object (Entity)
-                              or else Is_Named_Number (Entity))
-                    and then Entity_In_SPARK (Entity)
-                    and then Ada_Ent_To_Why.Has_Element
-                      (Symbol_Table, Entity)
-                  then
-                     Assume_Declaration_Of_Entity
-                       (E             => Entity,
-                        Params        => Body_Params,
-                        Initialized   => Initialized,
-                        Top_Predicate => True,
-                        Context       => R);
-                  end if;
-               end Assume_Declaration;
-
             begin
-               --  First, get initialized variables for Initializes aspect
 
-               for Cu in Init_Map.Iterate loop
-                  for X of Expand_Abstract_State (Dependency_Maps.Key (Cu),
-                                                  Erase_Constants => False)
-                  loop
-                     declare
-                        E_Name : constant Entity_Name :=
-                          (case X.Kind is
-                              when Direct_Mapping | Record_Field =>
-                                 To_Entity_Name (X.Node),
-                              when Magic_String =>
-                                 X.Name,
-                              when others =>
-                                 raise Program_Error);
+               if not Is_Generic_Unit (E)
+                 and then (Nkind (Decl) = N_Package_Body
+                           or else No (Package_Body (E)))
+               then
+                  declare
+                     Init_Map : constant Dependency_Maps.Map :=
+                       Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
+                                          E,
+                                          Get_Flow_Scope (E));
+
+                     Vars : Name_Sets.Set := GG_Get_Local_Variables (E);
+                     --  Local variables declared in E and not initialized by E
+
+                     procedure Assume_Declaration
+                       (Obj         : Entity_Name;
+                        Initialized : Boolean);
+                     --  Assume that the entity Obj has been declared.
+                     --  @param Obj entity we consider
+                     --  @param Initialized True if we are sure Obj has been
+                     --         initialized at declaration.
+
+                     ------------------------
+                     -- Assume_Declaration --
+                     ------------------------
+
+                     procedure Assume_Declaration
+                       (Obj         : Entity_Name;
+                        Initialized : Boolean)
+                     is
+                        Entity : constant Entity_Id := Find_Entity (Obj);
 
                      begin
-                        Assume_Declaration (E_Name, Initialized => True);
+                        if Present (Entity)
+                          and then Nkind (Entity) in N_Entity
+                          and then (Is_Object (Entity)
+                                    or else Is_Named_Number (Entity))
+                          and then Entity_In_SPARK (Entity)
+                          and then Ada_Ent_To_Why.Has_Element
+                            (Symbol_Table, Entity)
+                        then
+                           Assume_Declaration_Of_Entity
+                             (E             => Entity,
+                              Params        => Body_Params,
+                              Initialized   => Initialized,
+                              Top_Predicate => True,
+                              Context       => R);
+                        end if;
+                     end Assume_Declaration;
 
-                        --  Exclude it from Var_Set so that we do not declare
-                        --  it again.
-
-                        Vars.Exclude (E_Name);
-                     end;
-                  end loop;
-               end loop;
-
-               --  Then also assume dynamic property of unitialized variables
-
-               for Var of Vars loop
-                  Assume_Declaration (Var, Initialized => False);
-               end loop;
-            end;
-
-            --  Assume initial condition
-
-            declare
-               Init_Cond : constant Node_Id :=
-                 Get_Pragma (Unique_Defining_Entity (Decl),
-                             Pragma_Initial_Condition);
-
-            begin
-               if Present (Init_Cond) then
-                  declare
-                     Expr : constant Node_Id :=
-                       Expression (First (Pragma_Argument_Associations
-                                   (Init_Cond)));
                   begin
-                     R := Sequence
-                       (R,
-                        New_Assume_Statement
-                          (Pred => +Transform_Expr
-                               (Expr, EW_Bool_Type, EW_Pred, Body_Params)));
+                     --  First, get initialized variables for Initializes
+                     --  aspect.
+
+                     for Cu in Init_Map.Iterate loop
+                        for X of Expand_Abstract_State
+                          (Dependency_Maps.Key (Cu), Erase_Constants => False)
+                        loop
+                           declare
+                              E_Name : constant Entity_Name :=
+                                (case X.Kind is
+                                    when Direct_Mapping | Record_Field =>
+                                       To_Entity_Name (X.Node),
+                                    when Magic_String =>
+                                       X.Name,
+                                    when others =>
+                                       raise Program_Error);
+
+                           begin
+                              Assume_Declaration (E_Name, Initialized => True);
+
+                              --  Exclude it from Var_Set so that we do not
+                              --  declare it again.
+
+                              Vars.Exclude (E_Name);
+                           end;
+                        end loop;
+                     end loop;
+
+                     --  Then also assume dynamic property of uninitialized
+                     --  variables.
+
+                     for Var of Vars loop
+                        Assume_Declaration (Var, Initialized => False);
+                     end loop;
+                  end;
+
+                  --  Assume initial condition
+
+                  declare
+                     Init_Cond : constant Node_Id :=
+                       Get_Pragma (E, Pragma_Initial_Condition);
+
+                  begin
+                     if Present (Init_Cond) then
+                        declare
+                           Expr : constant Node_Id :=
+                             Expression (First (Pragma_Argument_Associations
+                                         (Init_Cond)));
+                        begin
+                           R := Sequence
+                             (R,
+                              New_Assume_Statement
+                                (Pred => +Transform_Expr
+                                     (Expr, EW_Bool_Type, EW_Pred,
+                                      Body_Params)));
+                        end;
+                     end if;
                   end;
                end if;
             end;

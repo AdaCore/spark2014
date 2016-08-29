@@ -1234,26 +1234,6 @@ package body Flow.Analysis is
          V : Flow_Graphs.Vertex_Id)
       is
 
-         function Get_Enclosing_Comp_Unit (Start : Node_Id) return Node_Id;
-         --  Goes up the tree and returns the first N_Compilation_Unit
-         --  that it finds.
-
-         -----------------------------
-         -- Get_Enclosing_Comp_Unit --
-         -----------------------------
-
-         function Get_Enclosing_Comp_Unit (Start : Node_Id) return Node_Id is
-            Current_Unit : Node_Id := Start;
-         begin
-            while Present (Current_Unit)
-              and then Nkind (Current_Unit) /= N_Compilation_Unit
-            loop
-               Current_Unit := Parent (Current_Unit);
-            end loop;
-
-            return Current_Unit;
-         end Get_Enclosing_Comp_Unit;
-
          N     : constant Node_Id := (if F.Kind = Direct_Mapping
                                       then Get_Direct_Mapping_Id (F)
                                       else Empty);
@@ -1291,9 +1271,9 @@ package body Flow.Analysis is
          then
             declare
                Current_Unit : constant Node_Id :=
-                 Get_Enclosing_Comp_Unit (FA.Spec_Entity);
+                 Enclosing_Comp_Unit_Node (FA.Spec_Entity);
                Other_Unit   : constant Node_Id :=
-                 Get_Enclosing_Comp_Unit (Scope (N));
+                 Enclosing_Comp_Unit_Node (Scope (N));
 
                Found        : Boolean := False;
                --  Found will become True if we find a pragma Elaborate[_All]
@@ -1333,7 +1313,8 @@ package body Flow.Analysis is
                if not Found
                  and then FA.Analyzed_Entity /= FA.Spec_Entity
                then
-                  Check_Clauses (Get_Enclosing_Comp_Unit (FA.Analyzed_Entity));
+                  Check_Clauses
+                    (Enclosing_Comp_Unit_Node (FA.Analyzed_Entity));
                end if;
 
                if not Found then

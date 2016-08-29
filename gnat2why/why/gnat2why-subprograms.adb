@@ -170,6 +170,17 @@ package body Gnat2Why.Subprograms is
    --  The array is a singleton of unit type if E has no parameters and no
    --  effects.
 
+   function Assume_Initial_Condition_Of_Withed_Units
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   with Pre => Ekind (E) in Subprogram_Kind | E_Package
+     and then Is_Compilation_Unit (E);
+   --  Assume the Initial_Condition of every unit withed by a compilation unit.
+   --  @param E entity for a compilation unit
+   --  @param Params the transformation parameters
+   --  @result a sequence of assumptions, one for each withed unit which has an
+   --          Initial_Condition.
+
    procedure Assume_Value_Of_Constants
      (Why_Expr : in out W_Prog_Id;
       Scope    : Entity_Id;
@@ -264,6 +275,59 @@ package body Gnat2Why.Subprograms is
          Add_Effect_Import (T, To_Name (N));
       end loop;
    end Add_Dependencies_For_Effects;
+
+   ----------------------------------------------
+   -- Assume_Initial_Condition_Of_Withed_Units --
+   ----------------------------------------------
+
+   function Assume_Initial_Condition_Of_Withed_Units
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      CU           : constant Node_Id := Enclosing_Comp_Unit_Node (E);
+      Context_Item : Node_Id;
+      Assumption   : W_Prog_Id := +Void;
+
+   begin
+      pragma Assert (Nkind (CU) = N_Compilation_Unit);
+
+      --  For each withed unit which is a package declaration, assume its
+      --  Initial_Condition
+
+      Context_Item := First (Context_Items (CU));
+      while Present (Context_Item) loop
+         if Nkind (Context_Item) = N_With_Clause
+           and then not Limited_Present (Context_Item)
+           and then Nkind (Unit (Library_Unit (Context_Item)))
+           = N_Package_Declaration
+         then
+            declare
+               Package_E : constant Entity_Id :=
+                 Unique_Defining_Entity (Unit (Library_Unit (Context_Item)));
+               Init_Cond : constant Node_Id :=
+                 Get_Pragma (Package_E, Pragma_Initial_Condition);
+            begin
+               if Present (Init_Cond) then
+                  declare
+                     Expr : constant Node_Id :=
+                       Expression
+                         (First (Pragma_Argument_Associations (Init_Cond)));
+                  begin
+                     Assumption :=
+                       Sequence
+                         (Assumption,
+                          New_Assume_Statement
+                            (Pred => +Transform_Expr
+                               (Expr, EW_Bool_Type, EW_Pred, Params)));
+                  end;
+               end if;
+            end;
+         end if;
+         Context_Item := Next (Context_Item);
+      end loop;
+
+      return Assumption;
+   end Assume_Initial_Condition_Of_Withed_Units;
 
    -------------------------------
    -- Assume_Value_Of_Constants --
@@ -2301,8 +2365,22 @@ package body Gnat2Why.Subprograms is
          Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
 
+      --  Assume initial conditions of withed units.
+      --  ??? Currently, we only assume initial conditions of withed units
+      --  on compilation units though it is also valid for library level
+      --  packages. This is because it does not seem relevant for nested
+      --  packages. It may be interesting to rather inline them.
+
+      if Is_Compilation_Unit (E) then
+         Params.Phase := Generate_VCs_For_Contract;
+         Why_Body := Sequence
+           (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
+      end if;
+
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
+
+      Params.Phase := Generate_VCs_For_Contract;
 
       Why_Body :=
         Sequence
@@ -2578,6 +2656,10 @@ package body Gnat2Why.Subprograms is
       --  for which we should not assume that the predicate holds for checking
       --  the absence of RTE in the predicate itself.
 
+      function Assume_Init_Cond_Of_Withed_Units return W_Prog_Id;
+      --  For compilation units, generate assumptions for Initial conditions of
+      --  withed units
+
       function Comp_Decl_At_Subp_Start return W_Prog_Id;
       --  The body of the subprogram may contain declarations that are in fact
       --  essential to prove absence of RTE in the pre, e.g. compiler-generated
@@ -2665,6 +2747,29 @@ package body Gnat2Why.Subprograms is
                     E              => E,
                     Pred_Fun_Param => Pred_Fun_Param)));
       end Assume_For_Input;
+
+      --------------------------------------
+      -- Assume_Init_Cond_Of_Withed_Units --
+      --------------------------------------
+
+      function Assume_Init_Cond_Of_Withed_Units return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+      begin
+         if Is_Compilation_Unit (E) then
+            return
+              Sequence
+                (New_Comment
+                   (Comment =>
+                          NID ("Assume Initial_Condition of withed units")),
+                 Assume_Initial_Condition_Of_Withed_Units (E, Params));
+         else
+            return +Void;
+         end if;
+      end Assume_Init_Cond_Of_Withed_Units;
 
       -----------------------------
       -- Assume_Or_Assert_Of_Pre --
@@ -3174,6 +3279,7 @@ package body Gnat2Why.Subprograms is
 
       Prog := Sequence
         ((Assume_For_Input,
+          Assume_Init_Cond_Of_Withed_Units,
           Comp_Decl_At_Subp_Start,
           RTE_Of_Pre,
           Assume_Or_Assert_Of_Pre,

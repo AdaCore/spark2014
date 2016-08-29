@@ -52,7 +52,7 @@ initializes_illegal_2.ads:7:27: medium: initialization of Initializes_Illegal_2.
 initializes_illegal_2.ads:9:27: medium: initialization of Y must not depend on X (SPARK RM 7.1.5(11))
 initializes_illegal_2.ads:13:04: info: initialization of "X" proved
 initializes_illegal_2.ads:14:04: info: initialization of "Y" proved
-initializes_illegal_2.ads:14:28: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
+initializes_illegal_2.ads:14:28: info: overflow check proved (CVC4: 1 VC)
 initializes_illegal_2.ads:14:30: info: initialization of "X" proved
 initializes_illegal_3.ads:5:35: high: Z must be initialized at elaboration
 initializes_illegal_3.ads:8:04: info: initialization of "X" proved
