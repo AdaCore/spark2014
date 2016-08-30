@@ -2170,7 +2170,10 @@ package body Flow_Utility is
                             Depends              => Depends,
                             Use_Computed_Globals => Use_Computed_Globals,
                             Callsite             => Callsite);
+
                pragma Assert (Depends.Length in 1 .. 2);
+               --  For functions Depends always mentions the 'Result
+               --  (user-written or synthesized) and possibly also null.
 
                Flow_Id_Sets.Move
                  (Target => Used_Reads,
