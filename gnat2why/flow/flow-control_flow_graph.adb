@@ -3206,7 +3206,7 @@ package body Flow.Control_Flow_Graph is
          if not In_Generic_Actual (E)
            and then (Present (Expr) or else Is_Imported (E))
          then
-            FA.Local_Constants.Include (E);
+            FA.Local_Constants.Insert (E);
 
          else
             --  This is a deferred constant or a generic actual. We ignore it.
