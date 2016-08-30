@@ -2264,16 +2264,18 @@ package body Flow_Utility is
                            declare
                               Obj_Decl : constant Node_Id :=
                                 Parent (Entity (N));
-                              Expr     : constant Node_Id :=
-                                Expression (Obj_Decl);
-                           begin
+
                               pragma Assert
-                                (Nkind (Obj_Decl) =
-                                   N_Object_Declaration,
+                                (Nkind (Obj_Decl) = N_Object_Declaration,
                                  "Bad parent of constant entity");
+
+                              Expr : constant Node_Id := Expression (Obj_Decl);
+
                               pragma Assert
                                 (Present (Expr),
                                  "Constant has no expression");
+
+                           begin
                               VS.Union (Recurse_On (Expr));
                            end;
 
