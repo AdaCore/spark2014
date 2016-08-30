@@ -2311,20 +2311,15 @@ package body Flow_Utility is
                               E := Discriminal_Link (E);
                            end if;
 
-                           case Ekind (E) is
-                              when E_Discriminant | E_Component =>
-                                 if Ekind (Sinfo.Scope (E)) not in
+                           --  Ignore discriminants and components unless
+                           --  they come from task or protected types.
+                           if Ekind (E) in E_Discriminant | E_Component
+                              and then
+                                Ekind (Sinfo.Scope (E)) not in
                                    E_Protected_Type | E_Task_Type
-                                 then
-                                    --  We include stuff from tasks and
-                                    --  POs, but otherwise we need to
-                                    --  ignore discriminants and
-                                    --  components.
-                                    return OK;
-                                 end if;
-                              when others =>
-                                 null;
-                           end case;
+                           then
+                              return OK;
+                           end if;
 
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -2378,13 +2373,12 @@ package body Flow_Utility is
                            E := Discriminal_Link (E);
                         end if;
 
+                        --  Ignore discriminants and components unless they
+                        --  come from task or protected types.
                         if Ekind (E) in E_Discriminant | E_Component
                           and then Ekind (Sinfo.Scope (E)) not in
                             E_Protected_Type | E_Task_Type
                         then
-                           --  We include stuff from tasks and POs, but
-                           --  otherwise we need to ignore discriminants
-                           --  and components.
                            return OK;
                         end if;
 
