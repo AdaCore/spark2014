@@ -35,6 +35,7 @@ with Opt;
 with SPARK_Definition;
 with Stringt;
 with System;
+with Types; use Types;
 
 package body Back_End is
 
@@ -45,6 +46,12 @@ package body Back_End is
       Copyright_Years    => "2010-2016",
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
+
+   function To_Front_End_Warning_Mode
+     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+      return Opt.Warning_Mode_Type;
+   --  Transform warning mode type of gnat2why_args to the warning mode type of
+   --  the front-end.
 
    -------------------
    -- Call_Back_End --
@@ -83,7 +90,8 @@ package body Back_End is
       Errout.Reset_Warnings;
 
       if not Gnat2Why_Args.Global_Gen_Mode then
-         Opt.Warning_Mode := Gnat2Why_Args.Warning_Mode;
+         Opt.Warning_Mode :=
+           To_Front_End_Warning_Mode (Gnat2Why_Args.Warning_Mode);
       end if;
 
       GNAT2Why_BE.Call_Back_End;
@@ -152,7 +160,9 @@ package body Back_End is
 
       --  Read extra options for gnat2why
 
-      Gnat2Why_Args.Init;
+      Gnat2Why_Args.Init
+        (if Opt.SPARK_Switches_File_Name = null then ""
+         else Opt.SPARK_Switches_File_Name.all);
 
       --  gnat2why is run in two main modes:
       --    Global_Gen_Mode = True for generating ALI files with effects.
@@ -178,5 +188,21 @@ package body Back_End is
          Opt.Disable_ALI_File := True;
       end if;
    end Scan_Compiler_Arguments;
+
+   -------------------------------
+   -- To_Front_End_Warning_Mode --
+   -------------------------------
+
+   function To_Front_End_Warning_Mode
+     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+      return Opt.Warning_Mode_Type
+   is
+   begin
+      return
+        (case M is
+            when Gnat2Why_Args.SW_Suppress       => Opt.Suppress,
+            when Gnat2Why_Args.SW_Normal         => Opt.Normal,
+            when Gnat2Why_Args.SW_Treat_As_Error => Opt.Treat_As_Error);
+   end To_Front_End_Warning_Mode;
 
 end Back_End;

@@ -41,7 +41,6 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with Types;                 use Types;
 
 package VC_Kinds is
 
@@ -287,7 +286,7 @@ package VC_Kinds is
                                          "="          => "=");
 
    package Cntexample_Line_Maps is new
-     Ada.Containers.Ordered_Maps (Key_Type     => Logical_Line_Number,
+     Ada.Containers.Ordered_Maps (Key_Type     => Natural,
                                   Element_Type => Cntexample_Elt_Lists.List,
                                   "<"          => "<",
                                   "="          => Cntexample_Elt_Lists."=");

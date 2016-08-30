@@ -1233,20 +1233,20 @@ ASCII.LF;
       ----------------------
 
       procedure Set_Warning_Mode is
+         Warn_Switch : String renames CL_Switches.Warnings.all;
       begin
-         Warning_Mode := Opt.Normal;
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
-         if CL_Switches.Warnings.all = "" then
-            null;
-         elsif CL_Switches.Warnings.all = "off" then
-            Warning_Mode := Opt.Suppress;
-         elsif CL_Switches.Warnings.all = "error" then
-            Warning_Mode := Opt.Treat_As_Error;
-         elsif CL_Switches.Warnings.all = "on"
-           or else CL_Switches.Warnings.all = "continue"
+         if Warn_Switch = "" then
+            Warning_Mode := Gnat2Why_Args.SW_Normal;
+         elsif Warn_Switch = "off" then
+            Warning_Mode := Gnat2Why_Args.SW_Suppress;
+         elsif Warn_Switch = "error" then
+            Warning_Mode := Gnat2Why_Args.SW_Treat_As_Error;
+         elsif Warn_Switch = "on"
+           or else Warn_Switch = "continue"
          then
-            Warning_Mode := Opt.Normal;
+            Warning_Mode := Gnat2Why_Args.SW_Normal;
          else
 
             Abort_Msg (Config,

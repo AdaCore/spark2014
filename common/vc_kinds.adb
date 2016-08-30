@@ -141,7 +141,7 @@ package body VC_Kinds is
       begin
          if Name /= "vc_line" then
             Res.Other_Lines.Insert
-              (Logical_Line_Number'Value (Name), From_JSON (Value));
+              (Natural'Value (Name), From_JSON (Value));
          end if;
       end Process_Entry;
 
@@ -227,14 +227,14 @@ package body VC_Kinds is
    function To_JSON (L : Cntexample_Lines) return JSON_Value is
       Obj : constant JSON_Value := Create_Object;
 
-      function Line_Number_Image (L : Logical_Line_Number) return String;
+      function Line_Number_Image (L : Natural) return String;
 
       -----------------------
       -- Line_Number_Image --
       -----------------------
 
-      function Line_Number_Image (L : Logical_Line_Number) return String is
-         S : constant String := Logical_Line_Number'Image (L);
+      function Line_Number_Image (L : Natural) return String is
+         S : constant String := Natural'Image (L);
       begin
          return S (S'First + 1 .. S'Last);
       end Line_Number_Image;

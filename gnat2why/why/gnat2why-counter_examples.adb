@@ -49,7 +49,7 @@ package body Gnat2Why.Counter_Examples is
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
       VC_File : String;
-      VC_Line : Logical_Line_Number)
+      VC_Line : Natural)
       return Cntexample_File_Maps.Map;
    --  Remap information related to the construct that triggers VC to the
    --  location of this construct.
@@ -64,7 +64,7 @@ package body Gnat2Why.Counter_Examples is
    function Is_Uninitialized
      (Element_Decl : Entity_Id;
       Element_File : String;
-      Element_Line : Logical_Line_Number)
+      Element_Line : Natural)
       return Boolean;
    --  Return True if the counterexample element
    --  with given declaration at given position
@@ -127,7 +127,7 @@ package body Gnat2Why.Counter_Examples is
 
    procedure Build_Variables_Info
      (File             : String;
-      Line             : Logical_Line_Number;
+      Line             : Natural;
       Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
       Variables        : in out Variables_Info);
    --  Build a structure holding the informations associated to
@@ -494,7 +494,7 @@ package body Gnat2Why.Counter_Examples is
 
    procedure Build_Variables_Info
      (File             : String;
-      Line             : Logical_Line_Number;
+      Line             : Natural;
       Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
       Variables        : in out Variables_Info)
    is
@@ -752,7 +752,7 @@ package body Gnat2Why.Counter_Examples is
       procedure Create_Pretty_Line
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
          File                : String;
-         Line                : Logical_Line_Number;
+         Line                : Natural;
          Line_Cntexmp        : Cntexample_Elt_Lists.List);
       --  Pretty prints counterexample model elements at a single source
       --  code location (line).
@@ -764,7 +764,7 @@ package body Gnat2Why.Counter_Examples is
       procedure Create_Pretty_Line
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
          File                : String;
-         Line                : Logical_Line_Number;
+         Line                : Natural;
          Line_Cntexmp        : Cntexample_Elt_Lists.List)
       is
          use CNT_Elements;
@@ -794,7 +794,7 @@ package body Gnat2Why.Counter_Examples is
       Line : constant Logical_Line_Number :=
         Get_Logical_Line_Number (VC_Loc);
       Remapped_Cntexmp : constant Cntexample_File_Maps.Map :=
-        Remap_VC_Info (Cntexmp, File, Line);
+        Remap_VC_Info (Cntexmp, File, Natural (Line));
       Pretty_Cntexmp : Cntexample_File_Maps.Map :=
         Cntexample_File_Maps.Empty_Map;
 
@@ -877,7 +877,7 @@ package body Gnat2Why.Counter_Examples is
             Line_Map : Cntexample_Line_Maps.Map renames
               Cntexample_File_Maps.Element (File_Cur).Other_Lines;
             Line_Cur : constant Cntexample_Line_Maps.Cursor :=
-              Line_Map.Find (Line);
+              Line_Map.Find (Natural (Line));
          begin
             if Cntexample_Line_Maps.Has_Element (Line_Cur) then
                Cntexmp_Line := Cntexample_Line_Maps.Element (Line_Cur);
@@ -905,7 +905,7 @@ package body Gnat2Why.Counter_Examples is
    function Is_Uninitialized
      (Element_Decl : Entity_Id;
       Element_File : String;
-      Element_Line : Logical_Line_Number)
+      Element_Line : Natural)
       return Boolean
    is
    begin
@@ -919,8 +919,8 @@ package body Gnat2Why.Counter_Examples is
       if File_Name
         (Sloc (Element_Decl)) = Element_File
         and then
-          Get_Logical_Line_Number
-            (Sloc (Element_Decl)) = Element_Line
+          Natural
+            (Get_Logical_Line_Number (Sloc (Element_Decl))) = Element_Line
       then
          case Nkind (Parent (Element_Decl)) is
             --  Uninitialized variable
@@ -989,7 +989,7 @@ package body Gnat2Why.Counter_Examples is
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
       VC_File : String;
-      VC_Line : Logical_Line_Number)
+      VC_Line : Natural)
       return Cntexample_File_Maps.Map
    is
 

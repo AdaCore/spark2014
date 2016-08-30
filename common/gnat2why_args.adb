@@ -27,7 +27,6 @@ with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
-with Types;                     use Types;
 
 package body Gnat2Why_Args is
 
@@ -64,7 +63,7 @@ package body Gnat2Why_Args is
    -- Init --
    ----------
 
-   procedure Init is
+   procedure Init (Filename : String) is
 
       function Get_Opt_Bool (V : JSON_Value; Field : String) return Boolean;
       --  return the boolean value of the Field [Field] of the JSON record [V].
@@ -86,10 +85,10 @@ package body Gnat2Why_Args is
    --  Start of processing for Init
 
    begin
-      if Opt.SPARK_Switches_File_Name = null then
+      if Filename = "" then
          return;
       end if;
-      Ada.Text_IO.Open (File, In_File, Opt.SPARK_Switches_File_Name.all);
+      Ada.Text_IO.Open (File, In_File, Filename);
 
       while not End_Of_File (File) loop
          Append (File_Text, Get_Line (File));
@@ -111,7 +110,7 @@ package body Gnat2Why_Args is
       end if;
       if Has_Field (V, Warning_Mode_Name) then
          Warning_Mode :=
-           Opt.Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
+           SPARK_Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
       end if;
       if Has_Field (V, Limit_Subp_Name) then
          Limit_Subp := Get (Get (V, Limit_Subp_Name));
@@ -180,7 +179,7 @@ package body Gnat2Why_Args is
       if not Global_Gen_Mode then
          Set_Field (Obj,
                     Warning_Mode_Name,
-                    Opt.Warning_Mode_Type'Image (Warning_Mode));
+                    SPARK_Warning_Mode_Type'Image (Warning_Mode));
       end if;
 
       Set_Field (Obj, Global_Gen_Mode_Name, Global_Gen_Mode);

@@ -1,6 +1,0 @@
-project GNAT_Minimal is
-
-   for Source_Dirs use ("obj");
-   for Source_List_File use "MANIFEST.gnat_minimal";
-
-end GNAT_Minimal;

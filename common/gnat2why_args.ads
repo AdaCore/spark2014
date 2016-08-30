@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Opt;
 with String_Utils;          use String_Utils;
 
 package Gnat2Why_Args is
@@ -56,10 +55,13 @@ package Gnat2Why_Args is
    -- Options defined in this package --
    -------------------------------------
 
-   --  Warning mode for gnat2why. This is similar to Opt.Warning_Mode for the
-   --  compiler.
+   --  Warning mode for gnat2why. This is identical to Opt.Warning_Mode for the
+   --  compiler. We duplicate this type here to avoid a dependency on compiler
+   --  units.
 
-   Warning_Mode : Opt.Warning_Mode_Type := Opt.Treat_As_Error;
+   type SPARK_Warning_Mode_Type is (SW_Suppress, SW_Normal, SW_Treat_As_Error);
+
+   Warning_Mode : SPARK_Warning_Mode_Type := SW_Treat_As_Error;
 
    --  Global generation mode. In this mode, gnat2why generates cross-reference
    --  information in ALI files about globals accessed by subprograms.
@@ -161,9 +163,13 @@ package Gnat2Why_Args is
    -- Procedures of this package --
    --------------------------------
 
-   procedure Init;
+   procedure Init (Filename : String);
    --  Read the extra options information and set the corresponding global
    --  variables above.
+   --  @param Filename the filename to read the extra information from.
+   --    Basically, you should pass Opt.SPARK_Switches_File_Name.all here. We
+   --    want to avoid the dependency on Opt here, so you need to pass it
+   --    yourself.
 
    function Set (Obj_Dir : String) return String;
    --  Assuming that the above global variables are set to meaningful values,

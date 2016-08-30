@@ -31,7 +31,6 @@ with Gnat2Why_Args;     use Gnat2Why_Args;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
-with Opt;
 with String_Utils;      use String_Utils;
 
 package Configuration is
@@ -158,7 +157,7 @@ package Configuration is
    RTS_Dir           : GNAT.Strings.String_Access;
    Counterexample    : Boolean;
    Mode              : GP_Mode;
-   Warning_Mode      : Opt.Warning_Mode_Type;
+   Warning_Mode      : Gnat2Why_Args.SPARK_Warning_Mode_Type;
    Caching           : Boolean;
    --  enable caching through memcached
    Report            : Report_Mode_Type;
