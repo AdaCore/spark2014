@@ -64,7 +64,7 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 # the builds of why3 and alt-ergo are handled separately.
 #
 # Thus, special targets are defined for the developer only:
-#   setup        setup of gnatprove, why3, alt-ergo
+#   setup        why3, alt-ergo
 #   install-all  install of gnatprove, why3 and alt-ergo
 
 setup:
@@ -143,7 +143,7 @@ gnatprove:
 	$(MAKE) -C gnatprove build
 
 gnatprove-nightly:
-	$(MAKE) -C gnatprove nightly PROD=$(PROD)
+	$(MAKE) -C gnatprove build PROD=$(PROD)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)

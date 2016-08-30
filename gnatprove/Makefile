@@ -1,11 +1,10 @@
+# need to define this variable here, to allow overriding it when calling the
+# Makefile
+PROD=
+
 all: build
 
 build:
-	gprbuild -p -j0 -P gnatprove.gpr
-
-PROD=-XBuild=Production
-
-nightly:
 	gprbuild -p -j0 -P gnatprove.gpr $(PROD)
 
 clean:
