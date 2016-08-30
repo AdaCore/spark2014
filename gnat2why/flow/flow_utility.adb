@@ -2100,9 +2100,9 @@ package body Flow_Utility is
                  (Recurse_On
                     (Actual,
                      Consider_Extensions =>
-                       Has_Extensions_Visible (Subprogram) or else
-                     Ekind (Get_Type (Formal, Scope))
-                     in Class_Wide_Kind));
+                       Has_Extensions_Visible (Subprogram)
+                         or else
+                       Ekind (Get_Type (Formal, Scope)) in Class_Wide_Kind));
             end if;
          end Handle_Parameter;
 
