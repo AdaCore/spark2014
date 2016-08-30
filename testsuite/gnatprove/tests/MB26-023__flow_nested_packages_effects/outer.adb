@@ -66,7 +66,7 @@ is
            with Global => Deep_State;
       end Nested_In_Body;
 
-      Y : Integer := Nested_In_Body.Deep_Var + Nested_In_Body.Get_Deep_State;
+      Y : Integer;
       Z : Integer;
 
       package body Nested_In_Body
@@ -82,6 +82,7 @@ is
         with Refined_Global => Y;
    begin
       X := X + Init.Var;
+      Y := Nested_In_Body.Deep_Var + Nested_In_Body.Get_Deep_State;
       Z := 0;
    end Inner;
 

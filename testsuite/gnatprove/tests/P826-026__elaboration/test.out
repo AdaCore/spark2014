@@ -1,0 +1,3 @@
+elab.ads:5:19: Program_Error would have been raised at run time
+elab.ads:5:19: cannot call "F" before body seen
+gnatprove: error during generation of Global contracts
