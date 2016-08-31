@@ -1,12 +1,16 @@
 [submodule "why3"]
 	path = why3
 	url = git+ssh://git.adacore.com/why3.git
+	ignore = dirty
 [submodule "alt-ergo"]
 	path = alt-ergo
 	url = git+ssh://git.adacore.com/alt-ergo.git
+	ignore = dirty
 [submodule "cvc4"]
 	path = cvc4
 	url = git+ssh://git.adacore.com/cvc4.git
+	ignore = dirty
 [submodule "z3"]
 	path = z3
 	url = git+ssh://git.adacore.com/z3.git
+	ignore = dirty
