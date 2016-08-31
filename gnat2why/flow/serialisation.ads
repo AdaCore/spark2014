@@ -35,9 +35,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --  *single* procedure for reading and writing, which keeps code size small and
 --  maintainance obvious should data structures be extended or modified.
 --
---  To use it you first need write a simple Serialize procedure, for example
---  for a record containing three integer fields. Note that this procedure can
---  both read and write the record!
+--  To use it you first need to write a simple Serialize procedure, for
+--  example for a record containing three integer fields. Note that this
+--  procedure can both read and write the record!
 --
 --     procedure Serialize (A : in out Archive; V : in out My_Record) is
 --     begin
