@@ -1174,7 +1174,18 @@ ASCII.LF;
          S : constant String :=
            (if CL_Switches.Prover /= null then CL_Switches.Prover.all else "");
       begin
+
+         --  This procedure is called when the Provers list is already filled
+         --  with the defaults from the --level switch.
+         --  In replay mode, we only want to take into account provers when
+         --  they were explicitly set, not when set by default. When not
+         --  in replay mode, we only need to change the Provers list when
+         --  --provers was explicitly set.
+
          if S = "" then
+            if CL_Switches.Replay then
+               Provers.Clear;
+            end if;
             return;
          end if;
          Provers.Clear;
