@@ -734,6 +734,7 @@ package body Flow.Slice is
 
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
+      Inputs_Proof.Clear;
       Inputs.Clear;
       Outputs.Clear;
 
