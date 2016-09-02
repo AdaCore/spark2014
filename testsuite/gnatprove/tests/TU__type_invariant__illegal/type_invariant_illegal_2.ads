@@ -1,4 +1,4 @@
---  TU: 1. The aspect Type_Invariant’Class is not in SPARK.
+--  TU: 1. The aspect Type_Invariant'Class is not in SPARK.
 
 package Type_Invariant_Illegal_2 is
 

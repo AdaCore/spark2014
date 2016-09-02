@@ -1,6 +1,5 @@
-package Typeinv is 
-   type T is private
-      with Type_Invariant => Is_Valid (T);
+package Typeinv with SPARK_Mode is 
+   type T is private;
 
    function Is_Valid (X : T) return Boolean;
 
@@ -9,7 +8,8 @@ package Typeinv is
    procedure Divide (X : in out T);
 
 private
-   type T is range 0 .. 10000;
+   type T is range 0 .. 10000
+      with Type_Invariant => Is_Valid (T);
 
    function Is_Valid (X : T) return Boolean is
       (X mod 2 = 0);
