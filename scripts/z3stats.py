@@ -129,7 +129,8 @@ def start_server(fname):
            "--single-client",
            "--logging",
            "--socket", fname]
-    print cmd
+    if args.verbose:
+        print cmd
     subprocess.Popen(cmd)
     time.sleep(1)
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
