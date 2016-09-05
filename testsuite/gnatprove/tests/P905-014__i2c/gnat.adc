@@ -1,0 +1,9 @@
+--  This sets configuration pragmas for use with gnatprove.
+
+--  Partition_Elaboration_Policy is required (tasks don't start until
+--  elaboration has finished).
+pragma Partition_Elaboration_Policy (Sequential);
+
+--  We may well be proving using a host compiler (partly because
+--  gnatprove doesn't understand target, runtime settings in GPRs).
+pragma Profile (Ravenscar);
