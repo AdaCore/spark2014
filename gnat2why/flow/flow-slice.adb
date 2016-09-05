@@ -295,19 +295,32 @@ package body Flow.Slice is
       Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    is
-      --  The "Get" functions that follow return sets of nodes that are purely
-      --  of the mode described in their names. This is pointed out so as to
-      --  prevent confusion between the functions and the formal parameters
-      --  of Compute_Globals (where an Input could also appear as an Output).
+      --  The "Get_" functions that follow collect nodes that are purely of the
+      --  mode described in their names. This is pointed out so as to prevent
+      --  confusion between the functions and the formal parameters of
+      --  Compute_Globals (where an Input could also appear as an Output).
 
       --  Utitlity functions for calculating subprogram calls
 
-      function Get_Proof_Subprograms return Node_Sets.Set;
-      --  Returns all subprograms that are only ever called in proof related
-      --  vertices.
+      Unresolved : Node_Sets.Set;
+      --  Direct calls whose flow effects (given in the Global or Depends
+      --  contracts) are not already "inlined" in the control flow graph.
 
-      function Get_Definite_Subprograms return Node_Sets.Set;
-      --  Returns all subprograms that are definitely called
+      procedure Get_Unresolved_Calls
+      with Global => (Output => Unresolved),
+           Pre    => Unresolved.Is_Empty,
+           Post   => Node_Sets.Is_Subset (Subset => Unresolved,
+                                          Of_Set => FA.Direct_Calls);
+      --  Removes subprograms whose flow effects (given in the Global or
+      --  Depends contracts) are already "inlined" in the control flow graph.
+
+      procedure Get_Proof_Calls (Calls : out Node_Sets.Set)
+      with Global => (Input => Unresolved);
+      --  Get subprograms are only ever called in proof-related contexts
+
+      procedure Get_Definite_Calls (Calls : out Node_Sets.Set)
+      with Global => (Input => Unresolved);
+      --  Get subprograms that are definitely called
 
       procedure Get_Local_Variables_And_Subprograms
       with Global => (Output => (Local_Variables, Local_Subprograms));
@@ -315,67 +328,34 @@ package body Flow.Slice is
       --  and subprogram declarations and puts them in Local_Variables and
       --  Local_Subprograms, respectively.
 
-      procedure Get_Local_Definite_Writes;
+      procedure Get_Local_Definite_Writes
+      with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
       --  Collect local variables of the package that are definitely
       --  initialized after package elaboration.
 
-      function Subprograms_Without_Contracts
-        (NS : Node_Sets.Set)
-         return Node_Sets.Set;
-      --  Returns a subset of NS that comprises those subprograms that have no
-      --  user-provided Global or Depends contracts.
-      --  @param NS is the initial set of subprograms that we opperate on
-      --  @return a subset of NS that comprises those subprograms that
-      --    have no user-provided Global or Depends contracts.
+      ------------------------
+      -- Get_Definite_Calls --
+      ------------------------
 
-      ---------------------------
-      -- Get_Proof_Subprograms --
-      ---------------------------
-
-      function Get_Proof_Subprograms return Node_Sets.Set is
-         All_Proof_Subprograms : Node_Sets.Set := FA.Direct_Calls;
-      begin
-         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            --  We exclude subprograms called in graph vertices not related to
-            --  proof.
-
-            declare
-               A : V_Attributes renames FA.Atr (V);
-
-            begin
-               if not A.Is_Proof then
-                  All_Proof_Subprograms.Difference (A.Subprograms_Called);
-               end if;
-            end;
-         end loop;
-
-         return Subprograms_Without_Contracts (All_Proof_Subprograms);
-      end Get_Proof_Subprograms;
-
-      ------------------------------
-      -- Get_Definite_Subprograms --
-      ------------------------------
-
-      function Get_Definite_Subprograms return Node_Sets.Set is
-         All_Definite_Subprograms : Node_Sets.Set := Node_Sets.Empty_Set;
+      procedure Get_Definite_Calls (Calls : out Node_Sets.Set) is
       begin
          --  Collect those directly called subprograms whose corresponding
          --  'Initial vertex has no Out_Neighbours.
 
-         for G of FA.Direct_Calls loop
+         pragma Assert (Calls.Is_Empty);
+
+         for G of Unresolved loop
             declare
-               F         : constant Flow_Id := Direct_Mapping_Id (G);
-               V_Initial : constant Flow_Graphs.Vertex_Id :=
-                 FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
+               V_Initial : Flow_Graphs.Vertex_Id renames
+                 FA.PDG.Get_Vertex (Direct_Mapping_Id (G, Initial_Value));
+
             begin
                if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
-                  All_Definite_Subprograms.Insert (G);
+                  Calls.Insert (G);
                end if;
             end;
          end loop;
-
-         return Subprograms_Without_Contracts (All_Definite_Subprograms);
-      end Get_Definite_Subprograms;
+      end Get_Definite_Calls;
 
       -----------------------------------------
       -- Get_Local_Variables_And_Subprograms --
@@ -687,26 +667,45 @@ package body Flow.Slice is
          end loop;
       end Get_Local_Definite_Writes;
 
-      -----------------------------------
-      -- Subprograms_Without_Contracts --
-      -----------------------------------
+      ---------------------
+      -- Get_Proof_Calls --
+      ---------------------
 
-      function Subprograms_Without_Contracts
-        (NS : Node_Sets.Set)
-         return Node_Sets.Set
-      is
-         Subs_Without_Contracts : Node_Sets.Set := Node_Sets.Empty_Set;
+      procedure Get_Proof_Calls (Calls : out Node_Sets.Set) is
+         All_Proof_Subprograms : Node_Sets.Set := Unresolved;
       begin
-         for N of NS loop
+         --  Exclude subprograms called in graph vertices not nrelated to proof
+
+         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               A : V_Attributes renames FA.Atr (V);
+
+            begin
+               if not A.Is_Proof then
+                  All_Proof_Subprograms.Difference (A.Subprograms_Called);
+               end if;
+            end;
+         end loop;
+
+         Node_Sets.Move (Target => Calls, Source => All_Proof_Subprograms);
+      end Get_Proof_Calls;
+
+      --------------------------
+      -- Get_Unresolved_Calls --
+      --------------------------
+
+      procedure Get_Unresolved_Calls is
+      begin
+         for N of FA.Direct_Calls loop
+            --  Check if flow effects have been already "inlined" in CFG; see
+            --  the call to Process_Subprogram_Globals in Do_Call_Statement.
             if Rely_On_Generated_Global (N, FA.B_Scope)
               or else not Has_User_Supplied_Globals (N)
             then
-               Subs_Without_Contracts.Insert (N);
+               Unresolved.Insert (N);
             end if;
          end loop;
-
-         return Subs_Without_Contracts;
-      end Subprograms_Without_Contracts;
+      end Get_Unresolved_Calls;
 
       Ordinary_Ins : Node_Sets.Set;
 
@@ -804,11 +803,17 @@ package body Flow.Slice is
          end;
       end loop;
 
-      --  Classify subprogram calls into proof, definite and conditional ones
-      Proof_Calls       := Get_Proof_Subprograms;
-      Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
-      Conditional_Calls := Subprograms_Without_Contracts
-        (FA.Direct_Calls - Definite_Calls - Proof_Calls);
+      --  Classify unresolved calls into proof, definite and conditional ones
+      Get_Unresolved_Calls;
+
+      Get_Proof_Calls (Proof_Calls);
+
+      Get_Definite_Calls (Definite_Calls);
+      Definite_Calls.Difference (Proof_Calls);
+
+      Conditional_Calls := Unresolved;
+      Conditional_Calls.Difference (Definite_Calls);
+      Conditional_Calls.Difference (Proof_Calls);
 
       Get_Local_Variables_And_Subprograms;
 
