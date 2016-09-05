@@ -236,14 +236,6 @@ is
    --  Returns True if Scope has visibility of E's body and Generated Globals
    --  will be produced for E.
 
-   function Rely_On_Generated_Depends
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
-   --  Returns True if Scope has visibility of E's body and a Generated Depends
-   --  will be produced for E.
-
    function Get_Functions
      (N                  : Node_Id;
       Include_Predicates : Boolean)
