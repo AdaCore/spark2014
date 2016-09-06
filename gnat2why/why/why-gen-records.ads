@@ -293,4 +293,19 @@ package Why.Gen.Records is
 
    function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id;
 
+   generic
+      with function Build_Predicate_For_Discr
+        (D_Expr : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id;
+      with function Build_Predicate_For_Field
+        (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id;
+   function Build_Predicate_For_Record
+     (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
+   --  Construct a predicate:
+   --  Build_Predicate_For_Discr <Expr>.rec__d1 /\ ...
+   --  /\ (check_for_f1 <Expr> -> Build_Predicate_For_Field <Expr>.rec__f1)
+   --  /\ ..
+   --  /\ (check_for_fn <Expr> -> Build_Predicate_For_Field <Expr>.rec__fn)
+
 end Why.Gen.Records;

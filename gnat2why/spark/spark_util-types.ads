@@ -350,6 +350,15 @@ package SPARK_Util.Types is
    --  Specific_Tagged_Types redundant, except the detection that a type is
    --  a full view is currently not available soon enough.
 
+   function Get_Stored_Constraint_For_Discr
+     (Ty    : Entity_Id;
+      Discr : Entity_Id)
+      return Node_Id
+   with Pre => Has_Discriminants (Ty) and then Is_Constrained (Ty);
+   --  @param Ty a constrained type with discriminants
+   --  @param Discr a discriminant of Ty
+   --  @result the constraint stored for Discr in Ty
+
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
    --  @param E any type
    --  @return True iff E is a tagged type whose translation into Why3 requires

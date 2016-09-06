@@ -146,6 +146,134 @@ package body Why.Gen.Records is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as private. Otherwise, return the abstract type of the component.
 
+   --------------------------------
+   -- Build_Predicate_For_Record --
+   --------------------------------
+
+   function Build_Predicate_For_Record
+     (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id is
+
+      Ty_Ext  : constant Entity_Id := Retysp (Ty);
+      R_Expr  : constant W_Expr_Id :=
+        Insert_Simple_Conversion (Domain   => EW_Term,
+                                  Expr     => +Expr,
+                                  To       => EW_Abstract (Ty_Ext));
+      Discrs  : constant Natural :=
+        (if Has_Discriminants (Ty_Ext) then
+              Natural (Number_Discriminants (Ty_Ext))
+         else 0);
+      Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
+                            or else Has_Unknown_Discriminants (Ty_Ext)
+                            then First_Discriminant (Ty_Ext)
+                            else Empty);
+      T_Comp  : W_Pred_Id;
+      T_Guard : W_Pred_Id;
+      F_Expr  : W_Expr_Id;
+      R_Acc   : W_Expr_Id;
+      Tmps    : W_Identifier_Array (1 .. Discrs);
+      Binds   : W_Expr_Array (1 .. Discrs);
+      I       : Positive := 1;
+      T       : W_Pred_Id := True_Pred;
+
+   begin
+      --  As discriminants may occur in bounds of types of other fields,
+      --  store them in the Symbol_Table.
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      while Present (Discr) loop
+         if Is_Not_Hidden_Discriminant (Discr) then
+
+            R_Acc := New_Ada_Record_Access
+                 (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
+
+            Tmps (I) := New_Temp_Identifier
+              (Discr, EW_Abstract (Etype (Discr)));
+            Binds (I) := R_Acc;
+
+            declare
+               Base_Discr : constant Entity_Id :=
+                 (if Is_Base_Type (Ty_Ext) then Discr
+                  else Original_Record_Component (Discr));
+               --  Depending on the case, we may also need to refer to
+               --  discriminants of the base type. It is the case for example
+               --  for default values which are declared on base types.
+            begin
+
+               --  We need entities of discrimiants
+
+               Insert_Entity (Discr, Tmps (I));
+
+               --  and entities of discrimiants of the base type
+
+               if not Is_Base_Type (Ty_Ext) then
+                  Insert_Entity (Base_Discr, Tmps (I));
+               end if;
+            end;
+
+            --  Call Build_Predicate_For_Discr on discriminants
+
+            T_Comp :=
+              Build_Predicate_For_Discr
+                (D_Expr => +R_Acc,
+                 D_Ty   => Etype (Discr),
+                 E      => Discr);
+
+            T := +New_And_Then_Expr (Left   => +T,
+                                     Right  => +T_Comp,
+                                     Domain => EW_Pred);
+         end if;
+
+         Next_Discriminant (Discr);
+         I := I + 1;
+      end loop;
+
+      for Field of Get_Component_Set (Ty_Ext) loop
+         if Ekind (Field) = E_Component
+           and then Component_Is_Visible_In_Type (Ty_Ext, Field)
+         then
+
+            R_Acc := New_Ada_Record_Access
+              (Empty, EW_Term, R_Expr, Field, Ty_Ext);
+
+            --  Call Build_Predicate_For_Field on fields
+
+            T_Comp :=
+              Build_Predicate_For_Field
+                (F_Expr => +R_Acc,
+                 F_Ty   => Etype (Field),
+                 E      => Field);
+
+            if T_Comp /= True_Pred then
+               T_Guard := +New_Ada_Record_Check_For_Field
+                 (Empty, EW_Pred, R_Expr, Field, Ty_Ext);
+
+               F_Expr  := New_Conditional (Domain    => EW_Pred,
+                                           Condition => +T_Guard,
+                                           Then_Part => +T_Comp);
+
+               T := +New_And_Then_Expr (Left   => +T,
+                                        Right  => +F_Expr,
+                                        Domain => EW_Pred);
+            end if;
+         end if;
+      end loop;
+
+      if T /= True_Pred then
+         for I in 1 .. Discrs loop
+            T := +New_Typed_Binding
+              (Domain  => EW_Pred,
+               Name    => Tmps (I),
+               Def     => Binds (I),
+               Context => +T);
+         end loop;
+      end if;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      return T;
+   end Build_Predicate_For_Record;
+
    ------------------------------
    -- Count_Fields_Not_In_Root --
    ------------------------------

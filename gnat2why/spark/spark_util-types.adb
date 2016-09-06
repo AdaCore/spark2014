@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Aspects;                            use Aspects;
+with Elists;                             use Elists;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
 with Nlists;                             use Nlists;
@@ -868,6 +869,25 @@ package body SPARK_Util.Types is
          return S;
       end if;
    end Get_Specific_Type_From_Classwide;
+
+   -------------------------------------
+   -- Get_Stored_Constraint_For_Discr --
+   -------------------------------------
+
+   function Get_Stored_Constraint_For_Discr
+     (Ty    : Entity_Id;
+      Discr : Entity_Id)
+      return Node_Id
+   is
+      Current : Entity_Id := First_Discriminant (Ty);
+      Elmt    : Elmt_Id := First_Elmt (Stored_Constraint (Ty));
+   begin
+      while Current /= Discr loop
+         Current := Next_Discriminant (Current);
+         Elmt := Next_Elmt (Elmt);
+      end loop;
+      return Node (Elmt);
+   end Get_Stored_Constraint_For_Discr;
 
    ----------------------
    -- Get_Variant_Info --

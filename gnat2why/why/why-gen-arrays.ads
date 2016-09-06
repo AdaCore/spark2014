@@ -366,4 +366,13 @@ package Why.Gen.Arrays is
    --  Return the m_array_1_bool_op_type containing the theory of the type of E
    --  @param E the entity of type array
 
+   generic
+      with function Build_Predicate_For_Comp
+        (C_Expr : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id;
+   function Build_Predicate_For_Array
+     (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
+   --  Construct a predicate:
+   --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
+   --    Build_Predicate_For_Comp (get <Expr> i1 .. in)
+
 end Why.Gen.Arrays;
