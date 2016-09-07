@@ -645,11 +645,12 @@ package body Why.Inter is
          when Named_Kind  =>
             return WF_Context;
 
-         when Entry_Kind =>
+         when Entry_Kind
+            | E_Procedure
+         =>
             return WF_Context;
 
          when E_Function
-            | E_Procedure
             | E_Subprogram_Body
          =>
             declare
