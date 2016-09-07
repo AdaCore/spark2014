@@ -1434,19 +1434,46 @@ package body Gnat2Why.Expr is
       N      : Entity_Id;
       Base   : Entity_Id) return W_Prog_Id
    is
-   begin
-      --  If either the base type or the range is not static, we need to
-      --  generate a check that the subtype declaration is valid; otherwise,
-      --  the frontend has done it for us already.
+      Rng  : constant Node_Id := Get_Range (N);
+      Low  : constant Node_Id := Low_Bound (Rng);
+      High : constant Node_Id := High_Bound (Rng);
 
-      if Is_OK_Static_Range (Get_Range (N))
-        and then (No (Base) or else Has_Static_Scalar_Subtype (Base))
+   begin
+      --  If the range is static, raises no run-time errors by itself, and no
+      --  base type is passed, there is nothing to do.
+
+      if Is_OK_Static_Range (Rng)
+        and then No (Base)
       then
          return +Void;
+
+      --  If the range is static, raises no run-time errors by itself, and a
+      --  base type is passed, we need to check that either the range is empty
+      --  or the bounds fit in the base type. Do nothing when either of these
+      --  conditions can be verified statically.
+
+      elsif Is_OK_Static_Range (Rng)
+        and then Present (Base)
+        and then Has_Static_Scalar_Subtype (Base)
+        and then
+          ((if Is_Floating_Point_Type (Base) then
+              Expr_Value_R (High) < Expr_Value_R (Low)
+            else
+              Expr_Value (High) < Expr_Value (Low))
+        or else
+          (Is_In_Range (N            => Low,
+                        Typ          => Base,
+                        Assume_Valid => True)
+             and then
+           Is_In_Range (N            => High,
+                        Typ          => Base,
+                        Assume_Valid => True)))
+      then
+         return +Void;
+
       else
          pragma Assert (Present (Base));
          declare
-            Rng              : constant Node_Id := Get_Range (N);
             Why_Base         : constant W_Type_Id := Base_Why_Type (Base);
             Le               : constant W_Identifier_Id :=
               (if Why_Base = EW_Real_Type then Real_Infix_Le
@@ -1454,9 +1481,9 @@ package body Gnat2Why.Expr is
                     MF_BVs (Why_Base).Ule
                else Int_Infix_Le);
             Low_Expr         : constant W_Term_Id :=
-              +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
+              +Transform_Expr (Low, Why_Base, EW_Term, Params);
             High_Expr        : constant W_Term_Id :=
-              +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
+              +Transform_Expr (High, Why_Base, EW_Term, Params);
             First_In_Range   : constant W_Pred_Id :=
               New_Call
                 (Name =>
@@ -1508,25 +1535,25 @@ package body Gnat2Why.Expr is
                                                   Pre      => Precond,
                                                   Post     => True_Pred));
 
-            if Comes_From_Source (Low_Bound (Rng))
-              and then not Is_OK_Static_Expression (Low_Bound (Rng))
+            if Comes_From_Source (Low)
+              and then not Is_OK_Static_Expression (Low)
             then
                Check_Range := Sequence
                  (New_Ignore
                     (Ada_Node => N,
                      Prog     => +Transform_Expr
-                       (Low_Bound (Rng), Why_Base, EW_Prog, Params)),
+                       (Low, Why_Base, EW_Prog, Params)),
                   Check_Range);
             end if;
 
-            if Comes_From_Source (High_Bound (Rng))
-              and then not Is_OK_Static_Expression (High_Bound (Rng))
+            if Comes_From_Source (High)
+              and then not Is_OK_Static_Expression (High)
             then
                Check_Range := Sequence
                  (New_Ignore
                     (Ada_Node => N,
                      Prog     => +Transform_Expr
-                       (High_Bound (Rng), Why_Base, EW_Prog, Params)),
+                       (High, Why_Base, EW_Prog, Params)),
                   Check_Range);
             end if;
 
@@ -10574,8 +10601,11 @@ package body Gnat2Why.Expr is
                                     Domain,
                                     Local_Params);
 
-            --  Compiler inserted unchecked type conversions should be
-            --  transparent for Why with our translation.
+            --  Compiler-generated unchecked type conversions may have been
+            --  rewritten into the converted expression in SPARK_Rewrite, when
+            --  needed to propagate the Do_Range_Check flag to the converted
+            --  expression. In any case, they are transparent for Why with our
+            --  translation.
 
             else
                T := Transform_Expr (Expression (Expr),

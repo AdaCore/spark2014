@@ -259,6 +259,14 @@ package body SPARK_Rewrite is
       procedure Rewrite_Nodes is
         new Traverse_Proc (Rewrite_Node);
 
+      procedure Rewrite_Unchecked_Type_Conversion (N : Node_Id);
+      --  Remove compiler-generated unchecked type conversions, which should
+      --  be transparent with our translation, when Do_Range_Check flag is
+      --  set on the node. Replace these nodes with the converted expression
+      --  where Do_Range_Check is set. This ensures that when translating
+      --  the expression, we can effectively ignore the compiler-generated
+      --  unchecked type conversion.
+
       ------------------
       -- Rewrite_Node --
       ------------------
@@ -274,8 +282,21 @@ package body SPARK_Rewrite is
             =>
                Rewrite_Identifier (N);
 
+            --  Replace calls to Unchecked_Conversion instances by nodes
+            --  N_Unchecked_Type_Conversion, which are marked as coming
+            --  from source.
+
             when N_Subprogram_Call =>
                Rewrite_Call (N);
+
+            --  Replace compiler-generated unchecked type conversions by the
+            --  converted expression when required so that the translation of
+            --  expressions into Why3 can rely on correct flag placement as
+            --  specified in sinfo.ads. We do that here in order to set the
+            --  appropriate range check flag on the rewritten expression.
+
+            when N_Unchecked_Type_Conversion =>
+               Rewrite_Unchecked_Type_Conversion (N);
 
             when N_Subprogram_Instantiation =>
                Rewrite_Subprogram_Instantiation (N);
@@ -305,6 +326,29 @@ package body SPARK_Rewrite is
 
          return OK;
       end Rewrite_Node;
+
+      ---------------------------------------
+      -- Rewrite_Unchecked_Type_Conversion --
+      ---------------------------------------
+
+      procedure Rewrite_Unchecked_Type_Conversion (N : Node_Id) is
+         Expr : constant Node_Id := Expression (N);
+         Typ  : constant Entity_Id := Etype (N);
+
+      begin
+         if not Comes_From_Source (N)
+           and then Do_Range_Check (N)
+         then
+            declare
+               Ignore : constant Traverse_Result := Rewrite_Node (Expr);
+            begin
+               Rewrite (Old_Node => N,
+                        New_Node => Expr);
+               Set_Do_Range_Check (N, True);
+               Set_Etype (N, Typ);
+            end;
+         end if;
+      end Rewrite_Unchecked_Type_Conversion;
 
    --   Start of processing for Rewrite_Compilation_Unit
 
