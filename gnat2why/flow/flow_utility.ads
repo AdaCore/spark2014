@@ -258,7 +258,7 @@ is
    with Pre  => (if Fold_Functions then not Allow_Statements),
         Post => (if Reduced
                  then (for all F of Get_Variables'Result
-                         => F.Kind /= Record_Field));
+                         => Is_Entire_Variable (F)));
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --

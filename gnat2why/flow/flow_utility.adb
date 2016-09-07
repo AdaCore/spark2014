@@ -2518,20 +2518,24 @@ package body Flow_Utility is
                      end if;
 
                   when Attribute_Constrained =>
-                     for F of Recurse_On (Prefix (N)) loop
-                        if F.Kind in Direct_Mapping | Record_Field and then
-                          F.Facet = Normal_Part and then
-                          Has_Bounds (F, Scope)
-                        then
-                           --  This is not a bound variable, but it
-                           --  requires bounds tracking. We make it a
-                           --  bound variable.
-                           VS.Include (F'Update (Facet => The_Bounds));
-                        elsif Is_Discriminant (F) then
-                           VS.Include (F);
-                        end if;
-                     end loop;
-                     return Skip;
+                     if Reduced then
+                        return OK;
+                     else
+                        for F of Recurse_On (Prefix (N)) loop
+                           if F.Kind in Direct_Mapping | Record_Field and then
+                             F.Facet = Normal_Part and then
+                             Has_Bounds (F, Scope)
+                           then
+                              --  This is not a bound variable, but it
+                              --  requires bounds tracking. We make it a
+                              --  bound variable.
+                              VS.Include (F'Update (Facet => The_Bounds));
+                           elsif Is_Discriminant (F) then
+                              VS.Include (F);
+                           end if;
+                        end loop;
+                        return Skip;
+                     end if;
 
                   when Attribute_First  |
                        Attribute_Last   |
@@ -2570,6 +2574,8 @@ package body Flow_Utility is
                               when others =>
                                  raise Why.Unexpected_Node;
                            end case;
+                        elsif Reduced then
+                           return OK;
                         else
                            for F of Recurse_On (Prefix (N)) loop
                               if F.Kind in Direct_Mapping | Record_Field

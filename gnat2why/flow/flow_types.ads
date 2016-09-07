@@ -350,6 +350,15 @@ package Flow_Types is
    --  a record (used when something is private and we don't have
    --  visibility).
 
+   function Is_Entire_Variable (F : Flow_Id) return Boolean
+   is (case F.Kind is
+       when Direct_Mapping => F.Facet = Normal_Part and then
+                              Nkind (F.Node) in N_Entity,
+       when Synthetic_Null_Export | Magic_String => True,
+       when Null_Value | Record_Field            => False);
+   --  Returns True iff the given flow id represents an entire variable (or
+   --  the magic null export, or a magic string).
+
    function Is_Extension (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = Extension_Part);
@@ -444,7 +453,8 @@ package Flow_Types is
    --  returned.
 
    function Entire_Variable (F : Flow_Id) return Flow_Id
-   with Post => Entire_Variable'Result.Kind /= Record_Field;
+   with Post => (if Present (F)
+                 then Is_Entire_Variable (Entire_Variable'Result));
    --  Returns the entire variable represented by F.
 
    procedure Sprint_Flow_Id (F : Flow_Id);
