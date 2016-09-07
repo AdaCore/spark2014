@@ -27,7 +27,6 @@ with Atree;                      use Atree;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Namet;                      use Namet;
-with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
@@ -647,33 +646,23 @@ package body Why.Inter is
 
          when Entry_Kind
             | E_Procedure
+            | E_Subprogram_Body
          =>
             return WF_Context;
 
-         when E_Function
-            | E_Subprogram_Body
-         =>
-            declare
-               Decl_E : constant Entity_Id := Unique_Entity (E);
-            begin
-               --  Functions without read/write global effects are declared
-               --  in the "type" Why files instead of the "context" Why files,
-               --  so that they can be used as parameters of generics whose
-               --  axiomatization in Why is written manually (example: formal
-               --  containers).
-               --  ??? sequence of calls to Has_Proof_Global_* is inefficient
+         --  Functions without read/write global effects are declared in the
+         --  "type" Why files instead of the "context" Why files, so that they
+         --  can be used as parameters of generics whose axiomatization in Why
+         --  is written manually (example: formal containers).
 
-               if Ekind (E) = E_Function
-                 and then not Flow_Utility.Has_Proof_Global_Reads
-                                (Decl_E, Classwide => True)
-                 and then not Flow_Utility.Has_Proof_Global_Writes
-                                (Decl_E, Classwide => True)
-               then
-                  return WF_Pure;
-               else
-                  return WF_Context;
-               end if;
-            end;
+         when E_Function =>
+            return
+              (if Flow_Utility.Has_Proof_Global_Reads  (E, Classwide => True)
+                   or else
+                  Flow_Utility.Has_Proof_Global_Writes (E, Classwide => True)
+               --  ??? separateof calls to Has_Proof_Global_* are inefficient
+               then WF_Context
+               else WF_Pure);
 
          when Object_Kind =>
 
