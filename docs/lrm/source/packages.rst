@@ -879,11 +879,11 @@ of the package.]
           Initializes    => (S1 => Q.State,       -- Indicates that S1 will be initialized
                                                   -- dependent on the value of Q.State
                              X  => Q.Visible_Var) -- and X dependent on Q.Visible_Var
-                                                  -- during the elaboration of Q.
+                                                  -- during the elaboration of R.
    is
       X : Integer := Q.Visible_Var;
       ...
-   end Q;
+   end R;
 
 .. code-block:: ada
    :linenos:
