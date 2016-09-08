@@ -1678,10 +1678,6 @@ package body Flow_Generated_Globals.Phase_2 is
                --  Insert II into Initializes_Aspects_Map
                Initializes_Aspects_Map.Insert (P.Name, II);
             end;
-
-            --  This is a convenient place to populate the
-            --  Package_To_Locals_Map.
-            Package_To_Locals_Map.Insert (P.Name, P.Local_Variables);
          end loop;
 
          if Debug_Print_Generated_Initializes then
@@ -1831,6 +1827,12 @@ package body Flow_Generated_Globals.Phase_2 is
                      when Kind_Package | Kind_Package_Body =>
                         Package_Info_List.Append (V.The_Global_Info);
                         GG_Exists.Packages.Insert (V.The_Global_Info.Name);
+
+                        --  This is a convenient place to populate the
+                        --  Package_To_Locals_Map.
+                        Package_To_Locals_Map.Insert
+                         (V.The_Global_Info.Name,
+                          V.The_Global_Info.Local_Variables);
                   end case;
 
                when EK_Protected_Instance =>

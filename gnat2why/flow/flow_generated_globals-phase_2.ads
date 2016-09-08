@@ -121,8 +121,8 @@ package Flow_Generated_Globals.Phase_2 is
      (E : Entity_Id)
       return Name_Sets.Set
    with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Package | E_Generic_Package;
-   --  This function takes as a parameter the name of a package and returns a
+               Ekind (E) in E_Package;
+   --  This function takes as a parameter a package entity and returns a
    --  set of names comprising:
    --    * all variables declared directly inside the package,
    --    * variables declared in the private part of nested packages that are
@@ -132,7 +132,7 @@ package Flow_Generated_Globals.Phase_2 is
    --      Abstract_State aspect.
    --  Constants with variable inputs are also included in the above.
    --
-   --  @param EN is the entity name whose local variables we are asking for
+   --  @param E is the entity whose local variables we are asking for
    --  @return the set of Entity_Names of the local variables as recorded
    --    by the generated globals
 
