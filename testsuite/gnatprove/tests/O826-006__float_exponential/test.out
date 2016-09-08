@@ -1,11 +1,14 @@
 float_expon.adb:6:28: warning: unused initial value of "Y"
 float_expon.adb:10:15: medium: overflow check might fail
+float_expon.adb:10:17: info: division check proved (CVC4: 1 VC)
 float_expon.adb:10:17: medium: overflow check might fail
 float_expon.adb:10:21: medium: overflow check might fail
 float_expon.adb:10:26: medium: overflow check might fail
+float_expon.adb:10:28: info: division check proved (CVC4: 1 VC)
 float_expon.adb:10:28: medium: overflow check might fail
 float_expon.adb:10:31: medium: overflow check might fail
-float_expon.adb:10:33: info: overflow check proved (altergo: 1 VC)
+float_expon.adb:10:33: info: division check proved (CVC4: 1 VC)
+float_expon.adb:10:33: medium: overflow check might fail
 float_expon.adb:10:36: medium: overflow check might fail
 float_expon.adb:10:41: info: overflow check proved (Interval)
 float_expon.adb:10:43: medium: overflow check might fail

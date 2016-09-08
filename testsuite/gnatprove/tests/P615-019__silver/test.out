@@ -62,6 +62,7 @@ overflow_check.adb:28:32: medium: overflow check might fail
 overflow_check.adb:29:32: medium: overflow check might fail
 overflow_check.adb:30:32: medium: divide by zero might fail
 overflow_check.adb:30:32: medium: overflow check might fail
+overflow_check.adb:31:32: info: division check proved (CVC4: 1 VC)
 overflow_check.adb:31:32: medium: overflow check might fail
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 overflow_check.adb:35:51: warning: unused variable "E"

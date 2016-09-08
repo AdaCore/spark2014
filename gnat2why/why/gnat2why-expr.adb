@@ -5293,8 +5293,20 @@ package body Gnat2Why.Expr is
 
          when N_Op_Expon =>
             declare
-               Name    : W_Identifier_Id;
-               Typ     : constant W_Type_Id := Base_Why_Type (Left_Type);
+               Name : W_Identifier_Id;
+               Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
+               Base : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Expr     => Left,
+                          To       => Typ);
+               Expo : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Expr     => Right,
+                        To       => EW_Int_Type);
             begin
                Name := New_Exp (Typ);
 
@@ -5302,18 +5314,40 @@ package body Gnat2Why.Expr is
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
                   Name     => Name,
-                  Args     =>
-                    (1 => Insert_Simple_Conversion
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Expr     => Left,
-                          To       => Typ),
-                     2 => Insert_Simple_Conversion
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Expr     => Right,
-                        To       => EW_Int_Type)),
+                  Args     => (1 => Base, 2 => Expo),
                   Typ      => Typ);
+
+               --  Exponentiation on floats can actually cause a division
+               --  check, when the base is 0 and the exponent is negative.
+
+               if Domain = EW_Prog
+                 and then Is_Floating_Point_Type (Left_Type)
+               then
+                  declare
+                     Expo_Negative : constant W_Pred_Id :=
+                       +New_Comparison
+                         (Int_Infix_Lt, Expo,
+                          New_Integer_Constant (Value => Uint_0), EW_Term);
+                     Base_Zero     : constant W_Pred_Id :=
+                       +New_Comparison
+                         (Why_Neq, Base,
+                          New_Real_Constant (Value => Ureal_0), EW_Term);
+                     Ass           : constant W_Prog_Id :=
+                       New_Located_Assert
+                         (Ada_Node => Ada_Node,
+                          Pred     =>
+                            +New_Simpl_Conditional
+                              (Domain    => EW_Pred,
+                               Condition => +Expo_Negative,
+                               Then_Part => +Base_Zero,
+                               Else_Part => +True_Pred
+                              ),
+                          Reason   => VC_Division_Check,
+                          Kind     => EW_Assert);
+                  begin
+                     T := +Sequence (Ass, +T);
+                  end;
+               end if;
 
             end;
 

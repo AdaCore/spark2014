@@ -18,6 +18,7 @@ number_theory.ads:20:37: medium: overflow check might fail
 number_theory.ads:20:45: info: range check proved (CVC4: 1 VC)
 number_theory.ads:23:16: medium: postcondition might fail, cannot prove Float(Fib'Result) < (1.6181**N)/2.2360 + 1.0
 number_theory.ads:23:25: info: range check proved (CVC4: 1 VC)
+number_theory.ads:23:43: info: division check proved (CVC4: 1 VC)
 number_theory.ads:23:43: medium: overflow check might fail
 number_theory.ads:23:47: info: division check proved (CVC4: 1 VC)
 number_theory.ads:23:47: info: overflow check proved (Interval)
