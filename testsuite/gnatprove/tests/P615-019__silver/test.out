@@ -41,6 +41,10 @@ division_by_zero.adb:32:04: warning: analyzing unreferenced procedure "Div_Fixed
 division_by_zero.adb:32:39: info: initialization of "U" proved
 division_by_zero.adb:34:14: medium: divide by zero might fail
 division_by_zero.adb:34:14: medium: overflow check might fail
+division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
+division_by_zero.adb:37:49: info: initialization of "U" proved
+division_by_zero.adb:39:14: medium: divide by zero might fail (e.g. when Y = -1)
+division_by_zero.adb:39:14: medium: overflow check might fail
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
 index_check.adb:5:16: medium: array index check might fail (e.g. when J = 1 and S = (others => 0) and S'First = 2 and S'Last = 0)
 index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"

@@ -33,6 +33,11 @@ procedure Division_By_Zero is
    begin
       U := X / Y;
    end Div_Fixed;
+
+   procedure Exp_Float (X : Float; Y : Integer; U : out Float) is
+   begin
+      U := X ** Y;
+   end Exp_Float;
 begin
    null;
 end Division_By_Zero;
