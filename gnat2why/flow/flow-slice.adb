@@ -31,7 +31,6 @@ with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with Why;
 
 package body Flow.Slice is
 
@@ -47,8 +46,7 @@ package body Flow.Slice is
       V_Final : Flow_Graphs.Vertex_Id;
       IPFA    : Boolean)
       return Vertex_Sets.Set;
-   --  Helper function to compute the dependencies for a single
-   --  vertex.
+   --  Helper function to compute the dependencies for a single vertex
 
    -------------------------
    -- Internal_Dependency --
@@ -172,7 +170,7 @@ package body Flow.Slice is
                return Change_Variant (Entire_Variable (F), Normal_Use);
 
             when Null_Value =>
-               raise Why.Unexpected_Node;
+               raise Program_Error;
          end case;
       end Flow_Equivalent;
 
