@@ -18,9 +18,7 @@
 
 with CertProc;
 
-package body CertProcessing
-  with SPARK_Mode => Off  --  assert failure in flow analysis (N728-018)
-is
+package body CertProcessing is
    ------------------------------------------------------------------
    -- Exported Subprograms
    ------------------------------------------------------------------
