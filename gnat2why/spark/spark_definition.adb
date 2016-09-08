@@ -3661,7 +3661,9 @@ package body SPARK_Definition is
 
                --  Only mark the invariant as part of the type's fullview.
 
-            elsif not Is_Partial_View (E) then
+            elsif not Is_Partial_View (E)
+              and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+            then
 
                --  Invariants cannot be specified on completion of private
                --  extension in SPARK.
@@ -3674,6 +3676,26 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("type invariant on completion of "
                      & "private_type_extension", E, "SPARK RM 7.3.2(2)");
+
+                  --  We currently do not support invariants on type declared
+                  --  in a nested package. This restriction results in
+                  --  simplifications in deciding wether a type invariant
+                  --  should be checked or considered to hold in the program.
+
+               elsif not Is_Compilation_Unit (Enclosing_Unit (E)) then
+                  Mark_Unsupported
+                    ("type invariants not immediately in a compilation unit",
+                     E);
+
+                  --  We currently do not support invariants on protected types
+
+               elsif Is_Protected_Type (E) then
+                  Mark_Unsupported ("type invariants on protected types", E);
+
+                  --  We currently do not support invariants on tagged types
+
+               elsif Is_Tagged_Type (E) then
+                  Mark_Unsupported ("type invariants on tagged types", E);
                else
 
                   --  Add the type invariant to delayed aspects to be marked
@@ -3693,8 +3715,7 @@ package body SPARK_Definition is
 
                   --  Still emit a warning, as checks are not done yet
 
-                  if Comes_From_Source (E)
-                    and then Emit_Warning_Info_Messages
+                  if Emit_Warning_Info_Messages
                     and then SPARK_Pragma_Is (Opt.On)
                   then
                      Error_Msg_N
