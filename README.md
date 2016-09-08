@@ -29,7 +29,7 @@ News about SPARK project are shared primarily on [a dedicated
 blog](http://www.spark-2014.org/). Discussions about SPARK occur on [a public
 mailing-list](https://lists.forge.open-do.org/mailman/listinfo/spark2014-discuss).
 
-4. Documentation
+5. Documentation
 ----------------
 
 You can find the definition of the SPARK language in the
