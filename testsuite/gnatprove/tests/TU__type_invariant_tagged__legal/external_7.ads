@@ -1,6 +1,6 @@
 with Type_Invariant_Legal_7; use Type_Invariant_Legal_7;
 
-package External_7 is
+package External_7 with SPARK_Mode is
 
    function Read (X : T) return Integer;
    procedure Read (X : T);

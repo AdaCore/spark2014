@@ -1,8 +1,10 @@
-package body Type_Invariant_Legal_4 is
+package body Type_Invariant_Legal_4 with SPARK_Mode,
+  Refined_State => (State => X)
+is
 
-   procedure Priv_In;
-   procedure Priv_Out;
-   procedure Priv_In_Out;
+   procedure Priv_In with Pre => True;  --  @INVARIANT_CHECK:NONE
+   procedure Priv_Out with Pre => True, Global => (Output => X);  --  @INVARIANT_CHECK:PASS
+   procedure Priv_In_Out with Pre => True;  --  @INVARIANT_CHECK:PASS
 
    function Pub return Integer is
    begin
@@ -17,24 +19,24 @@ package body Type_Invariant_Legal_4 is
    procedure Pub_In is
       Tmp : Integer;
    begin
-      Tmp := Pub;  --  @INVARIANT_CHECK:NONE
-      Tmp := Priv;  --  @INVARIANT_CHECK:NONE
-      Tmp := E_Pub;  --  @INVARIANT_CHECK:NONE
-      Tmp := E_Priv;  --  @INVARIANT_CHECK:NONE
-      return;  --  @INVARIANT_CHECK:NONE
+      Tmp := Pub;  --  @INVARIANT_CHECK:PASS
+      Tmp := Priv;  --  @INVARIANT_CHECK:PASS
+      Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
+      Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
+      return;
    end Pub_In;
 
    procedure Priv_In is
       Tmp : Integer;
    begin
-      Tmp := Pub;  --  @INVARIANT_CHECK:NONE
-      Tmp := Priv;  --  @INVARIANT_CHECK:NONE
-      Tmp := E_Pub;  --  @INVARIANT_CHECK:NONE
-      Tmp := E_Priv;  --  @INVARIANT_CHECK:NONE
-      return;  --  @INVARIANT_CHECK:NONE
+      Tmp := Pub;  --  @INVARIANT_CHECK:PASS
+      Tmp := Priv;  --  @INVARIANT_CHECK:PASS
+      Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
+      Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
+      return;
    end Priv_In;
 
-   procedure Pub_Out is
+   procedure Pub_Out with Refined_Global => (Output => X) is
       Tmp : Integer;
    begin
       X := 1;
@@ -42,7 +44,7 @@ package body Type_Invariant_Legal_4 is
       Tmp := Priv;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
-      return;  --  @INVARIANT_CHECK:PASS
+      return;
    end Pub_Out;
 
    procedure Priv_Out is
@@ -53,7 +55,7 @@ package body Type_Invariant_Legal_4 is
       Tmp := Priv;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
-      return;  --  @INVARIANT_CHECK:NONE
+      return;
    end Priv_Out;
 
    procedure Pub_In_Out is
@@ -65,7 +67,7 @@ package body Type_Invariant_Legal_4 is
       Priv_Out;  --  @INVARIANT_CHECK:NONE
       Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
-      return;  --  @INVARIANT_CHECK:PASS
+      return;
    end Pub_In_Out;
 
    procedure Priv_In_Out is
@@ -77,14 +79,14 @@ package body Type_Invariant_Legal_4 is
       Pub_Out;  --  @INVARIANT_CHECK:NONE
       Tmp := E_Pub;  --  @INVARIANT_CHECK:PASS
       Tmp := E_Priv;  --  @INVARIANT_CHECK:PASS
-      return;  --  @INVARIANT_CHECK:PASS
+      return;
    end Priv_In_Out;
 
-   procedure Extra_Test is
+   procedure Extra_Test is  --  @INVARIANT_CHECK:PASS
    begin
       Pub_In_Out;  --  @INVARIANT_CHECK:PASS
       Priv_In_Out;  --  @INVARIANT_CHECK:PASS
-      return;  --  @INVARIANT_CHECK:PASS
+      return;
    end Extra_Test;
 
 end Type_Invariant_Legal_4;

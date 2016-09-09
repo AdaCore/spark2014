@@ -4,26 +4,26 @@
 --  or in out) is treated like a parameter of the given mode. This rule applies
 --  regardless of where the global object in question is declared.
 
-package Type_Invariant_Legal_4 is
+package Type_Invariant_Legal_4 with SPARK_Mode, Abstract_State => State is
 
    type T is private;
 
    function Pub return Integer;
-   function E_Pub return Integer;
+   function E_Pub return Integer;  --  @INVARIANT_CHECK:NONE
 
-   procedure Pub_In;
-   procedure Pub_Out;
-   procedure Pub_In_Out;
+   procedure Pub_In;  --  @INVARIANT_CHECK:NONE
+   procedure Pub_Out with Global => (Output => State);  --  @INVARIANT_CHECK:PASS
+   procedure Pub_In_Out;  --  @INVARIANT_CHECK:PASS
 
 private
-   type T is new Natural with Type_Invariant => T /= 0;
+   type T is new Natural with Type_Invariant => T /= 0;  --  @INVARIANT_CHECK:FAIL
 
-   X : T := 1;  --  @INVARIANT_CHECK:PASS
+   X : T := 1 with Part_Of => State;  --  @INVARIANT_CHECK:PASS
 
-   function Priv return Integer;
-   function E_Priv return Integer;
+   function Priv return Integer with Pre => True;
+   function E_Priv return Integer;  --  @INVARIANT_CHECK:NONE
 
-   function E_Pub return Integer is (Integer(X));  --  @INVARIANT_CHECK:NONE
-   function E_Priv return Integer is (Integer(X));  --  @INVARIANT_CHECK:NONE
+   function E_Pub return Integer is (Integer(X));
+   function E_Priv return Integer is (Integer(X));
 
 end Type_Invariant_Legal_4;

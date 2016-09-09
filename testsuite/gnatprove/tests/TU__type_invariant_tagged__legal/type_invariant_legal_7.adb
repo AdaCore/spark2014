@@ -1,6 +1,6 @@
 with External_7; use External_7;
 
-package body Type_Invariant_Legal_7 is
+package body Type_Invariant_Legal_7 with SPARK_Mode is
 
    function Priv (X : T) return Integer;
    procedure Priv_In (X : T);

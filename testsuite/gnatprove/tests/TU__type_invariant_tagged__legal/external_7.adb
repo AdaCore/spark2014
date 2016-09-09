@@ -1,4 +1,4 @@
-package body External_7 is
+package body External_7 with SPARK_Mode is
 
    function Read (X : T) return Integer is
    begin
