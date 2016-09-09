@@ -95,13 +95,13 @@ p.adb:17:17: info: initialization of "Value" proved, in call inlined at p.adb:26
 p.adb:21:22: info: initialization of "Size" proved
 p.adb:22:60: info: overflow check proved (CVC4: 1 VC)
 p.adb:22:64: info: overflow check proved (CVC4: 1 VC)
+p.adb:24:16: info: overflow check proved (CVC4: 1 VC)
 p.adb:24:31: info: initialization of "Size" proved
-p.adb:24:36: info: overflow check proved (CVC4: 1 VC)
 p.adb:25:30: info: initialization of "Addr" proved
 p.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 p.adb:25:54: info: initialization of "Size" proved
 p.adb:26:16: info: initialization of "Addr" proved
-p.adb:26:31: info: overflow check proved (CVC4: 1 VC)
+p.adb:26:16: info: overflow check proved (CVC4: 1 VC)
 p.adb:26:32: info: initialization of "Size" proved
 p.adb:32:17: info: overflow check proved (CVC4: 1 VC)
 p.adb:34:17: info: overflow check proved (CVC4: 1 VC)

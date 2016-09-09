@@ -51,11 +51,12 @@ skein.adb:118:44: info: length check proved (CVC4: 1 VC)
 skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:121:27: info: initialization of "Byte_Count" proved
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
-skein.adb:125:25: info: initialization of "Blocks_Done" proved
+skein.adb:125:10: info: initialization of "Blocks_Done" proved
 skein.adb:133:15: info: initialization of "Byte_Count" proved
 skein.adb:133:29: info: initialization of "Blocks_Done" proved
 skein.adb:134:14: info: initialization of "N" proved
 skein.adb:139:10: info: initialization of "N" proved
+skein.adb:139:10: info: range check proved (CVC4: 1 VC)
 skein.adb:140:44: info: initialization of "Blocks_Done" proved
 skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
 skein.adb:144:25: info: initialization of "X" proved
@@ -80,12 +81,12 @@ Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
 Initialization 28 28 . . . . .
 Non-Aliasing . . . . . . .
-Run-time Checks 28 . . . 24 . 4
+Run-time Checks 29 . . . 25 . 4
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 56 28 (50%) . . 24 (43%) . 4 (7%)
+Total 57 28 (49%) . . 25 (44%) . 4 (7%)
 
 
 Analyzed 1 unit
@@ -95,7 +96,7 @@ absence of run-time errors of Skein fully established
  Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 17 checks out of 21 proved
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 18 checks out of 22 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
