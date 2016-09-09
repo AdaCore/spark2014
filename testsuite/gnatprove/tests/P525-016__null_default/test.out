@@ -1,2 +1,0 @@
-null_default.ads:4:25: warning: "X" is not modified, could be IN, in instantiation at null_default.ads:8
-null_default.ads:4:25: warning: unused variable "X", in instantiation at null_default.ads:8

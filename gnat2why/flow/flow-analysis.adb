@@ -108,6 +108,12 @@ package body Flow.Analysis is
         Post => G.Get_Key (Get_Final_Vertex'Result).Variant = Final_Value;
    --  Returns the vertex id which represents the final value for F
 
+   function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
+                                              return Boolean
+   with Pre => Nkind (E) in N_Entity;
+   --  Returns True iff E is a parameter of a formal subprogram of a generic
+   --  unit and the formal subprogram has null default.
+
    --------------------
    -- Error_Location --
    --------------------
@@ -536,6 +542,21 @@ package body Flow.Analysis is
    --  Checks if the entity E has been mentioned in any pragma Unmodified,
    --  Unreferenced or Unused.
 
+   --------------------------------------
+   -- Is_Param_Of_Null_Subp_Of_Generic --
+   --------------------------------------
+
+   function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
+                                              return Boolean
+   is
+      Subp : constant Entity_Id := Scope (E);
+   begin
+      return (Ekind (E) in Formal_Kind
+                and then Ekind (Subp) in E_Procedure | E_Function
+                and then Is_Generic_Actual_Subprogram (Subp)
+                and then Has_Null_Body (Subp));
+   end Is_Param_Of_Null_Subp_Of_Generic;
+
    ------------------
    -- Analyse_Main --
    ------------------
@@ -861,11 +882,16 @@ package body Flow.Analysis is
                --  We inhibit messages for variables that:
                --    * have been marked as unmodified, as unused or as
                --      unreferenced,
-               --    * are/belong to a concurrent object.
+               --    * are/belong to a concurrent object
+               --    * are formal parameters of a subprogram with null default
+               --      defined in the formal part of a generic unit.
                if F_Final.Kind in Direct_Mapping | Record_Field
                  and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F_Final))
                              or else
-                           Is_Or_Belongs_To_Concurrent_Object (F_Final))
+                           Is_Or_Belongs_To_Concurrent_Object (F_Final)
+                             or else
+                           Is_Param_Of_Null_Subp_Of_Generic
+                             (Get_Direct_Mapping_Id (F_Final)))
                then
                   null;
 
@@ -1118,13 +1144,17 @@ package body Flow.Analysis is
                --  We suppress this warning when we are dealing with a
                --  concurrent type or a component of a concurrent type. Also
                --  when the variable has been marked either as Unreferenced
-               --  or Unmodified or Unused.
+               --  or Unmodified or Unused or if it is a formal parameter of a
+               --  null subprogram of a generic unit.
                if F.Kind /= Direct_Mapping
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
                             not in Concurrent_Kind
                           and then not Is_Concurrent_Comp_Or_Disc (F)
                           and then not
-                            Has_Pragma_Un (Get_Direct_Mapping_Id (F)))
+                            Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+                          and then not
+                            Is_Param_Of_Null_Subp_Of_Generic
+                              (Get_Direct_Mapping_Id (F)))
                then
                   Error_Msg_Flow
                     (FA       => FA,
