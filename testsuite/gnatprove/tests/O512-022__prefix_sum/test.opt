@@ -1,4 +1,4 @@
 Darwin DEAD too slow on Darwin (OA05-034)
 assertions DEAD too slow for run assertions
 !large SKIP part of large testsuite
-RLIMIT 1000
+ALL RLIMIT 1000
