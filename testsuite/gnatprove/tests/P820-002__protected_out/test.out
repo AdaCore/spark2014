@@ -102,87 +102,12 @@ polyorb_hi-periodic_task.ads:62:19: warning: subprogram "Activate_Entrypoint" ha
 polyorb_hi-periodic_task.ads:62:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:192
 polyorb_hi-periodic_task.ads:66:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:102
 polyorb_hi-periodic_task.ads:66:19: warning: subprogram "Recover_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "producer_consumer.the_data", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "producer_consumer.the_data", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "producer_consumer.the_data", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: possible data race when accessing variable "producer_consumer.the_data", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:102
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-periodic_task.ads:72:09: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task", in instantiation at polyorb_hi_generated-activity.ads:192
 polyorb_hi-periodic_task.ads:72:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:102
 polyorb_hi-periodic_task.ads:72:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:192
 polyorb_hi-periodic_task.ads:72:09: info: initialization of "The_Periodic_Task" proved, in instantiation at polyorb_hi_generated-activity.ads:102
 polyorb_hi-periodic_task.ads:72:09: info: initialization of "The_Periodic_Task" proved, in instantiation at polyorb_hi_generated-activity.ads:192
 polyorb_hi-periodic_task.ads:72:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:102
 polyorb_hi-periodic_task.ads:72:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:192
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s"
-polyorb_hi-protocols.adb:34:25: high: possible data race when accessing variable "producer_consumer.the_data"
-polyorb_hi-protocols.adb:34:25: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task"
-polyorb_hi-protocols.adb:34:25: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task"
 polyorb_hi-protocols.adb:51:44: side effects of function "Send" are not modeled in SPARK
 polyorb_hi-protocols.ads:44:13: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 polyorb_hi-thread_interrogators.adb:51:28: warning: "Deployment" is already use-visible through previous use clause at polyorb_hi-thread_interrogators.ads:39
@@ -237,21 +162,6 @@ polyorb_hi-thread_interrogators.ads:197:30: info: initialization of "Port" prove
 polyorb_hi-thread_interrogators.ads:197:30: info: initialization of "Port" proved, in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-thread_interrogators.ads:197:52: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-thread_interrogators.ads:197:52: info: initialization of "Valid" proved, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.most_recent_values"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.time_stamps"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq.value_put"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_producer_interrogators.uq_s"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.empties"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.firsts"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.global_data_queue"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.initialized"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.lasts"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.most_recent_values"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq.time_stamps"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: possible data race when accessing variable "producer_consumer.the_data"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: with task "polyorb_hi_generated.activity.producer_consumer_producer_task.the_periodic_task"
-polyorb_hi-transport_low_level_sockets.adb:55:25: high: with task "polyorb_hi_generated.activity.producer_consumer_result_consumer_task.the_periodic_task"
 polyorb_hi-unprotected_queue.adb:42:04: info: initialization of "Global_Data_Queue" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-unprotected_queue.adb:42:04: info: initialization of "Global_Data_Queue" constituent of "Elaborated_Variables" proved, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-unprotected_queue.adb:43:09: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102

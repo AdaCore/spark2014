@@ -3512,21 +3512,26 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end if;
 
-      --  In phase 1 we count task instances (which can be only declared at
-      --  library level because of the Ravenscar profile restrictions) and
-      --  register priorities of objects containing protected types.
-      if FA.Generating_Globals then
-         if Ekind (Scope (E)) in E_Package | E_Package_Body then
-            declare
-               T : constant Entity_Id := Etype (E);
-            begin
-               --  Register task objects
-               Find_Tasks (T, Array_Component => False);
+      --  In phase 1 we register task instances and priorities of objects
+      --  containing protected types. Both can be only declared as library
+      --  level entities (because of the Ravenscar profile restrictions).
+      --  We only register those declared directly within the scope of the
+      --  analyzed package (i.e. not those in nested packages), because we
+      --  want to register them only once.
+      if FA.Generating_Globals
+        and then Ekind (FA.Spec_Entity) = E_Package
+        and then Scope (E) = FA.Spec_Entity
+        and then Is_Library_Level_Entity (E)
+      then
+         declare
+            T : constant Entity_Id := Etype (E);
+         begin
+            --  Register task objects
+            Find_Tasks (T, Array_Component => False);
 
-               --  Register priorities of protected components
-               Find_Protected_Components (T);
-            end;
-         end if;
+            --  Register priorities of protected components
+            Find_Protected_Components (T);
+         end;
       end if;
    end Do_Object_Declaration;
 

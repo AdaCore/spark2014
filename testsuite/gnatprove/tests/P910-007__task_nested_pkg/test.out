@@ -1,3 +1,1 @@
 outer.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
-outer.ads:8:07: high: possible data race when accessing variable "outer.x"
-outer.ads:8:07: high: with task "outer.inner.t"
