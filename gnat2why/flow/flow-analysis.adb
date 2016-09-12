@@ -363,12 +363,12 @@ package body Flow.Analysis is
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
          if Get_Variables (N,
-                              Scope                => Scope,
-                              Local_Constants      => FA.Local_Constants,
-                              Reduced              => not Precise,
-                              Allow_Statements     => True,
-                              Fold_Functions       => False,
-                              Use_Computed_Globals => True).Contains (Var_Tgt)
+                           Scope                => Scope,
+                           Local_Constants      => FA.Local_Constants,
+                           Reduced              => not Precise,
+                           Allow_Statements     => True,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True).Contains (Var_Tgt)
          then
             First_Use := N;
             return OK;

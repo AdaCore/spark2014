@@ -178,9 +178,12 @@ is
                                       E_Function  |
                                       E_Procedure |
                                       E_Task_Type,
-        Post => (for all G of Proof_Ins => G.Variant = In_View) and then
-                (for all G of Reads     => G.Variant = In_View) and then
-                (for all G of Writes    => G.Variant = Out_View);
+        Post => (for all G of Proof_Ins =>
+                   Is_Entire_Variable (G) and then G.Variant = In_View)
+       and then (for all G of Reads =>
+                   Is_Entire_Variable (G) and then G.Variant = In_View)
+       and then (for all G of Writes =>
+                   Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is
    --  given). If the Global and Depends aspects are not present then use the
@@ -204,8 +207,10 @@ is
                                       E_Function  |
                                       E_Procedure |
                                       E_Task_Type,
-        Post => (for all G of Reads  => G.Variant = In_View) and then
-                (for all G of Writes => G.Variant = Out_View);
+        Post => (for all G of Reads =>
+                   Is_Entire_Variable (G) and then G.Variant = In_View)
+       and then (for all G of Writes =>
+                   Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof globals,
    --  and we always return the most refined view possible. If Keep_Constants

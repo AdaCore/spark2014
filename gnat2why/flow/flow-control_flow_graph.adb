@@ -395,8 +395,7 @@ package body Flow.Control_Flow_Graph is
 
    type Var_Kind is (Variable_Kind,
                      Parameter_Kind,
-                     Discriminant_Kind,
-                     Quantified_Variable_Kind);
+                     Discriminant_Kind);
 
    procedure Create_Initial_And_Final_Vertices
      (E    : Entity_Id;
@@ -808,24 +807,6 @@ package body Flow.Control_Flow_Graph is
    --  This ignores type declarations (but creates a sink vertex so we
    --  can check for use of uninitialized variables).
 
-   procedure Process_Quantified_Expressions
-     (L   : List_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
-   --  This procedure goes through a given list of statements and
-   --  recursively looks at each one, setting up the 'initial and
-   --  'final vertices for symbols introduced by quantified
-   --  expressions. We do not descend into nested subprograms, tasks
-   --  or packages.
-
-   procedure Process_Quantified_Expressions
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
-   --  As above but operates on a single node
-
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
       Ins      : in out Vertex_Vectors.Vector;
@@ -1231,9 +1212,7 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when others =>
-            pragma Assert (Kind in Parameter_Kind           |
-                                   Quantified_Variable_Kind |
-                                   Variable_Kind);
+            pragma Assert (Kind in Parameter_Kind | Variable_Kind);
             case Kind is
                when Parameter_Kind =>
                   if In_Generic_Actual (E) then
@@ -1250,8 +1229,6 @@ package body Flow.Control_Flow_Graph is
                   else
                      M := Mode_In_Out;
                   end if;
-               when Quantified_Variable_Kind =>
-                  M := Mode_In;
                when Variable_Kind =>
                   M := Mode_Invalid;
                when others =>
@@ -4446,12 +4423,12 @@ package body Flow.Control_Flow_Graph is
    -- Do_Type_Declaration --
    -------------------------
 
-   procedure Do_Type_Declaration
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
+   procedure Do_Type_Declaration (N   : Node_Id;
+                                  FA  : in out Flow_Analysis_Graphs;
+                                  CM  : in out Connection_Maps.Map;
+                                  Ctx : in out Context)
    is
+      pragma Unreferenced (Ctx);
       V   : Flow_Graphs.Vertex_Id;
       Typ : constant Entity_Id := Defining_Identifier (N);
    begin
@@ -4463,25 +4440,11 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (N), Trivial_Connection (V));
 
       --  If the type has a Default_Initial_Condition then we:
-      --    * add vertices for variables introduced by quantified
-      --      Expressions
       --    * check if the full type is as the aspect suggested
       --      and issue a warning if not
       if Has_DIC (Typ)
         or else Has_Inherited_DIC (Typ)
       then
-         if Present (DIC_Procedure (Typ)) then
-            declare
-               Expr : constant Node_Id := Get_Expr_From_Check_Only_Proc
-                 (DIC_Procedure (Typ));
-            begin
-               --  Process quantified expressions
-               if Present (Expr) then
-                  Process_Quantified_Expressions (Expr, FA, CM, Ctx);
-               end if;
-            end;
-         end if;
-
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
          --
@@ -4510,92 +4473,6 @@ package body Flow.Control_Flow_Graph is
          end if;
       end if;
    end Do_Type_Declaration;
-
-   ------------------------------------
-   -- Process_Quantified_Expressions --
-   ------------------------------------
-
-   procedure Process_Quantified_Expressions
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   is
-      pragma Unreferenced (CM, Ctx);
-
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Traverses the tree looking for quantified expressions. Once
-      --  it finds one, it creates the 'initial and 'final vertices
-      --  for the variable introduced by the quantified expression.
-
-      ----------
-      -- Proc --
-      ----------
-
-      function Proc (N : Node_Id) return Traverse_Result is
-      begin
-         case Nkind (N) is
-            when N_Package_Body               |
-                 N_Package_Declaration        |
-                 N_Subprogram_Body            |
-                 N_Subprogram_Declaration     |
-                 N_Protected_Body             |
-                 N_Protected_Type_Declaration |
-                 N_Entry_Body                 |
-                 N_Entry_Declaration          |
-                 N_Task_Body                  |
-                 N_Task_Definition            =>
-               --  If we ever get one of these we skip the rest of the
-               --  nodes that hang under them.
-               return Skip;
-
-            when N_Pragma =>
-               if Pragma_Relevant_To_Flow (N) then
-                  return OK;
-               else
-                  return Skip;
-               end if;
-
-            when N_Quantified_Expression =>
-               pragma Assert (Present (Iterator_Specification (N))
-                              xor Present (Loop_Parameter_Specification (N)));
-
-               Create_Initial_And_Final_Vertices
-                 (Defining_Identifier
-                    (if Present (Iterator_Specification (N))
-                     then Iterator_Specification (N)
-                     else Loop_Parameter_Specification (N)),
-                  Quantified_Variable_Kind,
-                  FA);
-
-            when others =>
-               null;
-         end case;
-
-         return OK;
-      end Proc;
-
-      procedure Traverse is new Traverse_Proc (Process => Proc);
-
-   --  Start of processing for Process_Quantified_Expressions
-
-   begin
-      Traverse (N);
-   end Process_Quantified_Expressions;
-
-   procedure Process_Quantified_Expressions
-     (L   : List_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   is
-      N : Node_Id := First (L);
-   begin
-      while Present (N) loop
-         Process_Quantified_Expressions (N, FA, CM, Ctx);
-         Next (N);
-      end loop;
-   end Process_Quantified_Expressions;
 
    --------------------------------
    -- Process_Subprogram_Globals --
@@ -6058,93 +5935,6 @@ package body Flow.Control_Flow_Graph is
                   end if;
                end;
             end if;
-
-      end case;
-
-      --  Collect variables introduced by quantified expressions.
-      --  We need to look at the following parts:
-      --     - precondition
-      --     - postcondition
-      --     - initial_condition
-      --     - declarative part
-      --     - body
-      case FA.Kind is
-         when Kind_Subprogram =>
-            for Precondition of Preconditions loop
-               Process_Quantified_Expressions
-                 (Precondition, FA, Connection_Map, The_Context);
-            end loop;
-            for Refined in Boolean loop
-               declare
-                  Postconditions : constant Node_Lists.List :=
-                    Get_Postcondition_Expressions (FA.Analyzed_Entity,
-                                                   Refined);
-               begin
-                  for Postcondition of Postconditions loop
-                     Process_Quantified_Expressions
-                       (Postcondition, FA, Connection_Map, The_Context);
-                  end loop;
-               end;
-            end loop;
-            Process_Quantified_Expressions
-              (Declarations (Body_N), FA, Connection_Map, The_Context);
-            Process_Quantified_Expressions
-              (Statements (Handled_Statement_Sequence (Body_N)),
-               FA, Connection_Map, The_Context);
-            --  ??? O429-046 look into entry barriers
-
-         when Kind_Task =>
-            Process_Quantified_Expressions
-              (Declarations (Body_N), FA, Connection_Map, The_Context);
-            Process_Quantified_Expressions
-              (Statements (Handled_Statement_Sequence (Body_N)),
-               FA, Connection_Map, The_Context);
-
-         when Kind_Package =>
-            Process_Quantified_Expressions
-              (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
-            Process_Quantified_Expressions
-              (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
-            --  Look into initial conditions
-            declare
-               Postconditions : constant Node_Lists.List :=
-                 Get_Postcondition_Expressions (FA.Analyzed_Entity,
-                                                Refined => False);
-            begin
-               for Postcondition of Postconditions loop
-                  Process_Quantified_Expressions
-                    (Postcondition, FA, Connection_Map, The_Context);
-               end loop;
-            end;
-
-         when Kind_Package_Body =>
-            --  Look into the spec
-            Process_Quantified_Expressions
-              (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
-            Process_Quantified_Expressions
-              (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
-
-            --  Look at the body
-            Process_Quantified_Expressions
-              (Declarations (Body_N), FA, Connection_Map, The_Context);
-            if Present (Handled_Statement_Sequence (Body_N)) then
-               Process_Quantified_Expressions
-                 (Statements (Handled_Statement_Sequence (Body_N)),
-                  FA, Connection_Map, The_Context);
-            end if;
-
-            --  Look into initial conditions
-            declare
-               Postconditions : constant Node_Lists.List :=
-                 Get_Postcondition_Expressions (Spec_Entity
-                                                  (FA.Analyzed_Entity),
-                                                Refined => False);
-            begin
-               for Postcondition of Postconditions loop
-                  Process_Quantified_Expressions
-                    (Postcondition, FA, Connection_Map, The_Context);
-               end loop;
-            end;
 
       end case;
 
