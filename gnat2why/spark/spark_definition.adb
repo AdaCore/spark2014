@@ -3714,14 +3714,14 @@ package body SPARK_Definition is
                Mark_Violation
                  ("classwide invariant", E, "SPARK RM 7.3.2(2)");
 
-               --  Partial invariants are not allowed in SPARK.
+            --  Partial invariants are not allowed in SPARK.
 
             elsif Present (Partial_Invariant_Procedure (E)) then
                Mark_Violation
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-               --  Only mark the invariant as part of the type's fullview.
+            --  Only mark the invariant as part of the type's fullview.
 
             elsif not Is_Partial_View (E)
               and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
@@ -3739,25 +3739,35 @@ package body SPARK_Definition is
                     ("type invariant on completion of "
                      & "private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-                  --  We currently do not support invariants on type declared
-                  --  in a nested package. This restriction results in
-                  --  simplifications in deciding wether a type invariant
-                  --  should be checked or considered to hold in the program.
+               --  We currently do not support invariants on type declared in a
+               --  nested package. This restriction results in simplifications
+               --  in invariant checks on subprogram parameters/global
+               --  variables, as well as in determining which are the type
+               --  invariants which are visible at a given program point.
 
                elsif not Is_Compilation_Unit (Enclosing_Unit (E)) then
                   Mark_Unsupported
-                    ("type invariants not immediately in a compilation unit",
+                    ("type invariant not immediately in a compilation unit",
                      E);
 
-                  --  We currently do not support invariants on protected types
+               elsif Is_Child_Unit (Enclosing_Unit (E)) then
+                  Mark_Unsupported ("type invariant in child unit", E);
+
+               --  We currently do not support invariants on protected types.
+               --  To support them, we would probably need some new RM
+               --  RM wording in SPARK or new syntax in Ada (see P826-030).
 
                elsif Is_Protected_Type (E) then
-                  Mark_Unsupported ("type invariants on protected types", E);
+                  Mark_Unsupported ("type invariant on protected types", E);
 
-                  --  We currently do not support invariants on tagged types
+               --  We currently do not support invariants on tagged types. To
+               --  support them, we would need to introduce checks for type
+               --  invariants of childs on dispatching calls to root primitives
+               --  (see SPARK RM 7.3.2(8) and test
+               --  P801-002__invariant_on_tagged_types).
 
                elsif Is_Tagged_Type (E) then
-                  Mark_Unsupported ("type invariants on tagged types", E);
+                  Mark_Unsupported ("type invariant on tagged types", E);
                else
 
                   --  Add the type invariant to delayed aspects to be marked
@@ -3774,17 +3784,39 @@ package body SPARK_Definition is
                      Delayed_Type_Aspects.Include (Invariant_Procedure (E),
                                                    Delayed_Mapping);
                   end;
-
-                  --  Still emit a warning, as checks are not done yet
-
-                  if Emit_Warning_Info_Messages
-                    and then SPARK_Pragma_Is (Opt.On)
-                  then
-                     Error_Msg_N
-                       ("?type invariant ignored (not yet supported)", E);
-                  end if;
                end if;
             end if;
+         end if;
+
+         --  We currently do not support invariants on components of tagged
+         --  types, if the invariant is visible. It is still allowed to include
+         --  types with invariants in tagged types as long as the tagged type
+         --  is not visible from the scope of the invariant. To support them,
+         --  we would need to introduce checks for type invariants of
+         --  components of childs on dispatching calls to root primitives
+         --  (see SPARK RM 7.3.2(8) and test
+         --  P801-002__invariant_on_tagged_component).
+
+         if Is_Tagged_Type (E)
+           and then not Is_Partial_View (E)
+           and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+         then
+            declare
+               Comp : Node_Id := First_Component_Or_Discriminant (E);
+
+            begin
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then In_SPARK (Etype (Comp))
+                    and then Invariant_Check_Needed (Etype (Comp))
+                  then
+                     Mark_Unsupported
+                       ("type invariant on components of tagged types", E);
+                  end if;
+
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
          end if;
 
          --  Check default initialization

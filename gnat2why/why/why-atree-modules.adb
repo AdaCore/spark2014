@@ -1419,12 +1419,17 @@ package body Why.Atree.Modules is
 
       procedure Insert_Type_Symbols (E : Entity_Id)
         with Pre => Is_Type (E);
-      --  add the symbols for type entity E
+      --  Add the symbols for type entity E
       --  @param E a type entity
 
       procedure Insert_Object_Symbols (E : Entity_Id)
         with Pre => Is_Object (E);
-      --  add the symbols for object entity E
+      --  Add the symbols for object entity E
+      --  @param E an object entity
+
+      procedure Insert_Subprogram_Symbols (E : Entity_Id)
+        with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry;
+      --  Add the symbols for subprogram or entry entity E
       --  @param E an object entity
 
       -------------------
@@ -1485,6 +1490,23 @@ package body Why.Atree.Modules is
 
       end Insert_Object_Symbols;
 
+      -------------------------------
+      -- Insert_Subprogram_Symbols --
+      -------------------------------
+
+      procedure Insert_Subprogram_Symbols (E : Entity_Id) is
+         M : constant W_Module_Id := E_Axiom_Module (E);
+
+      begin
+         Insert_Symbol
+           (E, WNE_Check_Invariants_On_Call,
+            New_Identifier
+              (Symbol => NID ("check_invariants_on_call"),
+               Module => M,
+               Domain => EW_Prog,
+               Typ    => EW_Unit_Type));
+      end Insert_Subprogram_Symbols;
+
       -------------------------
       -- Insert_Type_Symbols --
       -------------------------
@@ -1540,6 +1562,23 @@ package body Why.Atree.Modules is
               (E, WNE_Dynamic_Invariant,
                New_Identifier
                  (Symbol => NID ("dynamic_invariant"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
+         --  Add symbol for the function checking that the invariant of a type
+         --  holds. This symbol is registered in the axiom module, so that
+         --  the function can be directly defined there instead of being first
+         --  declared in the entity module and then axiomatized in the axiom
+         --  module (to have visibility over constants/functions in the
+         --  definition).
+
+         if Has_Invariants_In_SPARK (E) then
+            Insert_Symbol
+              (E, WNE_Type_Invariant,
+               New_Identifier
+                 (Symbol => NID ("type_invariant"),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -2132,6 +2171,8 @@ package body Why.Atree.Modules is
          Insert_Type_Symbols (E);
       elsif Is_Object (E) then
          Insert_Object_Symbols (E);
+      elsif Ekind (E) in E_Function | E_Procedure | E_Entry then
+         Insert_Subprogram_Symbols (E);
       end if;
    end Insert_Why_Symbols;
 

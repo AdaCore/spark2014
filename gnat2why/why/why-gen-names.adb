@@ -738,6 +738,7 @@ package body Why.Gen.Names is
             | WNE_Attr_Value_Component_Size
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
+            | WNE_Check_Invariants_On_Call
             | WNE_Check_Not_First
             | WNE_Check_Not_Last
             | WNE_Default_Init
@@ -783,6 +784,7 @@ package body Why.Gen.Names is
             | WNE_To_Int_4
             | WNE_To_Real
             | WNE_To_Rep
+            | WNE_Type_Invariant
          =>
             raise Program_Error);
 

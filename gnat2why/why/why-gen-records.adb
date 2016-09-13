@@ -185,7 +185,7 @@ package body Why.Gen.Records is
          if Is_Not_Hidden_Discriminant (Discr) then
 
             R_Acc := New_Ada_Record_Access
-                 (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
+              (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
 
             Tmps (I) := New_Temp_Identifier
               (Discr, EW_Abstract (Etype (Discr)));
@@ -229,9 +229,7 @@ package body Why.Gen.Records is
       end loop;
 
       for Field of Get_Component_Set (Ty_Ext) loop
-         if Ekind (Field) = E_Component
-           and then Component_Is_Visible_In_Type (Ty_Ext, Field)
-         then
+         if Ekind (Field) = E_Component then
 
             R_Acc := New_Ada_Record_Access
               (Empty, EW_Term, R_Expr, Field, Ty_Ext);

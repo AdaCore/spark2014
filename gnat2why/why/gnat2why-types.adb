@@ -85,6 +85,12 @@ package body Gnat2Why.Types is
       with Pre => Has_Predicates (E);
       --  Create a function to express type E's predicate
 
+      procedure Create_Type_Invariant
+        (File : W_Section_Id;
+         E    : Entity_Id)
+      with Pre => Has_Invariants_In_SPARK (E);
+      --  Create a function to express type E's invariant
+
       -------------------------------------
       -- Create_Axioms_For_Scalar_Bounds --
       -------------------------------------
@@ -183,7 +189,7 @@ package body Gnat2Why.Types is
               New_Temp_Identifier (Typ => EW_Bool_Type);
             --  Only assume initial condition for the components
 
-            Def : W_Pred_Id;
+            Def      : W_Pred_Id;
 
          begin
             --  Use local names for variables
@@ -257,7 +263,7 @@ package body Gnat2Why.Types is
                                    Base_Name => "expr");
             --  Expression on which we want to assume the property
 
-            Def : W_Pred_Id;
+            Def      : W_Pred_Id;
 
          begin
             --  Use local names for variables
@@ -320,7 +326,7 @@ package body Gnat2Why.Types is
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => Type_Of_Node (E));
             --  Expression on which we want to assume the property
-            Def : W_Pred_Id;
+            Def      : W_Pred_Id;
 
          begin
             --  Use local names for variables
@@ -341,9 +347,9 @@ package body Gnat2Why.Types is
             Emit
               (File,
                Why.Gen.Binders.New_Function_Decl
-                 (Domain      => EW_Pred,
-                  Name        => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
-                  Def         => +Def,
+                 (Domain  => EW_Pred,
+                  Name    => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
+                  Def     => +Def,
                   Labels  => Name_Id_Sets.To_Set (NID ("inline")),
                   Binders =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
@@ -353,6 +359,61 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
       end Create_Dynamic_Predicate;
+
+      ---------------------------
+      -- Create_Type_Invariant --
+      ---------------------------
+
+      procedure Create_Type_Invariant
+        (File : W_Section_Id;
+         E    : Entity_Id)
+      is
+         Variables : Flow_Id_Sets.Set;
+
+      begin
+         --  Get the set of variables used in E's predicate
+
+         Variables_In_Type_Invariant (E, Variables);
+
+         declare
+            Items    : Item_Array :=
+              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Main_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Type_Of_Node (E));
+            --  Expression on which we want to assume the property
+            Def      : W_Pred_Id;
+
+         begin
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Def := Compute_Top_Level_Type_Invariant
+                     (Expr     => +Main_Arg,
+                      Ty       => E,
+                      Params   => Logic_Params (File),
+                      Use_Pred => False);
+
+            Emit
+              (File,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Pred,
+                  Name    => To_Local (E_Symb (E, WNE_Type_Invariant)),
+                  Def     => +Def,
+                  Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                  Binders =>
+                    Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                    others => <>))
+                    & Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+      end Create_Type_Invariant;
 
       Ty : constant W_Type_Id := EW_Abstract (E);
 
@@ -456,6 +517,10 @@ package body Gnat2Why.Types is
 
       if Has_Predicates (E) then
          Create_Dynamic_Predicate (File, E);
+      end if;
+
+      if Has_Invariants_In_SPARK (E) then
+         Create_Type_Invariant (File, E);
       end if;
 
       --  If E is a scalar type with dynamic bounds, we give axioms for the

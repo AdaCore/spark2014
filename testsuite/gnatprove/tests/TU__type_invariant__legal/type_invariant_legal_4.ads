@@ -4,7 +4,7 @@
 --  or in out) is treated like a parameter of the given mode. This rule applies
 --  regardless of where the global object in question is declared.
 
-package Type_Invariant_Legal_4 with SPARK_Mode, Abstract_State => State is
+package Type_Invariant_Legal_4 with SPARK_Mode, Abstract_State => State is  --  @INVARIANT_CHECK:PASS
 
    type T is private;
 
@@ -18,7 +18,7 @@ package Type_Invariant_Legal_4 with SPARK_Mode, Abstract_State => State is
 private
    type T is new Natural with Type_Invariant => T /= 0;  --  @INVARIANT_CHECK:FAIL
 
-   X : T := 1 with Part_Of => State;  --  @INVARIANT_CHECK:PASS
+   X : T := 1 with Part_Of => State;
 
    function Priv return Integer with Pre => True;
    function E_Priv return Integer;  --  @INVARIANT_CHECK:NONE

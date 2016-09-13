@@ -51,7 +51,6 @@ with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
-with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
 with Ttypes;
 with Uintp;                          use Uintp;
@@ -281,7 +280,7 @@ package body Gnat2Why.Expr is
    --  @param Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
    --  @param Params transformation parameters
-   --  @result Why3 pred that expressed the check
+   --  @return Why3 predicate that expressed the check
 
    function New_Predicate_Check
      (Ada_Node         : Node_Id;
@@ -293,7 +292,28 @@ package body Gnat2Why.Expr is
    --  @param W_Expr Why3 expression on which to check the predicate
    --  @param On_Default_Value True iff this predicate check applies to the
    --    default value for a type
-   --  @result Why3 program that performs the check
+   --  @return Why3 program that performs the check
+
+   function New_Type_Invariant_Call
+     (Ty     : Entity_Id;
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  @param Ty type whose type invariant needs to be checked
+   --  @param W_Expr Why3 expression on which to check the invariant
+   --  @param Params transformation parameters
+   --  @return Why3 predicate that expresses the check
+
+   function New_Invariant_Check
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
+      W_Expr           : W_Expr_Id;
+      On_Default_Value : Boolean := False) return W_Prog_Id;
+   --  @param Ada_Node node to which the check is attached
+   --  @param Ty type whose invariant needs to be checked
+   --  @param W_Expr Why3 expression on which to check the invariant
+   --  @param On_Default_Value True iff this invariant check applies to the
+   --    default value for a type
+   --  @return Why3 program that performs the check
 
    function One_Level_Access
      (N      : Node_Id;
@@ -416,7 +436,7 @@ package body Gnat2Why.Expr is
                                     Pragma_Priority;
    --  @param Prag either a pragma Priority or a pragma Interrupt_priority
    --  @return an expression that checks that the argument of the pragma is in
-   --    the required range for this object type and pragma type
+   --          the required range for this object type and pragma type
 
    function Transform_Slice
      (Params : Transformation_Params;
@@ -433,6 +453,19 @@ package body Gnat2Why.Expr is
    --  Why3 predicate equivalent of the assertion expression, and
    --  Transform_Statement contains the check program expression
    --  that corresponds to the assertion expression.
+
+   function Type_Invariant_Expression
+     (Expr     : W_Expr_Id;
+      Inv_Subp : Entity_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id;
+   --  Transform the expression of a type_invariant
+   --  @param Expr expression on which the invariant is called
+   --  @param Inv_Subp entity of the invariant procedure
+   --  @param Domain domain where we want to do the transformation
+   --  @param Params transformation parameters
+   --  @return the translation of the expression contained in the invariant
+   --          applied on Expr.
 
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
@@ -1424,6 +1457,90 @@ package body Gnat2Why.Expr is
             Typ         => Get_Type (Then_Expr));
       end if;
    end Case_Expr_Of_Ada_Node;
+
+   ---------------------------------
+   --  Check_Type_With_Invariants --
+   ---------------------------------
+
+   function Check_Type_With_Invariants
+     (Params : Transformation_Params;
+      N      : Entity_Id) return W_Prog_Id
+   is
+      Ty        : constant Entity_Id :=
+        (if Ekind (N) in SPARK_Util.Types.Subtype_Kind then Retysp (Etype (N))
+         else Retysp (N));
+      --  N can be a subtype of an Itype introduced by the frontend. In this
+      --  case, we should to do the checks on the introduced Itype instead.
+
+      Tmp_Id    : constant W_Identifier_Id :=
+        New_Temp_Identifier (Ty, Type_Of_Node (Ty));
+      Tmp_Post  : constant W_Pred_Id :=
+        Compute_Dynamic_Invariant
+          (Expr        => +New_Result_Ident (Type_Of_Node (Ty)),
+           Ty          => Ty,
+           Initialized => True_Term,
+           Only_Var    => False_Term,
+           Params      => Params);
+      Tmp_Def   : constant W_Prog_Id :=
+        New_Any_Expr (Ada_Node    => N,
+                      Pre         => True_Pred,
+                      Post        => Tmp_Post,
+                      Return_Type => Type_Of_Node (Ty));
+
+      Inv_RTE   : W_Prog_Id;
+      Inv_Check : W_Prog_Id;
+
+   begin
+      --  Generate:
+      --  let tmp = any Ty ensure {dynamic_invariant (result)} in
+      --  ignore (inv_expr (tmp));  -- only if Ty has an invariant
+      --  assume {default_init (tmp)};
+      --  assert {inv_expr (tmp)}
+
+      --  If the type itself has an invariant, check for runtime errors in the
+      --  type's invariant.
+
+      if Has_Invariants_In_SPARK (Ty) then
+         declare
+            Inv_Subp  : constant Node_Id := Invariant_Procedure (Ty);
+            Inv_Expr  : constant Node_Id :=
+              Get_Expr_From_Check_Only_Proc (Inv_Subp);
+            Inv_Param : constant Entity_Id :=
+              Defining_Entity (First (Parameter_Specifications
+                               (Subprogram_Specification (Inv_Subp))));
+         begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Insert_Entity (Inv_Param, Tmp_Id);
+            Inv_RTE :=
+              +Transform_Expr (Expr          => Inv_Expr,
+                               Expected_Type => EW_Bool_Type,
+                               Domain        => EW_Prog,
+                               Params        => Params);
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+            Inv_RTE := New_Ignore (Inv_Expr, Inv_RTE);
+         end;
+      else
+         Inv_RTE := +Void;
+      end if;
+
+      --  Check that the default values of the type and all its subtypes
+      --  respect its invariant.
+
+      Inv_Check :=
+        +Sequence
+        (Left  => New_Assume_Statement
+           (Ty, Compute_Default_Init
+                (+Tmp_Id, N, Params, Include_Subtypes => True)),
+         Right => New_Invariant_Check (N, Ty, +Tmp_Id, True));
+
+      return New_Ignore (Ty,
+                         +New_Typed_Binding
+                           (Domain  => EW_Prog,
+                            Name    => Tmp_Id,
+                            Def     => +Tmp_Def,
+                            Context => +Sequence (Inv_RTE, Inv_Check)));
+   end Check_Type_With_Invariants;
 
    ------------------------
    -- Check_Scalar_Range --
@@ -2545,11 +2662,13 @@ package body Gnat2Why.Expr is
    --------------------------
 
    function Compute_Default_Init
-     (Expr           : W_Expr_Id;
-      Ty             : Entity_Id;
-      Params         : Transformation_Params := Body_Params;
-      Skip_Last_Cond : W_Term_Id := False_Term;
-      Use_Pred       : Boolean := True) return W_Pred_Id is
+     (Expr             : W_Expr_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params := Body_Params;
+      Skip_Last_Cond   : W_Term_Id := False_Term;
+      Use_Pred         : Boolean := True;
+      Include_Subtypes : Boolean := False) return W_Pred_Id
+   is
 
       Ty_Ext : constant Entity_Id := Retysp (Ty);
 
@@ -2630,6 +2749,9 @@ package body Gnat2Why.Expr is
          return W_Pred_Id
       is
       begin
+         --  If the type is constrained, get the value of discriminants from
+         --  the stored constraints.
+
          if Has_Discriminants (Ty_Ext) and then Is_Constrained (Ty_Ext) then
             return +New_Comparison
               (Symbol => Why_Eq,
@@ -2644,8 +2766,13 @@ package body Gnat2Why.Expr is
                     Get_Stored_Constraint_For_Discr (Ty_Ext, E),
                   Expected_Type => Type_Of_Node (D_Ty)),
                Domain => EW_Pred);
-         else
+
+         --  Default initialized objects of an unconstrained record type have
+         --  the discriminant's defaults.
+
+         elsif not Include_Subtypes then
             pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
+
             return +New_Comparison
               (Symbol => Why_Eq,
                Left   => +Insert_Simple_Conversion
@@ -2660,6 +2787,13 @@ package body Gnat2Why.Expr is
                   Domain        => EW_Term,
                   Params        => Params),
                Domain => EW_Pred);
+
+         --  Discriminants must be initialized
+
+         else
+            return Compute_Dynamic_Invariant
+              (D_Expr, D_Ty, Initialized => True_Term,
+               Params => Params, Use_Pred => Use_Pred);
          end if;
       end Default_Init_For_Discr;
 
@@ -2713,13 +2847,16 @@ package body Gnat2Why.Expr is
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Pred_Id := True_Pred;
       Variables  : Flow_Id_Sets.Set;
-   begin
 
+   --  Start of processing for Compute_Default_Init
+
+   begin
       --  If Use_Precomputed_Func is true, then we already have generated a
       --  predicate for the default initial value of elements of type Ty_Ext,
       --  except if the type is an itype or if it is standard boolen.
 
       if Use_Pred
+        and then not Include_Subtypes
         and then not Is_Itype (Ty_Ext)
         and then not Is_Standard_Boolean_Type (Ty_Ext)
       then
@@ -2769,7 +2906,6 @@ package body Gnat2Why.Expr is
       elsif Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
-         pragma Assert (Is_Constrained (Ty_Ext));
 
          --  Generates:
          --  forall i1 : int ..
@@ -3014,6 +3150,8 @@ package body Gnat2Why.Expr is
       Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
       Variables : Flow_Id_Sets.Set;
 
+   --  Start of processing for Compute_Dynamic_Invariant
+
    begin
       --  If Use_Pred is true, then we already have generated a predicate
       --  for the dynamic invariant of elements of type Ty_Ext, except if the
@@ -3214,9 +3352,8 @@ package body Gnat2Why.Expr is
       --  data, when the top predicate should be included.
 
       declare
-         Typ_Pred : constant W_Pred_Id :=
-           Compute_Dynamic_Predicate
-             (Expr, Ty_Ext, Params, Use_Pred => False);
+         Typ_Pred   : constant W_Pred_Id :=
+           Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
          Check_Pred : constant W_Pred_Id :=
            New_Conditional
              (Condition => +Top_Predicate,
@@ -3232,6 +3369,24 @@ package body Gnat2Why.Expr is
                                      Right  => +Check_Pred,
                                      Domain => EW_Pred);
          end if;
+      end;
+
+      --  Add possible type invariant. Only include type invariants that are
+      --  defined outside the current compilation unit. Only deal with the
+      --  top-level invariants as invariants of components will be added in
+      --  recursive calls.
+
+      declare
+         Type_Inv : constant W_Pred_Id :=
+           Compute_Type_Invariant
+             (Expr, Ty_Ext, Params,
+              On_External  => True,
+              Include_Comp => False,
+              Use_Pred     => Use_Pred);
+      begin
+         T := +New_And_Then_Expr (Left   => +T,
+                                  Right  => +Type_Inv,
+                                  Domain => EW_Pred);
       end;
 
       --  Compute dynamic invariant for its components
@@ -3412,6 +3567,172 @@ package body Gnat2Why.Expr is
       end if;
    end Compute_Tag_Check;
 
+   --------------------------------------
+   -- Compute_Top_Level_Type_Invariant --
+   --------------------------------------
+
+   function Compute_Top_Level_Type_Invariant
+     (Expr     : W_Term_Id;
+      Ty       : Entity_Id;
+      Params   : Transformation_Params := Body_Params;
+      Use_Pred : Boolean := True) return W_Pred_Id
+   is
+      --  If Ty's fullview is in SPARK, go to its underlying type to check its
+      --  kind.
+
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+
+   begin
+      if Has_Invariants_In_SPARK (Rep_Ty) then
+
+            --  If Use_Pred is true, then we already have generated a predicate
+            --  for the type invariant of elements of type Ty. We also avoid
+            --  using the predicate for objects in split form as it would
+            --  introduce an unnecessary conversion harmful to provers.
+
+            if Use_Pred
+              and then Eq_Base (Type_Of_Node (Rep_Ty), Get_Type (+Expr))
+            then
+               return New_Type_Invariant_Call (Rep_Ty, Expr, Params);
+            else
+               return
+                 +Type_Invariant_Expression
+                 (Expr     => +Expr,
+                  Inv_Subp => Invariant_Procedure (Rep_Ty),
+                  Domain   => EW_Pred,
+                  Params   => Params);
+            end if;
+      else
+         return True_Pred;
+      end if;
+   end Compute_Top_Level_Type_Invariant;
+
+   ----------------------------
+   -- Compute_Type_Invariant --
+   ----------------------------
+
+   function Compute_Type_Invariant
+     (Expr         : W_Term_Id;
+      Ty           : Entity_Id;
+      Params       : Transformation_Params := Body_Params;
+      On_External  : Boolean := False;
+      On_Internal  : Boolean := False;
+      Include_Comp : Boolean := True;
+      Use_Pred     : Boolean := True) return W_Pred_Id
+   is
+      function Invariant_For_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id;
+      --  @param C_Expr expression for a component
+      --  @param C_Ty component type
+      --  @param E not referenced
+      --  @return predicate for individual components
+
+      function Invariant_For_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id)
+         return W_Pred_Id
+      is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
+
+      ------------------------
+      -- Invariant_For_Comp --
+      ------------------------
+
+      function Invariant_For_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id
+      is
+        (Compute_Type_Invariant
+           (C_Expr, C_Ty, Params, On_External => On_External,
+            On_Internal => On_Internal));
+
+      function Invariant_For_Array is new Build_Predicate_For_Array
+        (Invariant_For_Comp);
+
+      function Invariant_For_Record is new Build_Predicate_For_Record
+        (Invariant_For_Comp, Invariant_For_Comp);
+
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+      --  If Ty's fullview is in SPARK, go to its underlying type to check its
+      --  kind.
+
+      Pred : W_Pred_Id := True_Pred;
+
+   --  Start of processing for Compute_Type_Invariant
+
+   begin
+      --  Check for invariants on the type and its ancestors
+
+      declare
+         Current : Entity_Id := Rep_Ty;
+         Parent  : Entity_Id;
+      begin
+         loop
+            if Has_Invariants_In_SPARK (Current)
+              and then (if Has_Visible_Type_Invariants (Current)
+                        then On_Internal
+                        else On_External)
+            then
+               Pred := +New_And_Then_Expr
+                 (Left   => +Pred,
+                  Right  => +Compute_Top_Level_Type_Invariant
+                    (+Insert_Simple_Conversion
+                         (Domain         => EW_Term,
+                          Expr           => +Expr,
+                          To             => Type_Of_Node (Current),
+                          Force_No_Slide => True), Current, Params,
+                     Use_Pred => Use_Pred),
+                  Domain   => EW_Pred);
+            end if;
+
+            if Full_View_Not_In_SPARK (Current) then
+               Parent := Get_First_Ancestor_In_SPARK (Current);
+            else
+               Parent := Retysp (Etype (Current));
+            end if;
+            exit when Current = Parent;
+            Current := Parent;
+         end loop;
+      end;
+
+      --  Check for invariants on components.
+
+      if Include_Comp then
+
+         --  For array types, produce:
+         --  (forall i1, i2 .... in_range1 (i1) /\ inrange2 (i2) /\ ... ->
+         --      invariant (a (i1, i2, ...)))
+
+         if Is_Array_Type (Rep_Ty) then
+
+            Pred := +New_And_Then_Expr
+              (Left   => +Pred,
+               Right  => +Invariant_For_Array (Expr, Rep_Ty),
+               Domain => EW_Pred);
+
+         --  For array record types, produce:
+         --  invariant (r.d1) /\ ...
+         --      /\ (check_for_f1 (r) -> invariant (r.f1)) /\ ...
+
+         elsif Is_Private_Type (Rep_Ty)
+           or else Is_Record_Type (Rep_Ty)
+           or else Is_Concurrent_Type (Rep_Ty)
+         then
+
+            Pred := +New_And_Then_Expr
+              (Left   => +Pred,
+               Right  => +Invariant_For_Record (Expr, Rep_Ty),
+               Domain => EW_Pred);
+         end if;
+      end if;
+
+      return Pred;
+   end Compute_Type_Invariant;
+
    --------------------------------------------
    -- Declaration_Is_Associated_To_Parameter --
    --------------------------------------------
@@ -3492,12 +3813,12 @@ package body Gnat2Why.Expr is
                 (Symbol_Table, Get_Entity_Of_Variable (+Expr));
          begin
             Insert_Item
-              (I => Item_Type'(Kind     => UCArray,
-                               Content  =>
+              (I => Item_Type'(Kind    => UCArray,
+                               Content =>
                                  Binder_Type'(B_Name => Pred_Id,
                                               others => <>),
-                               Dim      => E.Dim,
-                               Bounds   => E.Bounds),
+                               Dim     => E.Dim,
+                               Bounds  => E.Bounds),
                E => Pred_Param);
          end;
       else
@@ -3621,6 +3942,33 @@ package body Gnat2Why.Expr is
    begin
       return Is_Visible (E, Our_Scope);
    end Has_Visibility_On_Refined;
+
+   ----------------------------
+   -- Insert_Invariant_Check --
+   ----------------------------
+
+   function Insert_Invariant_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      W_Expr   : W_Prog_Id;
+      Var_Ent  : Entity_Id := Empty) return W_Prog_Id
+   is
+      W_Tmp : constant W_Identifier_Id :=
+        New_Temp_Identifier (Typ      => Get_Type (+W_Expr),
+                             Ada_Node => Var_Ent);
+      --  If W_Expr is an array in split form, we need to link W_Tmp to Var_Ent
+      --  so that the proper bounds can be retrieved.
+
+      W_Seq : constant W_Prog_Id :=
+        Sequence (New_Invariant_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
+   begin
+      return +W_Expr_Id'(New_Binding (Ada_Node => Ada_Node,
+                                      Domain   => EW_Prog,
+                                      Name     => W_Tmp,
+                                      Def      => +W_Expr,
+                                      Context  => +W_Seq,
+                                      Typ      => Get_Type (+W_Expr)));
+   end Insert_Invariant_Check;
 
    ---------------------------
    -- Insert_Overflow_Check --
@@ -5472,7 +5820,7 @@ package body Gnat2Why.Expr is
       Variables : Flow_Id_Sets.Set;
 
    begin
-      Variables_In_Dynamic_Invariant (Ty, Variables);
+      Variables_In_Dynamic_Predicate (Ty, Variables);
 
       declare
          Vars  : constant W_Expr_Array :=
@@ -5517,6 +5865,69 @@ package body Gnat2Why.Expr is
                       Def    => +Check),
          Assert_Kind => EW_Assert);
    end New_Predicate_Check;
+
+   -----------------------------
+   -- New_Type_Invariant_Call --
+   -----------------------------
+
+   function New_Type_Invariant_Call
+     (Ty     : Entity_Id;
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+      Variables : Flow_Id_Sets.Set;
+
+   begin
+      Variables_In_Type_Invariant (Ty, Variables);
+
+      declare
+         Vars  : constant W_Expr_Array :=
+           Get_Args_From_Variables
+             (To_Name_Set (Variables), Params.Ref_Allowed);
+         Num_B : constant Positive := 1 + Vars'Length;
+         Args  : W_Expr_Array (1 .. Num_B);
+
+      begin
+         Args (1)          := +W_Expr;
+         Args (2 .. Num_B) := Vars;
+
+         return +New_Call (Name => E_Symb (Ty, WNE_Type_Invariant),
+                           Args => Args,
+                           Typ  => EW_Bool_Type);
+      end;
+   end New_Type_Invariant_Call;
+
+   -------------------------
+   -- New_Invariant_Check --
+   -------------------------
+
+   function New_Invariant_Check
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
+      W_Expr           : W_Expr_Id;
+      On_Default_Value : Boolean := False) return W_Prog_Id
+   is
+      Check : constant W_Pred_Id :=
+        Compute_Type_Invariant (Expr         => +W_Expr,
+                                Ty           => Ty,
+                                Params       => Body_Params,
+                                On_Internal  => True);
+      Kind : constant VC_Kind :=
+        (if On_Default_Value then
+           VC_Invariant_Check_On_Default_Value
+         else
+           VC_Invariant_Check);
+   begin
+      if Is_True_Boolean (+Check) then
+         return +Void;
+      else
+         return New_Assert
+           (Pred =>
+              New_Label (Labels => New_VC_Labels (Ada_Node, Kind),
+                         Def    => +Check),
+            Assert_Kind => EW_Assert);
+      end if;
+   end New_Invariant_Check;
 
    ----------------------
    -- One_Level_Access --
@@ -9375,26 +9786,48 @@ package body Gnat2Why.Expr is
 
                R := Assignment_Of_Obj_Decl (Decl);
 
-               if not Is_Partial_View (Obj) then
-                  R :=
-                    Sequence
-                      (R,
-                       Assume_Dynamic_Invariant
-                         (Expr        =>
-                            +Transform_Identifier (Expr   => Lvalue,
-                                                   Ent    => Lvalue,
-                                                   Domain => EW_Term,
-                                                   Params => Body_Params),
-                          Ty          => Etype (Lvalue),
-                          Initialized => Present (Expression (Decl)),
-                          Only_Var    => False));
-               end if;
+               --  Assume dynamic invariant of the object
 
+               if not Is_Partial_View (Obj) then
+                  declare
+                     Obj_Expr : constant W_Term_Id :=
+                       +Transform_Identifier (Expr   => Lvalue,
+                                              Ent    => Lvalue,
+                                              Domain => EW_Term,
+                                              Params => Body_Params);
+                  begin
+                     R :=
+                       Sequence
+                         (R,
+                          Assume_Dynamic_Invariant
+                            (Expr        => Obj_Expr,
+                             Ty          => Etype (Lvalue),
+                             Initialized => Present (Expression (Decl)),
+                             Only_Var    => False));
+
+                     --  Check the type invariant of visible constants with no
+                     --  variable inputs.
+
+                     if not Has_Variable_Input (Obj)
+                       and then Is_Globally_Visible (Obj)
+                       and then Invariant_Check_Needed (Obj_Type)
+                     then
+                        pragma Assert (not Is_Mutable_In_Why (Obj));
+                        R :=
+                          Sequence
+                            (R,
+                             New_Invariant_Check
+                               (Ada_Node => Decl,
+                                Ty       => Obj_Type,
+                                W_Expr   => +Obj_Expr));
+                     end if;
+                  end;
+               end if;
             end;
 
          when N_Subtype_Declaration
             | N_Full_Type_Declaration
-         =>
+            =>
             declare
                Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
                Base : Entity_Id := Get_Base_Type (Decl);
@@ -9520,6 +9953,21 @@ package body Gnat2Why.Expr is
                         & Entity_Kind'Image (Ekind (Ent)));
                      raise Not_Implemented;
                   end case;
+
+                  --  If the type has an invariant, check that there can be no
+                  --  runtime error in the type invariant.
+                  --  If the type, one of its ancestors, or one of its
+                  --  components has an invariant, check that default values of
+                  --  the type and all its subtypes respect the invariant.
+
+                  if Nkind (Decl) = N_Full_Type_Declaration
+                    and then Invariant_Check_Needed (Ent)
+                  then
+                     R := Sequence
+                       (R,
+                        Check_Type_With_Invariants (Params => Body_Params,
+                                                    N      => Ent));
+                  end if;
                end if;
             end;
 
@@ -10621,6 +11069,16 @@ package body Gnat2Why.Expr is
                                     Local_Params);
             end if;
 
+            --  Invariant checks are introduced explicitly as they need only be
+            --  performed on actual type conversions (and not view
+            --  conversions).
+
+            if Domain = EW_Prog
+              and then Invariant_Check_Needed (Expr_Type)
+            then
+               T := +Insert_Invariant_Check (Expr, Expr_Type, +T);
+            end if;
+
          when N_Unchecked_Type_Conversion =>
 
             --  Source unchecked type conversion nodes were rewritten as such
@@ -10995,6 +11453,23 @@ package body Gnat2Why.Expr is
       end if;
 
       if Domain = EW_Prog then
+
+         --  Insert invariant check if needed
+
+         if Subp_Needs_Invariant_Checks (Subp) then
+            T := +Sequence
+              (+New_VC_Call
+                 (Ada_Node => Expr,
+                  Name     => E_Symb (Subp, WNE_Check_Invariants_On_Call),
+                  Progs    => Args,
+                  Reason   => VC_Invariant_Check,
+                  Domain   => Domain,
+                  Typ      => EW_Unit_Type),
+               +T);
+         end if;
+
+         --  Insert tag check if needed
+
          if Present (Controlling_Argument (Expr)) then
             T := +Sequence (Compute_Tag_Check (Expr, Params),
                             +T);
@@ -13688,6 +14163,23 @@ package body Gnat2Why.Expr is
                        EW_Unit_Type);
                end if;
 
+               --  Insert invariant check if needed
+
+               if Subp_Needs_Invariant_Checks (Subp) then
+                  Call := +Sequence
+                    (+New_VC_Call
+                       (Ada_Node => Stmt_Or_Decl,
+                        Name     =>
+                          E_Symb (Subp, WNE_Check_Invariants_On_Call),
+                        Progs    => Args,
+                        Reason   => VC_Invariant_Check,
+                        Domain   => EW_Prog,
+                        Typ      => EW_Unit_Type),
+                     +Call);
+               end if;
+
+               --  Insert tag check if needed
+
                Call :=
                  +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
                             +Call);
@@ -13988,6 +14480,74 @@ package body Gnat2Why.Expr is
    end Transform_String_Literal;
 
    -------------------------------
+   -- Type_Invariant_Expression --
+   -------------------------------
+
+   function Type_Invariant_Expression
+     (Expr     : W_Expr_Id;
+      Inv_Subp : Entity_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id
+   is
+      Result    : W_Expr_Id;
+      Inv_Expr  : constant Node_Id :=
+        Get_Expr_From_Check_Only_Proc (Inv_Subp);
+      Inv_Param : constant Entity_Id :=
+        Defining_Entity (First (Parameter_Specifications
+                         (Subprogram_Specification (Inv_Subp))));
+      Inv_Id    : constant W_Identifier_Id :=
+        New_Temp_Identifier (Inv_Param, Get_Type (+Expr));
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  Register the temporary identifier Inv_Id for parameter Inv_Param in
+      --  the symbol table. This ensures both that a distinct name is used each
+      --  time (preventing name capture), and that the type of Expr is used as
+      --  the type used to represent Inv_Param (avoiding type conversion).
+
+      if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
+        and then Has_Array_Type (Get_Ada_Node (+Get_Type (+Expr)))
+      then
+         declare
+            E : constant Item_Type :=
+              Ada_Ent_To_Why.Element
+                (Symbol_Table, Get_Entity_Of_Variable (+Expr));
+         begin
+            Insert_Item
+              (I => Item_Type'(Kind    => UCArray,
+                               Content =>
+                                 Binder_Type'(B_Name => Inv_Id,
+                                              others => <>),
+                               Dim     => E.Dim,
+                               Bounds  => E.Bounds),
+               E => Inv_Param);
+         end;
+      else
+         Insert_Entity (Inv_Param, Inv_Id);
+      end if;
+
+      --  Transform the invariant expression into Why3
+
+      Result := +Transform_Expr (Expr   => Inv_Expr,
+                                 Domain => Domain,
+                                 Params => Params);
+
+      --  Relate the name Inv_Id used in the invariant expression to the
+      --  value Expr for which the invariant is checked.
+
+      Result := New_Binding (Name    => Inv_Id,
+                             Def     => +Expr,
+                             Context => +Result,
+                             Domain  => Domain,
+                             Typ     => Get_Type (+Result));
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      return Result;
+   end Type_Invariant_Expression;
+
+   -------------------------------
    -- Variables_In_Default_Init --
    -------------------------------
 
@@ -14133,8 +14693,8 @@ package body Gnat2Why.Expr is
                Variables.Union (Get_Variables_For_Proof (Default_Init_Expr,
                                                          Ty_Ext));
 
-               --  ??? Remove parameter of DIC procedure. Why is this needed
-               --  now?
+               --  Remove parameter of DIC procedure
+
                Variables.Difference (Get_Variables_For_Proof (Init_Param,
                                                               Ty_Ext));
             end if;
@@ -14282,7 +14842,55 @@ package body Gnat2Why.Expr is
             end if;
          end loop;
       end if;
+
+      --  External type invariant of Ty_Ext and its parents if any
+
+      declare
+         Current : Entity_Id := Ty_Ext;
+         Parent  : Entity_Id;
+      begin
+         loop
+            if Has_Invariants_In_SPARK (Current)
+              and then not Has_Visible_Type_Invariants (Current)
+            then
+               Variables_In_Type_Invariant (Current, Variables);
+            end if;
+
+            if Full_View_Not_In_SPARK (Current) then
+               Parent := Get_First_Ancestor_In_SPARK (Current);
+            else
+               Parent := Retysp (Etype (Current));
+            end if;
+            exit when Current = Parent;
+            Current := Parent;
+         end loop;
+      end;
+
    end Variables_In_Dynamic_Invariant;
+
+   ---------------------------------
+   -- Variables_In_Type_Invariant --
+   ---------------------------------
+
+   procedure Variables_In_Type_Invariant
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set)
+   is
+      Rep_Type      : constant Entity_Id := Retysp (Ty);
+      Inv_Subp      : constant Node_Id := Invariant_Procedure (Rep_Type);
+      Type_Inv_Expr : constant Node_Id :=
+        Get_Expr_From_Check_Only_Proc (Inv_Subp);
+      Inv_Param     : constant Entity_Id :=
+        Defining_Entity (First (Parameter_Specifications
+                         (Subprogram_Specification (Inv_Subp))));
+
+   begin
+      Variables.Union (Get_Variables_For_Proof (Type_Inv_Expr, Rep_Type));
+
+      --  Remove parameter of invariant procedure
+
+      Variables.Difference (Get_Variables_For_Proof (Inv_Param, Rep_Type));
+   end Variables_In_Type_Invariant;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --

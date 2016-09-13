@@ -219,6 +219,30 @@ package body SPARK_Util.Types is
       return Ekind (Retysp (T));
    end Retysp_Kind;
 
+   ---------------------------------
+   -- Has_Visible_Type_Invariants --
+   ---------------------------------
+
+   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (Ty)
+         then Associated_Node_For_Itype (Ty)
+         else Ty);
+
+      Main_CU : Entity_Id := Main_Unit_Entity;
+
+   begin
+      --  If the current compilation unit is a child unit, go to its parent.
+
+      while Is_Child_Unit (Main_CU) loop
+         Main_CU := Unique_Defining_Entity
+           (Unit (Enclosing_Lib_Unit_Node (Scope (Main_CU))));
+      end loop;
+      return Has_Invariants_In_SPARK (Ty) and then
+        Unique_Defining_Entity (Unit (Enclosing_Lib_Unit_Node (Real_Node))) =
+        Main_CU;
+   end Has_Visible_Type_Invariants;
+
    --------------------------------
    -- Check_Needed_On_Conversion --
    --------------------------------
@@ -698,7 +722,11 @@ package body SPARK_Util.Types is
       --  that of its component type.
 
       elsif Is_Array_Type (Typ) then
-         if Present (Default_Aspect_Component_Value (Base_Type (Typ))) then
+         if Present (Default_Aspect_Component_Value
+                     (if Is_Partial_View (Base_Type (Typ))
+                        then Full_View (Base_Type (Typ))
+                        else Base_Type (Typ)))
+         then
             Result := Full_Default_Initialization;
          else
             Result := Default_Initialization (Component_Type (Typ),
@@ -910,6 +938,15 @@ package body SPARK_Util.Types is
             return Info_Maps.Empty_Map;
       end case;
    end Get_Variant_Info;
+
+   ------------------------------
+   -- Has_Invariants_In_SPARK --
+   -----------------------------
+
+   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean is
+     (Has_Own_Invariants (E)
+      and then Ekind (E) not in Subtype_Kind
+      and then (if Is_Partial_View (E) then Entity_In_SPARK (Full_View (E))));
 
    ----------------------------------
    -- Has_Private_Ancestor_Or_Root --
@@ -1190,6 +1227,67 @@ package body SPARK_Util.Types is
 
       Comp_Info.Insert (E, (Variant_Info => Info, Components => Comps));
    end Init_Component_Info_For_Protected_Types;
+
+   ------------------------------
+   -- Invariant_Check_Needed --
+   ------------------------------
+
+   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean
+   is
+      Rep_Ty  : constant Entity_Id := Retysp (Ty);
+      Current : Entity_Id := Rep_Ty;
+      Parent  : Entity_Id;
+
+   begin
+      --  Check for invariants on the type and its ancestors
+
+      loop
+         if Has_Visible_Type_Invariants (Current) then
+            return True;
+         end if;
+
+         if Full_View_Not_In_SPARK (Current) then
+            Parent := Get_First_Ancestor_In_SPARK (Current);
+         else
+            Parent := Retysp (Etype (Current));
+         end if;
+         exit when Current = Parent;
+         Current := Parent;
+      end loop;
+
+      --  Check for invariants on components.
+
+      if Is_Array_Type (Rep_Ty) then
+         return Invariant_Check_Needed (Component_Type (Rep_Ty));
+
+      elsif Is_Private_Type (Rep_Ty)
+        or else Is_Record_Type (Rep_Ty)
+        or else Is_Concurrent_Type (Rep_Ty)
+      then
+         if Has_Discriminants (Rep_Ty) then
+            declare
+               Discr : Entity_Id := First_Discriminant (Rep_Ty);
+            begin
+               while Present (Discr) loop
+                  if Invariant_Check_Needed (Etype (Discr)) then
+                     return True;
+                  end if;
+
+                  Discr := Next_Discriminant (Discr);
+               end loop;
+            end;
+         end if;
+
+         for Comp of Get_Component_Set (Rep_Ty) loop
+            if Ekind (Comp) = E_Component
+              and then Invariant_Check_Needed (Etype (Comp))
+            then
+               return True;
+            end if;
+         end loop;
+      end if;
+      return False;
+   end Invariant_Check_Needed;
 
    -------------------
    -- Is_Null_Range --

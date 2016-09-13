@@ -886,6 +886,8 @@ procedure SPARK_Report is
             | VC_Range_Check
             | VC_Predicate_Check
             | VC_Predicate_Check_On_Default_Value
+            | VC_Invariant_Check
+            | VC_Invariant_Check_On_Default_Value
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check

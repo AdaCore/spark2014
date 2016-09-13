@@ -1,5 +1,8 @@
 main.adb:6:12: info: initialization of "X" proved
+typeinv.adb:6:14: medium: invariant check might fail
 typeinv.adb:6:17: medium: range check might fail (e.g. when X = -1)
 typeinv.adb:12:14: info: division check proved (CVC4: 1 VC)
-typeinv.ads:11:04: warning: type invariant ignored (not yet supported)
-typeinv.ads:15:10: info: division check proved (CVC4: 1 VC)
+typeinv.ads:4:13: info: invariant check proved (CVC4: 1 VC)
+typeinv.ads:6:14: medium: invariant check might fail
+typeinv.ads:9:09: medium: invariant check might fail on default value
+typeinv.ads:13:10: info: division check proved (CVC4: 1 VC)

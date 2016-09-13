@@ -212,6 +212,12 @@ package Why.Gen.Names is
 
       WNE_Dynamic_Invariant,       --  dynamic invariant of a type
 
+      WNE_Type_Invariant,          --  toplevel invariant checking function
+
+      --  Name of the program function for type invariant checks on subprogram
+      --  calls.
+      WNE_Check_Invariants_On_Call,
+
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 

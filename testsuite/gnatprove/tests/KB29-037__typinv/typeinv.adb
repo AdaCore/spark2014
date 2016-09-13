@@ -3,7 +3,7 @@ package body Typeinv is
    function New_T ( X : Integer) return T is
    begin
       -- will fail when X is not even
-      return T (X);
+      return T (X); -- @INVARIANT_CHECK:FAIL
    end New_T;
 
    procedure Divide (X : in out T) is

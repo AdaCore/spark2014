@@ -27,6 +27,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
+with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
 with Gnat2Why_Args;
@@ -38,6 +39,7 @@ with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
+with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with VC_Kinds;                           use VC_Kinds;
@@ -1099,6 +1101,84 @@ package body SPARK_Util.Subprograms is
    begin
       return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
    end Subp_Location;
+
+   ---------------------------------
+   -- Subp_Needs_Invariant_Checks --
+   ---------------------------------
+
+   function Subp_Needs_Invariant_Checks (E : Entity_Id) return Boolean is
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+
+      Is_External : constant Boolean := Is_Globally_Visible (E);
+      --  The subprogram is an external or a boundary subprogram if it is
+      --  visible from outside the current compilation unit.
+
+   begin
+      --  If the subprogram is boundary or external, we should check the type
+      --  invariants of its parameters.
+
+      if Is_External then
+         declare
+            Parameters : constant List_Id :=
+              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
+               else Parameter_Specifications (Subprogram_Specification (E)));
+            Parameter  : Node_Id := First (Parameters);
+         begin
+            while Present (Parameter) loop
+               declare
+                  E : constant Entity_Id := Defining_Entity (Parameter);
+               begin
+                  if Ekind (E) /= E_Out_Parameter
+                    and then Invariant_Check_Needed (Etype (E))
+                  then
+                     return True;
+                  end if;
+               end;
+               Next (Parameter);
+            end loop;
+         end;
+      end if;
+
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                      Classwide  => True,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
+
+      --  Consider invariants of the variables read by E
+
+      for F of Read_Ids loop
+         pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+         --  Magic_String are global state with no attached entities. As
+         --  such state is translated as private in Why3, we do not need
+         --  to consider any type invariant for it.
+
+         if F.Kind = Direct_Mapping then
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               if Present (E)
+
+                 --  Global variables accessed by the subprogram
+
+                 and then ((Ekind (E) in Object_Kind
+                            and then Entity_In_SPARK (E)
+                            and then Invariant_Check_Needed (Etype (E)))
+
+                           --  Self reference of protected subprograms
+
+                           or else (Ekind (E) in Type_Kind
+                                    and then Invariant_Check_Needed (E)))
+               then
+                  return True;
+               end if;
+            end;
+         end if;
+      end loop;
+
+      return False;
+   end Subp_Needs_Invariant_Checks;
 
    ---------------------------------
    -- Subprogram_Full_Source_Name --

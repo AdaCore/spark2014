@@ -356,6 +356,11 @@ package SPARK_Util.Subprograms is
    --    by its source position and is used e.g. for the --limit-subp switch of
    --    GNATprove.
 
+   function Subp_Needs_Invariant_Checks (E : Entity_Id) return Boolean;
+   --  @param E subprogram or entry
+   --  @return True whenever an invariant check may be needed when calling E
+   --          from inside the current compilation unit.
+
    --------------------------------
    -- Queries related to entries --
    --------------------------------

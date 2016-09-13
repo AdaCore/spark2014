@@ -174,7 +174,7 @@ package SPARK_Util.Types is
      and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
-   --  @result True if Comp is visible in Rec, that is, it has not been hidden
+   --  @return True if Comp is visible in Rec, that is, it has not been hidden
    --          by a pragma SPARK_Mode (Off), a private derivation, or a
    --          discriminant constraint.
 
@@ -206,7 +206,7 @@ package SPARK_Util.Types is
    with
        Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Comp component of the record type or of one of its ancestors
-   --  @result the first type in the derivation of Scope (Comp) in which Comp
+   --  @return the first type in the derivation of Scope (Comp) in which Comp
    --          appears.
 
    function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
@@ -227,13 +227,6 @@ package SPARK_Util.Types is
    -- General Queries For Types --
    -------------------------------
 
-   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
-   --  @param From type of expression to be converted, which should be a Retysp
-   --  @param To target type of the conversion, which should be a Retysp
-   --  @return whether a check may be needed when converting an expression
-   --     of type From to type To. Currently a very coarse approximation
-   --     to rule out obvious cases.
-
    function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
       and then (not (Has_Record_Type (Typ) or else Has_Private_Type (Typ))
@@ -244,6 +237,13 @@ package SPARK_Util.Types is
    --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
+
+   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
+   --  @param From type of expression to be converted, which should be a Retysp
+   --  @param To target type of the conversion, which should be a Retysp
+   --  @return whether a check may be needed when converting an expression
+   --     of type From to type To. Currently a very coarse approximation
+   --     to rule out obvious cases.
 
    function Default_Initialization
      (Typ           : Entity_Id;
@@ -264,6 +264,9 @@ package SPARK_Util.Types is
    --  Static_Predicate associated with entity Typ. Return Empty if Typ does
    --  not have any of these aspects. Typ might still inherit the aspect in
    --  such cases.
+   --  This is only used to give better locations for error messages. To get
+   --  the predicate expression, use the procedure generated to check the
+   --  predicate.
 
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
    with Pre => Present (N);
@@ -280,9 +283,28 @@ package SPARK_Util.Types is
    --  the value of the Iterable aspect of a formal type.
    --  Return the ultimate alias.
 
+   function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean;
+   --  @params E any type
+   --  @returns True if E has a type invariant and the invariant is in SPARK.
+
    function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
    --  @param E any type
    --  @return True iff E is a discrete type with a static predicate
+
+   function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean;
+   --  @param Ty type entity
+   --  @return True if Ty has a top level invariant which needs to be checked
+   --          in the current compilation unit and False if it can be assumed
+   --          to hold.
+   --  Since invariants can only be declared directly in compilation units, it
+   --  is enough to check if the type is declared in the main compilation unit
+   --  to decide whether or not it should be checked in this unit.
+
+   function Invariant_Check_Needed (Ty : Entity_Id) return Boolean;
+   --  @param Ty type entity
+   --  @return True if there is an invariant that needs to be checked for type
+   --          Ty. It can come from Ty itself, from one of its ancestors, or
+   --          from one of its components.
 
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T);
@@ -357,7 +379,7 @@ package SPARK_Util.Types is
    with Pre => Has_Discriminants (Ty) and then Is_Constrained (Ty);
    --  @param Ty a constrained type with discriminants
    --  @param Discr a discriminant of Ty
-   --  @result the constraint stored for Discr in Ty
+   --  @return the constraint stored for Discr in Ty
 
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
    --  @param E any type
@@ -383,7 +405,7 @@ package SPARK_Util.Types is
       else Sem_Type.Is_Ancestor (Get_Specific_Type_From_Classwide (Anc), E));
    --  @param Anc A tagged type (which may or not be class-wide).
    --  @param E A tagged type (which may or not be class-wide).
-   --  @result True if Anc is one of the ancestors of type E.
+   --  @return True if Anc is one of the ancestors of type E.
 
    --------------------------------
    -- Queries related to arrays --

@@ -1,2 +1,2 @@
-invariant_test.adb:23:11: type invariants not immediately in a compilation unit is not yet supported
+invariant_test.adb:23:11: type invariant not immediately in a compilation unit is not yet supported
 gnatprove: error during flow analysis and proof

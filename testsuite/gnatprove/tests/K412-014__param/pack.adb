@@ -1,4 +1,4 @@
-package body Pack is
+package body Pack with SPARK_Mode is
 
    package Ptr is
       procedure Set;

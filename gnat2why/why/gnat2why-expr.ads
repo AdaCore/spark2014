@@ -32,6 +32,7 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with Sem_Eval;                   use Sem_Eval;
 with Sinfo;                      use Sinfo;
 with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
 with Why.Gen.Terms;              use Why.Gen.Terms;
 with Why.Ids;                    use Why.Ids;
@@ -77,7 +78,7 @@ package Gnat2Why.Expr is
    --  @param Top_Predicate True iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
    --  @param Use_Pred True iff the named predicate should be used
-   --  @result Why3 prog assuming the dynamic invariant of type [Ty]
+   --  @result Why3 program assuming the dynamic invariant of type [Ty]
    --     over [Expr].
 
    function Check_Scalar_Range
@@ -104,12 +105,25 @@ package Gnat2Why.Expr is
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.
 
+   function Check_Type_With_Invariants
+     (Params : Transformation_Params;
+      N      : Entity_Id) return W_Prog_Id;
+   --  Generate checks for absence of runtime errors in the type invariant's
+   --  expression. It also checks that the invariant holds for default values
+   --  of the type.
+   --  @param Params transformation parameters
+   --  @param N a type with a type invariant visible in SPARK
+   --  @return a program that checks that no error can appear in N's type
+   --          invariant nor in default value of this type.
+
    function Compute_Default_Init
-     (Expr           : W_Expr_Id;
-      Ty             : Entity_Id;
-      Params         : Transformation_Params := Body_Params;
-      Skip_Last_Cond : W_Term_Id := False_Term;
-      Use_Pred       : Boolean := True) return W_Pred_Id;
+     (Expr             : W_Expr_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params := Body_Params;
+      Skip_Last_Cond   : W_Term_Id := False_Term;
+      Use_Pred         : Boolean := True;
+      Include_Subtypes : Boolean := False) return W_Pred_Id
+   with Pre => (if not Include_Subtypes then Can_Be_Default_Initialized (Ty));
    --  @param Expr Expression for which we want the default initialization
    --  @param Ty The type of the expression Expr
    --  @param Params Transformation parameters
@@ -117,6 +131,10 @@ package Gnat2Why.Expr is
    --         Default_Initial_Condition of Ty if any.
    --  @param Use_Pred Use the precomputed predicate for Ty's default initial
    --         assumption
+   --  @param Include_Subtypes True if Expr can be of any subtype of Ty. In
+   --         particular, if Ty is a record type with defaulted discriminants,
+   --         we only assume the value of its discriminants to be the defaults
+   --         if Include_Subtypes is false.
    --  @result The default initial assumption of type Ty over Expr
 
    function Compute_Dynamic_Predicate
@@ -152,6 +170,41 @@ package Gnat2Why.Expr is
    --  @result Why3 predicate expressing the dynamic invariant of type [Ty]
    --     over [Expr].
 
+   function Compute_Top_Level_Type_Invariant
+     (Expr     : W_Term_Id;
+      Ty       : Entity_Id;
+      Params   : Transformation_Params := Body_Params;
+      Use_Pred : Boolean := True) return W_Pred_Id;
+   --  @param Expr Why3 term expression on which to express the type invariant
+   --  @param Ty type with the type invariant
+   --  @param Params transformation parameters
+   --  @param Use_Pred True iff the named predicate should be used
+   --  @result Why3 predicate expressing the type invariant of type [Ty] over
+   --          [Expr].
+
+   function Compute_Type_Invariant
+     (Expr         : W_Term_Id;
+      Ty           : Entity_Id;
+      Params       : Transformation_Params := Body_Params;
+      On_External  : Boolean := False;
+      On_Internal  : Boolean := False;
+      Include_Comp : Boolean := True;
+      Use_Pred     : Boolean := True) return W_Pred_Id
+   with Pre => On_Internal or On_External;
+   --  @param Expr Why3 term expression on which to express the type invariant
+   --  @param Ty type with the type invariant
+   --  @param Params transformation parameters
+   --  @param On_External True if invariants of types declared outside the
+   --         current compilation unit should be considered.
+   --  @param On_Internal True if invariants of types declared in the current
+   --         compilation unit should be considered.
+   --  @param Include_Comp False if we do not care about the invariants of
+   --         composite types. Invariants of parents of Ty are still included.
+   --  @param Use_Pred False if the predicate function introduced for Ty's
+   --         top-level invariant should not be used.
+   --  @result Why3 predicate expressing the type invariant of type [Ty] and
+   --          of all its parts and ancestors over [Expr].
+
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
 
@@ -170,6 +223,18 @@ package Gnat2Why.Expr is
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
+   --  @param Var_Ent entity of the corresponding variable if W_Expr is an
+   --         array in split form.
+   --  @result Why3 program that performs the check and returns [W_Expr]
+
+   function Insert_Invariant_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      W_Expr   : W_Prog_Id;
+      Var_Ent  : Entity_Id := Empty) return W_Prog_Id;
+   --  @param Ada_Node node to which the check is attached
+   --  @param Check_Ty type whose invariant needs to be checked
+   --  @param W_Expr Why3 expression on which to check the invariant
    --  @param Var_Ent entity of the corresponding variable if W_Expr is an
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
@@ -349,6 +414,13 @@ package Gnat2Why.Expr is
       Variables : in out Flow_Id_Sets.Set);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's dynamic invariant
+
+   procedure Variables_In_Type_Invariant
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set)
+   with Pre => Has_Invariants_In_SPARK (Ty);
+   --  @param Ty a type with a visible type invariant
+   --  @param Variables used in the expression for Ty's invariant
 
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --

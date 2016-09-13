@@ -9,7 +9,10 @@ package body Types_With_Invariants with SPARK_Mode is
      Ghost,
      Pre => True
    is
+      subtype Int is My_Integer;
+      T : Int := E;
    begin
+      pragma Assert (My_Integer (T).Val = E.Val);
       pragma Assert (if E.Val /= 0 or else E.Sign then
                         From_Integer (To_Integer (E)) = E);
       pragma Assert (To_Integer (My_Integer'(From_Integer (I))) = I);

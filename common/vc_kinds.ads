@@ -61,6 +61,11 @@ package VC_Kinds is
       VC_Tag_Check,
       VC_Ceiling_Interrupt,
       VC_Interrupt_Reserved,
+      VC_Invariant_Check,
+      VC_Invariant_Check_On_Default_Value,  --  the invariant check on
+                                            --  the default value of a type,
+                                            --  it is used once at the type
+                                            --  declaration.
       VC_Ceiling_Priority_Protocol,
       VC_Task_Termination,
 

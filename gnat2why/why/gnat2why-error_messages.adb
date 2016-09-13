@@ -239,6 +239,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Stronger_Classwide_Post
                | VC_Predicate_Check
                | VC_Predicate_Check_On_Default_Value
+               | VC_Invariant_Check
+               | VC_Invariant_Check_On_Default_Value
             =>
                return (OK => False);
          end case;
@@ -519,6 +521,10 @@ package body Gnat2Why.Error_Messages is
             return "predicate check might fail";
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check might fail on default value";
+         when VC_Invariant_Check           =>
+            return "invariant check might fail";
+         when VC_Invariant_Check_On_Default_Value =>
+            return "invariant check might fail on default value";
          when VC_Length_Check              =>
             return "length check might fail";
          when VC_Discriminant_Check        =>
@@ -782,6 +788,9 @@ package body Gnat2Why.Error_Messages is
          when VC_Predicate_Check           => return "predicate check proved";
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check proved on default value";
+         when VC_Invariant_Check           => return "invariant check proved";
+         when VC_Invariant_Check_On_Default_Value =>
+            return "invariant check proved on default value";
          when VC_Length_Check              => return "length check proved";
          when VC_Discriminant_Check        =>
             return "discriminant check proved";

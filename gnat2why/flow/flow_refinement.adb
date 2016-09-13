@@ -171,6 +171,9 @@ package body Flow_Refinement is
       return Is_Visible (Target_Scope, S);
    end Is_Visible;
 
+   function Is_Globally_Visible (N : Node_Id) return Boolean is
+      (Is_Visible (N, Null_Flow_Scope));
+
    ------------------------------
    -- Get_Enclosing_Flow_Scope --
    ------------------------------

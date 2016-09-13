@@ -15,9 +15,9 @@ package Shapes4 is
 private
    type Circle is
       record
-         Center_X : Coordinate_Type;
-         Center_Y : Coordinate_Type;
-         Radius   : Radius_Type;
+         Center_X : Coordinate_Type := 0;
+         Center_Y : Coordinate_Type := 0;
+         Radius   : Radius_Type := 0;
       end record
      with
        Type_Invariant => In_Bounds (Circle);
