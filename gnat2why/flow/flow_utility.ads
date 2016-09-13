@@ -256,11 +256,11 @@ is
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
-      Allow_Statements             : Boolean := False;
+      Assume_In_Expression         : Boolean := True;
       Expand_Synthesized_Constants : Boolean := False;
       Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
-   with Pre  => (if Fold_Functions then not Allow_Statements),
+   with Pre  => (if Fold_Functions then Assume_In_Expression),
         Post => (if Reduced
                  then (for all F of Get_Variables'Result
                          => Is_Entire_Variable (F)));
@@ -284,8 +284,9 @@ is
    --
    --     * Reduced: if True, obtain only entire variables.
    --
-   --     * Allow_Statements: if False, we raise an exception if we
-   --       encounter certain statements such as procedure calls.
+   --     * Assume_In_Expression: if True, we assume that node N is part of
+   --       some kind of expression, and aggressively raise exceptions if we
+   --       find nodes that make no sense in such a context.
    --
    --     * Expand_Synthesized_Constants: if True, then constants that do
    --       not come from source are expanded out to the variable set of
@@ -298,7 +299,7 @@ is
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
-      Allow_Statements             : Boolean := False;
+      Assume_In_Expression         : Boolean := True;
       Expand_Synthesized_Constants : Boolean := False)
       return Flow_Id_Sets.Set;
    --  As above, but operating on a list. Note we don't have the

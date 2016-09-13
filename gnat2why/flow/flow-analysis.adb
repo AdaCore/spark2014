@@ -366,7 +366,7 @@ package body Flow.Analysis is
                            Scope                => Scope,
                            Local_Constants      => FA.Local_Constants,
                            Reduced              => not Precise,
-                           Allow_Statements     => True,
+                           Assume_In_Expression => False,
                            Fold_Functions       => False,
                            Use_Computed_Globals => True).Contains (Var_Tgt)
          then

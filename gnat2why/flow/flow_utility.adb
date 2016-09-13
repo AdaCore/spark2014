@@ -2014,7 +2014,7 @@ package body Flow_Utility is
       Fold_Functions                  : Boolean;
       Use_Computed_Globals            : Boolean;
       Reduced                         : Boolean;
-      Allow_Statements                : Boolean;
+      Assume_In_Expression            : Boolean;
       Expand_Synthesized_Constants    : Boolean;
       Consider_Extensions             : Boolean;
       Quantified_Variables_Introduced : Node_Sets.Set;
@@ -2043,7 +2043,7 @@ package body Flow_Utility is
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
-      Allow_Statements             : Boolean := False;
+      Assume_In_Expression         : Boolean := True;
       Expand_Synthesized_Constants : Boolean := False;
       Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
@@ -2054,7 +2054,7 @@ package body Flow_Utility is
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
-         Allow_Statements                => Allow_Statements,
+         Assume_In_Expression            => Assume_In_Expression,
          Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
          Consider_Extensions             => Consider_Extensions,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
@@ -2069,7 +2069,7 @@ package body Flow_Utility is
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
-      Allow_Statements             : Boolean := False;
+      Assume_In_Expression         : Boolean := True;
       Expand_Synthesized_Constants : Boolean := False)
       return Flow_Id_Sets.Set
    is
@@ -2079,7 +2079,7 @@ package body Flow_Utility is
          Fold_Functions                  => Fold_Functions,
          Use_Computed_Globals            => Use_Computed_Globals,
          Reduced                         => Reduced,
-         Allow_Statements                => Allow_Statements,
+         Assume_In_Expression            => Assume_In_Expression,
          Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
          Consider_Extensions             => False,
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
@@ -2100,27 +2100,24 @@ package body Flow_Utility is
       -- Subprograms that do *not* write into Variables --
       ----------------------------------------------------
 
-      function Recurse (N       : Node_Id;
-                        New_Ctx : Get_Variables_Context :=
-                          Ctx'Update (Consider_Extensions => False))
-                        return Flow_Id_Sets.Set
-      is (Get_Variables_Internal (N,
-                                  New_Ctx'Update
-                                    (Allow_Statements => False)));
-      --  Recurse on N. Since we only ever call this on something inside
-      --  expressions, Allow_Statements should be always false.
-
       function Do_Subprogram_Call (Callsite : Node_Id)
                                    return Flow_Id_Sets.Set
       with Pre => Nkind (Callsite) in N_Entry_Call_Statement |
                                       N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
-      --  entry/subprogram call and add them to the given set.
+      --  entry/subprogram call and add them to the given set. Do not follow
+      --  children after calling this.
 
       function Do_Entity (E : Entity_Id)
                           return Flow_Id_Sets.Set
       with Pre => Nkind (E) in N_Entity;
       --  Process the given entity and return the variables associated with it
+
+      function Do_N_Attribute_Reference (N : Node_Id)
+                                         return Flow_Id_Sets.Set
+      with Pre => Nkind (N) = N_Attribute_Reference;
+      --  Process the given attribute reference. Do not follow children after
+      --  calling this.
 
       procedure Merge_Entity (Variables : in out Flow_Id_Sets.Set;
                               E         : Entity_Id)
@@ -2136,6 +2133,46 @@ package body Flow_Utility is
       --  Some functions called by Get_Variables do not know about the context
       --  we've built up, so we may need to strip some variables from their
       --  returned set. In particular, we remove quantified variables.
+
+      function Recurse (N                        : Node_Id;
+                        Consider_Extensions      : Boolean   := False;
+                        With_Quantified_Variable : Entity_Id := Empty)
+                        return Flow_Id_Sets.Set
+      with Pre => (if Present (With_Quantified_Variable)
+                   then Nkind (With_Quantified_Variable) in N_Entity);
+      --  Helper function to recurse on N
+
+      function Untangle_With_Context (N : Node_Id)
+                                      return Flow_Id_Sets.Set
+      is (Filter (Untangle_Record_Fields
+           (N,
+            Scope                        => Ctx.Scope,
+            Local_Constants              => Ctx.Local_Constants,
+            Fold_Functions               => Ctx.Fold_Functions,
+            Use_Computed_Globals         => Ctx.Use_Computed_Globals,
+            Expand_Synthesized_Constants =>
+              Ctx.Expand_Synthesized_Constants)));
+      --  Helper function to call Untangle_Record_Fields with the appropriate
+      --  context, but also filtering out quantified variables.
+
+      -------------
+      -- Recurse --
+      -------------
+
+      function Recurse (N                        : Node_Id;
+                        Consider_Extensions      : Boolean   := False;
+                        With_Quantified_Variable : Entity_Id := Empty)
+                        return Flow_Id_Sets.Set
+      is
+         New_Ctx : Get_Variables_Context := Ctx;
+      begin
+         New_Ctx.Consider_Extensions := Consider_Extensions;
+         if Present (With_Quantified_Variable) then
+            New_Ctx.Quantified_Variables_Introduced.Insert
+              (With_Quantified_Variable);
+         end if;
+         return Get_Variables_Internal (N, New_Ctx);
+      end Recurse;
 
       ------------------
       -- Merge_Entity --
@@ -2164,8 +2201,7 @@ package body Flow_Utility is
       function Filter (Variables : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
       is
       begin
-         return Filtered_Variables : Flow_Id_Sets.Set :=
-           Flow_Id_Sets.Empty_Set
+         return Filtered_Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
          do
             for V of Variables loop
                if V.Kind not in Direct_Mapping | Record_Field
@@ -2214,14 +2250,11 @@ package body Flow_Utility is
             --  True if we have the aspect set (so we know the subprogram might
             --  convert to a classwide type), or we're dealing with a classwide
             --  type directly (since that may or may not have extensions).
-
-            New_Context : constant Get_Variables_Context :=
-              Ctx'Update (Consider_Extensions => May_Use_Extensions);
          begin
             if not Folding
               or else Used_Reads.Contains (Direct_Mapping_Id (Formal))
             then
-               V.Union (Recurse (Actual, New_Context));
+               V.Union (Recurse (Actual, May_Use_Extensions));
             end if;
          end Handle_Parameter;
 
@@ -2364,6 +2397,10 @@ package body Flow_Utility is
          end if;
 
          case Ekind (E) is
+            --------------------------------------------
+            -- Entities requiring some kind of action --
+            --------------------------------------------
+
             when E_Constant =>
                if Ctx.Expand_Synthesized_Constants
                  and then not Comes_From_Source (E)
@@ -2395,17 +2432,16 @@ package body Flow_Utility is
                   --  then add it.
                   return Merge_Entity (E);
 
-               else
-                  return Flow_Id_Sets.Empty_Set;
                end if;
 
-            when E_Variable
-               | E_Component
+            when E_Component
+               --  E_Constant is dealt with in the above case
                | E_Discriminant
                | E_Loop_Parameter
+               | E_Variable
                | E_Out_Parameter
-               | E_In_Parameter
                | E_In_Out_Parameter
+               | E_In_Parameter
             =>
                if Ekind (E) = E_In_Parameter
                  and then Present (Discriminal_Link (E))
@@ -2436,6 +2472,9 @@ package body Flow_Utility is
                end return;
 
             when Scalar_Kind =>
+               --  Types mostly get dealt with by membership tests here, but
+               --  sometimes they just appear (for example in a for loop over a
+               --  type).
                if Is_Constrained (E) then
                   declare
                      SR : constant Node_Id := Scalar_Range (E);
@@ -2444,15 +2483,260 @@ package body Flow_Utility is
                   begin
                      return Recurse (LB) or Recurse (HB);
                   end;
-               else
-                  return Flow_Id_Sets.Empty_Set;
                end if;
 
-            when others =>
-               --  ??? What other things can we get here? To investigate...
-               return Flow_Id_Sets.Empty_Set;
+            ---------------------------------------------------------
+            -- Entities with no flow consequence (or not in SPARK) --
+            ---------------------------------------------------------
+
+            when E_Generic_In_Out_Parameter
+               | E_Generic_In_Parameter
+               | E_Generic_Function
+               | E_Generic_Procedure
+               | E_Generic_Package
+            =>
+               --  These are not in SPARK itself (we analyze instantiations
+               --  instead of generics). So if we get one here, we are trying
+               --  do something very wrong.
+               raise Program_Error;
+
+            when E_Void =>
+               --  We should never feed a null node into this function
+               raise Program_Error;
+
+            when Access_Kind
+               | E_Entry_Family
+               | E_Entry_Index_Parameter
+            =>
+               --  Not in SPARK (at least for now)
+               raise Why.Unexpected_Node;
+
+            when E_Abstract_State =>
+               --  Abstract state cannot directly appear in expressions, so if
+               --  we have called this function on something that involves
+               --  state then we've messed up somewhere.
+               --
+               --  Otherwise, we'll expand out into all the state we can see.
+               pragma Assert (not Ctx.Assume_In_Expression);
+
+               declare
+                  S : constant Node_Sets.Set := Down_Project
+                    (Node_Sets.To_Set (E), Ctx.Scope);
+               begin
+                  return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
+                  do
+                     for Constituent of S loop
+                        if Ekind (Constituent) = E_Abstract_State then
+                           Variables.Include (Direct_Mapping_Id (E));
+                        else
+                           Variables.Union (Do_Entity (Constituent));
+                        end if;
+                     end loop;
+                  end return;
+               end;
+
+            when Composite_Kind =>
+               --  Dealt with using membership tests, if applicable
+               null;
+
+            when E_Named_Integer
+               | E_Named_Real
+               | E_Enumeration_Literal
+            =>
+               --  All of these are simply constants, with no flow concern
+               null;
+
+            when E_Function
+               | E_Operator
+               | E_Procedure
+               | E_Entry
+               | E_Subprogram_Type
+            =>
+               --  Dealt with when dealing with N_Subprogram_Call nodes
+               null;
+
+            when E_Block
+               | E_Exception
+               | E_Exception_Type
+               | E_Label
+               | E_Loop
+               | E_Package
+               | E_Package_Body
+               | E_Protected_Object
+               | E_Protected_Body
+               | E_Task_Body
+               | E_Subprogram_Body
+               | E_Return_Statement
+            =>
+               --  Nothing to do for these directly
+               null;
+
          end case;
+
+         return Flow_Id_Sets.Empty_Set;
       end Do_Entity;
+
+      ------------------------------
+      -- Do_N_Attribute_Reference --
+      ------------------------------
+
+      function Do_N_Attribute_Reference (N : Node_Id)
+                                         return Flow_Id_Sets.Set
+      is
+         The_Attribute : constant Attribute_Id :=
+           Get_Attribute_Id (Attribute_Name (N));
+
+         Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         --  The code here first deals with the unusual cases, followed by the
+         --  usual case.
+         --
+         --  Sometimes we do a bit of the unusual with all the usual, in which
+         --  case we do not exit; otherwise we return directly.
+
+         -----------------
+         -- The unusual --
+         -----------------
+
+         case The_Attribute is
+            when Attribute_Update =>
+               if Ctx.Reduced or else Is_Tagged_Type (Get_Type (N, Ctx.Scope))
+               then
+                  --  !!! Precise analysis is disabled for tagged types, so we
+                  --      just do the usual instead.
+                  null;
+
+               else
+                  return Untangle_With_Context (N);
+               end if;
+
+            when Attribute_Constrained =>
+               if not Ctx.Reduced then
+                  for F of Recurse (Prefix (N)) loop
+                     if F.Kind in Direct_Mapping | Record_Field
+                       and then F.Facet = Normal_Part
+                       and then Has_Bounds (F, Ctx.Scope)
+                     then
+                        --  This is not a bound variable, but it requires
+                        --  bounds tracking. We make it a bound variable.
+                        Variables.Include
+                          (F'Update (Facet => The_Bounds));
+
+                     elsif Is_Discriminant (F) then
+                        Variables.Include (F);
+
+                     end if;
+                  end loop;
+                  return Variables;
+               else
+                  null;
+                  --  Otherwise, we do the usual
+               end if;
+
+            when Attribute_First
+               | Attribute_Last
+               | Attribute_Length
+               | Attribute_Range
+            =>
+               declare
+                  T  : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
+                  pragma Assert (Nkind (T) in N_Entity);
+                  LB : Node_Id;
+                  HB : Node_Id;
+               begin
+                  if Is_Constrained (T) then
+                     if Is_Array_Type (T) then
+                        LB := Type_Low_Bound (Etype (First_Index (T)));
+                        HB := Type_High_Bound (Etype (First_Index (T)));
+                     else
+                        pragma Assert (Ekind (T) in Scalar_Kind);
+                        LB := Low_Bound (Scalar_Range (T));
+                        HB := High_Bound (Scalar_Range (T));
+                     end if;
+
+                     if The_Attribute /= Attribute_First then
+                        --  Last, Length, and Range
+                        Variables.Union (Recurse (HB));
+                     end if;
+
+                     if The_Attribute /= Attribute_Last then
+                        --  First, Length, and Range
+                        Variables.Union (Recurse (LB));
+                     end if;
+
+                  elsif not Ctx.Reduced then
+                     for F of Recurse (Prefix (N)) loop
+                        if F.Kind in Direct_Mapping | Record_Field
+                          and then F.Facet = Normal_Part
+                          and then Has_Bounds (F, Ctx.Scope)
+                        then
+                           --  This is not a bound variable, but it requires
+                           --  bounds tracking. We make it a bound variable.
+                           Variables.Include
+                             (F'Update (Facet => The_Bounds));
+
+                        else
+                           --  This is something else. We just copy it.
+                           Variables.Include (F);
+                        end if;
+                     end loop;
+                  end if;
+               end;
+               return Variables;
+
+            when Attribute_Loop_Entry =>
+               --  Again, we ignore loop entry references, these are dealt with
+               --  by Do_Pragma and Do_Loop_Statement in the CFG construction.
+               return Flow_Id_Sets.Empty_Set;
+
+            when Attribute_Address =>
+               --  The address of anything is totally separate from anything
+               --  flow analysis cares about, so we ignore it.
+               return Flow_Id_Sets.Empty_Set;
+
+            when Attribute_Callable
+               | Attribute_Caller
+               | Attribute_Count
+               | Attribute_Terminated
+            =>
+               --  Add the implicit use of
+               --  Ada.Task_Identification.Tasking_State
+               Merge_Entity (Variables, RTE (RE_Tasking_State));
+
+               --  We also need to do the usual
+
+            when others =>
+               --  We just need to do the usual
+               null;
+         end case;
+
+         ---------------
+         -- The usual --
+         ---------------
+
+         --  Here we just recurse down the tree, so we look at our prefix and
+         --  then any arguments (if any).
+         --
+         --  The reason we can't do this first is that some attributes skip
+         --  looking at the prefix (i.e. address) or do something strange (i.e.
+         --  update).
+
+         Variables.Union (Recurse (Prefix (N)));
+
+         declare
+            Ptr : Node_Id := Empty;
+         begin
+            if Present (Expressions (N)) then
+               Ptr := First (Expressions (N));
+            end if;
+            while Present (Ptr) loop
+               Variables.Union (Recurse (Ptr));
+               Next (Ptr);
+            end loop;
+         end;
+
+         return Variables;
+      end Do_N_Attribute_Reference;
 
       ------------------------------------------------
       -- Subprograms that *do* write into Variables --
@@ -2479,15 +2763,15 @@ package body Flow_Utility is
                | N_Function_Call
                | N_Procedure_Call_Statement
             =>
-
-               pragma Assert (if Nkind (N) in N_Entry_Call_Statement
-                                            | N_Procedure_Call_Statement
-                              then Ctx.Allow_Statements);
+               pragma Assert (not Ctx.Assume_In_Expression or else
+                                Nkind (N) = N_Function_Call);
 
                Variables.Union (Do_Subprogram_Call (N));
                return Skip;
 
             when N_Later_Decl_Item =>
+               pragma Assert (not Ctx.Assume_In_Expression);
+
                --  These should allow us to go through package specs and bodies
                return Skip;
 
@@ -2523,16 +2807,7 @@ package body Flow_Utility is
                   Variables.Union (Recurse (Prefix (N)));
 
                else
-                  Variables.Union (Filter
-                    (Untangle_Record_Fields
-                       (N,
-                        Scope                        => Ctx.Scope,
-                        Local_Constants              => Ctx.Local_Constants,
-                        Fold_Functions               => Ctx.Fold_Functions,
-                        Use_Computed_Globals         =>
-                          Ctx.Use_Computed_Globals,
-                        Expand_Synthesized_Constants =>
-                          Ctx.Expand_Synthesized_Constants)));
+                  Variables.Union (Untangle_With_Context (N));
                end if;
                return Skip;
 
@@ -2571,129 +2846,8 @@ package body Flow_Utility is
                end if;
 
             when N_Attribute_Reference =>
-               case Get_Attribute_Id (Attribute_Name (N)) is
-                  when Attribute_Update =>
-                     if Ctx.Reduced
-                       or else Is_Tagged_Type (Get_Type (N, Ctx.Scope))
-                     then
-                        --  !!! Precise analysis is disabled for tagged types
-                        return OK;
-
-                     else
-                        Variables.Union (Filter (Untangle_Record_Fields
-                          (N,
-                           Scope                        => Ctx.Scope,
-                           Local_Constants              => Ctx.Local_Constants,
-                           Fold_Functions               =>
-                             Ctx.Fold_Functions,
-                           Use_Computed_Globals         =>
-                             Ctx.Use_Computed_Globals,
-                           Expand_Synthesized_Constants =>
-                             Ctx.Expand_Synthesized_Constants)));
-                        return Skip;
-                     end if;
-
-                  when Attribute_Constrained =>
-                     if not Ctx.Reduced then
-                        for F of Recurse (Prefix (N)) loop
-                           if F.Kind in Direct_Mapping | Record_Field
-                             and then F.Facet = Normal_Part
-                             and then Has_Bounds (F, Ctx.Scope)
-                           then
-                              --  This is not a bound variable, but it
-                              --  requires bounds tracking. We make it a
-                              --  bound variable.
-                              Variables.Include
-                                (F'Update (Facet => The_Bounds));
-
-                           elsif Is_Discriminant (F) then
-                              Variables.Include (F);
-
-                           end if;
-                        end loop;
-                        return Skip;
-                     end if;
-
-                  when Attribute_First
-                     | Attribute_Last
-                     | Attribute_Length
-                     | Attribute_Range
-                  =>
-                     declare
-                        T  : constant Entity_Id := Get_Type (Prefix (N),
-                                                             Ctx.Scope);
-                        pragma Assert (Nkind (T) in N_Entity);
-                        LB : Node_Id;
-                        HB : Node_Id;
-                     begin
-                        if Is_Constrained (T) then
-                           if Is_Array_Type (T) then
-                              LB := Type_Low_Bound (Etype (First_Index (T)));
-                              HB := Type_High_Bound (Etype (First_Index (T)));
-                           else
-                              pragma Assert (Ekind (T) in Scalar_Kind);
-                              LB := Low_Bound (Scalar_Range (T));
-                              HB := High_Bound (Scalar_Range (T));
-                           end if;
-
-                           if Get_Attribute_Id (Attribute_Name (N)) /=
-                             Attribute_First
-                           then
-                              --  Last, Length, and Range
-                              Variables.Union (Recurse (HB));
-                           end if;
-
-                           if Get_Attribute_Id (Attribute_Name (N)) /=
-                             Attribute_Last
-                           then
-                              --  First, Length, and Range
-                              Variables.Union (Recurse (LB));
-                           end if;
-
-                        elsif not Ctx.Reduced then
-                           for F of Recurse (Prefix (N)) loop
-                              if F.Kind in Direct_Mapping | Record_Field
-                                and then F.Facet = Normal_Part
-                                and then Has_Bounds (F, Ctx.Scope)
-                              then
-                                 --  This is not a bound variable, but it
-                                 --  requires bounds tracking. We make it a
-                                 --  bound variable.
-                                 Variables.Include
-                                   (F'Update (Facet => The_Bounds));
-
-                              else
-                                 --  This is something else. We just copy it
-                                 Variables.Include (F);
-                              end if;
-                           end loop;
-                        end if;
-                     end;
-                     return Skip;
-
-                  when Attribute_Loop_Entry =>
-                     --  Again, we ignore loop entry references, these are
-                     --  dealt with by Do_Pragma and Do_Loop_Statement in the
-                     --  CFG construction.
-                     return Skip;
-
-                  when Attribute_Address =>
-                     --  The address of anything is totally separate from
-                     --  anything flow analysis cares about, so we ignore it.
-                     return Skip;
-
-                  when Attribute_Callable
-                     | Attribute_Caller
-                     | Attribute_Count
-                     | Attribute_Terminated
-                  =>
-                     --  Add the implicit use of
-                     --  Ada.Task_Identification.Tasking_State
-                     Merge_Entity (Variables, RTE (RE_Tasking_State));
-
-                  when others =>
-                     null;
-               end case;  -- dealing with all the attributes
+               Variables.Union (Do_N_Attribute_Reference (N));
+               return Skip;
 
             when N_In | N_Not_In =>
                --  Membership tests involving type with predicates have the
@@ -2770,26 +2924,22 @@ package body Flow_Utility is
                end;
 
             when N_Quantified_Expression =>
-               pragma Assert
-                 (Present (Iterator_Specification (N)) xor
-                    Present (Loop_Parameter_Specification (N)));
                declare
-                  E : constant Entity_Id :=
-                    Defining_Identifier
+                  pragma Assert
+                    (Present (Iterator_Specification (N)) xor
+                     Present (Loop_Parameter_Specification (N)));
+                  It : constant Node_Id :=
                     (if Present (Iterator_Specification (N))
                      then Iterator_Specification (N)
                      else Loop_Parameter_Specification (N));
-                  --  The quantified variable.
-
-                  New_Ctx : Get_Variables_Context := Ctx;
+                  E : constant Entity_Id := Defining_Identifier (It);
                begin
-                  if not Ctx.Quantified_Variables_Introduced.Contains (E) then
-                     New_Ctx.Quantified_Variables_Introduced.Insert (E);
-                     New_Ctx.Consider_Extensions := False;
-                     Variables.Union (Recurse (N, New_Ctx));
-                     return Skip;
-                  end if;
+                  Variables.Union (Recurse (It,
+                                            With_Quantified_Variable => E));
+                  Variables.Union (Recurse (Condition (N),
+                                            With_Quantified_Variable => E));
                end;
+               return Skip;
 
             when others =>
                null;
@@ -3749,7 +3899,6 @@ package body Flow_Utility is
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => False,
-             Allow_Statements             => False,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
       --  Helpful wrapper for calling Get_Variables
 

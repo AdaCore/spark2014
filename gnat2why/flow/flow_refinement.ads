@@ -157,9 +157,8 @@ package Flow_Refinement is
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)
                           return Node_Sets.Set
-   with Pre  => (for all V of Vars => Nkind (V) = N_Defining_Identifier),
-        Post => (for all V of Down_Project'Result =>
-                   Nkind (V) = N_Defining_Identifier);
+   with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
+        Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
    --  Given a set of variables and a scope, recursively expand abstract states
    --  whose refinement is visible in S.
 
