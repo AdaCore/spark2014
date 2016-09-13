@@ -24,7 +24,6 @@
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
@@ -96,11 +95,6 @@ package Flow is
       Hash                => Flow_Graphs.Vertex_Hash,
       Equivalent_Elements => Flow_Graphs."=",
       "="                 => Flow_Graphs."=");
-
-   package Vertex_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Flow_Graphs.Vertex_Id,
-      "="          => Flow_Graphs."=");
 
    package Vertex_To_Vertex_Set_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Flow_Graphs.Vertex_Id,

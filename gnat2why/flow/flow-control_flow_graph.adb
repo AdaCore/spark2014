@@ -129,6 +129,9 @@ package body Flow.Control_Flow_Graph is
                                 N_Use_Type_Clause                 |
                                 N_Validate_Unchecked_Conversion;
 
+   package Vertex_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Flow_Graphs.Vertex_Id);
+
    ---------------------
    -- Connection_Maps --
    ---------------------
@@ -809,8 +812,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
-      Ins      : in out Vertex_Vectors.Vector;
-      Outs     : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Lists.List;
+      Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context);
@@ -841,8 +844,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite : Node_Id;
-      Ins      : in out Vertex_Vectors.Vector;
-      Outs     : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Lists.List;
+      Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
@@ -1334,7 +1337,7 @@ package body Flow.Control_Flow_Graph is
       Funcs : Node_Sets.Set;
 
       V     : Flow_Graphs.Vertex_Id;
-      Verts : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Verts : Vertex_Lists.List;
 
       Partial         : Boolean;
       View_Conversion : Boolean;
@@ -2981,7 +2984,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V     : Flow_Graphs.Vertex_Id;
-      Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Inits : Vertex_Lists.List;
 
       E : constant Entity_Id := Defining_Identifier (N);
       --  Entity of the object declared by node N
@@ -4004,8 +4007,8 @@ package body Flow.Control_Flow_Graph is
       Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
       Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
 
-      Ins  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-      Outs : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Ins  : Vertex_Lists.List;
+      Outs : Vertex_Lists.List;
 
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
@@ -4208,19 +4211,21 @@ package body Flow.Control_Flow_Graph is
 
       --  We now build the connection map for this sequence
       declare
-         use Vertex_Vectors;
-         Combined_List : constant Vertex_Vectors.Vector :=
-           Vertex_Vectors.To_Vector (V, 1) & Ins & Outs;
-         Prev          : Flow_Graphs.Vertex_Id;
-      begin
-         Prev := Flow_Graphs.Null_Vertex;
-         for V of Combined_List loop
-            if Prev /= Flow_Graphs.Null_Vertex then
-               FA.CFG.Add_Edge (Prev, V, EC_Default);
-            end if;
-            FA.CFG.Set_Cluster (V, C);
+         Prev : Flow_Graphs.Vertex_Id := V;
+         --  Pointer to the previous vertex, initialized to V which goes first
 
-            Prev := V;
+      begin
+         --  Destructivelly append outs at the end of Ins
+         Ins.Splice (Before => Vertex_Lists.No_Element,
+                     Source => Outs);
+
+         pragma Assert (Outs.Is_Empty);
+
+         --  Iterate over a list that now keeps first Ins and then Outs
+         for Var of Ins loop
+            FA.CFG.Set_Cluster (Var, C);
+            FA.CFG.Add_Edge (Prev, Var, EC_Default);
+            Prev := Var;
          end loop;
 
          if No_Return (Called_Thing) then
@@ -4485,8 +4490,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite : Node_Id;
-      Ins      : in out Vertex_Vectors.Vector;
-      Outs     : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Lists.List;
+      Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
@@ -4554,8 +4559,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
-      Ins      : in out Vertex_Vectors.Vector;
-      Outs     : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Lists.List;
+      Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
@@ -4725,7 +4730,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      L : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      L : Vertex_Lists.List;
    begin
 
       --  Initialize the set of expressions we need to double check.
