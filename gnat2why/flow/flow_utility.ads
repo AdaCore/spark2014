@@ -305,6 +305,17 @@ is
    --  As above, but operating on a list. Note we don't have the
    --  Consider_Extensions parameter here as its implicitly false.
 
+   function Get_Variables_For_Proof (Expr_N  : Node_Id;
+                                     Scope_N : Node_Id)
+                                     return Flow_Id_Sets.Set
+   with Pre  => Present (Expr_N) and then
+                Present (Scope_N),
+        Post => (for all F of Get_Variables_For_Proof'Result =>
+                   Is_Entire_Variable (F));
+   --  A wrapper around Get_Variables, as used by proof. Expr_N is the
+   --  expression for which we obtain variables, and Scope_N is the node
+   --  controlling visibility.
+
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
    with Pre => Present (N);
    --  Return the set of entire variables which are introduced in a quantifier

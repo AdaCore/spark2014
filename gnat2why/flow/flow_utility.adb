@@ -3010,6 +3010,28 @@ package body Flow_Utility is
       end return;
    end Get_Variables_Internal;
 
+   -----------------------------
+   -- Get_Variables_For_Proof --
+   -----------------------------
+
+   function Get_Variables_For_Proof (Expr_N  : Node_Id;
+                                     Scope_N : Node_Id)
+                                     return Flow_Id_Sets.Set
+   is
+      Ctx : constant Get_Variables_Context :=
+        (Scope                           => Get_Flow_Scope (Scope_N),
+         Local_Constants                 => Node_Sets.Empty_Set,
+         Fold_Functions                  => False,
+         Use_Computed_Globals            => True,
+         Reduced                         => True,
+         Assume_In_Expression            => True,
+         Expand_Synthesized_Constants    => False,
+         Consider_Extensions             => False,
+         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+   begin
+      return Get_Variables_Internal (Expr_N, Ctx);
+   end Get_Variables_For_Proof;
+
    -----------------
    -- Has_Depends --
    -----------------

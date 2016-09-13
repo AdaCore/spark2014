@@ -13996,18 +13996,11 @@ package body Gnat2Why.Expr is
       Variables : in out Flow_Id_Sets.Set)
    is
       Ty_Ext : constant Entity_Id := Retysp (Ty);
-      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
    begin
       if Is_Scalar_Type (Ty_Ext) then
          if Has_Default_Aspect (Ty_Ext) then
-            Variables.Union
-              (Get_Variables
-                 (N                    => Default_Aspect_Value (Ty_Ext),
-                  Scope                => Scope,
-                  Local_Constants      => Node_Sets.Empty_Set,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => True,
-                  Reduced              => True));
+            Variables.Union (Get_Variables_For_Proof
+                               (Default_Aspect_Value (Ty_Ext), Ty_Ext));
          end if;
       elsif Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
@@ -14025,15 +14018,9 @@ package body Gnat2Why.Expr is
             --  if Ty_Ext as a Default_Component_Value aspect,
             --  generate get (<Expr>, i1, ...) = <Default_Component_Value>
 
-            Variables.Union
-              (Get_Variables
-                 (N                    =>
-                      Default_Aspect_Component_Value (Ty_Ext),
-                  Scope                => Scope,
-                  Local_Constants      => Node_Sets.Empty_Set,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => True,
-                  Reduced              => True));
+            Variables.Union (Get_Variables_For_Proof
+                               (Default_Aspect_Component_Value (Ty_Ext),
+                                Ty_Ext));
          else
 
             --  otherwise, use its Component_Type default value.
@@ -14077,28 +14064,16 @@ package body Gnat2Why.Expr is
                      --  Generate <Expr>.rec__disc1 = Discr
 
                      Variables.Union
-                       (Get_Variables
-                          (N                    => Node (Elmt),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                       (Get_Variables_For_Proof (Node (Elmt), Ty_Ext));
                      Next_Elmt (Elmt);
                   else
                      pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
 
                      --  Generate <Expr>.rec__disc1 = Discr1.default
 
-                     Variables.Union
-                       (Get_Variables
-                          (N                    =>
-                               Discriminant_Default_Value (Discr),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                     Variables.Union (Get_Variables_For_Proof
+                                        (Discriminant_Default_Value (Discr),
+                                         Ty_Ext));
                   end if;
                end if;
                Next_Discriminant (Discr);
@@ -14119,15 +14094,9 @@ package body Gnat2Why.Expr is
                         --  if Field has a default expression, use it.
                         --   <Expr>.rec__field1 = Field1.default
 
-                        Variables.Union
-                          (Get_Variables
-                             (N                    =>
-                                  Expression (Parent (Field)),
-                              Scope                => Scope,
-                              Local_Constants      => Node_Sets.Empty_Set,
-                              Fold_Functions       => False,
-                              Use_Computed_Globals => True,
-                              Reduced              => True));
+                        Variables.Union (Get_Variables_For_Proof
+                                           (Expression (Parent (Field)),
+                                            Ty_Ext));
                      else
 
                         --  otherwise, use its Field's Etype default value.
@@ -14161,25 +14130,13 @@ package body Gnat2Why.Expr is
          begin
             if Present (Default_Init_Expr) then
 
-               Variables.Union
-                 (Get_Variables
-                    (N                    => Default_Init_Expr,
-                     Scope                => Scope,
-                     Local_Constants      => Node_Sets.Empty_Set,
-                     Fold_Functions       => False,
-                     Use_Computed_Globals => True,
-                     Reduced              => True));
+               Variables.Union (Get_Variables_For_Proof (Default_Init_Expr,
+                                                         Ty_Ext));
 
                --  ??? Remove parameter of DIC procedure. Why is this needed
                --  now?
-               Variables.Difference
-                 (Get_Variables
-                    (N                    => Init_Param,
-                     Scope                => Scope,
-                     Local_Constants      => Node_Sets.Empty_Set,
-                     Fold_Functions       => False,
-                     Use_Computed_Globals => True,
-                     Reduced              => True));
+               Variables.Difference (Get_Variables_For_Proof (Init_Param,
+                                                              Ty_Ext));
             end if;
          end;
       end if;
@@ -14202,18 +14159,8 @@ package body Gnat2Why.Expr is
 
       Dynamic_Pred_Expr : constant Node_Id :=
         Get_Expr_From_Return_Only_Func (Predicate_Function (Pred_Type));
-
-      Scope : constant Flow_Scope := Get_Flow_Scope (Pred_Type);
-
    begin
-      Variables.Union
-        (Get_Variables
-           (N                    => Dynamic_Pred_Expr,
-            Scope                => Scope,
-            Local_Constants      => Node_Sets.Empty_Set,
-            Fold_Functions       => False,
-            Use_Computed_Globals => True,
-            Reduced              => True));
+      Variables.Union (Get_Variables_For_Proof (Dynamic_Pred_Expr, Pred_Type));
    end Variables_In_Dynamic_Predicate;
 
    ------------------------------------
@@ -14225,7 +14172,6 @@ package body Gnat2Why.Expr is
       Variables : in out Flow_Id_Sets.Set)
    is
       Ty_Ext : constant Entity_Id := Retysp (Ty);
-      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
    begin
 
       --  Dynamic property of the type itself
@@ -14239,22 +14185,10 @@ package body Gnat2Why.Expr is
          declare
             Rng : constant Node_Id := Get_Range (Ty_Ext);
          begin
-            Variables.Union
-              (Get_Variables
-                 (N                    => Low_Bound (Rng),
-                  Scope                => Scope,
-                  Local_Constants      => Node_Sets.Empty_Set,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => True,
-                  Reduced              => True));
-            Variables.Union
-              (Get_Variables
-                 (N                    => High_Bound (Rng),
-                  Scope                => Scope,
-                  Local_Constants      => Node_Sets.Empty_Set,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => True,
-                  Reduced              => True));
+            Variables.Union (Get_Variables_For_Proof (Low_Bound (Rng),
+                                                      Ty_Ext));
+            Variables.Union (Get_Variables_For_Proof (High_Bound (Rng),
+                                                      Ty_Ext));
          end;
       elsif Is_Array_Type (Ty_Ext)
         and then not Is_Static_Array_Type (Ty_Ext)
@@ -14270,22 +14204,10 @@ package body Gnat2Why.Expr is
                   declare
                      Rng : constant Node_Id := Get_Range (Etype (Index));
                   begin
-                     Variables.Union
-                       (Get_Variables
-                          (N                    => Low_Bound (Rng),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
-                     Variables.Union
-                       (Get_Variables
-                          (N                    => High_Bound (Rng),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                     Variables.Union (Get_Variables_For_Proof
+                                        (Low_Bound (Rng), Ty_Ext));
+                     Variables.Union (Get_Variables_For_Proof
+                                        (High_Bound (Rng), Ty_Ext));
                   end;
                end if;
                Next_Index (Index);
@@ -14303,21 +14225,9 @@ package body Gnat2Why.Expr is
                      Rng       : constant Node_Id := Get_Range (Index);
                   begin
                      Variables.Union
-                       (Get_Variables
-                          (N                    => Low_Bound (Rng),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                       (Get_Variables_For_Proof (Low_Bound (Rng), Ty_Ext));
                      Variables.Union
-                       (Get_Variables
-                          (N                    => High_Bound (Rng),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                       (Get_Variables_For_Proof (High_Bound (Rng), Ty_Ext));
                   end;
                   Next_Index (Index);
                end loop;
@@ -14338,14 +14248,8 @@ package body Gnat2Why.Expr is
             while Present (Discr) loop
                if Is_Not_Hidden_Discriminant (Discr) then
                   if Is_Constrained (Ty_Ext) then
-                     Variables.Union
-                       (Get_Variables
-                          (N                    => Node (Elmt),
-                           Scope                => Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True));
+                     Variables.Union (Get_Variables_For_Proof (Node (Elmt),
+                                                               Ty_Ext));
                      Next_Elmt (Elmt);
                   end if;
 
