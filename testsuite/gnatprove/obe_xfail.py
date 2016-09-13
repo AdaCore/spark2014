@@ -3,7 +3,8 @@ import re
 import glob
 import os.path
 
-host = "kwai.gnat.com"
+# script to be run on a server where bugtool is available
+
 status_re = re.compile(r"Status: (.*)")
 TN_re = re.compile(r'[0-9A-Z][0-9A-C][0-9][0-9]-[0-9][0-9][0-9]')
 xfail_re = re.compile(r'XFAIL')
@@ -11,7 +12,7 @@ xfail_re = re.compile(r'XFAIL')
 
 def get_tn_info(tn):
     """return the info text for a TN (a string)"""
-    return check_output(["ssh", host, "bugtool", "info", tn])
+    return check_output(["bugtool", "info", tn])
 
 
 def tn_status(tn):
@@ -56,7 +57,6 @@ def check_xfail_tests():
        exists.
     """
     tests = glob.glob("tests/*")
-    interesting_tests = []
     for test in tests:
         xfail_list = test_is_xfail(test)
         if xfail_list is None:
