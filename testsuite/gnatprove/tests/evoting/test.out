@@ -77,7 +77,7 @@ evoting.adb:190:10: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:190:10: warning: no Global contract available for "Put_Line"
 evoting.adb:191:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:191:10: warning: no Global contract available for "Get_Line"
-evoting.adb:191:32: warning: unused assignment to "last"
+evoting.adb:191:40: warning: unused assignment to "last"
 evoting.adb:192:13: info: initialization of "buf" proved
 evoting.adb:193:13: info: precondition proved (CVC4: 1 VC)
 evoting.adb:195:25: info: initialization of "chosen_vote" proved

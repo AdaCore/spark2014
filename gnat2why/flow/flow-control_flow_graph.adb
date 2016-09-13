@@ -810,13 +810,15 @@ package body Flow.Control_Flow_Graph is
    --  This ignores type declarations (but creates a sink vertex so we
    --  can check for use of uninitialized variables).
 
-   procedure Process_Parameter_Associations
+   procedure Process_Call_Actuals
      (Callsite : Node_Id;
       Ins      : in out Vertex_Lists.List;
       Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
-      Ctx      : in out Context);
+      Ctx      : in out Context)
+   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
+                                   N_Entry_Call_Statement;
    --  Similar to the above procedure, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not
    --  linked up; as above, they are appended to Ins and Outs.
@@ -4092,10 +4094,9 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Set_Cluster (V, C);
 
       --  Deal with the subprogram's parameters
-      Process_Parameter_Associations (N,
-                                      Ins,
-                                      Outs,
-                                      FA, CM, Ctx);
+      Process_Call_Actuals (N,
+                            Ins, Outs,
+                            FA, CM, Ctx);
 
       --  We process globals when:
       --     * the globals have already been generated or
@@ -4553,11 +4554,11 @@ package body Flow.Control_Flow_Graph is
       end loop;
    end Process_Subprogram_Globals;
 
-   --------------------------------------
-   --  Process_Parameter_Associations  --
-   --------------------------------------
+   ----------------------------
+   --  Process_Call_Actuals  --
+   ----------------------------
 
-   procedure Process_Parameter_Associations
+   procedure Process_Call_Actuals
      (Callsite : Node_Id;
       Ins      : in out Vertex_Lists.List;
       Outs     : in out Vertex_Lists.List;
@@ -4567,35 +4568,20 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Called_Thing   : constant Entity_Id := Get_Called_Entity (Callsite);
-      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
+      Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
-      P              : Node_Id;
+      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
 
-      V              : Flow_Graphs.Vertex_Id;
+      ----------------------
+      -- Handle_Parameter --
+      ----------------------
 
-      Actual         : Node_Id;
-      Formal         : Node_Id;
-      Call           : Node_Id;
-      Funcs          : Node_Sets.Set;
-   begin
-      --  Create initial nodes for the statements.
-      P := First (Parameter_Associations (Callsite));
-      while Present (P) loop
-         case Nkind (P) is
-            when N_Parameter_Association =>
-               --  F (A => B)
-               Actual := Explicit_Actual_Parameter (P);
-            when others =>
-               --  F (B)
-               Actual := P;
-         end case;
+      procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
+         Funcs : Node_Sets.Set;
+         V     : Flow_Graphs.Vertex_Id;
 
-         Find_Actual (Actual, Formal, Call);
-         pragma Assert (Get_Called_Entity (Call) = Called_Thing);
-         pragma Assert (Is_Formal (Formal));
-
-         --  Build an in vertex.
+      begin
+         --  Build an in vertex
          Collect_Functions_And_Read_Locked_POs
            (Actual,
             Functions_Called   => Funcs,
@@ -4604,7 +4590,7 @@ package body Flow.Control_Flow_Graph is
 
          Add_Vertex
            (FA,
-            Direct_Mapping_Id (P, In_View),
+            Direct_Mapping_Id (Actual, In_View),
             Make_Parameter_Attributes
               (FA                           => FA,
                Call_Vertex                  => Callsite,
@@ -4615,16 +4601,16 @@ package body Flow.Control_Flow_Graph is
                  Ekind (Formal) = E_Out_Parameter,
                Sub_Called                   => Funcs,
                Loops                        => Ctx.Current_Loops,
-               E_Loc                        => P),
+               E_Loc                        => Actual),
             V);
          Ctx.Folded_Function_Checks (Callsite).Insert (Actual);
          Ins.Append (V);
 
-         --  Build an out vertex.
+         --  Build an out vertex
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
             Add_Vertex
               (FA,
-               Direct_Mapping_Id (P, Out_View),
+               Direct_Mapping_Id (Actual, Out_View),
                Make_Parameter_Attributes
                  (FA                           => FA,
                   Call_Vertex                  => Callsite,
@@ -4633,24 +4619,32 @@ package body Flow.Control_Flow_Graph is
                   In_Vertex                    => False,
                   Discriminants_Or_Bounds_Only => False,
                   Loops                        => Ctx.Current_Loops,
-                  E_Loc                        => P),
+                  E_Loc                        => Actual),
                V);
             Outs.Append (V);
          end if;
-         --  Go to the next statement
-         Next (P);
-      end loop;
+      end Handle_Parameter;
 
-      if Belongs_To_Protected_Object (Called_Thing_F) then
+      procedure Handle_Parameters is new SPARK_Util.Iterate_Call_Parameters
+        (Handle_Parameter => Handle_Parameter);
+
+   --  Start of processing for Process_Call_Actuals
+
+   begin
+      Handle_Parameters (Callsite);
+
+      --  ??? I do not think we should do this for internal calls
+      if Ekind (Scope (Called_Thing)) = E_Protected_Type then
          declare
-            --  Create vertices for the implicit formal parameter.
+            --  Create vertices for the implicit formal parameter
             The_PO : constant Flow_Id :=
               Concurrent_Object_Id
                 (Get_Enclosing_Concurrent_Object (E        => Called_Thing,
                                                   Callsite => Callsite,
                                                   Entire   => False));
 
-            V      : Flow_Graphs.Vertex_Id;
+            V : Flow_Graphs.Vertex_Id;
+
          begin
             --  Reading
             Add_Vertex
@@ -4679,7 +4673,7 @@ package body Flow.Control_Flow_Graph is
             end if;
          end;
       end if;
-   end Process_Parameter_Associations;
+   end Process_Call_Actuals;
 
    ------------------------------
    --  Process_Statement_List  --
