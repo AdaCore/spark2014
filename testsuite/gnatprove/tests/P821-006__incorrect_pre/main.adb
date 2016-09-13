@@ -15,5 +15,5 @@ procedure main with SPARK_Mode is
    i32 : Integer_32;
 begin
    bar (arr); -- essential
-   i32 := foo.toInteger_32 (arr (60 .. 64)); -- length check proved, but actually exception
+   i32 := foo.toInteger_32 (arr (60 .. 64)); --@PRECONDITION:FAIL
 end main;
