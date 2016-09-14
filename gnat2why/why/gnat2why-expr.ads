@@ -116,6 +116,12 @@ package Gnat2Why.Expr is
    --  @return a program that checks that no error can appear in N's type
    --          invariant nor in default value of this type.
 
+   function Compute_Default_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id;
+   --  Compute Why3 code to check for absence of runtime errors in default
+   --  initialization of Expr of type Ty.
+
    function Compute_Default_Init
      (Expr             : W_Expr_Id;
       Ty               : Entity_Id;

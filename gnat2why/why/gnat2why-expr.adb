@@ -188,12 +188,6 @@ package body Gnat2Why.Expr is
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
 
-   function Compute_Default_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id;
-   --  Compute Why3 code to check for absence of runtime errors in default
-   --  initialization of Expr of type Ty.
-
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params) return W_Prog_Id;
@@ -2280,7 +2274,10 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+      elsif Is_Record_Type (Ty_Ext)
+        or else Is_Private_Type (Ty_Ext)
+        or else Is_Concurrent_Type (Ty_Ext)
+      then
 
          --  Generates:
          --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
@@ -2413,6 +2410,8 @@ package body Gnat2Why.Expr is
             --        Field1.default                  <if Field1 has a default>
             --        default_check (Etype (Field1))) <otherwise>
             --  /\ ..
+            --  Components of protected types are checked when generating VCs
+            --  for the protected type.
 
             if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
                for Field of Get_Component_Set (Ty_Ext) loop

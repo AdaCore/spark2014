@@ -4,3 +4,4 @@ c910003_pack.adb:14:68: medium: array index check might fail (e.g. when Item1 = 
 c910003_pack.adb:15:68: medium: array index check might fail (e.g. when Item2 = 0)
 c910003_pack.ads:9:36: warning: unused variable "X"
 c910003_pack.ads:10:36: warning: unused variable "X"
+c910003_pack.ads:14:43: info: length check proved (CVC4: 1 VC)

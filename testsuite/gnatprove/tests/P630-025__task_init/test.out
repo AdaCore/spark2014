@@ -188,9 +188,13 @@ decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Fr
 decadriver.ads:115:28: info: initialization of "Result" proved
 decadriver.ads:120:17: info: postcondition proved (CVC4: 1 VC)
 decadriver.ads:120:38: info: initialization of "Result" proved
+decadriver.ads:150:23: info: length check proved (CVC4: 1 VC)
+decadriver.ads:150:34: medium: predicate check might fail
+decadriver.ads:151:46: info: length check proved (CVC4: 1 VC)
 decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:210:27: info: initialization of "Result" proved
 decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
 decadriver.ads:331:17: medium: ceiling priority protocol might not be respected
 decadriver.ads:332:49: medium: this interrupt might be reserved
+decadriver.ads:361:48: info: length check proved (CVC4: 1 VC)

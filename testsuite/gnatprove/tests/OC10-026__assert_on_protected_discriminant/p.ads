@@ -5,7 +5,7 @@ package P is
     protected type PT (J : Integer) is
        pragma Assert (J > 0);
     private
-       X : Positive := Zero;
+       X : Positive := Zero; --@RANGE_CHECK:FAIL
     end;
 
     PO : PT (-1);

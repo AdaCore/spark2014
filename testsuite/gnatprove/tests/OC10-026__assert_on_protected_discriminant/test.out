@@ -1,2 +1,3 @@
 p.ads:6:23: medium: assertion might fail, cannot prove J > 0
+p.ads:8:24: medium: range check might fail
 p.ads:11:14: info: range check proved (CVC4: 1 VC)
