@@ -367,4 +367,11 @@ is
       pragma Assert (Res > 0.0);
    end Float_Greater;
 
+   procedure Diffs (X, Y, Z : Float) is
+   begin
+      pragma Assume (X - Y > 0.0);
+      pragma Assume (Y - Z > 0.0);
+      pragma Assert (X - Z > 0.0);
+   end Diffs;
+
 end Floating_Point;

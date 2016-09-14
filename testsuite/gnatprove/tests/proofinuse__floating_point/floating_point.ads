@@ -109,4 +109,7 @@ is
    procedure Float_Different (X, Y : Float_32; Res : out Float_32);
    procedure Float_Greater (X, Y : Float_32; Res : out Float_32);
 
+   --  from P914-008 (industrial user)
+   procedure Diffs (X, Y, Z : Float);
+
 end Floating_Point;
