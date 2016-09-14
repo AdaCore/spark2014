@@ -30,9 +30,9 @@ are in |SPARK|.
 
    * a task type; or
 
-   *  a protected type; or
+   * a protected type; or
 
-   *  a synchronized interface type; or
+   * a synchronized interface type; or
 
    * an array type whose element type yields synchronized objects; or
 
