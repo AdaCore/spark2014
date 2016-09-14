@@ -172,25 +172,22 @@ to be "nonvolatile for internal calls".
 
 6. Only the following combinations of properties are valid:
 
-   * Async_Readers, Effective_Writes, others => False;
+   ============= ============= ================ ===============
+   Async_Readers Async_Writers Effective_Writes Effective_Reads
+   ============= ============= ================ ===============
+   True          --            True             --
+   --            True          --               True
+   True          --            --               --
+   --            True          --               --
+   True          True          True             --
+   True          True          --               True
+   True          True          --               --
+   True          True          True             True
+   ============= ============= ================ ===============
 
-   * Async_Writers, Effective_Reads, others => False;
-
-   * Async_Readers, others => False;
-
-   * Async_Writers, others => False;
-
-   * Async_Readers, Async_Writers, Effective_Writes, others => False;
-
-   * Async_Readers, Async_Writers, Effective_Reads, others => False;
-
-   * Async_Readers, Async_Writers, others => False; and
-
-   * others => True.
-
-     [Another way of expressing this rule is that Effective_Reads can
-     only be True if Async_Writers is True and Effective_Writes can only
-     be True if Async_Readers is True.]
+   [Another way of expressing this rule is that Effective_Reads can
+   only be True if Async_Writers is True and Effective_Writes can only
+   be True if Async_Readers is True.]
 
 .. _etu-external_state-lr:
 
