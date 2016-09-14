@@ -244,6 +244,16 @@ to be "nonvolatile for internal calls".
     an inherited primitive operation of a tagged type whose
     Volatile_Function aspect is False. [The reverse is allowed.]
 
+.. _tu-fa-external_state-16:
+
+16. A protected object has at least the properties Async_Writers => True
+    and Async_Readers => True. If and only if it has at least one Part_Of
+    component with Effective_Writes => True or Effective_Reads => True,
+    then the protected object also carries this property. [This is
+    particularly relevant if a protected object is a constituent of an
+    external state, or if a protected object is an input of a volatile
+    function.]
+
 .. _etu-external_state-ss:
 
 .. _external_state-variables:
