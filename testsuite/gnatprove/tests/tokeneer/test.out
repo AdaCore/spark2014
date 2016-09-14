@@ -2310,14 +2310,14 @@ latch.ads:150:22: info: postcondition proved (CVC4: 1 VC)
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:95:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:105:29: warning: unused assignment to "InMsg"
+latchapi.adb:105:41: warning: unused assignment to "InMsg"
 latchapi.adb:108:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:112:20: info: initialization of "IsLocked" proved
 latchapi.adb:112:36: info: initialization of "ReadBackOK" proved
 latchapi.adb:129:37: medium: length check might fail
 latchapi.adb:129:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:129:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:140:10: warning: unused assignment to "InMsg"
+latchapi.adb:140:22: warning: unused assignment to "InMsg"
 latchapi.adb:143:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:146:24: info: initialization of "IsLocked" proved
 latchapi.adb:146:40: info: initialization of "ReadBackOK" proved
@@ -2517,23 +2517,23 @@ screen.adb:576:65: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:589:16: info: initialization of "OK" proved
 screen.adb:589:23: info: initialization of "ConsoleOK" proved
 screen.adb:591:35: info: initialization of "C112b" proved
-screen.adb:591:49: info: initialization of "LatchUnlock" proved
-screen.adb:591:49: info: range check proved (CVC4: 1 VC)
+screen.adb:591:35: info: initialization of "LatchUnlock" proved
+screen.adb:591:35: info: range check proved (CVC4: 1 VC)
 screen.adb:595:16: info: initialization of "OK" proved
 screen.adb:595:23: info: initialization of "ConsoleOK" proved
+screen.adb:597:35: info: initialization of "AlarmSilent" proved
 screen.adb:597:35: info: initialization of "C122b" proved
-screen.adb:597:49: info: initialization of "AlarmSilent" proved
-screen.adb:597:49: info: range check proved (CVC4: 1 VC)
+screen.adb:597:35: info: range check proved (CVC4: 1 VC)
 screen.adb:601:16: info: initialization of "OK" proved
 screen.adb:601:23: info: initialization of "ConsoleOK" proved
 screen.adb:603:35: info: initialization of "C132b" proved
-screen.adb:603:49: info: initialization of "FingerWait" proved
-screen.adb:603:49: info: range check proved (CVC4: 1 VC)
+screen.adb:603:35: info: initialization of "FingerWait" proved
+screen.adb:603:35: info: range check proved (CVC4: 1 VC)
 screen.adb:607:16: info: initialization of "OK" proved
 screen.adb:607:23: info: initialization of "ConsoleOK" proved
 screen.adb:609:35: info: initialization of "C142b" proved
-screen.adb:609:49: info: initialization of "TokenRemove" proved
-screen.adb:609:49: info: range check proved (CVC4: 1 VC)
+screen.adb:609:35: info: initialization of "TokenRemove" proved
+screen.adb:609:35: info: range check proved (CVC4: 1 VC)
 screen.adb:613:16: info: initialization of "OK" proved
 screen.adb:613:23: info: initialization of "ConsoleOK" proved
 screen.adb:615:35: info: initialization of "C152b" proved
@@ -3144,26 +3144,16 @@ usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined a
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:958
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:961
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:985
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:737
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:740
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:743
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:846
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:849
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:852
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:955
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:958
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:961
-usertoken.adb:693:37: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:985
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:737
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:740
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:743
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:846
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:849
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:852
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:955
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:958
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:961
-usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:985
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:737
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:740
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:743
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:846
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:849
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:852
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:955
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:958
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:961
+usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:985
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:737
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:740
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:743
@@ -3174,16 +3164,16 @@ usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:958
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:961
 usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:985
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:737
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:740
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:743
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:846
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:849
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:852
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:955
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:958
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:961
-usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:985
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:737
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:740
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:743
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:846
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:849
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:852
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:955
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:958
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:961
+usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:985
 usertoken.adb:695:29: warning: index for "Text" may assume lower bound of 1
 usertoken.adb:695:29: warning: suggested replacement: "Text'First"
 usertoken.adb:695:34: warning: index for "Text" may assume lower bound of 1
