@@ -16,6 +16,5 @@ fileio.ads:21:14: info: initialization of "Ch" proved
 fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'pos
 fileio.ads:22:46: medium: overflow check might fail
 fileio.ads:29:14: medium: postcondition might fail, cannot prove The_File = The_File'Old'update
-fileio.ads:29:75: info: range check proved (CVC4: 1 VC)
 fileio.ads:29:81: medium: range check might fail
 helpers.ads:9:54: info: division check proved (CVC4: 1 VC)

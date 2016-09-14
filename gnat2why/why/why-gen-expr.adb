@@ -1878,6 +1878,15 @@ package body Why.Gen.Expr is
                                              From     => Cur,
                                              To       => To,
                                              Expr     => Result);
+
+      --  If the type is in split form, no conversion is needed. Change the
+      --  Ada_Node to the expected type. We do that by adding a dummy node.
+
+      elsif Get_Type_Kind (To) = EW_Split then
+         Result := New_Label (Labels => Name_Id_Sets.Empty_Set,
+                              Def    => Result,
+                              Domain => Domain,
+                              Typ    => To);
       end if;
 
       --  9. Perform a predicate check if needed, after the final conversion
