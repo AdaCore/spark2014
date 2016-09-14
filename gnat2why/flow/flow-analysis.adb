@@ -29,6 +29,7 @@ with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Opt;                         use Opt;
 with Output;                      use Output;
+with Sem_Aux;                     use Sem_Aux;
 with Sem_Util;                    use Sem_Util;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -554,7 +555,7 @@ package body Flow.Analysis is
       return (Ekind (E) in Formal_Kind
                 and then Ekind (Subp) in E_Procedure | E_Function
                 and then Is_Generic_Actual_Subprogram (Subp)
-                and then Has_Null_Body (Subp));
+                and then Null_Present (Subprogram_Specification (Subp)));
    end Is_Param_Of_Null_Subp_Of_Generic;
 
    ------------------
