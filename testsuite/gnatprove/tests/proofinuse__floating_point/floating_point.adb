@@ -353,4 +353,18 @@ is
       pragma Assert ((((X + 2.0) * X + 3.0) + 4.0) * X + 5.0 in Float'Range);
    end Polynomial;
 
+   procedure Float_Different (X, Y : Float_32; Res : out Float_32) is
+   begin
+      pragma Assume (X /= Y);
+      Res := X - Y;
+      pragma Assert (Res /= 0.0);
+   end Float_Different;
+
+   procedure Float_Greater (X, Y : Float_32; Res : out Float_32) is
+   begin
+      pragma Assume (X > Y);
+      Res := X - Y;
+      pragma Assert (Res > 0.0);
+   end Float_Greater;
+
 end Floating_Point;

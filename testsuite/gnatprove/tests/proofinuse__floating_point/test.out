@@ -190,6 +190,12 @@ floating_point.adb:353:38: info: overflow check proved (altergo: 1 VC)
 floating_point.adb:353:45: medium: overflow check might fail
 floating_point.adb:353:52: medium: overflow check might fail
 floating_point.adb:353:56: medium: overflow check might fail
+floating_point.adb:359:16: medium: overflow check might fail
+floating_point.adb:360:22: info: initialization of "Res" proved
+floating_point.adb:360:22: medium: assertion might fail, cannot prove Res /= 0.0
+floating_point.adb:366:16: medium: overflow check might fail
+floating_point.adb:367:22: info: initialization of "Res" proved
+floating_point.adb:367:22: medium: assertion might fail, cannot prove Res > 0.0
 floating_point.ads:8:39: info: initialization of "Res" proved
 floating_point.ads:11:40: info: initialization of "Res" proved
 floating_point.ads:14:50: info: initialization of "Res" proved
@@ -215,3 +221,5 @@ floating_point.ads:97:28: info: initialization of "Res" proved
 floating_point.ads:100:28: info: initialization of "Res" proved
 floating_point.ads:103:28: info: initialization of "Res" proved
 floating_point.ads:106:28: info: initialization of "Res" proved
+floating_point.ads:109:48: info: initialization of "Res" proved
+floating_point.ads:110:46: info: initialization of "Res" proved

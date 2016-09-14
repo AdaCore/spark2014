@@ -105,4 +105,8 @@ is
    procedure User_Rule_16 (X, Y : Float;
                            Res  : out Boolean);
 
+   --  from P912-012 (industrial user)
+   procedure Float_Different (X, Y : Float_32; Res : out Float_32);
+   procedure Float_Greater (X, Y : Float_32; Res : out Float_32);
+
 end Floating_Point;
