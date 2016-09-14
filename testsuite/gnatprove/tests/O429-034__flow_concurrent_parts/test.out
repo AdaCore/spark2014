@@ -1,2 +1,2 @@
-tp.adb:5:19: medium: overflow check might fail (e.g. when B4 = 2147483647)
+tp.adb:5:19: medium: overflow check might fail
 tp.ads:5:09: medium: the task might terminate, which is not allowed in SPARK

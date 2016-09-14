@@ -1,4 +1,4 @@
 warn.adb:2:04: warning: unused variable "Y"
-warn.adb:4:11: medium: overflow check might fail (e.g. when X = 2147483647)
+warn.adb:4:11: medium: overflow check might fail
 warn.adb:2:04: warning: unused variable "Y"
-warn.adb:4:11: medium: overflow check might fail (e.g. when X = 2147483647)
+warn.adb:4:11: medium: overflow check might fail

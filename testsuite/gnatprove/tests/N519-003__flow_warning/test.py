@@ -1,4 +1,4 @@
 from test_support import *
 
-prove_all()
-prove_all()
+do_flow()
+do_flow()

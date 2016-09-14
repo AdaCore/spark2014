@@ -1,4 +1,4 @@
 from test_support import *
 
-prove_all()
+do_flow()
 check_trace_files()

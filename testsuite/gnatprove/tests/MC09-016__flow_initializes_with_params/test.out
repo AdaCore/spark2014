@@ -1,10 +1,10 @@
 p1.adb:12:10: info: initialization of "S" proved
-p1.adb:15:14: medium: overflow check might fail (e.g. when S = -1 and X = -2147483648)
+p1.adb:15:14: medium: overflow check might fail
 p1.adb:15:17: info: initialization of "S" proved
 p1.adb:26:10: info: initialization of "S" proved
-p1.adb:29:14: medium: overflow check might fail (e.g. when S = -1 and X = -2147483648)
+p1.adb:29:14: medium: overflow check might fail
 p1.adb:29:17: info: initialization of "S" proved
-p1.adb:30:14: medium: overflow check might fail (e.g. when X = 2147483647)
+p1.adb:30:14: medium: overflow check might fail
 p1.adb:43:13: info: initialization of "S" proved
 p1.adb:43:28: info: initialization of "X" proved
 p1.adb:46:16: info: initialization of "S" proved

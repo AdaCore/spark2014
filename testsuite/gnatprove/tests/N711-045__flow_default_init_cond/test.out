@@ -17,7 +17,7 @@ dic.adb:5:04: info: initialization of "D.Y" proved
 dic.adb:11:58: medium: overflow check might fail
 dic.adb:13:63: medium: overflow check might fail
 dic.adb:17:14: medium: overflow check might fail
-dic.ads:9:09: medium: default initial condition might fail (e.g. when G = -1)
+dic.ads:9:09: medium: default initial condition might fail
 dic.ads:26:14: info: initialization of "C.X" proved
 dic.ads:26:14: info: initialization of "C.Y" proved
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized

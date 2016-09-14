@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(opt=["--warnings=error"])
+do_flow(opt=["--warnings=error"])

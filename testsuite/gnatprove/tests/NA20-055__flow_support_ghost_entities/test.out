@@ -1,5 +1,5 @@
-casper.adb:4:17: medium: overflow check might fail (e.g. when G1 = -2147483648 and G2 = -1)
-casper.adb:8:27: medium: overflow check might fail (e.g. when G2 = 2147483647)
+casper.adb:4:17: medium: overflow check might fail
+casper.adb:8:27: medium: overflow check might fail
 casper.adb:11:07: info: assertion proved (CVC4: 1 VC)
 casper.adb:11:22: info: initialization of "Tmp" proved
 casper.adb:19:07: info: initialization of "Nested_Hidden_Var" constituent of "Nested_State" proved

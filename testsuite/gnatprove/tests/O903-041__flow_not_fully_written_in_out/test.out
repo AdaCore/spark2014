@@ -1,6 +1,6 @@
-stack.adb:12:22: medium: array index check might fail (e.g. when Top = 0)
+stack.adb:12:22: medium: array index check might fail
 stack.adb:13:19: info: range check proved (CVC4: 1 VC)
-stack.adb:18:19: medium: overflow check might fail (e.g. when Top = 2147483647)
-stack.adb:19:17: medium: array index check might fail (e.g. when Top = 101)
+stack.adb:18:19: medium: overflow check might fail
+stack.adb:19:17: medium: array index check might fail
 stack.ads:3:22: warning: no procedure exists that can initialize abstract state "Stack.The_Stack"
 stack.ads:7:21: info: initialization of "E" proved

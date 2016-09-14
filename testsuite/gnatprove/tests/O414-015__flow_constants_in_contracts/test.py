@@ -1,7 +1,7 @@
 from test_support import *
 
-prove_all(opt=["-u", "const.adb"])
-prove_all(opt=["-u", "const2.adb"])
-prove_all(opt=["-u", "const3.adb"])
-prove_all(opt=["-u", "const4.adb"])
-prove_all(opt=["-u", "other.adb"])
+do_flow(opt=["-u", "const.adb"])
+do_flow(opt=["-u", "const2.adb"])
+do_flow(opt=["-u", "const3.adb"])
+do_flow(opt=["-u", "const4.adb"])
+do_flow(opt=["-u", "other.adb"])

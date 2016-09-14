@@ -1,2 +1,2 @@
 outer.ads:13:07: info: initialization of "Priv" constituent of "In_State" proved
-outer.ads:13:25: medium: range check might fail (e.g. when Var = -1)
+outer.ads:13:25: medium: range check might fail

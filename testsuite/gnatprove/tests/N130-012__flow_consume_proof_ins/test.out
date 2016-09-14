@@ -2,7 +2,7 @@ test.adb:4:04: info: initialization of "Foo" constituent of "State" proved
 test.adb:4:09: info: initialization of "Bar" constituent of "State" proved
 test.adb:12:12: info: initialization of "Tmp" proved
 test.adb:20:29: info: refined post proved (CVC4: 1 VC)
-test.adb:24:19: medium: overflow check might fail (e.g. when Foo = 2147483647)
+test.adb:24:19: medium: overflow check might fail
 test.ads:5:04: info: initialization of "Proof_Var" proved
-test.ads:12:22: medium: postcondition might fail, cannot prove Proof_Var (e.g. when Proof_Var = False)
+test.ads:12:22: medium: postcondition might fail, cannot prove Proof_Var
 test.ads:19:21: info: postcondition proved (CVC4: 1 VC)

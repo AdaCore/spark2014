@@ -3,7 +3,7 @@ p.adb:11:07: info: initialization of "Pr_Var" proved
 p.adb:11:07: medium: "Pr_Var" needs to be a constituent of some state abstraction
 p.adb:17:07: info: initialization of "GN" proved
 p.adb:17:07: medium: "GN" needs to be a constituent of some state abstraction
-p.adb:19:42: medium: overflow check might fail (e.g. when GN = -1 and Pr_Var = -2147483648)
-p.adb:24:07: info: assertion proved (Z3: 1 VC)
+p.adb:19:42: medium: overflow check might fail
+p.adb:24:22: medium: assertion might fail, cannot prove G = 0 + Nest(Nest.foo)
 p.adb:24:28: info: overflow check proved (CVC4: 1 VC)
-p.adb:25:16: info: overflow check proved (Z3: 1 VC)
+p.adb:25:16: medium: overflow check might fail

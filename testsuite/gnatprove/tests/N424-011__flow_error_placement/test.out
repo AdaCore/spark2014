@@ -1,9 +1,9 @@
 assignment_error.adb:1:29: info: initialization of "X" proved
 assignment_error.adb:4:09: high: "X" is not initialized
-assignment_error.adb:4:11: medium: overflow check might fail (e.g. when X = 2147483647)
-longest_common_prefix.adb:8:15: medium: overflow check might fail (e.g. when L = 1 and X = 2147483647)
+assignment_error.adb:4:11: medium: overflow check might fail
+longest_common_prefix.adb:8:15: medium: overflow check might fail
 longest_common_prefix.adb:8:17: high: "L" is not initialized
-longest_common_prefix.adb:9:20: medium: overflow check might fail (e.g. when L = 1 and Y = 2147483647)
+longest_common_prefix.adb:9:20: medium: overflow check might fail
 longest_common_prefix.adb:10:23: info: index check proved (CVC4: 4 VC)
 longest_common_prefix.adb:10:23: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.adb:10:35: info: index check proved (CVC4: 4 VC)

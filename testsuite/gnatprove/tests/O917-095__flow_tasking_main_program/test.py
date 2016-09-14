@@ -16,4 +16,4 @@ mains = [
 	]
 
 for m in mains:
-	prove_all(opt=["-P", "test.gpr", m])
+	do_flow(opt=["-P", "test.gpr", m])

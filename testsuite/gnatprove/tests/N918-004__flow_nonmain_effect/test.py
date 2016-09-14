@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(opt=["-P", "test.gpr", "main.adb"])
+do_flow(opt=["-P", "test.gpr", "main.adb"])
