@@ -40,9 +40,6 @@ with Urealp;                             use Urealp;
 
 package body SPARK_Util is
 
-   function Is_Main_Cunit (N : Node_Id) return Boolean;
-   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean;
-
    ------------------------------
    -- Extra tables on entities --
    ------------------------------
@@ -909,99 +906,17 @@ package body SPARK_Util is
    -- In_Main_Unit --
    ------------------
 
-   function In_Main_Unit (N : Node_Id) return Boolean is
+   function In_Main_Unit (E : Entity_Id) return Boolean is
       Real_Node : constant Node_Id :=
-        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
+        (if Is_Itype (E)
+         then Associated_Node_For_Itype (E)
+         else E);
+
+      CU : constant Node_Id := Enclosing_Lib_Unit_Node (Real_Node);
+
    begin
-
-      --  ??? Should be made more efficient
-
-      return In_Main_Unit_Spec (Real_Node) or else
-        In_Main_Unit_Body (Real_Node);
+      return Unique_Defining_Entity (Unit (CU)) = Main_Unit_Entity;
    end In_Main_Unit;
-
-   -----------------------
-   -- In_Main_Unit_Body --
-   -----------------------
-
-   function In_Main_Unit_Body (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
-      Root : Node_Id;
-
-   begin
-      if No (CU) then
-         return False;
-      end if;
-
-      Root := Unit (CU);
-
-      case Nkind (Root) is
-         when N_Package_Body
-            | N_Subprogram_Body
-         =>
-            return Is_Main_Cunit (Root);
-
-         when N_Package_Declaration
-            | N_Generic_Package_Declaration
-            | N_Subprogram_Declaration
-            | N_Generic_Subprogram_Declaration
-         =>
-            return False;
-
-         when N_Package_Renaming_Declaration
-            | N_Generic_Package_Renaming_Declaration
-            | N_Subprogram_Renaming_Declaration
-            | N_Generic_Function_Renaming_Declaration
-            | N_Generic_Procedure_Renaming_Declaration
-         =>
-            return False;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end In_Main_Unit_Body;
-
-   -----------------------
-   -- In_Main_Unit_Spec --
-   -----------------------
-
-   function In_Main_Unit_Spec (N : Node_Id) return Boolean is
-      CU   : constant Node_Id := Enclosing_Lib_Unit_Node (N);
-      Root : Node_Id;
-
-   begin
-      if No (CU) then
-         return False;
-      end if;
-
-      Root := Unit (CU);
-
-      case Nkind (Root) is
-         when N_Package_Body
-            | N_Subprogram_Body
-         =>
-            return False;
-
-         when N_Package_Declaration
-            | N_Generic_Package_Declaration
-            | N_Subprogram_Declaration
-            | N_Generic_Subprogram_Declaration
-         =>
-            return Is_Main_Cunit (Root)
-              or else Is_Spec_Unit_Of_Main_Unit (Root);
-
-         when N_Package_Renaming_Declaration
-            | N_Generic_Package_Renaming_Declaration
-            | N_Subprogram_Renaming_Declaration
-            | N_Generic_Function_Renaming_Declaration
-            | N_Generic_Procedure_Renaming_Declaration
-         =>
-            return False;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end In_Main_Unit_Spec;
 
    ---------------
    -- Is_Action --
@@ -1129,13 +1044,6 @@ package body SPARK_Util is
       return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
-   -------------------
-   -- Is_Main_Cunit --
-   -------------------
-
-   function Is_Main_Cunit (N : Node_Id) return Boolean is
-     (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
-
    ----------------------
    -- Is_Others_Choice --
    ----------------------
@@ -1213,17 +1121,6 @@ package body SPARK_Util is
      (Present (Scope (E))
         and then Present (Parent (Scope (E)))
         and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
-
-   -------------------------------
-   -- Is_Spec_Unit_Of_Main_Unit --
-   -------------------------------
-
-   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
-      B : constant Node_Id := Corresponding_Body (N);
-   begin
-      return Present (B)
-        and then Is_Main_Cunit (Unit (Enclosing_Lib_Unit_Node (B)));
-   end Is_Spec_Unit_Of_Main_Unit;
 
    ----------------------------
    -- Iterate_Call_Arguments --

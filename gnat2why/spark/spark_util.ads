@@ -323,17 +323,9 @@ package SPARK_Util is
    --  @return Same as [Spec_File_Name], but always return the file name of the
    --    body, if there is one.
 
-   function In_Main_Unit (N : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is in the body or spec of the currently analyzed unit
-
-   function In_Main_Unit_Body (N : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is in the body of the currently analyzed unit
-
-   function In_Main_Unit_Spec (N : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is in the spec of the currently analyzed unit
+   function In_Main_Unit (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is in the body or spec of the currently analyzed unit
 
    function Spec_File_Name (N : Node_Id) return String;
    --  @param N any node
