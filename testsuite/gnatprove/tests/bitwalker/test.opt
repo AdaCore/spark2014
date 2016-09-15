@@ -1,2 +1,4 @@
 !large SKIP part of large testsuite
 ALL RLIMIT 1500
+Darwin DEAD too long on Darwin
+NT DEAD     too long on Windows
