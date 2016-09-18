@@ -350,11 +350,13 @@ package body SPARK_Definition is
    --  This flag is set to True if the Ravenscar_Profile_Result contains the
    --  correct cached result of Ravenscar_Profile calls.
 
-   function Ravenscar_Profile return Boolean;
-   --  Tests if configuration pragmas and restrictions corresponding to Profile
-   --  (Ravenscar) are currently in effect (set by pragma Profile, or by an
-   --  appropriate set of individual Restrictions pragmas). Returns True only
-   --  if all the required settings are set.
+   function GNATprove_Tasking_Profile return Boolean;
+   --  Tests if configuration pragmas and restrictions corresponding to the
+   --  tasking profile supported by the GNATprove (which is in the middle
+   --  between the Ravenscar profile and GNAT Extended Ravenscar profile) are
+   --  currently in effect (set by pragma Profile or by an appropriate set of
+   --  individual Restrictions pragmas). Returns True only if all the required
+   --  settings are set.
 
    function Sequential_Elaboration return Boolean;
    --  Check if Partition_Elaboration_Policy is set to Sequential
@@ -367,8 +369,8 @@ package body SPARK_Definition is
    -- Is_SPARK_Tasking_Configuration --
    ------------------------------------
 
-   function Is_SPARK_Tasking_Configuration
-     return Boolean is (Ravenscar_Profile and then Sequential_Elaboration);
+   function Is_SPARK_Tasking_Configuration return Boolean is
+     (GNATprove_Tasking_Profile and then Sequential_Elaboration);
 
    ----------------------
    -- Inhibit_Messages --
@@ -382,20 +384,70 @@ package body SPARK_Definition is
       Emit_Messages := False;
    end Inhibit_Messages;
 
-   -----------------------
-   -- Ravenscar_Profile --
-   -----------------------
+   -------------------------------
+   -- GNATprove_Tasking_Profile --
+   -------------------------------
 
    --  Check that the current settings match those in
    --  Sem_Prag.Set_Ravenscar_Profile.
    --  ??? Older versions of Ada are also supported to ease reuse once this
    --  code is moved to Restrict package.
 
-   function Ravenscar_Profile return Boolean is
+   function GNATprove_Tasking_Profile return Boolean is
       Prefix_Entity   : Entity_Id;
       Selector_Entity : Entity_Id;
       Prefix_Node     : Node_Id;
       Node            : Node_Id;
+
+      Profile : constant Profile_Data :=
+        --  Restrictions for GNAT_Extended_Ravenscar =
+        --    Restricted profile ..
+        (Set   =>
+           (No_Abort_Statements                      => True,
+            No_Asynchronous_Control                  => True,
+            No_Dynamic_Attachment                    => True,
+            No_Dynamic_Priorities                    => True,
+            No_Entry_Queue                           => True, --  TO LIFT
+            No_Local_Protected_Objects               => True,
+            No_Protected_Type_Allocators             => True,
+            No_Requeue_Statements                    => True,
+            No_Task_Allocators                       => True,
+            No_Task_Attributes_Package               => True,
+            No_Task_Hierarchy                        => True,
+            No_Terminate_Alternatives                => True,
+            Max_Asynchronous_Select_Nesting          => True,
+            Max_Protected_Entries                    => True, --  TO LIFT
+            Max_Select_Alternatives                  => True,
+            Max_Task_Entries                         => True,
+
+            --  plus these additional restrictions:
+
+            No_Calendar                              => True, --  TO LIFT
+            No_Implicit_Task_Allocations             => True,
+            No_Implicit_Protected_Object_Allocations => True,
+
+            No_Local_Timing_Events                   => True,
+            No_Relative_Delay                        => True, --  TO LIFT
+            No_Select_Statements                     => True,
+            No_Specific_Termination_Handlers         => True,
+            No_Task_Termination                      => True,
+            Simple_Barriers                          => True, --  TO LIFT
+            Pure_Barriers                            => True,
+            others                                   => False),
+
+         --  Value settings for Ravenscar (same as Restricted)
+
+         Value =>
+           (Max_Asynchronous_Select_Nesting => 0,
+            Max_Protected_Entries           => 1,             --  TO LIFT
+            Max_Select_Alternatives         => 0,
+            Max_Task_Entries                => 0,
+            others                          => 0));
+      --  A profile that is in the middle between extended and strict Ravenscar
+      --
+      --  ??? restrictions marked as "TO LIFT" should be removed one-by-one;
+      --  once none are left this constant should be replaced with
+      --  Profile_Info (GNAT_Extended_Ravenscar) from System.Rident.
 
       function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
       --  Check if restriction No_Dependence is set for Unit.
@@ -483,8 +535,8 @@ package body SPARK_Definition is
          end if;
 
          declare
-            R : Restriction_Flags  renames Profile_Info (Ravenscar).Set;
-            V : Restriction_Values renames Profile_Info (Ravenscar).Value;
+            R : Restriction_Flags  renames Profile.Set;
+            V : Restriction_Values renames Profile.Value;
          begin
             for J in R'Range loop
                if R (J)
@@ -494,8 +546,18 @@ package body SPARK_Definition is
                                (J in All_Parameter_Restrictions
                                   and then Restrictions.Value (J) > V (J)))
                then
-                  Ravenscar_Profile_Result := False;
-                  return False;
+                  if (J in No_Implicit_Task_Allocations |
+                           No_Implicit_Protected_Object_Allocations
+                      and then Restrictions.Set (No_Implicit_Heap_Allocations))
+                    or else
+                     (J = Pure_Barriers
+                      and then Restrictions.Set (Simple_Barriers))
+                  then
+                     null;
+                  else
+                     Ravenscar_Profile_Result := False;
+                     return False;
+                  end if;
                end if;
             end loop;
          end;
@@ -603,7 +665,7 @@ package body SPARK_Definition is
 
          return True;
       end if;
-   end Ravenscar_Profile;
+   end GNATprove_Tasking_Profile;
 
    ----------------------------
    -- Sequential_Elaboration --
@@ -5680,7 +5742,7 @@ package body SPARK_Definition is
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
 
-         if not Ravenscar_Profile then
+         if not GNATprove_Tasking_Profile then
             Error_Msg_F (Msg_Prefix &
                            "Ravenscar profile" & Msg_Suffix, N);
          elsif not Sequential_Elaboration then
