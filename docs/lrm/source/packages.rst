@@ -137,7 +137,9 @@ A protected function is also defined to be a *volatile function*, as is
 an instance of Unchecked_Conversion where one or both of the actual
 Source and Target types are effectively volatile types.
 [Unlike nonvolatile functions, two calls to a volatile function with all
-inputs equal need not return the same result.]
+inputs equal need not return the same result. However note that the rule
+that a function must not have any output still applies; in effect this bans
+a volatile function from reading an object with Effective_Reads => True.]
 
 A protected function whose Volatile_Function aspect is False is said
 to be "nonvolatile for internal calls".
