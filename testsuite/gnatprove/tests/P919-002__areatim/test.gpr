@@ -1,4 +1,4 @@
-project Repr is
+project Test is
 
   for Languages use ("Ada");
   for Source_Dirs use (".");
@@ -7,4 +7,4 @@ project Repr is
     for Switches ("Ada") use ("-gnatg", "-nostdinc");
   end Compiler;
 
-end Repr;
+end Test;
