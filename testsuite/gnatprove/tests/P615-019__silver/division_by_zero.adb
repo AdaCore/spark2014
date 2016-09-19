@@ -29,7 +29,7 @@ procedure Division_By_Zero is
       U := X / Y;
    end Div_Float;
 
-   procedure Div_Fixed (X, Y : Float; U : out Float) is
+   procedure Div_Fixed (X, Y : Fixed; U : out Fixed) is
    begin
       U := X / Y;
    end Div_Fixed;
