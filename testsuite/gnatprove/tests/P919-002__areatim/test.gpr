@@ -1,0 +1,10 @@
+project Repr is
+
+  for Languages use ("Ada");
+  for Source_Dirs use (".");
+
+  package Compiler is
+    for Switches ("Ada") use ("-gnatg", "-nostdinc");
+  end Compiler;
+
+end Repr;
