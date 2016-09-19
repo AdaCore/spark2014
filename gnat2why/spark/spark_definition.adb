@@ -427,7 +427,6 @@ package body SPARK_Definition is
             No_Implicit_Protected_Object_Allocations => True,
 
             No_Local_Timing_Events                   => True,
-            No_Relative_Delay                        => True, --  TO LIFT
             No_Select_Statements                     => True,
             No_Specific_Termination_Handlers         => True,
             No_Task_Termination                      => True,
@@ -1181,7 +1180,9 @@ package body SPARK_Definition is
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
 
-         when N_Delay_Until_Statement =>
+         when N_Delay_Relative_Statement
+            | N_Delay_Until_Statement
+         =>
             if Is_SPARK_Tasking_Configuration then
                Mark (Expression (N));
             else
@@ -1842,7 +1843,6 @@ package body SPARK_Definition is
             | N_Accept_Statement
             | N_Asynchronous_Select
             | N_Conditional_Entry_Call
-            | N_Delay_Relative_Statement
             | N_Requeue_Statement
             | N_Selective_Accept
             | N_Timed_Entry_Call

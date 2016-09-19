@@ -14330,9 +14330,11 @@ package body Gnat2Why.Expr is
          =>
             return +Void;
 
-         --  delay statements can be ignored for proof
+         --  ??? missing check for the expression of the delay statements
 
-         when N_Delay_Until_Statement =>
+         when N_Delay_Relative_Statement
+            | N_Delay_Until_Statement
+         =>
             return +Void;
 
          when others =>
