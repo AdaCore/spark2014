@@ -3,7 +3,7 @@ with Ada.Text_IO;
 procedure Generic_Examples is
 
    function Count (Source  : in String;
-                   Pattern : in Character) return Natural is
+                   Pattern : in Character) return Natural with Global => null is
    -- Returns the number of times Pattern occurs in Source
       Result : Natural := 0;
    begin

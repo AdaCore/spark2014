@@ -687,12 +687,9 @@ external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
 generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
-generic_examples.adb:11:21: info: index check proved (CVC4: 2 VC), in call inlined at generic_examples.adb:89
 generic_examples.adb:12:23: info: initialization of "Result" proved
-generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:30: medium: overflow check might fail
 generic_examples.adb:15:14: info: initialization of "Result" proved
-generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
 generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
