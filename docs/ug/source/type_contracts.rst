@@ -12,6 +12,9 @@ Type Contracts
 * A *predicate* introduced by aspect ``Static_Predicate``,
   ``Dynamic_Predicate`` or ``Predicate`` may be specified on a type or subtype
   to express a property verified by objects of the type.
+* A *type invariant* introduced by aspect ``Type_Invariant`` or ``Invariant``
+  may be specified on the completion of a private type to express a property
+  that is only guaranteed outside of the type scope.
 * A *default initial condition* introduced by aspect
   ``Default_Initial_Condition`` on a private type specifies the initialization
   status and possibly properties of the default initialization for a type.
@@ -292,6 +295,209 @@ by the Ada Reference Manual:
 Thus, not all violations of the dynamic predicate are caught at run time. On
 the contrary, during analysis, |GNATprove| checks that initialized variables
 whose type has a predicate always contain a value allowed by the predicate.
+
+Type Invariants
+---------------
+
+[Ada 2012]
+
+In |SPARK|, type invariants can only be specified on completions of private
+types (and not directly on private types declarations). They express a property
+that is only quaranteed outside of the immediate scope of the type bearing the
+invariant. Aspect ``Type_Invariant`` is defined in Ada 2012 to associate an
+invariant to a type. Aspect ``Invariant`` is specific to |GNAT Pro| and can be
+used instead of ``Type_Invariant``.
+
+|GNATprove| checks that, outside of the immediate scope of a type with an
+invariant, all values of this type are allowed by its invariant. 
+In order to provide such a strong guarantee, |GNATprove| generates an invariant
+check even in cases where there is no corresponding run-time check, for example
+on global variables that are modified by a subprogram. |GNATprove| also uses
+the invariant information for proving properties about the program.
+
+..  examples in this section are expanded in the example code invariants.ads/b
+    under gnatprove_by_example, and should be kept in synch with this code.
+
+As an example, let us consider a stack, which can be queried for the maximum of
+the elements stored in it:
+
+.. code-block:: ada
+
+   package P is
+
+      type Stack is private;
+   
+      function Max (S : Stack) return Element;
+
+   private
+   
+
+In the implementation, an additional component is allocated for the maximum,
+which is kept up to date by the implementation of the stack. This information is
+a type invariant, which can be specified using a ``Type_Invariant`` aspect:
+
+.. code-block:: ada
+
+   private
+   
+      type Stack is record
+         Content : Element_Array := (others => 0);
+         Size    : My_Length := 0;
+         Max     : Element := 0;
+      end record with
+        Type_Invariant => Is_Valid (Stack);
+   
+      function Is_Valid (S : Stack) return Boolean is
+        ((for all I in 1 .. S.Size => S.Content (I) <= S.Max)
+         and (if S.Max > 0 then
+                  (for some I in 1 .. S.Size => S.Content (I) = S.Max)));
+   
+      function Max (S : Stack) return Element is (S.Max);
+
+   end P;
+
+Like for type predicates, the name of the type can be used inside the invariant
+expression to refer to the current instance of the type. Here the type predicate
+of ``Stack`` expresses that the ``Max`` field of a valid stack is the maximum of
+the elements stored in the stack.
+
+To make sure that the invariant holds for every value of type ``Stack`` outside
+of the package ``P``, |GNATProve| introduces invariant checks in several
+places. First, at the type declaration, it will make sure that the invariant
+holds every time an object of type ``Stack`` is default initialized. Here, as
+the stack is empty by default and the default value of ``Max`` is 0, the check
+will succeed. It is also possible to forbid default initialization of objects of
+type ``Stack`` altogether by using a :ref:`Default Initial Condition` of
+``False``:
+
+.. code-block:: ada
+   
+   type Stack is private with Default_Initial_Condition => False;
+   
+   type Stack is record
+      Content : Element_Array;
+      Size    : My_Length;
+      Max     : Element;
+   end record with Type_Invariant => Is_Valid (Stack);
+
+A check is also introduced to make sure the invariant holds for every global
+object declared in the scope of ``Stack`` after it has been initialized:
+
+.. code-block:: ada
+
+   package body P is
+
+      The_Stack : Stack := (Content => (others => 1),
+                            Size    => 5,
+                            Max     => 0);
+      
+   begin
+
+      The_Stack.Max := 1;
+
+   end P;
+
+Here the global variable ``The_Stack`` is allowed to break its invariant during
+the elaboration of ``P``. The invariant check will only be done at the end of
+the elaboration of ``P``, and will succeed.
+
+In the same way, variables and parameters of a subprogram are allowed to break
+their invariants in the subprogram body. Verification
+conditions are generated to ensure that no invariant breaking value can leak
+outside of ``P``. More precisely, invariant checks on subprogram parameters are
+performed:
+
+* when calling a subprogram visible outside of ``P`` from inside of ``P``. Such
+  a subprogram can be either declared in the visible part of ``P`` or in another
+  unit,
+* when returning from a subprogram declared in the visible part of ``P``.
+
+For example, let us consider the implementation of a procedure ``Push`` that
+pushes an element of top of a stack. It is declared in the visible part of the
+specification of ``P``:
+
+.. code-block:: ada
+
+   function Size (S : Stack) return My_Length;
+   
+   procedure Push (S : in out Stack; E : Element) with 
+     Pre => Size (S) < My_Length'Last;
+   
+   procedure Push_Zero (S : in out Stack) with
+     Pre => Size (S) < My_Length'Last;
+
+It is then implemented using an internal procedure ``Push_Internal`` declared
+in the body of ``P``:
+
+.. code-block:: ada
+   
+   procedure Push_Internal (S : in out Stack; E : Element) with
+     Pre  => S.Size < My_Length'Last,
+     Post => S.Size = S.Size'Old + 1 and S.Content (S.Size) = E
+     and S.Content (1 .. S.Size)'Old = S.Content (1 .. S.Size - 1)
+     and S.Max = S.Max'Old
+   is
+   begin
+      S.Size := S.Size + 1;
+      S.Content (S.Size) := E;
+   end Push_Internal;
+   
+   procedure Push (S : in out Stack; E : Element) is
+   begin
+      Push_Internal (S, E);
+      if S.Max < E then
+         S.Max := E;
+      end if;
+   end Push;
+   
+   procedure Push_Zero (S : in out Stack) is
+   begin
+      Push (S, 0);
+   end Push_Zero;
+
+On exit of ``Push_Internal``, the invariant of ``Stack`` is broken. It is OK
+since ``Push_Internal`` is not visible from outside of ``P``. Invariant checks
+are performed when exiting ``Push`` and when calling it from inside
+``Push_Zero``. They both succeed.
+Note that, because of invariant checks on parameters, it is not allowed in
+|SPARK| to call a function that is visible from outside ``P`` in the invariant
+of ``Stack`` otherwise this would lead to a recursive proof. In particular, it
+is not allowed to make ``Is_Valid`` visible in
+the public declarations of ``P``. In the same way, the function ``Size`` cannot
+be used in the invariant of ``Stack``. We also avoid using ``Size`` in the
+contract of ``Push_Internal`` as it would have enforced additional invariant
+checks on its parameter.
+
+Checks are also performed for global variables accessed by subprograms inside
+``P``. Even if it is allowed to break the invariant of a global variable when
+inside the body of a subprogram declared in ``P``, invariant checks are
+performed when calling and returning from every subprogram inside ``P``. For
+example, if ``Push`` and ``Push_Internal`` are accessing directly the global
+stack ``The_Stack`` instead of taking it as a parameter, there will be a failed
+invariant check on exit of ``Push_Internal``:
+
+.. code-block:: ada
+   
+   procedure Push_Internal (E : Element) with
+     Pre  => The_Stack.Size < My_Length'Last
+   is
+   begin
+      The_Stack.Size := The_Stack.Size + 1;
+      The_Stack.Content (The_Stack.Size) := E;
+   end Push_Internal;
+      
+   procedure Push (E : Element) is
+   begin
+      Push_Internal (E);
+      if The_Stack.Max < E then
+         The_Stack.Max := E;
+      end if;
+   end Push;
+
+In this way, users will never have to use contracts to ensure that the invariant
+holds on global variable ``The_Stack`` through local subprogram calls.
+
+.. _Default Initial Condition:
 
 Default Initial Condition
 -------------------------

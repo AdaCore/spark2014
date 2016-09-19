@@ -58,6 +58,14 @@ Tool Limitations
 
 #. Task attributes Identity and Storage_Size are not supported.
 
+#. Type_Invariant and Invariant aspects are not supported:
+
+   * on private types declared in nested packages or child packages
+   * on protected types
+   * on tagged types
+   * on components of tagged types if the tagged type is visble from inside the
+     scope of the invariant bearing type.
+
 Legality Rules
 --------------
 
