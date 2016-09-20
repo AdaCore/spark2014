@@ -14470,12 +14470,16 @@ package body Gnat2Why.Expr is
          =>
             return +Void;
 
-         --  ??? missing check for the expression of the delay statements
-
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
          =>
-            return +Void;
+            return
+              New_Ignore (Ada_Node => Stmt_Or_Decl,
+                          Prog     =>
+                             +Transform_Expr
+                            (Expression (Stmt_Or_Decl),
+                             Domain => EW_Prog,
+                             Params => Body_Params));
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
