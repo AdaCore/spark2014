@@ -865,7 +865,8 @@ initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
 initializer_demo.adb:35:35: medium: overflow check might fail
 initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
 initializer_demo.ads:12:28: info: range check proved (CVC4: 1 VC)
-interval.ads:9:09: warning: type invariant ignored (not yet supported)
+interval.ads:6:13: info: invariant check proved (CVC4: 1 VC)
+interval.ads:9:09: info: invariant check proved on default value (CVC4: 1 VC)
 led_display.adb:19:15: info: length check proved (CVC4: 1 VC)
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 lights.adb:15:14: info: initialization of "Result" proved
@@ -1205,8 +1206,9 @@ shapes4.adb:27:30: medium: overflow check might fail
 shapes4.adb:27:32: info: initialization of "Delta_Y" proved
 shapes4.adb:27:39: info: overflow check proved (altergo: 1 VC)
 shapes4.adb:27:75: info: overflow check proved (altergo: 1 VC)
-shapes4.adb:27:75: medium: range check might fail
-shapes4.ads:16:09: warning: type invariant ignored (not yet supported)
+shapes4.adb:27:75: info: range check proved (altergo: 1 VC)
+shapes4.ads:8:13: info: invariant check proved (CVC4: 1 VC)
+shapes4.ads:16:09: info: invariant check proved on default value (CVC4: 1 VC)
 shapes5.adb:8:08: info: refined post proved (CVC4: 4 VC)
 shapes5.adb:19:10: info: initialization of "R" proved
 shapes5.adb:20:36: info: range check proved (CVC4: 1 VC)
