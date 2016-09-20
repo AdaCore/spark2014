@@ -1,4 +1,4 @@
-with "gnat_util.gpr";
+with "xmlada.gpr";
 
 project Test is
 end Test;
