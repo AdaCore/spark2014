@@ -25,6 +25,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
+with Rtsfind;                            use Rtsfind;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
@@ -1619,6 +1620,10 @@ package body Flow.Control_Flow_Graph is
       V         : Flow_Graphs.Vertex_Id;
       Vars_Used : Flow_Id_Sets.Set;
       Funcs     : Node_Sets.Set;
+
+      Real_Time_Clock : constant String := "ada__real_time__clock_time";
+      Calendar_Clock  : constant String := "ada__calendar__clock_time";
+
    begin
       --  Gather variables used in the expression of the delay statement
       Vars_Used := Get_Variables
@@ -1628,9 +1633,22 @@ package body Flow.Control_Flow_Graph is
                       Fold_Functions       => True,
                       Use_Computed_Globals => not FA.Generating_Globals);
 
-      --  Add the implicit use of Ada.Real_Time.Clock_Time
+      --  Add the implicit use of Ada.Real_Time.Clock_Time or
+      --  Ada.Calendar.Clock_Time, depending on the kind of the delay
+      --  statement and (for the delay until) the base type of its expression.
+      --  The condtion here is the same as in Expand_N_Delay_Until_Statement.
       Vars_Used.Include
-        (Get_Flow_Id (To_Entity_Name ("ada__real_time__clock_time")));
+        (Get_Flow_Id
+           (To_Entity_Name
+              ((case Nkind (N) is
+                when N_Delay_Relative_Statement =>
+                   Real_Time_Clock,
+                when N_Delay_Until_Statement =>
+                   (if Is_RTE (Base_Type (Etype (Expression (N))), RO_CA_Time)
+                    then Calendar_Clock
+                    else Real_Time_Clock),
+                when others =>
+                   raise Program_Error))));
 
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
