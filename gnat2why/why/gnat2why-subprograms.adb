@@ -3156,7 +3156,6 @@ package body Gnat2Why.Subprograms is
             if Is_Entry (E)
               and then Present (Body_N)
               and then Entity_Body_In_SPARK (E)
-              and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
             then
                declare
                   Params : constant Transformation_Params :=
@@ -3170,8 +3169,8 @@ package body Gnat2Why.Subprograms is
                   Pre :=
                     +New_And_Then_Expr
                       (Domain => EW_Pred,
-                       Left  => +Pre,
-                       Right =>
+                       Left   => +Pre,
+                       Right  =>
                          Transform_Expr
                            (Barrier, EW_Bool_Type, EW_Pred, Params));
                end;
@@ -3396,7 +3395,6 @@ package body Gnat2Why.Subprograms is
          if Is_Entry (E)
            and then Present (Body_N)
            and then Entity_Body_In_SPARK (E)
-           and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
          then
             Pre :=
               Sequence (Pre,
@@ -3410,7 +3408,7 @@ package body Gnat2Why.Subprograms is
              (New_Comment
                 (Comment => NID ("Check for RTE in the Pre of the subprogram"
                  & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                   else ""))),
+                    else ""))),
               New_Ignore
                 (Prog => Pre));
       end RTE_Of_Pre;

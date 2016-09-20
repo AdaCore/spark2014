@@ -429,7 +429,6 @@ package body SPARK_Definition is
             No_Select_Statements                     => True,
             No_Specific_Termination_Handlers         => True,
             No_Task_Termination                      => True,
-            Simple_Barriers                          => True, --  TO LIFT
             Pure_Barriers                            => True,
             others                                   => False),
 
@@ -5462,8 +5461,7 @@ package body SPARK_Definition is
                if Nkind (E) = N_Entry_Body then
                   --  Entry barriers in Ravenscar are always of N_Identifier
                   --  kind.
-                  Mark_Identifier_Or_Expanded_Name
-                    (Condition (Entry_Body_Formal_Part (N)));
+                  Mark (Condition (Entry_Body_Formal_Part (N)));
                end if;
 
                --  For subprogram bodies (but not other subprogram-like
