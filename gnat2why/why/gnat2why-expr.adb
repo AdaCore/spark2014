@@ -5654,11 +5654,12 @@ package body Gnat2Why.Expr is
                Name : W_Identifier_Id;
                Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
                Base : constant W_Expr_Id :=
-                 Insert_Simple_Conversion
-                         (Ada_Node => Ada_Node,
-                          Domain   => Domain,
-                          Expr     => Left,
-                          To       => Typ);
+                 New_Temp_For_Expr
+                   (Insert_Simple_Conversion
+                      (Ada_Node => Ada_Node,
+                       Domain   => Domain,
+                       Expr     => Left,
+                       To       => Typ));
                Expo : constant W_Expr_Id :=
                  Insert_Simple_Conversion
                        (Ada_Node => Ada_Node,
@@ -5707,6 +5708,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
+               T := Binding_For_Temp (Ada_Node, Domain, Base, T);
             end;
 
          when N_Op_Not =>
