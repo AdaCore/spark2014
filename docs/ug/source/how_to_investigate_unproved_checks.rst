@@ -74,6 +74,22 @@ may yield VCs that should be true, but cannot be proved:
 In these cases the missing information can usually be added using ``pragma
 Assume``.
 
+It may be difficult sometimes to distinguish between unprovable properties and
+prover shortcomings (the next section). The most generally useful action to
+narrow down the issue to its core is to insert assertions in the code that
+`test` whether the property (or part of it) can be proved at some specific
+point in the program. For example, if a postcondition states a property (P or
+Q), and the implementation contains many branches and paths, try adding
+assertions that P holds or Q holds where they are expected to hold. This can
+help distinguish between the two cases:
+
+* In the case of an unprovable property, this may point to a specific path in
+  the program, and a specific part of the property, which cause the issue.
+* In the case of a prover shortcoming, this may also help provers to manage to
+  prove both the assertion and the property. Then, it is good practice to keep
+  in the code only those assertions that help getting automatic proof, and to
+  remove other assertions that were inserted during interaction.
+
 .. _Investigating Prover Shortcomings:
 
 Investigating Prover Shortcomings
