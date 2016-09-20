@@ -11,14 +11,14 @@ x86.adb:49:19: medium: assertion might fail, in call inlined at x86.adb:99 (e.g.
 x86.adb:54:16: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at x86.adb:99
 x86.adb:55:20: medium: loop invariant might fail after first iteration, cannot prove for all M in 0 .. N => var1 /= (var2-var1_range_size + M)) or (for some i in 0 .. var1_range_size => (for some j in 0 .. var2_range_size => (var1 + i) = (var2 + j, in call inlined at x86.adb:99 (e.g. when N = 18446744073709551614 and var1 = 0 and var1_range_size = 18446744073709551614 and var2 = 9223372036854775806 and var2_range_size = 1)
 x86.adb:60:13: medium: assertion might fail, in call inlined at x86.adb:99 (e.g. when var1 = 1 and var1_range_size = 18446744073709551614 and var2 = 18446744073709551614 and var2_range_size = 0)
-x86.adb:65:16: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at x86.adb:99
-x86.adb:69:32: medium: loop invariant might fail after first iteration, cannot prove var1 + i /= var2 + J, in call inlined at x86.adb:99 (e.g. when I = 0 and J = 4096 and N1 = 1 and var1 = 9223372036854779904 and var2 = 9223372036854775808 and var2_range_size = 3458764514659401727)
+x86.adb:65:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at x86.adb:99
+x86.adb:69:32: medium: loop invariant might fail after first iteration, cannot prove var1 + i /= var2 + J, in call inlined at x86.adb:99 (e.g. when I = 0 and J = 9223372036854775808 and N1 = 1 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
 x86.adb:72:52: info: range check proved (CVC4: 2 VC), in call inlined at x86.adb:99
 x86.adb:74:37: medium: assertion might fail, cannot prove N in 0 .. var1_range_size+var2_range_size, in call inlined at x86.adb:99
 x86.adb:75:22: info: assertion proved (altergo: 2 VC), in call inlined at x86.adb:99
 x86.adb:77:34: medium: assertion might fail, cannot prove var1 + N1 /= var2 + N2, in call inlined at x86.adb:99
 x86.adb:78:19: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at x86.adb:99
-x86.adb:79:47: medium: loop invariant might fail after first iteration, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and N2 = 18446744073709551615 and var1 = 8 and var2 = 9223372036854775816)
+x86.adb:79:47: medium: loop invariant might fail after first iteration, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and N2 = 18446744073709551615 and var1 = 0 and var2 = 9223372036854775808)
 x86.adb:82:57: medium: assertion might fail, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
 x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99
 x86.adb:89:37: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 0 and i = 0 and j = 9223372036854775808 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)

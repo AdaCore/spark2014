@@ -86,8 +86,8 @@ counterexample expected for check at arrays.adb:178
 counterexample expected for check at arrays.adb:199
   trace at arrays.adb:197 --> C = NUL and Single_Char_Set_Broken'Result = (others => false)
   trace at arrays.adb:199 --> C = NUL and I = NUL and Single_Char_Set_Broken'Result = (others => true)
-  trace at arrays.adb:203 --> R = (others => true) and X = LC_Y_Diaeresis
-  trace at arrays.adb:204 --> R = (0 => true, others => false)
+  trace at arrays.adb:203 --> R = (others => false) and X = NUL
+  trace at arrays.adb:204 --> R = (others => false)
   trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = (others => true)
 counterexample expected for check at arrays.adb:218
   trace at arrays.adb:217 --> A = (others => false)

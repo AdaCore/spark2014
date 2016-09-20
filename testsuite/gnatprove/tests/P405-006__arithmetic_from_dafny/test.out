@@ -115,7 +115,7 @@ mul_lemmas.adb:17:14: info: initialization of "Res" proved
 mul_lemmas.adb:17:14: info: postcondition proved (Z3: 1 VC)
 mul_lemmas.adb:20:16: info: overflow check proved (altergo: 1 VC)
 mul_lemmas.adb:23:49: info: initialization of "Res" proved
-mul_lemmas.adb:24:14: info: postcondition proved (CVC4: 2 VC)
+mul_lemmas.adb:24:14: info: postcondition proved (CVC4: 3 VC)
 mul_lemmas.adb:24:18: info: initialization of "Res" proved
 mul_lemmas.adb:27:16: info: overflow check proved (altergo: 1 VC)
 mul_lemmas.adb:30:59: info: initialization of "Res1" proved

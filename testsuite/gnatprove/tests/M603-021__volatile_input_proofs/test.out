@@ -1,9 +1,9 @@
-port.adb:29:16: medium: range check might fail (e.g. when Tmp = 1)
+port.adb:29:16: medium: range check might fail (e.g. when Tmp = 1 and X = 0)
 port.adb:29:19: info: initialization of "Tmp" proved
 port.adb:39:10: info: initialization of "T" proved
 port.adb:39:10: warning: attribute Valid is assumed to return True
 port.adb:40:15: info: initialization of "T" proved
-port.adb:54:16: medium: range check might fail (e.g. when Tmp = 1)
+port.adb:54:16: medium: range check might fail (e.g. when T = 0 and Tmp = 1)
 port.adb:54:19: info: initialization of "Tmp" proved
 port.adb:55:10: info: initialization of "T" proved
 port.adb:55:10: warning: attribute Valid is assumed to return True
@@ -30,43 +30,43 @@ port.adb:162:18: info: initialization of "T2" proved
 port.ads:16:04: info: assertion proved (CVC4: 1 VC)
 port.ads:65:28: info: initialization of "X" proved
 port.ads:68:22: info: initialization of "X" proved
-port.ads:68:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:68:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:68:22: warning: attribute Valid is assumed to return True
 port.ads:70:28: info: initialization of "X" proved
 port.ads:73:22: info: initialization of "X" proved
-port.ads:73:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:73:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:73:22: warning: attribute Valid is assumed to return True
 port.ads:75:29: info: initialization of "X" proved
 port.ads:78:22: info: initialization of "X" proved
-port.ads:78:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:78:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:78:22: warning: attribute Valid is assumed to return True
 port.ads:80:29: info: initialization of "X" proved
 port.ads:83:22: info: initialization of "X" proved
-port.ads:83:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:83:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:83:22: warning: attribute Valid is assumed to return True
 port.ads:90:28: info: initialization of "X" proved
 port.ads:93:22: info: initialization of "X" proved
-port.ads:93:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:93:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:93:22: warning: attribute Valid is assumed to return True
 port.ads:95:28: info: initialization of "X" proved
 port.ads:98:22: info: initialization of "X" proved
-port.ads:98:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:98:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:98:22: warning: attribute Valid is assumed to return True
 port.ads:104:28: info: initialization of "X" proved
 port.ads:107:22: info: initialization of "X" proved
-port.ads:107:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:107:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:107:22: warning: attribute Valid is assumed to return True
 port.ads:109:28: info: initialization of "X" proved
 port.ads:112:22: info: initialization of "X" proved
-port.ads:112:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:112:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:112:22: warning: attribute Valid is assumed to return True
 port.ads:114:29: info: initialization of "X" proved
 port.ads:117:22: info: initialization of "X" proved
-port.ads:117:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:117:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:117:22: warning: attribute Valid is assumed to return True
 port.ads:119:29: info: initialization of "X" proved
 port.ads:122:22: info: initialization of "X" proved
-port.ads:122:22: info: postcondition proved (CVC4: 1 VC)
+port.ads:122:22: info: postcondition proved (CVC4: 2 VC)
 port.ads:122:22: warning: attribute Valid is assumed to return True
 port.ads:128:26: info: initialization of "X" proved
 port.ads:132:26: info: initialization of "X" proved

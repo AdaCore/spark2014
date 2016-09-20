@@ -2,8 +2,8 @@ p.adb:8:15: info: initialization of "Tmp" proved, in instantiation at q.adb:13
 p.adb:8:15: info: initialization of "Tmp" proved, in instantiation at q.ads:9
 p.adb:8:19: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 4)
 p.adb:8:19: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 1)
-p.adb:8:29: medium: overflow check might fail, in instantiation at q.adb:13
-p.adb:8:29: medium: overflow check might fail, in instantiation at q.ads:9
+p.adb:8:29: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 0)
+p.adb:8:29: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 0)
 p.adb:9:07: medium: precondition might fail, in instantiation at q.adb:13 (e.g. when Tmp = 2147483647)
 p.adb:9:07: medium: precondition might fail, in instantiation at q.ads:9 (e.g. when Tmp = 2147483647)
 p.adb:9:11: info: initialization of "Tmp" proved, in instantiation at q.adb:13

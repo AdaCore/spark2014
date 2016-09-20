@@ -1,8 +1,8 @@
-logic.adb:17:07: info: assertion proved (CVC4: 1 VC)
-logic.adb:18:07: info: assertion proved (CVC4: 1 VC)
+logic.adb:17:07: info: assertion proved (CVC4: 2 VC)
+logic.adb:18:07: info: assertion proved (CVC4: 2 VC)
 logic.adb:19:07: info: assertion proved (CVC4: 1 VC)
-logic.adb:20:07: info: assertion proved (CVC4: 1 VC)
-logic.adb:24:22: medium: assertion might fail, cannot prove not (if F then F else true (e.g. when T = True)
+logic.adb:20:07: info: assertion proved (CVC4: 2 VC)
+logic.adb:24:22: medium: assertion might fail, cannot prove not (if F then F else true
 logic.adb:26:07: info: assertion proved (CVC4: 1 VC)
 logic.adb:27:22: medium: assertion might fail, cannot prove not (if F then T else true (e.g. when F = False and T = True)
 logic.adb:29:07: info: assertion proved (CVC4: 1 VC)
@@ -32,7 +32,7 @@ logic.adb:79:07: info: assertion proved (CVC4: 1 VC)
 logic.adb:80:22: medium: assertion might fail, cannot prove not (A or B) = (not A and B (e.g. when A = False and B = False)
 logic.adb:83:04: warning: analyzing unreferenced procedure "Contraposition"
 logic.adb:86:07: info: assertion proved (CVC4: 1 VC)
-logic.adb:87:07: info: assertion proved (CVC4: 1 VC)
+logic.adb:87:07: info: assertion proved (CVC4: 2 VC)
 logic.adb:92:19: info: postcondition proved (CVC4: 3 VC)
 logic.adb:105:14: info: initialization of "R" proved
 logic.adb:108:04: warning: analyzing unreferenced procedure "XOR_Test_B"

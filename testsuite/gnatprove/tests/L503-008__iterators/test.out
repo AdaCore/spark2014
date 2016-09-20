@@ -2,7 +2,7 @@ p.adb:25:13: info: precondition proved (CVC4: 1 VC)
 p.adb:26:14: info: initialization of "C" proved
 p.adb:27:18: info: initialization of "Sum" proved
 p.adb:27:22: medium: overflow check might fail (e.g. when Sum = -1)
-p.adb:27:32: medium: precondition might fail
+p.adb:27:32: medium: precondition might fail (e.g. when Sum = 0)
 p.adb:27:44: info: initialization of "C" proved
 p.adb:28:19: medium: precondition might fail
 p.adb:28:29: info: initialization of "C" proved

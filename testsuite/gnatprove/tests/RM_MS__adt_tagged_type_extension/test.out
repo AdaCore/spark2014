@@ -1,6 +1,6 @@
 stacks_14-monitored_14.adb:10:42: info: length check proved (CVC4: 1 VC)
 stacks_14-monitored_14.adb:12:44: info: length check proved (CVC4: 1 VC)
-stacks_14-monitored_14.adb:19:25: medium: array index check might fail (e.g. when S = (Stack_Pointer => 0, others => ?))
+stacks_14-monitored_14.adb:19:25: medium: array index check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 0, Monitor_Vector => (others => 0), Next_Identity_Value => 0))
 stacks_14-monitored_14.adb:20:54: medium: overflow check might fail (e.g. when S = (Next_Identity_Value => 2147483647, others => ?))
 stacks_14-monitored_14.adb:25:30: medium: array index check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 0, Monitor_Vector => (others => 0), Next_Identity_Value => 0))
 stacks_14-monitored_14.ads:7:20: info: initialization of "S.Monitor_Vector" proved

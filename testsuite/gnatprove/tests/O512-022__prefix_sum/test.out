@@ -297,7 +297,7 @@ prefixsum_general.adb:86:13: info: initialization of "Space" proved
 prefixsum_general.adb:87:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum_general.adb:87:44: info: initialization of "Space" proved
 prefixsum_general.adb:89:19: info: initialization of "Space" proved
-prefixsum_general.adb:89:25: medium: overflow check might fail (e.g. when Space = 1073741824)
+prefixsum_general.adb:89:25: medium: overflow check might fail (e.g. when Right = 0 and Space = 1073741824)
 prefixsum_general.adb:89:29: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:89:29: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:90:16: info: initialization of "Right" proved
@@ -305,14 +305,14 @@ prefixsum_general.adb:91:13: info: loop variant proved (CVC4: 1 VC)
 prefixsum_general.adb:91:47: info: initialization of "Right" proved
 prefixsum_general.adb:93:26: info: initialization of "Right" proved
 prefixsum_general.adb:93:32: info: overflow check proved (CVC4: 1 VC)
-prefixsum_general.adb:93:32: medium: range check might fail
+prefixsum_general.adb:93:32: medium: range check might fail (e.g. when Left = 0)
 prefixsum_general.adb:93:34: info: initialization of "Space" proved
 prefixsum_general.adb:94:29: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:94:29: info: initialization of "Right" proved
 prefixsum_general.adb:95:16: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:29: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:29: info: initialization of "Left" proved
-prefixsum_general.adb:95:35: medium: overflow check might fail
+prefixsum_general.adb:95:35: medium: overflow check might fail (e.g. when A = (others => 0))
 prefixsum_general.adb:95:40: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:40: info: initialization of "Right" proved
 prefixsum_general.adb:96:16: info: index check proved (CVC4: 2 VC)
@@ -325,13 +325,13 @@ prefixsum_general.adb:97:34: info: initialization of "Space" proved
 prefixsum_general.adb:97:40: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:99:19: info: initialization of "Space" proved
 prefixsum_general.adb:99:25: info: division check proved (CVC4: 1 VC)
-prefixsum_general.adb:114:17: info: postcondition proved (CVC4: 1 VC)
+prefixsum_general.adb:114:17: info: postcondition proved (CVC4: 2 VC)
 prefixsum_general.adb:123:27: medium: overflow check might fail
 prefixsum_general.adb:123:29: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.adb:123:66: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:126:14: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.ads:8:56: info: division check proved (CVC4: 1 VC)
-prefixsum_general.ads:13:14: info: postcondition proved (CVC4: 1 VC)
+prefixsum_general.ads:13:14: info: postcondition proved (CVC4: 2 VC)
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
 prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'last)
 prefixsum_general.ads:18:30: info: precondition proved (CVC4: 1 VC)

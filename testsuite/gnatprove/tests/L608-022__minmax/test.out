@@ -27,7 +27,7 @@ minmax.adb:58:22: info: initialization of "MinT" proved
 minmax.adb:59:07: info: assertion proved (CVC4: 1 VC)
 minmax.adb:59:22: info: initialization of "MaxT" proved
 minmax.adb:64:16: info: range check proved (CVC4: 1 VC)
-minmax.adb:64:27: medium: overflow check might fail (e.g. when X = 63 and Y = 65)
+minmax.adb:64:27: medium: overflow check might fail (e.g. when MinT = 0 and X = 63 and Y = 65)
 minmax.adb:65:16: info: range check proved (CVC4: 1 VC)
 minmax.adb:65:24: info: overflow check proved (CVC4: 1 VC)
 minmax.adb:66:07: info: assertion proved (CVC4: 1 VC)

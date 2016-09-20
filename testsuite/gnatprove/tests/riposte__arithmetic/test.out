@@ -1,9 +1,9 @@
 arithmetic.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:7:38: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = -2147483648 and B = 1)
+arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = -2147483648 and B = 1 and Minus_I'Result = 0)
 arithmetic.adb:14:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:14:39: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = -2147483648)
+arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = -2147483648 and Negation_I'Result = 0)
 arithmetic.adb:21:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:21:41: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:24:16: medium: overflow check might fail
@@ -11,8 +11,8 @@ arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
 arithmetic.adb:32:11: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:33:15: info: initialization of "R" proved
 arithmetic.adb:33:17: info: overflow check proved (CVC4: 1 VC; Z3: 1 VC)
-arithmetic.adb:34:10: info: loop invariant initialization proved (CVC4: 1 VC)
-arithmetic.adb:34:10: info: loop invariant preservation proved (CVC4: 1 VC)
+arithmetic.adb:34:10: info: loop invariant initialization proved (CVC4: 2 VC)
+arithmetic.adb:34:10: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:34:33: info: initialization of "R" proved
 arithmetic.adb:34:48: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:37:14: info: initialization of "R" proved
@@ -31,15 +31,15 @@ arithmetic.adb:77:35: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:83:14: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:84:32: info: initialization of "R" proved
 arithmetic.adb:84:32: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
-arithmetic.adb:85:13: info: loop invariant preservation proved (CVC4: 1 VC)
+arithmetic.adb:85:13: info: loop invariant initialization proved (CVC4: 2 VC)
+arithmetic.adb:85:13: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:85:36: info: initialization of "R" proved
 arithmetic.adb:85:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:88:14: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:89:32: info: initialization of "R" proved
 arithmetic.adb:89:32: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:90:13: info: loop invariant initialization proved (CVC4: 1 VC)
-arithmetic.adb:90:13: info: loop invariant preservation proved (CVC4: 1 VC)
+arithmetic.adb:90:13: info: loop invariant initialization proved (CVC4: 2 VC)
+arithmetic.adb:90:13: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:90:36: info: initialization of "R" proved
 arithmetic.adb:90:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:93:14: info: initialization of "R" proved
@@ -75,7 +75,7 @@ arithmetic.adb:164:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:164:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:169:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:171:24: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:171:24: medium: overflow check might fail (e.g. when N = -2147483648)
+arithmetic.adb:171:24: medium: overflow check might fail (e.g. when N = -2147483648 and R = 0)
 arithmetic.adb:173:14: info: initialization of "R" proved
 arithmetic.adb:178:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:178:39: info: overflow check proved (CVC4: 1 VC)
@@ -86,7 +86,7 @@ arithmetic.adb:187:14: info: initialization of "R" proved
 arithmetic.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:191:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:194:14: medium: overflow check might fail (e.g. when N = -2147483648)
+arithmetic.adb:194:14: medium: overflow check might fail (e.g. when Abs_Test_C'Result = 0 and N = -2147483648)
 arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N
 arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N
@@ -125,14 +125,20 @@ arithmetic.adb:298:34: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:298:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:298:47: info: division check proved (CVC4: 1 VC)
 counterexample expected for check at arithmetic.adb:10
-  trace at arithmetic.adb:6 --> A = -2147483648 and B = 1
-  trace at arithmetic.adb:10 --> A = -2147483648 and B = 1
+  trace at arithmetic.adb:6 --> A = -2147483648 and B = 1 and Minus_I'Result = 0
+  trace at arithmetic.adb:10 --> A = -2147483648 and B = 1 and Minus_I'Result = 0
 counterexample expected for check at arithmetic.adb:17
-  trace at arithmetic.adb:13 --> A = -2147483648
-  trace at arithmetic.adb:17 --> A = -2147483648
+  trace at arithmetic.adb:13 --> A = -2147483648 and Negation_I'Result = 0
+  trace at arithmetic.adb:17 --> A = -2147483648 and Negation_I'Result = 0
 counterexample expected for check at arithmetic.adb:76
-  trace at arithmetic.adb:75 --> A = -2147483648 and B = -1
+  trace at arithmetic.adb:75 --> A = -2147483648 and B = -1 and I = 0 and Plus'Result = 0
   trace at arithmetic.adb:76 --> A = -2147483648 and B = -1
+  trace at arithmetic.adb:81 --> R = 0
+  trace at arithmetic.adb:83 --> I = 0 and R = 0
+  trace at arithmetic.adb:84 --> R = 0
+  trace at arithmetic.adb:88 --> I = 0 and R = 0
+  trace at arithmetic.adb:89 --> R = 0
+  trace at arithmetic.adb:93 --> Plus'Result = 0
 counterexample expected for check at arithmetic.adb:113
   trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
   trace at arithmetic.adb:113 --> Halve_B'Result = 0 and N = 2
@@ -141,17 +147,20 @@ counterexample expected for check at arithmetic.adb:113
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:124
-  trace at arithmetic.adb:112 --> N = 2
+  trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
   trace at arithmetic.adb:116 --> Half_Range = 127
-  trace at arithmetic.adb:120 --> I = 2 and R = 0
+  trace at arithmetic.adb:120 --> I = 0 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:124 --> N = 2 and R = 2
+  trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:171
-  trace at arithmetic.adb:163 --> N = -2147483648
-  trace at arithmetic.adb:171 --> N = -2147483648
+  trace at arithmetic.adb:163 --> Abs_Test_A'Result = 0 and N = -2147483648
+  trace at arithmetic.adb:169 --> R = 0
+  trace at arithmetic.adb:171 --> N = -2147483648 and R = 0
+  trace at arithmetic.adb:173 --> Abs_Test_A'Result = 0
 counterexample expected for check at arithmetic.adb:194
-  trace at arithmetic.adb:190 --> N = -2147483648
-  trace at arithmetic.adb:194 --> N = -2147483648
+  trace at arithmetic.adb:190 --> Abs_Test_C'Result = 0 and N = -2147483648
+  trace at arithmetic.adb:194 --> Abs_Test_C'Result = 0 and N = -2147483648
 counterexample expected for check at arithmetic.adb:226
   trace at arithmetic.adb:223 --> N = -1
   trace at arithmetic.adb:226 --> N = -1

@@ -4,6 +4,6 @@ refined_depends_legal.adb:11:10: info: initialization of "C" constituent of "S2"
 refined_depends_legal.adb:11:13: info: initialization of "D" constituent of "S2" proved
 refined_depends_legal.adb:17:42: info: initialization of "C" constituent of "S2" proved
 refined_depends_legal.adb:17:45: info: initialization of "D" constituent of "S2" proved
-refined_depends_legal.adb:24:20: medium: overflow check might fail (e.g. when A = -2147483648 and Par1 = -1)
+refined_depends_legal.adb:24:20: medium: overflow check might fail (e.g. when A = -2147483648 and Par1 = -1 and Par2 = 0)
 refined_depends_legal.adb:25:20: medium: overflow check might fail (e.g. when Par3 = 2147483647)
 refined_depends_legal.ads:7:18: info: initialization of "Par2" proved

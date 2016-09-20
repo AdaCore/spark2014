@@ -1,6 +1,6 @@
 p.adb:9:13: info: precondition proved (CVC4: 1 VC)
-p.adb:16:13: medium: precondition might fail
-p.ads:10:19: medium: postcondition might fail, cannot prove A = A'Old / 4 (e.g. when A = 268959752 and A'Old = 225166302)
+p.adb:16:13: medium: precondition might fail (e.g. when A = 0)
+p.ads:10:19: medium: postcondition might fail, cannot prove A = A'Old / 4 (e.g. when A = 16384 and A'Old = 4030116830)
 p.ads:10:29: info: division check proved (CVC4: 1 VC)
-p.ads:13:19: medium: postcondition might fail, cannot prove A = A'Old / (2 ** 17 (e.g. when A = 4096 and A'Old = 1137393534)
+p.ads:13:19: medium: postcondition might fail, cannot prove A = A'Old / (2 ** 17 (e.g. when A = 98 and A'Old = 163710)
 p.ads:13:29: info: division check proved (CVC4: 1 VC)

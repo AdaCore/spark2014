@@ -18,7 +18,7 @@ funcs.adb:70:07: info: assertion proved (CVC4: 1 VC)
 funcs.adb:71:09: warning: unused assignment
 funcs.adb:71:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:71:35: info: initialization of "Y" proved
-funcs.adb:72:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:72:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:73:09: warning: unused assignment
 funcs.adb:73:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:73:35: info: initialization of "Y" proved
@@ -38,7 +38,7 @@ funcs.adb:83:07: info: assertion proved (CVC4: 1 VC)
 funcs.adb:84:09: warning: unused assignment
 funcs.adb:84:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:84:35: info: initialization of "Y" proved
-funcs.adb:85:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:85:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:86:09: warning: unused assignment
 funcs.adb:86:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:86:35: info: initialization of "Y" proved
@@ -56,7 +56,7 @@ funcs.adb:95:12: info: precondition proved (CVC4: 1 VC)
 funcs.adb:95:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:95:35: info: initialization of "Y" proved
 funcs.adb:95:39: info: precondition proved (CVC4: 1 VC)
-funcs.adb:96:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:96:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:96:22: info: precondition proved (CVC4: 1 VC)
 funcs.adb:96:31: info: precondition proved (CVC4: 1 VC)
 funcs.adb:97:09: warning: unused assignment
@@ -64,15 +64,15 @@ funcs.adb:97:12: info: precondition proved (CVC4: 1 VC)
 funcs.adb:97:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:97:35: info: initialization of "Y" proved
 funcs.adb:97:39: info: precondition proved (CVC4: 1 VC)
-funcs.adb:101:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:101:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:102:09: warning: unused assignment
 funcs.adb:102:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:102:35: info: initialization of "Y" proved
-funcs.adb:105:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:105:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:106:09: warning: unused assignment
 funcs.adb:106:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:106:35: info: initialization of "Y" proved
-funcs.adb:107:07: info: assertion proved (CVC4: 1 VC)
+funcs.adb:107:07: info: assertion proved (CVC4: 2 VC)
 funcs.adb:108:09: warning: unused assignment
 funcs.adb:108:20: info: assertion proved (CVC4: 2 VC)
 funcs.adb:108:35: info: initialization of "Y" proved

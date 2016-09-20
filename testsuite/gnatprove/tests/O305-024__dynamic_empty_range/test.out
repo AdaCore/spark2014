@@ -7,6 +7,6 @@ empty_range_in_loop.adb:1:11: warning: subprogram "Empty_Range_In_Loop" has no e
 empty_range_in_loop.adb:3:12: info: range check proved (CVC4: 2 VC)
 empty_range_in_loop.adb:4:12: info: range check proved (CVC4: 2 VC)
 empty_range_in_loop.adb:4:45: medium: overflow check might fail (e.g. when C = 2147483647)
-empty_range_in_loop.adb:8:12: medium: range check might fail (e.g. when C = 101)
+empty_range_in_loop.adb:8:12: medium: range check might fail (e.g. when C = 101 and E = 0)
 empty_range_in_loop.adb:12:33: info: overflow check proved (CVC4: 1 VC)
 empty_range_in_loop.adb:12:33: medium: range check might fail

@@ -14,7 +14,7 @@ records.adb:45:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:56:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:60:29: info: range check proved (CVC4: 1 VC)
 records.adb:61:29: info: range check proved (CVC4: 1 VC)
-records.adb:65:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:65:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:75:15: info: precondition proved (CVC4: 2 VC)
 records.adb:80:14: info: initialization of "R.A" proved
 records.adb:80:14: info: initialization of "R.B" proved
@@ -107,9 +107,9 @@ records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:474:07: info: assertion proved (CVC4: 1 VC)
 records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1)
 records.adb:491:07: info: assertion proved (CVC4: 1 VC)
-records.adb:501:19: info: postcondition proved (CVC4: 1 VC)
+records.adb:501:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:504:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0)))
-records.adb:514:22: info: postcondition proved (CVC4: 1 VC)
+records.adb:514:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (PairPair'(A => 5), (B => 5))
 stack.ads:35:54: info: length check proved (CVC4: 1 VC)
@@ -204,5 +204,7 @@ counterexample expected for check at records.adb:483
   trace at records.adb:490 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:494 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
 counterexample expected for check at records.adb:504
+  trace at records.adb:498 --> Field_Suppression_On_Computation_Is_Insufficient'Result = False
   trace at records.adb:499 --> R = (Exists => False, The_Pair => (A => 0, B => 0))
   trace at records.adb:504 --> R = (Exists => False, The_Pair => (A => 0, B => 0))
+  trace at records.adb:506 --> Field_Suppression_On_Computation_Is_Insufficient'Result = False

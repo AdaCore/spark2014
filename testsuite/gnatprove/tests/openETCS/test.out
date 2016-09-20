@@ -5,10 +5,10 @@ deceleration_curve.adb:37:10: info: assertion proved (CVC4: 4 VC)
 deceleration_curve.adb:39:10: info: loop invariant initialization proved (CVC4: 2 VC)
 deceleration_curve.adb:40:35: info: initialization of "speed" proved
 deceleration_curve.adb:40:45: medium: loop invariant might fail after first iteration, cannot prove speed <= Initial_Speed
+deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1.0/speed
 deceleration_curve.adb:41:34: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:34: info: overflow check proved (altergo: 1 VC)
 deceleration_curve.adb:41:35: info: initialization of "speed" proved
-deceleration_curve.adb:41:45: medium: assertion might fail, cannot prove 1.0/speed < 1.0 / Minimum_Valid_Speed
 deceleration_curve.adb:41:48: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:48: info: overflow check proved (altergo: 1 VC)
 deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
@@ -134,9 +134,9 @@ section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
 section_4_6.ads:106:06: medium: contract cases might not be disjoint
-section_4_6.ads:106:55: info: contract case proved (CVC4: 1 VC)
-section_4_6.ads:107:55: info: contract case proved (CVC4: 1 VC)
-section_4_6.ads:108:55: info: contract case proved (CVC4: 1 VC)
+section_4_6.ads:106:55: info: contract case proved (CVC4: 2 VC)
+section_4_6.ads:107:55: info: contract case proved (CVC4: 2 VC)
+section_4_6.ads:108:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:109:14: info: postcondition proved (CVC4: 1 VC)
 step_function.adb:30:10: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:30:10: info: loop invariant preservation proved (altergo: 1 VC)
@@ -196,19 +196,19 @@ step_function.adb:102:42: info: initialization of "scan_sfun2" proved
 step_function.adb:103:18: info: initialization of "im" proved
 step_function.adb:103:24: info: initialization of "i1" proved
 step_function.adb:103:29: info: initialization of "i2" proved
-step_function.adb:106:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:106:10: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
 step_function.adb:107:28: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
-step_function.adb:108:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:108:10: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
 step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:110:56: info: initialization of "i1" proved
-step_function.adb:111:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:111:10: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
 step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
@@ -228,7 +228,7 @@ step_function.adb:121:33: info: initialization of "im" proved
 step_function.adb:122:30: info: index check proved (CVC4: 2 VC)
 step_function.adb:122:45: info: initialization of "Merge.Step" proved
 step_function.adb:122:56: info: index check proved (CVC4: 2 VC)
-step_function.adb:123:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:123:10: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:123:10: medium: loop invariant might fail after first iteration
 step_function.adb:124:20: info: initialization of "scan_sfun1" proved
 step_function.adb:126:38: info: initialization of "im" proved
@@ -242,7 +242,7 @@ step_function.adb:132:33: info: initialization of "im" proved
 step_function.adb:133:30: info: index check proved (CVC4: 2 VC)
 step_function.adb:133:45: info: initialization of "Merge.Step" proved
 step_function.adb:133:56: info: index check proved (CVC4: 2 VC)
-step_function.adb:134:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:134:10: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:134:10: medium: loop invariant might fail after first iteration
 step_function.adb:135:20: info: initialization of "scan_sfun2" proved
 step_function.adb:137:38: info: initialization of "im" proved

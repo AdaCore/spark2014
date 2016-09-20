@@ -778,11 +778,11 @@ ar.ads:1709:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1712:14: info: initialization of "A" proved
 ar.ads:1715:22: info: initialization of "A" proved
 ar.ads:1715:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1723:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1723:22: info: postcondition proved (CVC4: 3 VC)
 ar.ads:1728:22: info: postcondition proved (CVC4: 5 VC)
 ar.ads:1733:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1738:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1743:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1743:22: info: postcondition proved (CVC4: 3 VC)
 ar.ads:1748:22: info: postcondition proved (CVC4: 6 VC)
 ar.ads:1753:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1758:22: info: postcondition proved (CVC4: 1 VC)

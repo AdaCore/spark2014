@@ -13,7 +13,7 @@ ap-altitude-pitch-rate.adb:29:41: info: initialization of "Sum" proved
 ap-altitude-pitch-rate.adb:29:41: info: initialization of "Sum" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: overflow check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:29:45: medium: range check might fail, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:45: medium: range check might fail, in call inlined at ap-altitude-pitch-rate.adb:58 (e.g. when Average = 0)
 ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved

@@ -148,21 +148,21 @@ infoflow.adb:221:36: info: index check proved (CVC4: 2 VC)
 infoflow.adb:221:36: info: overflow check proved (CVC4: 1 VC)
 infoflow.ads:9:06: info: disjoint contract cases proved (CVC4: 1 VC)
 infoflow.ads:9:06: medium: contract cases might not be complete
-infoflow.ads:12:24: info: contract case proved (CVC4: 1 VC)
-infoflow.ads:16:24: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:12:24: info: contract case proved (CVC4: 2 VC)
+infoflow.ads:16:24: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:29:14: info: postcondition proved (CVC4: 1 VC)
 infoflow.ads:37:06: medium: contract cases might not be complete
-infoflow.ads:38:24: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:38:24: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:47:26: info: initialization of "Cache_V1" proved
 infoflow.ads:47:36: info: initialization of "Cache_V2" proved
 infoflow.ads:48:06: info: complete contract cases proved (CVC4: 1 VC)
-infoflow.ads:48:30: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:48:30: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:49:39: info: initialization of "Cache_V1" proved
 infoflow.ads:49:54: info: initialization of "Cache_V2" proved
 infoflow.ads:60:07: info: initialization of "OutKeys_V1" proved
 infoflow.ads:60:19: info: initialization of "OutKeys_V2" proved
 infoflow.ads:63:06: medium: contract cases might not be complete
-infoflow.ads:64:27: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:64:27: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:64:30: info: initialization of "OutKeys_V1" proved
 infoflow.ads:64:47: info: initialization of "OutKeys_V2" proved
 infoflow.ads:74:06: info: disjoint contract cases proved (CVC4: 1 VC)
@@ -190,7 +190,7 @@ infoflow.ads:95:34: info: index check proved (CVC4: 2 VC)
 infoflow.ads:95:45: info: division check proved (CVC4: 1 VC)
 infoflow.ads:95:59: info: index check proved (CVC4: 2 VC)
 infoflow.ads:95:70: info: division check proved (CVC4: 1 VC)
-infoflow.ads:96:24: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:96:24: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:96:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:96:44: info: index check proved (CVC4: 2 VC)
 infoflow.ads:101:39: info: division check proved (CVC4: 1 VC)
@@ -198,7 +198,7 @@ infoflow.ads:102:34: info: index check proved (CVC4: 2 VC)
 infoflow.ads:102:45: info: division check proved (CVC4: 1 VC)
 infoflow.ads:102:59: info: index check proved (CVC4: 2 VC)
 infoflow.ads:102:70: info: division check proved (CVC4: 1 VC)
-infoflow.ads:103:24: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:103:24: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:103:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:103:44: info: index check proved (CVC4: 2 VC)
 infoflow.ads:112:07: medium: "A_V1" might not be initialized in "ArrayPartitionedTransfer"
@@ -207,14 +207,14 @@ infoflow.ads:129:06: info: disjoint contract cases proved (CVC4: 1 VC)
 infoflow.ads:129:06: medium: contract cases might not be complete
 infoflow.ads:131:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:131:44: info: index check proved (CVC4: 2 VC)
-infoflow.ads:132:24: info: contract case proved (CVC4: 1 VC)
+infoflow.ads:132:24: info: contract case proved (CVC4: 2 VC)
 infoflow.ads:132:27: medium: "A_V1" might not be initialized
 infoflow.ads:132:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:132:38: medium: "A_V2" might not be initialized
 infoflow.ads:132:44: info: index check proved (CVC4: 2 VC)
 infoflow.ads:135:34: info: index check proved (CVC4: 2 VC)
 infoflow.ads:135:49: info: index check proved (CVC4: 2 VC)
-infoflow.ads:136:24: info: contract case proved (Z3: 1 VC)
+infoflow.ads:136:24: info: contract case proved (CVC4: 1 VC; Z3: 1 VC)
 infoflow.ads:136:27: medium: "A_V1" might not be initialized
 infoflow.ads:136:33: info: index check proved (CVC4: 2 VC)
 infoflow.ads:136:38: medium: "A_V2" might not be initialized

@@ -10,7 +10,7 @@ partition_refinement.adb:14:56: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:14:58: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:15:43: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:17:47: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:17:47: medium: range check might fail
+partition_refinement.adb:17:47: medium: range check might fail (e.g. when P_Prime_Index = 0)
 partition_refinement.adb:19:22: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:19:39: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:20:24: info: initialization of "P_Prime_Index" proved

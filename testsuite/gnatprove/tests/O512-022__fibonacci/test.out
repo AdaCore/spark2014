@@ -81,7 +81,7 @@ fib.adb:82:18: info: range check proved (Z3: 1 VC)
 fib.adb:82:18: medium: overflow check might fail
 fib.adb:82:20: info: initialization of "p2" proved
 fib.adb:93:14: info: initialization of "k1" proved
-fib.adb:94:10: info: loop invariant initialization proved (CVC4: 1 VC)
+fib.adb:94:10: info: loop invariant initialization proved (CVC4: 2 VC)
 fib.adb:94:33: medium: loop invariant might fail after first iteration, cannot prove a1 ** n1 = p1 * (b1 ** k1
 fib.adb:94:44: info: initialization of "p1" proved
 fib.adb:94:50: info: initialization of "b1" proved

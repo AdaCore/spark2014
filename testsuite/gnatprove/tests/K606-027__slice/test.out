@@ -7,9 +7,9 @@ fb20a00.adb:25:38: info: range check proved (CVC4: 1 VC)
 fb20a00.adb:27:24: medium: "Ret" might not be initialized
 fb20a00.adb:30:18: medium: "Ret" might not be initialized
 fb20a00.adb:34:15: info: length check proved (CVC4: 1 VC)
-fb20a00.adb:34:18: medium: length check might fail (e.g. when Str = (others => 0) and Str'First = 1 and Str'Last = 0)
+fb20a00.adb:34:18: medium: length check might fail (e.g. when New_Str = (others => 0) and Str = (others => 0) and Str'First = 1 and Str'Last = 0)
 fb20a00.adb:35:15: info: length check proved (CVC4: 1 VC)
-fb20a00.adb:35:18: medium: length check might fail (e.g. when Sub = (others => 0) and Sub'First = 1 and Sub'Last = 0)
+fb20a00.adb:35:18: medium: length check might fail (e.g. when New_Sub = (others => 0) and Sub = (others => 0) and Sub'First = 1 and Sub'Last = 0)
 fb20a00.adb:37:15: info: initialization of "Pos" proved
 fb20a00.adb:37:34: medium: overflow check might fail (e.g. when New_Str'Last = -2147483648 and New_Sub'First = 2147483647 and New_Sub'Last = 2147483647)
 fb20a00.adb:37:49: medium: overflow check might fail

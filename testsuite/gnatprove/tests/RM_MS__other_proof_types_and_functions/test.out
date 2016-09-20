@@ -29,13 +29,13 @@ stack.ads:71:47: info: precondition proved (CVC4: 2 VC)
 stack_external_prover.adb:16:36: info: length check proved (CVC4: 1 VC)
 stack_external_prover.adb:18:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack_external_prover.adb:18:04: info: initialization of "My_Stack.S" constituent of "State" proved
-stack_external_prover.adb:24:44: medium: range check might fail (e.g. when My_Stack = (S => ?, Pointer => 100))
+stack_external_prover.adb:24:44: medium: range check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 100))
 stack_external_prover.adb:25:26: info: index check proved (CVC4: 2 VC)
-stack_external_prover.adb:32:32: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0))
+stack_external_prover.adb:32:32: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0) and X = 0)
 stack_external_prover.adb:33:44: info: range check proved (CVC4: 1 VC)
-stack_external_prover.adb:41:35: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0))
+stack_external_prover.adb:41:35: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0) and Temp = 0)
 stack_external_prover.adb:42:27: info: index check proved (CVC4: 2 VC)
-stack_external_prover.adb:42:69: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 1))
+stack_external_prover.adb:42:69: medium: array index check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 1))
 stack_external_prover.adb:43:36: info: index check proved (CVC4: 2 VC)
 stack_external_prover.adb:43:44: info: initialization of "Temp" proved
 stack_external_prover.ads:5:08: medium: initial condition might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0))

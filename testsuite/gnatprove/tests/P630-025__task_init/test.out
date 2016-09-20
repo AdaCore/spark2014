@@ -186,7 +186,7 @@ decadriver.ads:89:23: medium: postcondition might fail, cannot prove Size in 1 .
 decadriver.ads:90:23: info: initialization of "Size" proved
 decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Frames_Count'Result <= 2 (e.g. when Pending_Frames_Count'Result = 3)
 decadriver.ads:115:28: info: initialization of "Result" proved
-decadriver.ads:120:17: info: postcondition proved (CVC4: 1 VC)
+decadriver.ads:120:17: info: postcondition proved (CVC4: 2 VC)
 decadriver.ads:120:38: info: initialization of "Result" proved
 decadriver.ads:150:23: info: length check proved (CVC4: 1 VC)
 decadriver.ads:150:34: medium: predicate check might fail

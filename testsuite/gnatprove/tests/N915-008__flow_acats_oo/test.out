@@ -157,9 +157,9 @@ cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation a
 cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
 cc1311a.adb:380:25: info: initialization of "OUTPUT" proved
-cc1311a.adb:383:21: info: length check proved (CVC4: 1 VC), in call inlined at cc1311a.adb:194, in instantiation at cc1311a.adb:414
-cc1311a.adb:383:21: info: length check proved (CVC4: 1 VC), in call inlined at cc1311a.adb:230, in instantiation at cc1311a.adb:423
-cc1311a.adb:383:21: info: length check proved (CVC4: 1 VC), in call inlined at cc1311a.adb:265, in instantiation at cc1311a.adb:432
+cc1311a.adb:383:21: info: length check proved (CVC4: 2 VC), in call inlined at cc1311a.adb:194, in instantiation at cc1311a.adb:414
+cc1311a.adb:383:21: info: length check proved (CVC4: 2 VC), in call inlined at cc1311a.adb:230, in instantiation at cc1311a.adb:423
+cc1311a.adb:383:21: info: length check proved (CVC4: 2 VC), in call inlined at cc1311a.adb:265, in instantiation at cc1311a.adb:432
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNC" has no effect
 cc1311a.adb:414:16: warning: subprogram "NEW_PROC_WITH_3D_PROC" has no effect
 cc1311a.adb:443:16: warning: subprogram "NPROC1" has no effect

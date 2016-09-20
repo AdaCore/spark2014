@@ -1,6 +1,6 @@
 bit_converter.adb:20:55: medium: range check might fail (e.g. when Array_of_Bits = (others => false) and Array_of_Bits'First = 0 and Array_of_Bits'Last = -1 and First_Index = 0)
-bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits = (others => false) and Array_of_Bits'First = 1 and Array_of_Bits'Last = 0 and Last_Index = 0)
-bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_of_Bits = (others => false) and Array_of_Bits'First = 2 and Array_of_Bits'Last = 1 and First_Index = 2)
+bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits = (others => false) and Array_of_Bits'First = 1 and Array_of_Bits'Last = 0 and I = 0 and Last_Index = 0)
+bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_of_Bits = (others => false) and Array_of_Bits'First = 2 and Array_of_Bits'Last = 1 and Bit = 0 and First_Index = 2)
 bit_converter.adb:27:13: info: initialization of "Bits" proved
 bit_converter.adb:27:21: info: initialization of "Bit" proved
 bit_converter.adb:30:15: info: initialization of "Bits" proved

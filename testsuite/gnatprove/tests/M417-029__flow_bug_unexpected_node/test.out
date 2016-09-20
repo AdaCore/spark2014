@@ -25,7 +25,7 @@ time.adb:20:20: info: initialization of "Result.Minutes" proved
 time.adb:20:20: info: initialization of "Result.Seconds" proved
 time.ads:25:05: info: complete contract cases proved (CVC4: 1 VC)
 time.ads:25:05: info: disjoint contract cases proved (CVC4: 1 VC)
-time.ads:27:08: info: contract case proved (CVC4: 3 VC)
-time.ads:34:08: info: contract case proved (CVC4: 3 VC)
-time.ads:41:08: info: contract case proved (CVC4: 3 VC)
+time.ads:27:08: info: contract case proved (CVC4: 4 VC)
+time.ads:34:08: info: contract case proved (CVC4: 4 VC)
+time.ads:41:08: info: contract case proved (CVC4: 4 VC)
 time.ads:44:54: info: overflow check proved (CVC4: 1 VC)

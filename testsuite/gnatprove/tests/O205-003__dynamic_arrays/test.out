@@ -37,7 +37,7 @@ dynamic_array.adb:52:19: info: discriminant check proved (CVC4: 1 VC)
 dynamic_array.adb:55:13: info: initialization of "F" proved
 dynamic_array.adb:56:18: info: initialization of "F" proved
 dynamic_array.adb:56:20: info: overflow check proved (CVC4: 1 VC)
-dynamic_array.adb:59:24: info: discriminant check proved (CVC4: 1 VC)
+dynamic_array.adb:59:24: info: discriminant check proved (CVC4: 2 VC)
 dynamic_array.adb:59:24: info: initialization of "H.Content" proved
 dynamic_array.adb:59:45: info: initialization of "F" proved
 dynamic_array.adb:59:45: info: range check proved (CVC4: 1 VC)

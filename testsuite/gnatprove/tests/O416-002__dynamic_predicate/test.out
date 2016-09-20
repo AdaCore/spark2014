@@ -197,7 +197,7 @@ dynamic_preds_rte.adb:7:14: medium: predicate check might fail
 dynamic_preds_rte.adb:12:18: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:17:12: medium: "X" might not be initialized
 dynamic_preds_rte.adb:17:15: medium: predicate check might fail
-dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when Y = -1)
+dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when X = (others => 0) and Y = -1)
 dynamic_preds_rte.adb:18:12: info: initialization of "X" proved
 dynamic_preds_rte.adb:18:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:18:15: info: range check proved (CVC4: 1 VC)

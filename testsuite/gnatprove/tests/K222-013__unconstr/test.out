@@ -9,7 +9,7 @@ unconstr.adb:15:14: warning: subprogram "R" has no effect
 unconstr.adb:18:07: info: precondition proved (CVC4: 1 VC)
 unconstr.adb:18:15: info: range check proved (CVC4: 1 VC)
 unconstr.adb:19:22: info: initialization of "A" proved
-unconstr.adb:19:22: medium: assertion might fail, cannot prove A (0) = 1
+unconstr.adb:19:22: medium: assertion might fail, cannot prove A (0) = 1 (e.g. when A = (others => 0))
 unconstr.ads:7:17: info: initialization of "X" proved
 unconstr.ads:9:20: info: postcondition proved (CVC4: 1 VC)
 unconstr.ads:9:21: info: initialization of "X" proved

@@ -1,15 +1,15 @@
 warns3.adb:8:04: warning: no warning suppressed by this pragma
 warns3.adb:10:04: warning: useless assignment to "Tmp", value never referenced
-warns.adb:6:13: medium: overflow check might fail (e.g. when X = 2147483647)
+warns.adb:6:13: medium: overflow check might fail (e.g. when Tmp = 0 and X = 2147483647)
 warns.adb:7:09: info: initialization of "Tmp" proved
 warns.adb:10:11: info: initialization of "Tmp" proved
 warns.adb:10:15: medium: overflow check might fail (e.g. when Tmp = 2147483647)
-warns2.adb:6:13: medium: overflow check might fail (e.g. when X = 2147483647)
+warns2.adb:6:13: medium: overflow check might fail (e.g. when Tmp = 0 and X = 2147483647)
 warns2.adb:7:09: info: initialization of "Tmp" proved
 warns2.adb:9:08: warning: unused assignment
 warns2.adb:9:11: info: initialization of "Tmp" proved
 warns2.adb:9:15: medium: overflow check might fail (e.g. when Tmp = 2147483647)
-warns3.adb:6:13: medium: overflow check might fail (e.g. when X = 2147483647)
+warns3.adb:6:13: medium: overflow check might fail (e.g. when Tmp = 0 and X = 2147483647)
 warns3.adb:7:09: info: initialization of "Tmp" proved
 warns3.adb:9:04: warning: no warning suppressed by this pragma
 warns3.adb:10:04: warning: useless assignment to "Tmp", value never referenced

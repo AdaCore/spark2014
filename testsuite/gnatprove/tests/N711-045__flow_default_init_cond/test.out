@@ -28,8 +28,8 @@ dic2.adb:11:22: info: initialization of "T_Var" proved
 dic2.adb:11:30: info: initialization of "R_Var.X" proved
 dic2.adb:11:42: info: initialization of "U_Var" proved
 dic2.adb:11:50: info: initialization of "R_Var.Y" proved
-dic2.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
-dic2.ads:5:09: info: default initial condition proved (CVC4: 1 VC)
+dic2.ads:2:09: info: default initial condition proved (CVC4: 2 VC)
+dic2.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
 dic2.ads:17:14: warning: subprogram "Test" has no effect
 dic2.ads:20:28: info: range check proved (CVC4: 1 VC)
 dic2.ads:23:28: info: range check proved (CVC4: 1 VC)
@@ -38,7 +38,7 @@ dic3.adb:8:07: info: initialization of "Y" proved
 dic3.adb:10:07: info: assertion proved (CVC4: 1 VC)
 dic3.adb:10:31: info: initialization of "X" proved
 dic3.adb:10:45: info: initialization of "Y" proved
-dic3.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
-dic3.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
+dic3.ads:2:09: info: default initial condition proved (CVC4: 2 VC)
+dic3.ads:5:09: info: default initial condition proved (CVC4: 3 VC)
 dic3.ads:12:14: warning: subprogram "Test" has no effect
 dic3.ads:15:28: info: range check proved (CVC4: 1 VC)

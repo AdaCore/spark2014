@@ -2,7 +2,7 @@ cascade.adb:1:20: warning: unused initial value of "X"
 cascade.adb:3:57: info: initialization of "Err" proved
 cascade.adb:7:18: medium: overflow check might fail (e.g. when Buf = -1 and Nid = -2147483648)
 cascade.adb:13:07: warning: unused assignment
-cascade.adb:13:12: medium: overflow check might fail (e.g. when X = -1073741825)
+cascade.adb:13:12: medium: overflow check might fail (e.g. when T1 = 0 and X = -1073741825)
 cascade.adb:14:04: warning: statement has no effect
 cascade.adb:14:07: info: initialization of "T1" proved
 cascade.adb:15:10: warning: unused assignment

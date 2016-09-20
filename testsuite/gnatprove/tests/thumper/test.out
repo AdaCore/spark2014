@@ -47,11 +47,11 @@ hermes-der-decode.adb:107:07: info: initialization of "Status" proved
 hermes-der-decode.adb:126:29: medium: overflow check might fail (e.g. when Octet_Count = 2 and Starting = 2147483647)
 hermes-der-decode.adb:127:51: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC4: 2 VC)
-hermes-der-decode.adb:132:13: info: loop invariant initialization proved (CVC4: 1 VC)
-hermes-der-decode.adb:132:13: info: loop invariant preservation proved (CVC4: 1 VC)
+hermes-der-decode.adb:132:13: info: loop invariant initialization proved (CVC4: 2 VC)
+hermes-der-decode.adb:132:13: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:134:13: info: loop invariant initialization proved (CVC4: 2 VC)
+hermes-der-decode.adb:134:13: info: loop invariant initialization proved (CVC4: 3 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
 hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2
 hermes-der-decode.adb:135:99: medium: overflow check might fail
@@ -121,7 +121,7 @@ hermes-der-decode.adb:287:13: info: precondition proved (CVC4: 2 VC)
 hermes-der-decode.adb:314:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:314:58: info: initialization of "Value" proved
 hermes-der-decode.adb:314:65: info: initialization of "Status" proved
-hermes-der-decode.adb:322:32: medium: overflow check might fail (e.g. when Length = 4 and Length_Stop = 2147483644)
+hermes-der-decode.adb:322:32: medium: overflow check might fail (e.g. when Length = 4 and Length_Stop = 2147483644 and Stop = 0)
 hermes-der-decode.adb:326:34: medium: array index check might fail (e.g. when Message = (others => 0) and Message'First = 0 and Message'Last = 1)
 hermes-der-decode.adb:326:34: medium: overflow check might fail (e.g. when Length_Stop = 2147483647)
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
@@ -136,7 +136,7 @@ hermes-der-decode.adb:334:29: medium: overflow check might fail (e.g. when Resul
 hermes-der-decode.adb:334:30: info: initialization of "Result" proved
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:334:67: medium: array index check might fail (e.g. when Message = (2 => 128, others => 1) and Message'First = 0 and Message'Last = 2)
+hermes-der-decode.adb:334:67: medium: array index check might fail (e.g. when Message = (2 => 128, others => 1) and Message'First = 0 and Message'Last = 2 and Result = 0)
 hermes-der-decode.adb:338:16: info: initialization of "Result" proved
 hermes-der-decode.adb:341:25: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:341:27: info: initialization of "Result" proved
@@ -569,7 +569,7 @@ server_timestamp_maker.adb:89:16: warning: unused variable constant with variabl
 server_timestamp_maker.adb:89:16: warning: unused variable constant with variable input "C18b", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
-server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115 (e.g. when Result = False)
 server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
 server_timestamp_maker.adb:113:53: info: length check proved (CVC4: 1 VC)
 server_timestamp_maker.adb:115:14: warning: unused variable "C14b"

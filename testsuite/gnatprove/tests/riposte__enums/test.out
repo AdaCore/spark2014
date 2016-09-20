@@ -14,7 +14,7 @@ enums.adb:106:41: info: range check proved (CVC4: 1 VC)
 enums.adb:138:14: info: initialization of "R" proved
 enums.adb:142:39: info: initialization of "Result" proved
 enums.adb:143:39: info: initialization of "Success" proved
-enums.adb:145:22: info: postcondition proved (CVC4: 1 VC)
+enums.adb:145:22: info: postcondition proved (CVC4: 2 VC)
 enums.adb:145:26: info: initialization of "Success" proved
 enums.adb:145:39: info: initialization of "Result" proved
 enums.adb:145:66: info: range check proved (CVC4: 1 VC)
@@ -29,7 +29,7 @@ enums.adb:176:71: info: range check proved (CVC4: 1 VC)
 enums.adb:187:14: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:191:50: info: range check proved (CVC4: 1 VC)
-enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8)
+enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_A'Result = Elem_0)
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:206:14: info: initialization of "Tmp.F" proved
 counterexample expected for check at enums.adb:19

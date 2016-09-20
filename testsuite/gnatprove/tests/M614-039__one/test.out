@@ -1,5 +1,5 @@
 unconstr.adb:9:20: info: postcondition proved (CVC4: 2 VC)
-unconstr.adb:18:20: info: postcondition proved (CVC4: 1 VC)
+unconstr.adb:18:20: info: postcondition proved (CVC4: 2 VC)
 unconstr.adb:22:31: info: length check proved (CVC4: 1 VC)
 unconstr.adb:23:33: info: length check proved (CVC4: 1 VC)
 unconstr.adb:25:22: info: initialization of "S" proved

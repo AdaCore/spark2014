@@ -1,5 +1,5 @@
 adt_stack-child.adb:11:31: info: length check proved (CVC4: 1 VC)
-adt_stack-child.adb:18:30: medium: array index check might fail (e.g. when S = (STack_Top => 0, others => ?))
+adt_stack-child.adb:18:30: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (others => 0), Next_Value => 0))
 adt_stack-child.adb:19:36: medium: overflow check might fail (e.g. when S = (Next_Value => 2147483647, others => ?))
 adt_stack-child.adb:29:52: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (others => 0), Next_Value => 0))
 adt_stack-child.adb:31:14: info: initialization of "Result" proved
@@ -9,10 +9,10 @@ adt_stack-child.ads:7:20: info: initialization of "S.STack_Top" proved
 adt_stack-child.ads:7:20: info: initialization of "S.STack_Vector" proved
 adt_stack.adb:21:25: info: length check proved (CVC4: 1 VC)
 adt_stack.adb:28:10: medium: exception might be raised
-adt_stack.adb:30:33: medium: range check might fail (e.g. when S = (STack_Vector => ?, STack_Top => 100))
+adt_stack.adb:30:33: medium: range check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 100))
 adt_stack.adb:31:23: info: index check proved (CVC4: 2 VC)
 adt_stack.adb:38:10: medium: exception might be raised
-adt_stack.adb:40:28: medium: array index check might fail (e.g. when S = (STack_Vector => ?, STack_Top => 0))
+adt_stack.adb:40:28: medium: array index check might fail (e.g. when S = (STack_Vector => ?, STack_Top => 0) and X = 0)
 adt_stack.adb:41:33: info: range check proved (CVC4: 1 VC)
 adt_stack.adb:48:10: info: range check proved (CVC4: 4 VC)
 adt_stack.adb:48:45: info: range check proved (CVC4: 4 VC)
@@ -31,7 +31,7 @@ generic_stack.adb:16:10: medium: exception might be raised, in instantiation at 
 generic_stack.adb:18:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved (CVC4: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:25:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
-generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 (e.g. when Index = 101)
+generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 (e.g. when E = 0 and Index = 101)
 generic_stack.adb:28:22: info: range check proved (CVC4: 1 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
 main.adb:5:11: info: initialization of "random_numbers.state" proved

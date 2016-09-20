@@ -135,8 +135,8 @@ polyorb_hi-thread_interrogators.adb:366:14: info: range check proved (CVC4: 1 VC
 polyorb_hi-thread_interrogators.adb:366:14: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-thread_interrogators.adb:371:27: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-thread_interrogators.adb:371:27: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
-polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
+polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
+polyorb_hi-thread_interrogators.adb:394:14: info: discriminant check proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-thread_interrogators.adb:394:38: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-thread_interrogators.adb:394:38: info: length check proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-thread_interrogators.adb:475:07: warning: statement has no effect, in instantiation at polyorb_hi_generated-activity.adb:102
@@ -215,7 +215,7 @@ polyorb_hi-unprotected_queue.adb:190:40: info: overflow check proved (CVC4: 1 VC
 polyorb_hi-unprotected_queue.adb:190:49: info: index check proved (CVC4: 2 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-unprotected_queue.adb:190:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-unprotected_queue.adb:190:49: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
-polyorb_hi-unprotected_queue.adb:190:49: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
+polyorb_hi-unprotected_queue.adb:190:49: medium: array index check might fail, in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102 (e.g. when P = (From => pr_A_Producer_K, Payload => (others => 0)))
 polyorb_hi-unprotected_queue.adb:196:41: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
 polyorb_hi-unprotected_queue.adb:196:41: info: range check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:193
 polyorb_hi-unprotected_queue.adb:196:48: info: overflow check proved (CVC4: 1 VC), in instantiation at polyorb_hi-thread_interrogators.adb:59, in instantiation at polyorb_hi_generated-activity.adb:102
@@ -620,7 +620,7 @@ polyorb_hi_generated-deployment.ads:206:08: info: length check proved (CVC4: 1 V
 polyorb_hi_generated-marshallers.adb:21:13: info: range check proved (CVC4: 1 VC)
 polyorb_hi_generated-marshallers.adb:31:13: info: discriminant check proved (CVC4: 1 VC)
 polyorb_hi_generated-marshallers.adb:77:13: info: range check proved (CVC4: 1 VC)
-polyorb_hi_generated-marshallers.adb:107:12: info: discriminant check proved (CVC4: 1 VC)
+polyorb_hi_generated-marshallers.adb:107:12: info: discriminant check proved (CVC4: 2 VC)
 polyorb_hi_generated-marshallers.adb:110:29: info: initialization of "Data_Sink_DATA" proved
 polyorb_hi_generated-marshallers.ads:23:05: high: "Data.Data_Source_DATA" is not initialized in "Unmarshall"
 polyorb_hi_generated-marshallers.ads:33:05: info: initialization of "Data" proved

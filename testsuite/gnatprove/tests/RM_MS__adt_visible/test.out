@@ -1,7 +1,7 @@
 stacks_14.adb:12:32: info: length check proved (CVC4: 1 VC)
-stacks_14.adb:17:42: medium: range check might fail (e.g. when S = (Stack_Vector => ?, Stack_Pointer => 100))
+stacks_14.adb:17:42: medium: range check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 100))
 stacks_14.adb:18:23: info: index check proved (CVC4: 2 VC)
-stacks_14.adb:23:28: medium: array index check might fail (e.g. when S = (Stack_Vector => ?, Stack_Pointer => 0))
+stacks_14.adb:23:28: medium: array index check might fail (e.g. when S = (Stack_Vector => ?, Stack_Pointer => 0) and X = 0)
 stacks_14.adb:24:42: info: range check proved (CVC4: 1 VC)
 stacks_14.ads:17:20: info: initialization of "S.Stack_Pointer" proved
 stacks_14.ads:17:20: info: initialization of "S.Stack_Vector" proved

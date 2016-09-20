@@ -11,7 +11,7 @@ instr-child.adb:9:67: info: division check proved (CVC4: 1 VC)
 instr-child.adb:10:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:10:07: warning: no Global contract available for "Put"
 instr-child.adb:10:60: info: division check proved (CVC4: 1 VC)
-instr-child.adb:15:39: medium: overflow check might fail (e.g. when X = (MilliSec => 1, others => ?) and inc = 2147483647)
+instr-child.adb:15:39: medium: overflow check might fail (e.g. when X = (Name => (others => 0), Seconds => 0, Minutes => 0, Hours => 0, MilliSec => 1) and inc = 2147483647)
 instr-child.adb:15:46: info: division check proved (CVC4: 1 VC)
 instr-child.adb:16:32: medium: overflow check might fail (e.g. when X = (MilliSec => 1000, others => ?) and inc = 2147482648)
 instr-child.adb:16:39: info: division check proved (CVC4: 1 VC)
@@ -68,7 +68,7 @@ instr.adb:74:59: info: division check proved (CVC4: 1 VC)
 instr.adb:75:07: warning: assuming "Put" has no effect on global items
 instr.adb:75:07: warning: no Global contract available for "Put"
 instr.adb:75:59: info: division check proved (CVC4: 1 VC)
-instr.adb:82:31: medium: overflow check might fail (e.g. when Inc = 2147483647 and X = (Seconds => 1, others => ?))
+instr.adb:82:31: medium: overflow check might fail (e.g. when Inc = 2147483647 and X = (Name => (others => 0), Seconds => 1, Minutes => 1, Hours => 0))
 instr.adb:82:38: info: division check proved (CVC4: 1 VC)
 instr.adb:83:26: medium: overflow check might fail
 instr.adb:83:33: info: division check proved (CVC4: 1 VC)

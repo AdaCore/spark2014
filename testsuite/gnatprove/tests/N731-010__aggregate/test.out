@@ -1,7 +1,7 @@
 assign_arr_out.adb:6:28: info: initialization of "A" proved
 assign_arr_out.adb:8:12: info: length check proved (CVC4: 1 VC), in call inlined at assign_arr_out.adb:13
 c330002_0.adb:5:09: medium: length check might fail (e.g. when A'First = 2147483646 and A'Last = 2147483645)
-c330002_0.adb:10:09: medium: length check might fail (e.g. when A'First = 2147483646 and A'Last = 2147483645)
+c330002_0.adb:10:09: medium: length check might fail (e.g. when A = (others => 0) and A'First = 2147483646 and A'Last = 2147483645)
 c330002_0.ads:7:28: info: initialization of "A" proved
 c330002_0.ads:9:33: info: initialization of "A" proved
 c330002_0.ads:10:14: info: initialization of "A" proved
