@@ -32,6 +32,7 @@ with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;         use Common_Containers;
+with Comperr;                   use Comperr;
 with Errout;                    use Errout;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
@@ -640,9 +641,7 @@ package body Gnat2Why.Error_Messages is
       procedure Handle_Error (Msg : String; Internal : Boolean) is
       begin
          if Internal then
-            Ada.Text_IO.Put_Line ("Internal error");
-            Ada.Text_IO.Put_Line (Msg);
-            Exit_Program (E_Abort);
+            Compiler_Abort (Msg);
          else
             Ada.Text_IO.Put ("gnatprove: ");
             Ada.Text_IO.Put_Line (Msg);
