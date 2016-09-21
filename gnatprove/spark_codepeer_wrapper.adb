@@ -212,6 +212,7 @@ procedure SPARK_CodePeer_Wrapper is
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "codepeer-gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, +Subdir);
+      Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
       Tree.Load (Project, Proj_Env, Recompute_View => True);
    exception
       when others =>
@@ -230,10 +231,11 @@ procedure SPARK_CodePeer_Wrapper is
       procedure Append_Arg is new Generic_Append_Arg (Args, Arg_Count);
    begin
       --  Call gprbuild:
-      --  codepeer-gprbuild -c --codepeer -ws [-jxx] -Pproject
+      --  codepeer-gprbuild -c --codepeer <other options> [-jxx] -Pproject
 
       Append_Arg ("-c");
       Append_Arg ("--codepeer");
+      Append_Arg ("--restricted-to-languages=ada");
 
       if Num_Procs /= null then
          Append_Arg ("-j" & Num_Procs.all);
