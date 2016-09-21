@@ -1,34 +1,5 @@
 pragma SPARK_Mode (On);
-pragma Task_Dispatching_Policy (FIFO_Within_Priorities);
-pragma Locking_Policy (Ceiling_Locking);
-pragma Detect_Blocking;
-pragma Restrictions (No_Abort_Statements,
-                     No_Asynchronous_Control,
-                     No_Dynamic_Attachment,
-                     No_Dynamic_Priorities,
-                     No_Entry_Queue,
-                     No_Local_Protected_Objects,
-                     No_Protected_Type_Allocators,
-                     No_Requeue_Statements,
-                     No_Task_Allocators,
-                     No_Task_Attributes_Package,
-                     No_Task_Hierarchy,
-                     No_Terminate_Alternatives,
-                     No_Implicit_Task_Allocations,
-                     No_Implicit_Protected_Object_Allocations,
-                     No_Local_Timing_Events,
-                     No_Select_Statements,
-                     No_Specific_Termination_Handlers,
-                     No_Task_Termination,
-                     Simple_Barriers,
-                     Max_Asynchronous_Select_Nesting => 0,
-                     Max_Protected_Entries           => 0,
-                     Max_Task_Entries                => 0,
-                     Max_Select_Alternatives         => 0,
-                     No_Dependence => Ada.Asynchronous_Task_Control,
-                   --No_Dependence => Ada.Calendar,
-                     No_Dependence => Ada.Execution_Time.Group_Budgets,
-                     No_Dependence => Ada.Execution_Time.Timers,
-                     No_Dependence => Ada.Task_Attributes,
-                     No_Dependence => System.Multiprocessors.Dispatching_Domains);
+pragma Profile (GNAT_Extended_Ravenscar);
+pragma Restrictions (No_Entry_Queue, Max_Protected_Entries => 1);
+--  enforce restrictions that we did not lift yet
 pragma Partition_Elaboration_Policy (Sequential);
