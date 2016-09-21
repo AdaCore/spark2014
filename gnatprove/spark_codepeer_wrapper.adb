@@ -47,6 +47,7 @@ procedure SPARK_CodePeer_Wrapper is
 
    Project_File : Virtual_File := No_File;
    Library      : String_Access;
+   File         : Virtual_File := No_File;
 
    procedure Error (Message : String);
    --  Display error message and exit the application.
@@ -253,6 +254,11 @@ procedure SPARK_CodePeer_Wrapper is
          Append_Arg ("--no-exit-message");
       end if;
 
+      if File /= No_File then
+         Append_Arg ("-u");
+         Append_Arg (File.Display_Base_Name);
+      end if;
+
       Append_Arg ("--subdirs=" & Subdir);
       Append_Arg ("-P" & Project.Display_Full_Name);
       Status := Local_Spawn ("codepeer-gprbuild", Args (1 .. Arg_Count));
@@ -395,6 +401,17 @@ procedure SPARK_CodePeer_Wrapper is
 
             elsif Starts_With (S, "-j") then
                Num_Procs := new String'(S (3 .. S'Last));
+
+            elsif S = "-file" then
+               Index := Index + 1;
+
+               if Index > Count then
+                  Put_Line ("missing -file parameter.");
+                  OS_Exit (2);
+               end if;
+
+               File := GNATCOLL.VFS.Create_From_Base
+                 (Filesystem_String (Argument (Index)));
 
             elsif S = "--help" then
                Help_Requested := True;

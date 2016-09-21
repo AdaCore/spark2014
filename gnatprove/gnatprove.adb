@@ -65,6 +65,7 @@
 --      on the same units, even when sources have not changed so analysis is
 --      not done on these units.
 
+with Ada.Containers;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;
@@ -857,6 +858,8 @@ procedure Gnatprove with SPARK_Mode is
    is
       pragma Unreferenced (Proj);
       Args : String_Lists.List;
+
+      use type Ada.Containers.Count_Type;
    begin
 
       if Project_File /= "" then
@@ -874,6 +877,16 @@ procedure Gnatprove with SPARK_Mode is
 
       if All_Projects then
          Args.Append ("-U");
+      end if;
+
+      --  ??? we only limit codepeer analysis if the user has given a single
+      --  file, and option -u
+
+      if CL_Switches.File_List.Length = 1 and Only_Given then
+         Args.Append ("-file");
+         for File of CL_Switches.File_List loop
+            Args.Append (File);
+         end loop;
       end if;
 
       for Var of CL_Switches.X loop
