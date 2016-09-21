@@ -41,8 +41,8 @@ mod_lemmas.adb:29:31: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:32:42: info: initialization of "Res1" proved
 mod_lemmas.adb:32:48: info: initialization of "Res2" proved
 mod_lemmas.adb:33:14: info: initialization of "Res1" proved
+mod_lemmas.adb:33:14: info: postcondition proved (altergo: 2 VC)
 mod_lemmas.adb:33:32: info: initialization of "Res2" proved
-mod_lemmas.adb:33:32: medium: postcondition might fail, cannot prove Res2 = 0
 mod_lemmas.adb:36:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:37:20: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:40:52: info: initialization of "Res" proved
