@@ -1,0 +1,1 @@
+ALL XFAIL unused type entities in auto mode should not be marked (P805-023)
