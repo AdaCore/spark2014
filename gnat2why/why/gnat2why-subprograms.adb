@@ -3014,8 +3014,8 @@ package body Gnat2Why.Subprograms is
       --  subtype declarations. We need to take those into account.
 
       function RTE_Of_Pre return W_Prog_Id;
-      --  compute an expression which contains the RTE checks of the
-      --  precondition
+      --  Compute an expression which contains the RTE checks of the
+      --  precondition.
 
       function Assume_Or_Assert_Of_Pre return W_Prog_Id;
       --  usually assumes the precondition, except for main programs where
@@ -3389,20 +3389,11 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
-         Pre : W_Prog_Id :=
-           +Compute_Spec (Params, E, Name_Precondition, EW_Prog);
-      begin
-         if Is_Entry (E)
-           and then Present (Body_N)
-           and then Entity_Body_In_SPARK (E)
-         then
-            Pre :=
-              Sequence (Pre,
-                        +Transform_Expr
-                          (Condition (Entry_Body_Formal_Part (Body_N)),
-                           EW_Bool_Type, EW_Pred, Params));
-         end if;
 
+         Pre   : constant W_Prog_Id :=
+           +Compute_Spec (Params, E, Name_Precondition, EW_Prog);
+
+      begin
          return
            Sequence
              (New_Comment
