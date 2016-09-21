@@ -29,11 +29,11 @@ subar.adb:45:14: warning: subprogram "Loop_Test" has no effect
 subar.adb:50:11: info: range check proved (CVC4: 2 VC)
 subar.adb:50:30: info: initialization of "X" proved
 subar.adb:53:12: info: initialization of "X" proved
-subar.adb:53:14: info: overflow check proved (CVC4: 1 VC)
+subar.adb:53:14: info: overflow check proved (CodePeer)
 subar.adb:54:11: info: range check proved (CVC4: 2 VC)
 subar.adb:54:30: info: initialization of "X" proved
 subar.adb:57:12: info: initialization of "X" proved
-subar.adb:57:14: info: overflow check proved (CVC4: 1 VC)
+subar.adb:57:14: info: overflow check proved (CodePeer)
 subar.adb:59:11: medium: range check might fail
 subar.adb:59:30: info: initialization of "X" proved
 subar.ads:21:14: warning: subprogram "F" has no effect

@@ -1,8 +1,8 @@
 aggregate.adb:5:14: info: length check proved (CVC4: 1 VC)
 aggregate.adb:5:28: info: division check proved (CVC4: 1 VC)
-aggregate.adb:5:45: info: overflow check proved (CVC4: 1 VC)
+aggregate.adb:5:45: info: overflow check proved (CodePeer)
 aggregate.adb:6:18: info: initialization of "Agg" proved
-aggregate.adb:6:26: info: overflow check proved (CVC4: 1 VC)
+aggregate.adb:6:26: info: overflow check proved (CodePeer)
 aggregate.adb:7:12: info: initialization of "Agg" proved
 aggregate.ads:6:09: info: length check proved (CVC4: 1 VC)
 aggregate.ads:8:30: info: initialization of "K" proved
@@ -66,7 +66,7 @@ rec_aggregate.ads:26:14: info: postcondition proved (CVC4: 2 VC)
 rec_aggregate.ads:31:14: info: postcondition proved (CVC4: 3 VC)
 rec_aggregate.ads:37:18: warning: unused initial value of "R"
 rec_aggregate.ads:39:14: info: postcondition proved (CVC4: 5 VC)
-rec_aggregate.ads:39:47: info: overflow check proved (CVC4: 1 VC)
+rec_aggregate.ads:39:47: info: overflow check proved (CodePeer)
 rec_aggregate.ads:45:18: warning: unused initial value of "R"
 rec_aggregate.ads:47:14: info: postcondition proved (CVC4: 5 VC)
 rec_aggregate.ads:53:21: warning: unused variable "R"

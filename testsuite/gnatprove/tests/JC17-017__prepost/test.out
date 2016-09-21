@@ -1,4 +1,4 @@
-p.adb:4:15: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
+p.adb:4:15: info: overflow check proved (CodePeer)
 p.adb:9:15: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
 p.ads:3:27: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
 p.ads:9:27: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)

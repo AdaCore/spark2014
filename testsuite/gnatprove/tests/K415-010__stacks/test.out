@@ -1,7 +1,7 @@
-stacks.adb:5:18: info: range check proved (CVC4: 1 VC)
-stacks.adb:11:18: info: range check proved (CVC4: 1 VC)
+stacks.adb:5:18: info: range check proved (CodePeer)
+stacks.adb:11:18: info: range check proved (CodePeer)
 stacks.ads:8:33: warning: unused variable "Data"
 stacks.ads:18:14: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:18:58: info: overflow check proved (CVC4: 1 VC)
+stacks.ads:18:58: info: overflow check proved (CodePeer)
 stacks.ads:20:40: warning: "Data" is not modified, could be IN
 stacks.ads:22:26: info: postcondition proved (CVC4: 1 VC)

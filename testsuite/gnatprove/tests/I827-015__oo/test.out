@@ -36,7 +36,7 @@ instr.adb:54:49: info: division check proved (CVC4: 1 VC)
 instr.adb:55:07: info: range check proved (CVC4: 2 VC)
 instr.adb:55:41: info: length check proved (CVC4: 1 VC)
 instr.adb:56:07: info: range check proved (CVC4: 1 VC; Z3: 1 VC)
-instr.adb:56:32: info: overflow check proved (CVC4: 1 VC)
+instr.adb:56:32: info: overflow check proved (CodePeer)
 instr.adb:56:50: info: length check proved (CVC4: 1 VC)
 instr.adb:59:07: warning: assuming "Put" has no effect on global items
 instr.adb:59:07: warning: no Global contract available for "Put"
@@ -72,19 +72,19 @@ instr.adb:82:31: medium: overflow check might fail (e.g. when Inc = 2147483647 a
 instr.adb:82:38: info: division check proved (CVC4: 1 VC)
 instr.adb:83:26: medium: overflow check might fail
 instr.adb:83:33: info: division check proved (CVC4: 1 VC)
-instr.adb:84:31: info: overflow check proved (CVC4: 1 VC)
+instr.adb:84:31: info: overflow check proved (CodePeer)
 instr.adb:84:33: info: initialization of "nInc" proved
 instr.adb:84:39: info: division check proved (CVC4: 1 VC)
-instr.adb:85:26: info: overflow check proved (CVC4: 1 VC)
+instr.adb:85:26: info: overflow check proved (CodePeer)
 instr.adb:85:28: info: initialization of "nInc" proved
 instr.adb:85:34: info: division check proved (CVC4: 1 VC)
-instr.adb:86:27: info: overflow check proved (CVC4: 1 VC)
+instr.adb:86:27: info: overflow check proved (CodePeer)
 instr.adb:86:29: info: initialization of "nInc" proved
 instr.adb:86:35: info: division check proved (CVC4: 1 VC)
-instr.adb:108:23: info: overflow check proved (CVC4: 1 VC)
-instr.adb:108:35: info: overflow check proved (CVC4: 1 VC)
-instr.adb:108:40: info: overflow check proved (CVC4: 1 VC)
-instr.adb:108:52: info: overflow check proved (CVC4: 1 VC)
+instr.adb:108:23: info: overflow check proved (CodePeer)
+instr.adb:108:35: info: overflow check proved (CodePeer)
+instr.adb:108:40: info: overflow check proved (CodePeer)
+instr.adb:108:52: info: overflow check proved (CodePeer)
 instr.adb:110:07: warning: assuming "Put" has no effect on global items
 instr.adb:110:07: warning: no Global contract available for "Put"
 instr.adb:111:07: warning: assuming "Put" has no effect on global items

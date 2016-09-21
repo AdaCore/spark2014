@@ -5,7 +5,7 @@ s.adb:14:32: info: initialization of "Found" proved
 s.adb:15:18: info: initialization of "Index" proved
 s.adb:20:12: info: initialization of "Index" proved
 s.adb:24:18: info: initialization of "Index" proved
-s.adb:24:24: info: range check proved (CVC4: 1 VC)
+s.adb:24:24: info: range check proved (CodePeer)
 s.ads:10:07: info: initialization of "Found" proved
 s.ads:11:07: info: initialization of "Index" proved
 s.ads:12:17: info: postcondition proved (CVC4: 1 VC)

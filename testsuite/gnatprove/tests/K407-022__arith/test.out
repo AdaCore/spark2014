@@ -4,13 +4,13 @@ arith.adb:7:14: medium: overflow check might fail (e.g. when Tmp1 = 0 and X = -2
 arith.adb:7:18: medium: overflow check might fail (e.g. when Tmp1 = 0)
 arith.adb:8:09: warning: unused assignment
 arith.adb:8:12: warning: possible reassociation due to missing parentheses
-arith.adb:8:14: info: overflow check proved (CVC4: 1 VC)
+arith.adb:8:14: info: overflow check proved (CodePeer)
 arith.adb:8:18: medium: overflow check might fail (e.g. when Tmp2 = 0)
 arith.adb:11:09: warning: unused assignment
-arith.adb:11:15: info: overflow check proved (CVC4: 1 VC)
-arith.adb:11:20: info: overflow check proved (CVC4: 1 VC)
+arith.adb:11:15: info: overflow check proved (CodePeer)
+arith.adb:11:20: info: overflow check proved (CodePeer)
 arith.adb:12:09: warning: unused assignment
-arith.adb:12:14: info: overflow check proved (CVC4: 1 VC)
+arith.adb:12:14: info: overflow check proved (CodePeer)
 arith.adb:12:19: medium: overflow check might fail (e.g. when Tmp2 = 0 and Y = -2147483648 and Z = 1)
 arith.adb:15:09: warning: unused assignment
 arith.adb:15:12: warning: possible reassociation due to missing parentheses
@@ -24,7 +24,7 @@ arith.adb:16:18: medium: overflow check might fail
 arith.adb:19:09: warning: unused assignment
 arith.adb:19:14: info: overflow check proved (CVC4: 1 VC)
 arith.adb:19:18: medium: overflow check might fail
-arith.adb:20:14: info: overflow check proved (CVC4: 1 VC)
+arith.adb:20:14: info: overflow check proved (CodePeer)
 arith.adb:20:14: medium: divide by zero might fail
 arith.adb:20:18: medium: overflow check might fail
 arith.adb:23:12: warning: possible reassociation due to missing parentheses

@@ -1,5 +1,5 @@
 default.adb:11:16: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
 default.adb:14:04: warning: analyzing unreferenced function "Use_Sub"
-default.adb:16:25: info: overflow check proved (CVC4: 1 VC)
+default.adb:16:25: info: overflow check proved (CodePeer)
 default.adb:19:04: warning: analyzing unreferenced function "Use_Add"
-default.adb:21:25: medium: overflow check might fail
+default.adb:21:25: info: overflow check proved (CodePeer)
