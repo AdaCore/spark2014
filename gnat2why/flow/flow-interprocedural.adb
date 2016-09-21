@@ -26,7 +26,6 @@ with Flow_Utility;   use Flow_Utility;
 with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
 with SPARK_Util;     use SPARK_Util;
-with Why;
 
 package body Flow.Interprocedural is
 
@@ -246,26 +245,19 @@ package body Flow.Interprocedural is
 
             --  Add parameters
             for E of Get_Formals (Called_Thing, N, False) loop
+               The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
+               The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
+
                if Nkind (E) in N_Entity then
                   case Ekind (E) is
                      when E_In_Parameter =>
-                        The_In := Direct_Mapping_Id (Unique_Entity (E),
-                                                     In_View);
                         Inputs.Insert (The_In);
 
                      when E_In_Out_Parameter =>
-                        The_In  := Direct_Mapping_Id (Unique_Entity (E),
-                                                      In_View);
-                        The_Out := Direct_Mapping_Id (Unique_Entity (E),
-                                                      Out_View);
                         Inputs.Insert (The_In);
                         Outputs.Insert (The_Out);
 
                      when E_Out_Parameter =>
-                        The_In  := Direct_Mapping_Id (Unique_Entity (E),
-                                                      In_View);
-                        The_Out := Direct_Mapping_Id (Unique_Entity (E),
-                                                      Out_View);
                         if Contains_Discriminants (The_In, FA.B_Scope)
                           or else Has_Bounds (The_In, FA.B_Scope)
                         then
@@ -277,30 +269,18 @@ package body Flow.Interprocedural is
                         Outputs.Insert (The_Out);
 
                      when E_Variable | Concurrent_Kind =>
-                        The_In  := Change_Variant (Concurrent_Object_Id (E),
-                                                   In_View);
-                        The_Out := Change_Variant (Concurrent_Object_Id (E),
-                                                   Out_View);
                         Inputs.Insert (The_In);
-                        if Ekind (Called_Thing) not in E_Function         |
-                                                       E_Generic_Function
-                        then
+                        if Ekind (Called_Thing) /= E_Function then
                            Outputs.Insert (The_Out);
                         end if;
 
                      when others =>
-                        raise Why.Unexpected_Node;
+                        raise Program_Error;
 
                   end case;
                else
-                  The_In  := Change_Variant (Concurrent_Object_Id (E),
-                                             In_View);
-                  The_Out := Change_Variant (Concurrent_Object_Id (E),
-                                             Out_View);
                   Inputs.Insert (The_In);
-                  if Ekind (Called_Thing) not in E_Function         |
-                                                 E_Generic_Function
-                  then
+                  if Ekind (Called_Thing) /= E_Function then
                      Outputs.Insert (The_Out);
                   end if;
                end if;

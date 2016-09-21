@@ -246,26 +246,6 @@ package body Flow_Types is
       return F;
    end Record_Field_Id;
 
-   --------------------------
-   -- Concurrent_Object_Id --
-   --------------------------
-
-   function Concurrent_Object_Id (N : Node_Id) return Flow_Id is
-   begin
-      case Nkind (N) is
-         when N_Entity =>
-            return Direct_Mapping_Id (N);
-         when N_Identifier | N_Expanded_Name =>
-            return Direct_Mapping_Id (Unique_Entity (Entity (N)));
-         when N_Indexed_Component =>
-            return Concurrent_Object_Id (Prefix (N));
-         when N_Selected_Component =>
-            return Record_Field_Id (N);
-         when others =>
-            raise Program_Error;
-      end case;
-   end Concurrent_Object_Id;
-
    -------------------
    -- Add_Component --
    -------------------
@@ -341,19 +321,19 @@ package body Flow_Types is
       Entire   : Boolean := True)
       return Entity_Id
    is
+      function Anonymous_Object_Or_Type (Typ : Entity_Id) return Entity_Id
+      with Pre => Ekind (Typ) in E_Protected_Type | E_Task_Type;
+      --  Returns the Anonymous_Object if it exists and type otherwise
 
-      function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
-      with Pre => Ekind (PT) in Concurrent_Kind;
-      --  Returns the Anonymous_Object if it exists
+      ------------------------------
+      -- Anonymous_Object_Or_Type --
+      ------------------------------
 
-      --------------------------
-      -- Get_Anonymous_Object --
-      --------------------------
-
-      function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id is
-        (if Present (Anonymous_Object (PT))
-         then Anonymous_Object (PT)
-         else PT);
+      function Anonymous_Object_Or_Type (Typ : Entity_Id) return Entity_Id is
+         Obj : constant Entity_Id := Anonymous_Object (Typ);
+      begin
+         return (if Present (Obj) then Obj else Typ);
+      end Anonymous_Object_Or_Type;
 
    --  Start of processing for Get_Enclosing_Concurrent_Object
 
@@ -364,32 +344,53 @@ package body Flow_Types is
 
          begin
             case Nkind (Orig_Name) is
+               --  Internal call
+
                when N_Identifier | N_Expanded_Name =>
-                  return Get_Enclosing_Concurrent_Object (E);
+                  return Anonymous_Object_Or_Type (Scope (E));
+
+               --  External call
 
                when N_Selected_Component =>
-                  declare
-                     Pref : constant Node_Id := Prefix (Orig_Name);
-                  begin
-                     return (if Entire
-                            then Get_Direct_Mapping_Id
-                                   (Concurrent_Object_Id (Pref))
-                            else Pref);
-                  end;
+                  --  ??? this is probably what Entire_Variable is meant to do
+                  if Entire then
+                     --  Repeat calling Get_Enclosing_Concurrent_Object until
+                     --  it returns Empty, which means than the current context
+                     --  is the most enclosing one, i.e. it is the "entire"
+                     --  object.
+                     declare
+                        Context   : Entity_Id :=
+                          Get_Enclosing_Object (Orig_Name);
+                        Enclosing : Entity_Id;
+
+                     begin
+                        loop
+                           Enclosing := Get_Enclosing_Object (Context);
+
+                           if Present (Enclosing) then
+                              Context := Enclosing;
+                           else
+                              return Context;
+                           end if;
+                        end loop;
+                     end;
+                  else
+                     return Get_Enclosing_Object (Orig_Name);
+                  end if;
 
                when others =>
                   raise Program_Error;
             end case;
          end;
 
+      --  Internal access to protected component
+
       else
-         return
-           Get_Anonymous_Object
-             (if Is_Part_Of_Concurrent_Object (E)
-              then Etype (Encapsulating_State (E))
-              elsif Ekind (Scope (E)) in Concurrent_Kind
-              then Scope (E)
-              else raise Program_Error);
+         if Is_Part_Of_Concurrent_Object (E) then
+            return Anonymous_Object (Etype (Encapsulating_State (E)));
+         else
+            return Anonymous_Object_Or_Type (Scope (E));
+         end if;
       end if;
    end Get_Enclosing_Concurrent_Object;
 

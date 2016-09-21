@@ -313,27 +313,35 @@ package body Flow_Classwide is
 
             --  ... all parameters...
             for P of Get_Formals (E) loop
-               case Ekind (P) is
-                  when E_In_Parameter     =>
-                     Inputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+               declare
+                  Formal : constant Flow_Id :=
+                    Direct_Mapping_Id (Unique_Entity (P));
+                  --  We do not need an In_View/Out_View here, so do not care
 
-                  when E_Out_Parameter    =>
-                     Outputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+               begin
+                  case Ekind (P) is
+                     when E_In_Parameter     =>
+                        Inputs.Include (Formal);
 
-                  when E_In_Out_Parameter =>
-                     Inputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
-                     Outputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+                     when E_Out_Parameter    =>
+                        Outputs.Include (Formal);
 
-                  when others             =>
-                     Inputs.Include (Concurrent_Object_Id (P));
+                     when E_In_Out_Parameter =>
+                        Inputs.Include (Formal);
+                        Outputs.Include (Formal);
 
-                     if Ekind (E) not in E_Function | E_Generic_Function then
-                        Outputs.Include (Concurrent_Object_Id (P));
-                     end if;
-               end case;
+                     --  ??? this is never executed; and what are the "others"?
+                     when others             =>
+                        Inputs.Include (Formal);
+
+                        if Ekind (E) /= E_Function then
+                           Outputs.Include (Formal);
+                        end if;
+                  end case;
+               end;
             end loop;
 
-            --  ... and the function symbol if we're dealing with a function.
+            --  ... and the function symbol if we're dealing with a function
             if Ekind (E) = E_Function then
                Outputs.Include (Direct_Mapping_Id (E));
             end if;

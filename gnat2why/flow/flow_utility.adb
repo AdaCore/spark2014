@@ -858,8 +858,6 @@ package body Flow_Utility is
       All_Reads     : Flow_Id_Sets.Set;
       All_Writes    : Flow_Id_Sets.Set;
 
-      Formal_Param : Flow_Id;
-
       function Trimming_Required return Boolean;
       --  Checks if the projected Depends constituents need to be trimmed
       --  (based on a user-provided Refined_Global aspect).
@@ -900,30 +898,30 @@ package body Flow_Utility is
 
          --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
-            case Ekind (Param) is
-               when E_In_Parameter     =>
-                  Formal_Param := Direct_Mapping_Id (Param);
-                  All_Reads.Insert (Formal_Param);
-                  All_Proof_Ins.Insert (Formal_Param);
+            declare
+               Formal_Param : constant Flow_Id := Direct_Mapping_Id (Param);
+            begin
+               case Ekind (Param) is
+                  when E_In_Parameter     =>
+                     All_Reads.Insert (Formal_Param);
+                     All_Proof_Ins.Insert (Formal_Param);
 
-               when E_In_Out_Parameter =>
-                  Formal_Param := Direct_Mapping_Id (Param);
-                  All_Proof_Ins.Insert (Formal_Param);
-                  All_Reads.Insert (Formal_Param);
-                  All_Writes.Insert (Formal_Param);
-
-               when E_Out_Parameter    =>
-                  Formal_Param := Direct_Mapping_Id (Param);
-                  All_Writes.Insert (Formal_Param);
-
-               when others             =>
-                  Formal_Param := Concurrent_Object_Id (Param);
-                  All_Reads.Insert (Formal_Param);
-                  All_Proof_Ins.Insert (Formal_Param);
-                  if Ekind (Subprogram) /= E_Function then
+                  when E_In_Out_Parameter =>
+                     All_Proof_Ins.Insert (Formal_Param);
+                     All_Reads.Insert (Formal_Param);
                      All_Writes.Insert (Formal_Param);
-                  end if;
-            end case;
+
+                  when E_Out_Parameter    =>
+                     All_Writes.Insert (Formal_Param);
+
+                  when others             =>
+                     All_Reads.Insert (Formal_Param);
+                     All_Proof_Ins.Insert (Formal_Param);
+                     if Ekind (Subprogram) /= E_Function then
+                        All_Writes.Insert (Formal_Param);
+                     end if;
+               end case;
+            end;
          end loop;
 
          --  If Subprogram is a function then we need to add it to the
@@ -1966,8 +1964,7 @@ package body Flow_Utility is
             --  entry/subprogram.
             return
               (if Ekind (Scope (E)) = E_Protected_Type
-               then
-                  Get_Enclosing_Concurrent_Object (E, Callsite, Entire)
+               then Get_Enclosing_Concurrent_Object (E, Callsite, Entire)
                else Empty);
 
          when E_Task_Type =>
@@ -2288,21 +2285,13 @@ package body Flow_Utility is
          --  If we are dealing with a subprogram that is declared inside a
          --  concurrent object then we also need to add the concurrent object
          --  to the variables we're using.
-         declare
-            Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
-            The_CO       : Entity_Id;
-         begin
-            pragma Assert
-              (Belongs_To_Concurrent_Object (Subprogram_F) =
-                 (Ekind (Scope (Subprogram)) = E_Protected_Type));
-            --  ??? really needed for internal calls to protected subprograms?
+         --  ??? really needed for internal calls to protected subprograms?
 
-            if Belongs_To_Concurrent_Object (Subprogram_F) then
-               The_CO := Get_Enclosing_Concurrent_Object (Subprogram_F,
-                                                          Callsite);
-               Merge_Entity (V, The_CO);
-            end if;
-         end;
+         if Ekind (Scope (Subprogram)) = E_Protected_Type then
+            Merge_Entity
+              (V,
+               Get_Enclosing_Concurrent_Object (Subprogram, Callsite));
+         end if;
 
          --  If we fold functions we need to obtain the used inputs
 

@@ -4024,8 +4024,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
-      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
+      Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
       Ins  : Vertex_Lists.List;
       Outs : Vertex_Lists.List;
@@ -4131,7 +4130,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Collect tasking-related information
-      if Belongs_To_Protected_Object (Called_Thing_F) then
+      if Ekind (Scope (Called_Thing)) = E_Protected_Type then
          declare
             The_PO : constant Entity_Id :=
               Get_Enclosing_Concurrent_Object (Called_Thing, N);
@@ -4656,7 +4655,7 @@ package body Flow.Control_Flow_Graph is
          declare
             --  Create vertices for the implicit formal parameter
             The_PO : constant Flow_Id :=
-              Concurrent_Object_Id
+              Direct_Mapping_Id
                 (Get_Enclosing_Concurrent_Object (E        => Called_Thing,
                                                   Callsite => Callsite,
                                                   Entire   => False));
