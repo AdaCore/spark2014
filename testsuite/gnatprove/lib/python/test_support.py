@@ -618,7 +618,8 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               prover=default_provers, cache_allowed=True, report="provers",
               level=None,
               no_fail=False,
-              subdue_flow=False):
+              subdue_flow=False,
+              codepeer=False):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
@@ -631,6 +632,8 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt += ["--assumptions"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
+    if codepeer:
+        fullopt += ["--codepeer=on"]
     if level is None:
         if steps is None:
             fullopt += ["--steps=0"]
