@@ -80,8 +80,17 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Item   : Item_Type;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id;
-   --  ???
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
+   --  Get the expression for the attribute (first/last/length) of an array
+   --  item.
+   --  @param Domain the domain of the returned expression
+   --  @param Item the item for the array object
+   --  @param Attr the querried array attribute
+   --  @param Dim dimension of the attribute
+   --  @param Typ expected type of the result. It is only relevant for
+   --         length attribute.
+   --  @return the translated array attribute into Why3
 
    function Prepare_Indices_Substitutions
      (Section     : W_Section_Id;
@@ -332,25 +341,29 @@ package body Why.Gen.Arrays is
    function Build_Length_Expr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
-      Dim    : Positive) return W_Expr_Id is
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
    begin
       return
         Build_Length_Expr
           (Domain,
            Get_Array_Attr (Domain, Expr, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Expr, Attribute_Last, Dim));
+           Get_Array_Attr (Domain, Expr, Attribute_Last, Dim),
+           Typ);
    end Build_Length_Expr;
 
    function Build_Length_Expr
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Dim    : Positive) return W_Expr_Id is
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
    begin
       return
         Build_Length_Expr
           (Domain,
            Get_Array_Attr (Domain, Ty, Attribute_First, Dim),
-           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim));
+           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim),
+           Typ);
    end Build_Length_Expr;
 
    -----------------------
@@ -810,8 +823,8 @@ package body Why.Gen.Arrays is
         Unconstr_Arrays (Positive (Dimension));
       Array_Theory    : constant W_Module_Id :=
         Get_Array_Theory (Und_Ent).Module;
-   begin
 
+   begin
       Emit (Section,
             New_Type_Decl (Name => To_Name (WNE_Array_Component_Type),
                            Alias => EW_Abstract (Component_Type (Und_Ent))));
@@ -931,7 +944,7 @@ package body Why.Gen.Arrays is
                    (Symbol => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Ind_Ty) then
-                           MF_BVs (R_Ty).Ule
+                         MF_BVs (R_Ty).Ule
                     else
                        Int_Infix_Le));
             Cursor := Cursor + 1;
@@ -1011,7 +1024,8 @@ package body Why.Gen.Arrays is
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id is
+      Params : Transformation_Params := Body_Params;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id is
    begin
 
       if Attr in Attribute_First | Attribute_Last then
@@ -1030,7 +1044,8 @@ package body Why.Gen.Arrays is
          pragma Assert (Is_Constrained (Ty));
 
          return
-           New_Integer_Constant (Value => Static_Array_Length (Ty, Dim));
+           New_Discrete_Constant (Value => Static_Array_Length (Ty, Dim),
+                                  Typ   => Typ);
       end if;
    end Get_Array_Attr;
 
@@ -1038,7 +1053,8 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
    is
       W_Ty : constant W_Type_Id := Get_Type (Expr);
       Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
@@ -1047,7 +1063,7 @@ package body Why.Gen.Arrays is
       --  If the type is constrained, just use the type information
 
       if Is_Static_Array_Type (Ty) then
-         return Get_Array_Attr (Domain, Ty, Attr, Dim);
+         return Get_Array_Attr (Domain, Ty, Attr, Dim, Typ => Typ);
 
       --  if the object is a split object, look up the required expressions in
       --  the symbol table
@@ -1058,7 +1074,8 @@ package body Why.Gen.Arrays is
                                   (Symbol_Table,
                                    Get_Entity_Of_Variable (Expr)),
                                 Attr,
-                                Dim);
+                                Dim,
+                                Typ);
       else
 
          if Attr in Attribute_First | Attribute_Last then
@@ -1076,13 +1093,19 @@ package body Why.Gen.Arrays is
                     Args   => (1 => Expr),
                     Typ    => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
             end;
+         elsif Typ = EW_Int_Type then
+            return
+              New_Call
+                (Domain => Domain,
+                 Name   => E_Symb (Ty, WNE_Attr_Length (Dim)),
+                 Args   => (1 => Expr),
+                 Typ    => EW_Int_Type);
          else
             return
-                 New_Call
-                   (Domain => Domain,
-                    Name   => E_Symb (Ty, WNE_Attr_Length (Dim)),
-                    Args   => (1 => Expr),
-                    Typ    => EW_Int_Type);
+              Build_Length_Expr (Domain => Domain,
+                                 Expr   => Expr,
+                                 Dim    => Dim,
+                                 Typ    => Typ);
          end if;
       end if;
    end Get_Array_Attr;
@@ -1091,7 +1114,8 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Item   : Item_Type;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
    is
    begin
       case Attr is
@@ -1104,7 +1128,8 @@ package body Why.Gen.Arrays is
               Build_Length_Expr
                 (Domain => Domain,
                  First  => +Item.Bounds (Dim).First,
-                 Last  => +Item.Bounds (Dim).Last);
+                 Last   => +Item.Bounds (Dim).Last,
+                 Typ    => Typ);
          when others =>
             raise Program_Error;
       end case;

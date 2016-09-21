@@ -500,12 +500,21 @@ package body Gnat2Why.Expr is
    --  declarations of constants in Actions.
 
    function Transform_Attr
-     (Expr   : Node_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
+     (Expr         : Node_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Expected_Typ : W_Type_Id) return W_Expr_Id;
    --  Range_Check_Needed is set to True for some attributes (like 'Pos,
    --  'Length, 'Modulus) which return a universal integer, so that we check
    --  the result fits in the actual type used for the node.
+   --  @param Expr attribute reference
+   --  @param Domain domain where we want to do the transformation
+   --  @param Params transformation parameters
+   --  @param Expected_Typ expected why3 type of the expression. It only
+   --         matters when computing the length attribute of an array type
+   --         which has a modular index.
+   --  @return the translation of the expression contained in the invariant
+   --          applied on Expr.
 
    procedure Transform_String_Literal
      (Params : Transformation_Params;
@@ -8421,9 +8430,10 @@ package body Gnat2Why.Expr is
    --------------------
 
    function Transform_Attr
-     (Expr   : Node_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id
+     (Expr         : Node_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Expected_Typ : W_Type_Id) return W_Expr_Id
    is
       Aname   : constant Name_Id := Attribute_Name (Expr);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
@@ -8585,7 +8595,13 @@ package body Gnat2Why.Expr is
                  (if Present (Expressions (Expr)) then
                      Expr_Value (First (Expressions (Expr)))
                   else Uint_1);
+               Typ    : constant W_Type_Id :=
+                 (if Domain = EW_Prog then EW_Int_Type
+                  else Base_Why_Type_No_Bool (Expected_Typ));
+               --  On prog domain, use EW_Int_Type so that potential range or
+               --  overflow checks can be applied.
             begin
+
                case Ekind (Ty_Ent) is
                   when Array_Kind =>
 
@@ -8598,7 +8614,8 @@ package body Gnat2Why.Expr is
                                              Ty     => Entity (Var),
                                              Attr   => Attr_Id,
                                              Dim    =>
-                                               Positive (UI_To_Int (Dim)));
+                                               Positive (UI_To_Int (Dim)),
+                                             Typ    => Typ);
 
                      --  Object'First
 
@@ -8610,7 +8627,8 @@ package body Gnat2Why.Expr is
                            T :=
                              Get_Array_Attr
                                (Domain, Why_Expr, Attr_Id,
-                                Positive (UI_To_Int (Dim)));
+                                Positive (UI_To_Int (Dim)),
+                                Typ => Typ);
                            if Domain = EW_Prog then
                               T :=
                                 +Sequence (New_Ignore (Prog => +Why_Expr), +T);
@@ -11271,7 +11289,7 @@ package body Gnat2Why.Expr is
                                    Local_Params);
 
          when N_Attribute_Reference =>
-            T := Transform_Attr (Expr, Domain, Local_Params);
+            T := Transform_Attr (Expr, Domain, Local_Params, Expected_Type);
 
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node

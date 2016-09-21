@@ -258,17 +258,24 @@ package Why.Gen.Arrays is
       return W_Expr_Id;
    --  Given the terms for first and last, build the expression
    --    if first <= last then last - first + 1 else 0
+   --  @param Domain domain of the transformation
+   --  @param First why expression for the first index of the array
+   --  @param Last why expression for the last index of the array
+   --  @param Typ expected type of the computation
+   --  @return if first <= last then last - first + 1 else 0
 
    function Build_Length_Expr
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Dim    : Positive) return W_Expr_Id
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
    with Pre => Is_Constrained (Ty);
 
    function Build_Length_Expr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
-      Dim    : Positive) return W_Expr_Id;
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
    --  Given a type and an array expression, build the length expression for
    --  this array.
 
@@ -295,29 +302,39 @@ package Why.Gen.Arrays is
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id
      with Pre =>
-       Attr in Attribute_First | Attribute_Last | Attribute_Length;
+       Attr in Attribute_First | Attribute_Last | Attribute_Length
+       and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Get the expression for the attribute (first/last/length) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
-   --  @param Domain The domain of the returned expression.
-   --  @param Expr The Why3 expression for the array object.
-   --  @param Attr The querried array attribute.
-   --  @return The translated array attribute into Why3.
+   --  @param Domain the domain of the returned expression
+   --  @param Expr the Why3 expression for the array object
+   --  @param Attr the querried array attribute
+   --  @param Dim dimension of the attribute
+   --  @param Typ expected type of the result. It is only relevant for
+   --         length attribute.
+   --  @return the translated array attribute into Why3
 
    function Get_Array_Attr
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id;
+      Params : Transformation_Params := Body_Params;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
    --  @param Domain The domain of the returned expression.
-   --  @param Ty The entity for the Ada array type.
-   --  @param Attr The querried array type attribute.
-   --  @return The translated array type attribute into Why3.
+   --  @param Ty the entity for the Ada array type
+   --  @param Attr the querried array type attribute
+   --  @param Dim dimension of the attribute
+   --  @param Params transformation parameters
+   --  @param Typ expected type of the result. It is only relevant for
+   --         length attribute.
+   --  @return the translated array type attribute into Why3
 
    function New_Concat_Call
      (Domain : EW_Domain;
