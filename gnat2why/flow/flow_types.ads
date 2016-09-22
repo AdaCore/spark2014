@@ -340,8 +340,7 @@ package Flow_Types is
    with Pre => (if F.Kind in Direct_Mapping | Record_Field
                   and then F.Facet = Normal_Part
                 then Nkind (F.Node) in N_Entity);
-   --  Returns True if a Flow_Id needs separate representation for its
-   --  bounds.
+   --  Returns True if a Flow_Id needs separate representation for its bounds
 
    function Is_Private_Part (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field

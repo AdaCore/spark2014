@@ -1542,8 +1542,8 @@ package body SPARK_Util is
          declare
             Part_Of_Pragma : constant Node_Id :=
               Get_Pragma (E, Pragma_Part_Of);
-         begin
 
+         begin
             return Present (Part_Of_Pragma)
               and then
                 Is_Some_Type

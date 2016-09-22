@@ -2261,7 +2261,7 @@ package body Flow_Utility is
          procedure Handle_Parameters is
             new Iterate_Call_Parameters (Handle_Parameter);
 
-      --  Start of processing for Process_Subprogram_Call
+      --  Start of processing for Do_Subprogram_Call
 
       begin
          --  Determine the global effects of the called program
@@ -2520,8 +2520,8 @@ package body Flow_Utility is
                pragma Assert (not Ctx.Assume_In_Expression);
 
                declare
-                  S : constant Node_Sets.Set := Down_Project
-                    (Node_Sets.To_Set (E), Ctx.Scope);
+                  S : constant Node_Sets.Set :=
+                    Down_Project (Node_Sets.To_Set (E), Ctx.Scope);
                begin
                   return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
                   do

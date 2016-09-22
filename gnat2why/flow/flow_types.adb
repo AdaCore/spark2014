@@ -35,7 +35,6 @@ with Output;                         use Output;
 with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
-with Why;
 
 package body Flow_Types is
 
@@ -241,7 +240,7 @@ package body Flow_Types is
             F.Node := Entity (Prefix (P));
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
 
       return F;
@@ -263,7 +262,7 @@ package body Flow_Types is
          when N_Selected_Component =>
             return Record_Field_Id (N);
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
    end Concurrent_Object_Id;
 
@@ -440,7 +439,7 @@ package body Flow_Types is
          when Magic_String | Synthetic_Null_Export =>
             False,
          when Null_Value =>
-            raise Why.Unexpected_Node);
+            raise Program_Error);
 
    ----------------------------
    -- Is_Record_Discriminant --
@@ -454,7 +453,7 @@ package body Flow_Types is
          when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
             False,
          when Null_Value =>
-            raise Why.Unexpected_Node);
+            raise Program_Error);
 
    --------------------------------
    -- Is_Concurrent_Discriminant --
