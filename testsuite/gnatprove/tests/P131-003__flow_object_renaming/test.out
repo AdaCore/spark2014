@@ -1,1 +1,1 @@
-p.adb:7:04: warning: useless assignment to "X", value never referenced
+p.adb:7:04: warning: possibly useless assignment to "X", value might not be referenced
