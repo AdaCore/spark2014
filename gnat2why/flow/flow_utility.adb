@@ -5007,28 +5007,43 @@ package body Flow_Utility is
       Decl : constant Node_Id := Parent (T);
       Def  : Node_Id;
    begin
-      if Nkind (Decl) /= N_Full_Type_Declaration then
-         return False;
-      end if;
+      case Nkind (Decl) is
+         when N_Full_Type_Declaration =>
+            Def := Type_Definition (Decl);
+            case Nkind (Def) is
+               when N_Record_Definition =>
+                  --  Ordinary record declaration, we just check if its either
+                  --  null or there are no components.
+                  return No (Component_List (Def))
+                    or else Null_Present (Component_List (Def));
 
-      Def := Type_Definition (Decl);
-      case Nkind (Def) is
-         when N_Record_Definition =>
-            return No (Component_List (Def))
-              or else Null_Present (Component_List (Def));
+               when N_Derived_Type_Definition =>
+                  declare
+                     Root_T : constant Entity_Id :=
+                       Etype (Subtype_Indication (Def));
+                     Ext    : constant Node_Id := Record_Extension_Part (Def);
+                  begin
+                     return Is_Empty_Record_Type (Root_T)
+                       and then
+                       (not Present (Ext)
+                          or else Null_Present (Ext)
+                          or else No (Component_List (Ext)));
+                  end;
 
-         when N_Derived_Type_Definition =>
-            --  First check the root, then check if this is a null extension...
-            return Is_Empty_Record_Type (Etype (Subtype_Indication (Def)))
-              and then
-                (if Present (Record_Extension_Part (Def))
-                 then Null_Present (Record_Extension_Part (Def))
-                 or else No (Component_List (Record_Extension_Part (Def))));
+               when others =>
+                  null;
+            end case;
+
+         when N_Subtype_Declaration =>
+            --  A subtype can be null too, we just check if the thing we're
+            --  deriving it from is null.
+            return Is_Empty_Record_Type (Etype (Subtype_Indication (Decl)));
 
          when others =>
-            return False;
-
+            null;
       end case;
+
+      return False;
    end Is_Empty_Record_Type;
 
 end Flow_Utility;
