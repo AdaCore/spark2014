@@ -33,10 +33,18 @@ private package Flow.Analysis.Sanity is
    --  analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 
-   procedure Check_Variable_Free_Expressions
+   procedure Check_Expressions
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
-   --  Enforce SRM 4.4(2): certain expressions must be variable-free
+   --  Emits errors:
+   --     * Enforce SRM 4.4(2): certain expressions must be variable-free
+   --
+   --  Emits high checks:
+   --     * Enforce SRM 7.3.2(4): no calls to boundary subprograms in
+   --                             invariants
+   --
+   --  Sane is set to true if no *errors* have been emitted, but note this
+   --  subprogram may raise checks.
 
    procedure Check_Illegal_Writes
      (FA   : in out Flow_Analysis_Graphs;

@@ -7,8 +7,8 @@ package Test_03 with Elaborate_Body is
 private
 
    type T is record
-      A : Boolean;
-      B : Boolean;
+      A : Boolean := False;
+      B : Boolean := False;
    end record
    with Type_Invariant => T.A xor T.B xor C;  --  Not OK, CAE
 

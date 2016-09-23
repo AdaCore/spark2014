@@ -11,7 +11,7 @@ package body Test_05 is
       private
 
          type T is new Integer with
-            Type_Invariant => T >= X;  -- I guess this is OK
+            Type_Invariant => Integer (T) >= X;  -- I guess this is OK
 
       end Nested;
 
@@ -28,7 +28,7 @@ package body Test_05 is
       private
 
          type T is new Integer with
-            Type_Invariant => T >= X;  -- Not OK
+            Type_Invariant => Integer (T) >= X;  -- Not OK
 
       end Nested;
 

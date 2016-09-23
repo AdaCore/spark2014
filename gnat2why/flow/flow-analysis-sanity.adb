@@ -74,28 +74,21 @@ package body Flow.Analysis.Sanity is
       end if;
    end Check_Function_Side_Effects;
 
-   -------------------------------------
-   -- Check_Variable_Free_Expressions --
-   -------------------------------------
+   -----------------------
+   -- Check_Expressions --
+   -----------------------
 
-   procedure Check_Variable_Free_Expressions
+   procedure Check_Expressions
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
       Entry_Node : Node_Id;
 
-      function Check_Expressions_Variable_Free
-        (N : Node_Id) return Traverse_Result;
-      --  Check that expressions used in certain contexts are free of
-      --  variables, as per SPARK RM 4.4(2). This function deals with
-      --  the following contexts:
-      --     Component Declarations
-      --     Discriminant Specifications
-      --     Object Renaming Declarations
+      function Check_Expression (N : Node_Id) return Traverse_Result;
+      --  Helper function to walk over the tree
 
-      function Simple_Variable_Set
-        (N : Node_Id)
-         return Ordered_Flow_Id_Sets.Set
+      function Simple_Variable_Set (N : Node_Id)
+                                    return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (N,
@@ -107,9 +100,8 @@ package body Flow.Analysis.Sanity is
       --  A helpful wrapper around Get_Variables as it is used in this sanity
       --  checking procedure.
 
-      function Simple_Variable_Set
-        (L : List_Id)
-         return Ordered_Flow_Id_Sets.Set
+      function Simple_Variable_Set (L : List_Id)
+                                    return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (L,
@@ -120,12 +112,11 @@ package body Flow.Analysis.Sanity is
                            Expand_Synthesized_Constants => True)));
       --  As above.
 
-      -------------------------------------
-      -- Check_Expressions_Variable_Free --
-      -------------------------------------
+      ----------------------
+      -- Check_Expression --
+      ----------------------
 
-      function Check_Expressions_Variable_Free
-        (N : Node_Id) return Traverse_Result
+      function Check_Expression (N : Node_Id) return Traverse_Result
       is
          procedure Check_Flow_Id_Set
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
@@ -209,7 +200,7 @@ package body Flow.Analysis.Sanity is
          procedure Check_Name_Indexes_And_Slices is new
            Traverse_Proc (Check_Name);
 
-      --  Start of processing for Check_Expressions_Variable_Free
+      --  Start of processing for Check_Expression
 
       begin
          case Nkind (N) is
@@ -233,29 +224,75 @@ package body Flow.Analysis.Sanity is
                | N_Private_Extension_Declaration
             =>
                declare
-                  E          : constant Entity_Id := Defining_Identifier (N);
-                  P          : constant Entity_Id := Predicate_Function (E);
-                  GP, GI, GO : Flow_Id_Sets.Set;
-                  Deps       : Ordered_Flow_Id_Sets.Set;
+                  Typ : constant Type_Entity_Id := Defining_Identifier (N);
                begin
-                  if Present (P) then
-                     Get_Globals (Subprogram => P,
-                                  Scope      => FA.B_Scope,
-                                  Classwide  => False,
-                                  Proof_Ins  => GP,
-                                  Reads      => GI,
-                                  Writes     => GO);
-                     pragma Assert (GO.Is_Empty);
+                  if Has_Predicates (Typ) then
+                     declare
+                        P          : constant Entity_Id :=
+                          Predicate_Function (Typ);
+                        GP, GI, GO : Flow_Id_Sets.Set;
+                        Deps       : Ordered_Flow_Id_Sets.Set;
+                     begin
+                        Get_Globals (Subprogram => P,
+                                     Scope      => FA.B_Scope,
+                                     Classwide  => False,
+                                     Proof_Ins  => GP,
+                                     Reads      => GI,
+                                     Writes     => GO);
+                        pragma Assert (GO.Is_Empty);
 
-                     for F of GP loop
-                        Deps.Insert (Change_Variant (F, Normal_Use));
-                     end loop;
-                     for F of GI loop
-                        Deps.Insert (Change_Variant (F, Normal_Use));
-                     end loop;
-                     Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Desc => "predicate",
-                                        Err_Node => E);
+                        for F of GP loop
+                           Deps.Insert (Change_Variant (F, Normal_Use));
+                        end loop;
+                        for F of GI loop
+                           Deps.Insert (Change_Variant (F, Normal_Use));
+                        end loop;
+                        Check_Flow_Id_Set (Flow_Ids => Deps,
+                                           Err_Desc => "predicate",
+                                           Err_Node => Typ);
+                     end;
+                  end if;
+
+                  if Has_Invariants_In_SPARK (Typ) then
+                     --  This is the check for 7.3.2(3) [which is really
+                     --  4.4(2)] and the check for 7.3.2(4).
+                     declare
+                        IP   : constant Entity_Id := Invariant_Procedure (Typ);
+                        Expr : constant Node_Id :=
+                          Get_Expr_From_Check_Only_Proc (IP);
+                        Vars : constant Flow_Id_Sets.Set := Get_Variables
+                          (Expr,
+                           Scope                => FA.B_Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True);
+                        Funs : constant Node_Sets.Set := Get_Functions
+                          (Expr,
+                           Include_Predicates => False);
+                     begin
+                        --  Check 4.4(2) (no variable inputs)
+                        Check_Flow_Id_Set (Flow_Ids => To_Ordered_Flow_Id_Set
+                                             (Vars),
+                                           Err_Desc => "invariant",
+                                           Err_Node => Typ);
+
+                        --  Check 7.3.2(4) (no calls to boundary subp)
+                        for F of Funs loop
+                           if Is_Boundary_Subprogram_For_Type (F, Typ) then
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      =>
+                                   "cannot call boundary subprogram & " &
+                                   "for type & in its own invariant",
+                                 Severity => High_Check_Kind,
+                                 N        => Typ,
+                                 F1       => Direct_Mapping_Id (F),
+                                 F2       => Direct_Mapping_Id (Typ),
+                                 SRM_Ref  => "7.3.2(4)");
+                           end if;
+                        end loop;
+                     end;
                   end if;
                end;
                return OK;
@@ -351,40 +388,39 @@ package body Flow.Analysis.Sanity is
             when others =>
                return OK;
          end case;
-      end Check_Expressions_Variable_Free;
+      end Check_Expression;
 
-      procedure Check_Expressions is
-        new Traverse_Proc (Check_Expressions_Variable_Free);
+      procedure Do_Checks is new Traverse_Proc (Check_Expression);
 
       Unused : Unbounded_String;
 
-   --  Start of processing for Check_Variable_Free_Expressions
+   --  Start of processing for Check_Expressions
 
    begin
       Sane := True;
 
       --  Please don't try to simplify/delete Entry_Node here, it is also a
-      --  global in Check_Expressions.
+      --  global in Do_Checks.
 
       case FA.Kind is
          when Kind_Subprogram =>
             Entry_Node := Get_Body (FA.Analyzed_Entity);
-            Check_Expressions (Entry_Node);
+            Do_Checks (Entry_Node);
 
          when Kind_Task =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);
-            Check_Expressions (Entry_Node);
+            Do_Checks (Entry_Node);
 
          when Kind_Package =>
             Entry_Node := Package_Specification (FA.Analyzed_Entity);
-            Check_Expressions (Entry_Node);
+            Do_Checks (Entry_Node);
 
          when Kind_Package_Body =>
             Entry_Node := Package_Specification (FA.Spec_Entity);
-            Check_Expressions (Entry_Node);
+            Do_Checks (Entry_Node);
 
             Entry_Node := Package_Body (FA.Analyzed_Entity);
-            Check_Expressions (Entry_Node);
+            Do_Checks (Entry_Node);
       end case;
 
       if not Sane then
@@ -398,7 +434,7 @@ package body Flow.Analysis.Sanity is
                F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
       end if;
-   end Check_Variable_Free_Expressions;
+   end Check_Expressions;
 
    --------------------------
    -- Check_Illegal_Writes --

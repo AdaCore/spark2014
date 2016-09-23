@@ -26,13 +26,13 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Nlists;                 use Nlists;
 with Output;                 use Output;
 with Sem_Aux;                use Sem_Aux;
+with Sinfo;                  use Sinfo;
 with Sprint;                 use Sprint;
 with Stand;                  use Stand;
 with Treepr;                 use Treepr;
 
 with Common_Iterators;       use Common_Iterators;
 with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Types;       use SPARK_Util.Types;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 with Flow_Debug;             use Flow_Debug;
@@ -352,7 +352,7 @@ package body Flow_Refinement is
    -- State_Refinement_Is_Visible --
    ---------------------------------
 
-   function State_Refinement_Is_Visible (E : Entity_Id;
+   function State_Refinement_Is_Visible (E : Checked_Entity_Id;
                                          S : Flow_Scope)
                                          return Boolean
    is
@@ -460,7 +460,7 @@ package body Flow_Refinement is
    -- Find_In_Initializes --
    -------------------------
 
-   function Find_In_Initializes (E : Entity_Id) return Entity_Id is
+   function Find_In_Initializes (E : Checked_Entity_Id) return Entity_Id is
       State : constant Entity_Id := Encapsulating_State (E);
 
       Target_Ent : constant Entity_Id :=
@@ -527,7 +527,7 @@ package body Flow_Refinement is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (E : Entity_Id;
+   function Is_Initialized_At_Elaboration (E : Checked_Entity_Id;
                                            S : Flow_Scope)
                                            return Boolean
    is
@@ -821,11 +821,39 @@ package body Flow_Refinement is
    -- Nested_Within_Concurrent_Type --
    -----------------------------------
 
-   function Nested_Within_Concurrent_Type
-     (T : Entity_Id;
-      S : Flow_Scope)
-      return Boolean
+   function Nested_Within_Concurrent_Type (T : Type_Entity_Id;
+                                           S : Flow_Scope)
+                                           return Boolean
+   is (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
+
+   -------------------------------------
+   -- Is_Boundary_Subprogram_For_Type --
+   -------------------------------------
+
+   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Entity_Id;
+                                             Typ        : Type_Entity_Id)
+                                             return Boolean
    is
-     (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
+   begin
+      if Is_Globally_Visible (Subprogram) then
+         --  If the subprogram is visible, then it could be boundary
+         --  subprogram.
+         declare
+            S : constant Flow_Scope := Get_Flow_Scope (Subprogram);
+         begin
+            --  If it is visible, it is a boundary subprogram if it can see the
+            --  private part of the invariant bearing type.
+            --
+            --  It may be tempting here to check if the subprogram has a
+            --  parameter or global of the invariant bearing type, but remember
+            --  that it can still allocate object that with this invariant and
+            --  can break their invariant. See SRM 7.3.2(1).
+            return Is_Visible (Typ, S)
+              or else Is_Visible (Typ, Private_Scope (S));
+         end;
+      else
+         return False;
+      end if;
+   end Is_Boundary_Subprogram_For_Type;
 
 end Flow_Refinement;

@@ -629,7 +629,7 @@ package body Flow.Analysis is
 
       Sanity_Checks : constant Sanity_Checks_T :=
         (Sanity.Check_Function_Side_Effects'Access,
-         Sanity.Check_Variable_Free_Expressions'Access,
+         Sanity.Check_Expressions'Access,
          Sanity.Check_Generated_Refined_Global'Access,
          Sanity.Check_Illegal_Writes'Access,
          Sanity.Check_All_Variables_Known'Access,

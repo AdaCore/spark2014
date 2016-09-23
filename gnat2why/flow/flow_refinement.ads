@@ -26,12 +26,13 @@
 --  refined view then which one.
 
 with Atree;             use Atree;
-with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
-with Sinfo;             use Sinfo;
 with Sem_Util;          use Sem_Util;
 with Snames;            use Snames;
 with Types;             use Types;
+
+with Common_Containers; use Common_Containers;
+with SPARK_Util.Types;  use SPARK_Util.Types;
 
 package Flow_Refinement is
 
@@ -106,9 +107,10 @@ package Flow_Refinement is
    with Pre => Present (S);
    --  Returns the body scope for a valid scope
 
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id with
-     Pre => Present (N);
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
    --  If a corresponding stub exists, then we return that instead of N
+   --
+   --  ??? This is not clear at all what this function is meant to do.
 
    ---------------------------
    -- Queries and utilities --
@@ -140,7 +142,7 @@ package Flow_Refinement is
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
-   function State_Refinement_Is_Visible (E : Entity_Id;
+   function State_Refinement_Is_Visible (E : Checked_Entity_Id;
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
@@ -161,16 +163,16 @@ package Flow_Refinement is
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)
                           return Node_Sets.Set
-   with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
-        Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
+   with Pre  => (for all V of Vars => V in Checked_Entity_Id),
+        Post => (for all V of Down_Project'Result => V in Checked_Entity_Id);
    --  Given a set of variables and a scope, recursively expand abstract states
    --  whose refinement is visible in S.
 
-   function Find_In_Initializes (E : Entity_Id) return Entity_Id
-   with Pre  => Present (E),
-        Post => (if Present (Find_In_Initializes'Result)
-                 then Find_In_Initializes'Result in
-                        E | Encapsulating_State (E));
+   function Find_In_Initializes (E : Checked_Entity_Id)
+                                 return Entity_Id
+   with Post => (if Present (Find_In_Initializes'Result)
+                 then Find_In_Initializes'Result in E
+                                                  | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)
    --  in an Initializes aspect or Empty.
 
@@ -190,13 +192,11 @@ package Flow_Refinement is
    --  it exists and the null scope otherwise.
    --  ??? this should be merged into Get_Enclosing_Body_Flow_Scope
 
-   function Is_Initialized_At_Elaboration
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Boolean
-   with Pre => Present (E);
-   --  Checks if the given entity E is initialized at elaboration, as seen
-   --  from scope S. For example if you have a nested package where:
+   function Is_Initialized_At_Elaboration (E : Checked_Entity_Id;
+                                           S : Flow_Scope)
+                                           return Boolean;
+   --  Checks if the given entity E is initialized at elaboration, as seen from
+   --  scope S. For example if you have a nested package where:
    --
    --     package Outer (Initialized "State")
    --        package Inner (X, not initialized, but part of State)
@@ -226,11 +226,15 @@ package Flow_Refinement is
    --  Otherwise returns False since we can't decide (nor need an answer,
    --  since we won't analyze the body).
 
-   function Nested_Within_Concurrent_Type
-     (T : Entity_Id;
-      S : Flow_Scope)
-      return Boolean
+   function Nested_Within_Concurrent_Type (T : Type_Entity_Id;
+                                           S : Flow_Scope)
+                                           return Boolean
    with Pre => Ekind (T) in Concurrent_Kind;
    --  Returns True iff S is nested inside a concurrent type T
+
+   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Entity_Id;
+                                             Typ        : Type_Entity_Id)
+                                             return Boolean
+   with Pre => Has_Invariants_In_SPARK (Typ);
 
 end Flow_Refinement;

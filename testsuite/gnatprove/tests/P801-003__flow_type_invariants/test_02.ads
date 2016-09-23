@@ -4,11 +4,11 @@ package Test_02 with Elaborate_Body is
 
 private
 
-   C : constant Boolean := False;
+   C : constant Boolean := True;
 
    type T is record
-      A : Boolean;
-      B : Boolean;
+      A : Boolean := True;
+      B : Boolean := True;
    end record
    with Type_Invariant => T.A xor T.B xor C;  --  OK, true constant
 

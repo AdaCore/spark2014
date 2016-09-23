@@ -30,26 +30,40 @@ with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
-with Atree;                              use Atree;
-with Einfo;                              use Einfo;
-with Hashing;                            use Hashing;
-with Namet;                              use Namet;
-with Types;                              use Types;
 
+with Atree;   use Atree;
+with Einfo;   use Einfo;
+with Hashing; use Hashing;
+with Namet;   use Namet;
+with Sinfo;   use Sinfo;
+with Types;   use Types;
 --  This package contains a few common types (and expression functions)
 --  which are used throughout gnat2why (frame conditions, flow and why
 --  generation).
 
 package Common_Containers is
 
+   subtype Checked_Entity_Id is Entity_Id with
+     Predicate => Nkind (Checked_Entity_Id) = N_Defining_Identifier;
+
+   subtype Subprogram_Entity_Id is Checked_Entity_Id with
+     Predicate => Ekind (Subprogram_Entity_Id) in Subprogram_Kind
+                                                | Entry_Kind;
+
+   subtype Type_Entity_Id is Checked_Entity_Id with
+     Predicate => Ekind (Type_Entity_Id) in Type_Kind;
+
    package Node_Lists is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
    --  Standard list of nodes. It is often more convenient to use these,
    --  compared to List_Id in the GNAT frontend, as a Node_Id can be in
    --  any number of these lists, while it can be only in one List_Id.
 
+   package Entity_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Checked_Entity_Id);
+
    package Entity_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Positive,
-      Element_Type => Entity_Id);
+      Element_Type => Checked_Entity_Id);
 
    function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
    is (Generic_Integer_Hash (Integer (X)));
@@ -61,6 +75,9 @@ package Common_Containers is
    --  order of iterating over them influence the generation of Why code, which
    --  we intend to be as predictable as possible on all machines, to get the
    --  same proof results on all machines when possible.
+
+   package Entity_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Checked_Entity_Id);
 
    package Node_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
