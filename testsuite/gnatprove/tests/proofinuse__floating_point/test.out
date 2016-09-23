@@ -88,18 +88,14 @@ floating_point.adb:158:46: medium: overflow check might fail
 floating_point.adb:158:57: medium: overflow check might fail
 floating_point.adb:159:46: medium: overflow check might fail
 floating_point.adb:162:15: info: overflow check proved (Interval)
-floating_point.adb:162:22: info: division check proved (CVC4: 2 VC)
 floating_point.adb:162:22: medium: overflow check might fail
 floating_point.adb:162:27: medium: overflow check might fail
 floating_point.adb:162:34: info: overflow check proved (Interval)
-floating_point.adb:162:41: info: division check proved (CVC4: 2 VC)
 floating_point.adb:162:41: medium: overflow check might fail
 floating_point.adb:165:15: info: overflow check proved (Interval)
-floating_point.adb:165:22: info: division check proved (CVC4: 2 VC)
 floating_point.adb:165:22: medium: overflow check might fail
 floating_point.adb:165:27: medium: overflow check might fail
 floating_point.adb:165:34: info: overflow check proved (Interval)
-floating_point.adb:165:41: info: division check proved (CVC4: 2 VC)
 floating_point.adb:165:41: medium: overflow check might fail
 floating_point.adb:169:24: medium: divide by zero might fail
 floating_point.adb:169:24: medium: overflow check might fail
