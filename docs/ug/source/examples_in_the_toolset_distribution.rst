@@ -355,18 +355,25 @@ scaling quantities using a division (a known limitation of automatic provers).
 
 .. rubric:: ``bitwalker``
 
-This example introduces a toplevel function that reads (resp. a toplevel
-procedure that writes) a word of bits of a given length from (resp. to) a
-stream of bytes at a given position. It heavily uses bitwise arithmetic and is
-fully specified with contracts and automatically proved by |GNATprove|. In
-addition, two test procedures call read-then-write (resp. write-then-read) and
-GNATprove is able to prove the expected properties on the interplay between
-reading and writing.
+This program was originally a case study in C from Siemens rewritten by the
+Fraunhofer FOKUS research group for applying the Frama-C formal verification
+tool to it. It was later on rewritten in SPARK and formally proved correct with
+|GNATprove| (with 100% of checks automatically proved). This work is described
+in the article `"Specification and Proof of High-Level Functional Properties of
+Bit-Level Programs"` published at NFM 2016 conference (at
+https://hal.inria.fr/hal-01314876).
 
-In this example we use an external axiomatization in order to lift
+This program introduces a function and procedure that read and respectively
+write a word of bits of a given length from a stream of bytes at a given
+position. It heavily uses bitwise arithmetic and is fully specified with
+contracts and automatically proved by |GNATprove|. In addition, two test
+procedures call read-then-write and write-then-read and GNATprove is able to
+prove the expected properties on the interplay between reading and writing.
+
+In this program we use an external axiomatization in order to lift
 some operators from the underlying Why3 theory of bitvectors to
 |SPARK|. In particular the ``Nth`` function, at the core of the
-specification of the example, lets us check if a specific bit in a
+specification of the program, lets us check if a specific bit in a
 modular value is set or not. Note that while such a function could be
 easily implemented in |SPARK|, using the one defined in the Why3 theory
 leads to more automatic proofs because it
