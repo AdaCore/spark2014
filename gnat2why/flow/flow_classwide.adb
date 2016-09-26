@@ -370,12 +370,13 @@ package body Flow_Classwide is
 
       My_To_Anc  : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map;
       Anc_To_My  : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map;
+
    begin
       --  The entities in the depends for E and its ancestor are different.
       --  We construct two maps that translate either way.
       declare
-         Anc_Ptr : Node_Id := First_Formal (Overridden_Operation (E));
-         My_Ptr  : Node_Id := First_Formal (E);
+         Anc_Ptr : Entity_Id := First_Formal (Overridden_Operation (E));
+         My_Ptr  : Entity_Id := First_Formal (E);
       begin
          while Present (Anc_Ptr) and Present (My_Ptr) loop
             My_To_Anc.Include (Direct_Mapping_Id (My_Ptr),
