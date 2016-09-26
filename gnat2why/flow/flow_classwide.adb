@@ -378,7 +378,8 @@ package body Flow_Classwide is
          Anc_Ptr : Entity_Id := First_Formal (Overridden_Operation (E));
          My_Ptr  : Entity_Id := First_Formal (E);
       begin
-         while Present (Anc_Ptr) and Present (My_Ptr) loop
+         while Present (Anc_Ptr) loop
+            pragma Assert (Present (My_Ptr));
             My_To_Anc.Include (Direct_Mapping_Id (My_Ptr),
                                Direct_Mapping_Id (Anc_Ptr));
             Anc_To_My.Include (Direct_Mapping_Id (Anc_Ptr),
