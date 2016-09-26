@@ -1287,15 +1287,9 @@ package body Flow is
                      and then Ekind (E) /= E_Task_Type
                      and then Entity_Body_In_SPARK (E)
                   then
-                     declare
-                        Body_N : constant Node_Id := Get_Body (E);
-                     begin
-                        if Present (Body_N)
-                          and then Has_Only_Nonblocking_Statements (Body_N)
-                        then
-                           GG_Register_Nonblocking (To_Entity_Name (E));
-                        end if;
-                     end;
+                     if Has_Only_Nonblocking_Statements (Get_Body (E)) then
+                        GG_Register_Nonblocking (To_Entity_Name (E));
+                     end if;
                   end if;
 
                   if Generating_Globals
