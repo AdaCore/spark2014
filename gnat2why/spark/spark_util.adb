@@ -1031,7 +1031,12 @@ package body SPARK_Util is
    --------------------------
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
+      Real_Entity : constant Node_Id :=
+        (if Is_Itype (E)
+         then Associated_Node_For_Itype (E)
+         else E);
+
+      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (Real_Entity);
       --  The library unit containing E
 
       Main_Unit_Node : constant Node_Id := Cunit (Main_Unit);

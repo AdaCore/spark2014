@@ -808,7 +808,6 @@ package body SPARK_Definition is
                          E_Package        |
                          E_Protected_Type |
                          E_Task_Type
-           and then In_Main_Unit (E)
            and then Analysis_Requested (E, With_Inlined => True)
          then
             declare

@@ -192,9 +192,22 @@ package SPARK_Util is
    --  @return True iff E is declared directly in Scope
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
-     with Pre => Present (E);
+     with Pre => Nkind (E) in N_Entity;
+   --  Use this routine to ensure that the entity will be processed only by one
+   --  invocation of gnat2why within a single pass of gnatprove. Technically,
+   --  the "analyzed files" means either the spec alone or the spec and body.
+   --
    --  @param E any entity
-   --  @return True iff E is contained in a file that should be analyzed
+   --  @return True iff E is contained in a file that should be analyzed, i.e.
+   --     in the spec file, the body file, or any file for a separate body
+   --     declared in the body file.
+   --
+   --  Note: front end offers few similar, but subtly different queries, e.g.
+   --  Entity_Is_In_Main_Unit (which is probably the most similar but returns
+   --  False for the entity of the unit itself and crashes on Itypes),
+   --  In_Extended_Main_Code_Unit (which returns True for entities in
+   --  subunits), Sem_Ch12.Is_In_Main_Unit, Inline.In_Main_Unit_Or_Subunit
+   --  (which do yet something else).
 
    function Source_Name (E : Entity_Id) return String
      with Pre => Nkind (E) in N_Has_Chars;

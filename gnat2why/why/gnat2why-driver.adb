@@ -376,7 +376,8 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      N          : constant Node_Id := Unit (GNAT_Root);
+      E          : constant Entity_Id :=
+        Unique_Defining_Entity (Unit (GNAT_Root));
       Base_Name  : constant String :=
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
@@ -402,9 +403,8 @@ package body Gnat2Why.Driver is
    begin
       Timing_Start (Timing);
 
-      if Is_Generic_Unit (Unique_Defining_Entity (N))
-        and then Analysis_Requested (Unique_Defining_Entity (N),
-                                     With_Inlined => False)
+      if Is_Generic_Unit (E)
+        and then Analysis_Requested (E, With_Inlined => False)
       then
 
          --  We do nothing for generic units currently. If this get revised
@@ -505,7 +505,7 @@ package body Gnat2Why.Driver is
 
          if not Gnat2Why_Args.Check_All_Mode
            and then not Gnat2Why_Args.Flow_Analysis_Mode
-           and then Is_In_Analyzed_Files (N)
+           and then Is_In_Analyzed_Files (E)
          then
             Proof_Done := True;
             Load_Codepeer_Results;
@@ -709,7 +709,7 @@ package body Gnat2Why.Driver is
 
       procedure Generate_VCs (E : Entity_Id) is
       begin
-         if In_Main_Unit (E) then
+         if Is_In_Analyzed_Files (E) then
             Do_Generate_VCs (E);
          end if;
       end Generate_VCs;
