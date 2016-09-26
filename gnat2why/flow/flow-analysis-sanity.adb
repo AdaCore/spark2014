@@ -515,7 +515,6 @@ package body Flow.Analysis.Sanity is
                   if Final_Atr.Is_Global
                     and then Final_Atr.Is_Constant
                     and then not Final_Atr.Is_Loop_Parameter
-                    and then not Is_Abstract_State (Var)
                   then
                      if FA.Kind in Kind_Package | Kind_Package_Body then
                         Error_Msg_Flow

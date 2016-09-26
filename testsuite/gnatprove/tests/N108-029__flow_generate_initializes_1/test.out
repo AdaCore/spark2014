@@ -21,4 +21,5 @@ p.adb:1:14: info: initialization of "X" proved
 p.adb:12:07: info: initialization of "Hidden" constituent of "State" proved
 p.adb:13:36: info: initialization of "Hidden" constituent of "State" proved
 p.adb:15:46: medium: overflow check might fail
+p.adb:18:15: info: initialization of "Nested.State" proved
 p.adb:18:15: info: precondition proved (CVC4: 1 VC)

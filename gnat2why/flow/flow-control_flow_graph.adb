@@ -5885,6 +5885,7 @@ package body Flow.Control_Flow_Graph is
                  Parse_Initializes (FA.Initializes_N,
                                     FA.Spec_Entity,
                                     FA.S_Scope);
+
             begin
                for C in DM.Iterate loop
                   declare
@@ -5925,35 +5926,27 @@ package body Flow.Control_Flow_Graph is
                     Get_Pragma (FA.Analyzed_Entity,
                                 Pragma_Refined_State);
 
-                  DM              : Dependency_Maps.Map;
+                  DM : constant Dependency_Maps.Map :=
+                    (if Present (Refined_State_N)
+                     then Parse_Refined_State (Refined_State_N)
+                     else Dependency_Maps.Empty_Map);
+
                begin
-                  if Present (Refined_State_N) then
-                     DM := Parse_Refined_State (Refined_State_N);
-                     for Constituents of DM loop
-                        for Constituent of Constituents loop
-                           if Is_Abstract_State (Constituent) then
-                              --  Found a constituent that is an abstract
-                              --  state. We now create Initial and Final
-                              --  vertices for it.
+                  for Constituents of DM loop
+                     for Constituent of Constituents loop
+                        if Is_Abstract_State (Constituent) then
+                           --  Found a constituent that is a (nested) abstract
+                           --  state. We now create Initial and Final vertices
+                           --  for it.
 
-                              declare
-                                 Initialized : constant Boolean :=
-                                   Is_Initialized_At_Elaboration
-                                     (Constituent, FA.B_Scope);
-
-                              begin
-                                 Create_Initial_And_Final_Vertices
-                                   (F             => Constituent,
-                                    Mode          => (if Initialized
-                                                      then Mode_In_Out
-                                                      else Mode_In),
-                                    Uninitialized => not Initialized,
-                                    FA            => FA);
-                              end;
-                           end if;
-                        end loop;
+                           Create_Initial_And_Final_Vertices
+                             (E             => Get_Direct_Mapping_Id
+                                                 (Constituent),
+                              Kind          => Variable_Kind,
+                              FA            => FA);
+                        end if;
                      end loop;
-                  end if;
+                  end loop;
                end;
             end if;
 

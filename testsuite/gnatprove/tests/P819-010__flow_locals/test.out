@@ -12,6 +12,7 @@ outer2.adb:10:10: warning: initialization of Private_Var has no effect
 outer2.adb:16:10: info: initialization of "Body_Var" constituent of "Body_State" proved
 outer2.adb:18:52: medium: overflow check might fail
 outer2.adb:18:66: medium: overflow check might fail
+outer2.adb:24:20: info: initialization of "Nested.Body_State" proved
 outer2.adb:24:20: info: initialization of "Nested.Private_State" proved
 outer2.adb:24:20: info: initialization of "Visible_Var" proved
 outer2.ads:2:17: info: initialization of "Arg" proved

@@ -254,16 +254,11 @@ package body Flow is
    function Is_Valid (X : Flow_Analysis_Graphs_Root)
                       return Boolean
    is (X.Kind = (case Ekind (X.Analyzed_Entity) is
-                    when E_Function | E_Procedure | E_Entry =>
-                       Kind_Subprogram,
-                    when E_Task_Type =>
-                       Kind_Task,
-                    when E_Package =>
-                       Kind_Package,
-                    when E_Package_Body =>
-                       Kind_Package_Body,
-                    when others =>
-                       raise Program_Error)
+                 when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
+                 when E_Task_Type                        => Kind_Task,
+                 when E_Package                          => Kind_Package,
+                 when E_Package_Body                     => Kind_Package_Body,
+                 when others => raise Program_Error)
        and then (if not X.Generating_Globals
                  then not X.GG.Aborted and then X.GG.Globals.Is_Empty)
       );

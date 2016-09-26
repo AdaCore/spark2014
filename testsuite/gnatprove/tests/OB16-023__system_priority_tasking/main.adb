@@ -1,7 +1,7 @@
 with P;
 
 procedure Main
-   with Global => P.State
+   with Global => (In_Out => P.State)
 is
 begin
    P.Hidden;

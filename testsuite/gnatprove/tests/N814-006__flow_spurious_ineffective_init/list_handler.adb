@@ -29,5 +29,5 @@ is
    end Append_Range;
 
 begin
-   Integer_List.Clear;
+   Integer_List.Clear; --  P531-027 regression: no warnings should occur here
 end List_Handler;
