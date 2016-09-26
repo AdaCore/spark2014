@@ -1028,17 +1028,18 @@ package body Flow is
    --  Start of processing for Flow_Analyse_Entity
 
    begin
-      FA.Analyzed_Entity       := E;
-      FA.Spec_Entity           := Unique_Entity (E);
-      FA.Start_Vertex          := Null_Vertex;
-      FA.Helper_End_Vertex     := Null_Vertex;
-      FA.End_Vertex            := Null_Vertex;
-      FA.CFG                   := Create;
-      FA.DDG                   := Create;
-      FA.CDG                   := Create;
-      FA.TDG                   := Create;
-      FA.PDG                   := Create;
-      FA.No_Errors_Or_Warnings := True;
+      FA.Analyzed_Entity                      := E;
+      FA.Spec_Entity                          := Unique_Entity (E);
+      FA.Start_Vertex                         := Null_Vertex;
+      FA.Helper_End_Vertex                    := Null_Vertex;
+      FA.End_Vertex                           := Null_Vertex;
+      FA.CFG                                  := Create;
+      FA.DDG                                  := Create;
+      FA.CDG                                  := Create;
+      FA.TDG                                  := Create;
+      FA.PDG                                  := Create;
+      FA.No_Errors_Or_Warnings                := True;
+      FA.Has_Potentially_Nonterminating_Loops := False;
 
       --  Generate Globals (gg) or Flow Analysis (fa)
       FA.Base_Filename := To_Unbounded_String (if Generating_Globals
@@ -1167,6 +1168,50 @@ package body Flow is
       --  (using control-flow traversal) and register the results.
       Control_Flow_Graph.Create (FA);
 
+      --  We register the following:
+      --  * subprograms which contain at least one loop that may not terminate
+      --  * procedures annotated with No_Return
+      --  * subprograms which call predefined procedures with No_Return.
+      if FA.Generating_Globals
+        and then (FA.Has_Potentially_Nonterminating_Loops
+                    or else No_Return (FA.Spec_Entity)
+                    or else (for some Callee of FA.Direct_Calls
+                             => (Chars
+                                   (Scope
+                                      (Enclosing_Lib_Unit_Entity (Callee)))
+                                         in Name_Ada    |
+                                            Name_System |
+                                            Name_Interfaces
+                                   and then No_Return (Callee))))
+      then
+         case FA.Kind is
+            when Kind_Subprogram =>
+               --  We register the subprogram
+               GG_Register_Nonreturning
+                 (To_Entity_Name (FA.Analyzed_Entity));
+
+            when Kind_Package_Body =>
+               --  If there is a package whose elaboration contains a
+               --  potentially nonterminating loop and it is nested within a
+               --  subprogram, then we register this subprogram as potentially
+               --  nonreturning.
+               declare
+                  E_Subprogram : constant Entity_Id :=
+                    Enclosing_Subprogram (FA.Analyzed_Entity);
+
+               begin
+                  if Present (E_Subprogram) then
+                     GG_Register_Nonreturning (To_Entity_Name (E_Subprogram));
+                  end if;
+               end;
+
+            when Kind_Task
+               | Kind_Package
+             =>
+               null;
+         end case;
+      end if;
+
       --  Register tasking-related information; ignore packages because they
       --  are elaborated sequentially anyway.
       if FA.Generating_Globals
@@ -1251,6 +1296,33 @@ package body Flow is
                            GG_Register_Nonblocking (To_Entity_Name (E));
                         end if;
                      end;
+                  end if;
+
+                  if Generating_Globals
+                    and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
+                  then
+                     --  We register subprograms with no body or body not in
+                     --  SPARK as nonreturning.
+                     if No (Get_Body (E))
+                       or else not Entity_Body_In_SPARK (E)
+                     then
+                        GG_Register_Nonreturning (To_Entity_Name (E));
+                     end if;
+
+                     --  We register subprograms which are relevant for proving
+                     --  termination, i.e.:
+                     --  * are annotated with No_Return
+                     --  * do not have a contract
+                     --  * are not inlined
+                     --  * are not expression functions.
+                     if No_Return (E)
+                       or else Present (Contract (E))
+                       or else Is_Inlined (E)
+                       or else Is_Expression_Function (E)
+                     then
+                        GG_Register_Relevant_To_Termination
+                          (To_Entity_Name (E));
+                     end if;
                   end if;
 
                   if Entity_Body_In_SPARK (E) then
@@ -1548,6 +1620,12 @@ package body Flow is
                   Analysis.Analyse_Main (FA);
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Constant_After_Elaboration (FA);
+
+                  if FA.Kind = Kind_Subprogram
+                    and then Gnat2Why_Args.Flow_Termination_Proof
+                  then
+                     Analysis.Check_Termination (FA);
+                  end if;
 
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the

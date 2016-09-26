@@ -103,6 +103,11 @@ package Gnat2Why_Args is
 
    Flow_Advanced_Debug : Boolean := False;
 
+   --  This will show termination status (as far as flow is concerned) for each
+   --  subprogram with a warning or info message.
+
+   Flow_Termination_Proof : Boolean := False;
+
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
    --  a warning when the Ada RM allows reassociation of operators in an

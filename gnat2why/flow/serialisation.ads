@@ -145,8 +145,8 @@ package Serialisation is
       with function Length (Container : T)
                             return Ada.Containers.Count_Type;
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
-   procedure Serialize_List (A   : in out Archive;
-                             V   : in out T);
+   procedure Serialize_List (A : in out Archive;
+                             V : in out T);
    --  Serialisation for a container that behaves like a list
 
    generic

@@ -38,6 +38,8 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Task_Instance,
                            EK_Tasking_Info,
                            EK_Nonblocking,
+                           EK_Nonreturning,
+                           EK_Termination,
                            EK_Direct_Calls);
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
@@ -48,31 +50,35 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Error | EK_End_Marker =>
             null;
          when EK_State_Map =>
-            The_State                   : Entity_Name;
-            The_Constituents            : Name_Lists.List;
+            The_State                    : Entity_Name;
+            The_Constituents             : Name_Lists.List;
          when EK_Remote_States =>
-            The_Remote_States           : Name_Sets.Set;
+            The_Remote_States            : Name_Sets.Set;
          when EK_Volatiles =>
-            The_Async_Readers           : Name_Sets.Set;
-            The_Async_Writers           : Name_Sets.Set;
-            The_Effective_Reads         : Name_Sets.Set;
-            The_Effective_Writes        : Name_Sets.Set;
+            The_Async_Readers            : Name_Sets.Set;
+            The_Async_Writers            : Name_Sets.Set;
+            The_Effective_Reads          : Name_Sets.Set;
+            The_Effective_Writes         : Name_Sets.Set;
          when EK_Globals =>
-            The_Global_Info             : Global_Phase_1_Info;
+            The_Global_Info              : Global_Phase_1_Info;
          when EK_Protected_Instance =>
-            The_Variable                : Entity_Name;
-            The_Priority                : Priority_Value;
+            The_Variable                 : Entity_Name;
+            The_Priority                 : Priority_Value;
          when EK_Task_Instance =>
-            The_Type                    : Entity_Name;
-            The_Object                  : Task_Object;
+            The_Type                     : Entity_Name;
+            The_Object                   : Task_Object;
          when EK_Tasking_Info =>
-            The_Entity                  : Entity_Name;
-            The_Tasking_Info            : Name_Tasking_Info;
+            The_Entity                   : Entity_Name;
+            The_Tasking_Info             : Name_Tasking_Info;
          when EK_Nonblocking =>
-            The_Nonblocking_Subprograms : Name_Lists.List;
+            The_Nonblocking_Subprograms  : Name_Lists.List;
+         when EK_Nonreturning =>
+            The_Nonreturning_Subprograms : Name_Lists.List;
+         when EK_Termination =>
+            The_Termination_Subprograms  : Name_Lists.List;
          when EK_Direct_Calls =>
-            The_Caller                  : Entity_Name;
-            The_Callees                 : Name_Lists.List;
+            The_Caller                   : Entity_Name;
+            The_Callees                  : Name_Lists.List;
       end case;
    end record;
    --  IMPORTANT: If you change this, then also update the serialisation

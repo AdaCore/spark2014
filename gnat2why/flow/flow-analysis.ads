@@ -196,6 +196,14 @@ package Flow.Analysis is
    --  (otherwise the front-end has some draconian checks that take care of
    --  it).
 
+   procedure Check_Termination (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind = Kind_Subprogram;
+   --  This is currently only used by the hidden debug flag --flow-termination
+   --
+   --  It puts a warning or info message on the analyzed subprogram based on
+   --  Is_Potentially_Nonreturning, so that it can be tested separately (as the
+   --  impact it has on proof is not necessarily obvious or easy to trigger).
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

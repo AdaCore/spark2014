@@ -790,6 +790,7 @@ ASCII.LF;
          Quiet   := CL_Switches.Q;
          Minimal_Compile := CL_Switches.M;
          Flow_Extra_Debug := CL_Switches.Flow_Debug;
+         Flow_Termination := CL_Switches.Flow_Termination;
          Debug_Proof_Only := CL_Switches.Dbg_Proof_Only;
          Continue_On_Error := CL_Switches.K;
          All_Projects := CL_Switches.UU;
@@ -1355,6 +1356,11 @@ ASCII.LF;
          (Config,
           CL_Switches.Flow_Debug'Access,
           Long_Switch => "--flow-debug");
+
+      Define_Switch
+         (Config,
+          CL_Switches.Flow_Termination'Access,
+          Long_Switch => "--flow-termination");
 
       Define_Switch
          (Config,

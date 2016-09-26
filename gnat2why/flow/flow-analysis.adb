@@ -4586,4 +4586,21 @@ package body Flow.Analysis is
                   Visitor       => Visitor'Access);
    end Check_Elaborate_Body;
 
+   procedure Check_Termination (FA : in out Flow_Analysis_Graphs) is
+      Termination_Proved : constant Boolean :=
+        not Is_Potentially_Nonreturning (FA.Analyzed_Entity);
+   begin
+      if Termination_Proved then
+         Error_Msg_Flow (FA         => FA,
+                         Msg        => "subprogram will terminate",
+                         Severity   => Info_Kind,
+                         N          => FA.Analyzed_Entity);
+      else
+         Error_Msg_Flow (FA         => FA,
+                         Msg        => "subprogram may not terminate",
+                         Severity   => Warning_Kind,
+                         N          => FA.Analyzed_Entity);
+      end if;
+   end Check_Termination;
+
 end Flow.Analysis;

@@ -318,6 +318,9 @@ package body Flow.Control_Flow_Graph is
       --  The currently processed loop. This is always a member of
       --  Current_Loops, unless no loop is currently processed.
 
+      Termination_Proved     : Boolean;
+      --  Set to True iff the current loop has been proven to terminate
+
       Entry_References       : Node_Graphs.Map;
       --  A map from loops -> 'loop_entry references
 
@@ -329,6 +332,7 @@ package body Flow.Control_Flow_Graph is
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
               Active_Loop            => Empty,
+              Termination_Proved     => False,
               Entry_References       => Node_Graphs.Empty_Map,
               Folded_Function_Checks => Node_Graphs.Empty_Map);
 
@@ -2838,6 +2842,7 @@ package body Flow.Control_Flow_Graph is
       I_Scheme          : constant Node_Id   := Iteration_Scheme (N);
       Loop_Id           : constant Entity_Id := Entity (Identifier (N));
       Fully_Initialized : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
+      Outer_Termination : constant Boolean   := Ctx.Termination_Proved;
 
    --  Start of processing for Do_Loop_Statement
 
@@ -2856,6 +2861,7 @@ package body Flow.Control_Flow_Graph is
       FA.Loops.Insert (Loop_Id);
       Ctx.Current_Loops.Insert (Loop_Id);
       Ctx.Entry_References.Insert (Loop_Id, Node_Sets.Empty_Set);
+      Ctx.Termination_Proved := False;
 
       declare
          Outer_Loop : constant Entity_Id := Ctx.Active_Loop;
@@ -2876,14 +2882,27 @@ package body Flow.Control_Flow_Graph is
 
       elsif Present (Loop_Parameter_Specification (I_Scheme)) then
          --  This is a normal for loop over a type or range
+         Ctx.Termination_Proved := True;
          Do_For_Loop (Fully_Initialized);
 
       elsif Present (Iterator_Specification (I_Scheme)) then
          --  This is a `in' or `of' loop over some container
+         if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme)) then
+            Ctx.Termination_Proved := True;
+         end if;
          Do_Iterator_Loop;
 
       else
          raise Program_Error;
+      end if;
+
+      --  If the loop is contained in a subprogram and we couldn't prove its
+      --  termination then we set the boolean flag
+      --  Has_Potentially_Nonterminating_Loops to True.
+      if Present (Enclosing_Subprogram (Loop_Id))
+        and then not Ctx.Termination_Proved
+      then
+         FA.Has_Potentially_Nonterminating_Loops := True;
       end if;
 
       --  If we need an init vertex, we add it before the loop itself
@@ -2949,6 +2968,7 @@ package body Flow.Control_Flow_Graph is
 
       Ctx.Entry_References.Delete (Loop_Id);
       Ctx.Current_Loops.Delete (Loop_Id);
+      Ctx.Termination_Proved := Outer_Termination;
 
       --  Finally, we can update the loop information in Flow_Utility
 
@@ -3969,6 +3989,12 @@ package body Flow.Control_Flow_Graph is
                               Pragma_Loop_Invariant
       then
          Add_Loop_Entry_References (N);
+      end if;
+
+      --  If we find a pragma Loop_Variant we set the flag Has_Loop_Variants to
+      --  True.
+      if Get_Pragma_Id (N) = Pragma_Loop_Variant then
+         Ctx.Termination_Proved := True;
       end if;
 
    end Do_Pragma;

@@ -27,6 +27,7 @@ with Einfo;                              use Einfo;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Flow_Refinement;                    use Flow_Refinement;
 with Sinfo;                              use Sinfo;
+with SPARK_Definition;                   use SPARK_Definition;
 
 package Flow_Generated_Globals.Phase_2 is
 
@@ -192,6 +193,18 @@ package Flow_Generated_Globals.Phase_2 is
                 (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
+
+   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean
+   with Pre => GG_Has_Been_Generated and then
+               Entity_In_SPARK (E) and then
+               Ekind (E) in E_Entry     |
+                            E_Procedure |
+                            E_Function;
+   --  Returns True iff subprogram E is potentially nonreturning, i.e.
+   --  * is a procedure annotated with pragma No_Return
+   --  * contains possibly nonterminating loops
+   --  * is recursive
+   --  * calls a potentially nonreturning subprogram.
 
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;

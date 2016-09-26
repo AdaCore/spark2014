@@ -38,7 +38,6 @@ with Call;                       use Call;
 with Debug.Timing;               use Debug.Timing;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
-with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
@@ -192,6 +191,12 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Call graph rooted at analyzed subprograms for detecting if a subprogram
    --  is recursive.
 
+   Termination_Call_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
+   --  Call graph rooted at analyzed subprograms which are relevant for proving
+   --  termination. This is used to determine calls to potentially nonreturning
+   --  subprograms.
+
    Tasking_Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
    --  Call graph for detecting ownership conflicts between tasks
    --
@@ -221,6 +226,13 @@ package body Flow_Generated_Globals.Phase_2 is
    Nonblocking_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Subprograms, entries and tasks that do not contain potentially blocking
    --  statements (but still may call another blocking subprogram).
+
+   Nonreturning_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  This contains information read from the ALI file on potentially
+   --  nonreturning subprograms.
+
+   Termination_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Contains subprogram calls which are relevant to prove termination
 
    package Entity_Name_To_Priorities_Maps is
      new Ada.Containers.Hashed_Maps
@@ -363,6 +375,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns callees of a Caller
+
+   function Is_Recursive (EN : Entity_Name) return Boolean;
+   --  Returns True iff there is an edge in the subprogram call graph that
+   --  connects a subprogram to itself.
 
    ----------------------------------------------------------------------
    --  Debug routines
@@ -1353,6 +1369,74 @@ package body Flow_Generated_Globals.Phase_2 is
             Call_Graph.Close;
          end Add_Subprogram_Edges;
 
+         Add_Termination_Edges : declare
+            Stack : Name_Sets.Set;
+            --  We collect called subprograms and use them as seeds to grow the
+            --  graph.
+
+            Call_Graph : Entity_Name_Graphs.Graph renames
+              Termination_Call_Graph;
+            --  A short alias for a long name
+
+         begin
+            for E of Marked_Entities loop
+               if Ekind (E) in E_Function | E_Procedure | E_Entry
+                 and then Is_In_Analyzed_Files (E)
+                 and then Entity_In_SPARK (E)
+               then
+                  declare
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                  begin
+                     Stack.Insert (E_Name);
+                     Call_Graph.Add_Vertex (E_Name);
+                  end;
+               end if;
+            end loop;
+
+            --  Then create a call graph for them
+            while not Stack.Is_Empty loop
+
+               declare
+                  Caller : constant Entity_Name := Stack (Stack.First);
+                  --  Name of the caller
+
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Call_Graph.Get_Vertex (Caller);
+
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+               begin
+                  --  Add callees of the caller into the graph. We add a callee
+                  --  only if it is interesting for proving termination.
+                  for Callee of Generated_Calls (Caller) loop
+                     if Nonreturning_Subprograms.Contains (Callee)
+                       or else Termination_Subprograms.Contains (Callee)
+                     then
+                        --  Get vertex for the callee
+                        V_Callee := Call_Graph.Get_Vertex (Callee);
+
+                        --  If there is no vertex for the callee then create
+                        --  one and put the callee on the stack.
+                        if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                           Call_Graph.Add_Vertex (Callee, V_Callee);
+                           Stack.Insert (Callee);
+                        end if;
+
+                        Call_Graph.Add_Edge (V_Caller, V_Callee);
+                     end if;
+                  end loop;
+
+                  --  Pop the caller from the stack
+                  Stack.Delete (Caller);
+               end;
+            end loop;
+
+            --  Close the call graph
+            Call_Graph.Close;
+
+         end Add_Termination_Edges;
+
          Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
@@ -1883,6 +1967,32 @@ package body Flow_Generated_Globals.Phase_2 is
                      end loop;
                   end;
 
+               when EK_Nonreturning =>
+                  declare
+                     C : Name_Lists.Cursor :=
+                       V.The_Nonreturning_Subprograms.First;
+                  begin
+                     while Name_Lists.Has_Element (C) loop
+                        Nonreturning_Subprograms.Include
+                          (V.The_Nonreturning_Subprograms (C));
+
+                        Name_Lists.Next (C);
+                     end loop;
+                  end;
+
+               when EK_Termination =>
+                  declare
+                     C : Name_Lists.Cursor :=
+                       V.The_Termination_Subprograms.First;
+                  begin
+                     while Name_Lists.Has_Element (C) loop
+                        Termination_Subprograms.Include
+                          (V.The_Termination_Subprograms (C));
+
+                        Name_Lists.Next (C);
+                     end loop;
+                  end;
+
                when EK_Direct_Calls =>
                   declare
                      Caller : Name_Graphs.Cursor;
@@ -1891,6 +2001,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Inserted : Boolean;
 
                      Callee : Name_Lists.Cursor := V.The_Callees.First;
+
                   begin
                      Direct_Calls.Insert (Key      => V.The_Caller,
                                           Position => Caller,
@@ -2433,17 +2544,73 @@ package body Flow_Generated_Globals.Phase_2 is
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
+   ---------------------------------
+   -- Is_Potentially_Nonreturning --
+   ---------------------------------
+
+   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Entity name
+
+      function Calls_Potentially_Nonreturning_Subprogram return Boolean;
+      --  Returns True iff the called subprogram, the callee, is potentially
+      --  nonreturning.
+
+      -----------------------------------------------
+      -- Calls_Potentially_Nonreturning_Subprogram --
+      -----------------------------------------------
+
+      function Calls_Potentially_Nonreturning_Subprogram return Boolean is
+         use Entity_Name_Graphs;
+
+         Caller : constant Vertex_Id :=
+           Termination_Call_Graph.Get_Vertex (EN);
+         --  Vertex that represents the analyzed subprogram
+
+      begin
+         for V of Termination_Call_Graph.
+           Get_Collection (Caller, Out_Neighbours)
+         loop
+            declare
+               Callee : constant Entity_Name :=
+                 Termination_Call_Graph.Get_Key (V);
+            begin
+               --  We say that the caller calls a potentially nonreturning
+               --  subprogram if the callee:
+               --  * has already been detected as potentially nonreturning
+               --    in phase 1
+               --  * is recursive.
+               if Nonreturning_Subprograms.Contains (Callee)
+                 or else Is_Recursive (Callee)
+               then
+                  return True;
+               end if;
+            end;
+         end loop;
+         return False;
+      end Calls_Potentially_Nonreturning_Subprogram;
+
+   --  Start of processing for Is_Potentially_Nonreturning
+
+   begin
+      return Nonreturning_Subprograms.Contains (EN)
+        or else Is_Recursive (EN)
+        or else Calls_Potentially_Nonreturning_Subprogram;
+   end Is_Potentially_Nonreturning;
+
    ------------------
    -- Is_Recursive --
    ------------------
 
-   function Is_Recursive (E : Entity_Id) return Boolean is
-      EN : constant Entity_Name := To_Entity_Name (E);
+   function Is_Recursive (EN : Entity_Name) return Boolean is
    begin
       return
         Subprogram_Call_Graph.Contains (EN)
         and then Subprogram_Call_Graph.Edge_Exists (EN, EN);
    end Is_Recursive;
+
+   function Is_Recursive (E : Entity_Id) return Boolean is
+     (Is_Recursive (To_Entity_Name (E)));
 
    ------------------------
    -- Calls_Current_Task --

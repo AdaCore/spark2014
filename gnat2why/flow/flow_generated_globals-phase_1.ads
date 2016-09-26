@@ -64,6 +64,23 @@ package Flow_Generated_Globals.Phase_1 is
         Post => GG_Mode = GG_Write_Mode;
    --  Register entity with no potentially blocking statements
 
+   procedure GG_Register_Nonreturning (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register:
+   --  * subprograms which contain possibly nonterminating loops
+   --  * procedures annotated with No_Return
+   --  * subprograms that call predefined procedures with No_Return
+   --  * subprograms with no body or body not in SPARK.
+
+   procedure GG_Register_Relevant_To_Termination (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register:
+   --  * procedures with No_Return
+   --  * subprograms with no contract, that are not inlined and that are not
+   --    expression functions.
+
    procedure GG_Register_Protected_Object (PO   : Entity_Name;
                                            Prio : Priority_Value)
    with Pre  => GG_Mode = GG_Write_Mode,
