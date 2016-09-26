@@ -378,7 +378,7 @@ package body Flow_Types is
                   end;
 
                when others =>
-                  raise Why.Unexpected_Node;
+                  raise Program_Error;
             end case;
          end;
 
@@ -389,7 +389,7 @@ package body Flow_Types is
               then Etype (Encapsulating_State (E))
               elsif Ekind (Scope (E)) in Concurrent_Kind
               then Scope (E)
-              else raise Why.Unexpected_Node);
+              else raise Program_Error);
       end if;
    end Get_Enclosing_Concurrent_Object;
 
