@@ -573,7 +573,8 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False,
                           "unused assignment to *",
                           "statement has no effect",
                           "unused initial value of *",
-                          "* is not modified, could be INPUT"):
+                          "* is not modified, could be INPUT",
+                          "initialization of * has no effect"):
                     f_adc.write("pragma Warnings (Off, \"%s\");\n" % w)
 
     cmd = ["gnatprove"]
