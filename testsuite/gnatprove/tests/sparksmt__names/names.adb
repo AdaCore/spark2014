@@ -72,7 +72,7 @@ is
                     N : out Name_Id)
    with Global => (In_Out   => (Char_Table, Entry_Table),
                    Proof_In => Hash_Table),
-        Pre    => Invariant,
+        Pre    => S'Length > 0 and Invariant,
         Post   => Invariant and
                   Length (Entry_Table) = Length (Entry_Table)'Old + 1 and
                   Length (Char_Table) >= Length (Char_Table)'Old and

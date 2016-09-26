@@ -272,7 +272,8 @@ hermes-der-encode.adb:124:60: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:131:07: warning: unused variable "Integer_Octet_Array"
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:142:47: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:142:80: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483647)
+hermes-der-encode.adb:142:71: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483647)
+hermes-der-encode.adb:142:80: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483642)
 hermes-der-encode.adb:149:39: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:153:07: warning: unused variable "OID_Octet_Array"
 hermes-der-encode.adb:155:07: medium: exception might be raised
@@ -303,8 +304,10 @@ hermes-oid.adb:48:48: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:48:67: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:48:73: info: initialization of "Result.Other_Components" proved
 hermes-oid.adb:48:86: info: index check proved (CVC4: 2 VC)
+hermes-oid.adb:50:54: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:50:62: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:67:14: info: length check proved (CVC4: 1 VC)
+hermes-oid.adb:70:56: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:71:23: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:71:31: info: initialization of "Result" proved
 hermes-oid.adb:72:30: info: index check proved (CVC4: 2 VC)
@@ -313,6 +316,7 @@ hermes-oid.adb:72:35: info: initialization of "Result" proved
 hermes-oid.adb:73:14: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:74:13: info: loop invariant initialization proved (CVC4: 3 VC)
 hermes-oid.adb:74:13: info: loop invariant preservation proved (CVC4: 3 VC)
+hermes-oid.adb:76:62: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:79:34: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:79:39: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:79:39: info: overflow check proved (CVC4: 1 VC)

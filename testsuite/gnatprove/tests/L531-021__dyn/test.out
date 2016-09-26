@@ -1,3 +1,4 @@
 proc.adb:19:14: warning: subprogram "P" has no effect
+proc.adb:21:24: medium: range check might fail (e.g. when Item'First = 10 and Item'Last = 1)
 proc.adb:21:33: info: initialization of "Item" proved
 proc.adb:21:33: info: length check proved (CVC4: 1 VC)

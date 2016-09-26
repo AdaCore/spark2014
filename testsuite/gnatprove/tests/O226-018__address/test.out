@@ -1,5 +1,6 @@
 worker_pack.adb:13:26: warning: assuming "XQueue_Create" has no effect on global items
 worker_pack.adb:13:26: warning: no Global contract available for "XQueue_Create"
+worker_pack.adb:13:85: medium: range check might fail
 worker_pack.adb:13:91: info: division check proved (CVC4: 1 VC)
 worker_pack.adb:38:20: warning: assuming "XQueue_Receive" has no effect on global items
 worker_pack.adb:38:20: warning: no Global contract available for "XQueue_Receive"

@@ -1,13 +1,17 @@
 foo.adb:14:26: info: initialization of "B" proved
+foo.adb:18:13: info: range check proved (CVC4: 1 VC)
 foo.adb:22:26: info: initialization of "B" proved
 foo.adb:25:25: low: range check might fail
 foo.adb:27:20: info: initialization of "X" proved
+foo.adb:32:18: info: range check proved (CVC4: 1 VC)
 foo.adb:36:07: info: initialization of "Tmp" proved
 foo.adb:40:26: info: initialization of "B" proved
 foo.adb:44:11: medium: array index check might fail
+foo.adb:45:13: info: range check proved (CVC4: 1 VC)
 foo.adb:48:26: info: initialization of "A" proved
 foo.adb:49:26: info: initialization of "B" proved
 foo.adb:54:09: info: length check proved (CVC4: 1 VC)
+foo.adb:55:13: info: range check proved (CVC4: 1 VC)
 foo.adb:58:26: info: initialization of "A" proved
 foo.adb:62:09: info: length check proved (CVC4: 1 VC)
 foo.adb:63:11: medium: array index check might fail
@@ -30,7 +34,10 @@ foo.adb:115:26: info: initialization of "A.Index" proved
 foo.adb:128:30: info: initialization of "Data" proved
 foo.adb:129:30: info: initialization of "Octet_Count" proved
 foo.adb:134:12: info: length check proved (CVC4: 1 VC)
+foo.adb:135:26: info: range check proved (CVC4: 1 VC)
+foo.adb:136:14: medium: range check might fail
 foo.adb:136:24: info: initialization of "Octet_Count" proved
+foo.adb:137:29: info: range check proved (CVC4: 1 VC)
 foo.adb:140:11: info: range check proved (CVC4: 2 VC)
 foo.adb:140:35: info: initialization of "Octet_Count" proved
 foo.adb:141:26: medium: overflow check might fail

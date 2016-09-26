@@ -1,0 +1,1 @@
+p.adb:8:21: medium: range check might fail (e.g. when A = -129)

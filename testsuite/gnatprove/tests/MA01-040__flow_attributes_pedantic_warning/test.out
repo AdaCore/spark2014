@@ -1,13 +1,21 @@
+pedantic.adb:8:15: medium: range check might fail
 pedantic.adb:8:15: warning: attribute "Alignment" has an implementation-defined value
+pedantic.adb:14:15: medium: range check might fail
 pedantic.adb:14:15: warning: attribute "Alignment" has an implementation-defined value
 pedantic.adb:20:15: warning: attribute "Address" has an implementation-defined value
 pedantic.adb:32:15: warning: attribute "Component_Size" has an implementation-defined value
+pedantic.adb:38:18: medium: range check might fail
 pedantic.adb:38:18: warning: attribute "First_Bit" has an implementation-defined value
+pedantic.adb:44:18: medium: range check might fail
 pedantic.adb:44:18: warning: attribute "Last_Bit" has an implementation-defined value
+pedantic.adb:50:18: medium: range check might fail
 pedantic.adb:50:18: warning: attribute "Position" has an implementation-defined value
+pedantic.adb:56:15: medium: range check might fail
 pedantic.adb:56:15: warning: attribute "Size" has an implementation-defined value
+pedantic.adb:62:15: medium: range check might fail
 pedantic.adb:62:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:10:04: info: initialization of "V.F1" proved
+pedantic.ads:12:29: medium: range check might fail
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
 pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value
 pedantic.ads:22:31: low: unused global "V"

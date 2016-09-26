@@ -1,3 +1,5 @@
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at extension.ads:9
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:25
 aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:59: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:10
 main.adb:16:04: info: initialization of "N" proved
 main.adb:18:30: info: initialization of "Tag_V" proved

@@ -76,16 +76,20 @@ crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized before start o
 crtp_pack.ads:195:24: info: range check proved (CVC4: 2 VC)
 crtp_pack.ads:200:09: info: nontermination of task proved (CVC4: 1 VC)
 crtp_pack.ads:201:24: info: range check proved (CVC4: 2 VC)
+generic_queue_pack.adb:7:39: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:11:29: medium: array index check might fail, in instantiation at crtp_pack.ads:167 (e.g. when Queue = (Length => ?, Count => 2, Front => 2, Rear => 2))
 generic_queue_pack.adb:11:36: medium: discriminant check might fail, in instantiation at crtp_pack.ads:167 (e.g. when Item = (Repr => ?, Size => 0, Channel => 0, Reserved => 0, Port => CRTP_PORT_CONSOLE, Data_1 => (others => 0), Header => 0, Data_2 => (others => 0), Raw => (others => 0)) and Queue = (Length => ?, Count => 2, Front => 2, Rear => 2))
+generic_queue_pack.adb:12:53: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:15:36: info: overflow check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:17:34: medium: overflow check might fail, in instantiation at crtp_pack.ads:167 (e.g. when Queue = (Count => 2147483647, others => ?))
 generic_queue_pack.adb:28:12: medium: discriminant check might fail, in instantiation at crtp_pack.ads:167 (e.g. when Item = (Repr => ?, Size => 0, Channel => 0, Reserved => 0, Port => CRTP_PORT_CONSOLE, Data_1 => (others => 0), Header => 0, Data_2 => (others => 0), Raw => (others => 0)))
 generic_queue_pack.adb:28:37: medium: array index check might fail, in instantiation at crtp_pack.ads:167 (e.g. when Item = (Repr => ?, Size => 0, Channel => 0, Reserved => 0, Port => CRTP_PORT_CONSOLE, Data_1 => (others => 0), Header => 0, Data_2 => (others => 0), Raw => (others => 0)) and Queue = (Front => 2, others => ?))
+generic_queue_pack.adb:29:55: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:32:38: info: overflow check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:33:34: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:41:13: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:46:13: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
+generic_queue_pack.adb:48:43: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:56:27: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:58:23: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.adb:71:28: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167

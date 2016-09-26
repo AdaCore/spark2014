@@ -327,6 +327,7 @@ very_longs.adb:572:30: info: initialization of "Shift_Distance" proved
 very_longs.ads:14:20: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
+very_longs.ads:21:23: info: range check proved (CVC4: 1 VC)
 very_longs.ads:21:34: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:46:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:52:18: info: postcondition proved (CVC4: 1 VC)

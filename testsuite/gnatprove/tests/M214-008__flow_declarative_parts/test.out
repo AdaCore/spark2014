@@ -3,6 +3,7 @@ test.adb:30:07: warning: analyzing unreferenced procedure "Nested"
 test.adb:30:17: warning: subprogram "Nested" has no effect
 test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:44:23: info: initialization of "L" proved
+test.adb:47:13: info: range check proved (CVC4: 1 VC)
 test.adb:55:24: info: initialization of "B" proved
 test.adb:67:24: info: initialization of "B" proved
 test.adb:71:15: info: range check proved (CVC4: 2 VC)

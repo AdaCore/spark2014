@@ -4,6 +4,9 @@ bounded_strings.adb:10:17: info: length check proved (CVC4: 1 VC)
 bounded_strings.adb:11:39: info: initialization of "B.Text" proved
 bounded_strings.adb:11:39: info: length check proved (CVC4: 1 VC)
 bounded_strings.adb:11:42: info: length check proved (CVC4: 1 VC)
+bounded_strings.adb:12:28: info: range check proved (CVC4: 1 VC)
 bounded_strings.adb:13:14: info: initialization of "B.Size" proved
 bounded_strings.adb:13:14: info: initialization of "B.Text" proved
+bounded_strings.ads:19:26: info: range check proved (CVC4: 1 VC)
 bounded_strings.ads:20:16: info: postcondition proved (CVC4: 1 VC)
+bounded_strings.ads:20:47: info: range check proved (CVC4: 1 VC)

@@ -3,4 +3,5 @@ strlit.adb:4:28: info: length check proved (CVC4: 1 VC)
 strlit.adb:5:07: warning: initialization of Y has no effect
 strlit.adb:7:07: warning: initialization of F has no effect
 strlit.adb:7:19: info: length check proved (CVC4: 1 VC)
+strlit.adb:9:15: info: range check proved (CVC4: 1 VC)
 strlit.ads:5:20: info: postcondition proved (CVC4: 1 VC)

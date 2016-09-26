@@ -360,6 +360,7 @@ very_longs.adb:586:43: info: initialization of "Digit" proved
 very_longs.ads:13:16: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:15:55: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:15:79: info: initialization of "Valid" proved
+very_longs.ads:18:21: info: range check proved (CVC4: 1 VC)
 very_longs.ads:18:32: medium: overflow check might fail
 very_longs.ads:44:16: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:50:16: info: postcondition proved (CVC4: 1 VC)
