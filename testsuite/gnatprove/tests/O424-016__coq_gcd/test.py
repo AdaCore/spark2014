@@ -1,5 +1,4 @@
 from test_support import *
-from time import sleep
 import glob
 
 proof = """admit.
@@ -23,7 +22,7 @@ print "======================================="
 edit_proof()
 # workaround for caching problem
 touch("greatest_common_divisor.adb")
-sleep(2)
+sleep_on_windows(2)
 prove_all(opt=["--prover=coq", "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False)
 print "======================================="
 prove_all(counterexample=False)

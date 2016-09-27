@@ -1,6 +1,5 @@
 from shutil import copyfile
 from test_support import *
-from time import sleep
 import glob
 
 proof = """
@@ -38,6 +37,6 @@ print "======================================="
 prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
 print "======================================="
 edit_file()
-sleep(4)
+sleep_on_windows(4)
 prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
 prove_all(counterexample=False)

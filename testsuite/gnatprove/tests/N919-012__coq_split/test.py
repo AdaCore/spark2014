@@ -1,5 +1,4 @@
 from test_support import *
-from time import sleep
 import xml.etree.ElementTree as ET
 
 def check_session_file():

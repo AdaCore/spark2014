@@ -1,6 +1,5 @@
 from shutil import copyfile
 from test_support import *
-from time import sleep
 import glob
 
 proof = """admit.

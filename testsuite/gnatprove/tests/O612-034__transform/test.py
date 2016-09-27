@@ -1,7 +1,6 @@
 from test_support import *
 import shutil
 import os.path
-from time import sleep
 
 # This test tests the capacity of gnatprove to follow transformations that
 # have been inserted into the Why3 session
@@ -22,7 +21,7 @@ touch('test.adb')
 print_session_proofs()
 # copy a file which has an extra transformation applied to the unique goal
 shutil.copyfile('new.xml', session_file)
-sleep(4)
+sleep_on_windows(4)
 # run gnatprove again and print number of proofs, should be higher now
 prove_all(cache_allowed=False)
 print_session_proofs()

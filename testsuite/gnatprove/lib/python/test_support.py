@@ -2,15 +2,16 @@
 This module contains support functions for all test.py
 """
 
-import os
-import sys
-import re
 import glob
 import json
+import os
+import re
+import sys
+from time import sleep
 from gnatpython import fileutils
 from gnatpython.env import Env
-from test_util import sort_key_for_errors
 from gnatpython.ex import Run
+from test_util import sort_key_for_errors
 
 
 max_steps = 200
@@ -724,6 +725,17 @@ def touch(fname, times=None):
     """
     with open(fname, 'a'):
         os.utime(fname, times)
+
+
+def sleep_on_windows(secs=3):
+    """If on Windows then sleep to stabilise the filesystem status
+
+    PARAMETERS
+    secs: number of seconds to sleep if in Windows
+    """
+    platform = sys.platform
+    if platform.startswith('win') or platform.startswith('cygwin'):
+        sleep(secs)
 
 
 def check_all_spark(result_file, expected_len):
