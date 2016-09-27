@@ -1381,7 +1381,6 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             for E of Marked_Entities loop
                if Ekind (E) in E_Function | E_Procedure | E_Entry
-                 and then Is_In_Analyzed_Files (E)
                  and then Entity_In_SPARK (E)
                then
                   declare
