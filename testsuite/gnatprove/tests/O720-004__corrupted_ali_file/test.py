@@ -12,7 +12,7 @@ def truncate_four_lines(a):
     content = content[:-4]
     with open(a,"w") as f:
         for line in content:
-            f.write(line + '\n')
+            f.write(line)
 
 prove_all()
 sleep(4)
