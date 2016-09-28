@@ -1,7 +1,8 @@
 from test_support import *
 import shutil
+import time
 
 prove_all(opt=["-u", "b.adb"])
-sleep_on_windows(4)
+sleep(4)
 shutil.copyfile("a.adb2", "a.adb")
 prove_all(opt=["-u", "b.adb"])

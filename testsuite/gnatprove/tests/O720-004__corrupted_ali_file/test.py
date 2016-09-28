@@ -1,5 +1,6 @@
 from test_support import *
 import os.path
+import time
 
 #this test corrupts an ALI file and checks that gnatprove detects the issue.
 
@@ -14,6 +15,6 @@ def truncate_four_lines(a):
             f.write(line + '\n')
 
 prove_all()
-sleep_on_windows(4)
+sleep(4)
 truncate_four_lines(target_ali)
 prove_all()
