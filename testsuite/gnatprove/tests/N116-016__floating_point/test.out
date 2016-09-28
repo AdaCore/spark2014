@@ -9,25 +9,25 @@ precise.adb:8:13: info: initialization of "Y" proved
 precise.adb:9:04: info: assertion proved (CVC4: 2 VC)
 precise.adb:9:19: info: initialization of "Z" proved
 precise.adb:10:09: info: initialization of "X" proved
-precise.adb:10:11: info: overflow check proved (altergo: 1 VC)
+precise.adb:10:11: info: overflow check proved (Z3: 1 VC)
 precise.adb:10:13: info: initialization of "Y" proved
 precise.adb:11:04: info: assertion proved (Z3: 2 VC)
 precise.adb:11:19: info: initialization of "Z" proved
 precise.adb:12:09: info: initialization of "X" proved
 precise.adb:12:11: info: division check proved (CVC4: 1 VC)
-precise.adb:12:11: info: overflow check proved (altergo: 1 VC)
+precise.adb:12:11: info: overflow check proved (Z3: 1 VC)
 precise.adb:12:13: info: initialization of "Y" proved
 precise.adb:13:04: info: assertion proved (Z3: 2 VC)
 precise.adb:13:19: info: initialization of "Z" proved
 test_18.adb:2:20: info: initialization of "Z" proved
 test_18.adb:4:16: info: initialization of "Z" proved
-test_18.adb:4:16: medium: postcondition might fail, cannot prove Z >= X
-test_18.adb:7:12: info: overflow check proved (CVC4: 1 VC)
-test_18.adb:7:19: info: overflow check proved (CVC4: 1 VC)
+test_18.adb:4:16: info: postcondition proved (Z3: 1 VC)
+test_18.adb:7:12: info: overflow check proved (Z3: 1 VC)
+test_18.adb:7:19: info: overflow check proved (Z3: 1 VC)
 test_float.adb:8:14: info: postcondition proved (CVC4: 1 VC)
 test_float.adb:8:24: info: overflow check proved (Interval)
 test_float.adb:11:14: info: overflow check proved (Interval)
-test_float.adb:11:14: info: range check proved (CVC4: 1 VC)
+test_float.adb:11:14: info: range check proved (Z3: 1 VC)
 test_float.adb:16:04: info: precondition proved (CVC4: 1 VC)
 test_float.adb:16:16: info: initialization of "X" proved
 test_float.adb:17:04: info: assertion proved (CVC4: 1 VC)

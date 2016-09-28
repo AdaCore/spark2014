@@ -33,6 +33,7 @@ with Sinfo;             use Sinfo;
 with Sinput;            use Sinput;
 with Snames;            use Snames;
 with Types;             use Types;
+with Urealp;            use Urealp;
 with Why.Atree.Tables;  use Why.Atree.Tables;
 
 package SPARK_Util is
@@ -465,6 +466,9 @@ package SPARK_Util is
    --  Returns True if Choices is the singleton list with an "others" element
 
    function File_Name_Without_Suffix (File_Name : String) return String;
+
+   function Real_Image (U : Ureal; Max_Length : Integer) return String;
+   --  Return a string, of maximum length Max_length, representing U.
 
    function String_Value (Str_Id : String_Id) return String;
 

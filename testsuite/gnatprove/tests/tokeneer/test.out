@@ -183,6 +183,7 @@ auditlog.adb:177:44: info: range check proved (CVC4: 1 VC)
 auditlog.adb:177:49: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:177:69: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:211:18: info: range check proved (CVC4: 1 VC)
+auditlog.adb:253:35: info: range check proved (CVC4: 1 VC)
 auditlog.adb:254:40: info: index check proved (CVC4: 2 VC)
 auditlog.adb:254:40: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:254:45: info: initialization of "LocalDesc" proved
@@ -839,7 +840,8 @@ certificatestore.adb:46:04: info: initialization of "StoreFile" constituent of "
 certificatestore.adb:190:35: info: initialization of "Success" proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
-certificatestore.adb:221:31: medium: range check might fail (e.g. when Length = 0 and Str'First = 1 and Str'Last = 0)
+certificatestore.adb:221:23: info: range check proved (CVC4: 1 VC)
+certificatestore.adb:221:31: medium: range check might fail (e.g. when Length = 0)
 certificatestore.adb:222:18: info: initialization of "Length" proved
 certificatestore.adb:222:26: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:26: medium: "Text" might not be initialized
@@ -2035,6 +2037,16 @@ keystore.adb:112:09: low: range check might fail, in call inlined at keystore.ad
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:694
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:762
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:847
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
+keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
 keystore.adb:116:41: info: initialization of "Result" proved
 keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:268
 keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:276

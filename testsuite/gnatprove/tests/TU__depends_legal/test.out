@@ -16,4 +16,4 @@ depends_legal_2.adb:37:33: info: initialization of "Rec1.Y" constituent of "Stat
 depends_legal_2.adb:37:33: info: initialization of "Rec1.Z" constituent of "State" proved
 depends_legal_2.adb:43:15: info: discriminant check proved (CVC4: 2 VC)
 depends_legal_2.adb:45:15: info: discriminant check proved (CVC4: 2 VC)
-depends_legal_2.adb:48:12: medium: discriminant check might fail (e.g. when Par2 = (A => 0, B => 0, others => ?))
+depends_legal_2.adb:48:12: medium: discriminant check might fail

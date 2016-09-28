@@ -19,7 +19,7 @@
 --  limitations under the Licence.
 
 with Units; use Units;
-with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Numerics.Elementary_Functions;
 with GNAT.IO; use GNAT.IO;
 with sec_3_13_6_deceleration; use sec_3_13_6_deceleration;
 
@@ -72,9 +72,7 @@ package body Deceleration_Curve is pragma SPARK_Mode (On);
 
    procedure Curve_From_Target(Target : Target_t;
                                Braking_Curve : out Braking_Curve_t) is
-      package Speed_Math is
-        new Ada.Numerics.Generic_Elementary_Functions(Speed_t);
-      use Speed_Math;
+      use Ada.Numerics.Elementary_Functions;
 
       speed : Speed_t := Target.speed;
       location : Distance_t := Target.location;

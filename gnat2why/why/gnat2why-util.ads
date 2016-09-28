@@ -178,7 +178,8 @@ package Gnat2Why.Util is
    --     parameter, which means essentially converting predicate to term.
 
    type W_Section_Id is
-     (WF_Pure,
+     (WF_Float_Literals,
+      WF_Pure,
       WF_Variables,
       WF_Context,
       WF_Main);
@@ -333,6 +334,21 @@ package Gnat2Why.Util is
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 
+   function Cast_Real_Literal
+     (E  : Node_Id;
+      Ty : W_Type_Id) return W_Integer_Constant_Id
+     with Pre => Why_Type_Is_Float (Ty)
+     and Has_Floating_Point_Type (Etype (E));
+   --  Cast a real constant (literal) into either a float32 or a float64,
+   --  This function will do the actual computation in order to produce
+   --  a float_constant from a real_constant, i.e., a bitstream for a ureal.
+   --  Note: the function might fail if the format of Rval(E) is not as
+   --  expected.
+   --  @param E The node of the literal, expected to be rounded.
+   --  @param Ty The type of the literal.
+   --  @return An integer constant of bit representation equal to the float
+   --          literal
+
    -------------
    -- Queries --
    -------------
@@ -415,6 +431,9 @@ package Gnat2Why.Util is
    --  [Insert_Entity] and [Insert_Item]).
    --  @param E variable or constant of scalar type
    --  @return True iff E has a builtin type in Why3
+
+   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean;
+   --  Return wether Typ is a Float type.
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean;
    --  Return wether Typ is a bitvector type.

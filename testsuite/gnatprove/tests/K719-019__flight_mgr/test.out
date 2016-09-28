@@ -1,5 +1,5 @@
-flight_manager.adb:12:11: info: postcondition proved (CVC4: 2 VC)
-flight_manager.adb:13:24: medium: overflow check might fail
+flight_manager.adb:13:13: medium: postcondition might fail, cannot prove F = (F'Old * Distance_To_Target) / 10.0
+flight_manager.adb:13:24: info: overflow check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: division check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: overflow check proved (Interval)
 flight_manager.adb:19:21: medium: overflow check might fail
@@ -12,9 +12,9 @@ flight_manager.adb:37:53: medium: overflow check might fail
 flight_manager.adb:39:14: info: initialization of "Result.X_Speed" proved
 flight_manager.adb:39:14: info: initialization of "Result.Y_Speed" proved
 flight_manager.ads:10:17: medium: postcondition might fail, cannot prove Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed
-flight_manager.ads:10:30: medium: overflow check might fail
+flight_manager.ads:10:30: info: overflow check proved (CVC4: 1 VC)
 flight_manager.ads:10:65: medium: overflow check might fail
 flight_manager.ads:11:18: medium: overflow check might fail
-flight_manager.ads:12:23: medium: overflow check might fail
+flight_manager.ads:12:23: info: overflow check proved (CVC4: 1 VC)
 flight_manager.ads:12:58: medium: overflow check might fail
 flight_manager.ads:13:18: medium: overflow check might fail

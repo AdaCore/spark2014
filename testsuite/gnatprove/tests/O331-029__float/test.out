@@ -1,39 +1,3 @@
-maths_pack.adb:9:32: info: overflow check proved (Interval)
-maths_pack.adb:18:34: info: initialization of "Y" proved
-maths_pack.adb:19:12: info: initialization of "Magic_Num" proved
-maths_pack.adb:19:37: info: initialization of "I" proved
-maths_pack.adb:20:34: info: initialization of "I" proved
-maths_pack.adb:21:12: info: initialization of "Y" proved
-maths_pack.adb:21:14: medium: overflow check might fail
-maths_pack.adb:21:21: medium: overflow check might fail
-maths_pack.adb:21:24: info: initialization of "Half_X" proved
-maths_pack.adb:21:31: medium: overflow check might fail
-maths_pack.adb:21:35: medium: overflow check might fail
-maths_pack.adb:22:14: info: initialization of "Y" proved
-maths_pack.ads:23:16: medium: postcondition might fail, cannot prove Inv_Sqrt'Result > 0.0
-safety_pack.adb:16:14: info: initialization of "Res" proved
-safety_pack.adb:30:14: info: initialization of "Res" proved
-safety_pack.adb:41:17: info: initialization of "Res" proved
-safety_pack.adb:41:21: info: overflow check proved (CVC4: 1 VC)
-safety_pack.adb:43:17: info: initialization of "Res" proved
-safety_pack.adb:43:21: info: overflow check proved (CVC4: 1 VC)
-safety_pack.adb:46:14: info: initialization of "Res" proved
-safety_pack.adb:57:26: info: range check proved (CVC4: 1 VC)
-safety_pack.adb:60:14: info: initialization of "Res" proved
-safety_pack.adb:76:14: info: initialization of "Res" proved
-safety_pack.ads:15:08: info: complete contract cases proved (CVC4: 1 VC)
-safety_pack.ads:15:08: info: disjoint contract cases proved (CVC4: 1 VC)
-safety_pack.ads:15:62: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:17:62: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:18:54: info: overflow check proved (CVC4: 1 VC)
-safety_pack.ads:19:62: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:20:54: info: overflow check proved (CVC4: 1 VC)
-safety_pack.ads:29:16: info: postcondition proved (CVC4: 3 VC)
-safety_pack.ads:44:17: info: postcondition proved (CVC4: 3 VC)
-safety_pack.ads:59:11: info: complete contract cases proved (CVC4: 1 VC)
-safety_pack.ads:59:11: info: disjoint contract cases proved (CVC4: 1 VC)
-safety_pack.ads:59:38: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:60:39: info: contract case proved (CVC4: 2 VC)
 sensfusion6_pack.adb:79:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:28: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:33: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
@@ -233,13 +197,13 @@ sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved, in call in
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:166:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:167:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:167:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:168:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:168:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:171:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:171:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
@@ -257,15 +221,15 @@ sensfusion6_pack.adb:190:21: info: overflow check proved (Interval), in call inl
 sensfusion6_pack.adb:190:26: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:36: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:191:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:192:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:193:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
@@ -438,25 +402,25 @@ sensfusion6_pack.adb:233:49: medium: overflow check might fail, in call inlined 
 sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:58: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:234:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:237:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved
 sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:240:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved
 sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:243:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -490,18 +454,18 @@ sensfusion6_pack.adb:292:40: info: overflow check proved (Interval)
 sensfusion6_pack.adb:292:45: info: overflow check proved (Interval)
 sensfusion6_pack.adb:292:50: info: overflow check proved (Interval)
 sensfusion6_pack.adb:292:56: info: overflow check proved (Interval)
-sensfusion6_pack.adb:292:64: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:292:64: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:292:64: info: overflow check proved (Interval)
 sensfusion6_pack.adb:292:64: info: range check proved (Interval)
 sensfusion6_pack.adb:294:35: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:294:43: info: overflow check proved (Interval)
-sensfusion6_pack.adb:294:51: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:294:51: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:294:51: info: overflow check proved (Interval)
 sensfusion6_pack.adb:294:51: info: range check proved (Interval)
 sensfusion6_pack.adb:295:36: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:295:44: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:295:52: info: overflow check proved (Interval)
-sensfusion6_pack.adb:295:60: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:295:60: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:295:60: info: overflow check proved (Interval)
 sensfusion6_pack.adb:295:60: info: range check proved (Interval)
 sensfusion6_pack.adb:308:21: info: overflow check proved (Interval)

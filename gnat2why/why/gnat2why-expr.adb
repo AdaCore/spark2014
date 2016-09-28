@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;                 use Ada.Containers;
+with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
@@ -109,21 +110,19 @@ package body Gnat2Why.Expr is
    -- Local Subprograms --
    -----------------------
 
-   function Apply_Modulus_Or_Rounding
+   function Apply_Modulus
      (Op     : N_Op;
       E      : Entity_Id;
       T      : W_Expr_Id;
       Domain : EW_Domain) return W_Expr_Id;
-   --  If E is a modular type, apply a modulus on T. If E is a floating-point
-   --  type, apply the corresponding rounding operation. If E is neither,
-   --  return T unchanged.
+   --  If E is a modular type, apply a modulus on T, else return T unchanged.
    --  Beware that for additions, substractions and multiplications on a
    --  modular type with a modulus that is not a power of two, it is not
    --  correct to use this function. Instead, one should directly use
    --  "Transform_Non_Binary_Modular_Operation" to deal with the whole
    --  transformation.
-   --  Optimization: if E is a modular type, and Op is division, do not add the
-   --  modulus operation.
+   --  Optimization: if E is a modular type, and Op is a division, do not add
+   --  the modulus operation.
 
    function Boolean_Prog_Of_Pred (W : W_Pred_Id) return W_Prog_Id is
      (New_Any_Expr (Post        =>
@@ -634,7 +633,7 @@ package body Gnat2Why.Expr is
    --  @param Modulus the modulus of the type in which the operation is done.
    --     It should be a non power of two smaller than 2 ** 32.
    --  @return the Why3 expression corresponding to the operation with
-   --     modulus applied. One should not call Apply_Modulus_Or_Rounding after
+   --     modulus applied. One should not call Apply_Modulus after
    --     calling this function.
 
    function Has_Visibility_On_Refined
@@ -648,7 +647,7 @@ package body Gnat2Why.Expr is
    -- Apply_Modulus --
    -------------------
 
-   function Apply_Modulus_Or_Rounding
+   function Apply_Modulus
      (Op     : N_Op;
       E      : Entity_Id;
       T      : W_Expr_Id;
@@ -656,7 +655,6 @@ package body Gnat2Why.Expr is
    is
       Modulus_Val : Uint;
       BV_Type     : W_Type_Id;
-
    begin
       if Is_Modular_Integer_Type (E) and then Op /= N_Op_Divide then
          Modulus_Val := Modulus (E);
@@ -681,16 +679,10 @@ package body Gnat2Why.Expr is
                              Typ    => BV_Type);
          end if;
 
-      elsif Is_Floating_Point_Type (E) then
-         return New_Call (Domain   => Domain,
-                          Name     => E_Symb (E, WNE_Float_Round),
-                          Args     => (1 => T),
-                          Typ      => EW_Real_Type);
-
       else
          return T;
       end if;
-   end Apply_Modulus_Or_Rounding;
+   end Apply_Modulus;
 
    ----------------------------
    -- Assignment_Of_Obj_Decl --
@@ -1598,7 +1590,8 @@ package body Gnat2Why.Expr is
          declare
             Why_Base         : constant W_Type_Id := Base_Why_Type (Base);
             Le               : constant W_Identifier_Id :=
-              (if Why_Base = EW_Real_Type then Real_Infix_Le
+              (if Why_Type_Is_Float (Why_Base) then
+                    MF_Floats (Why_Base).Le
                elsif Why_Type_Is_BitVector (Why_Base) then
                     MF_BVs (Why_Base).Ule
                else Int_Infix_Le);
@@ -1609,9 +1602,10 @@ package body Gnat2Why.Expr is
             First_In_Range   : constant W_Pred_Id :=
               New_Call
                 (Name =>
-                   (if Why_Base = EW_Real_Type then Real_Infix_Ge
+                   (if Why_Type_Is_Float (Why_Base) then
+                         MF_Floats (Why_Base).Ge
                     elsif Why_Type_Is_BitVector (Why_Base) then
-                      MF_BVs (Why_Base).Uge
+                         MF_BVs (Why_Base).Uge
                     else Int_Infix_Ge),
                  Typ  => EW_Bool_Type,
                  Args => (+Low_Expr,
@@ -3217,7 +3211,8 @@ package body Gnat2Why.Expr is
             declare
                Why_Rep_Type : constant W_Type_Id := Base_Why_Type (Ty_Ext);
                Le_Op        : constant W_Identifier_Id :=
-                 (if Why_Rep_Type = EW_Real_Type then Real_Infix_Le
+                 (if Why_Type_Is_Float (Why_Rep_Type) then
+                       MF_Floats (Why_Rep_Type).Le
                   elsif Why_Type_Is_BitVector (Why_Rep_Type) then
                     MF_BVs (Why_Rep_Type).Ule
                   else Int_Infix_Le);
@@ -4135,7 +4130,6 @@ package body Gnat2Why.Expr is
                      Fetch_Actual         : constant W_Prog_Id :=
                        (if Need_Check_On_Fetch then
                         +Insert_Checked_Conversion (Ada_Node => Actual,
-                                                    Ada_Type => Etype (Actual),
                                                     Domain   => EW_Prog,
                                                     Expr     =>
                                                       +Prefetch_Actual,
@@ -4186,7 +4180,6 @@ package body Gnat2Why.Expr is
                        (if Need_Check_On_Store then
                            +Insert_Checked_Conversion
                             (Ada_Node => Actual,
-                             Ada_Type => Etype (Actual),
                              Domain   => EW_Prog,
                              Expr     => +Tmp_Var_Deref,
                              To       => Actual_Target_T)
@@ -4276,7 +4269,6 @@ package body Gnat2Why.Expr is
 
                      Fetch_Actual  : constant W_Prog_Id :=
                        +Insert_Checked_Conversion (Ada_Node => Actual,
-                                                   Ada_Type => Etype (Actual),
                                                    Domain   => EW_Prog,
                                                    Expr     =>
                                                      +Prefetch_Actual_Rec,
@@ -5316,7 +5308,7 @@ package body Gnat2Why.Expr is
                     MF_BVs (Typ).Neg
                   elsif Typ = EW_Fixed_Type then
                     Fixed_Unary_Minus
-                  else Real_Unary_Minus);
+                  else MF_Floats (Typ).Unary_Minus);
 
                Right_Rep : constant W_Expr_Id := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -5336,7 +5328,6 @@ package body Gnat2Why.Expr is
                      Right_Opnd => Right_Rep,
                      Rep_Type   => Typ,
                      Modulus    => Modulus (Return_Type));
-
                else
                   T :=
                     New_Call
@@ -5346,7 +5337,7 @@ package body Gnat2Why.Expr is
                        Args     =>
                          (1 => Right_Rep),
                        Typ       => Get_Type (+Minus_Ident));
-                  T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
+                  T := Apply_Modulus (Op, Return_Type, T, Domain);
                end if;
             end;
 
@@ -5384,13 +5375,13 @@ package body Gnat2Why.Expr is
                      elsif Why_Type_Is_BitVector (Base) then
                        MF_BVs (Base).Add
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Add
-                     else Real_Infix_Add)
+                     else MF_Floats (Base).Add)
                   else
                     (if Base = EW_Int_Type then Int_Infix_Subtr
                      elsif Why_Type_Is_BitVector (Base) then
                           MF_BVs (Base).Sub
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
-                     else Real_Infix_Subtr));
+                     else MF_Floats (Base).Subtr));
                Left_Rep : constant W_Expr_Id :=
                  Insert_Simple_Conversion (Ada_Node => Ada_Node,
                                            Domain   => Domain,
@@ -5425,7 +5416,7 @@ package body Gnat2Why.Expr is
                        Args     => (1 => Left_Rep,
                                     2 => Right_Rep),
                        Typ   => Base);
-                  T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
+                  T := Apply_Modulus (Op, Return_Type, T, Domain);
                end if;
             end;
 
@@ -5509,7 +5500,7 @@ package body Gnat2Why.Expr is
                         elsif Why_Type_Is_BitVector (Base) then
                           MF_BVs (Base).Mult
                         elsif Base = EW_Fixed_Type then Fixed_Infix_Mult
-                        else Real_Infix_Mult);
+                        else MF_Floats (Base).Mult);
                   begin
                      T :=
                        New_Call
@@ -5519,7 +5510,7 @@ package body Gnat2Why.Expr is
                           Args     => (1 => L_Why, 2 => R_Why),
                           Typ      => Base);
                   end;
-                  T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
+                  T := Apply_Modulus (Op, Return_Type, T, Domain);
                end if;
             end;
 
@@ -5607,8 +5598,6 @@ package body Gnat2Why.Expr is
                        Args     => (1 => L_Why, 2 => R_Why),
                        Typ      => Base);
                end if;
-
-               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
          when N_Op_Rem
@@ -5689,8 +5678,7 @@ package body Gnat2Why.Expr is
                           New_Integer_Constant (Value => Uint_0), EW_Term);
                      Base_Zero     : constant W_Pred_Id :=
                        +New_Comparison
-                         (Why_Neq, Base,
-                          New_Real_Constant (Value => Ureal_0), EW_Term);
+                       (Why_Neq, Base, +MF_Floats (Typ).Plus_Zero, EW_Term);
                      Ass           : constant W_Prog_Id :=
                        New_Located_Assert
                          (Ada_Node => Ada_Node,
@@ -5790,7 +5778,7 @@ package body Gnat2Why.Expr is
                      if Is_Modular_Integer_Type (Return_Type) and then
                        Non_Binary_Modulus (Return_Type)
                      then
-                        T := Apply_Modulus_Or_Rounding
+                        T := Apply_Modulus
                           (Op     => Op,
                            E      => Return_Type,
                            T      => T,
@@ -8477,13 +8465,15 @@ package body Gnat2Why.Expr is
 
             if Is_Floating_Point_Type (Etype (Var)) then
                declare
+                  W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Oper : constant W_Identifier_Id :=
-                    E_Symb (Etype (Var), (if Attr_Id = Attribute_Pred
-                                          then WNE_Float_Pred
-                                          else WNE_Float_Succ));
+                    (if Attr_Id = Attribute_Pred then
+                        MF_Floats (W_Type).Prev_Rep
+                     else
+                        MF_Floats (W_Type).Next_Rep);
                   Arg : constant W_Expr_Id :=
                     Transform_Expr (First (Expressions (Expr)),
-                                    EW_Real_Type,
+                                    W_Type,
                                     Domain,
                                     Params);
                begin
@@ -8491,7 +8481,7 @@ package body Gnat2Why.Expr is
                                  Domain   => Domain,
                                  Name     => Oper,
                                  Args     => (1 => Arg),
-                                 Typ      => EW_Real_Type);
+                                 Typ      => W_Type);
                end;
 
             --  For all discrete and fixed-point types, 'Succ is modelled as
@@ -8954,25 +8944,26 @@ package body Gnat2Why.Expr is
             | Attribute_Truncation
          =>
             declare
+               Typ : constant W_Type_Id := Base_Why_Type (Etype (Var));
                Arg  : constant W_Expr_Id :=
                         Transform_Expr (First (Expressions (Expr)),
-                                        EW_Real_Type,
+                                        Typ,
                                         Domain,
                                         Params);
                Func : constant W_Identifier_Id :=
                              (if Attr_Id = Attribute_Ceiling then
-                                 M_Floating.Ceil
+                                 MF_Floats (Typ).Ceil
                               elsif Attr_Id = Attribute_Floor then
-                                 M_Floating.Floor
+                                 MF_Floats (Typ).Floor
                               elsif Attr_Id = Attribute_Rounding then
-                                 M_Floating.Round
-                              else M_Floating.Truncate);
+                                 MF_Floats (Typ).Rounding
+                              else MF_Floats (Typ).Truncate);
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => Func,
                               Args     => (1 => Arg),
-                              Typ      => EW_Int_Type);
+                              Typ      => Typ);
             end;
 
          when Attribute_Remainder =>
@@ -8981,23 +8972,23 @@ package body Gnat2Why.Expr is
                Base   : constant W_Type_Id := Base_Why_Type (Ada_Ty);
                Arg_1  : constant W_Expr_Id :=
                  Transform_Expr (First (Expressions (Expr)),
-                                 EW_Real_Type,
+                                 Base,
                                  Domain,
                                  Params);
                Arg_2  : constant W_Expr_Id :=
                  Transform_Expr (Next (First (Expressions (Expr))),
-                                 EW_Real_Type,
+                                 Base,
                                  Domain,
                                  Params);
             begin
-               T := New_VC_Call (Ada_Node => Expr,
-                                 Name     =>
-                                   To_Program_Space (M_Floating.Remainder),
-                                 Progs    => (1 => Arg_1,
-                                              2 => Arg_2),
-                                 Reason   => VC_Division_Check,
-                                 Domain   => Domain,
-                                 Typ      => Base);
+               T := New_VC_Call
+                 (Ada_Node => Expr,
+                  Name     => To_Program_Space (MF_Floats (Base).Remainder),
+                  Progs    => (1 => Arg_1,
+                               2 => Arg_2),
+                  Reason   => VC_Division_Check,
+                  Domain   => Domain,
+                  Typ      => Base);
             end;
 
          when Attribute_Min
@@ -9025,8 +9016,9 @@ package body Gnat2Why.Expr is
                        else
                          (if Attr_Id = Attribute_Min then M_Int_Minmax.Min
                           else M_Int_Minmax.Max))
-                  else (if Attr_Id = Attribute_Min then M_Floating.Min
-                        else M_Floating.Max));
+                  else (if Attr_Id = Attribute_Min
+                        then MF_Floats (Base).Min
+                        else MF_Floats (Base).Max));
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -9281,14 +9273,14 @@ package body Gnat2Why.Expr is
                when N_Op_Ge => return M_Integer.Bool_Ge;
                when N_Op_Le => return M_Integer.Bool_Le;
             end case;
-         elsif Ty = EW_Real_Type then
+         elsif Why_Type_Is_Float (Ty) then
             case Op is
-               when N_Op_Gt => return M_Floating.Bool_Gt;
-               when N_Op_Lt => return M_Floating.Bool_Lt;
-               when N_Op_Eq => return M_Floating.Bool_Eq;
-               when N_Op_Ne => return M_Floating.Bool_Ne;
-               when N_Op_Ge => return M_Floating.Bool_Ge;
-               when N_Op_Le => return M_Floating.Bool_Le;
+               when N_Op_Gt => return MF_Floats (Ty).Bool_Gt;
+               when N_Op_Lt => return MF_Floats (Ty).Bool_Lt;
+               when N_Op_Eq => return MF_Floats (Ty).Bool_Eq;
+               when N_Op_Ne => return MF_Floats (Ty).Bool_Ne;
+               when N_Op_Ge => return MF_Floats (Ty).Bool_Ge;
+               when N_Op_Le => return MF_Floats (Ty).Bool_Le;
             end case;
          elsif Ty = EW_Bool_Type then
             case Op is
@@ -9327,14 +9319,14 @@ package body Gnat2Why.Expr is
             when N_Op_Ge => return Int_Infix_Ge;
             when N_Op_Le => return Int_Infix_Le;
          end case;
-      elsif Ty = EW_Real_Type then
+      elsif Why_Type_Is_Float (Ty) then
          case Op is
-            when N_Op_Gt => return Real_Infix_Gt;
-            when N_Op_Lt => return Real_Infix_Lt;
-            when N_Op_Eq => return Why_Eq;
-            when N_Op_Ne => return Why_Neq;
-            when N_Op_Ge => return Real_Infix_Ge;
-            when N_Op_Le => return Real_Infix_Le;
+            when N_Op_Gt => return MF_Floats (Ty).Gt;
+            when N_Op_Lt => return MF_Floats (Ty).Lt;
+            when N_Op_Eq => return MF_Floats (Ty).Eq;
+            when N_Op_Ne => return MF_Floats (Ty).Neq;
+            when N_Op_Ge => return MF_Floats (Ty).Ge;
+            when N_Op_Le => return MF_Floats (Ty).Le;
          end case;
       elsif Why_Type_Is_BitVector (Ty) then
          case Op is
@@ -10540,24 +10532,18 @@ package body Gnat2Why.Expr is
                       (Ada_Node => Expr,
                        Value    => Corresponding_Integer_Value (Expr));
 
-            --  Note: although the original node for a real literal might
-            --  be closer to the source code expression of the value, this
-            --  original node should not be used for transforming the node
-            --  into Why. Indeed, a source float literal in Ada might not be
-            --  representable in machine, in which case the frontend rewrites
-            --  the value into a machine representable value (respecting
-            --  the Ada RM rules, so getting the closest representable
-            --  floating-point value).
-
-            --  The procedure printing this node in Why takes care of putting
-            --  the value in a suitable form for provers. In particular, we
-            --  want to avoid printing divisions between real numbers, which
-            --  provers don't handle well, even when the division can be
-            --  expressed exactly as a decimal number.
-
             else
-               T := New_Real_Constant (Ada_Node => Expr,
-                                       Value    => Realval (Expr));
+               T := +Transform_Float_Literal
+                 (Expr,
+                  (if Has_Single_Precision_Floating_Point_Type
+                       (Etype (Expr))
+                   then
+                      EW_Float_32_Type
+                   elsif Has_Double_Precision_Floating_Point_Type
+                     (Etype (Expr))
+                   then
+                      EW_Float_64_Type
+                   else raise Program_Error));
             end if;
 
          when N_Character_Literal =>
@@ -10851,8 +10837,7 @@ package body Gnat2Why.Expr is
                        New_Integer_Constant (Ada_Node => Expr,
                                              Value => Uint_1)
                   elsif Has_Floating_Point_Type (Left_Type) then
-                       New_Real_Constant (Ada_Node => Expr,
-                                          Value => Ureal_1)
+                       +MF_Floats (Base_Type).One
                   else raise Program_Error);
 
                function Square (X : W_Expr_Id; T : Entity_Id)
@@ -10899,9 +10884,8 @@ package body Gnat2Why.Expr is
                             (Ada_Node => Expr,
                              Pred     =>
                                +New_Comparison
-                               (Why_Neq,
-                                X,
-                                New_Real_Constant (Value => Ureal_0),
+                               (Why_Neq, X,
+                                +MF_Floats (Get_Type (X)).Plus_Zero,
                                 EW_Term),
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
@@ -11472,7 +11456,6 @@ package body Gnat2Why.Expr is
          null;
       else
          T := Insert_Checked_Conversion (Ada_Node => Expr,
-                                         Ada_Type => Expr_Type,
                                          Domain   => Domain,
                                          Expr     => T,
                                          To       => Expected_Type);
@@ -11966,7 +11949,7 @@ package body Gnat2Why.Expr is
                            then
                               Tag_Cond := New_Call
                                 (Domain => Domain,
-                                 Name => M_Main.Compat_Tags_Id,
+                                 Name => M_Compat_Tags.Compat_Tags_Id,
                                  Args => (1 => New_Tag_Access
                                           (Domain   => EW_Term,
                                            Name     => Var,
@@ -14627,6 +14610,132 @@ package body Gnat2Why.Expr is
          Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
    end Transform_String_Literal;
+
+   -----------------------------
+   -- Transform_Float_Literal --
+   -----------------------------
+
+   package Finite_Float_Literal_Map is new Ada.Containers.Ordered_Maps
+     (Key_Type     => Ureal,
+      Element_Type => W_Identifier_Id,
+      "<"          => UR_Lt);
+
+   Float32_Literals : aliased Finite_Float_Literal_Map.Map;
+   Float64_Literals : aliased Finite_Float_Literal_Map.Map;
+
+   function Transform_Float_Literal
+     (E  : Entity_Id;
+      Ty : W_Type_Id)
+      return W_Identifier_Id
+   is
+      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id);
+      --  Clone the theory "finite_float(32/64)_literal" with the appropriate
+      --  substitution corresponding to the current literal.
+
+      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id)
+      is
+         Decl_File : W_Section_Id renames WF_Float_Literals;
+
+         Module : constant W_Module_Id :=
+           New_Module (File => No_Name,
+                       Name => NID (New_Temp_Identifier
+                         (Base_Name => "finite_float_literal")));
+
+         Bin_Rep_Id : constant W_Identifier_Id :=
+           New_Identifier (Name => "binary_rep");
+
+         Dec_Rep_Id : constant W_Identifier_Id :=
+           New_Identifier (Name => "decimal_rep");
+
+         Subst : W_Clone_Substitution_Array (1 .. 2);
+
+      begin
+         --  The W_Identifier_Id that will correspond to the literal
+         Literal_Id := New_Identifier (Domain => EW_Term,
+                                       Symbol => NID ("l"),
+                                       Typ    => Ty,
+                                       Module => Module);
+
+         Open_Theory (Decl_File, Module,
+                      Comment =>
+                        "Module for defining the literal "
+                      & """" & Real_Image (Realval (E), 20)
+                      & """"
+                      & (if Sloc (E) > 0 then
+                           " defined at " & Build_Location_String (Sloc (E))
+                        else "")
+                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Emit (Decl_File,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Bin_Rep_Id,
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type,
+                  Def         => W_Expr_Id (Cast_Real_Literal (E  => E,
+                                                           Ty => Ty))));
+
+         Subst (1) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => Get_Name (Bin_Rep_Id),
+            Image     => Get_Name (Bin_Rep_Id));
+
+         Emit (Decl_File,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Dec_Rep_Id,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Binders     => (1 .. 0 => <>),
+                  Def         => New_Real_Constant (Ada_Node => E,
+                                                Value    => Realval (E)),
+                  Return_Type => EW_Real_Type));
+
+         Subst (2) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => Get_Name (Dec_Rep_Id),
+            Image     => Get_Name (Dec_Rep_Id));
+
+         Emit (Decl_File,
+               New_Clone_Declaration (Theory_Kind   => EW_Theory,
+                                      Clone_Kind    => EW_Export,
+                                      As_Name       => No_Name,
+                                      Origin        =>
+                                        (if Ty = EW_Float_32_Type
+                                         then Finite_Float32_Literal
+                                         else Finite_Float64_Literal),
+                                      Substitutions => Subst));
+
+         Close_Theory (Decl_File,
+                       Kind => Definition_Theory,
+                       Defined_Entity => E);
+      end Declare_Literal_Theory;
+
+      Literal_Id : W_Identifier_Id;
+
+      Float_Literals : constant access Finite_Float_Literal_Map.Map :=
+        (if Ty = EW_Float_32_Type then
+            Float32_Literals'Access
+         elsif Ty = EW_Float_64_Type then
+            Float64_Literals'Access
+         else raise Program_Error);
+
+      C : constant Finite_Float_Literal_Map.Cursor :=
+        Float_Literals.Find (Key => Realval (E));
+
+   begin
+
+      if Finite_Float_Literal_Map.Has_Element (C) then
+         Literal_Id := Finite_Float_Literal_Map.Element (C);
+      else
+         Declare_Literal_Theory (Literal_Id);
+
+         Float_Literals.Insert (Key      => Realval (E),
+                                New_Item => Literal_Id);
+      end if;
+
+      return Literal_Id;
+   end Transform_Float_Literal;
 
    -------------------------------
    -- Type_Invariant_Expression --

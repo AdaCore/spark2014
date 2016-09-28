@@ -35,9 +35,9 @@ biaseddivide.adb:24:16: medium: overflow check might fail
 biaseddivide.adb:24:23: medium: overflow check might fail
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: initialization of "r" proved
-biaseddivide.ads:19:14: info: postcondition proved (CVC4: 1 VC)
-biaseddivide.ads:19:20: info: overflow check proved (CVC4: 1 VC)
+biaseddivide.ads:19:14: medium: postcondition might fail, cannot prove R = Y / (Z - 4.0
 biaseddivide.ads:19:20: medium: divide by zero might fail
+biaseddivide.ads:19:20: medium: overflow check might fail
 biaseddivide.ads:19:25: medium: overflow check might fail
 dynamicsaturateassert.adb:49:26: info: initialization of "Saturation_Dynamic_out1" proved
 dynamicsaturateassert.adb:58:07: info: assertion proved (CVC4: 2 VC)
@@ -214,10 +214,6 @@ simulink_functions.adb:1414:14: info: initialization of "Res" proved
 simulink_functions.adb:1430:14: info: initialization of "Res" proved
 simulink_functions.adb:1446:14: info: initialization of "Res" proved
 simulink_functions.adb:1462:14: info: initialization of "Res" proved
-simulink_functions.adb:1473:19: warning: assuming "**" has no effect on global items
-simulink_functions.adb:1473:19: warning: no Global contract available for "**"
-simulink_functions.adb:1484:19: warning: assuming "**" has no effect on global items
-simulink_functions.adb:1484:19: warning: no Global contract available for "**"
 simulink_functions.adb:1494:19: medium: overflow check might fail
 simulink_functions.adb:1494:31: medium: range check might fail
 simulink_functions.adb:1504:19: medium: overflow check might fail

@@ -25,17 +25,17 @@ succ_floats.adb:14:31: info: initialization of "X" proved
 succ_floats.adb:14:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:18:24: info: initialization of "X" proved
 succ_floats.adb:18:24: medium: overflow check might fail
-succ_floats.adb:20:04: info: assertion proved (CVC4: 1 VC)
-succ_floats.adb:20:31: info: initialization of "X" proved
-succ_floats.adb:20:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:21:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.0
-succ_floats.adb:21:31: info: initialization of "X" proved
-succ_floats.adb:21:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:25:24: info: initialization of "X" proved
-succ_floats.adb:25:24: medium: overflow check might fail
-succ_floats.adb:27:04: info: assertion proved (CVC4: 1 VC)
-succ_floats.adb:27:31: info: initialization of "X" proved
-succ_floats.adb:27:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:28:19: medium: assertion might fail, cannot prove Float'Succ (X) < 0.0
-succ_floats.adb:28:31: info: initialization of "X" proved
-succ_floats.adb:28:31: info: overflow check proved (CVC4: 1 VC)
+succ_floats.adb:20:07: info: assertion proved (CVC4: 1 VC)
+succ_floats.adb:20:34: info: initialization of "X" proved
+succ_floats.adb:20:34: info: overflow check proved (CVC4: 1 VC)
+succ_floats.adb:22:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.0
+succ_floats.adb:22:31: info: initialization of "X" proved
+succ_floats.adb:22:31: info: overflow check proved (CVC4: 1 VC)
+succ_floats.adb:26:24: info: initialization of "X" proved
+succ_floats.adb:26:24: medium: overflow check might fail
+succ_floats.adb:28:07: info: assertion proved (CVC4: 1 VC)
+succ_floats.adb:28:34: info: initialization of "X" proved
+succ_floats.adb:28:34: info: overflow check proved (CVC4: 1 VC)
+succ_floats.adb:30:04: info: assertion proved (Z3: 1 VC)
+succ_floats.adb:30:31: info: initialization of "X" proved
+succ_floats.adb:30:31: info: overflow check proved (CVC4: 1 VC)

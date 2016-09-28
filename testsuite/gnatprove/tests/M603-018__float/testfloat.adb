@@ -1,7 +1,7 @@
-procedure Testfloat is 
+procedure Testfloat is
    Max_Float : constant Float := Float'Last;
    Max_Double : constant Long_Float := Long_Float'Last;
-   X : Float := 10.567;
+   X : Float := 0.0;
    Y : Float := 1.0;
    Z : Float := 0.5;
    T : Float := (X + Y) / 2.0;

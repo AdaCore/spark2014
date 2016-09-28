@@ -3934,11 +3934,20 @@ package body SPARK_Definition is
             --  in Why3 and provers for bitvectors greater than 64 bits, or
             --  else having a default theory for handling these modular types
             --  too large for bitvectors.
+            --  In addition, GNATprove only support single and double ieee
+            --  precision floats for now. This is in order to simplify initial
+            --  work on smtlib floats. Extending support to Ada's
+            --  long_long_float should not pose any fundamental problem.
 
             if Is_Modular_Integer_Type (E)
               and then Modulus (E) > UI_Expon (2, 64)
             then
                Mark_Unsupported ("modulus greater than 2 ** 64", E);
+            elsif Is_Floating_Point_Type (E)
+              and then not Is_Double_Precision_Floating_Point_Type (E)
+              and then not Is_Single_Precision_Floating_Point_Type (E)
+            then
+               Mark_Unsupported ("extended precision floating point type", E);
             end if;
 
          elsif Is_Class_Wide_Type (E) then
@@ -5201,10 +5210,14 @@ package body SPARK_Definition is
          S_Natural             => True,
          S_Positive            => True,
 
-         S_Short_Float         => True,
+         S_Short_Float         =>
+           Is_Single_Precision_Floating_Point_Type
+             (Standard_Entity (S_Short_Float)),
          S_Float               => True,
          S_Long_Float          => True,
-         S_Long_Long_Float     => True,
+         S_Long_Long_Float     =>
+           Is_Double_Precision_Floating_Point_Type
+             (Standard_Entity (S_Long_Long_Float)),
 
          S_Character           => True,
          S_Wide_Character      => True,

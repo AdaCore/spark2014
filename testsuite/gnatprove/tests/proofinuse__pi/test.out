@@ -20,8 +20,8 @@ pi_compute.adb:24:57: info: overflow check proved (CVC4: 1 VC)
 pi_compute.adb:24:59: info: initialization of "T9" proved
 pi_compute.adb:24:62: info: overflow check proved (CVC4: 1 VC)
 pi_compute.adb:24:64: info: initialization of "T10" proved
-pi_compute.adb:29:19: info: postcondition proved (CVC4: 2 VC)
-pi_compute.adb:42:18: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:29:19: medium: postcondition might fail, cannot prove Leibniz_Float'Result in 3.0418 .. 3.0419E0
+pi_compute.adb:42:18: medium: overflow check might fail
 pi_compute.adb:42:21: info: initialization of "T1" proved
 pi_compute.adb:42:24: info: overflow check proved (CVC4: 1 VC)
 pi_compute.adb:42:26: info: initialization of "T2" proved
@@ -31,15 +31,15 @@ pi_compute.adb:42:34: info: overflow check proved (CVC4: 1 VC)
 pi_compute.adb:42:36: info: initialization of "T4" proved
 pi_compute.adb:42:39: info: overflow check proved (CVC4: 1 VC)
 pi_compute.adb:42:41: info: initialization of "T5" proved
-pi_compute.adb:42:44: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:42:44: medium: overflow check might fail
 pi_compute.adb:42:46: info: initialization of "T6" proved
-pi_compute.adb:42:49: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:42:49: medium: overflow check might fail
 pi_compute.adb:42:51: info: initialization of "T7" proved
-pi_compute.adb:42:54: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:42:54: medium: overflow check might fail
 pi_compute.adb:42:56: info: initialization of "T8" proved
-pi_compute.adb:42:59: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:42:59: medium: overflow check might fail
 pi_compute.adb:42:61: info: initialization of "T9" proved
-pi_compute.adb:42:64: info: overflow check proved (CVC4: 1 VC)
+pi_compute.adb:42:64: medium: overflow check might fail
 pi_compute.adb:42:66: info: initialization of "T10" proved
 pi_compute.adb:47:19: info: postcondition proved (CVC4: 2 VC)
 pi_compute.adb:60:22: info: initialization of "T1" proved
@@ -107,47 +107,47 @@ pi_compute.adb:94:22: info: initialization of "T1" proved
 pi_compute.adb:94:22: info: initialization of "T1" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:95:22: info: initialization of "A1" proved
 pi_compute.adb:95:22: info: initialization of "A1" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:95:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:95:25: info: overflow check proved (altergo: 1 VC), in call inlined at pi_compute.adb:120
 pi_compute.adb:95:27: info: initialization of "T2" proved
 pi_compute.adb:95:27: info: initialization of "T2" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:96:22: info: initialization of "A2" proved
 pi_compute.adb:96:22: info: initialization of "A2" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:96:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:96:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:96:27: info: initialization of "T3" proved
 pi_compute.adb:96:27: info: initialization of "T3" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:97:22: info: initialization of "A3" proved
 pi_compute.adb:97:22: info: initialization of "A3" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:97:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:97:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:97:27: info: initialization of "T4" proved
 pi_compute.adb:97:27: info: initialization of "T4" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:98:22: info: initialization of "A4" proved
 pi_compute.adb:98:22: info: initialization of "A4" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:98:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:98:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:98:27: info: initialization of "T5" proved
 pi_compute.adb:98:27: info: initialization of "T5" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:99:22: info: initialization of "A5" proved
 pi_compute.adb:99:22: info: initialization of "A5" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:99:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:99:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:99:27: info: initialization of "T6" proved
 pi_compute.adb:99:27: info: initialization of "T6" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:100:22: info: initialization of "A6" proved
 pi_compute.adb:100:22: info: initialization of "A6" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:100:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:100:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:100:27: info: initialization of "T7" proved
 pi_compute.adb:100:27: info: initialization of "T7" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:101:22: info: initialization of "A7" proved
 pi_compute.adb:101:22: info: initialization of "A7" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:101:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:101:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:101:27: info: initialization of "T8" proved
 pi_compute.adb:101:27: info: initialization of "T8" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:102:22: info: initialization of "A8" proved
 pi_compute.adb:102:22: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:102:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:102:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:102:27: info: initialization of "T9" proved
 pi_compute.adb:102:27: info: initialization of "T9" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:103:22: info: initialization of "A9" proved
 pi_compute.adb:103:22: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:103:25: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:103:25: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:103:27: info: initialization of "T10" proved
 pi_compute.adb:103:27: info: initialization of "T10" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:105:26: medium: overflow check might fail, in call inlined at pi_compute.adb:120
@@ -162,16 +162,16 @@ pi_compute.adb:105:40: info: initialization of "A9" proved, in call inlined at p
 pi_compute.adb:105:43: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:22: info: initialization of "A10" proved
 pi_compute.adb:106:22: info: initialization of "A10" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:106:26: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
-pi_compute.adb:106:32: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:106:26: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:32: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:34: info: initialization of "A9" proved
 pi_compute.adb:106:34: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:106:37: info: overflow check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120
+pi_compute.adb:106:37: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:39: info: initialization of "A8" proved
 pi_compute.adb:106:39: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:112:07: info: assertion proved (CVC4: 2 VC), in call inlined at pi_compute.adb:120
 pi_compute.adb:112:22: info: initialization of "Den" proved
 pi_compute.adb:112:22: info: initialization of "Den" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:112:22: medium: assertion might fail, cannot prove Den in -0.11146 .. -1.1145E-1, in call inlined at pi_compute.adb:120
 pi_compute.adb:113:14: info: initialization of "Num" proved
 pi_compute.adb:113:14: info: initialization of "Num" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:113:18: info: division check proved (CVC4: 1 VC), in call inlined at pi_compute.adb:120

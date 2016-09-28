@@ -129,7 +129,7 @@ maths_pack.adb:15:18: info: overflow check proved (altergo: 1 VC)
 maths_pack.adb:15:20: info: precondition proved (CVC4: 1 VC)
 maths_pack.adb:23:14: info: range check proved (CVC4: 1 VC)
 maths_pack.adb:31:14: info: range check proved (CVC4: 1 VC)
-maths_pack.ads:18:16: info: postcondition proved (altergo: 2 VC)
+maths_pack.ads:18:42: medium: postcondition might fail, cannot prove Inv_Sqrt'Result < 2.7E22
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
@@ -261,7 +261,7 @@ pid_pack.ads:135:16: info: postcondition proved (CVC4: 1 VC), in instantiation a
 pid_pack.ads:135:16: info: postcondition proved (CVC4: 1 VC), in instantiation at stabilizer_pack.ads:45
 safety_pack.ads:16:16: info: overflow check proved (CVC4: 1 VC)
 safety_pack.ads:18:16: info: overflow check proved (CVC4: 1 VC)
-safety_pack.ads:56:21: info: range check proved (CVC4: 1 VC)
+safety_pack.ads:56:21: medium: range check might fail
 safety_pack.ads:64:10: info: predicate check proved (CVC4: 1 VC)
 safety_pack.ads:66:10: info: predicate check proved (CVC4: 1 VC)
 safety_pack.ads:68:10: info: predicate check proved (CVC4: 1 VC)
@@ -517,16 +517,16 @@ sensfusion6_pack.adb:226:25: info: initialization of "Recip_Norm" proved, in cal
 sensfusion6_pack.adb:227:10: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:228:10: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:229:10: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:230:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:230:34: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:230:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:230:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:230:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:230:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:231:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:231:34: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:231:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:231:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:231:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:231:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:232:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:232:34: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:232:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:232:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:232:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:232:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:236:22: info: initialization of "Norm_Ay" proved
@@ -553,19 +553,19 @@ sensfusion6_pack.adb:238:40: info: range check proved (Interval), in call inline
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:238:50: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:242:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:242:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:71: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:245:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:245:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:71: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:248:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:248:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:63: info: initialization of "Half_Ez" proved
@@ -665,18 +665,18 @@ sensfusion6_pack.adb:280:52: info: overflow check proved (Interval), in call inl
 sensfusion6_pack.adb:280:57: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:280:59: info: initialization of "Rate_Change_Gx" proved
 sensfusion6_pack.adb:280:59: info: initialization of "Rate_Change_Gx" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:283:07: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:284:10: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:284:10: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:285:07: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:284:10: medium: assertion might fail, cannot prove Q0_Tmp in -4.0 * MAX_RATE_CHANGE .. 4.0 * MAX_RATE_CHANGE, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:286:10: info: initialization of "Q1_Tmp" proved
 sensfusion6_pack.adb:286:10: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:287:07: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:286:10: medium: assertion might fail, cannot prove Q1_Tmp in -4.0 * MAX_RATE_CHANGE .. 4.0 * MAX_RATE_CHANGE, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:288:10: info: initialization of "Q2_Tmp" proved
 sensfusion6_pack.adb:288:10: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:289:07: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:288:10: medium: assertion might fail, cannot prove Q2_Tmp in -4.0 * MAX_RATE_CHANGE .. 4.0 * MAX_RATE_CHANGE, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:290:10: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:290:10: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:290:10: medium: assertion might fail, cannot prove Q3_Tmp in -4.0 * MAX_RATE_CHANGE .. 4.0 * MAX_RATE_CHANGE, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:293:21: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:293:31: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:293:31: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
@@ -693,28 +693,28 @@ sensfusion6_pack.adb:294:49: info: overflow check proved (Interval), in call inl
 sensfusion6_pack.adb:294:51: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:294:51: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:294:58: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:295:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:295:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:295:23: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:295:23: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:295:30: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:295:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:295:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:295:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:298:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:298:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:298:23: info: initialization of "Q1_Tmp" proved
 sensfusion6_pack.adb:298:23: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:298:30: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:298:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:298:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:298:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:301:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:301:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:301:23: info: initialization of "Q2_Tmp" proved
 sensfusion6_pack.adb:301:23: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:301:30: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:301:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:301:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:301:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:304:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:304:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:304:23: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:304:23: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:304:30: info: overflow check proved (altergo: 1 VC), in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:304:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:304:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:304:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:346:21: info: overflow check proved (Interval)
@@ -898,13 +898,13 @@ stabilizer_pack.adb:165:30: info: range check proved (Interval)
 stabilizer_pack.adb:168:44: info: range check proved (Interval)
 stabilizer_pack.adb:185:55: medium: range check might fail
 stabilizer_pack.adb:189:10: info: initialization of "LPS25H_Data_Valid" proved
-stabilizer_pack.adb:190:17: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:190:17: medium: range check might fail
 stabilizer_pack.adb:190:31: info: overflow check proved (Interval)
 stabilizer_pack.adb:190:43: info: overflow check proved (Interval)
 stabilizer_pack.adb:190:45: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
 stabilizer_pack.adb:190:53: info: overflow check proved (Interval)
 stabilizer_pack.adb:190:60: info: overflow check proved (Interval)
-stabilizer_pack.adb:193:22: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:193:22: medium: range check might fail
 stabilizer_pack.adb:193:41: info: overflow check proved (Interval)
 stabilizer_pack.adb:194:33: info: overflow check proved (Interval)
 stabilizer_pack.adb:194:35: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
@@ -925,16 +925,16 @@ stabilizer_pack.adb:228:33: info: range check proved (Interval)
 stabilizer_pack.adb:231:33: info: range check proved (Interval)
 stabilizer_pack.adb:233:32: info: initialization of "Prev_Integ" proved
 stabilizer_pack.adb:233:32: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:236:30: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:236:30: medium: range check might fail
 stabilizer_pack.adb:242:10: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.adb:244:29: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:244:29: medium: range check might fail
 stabilizer_pack.adb:244:55: info: overflow check proved (Interval)
 stabilizer_pack.adb:245:40: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.adb:245:56: info: division check proved (CVC4: 1 VC)
 stabilizer_pack.adb:245:56: info: overflow check proved (Interval)
 stabilizer_pack.adb:251:51: info: overflow check proved (Interval)
-stabilizer_pack.adb:257:52: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:260:26: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:257:52: medium: range check might fail
+stabilizer_pack.adb:260:26: medium: range check might fail
 stabilizer_pack.adb:260:41: info: overflow check proved (Interval)
 stabilizer_pack.adb:261:36: info: overflow check proved (Interval)
 stabilizer_pack.adb:261:40: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
@@ -942,8 +942,8 @@ stabilizer_pack.adb:261:52: info: overflow check proved (Interval)
 stabilizer_pack.adb:262:36: info: overflow check proved (Interval)
 stabilizer_pack.adb:262:39: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
 stabilizer_pack.adb:262:51: info: overflow check proved (Interval)
-stabilizer_pack.adb:265:30: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:270:30: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:265:30: medium: range check might fail
+stabilizer_pack.adb:270:30: medium: range check might fail
 stabilizer_pack.adb:270:54: info: overflow check proved (Interval)
 stabilizer_pack.adb:270:73: info: overflow check proved (Interval)
 stabilizer_pack.adb:271:42: info: initialization of "Baro_V_Speed" proved

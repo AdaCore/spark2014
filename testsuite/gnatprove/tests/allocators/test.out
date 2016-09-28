@@ -95,7 +95,7 @@ list_allocator.ads:77:38: info: contract case proved (Z3: 3 VC)
 list_allocator.ads:78:11: info: initialization of "Res" proved
 list_allocator.ads:84:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
 list_allocator.ads:85:40: info: initialization of "Res" proved
-list_allocator.ads:91:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:91:14: info: postcondition proved (CVC4: 1 VC; Z3: 3 VC)
 list_allocator.ads:96:36: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
 list_allocator.ads:103:16: info: contract case proved (Z3: 2 VC)
 list_mod_allocator.adb:14:04: info: initialization of "Data" constituent of "State" proved
@@ -130,14 +130,14 @@ list_mod_allocator.adb:82:13: info: loop invariant preservation proved (Z3: 2 VC
 list_mod_allocator.adb:83:16: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:83:29: info: initialization of "Alloc" proved
 list_mod_allocator.adb:84:13: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:84:13: info: loop invariant preservation proved (CVC4: 2 VC)
+list_mod_allocator.adb:84:13: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:85:16: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:85:29: info: initialization of "Unseen" proved
 list_mod_allocator.adb:86:13: info: loop invariant initialization proved (Z3: 1 VC)
 list_mod_allocator.adb:86:13: info: loop invariant preservation proved (Z3: 1 VC)
 list_mod_allocator.adb:88:62: info: initialization of "Alloc" proved
 list_mod_allocator.adb:89:13: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:89:13: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 2 VC)
+list_mod_allocator.adb:89:13: info: loop invariant preservation proved (Z3: 2 VC)
 list_mod_allocator.adb:91:28: info: index check proved (Z3: 2 VC)
 list_mod_allocator.adb:91:58: info: initialization of "Alloc" proved
 list_mod_allocator.adb:91:65: info: range check proved (Z3: 1 VC)
@@ -155,7 +155,7 @@ list_mod_allocator.adb:98:26: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:98:31: info: initialization of "Unseen" proved
 list_mod_allocator.adb:105:19: info: initialization of "R" proved
 list_mod_allocator.adb:105:49: info: initialization of "Avail" proved
-list_mod_allocator.adb:106:26: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+list_mod_allocator.adb:106:26: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:106:34: info: initialization of "Unseen" proved
 list_mod_allocator.adb:106:42: info: initialization of "R" proved
 list_mod_allocator.adb:107:25: info: precondition proved (Z3: 4 VC)
@@ -283,7 +283,7 @@ list_mod_allocator.adb:226:13: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:226:18: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:226:52: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.adb:226:52: info: precondition proved (Z3: 1 VC)
-list_mod_allocator.ads:13:03: info: initial condition proved (Z3: 10 VC)
+list_mod_allocator.ads:13:03: info: initial condition proved (Z3: 2 VC)
 list_mod_allocator.ads:13:24: info: initialization of "Data" constituent of "State" proved
 list_mod_allocator.ads:13:42: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.ads:43:53: info: precondition proved (Z3: 2 VC)
@@ -328,7 +328,7 @@ simple_allocator.adb:38:43: info: precondition proved (Z3: 4 VC)
 simple_allocator.adb:38:48: info: initialization of "Avail" proved
 simple_allocator.adb:39:43: info: precondition proved (Z3: 4 VC)
 simple_allocator.adb:39:48: info: initialization of "Alloc" proved
-simple_allocator.adb:41:13: info: loop invariant initialization proved (CVC4: 1 VC; Z3: 8 VC)
+simple_allocator.adb:41:13: info: loop invariant initialization proved (CVC4: 2 VC; Z3: 7 VC)
 simple_allocator.adb:41:13: info: loop invariant preservation proved (Z3: 9 VC)
 simple_allocator.adb:42:24: info: initialization of "Avail" proved
 simple_allocator.adb:42:31: info: overflow check proved (Z3: 1 VC)

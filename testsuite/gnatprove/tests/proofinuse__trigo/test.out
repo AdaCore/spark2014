@@ -86,7 +86,7 @@ trigo.ads:14:46: medium: overflow check might fail
 trigo.ads:14:57: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:57: info: overflow check proved (Interval)
 trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
-trigo.ads:18:30: info: overflow check proved (CVC4: 1 VC)
+trigo.ads:18:30: medium: overflow check might fail
 trigo.ads:21:12: info: overflow check proved (Interval)
 trigo.ads:21:23: info: division check proved (CVC4: 1 VC)
 trigo.ads:21:23: info: overflow check proved (Interval)
@@ -100,7 +100,7 @@ trigo.ads:21:66: info: overflow check proved (Interval)
 trigo.ads:21:77: info: division check proved (CVC4: 1 VC)
 trigo.ads:21:77: info: overflow check proved (Interval)
 trigo.ads:25:14: medium: postcondition might fail, cannot prove abs (Cos'Result - Approx_Cos (X)) < 3.0E-6
-trigo.ads:25:30: info: overflow check proved (CVC4: 1 VC)
+trigo.ads:25:30: medium: overflow check might fail
 trigo.ads:28:10: medium: overflow check might fail
 trigo.ads:28:21: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:21: info: overflow check proved (Interval)

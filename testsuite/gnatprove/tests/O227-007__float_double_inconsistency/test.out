@@ -1,30 +1,30 @@
 wibble.adb:16:34: info: range check proved (CVC4: 1 VC)
-wibble.adb:16:37: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:17:17: info: postcondition proved (CVC4: 1 VC)
+wibble.adb:16:37: medium: overflow check might fail
+wibble.adb:17:17: medium: postcondition might fail, cannot prove State <= Float32 (X + 1) * (C + 1.0
 wibble.adb:17:37: info: range check proved (CVC4: 1 VC)
-wibble.adb:17:42: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:20:22: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:17:42: medium: overflow check might fail
+wibble.adb:20:22: medium: overflow check might fail
 wibble.adb:28:34: info: range check proved (CVC4: 1 VC)
-wibble.adb:28:37: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:29:17: info: postcondition proved (CVC4: 1 VC)
+wibble.adb:28:37: medium: overflow check might fail
+wibble.adb:29:17: medium: postcondition might fail, cannot prove State <= Float64 (X + 1) * (C + 1.0
 wibble.adb:29:37: info: range check proved (CVC4: 1 VC)
-wibble.adb:29:42: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:32:22: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:29:42: medium: overflow check might fail
+wibble.adb:32:22: medium: overflow check might fail
 wibble.adb:40:34: info: range check proved (CVC4: 1 VC)
-wibble.adb:40:37: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:40:37: medium: overflow check might fail
 wibble.adb:41:17: medium: postcondition might fail, cannot prove State <= Float32 (X + 1) * C
 wibble.adb:41:37: info: range check proved (CVC4: 1 VC)
-wibble.adb:41:42: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:44:22: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:41:42: medium: overflow check might fail
+wibble.adb:44:22: info: overflow check proved (Z3: 1 VC)
 wibble.adb:52:45: info: range check proved (CVC4: 1 VC)
-wibble.adb:52:48: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:52:48: medium: overflow check might fail
 wibble.adb:53:17: medium: postcondition might fail, cannot prove State in C .. Float32 (X + 1) * C
 wibble.adb:53:42: info: range check proved (CVC4: 1 VC)
-wibble.adb:53:47: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:56:22: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:53:47: medium: overflow check might fail
+wibble.adb:56:22: info: overflow check proved (Z3: 1 VC)
 wibble.adb:64:45: info: range check proved (CVC4: 1 VC)
-wibble.adb:64:48: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:64:48: medium: overflow check might fail
 wibble.adb:65:17: medium: postcondition might fail, cannot prove State in C .. Float64 (X + 1) * C
 wibble.adb:65:42: info: range check proved (CVC4: 1 VC)
-wibble.adb:65:47: info: overflow check proved (CVC4: 1 VC)
-wibble.adb:68:22: info: overflow check proved (CVC4: 1 VC)
+wibble.adb:65:47: medium: overflow check might fail
+wibble.adb:68:22: medium: overflow check might fail

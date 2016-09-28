@@ -24,16 +24,15 @@
 
 --  Includes
 
-with Ada.Numerics.Generic_Elementary_Functions;
+--  with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Numerics.Long_Elementary_Functions;
+with Ada.Numerics.Elementary_Functions;
 with Interfaces; use Interfaces;
 
 package Simulink_Functions is
 
-   package Long_Float_Numerics is new Ada.Numerics.Generic_Elementary_Functions
-     (Long_Float);
-
-   package Float_Numerics is new Ada.Numerics.Generic_Elementary_Functions
-     (Float);
+   package Long_Float_Numerics renames Ada.Numerics.Long_Elementary_Functions;
+   package Float_Numerics renames Ada.Numerics.Elementary_Functions;
 
    --  Function prototypes
 

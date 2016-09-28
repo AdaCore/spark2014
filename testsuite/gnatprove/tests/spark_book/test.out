@@ -905,18 +905,18 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+operator_overload.adb:16:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:16:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:16:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37

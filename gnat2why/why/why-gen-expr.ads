@@ -265,7 +265,6 @@ package Why.Gen.Expr is
 
    function Insert_Checked_Conversion
      (Ada_Node : Node_Id;
-      Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
       To       : W_Type_Id) return W_Expr_Id;
@@ -286,11 +285,8 @@ package Why.Gen.Expr is
       Ada_Node    : Node_Id := Empty;
       Expr        : W_Expr_Id;
       To          : W_Type_Id;
-      Round_Func  : W_Identifier_Id := Why_Empty;
       Do_Check    : Boolean := False) return W_Expr_Id;
    --  We insert a conversion on Expr so that its type corresponds to "To".
-   --  When Round_Func is set, a call to the rounding function is inserted
-   --  into the conversion, on the argument of type "real".
    --  When Range_Check is set, a range check is inserted into the conversion,
    --  and the node Ada_Node is used to determine the kind of the check.
 
@@ -299,7 +295,6 @@ package Why.Gen.Expr is
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
-      Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Type    : Entity_Id;
       Check_Kind    : Range_Check_Kind) return W_Expr_Id;
    --  Same as the above except that we take directly the kind of check as

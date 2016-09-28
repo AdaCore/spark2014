@@ -27,6 +27,7 @@ with Atree;                      use Atree;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Namet;                      use Namet;
+with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
@@ -181,8 +182,6 @@ package body Why.Inter is
 
          if Node = Int_Unary_Minus then
             State.S.Include (+Int_Module);
-         elsif Node = Real_Unary_Minus then
-            State.S.Include (+RealInfix);
          end if;
 
          --  ??? Little optimization that also works around a bug
@@ -903,7 +902,13 @@ package body Why.Inter is
             return EW_Fixed_Type;
 
          when Float_Kind =>
-            return EW_Real_Type;
+            if Is_Single_Precision_Floating_Point_Type (Etype (Ty)) then
+               return EW_Float_32_Type;
+            elsif Is_Double_Precision_Floating_Point_Type (Etype (Ty)) then
+               return EW_Float_64_Type;
+            else
+               raise Program_Error;
+            end if;
 
          when Discrete_Kind =>
             --  In the case of Standard.Boolean, the base type 'bool' is
@@ -1095,7 +1100,8 @@ package body Why.Inter is
 
          --  Discrete types split forms are their base why type
 
-         pragma Assert (Has_Discrete_Type (E));
+         pragma Assert (Has_Discrete_Type (E) or else
+                        Has_Floating_Point_Type (E));
          return New_Type
            (Ada_Node   => E,
             Is_Mutable => False,

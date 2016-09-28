@@ -683,6 +683,29 @@ package body Gnat2Why.Types is
                           then Partial_View (E)
                           else E));
 
+         --  For scalar types that are not modeled using their base types
+         --  declare a Module where the functions to_rep/of_rep are defined.
+         --  This let us separate the different axioms (inversion/range/coerce)
+         --  to try and minimalize quantified axioms in the VCs' context.
+
+         if Is_Scalar_Type (E)
+           and then not Is_Fixed_Point_Type (E)
+           and then not Type_Is_Modeled_As_Base (E)
+         then
+            Open_Theory
+              (File, E_Rep_Module (E),
+               Comment =>
+                 "Module defining to_rep/of_rep for type "
+               & """" & Get_Name_String (Chars (E)) & """"
+               & (if Atree.Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                 else "")
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            Define_Scalar_Rep_Proj (File, E);
+
+            Close_Theory (File, Kind => Standalone_Theory);
+         end if;
       end if;
    end Translate_Type;
 

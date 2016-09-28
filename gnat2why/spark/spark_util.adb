@@ -36,7 +36,6 @@ with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
-with Urealp;                             use Urealp;
 
 package body SPARK_Util is
 
@@ -1226,6 +1225,40 @@ package body SPARK_Util is
       return Count;
    end Number_Of_Assocs_In_Expression;
 
+   ----------------
+   -- Real_Image --
+   ----------------
+
+   function Real_Image (U : Ureal; Max_Length : Integer) return String
+   is
+      Result : String (1 .. Max_Length);
+      Last   : Natural := 0;
+
+      procedure Output_Result (S : String);
+      --  Callback to print value of U in string Result
+
+      -------------------
+      -- Output_Result --
+      -------------------
+
+      procedure Output_Result (S : String) is
+      begin
+         --  Last character is always ASCII.LF which should be ignored
+         pragma Assert (S (S'Last) = ASCII.LF);
+         Last := Integer'Min (Max_Length, S'Length - 1);
+         Result (1 .. Last) := S (S'First .. Last - S'First + 1);
+      end Output_Result;
+
+      --  Start of processing for Real_Image
+
+   begin
+      Output.Set_Special_Output (Output_Result'Unrestricted_Access);
+      UR_Write (U);
+      Output.Write_Eol;
+      Output.Cancel_Special_Output;
+      return Result (1 .. Last);
+   end Real_Image;
+
    ---------------------------
    -- Root_Record_Component --
    ---------------------------
@@ -1431,15 +1464,17 @@ package body SPARK_Util is
 
    function String_Of_Node (N : Node_Id) return String is
 
-      function Real_Image (U : Ureal) return String;
       function String_Image (S : String_Id) return String;
       function Ident_Image (Expr        : Node_Id;
                             Orig_Expr   : Node_Id;
                             Expand_Type : Boolean)
                             return String;
 
+      function Real_Image_10 (U : Ureal) return String is
+         (Real_Image (U, 10));
+
       function Node_To_String is new
-        Expression_Image (Real_Image, String_Image, Ident_Image);
+        Expression_Image (Real_Image_10, String_Image, Ident_Image);
       --  The actual printing function
 
       -----------------
@@ -1461,40 +1496,6 @@ package body SPARK_Util is
             return Get_Name_String (Chars (Expr));
          end if;
       end Ident_Image;
-
-      ----------------
-      -- Real_Image --
-      ----------------
-
-      function Real_Image (U : Ureal) return String is
-         Max_Length : constant := 10;
-         Result : String (1 .. Max_Length);
-         Last   : Natural := 0;
-
-         procedure Output_Result (S : String);
-         --  Callback to print value of U in string Result
-
-         -------------------
-         -- Output_Result --
-         -------------------
-
-         procedure Output_Result (S : String) is
-         begin
-            --  Last character is always ASCII.LF which should be ignored
-            pragma Assert (S (S'Last) = ASCII.LF);
-            Last := Integer'Min (Max_Length, S'Length - 1);
-            Result (1 .. Last) := S (S'First .. Last - S'First + 1);
-         end Output_Result;
-
-      --  Start of processing for Real_Image
-
-      begin
-         Output.Set_Special_Output (Output_Result'Unrestricted_Access);
-         UR_Write (U);
-         Output.Write_Eol;
-         Output.Cancel_Special_Output;
-         return Result (1 .. Last);
-      end Real_Image;
 
       ------------------
       -- String_Image --

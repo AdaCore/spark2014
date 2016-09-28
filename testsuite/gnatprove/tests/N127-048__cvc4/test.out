@@ -59,12 +59,12 @@ nose_gear.adb:279:47: info: initialization of "Left_2_out1" proved
 nose_gear.adb:279:47: info: range check proved (CVC4: 1 VC)
 nose_gear.adb:283:40: info: initialization of "To_uint16_Result_out1" proved
 nose_gear.adb:283:40: info: range check proved (CVC4: 1 VC)
-nose_gear.adb:283:64: info: overflow check proved (CVC4: 8 VC)
+nose_gear.adb:283:64: medium: overflow check might fail
 nose_gear.adb:283:67: info: initialization of "Wheel_Circunference_out1" proved
 nose_gear.adb:287:43: info: initialization of "To_uint16_Result_1_out1" proved
 nose_gear.adb:287:43: info: range check proved (CVC4: 1 VC)
 nose_gear.adb:287:69: info: division check proved (CVC4: 1 VC)
-nose_gear.adb:287:69: info: overflow check proved (CVC4: 8 VC)
+nose_gear.adb:287:69: medium: overflow check might fail
 nose_gear.adb:287:72: info: initialization of "ms_in_hour_out1" proved
 nose_gear.adb:291:36: info: initialization of "To_uint16_Result_2_out1" proved
 nose_gear.adb:291:65: info: initialization of "Sum1_2_out1" proved
@@ -75,7 +75,7 @@ nose_gear.adb:305:45: info: initialization of "Relational_Operator_out1" proved
 nose_gear.adb:309:38: info: initialization of "Relational_Operator_out1" proved
 nose_gear.adb:309:67: info: initialization of "Compare_To_Constant_out1" proved
 nose_gear.adb:313:22: info: initialization of "Distance_km_out1" proved
-nose_gear.adb:313:40: info: division check proved (CVC4: 16 VC)
+nose_gear.adb:313:40: medium: divide by zero might fail
 nose_gear.adb:313:40: medium: overflow check might fail
 nose_gear.adb:313:43: info: initialization of "Avoid_Div_by_Zero_out1" proved
 nose_gear.adb:322:10: info: initialization of "Relational_Operator_out1" proved

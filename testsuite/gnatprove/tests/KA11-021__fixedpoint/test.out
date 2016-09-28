@@ -1,9 +1,25 @@
-pack.adb:6:25: info: overflow check proved (CVC4: 1 VC)
-pack.adb:6:25: info: range check proved (CVC4: 1 VC)
-pack.adb:7:27: info: overflow check proved (CVC4: 1 VC)
-pack.adb:7:27: medium: range check might fail
-pack.ads:7:12: info: range check proved (CVC4: 2 VC)
-pack.ads:11:48: medium: range check might fail
-pack.ads:18:19: info: postcondition proved (CVC4: 1 VC)
-pack.ads:18:26: info: overflow check proved (CVC4: 1 VC)
-pack.ads:18:47: info: overflow check proved (CVC4: 1 VC)
+
+
+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
+pack.adb
+pack.ads
+Consider also -gnatd.n switch (see debug.adb).
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+be reproduced with the set of files listed.
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Error detected at pack.ads:14:22                                         |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 17.0w (19940713) (spark) Program_Error gnat2why-expr.adb:10547 explicit raise|
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |

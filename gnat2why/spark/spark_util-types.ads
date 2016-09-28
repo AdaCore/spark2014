@@ -131,6 +131,14 @@ package SPARK_Util.Types is
    function Has_Floating_Point_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Float_Kind);
 
+   function Has_Single_Precision_Floating_Point_Type (T : Entity_Id)
+                                                      return Boolean is
+     (Is_Single_Precision_Floating_Point_Type (Retysp (T)));
+
+   function Has_Double_Precision_Floating_Point_Type (T : Entity_Id)
+                                                      return Boolean is
+     (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
+
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds. This includes looking past private types.

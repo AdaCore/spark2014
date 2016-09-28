@@ -17,13 +17,26 @@ module Perm__index
  function first = first,
  function last = last,
  predicate in_range = in_range
+end
 
+module Perm__index__rep
+ use import Perm__index
+ use import "_gnatprove_standard".Main
+
+ clone export "ada__model".Rep_Proj_Int with
+   type t = index,
+   predicate in_range = in_range
+
+ meta "model_projection" function to_rep
+
+ meta "inline : no" function to_rep
 end
 
 module Perm__nat_array
  use import "_gnatprove_standard".Main
  use        Standard__natural
  use        Standard__integer
+ use        Standard__integer__rep
  use        Perm__index
  use        "_gnatprove_standard".Integer
  use import "int".Int
@@ -42,7 +55,7 @@ module Perm__nat_array
  function array_bool_eq = Array__Int__Standard__natural.bool_eq,
  type index_base_type = Standard__integer.integer,
  type index_rep_type = int,
- function to_rep = Standard__integer.to_rep,
+ function to_rep = Standard__integer__rep.to_rep,
  function rep_to_int = index_1_id,
  predicate in_range_base = Standard__integer.in_range,
  predicate index_dynamic_property = Perm__index.dynamic_property,

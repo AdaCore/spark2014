@@ -19,6 +19,7 @@ module Ada__containers__formal_ordered_maps__map__rep
   use import "_gnatprove_standard".Main
   use Ada__containers__hash_type
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
 
   type __split_discrs = {rec__ada__containers__formal_ordered_maps__map__capacity : Ada__containers__count_type.count_type}
 
@@ -52,7 +53,7 @@ module Ada__containers__formal_ordered_maps__map
      l = { __split_discrs = { rec__ada__containers__formal_ordered_maps__map__capacity = l.__split_discrs.rec__ada__containers__formal_ordered_maps__map__capacity }; __split_fields = { rec__ada__containers__formal_ordered_maps__map = l.__split_fields.rec__ada__containers__formal_ordered_maps__map } }
 
    function capacity  (co : map) : int =
-          Ada__containers__count_type.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co))
+          Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co))
 
 end
 
@@ -1283,22 +1284,24 @@ module Ada__containers__formal_ordered_maps__capacity
   use import int.Int
   use import "_gnatprove_standard".Main
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 
-  function capacity__logic (co : map) : int = Ada__containers__count_type.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co))
+  function capacity__logic (co : map) : int = Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co))
 
   val capacity (co : map) : int
-    ensures { result = Ada__containers__count_type.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co)) }
+    ensures { result = Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_ordered_maps__map__capacity (__split_discrs co)) }
 end
 
 module Ada__containers__formal_ordered_maps__reserve_capacity
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_ordered_maps__map
+  use Ada__containers__count_type__rep
 
   val reserve_capacity (co:Ada__containers__formal_ordered_maps__map.__split_fields__ref) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (c : int) : unit
-    requires { Ada__containers__count_type.to_rep cap.rec__ada__containers__formal_ordered_maps__map__capacity >= c }
+    requires { Ada__containers__count_type__rep.to_rep cap.rec__ada__containers__formal_ordered_maps__map__capacity >= c }
     ensures { co.Ada__containers__formal_ordered_maps__map.__split_fields__content = old co.Ada__containers__formal_ordered_maps__map.__split_fields__content }
 end
 
@@ -1340,9 +1343,10 @@ module Ada__containers__formal_ordered_maps__assign
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__Oeq__2
+  use Ada__containers__count_type__rep
 
   val assign (target:Ada__containers__formal_ordered_maps__map.__split_fields__ref) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (source:map) : unit
-     requires { Ada__containers__count_type.to_rep (cap.rec__ada__containers__formal_ordered_maps__map__capacity) >= length_ source }
+     requires { Ada__containers__count_type__rep.to_rep (cap.rec__ada__containers__formal_ordered_maps__map__capacity) >= length_ source }
      writes     { target }
      reads      { target }
      ensures { let rec_t = {Ada__containers__formal_ordered_maps__map.__split_fields = target.Ada__containers__formal_ordered_maps__map.__split_fields__content;
@@ -1356,11 +1360,12 @@ module Ada__containers__formal_ordered_maps__move
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__Oeq__2
+  use Ada__containers__count_type__rep
 
   val move (target:Ada__containers__formal_ordered_maps__map.__split_fields__ref) (t_cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (source:Ada__containers__formal_ordered_maps__map.__split_fields__ref) (s_cap : Ada__containers__formal_ordered_maps__map.__split_discrs) : unit
      requires { let rec_s = {Ada__containers__formal_ordered_maps__map.__split_fields = source.Ada__containers__formal_ordered_maps__map.__split_fields__content;
                               Ada__containers__formal_ordered_maps__map.__split_discrs = s_cap}  in
-                   Ada__containers__count_type.to_rep (t_cap.rec__ada__containers__formal_ordered_maps__map__capacity) >= length_ rec_s }
+                   Ada__containers__count_type__rep.to_rep (t_cap.rec__ada__containers__formal_ordered_maps__map__capacity) >= length_ rec_s }
      writes     { target, source }
      reads      { target, source }
      ensures { let rec_s = {Ada__containers__formal_ordered_maps__map.__split_fields = source.Ada__containers__formal_ordered_maps__map.__split_fields__content;

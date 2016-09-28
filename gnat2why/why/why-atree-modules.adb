@@ -1,4 +1,4 @@
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
@@ -44,17 +44,19 @@ with Why.Inter;           use Why.Inter;
 package body Why.Atree.Modules is
 
    --  procedures to initialize the various modules
-   procedure Init_Main_Module;
+   procedure Init_Boolean_Module;
+   procedure Init_BV_Conv_Modules;
+   procedure Init_BV_Modules;
+   procedure Init_Compat_Tags_Module;
+   procedure Init_Floating_Conv_Module;
+   procedure Init_Floating_Module;
    procedure Init_Integer_Module;
-   procedure Init_Int_Power_Module;
    procedure Init_Int_Abs_Module;
    procedure Init_Int_Div_Module;
    procedure Init_Int_Minmax_Module;
-   procedure Init_Floating_Module;
-   procedure Init_Boolean_Module;
-   procedure Init_BV_Modules;
-   procedure Init_BV_Conv_Modules;
+   procedure Init_Int_Power_Module;
    procedure Init_Labels;
+   procedure Init_Main_Module;
 
    procedure Insert_Why_Symbols (E : Entity_Id);
    --  For the type entity E, add all the Why symbols which can be used for
@@ -87,6 +89,7 @@ package body Why.Atree.Modules is
    Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------
    -- E_Module --
@@ -164,6 +167,32 @@ package body Why.Atree.Modules is
       end if;
    end E_Axiom_Module;
 
+   --------------------
+   -- E_Rep_Module --
+   --------------------
+
+   function E_Rep_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Rep_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E) & "__rep"));
+         begin
+            Rep_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Rep_Module;
+
    ---------------------
    -- Get_Module_Name --
    ---------------------
@@ -221,17 +250,18 @@ package body Why.Atree.Modules is
       --  built-in void ident
 
       Init_Main_Module;
+      Init_Compat_Tags_Module;
       Init_Integer_Module;
       Init_Int_Power_Module;
       Init_Int_Div_Module;
       Init_Int_Abs_Module;
       Init_Int_Minmax_Module;
-      Init_Floating_Module;
-      Init_Boolean_Module;
       Init_BV_Modules;
       Init_BV_Conv_Modules;
+      Init_Floating_Module;
+      Init_Floating_Conv_Module;
+      Init_Boolean_Module;
       Init_Labels;
-
       --  modules of "ada__model" file
 
       Static_Modular_lt8 :=
@@ -286,14 +316,74 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Fixed_Point"));
-      Static_Floating_Point :=
+      Fixed_Point_Float_Conv :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Floating_Point"));
-      Dynamic_Floating_Point :=
+           Name => NID ("FixedPoint_Float_Conv"));
+      Static_Float32 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Float32"));
+      Static_Float64 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Float64"));
+      Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Floating_Point"));
+      Finite_Float32_Literal :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Finite_Float32_Literal"));
+      Finite_Float64_Literal :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Finite_Float64_Literal"));
+      Rep_Proj_Float32 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_Float32"));
+      Rep_Proj_Float64 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_Float64"));
+      Rep_Proj_Int :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_Int"));
+      Rep_Proj_Lt8 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_ltBV8"));
+      Rep_Proj_Lt16 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_ltBV16"));
+      Rep_Proj_Lt32 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_ltBV32"));
+      Rep_Proj_Lt64 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_ltBV64"));
+      Rep_Proj_8 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_BV8"));
+      Rep_Proj_16 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_BV16"));
+      Rep_Proj_32 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_BV32"));
+      Rep_Proj_64 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_BV64"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -359,10 +449,6 @@ package body Why.Atree.Modules is
         New_Identifier (Domain => EW_Term,
                         Symbol => NID ("-"),
                         Typ    => M_Main.Fixed_Type);
-      Real_Unary_Minus :=
-        New_Identifier (Domain => EW_Term,
-                        Symbol => NID ("-."),
-                        Typ    => EW_Real_Type);
 
       Void := New_Identifier (Domain => EW_Term,
                               Symbol => NID ("()"),
@@ -441,49 +527,6 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("*"),
                         Typ    => M_Main.Fixed_Type,
-                        Infix  => True);
-
-      Real_Infix_Add :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID ("+."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Subtr :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID ("-."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Mult :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID ("*."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Le :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID ("<=."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Lt :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID ("<."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Ge :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID (">=."),
-                        Typ    => EW_Real_Type,
-                        Infix  => True);
-      Real_Infix_Gt :=
-        New_Identifier (Module => RealInfix,
-                        Domain => EW_Term,
-                        Symbol => NID (">."),
-                        Typ    => EW_Real_Type,
                         Infix  => True);
 
       --  To_String function
@@ -1102,97 +1145,378 @@ package body Why.Atree.Modules is
       EW_BitVector_64_Type := M_BVs (BV64).T;
    end Init_BV_Modules;
 
+   -----------------------------
+   -- Init_Compat_Tags_Module --
+   -----------------------------
+
+   procedure Init_Compat_Tags_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Compatible_Tags"));
+   begin
+      M_Compat_Tags.Module := M;
+      M_Compat_Tags.Compat_Tags_Id :=
+        New_Identifier (Domain => EW_Pred,
+                        Module => M,
+                        Symbol => NID ("__compatible_tags"),
+                        Typ    => EW_Bool_Type);
+   end Init_Compat_Tags_Module;
+
+   -------------------------------
+   -- Init_Floating_Conv_Module --
+   -------------------------------
+
+   procedure Init_Floating_Conv_Module is
+      M : W_Module_Id;
+   begin
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("FloatConv"));
+      M_Floating_Conv :=
+        M_Floating_Conv_Type'(Module      => M,
+                              To_Float64  =>
+                                New_Identifier (Module => M,
+                                                Domain => EW_Term,
+                                                Symbol =>
+                                                  NID ("to_float64_rne"),
+                                                Typ    => EW_Float_64_Type),
+                              To_Float32  =>
+                                New_Identifier (Module => M,
+                                                Domain => EW_Term,
+                                                Symbol =>
+                                                  NID ("to_float32_rne"),
+                                                Typ    => EW_Float_32_Type),
+                              Range_Check =>
+                                New_Identifier (Module => M,
+                                                Domain => EW_Term,
+                                                Symbol => NID ("range_check_"),
+                                                Typ    => EW_Float_64_Type));
+   end Init_Floating_Conv_Module;
+
    --------------------------
    -- Init_Floating_Module --
    --------------------------
 
    procedure Init_Floating_Module is
-      M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Floating"));
+      Float32_BV_Converter : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_BV_Converter"));
+      Float64_BV_Converter : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_BV_Converter"));
    begin
-      M_Floating.Module := M;
-      M_Floating.Div_Real :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("div_real"));
-      M_Floating.Abs_Real :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("AbsReal.abs"));
-      M_Floating.Ceil :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("ceil"));
-      M_Floating.Floor :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("floor"));
-      M_Floating.Power :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("power"));
-      M_Floating.Real_Of_Int :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("real_of_int"));
-      M_Floating.Round :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("round"));
-      M_Floating.Truncate :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("truncate"));
-      M_Floating.Max :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("real_max"));
-      M_Floating.Min :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("real_min"));
-      M_Floating.Round_Single :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("round_single"));
-      M_Floating.Round_Double :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("round_double"));
-      M_Floating.Bool_Eq :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_eq"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Bool_Ne :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_neq"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Bool_Le :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_le"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Bool_Lt :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_lt"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Bool_Ge :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_ge"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Bool_Gt :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("bool_gt"),
-                        Typ    => EW_Bool_Type);
-      M_Floating.Remainder :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("remainder"));
+      M_Floats (Float32).Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32"));
+      M_Floats (Float64).Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64"));
+      M_Floats (Float32).Power_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_power"));
+      M_Floats (Float64).Power_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_power"));
+      M_Floats (Float32).Next_Prev_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_next_prev"));
+      M_Floats (Float64).Next_Prev_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_next_prev"));
+
+      for Fl in Floating_Kind loop
+         M_Floats (Fl).T :=
+           New_Type (Type_Kind  => EW_Builtin,
+                     Name       => New_Name (Symbol => NID ("t"),
+                                             Module => M_Floats (Fl).Module),
+                     Is_Mutable => False);
+         M_Floats (Fl).Bool_Eq :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_eq"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Bool_Ne :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_neq"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Bool_Le :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_le"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Bool_Lt :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_lt"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Bool_Ge :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_ge"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Bool_Gt :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("bool_gt"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Max :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("max"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Min :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("min"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Abs_Float :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("abs"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Ceil :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("ceil"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Floor :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("floor"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Is_Finite :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("is_finite"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Power :=
+           New_Identifier (Module => M_Floats (Fl).Power_Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("power"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).To_Int :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("to_int_rna"),
+                           Typ    => EW_Int_Type);
+         M_Floats (Fl).Rounding :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("rounding"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_Int :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("of_int_rna"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Truncate :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("truncate"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Unary_Minus :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("neg"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Add :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("add_rne"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Subtr :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("sub_rne"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Mult :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("mul_rne"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Div :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("div_rne"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Remainder :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("rem"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Le :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("le"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Lt :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("lt"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Ge :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("ge"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Gt :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("gt"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Eq :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("eq"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Neq :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("neq"),
+                           Typ    => EW_Bool_Type);
+         M_Floats (Fl).Prev_Rep :=
+           New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("prev_representable"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Next_Rep :=
+           New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("next_representable"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Plus_Zero :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("zeroF"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).One :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("one"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV8 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv8_rna"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV16 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv16_rna"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV32 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv32_rna"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV64 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv64_rna"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV8_RTN :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv8_rtn"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV16_RTN :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv16_rtn"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV32_RTN :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv32_rtn"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV64_RTN :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv64_rtn"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV8_RTP :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv8_rtp"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV16_RTP :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv16_rtp"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV32_RTP :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv32_rtp"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Of_BV64_RTP :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("of_ubv64_rtp"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).To_BV8 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("to_ubv8_rna"),
+                           Typ    => EW_BitVector_8_Type);
+         M_Floats (Fl).To_BV16 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("to_ubv16_rna"),
+                           Typ    => EW_BitVector_16_Type);
+         M_Floats (Fl).To_BV32 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("to_ubv32_rna"),
+                           Typ    => EW_BitVector_32_Type);
+         M_Floats (Fl).To_BV64 :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("to_ubv64_rna"),
+                           Typ    => EW_BitVector_64_Type);
+         M_Floats (Fl).Range_Check :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("range_check_"),
+                           Typ    => M_Floats (Fl).T);
+      end loop;
+
+      EW_Float_32_Type := M_Floats (Float32).T;
+      EW_Float_64_Type := M_Floats (Float64).T;
    end Init_Floating_Module;
 
    -------------------------
@@ -1385,11 +1709,6 @@ package body Why.Atree.Modules is
                         Symbol => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
 
-      M_Main.Compat_Tags_Id :=
-        New_Identifier (Domain => EW_Pred,
-                        Module => M,
-                        Symbol => NID ("__compatible_tags"),
-                        Typ    => EW_Bool_Type);
       EW_Fixed_Type := M_Main.Fixed_Type;
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;
@@ -1650,20 +1969,31 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E, WNE_To_Rep,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("to_rep"),
-                     Typ    => Base));
-               Insert_Symbol
-                 (E, WNE_Of_Rep,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("of_rep"),
-                     Typ    => Ty));
+
+               declare
+                  RM : constant W_Module_Id :=
+                    (if not Is_Fixed_Point_Type (E)
+                     and then Is_Scalar_Type (E)
+                     and then not Type_Is_Modeled_As_Base (E)
+                     then E_Rep_Module (E)
+                     else M);
+               begin
+                  Insert_Symbol
+                    (E, WNE_To_Rep,
+                     New_Identifier
+                       (Module => RM,
+                        Domain => EW_Term,
+                        Symbol => NID ("to_rep"),
+                        Typ    => Base));
+                  Insert_Symbol
+                    (E, WNE_Of_Rep,
+                     New_Identifier
+                       (Module => RM,
+                        Domain => EW_Term,
+                        Symbol => NID ("of_rep"),
+                        Typ    => Ty));
+               end;
+
                Insert_Symbol
                  (E, WNE_Attr_First,
                   New_Identifier
@@ -1695,10 +2025,12 @@ package body Why.Atree.Modules is
 
                if Has_Modular_Integer_Type (E) then
                   declare
+                     RM : constant W_Module_Id := E_Rep_Module (E);
+
                      To_Int : constant W_Identifier_Id :=
                        New_Identifier
                          (Symbol => NID ("to_int"),
-                          Module => M,
+                          Module => RM,
                           Domain => EW_Term,
                           Typ    => EW_Int_Type);
                   begin
@@ -1788,6 +2120,41 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => Base));
                   Insert_Symbol
+                    (E, WNE_Of_Real,
+                     New_Identifier
+                       (Symbol => NID ("of_real"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_Of_Float32,
+                     New_Identifier
+                       (Symbol => NID ("of_float32"),
+                        Module => Fixed_Point_Float_Conv,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_Of_Float64,
+                     New_Identifier
+                       (Symbol => NID ("of_float64"),
+                        Module => Fixed_Point_Float_Conv,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_To_Float32,
+                     New_Identifier
+                       (Symbol => NID ("to_float32"),
+                        Module => Fixed_Point_Float_Conv,
+                        Domain => EW_Term,
+                        Typ    => M_Floats (Float32).T));
+                  Insert_Symbol
+                    (E, WNE_To_Float64,
+                        New_Identifier
+                       (Symbol => NID ("to_float64"),
+                        Module => Fixed_Point_Float_Conv,
+                        Domain => EW_Term,
+                        Typ    => M_Floats (Float64).T));
+                  Insert_Symbol
                     (E, WNE_Fixed_Point_Mult,
                      New_Identifier
                        (Symbol => NID ("fxp_mult"),
@@ -1822,67 +2189,6 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
-                  Insert_Symbol
-                    (E, WNE_To_Real,
-                     New_Identifier
-                       (Symbol => NID ("to_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
-                  Insert_Symbol
-                    (E, WNE_Of_Real,
-                     New_Identifier
-                       (Symbol => NID ("of_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Fixed_Type));
-               end if;
-
-               --  symbols for floating point types
-
-               if Is_Floating_Point_Type (E) then
-                  Insert_Symbol
-                    (E, WNE_To_Real,
-                     New_Identifier
-                       (Symbol => NID ("to_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
-                  Insert_Symbol
-                    (E, WNE_Of_Real,
-                     New_Identifier
-                       (Symbol => NID ("of_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Ty));
-                  Insert_Symbol
-                    (E, WNE_Float_Round_Tmp,
-                     New_Identifier
-                       (Symbol => NID ("round_real_tmp"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
-                  Insert_Symbol
-                    (E, WNE_Float_Round,
-                     New_Identifier
-                       (Symbol => NID ("round_real"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
-                  Insert_Symbol
-                    (E, WNE_Float_Pred,
-                     New_Identifier
-                       (Symbol => NID ("prev_representable"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
-                  Insert_Symbol
-                    (E, WNE_Float_Succ,
-                     New_Identifier
-                       (Symbol => NID ("next_representable"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Real_Type));
                end if;
             end;
 
@@ -2088,13 +2394,20 @@ package body Why.Atree.Modules is
                if Ar_Dim = 1 and then
                  Is_Discrete_Type (Component_Type (E))
                then
-                  Insert_Symbol
-                    (E, WNE_To_Rep,
-                     New_Identifier
-                       (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("to_rep"),
-                        Typ    => EW_Abstract (Component_Type (E))));
+                  declare
+                     RM : constant W_Module_Id :=
+                       (if not Type_Is_Modeled_As_Base (E)
+                        then E_Rep_Module (E)
+                        else M);
+                  begin
+                     Insert_Symbol
+                       (E, WNE_To_Rep,
+                        New_Identifier
+                          (Module => RM,
+                           Domain => EW_Term,
+                           Symbol => NID ("to_rep"),
+                           Typ    => EW_Abstract (Component_Type (E))));
+                  end;
                end if;
                for Dim in 1 .. Ar_Dim loop
                   declare
@@ -2194,5 +2507,20 @@ package body Why.Atree.Modules is
          raise Program_Error;
       end if;
    end MF_BVs;
+
+   ---------------
+   -- MF_Floats --
+   ---------------
+
+   function MF_Floats (T : W_Type_Id) return M_Floating_Type is
+   begin
+      if T = EW_Float_32_Type then
+         return M_Floats (Float32);
+      elsif T = EW_Float_64_Type then
+         return M_Floats (Float64);
+      else
+         raise Program_Error;
+      end if;
+   end MF_Floats;
 
 end Why.Atree.Modules;

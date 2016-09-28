@@ -61,7 +61,9 @@ package Why.Atree.Modules is
    EW_Private_Type      : W_Type_Id;         --  alias of Main.Private_Type
    EW_Prop_Type         : W_Type_Id;
    EW_Fixed_Type        : W_Type_Id;         --  alias of Main.Fixed_Type
-   EW_Real_Type         : W_Type_Id;
+   EW_Real_Type         : W_Type_Id;         --  used for Universal Fixed
+   EW_Float_32_Type     : W_Type_Id;
+   EW_Float_64_Type     : W_Type_Id;
    EW_BitVector_8_Type  : W_Type_Id;
    EW_BitVector_16_Type : W_Type_Id;
    EW_BitVector_32_Type : W_Type_Id;
@@ -83,8 +85,23 @@ package Why.Atree.Modules is
    Dynamic_Discrete       : W_Module_Id;
    Static_Fixed_Point     : W_Module_Id;
    Dynamic_Fixed_Point    : W_Module_Id;
-   Static_Floating_Point  : W_Module_Id;
-   Dynamic_Floating_Point : W_Module_Id;
+   Fixed_Point_Float_Conv : W_Module_Id;
+   Static_Float32         : W_Module_Id;
+   Static_Float64         : W_Module_Id;
+   Dynamic_Float          : W_Module_Id;
+   Finite_Float32_Literal : W_Module_Id;
+   Finite_Float64_Literal : W_Module_Id;
+   Rep_Proj_Float32       : W_Module_Id;
+   Rep_Proj_Float64       : W_Module_Id;
+   Rep_Proj_Int           : W_Module_Id;
+   Rep_Proj_Lt8           : W_Module_Id;
+   Rep_Proj_Lt16          : W_Module_Id;
+   Rep_Proj_Lt32          : W_Module_Id;
+   Rep_Proj_Lt64          : W_Module_Id;
+   Rep_Proj_8             : W_Module_Id;
+   Rep_Proj_16            : W_Module_Id;
+   Rep_Proj_32            : W_Module_Id;
+   Rep_Proj_64            : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -107,7 +124,11 @@ package Why.Atree.Modules is
       Return_Exc        : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
-      Compat_Tags_Id    : W_Identifier_Id;
+   end record;
+
+   type M_Compat_Tags_Type is record
+      Module         : W_Module_Id;
+      Compat_Tags_Id : W_Identifier_Id;
    end record;
 
    type M_Integer_Type is record
@@ -146,26 +167,67 @@ package Why.Atree.Modules is
    end record;
 
    type M_Floating_Type is record
-      Module       : W_Module_Id;
-      Bool_Eq      : W_Identifier_Id;
-      Bool_Ne      : W_Identifier_Id;
-      Bool_Le      : W_Identifier_Id;
-      Bool_Lt      : W_Identifier_Id;
-      Bool_Ge      : W_Identifier_Id;
-      Bool_Gt      : W_Identifier_Id;
-      Max          : W_Identifier_Id;
-      Min          : W_Identifier_Id;
-      Round_Single : W_Identifier_Id;
-      Round_Double : W_Identifier_Id;
-      Real_Of_Int  : W_Identifier_Id;
-      Round        : W_Identifier_Id;
-      Div_Real     : W_Identifier_Id;
-      Abs_Real     : W_Identifier_Id;
-      Ceil         : W_Identifier_Id;
-      Floor        : W_Identifier_Id;
-      Power        : W_Identifier_Id;
-      Truncate     : W_Identifier_Id;
-      Remainder    : W_Identifier_Id;
+      Module                : W_Module_Id;
+      Power_Module          : W_Module_Id;
+      Next_Prev_Module      : W_Module_Id;
+      T                     : W_Type_Id;
+      Bool_Eq               : W_Identifier_Id;
+      Bool_Ne               : W_Identifier_Id;
+      Bool_Le               : W_Identifier_Id;
+      Bool_Lt               : W_Identifier_Id;
+      Bool_Ge               : W_Identifier_Id;
+      Bool_Gt               : W_Identifier_Id;
+      Max                   : W_Identifier_Id;
+      Min                   : W_Identifier_Id;
+      Abs_Float             : W_Identifier_Id;
+      Ceil                  : W_Identifier_Id;
+      Floor                 : W_Identifier_Id;
+      Is_Finite             : W_Identifier_Id;
+      Power                 : W_Identifier_Id;
+      Rounding              : W_Identifier_Id;
+      Of_Int                : W_Identifier_Id;
+      To_Int                : W_Identifier_Id;
+      Truncate              : W_Identifier_Id;
+      Unary_Minus           : W_Identifier_Id;
+      Add                   : W_Identifier_Id;
+      Subtr                 : W_Identifier_Id;
+      Mult                  : W_Identifier_Id;
+      Div                   : W_Identifier_Id;
+      Remainder             : W_Identifier_Id;
+      Le                    : W_Identifier_Id;
+      Lt                    : W_Identifier_Id;
+      Ge                    : W_Identifier_Id;
+      Gt                    : W_Identifier_Id;
+      Eq                    : W_Identifier_Id;
+      Neq                   : W_Identifier_Id;
+      Next_Rep              : W_Identifier_Id;
+      Prev_Rep              : W_Identifier_Id;
+      Of_BV8                : W_Identifier_Id;
+      Of_BV16               : W_Identifier_Id;
+      Of_BV32               : W_Identifier_Id;
+      Of_BV64               : W_Identifier_Id;
+      To_BV8                : W_Identifier_Id;
+      To_BV16               : W_Identifier_Id;
+      To_BV32               : W_Identifier_Id;
+      To_BV64               : W_Identifier_Id;
+      Of_BV8_RTP            : W_Identifier_Id;
+      Of_BV16_RTP           : W_Identifier_Id;
+      Of_BV32_RTP           : W_Identifier_Id;
+      Of_BV64_RTP           : W_Identifier_Id;
+      Of_BV8_RTN            : W_Identifier_Id;
+      Of_BV16_RTN           : W_Identifier_Id;
+      Of_BV32_RTN           : W_Identifier_Id;
+      Of_BV64_RTN           : W_Identifier_Id;
+      Range_Check           : W_Identifier_Id;
+      Plus_Zero             : W_Identifier_Id;
+      One                   : W_Identifier_Id;
+   end record;
+
+   type M_Floating_Conv_Type is record
+      Module      : W_Module_Id;
+      To_Float64  : W_Identifier_Id;
+      To_Float32  : W_Identifier_Id;
+      Range_Check : W_Identifier_Id;
    end record;
 
    type M_Boolean_Type is record
@@ -280,14 +342,15 @@ package Why.Atree.Modules is
       Range_Check : W_Identifier_Id;
    end record;
 
-   M_Main       : M_Main_Type;
-   M_Integer    : M_Integer_Type;
-   M_Int_Power  : M_Int_Power_Type;
-   M_Int_Div    : M_Int_Div_Type;
-   M_Int_Abs    : M_Int_Abs_Type;
-   M_Int_Minmax : M_Int_Minmax_Type;
-   M_Floating   : M_Floating_Type;
-   M_Boolean    : M_Boolean_Type;
+   M_Main          : M_Main_Type;
+   M_Compat_Tags   : M_Compat_Tags_Type;
+   M_Integer       : M_Integer_Type;
+   M_Int_Power     : M_Int_Power_Type;
+   M_Int_Div       : M_Int_Div_Type;
+   M_Int_Abs       : M_Int_Abs_Type;
+   M_Int_Minmax    : M_Int_Minmax_Type;
+   M_Boolean       : M_Boolean_Type;
+   M_Floating_Conv : M_Floating_Conv_Type;
 
    --  M_Arrays(_..), are hashed maps of M_Array(_..)_Type indexed by Name_Ids.
    --  The keys are generated by "Get_Array_Theory_Name", and the elements
@@ -345,11 +408,19 @@ package Why.Atree.Modules is
    --  @param T a bitvector type as Why tree node
    --  @return the corresponding Why module record
 
-   --  Built-in unary minus
+   type Floating_Kind is (Float32, Float64);
+
+   M_Floats : array (Floating_Kind) of M_Floating_Type;
+
+   function MF_Floats (T : W_Type_Id) return M_Floating_Type;
+   --  same as M_Floats but can be used with a Float type in W_Type_Id format
+   --  @param T a Floating type as Why tree node
+   --  @return the corresponding Why module record
+
+   --  Builtin unary minus
 
    Int_Unary_Minus   : W_Identifier_Id;
    Fixed_Unary_Minus : W_Identifier_Id;
-   Real_Unary_Minus  : W_Identifier_Id;
 
    --  Built-in void ident
 
@@ -370,14 +441,6 @@ package Why.Atree.Modules is
    Fixed_Infix_Add   : W_Identifier_Id;
    Fixed_Infix_Subtr : W_Identifier_Id;
    Fixed_Infix_Mult  : W_Identifier_Id;
-
-   Real_Infix_Add    : W_Identifier_Id;
-   Real_Infix_Subtr  : W_Identifier_Id;
-   Real_Infix_Mult   : W_Identifier_Id;
-   Real_Infix_Lt     : W_Identifier_Id;
-   Real_Infix_Le     : W_Identifier_Id;
-   Real_Infix_Gt     : W_Identifier_Id;
-   Real_Infix_Ge     : W_Identifier_Id;
 
    To_String_Id      : W_Identifier_Id;
    Of_String_Id      : W_Identifier_Id;
@@ -413,6 +476,11 @@ package Why.Atree.Modules is
    --  @param S a symbol which is allowed for that type entity
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
+
+   function E_Rep_Module (E : Entity_Id) return W_Module_Id;
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__rep"). Memoization may be used. Returns Empty when it is called with
+   --  a node which is not an entity, and no module is known for this entity.
 
    function Get_Module_Name (M : W_Module_Id) return String;
    --  Return the name of the module

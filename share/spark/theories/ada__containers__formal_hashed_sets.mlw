@@ -18,6 +18,7 @@ module Ada__containers__formal_hashed_sets__set__rep
   use import "_gnatprove_standard".Main
   use Ada__containers__hash_type
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
 
   type __split_discrs = { rec__ada__containers__formal_hashed_sets__set__capacity : Ada__containers__count_type.count_type;
                           rec__ada__containers__formal_hashed_sets__set__modulus : Ada__containers__hash_type.hash_type }
@@ -52,7 +53,7 @@ module Ada__containers__formal_hashed_sets__set
      l = { __split_discrs = { rec__ada__containers__formal_hashed_sets__set__capacity = l.__split_discrs.rec__ada__containers__formal_hashed_sets__set__capacity; rec__ada__containers__formal_hashed_sets__set__modulus = l.__split_discrs.rec__ada__containers__formal_hashed_sets__set__modulus }; __split_fields = { rec__ada__containers__formal_hashed_sets__set = l.__split_fields.rec__ada__containers__formal_hashed_sets__set } }
 
    function capacity  (co : set) : int =
-          Ada__containers__count_type.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co))
+          Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co))
 end
 
 module Ada__containers__formal_hashed_sets__length
@@ -1190,22 +1191,24 @@ module Ada__containers__formal_hashed_sets__capacity
   use import int.Int
   use import "_gnatprove_standard".Main
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
 
-  function capacity__logic (co : set) : int = Ada__containers__count_type.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co))
+  function capacity__logic (co : set) : int = Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co))
 
   val capacity (co : set) : int
-    ensures { result = Ada__containers__count_type.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co)) }
+    ensures { result = Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_hashed_sets__set__capacity (__split_discrs co)) }
 end
 
 module Ada__containers__formal_hashed_sets__reserve_capacity
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_sets__set
+  use Ada__containers__count_type__rep
 
   val reserve_capacity (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (c : int) : unit
-    requires { Ada__containers__count_type.to_rep cap.rec__ada__containers__formal_hashed_sets__set__capacity >= c }
+    requires { Ada__containers__count_type__rep.to_rep cap.rec__ada__containers__formal_hashed_sets__set__capacity >= c }
     ensures { co.Ada__containers__formal_hashed_sets__set.__split_fields__content = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content }
 end
 
@@ -1295,9 +1298,10 @@ module Ada__containers__formal_hashed_sets__assign
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
   use import Ada__containers__formal_hashed_sets__Oeq__2
+  use Ada__containers__count_type__rep
 
   val assign (target:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:set) : unit
-     requires { Ada__containers__count_type.to_rep cap.rec__ada__containers__formal_hashed_sets__set__capacity >= length_ source }
+     requires { Ada__containers__count_type__rep.to_rep cap.rec__ada__containers__formal_hashed_sets__set__capacity >= length_ source }
      writes     { target }
      reads      { target }
      ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = target.Ada__containers__formal_hashed_sets__set.__split_fields__content;
@@ -1311,11 +1315,12 @@ module Ada__containers__formal_hashed_sets__move
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
   use import Ada__containers__formal_hashed_sets__Oeq__2
+  use Ada__containers__count_type__rep
 
   val move (target:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (t_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (s_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) : unit
      requires { let rec_s = {Ada__containers__formal_hashed_sets__set.__split_fields = source.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = s_cap}  in
-                   Ada__containers__count_type.to_rep t_cap.rec__ada__containers__formal_hashed_sets__set__capacity >= length_ rec_s }
+                   Ada__containers__count_type__rep.to_rep t_cap.rec__ada__containers__formal_hashed_sets__set__capacity >= length_ rec_s }
      writes     { target, source }
      reads      { target, source }
      ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = target.Ada__containers__formal_hashed_sets__set.__split_fields__content;

@@ -2,6 +2,7 @@ module Ada__containers__formal_doubly_linked_lists__list__rep
   use import int.Int
   use import "_gnatprove_standard".Main
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
 
   type __split_discrs = {rec__ada__containers__formal_doubly_linked_lists__list__capacity : Ada__containers__count_type.count_type}
 
@@ -33,9 +34,9 @@ module Ada__containers__formal_doubly_linked_lists__list
 
   predicate list_inv "inline" (l : list) =
      l = { __split_discrs = { rec__ada__containers__formal_doubly_linked_lists__list__capacity = l.__split_discrs.rec__ada__containers__formal_doubly_linked_lists__list__capacity }; __split_fields = { rec__ada__containers__formal_doubly_linked_lists__list = l.__split_fields.rec__ada__containers__formal_doubly_linked_lists__list } }
- 
+
    function capacity  (co : list) : int =
-          Ada__containers__count_type.to_rep (rec__ada__containers__formal_doubly_linked_lists__list__capacity (__split_discrs (co)))
+          Ada__containers__count_type__rep.to_rep (rec__ada__containers__formal_doubly_linked_lists__list__capacity (__split_discrs (co)))
 end
 
 module Ada__containers__formal_doubly_linked_lists__length

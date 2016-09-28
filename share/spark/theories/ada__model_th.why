@@ -6,11 +6,3 @@ theory Discrete_Base_Theory
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 end
-
-theory Floating_Point_Theory
-  use export bool.Bool
-
-  function bool_eq (x : real) (y : real) : bool =
-    if x = y then True else False
-
-end

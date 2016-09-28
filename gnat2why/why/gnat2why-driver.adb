@@ -803,11 +803,7 @@ package body Gnat2Why.Driver is
                Translate_Type (File, E, New_Theory);
             end if;
 
-         when Named_Kind =>
-            if Entity_In_SPARK (E) then
-               Translate_Constant (File, E);
-               Translate_Constant_Value (Compl_File, E);
-            end if;
+         when Named_Kind => return;  --  Ignore named kind
 
          when Object_Kind =>
 
@@ -946,7 +942,6 @@ package body Gnat2Why.Driver is
       Translate_Standard_Entity (Standard_Integer_32);
       Translate_Standard_Entity (Standard_Integer_64);
       Translate_Standard_Entity (Universal_Integer);
-      Translate_Standard_Entity (Universal_Real);
 
    end Translate_Standard_Package;
 

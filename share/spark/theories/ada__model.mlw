@@ -1,8 +1,29 @@
+module Rep_Proj_Base
+  (* Basis for modules specifying to_rep/of_rep for all scalar types. *)
+  type t
+  type rep_type
+
+  function to_rep t : rep_type
+  function of_rep rep_type : t
+
+  val of_rep (x : rep_type) : t
+    requires { true }
+    ensures  { to_rep (result) = x }
+
+  predicate in_range (x : rep_type)
+
+  axiom inversion_axiom :
+    forall x : t [to_rep x].
+      of_rep (to_rep x) = x
+
+  axiom range_axiom :
+    forall x : t [to_rep x]. in_range (to_rep x)
+end
+
 module Discrete_Base
-  (* The module that is used as basis for all discrete types. It contains the
-    whole discrete theory, except the coerce_axiom which differs between
-    modular and non-modular types, and range-related functions and axioms which
-    differ between "static" and "dynamic" discrete types. *)
+  (* The module that is used as basis for all discrete types. It
+    contains the whole discrete theory, except the projections
+    to_rep/of_rep and associated axioms. *)
 
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Integer
@@ -24,14 +45,6 @@ module Discrete_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function to_rep t : rep_type
-
-  function of_rep rep_type : t
-
-  val of_rep (x : rep_type) : t
-    requires { true }
-    ensures { to_rep (result) = x }
-
   function user_eq (x : t) (y : t) : bool
 
   function dummy : t
@@ -39,20 +52,17 @@ end
 
 module Static_Discrete_Base
   (* The module that is used as basis for all "static" discrete types.
-     It contains the whole discrete theory, except the coerce_axiom which
-     differs between modular and non-modular types. "Static" here means that
-     Why only sees a static version of the type, with constants for the bounds,
-     even though this might correspond to dynamic types in Ada. *)
+     It contains the whole discrete theory, exceptt he projections
+     to_rep/of_rep and associated axioms. "Static" here means that Why
+     only sees a static version of the type, with constants for the
+     bounds, even though this might correspond to dynamic types in
+     Ada. *)
 
   clone export Discrete_Base
 
   function first : rep_type
 
   function last  : rep_type
-
-  axiom inversion_axiom :
-    forall x : t [to_rep x].
-    of_rep (to_rep (x)) = x
 
   val check_not_last (n : rep_type) : rep_type
     requires { n <> last }
@@ -68,9 +78,6 @@ module Static_Discrete_Base
     requires { in_range n }
     ensures { result = n /\ in_range n}
 
-  axiom range_axiom :
-    forall x : t [to_rep x]. in_range (to_rep x)
-
   predicate dynamic_property "inline" (f l x : rep_type) = in_range x
 end
 
@@ -78,6 +85,14 @@ module Static_Discrete
   use import int.Int
 
   clone export Static_Discrete_Base with
+    type rep_type = int
+end
+
+module Rep_Proj_Int
+  (* Specification of to_rep when rep_type = int; add coercion axiom. *)
+  use import int.Int
+
+  clone export Rep_Proj_Base with
     type rep_type = int
 
   axiom coerce_axiom :
@@ -90,23 +105,65 @@ module Static_Modular_Base
 
   clone export Static_Discrete_Base
 
+  function rep_to_int rep_type : int
+
   (* for conversions from int to bitvectors, we need to be able to do
      the range check directly in int. *)
   predicate in_range_int int
-
-  function rep_to_int rep_type : int
-
-  function to_int (x : t) : int = rep_to_int (to_rep x) (* used for modular indexed arrays cloning *)
 
   val range_check_int_ (n : int) : int
     requires { in_range_int n }
     ensures { result = n /\ in_range_int n }
 
-  axiom range_int_axiom :
-    forall x : t [to_int x]. in_range_int (to_int x)
-
   predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
 end
+
+module Rep_Proj_ltBVGen
+  (* Basis for specification of to_rep when rep_type is a BV with
+     modulus smaller than 2**(8/16/32/64); add coercion axiom and
+     to_int spec. Used in parallel with Static_Modular_lt* *)
+  clone export Rep_Proj_Base
+
+  function urem rep_type rep_type : rep_type
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+
+  function rep_to_int rep_type : int
+
+  predicate in_range_int int
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      let y = urem x attr__ATTRIBUTE_MODULUS in
+        in_range y -> to_rep (of_rep x) = y
+
+  function to_int (x : t) : int = rep_to_int (to_rep x) (* used for modular indexed arrays cloning *)
+
+  axiom range_int_axiom :
+    forall x : t [to_int x]. in_range_int (to_int x)
+end
+
+module Rep_Proj_BVGen
+  (* Basis for specification of to_rep when rep_type is a BV with
+     modulus equal to 2**(8/16/32/64); add coercion axiom and
+     to_int spec. Used in parallel with Static_Modular_* *)
+  clone export Rep_Proj_Base
+
+  function rep_to_int rep_type : int
+
+  predicate in_range_int int
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+        in_range x -> to_rep (of_rep x) = x
+
+  function to_int (x : t) : int = rep_to_int (to_rep x) (* used for modular indexed arrays cloning *)
+
+  axiom range_int_axiom :
+    forall x : t [to_int x]. in_range_int (to_int x)
+end
+
+(* ---- Modular with modulus lower or equal to 64 ---- *)
 
 module Static_Modular_lt64
   use _gnatprove_standard.BV64
@@ -119,11 +176,20 @@ module Static_Modular_lt64
     function rep_to_int = rep_to_int
 
   function attr__ATTRIBUTE_MODULUS : rep_type
+end
 
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      let y = BV64.urem x attr__ATTRIBUTE_MODULUS in
-        in_range y -> to_rep (of_rep x) = y
+module Rep_Proj_ltBV64
+  use import _gnatprove_standard.BV64
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_ltBVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int,
+    function urem = urem
+
+  (* need to specify modulus when cloning this *)
 end
 
 module Static_Modular_64
@@ -135,11 +201,20 @@ module Static_Modular_64
   clone export Static_Modular_Base with
     type rep_type = rep_type,
     function rep_to_int = rep_to_int
-
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      in_range x -> to_rep (of_rep x) = x
 end
+
+module Rep_Proj_BV64
+  use import _gnatprove_standard.BV64
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_BVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
+(* ---- Modular with modulus lower or equal to 32 ---- *)
 
 module Static_Modular_lt32
   use _gnatprove_standard.BV32
@@ -152,11 +227,20 @@ module Static_Modular_lt32
     function rep_to_int = rep_to_int
 
   function attr__ATTRIBUTE_MODULUS : rep_type
+end
 
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      let y = BV32.urem x attr__ATTRIBUTE_MODULUS in
-        in_range y -> to_rep (of_rep x) = y
+module Rep_Proj_ltBV32
+  use import _gnatprove_standard.BV32
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_ltBVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int,
+    function urem = urem
+
+  (* need to specify modulus when cloning this *)
 end
 
 module Static_Modular_32
@@ -168,11 +252,20 @@ module Static_Modular_32
   clone export Static_Modular_Base with
     type rep_type = rep_type,
     function rep_to_int = rep_to_int
-
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      in_range x -> to_rep (of_rep x) = x
 end
+
+module Rep_Proj_BV32
+  use import _gnatprove_standard.BV32
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_BVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
+(* ---- Modular with modulus lower or equal to 16 ---- *)
 
 module Static_Modular_lt16
   use _gnatprove_standard.BV16
@@ -185,11 +278,20 @@ module Static_Modular_lt16
     function rep_to_int = rep_to_int
 
   function attr__ATTRIBUTE_MODULUS : rep_type
+end
 
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      let y = BV16.urem x attr__ATTRIBUTE_MODULUS in
-        in_range y -> to_rep (of_rep x) = y
+module Rep_Proj_ltBV16
+  use import _gnatprove_standard.BV16
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_ltBVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int,
+    function urem = urem
+
+  (* need to specify modulus when cloning this *)
 end
 
 module Static_Modular_16
@@ -201,11 +303,20 @@ module Static_Modular_16
   clone export Static_Modular_Base with
     type rep_type = rep_type,
     function rep_to_int = rep_to_int
-
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      in_range x -> to_rep (of_rep x) = x
 end
+
+module Rep_Proj_BV16
+  use import _gnatprove_standard.BV16
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_BVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
+(* ---- Modular with modulus lower or equal to 8 ---- *)
 
 module Static_Modular_lt8
   use _gnatprove_standard.BV8
@@ -218,11 +329,20 @@ module Static_Modular_lt8
     function rep_to_int = rep_to_int
 
   function attr__ATTRIBUTE_MODULUS : rep_type
+end
 
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      let y = BV8.urem x attr__ATTRIBUTE_MODULUS in
-        in_range y -> to_rep (of_rep x) = y
+module Rep_Proj_ltBV8
+  use import _gnatprove_standard.BV8
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_ltBVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int,
+    function urem = urem
+
+  (* need to specify modulus when cloning this *)
 end
 
 module Static_Modular_8
@@ -234,11 +354,20 @@ module Static_Modular_8
   clone export Static_Modular_Base with
     type rep_type = rep_type,
     function rep_to_int = rep_to_int
-
-  axiom coerce_axiom :
-    forall x : rep_type [to_rep (of_rep x)].
-      in_range x -> to_rep (of_rep x) = x
 end
+
+module Rep_Proj_BV8
+  use import _gnatprove_standard.BV8
+  type rep_type = t
+
+  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+
+  clone export Rep_Proj_BVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
+(* ---- Dynamic types ---- *)
 
 module Dynamic_Discrete
   type rep_type
@@ -253,9 +382,7 @@ module Dynamic_Discrete
 
   clone export Discrete_Base
       with type t = t,
-      type rep_type = rep_type,
-      function of_rep = of_rep,
-      function to_rep = to_rep
+      type rep_type = rep_type
 
   predicate dynamic_property (first last n : rep_type)
 
@@ -566,11 +693,21 @@ module Fixed_Point_Base
       else (* x < 0 *)
         pos_div_relation (- (to_int x)) (-x) inv_small
 
-  (* conversion functions from/to real *)
-
-  function to_real __fixed : real
+  (* conversion function from real *)
 
   function of_real real : __fixed
+end
+
+module FixedPoint_Float_Conv
+  use "_gnatprove_standard".Float32
+  use "_gnatprove_standard".Float64
+  use "_gnatprove_standard".Main
+
+  function to_float32 Main.__fixed : Float32.t
+  function of_float32 Float32.t : Main.__fixed
+
+  function to_float64 Main.__fixed : Float64.t
+  function of_float64 Float64.t : Main.__fixed
 end
 
 module Static_Fixed_Point
@@ -653,48 +790,26 @@ module Floating_Point_Base
   (* The module that is used as basis for all floating-point types. *)
 
   use import "_gnatprove_standard".Main
-  use        "_gnatprove_standard".Floating
-  use import real.RealInfix
-  use export "ada__model_th".Floating_Point_Theory
+
+  type rep_type                 (* either float32 or float64 *)
+
+  predicate eq rep_type rep_type
+  predicate is_finite rep_type
+
+  function bool_eq (x : rep_type) (y : rep_type) : bool =
+    if eq x y then True else False
 
   type t
 
-  (* This module will be cloned and round_real_tmp possibly replaced.
-     We keep round_real to denote the resulting rounding function. *)
-
-  function round_real_tmp real : real
-  function round_real (x : real) : real = round_real_tmp (x)
-
-  function to_real t : real
-
-  function of_real real : t
-
-  val of_real (x : real) : t
-    requires { true }
-    ensures  { to_real (result) = x }
-
   function user_eq (x : t) (y : t) : bool
 
-  (* Next and previous representable reals. The functions return respectively
-     the representable real greater than or lower than the argument x, which
-     may or not be representable. *)
-
-  function next_representable (x : real) : real
-  function prev_representable (x : real) : real
-
-  axiom next_representable_def :
-    forall x : real [next_representable x]. next_representable x >. x
-
-  axiom prev_representable_def :
-    forall x : real [prev_representable x]. prev_representable x <. x
-
-  function attr__ATTRIBUTE_IMAGE real : __image
+  function attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-  function attr__ATTRIBUTE_VALUE __image : real
+  function attr__ATTRIBUTE_VALUE __image : rep_type
 
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : real
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : rep_type
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
@@ -704,73 +819,150 @@ end
 module Static_Floating_Point
   (* The module that is used as basis for all "static" floating-point types. *)
 
-  use import real.RealInfix
   clone export Floating_Point_Base
 
-  axiom inversion_axiom :
-    forall x : t [to_real x].
-      of_real (to_real (x)) = x
+  function first : rep_type
 
-  function first : real
+  function last  : rep_type
 
-  function last  : real
-
-  (* The first and last value of the floating-point type are exactly
-     represented. So round_real is the identity on such values. *)
-
-  axiom representable_first :
-    round_real first = first
-
-  axiom representable_last :
-    round_real last = last
-
-  val check_not_last (n : real) : real
+  val check_not_last (n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (n : real) : real
+  val check_not_first (n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n }
 
-  predicate in_range (x : real)
+  predicate in_range (x : rep_type)
 
-  val range_check_ (n : real) : real
+  val range_check_ (n : rep_type) : rep_type
     requires { in_range n }
-    ensures { result = n }
+    ensures { result = n /\ is_finite n }
 
-  axiom range_axiom :
-    forall x : t. in_range (to_real x)
+  predicate dynamic_property "inline" (f l x : rep_type) = in_range x
+end
+
+module Static_Float32
+  use import ieee_float.Float32
+
+  clone export Static_Floating_Point with
+    type rep_type = t,
+    predicate eq = eq,
+    predicate is_finite = is_finite
+end
+
+module Rep_Proj_Float32
+  (* Specification of to_rep when rep_type = float32; add coercion axiom *)
+  use import ieee_float.Float32
+
+  clone export Rep_Proj_Base with
+    type rep_type = t
+
+  axiom coerce_axiom :
+    forall x : Float32.t [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
+end
+
+module Static_Float64
+  use import ieee_float.Float64
+
+  clone export Static_Floating_Point with
+    type rep_type = t,
+    predicate eq = eq,
+    predicate is_finite = is_finite
+end
+
+module Rep_Proj_Float64
+  (* Specification of to_rep when rep_type = float64; add coercion axiom *)
+  use import ieee_float.Float64
+
+  clone export Rep_Proj_Base with
+    type rep_type = t
+
+  axiom coerce_axiom :
+    forall x : Float64.t [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Dynamic_Floating_Point
   (* The module that is used as basis for all "dynamic" floating-point types. *)
 
-  use import real.RealInfix
-
- type t
-
- function base_to_rep t : real
- function base_of_rep real : t
-
- function to_real "inline" (x : t) : real = base_to_rep x
- function of_real "inline" (x : real) : t = base_of_rep x
-
   clone export Floating_Point_Base
-      with type t = t, function of_real = of_real, function to_real = to_real
 
-  predicate dynamic_property (first last n : real)
+  function base_to_rep t : rep_type
+  function base_of_rep rep_type : t
 
-  val check_not_last (first last n : real) : real
+  val base_of_rep (x : rep_type) : t
+    requires { true }
+    ensures  { base_to_rep (result) = x }
+
+  function to_rep "inline" (x : t) : rep_type = base_to_rep x
+  function of_rep "inline" (x : rep_type) : t = base_of_rep x
+
+  predicate dynamic_property (first last n : rep_type)
+
+  val check_not_last (first last n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (first last n : real) : real
+  val check_not_first (first last n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n }
 
-  val range_check_ (first last n : real) : real
+  val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
+end
+
+theory Finite_Float_Literal
+  use ieee_float.RoundingMode
+
+  type t                        (* either Float32 or Float64 *)
+  (* don't use BV32/64 but just map it in the driver to not have the
+     whole theory systematically ? *)
+
+  function from_binary int : t
+  function to_real t  : real
+  function round RoundingMode.mode real : real
+
+  predicate is_finite t
+
+  constant l : t                (* the constant representing the literal *)
+
+  constant binary_rep  : int        (* it's binary representation *)
+
+  constant decimal_rep : real      (* it's decimal representation *)
+
+  axiom l_real : to_real l = decimal_rep
+
+  (* for cvc4 *)
+  axiom l_representable : to_real l = round RoundingMode.RNE (to_real l)
+
+  axiom l_bin : l = from_binary binary_rep
+
+  axiom l_is_finite : is_finite l
+end
+
+theory Finite_Float32_Literal
+  use "_gnatprove_standard".Float32
+
+  clone export Finite_Float_Literal with
+    type t = Float32.t,
+    predicate is_finite = Float32.is_finite,
+    function to_real = Float32.to_real,
+    function from_binary = Float32.from_binary,
+    function round = Float32.round
+end
+
+theory Finite_Float64_Literal
+  use "_gnatprove_standard".Float64
+
+  clone export Finite_Float_Literal with
+    type t = Float64.t,
+    predicate is_finite = Float64.is_finite,
+    function to_real = Float64.to_real,
+    function from_binary = Float64.from_binary,
+    function round = Float64.round
 end
 
 (* The following modules are templates for unconstrained and constrained array

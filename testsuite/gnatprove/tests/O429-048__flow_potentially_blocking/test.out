@@ -1,6 +1,3 @@
-a-ticoio.ads:43:04: info: initialization of "Default_Fore" proved, in instantiation at complex.adb:7
-a-ticoio.ads:44:04: info: initialization of "Default_Aft" proved, in instantiation at complex.adb:7
-a-ticoio.ads:45:04: info: initialization of "Default_Exp" proved, in instantiation at complex.adb:7
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at p.adb:231
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at p.adb:231
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at p.adb:231
@@ -11,14 +8,11 @@ barrier.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
 blocking_contract.adb:21:13: high: potentially blocking operation in protected operation "Dummy"
 blocking_contract.adb:27:10: medium: precondition might fail
-complex.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Complex"
-complex.adb:12:07: info: initialization of "Default_Aft" proved
-complex.adb:12:07: info: initialization of "Default_Exp" proved
-complex.adb:12:07: info: initialization of "Default_Fore" proved
+complex.adb:7:04: "Long_Long_Float" is not allowed in SPARK
+complex.adb:7:04: instantiation error at a-ticoio.adb:42
+complex.adb:7:04: violation of pragma SPARK_Mode at test.adc:1
 complex.adb:12:07: warning: assuming "Put" has no effect on global items
 complex.adb:12:07: warning: no Global contract available for "Put"
-complex.adb:12:13: info: initialization of "X.Im" proved
-complex.adb:12:13: info: initialization of "X.Re" proved
 external.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 external_separate_calls.ads:4:13: high: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:4:13: info: ceiling priority protocol is respected (CVC4: 1 VC)

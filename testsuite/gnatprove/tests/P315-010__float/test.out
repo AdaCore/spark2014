@@ -1,4 +1,4 @@
-call_sample.adb:6:04: info: precondition proved (CVC4: 4 VC)
+call_sample.adb:6:04: medium: precondition might fail
 call_sample.adb:6:27: info: initialization of "Time" proved
 call_sample2.adb:6:14: warning: subprogram "Test_Original" has no effect
 call_sample2.adb:13:07: medium: precondition might fail, in call inlined at call_sample2.adb:28
@@ -36,7 +36,7 @@ original_sample.adb:17:19: medium: overflow check might fail
 original_sample.adb:17:25: info: overflow check proved (Interval)
 original_sample.adb:17:34: info: range check proved (CVC4: 1 VC)
 original_sample.adb:17:44: info: overflow check proved (Interval)
-original_sample.adb:27:19: info: overflow check proved (CVC4: 1 VC)
+original_sample.adb:27:19: medium: overflow check might fail
 original_sample.adb:27:25: info: overflow check proved (Interval)
 original_sample.ads:15:128: medium: overflow check might fail
 original_sample.ads:15:140: info: division check proved (CVC4: 1 VC)
@@ -61,14 +61,14 @@ sample.adb:18:21: info: range check proved (CVC4: 1 VC)
 sample.adb:18:31: medium: overflow check might fail
 sample.adb:18:31: medium: range check might fail
 sample.adb:19:14: info: initialization of "T_Fp" proved
-sample.adb:19:19: info: overflow check proved (CVC4: 1 VC)
+sample.adb:19:19: medium: overflow check might fail
 sample.adb:19:21: info: initialization of "Tmp1" proved
 sample.adb:20:18: info: overflow check proved (Interval)
 sample.adb:20:27: info: range check proved (CVC4: 1 VC)
 sample.adb:20:37: info: overflow check proved (Interval)
 sample.adb:20:37: medium: range check might fail
 sample.adb:21:14: info: initialization of "T_Pp" proved
-sample.adb:21:19: info: overflow check proved (CVC4: 1 VC)
+sample.adb:21:19: medium: overflow check might fail
 sample.adb:21:21: info: initialization of "Tmp2" proved
 sample.adb:29:43: info: overflow check proved (Interval)
 sample.adb:29:43: info: range check proved (Interval)

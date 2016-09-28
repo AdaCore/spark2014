@@ -2322,7 +2322,7 @@ package body Why.Gen.Records is
       Call  : constant W_Expr_Id := New_Call
         (Ada_Node => Ada_Node,
          Domain   => EW_Pred,
-         Name     => M_Main.Compat_Tags_Id,
+         Name     => M_Compat_Tags.Compat_Tags_Id,
          Args     =>
            (1 => New_Tag_Access (Domain => EW_Term,
                                  Name   => Id,

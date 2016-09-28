@@ -8,37 +8,37 @@ testfloat.adb:14:23: info: overflow check proved (CVC4: 1 VC)
 testfloat.adb:19:23: info: overflow check proved (CVC4: 1 VC)
 testfloat.adb:19:28: info: division check proved (CVC4: 1 VC)
 testfloat.adb:19:28: info: overflow check proved (Interval)
-testfloat.adb:21:07: info: assertion proved (altergo: 1 VC)
-testfloat.adb:22:07: info: assertion proved (altergo: 1 VC)
+testfloat.adb:21:07: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:22:07: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:23:07: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:24:22: medium: assertion might fail, cannot prove Float'Floor (T) = X
 testfloat.adb:24:35: info: initialization of "T" proved
-testfloat.adb:26:07: info: assertion proved (altergo: 1 VC)
-testfloat.adb:27:07: info: assertion proved (altergo: 1 VC)
+testfloat.adb:26:07: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:27:07: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:28:07: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:29:22: medium: assertion might fail, cannot prove Float'Ceiling (T) = Y
 testfloat.adb:29:37: info: initialization of "T" proved
 testfloat.adb:31:07: info: assertion proved (CVC4: 2 VC)
 testfloat.adb:32:07: info: assertion proved (CVC4: 2 VC)
 testfloat.adb:32:22: info: initialization of "T" proved
-testfloat.adb:36:19: medium: assertion might fail, cannot prove Float'Floor (X) = X
+testfloat.adb:36:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:36:32: info: initialization of "X" proved
-testfloat.adb:37:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:37:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:37:32: info: initialization of "Y" proved
-testfloat.adb:38:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:38:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:38:32: info: initialization of "Z" proved
 testfloat.adb:38:37: info: initialization of "X" proved
-testfloat.adb:39:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:39:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:39:32: info: initialization of "T" proved
 testfloat.adb:39:37: info: initialization of "X" proved
-testfloat.adb:41:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:41:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:41:34: info: initialization of "X" proved
 testfloat.adb:42:04: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:42:34: info: initialization of "Y" proved
-testfloat.adb:43:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:43:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:43:34: info: initialization of "Z" proved
 testfloat.adb:43:39: info: initialization of "Y" proved
-testfloat.adb:44:04: info: assertion proved (CVC4: 1 VC)
+testfloat.adb:44:04: info: assertion proved (Z3: 1 VC)
 testfloat.adb:44:34: info: initialization of "T" proved
 testfloat.adb:44:39: info: initialization of "Y" proved
 testfloat.adb:46:04: info: assertion proved (CVC4: 2 VC)

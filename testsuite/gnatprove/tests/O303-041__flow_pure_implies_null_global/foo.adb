@@ -1,9 +1,8 @@
-with Ada.Numerics.Generic_Elementary_Functions;
+with Ada.Numerics.Elementary_Functions;
 
 procedure Foo (N : in out Float) is
 
-   package FF is new Ada.Numerics.Generic_Elementary_Functions (Float);
-   use FF;
+   use Ada.Numerics.Elementary_Functions;
 
 begin
    N := Log (N);

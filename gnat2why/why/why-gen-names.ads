@@ -248,18 +248,6 @@ package Why.Gen.Names is
       WNE_Fixed_Point_Mult,
       WNE_Fixed_Point_Mult_Int,
 
-      --  Name of an unknown floating-point rounding operation, when the
-      --  floating-point type is neither single precision nor double precision.
-      WNE_Float_Round,
-
-      --  Name of the temporary floating point rounding operation, to be
-      --  replaced when cloning module Floating
-      WNE_Float_Round_Tmp,
-
-      --  Predecessor and successor functions for a floating-point type
-      WNE_Float_Pred,
-      WNE_Float_Succ,
-
       WNE_Index_Dynamic_Property,
       WNE_Index_Dynamic_Property_2,
       WNE_Index_Dynamic_Property_3,
@@ -291,7 +279,9 @@ package Why.Gen.Names is
       WNE_Of_Rep,
       WNE_Of_Int,
       WNE_Of_Fixed,
-      WNE_Of_Real,
+      WNE_Of_Real,                --  for fixed-point
+      WNE_Of_Float32,             --  for fixed-point
+      WNE_Of_Float64,             --  for fixed-point
       WNE_Of_BitVector,
       WNE_Range_Check_Fun,
       WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
@@ -307,7 +297,8 @@ package Why.Gen.Names is
       WNE_To_Int_3,
       WNE_To_Int_4,
       WNE_To_Fixed,
-      WNE_To_Real,
+      WNE_To_Float32,             --  for fixed-point
+      WNE_To_Float64,             --  for fixed-point
       WNE_To_BitVector
      );
 

@@ -65,6 +65,19 @@ module Ada__containers__formal_indefinite_vectors__extended_index
     predicate in_range = in_range
 end
 
+module Ada__containers__formal_indefinite_vectors__extended_index__rep
+  use import Ada__containers__formal_indefinite_vectors__extended_index
+  use import "_gnatprove_standard".Main
+
+  clone export "ada__model".Rep_Proj_IRC_Int with
+    type t = extended_index,
+    predicate in_range = in_range
+
+ meta "model_projection" function to_rep
+
+ meta "inline : no" function to_rep
+end
+
 (* useful helper functions in extended index type *)
 module Ada__containers__formal_indefinite_vectors__extended_index_helper
   use import int.Int
@@ -116,12 +129,26 @@ module Ada__containers__formal_indefinite_vectors__capacity_range
     predicate in_range = in_range
 end
 
+module Ada__containers__formal_indefinite_vectors__capacity_range__rep
+  use import Ada__containers__formal_indefinite_vectors__capacity_range
+  use import "_gnatprove_standard".Main
+
+  clone export "ada__model".Rep_Proj_IRC_Int with
+    type t = capacity_range,
+    predicate in_range = in_range
+
+ meta "model_projection" function to_rep
+
+ meta "inline : no" function to_rep
+end
+
 (* type Vector *)
 module Ada__containers__formal_indefinite_vectors__vector__rep
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
   use        Ada__containers__formal_indefinite_vectors__capacity_range
+  use        Ada__containers__formal_indefinite_vectors__capacity_range__rep
 
   type __split_discrs = {rec__ada__containers__formal_indefinite_vectors__vector__capacity : Ada__containers__formal_indefinite_vectors__capacity_range.capacity_range}
 
@@ -160,7 +187,7 @@ module Ada__containers__formal_indefinite_vectors__vector
   function initial_capacity "inline"
     (v : vector)
   : int
-  = Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (rec__ada__containers__formal_indefinite_vectors__vector__capacity (__split_discrs v))
+  = Ada__containers__formal_indefinite_vectors__capacity_range__rep.to_rep (rec__ada__containers__formal_indefinite_vectors__vector__capacity (__split_discrs v))
 
 end
 
@@ -332,9 +359,10 @@ module Ada__containers__formal_indefinite_vectors__reserve_capacity
   use import Ada__containers__formal_indefinite_vectors__capacity
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__bounded
   use import Ada__containers__formal_indefinite_vectors__Oeq__2
+  use        Ada__containers__formal_indefinite_vectors__capacity_range__rep
 
   val reserve_capacity (v:Ada__containers__formal_indefinite_vectors__vector.__split_fields__ref) (v_cap : Ada__containers__formal_indefinite_vectors__vector.__split_discrs) (cap : int) : unit
-    requires { Ada__containers__formal_indefinite_vectors__bounded.bounded -> cap <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep v_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
+    requires { Ada__containers__formal_indefinite_vectors__bounded.bounded -> cap <= Ada__containers__formal_indefinite_vectors__capacity_range__rep.to_rep v_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
     writes   { v }
     reads    { v }
     ensures  { let rec_v = {Ada__containers__formal_indefinite_vectors__vector.__split_fields = v.Ada__containers__formal_indefinite_vectors__vector.__split_fields__content;
@@ -390,10 +418,11 @@ module Ada__containers__formal_indefinite_vectors__assign
   use import Ada__containers__formal_indefinite_vectors__length
   use import Ada__containers__formal_indefinite_vectors__Oeq__2
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__bounded
+  use        Ada__containers__formal_indefinite_vectors__capacity_range__rep
 
   val assign (target:Ada__containers__formal_indefinite_vectors__vector.__split_fields__ref) (t_cap : Ada__containers__formal_indefinite_vectors__vector.__split_discrs) (source : vector) : unit
     requires { Ada__containers__formal_indefinite_vectors__bounded.bounded ->
-                 length_ source <= Ada__containers__formal_indefinite_vectors__capacity_range.to_rep t_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
+                 length_ source <= Ada__containers__formal_indefinite_vectors__capacity_range__rep.to_rep t_cap.rec__ada__containers__formal_indefinite_vectors__vector__capacity }
     writes   { target }
     reads    { target }
     ensures  { let rec_t = {Ada__containers__formal_indefinite_vectors__vector.__split_fields = target.Ada__containers__formal_indefinite_vectors__vector.__split_fields__content;

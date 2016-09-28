@@ -61,12 +61,13 @@ module Main
      writes { x }
   val __private__havoc (x : __private__ref) : unit
      writes { x }
+end
 
+module Compatible_Tags
   (* A prediacte to check compatibility between tags *)
   predicate __compatible_tags (from_tag : int) (to_tag : int)
   axiom __compatible_tags_refl :
     forall tag : int. __compatible_tags tag tag
-
 end
 
 module Integer
@@ -134,114 +135,327 @@ module Int_Division
 
 end
 
-module Floating
-  use real.Real
-  use import real.RealInfix
-  use real.Abs as AbsReal
-  use export real.Truncate
-  use real.MinMax
-  use real.FromInt
+module Floating_power
+  (* Ada's exponentiation operator "**" axiomatization:
+
+     As said in the Ada RM (sec 4.5.6), "X**N" can be equal equal to
+     any one of the possible factorizations of the exponentiation:
+     "multiplications are associated in an arbitrary order". Also, it
+     is guaranteed that for "N" negative "the result is the reciprocal
+     of the result using the absolute value of "N"". Hence, since
+     multiplication on floats is commutative but not associative, we
+     can only be sure of the value of "X**N" for "N" between -3 and
+     3. *)
+
+  type t
+
   use import int.Int
+  predicate is_finite t
+  predicate is_zero t
+  predicate eq t t
 
-  use floating_point.Rounding
-  use floating_point.Single
-  use floating_point.Double
+  function of_int int : t
+  function ( * ) t t   : t
+  function div   t t   : t
+  function power t int : t
 
-  function round_single (x : real) : real = Single.round Rounding.NearestTiesToEven x
+  axiom Power_0 : forall x: t. is_finite x -> eq (power x 0) (of_int 1)
 
-  function round_double (x : real) : real = Double.round Rounding.NearestTiesToEven x
+  lemma Power_1 : forall x : t. is_finite x -> eq (power x 1) x
 
-  (* The rounding error on a floating-point operation can be bounded, see page 7 of
-     paper "The pitfalls of verifying floating-point computations" by David Monniaux:
-     http://arxiv.org/abs/cs/0701192
+  axiom Power_2 : forall x : t. is_finite x -> eq (power x 2) (x * x)
 
-     "As a result, for any floating-point type with a bounded number of bits,
-      there exist two positive reals εrel and εabs such that
-        |x − r(x)| ≤ max(εrel.|x|, εabs)
-      The following, coarser, property may be easier to use in some contexts:
-        |x − r(x)| ≤ εrel.|x| + εabs"
+  axiom Power_3 : forall x : t. is_finite x -> eq (power x 3) (x * (x * x))
 
-     The first part is the error made when rounding to a normal number (which is
-     proportional to the absolute value of the exact mathematical result), and the
-     second part is the error made when rounding to a subnormal number. In the case
-     of round-to-even, we have:
+  axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-1)) (div (of_int 1) x)
 
-     εrel = 2 ** (-p) where p is the number of bits of the mantissa
-     εabs = 2 ** (Emin - p) where Emin is the minimal value of the exponent
+  axiom Power_neg2 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-2)) (div (of_int 1) (power x 2))
 
-     with for single precision: p = 24, Emin = -126
-          for double precision: p = 53, Emin = -1022
+  axiom Power_neg3 : forall x : t. is_finite x -> not (is_zero x) ->
+    eq (power x (-2)) (div (of_int 1) (power x 3))
+end
+
+module Floating_next_prev
+  (* next/prev representable:
+     Next and previous representable reals. The functions return respectively
+     the representable real greater than or lower than the argument x, which
+     may or not be representable. *)
+
+  type t
+
+  constant max_value : t
+  function neg t : t
+
+  predicate is_finite t
+  predicate eq t t
+  predicate lt t t
+  predicate le t t
+  predicate gt t t
+  predicate ge t t
+
+  function next_representable (x : t) : t
+  function prev_representable (x : t) : t
+
+  (* Note that Succ (-0) > +0 *)
+
+  (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
+  axiom next_representable_def :
+    forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
+
+  axiom prev_representable_def :
+    forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
+
+  (* does not need is finite since gt y x implies that neither x or y is NaN *)
+  axiom next_representable_def2 :
+    forall x y : t. gt y x -> ge y (next_representable x)
+
+  axiom prev_representable_def2 :
+    forall x y : t. lt y x -> le y (prev_representable x)
+
+  (* possible addition: *)
+
+  (* axiom next_representable_gt :
+    forall x y z : t. gt y x -> gt z y -> gt z (next_representable x)
+
+    and idem for prev.
   *)
 
-  lemma round_single_bound :
-    forall x : real [round_single x].
-      x -. 0x1p-24 *. AbsReal.abs (x) -. 0x1p-150 <=. round_single x <=. x +. 0x1p-24 *. AbsReal.abs (x) +. 0x1p-150
+  axiom next_representable_finite :
+    forall x : t [is_finite (next_representable x)].
+      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
 
-  lemma round_double_bound :
-    forall x : real [round_double x].
-      x -. 0x1p-53 *. AbsReal.abs (x) -. 0x1p-1075 <=. round_double x <=. x +. 0x1p-53 *. AbsReal.abs (x) +. 0x1p-1075
+  axiom prev_representable_finite :
+    forall x : t [is_finite (prev_representable x)].
+      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
+end
 
-  (* this lemma expresses that every single is also a double *)
-  lemma round_double_single :
-    forall x : real [ round_single x ].
-      round_double (round_single x) = round_single x
+module Floating
+  clone export _gnatprove_standard_th.Floating_Func
 
-  (* this function is not the power on real but the implementation
-     defined power on floats *)
-  function power real int : real
+  constant zeroF   : t
+  function div_rne t t : t
+  function rem t t : t
 
-  use export _gnatprove_standard_th.Floating_Func
+  val div_rne_ (x:t) (y:t) : t
+     requires { not (eq y zeroF) }
+     ensures { result = div_rne x y }
 
-  function real_of_int (x : int) : real = FromInt.from_int x
+  val rem_ (x:t) (y:t) : t
+     requires { not (eq y zeroF) }
+     ensures{ result = rem x y }
+end
 
-  function round real : int
+module Float32RNE
+  use export ieee_float.Float32
 
-  axiom Round_down:
-    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
 
-  axiom Round_up:
-    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
+  function of_int_rna (x:int) : t = of_int RNA x
+  function to_int_rna (x:t) : int = to_int RNA x
 
-  axiom Round_neg_tie:
-    forall x:real.
-      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+end
 
-  axiom Round_pos_tie:
-    forall x:real.
-      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
+module Float64RNE
+  use export ieee_float.Float64
 
-  axiom Round_int :
-    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
+  function mul_rne (x y : t) : t = mul RNE x y
+  function div_rne (x y : t) : t = div RNE x y
+  function add_rne (x y : t) : t = add RNE x y
+  function sub_rne (x y : t) : t = sub RNE x y
 
-  axiom Round_near_int :
-    forall i:int. forall x:real.
-      -.0.5 <. x /\ x <. 0.5 -> (round (real_of_int (i) +. x) = i)
+  function of_int_rna (x:int) : t = of_int RNA x
+  function to_int_rna (x:t) : int = to_int RNA x
 
-  axiom Round_monotonic:
-    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
+  function ceil     (x:t) : t = roundToIntegral RTP x
+  function floor    (x:t) : t = roundToIntegral RTN x
+  function rounding (x:t) : t = roundToIntegral RNA x
+  function truncate (x:t) : t = roundToIntegral RTZ x
+end
 
-  axiom Round_monotonic_int1:
-    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
+module Float32_power
+  use export Float32RNE
 
-  axiom Round_monotonic_int2:
-    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rna,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate is_zero = is_zero
+end
 
-  axiom Round_bound:
-    forall x:real.
-      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
+module Float64_power
+  use export Float64RNE
 
-  function div_real (x : real) (y : real) : real = x /. y
+  clone export Floating_power with
+    type t = t,
+    function ( * ) = mul_rne,
+    function div = div_rne,
+    function of_int = of_int_rna,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate is_zero = is_zero
+end
 
-  val div_real_ (x:real) (y:real) : real
-    requires { y <> 0.0 }
-    ensures { result = div_real x y }
+module Float32_next_prev
+  use export Float32RNE
 
-  function remainder (x y : real) : real
+  constant max_value : t
+  axiom max_value : max_real = to_real max_value
 
-  val remainder_ (x y : real) : real
-    requires { y <> 0.0 }
-    ensures { result = remainder x y }
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
 
+module Float64_next_prev
+  use export Float64RNE
+
+  constant max_value : t
+  axiom max_value : max_real = to_real max_value
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float32
+  use export Float32RNE
+
+  clone export Floating with
+    type t = t,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne,
+    function rem = rem,
+    constant zeroF = zeroF
+
+  constant one : t
+  axiom one_is_finite: is_finite one
+  axiom one_is_int: is_int one
+  axiom one_to_real: to_real one = 1.0
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content "model_trace:" : t }
+end
+
+module Float64
+  use export Float64RNE
+
+  clone export Floating with
+    type t = t,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div_rne = div_rne,
+    function rem = rem,
+    constant zeroF = zeroF
+
+  constant one : t
+  axiom one_is_finite: is_finite one
+  axiom one_is_int: is_int one
+  axiom one_to_real: to_real one = 1.0
+  axiom one_of_int: one = of_int RNA 1
+
+  type t__ref = { mutable t__content "model_trace:" : t }
+end
+
+module FloatConv
+  use export ieee_float.FloatConverter
+
+  function to_float64_rne (x:Float32.t) : Float64.t = to_float64 RNE x
+  function to_float32_rne (x:Float64.t) : Float32.t = to_float32 RNE x
+
+  val range_check_ (f l x : Float64.t) : Float64.t
+    requires { (Float64.(.<=) f x) /\ (Float64.(.<=) x l) }
+    ensures { result = x }
+end
+
+module Float32_BV_Converter
+  use export ieee_float.Float32_BV_Converter
+  use import ieee_float.Float32
+
+  function of_ubv8_rna  (x:BV8.t)  : t = of_ubv8  RNA x
+  function of_ubv16_rna (x:BV16.t) : t = of_ubv16 RNA x
+  function of_ubv32_rna (x:BV32.t) : t = of_ubv32 RNA x
+  function of_ubv64_rna (x:BV64.t) : t = of_ubv64 RNA x
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
+end
+
+module Float64_BV_Converter
+  use export ieee_float.Float64_BV_Converter
+  use import ieee_float.Float64
+
+  function of_ubv8_rna  (x:BV8.t)  : t = of_ubv8  RNA x
+  function of_ubv16_rna (x:BV16.t) : t = of_ubv16 RNA x
+  function of_ubv32_rna (x:BV32.t) : t = of_ubv32 RNA x
+  function of_ubv64_rna (x:BV64.t) : t = of_ubv64 RNA x
+
+  function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
+  function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
+  function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
+  function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+
+  function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
+  function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
+  function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
+  function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+
+  function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
+  function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
+  function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
+  function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
 end
 
 module Boolean

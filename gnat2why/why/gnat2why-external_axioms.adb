@@ -1449,8 +1449,10 @@ package body Gnat2Why.External_Axioms is
                                  M_Integer.Module
                               elsif F_W_Type = EW_Int_Type then
                                  M_Integer.Module
-                              elsif F_W_Type = EW_Real_Type then
-                                 M_Floating.Module
+                              elsif F_W_Type = EW_Float_32_Type then
+                                 M_Floats (Float32).Module
+                              elsif F_W_Type = EW_Float_64_Type then
+                                 M_Floats (Float64).Module
                               elsif F_W_Type = EW_BitVector_8_Type then
                                  M_BVs (BV8).Module
                               elsif F_W_Type = EW_BitVector_16_Type then

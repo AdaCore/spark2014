@@ -1,4 +1,21 @@
-geom.adb:6:13: info: initialization of "Ret" proved
-geom.adb:7:17: info: initialization of "Ret" proved
-geom.adb:7:21: medium: overflow check might fail
-geom.adb:9:14: info: initialization of "Ret" proved
+geom.adb:4:13: "Angle" is not allowed in SPARK
+geom.adb:4:13: violation of aspect SPARK_Mode at line 1
+geom.adb:6:13: "Angle" is not allowed in SPARK
+geom.adb:6:13: violation of aspect SPARK_Mode at line 1
+geom.adb:6:19: "Mks_Type" is not allowed in SPARK
+geom.adb:6:19: violation of aspect SPARK_Mode at line 1
+geom.adb:7:10: "Angle" is not allowed in SPARK
+geom.adb:7:10: violation of aspect SPARK_Mode at line 1
+geom.adb:7:17: "Angle" is not allowed in SPARK
+geom.adb:7:17: "Mks_Type" is not allowed in SPARK
+geom.adb:7:17: violation of aspect SPARK_Mode at line 1
+geom.adb:7:17: violation of aspect SPARK_Mode at line 1
+geom.adb:7:23: "Mks_Type" is not allowed in SPARK
+geom.adb:7:23: violation of aspect SPARK_Mode at line 1
+geom.adb:9:14: "Angle" is not allowed in SPARK
+geom.adb:9:14: violation of aspect SPARK_Mode at line 1
+geom.ads:4:13: "Angle" is not allowed in SPARK
+geom.ads:4:13: violation of aspect SPARK_Mode at line 3
+geom.ads:4:30: "Angle" is not allowed in SPARK
+geom.ads:4:30: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof
