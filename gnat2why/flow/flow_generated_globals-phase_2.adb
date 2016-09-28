@@ -1457,8 +1457,8 @@ package body Flow_Generated_Globals.Phase_2 is
                          or else Might_Be_Main (E),
                       when others =>
                          False)
-                 and then Entity_Body_In_SPARK (E)
                  and then Analysis_Requested (E, With_Inlined => True)
+                 and then Entity_Body_In_SPARK (E)
                then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);

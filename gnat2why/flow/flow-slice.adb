@@ -697,8 +697,9 @@ package body Flow.Slice is
          for N of FA.Direct_Calls loop
             --  Check if flow effects have been already "inlined" in CFG; see
             --  the call to Process_Subprogram_Globals in Do_Call_Statement.
-            if Rely_On_Generated_Global (N, FA.B_Scope)
-              or else not Has_User_Supplied_Globals (N)
+            --  ??? refactor this test into a common routine
+            if not Has_User_Supplied_Globals (N)
+              or else Rely_On_Generated_Global (N, FA.B_Scope)
             then
                Unresolved.Insert (N);
             end if;

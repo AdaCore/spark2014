@@ -1781,11 +1781,10 @@ package body Flow_Utility is
       Unexpanded_Reads     : Flow_Id_Sets.Set;
       Unexpanded_Writes    : Flow_Id_Sets.Set;
 
-      Body_E : constant Entity_Id  := Get_Body_Entity (Subprogram);
-      S      : constant Flow_Scope :=
-        Get_Flow_Scope (if Present (Body_E) and then
-                          Entity_Body_In_SPARK (Subprogram)
-                        then Body_E
+      S : constant Flow_Scope :=
+        Get_Flow_Scope (if Is_In_Analyzed_Files (Subprogram)
+                          and then Entity_Body_In_SPARK (Subprogram)
+                        then Get_Body_Entity (Subprogram)
                         else Subprogram);
 
       procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
