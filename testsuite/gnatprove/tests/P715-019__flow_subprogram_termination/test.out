@@ -79,7 +79,7 @@ functions.adb:14:14: warning: subprogram may not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.ads:3:13: warning: subprogram may not terminate
-functions.ads:4:19: info: postcondition proved (CVC4: 1 VC)
+functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
 functions.ads:6:13: warning: subprogram may not terminate
 functions.ads:9:17: high: no paths in subprogram will return normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
