@@ -49,6 +49,7 @@ with Nlists;                         use Nlists;
 with Osint;                          use Osint;
 with Output;                         use Output;
 with Sem_Ch7;                        use Sem_Ch7;
+with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Snames;                         use Snames;
@@ -1176,12 +1177,7 @@ package body Flow is
         and then (FA.Has_Potentially_Nonterminating_Loops
                     or else No_Return (FA.Spec_Entity)
                     or else (for some Callee of FA.Direct_Calls
-                             => (Chars
-                                   (Scope
-                                      (Enclosing_Lib_Unit_Entity (Callee)))
-                                         in Name_Ada    |
-                                            Name_System |
-                                            Name_Interfaces
+                             => (In_Predefined_Unit (Callee)
                                    and then No_Return (Callee))))
       then
          case FA.Kind is
@@ -1292,8 +1288,17 @@ package body Flow is
                      end if;
                   end if;
 
+                  --  We register more nonreturning and relevant to termination
+                  --  subprograms provided that they are not in an instance of
+                  --  a generic.
                   if Generating_Globals
                     and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
+                    and then not (Is_Generic_Instance (Scope (E))
+                                  and then In_Predefined_Unit
+                                    (Entity
+                                       (Name
+                                          (Get_Package_Instantiation_Node
+                                             (Scope (E))))))
                   then
                      --  We register subprograms with no body or body not in
                      --  SPARK as nonreturning.
@@ -1310,9 +1315,13 @@ package body Flow is
                      --  * are not inlined
                      --  * are not expression functions.
                      if No_Return (E)
-                       or else Present (Contract (E))
+                       or else Has_Contracts (E, Name_Postcondition)
+                       or else Has_Contracts (E, Name_Contract_Cases)
                        or else Is_Inlined (E)
-                       or else Is_Expression_Function (E)
+                       or else (Entity_Body_In_SPARK (E)
+                                  and then
+                                    (Has_Contracts (E, Name_Refined_Post)
+                                       or else Is_Expression_Function (E)))
                      then
                         GG_Register_Relevant_To_Termination
                           (To_Entity_Name (E));
