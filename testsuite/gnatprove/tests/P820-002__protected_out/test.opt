@@ -1,1 +1,1 @@
-ALL XFAIL code uses function with an output (detected in P531-027)
+ALL XFAIL code uses function with an output (see P926-007)
