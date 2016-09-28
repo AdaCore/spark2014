@@ -40,7 +40,6 @@ with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
@@ -1254,6 +1253,7 @@ package body Flow_Generated_Globals.Phase_2 is
                if (Ekind (E) = E_Entry
                    or else (Ekind (E) in E_Function | E_Procedure
                             and then Convention (E) = Convention_Protected))
+                 and then Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
                   declare

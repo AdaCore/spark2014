@@ -28,6 +28,7 @@ with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Flow_Refinement;                    use Flow_Refinement;
 with Sinfo;                              use Sinfo;
 with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 
 package Flow_Generated_Globals.Phase_2 is
 
@@ -177,6 +178,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Is_Potentially_Blocking (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
+               Analysis_Requested (E, With_Inlined => True) and then
                Ekind (E) in E_Entry | E_Procedure | E_Function;
    --  Returns True if subprogram E is potentially blocking or its blocking
    --  status is unknown; returns False if it is known to be nonblocking.
@@ -189,6 +191,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Calls_Current_Task (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
+               Analysis_Requested (E, With_Inlined => True) and then
                (Ekind (E) = E_Entry or else
                 (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));
    --  Returns True iff subprogram E calls (directly or indirectly) function
