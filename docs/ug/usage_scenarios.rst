@@ -171,7 +171,7 @@ At the Level of Individual Run-Time Checks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One way to get confidence that unproved run-time checks cannot fail during
-execution is to exercize them during testing. Test coverage information allows
+execution is to exercise them during testing. Test coverage information allows
 to guarantee a set of run-time checks have been executed successfully during a
 test run. This coverage information may be gathered from the execution of a
 unit testing campaign, an integration testing campaign, or the execution of a
@@ -185,7 +185,7 @@ testing tool for Ada programs.
 Between Proof and Integration Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Contracts can also be exercized dynamically during integration testing. In
+Contracts can also be exercised dynamically during integration testing. In
 cases where unit testing is not required (either because proof has been applied
 to all subprograms, or because the verification context allows it), exercizing
 contracts during integration testing can complement proof results, by giving
@@ -193,7 +193,7 @@ the assurance that the actual compiled program behaves as expected.
 
 This strategy has been applied at Altran on UK military projects submitted to
 Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
-were exercized during integration testing, which allowed to scrap unit testing.
+were exercised during integration testing, which allowed to scrap unit testing.
 
 Between Proof and Unit Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -216,7 +216,7 @@ test:
 
 Thus, it is possible to combine freely subprograms that are proved and
 subprograms that are unit tested, provided subprogram contracts
-(:ref:`Preconditions` and :ref:`Postconditions`) are exercized during unit
+(:ref:`Preconditions` and :ref:`Postconditions`) are exercised during unit
 testing. This can be achieved by compiling the program with assertions for
 testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
 GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
@@ -615,7 +615,7 @@ to implementation defined or unspecified behavior:
 
    SPARK defines a few constructs (aspects, pragmas and attributes) that are
    not defined in Ada. While |GNAT Pro| supports these constructs, care should
-   be exercized to use these constructs with other compilers, or older versions
+   be exercised to use these constructs with other compilers, or older versions
    of |GNAT Pro|. This issue is detailed in section :ref:`Portability Issues`.
 
 .. _Portability of Programs With Errors:
