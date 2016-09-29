@@ -1301,9 +1301,13 @@ package body Flow is
                                              (Scope (E))))))
                   then
                      --  We register subprograms with no body or body not in
-                     --  SPARK as nonreturning.
-                     if No (Get_Body (E))
-                       or else not Entity_Body_In_SPARK (E)
+                     --  SPARK as nonreturning as long as they are not imported
+                     --  or intrinsic.
+                     if not (Is_Imported (E)
+                             or else (Ekind (E) in E_Function | E_Procedure
+                                        and then Is_Intrinsic_Subprogram (E)))
+                       and then (No (Get_Body (E))
+                                 or else not Entity_Body_In_SPARK (E))
                      then
                         GG_Register_Nonreturning (To_Entity_Name (E));
                      end if;

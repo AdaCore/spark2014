@@ -84,6 +84,10 @@ functions.ads:6:13: warning: subprogram may not terminate
 functions.ads:9:17: high: no paths in subprogram will return normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram may not terminate
+imported.adb:5:07: warning: assuming "P" has no effect on global items
+imported.adb:5:07: warning: no Global contract available for "P"
+imported.ads:7:14: info: subprogram will terminate
+imported.ads:7:14: warning: subprogram "Q" has no effect
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:14: warning: subprogram may not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
