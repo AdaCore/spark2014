@@ -3184,19 +3184,22 @@ package body Flow.Control_Flow_Graph is
             begin
                GG_Register_Task_Object
                  (Type_Name => TN,
-                  Object => (Name => Object_Name,
-                             Instances =>
-                               (if Array_Component
-                                then Many
-                                else One),
-                             Node => N));
+                  Object    => (Name      => Object_Name,
+                                Instances =>
+                                  (if Array_Component
+                                   then Many
+                                   else One),
+                                Node => N));
             end;
 
          elsif Is_Record_Type (T) then
-            --  Ignore record variants and simply find any task components
             declare
                C : Entity_Id := First_Component (T);
-               --  Component type
+               --  Iterator for record components. We do not assume any
+               --  particular values of discriminants and thus ignore how the
+               --  record is split into variants; instead, we conservatively
+               --  detect all tasks.
+
             begin
                while Present (C) loop
                   Find_Tasks (Etype (C), Array_Component);
