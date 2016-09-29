@@ -223,6 +223,13 @@ If both ``--level`` is set and an underlying switch is set (``--prover``,
 ``--steps``, or ``--proof``), the value of the latter takes precedence over the
 value set through ``--level``.
 
+|GNATprove| also supports using the static analysis tool |CodePeer| as an
+additional source for the proof of checks. If |CodePeer| is installed and in
+the PATH, it is sufficient to specify the command line option
+``--codepeer=on`` to enable this feature. |CodePeer| will be run before the
+other SPARK analyses. If it proves a check, |GNATprove| will not attempt to
+run another prover on this check.
+
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 

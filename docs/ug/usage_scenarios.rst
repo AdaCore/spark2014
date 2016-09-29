@@ -178,9 +178,9 @@ unit testing campaign, an integration testing campaign, or the execution of a
 dedicated testsuite focussing on exercizing the run-time checks (for example on
 boundary values or random ones).
 
-This strategy is already applied in other static analysis tools, for example in
-the integration between the CodePeer static analyzer and the VectorCAST testing
-tool for Ada programs.
+This strategy is already applied in other static analysis tools, for example
+in the integration between the |CodePeer| static analyzer and the VectorCAST
+testing tool for Ada programs.
 
 Between Proof and Integration Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
