@@ -4227,13 +4227,7 @@ package body Flow.Analysis is
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id) is
 
-      subtype Tasking_Owners_Kind is Tasking_Info_Kind
-        range
-        Suspends_On ..
-        --  Entry_Calls
-        Unsynch_Accesses;
-
-      Concurrent_Object_Owner : array (Tasking_Owners_Kind) of Name_Maps.Map;
+      Concurrent_Object_Owner : array (Tasking_Owning_Kind) of Name_Maps.Map;
       --  Mapping from concurrent objects to a task instance that owns them,
       --  i.e. suspends on a suspension object or calls an entry. It stores
       --  only the first owning task instance, if there are more then it is
@@ -4243,7 +4237,7 @@ package body Flow.Analysis is
 
       procedure Check_Ownership (Task_Instance : Task_Object;
                                  Object        : Entity_Name;
-                                 Owning_Kind   : Tasking_Owners_Kind);
+                                 Owning_Kind   : Tasking_Owning_Kind);
       --  Check ownership of a kind Owning_Kind of the Object by a
       --  Task_Instance.
 
@@ -4253,7 +4247,7 @@ package body Flow.Analysis is
 
       procedure Check_Ownership (Task_Instance : Task_Object;
                                  Object        : Entity_Name;
-                                 Owning_Kind   : Tasking_Owners_Kind)
+                                 Owning_Kind   : Tasking_Owning_Kind)
       is
          use Name_Maps;
 
@@ -4350,7 +4344,7 @@ package body Flow.Analysis is
 
          begin
             for This_Task_Object of This_Task_Objects loop
-               for Owning_Kind in Tasking_Owners_Kind loop
+               for Owning_Kind in Tasking_Owning_Kind loop
                   for Obj of Tasking_Objects (Owning_Kind, This_Task_Type) loop
                      Check_Ownership (Task_Instance => This_Task_Object,
                                       Object        => Obj,

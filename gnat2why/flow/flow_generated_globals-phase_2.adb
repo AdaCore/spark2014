@@ -2665,7 +2665,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------
 
    function Tasking_Objects
-     (Kind : Tasking_Info_Kind;
+     (Kind : Tasking_Owning_Kind;
       Subp : Entity_Name)
       return Name_Sets.Set
    is

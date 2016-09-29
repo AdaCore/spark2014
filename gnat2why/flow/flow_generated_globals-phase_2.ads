@@ -210,7 +210,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  * calls a potentially nonreturning subprogram.
 
    function Tasking_Objects
-     (Kind : Tasking_Info_Kind;
+     (Kind : Tasking_Owning_Kind;
       Subp : Entity_Name)
       return Name_Sets.Set
    with Pre => GG_Has_Been_Generated;

@@ -125,8 +125,18 @@ package Flow is
                               Read_Locks,
                               Write_Locks);
    pragma Ordered (Tasking_Info_Kind);
-   --  Tasking-related information that needs to be collected for each analyzed
-   --  entity.
+   --  Tasking-related information collected for subprograms, entries and
+   --  tasks. Used both for ownership (aka. exclusivity) checks and for ceiling
+   --  priority protocol checks.
+
+   subtype Tasking_Owning_Kind is Tasking_Info_Kind
+     range Suspends_On ..
+           -- Entry_Calls
+           Unsynch_Accesses;
+   --  Tasking-related information used for ownership checks
+   --
+   --  Note: it is intentionally defined with range and not with
+   --  Static_Predicate to allow its use as an array index.
 
    type Tasking_Info is array (Tasking_Info_Kind) of Node_Sets.Set;
    --  Named array type for sets of nodes related to tasking
