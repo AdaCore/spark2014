@@ -226,6 +226,23 @@ value set through ``--level``.
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 
+When |GNATprove| proves a check, it stores this result in a session file,
+along with the required time and steps for this check to be proved. This
+information can be used to replay the proofs, to check that they are indeed
+correct. When |GNATprove| is invoked using the using the ``--replay`` option,
+it will attempt such a replay, using the same prover that was able to prove
+the check last time, with some slightly higher time and step limit. In this
+mode, the user-provided step- and time limits are ignored. If the ``--prover``
+option is not provided, |GNATprove| will attempt to replay all checks,
+otherwise it will replay only the proofs proved by a specific prover.  If all
+replays succeeded, |GNATprove| output will be exactly the same as a normal run
+of |GNATprove|. If a replay failed, the corresponding check will be reported
+as not proved. If a replay has not been attempted because the corresponding
+prover is not available (a third-party prover that is not configured, or the
+user has selected other provers using the ``--prover`` option), a warning will
+be issued that the proof could not be replayed, but the check will still be
+marked as proved.
+
 By default, |GNATprove| stops at the first unit where it detect errors
 (violations of Ada or |SPARK| legality rules). The option ``-k`` can be used to
 get |GNATprove| to issue errors of the same kind for multiple units. If there

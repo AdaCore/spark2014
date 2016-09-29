@@ -32,6 +32,7 @@ Command Line Invocation
       --output-msg-only Do not run any provers, output current flow and proof
                         results
   -q, --quiet           Be quiet/terse
+      --replay          Replay proofs, do not attempt new proofs
       --report=r        Set the report mode of GNATprove (r=fail*, all,
                         provers, statistics)
   -v, --verbose         Output extra verbose information

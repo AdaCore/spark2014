@@ -162,8 +162,10 @@ ASCII.LF &
 & ASCII.LF &
 "                       results"
 & ASCII.LF &
-" -q, --quiet           Be quiet/terse" &
-ASCII.LF &
+" -q, --quiet           Be quiet/terse"
+& ASCII.LF &
+"     --replay          Replay proofs, do not attempt new proofs"
+& ASCII.LF &
 "     --report=r        Set the report mode of GNATprove (r=fail*, all,"
 & ASCII.LF &
 "                       provers, statistics)"
