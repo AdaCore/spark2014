@@ -236,12 +236,13 @@ per-unit basis. This mechanism can be disabled with the option ``-f``.
 When |GNATprove| proves a check, it stores this result in a session file,
 along with the required time and steps for this check to be proved. This
 information can be used to replay the proofs, to check that they are indeed
-correct. When |GNATprove| is invoked using the using the ``--replay`` option,
+correct. When |GNATprove| is invoked using the ``--replay`` option,
 it will attempt such a replay, using the same prover that was able to prove
 the check last time, with some slightly higher time and step limit. In this
-mode, the user-provided step- and time limits are ignored. If the ``--prover``
+mode, the user-provided steps and time limits are ignored. If the ``--prover``
 option is not provided, |GNATprove| will attempt to replay all checks,
-otherwise it will replay only the proofs proved by a specific prover.  If all
+otherwise it will replay only the proofs proved by one of the specified
+provers.  If all
 replays succeeded, |GNATprove| output will be exactly the same as a normal run
 of |GNATprove|. If a replay failed, the corresponding check will be reported
 as not proved. If a replay has not been attempted because the corresponding
