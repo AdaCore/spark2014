@@ -157,7 +157,7 @@ package body SPARK_Util.Subprograms is
 
       --  Local variables
 
-      Contr   : Node_Id := Contract (E);
+      Contr   : Node_Id;
       Prag    : Node_Id;
       Pragmas : Node_Lists.List := Node_Lists.Empty_List;
 
@@ -175,18 +175,16 @@ package body SPARK_Util.Subprograms is
             | Name_Initial_Condition
          =>
             if Name = Name_Refined_Post then
-               if Ekind (E) in Subprogram_Kind
-                 and then Present (Subprogram_Body (E))
-               then
-                  Contr := Contract (Defining_Entity (Specification
-                                                    (Subprogram_Body (E))));
-               elsif Ekind (E) = E_Entry
-                 and then Present (Entry_Body (E))
-               then
-                  Contr := Contract (Entry_Body_Entity (E));
-               else
-                  Contr := Empty;
-               end if;
+               declare
+                  Body_N : constant Node_Id := Get_Body (E);
+               begin
+                  Contr := (if Present (Body_N)
+                            then Contract (Defining_Entity (Body_N))
+                            else Empty);
+               end;
+
+            else
+               Contr := Contract (E);
             end if;
 
             if Present (Contr) then
