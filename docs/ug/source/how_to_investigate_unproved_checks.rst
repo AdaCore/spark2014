@@ -68,11 +68,14 @@ A property can also be conceptually provable, but the model used by
 |GNATProve|.) In particular using the following features of the language
 may yield VCs that should be true, but cannot be proved:
 
-* Floating point arithmetic
-* The content of string literals
+* Floating point arithmetic (although using |CodePeer| integration may help
+  here)
+* The content of string literals (again, using |CodePeer| integration may help
+  here)
 
-In these cases the missing information can usually be added using ``pragma
-Assume``.
+To use |CodePeer| integration, pass the switch ``--codepeer=on`` to
+|GNATprove|. In those cases where no prover, including |CodePeer|, can prove
+the VC, the missing information can usually be added using ``pragma Assume``.
 
 It may be difficult sometimes to distinguish between unprovable properties and
 prover shortcomings (the next section). The most generally useful action to
@@ -117,7 +120,14 @@ Subprogram` menus in GPS, as described in :ref:`Running GNATprove from GPS` and
 :ref:`Running GNATprove from GNATbench`, to get faster results for the desired
 line or subprogram.
 
-A common limitation of automatic provers is that they don't handle
+A current limitation of automatic provers is that they don't handle
+floating-point arithmetic very precisely, in particular when there are either a
+lot of operations, or some non-linear operations (multiplication, division,
+exponentiation). In that casee, it may be profitable to use |CodePeer|
+integration, which is activated with the switch ``--codepeer=on``, as |CodePeer|
+is both fast and precise for proving bounds of floating-point operations.
+
+Another common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks
 involving multiplication, division, modulo or exponentiation.
 
