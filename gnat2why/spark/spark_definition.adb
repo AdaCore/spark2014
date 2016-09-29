@@ -1989,6 +1989,7 @@ package body SPARK_Definition is
             | N_SCIL_Membership_Test
             | N_Signed_Integer_Type_Definition
             | N_Subunit
+            | N_Target_Name
             | N_Task_Definition
             | N_Terminate_Alternative
             | N_Triggering_Alternative
