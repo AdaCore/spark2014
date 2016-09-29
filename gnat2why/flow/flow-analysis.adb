@@ -4266,11 +4266,11 @@ package body Flow.Analysis is
 
          Msg : constant String :=
            (case Owning_Kind is
-            when Suspends_On =>
+               when Suspends_On =>
                   "multiple tasks might suspend on suspension object &",
-            when Entry_Calls =>
+               when Entry_Calls =>
                   "multiple tasks might suspend on protected object &",
-            when Unsynch_Accesses =>
+               when Unsynch_Accesses =>
                   "possible data race when accessing variable &");
          --  Main error message
 

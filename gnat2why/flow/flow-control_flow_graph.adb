@@ -4155,29 +4155,38 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  Collect tasking-related information
+      --  Check for calling protected procedures and entries
       if Ekind (Scope (Called_Thing)) = E_Protected_Type then
          declare
             The_PO : constant Entity_Id :=
               Get_Enclosing_Concurrent_Object (Called_Thing, N);
+
          begin
-            --  For internal calls The_PO will represent protected type. We do
-            --  not record such a case and miss the violation when an entry is
-            --  internally called from a protected procedure. However, such a
-            --  call is reported as potentially blocking anyway.
-            if Ekind (The_PO) in Object_Kind then
-               case Convention (Called_Thing) is
-                  when Convention_Entry =>
-                     FA.Tasking (Entry_Calls).Include (The_PO);
-                     FA.Tasking (Write_Locks).Include (The_PO);
+            case Ekind (The_PO) is
+               when Object_Kind =>
+                  case Ekind (Called_Thing) is
+                     when Entry_Kind =>
+                        FA.Tasking (Entry_Calls).Include (The_PO);
 
-                  when Convention_Protected =>
-                     FA.Tasking (Write_Locks).Include (The_PO);
+                     when E_Procedure =>
+                        FA.Tasking (Write_Locks).Include (The_PO);
 
-                  when others =>
-                     null;
-               end case;
-            end if;
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+               --  If The_PO represent a protected type, then it is an internal
+               --  call. We do not record such a case and miss the violation
+               --  about an entry being internally called from a protected
+               --  procedure. However, such a call is reported as potentially
+               --  blocking anyway.
+
+               when E_Protected_Type =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
          end;
       end if;
 
