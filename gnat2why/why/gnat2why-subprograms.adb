@@ -526,13 +526,12 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
-         Ent  : constant Entity_Name := To_Entity_Name (E);
          Prio : constant W_Expr_Id := Self_Priority;
 
          S    : W_Prog_Id := +Void;
       begin
          --  Placeholder for a Why3 sequence that will represent the check
-         for Obj_Name of Directly_Called_Protected_Objects (Ent) loop
+         for Obj_Name of Directly_Called_Protected_Objects (E) loop
 
             --  Create a check that compares priorities of the task and of a
             --  single protected component of an object. See ARM, D.3 (7-11)

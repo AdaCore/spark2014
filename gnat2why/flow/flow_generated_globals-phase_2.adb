@@ -2261,15 +2261,16 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------------------------
 
    function Directly_Called_Protected_Objects
-     (Ent : Entity_Name) return Name_Sets.Set
+     (E : Entity_Id) return Name_Sets.Set
    is
+      EN : constant Entity_Name := To_Entity_Name (E);
+
       use Entity_Name_Graphs;
 
-      Call_Graph : Entity_Name_Graphs.Graph renames
-        Ceiling_Priority_Call_Graph;
+      Call_Graph : Graph renames Ceiling_Priority_Call_Graph;
 
       Res : Name_Sets.Set;
-      V   : constant Vertex_Id := Call_Graph.Get_Vertex (Ent);
+      V   : constant Vertex_Id := Call_Graph.Get_Vertex (EN);
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name);
       --  Collect protected objects directly accessed from subprogram S
@@ -2307,7 +2308,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Vertex V might be null if we only have a spec for entity Ent
       if V /= Null_Vertex then
          --  Collect objects from the caller subprogram itself
-         Collect_Objects_From_Subprogram (Ent);
+         Collect_Objects_From_Subprogram (EN);
 
          --  and from all its callees
          for Obj of Call_Graph.Get_Collection (V, Out_Neighbours) loop
