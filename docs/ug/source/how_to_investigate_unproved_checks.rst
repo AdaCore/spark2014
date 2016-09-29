@@ -123,7 +123,7 @@ line or subprogram.
 A current limitation of automatic provers is that they don't handle
 floating-point arithmetic very precisely, in particular when there are either a
 lot of operations, or some non-linear operations (multiplication, division,
-exponentiation). In that casee, it may be profitable to use |CodePeer|
+exponentiation). In that case, it may be profitable to use |CodePeer|
 integration, which is activated with the switch ``--codepeer=on``, as |CodePeer|
 is both fast and precise for proving bounds of floating-point operations.
 
