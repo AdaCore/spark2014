@@ -261,17 +261,22 @@ buffers.adb:94:36: info: index check proved (CVC4: 2 VC)
 buffers.adb:94:41: info: initialization of "Workspace" proved
 buffers.adb:96:17: info: initialization of "Workspace" proved
 buffers.adb:104:17: info: length check proved (CVC4: 1 VC)
+buffers.adb:105:16: info: range check proved (CVC4: 1 VC)
 buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:106:38: info: range check proved (CVC4: 1 VC)
 buffers.adb:108:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
 buffers.adb:109:10: info: loop invariant initialization proved (CVC4: 2 VC)
 buffers.adb:109:10: info: loop invariant preservation proved (CVC4: 2 VC)
 buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
+buffers.adb:110:41: info: range check proved (CVC4: 1 VC)
 buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
 buffers.adb:113:25: info: initialization of "Buffer" proved
 buffers.adb:113:49: info: index check proved (CVC4: 2 VC)
 buffers.adb:113:49: info: overflow check proved (CVC4: 1 VC)
+buffers.adb:126:16: info: range check proved (CVC4: 1 VC)
 buffers.adb:126:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:127:38: info: range check proved (CVC4: 1 VC)
 buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
 buffers.adb:132:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
@@ -282,6 +287,8 @@ buffers.adb:133:57: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:146:19: info: length check proved (CVC4: 1 VC)
 buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
 buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
+buffers.adb:150:42: info: range check proved (CVC4: 1 VC)
+buffers.adb:151:43: info: range check proved (CVC4: 1 VC)
 buffers.adb:153:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
 buffers.adb:154:40: info: index check proved (CVC4: 2 VC)
@@ -443,20 +450,25 @@ datebook.adb:86:54: info: initialization of "Available" proved
 datebook.adb:86:69: info: length check proved (CVC4: 1 VC)
 datebook.adb:86:69: low: range check might fail
 datebook.adb:87:21: info: range check proved (CVC4: 2 VC)
+datebook.adb:87:64: info: range check proved (CVC4: 1 VC)
 datebook.adb:88:54: info: initialization of "Available" proved
+datebook.adb:88:68: info: range check proved (CVC4: 1 VC)
 datebook.adb:89:45: info: initialization of "Available" proved
 datebook.adb:90:45: info: initialization of "Available" proved
 datebook.adb:128:16: info: initialization of "Status" proved
 datebook.adb:133:62: info: initialization of "Date" proved
 datebook.adb:156:19: info: length check proved (CVC4: 1 VC)
 datebook.adb:161:26: info: initialization of "Index" proved
+datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
 datebook.adb:162:50: info: initialization of "Index" proved
 datebook.adb:165:20: info: range check proved (CVC4: 2 VC)
 datebook.adb:166:35: info: initialization of "Index" proved
 datebook.adb:168:19: info: loop invariant initialization proved (CVC4: 2 VC)
 datebook.adb:168:19: info: loop invariant preservation proved (CVC4: 2 VC)
 datebook.adb:169:35: info: initialization of "Index" proved
+datebook.adb:169:73: info: range check proved (CVC4: 1 VC)
 datebook.adb:170:35: info: initialization of "Index" proved
+datebook.adb:171:43: info: range check proved (CVC4: 1 VC)
 datebook.adb:173:49: info: index check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: overflow check proved (CVC4: 1 VC)
 datebook.adb:173:60: info: initialization of "Description" proved
@@ -495,19 +507,23 @@ datebooks.adb:60:65: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:60:70: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:60:92: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:62:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:62:74: info: range check proved (CVC4: 1 VC)
 datebooks.adb:63:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:64:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:91:16: info: initialization of "Status" proved
 datebooks.adb:96:49: info: initialization of "Date" proved
 datebooks.adb:109:19: info: length check proved (CVC4: 1 VC)
 datebooks.adb:114:18: info: initialization of "I" proved
+datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
 datebooks.adb:115:42: info: initialization of "I" proved
 datebooks.adb:118:20: info: range check proved (CVC4: 2 VC)
 datebooks.adb:118:64: info: initialization of "I" proved
 datebooks.adb:119:19: info: loop invariant initialization proved (CVC4: 2 VC)
 datebooks.adb:119:19: info: loop invariant preservation proved (CVC4: 2 VC)
 datebooks.adb:120:27: info: initialization of "I" proved
+datebooks.adb:120:61: info: range check proved (CVC4: 1 VC)
 datebooks.adb:121:27: info: initialization of "I" proved
+datebooks.adb:122:41: info: range check proved (CVC4: 1 VC)
 datebooks.adb:124:49: info: index check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:124:60: info: initialization of "Description" proved
@@ -874,6 +890,7 @@ list_handler.adb:25:20: info: initialization of "Status" proved
 list_handler.adb:25:54: info: initialization of "Current" proved
 list_handler.adb:26:21: info: initialization of "Current" proved
 list_handler.adb:26:29: info: overflow check proved (CVC4: 1 VC)
+messages.ads:17:28: medium: range check might fail
 network-helpers.ads:5:23: info: initialization of "MSB" proved
 network-helpers.ads:6:23: info: initialization of "LSB" proved
 network-helpers0.adb:14:27: info: range check proved (CVC4: 2 VC)
@@ -1505,7 +1522,9 @@ terminal.adb:13:14: info: length check proved (CVC4: 1 VC)
 terminal.adb:17:10: info: loop invariant initialization proved (CVC4: 1 VC)
 terminal.adb:17:10: info: loop invariant preservation proved (CVC4: 1 VC)
 terminal.adb:17:33: info: initialization of "Count" proved
+terminal.adb:17:48: info: range check proved (CVC4: 1 VC)
 terminal.adb:20:13: info: initialization of "Count" proved
+terminal.adb:20:27: info: range check proved (CVC4: 1 VC)
 terminal.adb:28:13: info: initialization of "Port_Status" proved
 terminal.adb:34:35: info: initialization of "Value" proved
 terminal.adb:37:31: info: index check proved (CVC4: 2 VC)
@@ -1878,6 +1897,7 @@ very_longs.adb:335:14: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:14:20: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
+very_longs.ads:21:23: info: range check proved (CVC4: 1 VC)
 very_longs.ads:21:34: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:46:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:52:18: info: postcondition proved (CVC4: 1 VC)
