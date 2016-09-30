@@ -6,9 +6,7 @@ project Chapter08 is
 
    --  Exclude bingo_basket_original.adb from analysis, as it instantiates
    --  non-SPARK generic Ada.Numerics.Discrete_Random in SPARK code.
-   --  Also exclude temporarily bingo_basket.adb due to an error in flow
-   --  analysis (O908-020).
-   for Excluded_Source_Files use ("bingo_basket_original.adb", "bingo_basket.adb");
+   for Excluded_Source_Files use ("bingo_basket_original.adb");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkr", "-gnat12", "-gnata");

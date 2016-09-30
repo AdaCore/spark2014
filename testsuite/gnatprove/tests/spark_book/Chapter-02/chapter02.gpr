@@ -6,10 +6,6 @@ project Chapter02 is
    for Source_Dirs use (".");
    for Main use ("average.adb", "average_with_use.adb", "bad_types.adb", "enum_example.adb", "example.adb", "generic_examples.adb", "good_types.adb", "palindrome.adb");
 
-   --  Exclude temporarily palindrome.adb due to an error in flow analysis,
-   --  (O908-020).
-   for Excluded_Source_Files use ("palindrome.adb");
-
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata");
       for Local_Configuration_Pragmas use "../spark_mode.adc";

@@ -305,7 +305,9 @@ package body Flow.Analysis.Sanity is
                return Skip;
 
             when N_Object_Renaming_Declaration =>
-               Check_Name_Indexes_And_Slices (Name (N));
+               if Comes_From_Source (N) then
+                  Check_Name_Indexes_And_Slices (Name (N));
+               end if;
                return Skip;
 
             when N_Subtype_Indication =>

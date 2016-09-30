@@ -89,6 +89,20 @@ bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
+bingo_basket.adb:12:15: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:12:24: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:12:30: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:12:33: info: initialization of "Temp" proved
+bingo_basket.adb:12:33: info: initialization of "Temp" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:22:30: info: initialization of "The_Basket" proved
+bingo_basket.adb:28:33: info: initialization of "Random_Index" proved
+bingo_basket.adb:36:32: info: index check proved (CVC4: 2 VC)
+bingo_basket.adb:37:30: info: range check proved (CVC4: 1 VC)
+bingo_basket.adb:40:12: info: initialization of "Number" proved
+bingo_basket.ads:6:14: info: initialization of "The_Basket" proved
+bingo_basket.ads:8:18: info: postcondition proved (CVC4: 1 VC)
+bingo_basket.ads:10:20: info: initialization of "Letter" proved
+bingo_basket.ads:11:20: info: initialization of "Number" proved
 bounded_queue.adb:3:13: info: range check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:8:13: info: range check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:13:13: info: range check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
@@ -944,6 +958,40 @@ operator_overload.adb:40:07: warning: no Global contract available for "Put_Line
 overflow.adb:7:15: medium: overflow check might fail
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
+palindrome.adb:9:22: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
+palindrome.adb:9:22: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:9:26: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
+palindrome.adb:11:20: info: initialization of "Left_Index" proved
+palindrome.adb:11:20: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:11:34: info: initialization of "Right_Index" proved
+palindrome.adb:11:34: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:12:20: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
+palindrome.adb:12:20: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:12:26: medium: array index check might fail, in call inlined at palindrome.adb:32
+palindrome.adb:12:42: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:12:48: medium: array index check might fail, in call inlined at palindrome.adb:32
+palindrome.adb:13:25: info: initialization of "Left_Index" proved
+palindrome.adb:13:25: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:13:36: info: overflow check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
+palindrome.adb:14:25: info: initialization of "Right_Index" proved
+palindrome.adb:14:25: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:14:37: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
+palindrome.adb:16:14: info: initialization of "Left_Index" proved
+palindrome.adb:16:14: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:16:28: info: initialization of "Right_Index" proved
+palindrome.adb:16:28: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:26:14: warning: assuming "Put_Line" has no effect on global items
+palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
+palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
+palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
+palindrome.adb:32:07: info: initialization of "C10b" proved
+palindrome.adb:32:07: medium: range check might fail
+palindrome.adb:32:22: info: initialization of "Line" proved
+palindrome.adb:32:33: info: initialization of "Count" proved
+palindrome.adb:33:18: warning: assuming "Put_Line" has no effect on global items
+palindrome.adb:33:18: warning: no Global contract available for "Put_Line"
+palindrome.adb:35:18: warning: assuming "Put_Line" has no effect on global items
+palindrome.adb:35:18: warning: no Global contract available for "Put_Line"
 parent-public1.adb:11:20: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
