@@ -69,7 +69,7 @@ module Ada__containers__formal_indefinite_vectors__extended_index__rep
   use import Ada__containers__formal_indefinite_vectors__extended_index
   use import "_gnatprove_standard".Main
 
-  clone export "ada__model".Rep_Proj_IRC_Int with
+  clone export "ada__model".Rep_Proj_Int with
     type t = extended_index,
     predicate in_range = in_range
 
@@ -133,7 +133,7 @@ module Ada__containers__formal_indefinite_vectors__capacity_range__rep
   use import Ada__containers__formal_indefinite_vectors__capacity_range
   use import "_gnatprove_standard".Main
 
-  clone export "ada__model".Rep_Proj_IRC_Int with
+  clone export "ada__model".Rep_Proj_Int with
     type t = capacity_range,
     predicate in_range = in_range
 
