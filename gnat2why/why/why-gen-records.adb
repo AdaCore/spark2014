@@ -153,14 +153,19 @@ package body Why.Gen.Records is
    function Build_Predicate_For_Record
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id is
 
-      Ty_Ext  : constant Entity_Id := Retysp (Ty);
+      C_Ty    : constant Entity_Id :=
+        (if Is_Class_Wide_Type (Ty) then Get_Specific_Type_From_Classwide (Ty)
+         else Ty);
+      Ty_Ext  : constant Entity_Id := Retysp (C_Ty);
       R_Expr  : constant W_Expr_Id :=
         Insert_Simple_Conversion (Domain   => EW_Term,
                                   Expr     => +Expr,
                                   To       => EW_Abstract (Ty_Ext));
       Discrs  : constant Natural :=
-        (if Has_Discriminants (Ty_Ext) then
-              Natural (Number_Discriminants (Ty_Ext))
+        (if Has_Discriminants (Ty_Ext)
+         or else Has_Unknown_Discriminants (Ty_Ext)
+         then
+            Natural (Number_Discriminants (Ty_Ext))
          else 0);
       Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
                             or else Has_Unknown_Discriminants (Ty_Ext)
