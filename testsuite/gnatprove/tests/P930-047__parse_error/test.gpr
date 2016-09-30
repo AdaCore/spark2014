@@ -1,0 +1,5 @@
+project Test is
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatdk");
+  end Compiler;
+end Test;
