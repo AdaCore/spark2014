@@ -8,11 +8,6 @@ barrier.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
 blocking_contract.adb:21:13: high: potentially blocking operation in protected operation "Dummy"
 blocking_contract.adb:27:10: medium: precondition might fail
-complex.adb:7:04: "Long_Long_Float" is not allowed in SPARK
-complex.adb:7:04: instantiation error at a-ticoio.adb:42
-complex.adb:7:04: violation of pragma SPARK_Mode at test.adc:1
-complex.adb:12:07: warning: assuming "Put" has no effect on global items
-complex.adb:12:07: warning: no Global contract available for "Put"
 external.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 external_separate_calls.ads:4:13: high: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:4:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
@@ -87,7 +82,6 @@ p.ads:92:17: high: potentially blocking operation in protected operation "File_P
 p.ads:96:13: high: potentially blocking operation in protected operation "Text_Entry"
 p.ads:97:17: high: potentially blocking operation in protected operation "Text_Proc"
 p.ads:101:13: high: potentially blocking operation in protected operation "My_Text_Entry"
-p.ads:105:13: high: potentially blocking operation in protected operation "Complex_Print_Entry"
 p.ads:109:13: high: potentially blocking operation in protected operation "Floatio_Print_Entry"
 p.ads:113:13: high: potentially blocking operation in protected operation "Entry_Call_To_Library_Level_Procedure"
 p.ads:114:17: high: potentially blocking operation in protected operation "Proc_Call_To_Library_Level_Procedure"
