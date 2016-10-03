@@ -5,8 +5,6 @@ package Formal.Numerics with
 is
    pragma Pure;
 
-   pragma Annotate (GNATprove, External_Axiomatization);
-
    -- FIXME: external axiomatization of Pi and e as constants is not supported;
    -- instead, we define them as inlined functions.
 

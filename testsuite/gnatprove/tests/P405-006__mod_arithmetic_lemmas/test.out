@@ -192,21 +192,9 @@ test_arith.adb:296:04: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:296:14: info: initialization of "X" proved
 test_arith.adb:296:14: info: range check proved (CVC4: 1 VC)
 test_arith.adb:296:17: info: initialization of "Y" proved
-test_arith.adb:296:17: info: range check provedtest.gpr:1:06: unknown project file: "spark_lemmas"
-gprbuild: "test.gpr" processing failed
- (CVC4: 1 VC)
+test_arith.adb:296:17: info: range check proved (CVC4: 1 VC)
 test_arith.adb:300:04: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:300:18: info: initialization of "X" proved
 test_arith.adb:300:18: info: range check proved (CVC4: 1 VC)
 test_arith.adb:300:21: info: initialization of "Y" proved
 test_arith.adb:300:21: info: range check proved (CVC4: 1 VC)
-Traceback (most recent call last):
-  File "test.py", line 8, in <module>
-    call(["./test_arith"])
-  File "/home/fumex/gnatpython-2.0.20160921-x86_64-linux-bin/lib/python2.7/subprocess.py", line 522, in call
-    return Popen(*popenargs, **kwargs).wait()
-  File "/home/fumex/gnatpython-2.0.20160921-x86_64-linux-bin/lib/python2.7/subprocess.py", line 710, in __init__
-    errread, errwrite)
-  File "/home/fumex/gnatpython-2.0.20160921-x86_64-linux-bin/lib/python2.7/subprocess.py", line 1335, in _execute_child
-    raise child_exception
-OSError: [Errno 2] No such file or directory

@@ -36,7 +36,6 @@
 package Formal.Numerics.Elementary_Functions with
   SPARK_Mode
 is
-   pragma Annotate (GNATprove, External_Axiomatization);
    pragma Pure;
 
 
