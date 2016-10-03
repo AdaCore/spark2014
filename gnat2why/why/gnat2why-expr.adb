@@ -8981,14 +8981,27 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
             begin
-               T := New_VC_Call
-                 (Ada_Node => Expr,
-                  Name     => To_Program_Space (MF_Floats (Base).Remainder),
-                  Progs    => (1 => Arg_1,
-                               2 => Arg_2),
-                  Reason   => VC_Division_Check,
-                  Domain   => Domain,
-                  Typ      => Base);
+               if Domain = EW_Prog
+               then
+                  --  The front end does not insert a Do_Division_Check flag on
+                  --  remainder attribute so we systematically do the check.
+                  T := New_VC_Call
+                    (Ada_Node => Expr,
+                     Name     => To_Program_Space (MF_Floats (Base).Remainder),
+                     Progs    => (1 => Arg_1,
+                                  2 => Arg_2),
+                     Reason   => VC_Division_Check,
+                     Domain   => Domain,
+                     Typ      => Base);
+               else
+                  T := New_Call
+                    (Ada_Node => Expr,
+                     Name     => MF_Floats (Base).Remainder,
+                     Args     => (1 => Arg_1,
+                                  2 => Arg_2),
+                     Domain   => Domain,
+                     Typ      => Base);
+               end if;
             end;
 
          when Attribute_Min
