@@ -176,7 +176,7 @@ package body Flow_Utility is
       Tasking            : in out Tasking_Info;
       Include_Predicates : Boolean)
    is
-      Scope : constant Flow_Scope := Get_Flow_Scope (N);
+      Scop : constant Flow_Scope := Get_Flow_Scope (N);
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
@@ -213,15 +213,35 @@ package body Flow_Utility is
       begin
          case Nkind (N) is
             when N_Function_Call =>
-               Functions_Called.Include (Get_Called_Entity (N));
+               declare
+                  Called_Func : constant Entity_Id := Get_Called_Entity (N);
 
-               --  Collect only external calls to protected functions; internal
-               --  calls must be called from the outside anyway.
-               if Convention (Get_Called_Entity (N)) = Convention_Protected
-                 and then Nkind (Name (N)) = N_Selected_Component
-               then
-                  Tasking (Read_Locks).Include (Entity (Prefix (Name (N))));
-               end if;
+               begin
+                  Functions_Called.Include (Called_Func);
+
+                  --  Collect external calls to protected functions only;
+                  --  internal calls do not trigger priority ceiling checks.
+                  if Ekind (Scope (Called_Func)) = E_Protected_Type then
+                     declare
+                        The_PO : constant Entity_Id :=
+                          Get_Enclosing_Concurrent_Object (Called_Func, N);
+
+                     begin
+                        case Ekind (The_PO) is
+                           --  External call
+                           when Object_Kind =>
+                              Tasking (Read_Locks).Include (The_PO);
+
+                           --  Internal call
+                           when E_Protected_Type =>
+                              null;
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end;
+                  end if;
+               end;
 
             when N_In | N_Not_In =>
                --  Membership tests involving type with predicates have the
@@ -234,7 +254,7 @@ package body Flow_Utility is
                   if Nkind (P) in N_Identifier | N_Expanded_Name
                     and then Ekind (Entity (P)) in Type_Kind
                   then
-                     Process_Type (Get_Type (P, Scope));
+                     Process_Type (Get_Type (P, Scop));
                   end if;
                else
                   --  x in t | 1 .. y | u
@@ -243,7 +263,7 @@ package body Flow_Utility is
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Ekind (Entity (P)) in Type_Kind
                      then
-                        Process_Type (Get_Type (P, Scope));
+                        Process_Type (Get_Type (P, Scop));
                      end if;
                      Next (P);
                   end loop;
