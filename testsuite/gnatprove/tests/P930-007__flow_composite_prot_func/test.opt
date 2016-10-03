@@ -1,0 +1,1 @@
+ALL XFAIL call to protected function on composite object (P930-007)
