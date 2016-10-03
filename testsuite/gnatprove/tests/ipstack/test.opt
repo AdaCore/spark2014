@@ -1,1 +1,1 @@
-ALL XFAIL O804-004 incorrect flow message
+ALL XFAIL attribute "ADDRESS" not on variable or constant is not yet supported
