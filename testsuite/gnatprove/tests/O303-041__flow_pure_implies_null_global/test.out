@@ -1,2 +1,0 @@
-foo.adb:9:09: warning: assuming "Log" has no effect on global items
-foo.adb:9:09: warning: no Global contract available for "Log"

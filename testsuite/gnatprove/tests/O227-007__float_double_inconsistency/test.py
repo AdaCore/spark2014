@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(counterexample=False,codepeer=True)
+prove_all(prover=["cvc4"])

@@ -31,7 +31,7 @@ pi_euler_2.adb:18:23: info: division check proved (altergo: 1 VC)
 pi_euler_2.adb:18:23: info: overflow check proved (altergo: 1 VC)
 pi_euler_2.adb:18:24: info: initialization of "Index_Float" proved
 pi_euler_2.adb:18:35: info: division check proved (altergo: 1 VC)
-pi_euler_2.adb:18:35: medium: overflow check might fail
+pi_euler_2.adb:18:35: info: overflow check proved (altergo: 1 VC)
 pi_euler_2.adb:19:16: info: initialization of "Pi" proved
 pi_euler_2.adb:19:18: medium: overflow check might fail
 pi_euler_2.adb:19:19: info: initialization of "Erreur" proved

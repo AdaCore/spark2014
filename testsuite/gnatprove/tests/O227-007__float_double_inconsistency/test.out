@@ -15,13 +15,13 @@ wibble.adb:40:37: medium: overflow check might fail
 wibble.adb:41:17: medium: postcondition might fail, cannot prove State <= Float32 (X + 1) * C
 wibble.adb:41:37: info: range check proved (CVC4: 1 VC)
 wibble.adb:41:42: medium: overflow check might fail
-wibble.adb:44:22: info: overflow check proved (Z3: 1 VC)
+wibble.adb:44:22: medium: overflow check might fail
 wibble.adb:52:45: info: range check proved (CVC4: 1 VC)
 wibble.adb:52:48: medium: overflow check might fail
 wibble.adb:53:17: medium: postcondition might fail, cannot prove State in C .. Float32 (X + 1) * C
 wibble.adb:53:42: info: range check proved (CVC4: 1 VC)
 wibble.adb:53:47: medium: overflow check might fail
-wibble.adb:56:22: info: overflow check proved (Z3: 1 VC)
+wibble.adb:56:22: medium: overflow check might fail
 wibble.adb:64:45: info: range check proved (CVC4: 1 VC)
 wibble.adb:64:48: medium: overflow check might fail
 wibble.adb:65:17: medium: postcondition might fail, cannot prove State in C .. Float64 (X + 1) * C

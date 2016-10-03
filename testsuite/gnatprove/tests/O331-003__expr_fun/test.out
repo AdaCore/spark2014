@@ -1,4 +1,3 @@
-PROOF REGRESSION at package_1.adb:15: mark @OVERFLOW_CHECK:PASS not found
 package_1.adb:12:20: info: overflow check proved (Interval)
-package_1.adb:15:30: medium: overflow check might fail
+package_1.adb:15:30: info: overflow check proved (altergo: 1 VC)
 package_1.ads:7:22: info: initialization of "OutputVar" proved
