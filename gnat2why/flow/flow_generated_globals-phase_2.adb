@@ -2283,7 +2283,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          subtype Protected_Info_Kind is Tasking_Info_Kind with
            Static_Predicate =>
-             Protected_Info_Kind in Entry_Calls | Write_Locks | Read_Locks;
+             Protected_Info_Kind in Write_Locks | Read_Locks;
          --  Accesses to protected objects that trigger ceiling priority checks
 
       begin

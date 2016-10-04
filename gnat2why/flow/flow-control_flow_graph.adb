@@ -4158,38 +4158,30 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  Check for calling protected procedures and entries
-      if Ekind (Scope (Called_Thing)) = E_Protected_Type then
+      --  Check for calls to protected procedures and entries
+      --
+      --  Ignore calls from within the same protected type (internal)
+      --  including calls from protected procedure to entry of the same
+      --  protected type. These calls are already reported as potentially
+      --  blocking.
+      --  Only register tasking-related info for calls from the
+      --  outside of the protected type (external).
+
+      if Ekind (Scope (Called_Thing)) = E_Protected_Type
+        and then Is_External_Call (N)
+      then
          declare
             The_PO : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object (Called_Thing, N);
+              Get_Enclosing_Object (Prefix (Name (N)));
 
          begin
-            case Ekind (The_PO) is
-               when Object_Kind =>
-                  case Ekind (Called_Thing) is
-                     when Entry_Kind =>
-                        FA.Tasking (Entry_Calls).Include (The_PO);
+            pragma Assert (Is_Object (The_PO));
 
-                     when E_Procedure =>
-                        FA.Tasking (Write_Locks).Include (The_PO);
+            if Is_Entry (Called_Thing) then
+               FA.Tasking (Entry_Calls).Include (The_PO);
+            end if;
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
-
-               --  If The_PO represent a protected type, then it is an internal
-               --  call. We do not record such a case and miss the violation
-               --  about an entry being internally called from a protected
-               --  procedure. However, such a call is reported as potentially
-               --  blocking anyway.
-
-               when E_Protected_Type =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
-            end case;
+            FA.Tasking (Write_Locks).Include (The_PO);
          end;
       end if;
 

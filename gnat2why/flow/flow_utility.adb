@@ -219,27 +219,13 @@ package body Flow_Utility is
                begin
                   Functions_Called.Include (Called_Func);
 
-                  --  Collect external calls to protected functions only;
-                  --  internal calls do not trigger priority ceiling checks.
-                  if Ekind (Scope (Called_Func)) = E_Protected_Type then
-                     declare
-                        The_PO : constant Entity_Id :=
-                          Get_Enclosing_Concurrent_Object (Called_Func, N);
-
-                     begin
-                        case Ekind (The_PO) is
-                           --  External call
-                           when Object_Kind =>
-                              Tasking (Read_Locks).Include (The_PO);
-
-                           --  Internal call
-                           when E_Protected_Type =>
-                              null;
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end;
+                  --  Only external calls to protected functions trigger
+                  --  priority ceiling protocol checks; internal calls do not.
+                  if Ekind (Scope (Called_Func)) = E_Protected_Type
+                    and then Is_External_Call (N)
+                  then
+                     Tasking (Read_Locks).Include
+                       (Get_Enclosing_Object (Prefix (Name (N))));
                   end if;
                end;
 
