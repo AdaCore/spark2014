@@ -1,0 +1,2 @@
+p.ads:3:19: default expression cannot mention type "PT" defined at line 3
+gnatprove: error during flow analysis and proof
