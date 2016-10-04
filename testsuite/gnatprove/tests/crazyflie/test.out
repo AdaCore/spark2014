@@ -125,20 +125,20 @@ free_fall_pack.ads:101:04: info: initialization of "Landing_Data_Collector.Sampl
 free_fall_pack.ads:109:07: info: initialization of "FF_Detected" proved
 free_fall_pack.ads:112:33: info: initialization of "Landing_Detected" proved
 maths_pack.adb:15:18: info: division check proved (CVC4: 1 VC)
-maths_pack.adb:15:18: info: overflow check proved (altergo: 1 VC)
+maths_pack.adb:15:18: medium: overflow check might fail
 maths_pack.adb:15:20: info: precondition proved (CVC4: 1 VC)
 maths_pack.adb:23:14: info: range check proved (CVC4: 1 VC)
 maths_pack.adb:31:14: info: range check proved (CVC4: 1 VC)
-maths_pack.ads:18:42: medium: postcondition might fail, cannot prove Inv_Sqrt'Result < 2.7E22
+maths_pack.ads:18:16: medium: postcondition might fail, cannot prove Inv_Sqrt'Result > 0.0
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:47:35: info: overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:47:35: info: range check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: range check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:47:35: info: range check proved (Interval), in instantiation at stabilizer_pack.ads:45
-pid_pack.adb:50:07: info: assertion proved (altergo: 2 VC), in instantiation at controller_pack.ads:16
-pid_pack.adb:50:07: info: assertion proved (altergo: 2 VC), in instantiation at controller_pack.ads:24
-pid_pack.adb:50:07: info: assertion proved (altergo: 2 VC), in instantiation at stabilizer_pack.ads:45
+pid_pack.adb:50:22: medium: assertion might fail, cannot prove Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at controller_pack.ads:16
+pid_pack.adb:50:22: medium: assertion might fail, cannot prove Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at controller_pack.ads:24
+pid_pack.adb:50:22: medium: assertion might fail, cannot prove Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:50:32: info: overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:50:32: info: overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:50:32: info: overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
