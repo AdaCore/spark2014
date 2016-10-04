@@ -178,6 +178,10 @@ package body Flow_Utility is
    is
       Scop : constant Flow_Scope := Get_Flow_Scope (N);
 
+      Current_Prot_Type : Entity_Id;
+      --  Protected type that encloses node N, if any; for detecting internal
+      --  calls to the same instance of a protected type.
+
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
       --  corresponding Entity_Id; for protected functions store the
@@ -219,28 +223,20 @@ package body Flow_Utility is
                begin
                   Functions_Called.Include (Called_Func);
 
-                  --  Collect external calls to protected functions only;
-                  --  internal calls do not trigger priority ceiling checks.
-                  if Ekind (Scope (Called_Func)) = E_Protected_Type then
-                     declare
-                        The_PO : constant Entity_Id :=
-                          Get_Enclosing_Concurrent_Object (Called_Func, N);
+                  --  Only external calls to protected functions trigger
+                  --  priority ceiling protocol checks; internal calls should
+                  --  be ignored.
+                  declare
+                     Callee_Scope : constant Entity_Id := Scope (Called_Func);
 
-                     begin
-                        case Ekind (The_PO) is
-                           --  External call
-                           when Object_Kind =>
-                              Tasking (Read_Locks).Include (The_PO);
-
-                           --  Internal call
-                           when E_Protected_Type =>
-                              null;
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end;
-                  end if;
+                  begin
+                     if Ekind (Callee_Scope) = E_Protected_Type
+                       and then Callee_Scope /= Current_Prot_Type
+                     then
+                        Tasking (Read_Locks).Include
+                          (Get_Enclosing_Object (Prefix (Name (N))));
+                     end if;
+                  end;
                end;
 
             when N_In | N_Not_In =>
@@ -282,6 +278,36 @@ package body Flow_Utility is
    --  Start of processing for Collect_Functions_And_Read_Locked_POs
 
    begin
+      --  Find the enlosing protected type, if any
+      declare
+         Decl : constant Node_Id := Enclosing_Declaration (N);
+
+         Context : Entity_Id;
+
+      begin
+         --  Contracts of library-level subprograms have no enclosing
+         --  declaration, but they are not interesting too.
+
+         if Present (Decl) then
+            Context := Unique_Defining_Entity (Decl);
+
+            loop
+               if Ekind (Context) = E_Protected_Type then
+                  Current_Prot_Type := Context;
+                  exit;
+
+               elsif Context = Standard_Standard then
+                  Current_Prot_Type := Empty;
+                  exit;
+
+               else
+                  Context := Scope (Context);
+
+               end if;
+            end loop;
+         end if;
+      end;
+
       Functions_Called := Node_Sets.Empty_Set;
       Traverse (N);
    end Collect_Functions_And_Read_Locked_POs;

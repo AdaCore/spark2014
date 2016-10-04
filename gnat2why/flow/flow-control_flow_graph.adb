@@ -4158,40 +4158,51 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  Check for calling protected procedures and entries
-      if Ekind (Scope (Called_Thing)) = E_Protected_Type then
-         declare
-            The_PO : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object (Called_Thing, N);
+      --  Check for calls to protected procedures and entries
+      declare
+         Callee_Scope : constant Entity_Id := Scope (Called_Thing);
 
-         begin
-            case Ekind (The_PO) is
-               when Object_Kind =>
-                  case Ekind (Called_Thing) is
-                     when Entry_Kind =>
-                        FA.Tasking (Entry_Calls).Include (The_PO);
+      begin
+         if Ekind (Callee_Scope) = E_Protected_Type then
+            declare
+               Context : Entity_Id := FA.Spec_Entity;
 
-                     when E_Procedure =>
+            begin
+               loop
+                  --  Ignore calls from within the same protected type
+                  --  (internal) including calls from protected procedure to
+                  --  entry of the same protected type. These calls are already
+                  --  reported as potentially blocking.
+                  if Context = Callee_Scope then
+                     exit;
+
+                  --  Only register tasking-related info for calls from the
+                  --  outside of the protected type (external).
+
+                  elsif Context = Standard_Standard then
+                     declare
+                        The_PO : constant Entity_Id :=
+                          Get_Enclosing_Object (Prefix (Name (N)));
+
+                     begin
+                        pragma Assert (Is_Object (The_PO));
+
+                        if Is_Entry (Called_Thing) then
+                           FA.Tasking (Entry_Calls).Include (The_PO);
+                        end if;
+
                         FA.Tasking (Write_Locks).Include (The_PO);
+                     end;
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
+                     exit;
 
-               --  If The_PO represent a protected type, then it is an internal
-               --  call. We do not record such a case and miss the violation
-               --  about an entry being internally called from a protected
-               --  procedure. However, such a call is reported as potentially
-               --  blocking anyway.
-
-               when E_Protected_Type =>
-                  null;
-
-               when others =>
-                  raise Program_Error;
-            end case;
-         end;
-      end if;
+                  else
+                     Context := Scope (Context);
+                  end if;
+               end loop;
+            end;
+         end if;
+      end;
 
       --  Check for suspending on a suspension object
       if Suspends_On_Suspension_Object then
