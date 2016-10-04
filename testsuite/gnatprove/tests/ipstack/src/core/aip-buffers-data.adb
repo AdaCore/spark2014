@@ -728,7 +728,8 @@ is
    --------------------
 
    function Buffer_Payload (Buf : Dbuf_Id) return System.Address with
-     Refined_Global => (Common.Buf_List, Data_Array)
+     Refined_Global => (Common.Buf_List, Data_Array),
+     SPARK_Mode => Off  --  Address attribute applied to array access
    is
       Buf_Start_Offset : constant Data_Offset :=
         Data_Offset (Buf - Dbuf_Index'First) * Config.Data_Buffer_Size;
