@@ -122,6 +122,17 @@ package Gnat2Why.Annotate is
    --  definition in Why3 on which the label "inline" is set so that gnatwhy3
    --  inlines its definition for provers.
 
+   --  A pragma Annotate for termination has the following form:
+   --    pragma Annotate (GNATprove, Terminating, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Terminating         is a fixed identifier
+   --    E                   is a subprogram entity
+
+   --  When such an annotation is provided, E is assumed to terminate as far as
+   --  proof is concerned.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -183,5 +194,8 @@ package Gnat2Why.Annotate is
    --  pragma Annotate Iterable_For_Proof that applies to type. If so, set
    --  Found to True and fill in the Info record. Otherwise, set Found to False
    --  and leave Info uninitialized.
+
+   function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate Terminating applies to the subprogram E
 
 end Gnat2Why.Annotate;

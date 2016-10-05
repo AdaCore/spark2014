@@ -34,7 +34,7 @@ package Perm with SPARK_Mode is
       or else (for some Ia in A'Range =>
                    (for some Ib in B'Range => A (Ia) = B (Ib) and then
                     Is_Perm (Remove (A, Ia), Remove (B, Ib)))));
-
+   pragma Annotate (GNATprove, Terminating, Is_Perm);
    function Perm_Reflexive (A, B : Nat_Array) return True_Bool with
      Pre  => Invariant (A) and then Invariant (B) and then A = B,
      Post => (if Perm_Reflexive'Result then Is_Perm (A, B));

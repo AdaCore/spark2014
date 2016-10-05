@@ -11,8 +11,8 @@ package Perm with SPARK_Mode, Ghost is
      (if A'Length = 0 then 0
       elsif A (A'Last) = E then Occ_Def (Remove_Last (A), E) + 1
       else Occ_Def (Remove_Last (A), E))
-   with
-     Post => Occ_Def'Result <= A'Length;
+   with Post => Occ_Def'Result <= A'Length;
+   pragma Annotate (GNATprove, Terminating, Occ_Def);
 
    function Occ (A : Nat_Array; E : Natural) return Nb_Occ is (Occ_Def (A, E))
    with

@@ -80,6 +80,11 @@ package body Gnat2Why.Annotate is
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
 
+   Terminate_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores function entities with a pragma Annotate
+   --  (GNATprove, Terminating, E).
+
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
@@ -137,6 +142,11 @@ package body Gnat2Why.Annotate is
       Arg4_Exp : Node_Id);
    --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
    --  and insert it in the Iterable_Annotations map.
+
+   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) with
+     Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, Terminating, ) and
+   --  insert it in the Terminate_Annotations map.
 
    ------------------------
    -- Check_Is_Annotated --
@@ -427,6 +437,30 @@ package body Gnat2Why.Annotate is
       end if;
    end Check_Iterable_Annotation;
 
+   --------------------------------
+   -- Check_Terminate_Annotation --
+   --------------------------------
+
+   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) is
+      E : constant Entity_Id := Entity (Arg3_Exp);
+
+   begin
+      --  The third argument must be an entity
+
+      pragma Assert (Present (E));
+
+      --  This entity must be a function
+
+      if Ekind (E) not in Subprogram_Kind then
+         Error_Msg_N
+           ("Entity parameter of a pragma Terminating must be a subprogram",
+            Arg3_Exp);
+         return;
+      end if;
+
+      Terminate_Annotations.Include (E);
+   end Check_Terminate_Annotation;
+
    -----------------------------------------------
    -- Generate_Useless_Pragma_Annotate_Warnings --
    -----------------------------------------------
@@ -457,6 +491,13 @@ package body Gnat2Why.Annotate is
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
+
+   ------------------------------
+   -- Has_Terminate_Annotation --
+   ------------------------------
+
+   function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
+      (Terminate_Annotations.Contains (E));
 
    ---------------------------
    -- Insert_Annotate_Range --
@@ -661,7 +702,7 @@ package body Gnat2Why.Annotate is
       Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
 
    begin
-      --  We silently ignore this case
+      --  We silently ignore these cases
 
       if List_Length (Pragma_Argument_Associations (Node)) = 2  then
          declare
@@ -685,6 +726,11 @@ package body Gnat2Why.Annotate is
            "inline_for_proof"
          then
             Check_Inline_Annotation (Arg3_Exp);
+            Ok := False;
+            return;
+         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "terminating"
+         then
+            Check_Terminate_Annotation (Arg3_Exp);
             Ok := False;
             return;
          end if;

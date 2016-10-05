@@ -7,6 +7,7 @@ package Private_Record with SPARK_Mode is
    function Mk_Result (Found : Boolean; Content : Positive := 1) return Result_Ty with
      Post => Mk_Result'Result.Found = Found
      and then (if Found then Get_Content (Mk_Result'Result) = Content);
+   pragma Annotate (GNATprove, Terminating, Mk_Result);
 
 private
    pragma SPARK_Mode (Off);

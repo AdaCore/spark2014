@@ -69,7 +69,7 @@ package body Perm with SPARK_Mode is
       function Induction_Hypothesis (A, B : Nat_Array) return True_Bool with
         Pre  => Invariant (A) and then Invariant (B) and then A = B,
         Post => (if Induction_Hypothesis'Result then Is_Perm (A, B));
-
+      pragma Annotate (GNATprove, Terminating, Induction_Hypothesis);
       function Induction_Hypothesis (A, B : Nat_Array) return True_Bool is
       begin
          if A'Length = 0 then
@@ -93,7 +93,7 @@ package body Perm with SPARK_Mode is
       function Induction_Hypothesis (A, B : Nat_Array) return True_Bool with
         Pre  => Invariant (A) and then Invariant (B) and then Is_Perm (A, B),
         Post => (if Induction_Hypothesis'Result then Is_Perm (B, A));
-
+      pragma Annotate (GNATprove, Terminating, Induction_Hypothesis);
       function Induction_Hypothesis (A, B : Nat_Array) return True_Bool is
       begin
          if A'Length = 0 then
@@ -153,7 +153,7 @@ package body Perm with SPARK_Mode is
         Pre  => Invariant (A) and then Invariant (B) and then Invariant (C)
         and then A = C and then Is_Perm (A, B),
         Post => (if Induction_Hypothesis'Result then Is_Perm (C, B));
-
+      pragma Annotate (GNATprove, Terminating, Induction_Hypothesis);
       function Induction_Hypothesis (A, B, C : Nat_Array) return True_Bool is
       begin
          if A'Length = 0 then
@@ -305,7 +305,7 @@ package body Perm with SPARK_Mode is
         Pre  => Invariant (A) and then Invariant (B) and then Invariant (C)
         and then Is_Perm (A, B) and then Is_Perm (B, C),
         Post => (if Induction_Hypothesis'Result then Is_Perm (A, C));
-
+      pragma Annotate (GNATprove, Terminating, Induction_Hypothesis);
       function Induction_Hypothesis (A, B, C : Nat_Array) return True_Bool is
       begin
          if A'Length = 0 then

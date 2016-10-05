@@ -54,7 +54,7 @@ is
         N /= 0 => (for all Idx in S1'Range =>
                      (if Idx in From1 .. From1 + N - 1 then S1 (Idx) = S2 (Idx - From1 + From2)
                       else S1 (Idx) = S1'Old (Idx))));
-
+   pragma Annotate (GNATprove, Terminating, Memcpy);
    procedure Memcpy
      (S1 : in out String;
       S2 : String;
@@ -78,7 +78,7 @@ is
                 Memchr'Result = Find_Char_In_String (S, Ch, N)
               else
                 Memchr'Result = 0);
-
+   pragma Annotate (GNATprove, Terminating, Memchr);
    function Memchr
      (S  : String;
       Ch : Character;
@@ -106,7 +106,7 @@ is
      Pre  => N <= B'Length,
      Post => (for all Idx in B'Range =>
                 (if Idx < B'First + N then B (Idx) = Ch else B (Idx) = B'Old (Idx)));
-
+   pragma Annotate (GNATprove, Terminating, Memset);
    procedure Memset
      (B  : in out String;
       Ch : Character;

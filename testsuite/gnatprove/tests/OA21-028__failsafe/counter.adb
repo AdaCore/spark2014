@@ -1,11 +1,11 @@
 package body Counter with SPARK_Mode is
 
-
    package body Model is
       function Current_Chain_Length return Time_Slot_Length is
          Res : Time_Slot_Length := 0;
       begin
          while Res < Cycle and then Inputs (Cycle - Res) loop
+            pragma Loop_Variant (Increases => Res);
             pragma Loop_Invariant ((for all I in Cycle - Res .. Cycle => Inputs (I)));
             Res := Res + 1;
          end loop;

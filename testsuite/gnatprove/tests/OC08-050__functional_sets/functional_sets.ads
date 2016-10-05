@@ -25,13 +25,13 @@ package Functional_Sets with SPARK_Mode is
    function Mem (S : Set; E : Element_Type) return Boolean with
      Global => null,
      Post   => (if E = No_Element then not Mem'Result);
-
+   pragma Annotate (GNATprove, Terminating, Mem);
    function Inc (S1, S2 : Set) return Boolean with
    --  Set inclusion.
 
      Global => null,
      Post   => Inc'Result = (for all E in S1 => Mem (S2, E));
-
+   pragma Annotate (GNATprove, Terminating, Inc);
    function "=" (S1, S2 : Set) return Boolean with
    --  Extensional equality over sets.
 
@@ -39,7 +39,7 @@ package Functional_Sets with SPARK_Mode is
      Post   =>
        "="'Result = ((for all E in S1 => Mem (S2, E))
                      and (for all E in S2 => Mem (S1, E)));
-
+   pragma Annotate (GNATprove, Terminating, Functional_Sets."=");
    pragma Warnings (Off, "unused variable");
    function Is_Empty (S : Set) return Boolean with
    --  A set is empty if it contains no element.
@@ -47,7 +47,7 @@ package Functional_Sets with SPARK_Mode is
      Global => null,
      Post   => Is_Empty'Result = (for all E in S => False);
    pragma Warnings (On, "unused variable");
-
+   pragma Annotate (GNATprove, Terminating, Is_Empty);
    function Is_Add (S : Set; E : Element_Type; Result : Set) return Boolean
    --  Returns True if Result is S augmented with E.
 
@@ -57,7 +57,7 @@ package Functional_Sets with SPARK_Mode is
        (E /= No_Element and Mem (Result, E) and not Mem (S, E)
         and (for all F in Result => Mem (S, F) or F = E)
         and (for all E in S => Mem (Result, E)));
-
+   pragma Annotate (GNATprove, Terminating, Is_Add);
    function Add (S : Set; E : Element_Type) return Set with
    --  Returns S augmented with E.
    --  Is_Add (S, E, Result) should be used instead of Result = Add (S, E)
@@ -66,7 +66,7 @@ package Functional_Sets with SPARK_Mode is
      Global => null,
      Pre    => E /= No_Element and then not Mem (S, E),
      Post   => Is_Add (S, E, Add'Result);
-
+   pragma Annotate (GNATprove, Terminating, Add);
    function Is_Intersection (S1, S2, Result : Set) return Boolean with
    --  Returns True if Result is the intersection of S1 and S2.
 
@@ -76,7 +76,7 @@ package Functional_Sets with SPARK_Mode is
                Mem (S1, E) and Mem (S2, E))
         and (for all E in S1 =>
                (if Mem (S2, E) then Mem (Result, E))));
-
+   pragma Annotate (GNATprove, Terminating, Is_Intersection);
    function Intersection (S1, S2 : Set) return Set with
    --  Returns the intersection of S1 and S2.
    --  Intersection (S1, S2, Result) should be used instead of
@@ -94,7 +94,7 @@ package Functional_Sets with SPARK_Mode is
        ((for all E in Result => Mem (S1, E) or Mem (S2, E))
         and (for all E in S1 => Mem (Result, E))
         and (for all E in S2 => Mem (Result, E)));
-
+   pragma Annotate (GNATprove, Terminating, Is_Union);
    function Union (S1, S2 : Set) return Set with
    --  Returns the union of S1 and S2.
    --  Is_Union (S1, S2, Result) should be used instead of

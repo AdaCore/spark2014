@@ -1,4 +1,4 @@
-package Stack is
+package Stack with SPARK_Mode is
 
    type Length_T is range 0 .. 100;
 

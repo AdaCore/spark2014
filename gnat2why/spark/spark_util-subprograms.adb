@@ -843,6 +843,29 @@ package body SPARK_Util.Subprograms is
       return not Potentially_Blocking_Statement_Found;
    end Has_Only_Nonblocking_Statements;
 
+   -------------------
+   -- Is_Predefined --
+   -------------------
+
+   function Is_Predefined (E : Entity_Id) return Boolean is
+      S : Entity_Id;
+   begin
+      if In_Predefined_Unit (E) then
+         return True;
+      end if;
+
+      S := Scope (E);
+      while Present (S) loop
+         if Is_Generic_Instance (S) then
+            return In_Predefined_Unit
+              (Defining_Entity (Get_Package_Instantiation_Node (S)));
+         end if;
+         S := Scope (S);
+      end loop;
+
+      return False;
+   end Is_Predefined;
+
    -----------------------------
    -- In_Private_Declarations --
    -----------------------------

@@ -1,4 +1,4 @@
-package body Private_A
+package body Private_A with SPARK_Mode
 is
    type Optional_Stack is record
       Exists    : Boolean;
