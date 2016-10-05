@@ -1,2 +1,0 @@
-p.ads:9:13: function with output global "PO" is not allowed in SPARK
-gnatprove: error during flow analysis and proof

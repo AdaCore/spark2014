@@ -1674,6 +1674,7 @@ package body Flow is
                      if FA.Kind = Kind_Package_Body then
                         Analysis.Check_Elaborate_Body (FA);
                      end if;
+                     Analysis.Check_State_Volatility_Escalation (FA);
                   end;
             end case;
          end if;

@@ -41,7 +41,7 @@ package PolyORB_HI.Epoch
 is
 
    procedure System_Startup_Time (SST: out Ada.Real_Time.Time)
-     with Global => (In_Out => Elaborated_Variables);
+     with Global => (Input => Elaborated_Variables);
    --  Startup time of user tasks
 
    procedure Set_Epoch

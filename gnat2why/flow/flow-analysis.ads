@@ -204,6 +204,13 @@ package Flow.Analysis is
    --  Is_Potentially_Nonreturning, so that it can be tested separately (as the
    --  impact it has on proof is not necessarily obvious or easy to trigger).
 
+   procedure Check_State_Volatility_Escalation
+     (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   --  Any external abstract state can be annotated with precise volatility
+   --  information, here we need to make sure that we do not have anything
+   --  exceeding what the contract allows.
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

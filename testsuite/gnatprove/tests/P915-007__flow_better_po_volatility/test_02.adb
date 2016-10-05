@@ -9,7 +9,7 @@ is
    Sensor : Integer with
      Part_Of => Database,
      Volatile,
-     Async_Writers, Effective_Reads,
+     Async_Readers, Effective_Writes,
      Address => System'To_Address (16#DEADBEEF#),
      Import;
 

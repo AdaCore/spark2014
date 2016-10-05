@@ -44,7 +44,7 @@ with Types;   use Types;
 package Common_Containers is
 
    subtype Checked_Entity_Id is Entity_Id with
-     Predicate => Nkind (Checked_Entity_Id) = N_Defining_Identifier;
+     Predicate => Nkind (Checked_Entity_Id) in N_Entity;
 
    subtype Subprogram_Entity_Id is Checked_Entity_Id with
      Predicate => Ekind (Subprogram_Entity_Id) in Subprogram_Kind

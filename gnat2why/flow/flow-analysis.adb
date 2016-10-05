@@ -4595,4 +4595,53 @@ package body Flow.Analysis is
       end if;
    end Check_Termination;
 
+   ---------------------------------------
+   -- Check_State_Volatility_Escalation --
+   ---------------------------------------
+
+   procedure Check_State_Volatility_Escalation
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      function To_String (P : Volatile_Pragma_Id) return String
+      is (case P is
+          when Pragma_Async_Readers    => "Async_Readers",
+          when Pragma_Async_Writers    => "Async_Writers",
+          when Pragma_Effective_Reads  => "Effective_Reads",
+          when Pragma_Effective_Writes => "Effective_Writes");
+   begin
+      --  We check all states of the current package, for all volatility
+      --  aspects...
+      for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+         for Flavor in Volatile_Pragma_Id loop
+
+            --  We only check if the state *does not* have a certain aspect
+            if not Has_Volatile (State)
+              or else not Has_Volatile_Flavor (State, Flavor)
+            then
+
+               --  And for each aspect we do not have, we make sure all
+               --  (non-null) constituents also do not have it.
+               for Constituent of Iter (Refinement_Constituents (State)) loop
+                  if Nkind (Constituent) /= N_Null
+                    and then Has_Volatile (Constituent)
+                    and then Has_Volatile_Flavor (Constituent, Flavor)
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "& cannot be a constituent of & "
+                          & "(which lacks volatile flavor "
+                          & To_String (Flavor) & ")",
+                        Severity => High_Check_Kind,
+                        N        => Constituent,
+                        F1       => Direct_Mapping_Id (Constituent),
+                        F2       => Direct_Mapping_Id (State));
+                  end if;
+               end loop;
+
+            end if;
+         end loop;
+
+      end loop;
+   end Check_State_Volatility_Escalation;
+
 end Flow.Analysis;

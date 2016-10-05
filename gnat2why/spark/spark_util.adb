@@ -26,7 +26,6 @@
 with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
-with Flow_Types;                         use Flow_Types;
 with Nlists;                             use Nlists;
 with Output;
 with Pprint;                             use Pprint;
@@ -833,7 +832,7 @@ package body SPARK_Util is
    -- Has_Volatile --
    ------------------
 
-   function Has_Volatile (E : Entity_Id) return Boolean is
+   function Has_Volatile (E : Checked_Entity_Id) return Boolean is
      (if Ekind (E) = E_Abstract_State then
         Is_External_State (E)
       elsif Is_Part_Of_Concurrent_Object (E) then
@@ -847,53 +846,51 @@ package body SPARK_Util is
    -- Has_Volatile_Flavor --
    -------------------------
 
-   function Has_Volatile_Flavor
-     (E : Entity_Id;
-      A : Pragma_Id) return Boolean
+   function Has_Volatile_Flavor (E : Checked_Entity_Id;
+                                 A : Volatile_Pragma_Id)
+                                 return Boolean
    is
-      subtype Volatile_Pragma is Pragma_Id with
-        Static_Predicate => Volatile_Pragma in Pragma_Async_Readers   |
-                                               Pragma_Async_Writers   |
-                                               Pragma_Effective_Reads |
-                                               Pragma_Effective_Writes;
-
-      Prag : constant Volatile_Pragma := A;
-
    begin
-      --  Protected objects and components of concurrent objects are considered
-      --  to be fully volatile.
-      if Ekind (Etype (E)) in Protected_Kind
-        or else Is_Concurrent_Comp (Direct_Mapping_Id (E))
-      then
-         return True;
-      end if;
-
       --  Tasks are considered to have Async_Readers and Async_Writers
       if Ekind (Etype (E)) in Task_Kind then
-         return Prag in Pragma_Async_Readers | Pragma_Async_Writers;
+         return A in Pragma_Async_Readers | Pragma_Async_Writers;
       end if;
 
       --  ??? how about arrays and records with protected or task components?
 
+      --  Q: Why restrict the flavors of volatility for IN and OUT
+      --  parameters???
+      --
+      --  A: See SRM 7.1.3. In short when passing a volatile through a
+      --  parameter we present a 'worst case but sane' view of the volatile,
+      --  which means there should be no information hiding possible and no
+      --  silent side effects, so...
+
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
             return
-              (case Prag is
+              (case A is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
                when Pragma_Async_Writers    => Async_Writers_Enabled (E),
                when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
                when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
-         --  Why restrict the flavors of volatility for IN and OUT
-         --  parameters???
-
          when E_In_Parameter  =>
-            return Prag = Pragma_Async_Writers;
+            --  All volatile in parameters have only async_writers set. In
+            --  particular reads cannot be effective and the absence of AR is
+            --  irrelevant since we are not allowed to write to it anyway.
+            return A = Pragma_Async_Writers;
 
          when E_Out_Parameter =>
-            return Prag in Pragma_Async_Readers | Pragma_Effective_Writes;
+            --  Out parameters we assume that writes are effective (worst
+            --  case). We do not assume reads are effective because (a - it may
+            --  be illegal to read anyway, b - we ban passing a fully volatile
+            --  object as an argument to an out parameter).
+            return A in Pragma_Async_Readers | Pragma_Effective_Writes;
 
          when E_In_Out_Parameter =>
+            --  For in out we just assume the absolute worst case (fully
+            --  volatile).
             return True;
 
          when others =>

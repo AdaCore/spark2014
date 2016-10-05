@@ -83,6 +83,13 @@ package SPARK_Util is
    --  as many checks simply check for one of the options (and do not
    --  explicitly make sure all cases are considered).
 
+   subtype Volatile_Pragma_Id is Pragma_Id with Static_Predicate =>
+     Volatile_Pragma_Id in Pragma_Async_Readers
+                         | Pragma_Async_Writers
+                         | Pragma_Effective_Reads
+                         | Pragma_Effective_Writes;
+   --  A subtype for our special SPARK volatility aspects
+
    ------------------------------
    -- Extra tables on entities --
    ------------------------------
@@ -227,19 +234,15 @@ package SPARK_Util is
    --     into Why3, i.e. it is a discriminant (which cannot be hidden in
    --     SPARK) or the full view of the enclosing record is in SPARK.
 
-   function Has_Volatile (E : Entity_Id) return Boolean;
+   function Has_Volatile (E : Checked_Entity_Id) return Boolean;
    --  @param E an abstract state or object
    --  @return True iff E is an external state or a volatile object
 
-   function Has_Volatile_Flavor
-     (E : Entity_Id;
-      A : Pragma_Id) return Boolean
-     with Pre => Has_Volatile (E) and then
-                 Ekind (E) /= E_Constant and then
-                 A in Pragma_Async_Readers
-                    | Pragma_Async_Writers
-                    | Pragma_Effective_Reads
-                    | Pragma_Effective_Writes;
+   function Has_Volatile_Flavor (E : Checked_Entity_Id;
+                                 A : Volatile_Pragma_Id)
+                                 return Boolean
+   with Pre => Has_Volatile (E)
+     and then Ekind (E) /= E_Constant;
    --  @param E an external state or a volatile object
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
