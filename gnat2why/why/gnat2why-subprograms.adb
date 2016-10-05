@@ -2910,50 +2910,50 @@ package body Gnat2Why.Subprograms is
                             Compute_Attach_Handler_Check
                               (Base_Type (E), Body_Params));
 
-      --  Check for absence of runtime error in protected components initial
-      --  values.
-
-      declare
-         Checks  : W_Prog_Id := +Void;
-         F_Check : W_Prog_Id;
-      begin
-         for Field of Get_Component_Set (E) loop
-            if Component_Is_Visible_In_Type (E, Field) then
-
-               if Present (Expression (Parent (Field))) then
-
-                  --  If Field has a default expression, use it
-
-                  F_Check := +Transform_Expr
-                    (Expr          => Expression (Parent (Field)),
-                     Expected_Type => Type_Of_Node (Etype (Field)),
-                     Domain        => EW_Prog,
-                     Params        => Body_Params);
-               else
-
-                  --  Otherwise, use its Field's Etype default value
-
-                  F_Check :=
-                    Compute_Default_Check (Etype (Field), Body_Params);
-               end if;
-
-               if F_Check /= +Void then
-                  Checks := Sequence
-                    (Left  => Checks,
-                     Right => New_Ignore
-                       (Ada_Node => Etype (Field),
-                        Prog     => F_Check));
-               end if;
-            end if;
-         end loop;
-         Why_Body := Sequence (Why_Body, Checks);
-      end;
-
       --  Translate public and private declarations of the package
 
       if Present (Priv_Decls) and then
         Private_Spec_In_SPARK (E)
       then
+         --  Check for absence of runtime error in protected components initial
+         --  values.
+
+         declare
+            Checks  : W_Prog_Id := +Void;
+            F_Check : W_Prog_Id;
+         begin
+            for Field of Get_Component_Set (E) loop
+               if Component_Is_Visible_In_Type (E, Field) then
+
+                  if Present (Expression (Parent (Field))) then
+
+                     --  If Field has a default expression, use it
+
+                     F_Check := +Transform_Expr
+                       (Expr          => Expression (Parent (Field)),
+                        Expected_Type => Type_Of_Node (Etype (Field)),
+                        Domain        => EW_Prog,
+                        Params        => Body_Params);
+                  else
+
+                     --  Otherwise, use its Field's Etype default value
+
+                     F_Check :=
+                       Compute_Default_Check (Etype (Field), Body_Params);
+                  end if;
+
+                  if F_Check /= +Void then
+                     Checks := Sequence
+                       (Left  => Checks,
+                        Right => New_Ignore
+                          (Ada_Node => Etype (Field),
+                           Prog     => F_Check));
+                  end if;
+               end if;
+            end loop;
+            Why_Body := Sequence (Why_Body, Checks);
+         end;
+
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
       end if;
 
