@@ -2678,8 +2678,12 @@ package body SPARK_Definition is
       --  so that they cannot be called from other marking subprograms, which
       --  should call Mark_Entity instead.
 
-      procedure Mark_Parameter_Entity (E : Entity_Id);
-      --  E is a subprogram or a loop parameter
+      procedure Mark_Parameter_Entity (E : Entity_Id)
+      with Pre => Ekind (E) in E_Discriminant
+                             | E_Loop_Parameter
+                             | E_Variable
+                             | Formal_Kind;
+      --  E is a subprogram or a loop parameter, or a discriminant
 
       procedure Mark_Number_Entity     (E : Entity_Id);
       procedure Mark_Object_Entity     (E : Entity_Id);
@@ -3417,6 +3421,85 @@ package body SPARK_Definition is
          --  Synchronous barriers are allowed by the Ravenscar profile, but we
          --  do not want them in SPARK.
 
+         procedure Mark_Default_Expression (C : Entity_Id);
+         --  Mark default expression of component or discriminant and check it
+         --  for references to the current instance of a type or subtype (which
+         --  is considered to be variable input).
+
+         -----------------------------
+         -- Mark_Default_Expression --
+         -----------------------------
+
+         procedure Mark_Default_Expression (C : Entity_Id) is
+
+            function Mentions_Type_Name (N : Node_Id) return Boolean;
+            --  Returns True iff node [N] mentions the type name [E]
+
+            ------------------------
+            -- Mentions_Type_Name --
+            ------------------------
+
+            function Mentions_Type_Name (N : Node_Id) return Boolean is
+               Found : Boolean := False;
+
+               function Find_Type (N : Node_Id) return Traverse_Result;
+               --  Sets [Found] to True if type name for [E] is found
+
+               Unique_E : constant Entity_Id := Unique_Entity (E);
+               --  Unique entity of E
+
+               ---------------
+               -- Find_Type --
+               ---------------
+
+               function Find_Type (N : Node_Id) return Traverse_Result is
+               begin
+                  case Nkind (N) is
+                  when N_Identifier | N_Expanded_Name =>
+                     if Present (Entity (N))
+                       and then
+                         Unique_Entity (Entity (N)) = Unique_E
+                     then
+                        Found := True;
+                     end if;
+                  when others => null;
+                  end case;
+                  return OK;
+               end Find_Type;
+
+               procedure Maybe_Find_Type is new Traverse_Proc (Find_Type);
+            begin
+               Maybe_Find_Type (N);
+               return Found;
+            end Mentions_Type_Name;
+
+            --  Local variables
+
+            Expr : constant Node_Id := Expression (Parent (C));
+
+         --  Start of processing for Mark_Default_Expression
+
+         begin
+            if Present (Expr) then
+
+               --  The default expression of a component declaration shall
+               --  not contain a name denoting the current instance of the
+               --  enclosing type; SPARK RM 3.8(2).
+
+               if Mentions_Type_Name (Expr) then
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
+                  then
+                     Error_Msg_Node_1 := E;
+                     Error_Msg_N
+                       ("default expression cannot mention }", E);
+                  end if;
+               end if;
+
+               Mark (Expr);
+            end if;
+         end Mark_Default_Expression;
+
          --------------------------------
          -- Is_Private_Entity_Mode_Off --
          --------------------------------
@@ -3627,49 +3710,8 @@ package body SPARK_Definition is
          --  its publicly visible components. The same applies to concurrent
          --  types.
 
-         if Ekind (E) in Record_Kind | Concurrent_Kind then
+         if Ekind (E) in Record_Kind then
             declare
-               function Mentions_Type_Name (N : Node_Id) return Boolean;
-               --  Returns True iff node [N] mentions the type name [E]
-
-               ------------------------
-               -- Mentions_Type_Name --
-               ------------------------
-
-               function Mentions_Type_Name (N : Node_Id) return Boolean is
-                  Found : Boolean := False;
-
-                  function Find_Type (N : Node_Id) return Traverse_Result;
-                  --  Sets [Found] to True if type name for [E] is found
-
-                  Unique_E : constant Entity_Id := Unique_Entity (E);
-                  --  Unique entity of E
-
-                  ---------------
-                  -- Find_Type --
-                  ---------------
-
-                  function Find_Type (N : Node_Id) return Traverse_Result is
-                  begin
-                     case Nkind (N) is
-                        when N_Identifier | N_Expanded_Name =>
-                           if Present (Entity (N))
-                                and then
-                              Unique_Entity (Entity (N)) = Unique_E
-                           then
-                              Found := True;
-                           end if;
-                        when others => null;
-                     end case;
-                     return OK;
-                  end Find_Type;
-
-                  procedure Maybe_Find_Type is new Traverse_Proc (Find_Type);
-               begin
-                  Maybe_Find_Type (N);
-                  return Found;
-               end Mentions_Type_Name;
-
                Comp : Node_Id := First_Component_Or_Discriminant (E);
 
             begin
@@ -3678,25 +3720,7 @@ package body SPARK_Definition is
                      Mark_Entity (Etype (Comp));
 
                      --  Mark default value of component or discriminant
-
-                     if Present (Expression (Parent (Comp))) then
-
-                        --  The default expression of a component declaration
-                        --  shall not contain a name denoting the current
-                        --  instance of the enclosing type. (SPARK RM 3.8(2))
-
-                        if Mentions_Type_Name (Expression (Parent (Comp))) then
-                           Violation_Detected := True;
-                           if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
-                           then
-                              Error_Msg_Node_1 := E;
-                              Error_Msg_N
-                                ("default expression cannot mention }", E);
-                           end if;
-                        end if;
-
-                        Mark (Expression (Parent (Comp)));
-                     end if;
+                     Mark_Default_Expression (Comp);
                   end if;
 
                   Next_Component_Or_Discriminant (Comp);
@@ -3986,7 +4010,7 @@ package body SPARK_Definition is
             declare
                Disc : Entity_Id :=
                  (if Has_Discriminants (E)
-                  or else Has_Unknown_Discriminants (E)
+                    or else Has_Unknown_Discriminants (E)
                   then First_Discriminant (E)
                   else Empty);
             begin
@@ -4138,12 +4162,24 @@ package body SPARK_Definition is
                           (if Ekind (E) = E_Protected_Type
                            then Protected_Definition (Type_Decl)
                            else Task_Definition (Type_Decl));
+
+                        C : Entity_Id;
+                        --  Component or discriminant
+
                      begin
+                        if Has_Discriminants (E) then
+                           C := First_Discriminant (E);
+                           while Present (C) loop
+                              Mark_Entity (C);
+                              Mark_Entity (Etype (C));
+                              Mark_Default_Expression (C);
+                              Next_Discriminant (C);
+                           end loop;
+                        end if;
+
                         Mark_List (Interface_List (Type_Decl));
 
                         if Present (Type_Def) then
-                           --  ??? components of protected types were already
-                           --  marked when dealing with discriminants
                            Mark_Stmt_Or_Decl_List
                              (Visible_Declarations (Type_Def));
 
@@ -4153,9 +4189,26 @@ package body SPARK_Definition is
                            begin
                               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
                               if not SPARK_Pragma_Is (Opt.Off) then
+                                 --  Private section may contain pragmas and
+                                 --  they are marked here.
                                  Mark_Stmt_Or_Decl_List
                                    (Private_Declarations (Type_Def));
+
+                                 --  Default expression needs an extra check
+                                 --  for references to the current type itself.
+                                 --
+                                 --  ??? this marks them for the second time
+                                 --  which is not perfect but acceptable;
+                                 --  marking of default expressions in record
+                                 --  types, protected types and subprogram
+                                 --  parameters should be unified.
+                                 C := First_Component (E);
+                                 while Present (C) loop
+                                    Mark_Default_Expression (C);
+                                    Next_Component (C);
+                                 end loop;
                               end if;
+
                               Current_SPARK_Pragma := Save_SPARK_Pragma;
                            end;
                         end if;
@@ -4294,7 +4347,9 @@ package body SPARK_Definition is
 
       case Ekind (E) is
          when Type_Kind        => Mark_Type_Entity (E);
+
          when Subprogram_Kind  => Mark_Subprogram_Entity (E);
+
          when E_Constant       |
               E_Variable       =>
             begin
@@ -4304,13 +4359,10 @@ package body SPARK_Definition is
                   when others                   => raise Program_Error;
                end case;
             end;
-         when E_Loop_Parameter |
+
+         when E_Discriminant   |
+              E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
-
-         --  Discriminants of task types are marked, but those of records and
-         --  protected objects are not.
-
-         when E_Discriminant   => Mark_Parameter_Entity (E);
 
          when Named_Kind       => Mark_Number_Entity (E);
          when E_Package        => Mark_Package_Entity (E);
@@ -5453,21 +5505,6 @@ package body SPARK_Definition is
                      Next (Param_Spec);
                   end loop;
                end;
-
-               --  Mark task discriminants
-
-               if Nkind (N) = N_Task_Body
-                 and then Has_Discriminants (E)
-               then
-                  declare
-                     Disc : Entity_Id := First_Discriminant (E);
-                  begin
-                     while Present (Disc) loop
-                        Mark_Entity (Disc);
-                        Next_Discriminant (Disc);
-                     end loop;
-                  end;
-               end if;
 
                --  Mark entry barrier
 
