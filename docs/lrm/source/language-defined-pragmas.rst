@@ -82,7 +82,6 @@ Pragma                        Allowed in SPARK 2014  Comment
 Abstract_State	 	      Yes
 Assert_And_Cut	 	      Yes
 Assume		 	      Yes
-Assume_No_Invalid_Values      Yes
 Async_Readers		      Yes
 Async_Writers		      Yes
 Constant_After_Elaboration    Yes
