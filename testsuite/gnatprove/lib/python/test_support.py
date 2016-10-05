@@ -545,7 +545,7 @@ def strip_provers_output_from_testout():
             f.write(content)
 
 
-def gnatprove(opt=["-P", "test.gpr"], no_fail=False,
+def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
               cache_allowed=True, subdue_flow=False):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -612,7 +612,8 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False,
 
     check_marks(strlist)
     check_fail(strlist, no_fail)
-    print_sorted(strlist)
+    if not no_output:
+        print_sorted(strlist)
 
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
@@ -620,6 +621,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               prover=default_provers, cache_allowed=True, report="provers",
               level=None,
               no_fail=False,
+              no_output=False,
               subdue_flow=False,
               codepeer=False):
     """Call gnatprove with standard options.
@@ -661,7 +663,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    gnatprove(fullopt, no_fail, cache_allowed, subdue_flow)
+    gnatprove(fullopt, no_fail, no_output, cache_allowed, subdue_flow)
 
 
 def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all"):

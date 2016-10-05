@@ -1,6 +1,17 @@
 package body Bitwalker with
   SPARK_Mode
 is
+   --------------
+   -- PeekBit8 --
+   --------------
+
+   function PeekBit8 (Byte : Unsigned_8; Left : Natural) return Boolean
+   is
+      Ret : constant Boolean := (Byte and Shift_Left (1, 7 - Left)) /= 0;
+   begin
+      return Ret;
+   end PeekBit8;
+
    ---------------
    -- PokeBit64 --
    ---------------

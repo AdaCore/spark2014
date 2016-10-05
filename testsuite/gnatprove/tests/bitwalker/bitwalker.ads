@@ -6,8 +6,7 @@ with Bvext;      use Bvext;
 package Bitwalker with
 SPARK_Mode
 is
-   function PeekBit8 (Byte : Unsigned_8; Left : Natural) return Boolean is
-      ((Byte and Shift_Left (1, 7 - Left)) /= 0)
+   function PeekBit8 (Byte : Unsigned_8; Left : Natural) return Boolean
    with
      Pre  => Left < 8,
      Post => PeekBit8'Result = Nth (Byte, 7 - Left);
