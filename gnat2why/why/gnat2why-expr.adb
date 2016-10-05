@@ -2501,13 +2501,9 @@ package body Gnat2Why.Expr is
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
-      if (Has_DIC (Ty)
-            or else
-          Has_Inherited_DIC (Ty))
-            and then
-          Present (DIC_Procedure (Ty))
-            and then
-          not Is_Private_Type (Ty_Ext)
+      if (Has_DIC (Ty) or else Has_Inherited_DIC (Ty))
+        and then Present (DIC_Procedure (Ty))
+        and then Needs_DIC_Check (Ty)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=

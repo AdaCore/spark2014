@@ -1319,6 +1319,33 @@ package body SPARK_Util.Types is
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
 
+   ---------------------
+   -- Needs_DIC_Check --
+   ---------------------
+
+   function Needs_DIC_Check (Ty : Entity_Id) return Boolean is
+      E   : Entity_Id := Ty;
+      Old : Entity_Id;
+
+   begin
+      --  Search for the type holding the DIC to see if it is a private type
+
+      while Full_View_Not_In_SPARK (E)
+        and then Has_Inherited_DIC (E)
+      loop
+         Old := E;
+         E := Get_First_Ancestor_In_SPARK (E);
+         pragma Assert (Old /= E);
+      end loop;
+
+      --  Either we have found the type holding the DIC or we have found a type
+      --  whose fullview is in SPARK. In the first case, we need a check only
+      --  if E is not a private type.
+
+      return Has_Inherited_DIC (E)
+        or else (Has_DIC (E) and then not Has_Private_Type (E));
+   end Needs_DIC_Check;
+
    --------------------
    -- Nth_Index_Type --
    --------------------

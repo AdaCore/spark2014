@@ -333,6 +333,11 @@ package SPARK_Util.Types is
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True
 
+   function Needs_DIC_Check (Ty : Entity_Id) return Boolean;
+   --  @param Ty type entity
+   --  @return True if Ty has a (inherited) DIC which applies to a non private
+   --          type.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

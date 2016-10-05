@@ -1,4 +1,3 @@
-aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:4:09: medium: default initial condition might fail, in instantiation at vk.ads:23
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:16: info: precondition is always True (CVC4: 1 VC), in instantiation at extension.ads:9
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:16: info: precondition is always True (CVC4: 1 VC), in instantiation at vk.ads:23
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at extension.ads:9
