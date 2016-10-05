@@ -1325,7 +1325,7 @@ package body SPARK_Util.Types is
 
    function Needs_DIC_Check (Ty : Entity_Id) return Boolean is
       E   : Entity_Id := Ty;
-      Old : Entity_Id;
+      Old : Entity_Id with Ghost;
 
    begin
       --  Search for the type holding the DIC to see if it is a private type
