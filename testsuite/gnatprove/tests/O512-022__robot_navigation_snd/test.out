@@ -239,7 +239,7 @@ algorithm.adb:538:52: medium: overflow check might fail
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: overflow check proved (CVC4: 1 VC)
-algorithm.adb:539:70: medium: overflow check might fail
+algorithm.adb:539:70: info: overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:98: info: division check proved (CVC4: 1 VC)
 algorithm.adb:539:98: medium: overflow check might fail
 algorithm.adb:542:29: info: initialization of "deltaAreaSum" proved
