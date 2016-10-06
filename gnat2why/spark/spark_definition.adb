@@ -3277,8 +3277,8 @@ package body SPARK_Definition is
 
             --  Postconditions of protected subprograms declared in protected
             --  type declarations are executed as part of protected operations,
-            --  so any calls to protected functions of the same protected type
-            --  are internal.
+            --  so calls to protected functions of the same protected type are
+            --  internal.
             --
             --  Subprograms declared in protected bodies can only be called
             --  internally and then Current_Protected_Type is already set
@@ -4187,27 +4187,42 @@ package body SPARK_Definition is
                            declare
                               Save_SPARK_Pragma : constant Node_Id :=
                                 Current_SPARK_Pragma;
+
                            begin
                               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
                               if not SPARK_Pragma_Is (Opt.Off) then
-                                 --  Private section may contain pragmas and
-                                 --  they are marked here.
-                                 Mark_Stmt_Or_Decl_List
-                                   (Private_Declarations (Type_Def));
+                                 declare
+                                    Save_Protected_Type : constant Entity_Id :=
+                                      Current_Protected_Type;
 
-                                 --  Default expression needs an extra check
-                                 --  for references to the current type itself.
-                                 --
-                                 --  ??? this marks them for the second time
-                                 --  which is not perfect but acceptable;
-                                 --  marking of default expressions in record
-                                 --  types, protected types and subprogram
-                                 --  parameters should be unified.
-                                 C := First_Component (E);
-                                 while Present (C) loop
-                                    Mark_Default_Expression (C);
-                                    Next_Component (C);
-                                 end loop;
+                                 begin
+                                    --  Private section may contain pragmas and
+                                    --  they are marked here.
+
+                                    Current_Protected_Type := E;
+
+                                    Mark_Stmt_Or_Decl_List
+                                      (Private_Declarations (Type_Def));
+
+                                    --  Default expression needs an extra check
+                                    --  for references to the current type
+                                    --  itself.
+                                    --
+                                    --  ??? this marks them for the second time
+                                    --  which is not perfect but acceptable;
+                                    --  marking of default expressions in
+                                    --  record types, protected types and
+                                    --  subprogram parameters should be
+                                    --  unified.
+                                    C := First_Component (E);
+                                    while Present (C) loop
+                                       Mark_Default_Expression (C);
+                                       Next_Component (C);
+                                    end loop;
+
+                                    Current_Protected_Type :=
+                                      Save_Protected_Type;
+                                 end;
                               end if;
 
                               Current_SPARK_Pragma := Save_SPARK_Pragma;
