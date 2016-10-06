@@ -1,0 +1,8 @@
+a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
+a.adb:12:32: warning: no Global contract available for "Unit_Vector"
+foo.adb:5:04: "Double" is not allowed in SPARK
+foo.adb:5:04: instantiation error at a-ngelfu.adb:51
+foo.adb:5:04: violation of pragma SPARK_Mode at test.adc:1
+foo.adb:18:09: warning: assuming "Log" has no effect on global items
+foo.adb:18:09: warning: no Global contract available for "Log"
+gnatprove: error during flow analysis and proof
