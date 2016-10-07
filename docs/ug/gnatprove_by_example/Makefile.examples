@@ -1,5 +1,3 @@
-DUMMY:=$(shell mkdir -p flow prove)
-
 .PHONY: gnatprove flow prove results clean force
 
 RESULTS=$(PWD)/results
@@ -7,33 +5,42 @@ ALL=$(wildcard examples/*.ad?)
 ALL_FLOW_MSG=$(sort $(patsubst examples/%.ads,$(RESULTS)/%.flow,$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL))))
 ALL_PROVE_MSG=$(sort $(patsubst examples/%.ads,$(RESULTS)/%.prove,$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))))
 
+COMMON_OPTS = -f -k -q -j0 --report=all --warnings=on
+FLOW_OPTS   = $(COMMON_OPTS) --mode=flow
+PROVE_OPTS  = $(COMMON_OPTS) --mode=prove
+
 gnatprove: flow prove
 
 flow:
-	cp examples/*.gpr flow
-	cp examples/illegal.txt flow
-	cp examples/flow_error.txt flow
-	cp examples/spark_mode.txt flow
-	cat examples/spark_mode.txt examples/illegal.txt examples/flow_error.txt > flow/spark_mode_or_illegal.txt
-	-cd flow && gnatprove -f -k -q -j0 -P illegal.gpr --report=all --warnings=on --mode=flow \
-	  > flow.results
-	-cd flow && gnatprove -f -k -q -j0 -P flow_error.gpr --report=all --warnings=on --mode=flow \
-	  >> flow.results
-	cd flow && gnatprove -f -k -q -j0 -P spark_mode.gpr --report=all --warnings=on --mode=flow \
-	  >> flow.results
-	cd flow && gnatprove -f -k -q -j0 -P no_spark_mode.gpr --report=all --warnings=on --mode=flow \
-	  >> flow.results
+	mkdir -p flow
+	cp examples/*.gpr          \
+	   examples/illegal.txt    \
+	   examples/flow_error.txt \
+	   examples/spark_mode.txt \
+	   flow
+	cat examples/spark_mode.txt \
+            examples/illegal.txt    \
+            examples/flow_error.txt \
+            > flow/spark_mode_or_illegal.txt
+	-cd flow && gnatprove $(FLOW_OPTS) -P illegal.gpr       >  flow.results
+	-cd flow && gnatprove $(FLOW_OPTS) -P flow_error.gpr    >> flow.results
+	cd flow  && gnatprove $(FLOW_OPTS) -P spark_mode.gpr    >> flow.results
+	cd flow  && gnatprove $(FLOW_OPTS) -P no_spark_mode.gpr >> flow.results
 
 prove:
-	cp examples/*.gpr prove
+	mkdir -p prove
+	cp examples/*.gpr          \
+	   examples/spark_mode.txt \
+	   examples/long.txt       \
+	   prove
 	echo "" > prove/illegal.txt
 	echo "" > prove/flow_error.txt
-	cp examples/spark_mode.txt examples/long.txt prove
-	cat examples/spark_mode.txt examples/illegal.txt examples/flow_error.txt examples/long.txt > prove/spark_mode_or_illegal.txt
-	cd prove && gnatprove -f -q -j0 -P intro.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --steps=100 \
-	  > prove.results
-	cd prove && gnatprove -f -q -j0 -P long.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --steps=10000 \
-	  >> prove.results
+	cat examples/spark_mode.txt \
+            examples/illegal.txt    \
+            examples/flow_error.txt \
+            examples/long.txt > prove/spark_mode_or_illegal.txt
+	cd prove && gnatprove $(PROVE_OPTS) -P intro.gpr --steps=100   >  prove.results
+	cd prove && gnatprove $(PROVE_OPTS) -P long.gpr  --steps=10000 >> prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 
