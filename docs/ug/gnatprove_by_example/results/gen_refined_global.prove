@@ -1,1 +1,3 @@
-no output
+gen_refined_global.ads:5:14: info: initialization of "V" constituent of "State" proved
+gen_refined_global.ads:8:14: info: initialization of "V" constituent of "State" proved
+gen_refined_global.ads:11:14: info: initialization of "V" constituent of "State" proved

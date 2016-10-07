@@ -1,3 +1,3 @@
 linear_search.ads:28:06: medium: contract cases might not be disjoint (e.g. when A = (others => 0) and Val = 0)
-linear_search.ads:29:20: medium: contract case might fail (e.g. when Search'Result = (Found => ?, At_Index => 2))
-linear_search.ads:31:46: medium: contract case might fail (e.g. when Search'Result = (Found => False, At_Index => ?))
+linear_search.ads:29:20: medium: contract case might fail (e.g. when A = (others => 0) and Search'Result = (Found => ?, At_Index => 2) and Val = 0)
+linear_search.ads:31:46: medium: contract case might fail (e.g. when A = (9 => 1, 1 => 1, others => 0) and Search'Result = (Found => False, At_Index => ?) and Val = 0)

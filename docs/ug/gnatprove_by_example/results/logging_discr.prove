@@ -1,5 +1,11 @@
+logging_discr.adb:4:13: info: range check proved
 logging_discr.adb:10:23: info: discriminant check proved
+logging_discr.adb:14:13: info: range check proved
 logging_discr.adb:16:17: info: discriminant check proved
 logging_discr.adb:16:31: info: discriminant check proved
 logging_discr.adb:16:31: info: index check proved
+logging_discr.ads:18:37: info: range check proved
+logging_discr.ads:18:53: info: range check proved
+logging_discr.ads:19:40: info: range check proved
+logging_discr.ads:19:53: info: range check proved
 logging_discr.ads:24:48: info: discriminant check proved

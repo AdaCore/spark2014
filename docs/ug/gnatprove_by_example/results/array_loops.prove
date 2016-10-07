@@ -2,7 +2,7 @@ array_loops.adb:7:11: info: length check proved
 array_loops.adb:9:21: info: initialization of "Arr" proved
 array_loops.adb:10:07: info: loop invariant initialization proved
 array_loops.adb:10:61: info: initialization of "Arr" proved
-array_loops.adb:10:61: medium: loop invariant might fail after first iteration, cannot prove Arr(K) (e.g. when Arr = (others => false))
+array_loops.adb:10:61: medium: loop invariant might fail after first iteration, cannot prove Arr(K) (e.g. when Arr = (others => false) and J = 2 and K = 2)
 array_loops.adb:10:65: info: index check proved
 array_loops.adb:13:11: info: length check proved
 array_loops.adb:15:21: info: initialization of "Arr" proved

@@ -1,5 +1,1 @@
 semaphores2.adb:4:14: warning: subprogram "Enter_Protected_Region" has no effect
-semaphores2.ads:6:09: medium: "Semaphore1" might not be initialized before start of tasks of type "T1tk"
-semaphores2.ads:6:09: medium: "Semaphore2" might not be initialized before start of tasks of type "T1tk"
-semaphores2.ads:7:09: medium: "Semaphore1" might not be initialized before start of tasks of type "T2tk"
-semaphores2.ads:7:09: medium: "Semaphore2" might not be initialized before start of tasks of type "T2tk"

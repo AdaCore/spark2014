@@ -1,5 +1,5 @@
 account7.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
-account7.ads:18:13: potentially blocking operation in protected operation "Bad_E"
-account7.ads:19:17: potentially blocking operation in protected operation "Bad_P"
+account7.ads:18:13: high: potentially blocking operation in protected operation "Bad_E"
+account7.ads:19:17: high: potentially blocking operation in protected operation "Bad_P"
 account7.ads:20:16: function with output global "Num_Accounts" is not allowed in SPARK
-account7.ads:20:16: potentially blocking operation in protected operation "Bad_F"
+account7.ads:20:16: high: potentially blocking operation in protected operation "Bad_F"

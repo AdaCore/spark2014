@@ -1,3 +1,7 @@
 synchronous_abstractions.adb:6:09: info: ceiling priority protocol is respected
+synchronous_abstractions.adb:6:09: info: initialization of "T" constituent of "Normal_State" proved
 synchronous_abstractions.adb:6:09: info: nontermination of task proved
+synchronous_abstractions.adb:7:14: info: initialization of "P" constituent of "Synchronous_State" proved
+synchronous_abstractions.adb:13:04: info: initialization of "S" constituent of "Synchronous_State" proved
+synchronous_abstractions.adb:14:04: info: initialization of "V" constituent of "Synchronous_State" proved
 synchronous_abstractions.adb:29:12: info: initialization of "R" proved

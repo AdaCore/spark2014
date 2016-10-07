@@ -1,1 +1,1 @@
-semaphores2_main.adb:3:11: medium: "Semaphore1" might not be initialized after elaboration of main program "Semaphores2_Main"
+no output

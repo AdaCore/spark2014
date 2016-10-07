@@ -1,6 +1,5 @@
 semaphores1.adb:17:31: medium: overflow check might fail
 semaphores1.ads:6:09: info: ceiling priority protocol is respected
 semaphores1.ads:6:09: info: nontermination of task proved
-semaphores1.ads:6:09: medium: "Semaphore" might not be initialized before start of tasks of type "T1tk"
+semaphores1.ads:7:09: info: ceiling priority protocol is respected
 semaphores1.ads:7:09: info: nontermination of task proved
-semaphores1.ads:7:09: medium: "Semaphore" might not be initialized before start of tasks of type "T2tk"

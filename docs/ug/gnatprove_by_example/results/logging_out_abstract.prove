@@ -1,4 +1,4 @@
 logging_out_abstract.adb:5:04: info: initialization of "Total" constituent of "State" proved
 logging_out_abstract.adb:6:04: info: initialization of "Log_Out" constituent of "State" proved
 logging_out_abstract.adb:9:53: info: initialization of "Log_Out" constituent of "State" proved
-logging_out_abstract.adb:13:22: medium: overflow check might fail (e.g. when Total = 1 and Incr = 2147483647)
+logging_out_abstract.adb:13:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = -2147483648)

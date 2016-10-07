@@ -7,4 +7,5 @@ predicates.ads:32:28: medium: overflow check might fail (e.g. when Y = -21474836
 predicates.ads:34:17: info: range check proved
 predicates.ads:36:24: info: overflow check proved
 predicates.ads:38:24: info: overflow check proved
+predicates.ads:48:09: info: range check proved
 predicates.ads:58:89: info: index check proved
