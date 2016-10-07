@@ -30,9 +30,9 @@ prove:
 	echo "" > prove/flow_error.txt
 	cp examples/spark_mode.txt examples/long.txt prove
 	cat examples/spark_mode.txt examples/illegal.txt examples/flow_error.txt examples/long.txt > prove/spark_mode_or_illegal.txt
-	cd prove && gnatprove -f -q -j0 -P intro.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --timeout=5 \
+	cd prove && gnatprove -f -q -j0 -P intro.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --steps=100 \
 	  > prove.results
-	cd prove && gnatprove -f -q -j0 -P long.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --timeout=60 \
+	cd prove && gnatprove -f -q -j0 -P long.gpr --prover=cvc4,altergo,z3 --report=all --warnings=on --mode=prove --steps=10000 \
 	  >> prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
