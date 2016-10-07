@@ -32,19 +32,19 @@ Tasks and Data Races
 [Ravenscar]
 
 Concurrent Ada programs are made of several `tasks`, that is, separate threads
-of control which share the same address space. In Ravenscar, only library
-level, nonterminating tasks are allowed.
+of control which share the same address space. In Ravenscar, only
+library-level, nonterminating tasks are allowed.
 
 Task Types and Task Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Like ordinary objects, tasks have a type in Ada and can be stored in composite
-objects such as arrays and records.  The definition of a task type looks like
-the definition of a subprogram. It is made of two parts, a declaration, usually
+objects such as arrays and records. The definition of a task type looks like
+the definition of a subprogram. It is made of two parts: a declaration, usually
 empty as Ravenscar does not allow tasks to have entries (for task rendezvous),
 and a body containing the list of statements to be executed by objects of the
 task type. The body of nonterminating tasks (the only ones allowed in
-Ravenscar) usually take the form of an infinite loop.  For task objects of a
+Ravenscar) usually takes the form of an infinite loop. For task objects of a
 given type to be parameterized, task types can have discriminants. As an
 example, a task type ``Account_Management`` can be declared as follows:
 
@@ -115,13 +115,13 @@ In Ravenscar, communication between tasks can only be done through shared
 objects (tasks cannot communicate through rendezvous as task entries are not
 allowed in Ravenscar). In |SPARK|, the language is further restricted to avoid
 the possibility of erroneous concurrent access to shared data (a.k.a. data
-races).  More precisely, tasks can only share `synchronized` objects, that is,
+races). More precisely, tasks can only share `synchronized` objects, that is,
 objects that are protected against concurrent accesses. These include atomic
-objects as well as protected objects (see :ref:`Protected Objects and
-Deadlocks`) and suspension objects (see :ref:`Suspension Objects`). As an
-example, our previous definition of the ``Account_Management`` task type was
-not in |SPARK|. Indeed, data races could occur when accessing the global
-variable ``Num_Accounts``, as detected by |GNATprove|:
+objects, protected objects (see :ref:`Protected Objects and Deadlocks`), and
+suspension objects (see :ref:`Suspension Objects`). As an example, our previous
+definition of the ``Account_Management`` task type was not in |SPARK|. Indeed,
+data races could occur when accessing the global variable ``Num_Accounts``, as
+detected by |GNATprove|:
 
 .. literalinclude:: ../gnatprove_by_example/results/bank1.flow
    :language: none
@@ -300,7 +300,7 @@ against data races (low-level unprotected concurrent access to data) and race
 conditions (lack of proper synchronization between reads and writes of shared
 data). They coordinate access to the protected data guaranteeing that
 read-write accesses are always exclusive while allowing concurrent read-only
-accesses. In Ravenscar, only library level protected objects are allowed.
+accesses. In Ravenscar, only library-level protected objects are allowed.
 
 .. _Protected Types and Protected Objects:
 
@@ -511,7 +511,7 @@ potentially blocking. Indeed, such a call cannot block a task in the absence of
 deadlocks (which is enforced in Ravenscar using the priority ceiling protocol,
 see :ref:`Avoiding Deadlocks and Priority Ceiling Protocol`).
 
-|GNATprove| verifies that no potentially blocking action can be performed from
+|GNATprove| verifies that no potentially blocking action is performed from
 inside a protected subprogram in a modular way on a per subprogram basis.
 Thus, if a subprogram can perform a potentially blocking operation, every call
 to this subprogram from inside a protected subprogram will be flagged as a
