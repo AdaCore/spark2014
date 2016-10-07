@@ -1,5 +1,4 @@
 with Logging; use Logging;
-with Use_Logging;
 
 procedure Use_Logging_Classwide (Log : out Log_Type'Class) with
   SPARK_Mode
