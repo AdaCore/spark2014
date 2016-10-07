@@ -470,12 +470,9 @@ flag ``Not_Full`` as a component of the protected object:
 
    end Account;
 
-On a single core, this version fixes the remaining race condition on this
-example, thus ensuring that every new account created bumps the value of
-``Num_Accounts`` by 1, and that ``Num_Accounts`` stays below
-``Max_Accounts``. But note that, on a multicore architecture, it can be the
-case that the condition of the entry barrier for ``Incr`` is not true anymore
-when execution of its body starts.
+This version fixes the remaining race condition on this example, thus ensuring
+that every new account created bumps the value of ``Num_Accounts`` by 1, and
+that ``Num_Accounts`` stays below ``Max_Accounts``.
 
 To avoid data races, protected subprograms should not access unsynchronized
 objects (see :ref:`Tasks and Data Races`). Like for tasks, it is still possible
