@@ -398,11 +398,6 @@ Data dependency contracts are given for most subprograms, specially in the
 ``Stabilizer_Pack`` package which uses :ref:`State Abstraction` to specify
 this type of contracts.
 
-|GNATprove| proves all the checks of the program using the default timeout of
-one second, except for three unproved checks in ``sensfusion6_pack.adb`` which
-involve multiplications between floating-point values and need to be checked
-manually.
-
 .. rubric:: ``heatingsystem``
 
 This program is a standard example of controller, turning on and off the
