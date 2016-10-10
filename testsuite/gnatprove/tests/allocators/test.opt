@@ -1,3 +1,4 @@
 Darwin SKIP too slow on darwin
+Linux,x86 SKIP test difference
 !large SKIP part of large testsuite
 ALL RLIMIT 2000
