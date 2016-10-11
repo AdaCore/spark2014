@@ -10541,6 +10541,14 @@ package body Gnat2Why.Expr is
                       (Ada_Node => Expr,
                        Value    => Corresponding_Integer_Value (Expr));
 
+            --  It can happen that the literal is a universal real which is
+            --  converted into a fixed point type, we then simply return a
+            --  real constant.
+
+            elsif Is_Universal_Numeric_Type (Etype (Expr)) then
+               T := New_Real_Constant (Ada_Node => Expr,
+                                       Value    => Realval (Expr));
+
             else
                T := +Transform_Float_Literal
                  (Expr,
