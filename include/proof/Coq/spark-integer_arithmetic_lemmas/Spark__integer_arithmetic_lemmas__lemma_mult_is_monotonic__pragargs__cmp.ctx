@@ -4,9 +4,6 @@ Require Import BuiltIn.
 Require BuiltIn.
 Require bool.Bool.
 Require int.Int.
-Require int.Abs.
-Require int.EuclideanDivision.
-Require int.ComputerDivision.
 
 (* Why3 assumption *)
 Definition unit := unit.
@@ -179,12 +176,12 @@ Definition dynamic_invariant (temp___expr_136:Z) (temp___is_init_133:bool)
   ((temp___is_init_133 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
   (in_range temp___expr_136).
 
-Axiom pos : Type.
-Parameter pos_WhyType : WhyType pos.
-Existing Instance pos_WhyType.
+Axiom nat : Type.
+Parameter nat_WhyType : WhyType nat.
+Existing Instance nat_WhyType.
 
 (* Why3 assumption *)
-Definition in_range1 (x:Z): Prop := (1%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
+Definition in_range1 (x:Z): Prop := (0%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
 
 Parameter bool_eq2: Z -> Z -> bool.
 
@@ -198,30 +195,30 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check1: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE1: us_image -> Z.
 
-Parameter user_eq1: pos -> pos -> bool.
+Parameter user_eq1: nat -> nat -> bool.
 
-Parameter dummy1: pos.
-
-(* Why3 assumption *)
-Inductive pos__ref :=
-  | mk_pos__ref : pos -> pos__ref.
-Axiom pos__ref_WhyType : WhyType pos__ref.
-Existing Instance pos__ref_WhyType.
+Parameter dummy1: nat.
 
 (* Why3 assumption *)
-Definition pos__content (v:pos__ref): pos :=
+Inductive nat__ref :=
+  | mk_nat__ref : nat -> nat__ref.
+Axiom nat__ref_WhyType : WhyType nat__ref.
+Existing Instance nat__ref_WhyType.
+
+(* Why3 assumption *)
+Definition nat__content (v:nat__ref): nat :=
   match v with
-  | (mk_pos__ref x) => x
+  | (mk_nat__ref x) => x
   end.
 
 (* Why3 assumption *)
-Definition pos__ref___projection (a:pos__ref): pos := (pos__content a).
+Definition nat__ref___projection (a:nat__ref): nat := (nat__content a).
 
 (* Why3 assumption *)
-Definition dynamic_invariant1 (temp___expr_148:Z) (temp___is_init_145:bool)
-  (temp___do_constant_146:bool) (temp___do_toplevel_147:bool): Prop :=
-  ((temp___is_init_145 = true) \/ (1%Z <= 2147483647%Z)%Z) -> (in_range1
-  temp___expr_148).
+Definition dynamic_invariant1 (temp___expr_142:Z) (temp___is_init_139:bool)
+  (temp___do_constant_140:bool) (temp___do_toplevel_141:bool): Prop :=
+  ((temp___is_init_139 = true) \/ (0%Z <= 2147483647%Z)%Z) -> (in_range1
+  temp___expr_142).
 
 Parameter val1: Z.
 
@@ -231,16 +228,15 @@ Parameter val2: Z.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 
-Parameter denom: Z.
+Parameter factor: Z.
 
 Parameter attr__ATTRIBUTE_ADDRESS2: Z.
 
 (* Why3 goal *)
 Theorem WP_parameter_def : ((in_range val1)
                             /\ ((in_range val2)
-                                /\ ((in_range1 denom) /\ (val1 <= val2)%Z))) ->
-                           (*        Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF                                                            *)
-                           (*                ^ spark-arithmetic_lemmas.ads:49:16:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
-                           ((ZArith.BinInt.Z.quot val1 denom) <= (ZArith.BinInt.Z.quot val2 denom))%Z.
-
-#include "lemma_div_is_monotonic.prf"
+                                /\ ((in_range1 factor) /\ (val1 <= val2)%Z))) ->
+                           (*      Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF                                                          *)
+                           (*              ^ spark-arithmetic_lemmas.ads:73:14:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
+                           ((val1 * factor)%Z <= (val2 * factor)%Z)%Z.
+#include "lemma_mult_is_monotonic.prf"

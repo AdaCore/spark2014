@@ -70,7 +70,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 * Factor <= Val2 * Factor;
+     Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Is_Strictly_Monotonic
      (Val1   : Int;
@@ -79,7 +79,7 @@ is
    with
      Global => null,
      Pre  => Val1 < Val2,
-     Post => Val1 * Factor < Val2 * Factor;
+     Post => Val1 * Factor < Val2 * Factor;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
