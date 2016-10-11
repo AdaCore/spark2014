@@ -102,17 +102,13 @@ Definition real__ref___projection (a:real__ref): R := (real__content a).
 Definition us_private__ref___projection (a:us_private__ref): us_private :=
   (us_private__content a).
 
-Parameter us_compatible_tags: Z -> Z -> Prop.
-
-Axiom us_compatible_tags_refl : forall (tag:Z), (us_compatible_tags tag tag).
-
 Axiom int__ : Type.
 Parameter int___WhyType : WhyType int__.
 Existing Instance int___WhyType.
 
 (* Why3 assumption *)
 Definition in_range (x:Z): Prop :=
-  ((-9223372036854775808%Z)%Z <= x)%Z /\ (x <= 9223372036854775807%Z)%Z.
+  ((-2147483648%Z)%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
 
 Parameter bool_eq: Z -> Z -> bool.
 
@@ -157,19 +153,9 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE: us_image -> Z.
 
-Parameter to_rep: int__ -> Z.
-
-Parameter of_rep: Z -> int__.
-
 Parameter user_eq: int__ -> int__ -> bool.
 
 Parameter dummy: int__.
-
-Axiom inversion_axiom : forall (x:int__), ((of_rep (to_rep x)) = x).
-
-Axiom range_axiom : forall (x:int__), (in_range (to_rep x)).
-
-Axiom coerce_axiom : forall (x:Z), (in_range x) -> ((to_rep (of_rep x)) = x).
 
 (* Why3 assumption *)
 Inductive int____ref :=
@@ -188,11 +174,10 @@ Definition int____ref___projection (a:int____ref): int__ :=
   (int____content a).
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_144:Z) (temp___is_init_141:bool)
-  (temp___do_constant_142:bool) (temp___do_toplevel_143:bool): Prop :=
-  ((temp___is_init_141 = true)
-   \/ ((-9223372036854775808%Z)%Z <= 9223372036854775807%Z)%Z) -> (in_range
-  temp___expr_144).
+Definition dynamic_invariant (temp___expr_136:Z) (temp___is_init_133:bool)
+  (temp___do_constant_134:bool) (temp___do_toplevel_135:bool): Prop :=
+  ((temp___is_init_133 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
+  (in_range temp___expr_136).
 
 Parameter arg1: Z.
 
@@ -205,8 +190,8 @@ Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 (* Why3 goal *)
 Theorem WP_parameter_def : ((in_range arg1)
                             /\ ((in_range arg2) /\ ~ (arg2 = 0%Z))) ->
-                           (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);                                                                          *)
-                           (*               ^ spark-arithmetic_lemmas.ads:64:15:instantiated:spark-long_integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
+                           (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF                                                   *)
+                           (*               ^ spark-arithmetic_lemmas.ads:64:15:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
                            ((ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z) = (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z).
 
 #include "lemma_mod_symmetry.prf"

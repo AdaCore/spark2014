@@ -1,3 +1,5 @@
+(* not used anymore, as Alt-ergo manages to prove Lemma_Modular_Div_Then_Mult_Bounds_Part1 *)
+
 intros (arg2_type,pre).
 Open Scope Z_scope.
 Require SPARK.

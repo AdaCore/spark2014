@@ -54,8 +54,8 @@ is
    with
      Global => null,
      Pre  => Res = (Arg1 / Arg2) * Arg2,
-     Post => Res <= Arg1 and then  --  MANUAL PROOF
-             Arg1 - Res < Arg2;  --  MANUAL PROOF
+     Post => Res <= Arg1 and then
+             Arg1 - Res < Arg2;
 
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;

@@ -2,38 +2,71 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="altergo" version="0.99.1" timelimit="10" steplimit="1000" memlimit="0"/>
-<prover id="1" name="Z3" version="4.4.1" timelimit="10" steplimit="15100000" memlimit="0"/>
-<prover id="2" name="CVC4" version="1.5" timelimit="10" steplimit="300000" memlimit="0"/>
-<prover id="3" name="Coq" version="8.4pl6" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="0" name="Coq" version="8.4pl6" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4_CE" version="1.5" timelimit="10" steplimit="12500" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.5" timelimit="0" steplimit="12500" memlimit="0"/>
+<prover id="3" name="altergo" version="0.99.1" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="4" name="Z3" version="4.4.1" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-integer_arithmetic_lemmas.mlw" expanded="true">
+<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__long_long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__natural__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__positive" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__positive__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__short_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Array__Int__Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -51,21 +84,35 @@
 </theory>
 <theory name="Standard__integer_8" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__integer_8__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__integer_16" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_16__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__integer_32" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Standard__integer_32__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Standard__integer_64" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_64__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__universal_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__universal_real" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__int" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__integer_arithmetic_lemmas__int__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__integer_arithmetic_lemmas__nat" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__integer_arithmetic_lemmas__nat__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__integer_arithmetic_lemmas__pos" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__pos__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -157,9 +204,13 @@
 </theory>
 <theory name="System__name" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="System__name__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="System__system_name" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__address" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="System__address__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__null_address" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -215,17 +266,25 @@
 </theory>
 <theory name="System__bit_order" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__default_bit_order" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__bit_order__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_interrupt_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__default_bit_order" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__max_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="System__max_interrupt_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="System__any_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="System__any_priority__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="System__priority__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="System__interrupt_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="System__interrupt_priority__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__default_priority" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -301,8 +360,6 @@
 </theory>
 <theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -327,8 +384,6 @@
 </theory>
 <theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__universal_real___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -344,30 +399,6 @@
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__min_int" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_int" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_binary_modulus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_nonbinary_modulus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_base_digits" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_digits" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_mantissa" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__fine_delta" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__tick" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__storage_unit" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__word_size" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__memory_size" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -389,35 +420,11 @@
 </theory>
 <theory name="System__system_name___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__min_int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_binary_modulus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_nonbinary_modulus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_base_digits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_digits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__max_mantissa___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__fine_delta___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__tick___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__storage_unit___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__word_size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__memory_size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="System__default_bit_order___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_interrupt_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="System__max_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="System__max_interrupt_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__default_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -501,134 +508,138 @@
 </theory>
 <theory name="System__Oeq___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__package_def" sum="68d85ea08773c83fbb28b61054b5d437" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="7a48ff2b01a652d4a448d5cf7cb53a62" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="80e9516f19cd99214ac1e4636b333a8b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.14"/></proof>
-  <proof prover="1"><result status="timeout" time="12.41"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="1340"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.83"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.40"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="8f6ea0f3c822ae8d249079f6fe9a53f2" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="a0e65e40c519b1c5a99fa1a116cedbc3" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="2" steplimit="35000"><result status="valid" time="0.03" steps="18"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="2" steplimit="35000"><result status="valid" time="0.03" steps="18"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="18"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="11a71503158ef4c9d4296a8be8c2c4d8" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="436d2a492667a4e4210b87f640b2d29b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2" timelimit="10" steplimit="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2" timelimit="10" steplimit="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.30"/></proof>
-  <proof prover="1"><result status="outofmemory" time="19.71"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="140"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.77"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.40"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="9376d8bc2ab0c489ff5381b3dc22701e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="fe8cdac71aa3d9dee367e493a97187b6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.02"/></proof>
-  <proof prover="2"><result status="unknown" time="0.01" steps="80"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.35"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.01" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.00" steps="14"/></proof>
+  <proof prover="3"><result status="unknown" time="0.01"/></proof>
+  <proof prover="4"><result status="timeout" time="10.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="e51d3d59d987a2394024c444a09a31c1" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="4bc2ea868d58c7b4428171bbfbda5dbe" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.02"/></proof>
-  <proof prover="2"><result status="unknown" time="0.01" steps="80"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.40"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.00" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.00" steps="14"/></proof>
+  <proof prover="3"><result status="unknown" time="0.01"/></proof>
+  <proof prover="4"><result status="timeout" time="10.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="be90e770b17d6d444f1ed888f194115b" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="a4498d264cff91877a04b081870795b2" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.02"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="390"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.01" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.01" steps="58"/></proof>
+  <proof prover="3"><result status="unknown" time="0.02"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="3800"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="dcead9e207b253cf8cc958894a4ecd1c" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="a70b208cea37cc5c614dc98dff7dc1e4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1" steplimit="1250000"><result status="valid" time="0.29" steps="0"/></proof>
-  <proof prover="2" steplimit="35000"><result status="unknown" time="0.05" steps="167"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.02" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.02" steps="167"/></proof>
+  <proof prover="4" timelimit="4"><result status="valid" time="0.80" steps="2358164"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1" steplimit="1250000"><result status="valid" time="0.02" steps="6"/></proof>
-  <proof prover="2" steplimit="35000"><result status="unknown" time="0.04" steps="144"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.01" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.01" steps="144"/></proof>
+  <proof prover="4" timelimit="4"><result status="valid" time="0.01" steps="7534"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="2" steplimit="35000"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="1" steplimit="1250000"><result status="valid" time="0.02" steps="1"/></proof>
-  <proof prover="2" steplimit="35000"><result status="unknown" time="0.04" steps="129"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.01" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.01" steps="129"/></proof>
+  <proof prover="3"><result status="valid" time="0.01" steps="21"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="1" steplimit="1250000"><result status="valid" time="0.02" steps="7"/></proof>
-  <proof prover="2" steplimit="35000"><result status="unknown" time="0.04" steps="151"/></proof>
+  <proof prover="3"><result status="valid" time="0.01" steps="22"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="409867ff4f9e1a929425097a0f9cd7ae" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="f26d3a401141fcfca0d9296ebf0eb996" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="135"/></proof>
-  <proof prover="1"><result status="timeout" time="19.64"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="110"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.01" steps="5"/></proof>
+  <proof prover="2"><result status="unknown" time="0.01" steps="26"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="302"/></proof>
   </goal>
  </transf>
  </goal>
