@@ -1997,6 +1997,7 @@ package body SPARK_Definition is
             | N_Unused_At_Start
             | N_Unused_At_End
             | N_Variant
+            | N_Delta_Aggregate
          =>
             raise Program_Error;
       end case;
