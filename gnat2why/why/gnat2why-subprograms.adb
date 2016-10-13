@@ -1326,7 +1326,7 @@ package body Gnat2Why.Subprograms is
                declare
                   K  : constant Flow_Id := Dependency_Maps.Key (Cu);
                   FS : constant Flow_Id_Sets.Set :=
-                    Expand_Abstract_State (K, False);
+                    Expand_Abstract_State (K, Erase_Constants => False);
                   E  : Entity_Id;
                begin
                   for F of FS loop
