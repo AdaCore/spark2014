@@ -444,7 +444,9 @@ package body Flow_Utility is
             end;
 
          when Magic_String =>
-            return Flow_Id_Sets.To_Set (F);
+            return (if Erase_Constants and then Is_Constant (F.Name)
+                    then Flow_Id_Sets.Empty_Set
+                    else Flow_Id_Sets.To_Set (F));
 
          when Record_Field | Null_Value | Synthetic_Null_Export =>
             raise Program_Error;
