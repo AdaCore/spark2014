@@ -58,4 +58,4 @@ $(RESULTS)/%.prove: force
 	test -s $@ || echo "no output" > $@
 
 clean:
-	rm -rf flow prove
+	rm -rf flow prove examples/proof/sessions
