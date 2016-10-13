@@ -943,9 +943,9 @@ package body Flow.Control_Flow_Graph is
       FA.Atr.Insert (V, A);
    end Add_Vertex;
 
-   --------------
-   --  Linkup  --
-   --------------
+   ------------
+   -- Linkup --
+   ------------
 
    procedure Linkup (FA    : in out Flow_Analysis_Graphs;
                      Froms : Vertex_Sets.Set;
@@ -1119,7 +1119,7 @@ package body Flow.Control_Flow_Graph is
 
    ---------------------------------------
    -- Create_Initial_And_Final_Vertices --
-   ----------------------------------------
+   ---------------------------------------
 
    procedure Create_Initial_And_Final_Vertices
      (E    : Entity_Id;
@@ -1331,9 +1331,9 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Create_Initial_And_Final_Vertices;
 
-   -------------------------------
-   --  Do_Assignment_Statement  --
-   -------------------------------
+   -----------------------------
+   -- Do_Assignment_Statement --
+   -----------------------------
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -1546,9 +1546,9 @@ package body Flow.Control_Flow_Graph is
                     Standard_Exits => To_Set (Verts.Last_Element)));
    end Do_Assignment_Statement;
 
-   -------------------------
-   --  Do_Case_Statement  --
-   -------------------------
+   -----------------------
+   -- Do_Case_Statement --
+   -----------------------
 
    procedure Do_Case_Statement
      (N   : Node_Id;
@@ -1673,9 +1673,9 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (N), Trivial_Connection (V));
    end Do_Delay_Statement;
 
-   -------------------------
-   --  Do_Exit_Statement  --
-   -------------------------
+   -----------------------
+   -- Do_Exit_Statement --
+   -----------------------
 
    procedure Do_Exit_Statement
      (N   : Node_Id;
@@ -1844,9 +1844,9 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Extended_Return_Statement;
 
-   -----------------------------------------
-   --  Do_Handled_Sequence_Of_Statements  --
-   -----------------------------------------
+   ---------------------------------------
+   -- Do_Handled_Sequence_Of_Statements --
+   ---------------------------------------
 
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
@@ -1862,9 +1862,9 @@ package body Flow.Control_Flow_Graph is
                         Src => Union_Id (Stmts));
    end Do_Handled_Sequence_Of_Statements;
 
-   -----------------------
-   --  Do_If_Statement  --
-   -----------------------
+   ---------------------
+   -- Do_If_Statement --
+   ---------------------
 
    procedure Do_If_Statement
      (N   : Node_Id;
@@ -2001,9 +2001,9 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Do_If_Statement;
 
-   -------------------------
-   --  Do_Loop_Statement  --
-   -------------------------
+   -----------------------
+   -- Do_Loop_Statement --
+   -----------------------
 
    procedure Do_Loop_Statement
      (N   : Node_Id;
@@ -2986,9 +2986,9 @@ package body Flow.Control_Flow_Graph is
 
    end Do_Loop_Statement;
 
-   ----------------------------------
-   --  Do_Null_Or_Raise_Statement  --
-   ----------------------------------
+   --------------------------------
+   -- Do_Null_Or_Raise_Statement --
+   --------------------------------
 
    procedure Do_Null_Or_Raise_Statement
      (N   : Node_Id;
@@ -3013,9 +3013,9 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (N), Trivial_Connection (V));
    end Do_Null_Or_Raise_Statement;
 
-   -----------------------------
-   --  Do_Object_Declaration  --
-   -----------------------------
+   ---------------------------
+   -- Do_Object_Declaration --
+   ---------------------------
 
    procedure Do_Object_Declaration
      (N   : Node_Id;
@@ -4043,9 +4043,9 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (Pre), Trivial_Connection (V));
    end Do_Precondition;
 
-   -------------------------
-   --  Do_Call_Statement  --
-   -------------------------
+   -----------------------
+   -- Do_Call_Statement --
+   -----------------------
 
    procedure Do_Call_Statement
      (N   : Node_Id;
@@ -4356,9 +4356,9 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (Post), Trivial_Connection (V));
    end Do_Postcondition;
 
-   ----------------------------------
-   --  Do_Simple_Return_Statement  --
-   ----------------------------------
+   --------------------------------
+   -- Do_Simple_Return_Statement --
+   --------------------------------
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
@@ -4620,9 +4620,9 @@ package body Flow.Control_Flow_Graph is
       end loop;
    end Process_Subprogram_Globals;
 
-   ----------------------------
-   --  Process_Call_Actuals  --
-   ----------------------------
+   --------------------------
+   -- Process_Call_Actuals --
+   --------------------------
 
    procedure Process_Call_Actuals
      (Callsite : Node_Id;
@@ -4741,9 +4741,9 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Process_Call_Actuals;
 
-   ------------------------------
-   --  Process_Statement_List  --
-   ------------------------------
+   ----------------------------
+   -- Process_Statement_List --
+   ----------------------------
 
    procedure Process_Statement_List
      (L   : List_Id;
@@ -4780,9 +4780,9 @@ package body Flow.Control_Flow_Graph is
 
    end Process_Statement_List;
 
-   -------------------------
-   --  Process_Statement  --
-   -------------------------
+   -----------------------
+   -- Process_Statement --
+   -----------------------
 
    procedure Process_Statement
      (N   : Node_Id;
