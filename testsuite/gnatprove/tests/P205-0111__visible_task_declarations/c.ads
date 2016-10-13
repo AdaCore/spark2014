@@ -6,7 +6,7 @@ package C with SPARK_Mode is
    end;
 
    task type TT is
-      pragma Assert (Inner.X_Ptr = Inner.X_Ptr); -- not in SPARK
+      pragma Priority (Inner.X_Ptr.all); -- not in SPARK
    end;
 
 end;

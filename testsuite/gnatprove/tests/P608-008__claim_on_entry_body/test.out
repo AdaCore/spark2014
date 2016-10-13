@@ -1,8 +1,2 @@
 logger.adb:5:20: warning: statement has no effect
 logger.adb:7:25: medium: assertion might fail, cannot prove Num_Queued > 0
-spec_and_body.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
-spec_and_body.ads:6:22: medium: assertion might fail, cannot prove X > 0 (e.g. when X = 0)
-spec_and_body.ads:10:22: medium: assertion might fail, cannot prove X > 0 (e.g. when X = 0)
-spec_only.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
-spec_only.ads:6:22: medium: assertion might fail, cannot prove X > 0 (e.g. when X = 0)
-spec_only.ads:10:22: medium: assertion might fail, cannot prove X > 0 (e.g. when X = 0)
