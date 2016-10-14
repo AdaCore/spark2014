@@ -1180,11 +1180,7 @@ package body SPARK_Definition is
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
          =>
-            if Is_SPARK_Tasking_Configuration then
-               Mark (Expression (N));
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+            Mark (Expression (N));
 
          when N_Exit_Statement =>
             if Present (Condition (N)) then
