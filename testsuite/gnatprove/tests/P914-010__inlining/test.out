@@ -1,0 +1,5 @@
+ex.adb:11:23: info: initialization of "Result" proved
+ex.adb:11:23: info: initialization of "Result" proved, in call inlined at ex.adb:20
+ex.adb:11:30: medium: overflow check might fail, in call inlined at ex.adb:20 (e.g. when Result = 2147483647)
+ex.adb:14:14: info: initialization of "Result" proved
+ex.adb:14:14: info: initialization of "Result" proved, in call inlined at ex.adb:20
