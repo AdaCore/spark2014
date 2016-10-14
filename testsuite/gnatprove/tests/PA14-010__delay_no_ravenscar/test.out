@@ -1,0 +1,7 @@
+p1.adb:6:04: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+p1.adb:6:04: violation of aspect SPARK_Mode at line 3
+p2.adb:6:04: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+p2.adb:6:04: violation of aspect SPARK_Mode at line 3
+p3.adb:3:04: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+p3.adb:3:04: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
