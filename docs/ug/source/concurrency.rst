@@ -24,6 +24,33 @@ start of files:
    pragma Profile (Ravenscar);
    pragma Partition_Elaboration_Policy (Sequential);
 
+While the Ravenscar profile is recommended for high-integrity concurrent
+applications, GNATprove also partly supports the GNAT Extended Ravenscar
+profile (see Section 4.5 "The Extended Ravenscar Profiles" in GNAT User’s Guide
+Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security). To lift
+some of the Ravenscar restrictions use the following configuration pragmas
+instead:
+
+.. code-block:: ada
+
+   pragma Profile (GNAT_Extended_Ravenscar);
+   pragma Restrictions (No_Entry_Queue, Max_Protected_Entries => 1);
+   --  Enforce Ravenscar restrictions still present within the supported
+   --  subset of the GNAT Extended Ravenscar profile.
+   pragma Partition_Elaboration_Policy (Sequential);
+
+In particular, the GNAT Extended Ravenscar profile allows the use of two forms
+of the delay statements depending on the type of their expression:
+
+* If the expression is of the type Ada.Real_Time.Time then for the purposes of
+  determining global inputs and outputs the delay statement is considered to be
+  just like the delay statement, i.e. to reference the state abstraction
+  Ada.Real_Time.Clock_Time as an input (see SPARK RM 9(17) for details).
+
+* If the expression is of the type Ada.Calendar.Time then it is considered to
+  reference the state abstraction Ada.Calendar.Clock_Time, which is defined
+  similarly to Ada.Real_Time.Clock_Time but represents a different time base.
+
 .. _Tasks and Data Races:
 
 Tasks and Data Races
