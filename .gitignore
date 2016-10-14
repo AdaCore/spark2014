@@ -29,6 +29,3 @@ benchmark_script/bench
 gnat2why/why/xgen/b__xtree.ad?
 testsuite/gnatprove/temp
 include/proof/Coq/*/*.v
-docs/ug/gnatprove_by_example/flow
-docs/ug/gnatprove_by_example/prove
-docs/ug/gnatprove_by_example/examples/proof/sessions
