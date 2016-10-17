@@ -2529,23 +2529,23 @@ screen.adb:576:65: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:589:16: info: initialization of "OK" proved
 screen.adb:589:23: info: initialization of "ConsoleOK" proved
 screen.adb:591:35: info: initialization of "C112b" proved
-screen.adb:591:35: info: initialization of "LatchUnlock" proved
-screen.adb:591:35: info: range check proved (CVC4: 1 VC)
+screen.adb:591:49: info: initialization of "LatchUnlock" proved
+screen.adb:591:49: info: range check proved (CVC4: 1 VC)
 screen.adb:595:16: info: initialization of "OK" proved
 screen.adb:595:23: info: initialization of "ConsoleOK" proved
-screen.adb:597:35: info: initialization of "AlarmSilent" proved
 screen.adb:597:35: info: initialization of "C122b" proved
-screen.adb:597:35: info: range check proved (CVC4: 1 VC)
+screen.adb:597:49: info: initialization of "AlarmSilent" proved
+screen.adb:597:49: info: range check proved (CVC4: 1 VC)
 screen.adb:601:16: info: initialization of "OK" proved
 screen.adb:601:23: info: initialization of "ConsoleOK" proved
 screen.adb:603:35: info: initialization of "C132b" proved
-screen.adb:603:35: info: initialization of "FingerWait" proved
-screen.adb:603:35: info: range check proved (CVC4: 1 VC)
+screen.adb:603:49: info: initialization of "FingerWait" proved
+screen.adb:603:49: info: range check proved (CVC4: 1 VC)
 screen.adb:607:16: info: initialization of "OK" proved
 screen.adb:607:23: info: initialization of "ConsoleOK" proved
 screen.adb:609:35: info: initialization of "C142b" proved
-screen.adb:609:35: info: initialization of "TokenRemove" proved
-screen.adb:609:35: info: range check proved (CVC4: 1 VC)
+screen.adb:609:49: info: initialization of "TokenRemove" proved
+screen.adb:609:49: info: range check proved (CVC4: 1 VC)
 screen.adb:613:16: info: initialization of "OK" proved
 screen.adb:613:23: info: initialization of "ConsoleOK" proved
 screen.adb:615:35: info: initialization of "C152b" proved

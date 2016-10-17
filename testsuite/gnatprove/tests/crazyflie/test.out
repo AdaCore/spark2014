@@ -833,45 +833,38 @@ stabilizer_pack.adb:98:15: info: initialization of "R" proved
 stabilizer_pack.adb:98:17: info: division check proved (CVC4: 1 VC)
 stabilizer_pack.adb:99:15: info: initialization of "P" proved
 stabilizer_pack.adb:99:17: info: division check proved (CVC4: 1 VC)
-stabilizer_pack.adb:101:28: info: overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:101:28: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:101:44: info: overflow check proved (CodePeer)
+stabilizer_pack.adb:101:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:101:46: info: initialization of "R" proved
 stabilizer_pack.adb:101:48: info: overflow check proved (CodePeer)
 stabilizer_pack.adb:101:50: info: initialization of "P" proved
-stabilizer_pack.adb:102:28: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:102:44: info: overflow check proved (CodePeer)
-stabilizer_pack.adb:101:52: info: overflow check proved (CodePeer)
+stabilizer_pack.adb:101:52: info: overflow check proved (CVC4: 1 VC)
+stabilizer_pack.adb:102:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:102:46: info: initialization of "R" proved
 stabilizer_pack.adb:102:48: info: overflow check proved (CodePeer)
 stabilizer_pack.adb:102:50: info: initialization of "P" proved
-stabilizer_pack.adb:103:28: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:103:44: info: overflow check proved (CodePeer)
-stabilizer_pack.adb:102:52: info: overflow check proved (CodePeer)
+stabilizer_pack.adb:102:52: info: overflow check proved (CVC4: 1 VC)
+stabilizer_pack.adb:103:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:103:46: info: initialization of "R" proved
 stabilizer_pack.adb:103:48: info: overflow check proved (CodePeer)
 stabilizer_pack.adb:103:50: info: initialization of "P" proved
-stabilizer_pack.adb:103:52: info: overflow check proved (CodePeer)
-stabilizer_pack.adb:104:28: info: range check proved (CVC4: 1 VC)
-stabilizer_pack.adb:104:44: info: overflow check proved (CodePeer)
+stabilizer_pack.adb:103:52: info: overflow check proved (CVC4: 1 VC)
+stabilizer_pack.adb:104:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:104:46: info: initialization of "R" proved
 stabilizer_pack.adb:104:48: info: overflow check proved (CodePeer)
 stabilizer_pack.adb:104:50: info: initialization of "P" proved
-stabilizer_pack.adb:104:52: info: overflow check proved (CodePeer)
+stabilizer_pack.adb:104:52: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:106:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:106:46: info: initialization of "P" proved
-stabilizer_pack.adb:107:28: info: overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:107:28: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:106:48: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:107:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:107:46: info: initialization of "R" proved
-stabilizer_pack.adb:108:28: info: overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:108:28: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:107:48: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:108:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:108:46: info: initialization of "P" proved
-stabilizer_pack.adb:109:28: info: overflow check proved (CVC4: 1 VC)
-stabilizer_pack.adb:109:28: info: range check proved (CVC4: 1 VC)
+stabilizer_pack.adb:108:48: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:109:44: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:109:46: info: initialization of "R" proved
+stabilizer_pack.adb:109:48: info: overflow check proved (CVC4: 1 VC)
 stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:114:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
@@ -950,7 +943,6 @@ stabilizer_pack.adb:271:55: info: overflow check proved (Interval)
 stabilizer_pack.adb:271:57: info: initialization of "Alt_Hold_PID_Out" proved
 stabilizer_pack.adb:276:30: info: overflow check proved (Interval)
 stabilizer_pack.adb:277:39: info: initialization of "C28b" proved
-stabilizer_pack.adb:277:39: info: range check proved (CVC4: 1 VC)
 stabilizer_pack.adb:277:62: info: initialization of "Raw_Thrust" proved
 stabilizer_pack.adb:317:33: medium: range check might fail
 stabilizer_pack.adb:318:33: medium: range check might fail
