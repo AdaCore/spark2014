@@ -29,7 +29,7 @@ package body Nest_In_Task is
       end loop;
    end TT;
 
-   B, C : TT;
+   B, C : TT; -- multiple tasks
 
 begin
    null;

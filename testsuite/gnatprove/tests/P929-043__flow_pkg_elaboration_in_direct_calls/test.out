@@ -13,4 +13,7 @@ nest_in_task.adb:18:20: warning: subprogram "P" has no effect
 nest_in_task.adb:24:11: cannot write "A" during elaboration of "Pkg" (SPARK RM 7.7.1(6))
 nest_in_task.ads:3:13: warning: subprogram may not terminate
 nest_in_task.ads:4:17: info: subprogram will terminate
+recursion.adb:1:11: info: subprogram will terminate
+recursion.adb:3:17: info: subprogram will terminate
+recursion.adb:3:17: warning: subprogram "P" has no effect
 gnatprove: error during flow analysis and proof

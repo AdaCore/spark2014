@@ -1,8 +1,8 @@
 with GNAT.OS_Lib;            use GNAT.OS_Lib;
 
-procedure Nest_In_Proc2 is
-   -- it may not terminate because it is calling Proxy, which is nonreturning,
-   -- but this is not detected
+procedure Nest_In_Proc is
+   -- this proves to be terminating because the call to Pkg is not considered
+   -- relevant right now
 
    procedure Proxy with Pre => True;
 
@@ -26,4 +26,4 @@ procedure Nest_In_Proc2 is
 
 begin
    null;
-end Nest_In_Proc2;
+end Nest_In_Proc;
