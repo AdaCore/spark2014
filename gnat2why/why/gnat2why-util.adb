@@ -1068,7 +1068,7 @@ package body Gnat2Why.Util is
       --  quantified expression).
 
       if Ekind (E) = E_Loop_Parameter then
-         return not (Is_Quantified_Loop_Param (E));
+         return not Is_Quantified_Loop_Param (E);
 
       elsif Ekind (E) = E_Variable
         and then Is_Quantified_Loop_Param (E)
