@@ -587,15 +587,15 @@ is currently locked by another task.
 
 To ensure absence of deadlocks on a single core, Ravenscar requires the use of
 the Priority Ceiling Protocol. This protocol ensures that no task can be
-blocked trying to access a protected object another task has locked.  It relies
+blocked trying to access a protected object locked by another task.  It relies
 on task's `priorities`. The priority of a task is a number encoding its
 urgency. On a single core, scheduling ensures that the current running task can
 only be preempted by another task if it has a higher priority.  Using this
-property, the Priority Ceiling Protocol works by increasing the priority of
-tasks acquiring a read-write or read-only access to a protected object to the
-highest priority of any task that can access this protected object. This
-ensures that, while holding a lock, the currently running task cannot be
-preempted by a task which could later be blocked by this lock.
+property, the Priority Ceiling Protocol works by increasing the priorities of
+tasks accessing a protected object to a priority that is at least as high as
+the priorities of other tasks accessing this object. This ensures that,
+while holding a lock, the currently running task cannot be preempted by a task
+which could later be blocked by this lock.
 
 To enforce this protocol, every task is associated with a `base priority`,
 either given at declaration using the ``Priority`` aspect or defaulted. This
