@@ -583,13 +583,13 @@ can set the base priority of ``Account_Management`` to 5 at declaration:
    end Account;
 
 Likewise, each protected object is associated at declaration with a `ceiling
-priority` which should be higher than the active priority of any task accessing
-it. The ceiling priority of a protected object does not need to be static, it
-can be set using a discriminant for example. Still, like for tasks, Ravenscar
-requires that it is set once and for all at the object's declaration and cannot
-be changed afterwards.  As an example, let us attach a ceiling priority to the
-protected object ``Num_Accounts``. As ``Num_Accounts`` will be used by
-``Account_Management``, its ceiling priority should be no lower than 5:
+priority` which should be equal or higher than the active priority of any task
+accessing it. The ceiling priority of a protected object does not need to be
+static, it can be set using a discriminant for example. Still, like for tasks,
+Ravenscar requires that it is set once and for all at the object's declaration
+and cannot be changed afterwards.  As an example, let us attach a ceiling
+priority to the protected object ``Num_Accounts``. As ``Num_Accounts`` will be
+used by ``Account_Management``, its ceiling priority should be no lower than 5:
 
 .. code-block:: ada
 
