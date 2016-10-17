@@ -1,7 +1,7 @@
 map_list_incr.adb:5:12: info: precondition proved
+map_list_incr.adb:6:11: info: postcondition proved
 map_list_incr.adb:6:12: info: precondition proved
 map_list_incr.adb:7:14: info: precondition proved
-map_list_incr.adb:7:14: medium: postcondition might fail, cannot prove Has_Element (L'Old, Cu)
 map_list_incr.adb:8:14: info: precondition proved
 map_list_incr.adb:8:32: info: precondition proved
 map_list_incr.adb:8:52: info: overflow check proved

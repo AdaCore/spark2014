@@ -7,7 +7,7 @@ ALL_PROVE_MSG=$(sort $(patsubst examples/%.ads,$(RESULTS)/%.prove,$(patsubst exa
 
 COMMON_OPTS = -f -k -q -j0 --report=all --warnings=on
 FLOW_OPTS   = $(COMMON_OPTS) --mode=flow
-PROVE_OPTS  = $(COMMON_OPTS) --mode=prove
+PROVE_OPTS  = $(COMMON_OPTS) --mode=prove --prover=cvc4,altergo,z3
 
 gnatprove: flow prove
 

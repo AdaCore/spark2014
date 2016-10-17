@@ -1,6 +1,7 @@
 update_range_list_zero.adb:5:11: info: precondition proved
 update_range_list_zero.adb:5:43: info: precondition proved
 update_range_list_zero.adb:5:56: info: precondition proved
+update_range_list_zero.adb:6:11: info: postcondition proved
 update_range_list_zero.adb:6:12: info: precondition proved
 update_range_list_zero.adb:6:26: info: precondition proved
 update_range_list_zero.adb:6:43: info: precondition proved
@@ -9,7 +10,6 @@ update_range_list_zero.adb:6:92: info: precondition proved
 update_range_list_zero.adb:7:10: info: precondition proved
 update_range_list_zero.adb:7:25: info: precondition proved
 update_range_list_zero.adb:7:57: info: precondition proved
-update_range_list_zero.adb:7:57: medium: postcondition might fail, cannot prove Has_Element (L'Old, Cu2)
 update_range_list_zero.adb:7:91: info: precondition proved
 update_range_list_zero.adb:7:110: info: precondition proved
 update_range_list_zero.adb:8:10: info: precondition proved
