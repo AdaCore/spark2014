@@ -12,13 +12,13 @@ t.ads:2:14: info: initialization of "X" proved
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
-pt.ads:2:09: high: possible data race when accessing variable "p.x"
-pt.ads:2:09: high: with task "original_main_func"
-pt.ads:2:09: high: with task "pt.t"
+original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
+original_main_func.ads:1:10: high: with task "original_main_func"
+original_main_func.ads:1:10: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
-pt.ads:2:09: high: possible data race when accessing variable "p.x"
-pt.ads:2:09: high: with task "original_main_func"
-pt.ads:2:09: high: with task "pt.t"
+original_main_func.ads:1:10: high: possible data race when accessing variable "p.x"
+original_main_func.ads:1:10: high: with task "original_main_func"
+original_main_func.ads:1:10: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 gen_inst.ads:5:11: high: possible data race when accessing variable "p.x"
 gen_inst.ads:5:11: high: with task "gen_inst"
@@ -34,11 +34,11 @@ pt2.ads:2:09: high: possible data race when accessing variable "p.x"
 pt2.ads:2:09: high: with task "pt.t"
 pt2.ads:2:09: high: with task "pt2.t"
 pt2.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
-pt.ads:2:09: high: possible data race when accessing variable "p.x"
-pt.ads:2:09: high: with task "main_with_no_spec"
-pt.ads:2:09: high: with task "pt.t"
+main_with_no_spec.adb:4:11: high: possible data race when accessing variable "p.x"
+main_with_no_spec.adb:4:11: high: with task "main_with_no_spec"
+main_with_no_spec.adb:4:11: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
-pt.ads:2:09: high: possible data race when accessing variable "p.x"
-pt.ads:2:09: high: with task "main_spec_only"
-pt.ads:2:09: high: with task "pt.t"
+main_spec_only.ads:4:11: high: possible data race when accessing variable "p.x"
+main_spec_only.ads:4:11: high: with task "main_spec_only"
+main_spec_only.ads:4:11: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
