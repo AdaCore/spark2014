@@ -1791,10 +1791,7 @@ package body Flow is
                   --  Part_Of single concurrent types.
                   E := Find_Entity (N);
 
-                  if not (Is_Synchronized_Object (E)
-                          or else Is_Synchronized_State (E)
-                          or else Is_Part_Of_Concurrent_Object (E))
-                  then
+                  if not Is_Synchronized (E) then
                      Tasking (Unsynch_Accesses).Include (E);
                   end if;
 

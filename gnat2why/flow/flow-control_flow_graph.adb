@@ -6229,10 +6229,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Collect unsynchronized accesses by excluding states and objects
             --  that are synchronized or are Part_Of single concurrent types.
-            if not (Is_Synchronized_Object (E)
-                    or else Is_Synchronized_State (E)
-                    or else Is_Part_Of_Concurrent_Object (E))
-            then
+            if not Is_Synchronized (E) then
                FA.Tasking (Unsynch_Accesses).Include (E);
             end if;
          end loop;
