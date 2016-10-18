@@ -541,7 +541,9 @@ package body Gnat2Why.Driver is
                  and then Entity_Body_In_SPARK (E)
                then
                   for C of Direct_Calls (E) loop
-                     Register_Assumptions_For_Call (E, C);
+                     if Ekind (C) in E_Function | E_Procedure | Entry_Kind then
+                        Register_Assumptions_For_Call (E, C);
+                     end if;
                   end loop;
                end if;
 

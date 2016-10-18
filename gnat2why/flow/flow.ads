@@ -125,9 +125,9 @@ package Flow is
                               Read_Locks,
                               Write_Locks);
    pragma Ordered (Tasking_Info_Kind);
-   --  Tasking-related information collected for subprograms, entries and
-   --  tasks. Used both for ownership (aka. exclusivity) checks and for ceiling
-   --  priority protocol checks.
+   --  Tasking-related information collected for subprograms, entries, tasks
+   --  and package elaborations. Used both for ownership (aka. exclusivity)
+   --  checks and for ceiling priority protocol checks.
 
    subtype Tasking_Owning_Kind is Tasking_Info_Kind
      range Suspends_On ..
@@ -209,7 +209,7 @@ package Flow is
       --  or a warning is found.
 
       Direct_Calls : Node_Sets.Set;
-      --  Subprograms called
+      --  Contains subprograms called and package elaborations
 
       GG : Flow_Global_Generation_Info;
       --  Information for globals computation

@@ -1208,14 +1208,11 @@ package body Flow is
          end case;
       end if;
 
-      --  Register tasking-related information; ignore packages because they
-      --  are elaborated sequentially anyway.
-      if FA.Generating_Globals
-        and then FA.Kind in Kind_Subprogram | Kind_Task
-      then
+      --  Register tasking-related information
+      if FA.Generating_Globals then
          Debug_GG_Tasking_Info;
 
-         GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
+         GG_Register_Tasking_Info (To_Entity_Name (FA.Spec_Entity),
                                    FA.Tasking);
       end if;
 
@@ -1927,9 +1924,7 @@ package body Flow is
          --  and conditional; this is necessary because splitting looses calls
          --  to protected subprograms, which are handled as just accesses to
          --  global variables.
-         if FA.Kind in Kind_Task | Kind_Subprogram then
-            GG_Register_Direct_Calls (FA.Analyzed_Entity, FA.Direct_Calls);
-         end if;
+         GG_Register_Direct_Calls (FA.Spec_Entity, FA.Direct_Calls);
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Outdent;

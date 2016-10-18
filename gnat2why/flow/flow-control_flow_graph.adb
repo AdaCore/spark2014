@@ -3594,6 +3594,8 @@ package body Flow.Control_Flow_Graph is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
    begin
+      FA.Direct_Calls.Insert (Spec_E);
+
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
 
