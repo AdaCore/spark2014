@@ -6066,13 +6066,9 @@ package body Flow.Control_Flow_Graph is
          when Kind_Package | Kind_Package_Body =>
             --  Flowgraph for initial_condition aspect
             declare
-               Spec_E         : constant Entity_Id :=
-                 (if Ekind (FA.Analyzed_Entity) = E_Package
-                  then FA.Analyzed_Entity
-                  else Spec_Entity (FA.Analyzed_Entity));
                NL             : Union_Lists.List := Union_Lists.Empty_List;
                Postconditions : constant Node_Lists.List :=
-                 Get_Postcondition_Expressions (Spec_E,
+                 Get_Postcondition_Expressions (FA.Spec_Entity,
                                                 Refined => False);
             begin
                for Postcondition of Postconditions loop

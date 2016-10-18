@@ -413,13 +413,8 @@ package body Flow_Error_Messages is
 
       Suppressed : Boolean;
 
-      E : constant Entity_Id :=
-        (if FA.Kind = Kind_Package_Body
-         then Spec_Entity (FA.Analyzed_Entity)
-         else FA.Analyzed_Entity);
-
    begin
-      Error_Msg_Flow (E            => E,
+      Error_Msg_Flow (E            => FA.Spec_Entity,
                       Msg          => Debug_Msg,
                       Severity     => Severity,
                       N            => N,
