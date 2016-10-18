@@ -1138,6 +1138,21 @@ package body SPARK_Util is
         and then Present (Parent (Scope (E)))
         and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
 
+   ---------------------
+   -- Is_Synchronized --
+   ---------------------
+
+   function Is_Synchronized (E : Entity_Id) return Boolean is
+   begin
+      return
+        Is_Synchronized_Object (E)
+          or else Is_Synchronized_State (E)
+          or else Is_Part_Of_Concurrent_Object (E)
+          or else Ekind (E) in E_Protected_Type | E_Task_Type;
+          --  We get protected/task types here when they act as globals for
+          --  subprograms nested in the type itself.
+   end Is_Synchronized;
+
    ----------------------------
    -- Iterate_Call_Arguments --
    ----------------------------

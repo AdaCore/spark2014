@@ -288,6 +288,14 @@ package SPARK_Util is
    --  @return True iff E is logically part of a protected object, either being
    --    a discriminant of field of the object, or being a "part_of".
 
+   function Is_Synchronized (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Abstract_State |
+                            E_Protected_Type |
+                            E_Task_Type      |
+                            Object_Kind;
+   --  @param E an entity that represents a global
+   --  @return True if E is safe to be accesses from multiple tasks
+
    function Root_Record_Component (E : Entity_Id) return Entity_Id;
    --  Given a component or discriminant of a record (sub-)type, return the
    --  corresponding component or discriminant of the root type, if any. This
