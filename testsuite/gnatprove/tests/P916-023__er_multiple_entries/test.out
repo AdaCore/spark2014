@@ -1,0 +1,7 @@
+test1.ads:3:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+test1.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
+test1.ads:4:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+test1.ads:4:14: info: nontermination of task proved (CVC4: 1 VC)
+test1_nok.ads:5:08: high: multiple tasks might queue on protected entry "p.po1.e1" (SPARK RM 9(11))
+test1_nok.ads:5:08: high: with task "test1_nok.t1"
+test1_nok.ads:5:08: high: with task "test1_nok.t2"

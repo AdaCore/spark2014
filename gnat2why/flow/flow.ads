@@ -119,8 +119,32 @@ package Flow is
       --  entity.
    end record;
 
-   type Tasking_Info_Kind is (Suspends_On,
-                              Entry_Calls,
+   type Entry_Call is record
+      Obj  : Entity_Id;        --  library-level object
+      Entr : Entity_Id;        --  protected entry
+   end record
+   with Predicate => Ekind (Entry_Call.Obj) = E_Variable and then
+                     Is_Entry (Entry_Call.Entr);
+   --  Unique representation of a call to protected entry of a library-level
+   --  protected object.
+   --
+   --  Note: it is represented as two entities, since the only single
+   --  node that contains this information is N_Selected_Component (or
+   --  N_Indexed_Component for entry families), but these nodes are not unique.
+   --  Alternatively, we could represent this as a symbol here, i.e. as a
+   --  pointer to string as it is written in the ALI file, but it is cleaner
+   --  use these strings only for the serialization.
+
+   function Hash (E : Entry_Call) return Ada.Containers.Hash_Type;
+   --  Hash function needed to instantiate container package
+
+   package Entry_Call_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Entry_Call,
+      Hash                => Hash,
+      Equivalent_Elements => "=");
+
+   type Tasking_Info_Kind is (Entry_Calls,
+                              Suspends_On,
                               Unsynch_Accesses,
                               Locks);
    pragma Ordered (Tasking_Info_Kind);
@@ -129,16 +153,17 @@ package Flow is
    --  checks and for ceiling priority protocol checks.
 
    subtype Tasking_Owning_Kind is Tasking_Info_Kind
-     range Suspends_On ..
-           -- Entry_Calls
+     range Entry_Calls ..
+           -- Suspends_On
            Unsynch_Accesses;
    --  Tasking-related information used for ownership checks
    --
    --  Note: it is intentionally defined with range and not with
    --  Static_Predicate to allow its use as an array index.
 
-   type Tasking_Info is array (Tasking_Info_Kind) of Node_Sets.Set;
-   --  Named array type for sets of nodes related to tasking
+   type Tasking_Info is array (Suspends_On .. Locks) of Node_Sets.Set;
+   --  Named array type for sets of nodes related to tasking. The nodes
+   --  represent library-level objects.
 
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
@@ -212,6 +237,9 @@ package Flow is
 
       GG : Flow_Global_Generation_Info;
       --  Information for globals computation
+
+      Entries : Entry_Call_Sets.Set;
+      --  Called entries of library-level objects
 
       Tasking : Tasking_Info;
       --  Tasking-related information collected in phase 1

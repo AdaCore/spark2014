@@ -16,7 +16,7 @@ task_and_po_arrays.adb:9:24: warning: statement has no effect
 task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 task_and_po_arrays.ads:5:14: medium: "POs" might not be initialized before start of tasks of type "T"
 task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
-task_and_po_arrays.ads:12:04: high: multiple tasks might suspend on protected object "task_and_po_arrays.pos" (SPARK RM 9(11))
+task_and_po_arrays.ads:12:04: high: multiple tasks might queue on protected entry "task_and_po_arrays.pos.dummy" (SPARK RM 9(11))
 task_and_po_arrays.ads:12:04: high: with task "task_and_po_arrays.ts"
 task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_so_arrays.ads:10:04: high: multiple tasks might suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
@@ -33,7 +33,7 @@ two_task_type_objects_single_so.ads:7:14: medium: the task might terminate, whic
 two_tasks_single_po.adb:4:20: warning: statement has no effect
 two_tasks_single_po.adb:10:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 two_tasks_single_po.adb:10:09: medium: the task might terminate, which is not allowed in SPARK
-two_tasks_single_po.adb:11:09: high: multiple tasks might suspend on protected object "two_tasks_single_po.po" (SPARK RM 9(11))
+two_tasks_single_po.adb:11:09: high: multiple tasks might queue on protected entry "two_tasks_single_po.po.e" (SPARK RM 9(11))
 two_tasks_single_po.adb:11:09: high: with task "two_tasks_single_po.t1"
 two_tasks_single_po.adb:11:09: high: with task "two_tasks_single_po.t2"
 two_tasks_single_po.adb:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)

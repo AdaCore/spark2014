@@ -87,8 +87,9 @@ package Flow_Generated_Globals.Phase_1 is
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
 
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
+   procedure GG_Register_Tasking_Info (Caller  : Entity_Name;
+                                       Entries : Entry_Call_Sets.Set;
+                                       Objects : Tasking_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register tasking-related information for entity

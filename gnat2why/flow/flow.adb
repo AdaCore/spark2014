@@ -1214,6 +1214,7 @@ package body Flow is
          Debug_GG_Tasking_Info;
 
          GG_Register_Tasking_Info (To_Entity_Name (FA.Spec_Entity),
+                                   FA.Entries,
                                    FA.Tasking);
       end if;
 
@@ -1781,7 +1782,10 @@ package body Flow is
                Collect_Unsynchronized_Globals (S.Inputs);
                Collect_Unsynchronized_Globals (S.Outputs);
 
-               GG_Register_Tasking_Info (S.Name, Tasking);
+               --  Entry calls are syntactically now allowed in specifications
+               GG_Register_Tasking_Info (S.Name,
+                                         Entry_Call_Sets.Empty_Set,
+                                         Tasking);
             end if;
          end Register_Unsynch_Accesses;
       end Generate_Globals_From_Spec;
@@ -1927,6 +1931,19 @@ package body Flow is
                        Character'Val (8#33#) & "[0m");
       end if;
    end Generate_Flow_Globals;
+
+   ----------
+   -- Hash --
+   ----------
+
+   function Hash (E : Entry_Call) return Ada.Containers.Hash_Type is
+      use type Ada.Containers.Hash_Type;
+
+   begin
+      --  ??? constants for hasing are picked from the air
+      return Ada.Containers.Hash_Type (E.Obj)  * 17
+           + Ada.Containers.Hash_Type (E.Entr) * 19;
+   end Hash;
 
    -----------------------------
    -- Last_Statement_Is_Raise --

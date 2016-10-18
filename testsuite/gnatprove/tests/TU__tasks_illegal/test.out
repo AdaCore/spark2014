@@ -44,7 +44,7 @@ po_t7.adb:11:34: info: overflow check proved (CVC4: 1 VC)
 po_t7.adb:18:52: info: overflow check proved (CVC4: 1 VC)
 po_t7.ads:11:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Get" (SPARK RM 9(10))
 po_t7.ads:14:21: high: variable "Not_CAE" cannot be referenced in precondition of protected operation "Increase" (SPARK RM 9(10))
-use_po_t8.adb:3:11: high: multiple tasks might suspend on protected object "po_t8.p_int" (SPARK RM 9(11))
+use_po_t8.adb:3:11: high: multiple tasks might queue on protected entry "po_t8.p_int.increase" (SPARK RM 9(11))
 use_po_t8.adb:3:11: high: with task "po_t8.t"
 use_po_t8.adb:3:11: high: with task "use_po_t8"
 use_po_t8.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
