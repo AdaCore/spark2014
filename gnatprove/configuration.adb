@@ -38,7 +38,9 @@ with System.Multiprocessors;
 
 package body Configuration is
 
-   Invalid_Step : constant := -1;
+   Invalid_Level : constant := -1;
+
+   Invalid_Steps : constant := -1;
 
    Clean : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
@@ -150,7 +152,7 @@ ASCII.LF &
 " -k                    Do not stop analysis at the first error" &
 ASCII.LF &
 "     --level=n         Set the level of proof " &
-"(0 = faster* to 4 = more powerful)" &
+"(0 = faster to 4 = more powerful)" &
 ASCII.LF &
 " -m                    Minimal reanalysis" &
 ASCII.LF &
@@ -239,13 +241,13 @@ ASCII.LF &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
+"                     Default is " & Natural'Image (Default_Steps) & " steps."
+& ASCII.LF &
 "                     Use value 0 for no steps limit." &
 ASCII.LF &
-" --timeout=s         Set the prover timeout in seconds (s=auto, nnn)" &
+" --timeout=nnn       Set the prover timeout in seconds" &
 ASCII.LF &
 "                     Use value 0 for no timeout." &
-ASCII.LF &
-"                     Use value auto for timeout adjusted to proof level." &
 ASCII.LF &
 " --why3-conf=f       Specify a configuration file for why3" &
 ASCII.LF &
@@ -920,65 +922,68 @@ ASCII.LF;
 
       procedure Set_Level_Timeout_Steps_Provers_Proof_Mode is
       begin
+           --  If level switch was not provided, set other switches to their
+           --  default values.
+
          case CL_Switches.Level is
+            when Invalid_Level =>
+               Provers.Append ("cvc4");
+               Proof := Per_Check;
+               Steps := Default_Steps;
+               Timeout := 0;
 
             --  Level 0 is equivalent to
-            --    --prover=cvc4 --proof=per_check --steps=100
-            --  If --timeout=auto is given, level 0 implies --timeout=1
+            --    --prover=cvc4 --proof=per_check --steps=0 --timeout=1
 
             when 0 =>
                Provers.Append ("cvc4");
                Proof := Per_Check;
-               Steps := 100;
+               Steps := 0;
                Timeout := 1;
 
-               --  Level 1 is equivalent to
-               --    --prover=cvc4,z3,altergo --proof=per_check --steps=100
-               --  If --timeout=auto is given, level 1 implies --timeout=1
+               --  Level 1 is equivalent to --prover=cvc4,z3,altergo
+               --   --proof=per_check --steps=0 --timeout=1
 
             when 1 =>
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
                Proof := Per_Check;
-               Steps := 100;
+               Steps := 0;
                Timeout := 1;
 
                --  Level 2 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=per_check --steps=1000
-               --  If --timeout=auto is given, level 2 implies --timeout=10
+               --    --proof=per_check --steps=0 --timeout=5
 
             when 2 =>
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
                Proof := Per_Check;
-               Steps := 1000;
-               Timeout := 10;
+               Steps := 0;
+               Timeout := 5;
 
                --  Level 3 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=progressive --steps=1000
-               --  If --timeout=auto is given, level 3 implies --timeout=10
+               --    --proof=progressive --steps=0 --timeout=5
 
             when 3 =>
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
                Proof := Progressive;
-               Steps := 1000;
-               Timeout := 10;
+               Steps := 0;
+               Timeout := 5;
 
                --  Level 4 is equivalent to --prover=cvc4,z3,altergo
-               --    --proof=progressive --steps=10000
-               --  If --timeout=auto is given, level 4 implies --timeout=60
+               --    --proof=progressive --steps=0 --timeout=10
 
             when 4 =>
                Provers.Append ("cvc4");
                Provers.Append ("z3");
                Provers.Append ("altergo");
                Proof := Progressive;
-               Steps := 10_000;
-               Timeout := 60;
+               Steps := 0;
+               Timeout := 10;
 
             when others =>
                Abort_Msg (Config,
@@ -988,14 +993,12 @@ ASCII.LF;
                raise Program_Error;
          end case;
 
-         --  in mode auto, leave the timeout as set above. If option --timeout
-         --  was not provided, set timeout to 0 (no timeout). Otherwise, take
-         --  the user-provided timeout
+         --  If option --timeout was not provided, keep timeout corresponding
+         --  to level switch/default value. Otherwise, take the user-provided
+         --  timeout.
 
-         if CL_Switches.Timeout.all = "auto" then
+         if CL_Switches.Timeout.all = "" then
             null;
-         elsif CL_Switches.Timeout.all = "" then
-            Timeout := 0;
          else
             begin
                Timeout := Integer'Value (CL_Switches.Timeout.all);
@@ -1011,7 +1014,7 @@ ASCII.LF;
             end;
          end if;
 
-         if CL_Switches.Steps = Invalid_Step then
+         if CL_Switches.Steps = Invalid_Steps then
             null;
          elsif CL_Switches.Steps < 0 then
             Abort_Msg (Config,
@@ -1458,12 +1461,12 @@ ASCII.LF;
       Define_Switch
          (Config, CL_Switches.Steps'Access,
           Long_Switch => "--steps=",
-          Initial => Invalid_Step);
+          Initial => Invalid_Steps);
 
       Define_Switch
          (Config, CL_Switches.Level'Access,
           Long_Switch => "--level=",
-          Initial => Default_Level);
+          Initial => Invalid_Level);
 
       Define_Switch
          (Config,
