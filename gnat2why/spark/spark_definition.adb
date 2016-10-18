@@ -416,7 +416,6 @@ package body SPARK_Definition is
             No_Task_Hierarchy                        => True,
             No_Terminate_Alternatives                => True,
             Max_Asynchronous_Select_Nesting          => True,
-            Max_Protected_Entries                    => True, --  TO LIFT
             Max_Select_Alternatives                  => True,
             Max_Task_Entries                         => True,
 
@@ -436,7 +435,6 @@ package body SPARK_Definition is
 
          Value =>
            (Max_Asynchronous_Select_Nesting => 0,
-            Max_Protected_Entries           => 1,             --  TO LIFT
             Max_Select_Alternatives         => 0,
             Max_Task_Entries                => 0,
             others                          => 0));

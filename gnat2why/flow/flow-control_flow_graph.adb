@@ -4178,7 +4178,9 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Is_Object (The_PO));
 
             if Is_Entry (Called_Thing) then
-               FA.Tasking (Entry_Calls).Include (The_PO);
+               FA.Entries.Include
+                 (Entry_Call'(Obj  => The_PO,
+                              Entr => Called_Thing));
             end if;
 
             FA.Tasking (Locks).Include (The_PO);

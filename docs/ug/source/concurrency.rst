@@ -34,9 +34,9 @@ instead:
 .. code-block:: ada
 
    pragma Profile (GNAT_Extended_Ravenscar);
-   pragma Restrictions (No_Entry_Queue, Max_Protected_Entries => 1);
-   --  Enforce Ravenscar restrictions still present within the supported
-   --  subset of the GNAT Extended Ravenscar profile.
+   pragma Restrictions (No_Entry_Queue);
+   --  Enforce Ravenscar restriction still present within the supported subset
+   --  of the GNAT Extended Ravenscar profile.
    pragma Partition_Elaboration_Policy (Sequential);
 
 In particular, the GNAT Extended Ravenscar profile allows the use of two forms

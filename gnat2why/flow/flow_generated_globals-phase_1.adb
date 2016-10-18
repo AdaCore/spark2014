@@ -24,6 +24,7 @@
 with Ada.Strings.Unbounded;
 
 with Lib.Util;                use Lib.Util;
+with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
@@ -76,6 +77,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
    type Accessed_Tasking_Objects is record
       Caller  : Entity_Name;
+      Entries : Entry_Call_Sets.Set;
       Objects : Tasking_Info;
    end record;
 
@@ -298,12 +300,14 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Tasking_Info --
    ------------------------------
 
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
+   procedure GG_Register_Tasking_Info (Caller  : Entity_Name;
+                                       Entries : Entry_Call_Sets.Set;
+                                       Objects : Tasking_Info)
    is
    begin
-      Tasking_Info_List.Append ((Caller => EN,
-                                 Objects => TI));
+      Tasking_Info_List.Append ((Caller  => Caller,
+                                 Entries => Entries,
+                                 Objects => Objects));
    end GG_Register_Tasking_Info;
 
    -----------------------
@@ -414,14 +418,26 @@ package body Flow_Generated_Globals.Phase_1 is
          Write_To_ALI (V);
       end loop;
 
-      for Subprogram of Tasking_Info_List loop
+      for Subprogram : Accessed_Tasking_Objects of Tasking_Info_List loop
          V := (Kind             => EK_Tasking_Info,
                The_Entity       => Subprogram.Caller,
                The_Tasking_Info => <>);
 
-         for Kind in Tasking_Info_Kind loop
-            V.The_Tasking_Info (Kind) :=
-              To_Name_Set (Subprogram.Objects (Kind));
+         for EC : Entry_Call of Subprogram.Entries loop
+            --  For entry calls pretend that we are accessing an object
+            --  Package_Name.Object_Name.Entry_Name.
+            V.The_Tasking_Info (Entry_Calls).Insert
+              (To_Entity_Name
+                  (Unique_Name (EC.Obj) &
+                   "__" &
+                   Get_Name_String (Chars (EC.Entr))));
+         end loop;
+
+         for Kind in Subprogram.Objects'Range loop
+            for N of Subprogram.Objects (Kind) loop
+               pragma Assert (Ekind (N) in E_Abstract_State | Object_Kind);
+               V.The_Tasking_Info (Kind).Insert (To_Entity_Name (N));
+            end loop;
          end loop;
 
          Write_To_ALI (V);

@@ -4263,7 +4263,7 @@ package body Flow.Analysis is
                when Suspends_On =>
                   "multiple tasks might suspend on suspension object &",
                when Entry_Calls =>
-                  "multiple tasks might suspend on protected object &",
+                  "multiple tasks might queue on protected entry &",
                when Unsynch_Accesses =>
                   "possible data race when accessing variable &");
          --  Main error message
