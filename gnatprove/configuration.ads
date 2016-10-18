@@ -225,7 +225,7 @@ package Configuration is
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
 
-   Default_Level : constant := 0;
+   Default_Steps : constant Natural := 100;
 
    Subdir_Name : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place

@@ -6,7 +6,7 @@ hard_stuff.adb:7:07: info: assertion proved
 hard_stuff.adb:11:14: info: overflow check proved
 hard_stuff.adb:12:07: info: assertion proved
 hard_stuff.adb:16:14: info: overflow check proved
-hard_stuff.adb:17:22: medium: assertion might fail, cannot prove X in -1.0 .. 1.0
+hard_stuff.adb:17:07: info: assertion proved
 hard_stuff.adb:20:04: warning: statement has no effect
 hard_stuff.adb:20:49: info: range check proved
 hard_stuff.adb:20:52: info: division check proved
@@ -27,7 +27,7 @@ hard_stuff.adb:7:07: info: assertion proved
 hard_stuff.adb:11:14: info: overflow check proved
 hard_stuff.adb:12:07: info: assertion proved
 hard_stuff.adb:16:14: info: overflow check proved
-hard_stuff.adb:17:22: medium: assertion might fail, cannot prove X in -1.0 .. 1.0
+hard_stuff.adb:17:07: info: assertion proved
 hard_stuff.adb:20:04: warning: statement has no effect
 hard_stuff.adb:20:49: info: range check proved
 hard_stuff.adb:20:52: info: division check proved
