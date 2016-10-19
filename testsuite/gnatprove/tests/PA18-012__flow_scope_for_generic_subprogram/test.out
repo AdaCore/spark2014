@@ -1,0 +1,6 @@
+memregions.adb:10:04: info: initialization of "Validity" constituent of "State" proved
+memregions.adb:11:04: info: initialization of "Memory" constituent of "State" proved
+memregions.adb:37:14: info: initialization of "Res.Index" proved
+memregions.ads:11:14: info: initialization of "Validity" constituent of "State" proved
+memregions.ads:25:17: "Memregions.State" must be listed in the Refined_Global aspect of "Memory_Has_Index" (SPARK RM 6.1.4(13)), in instantiation at main.adb:7
+gnatprove: error during flow analysis and proof
