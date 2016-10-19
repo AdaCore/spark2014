@@ -1827,14 +1827,16 @@ package body Gnat2Why.Expr is
                              Domain,
                              Params);
 
-                     --  The other two branches are internal calls
+                     --  Otherwise, it is an internal call
 
-                     elsif Self_Is_Mutable then
-                        Why_Args (Arg_Cnt) :=
-                          New_Deref (Right => Prot,
-                                     Typ   => Get_Typ (Prot));
                      else
-                        Why_Args (Arg_Cnt) := +Prot;
+                        if Self_Is_Mutable then
+                           Why_Args (Arg_Cnt) :=
+                             New_Deref (Right => Prot,
+                                        Typ   => Get_Typ (Prot));
+                        else
+                           Why_Args (Arg_Cnt) := +Prot;
+                        end if;
                      end if;
                   end;
 
@@ -4995,19 +4997,23 @@ package body Gnat2Why.Expr is
       --  In the case of protected components, we have to generate the record
       --  code ourselves on top.
 
+      --  ??? the following test is excessive, assignement to discriminants is
+      --  would be rejected by the front end; this should be fixed in the
+      --  SPARK_Util API for protected objects.
+
       if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Left_Side)) then
          declare
-            Left : constant Node_Id := Entity (Left_Side);
-            Ada_Obj : constant Node_Id :=
-              (if Is_Part_Of_Protected_Object (Left) then
-                    Get_Enclosing_Concurrent_Object (Left)
+            Left     : constant Node_Id := Entity (Left_Side);
+            Ada_Obj  : constant Node_Id :=
+              (if Is_Part_Of_Protected_Object (Left)
+               then Get_Enclosing_Concurrent_Object (Left)
                else Empty);
             Prot_Obj : constant W_Identifier_Id :=
               (if Is_Part_Of_Protected_Object (Left) then
                   To_Why_Id
-                 (E      => Ada_Obj,
-                  Domain => EW_Prog,
-                  Typ    => Type_Of_Node (Etype (Ada_Obj)))
+                    (E      => Ada_Obj,
+                     Domain => EW_Prog,
+                     Typ    => Type_Of_Node (Etype (Ada_Obj)))
                else Self_Name);
          begin
             Result :=
@@ -5016,12 +5022,12 @@ package body Gnat2Why.Expr is
                  Name     => Prot_Obj,
                  Value    =>
                    +One_Level_Update
-                   (Left_Side,
-                    New_Deref (Right => +Prot_Obj,
-                               Typ   => Get_Typ (Prot_Obj)),
-                    +Right_Side,
-                    EW_Prog,
-                    Body_Params),
+                     (Left_Side,
+                      New_Deref (Right => +Prot_Obj,
+                                 Typ   => Get_Typ (Prot_Obj)),
+                      +Right_Side,
+                      EW_Prog,
+                      Body_Params),
                  Typ     => Get_Typ (Prot_Obj));
          end;
       else
