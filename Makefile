@@ -68,7 +68,7 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 #   install-all  install of gnatprove, why3 and alt-ergo
 
 setup:
-	cd why3 && ./configure --prefix=$(INSTALLDIR) --enable-relocation --disable-ide --enable-coq-tactic=no
+	cd why3 && ./configure --prefix=$(INSTALLDIR) --enable-relocation --enable-coq-tactic=no
 	cd alt-ergo && ./configure --prefix=$(INSTALLDIR)
 
 why3:
@@ -79,7 +79,7 @@ alt-ergo:
 
 install-all:
 	$(MAKE) install
-	$(MAKE) -C why3 install_spark2014
+	$(MAKE) -C why3 install_spark2014_dev
 	$(MAKE) -C alt-ergo install
         # Move internal binaries to libexec/spark/bin like the nighty build
         # does (in anod scripts), as why3 executables expect this relative
@@ -90,6 +90,7 @@ install-all:
 	$(MV) install/bin/why3realize install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/why3config install/libexec/spark/bin
+	$(MV) install/bin/why3ide install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
         # Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
