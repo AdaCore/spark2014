@@ -9793,7 +9793,7 @@ package body Gnat2Why.Expr is
                --  We can ignore task declarations
 
                if Is_Task_Type (Obj_Type) then
-                  --  ??? missing checks for priority range and assertions
+                  --  ??? missing checks for priority range
                   return R;
                end if;
 
