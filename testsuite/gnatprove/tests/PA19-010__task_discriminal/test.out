@@ -1,0 +1,2 @@
+SOUNDNESS BUG at p.adb:12: mark @RANGE_CHECK:FAIL not found
+p.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
