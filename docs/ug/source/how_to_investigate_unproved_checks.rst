@@ -103,13 +103,13 @@ time [TIMEOUT] or if another prover can find a proof [PROVER]. To that end,
 |GNATprove| provides switch ``--level``, usable either from the command-line
 (see :ref:`Running GNATprove from the Command Line`), inside GPS (see
 :ref:`Running GNATprove from GPS`) or inside GNATbench (see :ref:`Running
-GNATprove from GNATbench`). The default level of 0 is only adequate for simple
+GNATprove from GNATbench`). The level of 0 is only adequate for simple
 proofs. In general, one should increase the level of proof (up to level 4)
 until no more automatic proofs can be obtained.
 
 As described in the section about :ref:`Running GNATprove from the Command
 Line`, switch ``--level`` is equivalent to setting directly various lower
-level switches like ``--steps``, ``--prover``, and ``--proof``. Hence, one
+level switches like ``--timeout``, ``--prover``, and ``--proof``. Hence, one
 can also set more powerful (and thus leading to longer proof time) values
 for the individual switches rather than using the predefined combinations
 set through ``--level``.
