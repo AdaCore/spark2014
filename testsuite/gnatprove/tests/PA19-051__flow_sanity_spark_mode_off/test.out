@@ -1,0 +1,2 @@
+p.ads:8:25: default initialization cannot depend on "PT" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
