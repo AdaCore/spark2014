@@ -1813,13 +1813,7 @@ package body Gnat2Why.Expr is
                   begin
                      --  External call, pass the object itself
 
-                     if Nkind (Sinfo.Name (Call)) = N_Selected_Component
-                       and then
-                         not (Nkind (Prefix (Sinfo.Name (Call))) in
-                                N_Has_Entity
-                              and then
-                              Is_Type (Entity (Prefix (Sinfo.Name (Call)))))
-                     then
+                     if Is_External_Call (Call) then
                         Why_Args (Arg_Cnt) :=
                           Transform_Expr
                             (Prefix (Sinfo.Name (Call)),
