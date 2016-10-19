@@ -241,7 +241,7 @@ ASCII.LF &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
-"                     Default is " & Natural'Image (Default_Steps) & " steps."
+"                     Default is" & Natural'Image (Default_Steps) & " steps."
 & ASCII.LF &
 "                     Use value 0 for no steps limit." &
 ASCII.LF &
