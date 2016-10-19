@@ -416,6 +416,17 @@ package SPARK_Util is
    --     should take the form of a type conversion. Node N should be the
    --     expression being converted rather than the type conversion itself.
 
+   function Is_External_Call (N : Node_Id) return Boolean
+   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call;
+   --  @param N call node
+   --  @return True iff N is an external call to a protected subprogram or
+   --     a protected entry.
+   --
+   --  Note: calls to protected functions in preconditions and guards of the
+   --  Contract_Cases are external, but this routine treats them as internal.
+   --  However, this only matters for marking where such a calls are rejected
+   --  anyway; for flow and proof this routine gives correct results.
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function

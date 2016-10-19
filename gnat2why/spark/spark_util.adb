@@ -1106,6 +1106,21 @@ package body SPARK_Util is
       Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
       = Name);
 
+   ----------------------
+   -- Is_External_Call --
+   ----------------------
+
+   function Is_External_Call (N : Node_Id) return Boolean is
+      Nam : constant Node_Id := Name (N);
+   begin
+      --  External calls are those with the selected_component syntax and whose
+      --  prefix is anything except a (protected) type.
+      return Nkind (Nam) = N_Selected_Component
+        and then
+          not (Nkind (Prefix (Nam)) in N_Has_Entity
+               and then Ekind (Entity (Prefix (Nam))) = E_Protected_Type);
+   end Is_External_Call;
+
    --------------------------------
    -- Is_Predicate_Function_Call --
    --------------------------------
