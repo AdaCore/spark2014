@@ -10,7 +10,7 @@ hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
 hard_stuff.adb:5:77: info: overflow check proved
 hard_stuff.adb:6:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
-hard_stuff.adb:13:17: info: overflow check proved
+hard_stuff.adb:13:17: medium: overflow check might fail
 hard_stuff.adb:13:21: info: overflow check proved
 hard_stuff.adb:14:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy
 
@@ -25,6 +25,6 @@ hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
 hard_stuff.adb:5:77: info: overflow check proved
 hard_stuff.adb:6:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
-hard_stuff.adb:13:17: info: overflow check proved
+hard_stuff.adb:13:17: medium: overflow check might fail
 hard_stuff.adb:13:21: info: overflow check proved
 hard_stuff.adb:14:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy
