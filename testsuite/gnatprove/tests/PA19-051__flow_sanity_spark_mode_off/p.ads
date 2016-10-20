@@ -1,11 +1,16 @@
-package P is
+package P is pragma SPARK_Mode (On);
+
+   Global : Boolean := True;
+
+   subtype S1 is Boolean
+   with Dynamic_Predicate => S1 and Global;
+   -- predicate depends on a global variable; should be reported
 
 private
    pragma SPARK_Mode (Off);
-   protected type PT is
-      function Func return Integer;
-   private
-      Priv : Integer := Func; --  no error should be generated
-   end PT;
 
-end P;
+   subtype S2 is Boolean
+   with Dynamic_Predicate => S2 and Global;
+   -- predicate depends on a global variable; should NOT be reported
+
+end;

@@ -2329,12 +2329,14 @@ package body Flow_Utility is
             end if;
          end;
 
-         --  If we are dealing with a subprogram that is declared inside a
-         --  concurrent object then we also need to add the concurrent object
-         --  to the variables we're using.
-         --  ??? really needed for internal calls to protected subprograms?
+         --  If this is an external call to protected subprogram then we also
+         --  need to add the enclosing object to the variables we're using.
+         --  This is not needed for internal calls, since the enclosing object
+         --  already is an implicit parameter of the caller.
 
-         if Ekind (Scope (Subprogram)) = E_Protected_Type then
+         if Ekind (Scope (Subprogram)) = E_Protected_Type
+           and then Is_External_Call (Callsite)
+         then
             Merge_Entity
               (V,
                Get_Enclosing_Concurrent_Object (Subprogram, Callsite));
