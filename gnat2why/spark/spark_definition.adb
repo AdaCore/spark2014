@@ -3418,7 +3418,8 @@ package body SPARK_Definition is
          --  Synchronous barriers are allowed by the Ravenscar profile, but we
          --  do not want them in SPARK.
 
-         procedure Mark_Default_Expression (C : Entity_Id);
+         procedure Mark_Default_Expression (C : Entity_Id)
+         with Pre => Ekind (C) in E_Component | E_Discriminant;
          --  Mark default expression of component or discriminant and check it
          --  for references to the current instance of a type or subtype (which
          --  is considered to be variable input).
@@ -3429,46 +3430,51 @@ package body SPARK_Definition is
 
          procedure Mark_Default_Expression (C : Entity_Id) is
 
-            function Mentions_Type_Name (N : Node_Id) return Boolean;
+            function Uses_Current_Type_Instance (N : Node_Id) return Boolean;
             --  Returns True iff node [N] mentions the type name [E]
 
-            ------------------------
-            -- Mentions_Type_Name --
-            ------------------------
+            --------------------------------
+            -- Uses_Current_Type_Instance --
+            --------------------------------
 
-            function Mentions_Type_Name (N : Node_Id) return Boolean is
-               Found : Boolean := False;
+            function Uses_Current_Type_Instance (N : Node_Id) return Boolean is
+               Current_Type_Instance : constant Entity_Id := Unique_Entity (E);
 
-               function Find_Type (N : Node_Id) return Traverse_Result;
-               --  Sets [Found] to True if type name for [E] is found
+               function Is_Current_Instance
+                 (N : Node_Id) return Traverse_Result;
+               --  Returns Abandon when a Current_Type_Instance is referenced
+               --  in node N and OK otherwise.
 
-               Unique_E : constant Entity_Id := Unique_Entity (E);
-               --  Unique entity of E
+               -------------------------
+               -- Is_Current_Instance --
+               -------------------------
 
-               ---------------
-               -- Find_Type --
-               ---------------
-
-               function Find_Type (N : Node_Id) return Traverse_Result is
+               function Is_Current_Instance
+                 (N : Node_Id)
+                  return Traverse_Result is
                begin
                   case Nkind (N) is
-                  when N_Identifier | N_Expanded_Name =>
-                     if Present (Entity (N))
-                       and then
-                         Unique_Entity (Entity (N)) = Unique_E
-                     then
-                        Found := True;
-                     end if;
-                  when others => null;
-                  end case;
-                  return OK;
-               end Find_Type;
+                     when N_Identifier | N_Expanded_Name =>
+                        if Present (Entity (N))
+                          and then
+                            Unique_Entity (Entity (N)) = Current_Type_Instance
+                        then
+                           return Abandon;
+                        end if;
 
-               procedure Maybe_Find_Type is new Traverse_Proc (Find_Type);
+                     when others =>
+                        null;
+                  end case;
+
+                  return OK;
+               end Is_Current_Instance;
+
+               function Find_Current_Instance is new
+                 Traverse_Func (Is_Current_Instance);
+
             begin
-               Maybe_Find_Type (N);
-               return Found;
-            end Mentions_Type_Name;
+               return Find_Current_Instance (N) = Abandon;
+            end Uses_Current_Type_Instance;
 
             --  Local variables
 
@@ -3483,7 +3489,7 @@ package body SPARK_Definition is
                --  not contain a name denoting the current instance of the
                --  enclosing type; SPARK RM 3.8(2).
 
-               if Mentions_Type_Name (Expr) then
+               if Uses_Current_Type_Instance (Expr) then
                   Violation_Detected := True;
                   if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
                   then
