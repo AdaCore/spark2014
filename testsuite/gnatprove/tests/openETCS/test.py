@@ -13,7 +13,8 @@ proof_level = {"step_function_test.adb" : 3}
 
 for f in sorted(files):
     prove_all(prover=["cvc4", "altergo"],
-              steps=None,
+              vc_timeout=0,
+              steps=1000,
               level=proof_level.get(f, default_level),
               counterexample=False,
               opt=["-u", f])
