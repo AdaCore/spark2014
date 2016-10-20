@@ -29,7 +29,6 @@ with Sem_Aux;                use Sem_Aux;
 with Sinfo;                  use Sinfo;
 with Sprint;                 use Sprint;
 with Stand;                  use Stand;
-with Treepr;                 use Treepr;
 
 with Common_Iterators;       use Common_Iterators;
 with SPARK_Util;             use SPARK_Util;
@@ -686,10 +685,7 @@ package body Flow_Refinement is
                --  initialized.
                return True;
 
-            when E_In_Parameter
-               | E_In_Out_Parameter
-               | E_Out_Parameter
-            =>
+            when Formal_Kind      =>
                --  This is for the case of a package nested in a subprogram
                --  that uses the subprogram's parameter.
                --  In case these parameters have not been initialized yet, an
@@ -702,7 +698,6 @@ package body Flow_Refinement is
                return True;
 
             when others           =>
-               Print_Tree_Node (Ent);
                raise Program_Error;
          end case;
 
