@@ -651,9 +651,10 @@ package body Flow_Refinement is
          end if;
 
          case Ekind (Ent) is
-            when E_Abstract_State |
-                 E_Component      |
-                 E_Constant       =>
+            when E_Abstract_State
+               | E_Component
+               | E_Constant
+            =>
                null;
 
             when E_Variable =>
@@ -683,6 +684,21 @@ package body Flow_Refinement is
                --  Task types act as records whose flattened view includes
                --  discriminants and Part_Of variables; both are always
                --  initialized.
+               return True;
+
+            when E_In_Parameter
+               | E_In_Out_Parameter
+               | E_Out_Parameter
+            =>
+               --  This is for the case of a package nested in a subprogram
+               --  that uses the subprogram's parameter.
+               --  In case these parameters have not been initialized yet, an
+               --  error would be raised somewhere else.
+               return True;
+
+            when E_Loop_Parameter =>
+               --  In case we use the loop parameter in a package nested within
+               --  a declare block.
                return True;
 
             when others           =>
