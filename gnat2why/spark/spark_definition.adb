@@ -3458,12 +3458,20 @@ package body SPARK_Definition is
                begin
                   case Nkind (N) is
                      when N_Identifier | N_Expanded_Name =>
-                        if Present (Entity (N))
-                          and then
-                            Unique_Entity (Entity (N)) = Current_Type_Instance
-                        then
-                           return Abandon;
-                        end if;
+                        declare
+                           E : constant Entity_Id := Entity (N);
+
+                        begin
+                           if Present (E)
+                             and then
+                              (Unique_Entity (E) = Current_Type_Instance
+                                 or else
+                               (Ekind (E) = E_Function
+                                and then Scope (E) = Current_Type_Instance))
+                           then
+                              return Abandon;
+                           end if;
+                        end;
 
                      when others =>
                         null;
