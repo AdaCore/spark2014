@@ -38,7 +38,6 @@ with Debug.Timing;                    use Debug.Timing;
 with Einfo;                           use Einfo;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
-with Flow.Trivia;                     use Flow.Trivia;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -540,7 +539,7 @@ package body Gnat2Why.Driver is
                if Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
-                  for C of Direct_Calls (E) loop
+                  for C of Generated_Calls (E) loop
                      if Ekind (C) in E_Function | E_Procedure | Entry_Kind then
                         Register_Assumptions_For_Call (E, C);
                      end if;

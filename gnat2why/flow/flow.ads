@@ -309,7 +309,6 @@ package Flow is
 private
 
    FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
-   --  All analysis results are stashed here in case we need them later. In
-   --  particular the Flow.Trivia package makes use of this.
+   --  All analysis results are stashed here in case we need them later
 
 end Flow;
