@@ -31,6 +31,7 @@ with Output;
 with Pprint;                             use Pprint;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
+with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
@@ -1111,6 +1112,12 @@ package body SPARK_Util is
    ----------------------
 
    function Is_External_Call (N : Node_Id) return Boolean is
+      pragma Assert (Is_Protected_Subprogram (Get_Called_Entity (N)));
+      --  ??? this should be checked in precondition, but that would create
+      --  circular dependency with SPARK_Util.Subprograms; and this routine is
+      --  here because a similar Is_Predicate_Function_Call was already here.
+      --  Perhaps the organization of the SPARK_Util packages needs rethinking?
+
       Nam : constant Node_Id := Name (N);
    begin
       --  External calls are those with the selected_component syntax and whose

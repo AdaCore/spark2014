@@ -4161,50 +4161,31 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Check for calls to protected procedures and entries
-      declare
-         Callee_Scope : constant Entity_Id := Scope (Called_Thing);
+      --
+      --  Ignore calls from within the same protected type (internal)
+      --  including calls from protected procedure to entry of the same
+      --  protected type. These calls are already reported as potentially
+      --  blocking.
+      --  Only register tasking-related info for calls from the
+      --  outside of the protected type (external).
 
-      begin
-         if Ekind (Callee_Scope) = E_Protected_Type then
-            declare
-               Context : Entity_Id := FA.Spec_Entity;
+      if Ekind (Scope (Called_Thing)) = E_Protected_Type
+        and then Is_External_Call (N)
+      then
+         declare
+            The_PO : constant Entity_Id :=
+              Get_Enclosing_Object (Prefix (Name (N)));
 
-            begin
-               loop
-                  --  Ignore calls from within the same protected type
-                  --  (internal) including calls from protected procedure to
-                  --  entry of the same protected type. These calls are already
-                  --  reported as potentially blocking.
-                  if Context = Callee_Scope then
-                     exit;
+         begin
+            pragma Assert (Is_Object (The_PO));
 
-                  --  Only register tasking-related info for calls from the
-                  --  outside of the protected type (external).
+            if Is_Entry (Called_Thing) then
+               FA.Tasking (Entry_Calls).Include (The_PO);
+            end if;
 
-                  elsif Context = Standard_Standard then
-                     declare
-                        The_PO : constant Entity_Id :=
-                          Get_Enclosing_Object (Prefix (Name (N)));
-
-                     begin
-                        pragma Assert (Is_Object (The_PO));
-
-                        if Is_Entry (Called_Thing) then
-                           FA.Tasking (Entry_Calls).Include (The_PO);
-                        end if;
-
-                        FA.Tasking (Locks).Include (The_PO);
-                     end;
-
-                     exit;
-
-                  else
-                     Context := Scope (Context);
-                  end if;
-               end loop;
-            end;
-         end if;
-      end;
+            FA.Tasking (Locks).Include (The_PO);
+         end;
+      end if;
 
       --  Check for suspending on a suspension object
       if Suspends_On_Suspension_Object then
