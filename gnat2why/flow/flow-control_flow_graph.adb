@@ -4193,7 +4193,7 @@ package body Flow.Control_Flow_Graph is
                            FA.Tasking (Entry_Calls).Include (The_PO);
                         end if;
 
-                        FA.Tasking (Write_Locks).Include (The_PO);
+                        FA.Tasking (Locks).Include (The_PO);
                      end;
 
                      exit;

@@ -233,7 +233,7 @@ package body Flow_Utility is
                      if Ekind (Callee_Scope) = E_Protected_Type
                        and then Callee_Scope /= Current_Prot_Type
                      then
-                        Tasking (Read_Locks).Include
+                        Tasking (Locks).Include
                           (Get_Enclosing_Object (Prefix (Name (N))));
                      end if;
                   end;
