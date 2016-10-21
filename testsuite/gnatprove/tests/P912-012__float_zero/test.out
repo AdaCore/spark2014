@@ -3,17 +3,16 @@ run.adb:14:15: info: overflow check proved (Interval)
 run.adb:20:15: info: overflow check proved (Interval)
 run.adb:26:15: info: overflow check proved (Interval)
 run.ads:12:34: info: initialization of "Y" proved
-run.ads:13:26: info: overflow check proved (Interval)
-run.ads:15:14: info: initialization of "Y" proved
-run.ads:15:14: medium: postcondition might fail, cannot prove Y /= 0.0
-run.ads:18:34: info: initialization of "Y" proved
-run.ads:19:21: info: overflow check proved (Interval)
-run.ads:21:14: info: initialization of "Y" proved
-run.ads:21:14: info: postcondition proved (CVC4: 1 VC)
-run.ads:24:36: info: initialization of "Y" proved
-run.ads:27:14: info: initialization of "Y" proved
-run.ads:27:14: medium: postcondition might fail, cannot prove Y /= 0.0
-run.ads:30:37: info: initialization of "Y" proved
-run.ads:31:21: info: overflow check proved (Interval)
-run.ads:33:14: info: initialization of "Y" proved
-run.ads:33:14: info: postcondition proved (CVC4: 1 VC)
+run.ads:14:19: info: initialization of "Y" proved
+run.ads:14:19: info: postcondition proved (Z3: 1 VC)
+run.ads:17:34: info: initialization of "Y" proved
+run.ads:18:21: info: overflow check proved (Interval)
+run.ads:19:19: info: initialization of "Y" proved
+run.ads:19:19: info: postcondition proved (CVC4: 1 VC)
+run.ads:22:36: info: initialization of "Y" proved
+run.ads:24:19: info: initialization of "Y" proved
+run.ads:24:19: info: postcondition proved (Z3: 1 VC)
+run.ads:27:37: info: initialization of "Y" proved
+run.ads:28:21: info: overflow check proved (Interval)
+run.ads:29:19: info: initialization of "Y" proved
+run.ads:29:19: info: postcondition proved (CVC4: 1 VC)
