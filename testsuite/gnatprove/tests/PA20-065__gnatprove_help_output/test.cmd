@@ -1,0 +1,1 @@
+gnatprove --help
