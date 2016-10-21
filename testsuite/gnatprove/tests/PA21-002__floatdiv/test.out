@@ -1,0 +1,8 @@
+basic_contracts.adb:4:62: info: overflow check proved (CVC4: 1 VC)
+basic_contracts.adb:10:51: info: range check proved (CVC4: 1 VC)
+basic_contracts.adb:11:43: medium: range check might fail
+basic_contracts.adb:13:13: info: division check proved (CVC4: 1 VC)
+basic_contracts.adb:13:13: medium: overflow check might fail
+basic_contracts.ads:8:10: info: postcondition proved (CVC4: 1 VC)
+basic_contracts.ads:8:35: info: overflow check proved (CVC4: 1 VC)
+basic_contracts.ads:15:10: info: postcondition proved (Z3: 1 VC)
