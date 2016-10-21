@@ -4,4 +4,4 @@ from test_support import *
 # In search_trees, insert is proved
 # read_balck_trees is not proved yet
 
-prove_all()
+prove_all(opt=["--replay"])

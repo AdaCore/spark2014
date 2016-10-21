@@ -23,7 +23,8 @@ package Binary_Trees with SPARK_Mode is
    --  Return True if I is a root of a binary tree in F
 
    function Parent (F : Forest; I : Index_Type) return Extended_Index_Type with
-     Post => (if Valid_Root (F, I) then Parent'Result = 0);
+     Post => (if Valid_Root (F, I) then Parent'Result = 0)
+     and then (if Size (F) = 0 then Parent'Result = 0);
    --  Parent in the corresponding binary tree
 
    function Position (F : Forest; I : Index_Type) return Direction with
@@ -73,23 +74,20 @@ package Binary_Trees with SPARK_Mode is
                (for all J in Index_Type =>
                     (if Model'Result (J).K
                      and then Model'Result (I).A = Model'Result (J).A
-                     then I = J))));
+                     then J = I))));
 
-   procedure Prove_Model_Total (F : Forest; Root : Index_Type) with Ghost,
+   procedure Prove_Model_Total (F : Forest; Root, I : Index_Type; D : Direction) with Ghost,
    --  Ghost function performing an induction to show that, if Peek returns 0
    --  on I and D, then every path in the forest from Root through I cannot
    --  be in direction D.
 
-     Pre  => Valid_Root (F, Root),
+     Pre  => Valid_Root (F, Root) and then Model (F, Root) (I).K
+     and then Peek (F, I, D) = 0,
      Post =>
-       (for all I in Index_Type =>
-          (if Model (F, Root) (I).K then
-               (for all D in Direction =>
-                    (if Peek (F, I, D) = 0 then
-                         (for all J in Index_Type =>
-                            (if Model (F, Root) (J).K
-                             and then (Model (F, Root) (I).A < Model (F, Root) (J).A)
-                             then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D))))));
+       (for all J in Index_Type =>
+          (if Model (F, Root) (J).K
+           and then (Model (F, Root) (I).A < Model (F, Root) (J).A)
+             then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D));
 
    procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with Ghost,
    --  Ghost function performing an induction to show that trees rooted at
@@ -100,14 +98,6 @@ package Binary_Trees with SPARK_Mode is
        (for all I in Index_Type =>
           (not Model (F, T1) (I).K or not Model (F, T2) (I).K));
 
-   procedure Prove_Peek_Preserved (F1, F2 : Forest; Root, I : Index_Type; D : Direction) with Ghost,
-   --  Ghost function performing an induction to show that the result of peek
-   --  in a tree is preserved if the model of the tree is preserved.
-
-     Pre  => Valid_Root (F1, Root) and then Valid_Root (F2, Root)
-     and then Model (F1, Root) = Model (F2, Root) and then Model (F1, Root) (I).K,
-     Post => Peek (F1, I, D) = Peek (F2, I, D);
-
    procedure Extract (F       : in out Forest;
                       Root, I : Index_Type;
                       D       : Direction;
@@ -117,7 +107,8 @@ package Binary_Trees with SPARK_Mode is
 
    with
      Pre  => Valid_Root (F, Root) and then Model (F, Root) (I).K,
-     Post => Valid_Root (F, Root)
+     Post => Size (F) = Size (F)'Old
+     and then Valid_Root (F, Root)
      and then V = Peek (F, I, D)'Old
      and then Peek (F, I, D) = 0
      and then (for all J in Index_Type =>
@@ -126,6 +117,10 @@ package Binary_Trees with SPARK_Mode is
      and then (for all J in Index_Type =>
                  (if J /= V and Parent (F, J) /= 0
                   then Position (F, J) = Position (F'Old, J)))
+     and then (for all J in Index_Type =>
+                 (for all E in Direction =>
+                      (if J /= I or else E /= D
+                           then Peek (F, J, E) = Peek (F'Old, J, E))))
      and then
        (for all T in Index_Type =>
           (if Valid_Root (F'Old, T) and then I /= T and then V /= T then
@@ -167,13 +162,24 @@ package Binary_Trees with SPARK_Mode is
      Pre =>  Valid_Root (F, Root) and then Model (F, Root) (I).K
      and then Peek (F, I, D) = 0 and then Root /= V
      and then (if V /= 0 then Valid_Root (F, V)),
-     Post => V = Peek (F, I, D)
+     Post => Size (F) = Size (F'Old)
+     and then V = Peek (F, I, D)
      and then
        (for all J in Index_Type =>
           (if Valid_Root (F'Old, J) and then J /= V then Valid_Root (F, J)))
      and then
        (for all J in Index_Type =>
           (if Valid_Root (F, J) then Valid_Root (F'Old, J)))
+     and then (for all J in Index_Type =>
+                 (if J /= V
+                  then Parent (F, J) = Parent (F'Old, J)))
+     and then (for all J in Index_Type =>
+                 (if J /= V and Parent (F, J) /= 0
+                  then Position (F, J) = Position (F'Old, J)))
+     and then (for all J in Index_Type =>
+                 (for all E in Direction =>
+                      (if J /= I or else E /= D
+                       then Peek (F, J, E) = Peek (F'Old, J, E))))
      and then
        (for all J in Index_Type =>
           (if Model (F, Root)'Old (J).K then Model (F, Root) (J).K))
@@ -182,10 +188,11 @@ package Binary_Trees with SPARK_Mode is
           (if V /= 0 and then Model (F'Old, V) (J).K
            then Model (F, Root) (J).K))
      and then
-       (for all J in Index_Type =>
-          (if Model (F, Root) (J).K then
-               Model (F, Root)'Old (J).K
-           or (V /= 0 and then Model (F'Old, V) (J).K)))
+       (for all I in Index_Type =>
+          (if Model (F, Root) (I).K then
+               (if V /= 0 and then Model (F, Root) (V).A <= Model (F, Root) (I).A
+                then Model (F'Old, V) (I).K
+                else Model (F'Old, Root) (I).K)))
      and then
        (for all J in Index_Type =>
                  (if Model (F, Root)'Old (J).K then Model (F, Root) (J).A = Model (F, Root)'Old (J).A))
@@ -213,10 +220,10 @@ package Binary_Trees with SPARK_Mode is
      and then Model (F, Root) (V).K
      and then not Model (F, Root)'Old (V).K
      and then (for all J in Index_Type =>
-                 (if Model (F, Root) (J).K and J /= V
+                 (if J /= V
                   then Parent (F, J) = Parent (F'Old, J)))
      and then (for all J in Index_Type =>
-                 (if Model (F, Root) (J).K and J /= V and J /= Root
+                 (if J /= V and Parent (F'Old, J) /= 0
                   then Position (F, J) = Position (F'Old, J)))
      and then
        (for all J in Index_Type =>

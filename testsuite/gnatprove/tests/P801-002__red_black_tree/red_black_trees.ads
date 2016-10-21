@@ -9,7 +9,7 @@ with Binary_Trees; use Binary_Trees;
 --  the search tree implemetation. Appart from the regular search tree, a red
 --  black tree contains an array associating a color to each node. The
 --  invariant states that there cannot be two red nodes in a row in any path
---  of the tree. The package is not proved yet.
+--  of the tree. We do not attempt to verify that the tree stays balanced.
 
 package Red_Black_Trees with SPARK_Mode is
    type Rbt is private with Default_Initial_Condition => True;
@@ -25,7 +25,7 @@ private
 
    type Rbt is record
       Struct : Search_Tree;
-      Color  : Color_Array;
+      Color  : Color_Array := (others => Black);
    end record
      with Type_Invariant => Invariant (Rbt);
 
@@ -33,12 +33,10 @@ private
       (if I = 0 then Black else T.Color (I));
 
    function Invariant (T : Rbt) return Boolean is
-     (if Root (T.Struct) /= 0 then T.Color (Root (T.Struct)) = Black
-      else
-        (for all I in Index_Type =>
-             (if Model (T.Struct) (I).K and I /= Root (T.Struct)
-              and T.Color (Parent (T.Struct, I)) = Red
-              then T.Color (I) = Black)))
+     (for all I in Index_Type =>
+        (if Parent (T.Struct, I) = 0
+         or else T.Color (Parent (T.Struct, I)) = Red
+         then T.Color (I) = Black))
    with Ghost;
 
    function Size (T : Rbt) return Extended_Index_Type is (Size (T.Struct));

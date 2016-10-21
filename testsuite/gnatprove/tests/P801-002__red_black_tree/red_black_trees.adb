@@ -10,18 +10,29 @@ package body Red_Black_Trees with SPARK_Mode is
       end if;
       T.Color (X) := Red;
 
+      pragma Assert
+        (for all I in Index_Type =>
+           (if I /= X
+            and then
+              (Parent (T.Struct, I) = 0
+               or else T.Color (Parent (T.Struct, I)) = Red)
+            then T.Color (I) = Black));
+
       --  X is red, while the parent of X is red, the invariant is broken
 
       while X /= Root (T.Struct) and then Color (T, Parent (T.Struct, X)) = Red loop
          pragma Loop_Invariant (X /= 0);
-         pragma Loop_Invariant (Root (T.Struct) /= 0);
+         pragma Loop_Invariant (Size (T.Struct) = Size (T.Struct)'Loop_Entry);
+         pragma Loop_Invariant (Root (T.Struct) = Root (T.Struct)'Loop_Entry);
          pragma Loop_Invariant (Model (T.Struct) (X).K);
          pragma Loop_Invariant (Color (T, X) = Red);
          pragma Loop_Invariant (Color (T, Root (T.Struct)) = Black);
          pragma Loop_Invariant
            (for all I in Index_Type =>
-              (if Model (T.Struct) (I).K and I /= Root (T.Struct) and I /= X
-               and T.Color (Parent (T.Struct, I)) = Red
+              (if I /= X
+               and then
+                 (Parent (T.Struct, I) = 0
+                  or else T.Color (Parent (T.Struct, I)) = Red)
                then T.Color (I) = Black));
 
          if Position (T.Struct, Parent (T.Struct, X)) = Left then
@@ -55,7 +66,8 @@ package body Red_Black_Trees with SPARK_Mode is
                end if;
 
                pragma Assert (Parent (T.Struct, Parent (T.Struct, X)) /= 0);
-               pragma Assert (Peek (T.Struct, Parent (T.Struct, Parent (T.Struct, X)), Left) /= 0);
+               pragma Assert (Peek (T.Struct,
+                              Parent (T.Struct, Parent (T.Struct, X)), Left) /= 0);
 
                --  Color X's parent black and its grand parent red
 
@@ -66,6 +78,12 @@ package body Red_Black_Trees with SPARK_Mode is
                --  We should now be done
 
                pragma Assert (Color (T, Parent (T.Struct, X)) = Black);
+
+               pragma Assert
+                 (for all I in Index_Type =>
+                    (if Parent (T.Struct, I) = 0
+                        or else T.Color (Parent (T.Struct, I)) = Red
+                     then T.Color (I) = Black));
             end if;
          else
 
@@ -97,21 +115,35 @@ package body Red_Black_Trees with SPARK_Mode is
                   Right_Rotate (T.Struct, X);
                end if;
 
-               pragma Assert (Parent (T.Struct, Y) /= 0);
-               pragma Assert (Peek (T.Struct, Parent (T.Struct, Y), Right) /= 0);
+               pragma Assert (Parent (T.Struct, Parent (T.Struct, X)) /= 0);
+               pragma Assert (Peek (T.Struct,
+                              Parent (T.Struct, Parent (T.Struct, X)), Right) /= 0);
 
                --  Color X's parent black and its grand parent red
 
                T.Color (Parent (T.Struct, X)) := Black;
-               T.Color (Parent (T.Struct, Y)) := Red;
-               Left_Rotate (T.Struct, Parent (T.Struct, Y));
+               T.Color (Parent (T.Struct, Parent (T.Struct, X))) := Red;
+               Left_Rotate (T.Struct, Parent (T.Struct, Parent (T.Struct, X)));
 
                --  We should now be done
 
                pragma Assert (Color (T, Parent (T.Struct, X)) = Black);
+
+               pragma Assert
+                 (for all I in Index_Type =>
+                    (if Parent (T.Struct, I) = 0
+                        or else T.Color (Parent (T.Struct, I)) = Red
+                     then T.Color (I) = Black));
             end if;
          end if;
       end loop;
+
+      pragma Assert
+        (for all I in Index_Type =>
+           (if I /= Root (T.Struct)
+            and then (Parent (T.Struct, I) = 0
+              or else T.Color (Parent (T.Struct, I)) = Red)
+            then T.Color (I) = Black));
 
       --  If we have colored the top red, we can safely color it back to black
 

@@ -164,22 +164,6 @@ package body Binary_Trees with SPARK_Mode is
       return R;
    end Model;
 
-   procedure Preserve_Equal (S1, S2, S3, S4 : Sequence; D : Direction) with
-     Ghost,
-     Pre  => S1 = S2 and Is_Add (S1, D, S3) and Is_Add (S2, D, S4),
-     Post => S3 = S4 is
-   begin
-      null;
-   end Preserve_Equal;
-
-   procedure Preserve_Concat (S1, S2, S3, S4, T : Sequence; D : Direction) with
-     Ghost,
-     Pre  => Is_Concat (T, S1, S2) and Is_Add (S1, D, S3) and Is_Add (S2, D, S4),
-     Post => Is_Concat (T, S3, S4) is
-   begin
-      null;
-   end Preserve_Concat;
-
    procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type)
    is
    begin
@@ -227,7 +211,18 @@ package body Binary_Trees with SPARK_Mode is
       end loop;
    end Prove_Model_Preserved;
 
-   procedure Prove_Model_Total (F : Forest; Root : Index_Type) is
+   procedure Prove_Model_Total (F : Forest; Root : Index_Type) with Ghost,
+     Pre  => Tree_Structure (F) and then Valid_Root (F, Root),
+     Post =>
+       (for all I in Index_Type =>
+          (if Model (F, Root) (I).K then
+               (for all D in Direction =>
+                    (if Peek (F, I, D) = 0 then
+                         (for all J in Index_Type =>
+                            (if Model (F, Root) (J).K
+                             and then (Model (F, Root) (I).A < Model (F, Root) (J).A)
+                               then Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1) /= D))))))
+   is
    begin
       for N in Index_Type loop
          pragma Loop_Invariant
@@ -243,10 +238,10 @@ package body Binary_Trees with SPARK_Mode is
       end loop;
    end Prove_Model_Total;
 
-   procedure Prove_Peek_Preserved (F1, F2 : Forest; Root, I : Index_Type; D : Direction) is
+   procedure Prove_Model_Total (F : Forest; Root, I : Index_Type; D : Direction) is
    begin
-      raise Program_Error;
-   end Prove_Peek_Preserved;
+      Prove_Model_Total (F, Root);
+   end Prove_Model_Total;
 
    function Peek (F : Forest; I : Index_Type; D : Direction) return Extended_Index_Type is
       (if D = Left then F.C (I).Left else F.C (I).Right);
@@ -406,7 +401,9 @@ package body Binary_Trees with SPARK_Mode is
           and then
           (for all I in Index_Type =>
              (if Model (F, Root) (I).K then
-                  Model (F_Old, V) (I).K or Model (F_Old, Root) (I).K))
+                  (if Model (F, Root) (V).A <= Model (F, Root) (I).A
+                   then Model (F_Old, V) (I).K
+                   else Model (F_Old, Root) (I).K)))
           and then
             (for all I in Index_Type =>
                (if Model (F_Old, Root) (I).K then Model (F, Root) (I).K))
@@ -426,11 +423,22 @@ package body Binary_Trees with SPARK_Mode is
                 Model (F_Old, R) = Model (F, R)))
       is
       begin
+         pragma Assert
+           (for all I in Index_Type =>
+              (if Model (F, Root) (I).K
+               and then Model (F, Root) (V).A <= Model (F, Root) (I).A
+                   and then F.C (I).Parent > 0
+               then I = V
+               or else Model (F, Root) (V).A <= Model (F, Root) (F.C (I).Parent).A));
          for N in Index_Type loop
             pragma Loop_Invariant
               (for all I in Index_Type =>
-                 (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N - 1 then
-                      Model (F_Old, V) (I).K or Model (F_Old, Root) (I).K));
+                 (if Length (Model (F, Root) (V).A) > 0
+                  and then Model (F, Root) (I).K
+                  and then Length (Model (F, Root) (I).A) <= N - 1 then
+                      (if Model (F, Root) (V).A <= Model (F, Root) (I).A then
+                              Model (F_Old, V) (I).K
+                       else Model (F_Old, Root) (I).K)));
             pragma Loop_Invariant
               (for all I in Index_Type =>
                  (if Model (F_Old, Root) (I).K and then Length (Model (F_Old, Root) (I).A) <= N - 1
@@ -471,6 +479,12 @@ package body Binary_Trees with SPARK_Mode is
          pragma Assert
            (for all I in Index_Type =>
               (if Model (F_Old, V) (I).K then Model (F, Root) (I).K));
+         pragma Assert
+          (for all I in Index_Type =>
+             (if Model (F, Root) (I).K then
+                  (if Model (F, Root) (V).A <= Model (F, Root) (I).A
+                   then Model (F_Old, V) (I).K
+                   else Model (F_Old, Root) (I).K)));
 
          for R in 1 .. F_Old.S loop
             if R /= Root and R /= V and F_Old.C (R).Position = Top then

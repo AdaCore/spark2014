@@ -28,7 +28,8 @@ package Tree_Model with SPARK_Mode is
               Get (P, I + Length (Q)) = Get (V, I))
       and then
         (for all I in Length (Q) + 1 .. Length (P) =>
-              Get (V, I - Length (Q)) = Get (P, I)));
+              Get (V, I - Length (Q)) = Get (P, I)))
+   with Pre => Length (Q) <= Max;
 
    function "<" (S1, S2 : Sequence) return Boolean
    is
@@ -44,5 +45,16 @@ package Tree_Model with SPARK_Mode is
 
    function "=" (M1, M2 : Model_Type) return Boolean is
       (for all I in Index_Type => M1 (I).A = M2 (I).A and M1 (I).K = M2 (I).K);
+
+   procedure Preserve_Equal (S1, S2, S3, S4 : Sequence; D : Direction) with
+     Ghost,
+     Pre  => S1 = S2 and Is_Add (S1, D, S3) and Is_Add (S2, D, S4),
+     Post => S3 = S4;
+
+   procedure Preserve_Concat (S1, S2, S3, S4, T : Sequence; D : Direction) with
+     Ghost,
+     Pre  => Length (T) <= Max and then Is_Concat (T, S1, S2)
+     and then Is_Add (S1, D, S3) and then Is_Add (S2, D, S4),
+     Post => Is_Concat (T, S3, S4);
 
 end Tree_Model;
