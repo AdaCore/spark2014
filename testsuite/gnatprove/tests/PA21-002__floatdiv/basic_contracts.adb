@@ -13,4 +13,28 @@ package body Basic_Contracts is
  return Num / Den;
  end Average;
 
+   function Average_Orig (Numerator : Integer;
+                          Denominator : Integer) return Float
+   is
+      Res : Float;
+   begin
+      pragma Assert (Float(Numerator) >= 0.0);
+      pragma Assert (Float(Denominator) >= 1.0);
+      Res := Float (Numerator) / Float (Denominator);
+      pragma Assert (Res >= 0.0);
+      return Res;
+   end Average_Orig;
+
+   function Average_Float (Numerator : Float;
+                           Denominator : Float) return Float
+   is
+      Res : Float;
+   begin
+      --pragma Assert (Numerator >= 0.0);
+      --pragma Assert (Denominator >= 1.0);
+      Res := Numerator / Denominator;
+      --pragma Assert (Res >= 0.0);
+      return Res;
+   end Average_Float;
+
 end Basic_Contracts;

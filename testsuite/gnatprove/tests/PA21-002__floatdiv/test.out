@@ -3,6 +3,22 @@ basic_contracts.adb:10:51: info: range check proved (CVC4: 1 VC)
 basic_contracts.adb:11:43: medium: range check might fail
 basic_contracts.adb:13:13: info: division check proved (CVC4: 1 VC)
 basic_contracts.adb:13:13: medium: overflow check might fail
+basic_contracts.adb:21:07: info: assertion proved (CVC4: 1 VC)
+basic_contracts.adb:21:28: info: range check proved (CVC4: 1 VC)
+basic_contracts.adb:22:22: medium: assertion might fail, cannot prove Float(Denominator) >= 1.0
+basic_contracts.adb:22:28: info: range check proved (CVC4: 1 VC)
+basic_contracts.adb:23:21: info: range check proved (CVC4: 1 VC)
+basic_contracts.adb:23:32: info: division check proved (CVC4: 1 VC)
+basic_contracts.adb:23:32: medium: overflow check might fail
+basic_contracts.adb:23:41: info: range check proved (CVC4: 1 VC)
+basic_contracts.adb:24:07: info: assertion proved (Z3: 1 VC)
+basic_contracts.adb:24:22: info: initialization of "Res" proved
+basic_contracts.adb:25:14: info: initialization of "Res" proved
+basic_contracts.adb:35:24: info: division check proved (CVC4: 1 VC)
+basic_contracts.adb:35:24: medium: overflow check might fail
+basic_contracts.adb:37:14: info: initialization of "Res" proved
 basic_contracts.ads:8:10: info: postcondition proved (CVC4: 1 VC)
 basic_contracts.ads:8:35: info: overflow check proved (CVC4: 1 VC)
 basic_contracts.ads:15:10: info: postcondition proved (Z3: 1 VC)
+basic_contracts.ads:22:20: info: postcondition proved (CVC4: 1 VC)
+basic_contracts.ads:29:20: info: postcondition proved (Z3: 1 VC)
