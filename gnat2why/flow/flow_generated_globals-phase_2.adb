@@ -2280,26 +2280,18 @@ package body Flow_Generated_Globals.Phase_2 is
       -------------------------------------
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name) is
-
-         subtype Protected_Info_Kind is Tasking_Info_Kind with
-           Static_Predicate =>
-             Protected_Info_Kind in Write_Locks | Read_Locks;
-         --  Accesses to protected objects that trigger ceiling priority checks
-
       begin
-         for Kind in Protected_Info_Kind loop
-            declare
-               Phase_1_Info : Name_Graphs.Map renames
-                 Tasking_Info_Bag (GG_Phase_1, Kind);
+         declare
+            Phase_1_Info : Name_Graphs.Map renames
+              Tasking_Info_Bag (GG_Phase_1, Locks);
 
-               C : constant Name_Graphs.Cursor := Phase_1_Info.Find (S);
+            C : constant Name_Graphs.Cursor := Phase_1_Info.Find (S);
 
-            begin
-               if Has_Element (C) then
-                  Res.Union (Phase_1_Info (C));
-               end if;
-            end;
-         end loop;
+         begin
+            if Has_Element (C) then
+               Res.Union (Phase_1_Info (C));
+            end if;
+         end;
       end Collect_Objects_From_Subprogram;
 
    --  Start of processing for Directly_Called_Protected_Objects

@@ -224,7 +224,7 @@ package body Flow_Utility is
                   if Ekind (Scope (Called_Func)) = E_Protected_Type
                     and then Is_External_Call (N)
                   then
-                     Tasking (Read_Locks).Include
+                     Tasking (Locks).Include
                        (Get_Enclosing_Object (Prefix (Name (N))));
                   end if;
                end;
