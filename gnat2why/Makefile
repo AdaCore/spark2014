@@ -58,7 +58,7 @@ else
 endif
 	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
 	  ada.ads gnat.ads interfac.ads && \
-	$(RM) `ls *.ad[sb] | grep '^.-'` && \
+	$(RM) ?-*.ad? && \
 	mv -f ada_get_targ.adb get_targ.adb
 
 build: setup force
