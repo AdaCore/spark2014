@@ -374,4 +374,24 @@ is
       pragma Assert (X - Z > 0.0);
    end Diffs;
 
+   procedure Sub_Then_Add1 (X, Y : Float_32; Res : out Float_32) is
+   begin
+      pragma Assume (X >= 0.0);
+      pragma Assume (Y >= 0.0);
+      pragma Assume (X <= Y);
+      Res := X + (Y - X);
+      pragma Assert (Res >= X);
+      pragma Assert (Res <= Y);
+   end Sub_Then_Add1;
+
+   procedure Sub_Then_Add2 (X, Y : Float_32; Res : out Float_32) is
+   begin
+      pragma Assume (X >= 0.0);
+      pragma Assume (Y >= 0.0);
+      pragma Assume (X >= Y);
+      Res := X + (Y - X);
+      pragma Assert (Res <= X);
+      pragma Assert (Res >= Y);
+   end Sub_Then_Add2;
+
 end Floating_Point;

@@ -112,4 +112,8 @@ is
    --  from P914-008 (industrial user)
    procedure Diffs (X, Y, Z : Float);
 
+   --  from P201-069 (academic user)
+   procedure Sub_Then_Add1 (X, Y : Float_32; Res : out Float_32);
+   procedure Sub_Then_Add2 (X, Y : Float_32; Res : out Float_32);
+
 end Floating_Point;
