@@ -1,0 +1,10 @@
+project Test is
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+
+  package Prove is
+     for Proof_Dir use "proof";
+  end Prove;
+end Test;
