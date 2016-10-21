@@ -230,9 +230,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  This contains information read from the ALI file on potentially
    --  nonreturning subprograms.
 
-   Termination_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Contains subprogram calls which are relevant to prove termination
-
    package Entity_Name_To_Priorities_Maps is
      new Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
@@ -1406,12 +1403,10 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Call graph vertices for the caller and the callee
 
                begin
-                  --  Add callees of the caller into the graph. We add a callee
-                  --  only if it is interesting for proving termination.
-                  for Callee of Generated_Calls (Caller) loop
-                     if Nonreturning_Subprograms.Contains (Callee)
-                       or else Termination_Subprograms.Contains (Callee)
-                     then
+                  --  Add callees of the caller into the graph, but do nothing
+                  --  if the caller itself is nonreturning.
+                  if not Nonreturning_Subprograms.Contains (Caller) then
+                     for Callee of Generated_Calls (Caller) loop
                         --  Get vertex for the callee
                         V_Callee := Call_Graph.Get_Vertex (Callee);
 
@@ -1423,8 +1418,8 @@ package body Flow_Generated_Globals.Phase_2 is
                         end if;
 
                         Call_Graph.Add_Edge (V_Caller, V_Callee);
-                     end if;
-                  end loop;
+                     end loop;
+                  end if;
 
                   --  Pop the caller from the stack
                   Stack.Delete (Caller);
@@ -1974,19 +1969,6 @@ package body Flow_Generated_Globals.Phase_2 is
                      while Name_Lists.Has_Element (C) loop
                         Nonreturning_Subprograms.Include
                           (V.The_Nonreturning_Subprograms (C));
-
-                        Name_Lists.Next (C);
-                     end loop;
-                  end;
-
-               when EK_Termination =>
-                  declare
-                     C : Name_Lists.Cursor :=
-                       V.The_Termination_Subprograms.First;
-                  begin
-                     while Name_Lists.Has_Element (C) loop
-                        Termination_Subprograms.Include
-                          (V.The_Termination_Subprograms (C));
 
                         Name_Lists.Next (C);
                      end loop;

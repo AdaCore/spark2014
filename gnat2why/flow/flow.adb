@@ -41,6 +41,7 @@ with Flow_Generated_Globals.Phase_1; use Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Utility;                   use Flow_Utility;
+with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions;           use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with Lib;                            use Lib;
@@ -49,7 +50,6 @@ with Nlists;                         use Nlists;
 with Osint;                          use Osint;
 with Output;                         use Output;
 with Sem_Ch7;                        use Sem_Ch7;
-with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Snames;                         use Snames;
@@ -1285,47 +1285,22 @@ package body Flow is
                      end if;
                   end if;
 
-                  --  We register more nonreturning and relevant to termination
-                  --  subprograms provided that they are not in an instance of
-                  --  a generic.
+                  --  We register more nonreturning subprograms provided that
+                  --  they are not in an instance of a generic.
                   if Generating_Globals
                     and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
-                    and then not (Is_Generic_Instance (Scope (E))
-                                  and then In_Predefined_Unit
-                                    (Entity
-                                       (Name
-                                          (Get_Package_Instantiation_Node
-                                             (Scope (E))))))
+                    and then not Is_Predefined (Scope (E))
                   then
-                     --  We register subprograms with no body or body not in
-                     --  SPARK as nonreturning as long as they are not imported
-                     --  or intrinsic.
+                     --  We register subprograms with body not in SPARK as
+                     --  nonreturning as long as they are not imported or
+                     --  intrinsic and do not have the Terminating annotation.
                      if not (Is_Imported (E)
                              or else (Ekind (E) in E_Function | E_Procedure
                                         and then Is_Intrinsic_Subprogram (E)))
-                       and then (No (Get_Body (E))
-                                 or else not Entity_Body_In_SPARK (E))
+                       and then not Entity_Body_In_SPARK (E)
+                       and then not Has_Terminate_Annotation (E)
                      then
                         GG_Register_Nonreturning (To_Entity_Name (E));
-                     end if;
-
-                     --  We register subprograms which are relevant for proving
-                     --  termination, i.e.:
-                     --  * are annotated with No_Return
-                     --  * do not have a contract
-                     --  * are not inlined
-                     --  * are not expression functions.
-                     if No_Return (E)
-                       or else Has_Contracts (E, Name_Postcondition)
-                       or else Has_Contracts (E, Name_Contract_Cases)
-                       or else Is_Inlined (E)
-                       or else (Entity_Body_In_SPARK (E)
-                                  and then
-                                    (Has_Contracts (E, Name_Refined_Post)
-                                       or else Is_Expression_Function (E)))
-                     then
-                        GG_Register_Relevant_To_Termination
-                          (To_Entity_Name (E));
                      end if;
                   end if;
 
@@ -1615,10 +1590,13 @@ package body Flow is
                   Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   if FA.Kind /= Kind_Task then
-                     --  We exclude Tasks from these checks since they do not
+                     --  We exclude tasks from these checks since they do not
                      --  have pre- and postconditions.
                      Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                      Analysis.Check_CAE_In_Preconditions (FA);
+                     --  We exclude tasks from this check since it is only
+                     --  relevant for subprograms.
+                     Analysis.Check_Terminating_Annotation (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);

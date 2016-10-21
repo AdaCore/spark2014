@@ -63,8 +63,6 @@ package Flow_Generated_Globals is
    --
    --    * We also collect potentially nonreturning subprograms.
    --
-   --    * We collect subprograms which are relevant to prove termination.
-   --
    --  During the second pass:
    --
    --    * All information stored in the ALI files during the first pass is
@@ -104,7 +102,6 @@ package Flow_Generated_Globals is
    --  * Volatile variables and external state abstractions
    --  * Nonblocking subprograms
    --  * Potentially nonreturning subprograms
-   --  * Subprograms relevant to prove termination
    --  * Tasking-related information.
    --    - suspension objects that call suspends on
    --    - protected objects whose entries are called

@@ -36,6 +36,7 @@ with Snames;                      use Snames;
 with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
+with Gnat2Why.Annotate;           use Gnat2Why.Annotate;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
@@ -4579,6 +4580,27 @@ package body Flow.Analysis is
                   Include_Start => False,
                   Visitor       => Visitor'Access);
    end Check_Elaborate_Body;
+
+   --------------------------------
+   -- Check_Terminate_Annotation --
+   --------------------------------
+
+   procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
+   begin
+      if Has_Terminate_Annotation (FA.Spec_Entity)
+        and then Is_Potentially_Nonreturning (FA.Spec_Entity)
+      then
+         Error_Msg_Flow (FA         => FA,
+                         Msg        => "subprogram may not terminate, " &
+                           "terminate annotation could be incorrect",
+                         Severity   => Medium_Check_Kind,
+                         N          => FA.Spec_Entity);
+      end if;
+   end Check_Terminating_Annotation;
+
+   -----------------------
+   -- Check_Termination --
+   -----------------------
 
    procedure Check_Termination (FA : in out Flow_Analysis_Graphs) is
    begin

@@ -78,9 +78,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Nonreturning       => (Kind   => EK_Nonreturning,
                                 others => <>),
 
-      EK_Termination        => (Kind   => EK_Termination,
-                                others => <>),
-
       EK_Direct_Calls       => (Kind       => EK_Direct_Calls,
                                 The_Caller => Invalid_Entity_Name,
                                 others     => <>)
@@ -245,9 +242,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Nonreturning =>
             Serialize (A, V.The_Nonreturning_Subprograms);
-
-         when EK_Termination =>
-            Serialize (A, V.The_Termination_Subprograms);
 
          when EK_Direct_Calls =>
             Serialize (A, V.The_Caller);

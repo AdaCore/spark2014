@@ -70,10 +70,6 @@ package body Flow_Generated_Globals.Phase_1 is
    --  * subprograms that contain a possibly nonterminating loop
    --  * subprograms with body not in SPARK.
 
-   Termination_Subprograms : Name_Lists.List;
-   --  We save here subprograms inlined for proof, which represent where we
-   --  we want to cut the Termination_Call_Graph.
-
    type Accessed_Tasking_Objects is record
       Caller  : Entity_Name;
       Objects : Tasking_Info;
@@ -232,9 +228,6 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Register_Nonreturning (EN : Entity_Name) renames
      Nonreturning_Subprograms.Append;
-
-   procedure GG_Register_Relevant_To_Termination (EN : Entity_Name) renames
-     Termination_Subprograms.Append;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -400,11 +393,6 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Write nonreturning subprograms
       V := (Kind                         => EK_Nonreturning,
             The_Nonreturning_Subprograms => Nonreturning_Subprograms);
-      Write_To_ALI (V);
-
-      --  Write termination subprograms
-      V := (Kind                        => EK_Termination,
-            The_Termination_Subprograms => Termination_Subprograms);
       Write_To_ALI (V);
 
       for Direct_Calls of Direct_Calls_List loop

@@ -39,7 +39,6 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Tasking_Info,
                            EK_Nonblocking,
                            EK_Nonreturning,
-                           EK_Termination,
                            EK_Direct_Calls);
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
@@ -74,8 +73,6 @@ package Flow_Generated_Globals.ALI_Serialization is
             The_Nonblocking_Subprograms  : Name_Lists.List;
          when EK_Nonreturning =>
             The_Nonreturning_Subprograms : Name_Lists.List;
-         when EK_Termination =>
-            The_Termination_Subprograms  : Name_Lists.List;
          when EK_Direct_Calls =>
             The_Caller                   : Entity_Name;
             The_Callees                  : Name_Lists.List;

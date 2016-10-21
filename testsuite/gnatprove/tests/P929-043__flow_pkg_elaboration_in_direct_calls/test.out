@@ -1,13 +1,13 @@
-nest_in_proc.adb:3:11: info: subprogram will terminate
-nest_in_proc.adb:7:14: high: no paths in subprogram will return normally
-nest_in_proc.adb:7:14: warning: subprogram "Proxy" has no effect
-nest_in_proc.adb:7:14: warning: subprogram may not terminate
-nest_in_proc.adb:11:07: medium: call to nonreturning subprogram might be executed
-nest_in_proc.adb:11:07: warning: assuming "OS_Exit" has no effect on global items
-nest_in_proc.adb:11:07: warning: no Global contract available for "OS_Exit"
-nest_in_proc.adb:15:17: info: subprogram will terminate
-nest_in_proc.adb:15:17: warning: subprogram "Nothing" has no effect
-nest_in_proc.adb:24:07: info: precondition proved (CVC4: 1 VC)
+nest_in_proc.adb:3:11: warning: subprogram may not terminate
+nest_in_proc.adb:5:14: high: no paths in subprogram will return normally
+nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
+nest_in_proc.adb:5:14: warning: subprogram may not terminate
+nest_in_proc.adb:9:07: medium: call to nonreturning subprogram might be executed
+nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
+nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
+nest_in_proc.adb:13:17: info: subprogram will terminate
+nest_in_proc.adb:13:17: warning: subprogram "Nothing" has no effect
+nest_in_proc.adb:22:07: info: precondition proved (CVC4: 1 VC)
 nest_in_task.adb:18:20: info: subprogram will terminate
 nest_in_task.adb:18:20: warning: subprogram "P" has no effect
 nest_in_task.adb:24:11: cannot write "A" during elaboration of "Pkg" (SPARK RM 7.7.1(6))
