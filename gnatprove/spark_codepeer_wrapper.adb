@@ -264,6 +264,14 @@ procedure SPARK_CodePeer_Wrapper is
 
       Append_Arg ("--subdirs=" & Subdir);
       Append_Arg ("-P" & Project.Display_Full_Name);
+
+      --  Switch -cargs should be passed last. Compilation switch -gnateF
+      --  ensures that CodePeer interprets floating-point overflows as
+      --  errors even for the predefined floating-point types.
+
+      Append_Arg ("-cargs");
+      Append_Arg ("-gnateF");
+
       Status := Local_Spawn ("codepeer-gprbuild", Args (1 .. Arg_Count));
       Free (Args);
 
