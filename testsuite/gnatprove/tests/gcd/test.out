@@ -1,0 +1,84 @@
+math_simple.adb:4:30: info: range check proved (CVC4: 1 VC)
+math_simple.adb:6:13: info: initialization of "C" proved
+math_simple.adb:7:22: info: division check proved (CVC4: 2 VC)
+math_simple.adb:7:26: info: initialization of "C" proved
+math_simple.adb:7:38: info: division check proved (CVC4: 2 VC)
+math_simple.adb:8:10: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple.adb:8:10: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple.adb:8:46: info: initialization of "C" proved
+math_simple.adb:9:49: info: range check proved (CVC4: 1 VC)
+math_simple.adb:9:68: info: range check proved (CVC4: 1 VC)
+math_simple.adb:10:15: info: initialization of "C" proved
+math_simple.adb:10:17: info: range check proved (Z3: 1 VC)
+math_simple.adb:13:14: info: initialization of "C" proved
+math_simple.ads:3:63: info: division check proved (CVC4: 1 VC)
+math_simple.ads:6:14: info: postcondition proved (CVC4: 1 VC; altergo: 2 VC)
+math_simple.ads:9:34: info: range check proved (CVC4: 1 VC)
+math_simple.ads:9:53: info: range check proved (CVC4: 1 VC)
+math_simple_abstract.adb:6:06: warning: postcondition does not check the outcome of calling "Lemma_Mult_Then_Div_Is_Ident"
+math_simple_abstract.adb:6:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:6:28: info: division check proved (CVC4: 1 VC)
+math_simple_abstract.adb:15:19: info: division check proved (CVC4: 1 VC)
+math_simple_abstract.adb:16:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:21:10: info: assertion proved (altergo: 2 VC)
+math_simple_abstract.adb:22:10: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple_abstract.adb:22:10: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_abstract.adb:29:19: info: division check proved (CVC4: 1 VC)
+math_simple_abstract.adb:30:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:37:30: info: range check proved (CVC4: 1 VC)
+math_simple_abstract.adb:39:13: info: initialization of "C" proved
+math_simple_abstract.adb:40:22: info: division check proved (CVC4: 2 VC)
+math_simple_abstract.adb:40:26: info: initialization of "C" proved
+math_simple_abstract.adb:40:38: info: division check proved (CVC4: 2 VC)
+math_simple_abstract.adb:41:15: info: division check proved (CVC4: 2 VC)
+math_simple_abstract.adb:41:19: info: initialization of "C" proved
+math_simple_abstract.adb:42:13: info: precondition proved (CVC4: 2 VC)
+math_simple_abstract.adb:42:36: info: initialization of "C" proved
+math_simple_abstract.adb:44:13: info: precondition proved (CVC4: 2 VC)
+math_simple_abstract.adb:44:36: info: initialization of "C" proved
+math_simple_abstract.adb:46:10: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_abstract.adb:46:10: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_abstract.adb:46:46: info: initialization of "C" proved
+math_simple_abstract.adb:47:49: info: range check proved (CVC4: 1 VC)
+math_simple_abstract.adb:47:68: info: range check proved (CVC4: 1 VC)
+math_simple_abstract.adb:48:15: info: initialization of "C" proved
+math_simple_abstract.adb:48:17: info: range check proved (Z3: 1 VC)
+math_simple_abstract.adb:51:07: info: precondition proved (altergo: 1 VC)
+math_simple_abstract.adb:51:26: info: initialization of "C" proved
+math_simple_abstract.adb:52:07: info: precondition proved (altergo: 1 VC)
+math_simple_abstract.adb:52:26: info: initialization of "C" proved
+math_simple_abstract.adb:54:14: info: initialization of "C" proved
+math_simple_abstract.ads:7:14: info: postcondition proved (CVC4: 3 VC)
+math_simple_abstract.ads:10:34: info: range check proved (CVC4: 1 VC)
+math_simple_abstract.ads:10:53: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:6:27: info: division check proved (CVC4: 1 VC)
+math_simple_half.adb:7:14: info: postcondition proved (Z3: 1 VC)
+math_simple_half.adb:29:34: info: division check proved (CVC4: 1 VC)
+math_simple_half.adb:29:34: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:30:19: info: initialization of "C" proved
+math_simple_half.adb:31:13: info: precondition proved (CVC4: 4 VC)
+math_simple_half.adb:31:32: info: range check proved (CVC4: 2 VC)
+math_simple_half.adb:31:42: info: range check proved (CVC4: 2 VC)
+math_simple_half.adb:32:13: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_half.adb:32:13: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_half.adb:32:49: info: initialization of "C" proved
+math_simple_half.adb:33:51: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:33:61: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:36:16: info: initialization of "C" proved
+math_simple_half.adb:37:25: info: division check proved (CVC4: 2 VC)
+math_simple_half.adb:37:29: info: initialization of "C" proved
+math_simple_half.adb:37:41: info: division check proved (CVC4: 2 VC)
+math_simple_half.adb:38:13: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_half.adb:38:13: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_half.adb:39:13: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple_half.adb:39:13: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_half.adb:39:49: info: initialization of "C" proved
+math_simple_half.adb:40:52: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:40:71: info: range check proved (CVC4: 1 VC)
+math_simple_half.adb:41:18: info: initialization of "C" proved
+math_simple_half.adb:41:20: medium: range check might fail
+math_simple_half.adb:44:17: info: initialization of "C" proved
+math_simple_half.ads:3:63: info: division check proved (CVC4: 1 VC)
+math_simple_half.ads:6:14: info: postcondition proved (CVC4: 1 VC; altergo: 2 VC)
+math_simple_half.ads:9:34: info: range check proved (CVC4: 1 VC)
+math_simple_half.ads:9:53: info: range check proved (CVC4: 1 VC)
