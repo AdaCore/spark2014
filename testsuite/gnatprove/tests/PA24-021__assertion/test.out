@@ -1,0 +1,2 @@
+assert.adb:1:11: warning: subprogram "Assert" has no effect
+assert.adb:8:04: info: assertion proved (CVC4: 1 VC)
