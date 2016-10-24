@@ -1,12 +1,8 @@
 client_spark_boundary.adb:20:07: medium: exception might be raised
 client_spark_boundary.adb:27:07: medium: exception might be raised
-client_spark_boundary.ads:17:14: high: no paths in subprogram will return normally
+client_spark_boundary.ads:17:14: high: all paths in "Fetch_Timestamp" raise exceptions or do not terminate normally
 client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no effect
-client_spark_boundary.ads:21:13: high: "Check_Timestamp" is not initialized in "Check_Timestamp"
-client_spark_boundary.ads:21:13: high: no paths in subprogram will return normally
-client_spark_boundary.ads:21:13: warning: unused variable "Check_Timestamp"
-client_spark_boundary.ads:22:07: warning: unused variable "Document_File_Name"
-client_spark_boundary.ads:22:36: warning: unused variable "Timestamp_File_Name"
+client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.adb:34:17: warning: procedure "Make_Request" is not referenced
 client_timestamp_maker.adb:40:38: info: length check proved (CVC4: 1 VC)
 client_timestamp_maker.adb:42:13: info: initialization of "Address_Status" proved
@@ -21,17 +17,8 @@ client_timestamp_maker.adb:50:27: warning: assuming "Put_Line" has no effect on 
 client_timestamp_maker.adb:50:27: warning: no Global contract available for "Put_Line"
 client_timestamp_maker.adb:60:07: medium: exception might be raised
 client_timestamp_maker.adb:68:07: medium: exception might be raised
-client_timestamp_maker.ads:17:14: high: no paths in subprogram will return normally
-client_timestamp_maker.ads:18:07: warning: unused variable "Hash"
-client_timestamp_maker.ads:19:07: high: "Timestamp" is not initialized in "Create_Timestamp"
-client_timestamp_maker.ads:19:07: warning: unused variable "Timestamp"
-client_timestamp_maker.ads:20:07: high: "Timestamp_Size" is not initialized in "Create_Timestamp"
-client_timestamp_maker.ads:20:07: warning: unused variable "Timestamp_Size"
-client_timestamp_maker.ads:23:13: high: "Verify_Timestamp" is not initialized in "Verify_Timestamp"
-client_timestamp_maker.ads:23:13: high: no paths in subprogram will return normally
-client_timestamp_maker.ads:23:13: warning: unused variable "Verify_Timestamp"
-client_timestamp_maker.ads:24:07: warning: unused variable "Hash"
-client_timestamp_maker.ads:24:34: warning: unused variable "Timestamp"
+client_timestamp_maker.ads:17:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
+client_timestamp_maker.ads:23:13: high: all paths in "Verify_Timestamp" raise exceptions or do not terminate normally
 data_storage.adb:48:32: warning: formal parameter "Serial_Number" is not referenced
 data_storage.adb:52:10: warning: variable "Result" is read but never assigned
 data_storage.adb:59:32: warning: formal parameter "Start" is not referenced
@@ -269,24 +256,16 @@ hermes-der-encode.adb:113:20: info: initialization of "Result" proved
 hermes-der-encode.adb:113:20: info: range check proved (CVC4: 4 VC)
 hermes-der-encode.adb:124:45: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:124:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:131:07: warning: unused variable "Integer_Octet_Array"
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:142:47: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:142:71: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483647)
 hermes-der-encode.adb:142:80: medium: range check might fail (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = 2147483642)
 hermes-der-encode.adb:149:39: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:153:07: warning: unused variable "OID_Octet_Array"
 hermes-der-encode.adb:155:07: medium: exception might be raised
 hermes-der-encode.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 hermes-der-encode.ads:28:19: info: postcondition proved (CVC4: 1 VC)
-hermes-der-encode.ads:31:13: high: "Put_Integer_Value" is not initialized in "Put_Integer_Value"
-hermes-der-encode.ads:31:13: high: no paths in subprogram will return normally
-hermes-der-encode.ads:31:13: warning: unused variable "Put_Integer_Value"
-hermes-der-encode.ads:31:31: warning: unused variable "Value"
-hermes-der-encode.ads:40:13: high: "Put_OID_Value" is not initialized in "Put_OID_Value"
-hermes-der-encode.ads:40:13: high: no paths in subprogram will return normally
-hermes-der-encode.ads:40:13: warning: unused variable "Put_OID_Value"
-hermes-der-encode.ads:40:27: warning: unused variable "Value"
+hermes-der-encode.ads:31:13: high: all paths in "Put_Integer_Value" raise exceptions or do not terminate normally
+hermes-der-encode.ads:40:13: high: all paths in "Put_OID_Value" raise exceptions or do not terminate normally
 hermes-oid.adb:35:64: info: length check proved (CVC4: 1 VC)
 hermes-oid.adb:38:74: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:41:35: info: range check proved (CVC4: 1 VC)
@@ -545,17 +524,8 @@ server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint"
 server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
 server_timestamp_maker.adb:47:07: warning: initialization of Result has no effect
-server_timestamp_maker.adb:47:07: warning: unused variable "Result", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:48:07: warning: unused variable "Length_Stop", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:49:07: warning: unused variable "Length", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:50:07: warning: unused variable "Version_Stop", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:51:07: warning: unused variable "Version", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop"
-server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint"
-server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:54:07: warning: unused variable "Decode_Status", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:55:07: warning: unused variable "Imprint_Status", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:69:27: info: precondition proved (CVC4: 2 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:71:13: info: initialization of "Decode_Status" proved
@@ -568,25 +538,15 @@ server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call
 server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"
 server_timestamp_maker.adb:81:16: info: initialization of "Decode_Status" proved
 server_timestamp_maker.adb:84:19: info: initialization of "Version" proved
-server_timestamp_maker.adb:89:16: warning: unused variable constant with variable input "C17b", in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:89:16: warning: unused variable constant with variable input "C18b", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115 (e.g. when Version_Stop = 512)
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115 (e.g. when Result = False)
 server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
 server_timestamp_maker.adb:113:53: info: length check proved (CVC4: 1 VC)
-server_timestamp_maker.adb:115:14: warning: unused variable "C14b"
-server_timestamp_maker.adb:115:14: warning: unused variable constant with variable input "C13b"
 server_timestamp_maker.adb:116:10: medium: exception might be raised
 server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)
-server_timestamp_maker.ads:18:14: high: no paths in subprogram will return normally
-server_timestamp_maker.ads:19:07: warning: unused variable "Request_Message"
-server_timestamp_maker.ads:19:46: high: "Response_Message.Data" is not initialized in "Create_Timestamp"
-server_timestamp_maker.ads:19:46: high: "Response_Message.Size" is not initialized in "Create_Timestamp"
-server_timestamp_maker.ads:19:46: warning: unused variable "Response_Message"
-server_timestamp_maker.ads:21:51: low: unused global "Cryptographic_Services.Key"
-server_timestamp_maker.ads:22:46: low: unused global "Serial_Generator.State"
+server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 server_timestamp_maker.ads:22:46: warning: "Serial_Generator.State" is not modified, could be INPUT
 server_timestamp_maker.ads:23:08: medium: missing dependency "null => Cryptographic_Services.Key"
 server_timestamp_maker.ads:23:08: medium: missing dependency "null => Request_Message"
@@ -594,23 +554,9 @@ server_timestamp_maker.ads:24:23: medium: incorrect dependency "Response_Message
 server_timestamp_maker.ads:24:62: medium: incorrect dependency "Response_Message => Cryptographic_Services.Key"
 server_timestamp_maker.ads:24:84: medium: incorrect dependency "Response_Message => Serial_Generator.State"
 timestamp_messages-client.adb:21:07: medium: exception might be raised
-timestamp_messages-client.adb:26:07: warning: unused variable "Dummy"
 timestamp_messages-client.adb:28:07: medium: exception might be raised
 timestamp_messages-client.adb:40:07: medium: exception might be raised
-timestamp_messages-client.ads:19:14: high: no paths in subprogram will return normally
-timestamp_messages-client.ads:20:07: warning: unused variable "Message"
-timestamp_messages-client.ads:21:07: warning: unused variable "Start"
-timestamp_messages-client.ads:22:07: high: "Stop" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:22:07: warning: unused variable "Stop"
-timestamp_messages-client.ads:23:07: high: "Stamp.Generalized_Time" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: high: "Stamp.Hash_Algorithm" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: high: "Stamp.Hashed_Message" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: high: "Stamp.Policy" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: high: "Stamp.Serial_Number" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: high: "Stamp.Version" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:23:07: warning: unused variable "Stamp"
-timestamp_messages-client.ads:24:07: high: "Status" is not initialized in "Get_Timestamp_Value"
-timestamp_messages-client.ads:24:07: warning: unused variable "Status"
+timestamp_messages-client.ads:19:14: high: all paths in "Get_Timestamp_Value" raise exceptions or do not terminate normally
 timestamp_messages-client.ads:27:08: medium: incorrect dependency "Stamp => Message"
 timestamp_messages-client.ads:27:08: medium: incorrect dependency "Stamp => Start"
 timestamp_messages-client.ads:27:08: medium: incorrect dependency "Status => Message"
@@ -619,19 +565,8 @@ timestamp_messages-client.ads:27:08: medium: incorrect dependency "Stop => Messa
 timestamp_messages-client.ads:27:08: medium: incorrect dependency "Stop => Start"
 timestamp_messages-client.ads:27:08: medium: missing dependency "null => Message"
 timestamp_messages-client.ads:27:08: medium: missing dependency "null => Start"
-timestamp_messages-client.ads:33:13: high: "Put_Request_Value" is not initialized in "Put_Request_Value"
-timestamp_messages-client.ads:33:13: high: no paths in subprogram will return normally
-timestamp_messages-client.ads:33:13: warning: unused variable "Put_Request_Value"
-timestamp_messages-client.ads:33:31: warning: unused variable "Req"
-timestamp_messages-client.ads:38:14: high: no paths in subprogram will return normally
-timestamp_messages-client.ads:39:07: warning: unused variable "Message"
-timestamp_messages-client.ads:40:07: warning: unused variable "Start"
-timestamp_messages-client.ads:41:07: high: "Stop" is not initialized in "Get_Response_Value"
-timestamp_messages-client.ads:41:07: warning: unused variable "Stop"
-timestamp_messages-client.ads:42:07: high: "Resp.Placeholder" is not initialized in "Get_Response_Value"
-timestamp_messages-client.ads:42:07: warning: unused variable "Resp"
-timestamp_messages-client.ads:43:07: high: "Status" is not initialized in "Get_Response_Value"
-timestamp_messages-client.ads:43:07: warning: unused variable "Status"
+timestamp_messages-client.ads:33:13: high: all paths in "Put_Request_Value" raise exceptions or do not terminate normally
+timestamp_messages-client.ads:38:14: high: all paths in "Get_Response_Value" raise exceptions or do not terminate normally
 timestamp_messages-client.ads:46:08: medium: incorrect dependency "Resp => Message"
 timestamp_messages-client.ads:46:08: medium: incorrect dependency "Resp => Start"
 timestamp_messages-client.ads:46:08: medium: incorrect dependency "Status => Message"

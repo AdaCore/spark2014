@@ -219,6 +219,11 @@ package Flow is
       Is_Generative : Boolean;
       --  True if we do not have a global contract
 
+      Has_Only_Exceptional_Paths : Boolean;
+      --  Set to true if we determine that we have *only* exceptional paths.
+      --  This used to avoid emitting some messages, as they might distract
+      --  from the actual issue.
+
       case Kind is
          when Kind_Subprogram | Kind_Task =>
             Is_Main : Boolean;

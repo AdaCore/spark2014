@@ -53,41 +53,16 @@ state_machine_with_oop.ads:8:28: warning: unused variable "Current"
 state_machine_with_oop.ads:9:28: warning: unused variable "Current"
 state_machine_with_oop.ads:10:28: warning: unused variable "Current"
 state_machine_with_oop.ads:34:28: warning: unused variable "Current"
-state_machine_with_oop.ads:40:13: high: "Move_To_A.Common_Value" is not initialized in "Move_To_A"
-state_machine_with_oop.ads:40:13: high: extension of "Move_To_A" is not initialized in "Move_To_A"
-state_machine_with_oop.ads:40:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:40:13: warning: unused variable "Move_To_A"
-state_machine_with_oop.ads:40:24: warning: unused variable "Current"
-state_machine_with_oop.ads:43:14: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:40:13: high: all paths in "Move_To_A" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:43:14: high: all paths in "Stay_Here" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:43:25: warning: "Current" is not modified, could be IN
-state_machine_with_oop.ads:43:25: warning: unused variable "Current"
 state_machine_with_oop.ads:47:28: warning: unused variable "Current"
 state_machine_with_oop.ads:48:28: warning: unused variable "Current"
 state_machine_with_oop.ads:49:28: warning: unused variable "Current"
-state_machine_with_oop.ads:51:13: high: "Move_To_A.Common_Value" is not initialized in "Move_To_A"
-state_machine_with_oop.ads:51:13: high: extension of "Move_To_A" is not initialized in "Move_To_A"
-state_machine_with_oop.ads:51:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:51:13: warning: unused variable "Move_To_A"
-state_machine_with_oop.ads:51:24: warning: unused variable "Current"
-state_machine_with_oop.ads:52:13: high: "Move_To_B.Common_Value" is not initialized in "Move_To_B"
-state_machine_with_oop.ads:52:13: high: extension of "Move_To_B" is not initialized in "Move_To_B"
-state_machine_with_oop.ads:52:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:52:13: warning: unused variable "Move_To_B"
-state_machine_with_oop.ads:52:24: warning: unused variable "Current"
-state_machine_with_oop.ads:53:13: high: "Move_To_C.Common_Value" is not initialized in "Move_To_C"
-state_machine_with_oop.ads:53:13: high: extension of "Move_To_C" is not initialized in "Move_To_C"
-state_machine_with_oop.ads:53:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:53:13: warning: unused variable "Move_To_C"
-state_machine_with_oop.ads:53:24: warning: unused variable "Current"
+state_machine_with_oop.ads:51:13: high: all paths in "Move_To_A" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:52:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:53:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally
 state_machine_with_oop.ads:65:28: warning: unused variable "Current"
 state_machine_with_oop.ads:66:28: warning: unused variable "Current"
-state_machine_with_oop.ads:69:13: high: "Move_To_B.Common_Value" is not initialized in "Move_To_B"
-state_machine_with_oop.ads:69:13: high: extension of "Move_To_B" is not initialized in "Move_To_B"
-state_machine_with_oop.ads:69:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:69:13: warning: unused variable "Move_To_B"
-state_machine_with_oop.ads:69:24: warning: unused variable "Current"
-state_machine_with_oop.ads:70:13: high: "Move_To_C.Common_Value" is not initialized in "Move_To_C"
-state_machine_with_oop.ads:70:13: high: extension of "Move_To_C" is not initialized in "Move_To_C"
-state_machine_with_oop.ads:70:13: high: no paths in subprogram will return normally
-state_machine_with_oop.ads:70:13: warning: unused variable "Move_To_C"
-state_machine_with_oop.ads:70:24: warning: unused variable "Current"
+state_machine_with_oop.ads:69:13: high: all paths in "Move_To_B" raise exceptions or do not terminate normally
+state_machine_with_oop.ads:70:13: high: all paths in "Move_To_C" raise exceptions or do not terminate normally

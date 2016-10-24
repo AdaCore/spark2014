@@ -1041,6 +1041,7 @@ package body Flow is
       FA.PDG                                  := Create;
       FA.No_Errors_Or_Warnings                := True;
       FA.Has_Potentially_Nonterminating_Loops := False;
+      FA.Has_Only_Exceptional_Paths           := False;
 
       --  Generate Globals (gg) or Flow Analysis (fa)
       FA.Base_Filename := To_Unbounded_String (if Generating_Globals

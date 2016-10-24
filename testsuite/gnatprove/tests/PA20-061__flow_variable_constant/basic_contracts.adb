@@ -1,7 +1,9 @@
 package body Basic_Contracts is
 
-   function Average (Numerator : Natural;
-                     Denominator : Positive) return Float
+   function Average (Numerator   : Natural;
+                     Denominator : Positive)
+                    return Float
+   with Post => (Average'Result >= 0.0)
    is
       Num : constant Float := Float (Numerator);
       Den : constant Float := Float'Succ (0.0);

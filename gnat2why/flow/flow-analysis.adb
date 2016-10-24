@@ -976,6 +976,14 @@ package body Flow.Analysis is
    --  Start of processing for Find_Ineffective_Imports_And_Unused_Objects
 
    begin
+      --  If this subprogram has only exceptional paths, then we already have a
+      --  high check for this. We don't issue any other messages as they
+      --  distract from the real issue.
+
+      if FA.Has_Only_Exceptional_Paths then
+         return;
+      end if;
+
       --  We look at the null depends (if one exists). For any variables
       --  mentioned there, we suppress the ineffective import warning by
       --  putting them to Suppressed.
@@ -2510,6 +2518,14 @@ package body Flow.Analysis is
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
+      --  If this subprogram has only exceptional paths, then we already have a
+      --  high check for this. We don't issue any other messages as they
+      --  distract from the real issue.
+
+      if FA.Has_Only_Exceptional_Paths then
+         return;
+      end if;
+
       --  We look at all vertices except for:
       --     * exceptional ones and
       --     * synthetic null output

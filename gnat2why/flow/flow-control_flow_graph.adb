@@ -5245,10 +5245,13 @@ package body Flow.Control_Flow_Graph is
             --  annotated with No_Return.
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "no paths in subprogram will return normally",
+               Msg      => "all paths in & raise exceptions or do " &
+                 "not terminate normally",
                N        => FA.Analyzed_Entity,
                Severity => High_Check_Kind,
-               Tag      => Missing_Return);
+               Tag      => Missing_Return,
+               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
+            FA.Has_Only_Exceptional_Paths := True;
          end if;
          FA.CFG.Add_Edge (FA.Start_Vertex, FA.End_Vertex, EC_Default);
       end if;

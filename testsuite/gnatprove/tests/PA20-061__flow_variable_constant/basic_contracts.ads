@@ -1,7 +1,2 @@
-package Basic_Contracts is
-
-   function Average (Numerator : Natural;
-                     Denominator : Positive) return Float
-      with Post => (Average'Result >= 0.0);
-
+package Basic_Contracts with Elaborate_Body is
 end Basic_Contracts;

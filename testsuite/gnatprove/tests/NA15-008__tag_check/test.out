@@ -8,10 +8,6 @@ tag_check.adb:38:14: warning: subprogram "Use_Three" has no effect
 tag_check.adb:40:07: medium: tag check might fail
 tag_check.ads:7:14: warning: subprogram "Two" has no effect
 tag_check.ads:8:14: warning: subprogram "Three" has no effect
-tag_check.ads:12:14: high: no paths in subprogram will return normally
-tag_check.ads:12:22: high: "X.X" is not initialized in "Assign"
-tag_check.ads:12:22: high: extension of "X" is not initialized in "Assign"
-tag_check.ads:12:22: warning: unused variable "X"
-tag_check.ads:12:39: warning: unused variable "Y"
+tag_check.ads:12:14: high: all paths in "Assign" raise exceptions or do not terminate normally
 tag_check.ads:14:24: info: initialization of "X.X" proved
 tag_check.ads:14:24: info: initialization of extension of "X" proved
