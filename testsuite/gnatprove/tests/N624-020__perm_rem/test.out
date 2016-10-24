@@ -59,7 +59,7 @@ perm.adb:62:39: info: range check proved (CVC4: 1 VC)
 perm.adb:62:44: info: precondition proved (CVC4: 3 VC)
 perm.adb:62:55: info: range check proved (CVC4: 1 VC)
 perm.adb:64:07: info: assertion proved (CVC4: 2 VC)
-perm.adb:69:16: medium: subprogram may not terminate, terminate annotation could be incorrect
+perm.adb:69:16: medium: subprogram may not terminate, terminating annotation could be incorrect
 perm.adb:71:17: info: postcondition proved (CVC4: 2 VC)
 perm.adb:71:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:80:15: medium: precondition might fail
@@ -69,7 +69,7 @@ perm.adb:80:58: info: precondition proved (CVC4: 3 VC)
 perm.adb:80:70: info: range check proved (CVC4: 1 VC)
 perm.adb:82:13: info: assertion proved (CVC4: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC4: 3 VC)
-perm.adb:93:16: medium: subprogram may not terminate, terminate annotation could be incorrect
+perm.adb:93:16: medium: subprogram may not terminate, terminating annotation could be incorrect
 perm.adb:94:63: info: precondition proved (CVC4: 2 VC)
 perm.adb:95:17: info: postcondition proved (CVC4: 2 VC)
 perm.adb:95:54: info: precondition proved (CVC4: 2 VC)
@@ -126,7 +126,7 @@ perm.adb:141:72: info: overflow check proved (CVC4: 1 VC)
 perm.adb:147:30: info: precondition proved (CVC4: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC4: 2 VC)
 perm.adb:148:43: info: precondition proved (CVC4: 2 VC)
-perm.adb:152:16: medium: subprogram may not terminate, terminate annotation could be incorrect
+perm.adb:152:16: medium: subprogram may not terminate, terminating annotation could be incorrect
 perm.adb:154:33: info: precondition proved (CVC4: 2 VC)
 perm.adb:155:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:155:54: medium: postcondition might fail, cannot prove Is_Perm (C, B)
@@ -353,7 +353,7 @@ perm.adb:290:54: info: range check proved (CVC4: 1 VC)
 perm.adb:292:17: info: initialization of "IH" proved
 perm.adb:297:25: info: precondition proved (CVC4: 3 VC)
 perm.adb:299:14: info: initialization of "HR" proved
-perm.adb:304:16: medium: subprogram may not terminate, terminate annotation could be incorrect
+perm.adb:304:16: medium: subprogram may not terminate, terminating annotation could be incorrect
 perm.adb:306:18: info: precondition proved (CVC4: 2 VC)
 perm.adb:306:42: info: precondition proved (CVC4: 2 VC)
 perm.adb:307:17: info: postcondition proved (CVC4: 2 VC)
@@ -434,7 +434,7 @@ perm.ads:22:27: info: precondition proved (CVC4: 3 VC)
 perm.ads:27:14: info: postcondition proved (CVC4: 2 VC)
 perm.ads:27:40: info: precondition proved (CVC4: 3 VC)
 perm.ads:27:56: info: precondition proved (CVC4: 3 VC)
-perm.ads:29:13: medium: subprogram may not terminate, terminate annotation could be incorrect
+perm.ads:29:13: medium: subprogram may not terminate, terminating annotation could be incorrect
 perm.ads:35:50: info: index check proved (CVC4: 2 VC)
 perm.ads:35:59: info: index check proved (CVC4: 2 VC)
 perm.ads:36:21: info: precondition proved (CVC4: 2 VC)

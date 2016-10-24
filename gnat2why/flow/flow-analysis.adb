@@ -4581,9 +4581,9 @@ package body Flow.Analysis is
                   Visitor       => Visitor'Access);
    end Check_Elaborate_Body;
 
-   --------------------------------
-   -- Check_Terminate_Annotation --
-   --------------------------------
+   ----------------------------------
+   -- Check_Terminating_Annotation --
+   ----------------------------------
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
    begin
@@ -4592,7 +4592,7 @@ package body Flow.Analysis is
       then
          Error_Msg_Flow (FA         => FA,
                          Msg        => "subprogram may not terminate, " &
-                           "terminate annotation could be incorrect",
+                           "terminating annotation could be incorrect",
                          Severity   => Medium_Check_Kind,
                          N          => FA.Spec_Entity);
       end if;

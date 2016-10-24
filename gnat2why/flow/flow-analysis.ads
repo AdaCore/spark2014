@@ -199,7 +199,7 @@ package Flow.Analysis is
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Subprogram;
    --  Checks if the terminating annotation is consistent with the results from
-   --  flow analysis, emits a warning if not.
+   --  flow analysis, emits a message if not.
 
    procedure Check_Termination (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Subprogram;
