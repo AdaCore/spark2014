@@ -131,6 +131,7 @@ Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes
 Inline_Always      	      Yes
 Linker_Section      	      Yes
+Max_Queue_Length              Yes                    Extended Ravenscar
 No_Elaboration_Code_All       Yes
 No_Heap_Finalization          Yes
 Overflow_Mode                 Yes

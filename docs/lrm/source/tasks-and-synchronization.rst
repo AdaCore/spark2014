@@ -4,7 +4,9 @@ Tasks and Synchronization
 =========================
 
 Tasks and protected types are in |SPARK|, but are subject to the
-restrictions of the Ravenscar profile (see Ada RM D.13). In particular,
+restrictions of the Ravenscar profile (see Ada RM D.13) or
+the more permissive Extended Ravenscar profile (see
+http://docs.adacore.com/gnathie_ug-docs/html/gnathie_ug/gnathie_ug/the_predefined_profiles.html#the-extended-ravenscar-profiles ). In particular,
 task entry declarations are never in |SPARK|.
 
 Tasks may communicate with each other via synchronized objects; these include
@@ -20,7 +22,7 @@ access to shared data (i.e., "data races").
 
 Tagged task types, tagged protected types, and the various forms of
 synchronized interface types are in |SPARK|. Subject to the restrictions
-of Ravenscar, delay statements and protected procedure handlers are
+of (extended) Ravenscar, delay statements and protected procedure handlers are
 in |SPARK|. The attributes Callable, Caller, Identity and Terminated
 are in |SPARK|.
 
@@ -63,14 +65,15 @@ are in |SPARK|.
 .. _tu-tasks_and_synchronization-01:
 
 2. Task and protected units are in |SPARK|, but their use requires
-   the Ravenscar Profile. [In other words, a task or protected unit
-   is not in |SPARK| if the Ravenscar profile does not apply to the
-   enclosing compilation unit.] Similarly, the use of task or protected units
+   the (extended) Ravenscar profile. [In other words, a task or protected unit
+   is not in |SPARK| if neither the Ravenscar profile nor the Extended
+   Ravenscar profile apply to the enclosing compilation unit.]
+   Similarly, the use of task or protected units
    also requires a Partition_Elaboration_Policy of Sequential. [This
    is to prevent data races during library unit elaboration.]
    Similarly, the use of any subprogram which references the
    predefined state abstraction Ada.Task_Identification.Tasking_State
-   (described below) as a global requires the Ravenscar Profile.
+   (described below) as a global requires the (extended) Ravenscar profile.
 
 .. _tu-tasks_and_synchronization-02:
 
@@ -170,18 +173,22 @@ are in |SPARK|.
 
 .. _tu-tasks_and_synchronization-10:
 
-11. At most one task (including the environment task)
-    shall ever call (directly or via intermediate calls) the protected
-    entry (if any) of a given protected object. [Roughly speaking, each
-    protected object which has an entry can be statically identified with
-    its "suspender task" and no other task shall call the entry of that
-    protected object. This rule is enforced via (potentially conservative)
-    flow analysis, as opposed to by introducing verification conditions.
-    This rule discharges the verification condition associated with Ravenscar's
-    "Max_Entry_Queue_Length => 1" restriction.]
+11. The Ravenscar profile includes "Max_Entry_Queue_Length => 1" and
+    "Max_Protected_Entries => 1" restrictions.
+    The Extended Ravenscar profile does not, but does allow use of
+    pragma Max_Queue_Length to specify the maximum entry queue length
+    for a particular entry. If the maximum queue length for some given
+    entry of some given protected object is specified (via either mechanism)
+    to have the value N, then at most N distinct tasks (including the
+    environment task) shall ever call (directly or via intermediate calls)
+    the given entry of the given protected object. [Roughly speaking, each
+    such protected entry can be statically identified with a set of at most N
+    "caller tasks" and no task outside that set shall call the entry.
+    This rule is enforced via (potentially conservative)
+    flow analysis, as opposed to by introducing verification conditions.]
 
     For purposes of this rule, Ada.Synchronous_Task_Control.Suspension_Object
-    is assumed to be a protected type having an entry and the procedure
+    is assumed to be a protected type having one entry and the procedure
     Suspend_Until_True is assumed to contain a call to the entry of its
     parameter. [This rule discharges the verification condition associated with
     the Ada rule that two tasks cannot simultaneously suspend on one
@@ -220,7 +227,7 @@ are in |SPARK|.
 .. _tu-tasks_and_synchronization-12:
 
 13. The end of a task body shall not be reachable. [This follows from
-    from Ravenscar's No_Task_Termination restriction.]
+    from (extended) Ravenscar's No_Task_Termination restriction.]
 
 .. _tu-nt-tasks_and_synchronization-13:
 
@@ -258,6 +265,10 @@ are in |SPARK|.
   * Ada.Execution_Time.Interrupts.Clock
     references Ada.Real_Time.Clock_Time;
 
+  * Ada.Calendar.Clock (which is excluded by the Ravenscar profile
+    but not by the Extended Ravenscar profile) references
+    Ada.Real_Time.Clock_Time;
+
   * Ada.Task_Identification.Current_Task
     references Ada.Task_Identification.Tasking_State;
 
@@ -288,8 +299,8 @@ are in |SPARK|.
   * Ada.Synchronous_Task_Control.Current_State
     references Ada.Task_Identification.Tasking_State.
 
-  [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
-  not on this list.]
+  [Functions excluded by the Extended Ravenscar profile (and
+  therefore also by the Ravenscar profile) are not on this list.]
 
 .. _tu-nt-tasks_and_synchronization-15:
 

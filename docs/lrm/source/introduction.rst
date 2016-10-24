@@ -562,7 +562,7 @@ in the remaining chapters of this document, the most notable restrictions are:
 - The use of controlled types is not currently permitted.
 
 - Tasks and protected objects are permitted only if the Ravenscar profile
-  is specified.
+  (or the Extended Ravenscar profile) is specified.
 
 - Raising and handling of exceptions is not currently permitted (exceptions can
   be included in a program but proof must be used to show that they cannot be
