@@ -1,5 +1,6 @@
 with Tree_Model; use Tree_Model;
 use Tree_Model.D_Seq;
+use Tree_Model.V_Set;
 with Conts; use Conts;
 
 with Search_Trees; use Search_Trees;
@@ -16,8 +17,16 @@ package Red_Black_Trees with SPARK_Mode is
 
    function Size (T : Rbt) return Extended_Index_Type with Ghost;
 
+   function Values (T : Rbt) return Value_Set with Ghost,
+     Post => (if Size (T) = 0 then Is_Empty (Values'Result));
+
+   function Mem (T : Rbt; V : Natural) return Boolean with
+     Post => Mem'Result = Mem (Values (T), V);
+
    procedure Insert (T : in out Rbt; V : Natural) with
-   Pre => Size (T) < Max;
+     Pre  => Size (T) < Max,
+     Post => (if Mem (T'Old, V) then Values (T) = Values (T'Old)
+              else Is_Add (Values (T'Old), V, Values (T)));
 private
 
    type Color_Type is (Black, Red);
@@ -40,4 +49,9 @@ private
    with Ghost;
 
    function Size (T : Rbt) return Extended_Index_Type is (Size (T.Struct));
+
+   function Values (T : Rbt) return Value_Set is (Values (T.Struct));
+
+   function Mem (T : Rbt; V : Natural) return Boolean is
+      (Mem (T.Struct, V));
 end Red_Black_Trees;

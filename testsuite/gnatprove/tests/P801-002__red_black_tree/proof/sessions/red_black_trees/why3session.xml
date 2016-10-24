@@ -2,8 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="Z3" version="4.4.1" timelimit="10" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="altergo" version="0.99.1" timelimit="30" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.4.1" timelimit="30" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="30" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/red_black_trees.mlw" expanded="true">
 <theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -837,9 +839,9 @@
 </theory>
 <theory name="Tree_model__path_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__path_typePredicate__I49s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__path_typePredicate__I87s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__path_typePredicate__I49s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__path_typePredicate__I87s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__path_typePredicate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -857,15 +859,15 @@
 </theory>
 <theory name="Tree_model__is_concat" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L52s__T53s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L90s__T91s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L28s__T29s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L54s__T55s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L92s__T93s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L30s__T31s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L56s__T57s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L94s__T95s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L32s__T33s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -879,7 +881,7 @@
 </theory>
 <theory name="Tree_model__Olt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__Olt__L59s__T60s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__Olt__L97s__T98s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__Olt__L35s__T36s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -893,7 +895,7 @@
 </theory>
 <theory name="Tree_model__Ole" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__Ole__L62s__T63s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__Ole__L100s__T101s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__Ole__L37s__T38s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -956,6 +958,232 @@
 <theory name="Tree_model__preserve_concat__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__preserve_concat__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__element_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__element_type__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__set__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__set" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__mem__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__mem__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__mem__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__mem__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__mem" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__length__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__length__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__length" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__private_key__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__private_key" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_first__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_first__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_first" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next__k___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element__k___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element__k" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element__k___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__L66s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole__L66s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__L67s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__L67s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__L68s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2__L68s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty__L69s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty__L69s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__L70s__f" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__L70s__f___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__L71s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add__L71s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__L72s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__L72s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__L73s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection__L73s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__L74s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps__L74s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L75s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L75s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L76s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L76s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L77s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union__L77s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union__s1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union__s1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union__s2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union__s2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__value_set" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__setDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__setDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__sequenceDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1109,13 +1337,13 @@
 </theory>
 <theory name="Binary_trees__tree_structure" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Binary_trees__forestInvariant___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__forestInvariant___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Binary_trees__forestDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Binary_trees__forestDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__forestInvariant___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__forestInvariant___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Array__Int__Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1179,15 +1407,11 @@
 </theory>
 <theory name="Search_trees__peek" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__value__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Search_trees__values__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__value__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Search_trees__values__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__value__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__value__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Search_trees__values" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Search_trees__mem__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1225,13 +1449,13 @@
 </theory>
 <theory name="Search_trees__ordered_leafs" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__search_treeInvariant___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__search_treeInvariant___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Search_trees__search_treeDefault_Initial_Condition___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Search_trees__search_treeDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__search_treeInvariant___object" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__search_treeInvariant___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__color_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1243,11 +1467,11 @@
 </theory>
 <theory name="Red_black_trees__color_array" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Red_black_trees__rbt__T4s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Red_black_trees__rbt__T7s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Red_black_trees__rbt__T4s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Red_black_trees__rbt__T7s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Red_black_trees__rbt__T5s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Red_black_trees__rbt__T8s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__rbt__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1258,6 +1482,22 @@
 <theory name="Red_black_trees__size__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__size" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__values__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__values__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__values" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem__t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem__t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem__v" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem__v___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__insert__v" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1415,137 +1655,41 @@
 </theory>
 <theory name="Red_black_trees__insert__y___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__insert__t_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__t_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__current" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__current___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__previous" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__previous___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__insert__B_10__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tree_model__d_seq__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__set__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__x___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__empty_element_array_access___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__y___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__num_overlaps__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__xr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__intersection__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__xr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__intersection__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__is_root" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__is_root___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__intersection__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__f_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__l" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__right_rotate__f_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_4" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_4___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_5" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__right_rotate__f_5___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__x___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__y___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__yl" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__yl___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__is_root" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__is_root___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_4" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_4___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_5" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__left_rotate__f_5___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__extract__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__extract__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__plug__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__plug__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__insert__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__insert__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__init__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Binary_trees__init__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__union__B_6__l___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Conts__ranged_random__B_1__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1599,6 +1743,174 @@
 </theory>
 <theory name="Binary_trees__model__B_3__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Search_trees__find_root__m" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__find_root__m___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__find_root__ki" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__find_root__ki___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__find_root__kj" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__find_root__kj___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__values__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__values__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__current" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__current___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__previous" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__previous___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__mem__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__t_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__t_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__current" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__current___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__previous" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__previous___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__insert__B_11__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__x___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__y___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__xr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__xr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__is_root" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__is_root___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__t_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__t_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_4" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_4___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_5" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__right_rotate__f_5___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__x" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__x___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__y" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__y___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__yl" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__yl___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__is_root" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__is_root___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__t_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__t_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_3" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_3___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_4" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_4___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_5" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Search_trees__left_rotate__f_5___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__extract__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__extract__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__plug__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__plug__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__insert__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__insert__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__init__f_old" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Binary_trees__init__f_old___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__empty_element_array_access___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__d_seq__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__num_overlaps__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -1627,33 +1939,9 @@
 </theory>
 <theory name="Tree_model__d_seq__containers__intersection__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__find_root__m" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__find_root__m___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__find_root__ki" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__find_root__ki___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__find_root__kj" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__find_root__kj___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tree_model__d_seq__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tree_model__d_seq__containers__empty_element_array_access___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__current" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__current___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__previous" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__previous___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__d" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Search_trees__mem__d___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__v_set__containers__set__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1875,29 +2163,37 @@
 </theory>
 <theory name="Tree_model__path_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L52s__T53s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L90s__T91s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L28s__T29s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L54s__T55s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L92s__T93s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L30s__T31s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__is_concat__L56s__T57s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__is_concat__L94s__T95s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__is_concat__L32s__T33s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__Olt__L59s__T60s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__Olt__L97s__T98s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__Olt__L35s__T36s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__Ole__L62s__T63s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tree_model__Ole__L100s__T101s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__Ole__L37s__T38s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__Tmodel_typeB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__model_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__element_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__set___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__private_key___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__value_set___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Binary_trees__cell___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1919,11 +2215,11 @@
 </theory>
 <theory name="Red_black_trees__color_array___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Red_black_trees__rbt__T4s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Red_black_trees__rbt__T7s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Red_black_trees__rbt__T5s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Red_black_trees__rbt__T8s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___675" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___699" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__rbt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2085,6 +2381,38 @@
 </theory>
 <theory name="Tree_model__preserve_concat___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__v_set__mem___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__length___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_first___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_has_element___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_next___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__iter_element___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Ole___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__Oeq__2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_empty___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_add___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__add___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_intersection___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__num_overlaps___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__intersection___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__is_union___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__union___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Binary_trees__size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Binary_trees__valid_root___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2123,7 +2451,7 @@
 </theory>
 <theory name="Search_trees__peek___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Search_trees__value___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Search_trees__values___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Search_trees__mem___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2137,6 +2465,10 @@
 </theory>
 <theory name="Red_black_trees__size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Red_black_trees__values___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Red_black_trees__mem___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Red_black_trees__insert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Red_black_trees__color___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2147,7 +2479,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="148"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="148"/></proof>
   </goal>
  </transf>
  </goal>
@@ -2158,436 +2490,1032 @@
  </transf>
  </goal>
 </theory>
-<theory name="Red_black_trees__insert__subprogram_def" sum="3a2fc4ef4db18505984c90d93a7fe79e" expanded="true">
+<theory name="Red_black_trees__values__subprogram_def" sum="645c28b54234a74ec5816a60ff545ca0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <proof prover="3"><result status="valid" time="0.05" steps="117"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Red_black_trees__mem__subprogram_def" sum="f3fa0c9dcac88ee45407720ca81b8e99" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <proof prover="3"><result status="valid" time="0.05" steps="76"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <proof prover="3"><result status="valid" time="0.06" steps="76"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Red_black_trees__insert__subprogram_def" sum="6cf5ed9bdc4e239ad56f7b1743cd1f9e" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="66"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="66"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="1"><result status="valid" time="0.14" steps="2208"/></proof>
+  <proof prover="3"><result status="valid" time="0.18" steps="2219"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="87"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="88"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="14. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.17" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="15. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.09" steps="265"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="266"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="16. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.12" steps="1086"/></proof>
+  <proof prover="3"><result status="valid" time="0.18" steps="1130"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="17. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.10" steps="278"/></proof>
+  <proof prover="3"><result status="valid" time="0.14" steps="279"/></proof>
   </goal>
-  <goal name="WP_parameter def.18" expl="18. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.18" expl="18. loop invariant init">
+  <proof prover="3"><result status="valid" time="0.12" steps="197"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="19. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.19.1" expl="1. precondition">
+   <proof prover="0" obsolete="true"><result status="timeout" time="10.00"/></proof>
+   <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="3" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.19.2" expl="2. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+  </transf>
   </goal>
-  <goal name="WP_parameter def.20" expl="20. assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="19"/></proof>
+  <goal name="WP_parameter def.20" expl="20. precondition">
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="21. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.22" expl="22. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.22" expl="22. assertion">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.23" expl="23. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="19"/></proof>
+  <goal name="WP_parameter def.23" expl="23. precondition">
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.24" expl="24. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.25" expl="25. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="19"/></proof>
+  <goal name="WP_parameter def.25" expl="25. assertion">
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.26" expl="26. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="274"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.27" expl="27. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="247"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="277"/></proof>
   </goal>
   <goal name="WP_parameter def.28" expl="28. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="250"/></proof>
   </goal>
   <goal name="WP_parameter def.29" expl="29. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.30" expl="30. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="251"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.31" expl="31. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="254"/></proof>
   </goal>
   <goal name="WP_parameter def.32" expl="32. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="1348"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.33" expl="33. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="19"/></proof>
+  <goal name="WP_parameter def.33" expl="33. precondition">
+  <proof prover="3"><result status="valid" time="0.18" steps="1413"/></proof>
   </goal>
   <goal name="WP_parameter def.34" expl="34. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.35" expl="35. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.35" expl="35. assertion">
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.36" expl="36. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.36" expl="36. precondition">
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.37" expl="37. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.38" expl="38. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.38" expl="38. assertion">
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.39" expl="39. assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="262"/></proof>
+  <goal name="WP_parameter def.39" expl="39. precondition">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.40" expl="40. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="265"/></proof>
   </goal>
-  <goal name="WP_parameter def.41" expl="41. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.41" expl="41. assertion">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.42" expl="42. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.43" expl="43. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.44" expl="44. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.45" expl="45. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="1158"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.46" expl="46. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.18" steps="1207"/></proof>
   </goal>
   <goal name="WP_parameter def.47" expl="47. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.48" expl="48. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="235"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.49" expl="49. precondition">
-  <proof prover="1"><result status="valid" time="0.14" steps="1263"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="238"/></proof>
   </goal>
   <goal name="WP_parameter def.50" expl="50. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.21" steps="1316"/></proof>
   </goal>
   <goal name="WP_parameter def.51" expl="51. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="75"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.52" expl="52. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="100"/></proof>
+  <proof prover="3"><result status="valid" time="0.15" steps="75"/></proof>
   </goal>
-  <goal name="WP_parameter def.53" expl="53. assertion">
-  <proof prover="1"><result status="valid" time="0.09" steps="100"/></proof>
+  <goal name="WP_parameter def.53" expl="53. precondition">
+  <proof prover="3"><result status="valid" time="0.18" steps="100"/></proof>
   </goal>
-  <goal name="WP_parameter def.54" expl="54. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="78"/></proof>
+  <goal name="WP_parameter def.54" expl="54. assertion">
+  <proof prover="3"><result status="valid" time="0.12" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.55" expl="55. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="100"/></proof>
+  <proof prover="3"><result status="valid" time="0.17" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.56" expl="56. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.57" expl="57. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.58" expl="58. precondition">
-  <proof prover="1"><result status="valid" time="0.51" steps="13764"/></proof>
+  <proof prover="3"><result status="valid" time="0.17" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.59" expl="59. assertion">
-  <proof prover="1"><result status="valid" time="0.25" steps="5599"/></proof>
+  <goal name="WP_parameter def.59" expl="59. precondition">
+  <proof prover="3"><result status="valid" time="0.90" steps="15375"/></proof>
   </goal>
-  <goal name="WP_parameter def.60" expl="60. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="78"/></proof>
+  <goal name="WP_parameter def.60" expl="60. assertion">
+  <proof prover="3"><result status="valid" time="0.32" steps="5939"/></proof>
   </goal>
-  <goal name="WP_parameter def.61" expl="61. assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="100"/></proof>
+  <goal name="WP_parameter def.61" expl="61. precondition">
+  <proof prover="3"><result status="valid" time="0.13" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.62" expl="62. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.16" steps="100"/></proof>
   </goal>
-  <goal name="WP_parameter def.63" expl="63. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.63" expl="63. assertion">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.64" expl="64. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.65" expl="65. assertion">
-  <proof prover="1"><result status="valid" time="0.09" steps="19"/></proof>
+  <goal name="WP_parameter def.65" expl="65. precondition">
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.66" expl="66. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.67" expl="67. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <goal name="WP_parameter def.67" expl="67. assertion">
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.68" expl="68. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.69" expl="69. precondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.70" expl="70. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="372"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.71" expl="71. precondition">
-  <proof prover="1"><result status="valid" time="0.38" steps="9793"/></proof>
+  <proof prover="3"><result status="valid" time="0.17" steps="377"/></proof>
   </goal>
   <goal name="WP_parameter def.72" expl="72. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.53" steps="10090"/></proof>
   </goal>
   <goal name="WP_parameter def.73" expl="73. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.74" expl="74. assertion">
-  <proof prover="1"><result status="valid" time="0.32" steps="8092"/></proof>
+  <goal name="WP_parameter def.74" expl="74. precondition">
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.75" expl="75. assertion">
-  <proof prover="1"><result status="valid" time="0.15" steps="19"/></proof>
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="3"><result status="valid" time="0.44" steps="8617"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.75.1" expl="1. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.75.2" expl="2. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.11" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.75.3" expl="3. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.75.4" expl="4. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.76" expl="76. assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.77" expl="77. assertion">
-  <proof prover="1"><result status="valid" time="4.24" steps="98102"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.78" expl="78. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.78" expl="78. assertion">
+  <proof prover="3"><result status="valid" time="6.30" steps="104064"/></proof>
   </goal>
   <goal name="WP_parameter def.79" expl="79. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.80" expl="80. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="251"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.81" expl="81. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="254"/></proof>
   </goal>
   <goal name="WP_parameter def.82" expl="82. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="1348"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.83" expl="83. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="19"/></proof>
+  <goal name="WP_parameter def.83" expl="83. precondition">
+  <proof prover="3"><result status="valid" time="0.16" steps="1413"/></proof>
   </goal>
   <goal name="WP_parameter def.84" expl="84. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.85" expl="85. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.85" expl="85. assertion">
+  <proof prover="3"><result status="valid" time="0.13" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.86" expl="86. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.86" expl="86. precondition">
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.87" expl="87. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.88" expl="88. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.88" expl="88. assertion">
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.89" expl="89. assertion">
-  <proof prover="1"><result status="valid" time="0.13" steps="262"/></proof>
+  <goal name="WP_parameter def.89" expl="89. precondition">
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.90" expl="90. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="265"/></proof>
   </goal>
-  <goal name="WP_parameter def.91" expl="91. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.91" expl="91. assertion">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.92" expl="92. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.93" expl="93. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.94" expl="94. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.14" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.95" expl="95. precondition">
-  <proof prover="1"><result status="valid" time="0.14" steps="1158"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.96" expl="96. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.18" steps="1207"/></proof>
   </goal>
   <goal name="WP_parameter def.97" expl="97. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.98" expl="98. precondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="235"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.99" expl="99. precondition">
-  <proof prover="1"><result status="valid" time="0.14" steps="1263"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="238"/></proof>
   </goal>
   <goal name="WP_parameter def.100" expl="100. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.16" steps="1316"/></proof>
   </goal>
   <goal name="WP_parameter def.101" expl="101. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="75"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.102" expl="102. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="100"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="75"/></proof>
   </goal>
-  <goal name="WP_parameter def.103" expl="103. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="100"/></proof>
+  <goal name="WP_parameter def.103" expl="103. precondition">
+  <proof prover="3"><result status="valid" time="0.12" steps="100"/></proof>
   </goal>
-  <goal name="WP_parameter def.104" expl="104. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="78"/></proof>
+  <goal name="WP_parameter def.104" expl="104. assertion">
+  <proof prover="3"><result status="valid" time="0.11" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.105" expl="105. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="100"/></proof>
+  <proof prover="3"><result status="valid" time="0.15" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.106" expl="106. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="100"/></proof>
   </goal>
   <goal name="WP_parameter def.107" expl="107. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.108" expl="108. precondition">
-  <proof prover="1"><result status="valid" time="0.52" steps="13770"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.109" expl="109. assertion">
-  <proof prover="1"><result status="valid" time="0.28" steps="5518"/></proof>
+  <goal name="WP_parameter def.109" expl="109. precondition">
+  <proof prover="3"><result status="valid" time="0.73" steps="14495"/></proof>
   </goal>
-  <goal name="WP_parameter def.110" expl="110. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="78"/></proof>
+  <goal name="WP_parameter def.110" expl="110. assertion">
+  <proof prover="3"><result status="valid" time="0.38" steps="5858"/></proof>
   </goal>
-  <goal name="WP_parameter def.111" expl="111. assertion">
-  <proof prover="1"><result status="valid" time="0.08" steps="100"/></proof>
+  <goal name="WP_parameter def.111" expl="111. precondition">
+  <proof prover="3"><result status="valid" time="0.11" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.112" expl="112. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="100"/></proof>
   </goal>
-  <goal name="WP_parameter def.113" expl="113. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  <goal name="WP_parameter def.113" expl="113. assertion">
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.114" expl="114. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.115" expl="115. assertion">
-  <proof prover="1"><result status="valid" time="0.09" steps="19"/></proof>
+  <goal name="WP_parameter def.115" expl="115. precondition">
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.116" expl="116. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="19"/></proof>
   </goal>
-  <goal name="WP_parameter def.117" expl="117. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <goal name="WP_parameter def.117" expl="117. assertion">
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.118" expl="118. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.119" expl="119. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.120" expl="120. precondition">
-  <proof prover="1"><result status="valid" time="0.13" steps="372"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.121" expl="121. precondition">
-  <proof prover="1"><result status="valid" time="0.37" steps="9811"/></proof>
+  <proof prover="3"><result status="valid" time="0.16" steps="377"/></proof>
   </goal>
   <goal name="WP_parameter def.122" expl="122. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.56" steps="10408"/></proof>
   </goal>
   <goal name="WP_parameter def.123" expl="123. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.124" expl="124. assertion">
-  <proof prover="1"><result status="valid" time="0.37" steps="8258"/></proof>
+  <goal name="WP_parameter def.124" expl="124. precondition">
+  <proof prover="3"><result status="valid" time="0.15" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.125" expl="125. assertion">
-  <proof prover="1"><result status="valid" time="0.10" steps="19"/></proof>
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="3"><result status="valid" time="0.50" steps="8787"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.125.1" expl="1. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.125.2" expl="2. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.13" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.125.3" expl="3. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.12" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.125.4" expl="4. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.11" steps="5"/></proof>
+   </goal>
+  </transf>
   </goal>
   <goal name="WP_parameter def.126" expl="126. assertion">
-  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.14" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.127" expl="127. assertion">
-  <proof prover="1"><result status="valid" time="4.69" steps="107985"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.128" expl="128. precondition">
-  <proof prover="1"><result status="valid" time="0.18" steps="205"/></proof>
+  <goal name="WP_parameter def.128" expl="128. assertion">
+  <proof prover="3"><result status="valid" time="6.12" steps="109142"/></proof>
   </goal>
   <goal name="WP_parameter def.129" expl="129. precondition">
-  <proof prover="1"><result status="valid" time="0.19" steps="294"/></proof>
+  <proof prover="3"><result status="valid" time="0.24" steps="205"/></proof>
   </goal>
-  <goal name="WP_parameter def.130" expl="130. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.11" steps="5"/></proof>
+  <goal name="WP_parameter def.130" expl="130. precondition">
+  <proof prover="3"><result status="valid" time="0.25" steps="294"/></proof>
   </goal>
   <goal name="WP_parameter def.131" expl="131. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.19" steps="219"/></proof>
+  <proof prover="3"><result status="valid" time="0.15" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.132" expl="132. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.20" steps="219"/></proof>
+  <proof prover="3"><result status="valid" time="0.25" steps="219"/></proof>
   </goal>
   <goal name="WP_parameter def.133" expl="133. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.86" steps="47058"/></proof>
+  <proof prover="3"><result status="valid" time="0.24" steps="219"/></proof>
   </goal>
   <goal name="WP_parameter def.134" expl="134. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.34" steps="8413"/></proof>
+  <proof prover="3"><result status="valid" time="1.14" steps="51029"/></proof>
   </goal>
   <goal name="WP_parameter def.135" expl="135. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.74" steps="37216"/></proof>
+  <proof prover="3"><result status="valid" time="0.47" steps="8950"/></proof>
   </goal>
   <goal name="WP_parameter def.136" expl="136. loop invariant preservation">
-  <proof prover="0"><result status="valid" time="1.67" steps="3208553"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="3"><result status="valid" time="1.02" steps="39427"/></proof>
   </goal>
-  <goal name="WP_parameter def.137" expl="137. precondition">
-  <proof prover="1"><result status="valid" time="0.28" steps="1684"/></proof>
+  <goal name="WP_parameter def.137" expl="137. loop invariant preservation">
+  <proof prover="2"><result status="valid" time="2.33" steps="3438252"/></proof>
+  <proof prover="3"><result status="timeout" time="30.00"/></proof>
   </goal>
-  <goal name="WP_parameter def.138" expl="138. assertion">
-  <proof prover="1"><result status="valid" time="0.18" steps="19"/></proof>
+  <goal name="WP_parameter def.138" expl="138. loop invariant preservation">
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="unknown" time="4.54" steps="6556648"/></proof>
+  <proof prover="3"><result status="valid" time="0.24" steps="219"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.138.1" expl="1. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.11" steps="152"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.2" expl="2. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.14" steps="143"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.3" expl="3. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.18" steps="909"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.4" expl="4. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.15" steps="875"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.5" expl="5. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.6" expl="6. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.11" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.7" expl="7. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.26" steps="2346"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.8" expl="8. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.19" steps="608"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.9" expl="9. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.10" expl="10. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.11" expl="11. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.26" steps="2165"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.12" expl="12. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.21" steps="738"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.13" expl="13. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.14" expl="14. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.15" expl="15. loop invariant preservation">
+   <proof prover="0" obsolete="true"><result status="timeout" time="10.00"/></proof>
+   <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="2" obsolete="true"><result status="unknown" time="1.38" steps="1728679"/></proof>
+   <proof prover="3" obsolete="true"><result status="unknown" time="5.20" steps="156769"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.16" expl="16. loop invariant preservation">
+   <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="2" obsolete="true"><result status="unknown" time="5.95" steps="7345532"/></proof>
+   <proof prover="3" obsolete="true"><result status="unknown" time="4.88" steps="159351"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.17" expl="17. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.18" expl="18. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.19" expl="19. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.22" steps="2131"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.20" expl="20. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.23" steps="637"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.21" expl="21. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.22" expl="22. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.23" expl="23. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.28" steps="2160"/></proof>
+   </goal>
+   <goal name="WP_parameter def.138.24" expl="24. loop invariant preservation">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.22" steps="738"/></proof>
+   </goal>
+  </transf>
   </goal>
-  <goal name="WP_parameter def.139" expl="139. assertion">
-  <proof prover="1"><result status="valid" time="0.13" steps="5"/></proof>
+  <goal name="WP_parameter def.139" expl="139. precondition">
+  <proof prover="2"><result status="valid" time="0.15" steps="235288"/></proof>
+  <proof prover="3" obsolete="true"><result status="timeout" time="30.00"/></proof>
   </goal>
   <goal name="WP_parameter def.140" expl="140. assertion">
-  <proof prover="0"><result status="valid" time="2.45" steps="4367568"/></proof>
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="3"><result status="valid" time="0.32" steps="19"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.140.1" expl="1. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.2" expl="2. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.3" expl="3. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.4" expl="4. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.5" expl="5. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.6" expl="6. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.7" expl="7. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.13" steps="31"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.8" expl="8. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.13" steps="31"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.9" expl="9. assertion">
+   <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="3" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.10" expl="10. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.15" steps="31"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.11" expl="11. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.16" steps="31"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.12" expl="12. assertion">
+   <proof prover="0" obsolete="true"><result status="timeout" time="10.00"/></proof>
+   <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="2" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   <proof prover="3" obsolete="true"><result status="timeout" time="30.00"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.13" expl="13. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.14" expl="14. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.15" expl="15. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.16" expl="16. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.16" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.17" expl="17. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.18" expl="18. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.19" expl="19. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.20" expl="20. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.21" expl="21. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.22" expl="22. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.23" expl="23. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.24" expl="24. assertion">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.140.25" expl="25. assertion">
+   </goal>
+   <goal name="WP_parameter def.140.26" expl="26. assertion">
+   </goal>
+  </transf>
   </goal>
-  <goal name="WP_parameter def.141" expl="141. precondition">
-  <proof prover="1"><result status="valid" time="0.29" steps="1690"/></proof>
+  <goal name="WP_parameter def.141" expl="141. assertion">
+  <proof prover="3"><result status="valid" time="0.18" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.142" expl="142. assertion">
-  <proof prover="1"><result status="valid" time="0.85" steps="36301"/></proof>
+  <proof prover="2"><result status="valid" time="2.91" steps="4994609"/></proof>
+  <proof prover="3"><result status="timeout" time="30.00"/></proof>
+  </goal>
+  <goal name="WP_parameter def.143" expl="143. precondition">
+  <proof prover="3"><result status="valid" time="0.36" steps="1703"/></proof>
+  </goal>
+  <goal name="WP_parameter def.144" expl="144. assertion">
+  <proof prover="2"><result status="valid" time="1.20" steps="1787345"/></proof>
+  <proof prover="3" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  </goal>
+  <goal name="WP_parameter def.145" expl="145. precondition">
+  <proof prover="3"><result status="valid" time="0.13" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.146" expl="146. precondition">
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.147" expl="147. precondition">
+  <proof prover="1" obsolete="true"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2" obsolete="true"><result status="unknown" time="24.07" steps="31719479"/></proof>
+  <proof prover="3"><result status="valid" time="0.13" steps="5"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.147.1" expl="1. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.12" steps="135"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.2" expl="2. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.12" steps="329"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.3" expl="3. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.4" expl="4. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.30" steps="1293"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.5" expl="5. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.6" expl="6. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.26" steps="2732"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.7" expl="7. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.8" expl="8. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.22" steps="2509"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.9" expl="9. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.10" expl="10. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.20" steps="1319"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.11" expl="11. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.12" expl="12. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.30" steps="2740"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.13" expl="13. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.14" expl="14. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.22" steps="2669"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.15" expl="15. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.16" expl="16. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.80" steps="17150"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.17" expl="17. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.18" expl="18. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.88" steps="20179"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.19" expl="19. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.20" expl="20. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.29" steps="3061"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.21" expl="21. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.22" expl="22. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="1.00" steps="18175"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.23" expl="23. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.24" expl="24. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="1.04" steps="21008"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.25" expl="25. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.26" expl="26. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.22" steps="2328"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.27" expl="27. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.10" steps="93"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.28" expl="28. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.29" expl="29. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.30" expl="30. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.31" expl="31. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.32" expl="32. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.33" expl="33. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.34" expl="34. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.35" expl="35. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.36" expl="36. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.12" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.37" expl="37. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.38" expl="38. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.39" expl="39. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.40" expl="40. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.41" expl="41. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.42" expl="42. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.43" expl="43. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.44" expl="44. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.45" expl="45. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.46" expl="46. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.47" expl="47. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.48" expl="48. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.49" expl="49. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.50" expl="50. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.51" expl="51. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.52" expl="52. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.147.53" expl="53. precondition">
+   <proof prover="3" obsolete="true"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+  </transf>
+  </goal>
+  <goal name="WP_parameter def.148" expl="148. precondition">
+  <proof prover="3"><result status="valid" time="0.14" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.149" expl="149. precondition">
+  <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.150" expl="150. postcondition">
+  <proof prover="3"><result status="valid" time="0.28" steps="3528"/></proof>
+  </goal>
+  <goal name="WP_parameter def.151" expl="151. postcondition">
+  <proof prover="1"><result status="timeout" time="30.00"/></proof>
+  <proof prover="2"><result status="unknown" time="13.50" steps="20761299"/></proof>
+  <proof prover="3"><result status="timeout" time="30.00"/></proof>
+  <transf name="split_disj" expanded="true">
+   <goal name="WP_parameter def.151.1" expl="1. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="135"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.2" expl="2. postcondition">
+   <proof prover="3"><result status="valid" time="0.12" steps="329"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.3" expl="3. postcondition">
+   <proof prover="3"><result status="valid" time="0.11" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.4" expl="4. postcondition">
+   <proof prover="3"><result status="valid" time="0.24" steps="1362"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.5" expl="5. postcondition">
+   <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.6" expl="6. postcondition">
+   <proof prover="3"><result status="valid" time="0.28" steps="2736"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.7" expl="7. postcondition">
+   <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.8" expl="8. postcondition">
+   <proof prover="3"><result status="valid" time="0.22" steps="2546"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.9" expl="9. postcondition">
+   <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.10" expl="10. postcondition">
+   <proof prover="3"><result status="valid" time="0.26" steps="1388"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.11" expl="11. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.12" expl="12. postcondition">
+   <proof prover="3"><result status="valid" time="0.31" steps="2744"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.13" expl="13. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.14" expl="14. postcondition">
+   <proof prover="3"><result status="valid" time="0.25" steps="3559"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.15" expl="15. postcondition">
+   <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.16" expl="16. postcondition">
+   <proof prover="3"><result status="valid" time="1.00" steps="19898"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.17" expl="17. postcondition">
+   <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.18" expl="18. postcondition">
+   <proof prover="3"><result status="valid" time="1.02" steps="24158"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.19" expl="19. postcondition">
+   <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.20" expl="20. postcondition">
+   <proof prover="3"><result status="valid" time="0.29" steps="3959"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.21" expl="21. postcondition">
+   <proof prover="3"><result status="valid" time="0.09" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.22" expl="22. postcondition">
+   <proof prover="3"><result status="valid" time="0.88" steps="17937"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.23" expl="23. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.24" expl="24. postcondition">
+   <proof prover="3"><result status="valid" time="0.90" steps="21031"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.25" expl="25. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.26" expl="26. postcondition">
+   <proof prover="3"><result status="valid" time="0.24" steps="3334"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.27" expl="27. postcondition">
+   <proof prover="3"><result status="valid" time="0.11" steps="93"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.28" expl="28. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.29" expl="29. postcondition">
+   <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.30" expl="30. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.31" expl="31. postcondition">
+   <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.32" expl="32. postcondition">
+   <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.33" expl="33. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.34" expl="34. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.35" expl="35. postcondition">
+   <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.36" expl="36. postcondition">
+   <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.37" expl="37. postcondition">
+   <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.38" expl="38. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.39" expl="39. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.40" expl="40. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.41" expl="41. postcondition">
+   <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.42" expl="42. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.43" expl="43. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.44" expl="44. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.45" expl="45. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.46" expl="46. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.47" expl="47. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.48" expl="48. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.49" expl="49. postcondition">
+   <proof prover="3"><result status="valid" time="0.10" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.50" expl="50. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.51" expl="51. postcondition">
+   <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.52" expl="52. postcondition">
+   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+   </goal>
+   <goal name="WP_parameter def.151.53" expl="53. postcondition">
+   <proof prover="3"><result status="valid" time="0.12" steps="5"/></proof>
+   </goal>
+  </transf>
   </goal>
  </transf>
  </goal>
@@ -2596,10 +3524,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -2608,10 +3536,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="1"><result status="valid" time="0.04" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

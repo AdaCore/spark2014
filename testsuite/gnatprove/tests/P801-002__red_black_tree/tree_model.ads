@@ -1,4 +1,5 @@
 with Conts.Functional.Sequences;
+with Conts.Functional.Sets;
 use Conts;
 package Tree_Model with SPARK_Mode is
 
@@ -57,4 +58,6 @@ package Tree_Model with SPARK_Mode is
      and then Is_Add (S1, D, S3) and then Is_Add (S2, D, S4),
      Post => Is_Concat (T, S3, S4);
 
+   package V_Set is new Conts.Functional.Sets (Natural);
+   subtype Value_Set is V_Set.Set;
 end Tree_Model;

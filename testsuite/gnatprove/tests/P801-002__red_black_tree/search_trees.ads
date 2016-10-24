@@ -1,5 +1,6 @@
 with Tree_Model; use Tree_Model;
 use Tree_Model.D_Seq;
+use Tree_Model.V_Set;
 with Conts; use Conts;
 with Binary_Trees; use Binary_Trees;
 
@@ -34,22 +35,19 @@ package Search_Trees with SPARK_Mode is
    function Peek (T : Search_Tree; I : Index_Type; D : Direction) return Extended_Index_Type with
      Pre  => Size (T) /= 0 and then Model (T) (I).K;
 
-   function Value (T : Search_Tree; I : Index_Type) return Natural with Ghost;
+   function Values (T : Search_Tree) return Value_Set with Ghost,
+     Post => (if Size (T) = 0 then Is_Empty (Values'Result));
 
    function Mem (T : Search_Tree; V : Natural) return Boolean with
-     Post => Mem'Result =
-       (Size (T) /= 0 and then
-          (for some I in Index_Type => Model (T) (I).K
-           and then Value (T, I) = V));
+     Post => Mem'Result = Mem (Values (T), V);
 
    procedure Insert
      (T : in out Search_Tree; V : Natural; I : out Extended_Index_Type)
      with
        Pre  => Size (T) < Max,
      Contract_Cases =>
-       (Mem (T, V)   => I = 0
-        and then
-          (for all J in Index_Type => Value (T, J) = Value (T'Old, J))
+       (Mem (Values (T), V) => I = 0
+        and then Values (T) = Values (T'Old)
         and then (for all J in Index_Type => Parent (T, J) = Parent (T'Old, J))
         and then (for all J in Index_Type =>
                     (if Parent (T, J) /= 0
@@ -58,18 +56,16 @@ package Search_Trees with SPARK_Mode is
                     (if Model (T) (J).K then Model (T'Old) (J).K))
         and then (for all J in Index_Type =>
                     (if Model (T'Old) (J).K then Model (T) (J).K)),
-        Size (T) = 0 => I > 0
-        and Size (T) = 1 and Root (T) = I and Value (T, I) = V
+        Size (T) = 0               => I > 0
+        and Size (T) = 1 and Root (T) = I
+        and Is_Add (Values (T'Old), V, Values (T))
         and (for all I in Index_Type =>
                (if I /= Root (T) then not Model (T) (I).K))
         and (for all I in Index_Type => Parent (T, I) = Parent (T'Old, I)),
-        others       => I > 0 and then Model (T) (I).K
+        others                     => I > 0 and then Model (T) (I).K
         and then Root (T) = Root (T'Old)
         and then Size (T) = Size (T)'Old + 1
-        and then Value (T, I) = V
-        and then
-          (for all J in Index_Type =>
-             (if I /= J then Value (T, J) = Value (T'Old, J)))
+        and then Is_Add (Values (T'Old), V, Values (T))
         and then (for all J in Index_Type =>
                     (if I /= J then Parent (T, J) = Parent (T'Old, J)))
         and then (for all J in Index_Type =>
@@ -87,8 +83,6 @@ package Search_Trees with SPARK_Mode is
      Post => Size (T) = Size (T)'Old
      and then (if Root (T)'Old /= I then Root (T) = Root (T)'Old
                else Root (T) = Peek (T'Old, I, Right))
-     and then
-       (for all J in Index_Type => Value (T, J) = Value (T'Old, J))
      and then Parent (T, I) = Peek (T'Old, I, Right)
      and then Position (T, I) = Left
      and then Parent (T, Peek (T'Old, I, Right)) = Parent (T'Old, I)
@@ -118,15 +112,14 @@ package Search_Trees with SPARK_Mode is
      and then (for all J in Index_Type =>
                  (if Model (T) (J).K then Model (T'Old) (J).K))
      and then (for all J in Index_Type =>
-                 (if Model (T'Old) (J).K then Model (T) (J).K));
+                 (if Model (T'Old) (J).K then Model (T) (J).K))
+     and then Values (T) = Values (T'Old);
 
    procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
      Pre  => Size (T) > 0 and then Model (T) (I).K and then Peek (T, I, Left) /= 0,
      Post => Size (T) = Size (T)'Old
      and then (if Root (T)'Old /= I then Root (T) = Root (T)'Old
                else Root (T) = Peek (T'Old, I, Left))
-     and then
-       (for all J in Index_Type => Value (T, J) = Value (T'Old, J))
      and then Parent (T, I) = Peek (T'Old, I, Left)
      and then Position (T, I) = Right
      and then Parent (T, Peek (T'Old, I, Left)) = Parent (T'Old, I)
@@ -156,7 +149,8 @@ package Search_Trees with SPARK_Mode is
      and then (for all J in Index_Type =>
                  (if Model (T) (J).K then Model (T'Old) (J).K))
      and then (for all J in Index_Type =>
-                 (if Model (T'Old) (J).K then Model (T) (J).K));
+                 (if Model (T'Old) (J).K then Model (T) (J).K))
+     and then Values (T) = Values (T'Old);
 private
 
    type Value_Array is array (Index_Type) of Natural;

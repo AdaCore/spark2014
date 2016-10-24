@@ -1,7 +1,41 @@
 package body Search_Trees with SPARK_Mode is
 
-   function Value (T : Search_Tree; I : Index_Type) return Natural is
-     (T.Values (I));
+   function Values (T : Search_Tree) return Value_Set with
+     Refined_Post =>
+       (if Size (T.Struct) = 0 then Is_Empty (Values'Result)
+        else
+          ((for all I in Index_Type =>
+             (if Model (T.Struct, T.Root) (I).K then Mem (Values'Result, T.Values (I))))
+           and then
+             (for all V in Natural =>
+                  (if Mem (Values'Result, V) then
+                     (for some I in Index_Type =>
+                            Model (T.Struct, T.Root) (I).K and then T.Values (I) = V)))))
+   is
+      S : Value_Set;
+   begin
+      if T.Root = 0 then
+         return S;
+      end if;
+
+      for J in Index_Type loop
+         if Model (T.Struct, T.Root) (J).K
+           and then not Mem (S, T.Values (J))
+         then
+            S := Add (S, T.Values (J));
+         end if;
+         pragma Loop_Invariant (Length (S) <= J);
+         pragma Loop_Invariant
+           (for all I in 1 .. J =>
+              (if Model (T.Struct, T.Root) (I).K then Mem (S, T.Values (I))));
+         pragma Loop_Invariant
+           (for all V in Natural =>
+              (if Mem (S, V) then
+                   (for some I in Index_Type =>
+                        Model (T.Struct, T.Root) (I).K and then T.Values (I) = V)));
+      end loop;
+      return S;
+   end Values;
 
    function Ordered_Leafs (F : Forest; Root : Index_Type; Values : Value_Array) return Boolean is
      (for all I in Index_Type =>
@@ -377,6 +411,25 @@ package body Search_Trees with SPARK_Mode is
                    else Values (J) > Values (I)))));
    end Prove_Preserved_Order;
 
+   procedure Prove_Preserved_Values (T1, T2 : Search_Tree) with
+     Ghost,
+     Pre  => T1.Root /= 0 and then Valid_Root (T1.Struct, T1.Root)
+     and then T2.Root /= 0 and then Valid_Root (T2.Struct, T2.Root)
+     and then Ordered_Leafs (T1.Struct, T1.Root, T1.Values)
+     and then Ordered_Leafs (T2.Struct, T2.Root, T2.Values)
+     and then (for all I in Index_Type =>
+                 (if Model (T1.Struct, T1.Root) (I).K
+                  then Model (T2.Struct, T2.Root) (I).K))
+     and then (for all I in Index_Type =>
+                 (if Model (T2.Struct, T2.Root) (I).K
+                  then Model (T1.Struct, T1.Root) (I).K))
+     and then T1.Values = T2.Values,
+     Post => Values (T1) = Values (T2)
+   is
+   begin
+      null;
+   end Prove_Preserved_Values;
+
    procedure Prove_Order_Total (T : Search_Tree; L : Index_Type; V : Natural) with
      Ghost,
      Pre  => Size (T.Struct) > 0 and then T.Root > 0
@@ -412,7 +465,7 @@ package body Search_Trees with SPARK_Mode is
         (for all I in Index_Type =>
            (if Model (T.Struct, T.Root) (I).K
             and then Find_Root (T.Struct, T.Root, I, L) = L
-            then Value (T, I) /= V));
+            then T.Values (I) /= V));
    end Prove_Order_Total;
 
    procedure Left_Rotate (T : in out Search_Tree; I : Index_Type) is
@@ -421,8 +474,9 @@ package body Search_Trees with SPARK_Mode is
       Is_Root : constant Boolean := I = T.Root;
       J       : Index_Type := 1;
       D       : Direction := Left;
-      F_Old   : Forest := T.Struct;
-      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct;
+      T_Old   : Search_Tree := T with Ghost;
+      F_Old   : Forest := T.Struct with Ghost;
+      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct with Ghost;
 
       procedure Prove_Extract_X with Ghost is
       begin
@@ -467,6 +521,7 @@ package body Search_Trees with SPARK_Mode is
                  (if Model (F_3, Y) (J).K
                   then T.Values (J) > T.Values (X)));
             pragma Assert (Ordered_Leafs (F_3, X, T.Values));
+            pragma Assert (Ordered_Leafs (F_3, YL, T.Values));
             Prove_Plug_Order (T.Struct, F_3, X, YL, T.Values);
          else
             Prove_Preserved_Order (T.Struct, F_3, X, T.Values);
@@ -490,6 +545,8 @@ package body Search_Trees with SPARK_Mode is
            (for all J in Index_Type =>
               (if Model (F_4, X) (J).K
                then T.Values (J) < T.Values (Y)));
+         pragma Assert (Ordered_Leafs (F_4, X, T.Values));
+         pragma Assert (Ordered_Leafs (F_4, Y, T.Values));
          Prove_Plug_Order (T.Struct, F_4, Y, X, T.Values);
          if not Is_Root then
             Prove_Preserved_Order (T.Struct, F_4, T.Root, T.Values);
@@ -566,6 +623,8 @@ package body Search_Trees with SPARK_Mode is
          Plug (T.Struct, T.Root, J, D, Y);
          Prove_Plug_Y;
       end if;
+
+      Prove_Preserved_Values (T_Old, T);
    end Left_Rotate;
 
    procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) is
@@ -574,8 +633,9 @@ package body Search_Trees with SPARK_Mode is
       Is_Root : constant Boolean := I = Root (T);
       J       : Index_Type := 1;
       D       : Direction := Left;
-      F_Old   : Forest := T.Struct;
-      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct;
+      T_Old   : Search_Tree := T with Ghost;
+      F_Old   : Forest := T.Struct with Ghost;
+      F_1, F_2, F_3, F_4, F_5 : Forest := T.Struct with Ghost;
 
       procedure Prove_Extract_Y with Ghost is
       begin
@@ -737,6 +797,8 @@ package body Search_Trees with SPARK_Mode is
          Plug (T.Struct, T.Root, J, D, X);
          Prove_Plug_X;
       end if;
+
+      Prove_Preserved_Values (T_Old, T);
    end Right_Rotate;
 
    function Mem (T : Search_Tree; V : Natural) return Boolean

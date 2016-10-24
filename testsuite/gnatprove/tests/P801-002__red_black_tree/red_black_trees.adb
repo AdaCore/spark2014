@@ -34,6 +34,7 @@ package body Red_Black_Trees with SPARK_Mode is
                  (Parent (T.Struct, I) = 0
                   or else T.Color (Parent (T.Struct, I)) = Red)
                then T.Color (I) = Black));
+         pragma Loop_Invariant (Values (T.Struct) = Values (T.Struct)'Loop_Entry);
 
          if Position (T.Struct, Parent (T.Struct, X)) = Left then
 
