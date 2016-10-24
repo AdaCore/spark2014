@@ -25,7 +25,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Vectors;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
 with Aspects;                      use Aspects;
 with Common_Containers;
@@ -45,10 +45,16 @@ with Stringt;                      use Stringt;
 
 package body Gnat2Why.Annotate is
 
-   package Annot_Range_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Natural,
-      Element_Type => Annotated_Range,
-      "="          => "=");
+   package Annot_Ranges is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Annotated_Range);
+   --  ??? why not use Ordered_Sets here?
+
+   function "<" (L, R : Annotated_Range) return Boolean;
+   --  Ordering relation on annotated ranges; used only for assertions
+
+   package Annot_Range_Sorting is new Annot_Ranges.Generic_Sorting;
+   --  Sorting of annotated ranges; used only to assert that data in the
+   --  container is indeed sorted.
 
    package Iterable_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
@@ -68,9 +74,8 @@ package body Gnat2Why.Annotate is
    --  This set contains all pragma Annotate Nodes which correspond only to a
    --  proved check.
 
-   Annotations : Annot_Range_Vectors.Vector :=
-     Annot_Range_Vectors.Empty_Vector;
-   --  A sorted vector of ranges
+   Annotations : Annot_Ranges.List := Annot_Ranges.Empty_List;
+   --  Sorted ranges
 
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
@@ -147,6 +152,15 @@ package body Gnat2Why.Annotate is
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, Terminating, ) and
    --  insert it in the Terminate_Annotations map.
+
+   ---------
+   -- "<" --
+   ---------
+
+   function "<" (L, R : Annotated_Range) return Boolean is
+   begin
+      return L.First < R.First;
+   end "<";
 
    ------------------------
    -- Check_Is_Annotated --
@@ -296,7 +310,7 @@ package body Gnat2Why.Annotate is
       procedure Insert_Iterable_Annotation
         (Kind   : Iterable_Kind;
          Entity : Entity_Id);
-      --  Insert an iterable annotation into the Iterable_Annotations map.
+      --  Insert an iterable annotation into the Iterable_Annotations map
 
       ------------------------
       -- Check_Contains_Entity --
@@ -496,8 +510,8 @@ package body Gnat2Why.Annotate is
    -- Has_Terminate_Annotation --
    ------------------------------
 
-   function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
-      (Terminate_Annotations.Contains (E));
+   function Has_Terminate_Annotation (E : Entity_Id) return Boolean renames
+     Terminate_Annotations.Contains;
 
    ---------------------------
    -- Insert_Annotate_Range --
@@ -553,7 +567,7 @@ package body Gnat2Why.Annotate is
       Pattern, Reason : String_Id;
       First, Last     : Source_Ptr)
    is
-      use Annot_Range_Vectors;
+      use Annot_Ranges;
 
       Cur : Cursor := Annotations.First;
    begin
@@ -562,13 +576,15 @@ package body Gnat2Why.Annotate is
          Next (Cur);
       end loop;
       Annotations.Insert
-        (Cur,
-         (Kind    => Kind,
-          First   => First,
-          Last    => Last,
-          Pattern => Pattern,
-          Reason  => Reason,
-          Prgma   => Prgma));
+        (Before   => Cur,
+         New_Item => (Kind    => Kind,
+                      First   => First,
+                      Last    => Last,
+                      Pattern => Pattern,
+                      Reason  => Reason,
+                      Prgma   => Prgma));
+
+      pragma Assert (Annot_Range_Sorting.Is_Sorted (Annotations));
    end Insert_Annotate_Range;
 
    procedure Insert_Annotate_Range
@@ -632,10 +648,10 @@ package body Gnat2Why.Annotate is
       declare
          Decl : constant Node_Id := Enclosing_Declaration (Preceding);
          Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
-      begin
 
+      begin
          --  Also, if the requested subprogram is always inlined, and also
-         --  referenced, the pragma should be ignored
+         --  referenced, the pragma should be ignored.
 
          if Is_Local_Subprogram_Always_Inlined (Ent)
            and then Referenced (Ent)
@@ -701,10 +717,13 @@ package body Gnat2Why.Annotate is
       Arg1, Arg2, Arg3, Arg4 : Node_Id;
       Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
 
+      Number_Of_Pragma_Args : constant Nat :=
+        List_Length (Pragma_Argument_Associations (Node));
+
    begin
       --  We silently ignore these cases
 
-      if List_Length (Pragma_Argument_Associations (Node)) = 2  then
+      if Number_Of_Pragma_Args = 2  then
          declare
             Arg1 : constant Node_Id :=
               First (Pragma_Argument_Associations (Node));
@@ -717,7 +736,7 @@ package body Gnat2Why.Annotate is
                return;
             end if;
          end;
-      elsif List_Length (Pragma_Argument_Associations (Node)) = 3  then
+      elsif Number_Of_Pragma_Args = 3  then
          Arg1 := First (Pragma_Argument_Associations (Node));
          Arg2 := Next (Arg1);
          Arg3 := Next (Arg2);
@@ -741,7 +760,7 @@ package body Gnat2Why.Annotate is
 
       Ok := False;
 
-      if List_Length (Pragma_Argument_Associations (Node)) /= 4 then
+      if Number_Of_Pragma_Args /= 4 then
          Error_Msg_N
            ("a Gnatprove Annotate pragma requires exactly 4 arguments",
             Node);
