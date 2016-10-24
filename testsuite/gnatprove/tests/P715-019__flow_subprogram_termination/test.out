@@ -4,7 +4,7 @@ container.adb:8:39: info: initialization of "Arr" proved
 container.adb:9:04: info: initialization of "Position.Index" proved
 container.adb:19:67: info: overflow check proved (CVC4: 1 VC)
 container.adb:23:14: info: index check proved (CVC4: 2 VC)
-container.adb:26:14: warning: subprogram may not terminate
+container.adb:26:14: warning: subprogram might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:33:15: warning: unused assignment, in call inlined at container.adb:45
 container.adb:33:18: info: initialization of "Int" proved, in call inlined at container.adb:45
@@ -72,32 +72,32 @@ container.ads:18:13: info: subprogram will terminate
 container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram will terminate
 container.ads:23:13: info: subprogram will terminate
-container.ads:27:14: warning: subprogram may not terminate
+container.ads:27:14: warning: subprogram might not terminate
 functions.adb:14:14: high: no paths in subprogram will return normally
 functions.adb:14:14: warning: subprogram "G" has no effect
-functions.adb:14:14: warning: subprogram may not terminate
+functions.adb:14:14: warning: subprogram might not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
-functions.ads:3:13: warning: subprogram may not terminate
+functions.ads:3:13: warning: subprogram might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
-functions.ads:6:13: warning: subprogram may not terminate
+functions.ads:6:13: warning: subprogram might not terminate
 functions.ads:9:17: high: no paths in subprogram will return normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
-functions.ads:9:17: warning: subprogram may not terminate
+functions.ads:9:17: warning: subprogram might not terminate
 imported.adb:5:07: warning: assuming "P" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P"
 imported.ads:7:14: info: subprogram will terminate
 imported.ads:7:14: warning: subprogram "Q" has no effect
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
-modular_analysis.adb:5:14: warning: subprogram may not terminate
+modular_analysis.adb:5:14: warning: subprogram might not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
 nest_in_proc.adb:5:17: info: subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: info: subprogram will terminate
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: warning: statement has no effect
-nest_in_proc.ads:1:11: medium: subprogram may not terminate, terminating annotation could be incorrect
-nest_in_proc.ads:1:11: warning: subprogram may not terminate
+nest_in_proc.ads:1:11: medium: subprogram might not terminate, terminating annotation could be incorrect
+nest_in_proc.ads:1:11: warning: subprogram might not terminate
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: subprogram will terminate
@@ -113,7 +113,7 @@ nested_loops.adb:14:16: medium: loop variant might fail
 nested_loops.adb:14:50: info: initialization of "X" proved
 nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
-nested_loops.adb:22:14: warning: subprogram may not terminate
+nested_loops.adb:22:14: warning: subprogram might not terminate
 nested_loops.adb:25:13: info: initialization of "J" proved
 nested_loops.adb:26:15: info: initialization of "J" proved
 nested_loops.adb:26:17: info: overflow check proved (CVC4: 2 VC)
@@ -122,7 +122,7 @@ nested_loops.adb:27:44: info: initialization of "J" proved
 nested_loops.adb:29:13: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
-nested_loops.adb:38:14: warning: subprogram may not terminate
+nested_loops.adb:38:14: warning: subprogram might not terminate
 nested_loops.adb:41:13: info: initialization of "J" proved
 nested_loops.adb:42:15: info: initialization of "J" proved
 nested_loops.adb:42:17: info: overflow check proved (CVC4: 1 VC)
@@ -134,39 +134,39 @@ nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
-nested_packages.ads:3:14: warning: subprogram may not terminate
+nested_packages.ads:3:14: warning: subprogram might not terminate
 nested_packages.ads:6:17: info: subprogram will terminate
 nested_packages.ads:6:17: warning: subprogram "Do_Nothing" has no effect
 nested_packages.ads:8:20: info: subprogram will terminate
 nested_packages.ads:8:20: warning: subprogram "Do_Nothing2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" has no effect
-p.adb:6:14: warning: subprogram may not terminate
+p.adb:6:14: warning: subprogram might not terminate
 p.adb:7:14: warning: subprogram "Proc3" has no effect
-p.adb:7:14: warning: subprogram may not terminate
+p.adb:7:14: warning: subprogram might not terminate
 p.adb:9:14: warning: subprogram "Proc" has no effect
-p.adb:9:14: warning: subprogram may not terminate
+p.adb:9:14: warning: subprogram might not terminate
 p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: warning: subprogram "Proc4" has no effect
-p.adb:26:14: warning: subprogram may not terminate
+p.adb:26:14: warning: subprogram might not terminate
 p.adb:32:14: warning: subprogram "Proc5" has no effect
-p.adb:32:14: warning: subprogram may not terminate
+p.adb:32:14: warning: subprogram might not terminate
 p.adb:39:14: warning: subprogram "Proc7" has no effect
-p.adb:39:14: warning: subprogram may not terminate
+p.adb:39:14: warning: subprogram might not terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
-p.adb:41:14: warning: subprogram may not terminate
+p.adb:41:14: warning: subprogram might not terminate
 p.adb:61:14: info: initialization of "B" proved
 r.adb:7:13: high: potentially blocking operation in protected operation "E"
-r.adb:7:13: warning: subprogram may not terminate
-r.adb:8:17: warning: subprogram may not terminate
+r.adb:7:13: warning: subprogram might not terminate
+r.adb:8:17: warning: subprogram might not terminate
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
-r.adb:31:14: warning: subprogram may not terminate
+r.adb:31:14: warning: subprogram might not terminate
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
 r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
 r.adb:51:14: high: no paths in subprogram will return normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect
-r.adb:51:14: warning: subprogram may not terminate
+r.adb:51:14: warning: subprogram might not terminate
 r.adb:53:07: medium: call to nonreturning subprogram might be executed
 r.adb:53:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:53:07: warning: no Global contract available for "OS_Exit"
@@ -174,6 +174,6 @@ r.adb:58:04: medium: call to nonreturning subprogram might be executed
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: warning: this statement is never reached
-r.ads:6:14: warning: subprogram may not terminate
-r.ads:7:13: warning: subprogram may not terminate
-spark_mode_off_user.ads:1:11: warning: subprogram may not terminate
+r.ads:6:14: warning: subprogram might not terminate
+r.ads:7:13: warning: subprogram might not terminate
+spark_mode_off_user.ads:1:11: warning: subprogram might not terminate

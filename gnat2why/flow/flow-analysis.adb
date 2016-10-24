@@ -4591,7 +4591,7 @@ package body Flow.Analysis is
         and then Is_Potentially_Nonreturning (FA.Spec_Entity)
       then
          Error_Msg_Flow (FA         => FA,
-                         Msg        => "subprogram may not terminate, " &
+                         Msg        => "subprogram might not terminate, " &
                            "terminating annotation could be incorrect",
                          Severity   => Medium_Check_Kind,
                          N          => FA.Spec_Entity);
@@ -4606,7 +4606,7 @@ package body Flow.Analysis is
    begin
       if Is_Potentially_Nonreturning (FA.Analyzed_Entity) then
          Error_Msg_Flow (FA         => FA,
-                         Msg        => "subprogram may not terminate",
+                         Msg        => "subprogram might not terminate",
                          Severity   => Warning_Kind,
                          N          => FA.Analyzed_Entity);
       else

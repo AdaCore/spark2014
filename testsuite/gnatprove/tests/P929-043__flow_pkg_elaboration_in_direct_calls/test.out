@@ -1,7 +1,7 @@
-nest_in_proc.adb:3:11: warning: subprogram may not terminate
+nest_in_proc.adb:3:11: warning: subprogram might not terminate
 nest_in_proc.adb:5:14: high: no paths in subprogram will return normally
 nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
-nest_in_proc.adb:5:14: warning: subprogram may not terminate
+nest_in_proc.adb:5:14: warning: subprogram might not terminate
 nest_in_proc.adb:9:07: medium: call to nonreturning subprogram might be executed
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
@@ -14,9 +14,9 @@ nest_in_task.adb:24:11: cannot write "A" during elaboration of "Pkg" (SPARK RM 7
 nest_in_task.adb:32:07: high: multiple tasks might suspend on protected object "nest_in_task.a" (SPARK RM 9(11))
 nest_in_task.adb:32:07: high: with task "nest_in_task.b"
 nest_in_task.adb:32:07: high: with task "nest_in_task.c"
-nest_in_task.ads:3:13: warning: subprogram may not terminate
+nest_in_task.ads:3:13: warning: subprogram might not terminate
 nest_in_task.ads:4:17: info: subprogram will terminate
-recursion.adb:1:11: warning: subprogram may not terminate
+recursion.adb:1:11: warning: subprogram might not terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect
-recursion.adb:3:17: warning: subprogram may not terminate
+recursion.adb:3:17: warning: subprogram might not terminate
 gnatprove: error during flow analysis and proof
