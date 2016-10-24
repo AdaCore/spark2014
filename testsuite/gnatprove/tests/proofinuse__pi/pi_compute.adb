@@ -20,13 +20,15 @@ is
       T8  : Fixed := 1.0 / 15.0;
       T9  : Fixed := 1.0 / 17.0;
       T10 : Fixed := 1.0 / 19.0;
+      Res : Fixed;
    begin
-      return 4 * (T1 - T2 + T3 - T4 + T5 - T6 + T7 - T8 + T9 - T10);
+      Res := 4 * (T1 - T2 + T3 - T4 + T5 - T6 + T7 - T8 + T9 - T10);
+      pragma Assert (Res = 3.0418358);
+      return Res;
    end Leibniz_Fixed;
 
    function Leibniz_Float return Float
---   with Post => Leibniz_Float'Result = 3.041839599609375
-     with Post => Leibniz_Float'Result in 3.0418 .. 3.0419
+     with Post => Leibniz_Float'Result = 3.0418395
    is
       T1  : Float := 1.0;
       T2  : Float := 1.0 / 3.0;
@@ -38,13 +40,15 @@ is
       T8  : Float := 1.0 / 15.0;
       T9  : Float := 1.0 / 17.0;
       T10 : Float := 1.0 / 19.0;
+      Res : Float;
    begin
-      return 4.0 * (T1 - T2 + T3 - T4 + T5 - T6 + T7 - T8 + T9 - T10);
+      Res := 4.0 * (T1 - T2 + T3 - T4 + T5 - T6 + T7 - T8 + T9 - T10);
+      pragma Assert (Res = 3.0418395);
+      return Res;
    end Leibniz_Float;
 
    function Shanks_Fixed return Fixed
---   with Post => Shanks_Fixed'Result = 3.1412525177001953125
-     with Post => Shanks_Fixed'Result in 0.0 .. 100.0
+     with Post => Shanks_Fixed'Result = 3.1412525177001953125
    is
       T1  : Fixed := 1.0;
       T2  : Fixed := 1.0 / 3.0;
@@ -70,15 +74,15 @@ is
 
       Num : Fixed := 4 * (A10 * A8 - A9 * A9);
       Den : Fixed := A10 - 2 * A9 + A8;
+      Res : Fixed;
    begin
-      pragma Assert (Num in -0.4 .. -0.3);
---    pragma Assert (Num = -0.35010528564453125);
-      pragma Assert (Den = -0.111454010009765625);
-      return Num / Den;
+      Res := Num / Den;
+      pragma Assert (Res = 3.1412525177001953125);
+      return Res;
    end Shanks_Fixed;
 
    function Shanks_Float return Float
---   with Post => Shanks_Float'Result = 3.14125514030456543
+     with Post => Shanks_Float'Result = 3.1412551
    is
       T1  : Float := 1.0;
       T2  : Float := 1.0 / 3.0;
@@ -104,13 +108,11 @@ is
 
       Num : Float := 4.0 * (A10 * A8 - A9 * A9);
       Den : Float := A10 - 2.0 * A9 + A8;
+      Res : Float;
    begin
---    pragma Assert (Num = -0.350108861923217773);
---    pragma Assert (Num <= 0.0);
---    pragma Assert (Num in -10000.0 .. 10000.0);
---    pragma Assert (Den = -0.111455082893371582);
-      pragma Assert (Den in -0.11146 .. -0.11145);
-      return Num / Den;
+      Res := Num / Den;
+      pragma Assert (Res = 3.1412551);
+      return Res;
    end Shanks_Float;
 
 begin
