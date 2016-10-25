@@ -1009,8 +1009,11 @@ package body Gnat2Why.Util is
       Scope : Entity_Id)
       return Boolean
    is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      use Flow_Types;
+
+      Read_Ids  : Flow_Id_Sets.Set;
+      Write_Ids : Flow_Id_Sets.Set;
+
    begin
       if Ekind (Scope) in E_Function | E_Procedure | E_Entry then
 
@@ -1022,10 +1025,13 @@ package body Gnat2Why.Util is
 
          --  Inside a subprogram, global variables may be uninitialized if
          --  they do not occur as reads of the subprogram.
+         --
+         --  Note: all elements of Read_Ids have their Variant set to In_View,
+         --  so the membership test below must also use this variant.
 
          return (Enclosing_Unit (Obj) = Scope
                  and then Ekind (Obj) /= E_Out_Parameter)
-           or else Read_Ids.Contains (Flow_Types.Direct_Mapping_Id (Obj));
+           or else Read_Ids.Contains (Direct_Mapping_Id (Obj, In_View));
 
       --  Every global variable referenced inside a package elaboration must be
       --  initialized. In the same way, tasks and protected objects can only
