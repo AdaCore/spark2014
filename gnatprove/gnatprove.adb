@@ -170,7 +170,7 @@ procedure Gnatprove with SPARK_Mode is
    function Replace_Config_File_If_Needed
      (Config_File : String;
       New_File    : String) return String;
-   --  if option --RTS was not used, do nothing (i.e. return the first
+   --  If option --RTS was not used, do nothing (i.e. return the first
    --  argument). Otherwise, copy the provided config file to a new file with
    --  the name of the second argument while adding the runtime information to
    --  it. Return the second argument.

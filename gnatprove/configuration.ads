@@ -209,14 +209,14 @@ package Configuration is
            Compose (Share_Spark, "config");
          Share_Why3_Drivers       : constant String :=
            Compose (Share_Why3, "drivers");
-         Share_Spark_Runtimes     : aliased constant String :=
+         Share_Spark_Runtimes     : constant String :=
            Compose (Share_Spark, "runtimes");
          Frames_Cgpr              : constant String := "frames.cgpr";
          Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
-         Gpr_Translation_Cnf_File : constant String :=
-           Compose (Share_Spark_Config, Gnat2why_Cgpr);
          Gpr_Frames_Cnf_File      : constant String :=
            Compose (Share_Spark_Config, Frames_Cgpr);
+         Gpr_Translation_Cnf_File : constant String :=
+           Compose (Share_Spark_Config, Gnat2why_Cgpr);
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
       end Install;

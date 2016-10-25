@@ -1281,6 +1281,8 @@ ASCII.LF;
    --  Start of processing for Read_Command_Line
 
    begin
+      --  Call Set_Usage for both command line configurations
+
       Set_Usage
         (First_Config,
          Usage     => Usage_Message,
@@ -1291,14 +1293,14 @@ ASCII.LF;
          Usage     => Usage_Message,
          Help_Msg  => Help_Message);
 
-      --  if no arguments have been given, print help message and exit
+      --  If no arguments have been given, print help message and exit
 
       if Com_Lin'Length = 0 then
          Abort_Msg (Config, "", With_Help => True);
       end if;
 
       --  We parse the command line *twice*. The reason is that before parsing
-      --  the commandline, we need to load the project (e.g. because the
+      --  the command line, we need to load the project (e.g. because the
       --  project also may specify extra switches), but loading the project
       --  requires reading some specific switches such as -P and -X.
 
@@ -1317,26 +1319,25 @@ ASCII.LF;
       end loop;
 
       Define_Switch
-        (First_Config, CL_Switches.P'Access,
-         "-P:",
-         Help => "The name of the project file");
+        (First_Config,
+         CL_Switches.P'Access,
+         "-P:");
 
       Define_Switch
         (First_Config,
          Version'Access,
-         Long_Switch => "--version",
-         Help => "Output version of the tool");
+         Long_Switch => "--version");
 
       Define_Switch
         (First_Config,
          CL_Switches.V'Access,
-         "-v", Long_Switch => "--verbose");
+         "-v",
+         Long_Switch => "--verbose");
 
       Define_Switch
          (First_Config,
           Clean'Access,
-          Long_Switch => "--clean",
-          Help => "Remove GNATprove intermediate files");
+          Long_Switch => "--clean");
 
       Define_Switch (First_Config, "-aP=");
 
@@ -1348,7 +1349,7 @@ ASCII.LF;
       Initialize (Proj_Env);
 
       Getopt (First_Config,
-              Callback => Handle_Project_Loading_Switches'Access,
+              Callback    => Handle_Project_Loading_Switches'Access,
               Concatenate => False);
 
       if Version then
@@ -1755,8 +1756,8 @@ ASCII.LF;
            Create_From_Base (Filesystem_String (RTS_Dir.all));
       begin
 
-         --  if this test is true, then RTS_Dir is a valid absolute or relative
-         --  path (we don't care which)
+         --  If this test is true, then RTS_Dir is a valid absolute or relative
+         --  path (we don't care which).
 
          if Is_Directory (Dir) then
             Normalize_Path (Dir);
