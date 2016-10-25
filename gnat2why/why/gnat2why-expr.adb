@@ -8892,7 +8892,7 @@ package body Gnat2Why.Expr is
          when Attribute_Update =>
             declare
                Pref        : constant Node_Id := Prefix (Expr);
-               Pref_Typ    : constant Entity_Id := Etype (Pref);
+               Pref_Typ    : constant Entity_Id := Retysp (Etype (Pref));
                Aggr        : constant Node_Id := First (Expressions (Expr));
                Prefix_Expr : W_Expr_Id;
 
