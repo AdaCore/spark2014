@@ -2617,7 +2617,7 @@ package body Flow.Analysis is
 
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
       Done : Boolean;
-      M    : Attribute_Maps.Map := FA.Atr;
+      M    : Attribute_Maps.Map renames FA.Atr;
    begin
       for Loop_Id of FA.Loops loop
          Done := False;
