@@ -32,6 +32,7 @@ def hash_cmd_line(hasher):
 
     skip = False
     proof_dir_arg = False
+    why3_conf_arg = False
     for arg in sys.argv[1:-1]:
         if skip:
             skip = False
@@ -42,10 +43,15 @@ def hash_cmd_line(hasher):
                 pass
             elif arg == "--proof-dir":
                 proof_dir_arg = True
+            elif arg == "--why3-conf":
+                why3_conf_arg = True
             else:
                 if proof_dir_arg:
                     hash_proof_dir(hasher, arg)
                     proof_dir_arg = False
+                elif why3_conf_arg:
+                    hash_file(hasher, arg)
+                    why3_conf_arg = False
                 else:
                     hasher.update(arg)
 
