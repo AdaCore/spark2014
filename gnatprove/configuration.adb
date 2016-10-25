@@ -26,6 +26,7 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
+with Ada.Direct_IO;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
@@ -112,183 +113,7 @@ package body Configuration is
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
 
-   Usage_Message : constant String :=
-     "-Pproj [switches] [-cargs switches]";
-
    --  Hidden switches: --ide-progress-bar
-   Help_Message : constant String :=
-ASCII.LF &
-"proj is a GNAT project file" &
-ASCII.LF &
-"-cargs switches are passed to gcc" &
-ASCII.LF &
-ASCII.LF &
-"All main units in proj are analyzed by default. Switches to change this:" &
-ASCII.LF &
-" -u [files]            Analyze only the given files" &
-ASCII.LF &
-"    [files]            Analyze given files and all dependencies" &
-ASCII.LF &
-" -U                    Analyze all files (including unused) of all projects" &
-ASCII.LF &
-ASCII.LF &
-"gnatprove basic switches:" & ASCII.LF &
-" -aP=p                 Add path p to project path" &
-ASCII.LF &
-"     --assumptions     Output assumptions information" &
-ASCII.LF &
-"     --codepeer=c      Enable or disable CodePeer analysis (c=on,off*)" &
-ASCII.LF &
-"     --clean           Remove GNATprove intermediate files, and exit" &
-ASCII.LF &
-" -f                    Force recompilation/analysis of all units" &
-ASCII.LF &
-" -h, --help            Display this usage information" &
-ASCII.LF &
-" -j N                  Use N parallel processes (default: 1; N=0 will use " &
-ASCII.LF &
-"                       all cores of the machine)" &
-ASCII.LF &
-" -k                    Do not stop analysis at the first error" &
-ASCII.LF &
-"     --level=n         Set the level of proof " &
-"(0 = faster to 4 = more powerful)" &
-ASCII.LF &
-" -m                    Minimal reanalysis" &
-ASCII.LF &
-"     --mode=m          Set the mode of GNATprove (m=check, check_all, flow," &
-ASCII.LF &
-"                       prove, all*)"
-& ASCII.LF &
-"     --output-msg-only Do not run any provers, output current flow and proof"
-& ASCII.LF &
-"                       results"
-& ASCII.LF &
-" -q, --quiet           Be quiet/terse"
-& ASCII.LF &
-"     --replay          Replay proofs, do not attempt new proofs"
-& ASCII.LF &
-"     --report=r        Set the report mode of GNATprove (r=fail*, all,"
-& ASCII.LF &
-"                       provers, statistics)"
-&
-ASCII.LF &
-" -v, --verbose         Output extra verbose information" &
-ASCII.LF &
-"     --version         Output version of the tool and exit" &
-ASCII.LF &
-"     --warnings=w      Set the warning mode of GNATprove " &
-"(w=off, continue*, error)" &
-ASCII.LF &
-ASCII.LF &
-" * Main mode values" &
-ASCII.LF &
-"   . check         - Fast partial check for SPARK violations" &
-ASCII.LF &
-"   . check_all     - Full check for SPARK violations" &
-ASCII.LF &
-"   . flow          - Prove correct initialization and data flow" &
-ASCII.LF &
-"   . prove         - Prove absence of run-time errors and contracts" &
-ASCII.LF &
-"   . all           - Activates all modes (default)" &
-ASCII.LF &
-ASCII.LF &
-" * Report mode values" &
-ASCII.LF &
-"   . fail          - Report failures to prove checks (default)" &
-ASCII.LF &
-"   . all           - Report all results of proving checks" &
-ASCII.LF &
-"   . provers       - Same as all, plus prover usage information" &
-ASCII.LF &
-"   . statistics    - Same as provers, plus timing and steps information" &
-
-ASCII.LF &
-ASCII.LF &
-" * Warning mode values" &
-ASCII.LF &
-"   . off           - Do not issue warnings" &
-ASCII.LF &
-"   . continue      - Issue warnings and continue (default)" &
-ASCII.LF &
-"   . error         - Treat warnings as errors" &
-ASCII.LF &
-ASCII.LF &
-"gnatprove advanced switches:" &
-ASCII.LF &
-" --no-counterexample Do not generate a counterexample for unproved formulas" &
-ASCII.LF &
-" -d, --debug         Debug mode" &
-ASCII.LF &
-" --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
-ASCII.LF &
-" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
-ASCII.LF &
-" --limit-line=s      Limit analysis to given file and line" &
-ASCII.LF &
-" --limit-subp=s      Limit analysis to subprogram defined by file and line" &
-ASCII.LF &
-" --pedantic          Use a strict interpretation of the Ada standard" &
-ASCII.LF &
-" --proof=g[:l]       Set the proof modes for generation of formulas" &
-ASCII.LF &
-"                     (g=per_check*, per_path, progressive) (l=lazy*, all)" &
-ASCII.LF &
-" --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)" &
-ASCII.LF &
-" --RTS=dir           Specify the Ada runtime name/location" &
-ASCII.LF &
-" --steps=nnn         Set the maximum number of proof steps (prover-specific)"
-& ASCII.LF &
-"                     Default is" & Natural'Image (Default_Steps) & " steps."
-& ASCII.LF &
-"                     Use value 0 for no steps limit." &
-ASCII.LF &
-" --timeout=nnn       Set the prover timeout in seconds" &
-ASCII.LF &
-"                     Use value 0 for no timeout." &
-ASCII.LF &
-" --why3-conf=f       Specify a configuration file for why3" &
-ASCII.LF &
-ASCII.LF &
-" * Proof mode values for generation" &
-ASCII.LF &
-"   . per_check     - Generate one formula per check (default)" &
-ASCII.LF &
-"   . per_path      - Generate one formula per path for each check" &
-ASCII.LF &
-"   . progressive   - Start with one formula per check, then split into" &
-ASCII.LF &
-"                     paths when needed" &
-ASCII.LF &
-ASCII.LF &
-" * Proof mode values for laziness" &
-ASCII.LF &
-"   . lazy          - Stop at first unproved formula for each check" &
-ASCII.LF &
-"                     (most suited for fully automatic proof) (default)" &
-ASCII.LF &
-"   . all           - Attempt to prove all formulas" &
-ASCII.LF &
-"                     (most suited for combination of automatic and " &
-"manual proof)" &
-ASCII.LF &
-ASCII.LF &
-" * Prover name values" &
-ASCII.LF &
-"   (Default prover is cvc4.)" &
-ASCII.LF &
-"   (Provers marked with [steps] support the --steps switch.)" &
-ASCII.LF &
-"   . altergo       - [steps] Use Alt-Ergo" &
-ASCII.LF &
-"   . cvc4          - [steps] Use CVC4" &
-ASCII.LF &
-"   . z3            - [steps] Use Z3" &
-ASCII.LF &
-"   . ...           - Any other prover configured in your .why3.conf file" &
-ASCII.LF;
 
    ---------------
    -- Abort_Msg --
@@ -688,6 +513,9 @@ ASCII.LF;
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
 
+      function Read_Help_Message return String;
+      --  Returns contents of the static help message file
+
       ----------
       -- Init --
       ----------
@@ -897,6 +725,29 @@ ASCII.LF;
             end;
          end if;
       end Process_Limit_Switches;
+
+      -----------------------
+      -- Read_Help_Message --
+      -----------------------
+
+      function Read_Help_Message return String is
+         File_Name : String renames File_System.Install.Help_Msg_File;
+         File_Size : constant Natural :=
+           Natural (Ada.Directories.Size (File_Name));
+
+         subtype File_String    is String (1 .. File_Size);
+         package File_String_IO is new Ada.Direct_IO (File_String);
+
+         File     : File_String_IO.File_Type;
+         Contents : File_String;
+      begin
+         File_String_IO.Open  (File, Mode => File_String_IO.In_File,
+                               Name => File_Name);
+         File_String_IO.Read  (File, Item => Contents);
+         File_String_IO.Close (File);
+
+         return Contents;
+      end Read_Help_Message;
 
       ---------------------
       -- Sanity_Checking --
@@ -1272,9 +1123,18 @@ ASCII.LF;
          end if;
       end Set_Warning_Mode;
 
+      --  Local variables
+
       First_Config : Command_Line_Configuration;
+
       Com_Lin : aliased String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
+
+      Usage_Message : constant String :=
+        "-Pproj [switches] [-cargs switches]";
+
+      Help_Message : constant String := Read_Help_Message;
+      --  Help message read from a static file
 
       use CL_Switches;
 

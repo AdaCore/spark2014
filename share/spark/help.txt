@@ -1,4 +1,3 @@
-Usage: gnatprove -Pproj [switches] [-cargs switches]
 
 proj is a GNAT project file
 -cargs switches are passed to gcc
@@ -87,4 +86,3 @@ gnatprove advanced switches:
    . cvc4          - [steps] Use CVC4
    . z3            - [steps] Use Z3
    . ...           - Any other prover configured in your .why3.conf file
-

@@ -108,6 +108,7 @@ install:
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
 	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
+	$(CP) share/spark/help.txt $(GNATPROVEDIR)
 	$(CP) share/spark/config/* $(CONFIGDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)

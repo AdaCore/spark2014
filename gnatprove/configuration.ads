@@ -211,6 +211,8 @@ package Configuration is
            Compose (Share_Why3, "drivers");
          Share_Spark_Runtimes     : constant String :=
            Compose (Share_Spark, "runtimes");
+         Help_Msg_File : constant String :=
+           Compose (Share_Spark, "help.txt");
          Frames_Cgpr              : constant String := "frames.cgpr";
          Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
          Gpr_Frames_Cnf_File      : constant String :=
