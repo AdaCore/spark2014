@@ -2478,59 +2478,29 @@ package body Why.Gen.Expr is
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare
             Dim   : constant Positive := Positive (Number_Dimensions (Ty));
-            Args  : W_Expr_Array (1 .. 4 * Dim);
+            Args  : W_Expr_Array (1 .. 2 * Dim);
          begin
             for Count in 0 .. Dim - 1 loop
                declare
-                  W_Typ      : constant W_Type_Id :=
-                    Nth_Index_Rep_Type_No_Bool (E   => Ty,
-                                                Dim => Count + 1);
-                  First_Expr : constant W_Expr_Id :=
-                    Insert_Simple_Conversion (Domain => Domain,
-                                              Expr   => Get_Array_Attr
-                                                (Domain => Domain,
-                                                 Ty     => Ty,
-                                                 Attr   => Attribute_First,
-                                                 Dim    => Count + 1,
-                                                 Params => Params),
-                                              To     => W_Typ);
-                  Last_Expr : constant W_Expr_Id :=
-                    Insert_Simple_Conversion (Domain => Domain,
-                                              Expr   => Get_Array_Attr
-                                                (Domain => Domain,
-                                                 Ty     => Ty,
-                                                 Attr   => Attribute_Last,
-                                                 Dim    => Count + 1,
-                                                 Params => Params),
-                                              To     => W_Typ);
                   F_Expr    : constant W_Expr_Id :=
-                    Insert_Simple_Conversion (Domain => Domain,
-                                              Expr   => Get_Array_Attr
-                                                (Domain => Domain,
-                                                 Expr   => Expr,
-                                                 Attr   => Attribute_First,
-                                                 Dim    => Count + 1),
-                                              To     => W_Typ);
+                    Get_Array_Attr
+                      (Domain => Domain,
+                       Expr   => Expr,
+                       Attr   => Attribute_First,
+                       Dim    => Count + 1);
                   L_Expr : constant W_Expr_Id :=
-                    Insert_Simple_Conversion (Domain => Domain,
-                                              Expr   => Get_Array_Attr
-                                                (Domain => Domain,
-                                                 Expr   => Expr,
-                                                 Attr   => Attribute_Last,
-                                                 Dim    => Count + 1),
-                                              To     => W_Typ);
+                    Get_Array_Attr
+                      (Domain => Domain,
+                       Expr   => Expr,
+                       Attr   => Attribute_Last,
+                       Dim    => Count + 1);
                begin
-                  Args (4 * Count + 1) := First_Expr;
-                  Args (4 * Count + 2) := Last_Expr;
-                  Args (4 * Count + 3) := F_Expr;
-                  Args (4 * Count + 4) := L_Expr;
+                  Args (2 * Count + 1) := F_Expr;
+                  Args (2 * Count + 2) := L_Expr;
                end;
             end loop;
 
-            return New_Call (Domain => Domain,
-                             Name   => Dynamic_Prop_Name (Ty),
-                             Args   => Args,
-                             Typ    => EW_Bool_Type);
+            return New_Dynamic_Property (Domain, Ty, Args, Params);
          end;
       elsif Has_Discriminants (Ty) and then Is_Constrained (Ty) then
          declare

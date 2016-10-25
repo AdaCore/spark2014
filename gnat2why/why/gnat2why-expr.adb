@@ -6434,6 +6434,17 @@ package body Gnat2Why.Expr is
       Update_Prefix : constant Node_Id :=
         (if In_Attribute_Update then Prefix (Parent (Expr)) else Empty);
 
+      Expr_Typ      : constant Entity_Id := Type_Of_Node (Expr);
+      Nb_Dim        : constant Positive :=
+        (if Ekind (Expr_Typ) = E_String_Literal_Subtype then 1
+         else Integer (Number_Dimensions (Expr_Typ)));
+      Needs_Bounds  : constant Boolean :=
+        not In_Attribute_Update and then not Is_Static_Array_Type (Expr_Typ);
+      --  We do not need to give the array bounds as additional arguments to
+      --  the aggregate function if it is a 'Update (we will use the bounds of
+      --  the updated object) or if the type is static (the bounds are declared
+      --  in the type).
+
       -----------------------
       -- Local subprograms --
       -----------------------
@@ -6508,6 +6519,8 @@ package body Gnat2Why.Expr is
          Value : Node_Lists.Cursor;
          Typ   : Node_Lists.Cursor;
          Args  : W_Expr_Array (1 .. Natural (Values.Length));
+         Bnd_Args : W_Expr_Array
+           (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
          R     : W_Expr_Id;
 
       begin
@@ -6539,12 +6552,24 @@ package body Gnat2Why.Expr is
             Cnt := Cnt + 1;
          end loop;
 
+         --  Compute the bounds of the type to be given as additional arguments
+         --  to the aggregate function.
+
+         if Needs_Bounds then
+            for Dim in 1 .. Nb_Dim loop
+               Bnd_Args (2 * Dim - 1) := Get_Array_Attr
+                 (EW_Term, Etype (Expr), Attribute_First, Dim);
+               Bnd_Args (2 * Dim) := Get_Array_Attr
+                 (EW_Term, Etype (Expr), Attribute_Last, Dim);
+            end loop;
+         end if;
+
          --  Compute the call
 
          R := New_Call (Ada_Node => Expr,
                         Domain   => Domain,
                         Name     => Func,
-                        Args     => Args,
+                        Args     => Args & Bnd_Args,
                         Typ      => Type_Of_Node (Etype (Expr)));
 
          --  Special case for choices of normal aggregate:
@@ -6692,8 +6717,6 @@ package body Gnat2Why.Expr is
 
          use Node_Lists;
 
-         Expr_Typ : constant Entity_Id  := Type_Of_Node (Expr);
-
          --  Generate name for the function based on the location of the
          --  aggregate.
 
@@ -6724,6 +6747,13 @@ package body Gnat2Why.Expr is
          Call_Args     : W_Expr_Array (1 .. Natural (Values.Length));
          Args_Map      : Ada_Ent_To_Why.Map;
 
+         --  Additional arguments for the array bounds
+
+         Bnd_Params    : Binder_Array
+           (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
+         Bnd_Args      : W_Expr_Array
+           (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
+
          --  Counter and iterators
 
          Cnt           : Positive;
@@ -6734,7 +6764,7 @@ package body Gnat2Why.Expr is
 
          Aggr          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
-         Axiom_Body    : W_Pred_Id;
+         Axiom_Body    : W_Pred_Id := True_Pred;
 
          Aggr_Temp     : constant W_Identifier_Id :=
            New_Temp_Identifier (Typ => Ret_Type);
@@ -6785,55 +6815,103 @@ package body Gnat2Why.Expr is
             end;
          end loop;
 
+         --  Assume values of the aggregate's bounds. For 'Update, take the
+         --  bounds of the array argument, otherwise, take the bounds of the
+         --  type.
+
+         if not Is_Static_Array_Type (Expr_Typ) then
+            for Dim in 1 .. Nb_Dim loop
+               declare
+                  BT     : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool
+                    (Expr_Typ, Dim);
+                  F_Expr  : constant W_Expr_Id :=
+                    (if In_Attribute_Update then
+                        Get_Array_Attr
+                       (EW_Term, +Call_Args (1), Attribute_First, 1)
+                     else +New_Temp_Identifier (Typ => BT));
+                  First_Eq : constant W_Pred_Id :=
+                    +New_Comparison
+                    (Symbol => Why_Eq,
+                     Domain => EW_Pred,
+                     Left   =>
+                       +Get_Array_Attr
+                       (EW_Term, +Aggr_Temp, Attribute_First, 1),
+                     Right  => F_Expr);
+                  L_Expr  : constant W_Expr_Id :=
+                    (if In_Attribute_Update then
+                        Get_Array_Attr
+                       (EW_Term, +Call_Args (1), Attribute_Last, 1)
+                     else +New_Temp_Identifier (Typ => BT));
+                  Last_Eq : constant W_Pred_Id :=
+                    +New_Comparison
+                    (Symbol => Why_Eq,
+                     Domain => EW_Pred,
+                     Left   =>
+                       +Get_Array_Attr
+                       (EW_Term, +Aggr_Temp, Attribute_Last, 1),
+                     Right  => L_Expr);
+
+               begin
+                  --  Store the bounds in the arguments
+
+                  if Needs_Bounds then
+                     Bnd_Args (2 * Dim - 1) := F_Expr;
+                     Bnd_Params (2 * Dim - 1) :=
+                       (Ada_Node => Empty,
+                        B_Name   => +F_Expr,
+                        B_Ent    => Null_Entity_Name,
+                        Mutable  => False);
+                     Bnd_Args (2 * Dim) := L_Expr;
+                     Bnd_Params (2 * Dim) :=
+                       (Ada_Node => Empty,
+                        B_Name   => +L_Expr,
+                        B_Ent    => Null_Entity_Name,
+                        Mutable  => False);
+                  end if;
+
+                  --  Add equalities to the axiom's body
+
+                  Axiom_Body :=
+                    +New_And_Then_Expr
+                    (Domain => EW_Pred,
+                     Left   => New_And_Expr (+First_Eq, +Last_Eq, EW_Pred),
+                     Right  => +Axiom_Body);
+               end;
+            end loop;
+
+            --  If bounds are taken from the type, we should add a guard to the
+            --  axiom for the dynamic property of the array to avoid generating
+            --  an unsound axiom if the bounds are not in their type.
+
+            if Needs_Bounds then
+               Axiom_Body :=
+                 New_Conditional
+                   (Condition   =>
+                      +New_Dynamic_Property
+                      (EW_Pred, Etype (Expr_Typ), Bnd_Args, Params_No_Ref),
+                    Then_Part   => +Axiom_Body,
+                    Typ         => EW_Bool_Type);
+            end if;
+         end if;
+
          --  Compute the call, guard and proposition for the axiom
+
+         Axiom_Body :=
+           +New_And_Then_Expr
+           (Domain => EW_Pred,
+            Left   => +Axiom_Body,
+            Right  => +Transform_Array_Component_Associations
+              (Expr   => Expr,
+               Arr    => +Aggr_Temp,
+               Args   => Args_Map,
+               Params => Params_No_Ref));
 
          Aggr :=
            New_Call (Ada_Node => Expr,
                      Domain   => EW_Term,
                      Name     => Func,
-                     Args     => Call_Args,
+                     Args     => Call_Args & Bnd_Args,
                      Typ      => Type_Of_Node (Etype (Expr)));
-
-         Axiom_Body :=
-           +Transform_Array_Component_Associations
-           (Expr   => Expr,
-            Arr    => +Aggr_Temp,
-            Args   => Args_Map,
-            Params => Params_No_Ref);
-
-         --  This is the equality that states that update cannot change
-         --  first/last attributes of the array
-
-         if In_Attribute_Update then
-            declare
-               First_Eq : constant W_Pred_Id :=
-                 +New_Comparison
-                   (Symbol => Why_Eq,
-                    Domain => EW_Pred,
-                    Left   =>
-                      +Get_Array_Attr
-                        (EW_Term, +Aggr_Temp, Attribute_First, 1),
-                    Right  =>
-                      +Get_Array_Attr
-                      (EW_Term, +Call_Args (1), Attribute_First, 1));
-               Last_Eq : constant W_Pred_Id :=
-                 +New_Comparison
-                   (Symbol => Why_Eq,
-                    Domain => EW_Pred,
-                    Left   =>
-                      +Get_Array_Attr
-                        (EW_Term, +Aggr_Temp, Attribute_Last, 1),
-                    Right  =>
-                      +Get_Array_Attr
-                        (EW_Term, +Call_Args (1), Attribute_Last, 1));
-            begin
-               Axiom_Body :=
-                 +New_And_Then_Expr
-                 (Domain => EW_Pred,
-                  Left   => New_And_Expr (+First_Eq, +Last_Eq, EW_Pred),
-                  Right  => +Axiom_Body);
-            end;
-         end if;
 
          Def_Pred :=
            +New_Typed_Binding
@@ -6865,11 +6943,11 @@ package body Gnat2Why.Expr is
                New_Function_Decl (Domain      => EW_Term,
                                   Name        => Func,
                                   Labels      => Name_Id_Sets.Empty_Set,
-                                  Binders     => Call_Params,
+                                  Binders     => Call_Params & Bnd_Params,
                                   Return_Type => Ret_Type));
          Emit (Decl_File,
                New_Guarded_Axiom (Name     => NID (Def_Axiom),
-                                  Binders  => Call_Params,
+                                  Binders  => Call_Params & Bnd_Params,
                                   Def      => Def_Pred));
 
          Close_Theory (Decl_File,

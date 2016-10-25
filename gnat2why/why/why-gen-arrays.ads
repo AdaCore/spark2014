@@ -233,6 +233,21 @@ package Why.Gen.Arrays is
    --    <left_arr>.first1 = <right_arr>.first1 /\
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
 
+   function New_Dynamic_Property
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Args   : W_Expr_Array;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id;
+   --  @param Domain The domain of the returned expression
+   --  @param Ty the entity for the Ada array type
+   --  @param Args bound values on which we want to check the dynamic predicate
+   --  @param Params transformation parameters
+   --  @return a call to the Ty's dynamic property:
+   --
+   --    <Dynamic_Prop_Name (Ty)>
+   --              Nth_Index_Type (Ty, 1)'First Nth_Index_Type (Ty, 1)'Last
+   --              Args (1) Args (2) ...
+
    function New_Element_Equality
      (Ada_Node  : Node_Id := Empty;
       Left_Arr  : W_Expr_Id;
