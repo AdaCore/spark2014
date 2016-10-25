@@ -1058,14 +1058,14 @@ package body Gnat2Why.Expr is
    begin
       --  Assume dynamic property of E
 
-         Context := Sequence
-           (Context,
-            Assume_Dynamic_Invariant
-              (Expr          => +L_Id,
-               Ty            => Etype (E),
-               Initialized   => Initialized,
-               Only_Var      => False,
-               Top_Predicate => Top_Predicate));
+      Context := Sequence
+        (Context,
+         Assume_Dynamic_Invariant
+           (Expr          => +L_Id,
+            Ty            => Etype (E),
+            Initialized   => Initialized,
+            Only_Var      => False,
+            Top_Predicate => Top_Predicate));
 
       --  Assume value if constant
 
