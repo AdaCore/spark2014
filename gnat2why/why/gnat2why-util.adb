@@ -1009,37 +1009,48 @@ package body Gnat2Why.Util is
       Scope : Entity_Id)
       return Boolean
    is
-      use Flow_Types;
-
-      Read_Ids  : Flow_Id_Sets.Set;
-      Write_Ids : Flow_Id_Sets.Set;
-
    begin
-      if Ekind (Scope) in E_Function | E_Procedure | E_Entry then
+      case Ekind (Scope) is
+      --  Inside a subprogram, global variables may be uninitialized if they do
+      --  not occur as reads of the subprogram.
 
-         Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
-                                         Classwide      => True,
-                                         Reads          => Read_Ids,
-                                         Writes         => Write_Ids,
-                                         Keep_Constants => True);
+      when E_Function | E_Procedure | E_Entry =>
 
-         --  Inside a subprogram, global variables may be uninitialized if
-         --  they do not occur as reads of the subprogram.
-         --
-         --  Note: all elements of Read_Ids have their Variant set to In_View,
-         --  so the membership test below must also use this variant.
+         if Enclosing_Unit (Obj) = Scope
+           and then Ekind (Obj) /= E_Out_Parameter
+         then
+            return True;
+         else
+            declare
+               use Flow_Types;
 
-         return (Enclosing_Unit (Obj) = Scope
-                 and then Ekind (Obj) /= E_Out_Parameter)
-           or else Read_Ids.Contains (Direct_Mapping_Id (Obj, In_View));
+               Read_Ids  : Flow_Id_Sets.Set;
+               Write_Ids : Flow_Id_Sets.Set;
+
+            begin
+               Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
+                                               Classwide      => True,
+                                               Reads          => Read_Ids,
+                                               Writes         => Write_Ids,
+                                               Keep_Constants => True);
+
+               --  Elements of Read_Ids have their Variant set to In_View, so
+               --  the membership test must also use this variant.
+
+               return Read_Ids.Contains (Direct_Mapping_Id (Obj, In_View));
+            end;
+         end if;
 
       --  Every global variable referenced inside a package elaboration must be
-      --  initialized. In the same way, tasks and protected objects can only
-      --  access synchronized or Part_Of objects, which are always initialized.
+      --  initialized. In the same way, tasks can only access synchronized or
+      --  Part_Of objects, which are always initialized.
 
-      else
+      when E_Package | E_Task_Type =>
          return True;
-      end if;
+
+      when others =>
+         raise Program_Error;
+      end case;
    end Is_Initialized;
 
    --------------------------------

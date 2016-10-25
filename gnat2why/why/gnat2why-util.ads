@@ -400,14 +400,13 @@ package Gnat2Why.Util is
       return Boolean
    with
      Pre => Ekind (Scope) in E_Entry | E_Function | E_Procedure | E_Package
-                           | E_Task_Type | E_Protected_Type
+                           | E_Task_Type
        and then not Is_Declared_In_Unit (Obj, Scope)
        and then Is_Mutable_In_Why (Obj);
    --  Returns True if Obj is always initialized in the scope of Scope
    --  @param Obj the entity of an object global to Scope which is variable in
    --         why.
-   --  @param Scope the entity of a package, entry, task, protected object, or
-   --         subprogram.
+   --  @param Scope the entity of a package, entry, task, or subprogram.
 
    ------------------------------
    -- Symbol table subprograms --
