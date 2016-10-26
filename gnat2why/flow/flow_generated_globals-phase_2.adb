@@ -2594,11 +2594,8 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------
 
    function Is_Recursive (EN : Entity_Name) return Boolean is
-   begin
-      return
-        Subprogram_Call_Graph.Contains (EN)
-        and then Subprogram_Call_Graph.Edge_Exists (EN, EN);
-   end Is_Recursive;
+     (Subprogram_Call_Graph.Contains (EN)
+      and then Subprogram_Call_Graph.Edge_Exists (EN, EN));
 
    function Is_Recursive (E : Entity_Id) return Boolean is
      (Is_Recursive (To_Entity_Name (E)));
