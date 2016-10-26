@@ -1984,7 +1984,7 @@ package body Flow_Generated_Globals.Phase_2 is
                        V.The_Nonreturning_Subprograms.First;
                   begin
                      while Name_Lists.Has_Element (C) loop
-                        Nonreturning_Subprograms.Include
+                        Nonreturning_Subprograms.Insert
                           (V.The_Nonreturning_Subprograms (C));
 
                         Name_Lists.Next (C);
