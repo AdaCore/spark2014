@@ -798,6 +798,9 @@ package body Search_Trees with SPARK_Mode is
          Prove_Plug_X;
       end if;
 
+      pragma Assert
+        (for all J in Index_Type =>
+           (if Model (T_Old) (J).K then Model (T) (J).K));
       Prove_Preserved_Values (T_Old, T);
    end Right_Rotate;
 
