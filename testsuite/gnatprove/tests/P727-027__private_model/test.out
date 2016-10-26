@@ -1,2 +1,1 @@
- 
-private_type.ads:8:45: medium: precondition might fail (e.g. when R = 0)
+private_type.ads:8:45: medium: precondition might fail

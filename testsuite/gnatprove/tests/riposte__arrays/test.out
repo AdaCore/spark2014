@@ -7,7 +7,7 @@ arrays.adb:94:07: info: assertion proved (CVC4: 1 VC)
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = NUL)
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = (others => 0))
 arrays.adb:120:22: medium: assertion might fail, cannot prove M (Elem_0) = Elem_0 (e.g. when M = (others => 0))
-arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1
+arrays.adb:128:22: medium: assertion might fail, cannot prove MM ('a') (Elem_0) = Elem_1 (e.g. when MM = (others => (others => 0)))
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:136:07: info: assertion proved (CVC4: 1 VC)
 arrays.adb:136:22: info: initialization of "M" proved

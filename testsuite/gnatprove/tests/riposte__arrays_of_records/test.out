@@ -1,40 +1,40 @@
-arrays_of_records.adb:23:22: medium: assertion might fail, cannot prove A(17).First_Value = 23
-arrays_of_records.adb:30:22: medium: assertion might fail, cannot prove A(I).First_Value = 23 (e.g. when I = 0)
-arrays_of_records.adb:35:22: medium: postcondition might fail, cannot prove A(17).First_Value = 23
-arrays_of_records.adb:44:22: medium: postcondition might fail, cannot prove A(I).First_Value = 23 (e.g. when I = 0)
-arrays_of_records.adb:55:22: medium: postcondition might fail, cannot prove A(17).First_Value = 23
+arrays_of_records.adb:23:22: medium: assertion might fail, cannot prove A(17).First_Value = 23 (e.g. when A = (17 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
+arrays_of_records.adb:30:22: medium: assertion might fail, cannot prove A(I).First_Value = 23 (e.g. when A = (0 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)) and I = 0)
+arrays_of_records.adb:35:22: medium: postcondition might fail, cannot prove A(17).First_Value = 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
+arrays_of_records.adb:44:22: medium: postcondition might fail, cannot prove A(I).First_Value = 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 0)
+arrays_of_records.adb:55:22: medium: postcondition might fail, cannot prove A(17).First_Value = 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
 arrays_of_records.adb:61:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:68:22: medium: postcondition might fail, cannot prove A(I).First_Value = 23 (e.g. when I = 0)
+arrays_of_records.adb:68:22: medium: postcondition might fail, cannot prove A(I).First_Value = 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 0)
 arrays_of_records.adb:74:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:81:22: medium: postcondition might fail, cannot prove A(17).First_Value = 42
-arrays_of_records.adb:90:22: medium: postcondition might fail, cannot prove A(I).First_Value = 42 (e.g. when I = 0)
-arrays_of_records.adb:102:22: medium: postcondition might fail, cannot prove A(17).First_Value = 42
+arrays_of_records.adb:81:22: medium: postcondition might fail, cannot prove A(17).First_Value = 42 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
+arrays_of_records.adb:90:22: medium: postcondition might fail, cannot prove A(I).First_Value = 42 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 0)
+arrays_of_records.adb:102:22: medium: postcondition might fail, cannot prove A(17).First_Value = 42 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
 arrays_of_records.adb:109:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:116:22: medium: postcondition might fail, cannot prove A(I).First_Value = 42 (e.g. when I = 0)
+arrays_of_records.adb:116:22: medium: postcondition might fail, cannot prove A(I).First_Value = 42 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 0)
 arrays_of_records.adb:123:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:130:22: medium: postcondition might fail, cannot prove A(17).First_Value /= 23
-arrays_of_records.adb:141:22: medium: postcondition might fail, cannot prove A(I).First_Value /= 23 (e.g. when I = 1)
-arrays_of_records.adb:153:22: medium: postcondition might fail, cannot prove A(17).First_Value /= 23
+arrays_of_records.adb:130:22: medium: postcondition might fail, cannot prove A(17).First_Value /= 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
+arrays_of_records.adb:141:22: medium: postcondition might fail, cannot prove A(I).First_Value /= 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 1)
+arrays_of_records.adb:153:22: medium: postcondition might fail, cannot prove A(17).First_Value /= 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)))
 arrays_of_records.adb:160:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:168:22: medium: postcondition might fail, cannot prove A(I).First_Value /= 23 (e.g. when I = 1)
+arrays_of_records.adb:168:22: medium: postcondition might fail, cannot prove A(I).First_Value /= 23 (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and I = 1)
 arrays_of_records.adb:175:07: info: assertion proved (CVC4: 1 VC)
-arrays_of_records.adb:182:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:182:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (17 => (First_Value => 0, Flag => false, Second_Value => 0), 5 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:188:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:193:22: medium: postcondition might fail, cannot prove A = A'old
+arrays_of_records.adb:193:22: medium: postcondition might fail, cannot prove A = A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (17 => (First_Value => 0, Flag => false, Second_Value => 0), 5 => (First_Value => 1, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:199:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:206:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:206:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (0 => (First_Value => 0, Flag => false, Second_Value => 0), 1 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:212:27: info: initialization of "Tmp" proved
-arrays_of_records.adb:220:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:220:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (17 => (First_Value => 0, Flag => false, Second_Value => 0), 23 => (First_Value => 0, Flag => true, Second_Value => 0), 5 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:227:29: info: initialization of "Tmp" proved
 arrays_of_records.adb:228:29: info: initialization of "Tmp" proved
-arrays_of_records.adb:236:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:236:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (0 => (First_Value => 0, Flag => false, Second_Value => 0), 1 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:243:28: info: initialization of "Tmp" proved
 arrays_of_records.adb:244:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:252:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:252:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (17 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:258:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:264:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:264:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (0 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:270:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:276:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:276:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (17 => (First_Value => 0, Flag => false, Second_Value => 0), 5 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:282:28: info: initialization of "Tmp" proved
-arrays_of_records.adb:289:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_of_records.adb:289:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (First_Value => 0, Flag => false, Second_Value => 0)) and A'Old = (0 => (First_Value => 0, Flag => false, Second_Value => 0), others => (First_Value => 0, Flag => false, Second_Value => 1)))
 arrays_of_records.adb:295:28: info: initialization of "Tmp" proved

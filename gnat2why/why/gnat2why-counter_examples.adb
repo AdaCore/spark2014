@@ -32,7 +32,8 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Atree;                     use Atree;
 with Einfo;                     use Einfo;
 with GNAT;                      use GNAT;
-with GNAT.String_Split;
+with GNAT.String_Split;         use GNAT.String_Split;
+with String_Utils;              use String_Utils;
 with Namet;                     use Namet;
 with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
@@ -165,6 +166,273 @@ package body Gnat2Why.Counter_Examples is
       package Names_And_Values is
         new Ada.Containers.Doubly_Linked_Lists
           (Element_Type => Name_And_Value);
+
+      ----------------------------
+      -- Array of records utils --
+      ----------------------------
+
+      --  Container used to keep counterex values of an array of records.
+      package Array_Record_Value is
+        new Ada.Containers.Indefinite_Ordered_Maps (
+              Key_Type => String, --  Integers or "others"
+              Element_Type => String, --  Record value
+              "<"          => "<");
+
+      procedure Add_V (Acc    : in out Array_Record_Value.Map;
+                       Indice : String;
+                       Value  : String);
+      --  Adds (Indice, Value) to Acc without checking it it is already there.
+
+      function Pretty_Print_Element (Element1 : String;
+                                     Element2 : String)
+                                     return String;
+      --  Separate elements with ','.
+
+      procedure Non_Empty_Split (S          : in out String_Split.Slice_Set;
+                                 From       : String;
+                                 Separators : String;
+                                 Mode       : String_Split.Separator_Mode);
+      --  Split that adds separators at the end of 'From' to ensure
+      --  that 'S' has at least one slice even when there is no separator in
+      --  the 'From' variable.
+
+      procedure Merge (Acc     : in out Array_Record_Value.Map;
+                       New_Acc : in out Array_Record_Value.Map);
+      --  Merge Acc and New_Acc into Acc. This is not as simple as it could
+      --  be as counterex for array of record are obtained by projecting on
+      --  particular records. So we have to combine several arrays that do not
+      --  have counterexamples for the same indices. So we need to fill the
+      --  gaps with the 'others' values.
+
+      procedure Get_List (Acc : in out Array_Record_Value.Map;
+                          V    : String;
+                          Name : String);
+      --  Merge the values of the array for field Name into already discovered
+      --  values Acc.
+
+      procedure Print_Array_Into_Value
+        (Acc   : Array_Record_Value.Map;
+         Value : in out Unbounded_String);
+      --  Pretty print the counterex for an array of record
+
+      -----------
+      -- Add_V --
+      -----------
+
+      procedure Add_V (Acc    : in out Array_Record_Value.Map;
+                       Indice : String;
+                       Value  : String) is
+      begin
+         if Indice /= "" then
+            Array_Record_Value.Insert (Acc, Indice, Value);
+         end if;
+      end Add_V;
+
+      --------------------------
+      -- Pretty_Print_Element --
+      --------------------------
+
+      function Pretty_Print_Element (Element1 : String;
+                                     Element2 : String)
+                                     return String is
+      begin
+         if Element1 = "" then
+            return (Element2);
+         else
+            return (Element1 & ", " & Element2);
+         end if;
+      end Pretty_Print_Element;
+
+      ---------------------
+      -- Non_Empty_Split --
+      ---------------------
+
+      procedure Non_Empty_Split (S          : in out String_Split.Slice_Set;
+                                 From       : String;
+                                 Separators : String;
+                                 Mode       : String_Split.Separator_Mode)
+      is
+         From_Sep : constant String := From & Separators;
+      begin
+         String_Split.Create (S          => S,
+                              From       => From_Sep,
+                              Separators => Separators,
+                              Mode       => Mode);
+      end Non_Empty_Split;
+
+      -----------
+      -- Merge --
+      -----------
+
+      procedure Merge (Acc     : in out Array_Record_Value.Map;
+                       New_Acc : in out Array_Record_Value.Map) is
+         C_Others     : constant Array_Record_Value.Cursor :=
+                          Array_Record_Value.Find (Acc, "others");
+         C_New_Others : constant Array_Record_Value.Cursor :=
+                          Array_Record_Value.Find (New_Acc, "others");
+      begin
+         --  If nothing in 'others' then Acc is empty
+         if not Array_Record_Value.Has_Element (C_Others) then
+            return;
+         end if;
+         --  If nothing in 'others' then New_Acc is empty
+         if not Array_Record_Value.Has_Element (C_New_Others) then
+            return;
+         end if;
+
+         declare
+            Former_Others : constant String :=
+                              Array_Record_Value.Element (C_Others);
+            New_Others    : constant String :=
+                              Array_Record_Value.Element (C_New_Others);
+         begin
+            --  The idea is to have one loop iterating over keys in
+            --  Acc and looking for corresponding values in New_Acc
+            --  and then removing them in New_Acc (or if no value is
+            --  found, fill it with 'others' value). The second loop
+            --  iterate over keys in New_Acc and use Acc 'others'
+            --  value as we know all these indices are indices not
+            --  present in Acc.
+            for C in Acc.Iterate loop
+               declare
+                  Indice  : constant String :=
+                              Array_Record_Value.Key (C);
+                  Element : constant String :=
+                              Array_Record_Value.Element (C);
+               begin
+                  if Indice /= "others" then
+                     declare
+                        NC : constant Array_Record_Value.Cursor :=
+                               Array_Record_Value.Find (New_Acc, Indice);
+                     begin
+                        if Array_Record_Value.Has_Element (NC) then
+                           declare
+                              New_Element : constant String :=
+                                              Array_Record_Value.Element (NC);
+                           begin
+                              Array_Record_Value.Replace_Element
+                                (Acc, C,
+                                 Pretty_Print_Element (Element,
+                                   New_Element)
+                                );
+                              Array_Record_Value.Delete
+                                (New_Acc, Indice);
+                           end;
+                        else
+                           Array_Record_Value.Replace_Element
+                             (Acc, C,
+                              Pretty_Print_Element (Element, New_Others));
+                        end if;
+                     end;
+                  end if;
+               end;
+            end loop;
+            for NC in New_Acc.Iterate loop
+               declare
+                  New_Indice  : constant String :=
+                                  Array_Record_Value.Key (NC);
+                  New_Element : constant String :=
+                                  Array_Record_Value.Element (NC);
+               begin
+                  if New_Indice /= "others" then
+                     Array_Record_Value.Insert
+                       (Acc, New_Indice,
+                        Pretty_Print_Element (Former_Others, New_Element));
+                  else
+                     Array_Record_Value.Replace
+                       (Acc, New_Indice,
+                        Pretty_Print_Element (Former_Others, New_Others));
+                  end if;
+               end;
+            end loop;
+         end;
+      end Merge;
+
+      --------------
+      -- Get_List --
+      --------------
+
+      procedure Get_List (Acc  : in out Array_Record_Value.Map;
+                          V    : String;
+                          Name : String) is
+         NV : String_Split.Slice_Set;
+         --  Remove parenthesis around counterex and space inside it
+         Rv : constant String :=
+                Trimi (V (V'First + 1 .. V'Last - 1), ' ');
+         New_Values : Array_Record_Value.Map :=
+                     Array_Record_Value.Empty_Map;
+      begin
+         --  V is the value of an array of projected record which looks like
+         --  "i1 => v1, i2 => v2, .... in => vn". We split on "," to have
+         --  single assignment pairs.
+         Non_Empty_Split (S          => NV,
+                          From       => Rv,
+                          Separators => ",",
+                          Mode       => String_Split.Single);
+         for I in 1 .. String_Split.Slice_Count (NV) loop
+            declare
+               I_Part : constant String :=
+                          String_Split.Slice (NV, I);
+               D      : String_Split.Slice_Set;
+            begin
+               if I_Part /= "" then
+                  String_Split.Create (S          => D,
+                                       From       => I_Part,
+                                       Separators => "=>",
+                                       Mode       => String_Split.Single);
+
+                  --  Indice is a string and it can be "others"
+                  declare
+                     Indice : constant String :=
+                                (String_Split.Slice (D, 1));
+                     Value  : constant String :=
+                                (String_Split.Slice (D, 3));
+                  begin
+                     --  Add new (indice, value) to the container
+                     Add_V (New_Values, Indice, Name & " => " & Value);
+                  end;
+               end if;
+            end;
+         end loop;
+         --  Merge value for field Name to the current array of record
+         Merge (Acc, New_Values);
+      end Get_List;
+
+      ----------------------------
+      -- Print_Array_Into_Value --
+      ----------------------------
+
+      procedure Print_Array_Into_Value
+        (Acc   : Array_Record_Value.Map;
+         Value : in out Unbounded_String) is
+         Is_Before : Boolean := False;
+      begin
+         Value := To_Unbounded_String ("(");
+         for Indice in Acc.Iterate loop
+            if Array_Record_Value.Has_Element (Indice) then
+               declare
+                  Cur_Value : constant String :=
+                                Array_Record_Value.Element (Indice);
+                  Key       : constant String :=
+                                Array_Record_Value.Key (Indice);
+               begin
+                  if Is_Before then
+                     Value := Value &  ", " & Key & " => "
+                       & "(" & Cur_Value & ")";
+                  else
+                     Value := Value & Key &
+                       " => " & "(" & Cur_Value & ")";
+                     Is_Before := True;
+                  end if;
+               end;
+            end if;
+         end loop;
+         Value := Value & ")";
+      end Print_Array_Into_Value;
+
+      -----------------------------------
+      -- End of Array of records utils --
+      -----------------------------------
 
       function Get_CNT_Element_Value_And_Attributes
         (CNT_Element : CNT_Element_Ptr;
@@ -299,6 +567,43 @@ package body Gnat2Why.Counter_Examples is
             end;
          end if;
 
+         --  Array of records case
+         if Is_Array_Type (Element_Type) and not CNT_Element.Fields.Is_Empty
+         then
+            declare
+               Acc   : Array_Record_Value.Map :=
+                         Array_Record_Value.Empty_Map;
+               Value : Unbounded_String := To_Unbounded_String ("");
+            begin
+               --  Initialization of the array value.
+               Array_Record_Value.Insert (Acc, "others", "");
+               for Field in CNT_Element.Fields.all.Iterate loop
+                  declare
+                     Field_Descr_Name : constant String :=
+                                          Key (Field);
+                     Field_Descr      : constant Cursor := Field;
+                  begin
+                     if Has_Element (Field_Descr) then
+                        declare
+                           Field_Descr_Val : constant String
+                             := To_String (Element (Field).Value);
+                        begin
+                           if Field_Descr_Val /= Dont_Display and
+                             Field_Descr_Val /= ""
+                           then
+                              Get_List (Acc,
+                                        Field_Descr_Val,
+                                        Field_Descr_Name);
+                           end if;
+                        end;
+                     end if;
+                  end;
+               end loop;
+               Print_Array_Into_Value (Acc, Value);
+               return Value;
+            end;
+         end if;
+
          --  Check whether the type can have fields or
          --  discriminants
 
@@ -372,7 +677,7 @@ package body Gnat2Why.Counter_Examples is
                declare
                   Field_Descr_Name : constant String :=
                     Source_Name (Decl_Field_Discr);
-                  Field_Descr : constant Cursor :=
+                  Field_Descr      : constant Cursor :=
                     Find (CNT_Element.Fields.all,
                           Field_Descr_Name);
                begin
@@ -615,8 +920,6 @@ package body Gnat2Why.Counter_Examples is
                      when Constraint_Error =>
                         return Empty;
                   end Try_Get_Part_Entity;
-
-                  use GNAT.String_Split;
 
                   Part : constant String :=
                     Slice (Name_Parts, Var_Slice_Num);

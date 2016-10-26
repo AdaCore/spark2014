@@ -58,4 +58,7 @@ package String_Utils is
      (S = null or else S.all = "");
    --  Return True iff S is null or the empty string
 
+   function Trimi (S : String; C : Character) return String;
+   --  Trimi returns a copy of S with all occurences of C removed.
+
 end String_Utils;

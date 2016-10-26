@@ -13,14 +13,14 @@ do_loops.adb:39:07: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:39:22: info: initialization of "D.F3" proved
 do_loops.adb:39:40: info: initialization of "D.F3" proved
 do_loops.adb:40:22: info: initialization of "D.F4" proved
-do_loops.adb:40:22: medium: assertion might fail, cannot prove D.F4 = D.F4'loop_entry
+do_loops.adb:40:22: medium: assertion might fail, cannot prove D.F4 = D.F4'loop_entry (e.g. when D = (F3 => ?, F4 => (0 => (F1 => 0, F2 => 0), 100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1))))
 do_loops.adb:40:33: info: initialization of "D.F4" proved
 do_loops.adb:47:22: info: initialization of "D.F3" proved
 do_loops.adb:48:22: info: initialization of "D.F4" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F3" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F4" proved
 do_loops.adb:50:25: info: initialization of "D.F3" proved
-do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when I = 99)
+do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 1, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => ?) and I = 99)
 do_loops.adb:50:43: info: initialization of "D.F3" proved
 do_loops.adb:51:10: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:51:25: info: initialization of "D.F3" proved
@@ -35,7 +35,7 @@ do_loops.adb:64:10: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:64:25: info: initialization of "D.F3" proved
 do_loops.adb:64:43: info: initialization of "D.F3" proved
 do_loops.adb:65:25: info: initialization of "D.F3" proved
-do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when I = 2)
+do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 2 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => ?) and I = 2)
 do_loops.adb:65:43: info: initialization of "D.F3" proved
 do_loops.adb:72:25: info: initialization of "D.F3" proved
 do_loops.adb:75:07: info: assertion proved (CVC4: 1 VC)
@@ -48,7 +48,7 @@ do_loops.adb:88:31: info: initialization of "D.F3" proved
 do_loops.adb:89:37: info: initialization of "D_inner.F3" proved
 do_loops.adb:90:37: info: initialization of "D_outer.F3" proved
 do_loops.adb:95:22: info: initialization of "D.F3" proved
-do_loops.adb:95:22: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F1 (e.g. when I = 99)
+do_loops.adb:95:22: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F1 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => ?) and I = 99)
 do_loops.adb:95:40: info: initialization of "D.F3" proved
 do_loops.adb:96:07: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:96:22: info: initialization of "D.F3" proved
@@ -61,10 +61,10 @@ do_loops.adb:106:29: info: initialization of "D_outer.F1" proved
 do_loops.adb:106:29: info: initialization of "D_outer.F2" proved
 do_loops.adb:107:24: info: initialization of "D.F4" proved
 do_loops.adb:110:22: info: initialization of "D.F3" proved
-do_loops.adb:110:22: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when I = 99)
+do_loops.adb:110:22: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 1, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => ?) and I = 99)
 do_loops.adb:110:40: info: initialization of "D.F3" proved
 do_loops.adb:111:22: info: initialization of "D.F3" proved
-do_loops.adb:111:22: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when I = 100)
+do_loops.adb:111:22: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => ?) and I = 100)
 do_loops.adb:111:40: info: initialization of "D.F3" proved
 do_loops.adb:112:07: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:112:22: info: initialization of "D.F4" proved

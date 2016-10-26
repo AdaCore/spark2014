@@ -50,16 +50,16 @@ aida-containers-formal_vectors.adb:175:13: info: range check proved (CVC4: 1 VC)
 aida-containers-formal_vectors.adb:179:31: info: precondition proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:49:14: info: postcondition proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:56:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Capacity = 1)
-aida-containers-formal_vectors.ads:72:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Source = -1)
-aida-containers-formal_vectors.ads:79:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Capacity = 1 and Source = -1)
-aida-containers-formal_vectors.ads:85:18: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = -1 and Index = 1)
+aida-containers-formal_vectors.ads:72:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Source = 0)
+aida-containers-formal_vectors.ads:79:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Capacity = 1 and Source = 0)
+aida-containers-formal_vectors.ads:85:18: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = 0 and Index = 1)
 aida-containers-formal_vectors.ads:93:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Index = 1)
-aida-containers-formal_vectors.ads:100:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when New_Item = -1)
+aida-containers-formal_vectors.ads:100:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when New_Item = 0)
 aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 (e.g. when New_Item = 0)
 aida-containers-formal_vectors.ads:108:17: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:121:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when I = 1)
-aida-containers-formal_vectors.ads:129:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = -1)
-aida-containers-formal_vectors.ads:136:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = -1)
+aida-containers-formal_vectors.ads:129:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = 0)
+aida-containers-formal_vectors.ads:136:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at hnco-test2.ads:8 (e.g. when Container = 0)
 hnco-test2.adb:7:08: medium: precondition might fail
 hnco-test2.adb:8:08: medium: precondition might fail
 hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1)

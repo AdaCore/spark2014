@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body String_Utils is
 
@@ -61,5 +62,20 @@ package body String_Utils is
    begin
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
    end Lower_Case_First;
+
+   -----------
+   -- Trimi --
+   -----------
+
+   function Trimi (S : String; C : Character) return String is
+      R : Unbounded_String := To_Unbounded_String ("");
+   begin
+      for I of S loop
+         if I /= C then
+            R := R & I;
+         end if;
+      end loop;
+      return To_String (R);
+   end Trimi;
 
 end String_Utils;
