@@ -289,8 +289,9 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
 
-   function Is_Predefined (E : Entity_Id) return Boolean;
-   --  @param E subprogram
+   function Is_Predefined (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   --  @param E subprogram or entry
    --  @return True iff E is declared in a predefined unit or an instance
    --     thereof.
 

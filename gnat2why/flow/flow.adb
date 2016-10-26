@@ -1289,7 +1289,7 @@ package body Flow is
                   --  they are not in an instance of a generic.
                   if Generating_Globals
                     and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
-                    and then not Is_Predefined (Scope (E))
+                    and then not Is_Predefined (E)
                   then
                      --  We register subprograms with body not in SPARK as
                      --  nonreturning as long as they are not imported or
