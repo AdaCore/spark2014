@@ -232,7 +232,7 @@ package Configuration is
    Subdir_Name : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
-   Main_Subdir : aliased GNAT.Strings.String_Access := null;
+   Main_Subdir : GNAT.Strings.String_Access := null;
    --  The name of the main sub-directory "gnatprove" in which files are
    --  generated. This is the same as
    --  <obj-dir-for-the-main-project>/Subdir_Name
@@ -244,7 +244,7 @@ package Configuration is
    --  The name of a why3 configuration file to be used in a single run of
    --  gnatprove.
 
-   Socket_Name : aliased GNAT.Strings.String_Access := null;
+   Socket_Name : GNAT.Strings.String_Access := null;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.
 

@@ -1127,7 +1127,7 @@ package body Configuration is
 
       First_Config : Command_Line_Configuration;
 
-      Com_Lin : aliased String_List :=
+      Com_Lin : String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
       Usage_Message : constant String :=
@@ -1418,11 +1418,11 @@ package body Configuration is
       begin
          if Extra_Switches /= null then
             declare
-               All_Switches   : aliased constant String_List :=
+               All_Switches : constant String_List :=
                  Extra_Switches.all & Com_Lin;
-               All_Access     : constant String_List_Access :=
+               All_Access   : constant String_List_Access :=
                  new String_List'(All_Switches);
-               Parser         : Opt_Parser;
+               Parser       : Opt_Parser;
             begin
                Initialize_Option_Scan (Parser, All_Access);
                Getopt (Config,
