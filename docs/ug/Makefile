@@ -3,7 +3,12 @@
 
 # Main mode for generating SPARK User's Guide:
 #  - full for the complete documentation
-#  - core for a core subset of the documentation, suitable for translation in other languages
+#  - core for a core subset of the documentation, suitable for translation in
+#    other languages. In that case, you also need to update files index.rst
+#    and gnatprove.rst to uncomment the lines that conditionally change the
+#    toctree for core mode. Indeed, Sphinx does not support currently
+#    conditional changes to the toctree, so leaving these lines uncommented
+#    leads to broken toctree.
 MODE ?= full
 
 # You can set these variables from the command line.

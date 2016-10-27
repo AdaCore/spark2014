@@ -22,6 +22,20 @@ SPARK 2014 User's Guide
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
 
+.. only : : core
+
+   .. toctree::
+      :maxdepth: 3
+      :numbered: 4
+
+      getting_started
+      introduction
+      install
+      spark_mode
+      spark_2014
+      gnatprove
+      gfdl
+
 .. only:: full
 
    .. toctree::
@@ -37,20 +51,6 @@ SPARK 2014 User's Guide
       gnatprove
       usage_scenarios
       appendix
-      gfdl
-
-.. only:: core
-
-   .. toctree::
-      :maxdepth: 3
-      :numbered: 4
-
-      getting_started
-      introduction
-      install
-      spark_mode
-      spark_2014
-      gnatprove
       gfdl
 
 .. Indices and tables
