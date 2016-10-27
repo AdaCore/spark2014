@@ -15,7 +15,7 @@ statically with |GNATprove|. |GNATprove| also performs additional verifications
 on the specification of the expected behavior itself, and its correspondence to
 the code.
 
-.. only:: core
+.. only : : core
 
    .. toctree::
       :maxdepth: 2
