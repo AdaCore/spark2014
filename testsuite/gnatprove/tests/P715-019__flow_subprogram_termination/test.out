@@ -73,7 +73,7 @@ container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram will terminate
 container.ads:23:13: info: subprogram will terminate
 container.ads:27:14: warning: subprogram might not terminate
-functions.adb:14:14: high: no paths in subprogram will return normally
+functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:14:14: warning: subprogram might not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
@@ -81,7 +81,7 @@ functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.ads:3:13: warning: subprogram might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
 functions.ads:6:13: warning: subprogram might not terminate
-functions.ads:9:17: high: no paths in subprogram will return normally
+functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram might not terminate
 imported.adb:5:07: warning: assuming "P" has no effect on global items
@@ -164,7 +164,7 @@ r.adb:31:14: warning: subprogram might not terminate
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
 r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
-r.adb:51:14: high: no paths in subprogram will return normally
+r.adb:51:14: high: all paths in "Proc4" raise exceptions or do not terminate normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect
 r.adb:51:14: warning: subprogram might not terminate
 r.adb:53:07: medium: call to nonreturning subprogram might be executed

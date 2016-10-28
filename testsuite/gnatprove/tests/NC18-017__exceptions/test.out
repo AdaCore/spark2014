@@ -1,4 +1,4 @@
-client.adb:4:11: high: no paths in subprogram will return normally
+client.adb:4:11: high: all paths in "Client" raise exceptions or do not terminate normally
 client.adb:4:11: warning: subprogram "Client" has no effect
 client.adb:9:07: medium: exception might be raised (e.g. when X = 0)
 client.adb:11:07: medium: exception might be raised (e.g. when X = 1)

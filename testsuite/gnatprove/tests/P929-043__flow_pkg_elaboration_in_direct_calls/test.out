@@ -1,5 +1,5 @@
 nest_in_proc.adb:3:11: warning: subprogram might not terminate
-nest_in_proc.adb:5:14: high: no paths in subprogram will return normally
+nest_in_proc.adb:5:14: high: all paths in "Proxy" raise exceptions or do not terminate normally
 nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
 nest_in_proc.adb:5:14: warning: subprogram might not terminate
 nest_in_proc.adb:9:07: medium: call to nonreturning subprogram might be executed

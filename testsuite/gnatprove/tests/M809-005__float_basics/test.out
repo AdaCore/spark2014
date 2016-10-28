@@ -22,8 +22,8 @@ generic_float_tests.adb:57:22: medium: assertion might fail, cannot prove X + Y 
 generic_float_tests.adb:57:22: medium: assertion might fail, cannot prove X + Y > X, in instantiation at foo.ads:15
 generic_float_tests.adb:57:24: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:57:24: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:62:14: high: no paths in subprogram will return normally, in instantiation at foo.ads:10
-generic_float_tests.adb:62:14: high: no paths in subprogram will return normally, in instantiation at foo.ads:15
+generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or do not terminate normally, in instantiation at foo.ads:10
+generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or do not terminate normally, in instantiation at foo.ads:15
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:66:07: info: assertion proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at foo.ads:10

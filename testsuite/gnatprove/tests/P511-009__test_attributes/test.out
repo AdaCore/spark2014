@@ -60,22 +60,22 @@ component_size_attribute.adb:28:14: warning: subprogram "Test1" has no effect
 component_size_attribute.adb:30:07: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:31:22: medium: assertion might fail, cannot prove RA'Component_size < 0
 component_size_attribute.adb:34:04: warning: analyzing unreferenced procedure "Test2"
-component_size_attribute.adb:34:14: high: no paths in subprogram will return normally
+component_size_attribute.adb:34:14: high: all paths in "Test2" raise exceptions or do not terminate normally
 component_size_attribute.adb:34:14: warning: subprogram "Test2" has no effect
 component_size_attribute.adb:36:07: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:37:22: medium: assertion might fail, cannot prove false
 component_size_attribute.adb:40:04: warning: analyzing unreferenced procedure "Test3"
-component_size_attribute.adb:40:14: high: no paths in subprogram will return normally
+component_size_attribute.adb:40:14: high: all paths in "Test3" raise exceptions or do not terminate normally
 component_size_attribute.adb:40:14: warning: subprogram "Test3" has no effect
 component_size_attribute.adb:42:07: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:43:22: medium: assertion might fail, cannot prove false
 component_size_attribute.adb:46:04: warning: analyzing unreferenced procedure "Test4"
-component_size_attribute.adb:46:14: high: no paths in subprogram will return normally
+component_size_attribute.adb:46:14: high: all paths in "Test4" raise exceptions or do not terminate normally
 component_size_attribute.adb:46:14: warning: subprogram "Test4" has no effect
 component_size_attribute.adb:48:07: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:49:22: medium: assertion might fail, cannot prove false
 component_size_attribute.adb:52:04: warning: analyzing unreferenced procedure "Test5"
-component_size_attribute.adb:52:14: high: no paths in subprogram will return normally
+component_size_attribute.adb:52:14: high: all paths in "Test5" raise exceptions or do not terminate normally
 component_size_attribute.adb:52:14: warning: subprogram "Test5" has no effect
 component_size_attribute.adb:54:07: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:55:22: medium: assertion might fail, cannot prove false
