@@ -553,19 +553,19 @@ sensfusion6_pack.adb:238:40: info: range check proved (Interval), in call inline
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:238:50: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:242:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:242:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:71: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:245:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:245:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:71: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:248:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:248:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:52: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:61: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:63: info: initialization of "Half_Ez" proved
