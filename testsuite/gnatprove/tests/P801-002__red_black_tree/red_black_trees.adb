@@ -44,7 +44,7 @@ package body Red_Black_Trees with SPARK_Mode is
             if Color (T, Y) = Red then
 
                --  If Y is red, move both Y and X's parent to black and the
-               --  grand parent to Red. This preserves the number of black node
+               --  grand parent to red. This preserves the number of black nodes
                --  per branch.
 
                T.Color (Y) := Black;
@@ -94,7 +94,7 @@ package body Red_Black_Trees with SPARK_Mode is
             if Color (T, Y) = Red then
 
                --  If Y is red, move both Y and X's parent to black and the
-               --  grand parent to Red. This preserves the number of black node
+               --  grand parent to red. This preserves the number of black nodes
                --  per branch.
 
                T.Color (Y) := Black;

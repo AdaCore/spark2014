@@ -6,11 +6,11 @@ with Conts; use Conts;
 with Search_Trees; use Search_Trees;
 with Binary_Trees; use Binary_Trees;
 
---  This package provides an implementation of balanced red black trees above
---  the search tree implementation. Appart from the regular search tree, a red
---  black tree contains an array associating a color to each node. The invariant
---  states that there cannot be two red nodes in a row in any path of the tree.
---  We do not attempt to verify that the tree stays balanced.
+--  This package provides an implementation of balanced red-black trees above
+--  the search tree implementation. Apart from the regular search tree, a
+--  red-black tree contains an array associating a color to each node. The
+--  invariant states that there cannot be two red nodes in a row in any path of
+--  the tree. We do not attempt to verify that the tree stays balanced.
 
 package Red_Black_Trees with SPARK_Mode is
    type Rbt is private with Default_Initial_Condition => True;
