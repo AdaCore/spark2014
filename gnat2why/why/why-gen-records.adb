@@ -24,8 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;          use Common_Containers;
+with Common_Iterators;           use Common_Iterators;
 with Elists;                     use Elists;
-with Flow_Utility;               use Flow_Utility;
 with GNAT.Source_Info;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Namet;                      use Namet;
@@ -1438,8 +1438,12 @@ package body Why.Gen.Records is
                Index := Index + 1;
             end if;
 
-            if Is_Protected_Type (E) then
-               for Part of Get_Part_Of_Variables (E) loop
+            if Ekind (E) = E_Protected_Type
+              and then Is_Single_Concurrent_Type (E)
+            then
+               for Part of Iter (Part_Of_Constituents (Anonymous_Object (E)))
+               loop
+                  --  ??? what about Part_Of variables that are not in SPARK?
                   Binders_F (Index) :=
                     (B_Name =>
                        To_Why_Id

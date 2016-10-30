@@ -25,8 +25,6 @@
 
 with Aspects;                            use Aspects;
 with Elists;                             use Elists;
-with Flow_Types;                         use Flow_Types;
-with Flow_Utility;                       use Flow_Utility;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
@@ -351,11 +349,12 @@ package body SPARK_Util.Types is
          Count := Count + 1;
       end if;
 
-      if Is_Protected_Type (E) then
-         for Part of Get_Part_Of_Variables (E) loop
-            pragma Unreferenced (Part);
-            Count := Count + 1;
-         end loop;
+      if Ekind (E) = E_Protected_Type
+        and then Is_Single_Concurrent_Type (E)
+      then
+         Count := Count +
+           Natural (List_Length (Part_Of_Constituents (Anonymous_Object (E))));
+         --  ??? should we count Part_Of variables that are not in SPARK?
       end if;
 
       return Count;

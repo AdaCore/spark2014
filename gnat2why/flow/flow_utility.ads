@@ -359,11 +359,6 @@ is
                             Type_Kind;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
-   function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set
-   with Pre => Is_Protected_Type (E);
-   --  @param E the entity of a protected type
-   --  @return the variables that belong to E by virtue of "part_of"
-
    function Expand_Abstract_State
      (F               : Flow_Id;
       Erase_Constants : Boolean)
