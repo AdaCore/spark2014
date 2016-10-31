@@ -935,7 +935,7 @@ package body Flow_Utility is
          --  If Subprogram is a function then we need to add it to the
          --  All_Writes set so that Subprogram'Result can appear on the LHS of
          --  the Refined_Depends.
-         if Ekind (Subprogram) in E_Function | E_Generic_Function then
+         if Ekind (Subprogram) = E_Function then
             All_Writes.Insert (Direct_Mapping_Id (Subprogram));
          end if;
 
