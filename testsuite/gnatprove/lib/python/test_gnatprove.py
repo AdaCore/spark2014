@@ -12,8 +12,11 @@ from gnatpython.mainloop import (MainLoop, add_mainloop_options,
 from gnatpython.testdriver import add_run_test_options
 from gnatpython.reports import ReportDiff
 
+from collections import deque
+import fnmatch
 from glob import glob
 
+import re
 import os
 
 
@@ -52,6 +55,11 @@ def run_testsuite(test_driver):
         else:
             print 'error: test \'' + options.run_test + '\' not found'
             exit(1)
+    elif options.pattern:
+        test_list = filter_list('tests/*')
+        reg = re.compile(options.pattern)
+        test_list = [test for test in test_list
+                     if test_contains_pattern(test, reg)]
     else:
         test_list = [t for t in filter_list('tests/*', options.run_test)
                      if os.path.isdir(t)]
@@ -89,6 +97,38 @@ def filter_list(pattern, run_test=""):
         return [test for test in test_list if run_test in test]
 
 
+def file_contains_regex(pattern, fn):
+    with open(fn, 'r') as f:
+        for line in f:
+            if pattern.search(line):
+                return True
+    return False
+
+
+def test_contains_pattern(test, reg):
+    files = ada_files_of_test(test)
+    for fn in files:
+        if file_contains_regex(reg, fn):
+            return True
+    return False
+
+
+def ada_files_of_test(test):
+    result = []
+    q = deque()
+    q.append(test)
+    while len(q) > 0:
+        dir = q.pop()
+        for fn in os.listdir(dir):
+            my_fn = os.path.join(dir, fn)
+            if os.path.isdir(my_fn):
+                q.append(my_fn)
+            else:
+                if fnmatch.fnmatch(my_fn, '*.ad[bs]'):
+                    result.append(my_fn)
+    return result
+
+
 def __parse_options():
     """Parse command lines options"""
     m = Main(add_targets_options=True)
@@ -105,6 +145,9 @@ def __parse_options():
     m.add_option("--testlist", dest="test_list", action="store",
                  type="string",
                  help="provide text file with one test per line to be run")
+    m.add_option("--pattern", dest="pattern", action="store",
+                 type="string",
+                 help="only run tests whose ada files contain this pattern")
     m.add_option("--inverse-prover", dest="inverse_prover",
                  action="store_true",
                  default=False, help="inverse order of default provers")
