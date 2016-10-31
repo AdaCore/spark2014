@@ -741,7 +741,12 @@ package body Gnat2Why.Annotate is
 
       Ok := False;
 
-      if List_Length (Pragma_Argument_Associations (Node)) /= 4 then
+      --  in the case of an annotate aspect, there is a fifth argument
+      --  for the entity to which the aspect applies. We check for this
+      --  situation explicitly below, to avoid the error message in that
+      --  case.
+
+      if List_Length (Pragma_Argument_Associations (Node)) not in 4 .. 5 then
          Error_Msg_N
            ("a Gnatprove Annotate pragma requires exactly 4 arguments",
             Node);
@@ -754,6 +759,21 @@ package body Gnat2Why.Annotate is
       Arg2_Exp := Expression (Arg2);
       Arg3_Exp := Expression (Arg3);
       Arg4_Exp := Expression (Arg4);
+
+      if List_Length (Pragma_Argument_Associations (Node)) = 5 then
+         declare
+            Arg5 : constant Node_Id := Next (Arg4);
+         begin
+            if Chars (Arg5) = No_Name
+              or else Get_Name_String (Chars (Arg5)) /= "entity"
+            then
+               Error_Msg_N
+                 ("a Gnatprove Annotate pragma requires exactly 4 arguments",
+                  Node);
+            end if;
+         end;
+      end if;
+
       if Nkind (Arg2_Exp) = N_Identifier then
          declare
             Args_Str : constant String := Get_Name_String (Chars (Arg2_Exp));
