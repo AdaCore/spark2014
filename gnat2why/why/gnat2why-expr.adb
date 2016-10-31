@@ -10031,7 +10031,8 @@ package body Gnat2Why.Expr is
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
 
-                  when E_Protected_Subtype =>
+                  when E_Protected_Subtype
+                     | E_Task_Subtype      =>
 
                      --  We need to check that the new discriminants of the
                      --  subtype fit into the base type.
@@ -10043,7 +10044,6 @@ package body Gnat2Why.Expr is
                      | E_Class_Wide_Subtype
                      | E_Protected_Type
                      | E_Task_Type
-                     | E_Task_Subtype
                   =>
                      null;
 

@@ -1,4 +1,5 @@
 p.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
 p.ads:8:13: info: range check proved (CVC4: 1 VC)
+p.ads:9:13: info: range check proved (CVC4: 1 VC)
 p.ads:14:19: medium: assertion might fail, cannot prove PO_X = 0 (e.g. when PO_X = -1)
 p.ads:15:19: medium: assertion might fail, cannot prove TO_X = 0 (e.g. when TO_X = -1)
