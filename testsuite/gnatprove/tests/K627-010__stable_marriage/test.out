@@ -1,36 +1,36 @@
 stable_marriage.adb:5:43: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:8:10: info: loop invariant initialization proved (CVC4: 2 VC)
-stable_marriage.adb:8:10: info: loop invariant preservation proved (CVC4: 2 VC)
+stable_marriage.adb:9:13: info: loop invariant initialization proved (CVC4: 2 VC)
+stable_marriage.adb:9:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:10:16: info: initialization of "Seen" proved
 stable_marriage.adb:11:26: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:12:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
-stable_marriage.adb:15:07: medium: assertion might fail (e.g. when G1 = 1 and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:15:22: medium: assertion might fail (e.g. when G1 = 1 and Seen = (1 => false, 0 => false, others => true))
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
 stable_marriage.adb:15:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
 stable_marriage.adb:19:34: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:26:43: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:29:10: info: loop invariant initialization proved (CVC4: 2 VC)
-stable_marriage.adb:29:10: info: loop invariant preservation proved (CVC4: 2 VC)
+stable_marriage.adb:30:13: info: loop invariant initialization proved (CVC4: 2 VC)
+stable_marriage.adb:30:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:31:16: info: initialization of "Seen" proved
 stable_marriage.adb:32:26: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:33:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
-stable_marriage.adb:36:07: medium: assertion might fail (e.g. when G2 = 1 and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:36:22: medium: assertion might fail (e.g. when G2 = 1 and Seen = (1 => false, 0 => false, others => true))
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
 stable_marriage.adb:36:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
 stable_marriage.adb:40:34: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:48:36: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:51:07: info: precondition proved (CVC4: 1 VC)
-stable_marriage.adb:53:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:53:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:54:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:54:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:54:21: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:55:16: info: initialization of "Result" proved
 stable_marriage.adb:55:28: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:56:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:56:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:57:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:57:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:58:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:59:28: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:59:50: info: initialization of "Result" proved
@@ -38,13 +38,13 @@ stable_marriage.adb:60:29: info: initialization of "Result" proved
 stable_marriage.adb:62:14: info: initialization of "Result" proved
 stable_marriage.adb:68:36: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:71:07: info: precondition proved (CVC4: 1 VC)
-stable_marriage.adb:73:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:73:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:74:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:74:21: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:75:16: info: initialization of "Result" proved
 stable_marriage.adb:75:28: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:76:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:76:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:77:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:77:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:78:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:79:28: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:79:50: info: initialization of "Result" proved
@@ -56,13 +56,13 @@ stable_marriage.adb:97:19: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:98:14: info: initialization of "Inverted" proved
 stable_marriage.adb:104:45: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:107:07: medium: precondition might fail
-stable_marriage.adb:109:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:109:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:110:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:110:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:110:21: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:111:16: info: initialization of "Result" proved
 stable_marriage.adb:111:34: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:112:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:112:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:114:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:115:35: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:116:29: info: initialization of "Result" proved
@@ -76,8 +76,8 @@ stable_marriage.adb:167:11: info: postcondition proved (CVC4: 1 VC)
 stable_marriage.adb:168:36: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:172:37: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:173:67: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:177:13: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:177:13: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:178:16: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:178:16: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:178:24: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:179:19: info: initialization of "Result" proved
 stable_marriage.adb:179:27: info: index check proved (CVC4: 2 VC)
@@ -124,7 +124,7 @@ stable_marriage.adb:303:13: info: initialization of "Already_Asked" proved
 stable_marriage.adb:304:30: info: initialization of "Already_Asked" proved
 stable_marriage.adb:304:30: info: range check proved (CodePeer)
 stable_marriage.adb:304:45: info: range check proved (CodePeer)
-stable_marriage.adb:305:13: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:306:16: info: assertion proved (CVC4: 1 VC)
 stable_marriage.adb:306:21: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:306:70: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:307:38: info: initialization of "G1" proved
@@ -137,7 +137,7 @@ stable_marriage.adb:311:53: info: range check proved (CodePeer)
 stable_marriage.adb:313:31: info: initialization of "G2" proved
 stable_marriage.adb:316:35: info: initialization of "G2" proved
 stable_marriage.adb:321:39: info: initialization of "G2" proved
-stable_marriage.adb:322:13: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:322:28: info: assertion proved (CodePeer)
 stable_marriage.adb:322:28: info: precondition proved (CodePeer)
 stable_marriage.adb:322:44: info: initialization of "G1" proved
 stable_marriage.adb:322:72: info: initialization of "G2" proved
@@ -145,9 +145,9 @@ stable_marriage.adb:326:13: info: initialization of "G1" proved
 stable_marriage.adb:329:13: info: initialization of "Accepted" proved
 stable_marriage.adb:330:24: info: initialization of "G2" proved
 stable_marriage.adb:330:27: info: initialization of "G1" proved
-stable_marriage.adb:333:10: info: assertion proved (CVC4: 1 VC)
-stable_marriage.adb:335:10: info: assertion proved (CVC4: 1 VC)
-stable_marriage.adb:343:10: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:333:25: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:336:13: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:344:13: info: assertion proved (CVC4: 1 VC)
 stable_marriage.adb:346:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:348:51: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:352:24: info: range check proved (CVC4: 2 VC)
@@ -157,7 +157,7 @@ stable_marriage.adb:355:54: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:356:33: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:357:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:358:59: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:360:10: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:360:25: info: assertion proved (CVC4: 1 VC)
 stable_marriage.adb:362:40: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:364:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:368:28: info: range check proved (CVC4: 2 VC)
@@ -165,33 +165,32 @@ stable_marriage.adb:370:46: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:372:20: medium: assertion might fail, cannot prove Result (Ranking_1 (G1_Id) (Ranking (Proposals_Made (G1_Id)))) = G1_Id
 stable_marriage.adb:373:31: info: range check proved (CodePeer)
 stable_marriage.adb:377:29: info: precondition proved (CVC4: 1 VC)
-stable_marriage.adb:380:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:380:10: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:380:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
-stable_marriage.adb:381:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:381:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:380:33: info: loop invariant proved (CodePeer)
 stable_marriage.adb:381:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
 stable_marriage.adb:381:33: info: initialization of "Unmatched_G1_Set.Elements" proved
-stable_marriage.adb:382:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:382:10: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:381:33: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:381:33: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:383:13: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:383:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:383:21: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:384:18: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:384:45: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:384:64: info: range check proved (CVC4: 1 VC)
-stable_marriage.adb:388:07: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:388:22: info: assertion proved (CVC4: 1 VC)
 stable_marriage.adb:388:22: info: initialization of "Unmatched_G1_Set.Cardinality" proved
 stable_marriage.adb:388:22: info: initialization of "Unmatched_G1_Set.Elements" proved
-stable_marriage.adb:390:07: info: assertion proved (CVC4: 2 VC)
+stable_marriage.adb:390:22: info: assertion proved (CVC4: 2 VC)
 stable_marriage.adb:391:25: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:392:28: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:394:13: info: initialization of "Unmatched_G1_Set.Cardinality" proved
-stable_marriage.adb:395:10: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:395:10: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:395:33: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:395:33: info: initialization of "Result" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G2_Set" proved
+stable_marriage.adb:395:33: info: loop invariant initialization proved (CVC4: 1 VC)
+stable_marriage.adb:395:33: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:396:10: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:396:10: info: initialization of "Ranking_2_Inverted" proved
 stable_marriage.adb:396:10: info: initialization of "Result" proved

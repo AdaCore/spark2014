@@ -1,6 +1,5 @@
-count.adb:6:10: info: loop invariant initialization proved (CVC4: 1 VC)
-count.adb:6:10: info: loop invariant preservation proved (CVC4: 1 VC)
 count.adb:6:33: info: initialization of "Res" proved
+count.adb:6:33: info: loop invariant proved (CodePeer)
 count.adb:7:17: info: initialization of "Res" proved
 count.adb:7:21: info: overflow check proved (CodePeer)
 count.adb:8:13: info: initialization of "Res" proved

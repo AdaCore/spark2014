@@ -455,17 +455,19 @@ package body Gnat2Why.Expr.Loops is
 
                for Loop_Invariant of Loop_Invariants loop
                   declare
+                     Expr          : Node_Id;
                      One_Inv_Check : W_Prog_Id;
                      One_Invariant : W_Pred_Id;
                   begin
                      Transform_Pragma_Check (Stmt    => Loop_Invariant,
                                              Force   => False,
+                                             Expr    => Expr,
                                              Runtime => One_Inv_Check,
                                              Pred    => One_Invariant);
                      Inv_Check := Sequence (Inv_Check, One_Inv_Check);
 
                      Why_Invariants (Count) :=
-                       +New_VC_Expr (Ada_Node => Loop_Invariant,
+                       +New_VC_Expr (Ada_Node => Expr,
                                      Expr     => +One_Invariant,
                                      Reason   => VC_Loop_Invariant,
                                      Domain   => EW_Pred);

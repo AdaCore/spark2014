@@ -1,11 +1,11 @@
-subar.adb:5:07: info: assertion proved (CVC4: 1 VC)
+subar.adb:5:22: info: assertion proved (CodePeer)
 subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B"
 subar.adb:9:14: warning: subprogram "Try_B" has no effect
 subar.adb:13:07: info: precondition proved (CVC4: 1 VC)
 subar.adb:13:10: info: initialization of "AB" proved
 subar.adb:13:10: info: length check proved (CVC4: 1 VC)
 subar.adb:13:10: medium: "AB" might not be initialized
-subar.adb:18:07: info: assertion proved (CVC4: 1 VC)
+subar.adb:18:22: info: assertion proved (CodePeer)
 subar.adb:18:26: medium: array index check might fail (e.g. when X = (others => 1) and X'First = 1 and X'Last = 0)
 subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
 subar.adb:22:14: warning: subprogram "Try_D" has no effect

@@ -4,11 +4,12 @@ from test_support import *
 print "------------"
 print "CodePeer run"
 print "------------"
-prove_all(codepeer=True, prover=["altergo"], steps=1)
+prove_all(codepeer=True, prover=["altergo"])
 
 # prove with provers
 print ""
 print "----------"
 print "Prover run"
 print "----------"
+clean()
 prove_all(prover=["z3"])

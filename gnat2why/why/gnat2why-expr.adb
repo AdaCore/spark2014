@@ -440,14 +440,17 @@ package body Gnat2Why.Expr is
    --  Transform a slice Expr
 
    function Transform_Statement_Or_Declaration
-     (Stmt_Or_Decl   : Node_Id;
-      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id;
+     (Stmt_Or_Decl        : Node_Id;
+      Assert_And_Cut_Expr : out Node_Id;
+      Assert_And_Cut      : out W_Pred_Id)
+      return W_Prog_Id;
    --  Transform the Ada statement into a Why program expression.
-   --  If Assert_And_Cut is not Why_Empty, the statement was a "pragma
-   --  Assert_And_Cut". In this case, Assert_And_Cut contains the
-   --  Why3 predicate equivalent of the assertion expression, and
-   --  Transform_Statement contains the check program expression
-   --  that corresponds to the assertion expression.
+   --  @param Assert_And_Cut_Expr Expression in the pragma Assert_And_Cut, if
+   --     Stmt_Or_Decl was such a pragma, Empty otherwise.
+   --  @param Assert_And_Cut Why3 predicate equivalent of the assertion
+   --     expression, if Stmt_Or_Decl was such a pragma, Why_Empty otherwise.
+   --  @return the check program expression that corresponds to the assertion
+   --     expression.
 
    function Type_Invariant_Expression
      (Expr     : W_Expr_Id;
@@ -12493,7 +12496,7 @@ package body Gnat2Why.Expr is
                   Result := Sequence
                     (Result,
                      New_Located_Assert
-                       (Prag,
+                       (Expr,
                         +Transform_Expr (Expr, EW_Pred, Params => Params),
                         VC_Assert,
                         EW_Assert));
@@ -12815,15 +12818,17 @@ package body Gnat2Why.Expr is
    procedure Transform_Pragma_Check
      (Stmt    :     Node_Id;
       Force   :     Boolean;
+      Expr    : out Node_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id)
    is
       Arg1   : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
       Arg2   : constant Node_Id := Next (Arg1);
-      Expr   : constant Node_Id := Expression (Arg2);
       Params : Transformation_Params := Assert_Params;
 
    begin
+      Expr := Expression (Arg2);
+
       if not Force and then Is_Ignored_Pragma_Check (Stmt) then
          Runtime := +Void;
          Pred := True_Pred;
@@ -12845,6 +12850,7 @@ package body Gnat2Why.Expr is
      (Prag  : Node_Id;
       Force : Boolean) return W_Prog_Id
    is
+      Expr       : Node_Id;
       Check_Expr : W_Prog_Id;
       Pred       : W_Pred_Id;
 
@@ -12867,7 +12873,7 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      Transform_Pragma_Check (Prag, Force, Check_Expr, Pred);
+      Transform_Pragma_Check (Prag, Force, Expr, Check_Expr, Pred);
 
       --  Assert_And_Cut is not handled here, except for runtime errors
 
@@ -12900,7 +12906,7 @@ package body Gnat2Why.Expr is
       if Is_Pragma_Check (Prag, Name_Assume) then
          T := New_Assume_Statement (Pred => Pred);
       else
-         T := New_Located_Assert (Prag, Pred, Reason, EW_Assert);
+         T := New_Located_Assert (Expr, Pred, Reason, EW_Assert);
       end if;
 
       if Check_Expr /= Why_Empty then
@@ -14212,11 +14218,15 @@ package body Gnat2Why.Expr is
    ----------------------------------------
 
    function Transform_Statement_Or_Declaration
-     (Stmt_Or_Decl   : Node_Id;
-      Assert_And_Cut : out W_Pred_Id) return W_Prog_Id is
+     (Stmt_Or_Decl        : Node_Id;
+      Assert_And_Cut_Expr : out Node_Id;
+      Assert_And_Cut      : out W_Pred_Id)
+      return W_Prog_Id
+   is
    begin
-      --  Make sure that Assert_And_Cut is initialized
+      --  Make sure that outputs are initialized
 
+      Assert_And_Cut_Expr := Empty;
       Assert_And_Cut := Why_Empty;
 
       case Nkind (Stmt_Or_Decl) is
@@ -14494,13 +14504,16 @@ package body Gnat2Why.Expr is
          when N_Pragma =>
             if Is_Pragma_Assert_And_Cut (Stmt_Or_Decl) then
                declare
+                  Expr       : Node_Id;
                   Check_Expr : W_Prog_Id;
                   Pred       : W_Pred_Id;
                begin
                   Transform_Pragma_Check (Stmt_Or_Decl,
                                           Force   => False,
+                                          Expr    => Expr,
                                           Runtime => Check_Expr,
                                           Pred    => Pred);
+                  Assert_And_Cut_Expr := Expr;
                   Assert_And_Cut := Pred;
                end;
             end if;
@@ -14577,9 +14590,13 @@ package body Gnat2Why.Expr is
       Prev_Prog    : W_Prog_Id) return W_Prog_Id
    is
       Result        : W_Prog_Id := Prev_Prog;
+      Cut_Assertion_Expr : Node_Id;
       Cut_Assertion : W_Pred_Id;
       Prog          : constant W_Prog_Id :=
-        Transform_Statement_Or_Declaration (Stmt_Or_Decl, Cut_Assertion);
+        Transform_Statement_Or_Declaration
+          (Stmt_Or_Decl        => Stmt_Or_Decl,
+           Assert_And_Cut_Expr => Cut_Assertion_Expr,
+           Assert_And_Cut      => Cut_Assertion);
    begin
       Result :=
         Sequence
@@ -14591,7 +14608,7 @@ package body Gnat2Why.Expr is
       if Cut_Assertion /= Why_Empty then
          Result :=
            New_Located_Abstract
-             (Ada_Node => Stmt_Or_Decl,
+             (Ada_Node => Cut_Assertion_Expr,
               Expr     => +Result,
               Post     => Cut_Assertion,
               Reason   => VC_Assert);

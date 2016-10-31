@@ -14,23 +14,23 @@ search.adb:25:24: medium: assertion might fail, cannot prove not Found2 or else 
 search.adb:25:28: info: initialization of "Found2" proved
 search.adb:25:49: info: initialization of "Index2" proved
 search.adb:25:49: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
-search.adb:26:09: info: assertion proved (CVC4: 1 VC)
+search.adb:26:24: info: assertion proved (CodePeer)
 search.adb:26:24: info: initialization of "Found" proved
 search.adb:27:16: info: initialization of "Found1" proved
 search.adb:30:21: info: initialization of "Found" proved
 search.adb:30:27: info: overflow check proved (CodePeer)
-search.adb:31:12: info: assertion proved (CVC4: 2 VC)
+search.adb:31:27: info: assertion proved (CodePeer)
 search.adb:31:27: info: initialization of "Found1" proved
 search.adb:31:43: info: initialization of "Index1" proved
-search.adb:32:12: info: assertion proved (CVC4: 1 VC)
+search.adb:32:27: info: assertion proved (CodePeer)
 search.adb:32:27: info: initialization of "Found" proved
 search.adb:34:16: info: initialization of "Found2" proved
 search.adb:37:21: info: initialization of "Found" proved
 search.adb:37:27: info: overflow check proved (CodePeer)
-search.adb:38:12: info: assertion proved (CVC4: 2 VC)
+search.adb:38:27: info: assertion proved (CodePeer)
 search.adb:38:27: info: initialization of "Found2" proved
 search.adb:38:43: info: initialization of "Index2" proved
-search.adb:39:12: info: assertion proved (CVC4: 1 VC)
+search.adb:39:27: info: assertion proved (CVC4: 1 VC)
 search.adb:39:27: info: initialization of "Found" proved
 search.adb:41:19: info: initialization of "Found" proved
 search.adb:53:19: info: index check proved (CVC4: 2 VC)
