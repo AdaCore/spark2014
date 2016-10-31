@@ -1188,8 +1188,8 @@ binary_trees.ads:261:36: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:261:36: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:270:09: info: invariant check proved on default value (CVC4: 1 VC)
 binary_trees.ads:274:29: info: no contextual analysis of "Tree_Structure" (in assertion expression)
-conts-functional-sets.ads:141:28: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:61
-conts-functional-sets.ads:142:22: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:61
++conts-functional-sets.ads:141:28: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:61
++conts-functional-sets.ads:142:22: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:61
 red_black_trees.adb:7:07: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:8:10: info: initialization of "X" proved
 red_black_trees.adb:11:16: info: index check proved (CVC4: 2 VC)
@@ -2109,7 +2109,7 @@ search_trees.adb:682:13: info: assertion proved (CVC4: 1 VC), in call inlined at
 search_trees.adb:682:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:785
 search_trees.adb:682:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:785
 search_trees.adb:682:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:785
-search_trees.adb:683:13: medium: precondition might fail, in call inlined at search_trees.adb:785
+search_trees.adb:683:13: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:785
 search_trees.adb:683:41: info: initialization of "F_3" proved, in call inlined at search_trees.adb:785
 search_trees.adb:683:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:785
 search_trees.adb:683:49: info: initialization of "XR" proved, in call inlined at search_trees.adb:785
