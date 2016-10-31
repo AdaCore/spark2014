@@ -1,0 +1,117 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{listings}
+\newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\lstset{
+   language=Ada,
+   keywordstyle=\color{RedViolet}\ttfamily\bf,
+   showspaces=false,
+   basicstyle={\scriptsize \sffamily},
+   commentstyle=\color{red}\textit,
+   stringstyle=\color{MidnightBlue}\ttfamily,
+   showtabs=false,
+   showstringspaces=false,
+   morekeywords=[1]Pre,
+   morekeywords=[1]Post,
+   morekeywords=[1]Test\_Case,
+   morekeywords=[1]Contract\_Cases,
+   morekeywords=[1]some,
+   morekeywords=[1]Old,
+   morekeywords=[1]Global,
+   morekeywords=[1]Depends,
+   morekeywords=[1]Loop\_Invariant,
+   morekeywords=[1]Loop\_Variant,
+   morekeywords=[1]Loop\_Entry,
+   morekeywords=[1]Increases,
+   literate={(}{{\CodeSymbol{(}}}1
+            {)}{{\CodeSymbol{)}}}1
+            {>}{{\CodeSymbol{$>$}}}1
+            {>=}{{\CodeSymbol{$\ge$}}}1
+            {<}{{\CodeSymbol{$<$}}}1
+            {<=}{{\CodeSymbol{$\le$}}}1
+            {=}{{\CodeSymbol{$=$}}}1
+            {:}{{\CodeSymbol{$:$}}}1
+            {.}{{\CodeSymbol{$.$}}}1
+            {;}{{\CodeSymbol{$;$}}}1
+            {/=}{{\CodeSymbol{$\ne$}}}1
+            {=>}{{\CodeSymbol{$\Rightarrow$}}}1
+            {->}{{\CodeSymbol{$\rightarrow$}}}1
+            {<->}{{\CodeSymbol{$\leftrightarrow$}}}1
+}
+
+\newcommand{\DO}{\textsc{do-178}\xspace}
+\newcommand{\DOB}{\textsc{do-178b}\xspace}
+\newcommand{\DOC}{\textsc{do-178c}\xspace}
+\newcommand{\hilite}{Hi-Lite\xspace}
+\newcommand{\openetcs}{openETCS\xspace}
+\newcommand{\gnatprove}{GNATprove\xspace}
+\newcommand{\oldspark}{SPARK~2005\xspace}
+\newcommand{\newspark}{SPARK~2014\xspace}
+\newcommand{\spark}{SPARK\xspace}
+\newcommand{\ada}{Ada\xspace}
+\newcommand{\adatwtw}{Ada~2012\xspace}
+\newcommand{\altergo}{Alt-Ergo\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\ie}{\textit{i.e.}\xspace}
+\newcommand{\adhoc}{\textit{ad hoc}\xspace}
+\newcommand{\Eg}{\textit{E.g.}\xspace}
+\newcommand{\eg}{\textit{e.g.}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
+
+\urlstyle{sf}
+
+\begin{document}
+
+\title{Auto-Active Proof of Red-Black Trees in SPARK}
+
+\author{%
+\large Claire Dross and Yannick Moy\\
+\normalsize AdaCore, 46 rue d'Amsterdam, F-75009 Paris (France)}
+
+\date{}
+
+\maketitle
+
+\paragraph{Abstract}
+SPARK is a subset of the Ada programming language targeted at safety- and
+security-critical applications. SPARK formal verification toolset allows to
+guarantee that a SPARK program is free from broad classes of errors (like reads
+of uninitialized data and run-time errors) and that it complies with its
+specification. While the former is a well adopted practice among SPARK users,
+the latter is used much more narrowly, owing to the cost of specifying the
+behavior of programs and even more the cost of achieving proof of such
+specifications. SPARK relies on automatic provers to keep the cost of formal
+verification reasonable, and on the techniques of auto-active verification for
+interacting with automatic provers. In this paper, we present how we applied
+auto-active verification to formally verify a library of red-black trees. To
+the best of our knowledge, this is the most advanced use of auto-active
+verification so far.
+
+\paragraph{Keywords}
+System formal development, Verification and validation,
+Certification and dependability
+
+\section{Introduction}
+
+
+\section{SPARK 2014}
+
+\section{Conclusion}
+
+
+\paragraph*{Acknowledgements}
+
+
+\bibliographystyle{plain}
+\bibliography{nfm_2017}
+
+\end{document}
