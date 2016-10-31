@@ -244,7 +244,7 @@ package body Flow.Interprocedural is
                          Use_Deduced_Globals    => not FA.Generating_Globals);
 
             --  Add parameters
-            for E of Get_Formals (Called_Thing, N, False) loop
+            for E of Get_Explicit_Formals (Called_Thing) loop
                The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
                The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
 
@@ -267,17 +267,31 @@ package body Flow.Interprocedural is
                      end if;
                      Outputs.Insert (The_Out);
 
-                  when E_Variable | E_Protected_Type | E_Task_Type =>
-                     Inputs.Insert (The_In);
-                     if Ekind (Called_Thing) /= E_Function then
-                        Outputs.Insert (The_Out);
-                     end if;
-
                   when others =>
                      raise Program_Error;
 
                end case;
             end loop;
+
+            if Ekind (Scope (Called_Thing)) = E_Protected_Type
+              and then Is_External_Call (N)
+            then
+               declare
+                  Implicit : constant Entity_Id :=
+                    Get_Enclosing_Object (Prefix (Name (N)));
+
+                  pragma Assert (Ekind (Implicit) = E_Variable);
+
+               begin
+                  The_In  := Direct_Mapping_Id (Implicit, In_View);
+                  The_Out := Direct_Mapping_Id (Implicit, Out_View);
+
+                  Inputs.Insert (The_In);
+                  if Ekind (Called_Thing) /= E_Function then
+                     Outputs.Insert (The_Out);
+                  end if;
+               end;
+            end if;
 
             if not Outputs.Is_Empty then
                --  Each output depends on all inputs

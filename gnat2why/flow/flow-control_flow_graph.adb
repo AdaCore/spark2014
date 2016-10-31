@@ -4684,15 +4684,14 @@ package body Flow.Control_Flow_Graph is
    begin
       Handle_Parameters (Callsite);
 
-      --  ??? I do not think we should do this for internal calls
-      if Ekind (Scope (Called_Thing)) = E_Protected_Type then
+      if Ekind (Scope (Called_Thing)) = E_Protected_Type
+        and then Is_External_Call (Callsite)
+      then
          declare
             --  Create vertices for the implicit formal parameter
             The_PO : constant Flow_Id :=
               Direct_Mapping_Id
-                (Get_Enclosing_Concurrent_Object (E        => Called_Thing,
-                                                  Callsite => Callsite,
-                                                  Entire   => False));
+                (Get_Enclosing_Object (Prefix (Name (Callsite))));
 
             V : Flow_Graphs.Vertex_Id;
 
