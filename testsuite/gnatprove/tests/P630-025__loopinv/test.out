@@ -17,7 +17,7 @@ decadriver.adb:113:56: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:113:56: info: range check proved (CVC4: 1 VC)
 decadriver.adb:114:35: info: initialization of "RX_FINFO_Reg.RXFLE" proved
 decadriver.adb:114:55: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:116:10: info: assertion proved (CVC4: 1 VC)
+decadriver.adb:116:25: info: assertion proved (CVC4: 1 VC)
 decadriver.adb:116:25: info: initialization of "Frame_Length" proved
 decadriver.adb:118:13: info: initialization of "Frame_Length" proved
 decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)

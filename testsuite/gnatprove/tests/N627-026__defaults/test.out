@@ -4,7 +4,7 @@ with_default.adb:13:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:14:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:16:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:19:38: info: range check proved (CVC4: 1 VC)
-with_default.adb:23:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:23:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:23:22: info: initialization of "Ok_Def" proved
 with_default.adb:27:69: medium: range check might fail
 with_default.adb:28:15: info: range check proved (CVC4: 2 VC)
@@ -16,11 +16,11 @@ with_default.adb:49:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:54:41: info: range check proved (CVC4: 1 VC)
 with_default.adb:58:41: info: range check proved (CVC4: 1 VC)
 with_default.adb:62:51: info: range check proved (CVC4: 1 VC)
-with_default.adb:69:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:69:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:69:22: info: initialization of "All_0" proved
-with_default.adb:70:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:70:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:70:22: info: initialization of "All_1" proved
-with_default.adb:71:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:71:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:71:22: info: initialization of "All_2" proved
 with_default.adb:75:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:76:15: info: range check proved (CVC4: 2 VC)
@@ -38,22 +38,22 @@ with_default.adb:134:36: info: range check proved (CVC4: 1 VC)
 with_default.adb:169:43: info: range check proved (CVC4: 1 VC)
 with_default.adb:187:57: info: range check proved (CVC4: 1 VC)
 with_default.adb:189:32: info: range check proved (CVC4: 1 VC)
-with_default.adb:195:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:195:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:195:22: info: initialization of "Simple.F1" proved
-with_default.adb:196:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:196:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:196:22: info: initialization of "Simple.F2" proved
-with_default.adb:197:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:197:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:197:22: info: initialization of "W_Disc.F1" proved
 with_default.adb:197:28: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:198:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:198:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:198:22: info: initialization of "W_D_Di.F1" proved
 with_default.adb:198:28: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:199:07: info: assertion proved (CVC4: 1 VC)
-with_default.adb:200:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:199:22: info: assertion proved (CVC4: 1 VC)
+with_default.adb:200:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:200:22: info: initialization of "W_O_Di.F3" proved
 with_default.adb:200:28: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:201:07: info: assertion proved (CVC4: 1 VC)
-with_default.adb:202:07: info: assertion proved (CVC4: 1 VC)
+with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
+with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
 with_default.adb:202:26: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)

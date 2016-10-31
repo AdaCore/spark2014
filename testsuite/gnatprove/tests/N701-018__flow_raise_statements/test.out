@@ -1,9 +1,9 @@
 raise_statements.adb:5:17: info: overflow check proved (CVC4: 1 VC)
-raise_statements.adb:24:10: info: assertion proved (CVC4: 2 VC)
+raise_statements.adb:24:25: info: assertion proved (CVC4: 2 VC)
 raise_statements.adb:29:10: info: raise statement proved unreachable (CVC4: 2 VC)
 raise_statements.adb:32:23: medium: overflow check might fail
 raise_statements.adb:32:30: info: overflow check proved (CVC4: 1 VC)
-raise_statements.adb:58:10: info: assertion proved (CVC4: 2 VC)
+raise_statements.adb:58:25: info: assertion proved (CVC4: 2 VC)
 raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"
 raise_statements.adb:65:26: medium: incorrect dependency "O => A"

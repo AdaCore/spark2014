@@ -2,9 +2,9 @@ sorted_lists.adb:6:27: info: precondition proved (CVC4: 1 VC)
 sorted_lists.adb:9:13: info: precondition proved (CVC4: 2 VC)
 sorted_lists.adb:9:37: info: initialization of "Current" proved
 sorted_lists.adb:10:09: info: precondition proved (CVC4: 2 VC)
-sorted_lists.adb:11:10: info: loop invariant initialization proved (CVC4: 1 VC)
-sorted_lists.adb:11:10: info: loop invariant preservation proved (CVC4: 1 VC)
 sorted_lists.adb:12:13: info: initialization of "Current" proved
+sorted_lists.adb:12:13: info: loop invariant initialization proved (CVC4: 1 VC)
+sorted_lists.adb:12:13: info: loop invariant preservation proved (CVC4: 1 VC)
 sorted_lists.adb:12:23: info: precondition proved (CVC4: 1 VC)
 sorted_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)
 sorted_lists.adb:13:33: info: precondition proved (CVC4: 1 VC)

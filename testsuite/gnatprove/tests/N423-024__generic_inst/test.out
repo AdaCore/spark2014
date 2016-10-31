@@ -4,5 +4,5 @@ context.adb:13:14: warning: subprogram "Inst" has no effect
 context.adb:15:14: warning: subprogram "Local" has no effect
 context_b.adb:1:11: warning: subprogram "Context_B" has no effect
 context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instantiation at context_b.adb:24
-context_b.adb:18:10: info: assertion proved (CVC4: 1 VC), in instantiation at context_b.adb:24
+context_b.adb:18:25: info: assertion proved (CVC4: 1 VC), in instantiation at context_b.adb:24
 context_b.adb:26:14: warning: subprogram "Local" has no effect

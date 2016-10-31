@@ -2,8 +2,8 @@ int_list.adb:4:07: info: precondition proved (CVC4: 1 VC)
 int_list.adb:8:24: info: precondition proved (CVC4: 1 VC)
 int_list.adb:10:13: info: precondition proved (CVC4: 2 VC)
 int_list.adb:10:29: info: initialization of "C" proved
-int_list.adb:11:10: info: loop invariant initialization proved (CVC4: 4 VC)
-int_list.adb:11:10: info: loop invariant preservation proved (CVC4: 5 VC)
+int_list.adb:12:13: info: loop invariant initialization proved (CVC4: 4 VC)
+int_list.adb:12:13: info: loop invariant preservation proved (CVC4: 5 VC)
 int_list.adb:12:13: info: precondition proved (CVC4: 1 VC)
 int_list.adb:12:40: info: initialization of "C" proved
 int_list.adb:13:13: info: precondition proved (CVC4: 1 VC)

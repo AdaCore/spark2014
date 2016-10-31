@@ -6,7 +6,7 @@ input_port_14.adb:24:25: info: initialization of "Second_Read" proved
 input_port_14.adb:24:25: warning: attribute Valid is assumed to return True
 input_port_14.adb:25:25: info: initialization of "Second_Read" proved
 input_port_14.adb:27:25: info: initialization of "First_Read" proved
-input_port_14.adb:29:07: info: assertion proved (CVC4: 1 VC)
+input_port_14.adb:29:22: info: assertion proved (CVC4: 1 VC)
 input_port_14.adb:29:23: info: initialization of "First_Read" proved
 input_port_14.adb:29:47: info: initialization of "Input_Value" proved
 input_port_14.adb:29:61: info: initialization of "Second_Read" proved

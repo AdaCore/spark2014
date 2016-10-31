@@ -22,12 +22,12 @@ port.adb:143:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T
 port.adb:143:27: info: initialization of "T2" proved
 port.adb:145:13: info: initialization of "T1" proved
 port.adb:145:18: info: initialization of "T2" proved
-port.adb:160:07: info: assertion proved (CVC4: 1 VC)
+port.adb:160:22: info: assertion proved (CVC4: 1 VC)
 port.adb:160:22: info: initialization of "T1" proved
 port.adb:160:27: info: initialization of "T2" proved
 port.adb:162:13: info: initialization of "T1" proved
 port.adb:162:18: info: initialization of "T2" proved
-port.ads:16:04: info: assertion proved (CVC4: 1 VC)
+port.ads:16:19: info: assertion proved (CVC4: 1 VC)
 port.ads:65:28: info: initialization of "X" proved
 port.ads:68:22: info: initialization of "X" proved
 port.ads:68:22: info: postcondition proved (CVC4: 2 VC)

@@ -1,10 +1,10 @@
 nested_pkg.adb:19:07: info: initialization of "Foo" constituent of "State" proved
 nested_pkg.adb:20:07: info: initialization of "Bar" constituent of "State" proved
-nested_pkg.adb:47:10: info: assertion proved (CVC4: 1 VC)
-nested_pkg.adb:49:10: info: assertion proved (CVC4: 1 VC)
+nested_pkg.adb:47:25: info: assertion proved (CVC4: 1 VC)
+nested_pkg.adb:49:25: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:51:10: medium: precondition might fail
-nested_pkg.adb:60:07: info: assertion proved (CVC4: 1 VC)
-nested_pkg.adb:62:07: info: assertion proved (CVC4: 1 VC)
+nested_pkg.adb:60:22: info: assertion proved (CVC4: 1 VC)
+nested_pkg.adb:62:22: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:64:08: medium: precondition might fail
 stack_asm.adb:26:24: medium: array index check might fail
 stack_asm.adb:33:25: medium: range check might fail

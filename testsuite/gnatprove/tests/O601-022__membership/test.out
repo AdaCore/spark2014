@@ -1,5 +1,5 @@
 membership.adb:7:14: warning: subprogram "Bad1" has no effect
-membership.adb:10:07: info: assertion proved (CVC4: 1 VC)
+membership.adb:10:22: info: assertion proved (CVC4: 1 VC)
 membership.adb:11:22: medium: assertion might fail, cannot prove Root'Class (R) in Child
 membership.adb:14:14: warning: subprogram "Bad2" has no effect
 membership.adb:17:22: medium: assertion might fail, cannot prove Root'Class (B) in Child
@@ -11,9 +11,9 @@ membership.adb:32:14: warning: subprogram "Bad5" has no effect
 membership.adb:35:22: medium: assertion might fail, cannot prove Root'Class (B) in Root
 membership.adb:38:14: warning: subprogram "Bad6" has no effect
 membership.adb:41:22: medium: assertion might fail
-membership.adb:47:04: info: assertion proved (CVC4: 1 VC)
-membership.adb:48:04: info: assertion proved (CVC4: 1 VC)
-membership.adb:49:04: info: assertion proved (CVC4: 1 VC)
+membership.adb:47:19: info: assertion proved (CVC4: 1 VC)
+membership.adb:48:19: info: assertion proved (CVC4: 1 VC)
+membership.adb:49:19: info: assertion proved (CVC4: 1 VC)
 membership_discr.adb:3:30: info: range check proved (CVC4: 1 VC)
 membership_discr.adb:4:29: info: range check proved (CVC4: 1 VC)
 membership_discr.adb:8:32: info: range check proved (CVC4: 1 VC)
@@ -22,7 +22,7 @@ membership_discr.adb:11:14: warning: subprogram "Bad_1" has no effect
 membership_discr.adb:12:19: info: range check proved (CVC4: 1 VC)
 membership_discr.adb:14:22: medium: assertion might fail, cannot prove Root'Class (R1) in Root_02
 membership_discr.adb:17:14: warning: subprogram "Bad_2" has no effect
-membership_discr.adb:20:07: info: assertion proved (CVC4: 2 VC)
+membership_discr.adb:20:22: info: assertion proved (CVC4: 2 VC)
 membership_discr.adb:21:22: medium: assertion might fail, cannot prove Root'Class (R01) in Root_02
 membership_discr.adb:24:14: warning: subprogram "Bad_3" has no effect
 membership_discr.adb:27:22: medium: assertion might fail, cannot prove R02 in Root

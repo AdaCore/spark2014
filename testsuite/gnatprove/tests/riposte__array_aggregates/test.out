@@ -1,12 +1,12 @@
 array_aggregates.adb:19:50: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:57:21: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:63:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:63:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:63:22: info: initialization of "M" proved
 array_aggregates.adb:73:21: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:75:22: info: initialization of "M" proved
 array_aggregates.adb:75:22: medium: assertion might fail, cannot prove M (Elem_1) = Elem_0 (e.g. when M = (1 => 1, others => 0))
 array_aggregates.adb:79:32: info: initialization of "M" proved
-array_aggregates.adb:84:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:84:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:84:22: info: initialization of "M" proved
 array_aggregates.adb:87:32: info: initialization of "M" proved
 array_aggregates.adb:92:22: info: initialization of "M" proved
@@ -17,7 +17,7 @@ array_aggregates.adb:100:22: info: initialization of "X" proved
 array_aggregates.adb:100:22: medium: assertion might fail, cannot prove X (4) = 2 (e.g. when X = (4 => 8, others => 1))
 array_aggregates.adb:103:32: info: initialization of "X" proved
 array_aggregates.adb:107:22: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:108:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:108:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:108:22: info: initialization of "X" proved
 array_aggregates.adb:111:32: info: initialization of "X" proved
 array_aggregates.adb:115:22: info: length check proved (CVC4: 1 VC)
@@ -45,7 +45,7 @@ array_aggregates.adb:164:22: info: initialization of "X" proved
 array_aggregates.adb:164:22: medium: assertion might fail, cannot prove X (3) = Elem_2 (e.g. when X = (others => 1))
 array_aggregates.adb:167:32: info: initialization of "X" proved
 array_aggregates.adb:171:27: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:173:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:173:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:173:22: info: initialization of "X" proved
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:180:29: info: length check proved (CVC4: 1 VC)
@@ -53,7 +53,7 @@ array_aggregates.adb:186:22: info: initialization of "X" proved
 array_aggregates.adb:186:22: medium: assertion might fail, cannot prove X (3).C = Elem_2 (e.g. when X = (3 => (A => 10, B => true, C => 1), others => (A => 0, B => false, C => 1)))
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:193:29: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:199:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:199:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:199:22: info: initialization of "X" proved
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:206:28: info: length check proved (CVC4: 1 VC)
@@ -65,7 +65,7 @@ array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:219:28: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:219:51: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:223:51: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:225:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:225:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:225:22: info: initialization of "X" proved
 array_aggregates.adb:228:32: info: initialization of "X" proved
 array_aggregates.adb:232:28: info: length check proved (CVC4: 1 VC)
@@ -75,7 +75,7 @@ array_aggregates.adb:234:22: medium: assertion might fail, cannot prove X (3) (4
 array_aggregates.adb:237:32: info: initialization of "X" proved
 array_aggregates.adb:241:28: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:241:49: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:243:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:243:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:243:22: info: initialization of "X" proved
 array_aggregates.adb:246:32: info: initialization of "X" proved
 array_aggregates.adb:250:28: info: length check proved (CVC4: 1 VC)
@@ -85,7 +85,7 @@ array_aggregates.adb:251:22: medium: assertion might fail, cannot prove X (3) (4
 array_aggregates.adb:254:32: info: initialization of "X" proved
 array_aggregates.adb:258:28: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:258:49: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:259:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:259:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:259:22: info: initialization of "X" proved
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:266:31: info: length check proved (CVC4: 1 VC)
@@ -95,7 +95,7 @@ array_aggregates.adb:273:22: medium: assertion might fail, cannot prove X (3).Le
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:280:31: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:282:66: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:287:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:287:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:287:22: info: initialization of "X" proved
 array_aggregates.adb:290:32: info: initialization of "X" proved
 array_aggregates.adb:294:27: info: length check proved (CVC4: 1 VC)
@@ -144,29 +144,29 @@ array_aggregates.adb:397:40: info: initialization of "X" proved
 array_aggregates.adb:400:33: info: initialization of "X" proved
 array_aggregates.adb:404:31: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:407:60: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:408:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:408:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:409:25: info: initialization of "X" proved
 array_aggregates.adb:411:59: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:414:33: info: initialization of "X" proved
 array_aggregates.adb:418:31: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:421:60: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:422:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:422:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:423:25: info: initialization of "X" proved
 array_aggregates.adb:425:59: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:436:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:436:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:436:36: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:437:38: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:439:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:439:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:440:54: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:442:56: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:447:33: info: initialization of "X" proved
 array_aggregates.adb:451:21: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:452:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:452:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:453:25: info: initialization of "X" proved
 array_aggregates.adb:453:38: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:456:33: info: initialization of "X" proved
 array_aggregates.adb:461:21: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:462:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:462:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:463:25: info: initialization of "X" proved
 array_aggregates.adb:463:38: info: length check proved (CVC4: 1 VC)
 stack.ads:35:54: info: length check proved (CVC4: 1 VC)

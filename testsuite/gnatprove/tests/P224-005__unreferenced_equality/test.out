@@ -1,4 +1,4 @@
 regpat.adb:9:04: warning: analyzing unreferenced function "="
-regpat.adb:23:07: info: assertion proved (CVC4: 1 VC)
+regpat.adb:23:22: info: assertion proved (CVC4: 1 VC)
 regpat.adb:23:27: info: initialization of "Left" proved
 regpat.adb:23:35: info: initialization of "Right" proved

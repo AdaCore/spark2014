@@ -1,6 +1,6 @@
 array_aggregates.adb:15:33: info: initialization of "X" proved
 array_aggregates.adb:19:31: info: length check proved (CVC4: 1 VC)
 array_aggregates.adb:20:74: info: length check proved (CVC4: 1 VC)
-array_aggregates.adb:21:07: info: assertion proved (CVC4: 1 VC)
+array_aggregates.adb:21:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:21:53: info: initialization of "X" proved
 array_aggregates.adb:22:93: info: length check proved (CVC4: 1 VC)

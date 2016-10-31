@@ -1,2 +1,2 @@
-generic_instance.adb:11:07: info: assertion proved (CVC4: 1 VC)
+generic_instance.adb:11:22: info: assertion proved (CVC4: 1 VC)
 generic_instance.ads:17:14: warning: subprogram "Test" has no effect

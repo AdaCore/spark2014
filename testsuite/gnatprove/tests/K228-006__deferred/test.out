@@ -1,4 +1,4 @@
 client.adb:3:11: warning: subprogram "Client" has no effect
 client.adb:6:22: medium: assertion might fail, cannot prove C.D = 10000 (e.g. when C = (D => 0))
 client.adb:8:22: medium: assertion might fail, cannot prove Get = 10000
-client.adb:10:07: info: assertion proved (CVC4: 1 VC)
+client.adb:10:22: info: assertion proved (CVC4: 1 VC)

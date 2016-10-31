@@ -1,4 +1,4 @@
-p.adb:6:08: info: assertion proved (CVC4: 1 VC)
+p.adb:6:23: info: assertion proved (CVC4: 1 VC)
 p.ads:3:15: info: postcondition proved (CVC4: 1 VC)
 p.ads:3:53: info: range check proved (CVC4: 1 VC)
 p.ads:3:56: info: overflow check proved (CVC4: 1 VC)

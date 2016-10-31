@@ -15,12 +15,12 @@ entities.ads:27:14: info: initialization of "Current_Cycles" constituent of "Sta
 entities.ads:31:18: info: initialization of "Current_Cycles" constituent of "State" proved
 entities.ads:31:18: info: postcondition proved (CVC4: 1 VC)
 main.adb:3:11: info: initialization of "Entities.State" proved
-main.adb:10:04: info: assertion proved (CVC4: 1 VC)
+main.adb:10:19: info: assertion proved (CVC4: 1 VC)
 main.adb:10:27: info: initialization of "Entities.State" proved
-main.adb:11:04: info: assertion proved (CVC4: 1 VC)
+main.adb:11:19: info: assertion proved (CVC4: 1 VC)
 main.adb:11:27: info: initialization of "Entities.State" proved
 main.adb:13:12: info: initialization of "Entities.State" proved
-main.adb:14:04: info: assertion proved (CVC4: 1 VC)
+main.adb:14:19: info: assertion proved (CVC4: 1 VC)
 main.adb:14:27: info: initialization of "Entities.State" proved
-main.adb:15:04: info: assertion proved (CVC4: 1 VC)
+main.adb:15:19: info: assertion proved (CVC4: 1 VC)
 main.adb:15:27: info: initialization of "Entities.State" proved

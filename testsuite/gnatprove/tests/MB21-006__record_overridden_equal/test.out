@@ -1,2 +1,2 @@
-test_equal.adb:25:04: info: assertion proved (CVC4: 1 VC)
+test_equal.adb:25:19: info: assertion proved (CVC4: 1 VC)
 test_equal.adb:26:19: medium: assertion might fail, cannot prove X /= Y (e.g. when X = (Content => (Content => 1)) and Y = (Content => (Content => 5)))

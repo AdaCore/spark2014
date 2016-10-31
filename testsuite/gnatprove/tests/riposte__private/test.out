@@ -13,14 +13,14 @@ private_a.adb:45:19: info: initialization of "S" proved
 private_a.adb:46:17: info: precondition proved (CVC4: 1 VC)
 private_a.adb:46:23: info: initialization of "S" proved
 private_a.adb:51:22: info: postcondition proved (CVC4: 1 VC)
-private_a.adb:57:07: info: assertion proved (CVC4: 1 VC)
+private_a.adb:57:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:57:22: info: initialization of "S.Exists" proved
 private_a.adb:58:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:58:19: info: initialization of "S.The_Stack" proved
 private_a.adb:59:17: info: precondition proved (CVC4: 1 VC)
 private_a.adb:59:23: info: initialization of "S.The_Stack" proved
 private_a.adb:64:22: info: postcondition proved (CVC4: 1 VC)
-private_a.adb:70:07: info: assertion proved (CVC4: 1 VC)
+private_a.adb:70:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:70:22: info: initialization of "S.Exists" proved
 private_a.adb:71:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:71:19: info: initialization of "S.The_Stack" proved
@@ -35,6 +35,6 @@ private_a.adb:80:13: info: initialization of "Dst.The_Stack" proved
 private_a.adb:80:13: info: postcondition proved (CVC4: 1 VC)
 private_a.adb:85:24: info: initialization of "Dst.The_Stack" proved
 private_a.adb:91:28: info: initialization of "X" proved
-private_a.adb:96:07: info: assertion proved (CVC4: 1 VC)
+private_a.adb:96:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:96:40: info: initialization of "X" proved
 stack.ads:36:54: info: length check proved (CVC4: 1 VC)

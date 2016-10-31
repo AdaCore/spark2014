@@ -1,4 +1,4 @@
-split.adb:12:10: info: loop invariant preservation proved (CVC4: 4 VC)
+split.adb:12:33: info: loop invariant preservation proved (CVC4: 4 VC)
 split.adb:12:33: medium: loop invariant might fail in first iteration, cannot prove U in 1 .. 20 (e.g. when U = 0)
 split.adb:13:10: medium: precondition might fail
 split.ads:6:14: warning: subprogram "P" has no effect

@@ -2,7 +2,7 @@ gcc -c -gnata main.adb
 gcc -c -gnata update_legal.adb
 gnatbind -x main.ali
 gnatlink main.ali
-update_legal.adb:13:07: info: assertion proved (CVC4: 5 VC)
+update_legal.adb:13:22: info: assertion proved (CVC4: 5 VC)
 update_uninitialized.adb:15:26: medium: "Element" might not be initialized
 update_uninitialized.adb:30:31: info: range check proved (CVC4: 1 VC)
 update_uninitialized.adb:30:40: medium: "Element" might not be initialized

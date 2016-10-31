@@ -1,9 +1,9 @@
 user_lemma.adb:10:07: info: precondition proved (CVC4: 1 VC)
-user_lemma.adb:11:07: info: assertion proved (CVC4: 1 VC)
+user_lemma.adb:11:22: info: assertion proved (CVC4: 1 VC)
 user_lemma.adb:13:22: medium: assertion might fail, cannot prove Is_Prime (15487001)
 user_lemma.adb:14:22: medium: assertion might fail, cannot prove Is_Prime (15487469)
 user_lemma.adb:16:07: medium: precondition might fail
-user_lemma.adb:17:07: info: assertion proved (CVC4: 1 VC)
+user_lemma.adb:17:22: info: assertion proved (CVC4: 1 VC)
 user_lemma.ads:4:15: info: range check proved (CVC4: 2 VC)
 user_lemma.ads:4:51: info: division check proved (CVC4: 1 VC)
 user_lemma.ads:11:14: info: postcondition proved (CVC4: 1 VC)

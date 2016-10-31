@@ -1,4 +1,4 @@
-abs_controller_oem_with_property.adb:33:07: info: assertion proved (CVC4: 1 VC)
+abs_controller_oem_with_property.adb:33:22: info: assertion proved (CVC4: 1 VC)
 abs_controller_oem_with_property.adb:56:26: info: overflow check proved (CodePeer)
 abs_controller_oem_with_property.adb:56:43: info: division check proved (CVC4: 1 VC)
 abs_controller_oem_with_property.adb:56:43: medium: overflow check might fail
@@ -21,12 +21,12 @@ abs_controller_supplier_with_property.adb:59:17: info: initialization of "Sum_1_
 abs_controller_supplier_with_property.adb:62:41: info: initialization of "Sum_1_out1_sat" proved
 abs_controller_supplier_with_property.adb:62:41: info: range check proved (CodePeer)
 abs_controller_supplier_with_property.adb:68:45: info: initialization of "Sum_1_out1" proved
-abs_controller_supplier_with_property.adb:93:07: info: assertion proved (CVC4: 1 VC)
+abs_controller_supplier_with_property.adb:93:22: info: assertion proved (CVC4: 1 VC)
 abs_controller_supplier_with_property.adb:94:20: info: initialization of "At_Rest_Switch_out1" proved
 abs_controller_supplier_with_property.adb:103:23: info: initialization of "At_Rest_Switch_out1" proved
 abs_controller_supplier_with_property.ads:22:08: info: initialization of "Apply_Brakes" proved
 assertionproperties.adb:30:12: info: initialization of "Sqrt_out1" proved
-assertionproperties.adb:36:07: info: assertion proved (CVC4: 1 VC)
+assertionproperties.adb:36:22: info: assertion proved (CVC4: 1 VC)
 assertionproperties.adb:43:22: medium: assertion might fail, cannot prove Sqrt_out1) /= (4.0
 assertionproperties.adb:43:23: info: initialization of "Sqrt_out1" proved
 assertionproperties.ads:18:46: info: initialization of "y" proved
@@ -40,11 +40,11 @@ biaseddivide.ads:19:20: medium: divide by zero might fail
 biaseddivide.ads:19:20: medium: overflow check might fail
 biaseddivide.ads:19:25: info: overflow check proved (CodePeer)
 dynamicsaturateassert.adb:49:26: info: initialization of "Saturation_Dynamic_out1" proved
-dynamicsaturateassert.adb:58:07: info: assertion proved (CVC4: 2 VC)
+dynamicsaturateassert.adb:58:22: info: assertion proved (CVC4: 2 VC)
 dynamicsaturateassert.adb:58:24: info: initialization of "Saturation_Dynamic_out1" proved
-dynamicsaturateassert.adb:71:07: info: assertion proved (CVC4: 1 VC)
+dynamicsaturateassert.adb:71:22: info: assertion proved (CVC4: 1 VC)
 dynamicsaturateassert.ads:23:08: info: initialization of "Saturated_Value" proved
-errorexample.adb:28:07: info: assertion proved (CVC4: 1 VC)
+errorexample.adb:28:22: info: assertion proved (CVC4: 1 VC)
 errorexample.adb:38:65: info: division check proved (CVC4: 1 VC)
 errorexample.adb:47:22: medium: assertion might fail, cannot prove Long_Float (Abs_out1)) <= (0.01
 errorexample.adb:47:35: info: initialization of "Abs_out1" proved
@@ -54,7 +54,7 @@ errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 errorexample.ads:26:77: info: division check proved (CVC4: 1 VC)
-errorexamplefloat.adb:29:07: info: assertion proved (CVC4: 1 VC)
+errorexamplefloat.adb:29:22: info: assertion proved (CVC4: 1 VC)
 errorexamplefloat.adb:39:43: info: overflow check proved (CodePeer)
 errorexamplefloat.adb:39:65: info: division check proved (CVC4: 1 VC)
 errorexamplefloat.adb:39:65: medium: overflow check might fail
@@ -238,8 +238,8 @@ simulink_functions.adb:1595:42: medium: range check might fail
 simulink_functions.adb:1595:49: info: division check proved (CodePeer)
 smoothing.adb:33:42: info: overflow check proved (CodePeer)
 smoothing.adb:40:32: info: initialization of "Abs_Delta_out1" proved
-smoothing.adb:46:07: info: assertion proved (CVC4: 1 VC)
-smoothing.adb:54:07: info: assertion proved (CVC4: 1 VC)
+smoothing.adb:46:22: info: assertion proved (CVC4: 1 VC)
+smoothing.adb:54:22: info: assertion proved (CVC4: 1 VC)
 smoothing.adb:65:44: medium: overflow check might fail
 smoothing.adb:65:60: info: overflow check proved (CodePeer)
 smoothing.adb:65:77: info: division check proved (CVC4: 1 VC)
@@ -255,42 +255,3 @@ smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

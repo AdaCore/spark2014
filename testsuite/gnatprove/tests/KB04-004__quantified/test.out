@@ -1,5 +1,5 @@
-data.adb:18:10: info: loop invariant initialization proved (CVC4: 4 VC)
-data.adb:18:10: info: loop invariant preservation proved (CVC4: 4 VC)
+data.adb:18:33: info: loop invariant initialization proved (CVC4: 4 VC)
+data.adb:18:33: info: loop invariant preservation proved (CVC4: 4 VC)
 data.adb:18:67: info: index check proved (CVC4: 2 VC)
 data.adb:18:82: info: index check proved (CVC4: 2 VC)
 data.adb:20:60: info: index check proved (CVC4: 2 VC)

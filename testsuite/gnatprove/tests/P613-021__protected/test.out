@@ -1,5 +1,5 @@
 core.adb:19:28: info: range check proved (CVC4: 1 VC)
-core.adb:27:10: info: assertion proved (CVC4: 1 VC)
+core.adb:27:25: info: assertion proved (CVC4: 1 VC)
 core.adb:30:25: medium: range check might fail
 core.ads:30:22: info: postcondition proved (CVC4: 1 VC)
 core.ads:33:25: info: initialization of "N" proved

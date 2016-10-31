@@ -5,6 +5,6 @@ inrange.adb:15:19: info: range check proved (CVC4: 1 VC)
 inrange.adb:15:19: medium: range check might fail (e.g. when X = 0)
 inrange.adb:15:19: warning: unused assignment to "X"
 inrange.adb:15:22: info: initialization of "Y" proved
-inrange.adb:16:07: info: assertion proved (CVC4: 1 VC)
+inrange.adb:16:22: info: assertion proved (CVC4: 1 VC)
 inrange.adb:16:22: info: initialization of "X" proved
 inrange.ads:8:23: info: postcondition proved (CVC4: 1 VC)

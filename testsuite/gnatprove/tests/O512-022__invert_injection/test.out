@@ -1,5 +1,5 @@
-invertinjection.adb:6:10: info: loop invariant initialization proved (CVC4: 1 VC)
-invertinjection.adb:6:10: info: loop invariant preservation proved (CVC4: 1 VC)
+invertinjection.adb:7:13: info: loop invariant initialization proved (CVC4: 1 VC)
+invertinjection.adb:7:13: info: loop invariant preservation proved (CVC4: 1 VC)
 invertinjection.adb:7:58: info: index check proved (CVC4: 2 VC)
-invertinjection.adb:10:07: info: assertion proved (CVC4: 1 VC)
+invertinjection.adb:10:22: info: assertion proved (CVC4: 1 VC)
 invertinjection.ads:15:71: medium: postcondition might fail, cannot prove I = J (e.g. when B = (2 => 100, 1 => 100, others => 0) and I = 1 and J = 2)

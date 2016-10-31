@@ -19,4 +19,4 @@ test.adb:57:20: medium: overflow check might fail
 test.adb:57:22: info: initialization of "temp" proved
 test.adb:59:17: info: overflow check proved (CVC4: 1 VC)
 test.adb:59:19: info: initialization of "temp" proved
-test.adb:61:07: info: assertion proved (CVC4: 1 VC)
+test.adb:61:22: info: assertion proved (CVC4: 1 VC)

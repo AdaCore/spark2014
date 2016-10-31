@@ -1,7 +1,7 @@
-vc4.adb:13:07: info: assertion proved (CVC4: 1 VC)
+vc4.adb:13:22: info: assertion proved (CVC4: 1 VC)
 vc4.adb:13:22: info: initialization of "T1" proved
 vc4.adb:13:27: info: initialization of "T2" proved
-vc4.adb:17:07: info: assertion proved (CVC4: 1 VC)
+vc4.adb:17:22: info: assertion proved (CVC4: 1 VC)
 vc4.adb:17:22: info: initialization of "T3" proved
 vc4.adb:17:27: info: initialization of "T4" proved
 vc4.adb:19:13: info: initialization of "T1" proved

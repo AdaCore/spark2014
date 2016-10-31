@@ -6,28 +6,28 @@ dic_of_cont.adb:5:45: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:6:07: info: initialization of private part of "Dorma" proved
 dic_of_cont.adb:7:07: info: initialization of private part of "Dorse" proved
 dic_of_cont.adb:8:07: info: initialization of private part of "Dfove" proved
-dic_of_cont.adb:10:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:10:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:10:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:10:40: info: initialization of private part of "Dlli" proved
-dic_of_cont.adb:11:07: info: assertion proved (CVC4: 1 VC)
-dic_of_cont.adb:12:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:11:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:12:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:12:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:12:40: info: initialization of private part of "Dhama" proved
-dic_of_cont.adb:13:07: info: assertion proved (CVC4: 1 VC)
-dic_of_cont.adb:14:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:13:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:14:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:14:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:14:40: info: initialization of private part of "Dhase" proved
-dic_of_cont.adb:15:07: info: assertion proved (CVC4: 1 VC)
-dic_of_cont.adb:16:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:15:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:16:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:16:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:16:40: info: initialization of private part of "Dorma" proved
-dic_of_cont.adb:17:07: info: assertion proved (CVC4: 1 VC)
-dic_of_cont.adb:18:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:17:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:18:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:18:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:18:40: info: initialization of private part of "Dorse" proved
-dic_of_cont.adb:19:07: info: assertion proved (CVC4: 1 VC)
-dic_of_cont.adb:20:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:19:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:20:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:20:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:20:40: info: initialization of private part of "Dfove" proved
-dic_of_cont.adb:21:07: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:21:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.ads:31:14: warning: subprogram "Main" has no effect

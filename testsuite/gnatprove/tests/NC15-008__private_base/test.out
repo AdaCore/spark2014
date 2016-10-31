@@ -1,3 +1,3 @@
 notag_base.ads:9:14: info: postcondition proved (CVC4: 1 VC)
-notag_ext.adb:8:07: info: assertion proved (CVC4: 1 VC)
+notag_ext.adb:8:22: info: assertion proved (CVC4: 1 VC)
 notag_ext.ads:12:14: warning: subprogram "Test" has no effect

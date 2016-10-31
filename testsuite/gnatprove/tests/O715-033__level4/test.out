@@ -3,10 +3,10 @@ At level 4
 ----------
 hard_stuff.adb:9:17: info: overflow check proved
 hard_stuff.adb:9:21: info: overflow check proved
-hard_stuff.adb:10:10: info: assertion proved
+hard_stuff.adb:10:25: info: assertion proved
 
 Equivalent switches
 -------------------
 hard_stuff.adb:9:17: info: overflow check proved
 hard_stuff.adb:9:21: info: overflow check proved
-hard_stuff.adb:10:10: info: assertion proved
+hard_stuff.adb:10:25: info: assertion proved

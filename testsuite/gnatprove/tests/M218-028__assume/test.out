@@ -1,2 +1,2 @@
 assume_natural.adb:1:11: warning: subprogram "Assume_Natural" has no effect
-assume_natural.adb:4:04: info: assertion proved (CVC4: 1 VC)
+assume_natural.adb:4:19: info: assertion proved (CVC4: 1 VC)

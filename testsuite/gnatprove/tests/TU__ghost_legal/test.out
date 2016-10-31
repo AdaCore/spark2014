@@ -1,10 +1,10 @@
 ghost_legal.adb:3:10: info: division check proved (CVC4: 1 VC)
 ghost_legal.adb:9:13: info: division check proved (CVC4: 1 VC)
-ghost_legal.adb:10:10: info: assertion proved (CVC4: 1 VC)
+ghost_legal.adb:10:33: info: assertion proved (CVC4: 1 VC)
 ghost_legal.adb:15:13: info: initialization of "Temp" proved
-ghost_legal.adb:16:10: info: loop invariant initialization proved (CVC4: 1 VC)
-ghost_legal.adb:16:10: info: loop invariant preservation proved (CVC4: 1 VC)
 ghost_legal.adb:16:33: info: initialization of "Temp" proved
+ghost_legal.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC)
+ghost_legal.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
 ghost_legal.adb:18:16: info: division check proved (CVC4: 1 VC)
 ghost_legal.adb:18:20: info: initialization of "Temp" proved
 ghost_legal.adb:22:18: info: initialization of "Temp" proved

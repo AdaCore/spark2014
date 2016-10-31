@@ -1,28 +1,28 @@
-main.adb:8:10: info: assertion proved (CVC4: 1 VC)
-main.adb:10:10: info: assertion proved (CVC4: 1 VC)
+main.adb:8:25: info: assertion proved (CVC4: 1 VC)
+main.adb:10:25: info: assertion proved (CVC4: 1 VC)
 main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
 main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
-main.adb:16:10: info: assertion proved (CVC4: 1 VC)
+main.adb:16:25: info: assertion proved (CVC4: 1 VC)
 main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
 main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
 main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 p.adb:3:14: warning: subprogram "P1" has no effect
-p.adb:7:13: info: assertion proved (CVC4: 1 VC)
-p.adb:9:13: info: assertion proved (CVC4: 1 VC)
-p.adb:11:13: info: assertion proved (CVC4: 1 VC)
+p.adb:7:28: info: assertion proved (CVC4: 1 VC)
+p.adb:9:28: info: assertion proved (CVC4: 1 VC)
+p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
-p.adb:15:13: info: assertion proved (CVC4: 1 VC)
+p.adb:15:28: info: assertion proved (CVC4: 1 VC)
 p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
 p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
 p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 p.adb:29:04: warning: analyzing unreferenced procedure "P2"
 p.adb:29:14: warning: subprogram "P2" has no effect
-p.adb:33:13: info: assertion proved (CVC4: 1 VC)
-p.adb:35:13: info: assertion proved (CVC4: 1 VC)
-p.adb:37:13: info: assertion proved (CVC4: 1 VC)
+p.adb:33:28: info: assertion proved (CVC4: 1 VC)
+p.adb:35:28: info: assertion proved (CVC4: 1 VC)
+p.adb:37:28: info: assertion proved (CVC4: 1 VC)
 p.adb:39:28: medium: assertion might fail, cannot prove F4 = 1
-p.adb:41:13: info: assertion proved (CVC4: 1 VC)
+p.adb:41:28: info: assertion proved (CVC4: 1 VC)
 p.adb:43:28: medium: assertion might fail, cannot prove G2 = 1
 p.adb:45:28: medium: assertion might fail, cannot prove G3 = 1
 p.adb:47:28: medium: assertion might fail, cannot prove G4 = 1
@@ -30,31 +30,31 @@ p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
 p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
 p.ads:6:38: medium: overflow check might fail
 p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
-private_main.adb:8:10: info: assertion proved (CVC4: 1 VC)
-private_main.adb:10:10: info: assertion proved (CVC4: 1 VC)
+private_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
+private_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
 private_main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
-private_main.adb:16:10: info: assertion proved (CVC4: 1 VC)
+private_main.adb:16:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
 private_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
 private_main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 private_p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 private_p.adb:3:14: warning: subprogram "P1" has no effect
-private_p.adb:7:13: info: assertion proved (CVC4: 1 VC)
-private_p.adb:9:13: info: assertion proved (CVC4: 1 VC)
-private_p.adb:11:13: info: assertion proved (CVC4: 1 VC)
+private_p.adb:7:28: info: assertion proved (CVC4: 1 VC)
+private_p.adb:9:28: info: assertion proved (CVC4: 1 VC)
+private_p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
-private_p.adb:15:13: info: assertion proved (CVC4: 1 VC)
+private_p.adb:15:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
 private_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
 private_p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 private_p.adb:27:04: warning: analyzing unreferenced procedure "P2"
 private_p.adb:27:14: warning: subprogram "P2" has no effect
-private_p.adb:31:13: info: assertion proved (CVC4: 1 VC)
-private_p.adb:33:13: info: assertion proved (CVC4: 1 VC)
-private_p.adb:35:13: info: assertion proved (CVC4: 1 VC)
+private_p.adb:31:28: info: assertion proved (CVC4: 1 VC)
+private_p.adb:33:28: info: assertion proved (CVC4: 1 VC)
+private_p.adb:35:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:37:28: medium: assertion might fail, cannot prove F4 = 1
-private_p.adb:39:13: info: assertion proved (CVC4: 1 VC)
+private_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1
 private_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
 private_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
@@ -64,77 +64,77 @@ private_p.ads:9:38: info: overflow check proved (CVC4: 1 VC)
 private_p.ads:9:43: info: overflow check proved (CVC4: 1 VC)
 private_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 private_q.adb:4:14: warning: subprogram "Q1" has no effect
-private_q.adb:8:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:10:13: info: assertion proved (CVC4: 1 VC)
+private_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:10:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
 private_q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
-private_q.adb:16:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:18:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:20:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:22:13: info: assertion proved (CVC4: 1 VC)
+private_q.adb:16:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:18:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:20:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:22:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:28:04: warning: analyzing unreferenced procedure "Q2"
 private_q.adb:28:14: warning: subprogram "Q2" has no effect
-private_q.adb:32:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:34:13: info: assertion proved (CVC4: 1 VC)
+private_q.adb:32:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:34:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1
 private_q.adb:38:28: medium: assertion might fail, cannot prove F4 = 1
-private_q.adb:40:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:42:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:44:13: info: assertion proved (CVC4: 1 VC)
-private_q.adb:46:13: info: assertion proved (CVC4: 1 VC)
+private_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:42:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:44:28: info: assertion proved (CVC4: 1 VC)
+private_q.adb:46:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:52:38: info: overflow check proved (CVC4: 1 VC)
 private_q.adb:52:43: info: overflow check proved (CVC4: 1 VC)
 private_q.ads:7:38: info: overflow check proved (CVC4: 1 VC)
 private_q.ads:7:43: info: overflow check proved (CVC4: 1 VC)
 q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 q.adb:4:14: warning: subprogram "Q1" has no effect
-q.adb:8:13: info: assertion proved (CVC4: 1 VC)
-q.adb:10:13: info: assertion proved (CVC4: 1 VC)
+q.adb:8:28: info: assertion proved (CVC4: 1 VC)
+q.adb:10:28: info: assertion proved (CVC4: 1 VC)
 q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
 q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
-q.adb:16:13: info: assertion proved (CVC4: 1 VC)
-q.adb:18:13: info: assertion proved (CVC4: 1 VC)
-q.adb:20:13: info: assertion proved (CVC4: 1 VC)
-q.adb:22:13: info: assertion proved (CVC4: 1 VC)
+q.adb:16:28: info: assertion proved (CVC4: 1 VC)
+q.adb:18:28: info: assertion proved (CVC4: 1 VC)
+q.adb:20:28: info: assertion proved (CVC4: 1 VC)
+q.adb:22:28: info: assertion proved (CVC4: 1 VC)
 q.adb:28:38: info: overflow check proved (CVC4: 1 VC)
 q.adb:28:43: info: overflow check proved (CVC4: 1 VC)
 q.adb:31:04: warning: analyzing unreferenced procedure "Q2"
 q.adb:31:14: warning: subprogram "Q2" has no effect
-q.adb:35:13: info: assertion proved (CVC4: 1 VC)
-q.adb:37:13: info: assertion proved (CVC4: 1 VC)
+q.adb:35:28: info: assertion proved (CVC4: 1 VC)
+q.adb:37:28: info: assertion proved (CVC4: 1 VC)
 q.adb:39:28: medium: assertion might fail, cannot prove F3 = 1
 q.adb:41:28: medium: assertion might fail, cannot prove F4 = 1
-q.adb:43:13: info: assertion proved (CVC4: 1 VC)
-q.adb:45:13: info: assertion proved (CVC4: 1 VC)
-q.adb:47:13: info: assertion proved (CVC4: 1 VC)
-q.adb:49:13: info: assertion proved (CVC4: 1 VC)
+q.adb:43:28: info: assertion proved (CVC4: 1 VC)
+q.adb:45:28: info: assertion proved (CVC4: 1 VC)
+q.adb:47:28: info: assertion proved (CVC4: 1 VC)
+q.adb:49:28: info: assertion proved (CVC4: 1 VC)
 q.ads:5:38: info: overflow check proved (CVC4: 1 VC)
 q.ads:5:43: info: overflow check proved (CVC4: 1 VC)
-reorder_main.adb:8:10: info: assertion proved (CVC4: 1 VC)
-reorder_main.adb:10:10: info: assertion proved (CVC4: 1 VC)
+reorder_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
+reorder_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
 reorder_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
 reorder_main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
-reorder_main.adb:16:10: info: assertion proved (CVC4: 1 VC)
+reorder_main.adb:16:25: info: assertion proved (CVC4: 1 VC)
 reorder_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
 reorder_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
 reorder_main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 reorder_p.adb:3:14: warning: subprogram "P1" has no effect
-reorder_p.adb:7:13: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:9:13: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:11:13: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:7:28: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:9:28: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
-reorder_p.adb:15:13: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:15:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
 reorder_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
 reorder_p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.adb:27:04: warning: analyzing unreferenced procedure "P2"
 reorder_p.adb:27:14: warning: subprogram "P2" has no effect
-reorder_p.adb:31:13: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:33:13: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:35:13: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:31:28: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:33:28: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:35:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:37:28: medium: assertion might fail, cannot prove F4 = 1
-reorder_p.adb:39:13: info: assertion proved (CVC4: 1 VC)
+reorder_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1
 reorder_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
 reorder_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
@@ -144,24 +144,24 @@ reorder_p.ads:6:38: medium: overflow check might fail
 reorder_p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 reorder_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 reorder_q.adb:4:14: warning: subprogram "Q1" has no effect
-reorder_q.adb:8:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:10:13: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:10:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
 reorder_q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
-reorder_q.adb:16:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:18:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:20:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:22:13: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:16:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:18:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:20:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:22:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:28:04: warning: analyzing unreferenced procedure "Q2"
 reorder_q.adb:28:14: warning: subprogram "Q2" has no effect
-reorder_q.adb:32:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:34:13: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:32:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:34:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1
 reorder_q.adb:38:28: medium: assertion might fail, cannot prove F4 = 1
-reorder_q.adb:40:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:42:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:44:13: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:46:13: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:42:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:44:28: info: assertion proved (CVC4: 1 VC)
+reorder_q.adb:46:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:52:38: info: overflow check proved (CVC4: 1 VC)
 reorder_q.adb:52:43: info: overflow check proved (CVC4: 1 VC)
 reorder_q.ads:5:38: info: overflow check proved (CVC4: 1 VC)

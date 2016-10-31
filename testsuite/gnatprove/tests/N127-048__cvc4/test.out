@@ -51,7 +51,7 @@ nose_gear.adb:262:25: info: initialization of "Sum2_2_out1" proved
 nose_gear.adb:264:25: info: initialization of "Sum_3_out1" proved
 nose_gear.adb:270:45: info: initialization of "Left_out1" proved
 nose_gear.adb:270:45: info: range check proved (CVC4: 8 VC)
-nose_gear.adb:273:07: info: assertion proved (CVC4: 1 VC)
+nose_gear.adb:273:22: info: assertion proved (CVC4: 1 VC)
 nose_gear.adb:273:22: info: initialization of "Left_1_out1" proved
 nose_gear.adb:275:47: info: initialization of "Left_1_out1" proved
 nose_gear.adb:275:47: info: range check proved (CVC4: 1 VC)

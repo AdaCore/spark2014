@@ -8,11 +8,11 @@ nonlinear.adb:19:22: info: initialization of "Res" proved
 nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X
 nonlinear.adb:25:16: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:25:16: info: range check proved (altergo: 1 VC)
-nonlinear.adb:26:07: info: assertion proved (altergo: 1 VC)
+nonlinear.adb:26:22: info: assertion proved (altergo: 1 VC)
 nonlinear.adb:26:23: info: initialization of "Res" proved
 nonlinear.adb:26:27: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:26:32: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:32:07: info: assertion proved (altergo: 1 VC)
+nonlinear.adb:32:22: info: assertion proved (altergo: 1 VC)
 nonlinear.adb:32:24: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:32:29: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:32:33: info: overflow check proved (CVC4: 1 VC)

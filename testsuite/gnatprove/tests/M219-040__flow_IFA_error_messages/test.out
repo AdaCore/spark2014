@@ -48,7 +48,7 @@ test.adb:150:24: medium: overflow check might fail
 test.adb:150:24: medium: range check might fail
 test.adb:150:41: info: range check proved (CVC4: 1 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
-test.adb:173:10: info: assertion proved (CVC4: 1 VC), in instantiation at test.adb:176
+test.adb:173:25: info: assertion proved (CVC4: 1 VC), in instantiation at test.adb:176
 test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"

@@ -1,4 +1,4 @@
 generic_instance.adb:17:14: medium: precondition might fail
 generic_instance.adb:18:29: medium: precondition might fail
-generic_instance.adb:19:07: info: assertion proved (CVC4: 1 VC)
+generic_instance.adb:19:22: info: assertion proved (CVC4: 1 VC)
 generic_instance.adb:19:22: medium: precondition might fail

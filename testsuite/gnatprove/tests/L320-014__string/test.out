@@ -1,2 +1,2 @@
-user.adb:6:04: info: assertion proved (CVC4: 1 VC)
-user.adb:7:04: info: assertion proved (CVC4: 1 VC)
+user.adb:6:19: info: assertion proved (CVC4: 1 VC)
+user.adb:7:19: info: assertion proved (CVC4: 1 VC)

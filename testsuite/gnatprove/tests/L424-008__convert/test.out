@@ -3,7 +3,7 @@ p.adb:5:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:37
 p.adb:6:31: info: initialization of "My_S1" proved
 p.adb:6:31: info: initialization of "My_S1" proved, in call inlined at p.adb:37
 p.adb:6:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:37
-p.adb:9:07: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:37
+p.adb:9:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:37
 p.adb:9:22: info: initialization of "My_S2" proved
 p.adb:9:22: info: initialization of "My_S2" proved, in call inlined at p.adb:37
 p.adb:12:14: warning: subprogram "Second" has no effect
@@ -19,7 +19,7 @@ p.adb:21:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:39
 p.adb:22:31: info: initialization of "My_S1" proved
 p.adb:22:31: info: initialization of "My_S1" proved, in call inlined at p.adb:39
 p.adb:22:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:39
-p.adb:25:07: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:39
+p.adb:25:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:39
 p.adb:25:22: info: initialization of "My_S2" proved
 p.adb:25:22: info: initialization of "My_S2" proved, in call inlined at p.adb:39
 p.adb:28:14: warning: subprogram "Fourth" has no effect
@@ -27,6 +27,6 @@ p.adb:29:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:40
 p.adb:30:31: info: initialization of "My_S1" proved
 p.adb:30:31: info: initialization of "My_S1" proved, in call inlined at p.adb:40
 p.adb:30:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:40
-p.adb:33:07: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:40
+p.adb:33:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:40
 p.adb:33:22: info: initialization of "My_S2" proved
 p.adb:33:22: info: initialization of "My_S2" proved, in call inlined at p.adb:40

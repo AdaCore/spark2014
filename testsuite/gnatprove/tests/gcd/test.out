@@ -13,8 +13,8 @@ math_euclid.adb:47:13: info: precondition proved (CVC4: 4 VC)
 math_euclid.adb:49:55: info: division check proved (CVC4: 2 VC)
 math_euclid.adb:49:55: info: range check proved (CVC4: 2 VC)
 math_euclid.adb:50:13: info: precondition proved (CVC4: 6 VC)
-math_euclid.adb:52:10: info: loop invariant initialization proved (CVC4: 4 VC)
-math_euclid.adb:52:10: info: loop invariant preservation proved (CVC4: 4 VC)
+math_euclid.adb:53:13: info: loop invariant initialization proved (CVC4: 4 VC)
+math_euclid.adb:53:13: info: loop invariant preservation proved (CVC4: 4 VC)
 math_euclid.adb:56:78: info: division check proved (CVC4: 1 VC)
 math_euclid.adb:56:78: info: range check proved (CVC4: 1 VC)
 math_euclid.adb:62:23: info: range check proved (CVC4: 1 VC)
@@ -28,18 +28,18 @@ math_euclid.adb:68:18: info: range check proved (CVC4: 2 VC)
 math_euclid.adb:68:22: info: initialization of "Bn" proved
 math_euclid.adb:69:34: info: initialization of "C" proved
 math_euclid.adb:69:37: info: initialization of "An" proved
-math_euclid.adb:70:10: info: loop invariant initialization proved (CVC4: 4 VC)
-math_euclid.adb:70:10: info: loop invariant preservation proved (CVC4: 4 VC)
+math_euclid.adb:71:13: info: loop invariant initialization proved (CVC4: 4 VC)
+math_euclid.adb:71:13: info: loop invariant preservation proved (CVC4: 4 VC)
 math_euclid.adb:74:28: info: initialization of "An" proved
 math_euclid.adb:74:37: info: initialization of "Bn" proved
 math_euclid.adb:74:64: info: range check proved (CVC4: 1 VC)
-math_euclid.adb:77:07: info: assertion proved (altergo: 1 VC)
+math_euclid.adb:77:22: info: assertion proved (altergo: 1 VC)
 math_euclid.adb:77:35: info: initialization of "An" proved
-math_euclid.adb:78:07: info: assertion proved (CVC4: 1 VC)
+math_euclid.adb:78:22: info: assertion proved (CVC4: 1 VC)
 math_euclid.adb:78:31: info: initialization of "An" proved
-math_euclid.adb:79:07: info: assertion proved (CVC4: 1 VC)
+math_euclid.adb:79:22: info: assertion proved (CVC4: 1 VC)
 math_euclid.adb:79:31: info: initialization of "An" proved
-math_euclid.adb:81:07: info: assertion proved (Z3: 1 VC)
+math_euclid.adb:81:22: info: assertion proved (Z3: 1 VC)
 math_euclid.adb:81:35: info: initialization of "An" proved
 math_euclid.adb:82:38: info: range check proved (CVC4: 1 VC)
 math_euclid.adb:82:57: info: range check proved (CVC4: 1 VC)
@@ -53,8 +53,8 @@ math_simple.adb:6:13: info: initialization of "C" proved
 math_simple.adb:7:22: info: division check proved (CVC4: 2 VC)
 math_simple.adb:7:26: info: initialization of "C" proved
 math_simple.adb:7:38: info: division check proved (CVC4: 2 VC)
-math_simple.adb:8:10: info: loop invariant initialization proved (altergo: 1 VC)
-math_simple.adb:8:10: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple.adb:8:33: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple.adb:8:33: info: loop invariant preservation proved (altergo: 1 VC)
 math_simple.adb:8:46: info: initialization of "C" proved
 math_simple.adb:9:49: info: range check proved (CVC4: 1 VC)
 math_simple.adb:9:68: info: range check proved (CVC4: 1 VC)
@@ -70,9 +70,9 @@ math_simple_abstract.adb:6:14: info: postcondition proved (altergo: 1 VC)
 math_simple_abstract.adb:6:28: info: division check proved (CVC4: 1 VC)
 math_simple_abstract.adb:15:19: info: division check proved (CVC4: 1 VC)
 math_simple_abstract.adb:16:14: info: postcondition proved (altergo: 1 VC)
-math_simple_abstract.adb:21:10: info: assertion proved (altergo: 2 VC)
-math_simple_abstract.adb:22:10: info: loop invariant initialization proved (altergo: 1 VC)
-math_simple_abstract.adb:22:10: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_abstract.adb:21:25: info: assertion proved (altergo: 2 VC)
+math_simple_abstract.adb:22:33: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple_abstract.adb:22:33: info: loop invariant preservation proved (altergo: 1 VC)
 math_simple_abstract.adb:29:19: info: division check proved (CVC4: 1 VC)
 math_simple_abstract.adb:30:14: info: postcondition proved (altergo: 1 VC)
 math_simple_abstract.adb:37:30: info: range check proved (CVC4: 1 VC)
@@ -86,8 +86,8 @@ math_simple_abstract.adb:42:13: info: precondition proved (CVC4: 2 VC)
 math_simple_abstract.adb:42:36: info: initialization of "C" proved
 math_simple_abstract.adb:44:13: info: precondition proved (CVC4: 2 VC)
 math_simple_abstract.adb:44:36: info: initialization of "C" proved
-math_simple_abstract.adb:46:10: info: loop invariant initialization proved (CVC4: 1 VC)
-math_simple_abstract.adb:46:10: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_abstract.adb:46:33: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_abstract.adb:46:33: info: loop invariant preservation proved (CVC4: 1 VC)
 math_simple_abstract.adb:46:46: info: initialization of "C" proved
 math_simple_abstract.adb:47:49: info: range check proved (CVC4: 1 VC)
 math_simple_abstract.adb:47:68: info: range check proved (CVC4: 1 VC)
@@ -109,8 +109,8 @@ math_simple_half.adb:30:19: info: initialization of "C" proved
 math_simple_half.adb:31:13: info: precondition proved (CVC4: 4 VC)
 math_simple_half.adb:31:32: info: range check proved (CVC4: 2 VC)
 math_simple_half.adb:31:42: info: range check proved (CVC4: 2 VC)
-math_simple_half.adb:32:13: info: loop invariant initialization proved (CVC4: 1 VC)
-math_simple_half.adb:32:13: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_half.adb:32:36: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_half.adb:32:36: info: loop invariant preservation proved (CVC4: 1 VC)
 math_simple_half.adb:32:49: info: initialization of "C" proved
 math_simple_half.adb:33:51: info: range check proved (CVC4: 1 VC)
 math_simple_half.adb:33:61: info: range check proved (CVC4: 1 VC)
@@ -118,10 +118,10 @@ math_simple_half.adb:36:16: info: initialization of "C" proved
 math_simple_half.adb:37:25: info: division check proved (CVC4: 2 VC)
 math_simple_half.adb:37:29: info: initialization of "C" proved
 math_simple_half.adb:37:41: info: division check proved (CVC4: 2 VC)
-math_simple_half.adb:38:13: info: loop invariant initialization proved (CVC4: 1 VC)
-math_simple_half.adb:38:13: info: loop invariant preservation proved (CVC4: 1 VC)
-math_simple_half.adb:39:13: info: loop invariant initialization proved (altergo: 1 VC)
-math_simple_half.adb:39:13: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_half.adb:38:36: info: loop invariant initialization proved (CVC4: 1 VC)
+math_simple_half.adb:38:36: info: loop invariant preservation proved (CVC4: 1 VC)
+math_simple_half.adb:39:36: info: loop invariant initialization proved (altergo: 1 VC)
+math_simple_half.adb:39:36: info: loop invariant preservation proved (altergo: 1 VC)
 math_simple_half.adb:39:49: info: initialization of "C" proved
 math_simple_half.adb:40:52: info: range check proved (CVC4: 1 VC)
 math_simple_half.adb:40:71: info: range check proved (CVC4: 1 VC)

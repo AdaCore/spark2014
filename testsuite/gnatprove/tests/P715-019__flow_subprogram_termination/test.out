@@ -21,9 +21,9 @@ container.adb:53:10: info: initialization of "X" proved
 container.adb:54:15: info: initialization of "X" proved
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:10: info: initialization of "I" proved
-container.adb:60:07: info: loop invariant initialization proved (CVC4: 1 VC)
-container.adb:60:07: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:60:30: info: initialization of "R" proved
+container.adb:60:30: info: loop invariant initialization proved (CVC4: 1 VC)
+container.adb:60:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:60:39: info: overflow check proved (CVC4: 1 VC)
 container.adb:60:44: info: overflow check proved (CVC4: 1 VC)
 container.adb:60:46: info: initialization of "I" proved
@@ -56,9 +56,9 @@ container.adb:97:08: info: precondition proved (CVC4: 1 VC)
 container.adb:97:13: info: initialization of "My_Container.A" proved
 container.adb:99:12: info: initialization of "R" proved
 container.adb:99:14: info: range check proved (CVC4: 2 VC)
-container.adb:100:07: info: loop invariant initialization proved (CVC4: 1 VC)
-container.adb:100:07: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:100:30: info: initialization of "B" proved
+container.adb:100:30: info: loop invariant initialization proved (CVC4: 1 VC)
+container.adb:100:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:101:07: info: loop variant proved (CVC4: 1 VC)
 container.adb:101:41: info: initialization of "R" proved
 container.adb:104:15: info: initialization of "X" proved

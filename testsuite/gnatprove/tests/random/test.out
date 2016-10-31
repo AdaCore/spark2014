@@ -19,9 +19,9 @@ random.adb:77:31: info: initialization of "I" proved
 random.adb:77:33: info: range check proved (CVC4: 2 VC)
 random.adb:79:53: info: initialization of "J" proved
 random.adb:79:55: info: overflow check proved (CVC4: 2 VC)
-random.adb:80:13: info: loop invariant initialization proved (CVC4: 3 VC)
-random.adb:80:13: info: loop invariant preservation proved (CVC4: 3 VC)
 random.adb:80:36: info: initialization of "I" proved
+random.adb:80:36: info: loop invariant initialization proved (CVC4: 3 VC)
+random.adb:80:36: info: loop invariant preservation proved (CVC4: 3 VC)
 random.adb:80:46: info: initialization of "J" proved
 random.adb:85:16: info: initialization of "G.State" proved
 random.adb:85:25: info: initialization of "I" proved
@@ -31,9 +31,9 @@ random.adb:89:16: info: initialization of "I" proved
 random.adb:90:31: info: initialization of "G.State" proved
 random.adb:93:31: info: initialization of "I" proved
 random.adb:93:33: info: range check proved (CVC4: 2 VC)
-random.adb:95:13: info: loop invariant initialization proved (CVC4: 1 VC)
-random.adb:95:13: info: loop invariant preservation proved (CVC4: 1 VC)
 random.adb:95:36: info: initialization of "I" proved
+random.adb:95:36: info: loop invariant initialization proved (CVC4: 1 VC)
+random.adb:95:36: info: loop invariant preservation proved (CVC4: 1 VC)
 random.adb:98:22: info: initialization of "G.State" proved
 random.adb:112:18: info: range check proved (CVC4: 1 VC)
 random.adb:115:09: info: length check proved (CVC4: 1 VC)
@@ -50,7 +50,7 @@ random.adb:159:61: info: division check proved (CVC4: 1 VC)
 random.adb:163:43: info: initialization of "X" proved
 random.adb:166:18: info: initialization of "X" proved
 random.adb:166:20: info: division check proved (CVC4: 1 VC)
-random.adb:167:13: info: assertion proved (CVC4: 2 VC)
+random.adb:167:28: info: assertion proved (CVC4: 2 VC)
 random.adb:167:28: info: initialization of "X" proved
 random.adb:170:47: info: range check proved (altergo: 1 VC)
 random.adb:170:66: info: initialization of "X" proved

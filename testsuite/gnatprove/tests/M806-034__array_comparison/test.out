@@ -1,12 +1,12 @@
-array_comparison.adb:8:07: info: assertion proved (CVC4: 1 VC)
+array_comparison.adb:8:22: info: assertion proved (CVC4: 1 VC)
 array_comparison.adb:8:22: info: initialization of "X" proved
 array_comparison.adb:8:26: info: initialization of "Y" proved
-array_comparison.adb:9:07: info: assertion proved (CVC4: 1 VC)
+array_comparison.adb:9:22: info: assertion proved (CVC4: 1 VC)
 array_comparison.adb:9:22: info: initialization of "X" proved
 array_comparison.adb:9:22: info: range check proved (CVC4: 4 VC)
 array_comparison.adb:9:35: info: initialization of "Z" proved
 array_comparison.adb:9:35: info: range check proved (CVC4: 4 VC)
-array_comparison.adb:10:07: info: assertion proved (CVC4: 1 VC)
+array_comparison.adb:10:22: info: assertion proved (CVC4: 1 VC)
 array_comparison.adb:10:22: info: initialization of "X" proved
 array_comparison.adb:10:26: info: initialization of "Z" proved
 array_comparison.adb:11:22: info: initialization of "X" proved

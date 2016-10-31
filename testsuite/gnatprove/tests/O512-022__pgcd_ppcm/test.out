@@ -1,7 +1,7 @@
 a.adb:8:13: info: initialization of "Bn" proved
-a.adb:9:10: info: loop invariant initialization proved (CVC4: 4 VC)
-a.adb:9:10: info: loop invariant preservation proved (CVC4: 4 VC)
 a.adb:10:13: info: initialization of "An" proved
+a.adb:10:13: info: loop invariant initialization proved (CVC4: 4 VC)
+a.adb:10:13: info: loop invariant preservation proved (CVC4: 4 VC)
 a.adb:11:24: info: initialization of "Bn" proved
 a.adb:12:25: info: overflow check proved (CVC4: 1 VC)
 a.adb:12:35: info: overflow check proved (CVC4: 1 VC)

@@ -14,9 +14,9 @@ database.adb:124:36: info: index check proved (CVC4: 2 VC)
 database.adb:132:35: info: index check proved (CVC4: 2 VC)
 database.adb:135:35: info: index check proved (CVC4: 2 VC)
 database.adb:141:44: info: index check proved (CVC4: 2 VC)
-database.adb:152:13: info: loop invariant initialization proved (CVC4: 1 VC)
-database.adb:152:13: info: loop invariant preservation proved (CVC4: 1 VC)
 database.adb:152:36: info: initialization of "Count" proved
+database.adb:152:36: info: loop invariant initialization proved (CVC4: 1 VC)
+database.adb:152:36: info: loop invariant preservation proved (CVC4: 1 VC)
 database.adb:154:25: info: initialization of "Count" proved
 database.adb:154:31: info: overflow check proved (CVC4: 1 VC)
 database.adb:157:17: info: initialization of "Count" proved

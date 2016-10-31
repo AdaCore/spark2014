@@ -1,10 +1,10 @@
 pi_euler.adb:9:15: info: initialization of "Erreur" proved
 pi_euler.adb:11:19: info: initialization of "Index" proved
 pi_euler.adb:11:24: medium: overflow check might fail
-pi_euler.adb:12:10: info: loop invariant initialization proved (altergo: 1 VC)
-pi_euler.adb:12:10: info: loop invariant preservation proved (altergo: 1 VC)
 pi_euler.adb:12:33: info: initialization of "Index" proved
-pi_euler.adb:13:10: info: assertion proved (CVC4: 1 VC)
+pi_euler.adb:12:33: info: loop invariant initialization proved (altergo: 1 VC)
+pi_euler.adb:12:33: info: loop invariant preservation proved (altergo: 1 VC)
+pi_euler.adb:13:25: info: assertion proved (CVC4: 1 VC)
 pi_euler.adb:13:36: info: initialization of "Index" proved
 pi_euler.adb:13:36: info: range check proved (CVC4: 1 VC)
 pi_euler.adb:14:23: info: division check proved (altergo: 1 VC)
@@ -22,10 +22,10 @@ pi_euler_2.adb:12:19: info: initialization of "Index" proved
 pi_euler_2.adb:12:24: medium: overflow check might fail
 pi_euler_2.adb:15:25: info: initialization of "Index_Float" proved
 pi_euler_2.adb:15:37: medium: overflow check might fail
-pi_euler_2.adb:16:10: info: loop invariant initialization proved (altergo: 1 VC)
 pi_euler_2.adb:16:33: info: initialization of "Index_Float" proved
+pi_euler_2.adb:16:33: info: loop invariant initialization proved (altergo: 1 VC)
 pi_euler_2.adb:16:33: medium: loop invariant might fail after first iteration, cannot prove Index_Float >= 1.0
-pi_euler_2.adb:17:10: info: assertion proved (altergo: 1 VC)
+pi_euler_2.adb:17:25: info: assertion proved (altergo: 1 VC)
 pi_euler_2.adb:17:25: info: initialization of "Index_Float" proved
 pi_euler_2.adb:18:23: info: division check proved (altergo: 1 VC)
 pi_euler_2.adb:18:23: info: overflow check proved (altergo: 1 VC)

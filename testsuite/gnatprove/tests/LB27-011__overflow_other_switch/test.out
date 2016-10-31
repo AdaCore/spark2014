@@ -1,6 +1,6 @@
-p.adb:5:07: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:5:07: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:5:30: info: initialization of "Result" proved
+p.adb:5:30: info: loop invariant initialization proved (CVC4: 1 VC)
+p.adb:5:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:5:41: info: overflow check proved (CVC4: 1 VC)
 p.adb:6:17: info: initialization of "Result" proved
 p.adb:8:11: info: initialization of "Result" proved

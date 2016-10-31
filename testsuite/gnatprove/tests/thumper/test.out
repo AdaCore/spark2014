@@ -34,11 +34,11 @@ hermes-der-decode.adb:107:07: info: initialization of "Status" proved
 hermes-der-decode.adb:126:29: medium: overflow check might fail (e.g. when Octet_Count = 2 and Starting = 2147483647)
 hermes-der-decode.adb:127:51: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC4: 2 VC)
-hermes-der-decode.adb:132:13: info: loop invariant initialization proved (CVC4: 2 VC)
-hermes-der-decode.adb:132:13: info: loop invariant preservation proved (CVC4: 2 VC)
+hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 2 VC)
+hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:134:13: info: loop invariant initialization proved (CVC4: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
 hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2
 hermes-der-decode.adb:135:99: medium: overflow check might fail
@@ -55,9 +55,9 @@ hermes-der-decode.adb:144:18: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:150:22: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:152:36: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:156:21: info: index check proved (CVC4: 2 VC)
-hermes-der-decode.adb:163:10: info: assertion proved (CVC4: 1 VC)
+hermes-der-decode.adb:163:24: info: assertion proved (CVC4: 1 VC)
 hermes-der-decode.adb:163:32: info: index check proved (CVC4: 2 VC)
-hermes-der-decode.adb:164:10: info: assertion proved (CVC4: 1 VC)
+hermes-der-decode.adb:164:24: info: assertion proved (CVC4: 1 VC)
 hermes-der-decode.adb:164:32: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:165:60: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:165:67: info: range check proved (CVC4: 1 VC)
@@ -293,8 +293,8 @@ hermes-oid.adb:72:30: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:72:30: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:72:35: info: initialization of "Result" proved
 hermes-oid.adb:73:14: info: range check proved (CVC4: 2 VC)
-hermes-oid.adb:74:13: info: loop invariant initialization proved (CVC4: 3 VC)
-hermes-oid.adb:74:13: info: loop invariant preservation proved (CVC4: 3 VC)
+hermes-oid.adb:75:16: info: loop invariant initialization proved (CVC4: 3 VC)
+hermes-oid.adb:75:16: info: loop invariant preservation proved (CVC4: 3 VC)
 hermes-oid.adb:76:62: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:79:34: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:79:39: info: index check proved (CVC4: 2 VC)
@@ -309,13 +309,13 @@ hermes-oid.adb:110:45: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:110:51: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:110:51: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:111:14: info: range check proved (CVC4: 2 VC)
-hermes-oid.adb:112:13: info: loop invariant initialization proved (CVC4: 2 VC)
-hermes-oid.adb:112:13: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-oid.adb:112:35: info: initialization of "Result_Index" proved
+hermes-oid.adb:112:35: info: loop invariant initialization proved (CVC4: 2 VC)
+hermes-oid.adb:112:35: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-oid.adb:118:29: info: initialization of "Result_Index" proved
-hermes-oid.adb:121:16: info: loop invariant initialization proved (CVC4: 2 VC)
-hermes-oid.adb:121:16: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-oid.adb:121:38: info: initialization of "Result_Index" proved
+hermes-oid.adb:121:38: info: loop invariant initialization proved (CVC4: 2 VC)
+hermes-oid.adb:121:38: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-oid.adb:122:19: info: initialization of "Result_Index" proved
 hermes-oid.adb:126:35: info: initialization of "Result_Index" proved
 hermes-oid.adb:126:48: info: overflow check proved (CVC4: 1 VC)
@@ -339,9 +339,9 @@ hermes-oid.adb:150:41: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:151:28: info: initialization of "Result_Index" proved
 hermes-oid.adb:152:19: info: initialization of "Left_Index" proved
 hermes-oid.adb:152:32: info: initialization of "Right_Index" proved
-hermes-oid.adb:153:16: info: loop invariant initialization proved (CVC4: 4 VC)
-hermes-oid.adb:153:16: info: loop invariant preservation proved (CVC4: 4 VC)
 hermes-oid.adb:153:38: info: initialization of "Left_Index" proved
+hermes-oid.adb:153:38: info: loop invariant initialization proved (CVC4: 4 VC)
+hermes-oid.adb:153:38: info: loop invariant preservation proved (CVC4: 4 VC)
 hermes-oid.adb:153:69: info: initialization of "Right_Index" proved
 hermes-oid.adb:155:39: info: initialization of "Result" proved
 hermes-oid.adb:155:46: info: index check proved (CVC4: 2 VC)
@@ -376,18 +376,18 @@ hermes-oid.ads:53:42: info: initialization of "Result" proved
 hermes-oid.ads:53:68: info: initialization of "Octet_Count" proved
 messages.adb:15:40: info: length check proved (CVC4: 1 VC)
 messages.adb:18:29: info: initialization of "High_Level.Data" proved
-messages.adb:20:10: info: loop invariant initialization proved (CVC4: 3 VC)
-messages.adb:20:10: info: loop invariant preservation proved (CVC4: 3 VC)
 messages.adb:21:13: info: initialization of "High_Level.Size" proved
+messages.adb:21:13: info: loop invariant initialization proved (CVC4: 3 VC)
+messages.adb:21:13: info: loop invariant preservation proved (CVC4: 3 VC)
 messages.adb:21:46: info: initialization of "High_Level.Size" proved
 messages.adb:25:26: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Size" proved
 messages.adb:32:47: info: length check proved (CVC4: 1 VC)
 messages.adb:35:28: info: initialization of "Low_Level.Data" proved
-messages.adb:37:10: info: loop invariant initialization proved (CVC4: 3 VC)
-messages.adb:37:10: info: loop invariant preservation proved (CVC4: 3 VC)
 messages.adb:38:13: info: initialization of "Low_Level.Size" proved
+messages.adb:38:13: info: loop invariant initialization proved (CVC4: 3 VC)
+messages.adb:38:13: info: loop invariant preservation proved (CVC4: 3 VC)
 messages.adb:38:44: info: initialization of "Low_Level.Size" proved
 messages.adb:42:26: info: initialization of "Low_Level.Data" proved
 messages.adb:44:14: info: initialization of "Low_Level.Data" proved
@@ -418,9 +418,9 @@ network-addresses.adb:72:31: info: initialization of "Result" proved
 network-addresses.adb:72:31: info: initialization of "Result_Index" proved
 network-addresses.adb:72:34: info: initialization of "Value" proved
 network-addresses.adb:93:36: info: length check proved (CVC4: 1 VC)
-network-addresses.adb:98:10: info: loop invariant initialization proved (CVC4: 2 VC)
-network-addresses.adb:98:10: info: loop invariant preservation proved (CVC4: 2 VC)
 network-addresses.adb:98:32: info: initialization of "Count" proved
+network-addresses.adb:98:32: info: loop invariant initialization proved (CVC4: 2 VC)
+network-addresses.adb:98:32: info: loop invariant preservation proved (CVC4: 2 VC)
 network-addresses.adb:98:42: info: overflow check proved (CVC4: 1 VC)
 network-addresses.adb:98:63: info: overflow check proved (CVC4: 1 VC)
 network-addresses.adb:101:30: info: overflow check proved (CVC4: 1 VC)
@@ -465,7 +465,7 @@ network-addresses.adb:129:32: info: initialization of "Skip" proved
 network-addresses.adb:129:32: info: initialization of "Text" proved
 network-addresses.adb:130:21: info: initialization of "Skip" proved
 network-addresses.adb:130:26: info: range check proved (CVC4: 1 VC)
-network-addresses.adb:133:10: info: assertion proved (CVC4: 2 VC)
+network-addresses.adb:133:24: info: assertion proved (CVC4: 2 VC)
 network-addresses.adb:133:80: info: initialization of "Skip" proved
 network-addresses.adb:136:19: info: initialization of "Count" proved
 network-addresses.adb:136:25: info: overflow check proved (CVC4: 1 VC)

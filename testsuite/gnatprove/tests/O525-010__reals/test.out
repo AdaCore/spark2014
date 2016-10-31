@@ -1,2 +1,2 @@
 test_reals.adb:3:11: warning: subprogram "Test_Reals" has no effect
-test_reals.adb:7:04: info: assertion proved (altergo: 1 VC)
+test_reals.adb:7:19: info: assertion proved (altergo: 1 VC)

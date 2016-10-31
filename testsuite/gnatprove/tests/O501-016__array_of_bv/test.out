@@ -1,5 +1,5 @@
-dumbledore.adb:31:07: info: assertion proved (CVC4: 1 VC)
-dumbledore.adb:40:07: info: assertion proved (CVC4: 1 VC)
+dumbledore.adb:31:21: info: assertion proved (CVC4: 1 VC)
+dumbledore.adb:40:21: info: assertion proved (CVC4: 1 VC)
 dumbledore.ads:16:43: low: unused global "RAX"
 dumbledore.ads:16:43: warning: "RAX" is not modified, could be INPUT
 dumbledore.ads:16:52: low: unused global "RDX"
@@ -65,15 +65,15 @@ x86.adb:387:28: info: range check proved (CVC4: 2 VC)
 x86.adb:425:07: warning: initialization of tmp has no effect
 x86.adb:434:57: info: range check proved (CVC4: 2 VC)
 x86.adb:436:57: info: range check proved (CVC4: 2 VC)
-x86.adb:446:07: info: assertion proved (CVC4: 1 VC)
-x86.adb:449:07: info: assertion proved (CVC4: 1 VC)
+x86.adb:446:22: info: assertion proved (CVC4: 1 VC)
+x86.adb:449:22: info: assertion proved (CVC4: 1 VC)
 x86.adb:463:58: info: range check proved (CVC4: 2 VC)
 x86.adb:464:58: info: range check proved (CVC4: 2 VC)
 x86.adb:465:58: info: range check proved (CVC4: 2 VC)
 x86.adb:466:58: info: range check proved (CVC4: 2 VC)
 x86.adb:467:64: info: range check proved (CVC4: 2 VC)
 x86.adb:468:55: info: range check proved (CVC4: 2 VC)
-x86.adb:469:07: info: assertion proved (CVC4: 1 VC)
+x86.adb:469:22: info: assertion proved (CVC4: 1 VC)
 x86.adb:485:22: info: initialization of "Result" proved
 x86.adb:488:14: info: initialization of "Result" proved
 x86.adb:497:56: info: range check proved (CVC4: 2 VC)

@@ -1,2 +1,2 @@
 pure.adb:4:26: warning: statement has no effect
-pure.adb:6:10: info: assertion proved (CVC4: 2 VC)
+pure.adb:6:25: info: assertion proved (CVC4: 2 VC)

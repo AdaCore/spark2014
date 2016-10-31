@@ -1,54 +1,54 @@
 binary_fixed.adb:7:12: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:7:12: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:8:07: info: assertion proved (CVC4: 3 VC)
+binary_fixed.adb:8:22: info: assertion proved (CVC4: 3 VC)
 binary_fixed.adb:8:78: info: initialization of "Z" proved
-binary_fixed.adb:10:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:10:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:10:22: info: initialization of "Z" proved
 binary_fixed.adb:17:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:17:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:18:07: info: assertion proved (CVC4: 3 VC)
+binary_fixed.adb:18:22: info: assertion proved (CVC4: 3 VC)
 binary_fixed.adb:18:74: info: initialization of "Z" proved
 binary_fixed.adb:19:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:19:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:20:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:20:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:20:22: info: initialization of "Z" proved
-binary_fixed.adb:22:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:22:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:22:22: info: initialization of "Z" proved
 binary_fixed.adb:30:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:30:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:31:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:31:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:31:22: info: initialization of "Z" proved
 binary_fixed.adb:32:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:32:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:33:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:33:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:33:22: info: initialization of "Z" proved
-binary_fixed.adb:35:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:35:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:35:22: info: initialization of "Z" proved
 binary_fixed.adb:43:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:43:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:44:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:44:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:44:22: info: initialization of "Z" proved
 binary_fixed.adb:44:28: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:45:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:46:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:46:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:46:22: info: initialization of "Z" proved
 binary_fixed.adb:46:28: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:47:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:47:14: info: range check proved (CVC4: 1 VC)
 binary_fixed.adb:47:16: info: initialization of "Two" proved
-binary_fixed.adb:48:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:48:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:48:22: info: initialization of "Z" proved
 binary_fixed.adb:48:28: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:49:12: info: initialization of "Two" proved
 binary_fixed.adb:49:16: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:49:16: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:50:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:50:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:50:22: info: initialization of "Z" proved
 binary_fixed.adb:50:28: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:53:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:53:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:54:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:54:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:54:22: info: initialization of "Z" proved
 binary_fixed.adb:54:28: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:64:17: info: division check proved (CVC4: 1 VC)
@@ -59,13 +59,13 @@ binary_fixed.adb:65:25: medium: assertion might fail, cannot prove Z = 1.0
 binary_fixed.adb:67:14: info: division check proved (CVC4: 1 VC)
 binary_fixed.adb:67:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:67:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:68:07: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:68:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:68:22: info: initialization of "Z" proved
 binary_fixed.adb:68:32: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:69:14: info: division check proved (CVC4: 1 VC)
 binary_fixed.adb:69:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:69:14: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:70:07: info: assertion proved (CVC4: 2 VC)
+binary_fixed.adb:70:22: info: assertion proved (CVC4: 2 VC)
 binary_fixed.adb:70:29: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:70:33: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:70:48: info: overflow check proved (CVC4: 1 VC)
@@ -75,7 +75,7 @@ binary_fixed.adb:71:14: info: division check proved (CVC4: 1 VC)
 binary_fixed.adb:71:14: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:71:14: info: range check proved (CVC4: 1 VC)
 binary_fixed.adb:71:16: info: initialization of "Two" proved
-binary_fixed.adb:72:07: info: assertion proved (CVC4: 2 VC)
+binary_fixed.adb:72:22: info: assertion proved (CVC4: 2 VC)
 binary_fixed.adb:72:29: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:72:33: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.adb:72:48: info: overflow check proved (CVC4: 1 VC)
@@ -106,15 +106,15 @@ binary_fixed.adb:106:17: info: initialization of "Z1" proved
 binary_fixed.adb:106:17: medium: range check might fail
 binary_fixed.adb:107:17: info: initialization of "Z2" proved
 binary_fixed.adb:108:17: info: initialization of "Z3" proved
-binary_fixed.adb:115:10: info: assertion proved (CVC4: 1 VC)
-binary_fixed.adb:116:10: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:115:25: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:116:25: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:116:27: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:117:10: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:117:25: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:117:27: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:119:10: info: assertion proved (CVC4: 1 VC)
-binary_fixed.adb:120:10: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:119:25: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:120:25: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:120:27: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:121:10: info: assertion proved (CVC4: 1 VC)
+binary_fixed.adb:121:25: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:121:27: info: overflow check proved (CVC4: 1 VC)
 binary_fixed.ads:5:14: warning: subprogram "Test_Minus" has no effect
 binary_fixed.ads:8:14: warning: subprogram "Test_Add" has no effect
@@ -125,55 +125,55 @@ binary_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 binary_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 decimal_fixed.adb:7:12: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:7:12: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:8:07: info: assertion proved (CVC4: 3 VC)
+decimal_fixed.adb:8:22: info: assertion proved (CVC4: 3 VC)
 decimal_fixed.adb:8:78: info: initialization of "Z" proved
-decimal_fixed.adb:10:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:10:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:10:22: info: initialization of "Z" proved
 decimal_fixed.adb:17:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:17:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:18:07: info: assertion proved (CVC4: 3 VC)
+decimal_fixed.adb:18:22: info: assertion proved (CVC4: 3 VC)
 decimal_fixed.adb:18:74: info: initialization of "Z" proved
 decimal_fixed.adb:19:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:19:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:20:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:20:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:20:22: info: initialization of "Z" proved
-decimal_fixed.adb:22:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:22:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:22:22: info: initialization of "Z" proved
 decimal_fixed.adb:30:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:30:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:31:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:31:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:31:22: info: initialization of "Z" proved
 decimal_fixed.adb:32:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:32:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:33:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:33:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:33:22: info: initialization of "Z" proved
-decimal_fixed.adb:35:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:35:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:35:22: info: initialization of "Z" proved
 decimal_fixed.adb:43:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:43:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:44:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:44:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:44:22: info: initialization of "Z" proved
 decimal_fixed.adb:44:28: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:45:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:46:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:46:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:46:22: info: initialization of "Z" proved
 decimal_fixed.adb:46:28: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:47:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:47:14: info: range check proved (CVC4: 1 VC)
 decimal_fixed.adb:47:16: info: initialization of "Two" proved
-decimal_fixed.adb:48:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:48:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:48:22: info: initialization of "Z" proved
 decimal_fixed.adb:48:28: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:49:12: info: initialization of "Two" proved
 decimal_fixed.adb:49:16: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:49:16: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:50:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:50:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:50:22: info: initialization of "Z" proved
 decimal_fixed.adb:50:28: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:53:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:53:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:54:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:54:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:54:22: info: initialization of "Z" proved
 decimal_fixed.adb:54:28: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:64:17: info: division check proved (CVC4: 1 VC)
@@ -184,13 +184,13 @@ decimal_fixed.adb:65:25: medium: assertion might fail, cannot prove Z = 1.0
 decimal_fixed.adb:67:14: info: division check proved (CVC4: 1 VC)
 decimal_fixed.adb:67:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:67:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:68:07: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:68:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:68:22: info: initialization of "Z" proved
 decimal_fixed.adb:68:32: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:69:14: info: division check proved (CVC4: 1 VC)
 decimal_fixed.adb:69:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:69:14: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:70:07: info: assertion proved (CVC4: 2 VC)
+decimal_fixed.adb:70:22: info: assertion proved (CVC4: 2 VC)
 decimal_fixed.adb:70:29: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:70:33: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:70:48: info: overflow check proved (CVC4: 1 VC)
@@ -200,7 +200,7 @@ decimal_fixed.adb:71:14: info: division check proved (CVC4: 1 VC)
 decimal_fixed.adb:71:14: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:71:14: info: range check proved (CVC4: 1 VC)
 decimal_fixed.adb:71:16: info: initialization of "Two" proved
-decimal_fixed.adb:72:07: info: assertion proved (CVC4: 2 VC)
+decimal_fixed.adb:72:22: info: assertion proved (CVC4: 2 VC)
 decimal_fixed.adb:72:29: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:72:33: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.adb:72:48: info: overflow check proved (CVC4: 1 VC)
@@ -231,15 +231,15 @@ decimal_fixed.adb:106:17: info: initialization of "Z1" proved
 decimal_fixed.adb:106:17: medium: range check might fail
 decimal_fixed.adb:107:17: info: initialization of "Z2" proved
 decimal_fixed.adb:108:17: info: initialization of "Z3" proved
-decimal_fixed.adb:115:10: info: assertion proved (CVC4: 1 VC)
-decimal_fixed.adb:116:10: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:115:25: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:116:25: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:116:27: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:117:10: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:117:25: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:117:27: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:119:10: info: assertion proved (CVC4: 1 VC)
-decimal_fixed.adb:120:10: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:119:25: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:120:25: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:120:27: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:121:10: info: assertion proved (CVC4: 1 VC)
+decimal_fixed.adb:121:25: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:121:27: info: overflow check proved (CVC4: 1 VC)
 decimal_fixed.ads:5:14: warning: subprogram "Test_Minus" has no effect
 decimal_fixed.ads:8:14: warning: subprogram "Test_Add" has no effect
@@ -252,7 +252,7 @@ dynamic_fixed.adb:6:18: info: range check proved (CVC4: 2 VC)
 dynamic_fixed.adb:6:40: info: range check proved (CVC4: 1 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 1 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
-dynamic_fixed.adb:10:10: info: assertion proved (CVC4: 1 VC)
+dynamic_fixed.adb:10:25: info: assertion proved (CVC4: 1 VC)
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:5:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:8:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported

@@ -1,6 +1,6 @@
 p.adb:7:07: info: precondition proved (CVC4: 1 VC)
 p.adb:7:25: warning: unused assignment to "I"
-p.adb:8:07: info: assertion proved (CVC4: 1 VC)
+p.adb:8:22: info: assertion proved (CVC4: 1 VC)
 p.adb:8:22: info: initialization of "I" proved
 p.adb:9:07: info: precondition proved (CVC4: 1 VC)
 p.adb:9:18: info: initialization of "Cu" proved
@@ -11,7 +11,7 @@ p.adb:16:18: warning: unused assignment to "Cu"
 p.adb:17:07: info: precondition proved (CVC4: 1 VC)
 p.adb:17:18: info: initialization of "E" proved
 p.adb:17:25: warning: unused assignment to "I"
-p.adb:18:07: info: assertion proved (CVC4: 1 VC)
+p.adb:18:22: info: assertion proved (CVC4: 1 VC)
 p.adb:18:22: info: initialization of "I" proved
 p.adb:23:10: info: precondition proved (CVC4: 1 VC)
 p.adb:24:10: info: precondition proved (CVC4: 1 VC)

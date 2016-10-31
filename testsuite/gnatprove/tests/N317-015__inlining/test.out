@@ -89,21 +89,21 @@ ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:45:26: info: initialization of "X" proved
-ident.adb:46:07: info: assertion proved (CVC4: 1 VC)
+ident.adb:46:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:46:22: info: initialization of "Res" proved
 ident.adb:46:28: info: initialization of "X" proved
 ident.adb:47:23: info: initialization of "X" proved
-ident.adb:48:07: info: assertion proved (CVC4: 1 VC)
+ident.adb:48:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:48:22: info: initialization of "Res" proved
 ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
 ident.adb:52:07: info: initialization of "X" proved
-ident.adb:53:07: info: assertion proved (CVC4: 1 VC)
+ident.adb:53:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:53:22: info: initialization of "Y" proved
 ident.adb:54:07: info: initialization of "X" proved
-ident.adb:55:07: info: assertion proved (CVC4: 1 VC)
+ident.adb:55:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
@@ -112,31 +112,31 @@ incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = 2147483
 incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = 2147483647)
-incr_expr_fun.adb:16:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:16:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:16:32: info: initialization of "X" proved
 incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:17:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:17:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:17:36: info: initialization of "X" proved
 incr_expr_fun.adb:17:43: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:18:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:18:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:18:37: info: initialization of "X" proved
 incr_expr_fun.adb:18:44: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:19:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:19:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:19:37: info: initialization of "X" proved
 incr_expr_fun.adb:19:44: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:20:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:20:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:20:33: info: initialization of "X" proved
 incr_expr_fun.adb:20:40: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:21:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:21:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:21:38: info: initialization of "X" proved
 incr_expr_fun.adb:21:45: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:22:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:22:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:22:38: info: initialization of "X" proved
 incr_expr_fun.adb:22:45: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:23:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:23:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:23:33: info: initialization of "X" proved
 incr_expr_fun.adb:23:40: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.adb:24:07: info: assertion proved (CVC4: 1 VC)
+incr_expr_fun.adb:24:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = 2147483647)

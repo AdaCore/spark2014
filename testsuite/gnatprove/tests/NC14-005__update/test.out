@@ -1,11 +1,11 @@
 update_proof.adb:9:18: info: length check proved (CVC4: 1 VC)
 update_proof.adb:10:29: info: initialization of "A" proved
 update_proof.adb:12:12: info: initialization of "A" proved
-update_proof.adb:14:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:14:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:14:22: info: initialization of "A" proved
-update_proof.adb:15:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:15:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:15:22: info: initialization of "A" proved
-update_proof.adb:16:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:16:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:16:22: info: initialization of "A" proved
 update_proof.adb:21:09: info: length check proved (CVC4: 1 VC)
 update_proof.adb:21:15: info: length check proved (CVC4: 1 VC)
@@ -13,14 +13,14 @@ update_proof.adb:22:15: info: length check proved (CVC4: 1 VC)
 update_proof.adb:23:29: info: initialization of "B" proved
 update_proof.adb:25:12: info: initialization of "B" proved
 update_proof.adb:25:15: info: length check proved (CVC4: 1 VC)
-update_proof.adb:27:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:27:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:27:22: info: initialization of "B" proved
-update_proof.adb:28:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:28:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:28:22: info: initialization of "B" proved
 update_proof.adb:28:34: info: length check proved (CVC4: 1 VC)
-update_proof.adb:29:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:29:22: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:29:22: info: initialization of "B" proved
 update_proof.adb:29:43: info: length check proved (CVC4: 1 VC)
-update_proof.adb:32:07: info: assertion proved (CVC4: 1 VC)
+update_proof.adb:33:10: info: assertion proved (CVC4: 1 VC)
 update_proof.adb:33:34: info: initialization of "B" proved
 update_proof.adb:35:20: info: length check proved (CVC4: 1 VC)

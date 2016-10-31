@@ -35,7 +35,7 @@ textio-get_line.adb:68:12: info: initialization of "Rest" proved
 textio-get_line.adb:89:14: info: length check proved (CVC4: 1 VC)
 textio-get_line.adb:96:07: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:96:15: info: initialization of "Buf" proved
-textio-get_line.adb:98:07: info: assertion proved (CVC4: 1 VC)
+textio-get_line.adb:98:22: info: assertion proved (CVC4: 1 VC)
 textio-get_line.adb:98:22: info: initialization of "Buf" proved
 textio-get_line.adb:98:27: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:100:13: info: initialization of "Buf" proved
@@ -50,7 +50,7 @@ textio-get_line.adb:127:24: info: initialization of "Buf" proved
 textio-get_line.adb:128:27: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:139:37: info: initialization of "P" proved
 textio-get_line.adb:139:39: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:145:13: info: assertion proved (CVC4: 2 VC)
+textio-get_line.adb:145:28: info: assertion proved (CVC4: 2 VC)
 textio-get_line.adb:145:106: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:146:31: info: initialization of "K" proved
 textio-get_line.adb:146:35: info: precondition proved (CVC4: 1 VC)
@@ -79,18 +79,18 @@ textio-get_line.adb:184:19: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:186:10: info: initialization of "N" proved
-textio-get_line.adb:187:07: info: loop invariant initialization proved (CVC4: 2 VC)
-textio-get_line.adb:187:07: info: loop invariant preservation proved (CVC4: 2 VC)
 textio-get_line.adb:187:30: info: initialization of "Last" proved
+textio-get_line.adb:187:30: info: loop invariant initialization proved (CVC4: 2 VC)
+textio-get_line.adb:187:30: info: loop invariant preservation proved (CVC4: 2 VC)
 textio-get_line.adb:188:37: info: initialization of "N" proved
-textio-get_line.adb:189:07: info: loop invariant initialization proved (CVC4: 1 VC)
-textio-get_line.adb:189:07: info: loop invariant preservation proved (CVC4: 1 VC)
+textio-get_line.adb:189:30: info: loop invariant initialization proved (CVC4: 1 VC)
+textio-get_line.adb:189:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:189:59: info: initialization of "Last" proved
 textio-get_line.adb:190:32: info: initialization of "Item" proved
 textio-get_line.adb:190:38: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:190:72: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:191:07: info: loop invariant initialization proved (CVC4: 1 VC)
-textio-get_line.adb:191:07: info: loop invariant preservation proved (CVC4: 1 VC)
+textio-get_line.adb:191:30: info: loop invariant initialization proved (CVC4: 1 VC)
+textio-get_line.adb:191:30: info: loop invariant preservation proved (CVC4: 1 VC)
 textio-get_line.adb:191:71: info: initialization of "Last" proved
 textio-get_line.adb:195:07: info: initialization of "Item" proved
 textio-get_line.adb:195:07: info: initialization of "Last" proved
@@ -107,7 +107,7 @@ textio-get_line.adb:208:18: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:209:12: info: initialization of "Rest" proved
 textio-get_line.adb:209:12: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:214:07: info: initialization of "N" proved
-textio-get_line.adb:215:07: info: assertion proved (CVC4: 1 VC)
+textio-get_line.adb:215:22: info: assertion proved (CVC4: 1 VC)
 textio-get_line.adb:215:22: info: initialization of "Last" proved
 textio-get_line.adb:215:29: info: initialization of "N" proved
 textio-get_line.adb:221:10: info: initialization of "ch" proved
@@ -158,7 +158,7 @@ textio.adb:188:16: info: initialization of "Last" proved
 textio.adb:189:29: info: initialization of "Num" proved
 textio.adb:189:34: info: length check proved (CVC4: 1 VC)
 textio.adb:189:37: info: length check proved (CVC4: 1 VC)
-textio.adb:192:16: info: assertion proved (CVC4: 1 VC)
+textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:192:31: info: initialization of "Last" proved
 textio.adb:199:32: info: initialization of "Num" proved
 textio.adb:199:37: info: length check proved (CVC4: 1 VC)

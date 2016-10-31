@@ -6,19 +6,19 @@ pack.adb:12:51: medium: array index check might fail (e.g. when Glob'First = 2 a
 pack.adb:13:41: info: length check proved (CVC4: 1 VC)
 pack.adb:14:41: info: length check proved (CVC4: 1 VC)
 pack.adb:14:41: info: range check proved (CVC4: 4 VC)
-pack.adb:16:07: info: assertion proved (CVC4: 1 VC)
-pack.adb:17:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:16:22: info: assertion proved (CVC4: 1 VC)
+pack.adb:17:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1..4 => 42) (e.g. when My_B = (others => 0))
 pack.adb:23:34: info: length check proved (CVC4: 1 VC)
 pack.adb:23:34: medium: range check might fail (e.g. when Glob'First = 2 and My_S2 = (others => 0))
 pack.adb:24:41: info: length check proved (CVC4: 1 VC)
 pack.adb:25:41: info: length check proved (CVC4: 1 VC)
 pack.adb:25:41: info: range check proved (CVC4: 4 VC)
-pack.adb:27:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:27:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:27:22: info: initialization of "My_S2" proved
 pack.adb:27:22: info: range check proved (CVC4: 4 VC)
 pack.adb:27:39: info: range check proved (CVC4: 4 VC)
-pack.adb:28:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:28:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:28:29: info: range check proved (CVC4: 4 VC)
 pack.adb:29:22: info: initialization of "My_S2" proved
 pack.adb:29:22: info: range check proved (CVC4: 4 VC)
@@ -31,7 +31,7 @@ pack.adb:34:34: medium: range check might fail (e.g. when Glob'First = 2 and My_
 pack.adb:35:41: info: length check proved (CVC4: 1 VC)
 pack.adb:36:41: info: length check proved (CVC4: 1 VC)
 pack.adb:36:41: info: range check proved (CVC4: 4 VC)
-pack.adb:38:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:38:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:38:22: info: initialization of "My_S2" proved
 pack.adb:38:22: info: range check proved (CVC4: 4 VC)
 pack.adb:38:39: info: range check proved (CVC4: 4 VC)
@@ -46,7 +46,7 @@ pack.adb:44:34: medium: range check might fail (e.g. when Glob'First = 2 and My_
 pack.adb:45:41: info: length check proved (CVC4: 1 VC)
 pack.adb:46:41: info: length check proved (CVC4: 1 VC)
 pack.adb:46:41: info: range check proved (CVC4: 4 VC)
-pack.adb:48:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:48:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:48:22: info: initialization of "My_S2" proved
 pack.adb:48:22: info: range check proved (CVC4: 4 VC)
 pack.adb:48:39: info: range check proved (CVC4: 4 VC)
@@ -63,7 +63,7 @@ pack.adb:59:14: warning: subprogram "A4" has no effect
 pack.adb:60:34: info: length check proved (CVC4: 1 VC)
 pack.adb:63:22: info: initialization of "My_S4" proved
 pack.adb:63:25: info: length check proved (CVC4: 1 VC)
-pack.adb:64:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:64:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:64:22: info: initialization of "My_S4" proved
 pack.adb:65:22: info: initialization of "My_S4" proved
 pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) (e.g. when G = (others => 0) and My_S4 = (2 => 0, others => 1))
@@ -82,7 +82,7 @@ pack.adb:77:47: info: index check proved (CVC4: 2 VC)
 pack.adb:81:09: info: length check proved (CVC4: 1 VC)
 pack.adb:84:04: warning: analyzing unreferenced procedure "P"
 pack.adb:84:14: warning: subprogram "P" has no effect
-pack.adb:88:07: info: assertion proved (CVC4: 1 VC)
+pack.adb:88:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:88:22: info: initialization of "A" proved
 pack.adb:89:22: info: initialization of "A" proved
 pack.adb:89:22: medium: assertion might fail, cannot prove A (9) = 2

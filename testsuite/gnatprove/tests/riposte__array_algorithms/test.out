@@ -1,14 +1,14 @@
 array_algorithms.adb:12:11: info: range check proved (CVC4: 2 VC)
 array_algorithms.adb:13:23: info: index check proved (CVC4: 4 VC)
-array_algorithms.adb:19:10: info: loop invariant initialization proved (CVC4: 2 VC)
-array_algorithms.adb:19:10: info: loop invariant preservation proved (CVC4: 2 VC)
+array_algorithms.adb:19:33: info: loop invariant initialization proved (CVC4: 2 VC)
+array_algorithms.adb:19:33: info: loop invariant preservation proved (CVC4: 2 VC)
 array_algorithms.adb:19:42: info: range check proved (CVC4: 2 VC)
 array_algorithms.adb:20:38: info: index check proved (CVC4: 2 VC)
 array_algorithms.adb:20:45: info: index check proved (CVC4: 2 VC)
 array_algorithms.adb:21:37: info: initialization of "Found" proved
 array_algorithms.adb:36:11: info: range check proved (CVC4: 2 VC)
-array_algorithms.adb:43:10: info: loop invariant initialization proved (CVC4: 2 VC)
-array_algorithms.adb:43:10: info: loop invariant preservation proved (CVC4: 2 VC)
+array_algorithms.adb:43:33: info: loop invariant initialization proved (CVC4: 2 VC)
+array_algorithms.adb:43:33: info: loop invariant preservation proved (CVC4: 2 VC)
 array_algorithms.adb:43:42: info: range check proved (CVC4: 2 VC)
 array_algorithms.adb:44:38: info: index check proved (CVC4: 2 VC)
 array_algorithms.adb:45:37: info: initialization of "Found" proved

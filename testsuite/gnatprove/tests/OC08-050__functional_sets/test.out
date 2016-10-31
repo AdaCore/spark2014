@@ -10,8 +10,8 @@ allocator.adb:36:43: info: precondition proved (CVC4: 4 VC)
 allocator.adb:36:48: info: initialization of "Avail" proved
 allocator.adb:37:43: info: precondition proved (CVC4: 4 VC)
 allocator.adb:37:48: info: initialization of "Alloc" proved
-allocator.adb:39:13: info: loop invariant initialization proved (CVC4: 8 VC)
-allocator.adb:39:13: info: loop invariant preservation proved (CVC4: 8 VC)
+allocator.adb:40:16: info: loop invariant initialization proved (CVC4: 8 VC)
+allocator.adb:40:16: info: loop invariant preservation proved (CVC4: 8 VC)
 allocator.adb:40:17: info: precondition proved (CVC4: 1 VC)
 allocator.adb:40:30: info: initialization of "Avail" proved
 allocator.adb:42:17: info: precondition proved (CVC4: 1 VC)
@@ -23,8 +23,8 @@ allocator.adb:47:55: info: range check proved (CVC4: 1 VC)
 allocator.adb:47:75: info: range check proved (CVC4: 1 VC)
 allocator.adb:49:33: info: initialization of "Avail" proved
 allocator.adb:49:53: info: initialization of "Alloc" proved
-allocator.adb:62:10: info: loop invariant initialization proved (CVC4: 2 VC)
-allocator.adb:62:10: info: loop invariant preservation proved (CVC4: 2 VC)
+allocator.adb:63:13: info: loop invariant initialization proved (CVC4: 2 VC)
+allocator.adb:63:13: info: loop invariant preservation proved (CVC4: 2 VC)
 allocator.adb:64:53: info: index check proved (CVC4: 2 VC)
 allocator.adb:71:44: info: index check proved (CVC4: 2 VC)
 allocator.adb:72:16: info: index check proved (CVC4: 2 VC)

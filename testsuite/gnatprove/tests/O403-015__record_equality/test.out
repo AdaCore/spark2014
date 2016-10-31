@@ -10,26 +10,26 @@ record_equality.adb:10:31: info: range check proved (CVC4: 1 VC)
 record_equality.adb:10:37: info: discriminant check proved (CVC4: 1 VC)
 record_equality.adb:10:44: info: initialization of "G_Pu2.F1" proved
 record_equality.adb:10:44: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:12:07: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:12:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:12:22: info: initialization of "R_Pu1.F1" proved
 record_equality.adb:12:30: info: initialization of "R_Pu2.F1" proved
-record_equality.adb:13:07: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:13:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:13:28: info: initialization of "C_Pu1.F1" proved
 record_equality.adb:13:43: info: initialization of "C_Pu2.F1" proved
-record_equality.adb:14:07: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:14:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:14:29: info: initialization of "G_Pu1.F1" proved
 record_equality.adb:14:29: info: initialization of "G_Pu1.F2" proved
 record_equality.adb:14:45: info: initialization of "G_Pu2.F1" proved
 record_equality.adb:14:45: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:15:07: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:16:07: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:15:22: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:16:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:16:22: info: initialization of "G_Pu1.F1" proved
 record_equality.adb:16:22: info: initialization of "G_Pu1.F2" proved
 record_equality.adb:16:22: info: initialization of "G_Pu1.F3" proved
 record_equality.adb:16:31: info: initialization of "G_Pu2.F1" proved
 record_equality.adb:16:31: info: initialization of "G_Pu2.F2" proved
 record_equality.adb:16:31: info: initialization of "G_Pu2.F3" proved
-record_equality.adb:17:07: info: assertion proved (CVC4: 1 VC)
+record_equality.adb:17:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:17:22: info: initialization of "C_Pu1.F1" proved
 record_equality.adb:17:22: info: initialization of "C_Pu1.F2" proved
 record_equality.adb:17:30: info: initialization of "C_Pu2.F1" proved

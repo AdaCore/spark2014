@@ -1,4 +1,4 @@
-foo.adb:17:07: info: assertion proved (CVC4: 1 VC)
+foo.adb:17:22: info: assertion proved (CVC4: 1 VC)
 foo.adb:22:24: warning: unused variable "Y"
 foo.adb:29:26: info: initialization of "R" proved
 foo.adb:35:10: medium: precondition might fail

@@ -190,7 +190,7 @@ very_longs.adb:93:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:93:50: info: initialization of "Difference" proved
 very_longs.adb:109:26: info: range check proved (CVC4: 1 VC)
-very_longs.adb:112:07: info: assertion proved (CVC4: 1 VC)
+very_longs.adb:112:21: info: assertion proved (CVC4: 1 VC)
 very_longs.adb:113:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:113:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:116:29: info: index check proved (CVC4: 2 VC)
@@ -205,9 +205,9 @@ very_longs.adb:133:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:133:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:136:34: info: range check proved (CVC4: 1 VC)
 very_longs.adb:137:29: info: range check proved (CVC4: 1 VC)
-very_longs.adb:139:10: info: loop invariant initialization proved (CVC4: 1 VC)
-very_longs.adb:139:10: info: loop invariant preservation proved (CVC4: 1 VC)
 very_longs.adb:140:13: info: initialization of "String_Index" proved
+very_longs.adb:140:13: info: loop invariant initialization proved (CVC4: 1 VC)
+very_longs.adb:140:13: info: loop invariant preservation proved (CVC4: 1 VC)
 very_longs.adb:140:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:140:37: medium: range check might fail
 very_longs.adb:140:63: info: overflow check proved (CVC4: 1 VC)
@@ -248,8 +248,8 @@ very_longs.adb:200:48: medium: array index check might fail (e.g. when Number = 
 very_longs.adb:202:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:208:36: info: index check proved (CVC4: 4 VC)
 very_longs.adb:209:31: info: range check proved (CVC4: 2 VC)
-very_longs.adb:212:13: info: loop invariant initialization proved (CVC4: 2 VC)
-very_longs.adb:212:13: info: loop invariant preservation proved (CVC4: 2 VC)
+very_longs.adb:213:16: info: loop invariant initialization proved (CVC4: 2 VC)
+very_longs.adb:213:16: info: loop invariant preservation proved (CVC4: 2 VC)
 very_longs.adb:214:32: info: initialization of "Digit_Count" proved
 very_longs.adb:214:75: info: index check proved (CVC4: 2 VC)
 very_longs.adb:217:14: info: initialization of "Digit_Count" proved

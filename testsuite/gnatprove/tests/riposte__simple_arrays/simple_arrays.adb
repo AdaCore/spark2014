@@ -39,8 +39,8 @@ is
    begin
       for I in Integer loop
          A(I) := B(I);
-         pragma Loop_Invariant  -- @LOOP_INVARIANT_INIT:PASS @LOOP_INVARIANT_PRESERV:PASS
-           (for all J in Integer range Integer'First .. I => A(J) = B(J));
+         pragma Loop_Invariant
+           (for all J in Integer range Integer'First .. I => A(J) = B(J));  -- @LOOP_INVARIANT_INIT:PASS @LOOP_INVARIANT_PRESERV:PASS
       end loop;
    end Array_Equality_On_Individual_Assignment;
 

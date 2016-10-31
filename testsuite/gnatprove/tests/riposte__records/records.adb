@@ -215,8 +215,8 @@ is
       pragma Assert_And_Cut (X = X_Old  --  @ASSERT:PASS
                                and Tmp = X.The_Pair.B);
       X.The_Pair.A := X.The_Pair.B;
-      pragma Assert_And_Cut  --  @ASSERT:PASS
-        (X = X_Old'Update (The_Pair =>
+      pragma Assert_And_Cut
+        (X = X_Old'Update (The_Pair =>  --  @ASSERT:PASS
                              X_Old.The_Pair'Update(A => X_Old.The_Pair.B))
            and Tmp = X_Old.The_Pair.B);
       X.The_Pair.B := Tmp;

@@ -1,6 +1,6 @@
 tab.adb:6:49: medium: range check might fail (e.g. when X = 1)
-tab.adb:9:10: info: loop invariant initialization proved (CVC4: 1 VC)
-tab.adb:9:10: info: loop invariant preservation proved (CVC4: 1 VC)
+tab.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
+tab.adb:10:13: info: loop invariant preservation proved (CVC4: 1 VC)
 tab.adb:10:21: info: range check proved (CVC4: 2 VC)
 tab.adb:11:22: info: index check proved (CVC4: 2 VC)
 tab.adb:12:28: info: range check proved (Z3: 2 VC)

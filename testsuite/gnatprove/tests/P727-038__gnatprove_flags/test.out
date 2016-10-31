@@ -1,15 +1,15 @@
 --- Messages on foo and bar should appear
-bar.adb:7:07: info: assertion proved
-foo.adb:7:04: info: assertion proved
+bar.adb:7:22: info: assertion proved
+foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo only should appear
-foo.adb:7:04: info: assertion proved
+foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo and bar should appear
-bar.adb:7:07: info: assertion proved
-foo.adb:7:04: info: assertion proved
+bar.adb:7:22: info: assertion proved
+foo.adb:7:19: info: assertion proved
 ------------------------------------------------------------
 --- Messages on foo, bar, baz should appear
-bar.adb:7:07: info: assertion proved
-baz.adb:7:07: info: assertion proved
-foo.adb:7:04: info: assertion proved
+bar.adb:7:22: info: assertion proved
+baz.adb:7:22: info: assertion proved
+foo.adb:7:19: info: assertion proved

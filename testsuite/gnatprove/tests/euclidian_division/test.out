@@ -4,9 +4,9 @@ linear_div.adb:10:11: info: initialization of "Quotient" proved
 linear_div.adb:10:11: info: postcondition proved (CVC4: 3 VC; altergo: 1 VC)
 linear_div.adb:11:17: info: initialization of "Remainder" proved
 linear_div.adb:19:10: info: initialization of "Remainder" proved
-linear_div.adb:20:07: info: loop invariant initialization proved (CVC4: 3 VC)
-linear_div.adb:20:07: info: loop invariant preservation proved (CVC4: 3 VC)
 linear_div.adb:21:10: info: initialization of "Remainder" proved
+linear_div.adb:21:10: info: loop invariant initialization proved (CVC4: 3 VC)
+linear_div.adb:21:10: info: loop invariant preservation proved (CVC4: 3 VC)
 linear_div.adb:22:16: info: initialization of "Quotient" proved
 linear_div.adb:24:19: info: initialization of "Quotient" proved
 linear_div.adb:24:28: info: overflow check proved (altergo: 1 VC)

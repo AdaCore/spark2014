@@ -13,4 +13,4 @@ test.adb:59:16: high: "G" is not initialized
 test.adb:60:17: high: "G" is not initialized
 test.adb:60:17: info: postcondition proved (CVC4: 1 VC)
 test.adb:69:14: warning: subprogram "Multiple_Preconditions" has no effect
-test.adb:72:07: info: assertion proved (CVC4: 1 VC)
+test.adb:72:28: info: assertion proved (CVC4: 1 VC)

@@ -7,5 +7,5 @@ unconstr_call.adb:19:24: info: initialization of "Tmp" proved
 unconstr_call.adb:23:04: warning: analyzing unreferenced procedure "Test_1"
 unconstr_call.adb:23:22: warning: "Z" is not modified, could be IN
 unconstr_call.adb:28:04: warning: analyzing unreferenced procedure "Test_2"
-unconstr_call.adb:32:07: info: assertion proved (CVC4: 1 VC)
+unconstr_call.adb:32:22: info: assertion proved (CVC4: 1 VC)
 unconstr_call.ads:5:14: warning: subprogram "P" has no effect

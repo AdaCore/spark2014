@@ -10,9 +10,9 @@ binary_search.adb:19:32: info: index check proved (CVC4: 2 VC)
 binary_search.adb:19:32: info: initialization of "Right" proved
 binary_search.adb:23:13: info: initialization of "Left" proved
 binary_search.adb:23:20: info: initialization of "Right" proved
-binary_search.adb:24:10: info: loop invariant initialization proved (CVC4: 4 VC)
-binary_search.adb:24:10: info: loop invariant preservation proved (CVC4: 4 VC)
 binary_search.adb:24:33: info: initialization of "Left" proved
+binary_search.adb:24:33: info: loop invariant initialization proved (CVC4: 4 VC)
+binary_search.adb:24:33: info: loop invariant preservation proved (CVC4: 4 VC)
 binary_search.adb:24:53: info: initialization of "Right" proved
 binary_search.adb:25:10: info: loop variant proved (CVC4: 1 VC)
 binary_search.adb:25:44: info: initialization of "Right" proved

@@ -151,16 +151,16 @@ is
 
       for J in Index range Index'First .. I loop
          Tmp(J) := Value'First;
-         pragma Loop_Invariant  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
-           ((for all K in Index range Index'First..J =>
+         pragma Loop_Invariant
+           ((for all K in Index range Index'First..J =>  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
                (if K <= J then Tmp (K) = Value'First))
             and I = I'Loop_Entry);
       end loop;
 
       for J in Index range I .. Index'Last loop
          Tmp(J) := Value'Last;
-         pragma Loop_Invariant  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
-           (for all K in Index range Index'First..J =>
+         pragma Loop_Invariant
+           (for all K in Index range Index'First..J =>  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
               (if K < I  then Tmp (K) = Value'First) and
               (if K >= I then Tmp (K) = Value'Last));
       end loop;
@@ -181,8 +181,8 @@ is
             C := C + 1;
          end if;
 
-         pragma Loop_Invariant  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
-           ((for all K in Index =>
+         pragma Loop_Invariant
+           ((for all K in Index =>  --  @LOOP_INVARIANT_INIT:PASS  @LOOP_INVARIANT_PRESERV:PASS
                (if K < I  then Step (K) = Value'First) and
                (if K >= I then Step (K) = Value'Last))
             and (if J < I  then C = J + 1)

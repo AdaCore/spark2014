@@ -7,14 +7,14 @@ ar.adb:86:14: info: range check proved (CVC4: 1 VC)
 ar.adb:88:10: info: initialization of "J" proved
 ar.adb:88:13: info: initialization of "F" proved
 ar.adb:98:07: warning: unused assignment
-ar.adb:100:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:100:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:100:32: info: initialization of "T" proved
 ar.adb:104:14: info: range check proved (CVC4: 1 VC)
 ar.adb:109:14: info: range check proved (CVC4: 1 VC)
 ar.adb:111:10: info: initialization of "J" proved
 ar.adb:111:13: info: initialization of "F" proved
 ar.adb:121:07: warning: unused assignment
-ar.adb:123:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:123:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:123:32: info: initialization of "T" proved
 ar.adb:127:14: info: range check proved (CVC4: 1 VC)
 ar.adb:132:14: info: range check proved (CVC4: 1 VC)
@@ -22,7 +22,7 @@ ar.adb:134:10: info: initialization of "J" proved
 ar.adb:134:13: info: initialization of "F" proved
 ar.adb:144:07: warning: unused assignment
 ar.adb:149:14: info: range check proved (CVC4: 1 VC)
-ar.adb:151:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:151:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:151:32: info: initialization of "T" proved
 ar.adb:151:71: info: initialization of "J" proved
 ar.adb:155:14: info: range check proved (CVC4: 1 VC)
@@ -30,7 +30,7 @@ ar.adb:157:10: info: initialization of "J" proved
 ar.adb:157:13: info: initialization of "F" proved
 ar.adb:167:07: warning: unused assignment
 ar.adb:172:14: info: range check proved (CVC4: 1 VC)
-ar.adb:174:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:174:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:174:32: info: initialization of "T" proved
 ar.adb:174:71: info: initialization of "J" proved
 ar.adb:178:14: info: range check proved (CVC4: 1 VC)
@@ -148,14 +148,14 @@ ar.adb:476:14: info: range check proved (CVC4: 1 VC)
 ar.adb:478:18: info: initialization of "J_Next" proved
 ar.adb:478:21: info: initialization of "F" proved
 ar.adb:488:07: warning: unused assignment
-ar.adb:490:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:490:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:490:32: info: initialization of "T" proved
 ar.adb:494:19: info: range check proved (CVC4: 1 VC)
 ar.adb:499:14: info: range check proved (CVC4: 1 VC)
 ar.adb:501:18: info: initialization of "J_Next" proved
 ar.adb:501:21: info: initialization of "F" proved
 ar.adb:511:07: warning: unused assignment
-ar.adb:513:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:513:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:513:32: info: initialization of "T" proved
 ar.adb:517:19: info: range check proved (CVC4: 1 VC)
 ar.adb:522:14: info: range check proved (CVC4: 1 VC)
@@ -163,7 +163,7 @@ ar.adb:524:18: info: initialization of "J_Next" proved
 ar.adb:524:21: info: initialization of "F" proved
 ar.adb:534:07: warning: unused assignment
 ar.adb:539:19: info: range check proved (CVC4: 1 VC)
-ar.adb:541:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:541:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:541:32: info: initialization of "T" proved
 ar.adb:541:90: info: initialization of "J_Next" proved
 ar.adb:545:14: info: range check proved (CVC4: 1 VC)
@@ -171,7 +171,7 @@ ar.adb:547:18: info: initialization of "J_Next" proved
 ar.adb:547:21: info: initialization of "F" proved
 ar.adb:557:07: warning: unused assignment
 ar.adb:562:19: info: range check proved (CVC4: 1 VC)
-ar.adb:564:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:564:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:564:32: info: initialization of "T" proved
 ar.adb:564:90: info: initialization of "J_Next" proved
 ar.adb:568:14: info: range check proved (CVC4: 1 VC)
@@ -187,14 +187,14 @@ ar.adb:776:14: info: range check proved (CVC4: 1 VC)
 ar.adb:778:21: info: initialization of "K_Next" proved
 ar.adb:778:24: info: initialization of "F" proved
 ar.adb:788:07: warning: unused assignment
-ar.adb:790:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:790:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:790:32: info: initialization of "T" proved
 ar.adb:794:19: info: range check proved (CVC4: 1 VC)
 ar.adb:799:14: info: range check proved (CVC4: 1 VC)
 ar.adb:801:21: info: initialization of "K_Next" proved
 ar.adb:801:24: info: initialization of "F" proved
 ar.adb:811:07: warning: unused assignment
-ar.adb:813:05: info: assertion proved (CVC4: 1 VC)
+ar.adb:813:28: info: assertion proved (CVC4: 1 VC)
 ar.adb:813:32: info: initialization of "T" proved
 ar.adb:817:19: info: range check proved (CVC4: 1 VC)
 ar.adb:822:14: info: range check proved (CVC4: 1 VC)
@@ -202,7 +202,7 @@ ar.adb:824:21: info: initialization of "K_Next" proved
 ar.adb:824:24: info: initialization of "F" proved
 ar.adb:834:07: warning: unused assignment
 ar.adb:839:19: info: range check proved (CVC4: 1 VC)
-ar.adb:841:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:841:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:841:32: info: initialization of "T" proved
 ar.adb:841:112: info: initialization of "K_Next" proved
 ar.adb:845:14: info: range check proved (CVC4: 1 VC)
@@ -210,7 +210,7 @@ ar.adb:847:21: info: initialization of "K_Next" proved
 ar.adb:847:24: info: initialization of "F" proved
 ar.adb:857:07: warning: unused assignment
 ar.adb:862:19: info: range check proved (CVC4: 1 VC)
-ar.adb:864:05: info: assertion proved (CVC4: 3 VC)
+ar.adb:864:28: info: assertion proved (CVC4: 3 VC)
 ar.adb:864:32: info: initialization of "T" proved
 ar.adb:864:112: info: initialization of "K_Next" proved
 ar.adb:868:14: info: range check proved (CVC4: 1 VC)

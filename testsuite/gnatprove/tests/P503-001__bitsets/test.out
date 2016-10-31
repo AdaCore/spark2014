@@ -14,25 +14,25 @@ bitsets.ads:45:19: info: postcondition proved (CVC4: 1 VC), in instantiation at 
 bitsets.ads:48:19: info: postcondition proved (altergo: 1 VC), in instantiation at test_main.adb:5
 test_main.adb:9:17: info: initialization of "S" proved
 test_main.adb:10:17: info: initialization of "S" proved
-test_main.adb:11:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:11:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:11:32: info: initialization of "S" proved
-test_main.adb:12:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:12:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:12:32: info: initialization of "S" proved
-test_main.adb:13:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:13:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:13:36: info: initialization of "S" proved
-test_main.adb:14:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:14:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:14:36: info: initialization of "S" proved
-test_main.adb:15:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:15:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:15:36: info: initialization of "S" proved
-test_main.adb:16:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:16:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:16:36: info: initialization of "S" proved
-test_main.adb:17:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:17:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:17:36: info: initialization of "S" proved
-test_main.adb:18:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:18:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:18:36: info: initialization of "S" proved
-test_main.adb:19:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:19:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:19:36: info: initialization of "S" proved
-test_main.adb:20:04: info: assertion proved (CVC4: 1 VC)
+test_main.adb:20:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:20:36: info: initialization of "S" proved
 test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (-1 => false, 9 => false, 7 => false, 6 => false, 5 => false, 4 => false, 2 => false, 10 => false, 1 => false, 0 => false, others => true))
 test_main.adb:22:36: info: initialization of "S" proved

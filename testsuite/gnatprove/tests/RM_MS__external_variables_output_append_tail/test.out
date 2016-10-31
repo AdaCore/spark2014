@@ -10,6 +10,6 @@ output_port_14.adb:33:34: warning: unused assignment to "Out_2"
 output_port_14.adb:35:34: warning: unused assignment to "Out_1"
 output_port_14.adb:36:16: warning: unused assignment
 output_port_14.adb:36:19: info: initialization of "Out_1" proved
-output_port_14.adb:39:07: info: assertion proved (CVC4: 3 VC)
+output_port_14.adb:39:22: info: assertion proved (CVC4: 3 VC)
 output_port_14.adb:40:39: info: initialization of "Out_2" proved
 output_port_14.adb:42:25: info: initialization of "Out_1" proved

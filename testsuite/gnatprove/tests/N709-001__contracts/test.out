@@ -1,16 +1,16 @@
-main.adb:10:04: info: assertion proved (CVC4: 1 VC)
+main.adb:10:19: info: assertion proved (CVC4: 1 VC)
 main.adb:10:19: info: initialization of "X1.C1" proved
 main.adb:11:04: info: initialization of "X1.C1" proved
 main.adb:11:06: info: precondition proved (CVC4: 1 VC)
-main.adb:12:04: info: assertion proved (CVC4: 1 VC)
+main.adb:12:19: info: assertion proved (CVC4: 1 VC)
 main.adb:12:23: info: initialization of "X1.C1" proved
-main.adb:15:04: info: assertion proved (CVC4: 1 VC)
+main.adb:15:19: info: assertion proved (CVC4: 1 VC)
 main.adb:15:19: info: initialization of "X2.C1" proved
 main.adb:15:19: info: initialization of "X2.C2" proved
 main.adb:16:04: info: initialization of "X2.C1" proved
 main.adb:16:04: info: initialization of "X2.C2" proved
 main.adb:16:06: info: precondition proved (CVC4: 1 VC)
-main.adb:17:04: info: assertion proved (CVC4: 1 VC)
+main.adb:17:19: info: assertion proved (CVC4: 1 VC)
 main.adb:17:23: info: initialization of "X2.C1" proved
 main.adb:17:23: info: initialization of "X2.C2" proved
 main.adb:19:04: warning: assuming "Put_Line" has no effect on global items

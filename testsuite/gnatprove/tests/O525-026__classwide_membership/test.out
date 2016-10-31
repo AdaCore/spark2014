@@ -1,4 +1,4 @@
-mem.adb:14:04: info: assertion proved (CVC4: 1 VC)
-mem.adb:15:04: info: assertion proved (CVC4: 1 VC)
-mem.adb:16:04: info: assertion proved (CVC4: 1 VC)
-mem.adb:17:04: info: assertion proved (CVC4: 1 VC)
+mem.adb:14:19: info: assertion proved (CVC4: 1 VC)
+mem.adb:15:19: info: assertion proved (CVC4: 1 VC)
+mem.adb:16:19: info: assertion proved (CVC4: 1 VC)
+mem.adb:17:19: info: assertion proved (CVC4: 1 VC)

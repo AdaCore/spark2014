@@ -3,7 +3,7 @@ students.adb:14:29: info: overflow check proved (CVC4: 1 VC)
 students.adb:14:29: info: range check proved (CVC4: 1 VC)
 students.adb:14:38: info: division check proved (CVC4: 1 VC)
 students.adb:14:38: info: overflow check proved (CVC4: 1 VC)
-students.adb:17:07: info: assertion proved (CVC4: 1 VC)
+students.adb:17:22: info: assertion proved (CVC4: 1 VC)
 students.adb:17:22: info: initialization of "Tuition" proved
 students.adb:30:18: info: initialization of "Fees" proved
 students.adb:30:23: info: overflow check proved (CVC4: 1 VC)

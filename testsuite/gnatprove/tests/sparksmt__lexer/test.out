@@ -90,8 +90,8 @@ lexer.adb:421:54: info: range check proved (CVC4: 1 VC)
 lexer.adb:421:56: info: initialization of "C" proved
 lexer.adb:421:58: info: range check proved (CVC4: 1 VC)
 lexer.adb:427:27: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:429:10: info: loop invariant initialization proved (CVC4: 5 VC)
-lexer.adb:429:10: info: loop invariant preservation proved (CVC4: 5 VC)
+lexer.adb:433:13: info: loop invariant initialization proved (CVC4: 5 VC)
+lexer.adb:433:13: info: loop invariant preservation proved (CVC4: 5 VC)
 lexer.adb:436:13: info: initialization of "State" proved
 lexer.adb:440:21: info: initialization of "S" proved
 lexer.adb:441:28: info: initialization of "First_Pos" proved
@@ -116,7 +116,7 @@ lexer.adb:510:25: info: initialization of "State" proved
 lexer.adb:519:16: info: raise statement proved unreachable (CVC4: 1 VC)
 lexer.adb:523:10: info: initialization of "S" proved
 lexer.adb:523:10: info: precondition proved (CVC4: 2 VC)
-lexer.adb:526:07: info: assertion proved (CVC4: 2 VC)
+lexer.adb:526:22: info: assertion proved (CVC4: 2 VC)
 lexer.adb:526:25: info: initialization of "State" proved
 lexer.adb:527:35: info: initialization of "S" proved
 lexer.adb:531:46: info: initialization of "S" proved

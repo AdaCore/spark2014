@@ -1,4 +1,4 @@
-u.adb:12:05: info: assertion proved (CVC4: 1 VC)
+u.adb:12:20: info: assertion proved (CVC4: 1 VC)
 u.adb:12:20: info: initialization of "X" proved
-u.adb:13:05: info: assertion proved (CVC4: 1 VC)
+u.adb:13:20: info: assertion proved (CVC4: 1 VC)
 u.adb:13:20: info: initialization of "Y" proved

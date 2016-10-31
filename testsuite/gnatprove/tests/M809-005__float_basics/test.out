@@ -26,8 +26,8 @@ generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or d
 generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or do not terminate normally, in instantiation at foo.ads:15
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:66:07: info: assertion proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:66:07: info: assertion proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:66:22: info: assertion proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:66:22: info: assertion proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:75:18: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -76,8 +76,8 @@ generic_float_tests.adb:125:23: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:125:23: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:128:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:128:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:131:07: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:131:07: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:131:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:131:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:131:24: info: overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:131:24: info: overflow check proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:131:32: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -148,8 +148,8 @@ generic_float_tests.adb:177:49: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:177:49: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:190:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:190:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:190:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:190:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:194:42: info: initialization of "Z" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:194:42: info: initialization of "Z" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:198:14: medium: divide by zero might fail, in instantiation at foo.ads:10
@@ -178,14 +178,14 @@ generic_float_tests.adb:216:28: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:216:28: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:225:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:225:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:236:10: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:236:10: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:225:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:225:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:236:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:236:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:245:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:245:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:245:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:245:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:249:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:249:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:252:14: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -254,8 +254,8 @@ generic_float_tests.adb:284:26: info: initialization of "B" proved, in instantia
 generic_float_tests.adb:284:26: info: initialization of "B" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:296:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:296:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:296:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:296:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:300:24: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:300:24: info: initialization of "M" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:301:19: info: initialization of "M" proved, in instantiation at foo.ads:10
@@ -294,30 +294,30 @@ generic_float_tests.adb:342:38: info: overflow check proved (CVC4: 1 VC), in ins
 generic_float_tests.adb:342:38: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:348:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:348:07: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:348:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:348:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:357:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:357:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:358:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:358:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:361:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:361:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:362:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:362:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:365:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:365:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:366:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:366:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:369:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:369:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:370:10: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:370:10: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:373:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:373:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:374:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:374:10: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:357:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:357:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:358:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:358:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:361:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:361:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:362:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:362:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:365:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:365:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:366:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:366:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:369:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:369:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:370:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:370:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:373:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:373:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:374:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:374:25: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:379:28: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:379:28: info: initialization of "I" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:381:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -560,12 +560,12 @@ generic_interval_tests.adb:178:19: info: initialization of "Z" proved, in instan
 generic_interval_tests.adb:178:19: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:178:19: info: postcondition proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:178:19: info: postcondition proved (CVC4: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:181:07: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:181:07: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:182:07: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:182:07: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:183:07: info: assertion proved (CVC4: 2 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:183:07: info: assertion proved (CVC4: 2 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:181:22: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:181:22: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:182:22: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:182:22: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:183:22: info: assertion proved (CVC4: 2 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:183:22: info: assertion proved (CVC4: 2 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:184:14: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:184:14: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:184:18: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
@@ -580,8 +580,8 @@ homothetical.adb:13:28: medium: overflow check might fail
 homothetical.adb:31:32: info: length check proved (CVC4: 1 VC)
 homothetical.adb:34:33: info: length check proved (CVC4: 1 VC)
 homothetical.adb:38:29: info: length check proved (CVC4: 1 VC)
-homothetical.adb:41:10: info: loop invariant initialization proved (CVC4: 1 VC)
-homothetical.adb:41:10: info: loop invariant preservation proved (altergo: 1 VC)
+homothetical.adb:41:33: info: loop invariant initialization proved (CVC4: 1 VC)
+homothetical.adb:41:33: info: loop invariant preservation proved (altergo: 1 VC)
 homothetical.adb:42:35: info: initialization of "kvp" proved
 homothetical.adb:42:40: info: index check proved (CVC4: 2 VC)
 homothetical.adb:44:17: info: initialization of "kvp" proved
@@ -590,7 +590,7 @@ homothetical.adb:47:13: warning: unused assignment
 homothetical.adb:47:16: info: length check proved (CVC4: 1 VC)
 homothetical.adb:48:13: warning: unused assignment
 homothetical.adb:48:16: info: length check proved (CVC4: 1 VC)
-homothetical.adb:50:07: info: assertion proved (CVC4: 2 VC; Z3: 1 VC)
+homothetical.adb:50:29: info: assertion proved (CVC4: 2 VC; Z3: 1 VC)
 homothetical.adb:51:35: info: initialization of "kvp" proved
 homothetical.adb:59:40: info: initialization of "lambda" proved
 homothetical.adb:59:52: info: initialization of "kvp" proved

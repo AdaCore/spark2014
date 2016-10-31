@@ -8,18 +8,18 @@ static_discr.adb:19:45: info: index check proved (CVC4: 2 VC)
 static_discr.adb:24:43: info: range check proved (CVC4: 1 VC)
 static_discr.adb:30:13: info: initialization of "Result" proved
 static_discr.adb:30:33: info: initialization of "Current.Length" proved
-static_discr.adb:31:10: info: loop invariant initialization proved (CVC4: 4 VC)
-static_discr.adb:31:10: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:32:13: info: initialization of "Current.Length" proved
+static_discr.adb:32:13: info: loop invariant initialization proved (CVC4: 4 VC)
+static_discr.adb:32:13: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:33:42: info: initialization of "Current.Content.Content" proved
 static_discr.adb:34:51: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:35:46: info: index check proved (CVC4: 2 VC)
-static_discr.adb:36:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:36:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:37:10: info: precondition proved (CVC4: 2 VC)
 static_discr.adb:37:23: info: initialization of "Current.Content.Content" proved
 static_discr.adb:37:23: info: initialization of "Current.Length" proved
-static_discr.adb:38:10: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:39:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:38:25: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:39:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:39:45: info: initialization of "Current.Content.Content" proved
 static_discr.adb:41:14: info: initialization of "Result" proved
 static_discr.adb:45:38: info: range check proved (CVC4: 1 VC)
@@ -42,18 +42,18 @@ static_discr.adb:70:65: info: length check proved (CVC4: 1 VC)
 static_discr.adb:70:70: info: range check proved (CVC4: 1 VC)
 static_discr.adb:73:13: info: initialization of "Result" proved
 static_discr.adb:73:33: info: initialization of "Current.Length" proved
-static_discr.adb:74:10: info: loop invariant initialization proved (CVC4: 4 VC)
-static_discr.adb:74:10: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:75:13: info: initialization of "Current.Length" proved
+static_discr.adb:75:13: info: loop invariant initialization proved (CVC4: 4 VC)
+static_discr.adb:75:13: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:76:26: info: initialization of "Current.Content.Content" proved
 static_discr.adb:77:51: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:78:30: info: index check proved (CVC4: 2 VC)
-static_discr.adb:79:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:79:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:80:10: info: precondition proved (CVC4: 2 VC)
 static_discr.adb:80:23: info: initialization of "Current.Content.Content" proved
 static_discr.adb:80:23: info: initialization of "Current.Length" proved
-static_discr.adb:81:10: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:82:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:81:25: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:82:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:82:29: info: initialization of "Current.Content.Content" proved
 static_discr.adb:84:14: info: initialization of "Result" proved
 static_discr.adb:87:13: info: range check proved (CVC4: 1 VC)
@@ -69,18 +69,18 @@ static_discr.adb:103:45: info: index check proved (CVC4: 2 VC)
 static_discr.adb:108:43: info: range check proved (CVC4: 1 VC)
 static_discr.adb:114:13: info: initialization of "Result" proved
 static_discr.adb:114:33: info: initialization of "Current.Length" proved
-static_discr.adb:115:10: info: loop invariant initialization proved (CVC4: 4 VC)
-static_discr.adb:115:10: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:116:13: info: initialization of "Current.Length" proved
+static_discr.adb:116:13: info: loop invariant initialization proved (CVC4: 4 VC)
+static_discr.adb:116:13: info: loop invariant preservation proved (CVC4: 4 VC)
 static_discr.adb:117:42: info: initialization of "Current.Content.Content" proved
 static_discr.adb:118:51: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:119:46: info: index check proved (CVC4: 2 VC)
-static_discr.adb:120:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:120:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:121:10: info: precondition proved (CVC4: 2 VC)
 static_discr.adb:121:23: info: initialization of "Current.Content.Content" proved
 static_discr.adb:121:23: info: initialization of "Current.Length" proved
-static_discr.adb:122:10: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:123:10: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:122:25: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:123:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:123:26: info: discriminant check proved (CVC4: 2 VC)
 static_discr.adb:123:26: info: range check proved (CVC4: 1 VC)
 static_discr.adb:123:45: info: initialization of "Current.Content.Content" proved
