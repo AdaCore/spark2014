@@ -1498,7 +1498,6 @@ package body SPARK_Util is
 
    function String_Of_Node (N : Node_Id) return String is
 
-      function String_Image (S : String_Id) return String;
       function Ident_Image (Expr        : Node_Id;
                             Orig_Expr   : Node_Id;
                             Expand_Type : Boolean)
@@ -1506,6 +1505,9 @@ package body SPARK_Util is
 
       function Real_Image_10 (U : Ureal) return String is
          (Real_Image (U, 10));
+
+      function String_Image (S : String_Id) return String is
+        ('"' & Get_Name_String (String_To_Name (S)) & '"');
 
       function Node_To_String is new
         Expression_Image (Real_Image_10, String_Image, Ident_Image);
@@ -1530,19 +1532,6 @@ package body SPARK_Util is
             return Get_Name_String (Chars (Expr));
          end if;
       end Ident_Image;
-
-      ------------------
-      -- String_Image --
-      ------------------
-
-      function String_Image (S : String_Id) return String is
-      begin
-         Name_Len := 0;
-         Add_Char_To_Name_Buffer ('"');
-         Add_String_To_Name_Buffer (S);
-         Add_Char_To_Name_Buffer ('"');
-         return Name_Buffer (1 .. Name_Len);
-      end String_Image;
 
    --  Start of processing for String_Of_Node
 
