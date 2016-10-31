@@ -856,7 +856,10 @@ package body SPARK_Util.Subprograms is
 
       S := Scope (E);
       while Present (S) loop
-         if Is_Generic_Instance (S) then
+         if Is_Generic_Instance (S) and then Ekind (S) = E_Package then
+            --  We don't need to check for E_Generic_Package (which is another
+            --  context Get_Package_Instantiation_Node may be called), as we
+            --  know we're in a generic instance.
             return In_Predefined_Unit
               (Defining_Entity (Get_Package_Instantiation_Node (S)));
          end if;
