@@ -391,10 +391,6 @@ package body Gnat2Why.Expr.Loops is
       --  These three variables hold the loop parameter in Ada and Why, if any
 
    begin
-      --  Nested loops should not appear before the loop invariant in a loop.
-
-      pragma Assert (not In_Loop_Initial_Statements);
-
       --  Add the loop index to the entity table
 
       if Present (Scheme)
@@ -430,13 +426,15 @@ package body Gnat2Why.Expr.Loops is
 
       declare
          Why_Invariants : W_Pred_Array (1 .. Integer (Loop_Invariants.Length));
+         Save_Loop_Init : constant Boolean := In_Loop_Initial_Statements
+           with Ghost;
 
       begin
          --  Transform statements before and after the loop invariants
 
          In_Loop_Initial_Statements := True;
          Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
-         In_Loop_Initial_Statements := False;
+         In_Loop_Initial_Statements := Save_Loop_Init;
          Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
 
          --  Generate the implicit invariant for the dynamic properties of

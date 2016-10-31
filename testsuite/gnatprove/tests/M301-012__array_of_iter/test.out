@@ -15,6 +15,5 @@ iter_array.adb:21:04: info: assertion proved (CVC4: 1 VC)
 iter_array.adb:21:32: info: initialization of "X" proved
 iter_multi_array.adb:6:27: iterator specification over array of dimension 2 is not yet supported
 iter_multi_array.adb:11:27: iterator specification over array of dimension 2 is not yet supported
-iter_multi_array.adb:14:28: nested loop before loop-invariant is not yet supported
 iter_multi_array.adb:30:27: iterator specification over array of dimension 2 is not yet supported
 gnatprove: error during flow analysis and proof

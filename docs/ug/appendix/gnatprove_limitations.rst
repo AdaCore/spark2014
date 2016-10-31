@@ -33,8 +33,8 @@ Tool Limitations
    These restrictions ensure that the result of fixed-point operations always
    belongs to the *perfect result set* as defined in Ada RM G.2.3.
 
-#. Loop_Invariant and Loop_Variant pragmas must appear before
-   any non-scalar object declaration and any nested loop.
+#. Loop_Invariant and Loop_Variant pragmas must appear before any non-scalar
+   object declaration.
 
 #. Inheriting the same subprogram from multiple interfaces is not supported.
 

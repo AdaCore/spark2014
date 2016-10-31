@@ -885,12 +885,12 @@ package body SPARK_Definition is
       procedure Check_Loop_Invariant_Placement
         (Stmts : List_Id;
          Nested : Boolean := False);
-      --  Checks that no non-scalar object declaration or nested loop appears
-      --  before the last loop-invariant or variant in a loop's list of
-      --  statements. Also stores scalar objects declared before the last
-      --  loop-invariant in Loop_Entity_Set.
-      --  Nested should be true when checking statements coming from a nested
-      --  construct of the loop (if, case, and extended return statements).
+      --  Checks that no non-scalar object declaration appears before the
+      --  last loop-invariant or variant in a loop's list of statements. Also
+      --  stores scalar objects declared before the last loop-invariant in
+      --  Loop_Entity_Set. Nested should be true when checking statements
+      --  coming from a nested construct of the loop (if, case, extended
+      --  return statements and nested loops).
 
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
@@ -920,10 +920,10 @@ package body SPARK_Definition is
                then
                   Inv_Found := True;
                end if;
-            else
 
-               --  Check that there are no nested loops and non-scalar objects
-               --  declarations before the last invariant/variant.
+            else
+               --  Check that there are no non-scalar objects declarations
+               --  before the last invariant/variant.
 
                case Nkind (N) is
                   when N_Full_Type_Declaration
@@ -951,10 +951,6 @@ package body SPARK_Definition is
                            N);
                      end if;
 
-                  when N_Loop_Statement =>
-                     Mark_Unsupported
-                       ("nested loop before loop-invariant", N);
-
                   when N_Package_Declaration =>
                      Mark_Unsupported
                        ("nested packages before loop-invariant", N);
@@ -965,9 +961,9 @@ package body SPARK_Definition is
                      Mark_Unsupported
                        ("nested subprogram before loop-invariant", N);
 
-                  --  Go inside if, case, and exended return statements to
-                  --  check for absence of non-scalar object declarations
-                  --  and nested loops.
+                  --  Go inside if, case, exended return statements and
+                  --  nested loops to check for absence of non-scalar
+                  --  object declarations.
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
@@ -1001,6 +997,9 @@ package body SPARK_Definition is
                        (Return_Object_Declarations (N), True);
                      Check_Loop_Invariant_Placement
                        (Statements (Handled_Statement_Sequence (N)), True);
+
+                  when N_Loop_Statement =>
+                     Check_Loop_Invariant_Placement (Statements (N), True);
 
                   when others => null;
                end case;
