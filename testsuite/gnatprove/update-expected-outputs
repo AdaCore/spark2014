@@ -16,8 +16,13 @@ def get_result(result_file):
     return tmp.split(":")[0]
 
 for result_file in glob("out/*.result"):
-    if get_result(result_file) == "DIFF":
+    # Result is "DIFF" when run locally, and "D" in mailservers/nightly runs
+    if get_result(result_file) == "DIFF" or get_result(result_file) == "D":
+        # Output is in file .out.filtered when run locally, and in .out in
+        # mailservers/nightly runs
         new_out_file = result_file.replace(".result", ".out.filtered")
+        if not os.path.exists(new_out_file):
+            new_out_file = result_file.replace(".result", ".out")
         old_out_file = result_file\
             .replace("out/", "tests/")\
             .replace(".result", "/test.out")
