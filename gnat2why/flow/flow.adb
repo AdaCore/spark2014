@@ -1017,7 +1017,7 @@ package body Flow is
       procedure Debug_GG_Tasking_Info is
       begin
          if Gnat2Why_Args.Flow_Advanced_Debug then
-            for Kind in Tasking_Info_Kind loop
+            for Kind in FA.Tasking'Range loop
                if not FA.Tasking (Kind).Is_Empty then
                   Write_Str (Kind'Img & ": ");
                   Print_Node_Set (FA.Tasking (Kind));
