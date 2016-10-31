@@ -17,18 +17,21 @@
 -- The CodePeer technology was originally developed by SofCheck, Inc.       --
 ------------------------------------------------------------------------------
 
-with Ada.Characters;            use Ada.Characters;
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
-with Ada.Command_Line;          use Ada.Command_Line;
-with Ada.Directories;           use Ada.Directories;
-with Ada.Text_IO;               use Ada.Text_IO;
+with Ada.Characters;          use Ada.Characters;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Command_Line;        use Ada.Command_Line;
+with Ada.Directories;         use Ada.Directories;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;             use Ada.Text_IO;
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;             use GNAT.OS_Lib;
 with GNAT.Strings;
 
-with GNATCOLL.Utils;     use GNATCOLL.Utils;
-with GNATCOLL.VFS;       use GNATCOLL.VFS;
-with GNATCOLL.Projects;  use GNATCOLL.Projects;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with GNATCOLL.VFS;            use GNATCOLL.VFS;
+with GNATCOLL.Projects;       use GNATCOLL.Projects;
+
+with String_Utils;            use String_Utils;
 
 --  Wrapper around the codepeer_be executable for SPARK integration.
 
@@ -48,6 +51,8 @@ procedure SPARK_CodePeer_Wrapper is
    Project_File : Virtual_File := No_File;
    Library      : String_Access;
    File         : Virtual_File := No_File;
+
+   Ext_Vars     : String_Lists.List;
 
    procedure Error (Message : String);
    --  Display error message and exit the application.
@@ -214,6 +219,15 @@ procedure SPARK_CodePeer_Wrapper is
       Set_Path_From_Gnatls (Proj_Env.all, "codepeer-gnatls", GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, +Subdir);
       Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
+      for Ext of Ext_Vars loop
+         declare
+            Equal : constant Integer := Ada.Strings.Fixed.Index (Ext, "=");
+         begin
+            Proj_Env.Change_Environment
+              (Ext (Ext'First + 2 .. Equal - 1),
+               Ext (Equal + 1 .. Ext'Last));
+         end;
+      end loop;
       Tree.Load (Project, Proj_Env, Recompute_View => True);
    exception
       when others =>
@@ -270,6 +284,10 @@ procedure SPARK_CodePeer_Wrapper is
 
       Append_Arg ("--subdirs=" & Subdir);
       Append_Arg ("-P" & Project.Display_Full_Name);
+
+      for Ext of Ext_Vars loop
+         Append_Arg (Ext);
+      end loop;
 
       Status := Local_Spawn ("codepeer-gprbuild", Args (1 .. Arg_Count));
       Free (Args);
@@ -428,6 +446,9 @@ procedure SPARK_CodePeer_Wrapper is
 
             elsif S = "-U" then
                Compile_All_Sources := True;
+            elsif Starts_With (S, "-X") then
+               Ext_Vars.Append (S);
+
             else
                Put_Line ("unknown switch: " & S);
                Help_Requested := True;
