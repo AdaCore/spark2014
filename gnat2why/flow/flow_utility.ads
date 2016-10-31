@@ -626,7 +626,11 @@ is
                (if Present (Callsite)
                 then Nkind (Callsite) in N_Entry_Call_Statement     |
                                          N_Function_Call            |
-                                         N_Procedure_Call_Statement);
+                                         N_Procedure_Call_Statement),
+        Post => (if Present (Get_Implicit_Formal'Result)
+                 then Ekind (Get_Implicit_Formal'Result) in E_Protected_Type |
+                                                            E_Task_Type      |
+                                                            E_Variable);
    --  Returns implicit formals, i.e. the protected type for protected
    --  subprograms and entries and the task type itself for task types; returns
    --  Empty for ordinary subprograms.
@@ -646,13 +650,13 @@ is
                 then Nkind (Callsite) in N_Entry_Call_Statement     |
                                          N_Function_Call            |
                                          N_Procedure_Call_Statement);
-   --  Returns a set of nodes containing all implicit and explicit formal
-   --  parameters of an Entry or Subprogram. For tasks it returns a set
-   --  containing all discriminants of the task and the task itself.
+   --  Returns all implicit and explicit formal parameters of an Entry or
+   --  Subprogram. For tasks it returns all discriminants of the task and
+   --  the task itself.
    --  @param E is the entity of an entry/task/subprogram
    --  @param Callsite is the place from where the entry/subprogram is called
    --  @param Entire returns the entire object as opposed to a record field
-   --  @return the set of explicit and implicit formal parameters of E
+   --  @return explicit and implicit formal parameters of E
 
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)

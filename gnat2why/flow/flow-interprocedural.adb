@@ -248,42 +248,35 @@ package body Flow.Interprocedural is
                The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
                The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
 
-               if Nkind (E) in N_Entity then
-                  case Ekind (E) is
-                     when E_In_Parameter =>
-                        Inputs.Insert (The_In);
+               case Ekind (E) is
+                  when E_In_Parameter =>
+                     Inputs.Insert (The_In);
 
-                     when E_In_Out_Parameter =>
-                        Inputs.Insert (The_In);
-                        Outputs.Insert (The_Out);
-
-                     when E_Out_Parameter =>
-                        if Contains_Discriminants (The_In, FA.B_Scope)
-                          or else Has_Bounds (The_In, FA.B_Scope)
-                        then
-                           --  Discriminated out parameters or out parameters
-                           --  for which we need to keep track of the bounds
-                           --  also appear as an input.
-                           Inputs.Insert (The_In);
-                        end if;
-                        Outputs.Insert (The_Out);
-
-                     when E_Variable | Concurrent_Kind =>
-                        Inputs.Insert (The_In);
-                        if Ekind (Called_Thing) /= E_Function then
-                           Outputs.Insert (The_Out);
-                        end if;
-
-                     when others =>
-                        raise Program_Error;
-
-                  end case;
-               else
-                  Inputs.Insert (The_In);
-                  if Ekind (Called_Thing) /= E_Function then
+                  when E_In_Out_Parameter =>
+                     Inputs.Insert (The_In);
                      Outputs.Insert (The_Out);
-                  end if;
-               end if;
+
+                  when E_Out_Parameter =>
+                     if Contains_Discriminants (The_In, FA.B_Scope)
+                       or else Has_Bounds (The_In, FA.B_Scope)
+                     then
+                        --  Discriminated out parameters or out parameters
+                        --  for which we need to keep track of the bounds
+                        --  also appear as an input.
+                        Inputs.Insert (The_In);
+                     end if;
+                     Outputs.Insert (The_Out);
+
+                  when E_Variable | E_Protected_Type | E_Task_Type =>
+                     Inputs.Insert (The_In);
+                     if Ekind (Called_Thing) /= E_Function then
+                        Outputs.Insert (The_Out);
+                     end if;
+
+                  when others =>
+                     raise Program_Error;
+
+               end case;
             end loop;
 
             if not Outputs.Is_Empty then
