@@ -1045,18 +1045,16 @@ package body Flow_Utility is
       ----------------------------------------------------------------------
 
       if Present (Callsite)
-        and then Belongs_To_Protected_Object (Direct_Mapping_Id (Subprogram))
+        and then Ekind (Sinfo.Scope (Subprogram)) = E_Protected_Type
       then
          declare
-            PO_Type : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object (E        => Subprogram,
-                                               Callsite => Empty,
-                                               Entire   => True);
+            The_PO : constant Entity_Id :=
+              Get_Enclosing_Object (Prefix (Name (Callsite)));
 
-            The_PO  : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object (E        => Subprogram,
-                                               Callsite => Callsite,
-                                               Entire   => True);
+            PO_Type : constant Entity_Id := Etype (The_PO);
+
+            pragma Assert (Ekind (The_PO) = E_Variable and then
+                           Ekind (PO_Type) = E_Protected_Type);
 
          begin
             --  Substitute reference on LHS
@@ -2299,7 +2297,7 @@ package body Flow_Utility is
          then
             Merge_Entity
               (V,
-               Get_Enclosing_Concurrent_Object (Subprogram, Callsite));
+               Get_Enclosing_Object (Prefix (Name (Callsite))));
          end if;
 
          --  If we fold functions we need to obtain the used inputs

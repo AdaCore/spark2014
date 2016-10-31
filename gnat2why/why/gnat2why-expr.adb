@@ -5000,19 +5000,30 @@ package body Gnat2Why.Expr is
 
       if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Left_Side)) then
          declare
-            Left     : constant Node_Id := Entity (Left_Side);
-            Ada_Obj  : constant Node_Id :=
-              (if Is_Part_Of_Protected_Object (Left)
-               then Get_Enclosing_Concurrent_Object (Left)
-               else Empty);
-            Prot_Obj : constant W_Identifier_Id :=
-              (if Is_Part_Of_Protected_Object (Left) then
-                  To_Why_Id
-                    (E      => Ada_Obj,
-                     Domain => EW_Prog,
-                     Typ    => Type_Of_Node (Etype (Ada_Obj)))
-               else Self_Name);
+            Left : constant Entity_Id := Entity (Left_Side);
+
+            Prot_Obj : W_Identifier_Id;
+
          begin
+            if Is_Part_Of_Protected_Object (Left) then
+               declare
+                  Ada_Obj : constant Entity_Id := Encapsulating_State (Left);
+                  Ada_Typ : constant Entity_Id := Etype (Ada_Obj);
+
+                  pragma Assert (Ekind (Ada_Obj) = E_Variable and then
+                                 Ekind (Ada_Typ) = E_Protected_Type);
+
+               begin
+                  Prot_Obj :=
+                    To_Why_Id
+                      (E      => Ada_Obj,
+                       Domain => EW_Prog,
+                       Typ    => Type_Of_Node (Ada_Typ));
+               end;
+            else
+               Prot_Obj := Self_Name;
+            end if;
+
             Result :=
               New_Assignment
                 (Ada_Node => Ada_Node,
@@ -11834,10 +11845,12 @@ package body Gnat2Why.Expr is
 
       elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
          declare
-            Obj_Or_Ty : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object (Ent);
-            Prot      : constant Entity_Id :=
-              (if Is_Type (Obj_Or_Ty) then Obj_Or_Ty else Etype (Obj_Or_Ty));
+            Prot : constant Entity_Id :=
+              (if Is_Part_Of_Protected_Object (Ent)
+               then Etype (Encapsulating_State (Ent))
+               else Scope (Ent));
+
+            pragma Assert (Ekind (Prot) = E_Protected_Type);
 
             --  The Ada_Node is important here, because that's how we detect
             --  occurrences of "self" in a term later.
