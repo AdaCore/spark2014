@@ -616,17 +616,8 @@ is
    --  Returns explicit formals of a subprogram or entry or task type
    --  discriminants for a task type.
 
-   function Get_Implicit_Formal
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
-      return Entity_Id
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
-                 and then
-               (if Present (Callsite)
-                then Nkind (Callsite) in N_Entry_Call_Statement     |
-                                         N_Function_Call            |
-                                         N_Procedure_Call_Statement),
+   function Get_Implicit_Formal (E : Entity_Id) return Entity_Id
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
         Post => (if Present (Get_Implicit_Formal'Result)
                  then Ekind (Get_Implicit_Formal'Result) in E_Protected_Type |
                                                             E_Task_Type      |
@@ -635,27 +626,14 @@ is
    --  subprograms and entries and the task type itself for task types; returns
    --  Empty for ordinary subprograms.
    --  @param E is the entity of an entry/task/subprogram
-   --  @param Callsite is the place from where the entry/subprogram is called
-   --  @param Entire returns the entire object as opposed to a record field
    --  @return the implicit formal parameter of E, if any
 
-   function Get_Formals
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
-      return Node_Sets.Set
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
-                 and then
-               (if Present (Callsite)
-                then Nkind (Callsite) in N_Entry_Call_Statement     |
-                                         N_Function_Call            |
-                                         N_Procedure_Call_Statement);
+   function Get_Formals (E : Entity_Id) return Node_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Returns all implicit and explicit formal parameters of an Entry or
    --  Subprogram. For tasks it returns all discriminants of the task and
    --  the task itself.
    --  @param E is the entity of an entry/task/subprogram
-   --  @param Callsite is the place from where the entry/subprogram is called
-   --  @param Entire returns the entire object as opposed to a record field
    --  @return explicit and implicit formal parameters of E
 
    function Extensions_Visible (E     : Entity_Id;

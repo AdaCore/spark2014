@@ -286,9 +286,16 @@ package body Flow.Interprocedural is
                   The_In  := Direct_Mapping_Id (Implicit, In_View);
                   The_Out := Direct_Mapping_Id (Implicit, Out_View);
 
-                  Inputs.Insert (The_In);
+                  --  The protected object may already appear as a (generated)
+                  --  Global, e.g. when a protected subprogram calls an
+                  --  (external) proxy that externally calls a protected
+                  --  subprogram of the same object. External calls will be
+                  --  rejected by the flow analysis later, but now we must
+                  --  conservatively Include and not Insert the protected
+                  --  object.
+                  Inputs.Include (The_In);
                   if Ekind (Called_Thing) /= E_Function then
-                     Outputs.Insert (The_Out);
+                     Outputs.Include (The_Out);
                   end if;
                end;
             end if;

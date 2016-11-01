@@ -1956,9 +1956,7 @@ package body Flow_Utility is
    -------------------------
 
    function Get_Implicit_Formal
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
+     (E : Entity_Id)
       return Entity_Id
    is
    begin
@@ -1969,7 +1967,7 @@ package body Flow_Utility is
             --  entry/subprogram.
             return
               (if Ekind (Scope (E)) = E_Protected_Type
-               then Get_Enclosing_Concurrent_Object (E, Callsite, Entire)
+               then Scope (E)
                else Empty);
 
          when E_Task_Type =>
@@ -1989,14 +1987,11 @@ package body Flow_Utility is
    -----------------
 
    function Get_Formals
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
+     (E : Entity_Id)
       return Node_Sets.Set
    is
       Formals  : Node_Sets.Set := Get_Explicit_Formals (E);
-      Implicit : constant Entity_Id :=
-        Get_Implicit_Formal (E, Callsite, Entire);
+      Implicit : constant Entity_Id := Get_Implicit_Formal (E);
 
    begin
       if Present (Implicit) then

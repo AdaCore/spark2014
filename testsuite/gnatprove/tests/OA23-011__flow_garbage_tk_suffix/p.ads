@@ -1,6 +1,6 @@
 package P is
 
-   task T2;
+   task T2 with Global => null;
 
    protected PO is
       entry Dummy;
