@@ -9,9 +9,6 @@ is
    private
    end P;
 
-   function Get return Boolean with Global => P, Volatile_Function;
-
 private
    G : Boolean := False with Part_Of => P;
-   function Get return Boolean is (G);
 end Prot;

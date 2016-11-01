@@ -1,2 +1,0 @@
-prot.ads:16:36: "P" must be listed in the Global aspect of "Get" (SPARK RM 6.1.4(13))
-gnatprove: error during flow analysis and proof
