@@ -267,34 +267,18 @@ package Flow_Types is
    --  @return True iff F belongs to a protected object
 
    function Get_Enclosing_Concurrent_Object
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
+     (E : Entity_Id)
       return Entity_Id
    with Pre  => (Is_Part_Of_Concurrent_Object (E) or else
-                 Ekind (Scope (E)) in E_Protected_Type | E_Task_Type)
-                and then (if Present (Callsite)
-                          then Nkind (Callsite) in N_Entry_Call_Statement
-                                                 | N_Function_Call
-                                                 | N_Procedure_Call_Statement),
+                 Ekind (Scope (E)) in E_Protected_Type | E_Task_Type),
         Post => Ekind (Get_Enclosing_Concurrent_Object'Result) in
-                  E_Protected_Type | E_Task_Type | Object_Kind;
+                  E_Protected_Type | E_Task_Type | E_Variable;
    --  @param E is the entity of a constituent of a concurrent object, its
    --     Part_Of, or a protected subprogram
-   --  @param Callsite is the node id from where the protected operation was
-   --     called
-   --  @param Entire is a boolean flag. When Entire is set we return the
-   --     outermost construct that encloses the concurrent object (that might
-   --     be a record or an array). Entire is set to False when we try to be
-   --     as precise as possible (we use this for example when we want to
-   --     get the N_Selected_Component that corresponds to our enclosing
-   --     protected object)
-   --  @return the node that best represents the enclosing concurrent object
+   --  @return concurrent type or a single concurrent object, if possible
 
    function Get_Enclosing_Concurrent_Object
-     (F        : Flow_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
+     (F : Flow_Id)
       return Entity_Id
    with Pre  => Belongs_To_Concurrent_Object (F),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);

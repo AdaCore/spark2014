@@ -315,11 +315,7 @@ package body Flow_Types is
    -- Get_Enclosing_Concurrent_Object --
    -------------------------------------
 
-   function Get_Enclosing_Concurrent_Object
-     (E        : Entity_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
-      return Entity_Id
+   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id
    is
       function Anonymous_Object_Or_Type (Typ : Entity_Id) return Entity_Id
       with Pre => Ekind (Typ) in E_Protected_Type | E_Task_Type;
@@ -338,71 +334,16 @@ package body Flow_Types is
    --  Start of processing for Get_Enclosing_Concurrent_Object
 
    begin
-      if Present (Callsite) then
-         declare
-            Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
-
-         begin
-            case Nkind (Orig_Name) is
-               --  Internal call
-
-               when N_Identifier | N_Expanded_Name =>
-                  return Anonymous_Object_Or_Type (Scope (E));
-
-               --  External call
-
-               when N_Selected_Component =>
-                  --  ??? this is probably what Entire_Variable is meant to do
-                  if Entire then
-                     --  Repeat calling Get_Enclosing_Concurrent_Object until
-                     --  it returns Empty, which means than the current context
-                     --  is the most enclosing one, i.e. it is the "entire"
-                     --  object.
-                     declare
-                        Context   : Entity_Id :=
-                          Get_Enclosing_Object (Orig_Name);
-                        Enclosing : Entity_Id;
-
-                     begin
-                        loop
-                           Enclosing := Get_Enclosing_Object (Context);
-
-                           if Present (Enclosing) then
-                              Context := Enclosing;
-                           else
-                              return Context;
-                           end if;
-                        end loop;
-                     end;
-                  else
-                     return Get_Enclosing_Object (Orig_Name);
-                  end if;
-
-               when others =>
-                  raise Program_Error;
-            end case;
-         end;
-
-      --  Internal access to protected component
-
+      if Is_Part_Of_Concurrent_Object (E) then
+         return Encapsulating_State (E);
       else
-         if Is_Part_Of_Concurrent_Object (E) then
-            return Anonymous_Object (Etype (Encapsulating_State (E)));
-         else
-            return Anonymous_Object_Or_Type (Scope (E));
-         end if;
+         return Anonymous_Object_Or_Type (Scope (E));
       end if;
    end Get_Enclosing_Concurrent_Object;
 
-   function Get_Enclosing_Concurrent_Object
-     (F        : Flow_Id;
-      Callsite : Node_Id := Empty;
-      Entire   : Boolean := True)
-      return Entity_Id
-   is
-      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
    begin
-      return Get_Enclosing_Concurrent_Object (E, Callsite, Entire);
+      return Get_Enclosing_Concurrent_Object (Get_Direct_Mapping_Id (F));
    end Get_Enclosing_Concurrent_Object;
 
    --------------------------------
