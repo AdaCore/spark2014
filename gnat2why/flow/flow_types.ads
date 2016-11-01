@@ -264,7 +264,8 @@ package Flow_Types is
 
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
-   --  @return True iff F belongs to a protected object
+   --  @return True iff F represents a discriminant, component, or Part_Of
+   --     protected object
 
    function Get_Enclosing_Concurrent_Object
      (E : Entity_Id)

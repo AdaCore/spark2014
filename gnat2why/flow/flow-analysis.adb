@@ -4415,10 +4415,8 @@ package body Flow.Analysis is
    --  Start of processing for Check_CAE_In_Preconditions
 
    begin
-      if not Belongs_To_Protected_Object
-               (Direct_Mapping_Id (FA.Analyzed_Entity))
-      then
-         --  We only perform this check on protected operations.
+      --  We only perform this check on protected operations
+      if Ekind (Scope (FA.Analyzed_Entity)) /= E_Protected_Type then
          return;
       end if;
 

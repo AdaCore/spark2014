@@ -297,19 +297,9 @@ package body Flow_Types is
    ---------------------------------
 
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean is
-   begin
-      if F.Kind in Direct_Mapping | Record_Field then
-         declare
-            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-         begin
-            return Is_Part_Of_Protected_Object (E)
-              or else Ekind (Scope (E)) = E_Protected_Type;
-         end;
-
-      else
-         return False;
-      end if;
-   end Belongs_To_Protected_Object;
+     (F.Kind in Direct_Mapping | Record_Field
+        and then
+      Is_Protected_Component_Or_Discr_Or_Part_Of (Get_Direct_Mapping_Id (F)));
 
    -------------------------------------
    -- Get_Enclosing_Concurrent_Object --
