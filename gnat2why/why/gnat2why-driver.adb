@@ -535,24 +535,26 @@ package body Gnat2Why.Driver is
    begin
       for E of Marked_Entities loop
          case Ekind (E) is
-            when Subprogram_Kind =>
+            when Entry_Kind
+               | E_Function
+               | E_Procedure
+               | E_Package
+               | E_Task_Type
+            =>
+               --  Packages have always a "body" in the SPARK meaning, that is,
+               --  some elaboration code will always be run even for packages
+               --  without explicit elaboration code in the package body
+               --  statements. So we always register assumptions for packages.
+
                if Analysis_Requested (E, With_Inlined => True)
-                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Spec_In_SPARK (E)
+                 and then (if Ekind (E) /= E_Package
+                           then Entity_Body_In_SPARK (E))
                then
                   for C of Generated_Calls (E) loop
-                     if Ekind (C) in E_Function | E_Procedure | Entry_Kind then
-                        Register_Assumptions_For_Call (E, C);
-                     end if;
+                     Register_Assumptions_For_Call (E, C);
                   end loop;
                end if;
-
-            when E_Package =>
-
-               --  ??? we need to do the same for packages, we would have to
-               --  take into account calls during elaboration, and elaboration
-               --  of the with'ed packages
-
-               null;
 
             when others =>
                null;

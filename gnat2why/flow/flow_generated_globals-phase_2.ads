@@ -179,7 +179,11 @@ package Flow_Generated_Globals.Phase_2 is
    function Generated_Calls (E : Entity_Id) return Node_Lists.List
    with Pre  => GG_Has_Been_Generated and then
                 Analysis_Requested (E, With_Inlined => True) and then
-                Ekind (E) in Entry_Kind | E_Function | E_Package | E_Procedure,
+                Ekind (E) in Entry_Kind
+                           | E_Function
+                           | E_Package
+                           | E_Procedure
+                           | E_Task_Type,
         Post => (for all Calle of Generated_Calls'Result
                    => Ekind (Calle) in Entry_Kind
                                      | E_Function
