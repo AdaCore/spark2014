@@ -366,8 +366,8 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
 .. _implementation_defined:
 
-Implementation-Defined Behavior
--------------------------------
+Specifying the Target Architecture and Implementation-Defined Behavior
+----------------------------------------------------------------------
 
 A |SPARK| program is guaranteed to be unambiguous, so that formal verification
 of properties is possible. However, some behaviors (for example some
@@ -424,6 +424,37 @@ Target parameterization can be used:
 * to specify the parameters for a different compiler than |GNAT Pro|, even when
   the host and target are the same. In that case, the target file should be
   generated manually.
+
+Here is an example of a configuration file for a bare board PowerPC 750
+processor configured as big-endian::
+
+  Bits_BE                       1
+  Bits_Per_Unit                 8
+  Bits_Per_Word                32
+  Bytes_BE                      1
+  Char_Size                     8
+  Double_Float_Alignment        0
+  Double_Scalar_Alignment       0
+  Double_Size                  64
+  Float_Size                   32
+  Float_Words_BE                1
+  Int_Size                     32
+  Long_Double_Size             64
+  Long_Long_Size               64
+  Long_Size                    32
+  Maximum_Alignment            16
+  Max_Unaligned_Field          64
+  Pointer_Size                 32
+  Short_Enums                   0
+  Short_Size                   16
+  Strict_Alignment              1
+  System_Allocator_Alignment    8
+  Wchar_T_Size                 32
+  Words_BE                      1
+
+  float          6  I  32  32
+  double        15  I  64  64
+  long double   15  I  64  64
 
 Also by default, |GNATprove| uses the host run-time library, which may not be
 suitable for your target when doing cross-compilation. A different run-time
