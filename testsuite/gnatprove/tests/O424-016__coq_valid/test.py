@@ -11,7 +11,7 @@ def edit_session():
 
 prove_all(counterexample=False)
 print "======================================="
-prove_all(opt=["--prover=coq", "--limit-line=greatest_common_divisor.adb:10"], counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=greatest_common_divisor.adb:10"], counterexample=False, filter_output=".*Grammar extension")
 print "======================================="
 edit_session()
 print "======================================="

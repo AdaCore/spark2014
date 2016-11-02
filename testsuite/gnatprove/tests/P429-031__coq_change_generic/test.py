@@ -4,7 +4,7 @@ import glob
 
 proof = """admit.
 
-Qed.
+Admitted.
 """
 
 def edit_proof(num):
@@ -17,14 +17,14 @@ def edit_proof(num):
 
 prove_all(prover=["cvc4"], counterexample=False)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 edit_proof(1)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 edit_proof(2)
 print "======================================="
-prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False)
+prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 print "======================================="
 prove_all(counterexample=False)

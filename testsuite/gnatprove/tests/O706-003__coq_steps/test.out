@@ -1,6 +1,4 @@
 dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/Dummy__return__div1.v
 dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/Dummy__return__div.v
-<W> Grammar extension: in [constr:operconstr] some rule has been masked
-<W> Grammar extension: in [constr:pattern] some rule has been masked
 dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/Dummy__return__div1.v
 dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/Dummy__return__div.v

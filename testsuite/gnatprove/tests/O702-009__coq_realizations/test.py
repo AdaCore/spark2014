@@ -86,7 +86,10 @@ def compile_coq_files():
     os.chdir('coq')
     for fn in files_to_be_compiled:
         process = Run(['coqc', '-R', '.', 'Why3', fn])
-        print process.out
+        lines = process.out.splitlines()
+        lines = grep(".*Grammar extension", lines, invert=True)
+        for line in lines:
+            print line
     os.chdir(cwd)
 
 
@@ -100,7 +103,10 @@ def check_realizations():
     os.chdir(realize_subdir)
     for real in realized:
         process = Run(['coqc', '-R', os.path.join('..', 'coq'), 'Why3', real + '.v'])
-        print process.out
+        lines = process.out.splitlines()
+        lines = grep(".*Grammar extension", lines, invert=True)
+        for line in lines:
+            print line
 
 copy_spark_why_files()
 compile_coq_files()
