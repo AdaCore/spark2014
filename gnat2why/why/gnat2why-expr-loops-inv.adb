@@ -1120,6 +1120,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                Discard_Writes => Has_Volatile (Entity (New_Write))
                or else Is_Protected_Component_Or_Discr_Or_Part_Of
                  (Entity (New_Write)),
+               --  ??? protected components and Part_Of may only be accessed
+               --  from within the protected operations where they appear
+               --  as non-volatile (unless they are explicitly annotated
+               --  as Volatile, if such an annotation is legal at all).
+               --  ??? also, discriminants cannot be written, so this test
+               --  seems too excessive anyway.
                Updated_Status => Updated_Status);
 
             Expected_Type := Retysp (Etype (New_Write));
