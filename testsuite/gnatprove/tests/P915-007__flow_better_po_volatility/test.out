@@ -12,3 +12,13 @@ test_02.adb:16:09: info: nontermination of task proved (CVC4: 1 VC)
 test_02.adb:18:14: high: "Database" constituent of "State" cannot be a constituent of "Test_02.State" (which lacks volatile flavor Effective_Writes)
 test_02.adb:41:15: info: initialization of "T" proved
 test_02.adb:43:22: info: initialization of "T" proved
+
+=== test_03.adb ===
+
+=== test_04.adb ===
+test_04.adb:35:14: high: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile flavor Effective_Reads)
+test_04.adb:35:14: high: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile flavor Effective_Writes)
+test_04.adb:37:14: high: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile flavor Effective_Reads)
+test_04.adb:37:14: high: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile flavor Effective_Writes)
+test_04.adb:39:14: high: "PO_ER" constituent of "State_ER" cannot be a constituent of "Test_03.State_ER" (which lacks volatile flavor Effective_Writes)
+test_04.adb:41:14: high: "PO_EW" constituent of "State_EW" cannot be a constituent of "Test_03.State_EW" (which lacks volatile flavor Effective_Reads)
