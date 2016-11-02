@@ -90,10 +90,10 @@ skein.adb:698:36: info: index check proved (CVC4: 4 VC), in call inlined at skei
 skein.adb:698:36: info: initialization of "Src" proved
 skein.adb:698:36: info: initialization of "Src" proved, in call inlined at skein.adb:724
 skein.adb:698:36: info: initialization of "Src" proved, in call inlined at skein.adb:764
-skein.adb:702:16: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:724
-skein.adb:702:16: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:764
-skein.adb:702:16: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:724
-skein.adb:702:16: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:764
+skein.adb:702:39: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:724
+skein.adb:702:39: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:764
+skein.adb:702:39: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:724
+skein.adb:702:39: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:764
 skein.adb:704:26: info: initialization of "Dst" proved
 skein.adb:704:26: info: initialization of "Dst" proved, in call inlined at skein.adb:724
 skein.adb:704:26: info: initialization of "Dst" proved, in call inlined at skein.adb:764
@@ -184,9 +184,9 @@ skein.adb:834:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:836:27: info: initialization of "Byte_Count" proved
 skein.adb:836:44: info: division check proved (CVC4: 1 VC)
 skein.adb:838:31: info: initialization of "Blocks_Required" proved
-skein.adb:839:10: info: loop invariant initialization proved (CVC4: 1 VC)
-skein.adb:839:10: info: loop invariant preservation proved (CVC4: 1 VC)
 skein.adb:840:13: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
+skein.adb:840:13: info: loop invariant initialization proved (CVC4: 1 VC)
+skein.adb:840:13: info: loop invariant preservation proved (CVC4: 1 VC)
 skein.adb:840:64: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:851:19: info: initialization of "Local_Ctx.B" proved
 skein.adb:852:10: info: precondition proved (CVC4: 6 VC)

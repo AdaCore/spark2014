@@ -248,21 +248,21 @@ buffers.adb:20:31: info: initialization of "New_Index" proved
 buffers.adb:20:31: info: initialization of "Workspace" proved
 buffers.adb:22:17: info: initialization of "Workspace" proved
 buffers.adb:32:43: info: initialization of "Temp" proved
-buffers.adb:42:10: info: loop invariant initialization proved (CVC4: 1 VC)
-buffers.adb:42:10: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:42:33: info: initialization of "Count" proved
+buffers.adb:42:33: info: loop invariant initialization proved (CVC4: 1 VC)
+buffers.adb:42:33: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:45:22: info: initialization of "Count" proved
 buffers.adb:45:28: info: range check proved (CVC4: 1 VC)
 buffers.adb:48:14: info: initialization of "Count" proved
-buffers.adb:59:10: info: loop invariant initialization proved (CVC4: 1 VC)
-buffers.adb:59:10: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:59:33: info: initialization of "Count" proved
+buffers.adb:59:33: info: loop invariant initialization proved (CVC4: 1 VC)
+buffers.adb:59:33: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:62:22: info: initialization of "Count" proved
 buffers.adb:62:28: info: range check proved (CVC4: 1 VC)
 buffers.adb:77:32: info: length check proved (CVC4: 1 VC)
-buffers.adb:82:10: info: loop invariant initialization proved (CVC4: 1 VC)
-buffers.adb:82:10: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:82:32: info: initialization of "Offset" proved
+buffers.adb:82:32: info: loop invariant initialization proved (CVC4: 1 VC)
+buffers.adb:82:32: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:85:39: info: index check proved (CVC4: 2 VC)
 buffers.adb:85:49: info: initialization of "Offset" proved
 buffers.adb:85:49: info: initialization of "Workspace" proved
@@ -280,9 +280,9 @@ buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
 buffers.adb:106:38: info: range check proved (CVC4: 1 VC)
 buffers.adb:108:11: info: range check proved (CVC4: 2 VC)
 buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
-buffers.adb:109:10: info: loop invariant initialization proved (CVC4: 2 VC)
-buffers.adb:109:10: info: loop invariant preservation proved (CVC4: 2 VC)
 buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
+buffers.adb:110:13: info: loop invariant initialization proved (CVC4: 2 VC)
+buffers.adb:110:13: info: loop invariant preservation proved (CVC4: 2 VC)
 buffers.adb:110:41: info: range check proved (CVC4: 1 VC)
 buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
 buffers.adb:113:25: info: initialization of "Buffer" proved
@@ -338,7 +338,7 @@ contains2.adb:14:11: info: initialization of "Result_Index" proved
 contains3.adb:7:21: info: postcondition proved (CVC4: 2 VC)
 contains3.adb:7:69: info: index check proved (CVC4: 2 VC)
 contains3.adb:9:39: info: length check proved (CVC4: 1 VC)
-contains3.adb:14:04: info: assertion proved (CVC4: 3 VC)
+contains3.adb:14:19: info: assertion proved (CVC4: 3 VC)
 contains3.adb:15:37: warning: assuming "Index" has no effect on global items
 contains3.adb:15:37: warning: no Global contract available for "Index"
 contains3.adb:16:56: info: initialization of "Search_String" proved
@@ -477,8 +477,8 @@ datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
 datebook.adb:162:50: info: initialization of "Index" proved
 datebook.adb:165:20: info: range check proved (CVC4: 2 VC)
 datebook.adb:166:35: info: initialization of "Index" proved
-datebook.adb:168:19: info: loop invariant initialization proved (CVC4: 2 VC)
-datebook.adb:168:19: info: loop invariant preservation proved (CVC4: 2 VC)
+datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 2 VC)
+datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebook.adb:169:35: info: initialization of "Index" proved
 datebook.adb:169:73: info: range check proved (CVC4: 1 VC)
 datebook.adb:170:35: info: initialization of "Index" proved
@@ -491,9 +491,9 @@ datebook.adb:182:20: info: initialization of "Index" proved
 datebook.adb:183:19: info: initialization of "Index" proved
 datebook.adb:183:25: info: range check proved (CVC4: 1 VC)
 datebook.adb:210:12: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
-datebook.adb:228:10: info: loop invariant initialization proved (CVC4: 1 VC)
-datebook.adb:228:10: info: loop invariant preservation proved (CVC4: 1 VC)
 datebook.adb:228:32: info: initialization of "Count" proved
+datebook.adb:228:32: info: loop invariant initialization proved (CVC4: 1 VC)
+datebook.adb:228:32: info: loop invariant preservation proved (CVC4: 1 VC)
 datebook.adb:231:22: info: initialization of "Count" proved
 datebook.adb:231:28: info: range check proved (CVC4: 1 VC)
 datebook.adb:234:14: info: initialization of "Count" proved
@@ -506,15 +506,15 @@ datebook.ads:70:07: info: initialization of "Next_Date" proved
 datebook.ads:71:07: info: initialization of "Status" proved
 datebooks.adb:17:09: info: length check proved (CVC4: 1 VC)
 datebooks.adb:17:71: info: length check proved (CVC4: 1 VC)
-datebooks.adb:41:13: info: loop invariant initialization proved (CVC4: 1 VC)
-datebooks.adb:41:13: info: loop invariant preservation proved (CVC4: 1 VC)
+datebooks.adb:41:35: info: loop invariant initialization proved (CVC4: 1 VC)
+datebooks.adb:41:35: info: loop invariant preservation proved (CVC4: 1 VC)
 datebooks.adb:50:17: info: initialization of "Find_Result.Found_Slot" proved
 datebooks.adb:54:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:54:80: info: length check proved (CVC4: 1 VC)
 datebooks.adb:55:17: info: range check proved (CVC4: 2 VC)
-datebooks.adb:56:16: info: loop invariant initialization proved (CVC4: 3 VC)
-datebooks.adb:56:16: info: loop invariant preservation proved (CVC4: 3 VC)
 datebooks.adb:56:38: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:56:38: info: loop invariant initialization proved (CVC4: 3 VC)
+datebooks.adb:56:38: info: loop invariant preservation proved (CVC4: 3 VC)
 datebooks.adb:58:40: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:60:65: info: index check proved (CVC4: 2 VC)
 datebooks.adb:60:65: info: overflow check proved (CVC4: 1 VC)
@@ -532,8 +532,8 @@ datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
 datebooks.adb:115:42: info: initialization of "I" proved
 datebooks.adb:118:20: info: range check proved (CVC4: 2 VC)
 datebooks.adb:118:64: info: initialization of "I" proved
-datebooks.adb:119:19: info: loop invariant initialization proved (CVC4: 2 VC)
-datebooks.adb:119:19: info: loop invariant preservation proved (CVC4: 2 VC)
+datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 2 VC)
+datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebooks.adb:120:27: info: initialization of "I" proved
 datebooks.adb:120:61: info: range check proved (CVC4: 1 VC)
 datebooks.adb:121:27: info: initialization of "I" proved
@@ -546,9 +546,9 @@ datebooks.adb:132:20: info: initialization of "I" proved
 datebooks.adb:133:15: info: initialization of "I" proved
 datebooks.adb:133:17: info: range check proved (CVC4: 1 VC)
 datebooks.adb:152:38: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
-datebooks.adb:165:10: info: loop invariant initialization proved (CVC4: 1 VC)
-datebooks.adb:165:10: info: loop invariant preservation proved (CVC4: 1 VC)
 datebooks.adb:165:32: info: initialization of "Count" proved
+datebooks.adb:165:32: info: loop invariant initialization proved (CVC4: 1 VC)
+datebooks.adb:165:32: info: loop invariant preservation proved (CVC4: 1 VC)
 datebooks.adb:168:22: info: initialization of "Count" proved
 datebooks.adb:168:28: info: range check proved (CVC4: 1 VC)
 datebooks.adb:171:14: info: initialization of "Count" proved
@@ -578,13 +578,13 @@ dates.adb:105:53: info: range check proved (CVC4: 1 VC)
 dates.adb:142:10: info: initialization of "C23b" proved
 dates.adb:224:14: info: range check proved (CVC4: 2 VC)
 dates.adb:224:47: info: initialization of "Steps" proved
-dates.adb:230:13: info: loop invariant initialization proved (CVC4: 1 VC)
-dates.adb:230:13: info: loop invariant preservation proved (CVC4: 1 VC)
+dates.adb:230:35: info: loop invariant initialization proved (CVC4: 1 VC)
+dates.adb:230:35: info: loop invariant preservation proved (CVC4: 1 VC)
 dates.adb:232:13: info: precondition proved (CVC4: 1 VC)
 dates.adb:236:14: info: range check proved (CVC4: 2 VC)
 dates.adb:236:47: info: initialization of "Steps" proved
-dates.adb:242:13: info: loop invariant initialization proved (CVC4: 1 VC)
-dates.adb:242:13: info: loop invariant preservation proved (CVC4: 1 VC)
+dates.adb:242:35: info: loop invariant initialization proved (CVC4: 1 VC)
+dates.adb:242:35: info: loop invariant preservation proved (CVC4: 1 VC)
 dates.adb:244:13: info: precondition proved (CVC4: 1 VC)
 dates.adb:276:14: info: initialization of "Result" proved
 dates.ads:32:07: info: initialization of "New_Date.Day" proved
@@ -770,32 +770,32 @@ generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in inst
 generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:30:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:30:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:30:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:30:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:31:10: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:31:10: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:31:10: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:31:10: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:32:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:32:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:32:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:32:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:33:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:33:10: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:33:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:33:10: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:34:10: info: loop variant proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
@@ -996,7 +996,7 @@ parent-public1.adb:11:20: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
 prime_search.adb:10:06: info: length check proved (CVC4: 1 VC)
-prime_search.adb:20:04: info: assertion proved (CVC4: 1 VC)
+prime_search.adb:20:18: info: assertion proved (CVC4: 1 VC)
 prime_search.adb:21:77: info: index check proved (CVC4: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC4: 1 VC)
 prime_search.adb:22:32: info: length check proved (CVC4: 1 VC)
@@ -1053,9 +1053,9 @@ scrabble.adb:12:37: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:12:48: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:13:15: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:13:25: info: predicate check proved (CVC4: 1 VC)
-scrabble.adb:19:10: info: loop invariant initialization proved (CVC4: 1 VC)
-scrabble.adb:19:10: info: loop invariant preservation proved (CVC4: 1 VC)
 scrabble.adb:19:33: info: initialization of "Total_Score" proved
+scrabble.adb:19:33: info: loop invariant initialization proved (CVC4: 1 VC)
+scrabble.adb:19:33: info: loop invariant preservation proved (CVC4: 1 VC)
 scrabble.adb:19:50: info: overflow check proved (CVC4: 1 VC)
 scrabble.adb:19:65: info: overflow check proved (CVC4: 1 VC)
 scrabble.adb:20:25: info: initialization of "Total_Score" proved
@@ -1082,11 +1082,11 @@ searchers.adb:24:33: info: initialization of "Mid_Index" proved
 searchers.adb:26:23: info: initialization of "Mid_Index" proved
 searchers.adb:30:20: info: initialization of "Low_Index" proved
 searchers.adb:30:32: info: initialization of "High_Index" proved
-searchers.adb:32:10: info: loop invariant initialization proved (CVC4: 1 VC)
-searchers.adb:32:10: info: loop invariant preservation proved (CVC4: 1 VC)
+searchers.adb:32:32: info: loop invariant initialization proved (CVC4: 1 VC)
+searchers.adb:32:32: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers.adb:32:38: info: initialization of "Low_Index" proved
-searchers.adb:33:10: info: loop invariant initialization proved (CVC4: 1 VC)
-searchers.adb:33:10: info: loop invariant preservation proved (CVC4: 1 VC)
+searchers.adb:33:32: info: loop invariant initialization proved (CVC4: 1 VC)
+searchers.adb:33:32: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers.adb:33:53: info: initialization of "High_Index" proved
 searchers.adb:35:19: info: initialization of "Mid_Index" proved
 searchers.adb:36:26: info: initialization of "Mid_Index" proved
@@ -1103,8 +1103,8 @@ searchers2.adb:24:33: info: initialization of "Mid_Index" proved
 searchers2.adb:26:23: info: initialization of "Mid_Index" proved
 searchers2.adb:30:20: info: initialization of "Low_Index" proved
 searchers2.adb:30:32: info: initialization of "High_Index" proved
-searchers2.adb:32:10: info: loop invariant initialization proved (CVC4: 2 VC)
-searchers2.adb:32:10: info: loop invariant preservation proved (CVC4: 2 VC)
+searchers2.adb:33:13: info: loop invariant initialization proved (CVC4: 2 VC)
+searchers2.adb:33:13: info: loop invariant preservation proved (CVC4: 2 VC)
 searchers2.adb:33:34: info: initialization of "Low_Index" proved
 searchers2.adb:33:54: info: initialization of "High_Index" proved
 searchers2.adb:35:19: info: initialization of "Mid_Index" proved
@@ -1125,19 +1125,19 @@ searchers3.adb:22:33: info: initialization of "Mid_Index" proved
 searchers3.adb:24:23: info: initialization of "Mid_Index" proved
 searchers3.adb:28:20: info: initialization of "Low_Index" proved
 searchers3.adb:28:32: info: initialization of "High_Index" proved
-searchers3.adb:30:10: info: loop invariant initialization proved (CVC4: 1 VC)
-searchers3.adb:30:10: info: loop invariant preservation proved (CVC4: 1 VC)
+searchers3.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
+searchers3.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers3.adb:30:37: info: initialization of "Found" proved
-searchers3.adb:31:10: info: loop invariant initialization proved (CVC4: 2 VC)
-searchers3.adb:31:10: info: loop invariant preservation proved (CVC4: 2 VC)
 searchers3.adb:31:33: info: initialization of "Mid_Index" proved
+searchers3.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC)
+searchers3.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC)
 searchers3.adb:31:46: info: initialization of "Low_Index" proved
 searchers3.adb:31:59: info: initialization of "High_Index" proved
-searchers3.adb:32:10: info: loop invariant initialization proved (CVC4: 1 VC)
-searchers3.adb:32:10: info: loop invariant preservation proved (CVC4: 1 VC)
+searchers3.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC)
+searchers3.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers3.adb:32:39: info: initialization of "Low_Index" proved
-searchers3.adb:33:10: info: loop invariant initialization proved (CVC4: 1 VC)
-searchers3.adb:33:10: info: loop invariant preservation proved (CVC4: 1 VC)
+searchers3.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC)
+searchers3.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers3.adb:33:54: info: initialization of "High_Index" proved
 searchers3.adb:34:10: info: loop variant proved (CVC4: 1 VC)
 searchers3.adb:34:44: info: initialization of "High_Index" proved
@@ -1159,18 +1159,18 @@ searches.adb:11:26: info: index check proved (CVC4: 4 VC)
 searches.adb:11:26: info: initialization of "Position" proved
 searches.adb:12:22: info: initialization of "Position" proved
 searches.adb:12:31: info: overflow check proved (CVC4: 2 VC)
-searches.adb:13:10: info: loop invariant initialization proved (CVC4: 3 VC)
-searches.adb:13:10: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:14:13: info: initialization of "Position" proved
+searches.adb:14:13: info: loop invariant initialization proved (CVC4: 3 VC)
+searches.adb:14:13: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:15:63: info: index check proved (CVC4: 2 VC)
 searches.adb:24:23: info: range check proved (CVC4: 1 VC)
 searches.adb:26:20: info: initialization of "Position" proved
 searches.adb:26:55: info: index check proved (CVC4: 4 VC)
 searches.adb:27:22: info: initialization of "Position" proved
 searches.adb:27:31: info: overflow check proved (CVC4: 2 VC)
-searches.adb:28:10: info: loop invariant initialization proved (CVC4: 3 VC)
-searches.adb:28:10: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:29:13: info: initialization of "Position" proved
+searches.adb:29:13: info: loop invariant initialization proved (CVC4: 3 VC)
+searches.adb:29:13: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:29:49: info: overflow check proved (CVC4: 1 VC)
 searches.adb:30:63: info: index check proved (CVC4: 2 VC)
 searches.adb:32:16: info: initialization of "Position" proved
@@ -1318,9 +1318,9 @@ sorters.adb:41:19: info: postcondition proved (CVC4: 3 VC)
 sorters.adb:43:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:43:67: info: index check proved (CVC4: 2 VC)
 sorters.adb:47:22: info: range check proved (CVC4: 1 VC)
-sorters.adb:49:10: info: loop invariant initialization proved (CVC4: 3 VC)
-sorters.adb:49:10: info: loop invariant preservation proved (CVC4: 3 VC)
 sorters.adb:50:13: info: initialization of "Min" proved
+sorters.adb:50:13: info: loop invariant initialization proved (CVC4: 3 VC)
+sorters.adb:50:13: info: loop invariant preservation proved (CVC4: 3 VC)
 sorters.adb:51:50: info: overflow check proved (CVC4: 1 VC)
 sorters.adb:52:25: info: index check proved (CVC4: 2 VC)
 sorters.adb:52:43: info: index check proved (CVC4: 2 VC)
@@ -1338,13 +1338,13 @@ sorters.adb:73:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:74:29: info: range check proved (CVC4: 2 VC)
 sorters.adb:75:29: info: initialization of "Smallest" proved
 sorters.adb:78:61: info: initialization of "Values_Last" proved
-sorters.adb:80:10: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:80:10: info: loop invariant preservation proved (CVC4: 1 VC)
-sorters.adb:81:10: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:81:10: info: loop invariant preservation proved (CVC4: 1 VC)
+sorters.adb:80:33: info: loop invariant initialization proved (CVC4: 1 VC)
+sorters.adb:80:33: info: loop invariant preservation proved (CVC4: 1 VC)
+sorters.adb:82:13: info: loop invariant initialization proved (CVC4: 1 VC)
+sorters.adb:82:13: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:83:26: info: index check proved (CVC4: 2 VC)
 sorters.adb:83:46: info: index check proved (CVC4: 2 VC)
-sorters.adb:84:10: info: loop invariant initialization proved (CVC4: 1 VC)
+sorters.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:86:16: medium: loop invariant might fail after first iteration, cannot prove Values (J) <= Values (J + 1)
 sorters.adb:86:24: info: index check proved (CVC4: 2 VC)
 sorters.adb:86:40: info: index check proved (CVC4: 2 VC)
@@ -1487,13 +1487,13 @@ students2.adb:68:27: info: range check proved (CVC4: 1 VC)
 students2.adb:72:23: info: initialization of "Grants" proved
 students2.adb:72:30: info: overflow check proved (CVC4: 1 VC)
 students2.adb:72:30: info: range check proved (CVC4: 1 VC)
-students2.adb:76:07: info: assertion proved (CVC4: 2 VC)
+students2.adb:76:21: info: assertion proved (CVC4: 2 VC)
 students2.adb:76:21: info: initialization of "Tuition" proved
-students2.adb:77:07: info: assertion proved (CVC4: 2 VC)
+students2.adb:77:21: info: assertion proved (CVC4: 2 VC)
 students2.adb:77:21: info: initialization of "Insurance" proved
-students2.adb:78:07: info: assertion proved (CVC4: 2 VC)
+students2.adb:78:21: info: assertion proved (CVC4: 2 VC)
 students2.adb:78:21: info: initialization of "Fees" proved
-students2.adb:79:07: info: assertion proved (CVC4: 2 VC)
+students2.adb:79:21: info: assertion proved (CVC4: 2 VC)
 students2.adb:79:21: info: initialization of "Grants" proved
 students2.adb:81:16: info: initialization of "Tuition" proved
 students2.adb:81:24: info: overflow check proved (CVC4: 1 VC)
@@ -1508,9 +1508,9 @@ students3.adb:15:29: info: overflow check proved (CVC4: 1 VC)
 students3.adb:15:29: info: range check proved (CVC4: 1 VC)
 students3.adb:15:39: info: division check proved (CVC4: 1 VC)
 students3.adb:15:39: info: overflow check proved (CVC4: 1 VC)
-students3.adb:18:07: info: assertion proved (CVC4: 2 VC)
+students3.adb:18:30: info: assertion proved (CVC4: 2 VC)
 students3.adb:18:30: info: initialization of "Tuition" proved
-students3.adb:25:07: info: assertion proved (CVC4: 4 VC)
+students3.adb:25:30: info: assertion proved (CVC4: 4 VC)
 students3.adb:25:31: info: initialization of "Tuition" proved
 students3.adb:26:31: info: initialization of "Insurance" proved
 students3.adb:37:18: info: initialization of "Fees" proved
@@ -1534,7 +1534,7 @@ students3.adb:49:44: info: range check proved (CVC4: 1 VC)
 students3.adb:50:39: info: initialization of "Fees" proved
 students3.adb:50:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:50:44: info: range check proved (CVC4: 1 VC)
-students3.adb:54:07: info: assertion proved (CVC4: 6 VC)
+students3.adb:54:30: info: assertion proved (CVC4: 6 VC)
 students3.adb:54:31: info: initialization of "Tuition" proved
 students3.adb:55:31: info: initialization of "Insurance" proved
 students3.adb:56:31: info: initialization of "Fees" proved
@@ -1544,7 +1544,7 @@ students3.adb:60:27: info: range check proved (CVC4: 1 VC)
 students3.adb:64:23: info: initialization of "Grants" proved
 students3.adb:64:30: info: overflow check proved (CVC4: 1 VC)
 students3.adb:64:30: info: range check proved (CVC4: 1 VC)
-students3.adb:68:07: info: assertion proved (CVC4: 8 VC)
+students3.adb:68:30: info: assertion proved (CVC4: 8 VC)
 students3.adb:68:31: info: initialization of "Tuition" proved
 students3.adb:69:31: info: initialization of "Insurance" proved
 students3.adb:70:31: info: initialization of "Fees" proved
@@ -1567,9 +1567,9 @@ temperature_buffer14.adb:64:31: info: length check proved (CVC4: 1 VC)
 temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
 temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
 terminal.adb:13:14: info: length check proved (CVC4: 1 VC)
-terminal.adb:17:10: info: loop invariant initialization proved (CVC4: 1 VC)
-terminal.adb:17:10: info: loop invariant preservation proved (CVC4: 1 VC)
 terminal.adb:17:33: info: initialization of "Count" proved
+terminal.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
+terminal.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
 terminal.adb:17:48: info: range check proved (CVC4: 1 VC)
 terminal.adb:20:13: info: initialization of "Count" proved
 terminal.adb:20:27: info: range check proved (CVC4: 1 VC)
@@ -1590,21 +1590,21 @@ ticktock.adb:14:34: medium: overflow check might fail
 transitive.adb:16:19: info: postcondition proved (CVC4: 1 VC)
 transitive.adb:20:37: info: division check proved (CVC4: 1 VC)
 transitive.adb:21:14: info: division check proved (CVC4: 1 VC)
-transitive.adb:31:10: info: loop invariant initialization proved (CVC4: 1 VC)
-transitive.adb:31:10: info: loop invariant preservation proved (CVC4: 1 VC)
+transitive.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
+transitive.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
 transitive.adb:38:56: info: initialization of "X_Last" proved
 transitive.ads:10:19: info: postcondition proved (CVC4: 1 VC)
 unused_parameter.adb:7:15: medium: overflow check might fail
 unused_parameter.adb:7:20: info: division check proved (CVC4: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
-utility.adb:12:10: info: loop invariant initialization proved (CVC4: 1 VC)
-utility.adb:12:10: info: loop invariant preservation proved (CVC4: 1 VC)
+utility.adb:13:13: info: loop invariant initialization proved (CVC4: 1 VC)
+utility.adb:13:13: info: loop invariant preservation proved (CVC4: 1 VC)
 utility.adb:13:67: info: index check proved (CVC4: 2 VC)
 utility.adb:15:07: info: raise statement proved unreachable (CVC4: 2 VC)
 utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:12:07: medium: exception might be raised
-various.adb:20:07: info: assertion proved (CVC4: 1 VC)
+various.adb:20:21: info: assertion proved (CVC4: 1 VC)
 various.adb:20:23: medium: overflow check might fail
 various.adb:20:26: info: division check proved (CVC4: 1 VC)
 various.adb:21:13: info: division check proved (CVC4: 1 VC)
@@ -1800,7 +1800,7 @@ very_longs.adb:93:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:93:50: info: initialization of "Difference" proved
 very_longs.adb:109:26: info: range check proved (CVC4: 1 VC)
-very_longs.adb:112:07: info: assertion proved (CVC4: 1 VC)
+very_longs.adb:112:21: info: assertion proved (CVC4: 1 VC)
 very_longs.adb:113:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:113:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:116:29: info: index check proved (CVC4: 2 VC)
@@ -1815,19 +1815,19 @@ very_longs.adb:133:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:133:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:136:34: info: range check proved (CVC4: 1 VC)
 very_longs.adb:137:29: info: range check proved (CVC4: 1 VC)
-very_longs.adb:140:10: info: loop invariant initialization proved (CVC4: 1 VC)
-very_longs.adb:140:10: info: loop invariant preservation proved (CVC4: 1 VC)
+very_longs.adb:141:13: info: loop invariant initialization proved (CVC4: 1 VC)
+very_longs.adb:141:13: info: loop invariant preservation proved (CVC4: 1 VC)
 very_longs.adb:141:26: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:141:28: info: initialization of "String_Index" proved
 very_longs.adb:141:41: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:141:45: info: division check proved (CVC4: 1 VC)
 very_longs.adb:141:59: info: initialization of "Index" proved
-very_longs.adb:142:10: info: loop invariant initialization proved (CVC4: 2 VC)
-very_longs.adb:142:10: info: loop invariant preservation proved (CVC4: 2 VC)
 very_longs.adb:142:32: info: initialization of "String_Index" proved
-very_longs.adb:143:10: info: loop invariant initialization proved (CVC4: 2 VC)
-very_longs.adb:143:10: info: loop invariant preservation proved (CVC4: 2 VC)
+very_longs.adb:142:32: info: loop invariant initialization proved (CVC4: 2 VC)
+very_longs.adb:142:32: info: loop invariant preservation proved (CVC4: 2 VC)
 very_longs.adb:143:32: info: initialization of "Index" proved
+very_longs.adb:143:32: info: loop invariant initialization proved (CVC4: 2 VC)
+very_longs.adb:143:32: info: loop invariant preservation proved (CVC4: 2 VC)
 very_longs.adb:145:31: info: index check proved (CVC4: 2 VC)
 very_longs.adb:145:31: info: initialization of "String_Index" proved
 very_longs.adb:146:31: info: initialization of "String_Index" proved
@@ -1835,7 +1835,7 @@ very_longs.adb:146:44: info: index check proved (CVC4: 2 VC)
 very_longs.adb:146:44: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:147:18: info: initialization of "H_Okay" proved
 very_longs.adb:147:29: info: initialization of "L_Okay" proved
-very_longs.adb:151:10: info: assertion proved (CVC4: 2 VC)
+very_longs.adb:151:24: info: assertion proved (CVC4: 2 VC)
 very_longs.adb:151:24: info: initialization of "Index" proved
 very_longs.adb:152:29: info: index check proved (CVC4: 2 VC)
 very_longs.adb:152:36: info: initialization of "Index" proved
@@ -1865,8 +1865,8 @@ very_longs.adb:205:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:207:33: info: index check proved (CVC4: 2 VC)
 very_longs.adb:213:33: info: index check proved (CVC4: 4 VC)
 very_longs.adb:214:28: info: range check proved (CVC4: 2 VC)
-very_longs.adb:217:10: info: loop invariant initialization proved (CVC4: 4 VC)
-very_longs.adb:217:10: info: loop invariant preservation proved (CVC4: 4 VC)
+very_longs.adb:218:13: info: loop invariant initialization proved (CVC4: 4 VC)
+very_longs.adb:218:13: info: loop invariant preservation proved (CVC4: 4 VC)
 very_longs.adb:219:37: info: index check proved (CVC4: 2 VC)
 very_longs.adb:219:37: info: initialization of "Digit_Count" proved
 very_longs.adb:223:39: info: index check proved (CVC4: 2 VC)
@@ -1964,3 +1964,23 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

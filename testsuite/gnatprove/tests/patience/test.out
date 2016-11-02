@@ -1,9 +1,9 @@
 patience.adb:12:13: info: initialization of "I" proved
-patience.adb:13:10: info: loop invariant initialization proved (CVC4: 2 VC)
-patience.adb:13:10: info: loop invariant preservation proved (CVC4: 2 VC)
 patience.adb:13:33: info: initialization of "I" proved
-patience.adb:14:10: info: loop invariant initialization proved (CVC4: 6 VC)
-patience.adb:14:10: info: loop invariant preservation proved (CVC4: 6 VC)
+patience.adb:13:33: info: loop invariant initialization proved (CVC4: 2 VC)
+patience.adb:13:33: info: loop invariant preservation proved (CVC4: 2 VC)
+patience.adb:16:13: info: loop invariant initialization proved (CVC4: 6 VC)
+patience.adb:16:13: info: loop invariant preservation proved (CVC4: 6 VC)
 patience.adb:20:13: info: initialization of "Pred" proved
 patience.adb:22:31: info: initialization of "I" proved
 patience.adb:22:32: info: index check proved (CVC4: 2 VC)
@@ -22,9 +22,9 @@ patience.adb:30:37: info: initialization of "StackISize" proved
 patience.adb:30:48: info: index check proved (CVC4: 1 VC; altergo: 1 VC)
 patience.adb:31:36: info: index check proved (CVC4: 2 VC)
 patience.adb:31:36: info: initialization of "TopStackI" proved
-patience.adb:32:12: info: assertion proved (CVC4: 2 VC)
+patience.adb:32:27: info: assertion proved (CVC4: 2 VC)
 patience.adb:32:32: info: initialization of "TopStackI" proved
-patience.adb:33:12: info: assertion proved (CVC4: 7 VC)
+patience.adb:35:15: info: assertion proved (CVC4: 7 VC)
 patience.adb:35:31: info: index check proved (CVC4: 2 VC)
 patience.adb:35:31: info: initialization of "TopStackI" proved
 patience.adb:36:28: info: index check proved (CVC4: 2 VC)
@@ -85,7 +85,7 @@ patience.adb:65:32: info: range check proved (CVC4: 1 VC)
 patience.adb:66:25: info: index check proved (CVC4: 2 VC)
 patience.adb:66:30: info: initialization of "Idx" proved
 patience.adb:66:33: info: initialization of "StackISize" proved
-patience.adb:70:07: info: assertion proved (CVC4: 4 VC)
+patience.adb:71:08: info: assertion proved (CVC4: 4 VC)
 patience.adb:80:13: medium: assertion might fail, cannot prove S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved (CVC4: 2 VC)
 patience.adb:83:13: medium: assertion might fail, cannot prove S.StackSizes(I) <= S.NumElts
@@ -138,12 +138,12 @@ patience.adb:130:31: info: index check proved (CVC4: 2 VC)
 patience.adb:132:32: info: index check proved (CVC4: 2 VC)
 patience.adb:132:39: info: index check proved (CVC4: 2 VC)
 patience.adb:132:56: info: index check proved (CVC4: 2 VC)
-patience.adb:146:10: info: loop invariant initialization proved (CVC4: 1 VC)
-patience.adb:146:10: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:146:33: info: initialization of "S.NumElts" proved
+patience.adb:146:33: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:146:33: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:146:47: info: overflow check proved (CVC4: 1 VC)
-patience.adb:147:10: info: loop invariant initialization proved (CVC4: 1 VC)
-patience.adb:147:10: info: loop invariant preservation proved (CVC4: 1 VC)
+patience.adb:147:33: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:147:33: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:147:37: info: initialization of "S.NumElts" proved
 patience.adb:147:37: info: initialization of "S.NumStacks" proved
 patience.adb:147:37: info: initialization of "S.PosHeight" proved
@@ -291,3 +291,4 @@ test_patience.adb:53:04: info: initialization of "S.Preds" proved
 test_patience.adb:53:04: info: initialization of "S.StackSizes" proved
 test_patience.adb:53:04: info: initialization of "S.Stacks" proved
 test_patience.adb:53:04: info: initialization of "S.Values" proved
+
