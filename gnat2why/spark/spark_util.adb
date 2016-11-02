@@ -836,8 +836,6 @@ package body SPARK_Util is
    function Has_Volatile (E : Checked_Entity_Id) return Boolean is
      (if Ekind (E) = E_Abstract_State then
         Is_External_State (E)
-      elsif Is_Part_Of_Concurrent_Object (E) then
-        True
       elsif Ekind (E) in Object_Kind then
         Is_Effectively_Volatile (E)
       else
