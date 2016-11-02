@@ -260,12 +260,7 @@ package body Configuration is
          --  First we add the variable to the environment. For that, we search
          --  for the "=" sign which separates the variable from the value ..
 
-         Equal := Switch'First + 2;
-         while Equal in Switch'Range
-           and then Switch (Equal) /= '='
-         loop
-            Equal := Equal + 1;
-         end loop;
+         Equal := Ada.Strings.Fixed.Index (Switch, "=");
 
          --  ... and then set the variable in the environment.
 
