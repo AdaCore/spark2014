@@ -113,14 +113,49 @@ Certification and dependability
 % relation between invariants and models
 % public model of RBT
 % internal model of tree
+
+% hierarchy done with proof in mind, separation of concerns
+%    binary_trees => tree structure
+%    search_trees => ordered values
+%    red_black_trees => balanceness
+% properties stored in (private) invariants and reflected in (public) models
+%    binary_trees => reachability
+%    search_trees => set of contained values
+%    red_black_trees => no model
+% models should be easy to use/complex to verify to factor complexity
+%  ex: provide a model of reachability
+% primitives needed by upper levels provided at lower level were they abide by the invariant
 \subsection{Proof Principles}
 % principle of inductive proofs on size of path
 % principles of dealing with the frame condition: unmodified trees in forest
+
+% reachability requires proof by induction on the size of the path
+%   This is done using loops and loop invariants
+% order requires case split
+%   This is done using if statements
 \subsection{Ghost Code}
 % different uses of ghost code
-\subsection{Specification}
+
+% For specification purpose:
+% - typically ghost functions used in contracts
+% - can be interesting to execute as test oracles
+% For verification purpose:
+% - typically ghost procedures containing proofs by induction (loops), by case analysis...
+% - no need to execute them, they do not bring anything
+% No way to distinguish between both right now.
 \subsection{Implementation}
+% no pointer in spark => indexes inside an array
+% avoid copies, use forest
+% it is bounded
+% values and colors are outside, in separate array (to avoid having them in the frame)
+% provide plug/extract to modify the forest while keepong the invariant
+% rotate_left and rotate_right preserve the order
+\subsection{Specification}
+% use parent/position and model
+% model can be derived from parent and position but have it in post to do inductive proofs only once
 \subsection{Auto-active Verification}
+% factored out in ghost procedures to keep efficiency
+% with or without contracts (inlining)
 
 \section{Development and Verification Data}
 % number of assertions, loc of ghost code, etc.
