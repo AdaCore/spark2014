@@ -347,16 +347,6 @@ package body Flow_Types is
                                                           Subprogram_Kind;
    end Is_Concurrent_Comp_Or_Disc;
 
-   ------------------------
-   -- Is_Concurrent_Comp --
-   ------------------------
-
-   function Is_Concurrent_Comp (F : Flow_Id) return Boolean is
-   begin
-      return Is_Concurrent_Comp_Or_Disc (F)
-        and then not Is_Discriminant (F);
-   end Is_Concurrent_Comp;
-
    ---------------------
    -- Is_Discriminant --
    ---------------------
@@ -372,6 +362,14 @@ package body Flow_Types is
             False,
          when Null_Value =>
             raise Program_Error);
+
+   ----------------------------
+   -- Is_Protected_Component --
+   ----------------------------
+
+   function Is_Protected_Component (F : Flow_Id) return Boolean is
+     (F.Kind in Direct_Mapping | Record_Field
+      and then Is_Protected_Component (Get_Direct_Mapping_Id (F)));
 
    ----------------------------
    -- Is_Record_Discriminant --
@@ -460,8 +458,10 @@ package body Flow_Types is
                      --  outside its enclosing concurrent object.
                      if Is_Protected_Type (Etype (E)) then
                         T := Etype (E);
-                     elsif Is_Concurrent_Comp (F) then
-                        T := Etype (Get_Enclosing_Concurrent_Object (F));
+                     elsif Is_Part_Of_Protected_Object (E)
+                       or else Is_Protected_Component (E)
+                     then
+                        T := Etype (Get_Enclosing_Concurrent_Object (E));
                      else
                         --  There is no enclosing protected object
                         return True;

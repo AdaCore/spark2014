@@ -291,13 +291,9 @@ package Flow_Types is
    --    object. It will return False for subprograms and entries that belong
    --    to concurrent objects.
 
-   function Is_Concurrent_Comp (F : Flow_Id) return Boolean
-   with Post => (if Is_Concurrent_Comp'Result
-                 then Is_Concurrent_Comp_Or_Disc (F));
+   function Is_Protected_Component (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
-   --  @return True iff F is a component of a concurrent object. It will return
-   --    False for subprograms, entries and discriminants that belong to
-   --    concurrent objects.
+   --  @return True iff F is a component of a protected object
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked

@@ -247,6 +247,11 @@ package SPARK_Util is
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
 
+   function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean;
+   --  @param E an entity
+   --  @return True iff the entity is a component or discriminant of a
+   --            concurrent type
+
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
      (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
    --  @param E any entity
@@ -273,9 +278,7 @@ package SPARK_Util is
    --  @param E loop parameter
    --  @return True iff E has been introduced by a quantified expression
 
-   function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Component | E_Discriminant | E_In_Parameter and then
-      Ekind (Scope (E)) in Protected_Kind);
+   function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a
    --            protected type

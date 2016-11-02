@@ -988,6 +988,19 @@ package body SPARK_Util is
         and then Present (Parent (Parent (N)))
         and then Is_Predicate_Function_Call (Parent (Parent (N))));
 
+   -------------------------------------
+   -- Is_Concurrent_Component_Or_Discr --
+   -------------------------------------
+
+   function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean is
+   begin
+      --  Protected discriminants appear either as E_In_Parameter (in spec of
+      --  protected types, e.g. in pragma Priority) or as E_Discriminant
+      --  (everywhere else).
+      return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
+        and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
+   end Is_Concurrent_Component_Or_Discr;
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
@@ -1135,6 +1148,19 @@ package body SPARK_Util is
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean is
      (Nkind (N) = N_Function_Call
         and then Is_Predicate_Function (Entity (Name (N))));
+
+   -------------------------------------
+   -- Is_Protected_Component_Or_Discr --
+   -------------------------------------
+
+   function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean is
+   begin
+      --  Protected discriminants appear either as E_In_Parameter (in spec of
+      --  protected types, e.g. in pragma Priority) or as E_Discriminant
+      --  (everywhere else).
+      return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
+        and then Ekind (Scope (E)) in E_Protected_Type;
+   end Is_Protected_Component_Or_Discr;
 
    ------------------------------
    -- Is_Quantified_Loop_Param --
