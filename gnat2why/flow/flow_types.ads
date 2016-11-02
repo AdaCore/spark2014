@@ -352,45 +352,24 @@ package Flow_Types is
          and then F.Facet = The_Bounds);
    --  Returns True if the given Flow_Id represents a bound.
 
-   function Is_Volatile
-     (F     : Flow_Id;
-      Scope : Flow_Scope := Null_Flow_Scope)
-      return Boolean;
-   --  Returns True if the given Flow_Id is volatile in any way.
-   --
-   --  When Scope is provided we check if F is volatile from Scope. This is
-   --  only ever used when dealing with protected objects and components of
-   --  concurrent types. These are only volatile when seen from the outside.
+   function Is_Volatile (F : Flow_Id) return Boolean;
+   --  Returns True if the given Flow_Id is volatile in any way
 
-   function Has_Async_Readers
-     (F     : Flow_Id;
-      Scope : Flow_Scope := Null_Flow_Scope)
-      return Boolean
-   with Post => (if Has_Async_Readers'Result then Is_Volatile (F, Scope));
-   --  Checks if F has async readers.
+   function Has_Async_Readers (F : Flow_Id) return Boolean
+   with Post => (if Has_Async_Readers'Result then Is_Volatile (F));
+   --  Checks if F has async readers
 
-   function Has_Async_Writers
-     (F     : Flow_Id;
-      Scope : Flow_Scope := Null_Flow_Scope)
-      return Boolean
-   with Post => (if Has_Async_Writers'Result then Is_Volatile (F, Scope));
-   --  Checks if F has async writers.
+   function Has_Async_Writers (F : Flow_Id) return Boolean
+   with Post => (if Has_Async_Writers'Result then Is_Volatile (F));
+   --  Checks if F has async writers
 
-   function Has_Effective_Reads
-     (F     : Flow_Id;
-      Scope : Flow_Scope := Null_Flow_Scope)
-      return Boolean
-   with Post => (if Has_Effective_Reads'Result
-                 then Has_Async_Writers (F, Scope));
-   --  Checks if reads of F are always effective.
+   function Has_Effective_Reads (F : Flow_Id) return Boolean
+   with Post => (if Has_Effective_Reads'Result then Has_Async_Writers (F));
+   --  Checks if reads of F are always effective
 
-   function Has_Effective_Writes
-     (F     : Flow_Id;
-      Scope : Flow_Scope := Null_Flow_Scope)
-      return Boolean
-   with Post => (if Has_Effective_Writes'Result
-                 then Has_Async_Readers (F, Scope));
-   --  Checks if writes to F are always effective.
+   function Has_Effective_Writes (F : Flow_Id) return Boolean
+   with Post => (if Has_Effective_Writes'Result then Has_Async_Readers (F));
+   --  Checks if writes to F are always effective
 
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state.

@@ -321,7 +321,6 @@ package Flow is
 
    procedure Print_Graph
      (Filename          : String;
-      Analyzed_Entity   : Entity_Id;
       G                 : Flow_Graphs.Graph;
       M                 : Attribute_Maps.Map;
       Start_Vertex      : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;

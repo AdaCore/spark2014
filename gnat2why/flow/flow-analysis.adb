@@ -4171,7 +4171,7 @@ package body Flow.Analysis is
       procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
       begin
          for F of FS loop
-            if Is_Volatile (Change_Variant (F, Normal_Use), FA.B_Scope) then
+            if Is_Volatile (Change_Variant (F, Normal_Use)) then
                --  We just found a volatile effect
                Volatile_Effect_Found := True;
 

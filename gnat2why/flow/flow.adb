@@ -298,7 +298,6 @@ package body Flow is
 
    procedure Print_Graph
      (Filename          : String;
-      Analyzed_Entity   : Entity_Id;
       G                 : Graph;
       M                 : Attribute_Maps.Map;
       Start_Vertex      : Vertex_Id := Null_Vertex;
@@ -658,28 +657,21 @@ package body Flow is
                   Rv.Shape := Shape_None;
                   Write_Str ("'initial");
 
-                  declare
-                     S : constant Flow_Scope :=
-                       (if F.Kind in Direct_Mapping | Record_Field
-                        then Get_Flow_Scope (Analyzed_Entity)
-                        else Null_Flow_Scope);
-                  begin
-                     if Is_Volatile (F, S) then
-                        Write_Str ("\nvolatile:");
-                        if Has_Async_Readers (F, S) then
-                           Write_Str (NBSP & "AR");
-                        end if;
-                        if Has_Async_Writers (F, S) then
-                           Write_Str (NBSP & "AW");
-                        end if;
-                        if Has_Effective_Reads (F, S) then
-                           Write_Str (NBSP & "ER");
-                        end if;
-                        if Has_Effective_Writes (F, S) then
-                           Write_Str (NBSP & "EW");
-                        end if;
+                  if Is_Volatile (F) then
+                     Write_Str ("\nvolatile:");
+                     if Has_Async_Readers (F) then
+                        Write_Str (NBSP & "AR");
                      end if;
-                  end;
+                     if Has_Async_Writers (F) then
+                        Write_Str (NBSP & "AW");
+                     end if;
+                     if Has_Effective_Reads (F) then
+                        Write_Str (NBSP & "ER");
+                     end if;
+                     if Has_Effective_Writes (F) then
+                        Write_Str (NBSP & "EW");
+                     end if;
+                  end if;
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
@@ -931,7 +923,6 @@ package body Flow is
          if Condition then
             Print_Graph (Filename          =>
                            To_String (FA.Base_Filename) & "_" & Suffix,
-                         Analyzed_Entity   => FA.Analyzed_Entity,
                          G                 => Graph,
                          M                 => FA.Atr,
                          Start_Vertex      => FA.Start_Vertex,
