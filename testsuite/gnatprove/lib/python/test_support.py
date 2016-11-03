@@ -208,25 +208,17 @@ def check_fail(strlist, no_failures_allowed):
     failures = frozenset(["low", "medium", "high"])
 
     has_failure = False
-    has_check = False
 
     for m in map(is_msg.match, strlist):
         if m is not None:
             kind = m.group(3)
             if kind in failures:
                 has_failure = True
-                has_check = True
                 if no_failures_allowed:
                     print "FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1),
                                                                 m.group(2))
-            elif kind == "info":
-                has_check = True
-
             elif m.group(3) is None and m.group(4) is None:
                 has_failure = True
-
-    # if not no_failures_allowed and not has_failure and has_check:
-    #     print "YOU SHOULD ENABLE no_fail IN THE TESTSCRIPT"
 
 
 def check_marks(strlist):
