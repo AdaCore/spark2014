@@ -538,7 +538,8 @@ package body Flow_Types is
               and then Ekind (F.Node) in E_Abstract_State |
                                          E_Constant       |
                                          E_Variable
-              and then Present (Encapsulating_State (F.Node));
+              and then Present (Encapsulating_State (F.Node))
+              and then Ekind (Encapsulating_State (F.Node)) = E_Abstract_State;
 
          when Magic_String =>
             return GG_Is_Constituent (F.Name);
