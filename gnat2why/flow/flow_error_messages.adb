@@ -830,9 +830,9 @@ package body Flow_Error_Messages is
                      Append (R, " constituent of ");
                      Append_Quote;
                      declare
-                        Encaps_State : constant Node_Id :=
+                        Encaps_State : constant Entity_Id :=
                           Encapsulating_State (Get_Direct_Mapping_Id (F));
-                        Encaps_Scope : constant Node_Id :=
+                        Encaps_Scope : constant Entity_Id :=
                           Scope (Encaps_State);
                      begin
                         --  If scopes of the abstract state and its constituent
