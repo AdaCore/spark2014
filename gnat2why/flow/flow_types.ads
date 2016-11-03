@@ -260,7 +260,8 @@ package Flow_Types is
 
    function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
-   --  @return True iff F belongs to a concurrent object
+   --  @return True iff F represents a discriminant, component, or Part_Of
+   --     concurrent object
 
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
@@ -270,12 +271,12 @@ package Flow_Types is
    function Get_Enclosing_Concurrent_Object
      (E : Entity_Id)
       return Entity_Id
-   with Pre  => (Is_Part_Of_Concurrent_Object (E) or else
-                 Ekind (Scope (E)) in E_Protected_Type | E_Task_Type),
+   with Pre  => Is_Part_Of_Concurrent_Object (E) or else
+                Is_Concurrent_Component_Or_Discr (E),
         Post => Ekind (Get_Enclosing_Concurrent_Object'Result) in
                   E_Protected_Type | E_Task_Type | E_Variable;
-   --  @param E is the entity of a constituent of a concurrent object, its
-   --     Part_Of, or a protected subprogram
+   --  @param E is the entity of a component, discriminant or Part of
+   --     concurrent object
    --  @return concurrent type or a single concurrent object, if possible
 
    function Get_Enclosing_Concurrent_Object
@@ -284,16 +285,6 @@ package Flow_Types is
    with Pre  => Belongs_To_Concurrent_Object (F),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);
    --  Same as above, but for a Flow_Id argument
-
-   function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
-   --  @param F is the Flow_Id which will be checked
-   --  @return True iff F is a component or discriminant of a concurrent
-   --    object. It will return False for subprograms and entries that belong
-   --    to concurrent objects.
-
-   function Is_Protected_Component (F : Flow_Id) return Boolean;
-   --  @param F is the Flow_Id which will be checked
-   --  @return True iff F is a component of a protected object
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked

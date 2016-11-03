@@ -543,15 +543,16 @@ package body Flow.Control_Flow_Graph.Utility is
 
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
-            --    * concurrent types ( since they are implicit formal
+            --    * concurrent types (since they are implicit formal
             --      parameters)
             --    * components of protected objects
             --    * parts of task objects that are initialized
-            A.Is_Import := Ekind (Entire_Var) in E_In_Out_Parameter |
-                                                 E_In_Parameter
-              or else Ekind (Etype (Get_Direct_Mapping_Id (F_Ent))) in
-                        Concurrent_Kind
-              or else (Is_Concurrent_Comp_Or_Disc (F_Ent)
+            A.Is_Import :=
+              Ekind (Entire_Var) in E_In_Out_Parameter |
+                                    E_In_Parameter     |
+                                    E_Protected_Type   |
+                                    E_Task_Type
+              or else (Belongs_To_Concurrent_Object (F_Ent)
                          and then (Belongs_To_Protected_Object (F_Ent)
                                      or else Is_Default_Initialized (F_Ent)))
               or else In_Generic_Actual (Entire_Var);

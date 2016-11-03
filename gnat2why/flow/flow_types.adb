@@ -281,12 +281,8 @@ package body Flow_Types is
             E : constant Entity_Id := Get_Direct_Mapping_Id (F);
          begin
             return Is_Part_Of_Concurrent_Object (E)
-              or else Ekind (Scope (E)) = E_Protected_Type
-              or else (Is_Discriminant (F)
-                       and then F.Kind = Direct_Mapping
-                       and then Ekind (Scope (E)) = E_Task_Type);
+              or else Is_Concurrent_Component_Or_Discr (E);
          end;
-
       else
          return False;
       end if;
@@ -336,17 +332,6 @@ package body Flow_Types is
       return Get_Enclosing_Concurrent_Object (Get_Direct_Mapping_Id (F));
    end Get_Enclosing_Concurrent_Object;
 
-   --------------------------------
-   -- Is_Concurrent_Comp_Or_Disc --
-   --------------------------------
-
-   function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean is
-   begin
-      return Belongs_To_Concurrent_Object (F)
-        and then Ekind (Get_Direct_Mapping_Id (F)) not in Entry_Kind     |
-                                                          Subprogram_Kind;
-   end Is_Concurrent_Comp_Or_Disc;
-
    ---------------------
    -- Is_Discriminant --
    ---------------------
@@ -362,14 +347,6 @@ package body Flow_Types is
             False,
          when Null_Value =>
             raise Program_Error);
-
-   ----------------------------
-   -- Is_Protected_Component --
-   ----------------------------
-
-   function Is_Protected_Component (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-      and then Is_Protected_Component (Get_Direct_Mapping_Id (F)));
 
    ----------------------------
    -- Is_Record_Discriminant --
@@ -391,8 +368,19 @@ package body Flow_Types is
 
    function Is_Concurrent_Discriminant (F : Flow_Id) return Boolean is
    begin
-      return Is_Discriminant (F)
-        and then Is_Concurrent_Comp_Or_Disc (F);
+      if F.Kind in Direct_Mapping | Record_Field then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            --  Protected discriminants appear either as E_In_Parameter
+            --  (in spec of protected types, e.g. in pragma Priority) or
+            --  as E_Discriminant (everywhere else).
+            return Ekind (E) in E_Discriminant | E_In_Parameter
+              and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
+         end;
+      else
+         return False;
+      end if;
    end Is_Concurrent_Discriminant;
 
    ----------------
@@ -658,7 +646,7 @@ package body Flow_Types is
    begin
       --  When we are dealing with the constituent of a concurrent object then
       --  we consider the concurrent object to be the parent record.
-      if Is_Concurrent_Comp_Or_Disc (F) then
+      if Belongs_To_Concurrent_Object (F) then
          return Flow_Id'(Kind    => Direct_Mapping,
                          Variant => F.Variant,
                          Node    => Get_Enclosing_Concurrent_Object (F),
@@ -693,17 +681,13 @@ package body Flow_Types is
             return F;
 
          when Direct_Mapping | Record_Field =>
-            if Is_Concurrent_Comp_Or_Disc (F) then
-               return Flow_Id'(Kind    => Direct_Mapping,
-                               Variant => F.Variant,
-                               Node    => Get_Enclosing_Concurrent_Object (F),
-                               Facet   => Normal_Part);
-            else
-               return Flow_Id'(Kind    => Direct_Mapping,
-                               Variant => F.Variant,
-                               Node    => F.Node,
-                               Facet   => Normal_Part);
-            end if;
+            return
+              Flow_Id'(Kind    => Direct_Mapping,
+                       Variant => F.Variant,
+                       Node    => (if Belongs_To_Concurrent_Object (F)
+                                   then Get_Enclosing_Concurrent_Object (F)
+                                   else F.Node),
+                       Facet   => Normal_Part);
       end case;
    end Entire_Variable;
 

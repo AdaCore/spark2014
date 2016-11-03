@@ -1076,7 +1076,7 @@ package body Flow.Control_Flow_Graph is
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
-                    or else Is_Concurrent_Comp_Or_Disc (F)
+                    or else Belongs_To_Concurrent_Object (F)
                   then
                      declare
                         P : constant Flow_Id :=
