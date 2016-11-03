@@ -1159,7 +1159,7 @@ package body Flow.Analysis is
                if F.Kind /= Direct_Mapping
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
                             not in Concurrent_Kind
-                          and then not Belongs_To_Concurrent_Object (F)
+                          and then not Belongs_To_Concurrent_Type (F)
                           and then not
                             Has_Pragma_Un (Get_Direct_Mapping_Id (F))
                           and then not
@@ -1233,7 +1233,7 @@ package body Flow.Analysis is
                if F.Kind /= Direct_Mapping
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F))) not in
                             Concurrent_Kind
-                          and then not Belongs_To_Concurrent_Object (F))
+                          and then not Belongs_To_Concurrent_Type (F))
                then
                   Error_Msg_Flow
                     (FA       => FA,

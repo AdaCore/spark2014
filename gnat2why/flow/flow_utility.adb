@@ -3463,7 +3463,7 @@ package body Flow_Utility is
             --  ??? use Is_Constituent here
             return Ekind (E) in E_Abstract_State | E_Constant | E_Variable
               and then (Present (Encapsulating_State (E))
-                          or else Belongs_To_Concurrent_Object (F))
+                          or else Belongs_To_Concurrent_Type (F))
               and then not Is_Visible (E, Scope);
          end;
 
@@ -4953,12 +4953,9 @@ package body Flow_Utility is
          declare
             State : constant Entity_Id := Encapsulating_State (Enclosing_E);
          begin
-            if Present (State) then
-               Enclosing_E := State;
-            else
-               pragma Assert (Belongs_To_Concurrent_Object (F));
-               Enclosing_E := Get_Enclosing_Concurrent_Object (F);
-            end if;
+            Enclosing_E := (if Present (State)
+                            then State
+                            else Enclosing_Concurrent_Type (F));
          end;
          Enclosing_F := Direct_Mapping_Id (Enclosing_E);
       end loop;

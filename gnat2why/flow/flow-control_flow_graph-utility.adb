@@ -552,8 +552,8 @@ package body Flow.Control_Flow_Graph.Utility is
                                     E_In_Parameter     |
                                     E_Protected_Type   |
                                     E_Task_Type
-              or else (Belongs_To_Concurrent_Object (F_Ent)
-                         and then (Belongs_To_Protected_Object (F_Ent)
+              or else (Belongs_To_Concurrent_Type (F_Ent)
+                         and then (Belongs_To_Protected_Type (F_Ent)
                                      or else Is_Default_Initialized (F_Ent)))
               or else In_Generic_Actual (Entire_Var);
 

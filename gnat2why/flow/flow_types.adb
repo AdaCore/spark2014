@@ -270,11 +270,11 @@ package body Flow_Types is
       return Tmp;
    end Add_Component;
 
-   ----------------------------------
-   -- Belongs_To_Concurrent_Object --
-   ----------------------------------
+   --------------------------------
+   -- Belongs_To_Concurrent_Type --
+   --------------------------------
 
-   function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean is
+   function Belongs_To_Concurrent_Type (F : Flow_Id) return Boolean is
    begin
       if F.Kind in Direct_Mapping | Record_Field then
          declare
@@ -286,51 +286,30 @@ package body Flow_Types is
       else
          return False;
       end if;
-   end Belongs_To_Concurrent_Object;
+   end Belongs_To_Concurrent_Type;
 
    ---------------------------------
    -- Belongs_To_Protected_Object --
    ---------------------------------
 
-   function Belongs_To_Protected_Object (F : Flow_Id) return Boolean is
+   function Belongs_To_Protected_Type (F : Flow_Id) return Boolean is
      (F.Kind in Direct_Mapping | Record_Field
         and then
       Is_Protected_Component_Or_Discr_Or_Part_Of (Get_Direct_Mapping_Id (F)));
 
-   -------------------------------------
-   -- Get_Enclosing_Concurrent_Object --
-   -------------------------------------
+   -------------------------------
+   -- Enclosing_Concurrent_Type --
+   -------------------------------
 
-   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id
-   is
-      function Anonymous_Object_Or_Type (Typ : Entity_Id) return Entity_Id
-      with Pre => Ekind (Typ) in E_Protected_Type | E_Task_Type;
-      --  Returns the Anonymous_Object if it exists and type otherwise
+   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id is
+     (if Is_Part_Of_Concurrent_Object (E)
+      then Etype (Encapsulating_State (E))
+      else Scope (E));
 
-      ------------------------------
-      -- Anonymous_Object_Or_Type --
-      ------------------------------
-
-      function Anonymous_Object_Or_Type (Typ : Entity_Id) return Entity_Id is
-         Obj : constant Entity_Id := Anonymous_Object (Typ);
-      begin
-         return (if Present (Obj) then Obj else Typ);
-      end Anonymous_Object_Or_Type;
-
-   --  Start of processing for Get_Enclosing_Concurrent_Object
-
+   function Enclosing_Concurrent_Type (F : Flow_Id) return Entity_Id is
    begin
-      if Is_Part_Of_Concurrent_Object (E) then
-         return Encapsulating_State (E);
-      else
-         return Anonymous_Object_Or_Type (Scope (E));
-      end if;
-   end Get_Enclosing_Concurrent_Object;
-
-   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
-   begin
-      return Get_Enclosing_Concurrent_Object (Get_Direct_Mapping_Id (F));
-   end Get_Enclosing_Concurrent_Object;
+      return Enclosing_Concurrent_Type (Get_Direct_Mapping_Id (F));
+   end Enclosing_Concurrent_Type;
 
    ---------------------
    -- Is_Discriminant --
@@ -646,10 +625,10 @@ package body Flow_Types is
    begin
       --  When we are dealing with the constituent of a concurrent object then
       --  we consider the concurrent object to be the parent record.
-      if Belongs_To_Concurrent_Object (F) then
+      if Belongs_To_Concurrent_Type (F) then
          return Flow_Id'(Kind    => Direct_Mapping,
                          Variant => F.Variant,
-                         Node    => Get_Enclosing_Concurrent_Object (F),
+                         Node    => Enclosing_Concurrent_Type (F),
                          Facet   => F.Facet);
       end if;
 
@@ -684,8 +663,8 @@ package body Flow_Types is
             return
               Flow_Id'(Kind    => Direct_Mapping,
                        Variant => F.Variant,
-                       Node    => (if Belongs_To_Concurrent_Object (F)
-                                   then Get_Enclosing_Concurrent_Object (F)
+                       Node    => (if Belongs_To_Concurrent_Type (F)
+                                   then Enclosing_Concurrent_Type (F)
                                    else F.Node),
                        Facet   => Normal_Part);
       end case;

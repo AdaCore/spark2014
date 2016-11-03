@@ -258,32 +258,33 @@ package Flow_Types is
       return Flow_Id;
    --  Create a Flow_Id for the given magic string.
 
-   function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean;
+   function Belongs_To_Concurrent_Type (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F represents a discriminant, component, or Part_Of
-   --     concurrent object
+   --     concurrent type
 
-   function Belongs_To_Protected_Object (F : Flow_Id) return Boolean;
+   function Belongs_To_Protected_Type (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F represents a discriminant, component, or Part_Of
-   --     protected object
+   --     protected type
 
-   function Get_Enclosing_Concurrent_Object
+   function Enclosing_Concurrent_Type
      (E : Entity_Id)
       return Entity_Id
    with Pre  => Is_Part_Of_Concurrent_Object (E) or else
                 Is_Concurrent_Component_Or_Discr (E),
-        Post => Ekind (Get_Enclosing_Concurrent_Object'Result) in
-                  E_Protected_Type | E_Task_Type | E_Variable;
+        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
+                                                            E_Task_Type;
    --  @param E is the entity of a component, discriminant or Part of
-   --     concurrent object
-   --  @return concurrent type or a single concurrent object, if possible
+   --     concurrent type
+   --  @return concurrent type
 
-   function Get_Enclosing_Concurrent_Object
+   function Enclosing_Concurrent_Type
      (F : Flow_Id)
       return Entity_Id
-   with Pre  => Belongs_To_Concurrent_Object (F),
-        Post => Present (Get_Enclosing_Concurrent_Object'Result);
+   with Pre  => Belongs_To_Concurrent_Type (F),
+        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
+                                                            E_Task_Type;
    --  Same as above, but for a Flow_Id argument
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
@@ -390,7 +391,7 @@ package Flow_Types is
    with Pre  => F.Kind in Direct_Mapping | Record_Field
                   and then (F.Kind = Record_Field
                               or else F.Facet /= Normal_Part
-                              or else Belongs_To_Concurrent_Object (F)),
+                              or else Belongs_To_Concurrent_Type (F)),
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
