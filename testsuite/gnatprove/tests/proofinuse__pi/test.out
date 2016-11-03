@@ -280,8 +280,8 @@ pi_compute.adb:76:35: info: range check proved (Z3: 1 VC)
 pi_compute.adb:76:37: info: initialization of "A8" proved
 pi_compute.adb:79:14: info: initialization of "Num" proved
 pi_compute.adb:79:18: info: division check proved (Z3: 1 VC)
-pi_compute.adb:79:18: medium: overflow check might fail
-pi_compute.adb:79:18: medium: range check might fail
+pi_compute.adb:79:18: info: overflow check proved (Z3: 1 VC)
+pi_compute.adb:79:18: info: range check proved (Z3: 1 VC)
 pi_compute.adb:79:20: info: initialization of "Den" proved
 pi_compute.adb:80:22: info: initialization of "Res" proved
 pi_compute.adb:80:22: medium: assertion might fail, cannot prove Res = 3.14125251

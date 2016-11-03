@@ -12,4 +12,4 @@ print "----------"
 print "Prover run"
 print "----------"
 clean()
-prove_all(prover=["z3"])
+prove_all(prover=["z3"], steps=5000)
