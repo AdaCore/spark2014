@@ -556,7 +556,7 @@ package body Flow_Types is
    function Is_Function_Entity (F : Flow_Id) return Boolean is
      (F.Kind in Direct_Mapping | Record_Field
       and then Nkind (F.Node) in N_Entity
-      and then Ekind (F.Node) in E_Function | E_Operator);
+      and then Ekind (F.Node) in E_Function);
 
    ----------------------
    -- Is_Loop_Variable --
