@@ -15,27 +15,27 @@ search_list_max.adb:11:19: info: precondition proved
 search_list_max.adb:14:11: info: initialization of "Cu" proved
 search_list_max.adb:16:10: info: precondition proved
 search_list_max.adb:16:26: info: initialization of "Cu" proved
-search_list_max.adb:17:07: info: loop invariant initialization proved
-search_list_max.adb:17:07: info: loop invariant preservation proved
+search_list_max.adb:17:30: info: loop invariant initialization proved
+search_list_max.adb:17:30: info: loop invariant preservation proved
 search_list_max.adb:17:30: info: precondition proved
 search_list_max.adb:17:45: info: precondition proved
 search_list_max.adb:17:67: info: initialization of "Cu" proved
 search_list_max.adb:17:74: info: precondition proved
 search_list_max.adb:17:94: info: initialization of "Max" proved
-search_list_max.adb:18:07: info: loop invariant initialization proved
-search_list_max.adb:18:07: info: loop invariant preservation proved
 search_list_max.adb:18:30: info: initialization of "Max" proved
+search_list_max.adb:18:30: info: loop invariant initialization proved
+search_list_max.adb:18:30: info: loop invariant preservation proved
 search_list_max.adb:18:47: info: precondition proved
 search_list_max.adb:18:63: info: precondition proved
 search_list_max.adb:18:85: info: initialization of "Cu" proved
 search_list_max.adb:18:92: info: precondition proved
-search_list_max.adb:19:07: info: loop invariant initialization proved
-search_list_max.adb:19:07: info: loop invariant preservation proved
+search_list_max.adb:19:30: info: loop invariant initialization proved
+search_list_max.adb:19:30: info: loop invariant preservation proved
 search_list_max.adb:19:30: info: precondition proved
 search_list_max.adb:19:46: info: initialization of "Pos" proved
-search_list_max.adb:20:07: info: loop invariant initialization proved
-search_list_max.adb:20:07: info: loop invariant preservation proved
 search_list_max.adb:20:30: info: initialization of "Max" proved
+search_list_max.adb:20:30: info: loop invariant initialization proved
+search_list_max.adb:20:30: info: loop invariant preservation proved
 search_list_max.adb:20:46: info: precondition proved
 search_list_max.adb:20:58: info: initialization of "Pos" proved
 search_list_max.adb:22:10: info: precondition proved

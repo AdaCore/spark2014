@@ -1,10 +1,10 @@
 update_arr_zero.adb:5:11: info: postcondition proved
-update_arr_zero.adb:12:07: info: loop invariant initialization proved
-update_arr_zero.adb:12:07: info: loop invariant preservation proved
+update_arr_zero.adb:12:30: info: loop invariant initialization proved
+update_arr_zero.adb:12:30: info: loop invariant preservation proved
 update_arr_zero.adb:12:61: info: index check proved
 update_arr_zero.adb:12:83: info: index check proved
 update_arr_zero.adb:12:124: info: index check proved
-update_arr_zero.adb:13:07: info: loop invariant initialization proved
-update_arr_zero.adb:13:07: info: loop invariant preservation proved
+update_arr_zero.adb:13:30: info: loop invariant initialization proved
+update_arr_zero.adb:13:30: info: loop invariant preservation proved
 update_arr_zero.adb:13:64: info: index check proved
 update_arr_zero.adb:13:82: info: index check proved

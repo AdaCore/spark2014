@@ -1,2 +1,2 @@
-selected_units.adb:10:07: info: assertion proved
+selected_units.adb:10:22: info: assertion proved
 selected_units.adb:10:22: info: initialization of "X" proved

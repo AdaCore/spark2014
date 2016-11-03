@@ -15,8 +15,8 @@ search_vec_zero.adb:9:32: info: precondition proved
 search_vec_zero.adb:10:10: info: precondition proved
 search_vec_zero.adb:10:22: info: range check proved
 search_vec_zero.adb:12:17: info: range check proved
-search_vec_zero.adb:15:07: info: loop invariant initialization proved
-search_vec_zero.adb:15:07: info: loop invariant preservation proved
+search_vec_zero.adb:15:30: info: loop invariant initialization proved
+search_vec_zero.adb:15:30: info: loop invariant preservation proved
 search_vec_zero.adb:15:43: info: precondition proved
 search_vec_zero.adb:15:67: info: precondition proved
 search_vec_zero.adb:15:79: info: range check proved

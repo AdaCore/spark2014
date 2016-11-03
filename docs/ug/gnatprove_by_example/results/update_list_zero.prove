@@ -7,28 +7,28 @@ update_list_zero.adb:7:81: info: precondition proved
 update_list_zero.adb:9:19: info: precondition proved
 update_list_zero.adb:11:10: info: precondition proved
 update_list_zero.adb:11:26: info: initialization of "Cu" proved
-update_list_zero.adb:12:07: info: loop invariant initialization proved
-update_list_zero.adb:12:07: info: loop invariant preservation proved
+update_list_zero.adb:12:30: info: loop invariant initialization proved
+update_list_zero.adb:12:30: info: loop invariant preservation proved
 update_list_zero.adb:12:30: info: precondition proved
 update_list_zero.adb:12:45: info: precondition proved
 update_list_zero.adb:12:67: info: initialization of "Cu" proved
 update_list_zero.adb:13:32: info: precondition proved
-update_list_zero.adb:14:07: info: loop invariant initialization proved
-update_list_zero.adb:14:07: info: loop invariant preservation proved
+update_list_zero.adb:14:30: info: loop invariant initialization proved
+update_list_zero.adb:14:30: info: loop invariant preservation proved
 update_list_zero.adb:14:30: info: precondition proved
 update_list_zero.adb:14:45: info: precondition proved
 update_list_zero.adb:14:67: info: initialization of "Cu" proved
 update_list_zero.adb:15:32: info: precondition proved
 update_list_zero.adb:15:55: info: precondition proved
 update_list_zero.adb:15:108: info: precondition proved
-update_list_zero.adb:16:07: info: loop invariant initialization proved
-update_list_zero.adb:16:07: info: loop invariant preservation proved
+update_list_zero.adb:16:30: info: loop invariant initialization proved
+update_list_zero.adb:16:30: info: loop invariant preservation proved
 update_list_zero.adb:16:30: info: precondition proved
 update_list_zero.adb:16:44: info: precondition proved
 update_list_zero.adb:16:80: info: precondition proved
 update_list_zero.adb:16:100: info: initialization of "Cu" proved
-update_list_zero.adb:17:07: info: loop invariant initialization proved
-update_list_zero.adb:17:07: info: loop invariant preservation proved
+update_list_zero.adb:17:30: info: loop invariant initialization proved
+update_list_zero.adb:17:30: info: loop invariant preservation proved
 update_list_zero.adb:17:30: info: precondition proved
 update_list_zero.adb:17:57: info: initialization of "Cu" proved
 update_list_zero.adb:18:10: info: precondition proved

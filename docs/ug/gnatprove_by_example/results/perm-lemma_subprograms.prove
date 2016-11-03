@@ -1,8 +1,8 @@
 perm-lemma_subprograms.adb:5:14: info: postcondition proved
 perm-lemma_subprograms.adb:13:14: info: index check proved
-perm-lemma_subprograms.adb:14:10: info: assertion proved
+perm-lemma_subprograms.adb:14:25: info: assertion proved
 perm-lemma_subprograms.adb:14:29: info: index check proved
-perm-lemma_subprograms.adb:16:10: info: assertion proved
+perm-lemma_subprograms.adb:16:25: info: assertion proved
 perm-lemma_subprograms.adb:16:29: info: index check proved
 perm-lemma_subprograms.adb:19:07: info: precondition proved
 perm-lemma_subprograms.adb:19:15: info: precondition proved

@@ -9,12 +9,12 @@ update_vec_zero.adb:9:10: info: precondition proved
 update_vec_zero.adb:9:22: info: range check proved
 update_vec_zero.adb:10:10: info: precondition proved
 update_vec_zero.adb:10:30: info: range check proved
-update_vec_zero.adb:12:07: info: loop invariant initialization proved
-update_vec_zero.adb:12:07: info: loop invariant preservation proved
+update_vec_zero.adb:12:30: info: loop invariant initialization proved
+update_vec_zero.adb:12:30: info: loop invariant preservation proved
 update_vec_zero.adb:12:30: info: precondition proved
 update_vec_zero.adb:12:47: info: precondition proved
-update_vec_zero.adb:13:07: info: loop invariant initialization proved
-update_vec_zero.adb:13:07: info: loop invariant preservation proved
+update_vec_zero.adb:13:30: info: loop invariant initialization proved
+update_vec_zero.adb:13:30: info: loop invariant preservation proved
 update_vec_zero.adb:13:43: info: precondition proved
 update_vec_zero.adb:13:67: info: precondition proved
 update_vec_zero.adb:13:79: info: range check proved

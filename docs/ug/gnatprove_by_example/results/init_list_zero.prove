@@ -3,8 +3,8 @@ init_list_zero.adb:5:12: info: precondition proved
 init_list_zero.adb:7:19: info: precondition proved
 init_list_zero.adb:9:10: info: precondition proved
 init_list_zero.adb:9:26: info: initialization of "Cu" proved
-init_list_zero.adb:10:07: info: loop invariant initialization proved
-init_list_zero.adb:10:07: info: loop invariant preservation proved
+init_list_zero.adb:10:30: info: loop invariant initialization proved
+init_list_zero.adb:10:30: info: loop invariant preservation proved
 init_list_zero.adb:10:30: info: precondition proved
 init_list_zero.adb:10:45: info: precondition proved
 init_list_zero.adb:10:67: info: initialization of "Cu" proved

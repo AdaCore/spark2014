@@ -1,6 +1,6 @@
 validate_arr_zero.adb:3:41: info: initialization of "Success" proved
 validate_arr_zero.adb:5:11: info: initialization of "Success" proved
 validate_arr_zero.adb:5:11: info: postcondition proved
-validate_arr_zero.adb:13:07: info: loop invariant initialization proved
-validate_arr_zero.adb:13:07: info: loop invariant preservation proved
+validate_arr_zero.adb:13:30: info: loop invariant initialization proved
+validate_arr_zero.adb:13:30: info: loop invariant preservation proved
 validate_arr_zero.adb:13:61: info: index check proved

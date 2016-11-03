@@ -19,12 +19,12 @@ sort.adb:37:37: info: index check proved
 sort.adb:38:13: info: precondition proved
 sort.adb:38:30: info: range check proved
 sort.adb:38:39: info: index check proved
-sort.adb:39:13: info: loop invariant initialization proved
-sort.adb:39:13: info: loop invariant preservation proved
+sort.adb:40:16: info: loop invariant initialization proved
+sort.adb:40:16: info: loop invariant preservation proved
 sort.adb:46:29: info: index check proved
 sort.adb:47:15: info: index check proved
 sort.adb:47:29: info: index check proved
-sort.adb:50:07: info: assertion proved
+sort.adb:50:22: info: assertion proved
 sort.adb:50:22: info: precondition proved
 sort.adb:50:36: info: range check proved
 sort.adb:50:45: info: index check proved
@@ -33,7 +33,7 @@ sort.adb:51:17: info: length check proved
 sort.adb:53:15: info: index check proved
 sort.adb:53:21: info: initialization of "Temp" proved
 sort.adb:53:21: info: range check proved
-sort.adb:56:07: info: assertion proved
+sort.adb:56:22: info: assertion proved
 sort.adb:56:22: info: precondition proved
 sort.adb:56:30: info: initialization of "Interm" proved
 sort.adb:56:38: info: range check proved
@@ -47,9 +47,9 @@ sort.adb:71:20: info: range check proved
 sort.adb:73:38: info: index check proved
 sort.adb:73:38: info: initialization of "Min" proved
 sort.adb:74:20: info: range check proved
-sort.adb:76:10: info: loop invariant initialization proved
-sort.adb:76:10: info: loop invariant preservation proved
 sort.adb:77:13: info: initialization of "Min" proved
+sort.adb:77:13: info: loop invariant initialization proved
+sort.adb:77:13: info: loop invariant preservation proved
 sort.adb:79:28: info: index check proved
 sort.adb:79:44: info: index check proved
 sort.adb:81:14: info: initialization of "Min" proved
@@ -60,13 +60,13 @@ sort.adb:94:13: info: initialization of "Smallest" proved
 sort.adb:95:13: info: precondition proved
 sort.adb:96:29: info: range check proved
 sort.adb:97:29: info: initialization of "Smallest" proved
-sort.adb:100:10: info: loop invariant initialization proved
-sort.adb:100:10: info: loop invariant preservation proved
+sort.adb:101:13: info: loop invariant initialization proved
+sort.adb:101:13: info: loop invariant preservation proved
 sort.adb:102:31: info: overflow check proved
 sort.adb:103:28: info: index check proved
 sort.adb:103:42: info: index check proved
-sort.adb:104:10: info: loop invariant initialization proved
-sort.adb:104:10: info: loop invariant preservation proved
+sort.adb:104:33: info: loop invariant initialization proved
+sort.adb:104:33: info: loop invariant preservation proved
 sort.ads:9:16: info: postcondition proved
 sort.ads:11:51: info: overflow check proved
 sort.ads:12:22: info: index check proved

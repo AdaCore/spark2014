@@ -9,8 +9,8 @@ validate_vec_zero.adb:8:13: info: precondition proved
 validate_vec_zero.adb:8:32: info: precondition proved
 validate_vec_zero.adb:9:10: info: precondition proved
 validate_vec_zero.adb:9:22: info: range check proved
-validate_vec_zero.adb:13:07: info: loop invariant initialization proved
-validate_vec_zero.adb:13:07: info: loop invariant preservation proved
+validate_vec_zero.adb:13:30: info: loop invariant initialization proved
+validate_vec_zero.adb:13:30: info: loop invariant preservation proved
 validate_vec_zero.adb:13:43: info: precondition proved
 validate_vec_zero.adb:13:67: info: precondition proved
 validate_vec_zero.adb:13:79: info: range check proved

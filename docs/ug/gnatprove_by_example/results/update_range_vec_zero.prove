@@ -3,11 +3,11 @@ update_range_vec_zero.adb:6:11: info: postcondition proved
 update_range_vec_zero.adb:6:42: info: precondition proved
 update_range_vec_zero.adb:6:54: info: range check proved
 update_range_vec_zero.adb:10:07: info: precondition proved
-update_range_vec_zero.adb:11:07: info: loop invariant initialization proved
-update_range_vec_zero.adb:11:07: info: loop invariant preservation proved
+update_range_vec_zero.adb:11:30: info: loop invariant initialization proved
+update_range_vec_zero.adb:11:30: info: loop invariant preservation proved
 update_range_vec_zero.adb:11:30: info: precondition proved
 update_range_vec_zero.adb:11:47: info: precondition proved
-update_range_vec_zero.adb:12:07: info: loop invariant initialization proved
-update_range_vec_zero.adb:12:07: info: loop invariant preservation proved
+update_range_vec_zero.adb:12:30: info: loop invariant initialization proved
+update_range_vec_zero.adb:12:30: info: loop invariant preservation proved
 update_range_vec_zero.adb:12:57: info: precondition proved
 update_range_vec_zero.adb:12:69: info: range check proved

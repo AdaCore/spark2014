@@ -1,8 +1,8 @@
 my_find.adb:4:19: info: precondition proved
 my_find.adb:7:10: info: precondition proved
 my_find.adb:7:26: info: initialization of "Cu" proved
-my_find.adb:8:07: info: loop invariant initialization proved
-my_find.adb:8:07: info: loop invariant preservation proved
+my_find.adb:8:30: info: loop invariant initialization proved
+my_find.adb:8:30: info: loop invariant preservation proved
 my_find.adb:8:34: info: precondition proved
 my_find.adb:8:44: info: precondition proved
 my_find.adb:8:66: info: initialization of "Cu" proved

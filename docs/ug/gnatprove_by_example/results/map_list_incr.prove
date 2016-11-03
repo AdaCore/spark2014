@@ -8,35 +8,35 @@ map_list_incr.adb:8:52: info: overflow check proved
 map_list_incr.adb:10:19: info: precondition proved
 map_list_incr.adb:12:10: info: precondition proved
 map_list_incr.adb:12:26: info: initialization of "Cu" proved
-map_list_incr.adb:13:07: info: loop invariant initialization proved
-map_list_incr.adb:13:07: info: loop invariant preservation proved
+map_list_incr.adb:13:30: info: loop invariant initialization proved
+map_list_incr.adb:13:30: info: loop invariant preservation proved
 map_list_incr.adb:13:30: info: precondition proved
 map_list_incr.adb:13:45: info: precondition proved
 map_list_incr.adb:13:67: info: initialization of "Cu" proved
 map_list_incr.adb:13:74: info: precondition proved
-map_list_incr.adb:14:07: info: loop invariant initialization proved
-map_list_incr.adb:14:07: info: loop invariant preservation proved
+map_list_incr.adb:14:30: info: loop invariant initialization proved
+map_list_incr.adb:14:30: info: loop invariant preservation proved
 map_list_incr.adb:14:30: info: precondition proved
 map_list_incr.adb:14:45: info: precondition proved
 map_list_incr.adb:14:67: info: initialization of "Cu" proved
 map_list_incr.adb:14:74: info: precondition proved
 map_list_incr.adb:14:93: info: precondition proved
 map_list_incr.adb:14:121: info: overflow check proved
-map_list_incr.adb:15:07: info: loop invariant initialization proved
-map_list_incr.adb:15:07: info: loop invariant preservation proved
+map_list_incr.adb:15:30: info: loop invariant initialization proved
+map_list_incr.adb:15:30: info: loop invariant preservation proved
 map_list_incr.adb:15:30: info: precondition proved
 map_list_incr.adb:15:45: info: precondition proved
 map_list_incr.adb:15:65: info: initialization of "Cu" proved
 map_list_incr.adb:15:72: info: precondition proved
 map_list_incr.adb:15:91: info: precondition proved
-map_list_incr.adb:16:07: info: loop invariant initialization proved
-map_list_incr.adb:16:07: info: loop invariant preservation proved
+map_list_incr.adb:16:30: info: loop invariant initialization proved
+map_list_incr.adb:16:30: info: loop invariant preservation proved
 map_list_incr.adb:16:30: info: precondition proved
 map_list_incr.adb:16:44: info: precondition proved
 map_list_incr.adb:16:80: info: precondition proved
 map_list_incr.adb:16:100: info: initialization of "Cu" proved
-map_list_incr.adb:17:07: info: loop invariant initialization proved
-map_list_incr.adb:17:07: info: loop invariant preservation proved
+map_list_incr.adb:17:30: info: loop invariant initialization proved
+map_list_incr.adb:17:30: info: loop invariant preservation proved
 map_list_incr.adb:17:30: info: precondition proved
 map_list_incr.adb:17:57: info: initialization of "Cu" proved
 map_list_incr.adb:18:07: info: precondition proved
