@@ -1278,22 +1278,26 @@ package body Flow is
                      end if;
                   end if;
 
-                  --  We register more nonreturning subprograms provided that
-                  --  they are not in an instance of a generic.
                   if Generating_Globals
                     and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
-                    and then not Is_Predefined (E)
                   then
+                     --  We register subprograms with the Terminating
+                     --  annotation.
+                     if Has_Terminate_Annotation (E) then
+                        GG_Register_Terminating (To_Entity_Name (E));
+
                      --  We register subprograms with body not in SPARK as
-                     --  nonreturning as long as they are not imported or
-                     --  intrinsic and do not have the Terminating annotation.
-                     if not (Is_Imported (E)
-                             or else (Ekind (E) in E_Function | E_Procedure
-                                        and then Is_Intrinsic_Subprogram (E)))
-                       and then not Entity_Body_In_SPARK (E)
-                       and then not Has_Terminate_Annotation (E)
-                     then
-                        GG_Register_Nonreturning (To_Entity_Name (E));
+                     --  nonreturning except when they are predefined, imported
+                     --  or intrinsic.
+                     else
+                        if not Entity_Body_In_SPARK (E)
+                          and then not Is_Predefined (E)
+                          and then not Is_Imported (E)
+                          and then not (Ekind (E) in E_Function | E_Procedure
+                                        and then Is_Intrinsic_Subprogram (E))
+                        then
+                           GG_Register_Nonreturning (To_Entity_Name (E));
+                        end if;
                      end if;
                   end if;
 
@@ -1313,9 +1317,9 @@ package body Flow is
                               --  Collect function calls in expression Expr and
                               --  put them into Contract_Calls.
 
-                              ------------------
+                              -------------------
                               -- Collect_Calls --
-                              ------------------
+                              -------------------
 
                               procedure Collect_Calls (Expr : Node_Id) is
                               begin

@@ -71,6 +71,9 @@ package body Flow_Generated_Globals.Phase_1 is
    --  * subprograms that contain a possibly nonterminating loop
    --  * subprograms with body not in SPARK.
 
+   Terminating_Subprograms : Name_Lists.List;
+   --  We save here subprograms with Terminating annotation
+
    type Accessed_Tasking_Objects is record
       Caller  : Entity_Name;
       Entries : Entry_Call_Sets.Set;
@@ -230,6 +233,13 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Register_Nonreturning (EN : Entity_Name) renames
      Nonreturning_Subprograms.Append;
+
+   -----------------------------
+   -- GG_Register_Terminating --
+   -----------------------------
+
+   procedure GG_Register_Terminating (EN : Entity_Name) renames
+     Terminating_Subprograms.Append;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -397,6 +407,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Write nonreturning subprograms
       V := (Kind                         => EK_Nonreturning,
             The_Nonreturning_Subprograms => Nonreturning_Subprograms);
+      Write_To_ALI (V);
+
+      --  Write terminating subprograms
+      V := (Kind                         => EK_Terminating,
+            The_Terminating_Subprograms  => Terminating_Subprograms);
       Write_To_ALI (V);
 
       for Direct_Calls of Direct_Calls_List loop

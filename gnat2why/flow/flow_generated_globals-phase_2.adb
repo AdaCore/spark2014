@@ -230,6 +230,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  This contains information read from the ALI file on potentially
    --  nonreturning subprograms.
 
+   Terminating_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Contains subprograms with Terminating annotation read from the ALI file
+
    package Entity_Name_To_Priorities_Maps is
      new Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
@@ -1421,8 +1424,11 @@ package body Flow_Generated_Globals.Phase_2 is
 
                begin
                   --  Add callees of the caller into the graph, but do nothing
-                  --  if the caller itself is nonreturning.
-                  if not Nonreturning_Subprograms.Contains (Caller) then
+                  --  if the caller itself is nonreturning or annotated with
+                  --  the Terminating annotation.
+                  if not Nonreturning_Subprograms.Contains (Caller)
+                    and then not Terminating_Subprograms.Contains (Caller)
+                  then
                      for Callee of Generated_Calls (Caller) loop
                         --  Get vertex for the callee
                         V_Callee := Call_Graph.Get_Vertex (Callee);
@@ -1835,6 +1841,28 @@ package body Flow_Generated_Globals.Phase_2 is
               From_String (Line (Line'First + 3 .. Line'Last));
 
             V : ALI_Entry := (Kind => EK_Error);
+
+            procedure Merge (From : Name_Lists.List;
+                             To   : in out Name_Sets.Set);
+            --  Copy elements from list (as they are written in the ALI file)
+            --  to set (as they are used in the flow analysis) while ensuring
+            --  that there are no duplicates.
+
+            -----------
+            -- Merge --
+            -----------
+
+            procedure Merge (From : Name_Lists.List;
+                             To   : in out Name_Sets.Set)
+            is
+            begin
+               for E of From loop
+                  To.Insert (E);
+               end loop;
+            end Merge;
+
+         --  Start of processing for Parse_GG_Line
+
          begin
             Serialize (A, V);
             case V.Kind is
@@ -1966,30 +1994,16 @@ package body Flow_Generated_Globals.Phase_2 is
                   end loop;
 
                when EK_Nonblocking =>
-                  declare
-                     C : Name_Lists.Cursor :=
-                       V.The_Nonblocking_Subprograms.First;
-                  begin
-                     while Name_Lists.Has_Element (C) loop
-                        Nonblocking_Subprograms.Insert
-                          (V.The_Nonblocking_Subprograms (C));
-
-                        Name_Lists.Next (C);
-                     end loop;
-                  end;
+                  Merge (From => V.The_Nonblocking_Subprograms,
+                         To   => Nonblocking_Subprograms);
 
                when EK_Nonreturning =>
-                  declare
-                     C : Name_Lists.Cursor :=
-                       V.The_Nonreturning_Subprograms.First;
-                  begin
-                     while Name_Lists.Has_Element (C) loop
-                        Nonreturning_Subprograms.Insert
-                          (V.The_Nonreturning_Subprograms (C));
+                  Merge (From => V.The_Nonreturning_Subprograms,
+                         To   => Nonreturning_Subprograms);
 
-                        Name_Lists.Next (C);
-                     end loop;
-                  end;
+               when EK_Terminating =>
+                  Merge (From => V.The_Terminating_Subprograms,
+                         To   => Terminating_Subprograms);
 
                when EK_Direct_Calls =>
                   declare
@@ -2007,6 +2021,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      pragma Assert (Inserted);
 
+                     --  ??? cannot use Copy as To is not a variable
                      while Name_Lists.Has_Element (Callee) loop
                         Direct_Calls (Caller).Insert (V.The_Callees (Callee));
                         Name_Lists.Next (Callee);
@@ -2567,12 +2582,14 @@ package body Flow_Generated_Globals.Phase_2 is
                  Termination_Call_Graph.Get_Key (V);
             begin
                --  We say that the caller calls a potentially nonreturning
-               --  subprogram if the callee:
+               --  subprogram if the callee does not have the Terminating
+               --  annotation and:
                --  * has already been detected as potentially nonreturning
                --    in phase 1
                --  * is recursive.
-               if Nonreturning_Subprograms.Contains (Callee)
-                 or else Is_Recursive (Callee)
+               if not Terminating_Subprograms.Contains (Callee)
+                 and then (Nonreturning_Subprograms.Contains (Callee)
+                           or else Is_Recursive (Callee))
                then
                   return True;
                end if;

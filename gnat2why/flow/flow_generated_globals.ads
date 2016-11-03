@@ -58,10 +58,13 @@ package Flow_Generated_Globals is
    --    * For every package all known state abstractions and all their
    --      constituents are collected and this info is stored in the ALI file.
    --
-   --    * We also collect some data relevant to tasking: a set of
-   --      nonblocking subprograms, instance counts, etc.
+   --    * We collect some data relevant to tasking: a set of nonblocking
+   --      subprograms, instance counts, etc.
    --
-   --    * We also collect potentially nonreturning subprograms.
+   --    * We collect potentially nonreturning subprograms.
+   --
+   --    * We also collect subprograms with Terminating annotation.
+
    --
    --  During the second pass:
    --
@@ -102,6 +105,7 @@ package Flow_Generated_Globals is
    --  * Volatile variables and external state abstractions
    --  * Nonblocking subprograms
    --  * Potentially nonreturning subprograms
+   --  * Subprograms with Terminating annotation
    --  * Tasking-related information.
    --    - suspension objects that call suspends on
    --    - protected objects whose entries are called

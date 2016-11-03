@@ -75,6 +75,11 @@ package Flow_Generated_Globals.Phase_1 is
    --  * subprograms that call predefined procedures with No_Return
    --  * subprograms with no body or body not in SPARK.
 
+   procedure GG_Register_Terminating (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register subprograms with the Terminating annotation
+
    procedure GG_Register_Protected_Object (PO   : Entity_Name;
                                            Prio : Priority_Value)
    with Pre  => GG_Mode = GG_Write_Mode,
