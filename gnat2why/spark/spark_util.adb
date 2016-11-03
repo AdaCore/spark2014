@@ -548,6 +548,15 @@ package body SPARK_Util is
       end if;
    end Component_Is_Visible_In_SPARK;
 
+   -------------------------------
+   -- Enclosing_Concurrent_Type --
+   -------------------------------
+
+   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id is
+     (if Is_Part_Of_Concurrent_Object (E)
+      then Etype (Encapsulating_State (E))
+      else Scope (E));
+
    --------------------
    -- Enclosing_Unit --
    --------------------

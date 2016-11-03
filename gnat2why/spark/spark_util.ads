@@ -234,6 +234,15 @@ package SPARK_Util is
    --     into Why3, i.e. it is a discriminant (which cannot be hidden in
    --     SPARK) or the full view of the enclosing record is in SPARK.
 
+   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id
+   with Pre  => Is_Part_Of_Concurrent_Object (E) or else
+                Is_Concurrent_Component_Or_Discr (E),
+        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
+                                                            E_Task_Type;
+   --  @param E is the entity of a component, discriminant or Part of
+   --     concurrent type
+   --  @return concurrent type
+
    function Has_Volatile (E : Checked_Entity_Id) return Boolean;
    --  @param E an abstract state or object
    --  @return True iff E is an external state or a volatile object

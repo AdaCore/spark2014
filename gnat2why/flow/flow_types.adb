@@ -301,11 +301,6 @@ package body Flow_Types is
    -- Enclosing_Concurrent_Type --
    -------------------------------
 
-   function Enclosing_Concurrent_Type (E : Entity_Id) return Entity_Id is
-     (if Is_Part_Of_Concurrent_Object (E)
-      then Etype (Encapsulating_State (E))
-      else Scope (E));
-
    function Enclosing_Concurrent_Type (F : Flow_Id) return Entity_Id is
    begin
       return Enclosing_Concurrent_Type (Get_Direct_Mapping_Id (F));

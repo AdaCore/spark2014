@@ -268,24 +268,13 @@ package Flow_Types is
    --  @return True iff F represents a discriminant, component, or Part_Of
    --     protected type
 
-   function Enclosing_Concurrent_Type
-     (E : Entity_Id)
-      return Entity_Id
-   with Pre  => Is_Part_Of_Concurrent_Object (E) or else
-                Is_Concurrent_Component_Or_Discr (E),
+   function Enclosing_Concurrent_Type (F : Flow_Id) return Entity_Id
+   with Pre  => Belongs_To_Concurrent_Type (F),
         Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
                                                             E_Task_Type;
    --  @param E is the entity of a component, discriminant or Part of
    --     concurrent type
    --  @return concurrent type
-
-   function Enclosing_Concurrent_Type
-     (F : Flow_Id)
-      return Entity_Id
-   with Pre  => Belongs_To_Concurrent_Type (F),
-        Post => Ekind (Enclosing_Concurrent_Type'Result) in E_Protected_Type |
-                                                            E_Task_Type;
-   --  Same as above, but for a Flow_Id argument
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
