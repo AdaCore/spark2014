@@ -104,7 +104,7 @@ pi_compute.adb:76:35: info: overflow check proved (CodePeer)
 pi_compute.adb:76:35: info: range check proved (CodePeer)
 pi_compute.adb:76:37: info: initialization of "A8" proved
 pi_compute.adb:79:14: info: initialization of "Num" proved
-pi_compute.adb:79:18: info: division check proved (altergo: 1 VC)
+pi_compute.adb:79:18: info: division check proved (CodePeer)
 pi_compute.adb:79:18: info: overflow check proved (CodePeer)
 pi_compute.adb:79:18: info: range check proved (CodePeer)
 pi_compute.adb:79:20: info: initialization of "Den" proved
@@ -154,8 +154,8 @@ pi_compute.adb:110:34: info: initialization of "A9" proved
 pi_compute.adb:110:37: info: overflow check proved (CodePeer)
 pi_compute.adb:110:39: info: initialization of "A8" proved
 pi_compute.adb:113:14: info: initialization of "Num" proved
+pi_compute.adb:113:18: info: division check proved (CodePeer)
 pi_compute.adb:113:18: info: overflow check proved (CodePeer)
-pi_compute.adb:113:18: medium: divide by zero might fail
 pi_compute.adb:113:20: info: initialization of "Den" proved
 pi_compute.adb:114:22: info: assertion proved (CodePeer)
 pi_compute.adb:114:22: info: initialization of "Res" proved

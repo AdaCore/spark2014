@@ -9,7 +9,7 @@ math.adb:17:43: info: initialization of "Prev_Value" proved
 math.adb:17:54: info: overflow check proved
 math.adb:18:48: info: overflow check proved
 math.adb:19:43: info: range check proved
-math.adb:20:10: info: assertion proved
+math.adb:20:25: info: assertion proved
 math.adb:21:31: info: index check proved
 math.adb:21:44: info: overflow check proved
 math.adb:21:50: info: division check proved
@@ -17,20 +17,20 @@ math.adb:24:10: info: predicate check proved
 math.adb:24:23: info: overflow check proved
 math.adb:24:29: info: division check proved
 math.adb:24:29: info: range check proved
-math.adb:26:10: info: loop invariant initialization proved
-math.adb:26:10: info: loop invariant preservation proved
+math.adb:26:33: info: loop invariant initialization proved
+math.adb:26:33: info: loop invariant preservation proved
 math.adb:26:41: info: length check proved
-math.adb:27:10: info: loop invariant initialization proved
-math.adb:27:10: info: loop invariant preservation proved
 math.adb:27:33: info: initialization of "Prev_Value" proved
-math.adb:28:10: info: loop invariant initialization proved
-math.adb:28:10: info: loop invariant preservation proved
+math.adb:27:33: info: loop invariant initialization proved
+math.adb:27:33: info: loop invariant preservation proved
+math.adb:29:13: info: loop invariant initialization proved
+math.adb:29:13: info: loop invariant preservation proved
 math.adb:29:48: info: index check proved
 math.adb:29:66: info: index check proved
 math.adb:29:69: info: overflow check proved
 math.adb:29:75: info: division check proved
-math.adb:30:10: info: loop invariant initialization proved
-math.adb:30:10: info: loop invariant preservation proved
+math.adb:31:13: info: loop invariant initialization proved
+math.adb:31:13: info: loop invariant preservation proved
 math.adb:31:51: info: index check proved
 math.adb:31:69: info: index check proved
 math.ads:12:35: info: length check proved

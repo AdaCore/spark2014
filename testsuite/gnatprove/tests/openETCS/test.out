@@ -1,8 +1,8 @@
 com_map.ads:46:22: info: precondition proved (CVC4: 1 VC)
 com_map.ads:47:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:36:13: info: initialization of "speed" proved
-deceleration_curve.adb:37:10: info: assertion proved (CVC4: 4 VC)
-deceleration_curve.adb:39:10: info: loop invariant initialization proved (CVC4: 2 VC)
+deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)
+deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC4: 2 VC)
 deceleration_curve.adb:40:35: info: initialization of "speed" proved
 deceleration_curve.adb:40:45: medium: loop invariant might fail after first iteration, cannot prove speed <= Initial_Speed
 deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1.0/speed
@@ -136,118 +136,118 @@ section_4_6.ads:106:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:107:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:108:55: info: contract case proved (CVC4: 2 VC)
 section_4_6.ads:109:14: info: postcondition proved (CVC4: 1 VC)
-step_function.adb:30:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:30:10: info: loop invariant preservation proved (altergo: 1 VC)
+step_function.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:30:33: info: loop invariant preservation proved (altergo: 1 VC)
 step_function.adb:31:50: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: overflow check proved (CVC4: 1 VC)
-step_function.adb:45:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:46:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:47:34: info: index check proved (CVC4: 2 VC)
 step_function.adb:48:16: info: initialization of "min" proved
 step_function.adb:48:16: medium: loop invariant might fail after first iteration, cannot prove min <= SFun.Step(j).Value
 step_function.adb:48:33: info: index check proved (CVC4: 2 VC)
-step_function.adb:49:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:49:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:50:13: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:50:13: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:51:31: info: index check proved (CVC4: 2 VC)
 step_function.adb:53:18: info: initialization of "min" proved
 step_function.adb:53:34: info: index check proved (CVC4: 2 VC)
 step_function.adb:56:37: info: initialization of "min" proved
-step_function.adb:58:13: info: assertion proved (CVC4: 1 VC)
+step_function.adb:59:16: info: assertion proved (CVC4: 1 VC)
 step_function.adb:60:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:60:55: info: index check proved (CVC4: 2 VC)
 step_function.adb:64:14: info: initialization of "min" proved
 step_function.adb:72:17: info: range check proved (CVC4: 1 VC)
 step_function.adb:89:27: info: initialization of "im" proved
-step_function.adb:91:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:91:10: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:91:33: info: initialization of "i1" proved
-step_function.adb:92:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:92:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:91:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:91:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:92:33: info: initialization of "i2" proved
-step_function.adb:93:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:93:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:92:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:92:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:93:33: info: initialization of "im" proved
-step_function.adb:94:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:94:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:93:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:93:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:94:33: info: initialization of "i1" proved
-step_function.adb:95:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:95:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:94:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:94:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:95:33: info: initialization of "i2" proved
-step_function.adb:96:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:96:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:95:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:95:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:96:33: info: initialization of "im" proved
-step_function.adb:97:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:97:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:96:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:96:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:97:33: info: initialization of "scan_sfun1" proved
+step_function.adb:97:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:97:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:97:47: info: initialization of "scan_sfun2" proved
-step_function.adb:98:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:98:10: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:98:34: info: initialization of "i1" proved
 step_function.adb:98:45: info: initialization of "i2" proved
 step_function.adb:98:56: info: initialization of "im" proved
 step_function.adb:99:51: info: initialization of "scan_sfun1" proved
 step_function.adb:100:55: info: initialization of "scan_sfun2" proved
-step_function.adb:101:10: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:101:10: info: loop invariant preservation proved (CVC4: 2 VC)
+step_function.adb:102:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:102:13: info: loop invariant preservation proved (CVC4: 2 VC)
 step_function.adb:102:27: info: initialization of "scan_sfun1" proved
 step_function.adb:102:42: info: initialization of "scan_sfun2" proved
 step_function.adb:103:18: info: initialization of "im" proved
 step_function.adb:103:24: info: initialization of "i1" proved
 step_function.adb:103:29: info: initialization of "i2" proved
-step_function.adb:106:10: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:107:13: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
 step_function.adb:107:28: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
-step_function.adb:108:10: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:109:13: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
 step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:110:56: info: initialization of "i1" proved
-step_function.adb:111:10: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:112:13: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
 step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:113:56: info: initialization of "i2" proved
-step_function.adb:114:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:115:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:115:29: info: initialization of "im" proved
 step_function.adb:116:15: info: initialization of "Merge.Step" proved
 step_function.adb:116:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved (CVC4: 2 VC)
 step_function.adb:116:54: info: index check proved (CVC4: 2 VC)
-step_function.adb:119:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:119:10: medium: loop invariant might fail after first iteration
+step_function.adb:120:13: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:120:13: medium: loop invariant might fail after first iteration
 step_function.adb:120:29: info: initialization of "i1" proved
 step_function.adb:121:33: info: initialization of "im" proved
 step_function.adb:122:30: info: index check proved (CVC4: 2 VC)
 step_function.adb:122:45: info: initialization of "Merge.Step" proved
 step_function.adb:122:56: info: index check proved (CVC4: 2 VC)
-step_function.adb:123:10: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:123:10: medium: loop invariant might fail after first iteration
+step_function.adb:124:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:124:13: medium: loop invariant might fail after first iteration
 step_function.adb:124:20: info: initialization of "scan_sfun1" proved
 step_function.adb:126:38: info: initialization of "im" proved
 step_function.adb:127:36: info: index check proved (CVC4: 2 VC)
 step_function.adb:127:51: info: initialization of "Merge.Step" proved
 step_function.adb:127:62: info: index check proved (CVC4: 2 VC)
-step_function.adb:130:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:130:10: medium: loop invariant might fail after first iteration
+step_function.adb:131:13: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:131:13: medium: loop invariant might fail after first iteration
 step_function.adb:131:29: info: initialization of "i2" proved
 step_function.adb:132:33: info: initialization of "im" proved
 step_function.adb:133:30: info: index check proved (CVC4: 2 VC)
 step_function.adb:133:45: info: initialization of "Merge.Step" proved
 step_function.adb:133:56: info: index check proved (CVC4: 2 VC)
-step_function.adb:134:10: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:134:10: medium: loop invariant might fail after first iteration
+step_function.adb:135:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:135:13: medium: loop invariant might fail after first iteration
 step_function.adb:135:20: info: initialization of "scan_sfun2" proved
 step_function.adb:137:38: info: initialization of "im" proved
 step_function.adb:138:36: info: index check proved (CVC4: 2 VC)
 step_function.adb:138:51: info: initialization of "Merge.Step" proved
 step_function.adb:138:62: info: index check proved (CVC4: 2 VC)
-step_function.adb:141:10: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:142:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:142:29: info: initialization of "im" proved
 step_function.adb:143:15: info: initialization of "Merge.Step" proved
 step_function.adb:143:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
@@ -347,43 +347,43 @@ step_function_test.adb:7:15: info: length check proved (CVC4: 1 VC)
 step_function_test.adb:14:15: info: length check proved (CVC4: 1 VC)
 step_function_test.adb:21:15: info: length check proved (CVC4: 1 VC)
 step_function_test.adb:31:15: info: length check proved (CVC4: 1 VC)
-step_function_test.adb:41:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:41:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:41:28: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:41:28: info: initialization of "SFun1.Step" proved
-step_function_test.adb:42:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:42:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:42:28: info: initialization of "SFun2.Number_Of_Delimiters" proved
 step_function_test.adb:42:28: info: initialization of "SFun2.Step" proved
-step_function_test.adb:43:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:43:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:43:42: info: initialization of "sfun3.Number_Of_Delimiters" proved
 step_function_test.adb:43:42: info: initialization of "sfun3.Step" proved
-step_function_test.adb:44:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:44:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:44:42: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:44:42: info: initialization of "sfun4.Step" proved
-step_function_test.adb:46:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:46:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:46:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:46:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:46:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:47:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:47:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:47:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:47:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:47:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:48:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:48:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:48:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:48:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:48:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:49:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:49:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:49:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:49:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:49:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:50:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:50:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:50:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:50:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:50:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:51:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:51:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:51:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:51:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:51:29: info: initialization of "SFun1.Step" proved
-step_function_test.adb:54:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:54:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:54:39: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:54:39: info: initialization of "SFun1.Step" proved
 step_function_test.adb:54:46: info: initialization of "SFun2.Number_Of_Delimiters" proved
@@ -403,7 +403,7 @@ step_function_test.adb:62:38: info: initialization of "sfun3.Step" proved
 step_function_test.adb:62:49: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:62:59: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:62:59: info: initialization of "sfun4.Step" proved
-step_function_test.adb:65:04: info: assertion proved (CVC4: 1 VC)
+step_function_test.adb:65:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:65:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved

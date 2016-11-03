@@ -6,9 +6,9 @@ admin.adb:48:52: info: length check proved (CVC4: 1 VC)
 admin.adb:67:29: info: index check proved (CVC4: 2 VC)
 admin.adb:67:47: info: index check proved (CVC4: 2 VC)
 admin.adb:79:27: info: index check proved (CVC4: 2 VC)
-admin.adb:119:10: info: loop invariant initialization proved (CVC4: 1 VC)
-admin.adb:119:10: info: loop invariant preservation proved (CVC4: 1 VC)
 admin.adb:119:33: info: initialization of "TheOp" proved
+admin.adb:119:33: info: loop invariant initialization proved (CVC4: 1 VC)
+admin.adb:119:33: info: loop invariant preservation proved (CVC4: 1 VC)
 admin.adb:125:36: info: index check proved (CVC4: 2 VC)
 admin.adb:131:14: info: initialization of "TheOp" proved
 admin.adb:206:64: info: range check proved (CVC4: 1 VC)
@@ -403,8 +403,8 @@ auditlog.adb:1447:32: info: initialization of "Archive" proved
 auditlog.adb:1450:26: info: initialization of "ArchiveFault" proved
 auditlog.adb:1450:46: info: initialization of "OK" proved
 auditlog.adb:1456:16: info: initialization of "ArchivedFileCount" proved
-auditlog.adb:1459:13: info: loop invariant initialization proved (CVC4: 1 VC)
-auditlog.adb:1459:13: info: loop invariant preservation proved (CVC4: 1 VC)
+auditlog.adb:1460:16: info: loop invariant initialization proved (CVC4: 1 VC)
+auditlog.adb:1460:16: info: loop invariant preservation proved (CVC4: 1 VC)
 auditlog.adb:1461:53: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1461:58: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1461:78: info: overflow check proved (CVC4: 1 VC)
@@ -433,8 +433,8 @@ auditlog.adb:1564:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1566:67: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1566:72: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1567:50: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1582:10: info: loop invariant initialization proved (CVC4: 3 VC)
-auditlog.adb:1582:10: info: loop invariant preservation proved (CVC4: 3 VC)
+auditlog.adb:1583:13: info: loop invariant initialization proved (CVC4: 3 VC)
+auditlog.adb:1583:13: info: loop invariant preservation proved (CVC4: 3 VC)
 auditlog.adb:1587:50: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1587:55: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1587:75: info: overflow check proved (CVC4: 1 VC)
@@ -459,8 +459,8 @@ audittypes.ads:93:58: info: length check proved (CVC4: 1 VC)
 audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
 audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
 audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
-bio.adb:119:10: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at bio.adb:181
-bio.adb:119:10: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at bio.adb:181
+bio.adb:119:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at bio.adb:181
+bio.adb:119:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at bio.adb:181
 bio.adb:121:33: info: initialization of "Result" proved
 bio.adb:121:33: info: initialization of "Result" proved, in call inlined at bio.adb:181
 bio.adb:122:25: info: initialization of "C30b" proved, in call inlined at bio.adb:181
@@ -1198,9 +1198,9 @@ configdata.adb:295:36: info: initialization of "Success" proved
 configdata.adb:308:16: info: initialization of "Stop" proved
 configdata.adb:313:20: info: range check proved (CVC4: 2 VC)
 configdata.adb:313:47: info: initialization of "Stop" proved
-configdata.adb:315:19: info: loop invariant initialization proved (CVC4: 2 VC)
-configdata.adb:315:19: info: loop invariant preservation proved (CVC4: 2 VC)
 configdata.adb:315:42: info: initialization of "Stop" proved
+configdata.adb:315:42: info: loop invariant initialization proved (CVC4: 2 VC)
+configdata.adb:315:42: info: loop invariant preservation proved (CVC4: 2 VC)
 configdata.adb:315:53: info: initialization of "Stop" proved
 configdata.adb:317:48: info: index check proved (CVC4: 2 VC)
 configdata.adb:317:54: info: initialization of "RawClass" proved
@@ -1267,9 +1267,9 @@ configdata.adb:694:12: info: initialization of "TheTitle" proved
 configdata.adb:699:19: info: initialization of "Stop" proved
 configdata.adb:703:23: info: range check proved (CVC4: 2 VC)
 configdata.adb:703:51: info: initialization of "Stop" proved
-configdata.adb:704:22: info: loop invariant initialization proved (CVC4: 2 VC)
-configdata.adb:704:22: info: loop invariant preservation proved (CVC4: 2 VC)
 configdata.adb:704:45: info: initialization of "Stop" proved
+configdata.adb:704:45: info: loop invariant initialization proved (CVC4: 2 VC)
+configdata.adb:704:45: info: loop invariant preservation proved (CVC4: 2 VC)
 configdata.adb:704:56: info: initialization of "Stop" proved
 configdata.adb:706:53: info: index check proved (CVC4: 2 VC)
 configdata.adb:707:24: info: initialization of "RawAccessPolicy" proved
@@ -1602,10 +1602,10 @@ display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at d
 display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at display.adb:280
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:280
-display.adb:129:10: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:129:10: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:280
-display.adb:129:10: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:188
-display.adb:129:10: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:280
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at display.adb:280
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:188
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:132:25: info: initialization of "Result.Text" proved
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
@@ -1640,10 +1640,10 @@ display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at di
 display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:280
 display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
 display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:280
-display.adb:144:10: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:188
-display.adb:144:10: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:280
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:188
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:280
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:188
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:280
 display.adb:147:33: info: initialization of "Result.Len" proved
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
@@ -1794,7 +1794,7 @@ enclave.adb:329:22: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:382:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:394:22: info: initialization of "Status" constituent of "State" proved
 enclave.adb:394:22: info: postcondition proved (CVC4: 2 VC)
-enclave.adb:396:07: info: assertion proved (CVC4: 1 VC)
+enclave.adb:396:29: info: assertion proved (CVC4: 1 VC)
 enclave.adb:396:29: info: initialization of "Status" constituent of "State" proved
 enclave.adb:399:15: medium: precondition might fail
 enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
@@ -2118,8 +2118,8 @@ keystore.adb:186:42: info: range check proved (CVC4: 1 VC)
 keystore.adb:186:53: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:186:69: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:190:39: info: length check proved (CVC4: 1 VC)
-keystore.adb:193:13: info: loop invariant initialization proved (CVC4: 7 VC)
-keystore.adb:193:13: info: loop invariant preservation proved (CVC4: 7 VC)
+keystore.adb:194:16: info: loop invariant initialization proved (CVC4: 7 VC)
+keystore.adb:194:16: info: loop invariant preservation proved (CVC4: 7 VC)
 keystore.adb:199:24: info: initialization of "Result" proved
 keystore.adb:199:35: info: index check proved (CVC4: 2 VC)
 keystore.adb:199:35: info: overflow check proved (CVC4: 1 VC)
@@ -2128,9 +2128,9 @@ keystore.adb:204:17: info: initialization of "Result" proved
 keystore.adb:216:10: info: initialization of "RetValIni" proved
 keystore.adb:218:51: info: division check proved (CVC4: 1 VC)
 keystore.adb:221:24: info: initialization of "LoopMax" proved
-keystore.adb:222:13: info: loop invariant initialization proved (CVC4: 10 VC)
-keystore.adb:222:13: info: loop invariant preservation proved (CVC4: 10 VC)
 keystore.adb:223:16: info: initialization of "LoopMax" proved
+keystore.adb:223:16: info: loop invariant initialization proved (CVC4: 10 VC)
+keystore.adb:223:16: info: loop invariant preservation proved (CVC4: 10 VC)
 keystore.adb:223:56: info: division check proved (CVC4: 1 VC)
 keystore.adb:224:37: info: initialization of "LoopMax" proved
 keystore.adb:226:20: info: initialization of "BytesLeft" proved
@@ -2840,7 +2840,7 @@ tismain.adb:1291:41: info: initialization of "Display.Output" proved
 tismain.adb:1292:39: info: initialization of "Latch.Output" proved
 tismain.adb:1293:40: info: initialization of "Screen.Output" proved
 tismain.adb:1294:34: info: initialization of "TheAdmin" proved
-tismain.adb:1346:07: info: loop invariant preservation proved (CVC4: 19 VC)
+tismain.adb:1347:10: info: loop invariant preservation proved (CVC4: 19 VC)
 tismain.adb:1347:23: info: initialization of "Enclave.State" proved
 tismain.adb:1347:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1351:10: medium: loop invariant might fail in first iteration, cannot prove Latch.IsLocked = Latch(Latch.interfac_islocked)
@@ -2868,7 +2868,7 @@ tismain.adb:1397:07: info: initialization of "UserToken.State" proved
 tismain.adb:1397:07: info: precondition proved (CVC4: 19 VC)
 tismain.adb:1399:35: info: initialization of "Enclave.State" proved
 tismain.adb:1401:17: info: initialization of "ShutdownCompleted" proved
-tismain.adb:1403:07: info: assertion proved (CVC4: 20 VC)
+tismain.adb:1404:10: info: assertion proved (CVC4: 20 VC)
 tismain.adb:1404:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1405:23: info: initialization of "Enclave.State" proved
 tismain.adb:1405:57: info: initialization of "KeyStore.State" proved
@@ -2883,7 +2883,7 @@ tismain.adb:1449:23: medium: precondition might fail
 tismain.adb:1456:22: medium: precondition might fail
 tismain.adb:1482:10: info: initialization of "SystemFault" proved
 tismain.adb:1489:18: info: initialization of "AuditLog.State" proved
-tismain.adb:1496:07: info: assertion proved (CVC4: 21 VC)
+tismain.adb:1497:10: info: assertion proved (CVC4: 21 VC)
 tismain.adb:1497:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1497:40: info: initialization of "SystemFault" proved
 tismain.adb:1499:23: info: initialization of "Enclave.State" proved
@@ -2926,13 +2926,13 @@ tokenreader.adb:273:13: info: initialization of "NumberReaders" proved
 tokenreader.adb:278:17: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:279:46: info: initialization of "NumberReaders" proved
 tokenreader.adb:279:46: info: range check proved (CVC4: 1 VC)
-tokenreader.adb:281:16: info: loop invariant initialization proved (CVC4: 2 VC)
-tokenreader.adb:281:16: info: loop invariant preservation proved (CVC4: 2 VC)
+tokenreader.adb:282:19: info: loop invariant initialization proved (CVC4: 2 VC)
+tokenreader.adb:282:19: info: loop invariant preservation proved (CVC4: 2 VC)
 tokenreader.adb:282:46: info: initialization of "NumberReaders" proved
 tokenreader.adb:282:46: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:283:48: info: initialization of "NumberReaders" proved
-tokenreader.adb:285:19: info: loop invariant initialization proved (CVC4: 2 VC)
-tokenreader.adb:285:19: info: loop invariant preservation proved (CVC4: 2 VC)
+tokenreader.adb:286:22: info: loop invariant initialization proved (CVC4: 2 VC)
+tokenreader.adb:286:22: info: loop invariant preservation proved (CVC4: 2 VC)
 tokenreader.adb:286:49: info: initialization of "NumberReaders" proved
 tokenreader.adb:286:49: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:287:51: info: initialization of "NumberReaders" proved

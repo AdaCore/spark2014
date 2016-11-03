@@ -24,15 +24,15 @@ arith.adb:16:18: medium: overflow check might fail
 arith.adb:19:09: warning: unused assignment
 arith.adb:19:14: info: overflow check proved (CVC4: 1 VC)
 arith.adb:19:18: medium: overflow check might fail
+arith.adb:20:14: info: division check proved (CodePeer)
 arith.adb:20:14: info: overflow check proved (CodePeer)
-arith.adb:20:14: medium: divide by zero might fail
 arith.adb:20:18: medium: overflow check might fail
 arith.adb:23:12: warning: possible reassociation due to missing parentheses
 arith.adb:23:14: medium: overflow check might fail
 arith.adb:23:17: warning: possible reassociation due to missing parentheses
 arith.adb:23:19: medium: overflow check might fail
 arith.adb:23:23: medium: overflow check might fail
-arith.adb:23:28: medium: divide by zero might fail
+arith.adb:23:28: info: division check proved (CodePeer)
 arith.adb:26:11: info: initialization of "Tmp2" proved
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
 arith.adb:26:16: medium: overflow check might fail

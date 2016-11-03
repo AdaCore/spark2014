@@ -2,19 +2,19 @@ instr-child.adb:7:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:7:07: warning: no Global contract available for "Put"
 instr-child.adb:8:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:8:07: warning: no Global contract available for "Put"
-instr-child.adb:8:61: info: division check proved (CVC4: 1 VC)
-instr-child.adb:8:68: info: division check proved (CVC4: 1 VC)
+instr-child.adb:8:61: info: division check proved (CodePeer)
+instr-child.adb:8:68: info: division check proved (CodePeer)
 instr-child.adb:9:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:9:07: warning: no Global contract available for "Put"
-instr-child.adb:9:61: info: division check proved (CVC4: 1 VC)
-instr-child.adb:9:67: info: division check proved (CVC4: 1 VC)
+instr-child.adb:9:61: info: division check proved (CodePeer)
+instr-child.adb:9:67: info: division check proved (CodePeer)
 instr-child.adb:10:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:10:07: warning: no Global contract available for "Put"
-instr-child.adb:10:60: info: division check proved (CVC4: 1 VC)
+instr-child.adb:10:60: info: division check proved (CodePeer)
 instr-child.adb:15:39: medium: overflow check might fail (e.g. when X = (Name => (others => 0), Seconds => 0, Minutes => 0, Hours => 0, MilliSec => 1) and inc = 2147483647)
-instr-child.adb:15:46: info: division check proved (CVC4: 1 VC)
+instr-child.adb:15:46: info: division check proved (CodePeer)
 instr-child.adb:16:32: medium: overflow check might fail (e.g. when X = (MilliSec => 1000, others => ?) and inc = 2147482648)
-instr-child.adb:16:39: info: division check proved (CVC4: 1 VC)
+instr-child.adb:16:39: info: division check proved (CodePeer)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:7:18: medium: array index check might fail (e.g. when J = 15)
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
@@ -32,7 +32,7 @@ instr.adb:39:07: warning: no Global contract available for "Put"
 instr.adb:40:07: warning: assuming "Put" has no effect on global items
 instr.adb:40:07: warning: no Global contract available for "Put"
 instr.adb:54:39: medium: overflow check might fail
-instr.adb:54:49: info: division check proved (CVC4: 1 VC)
+instr.adb:54:49: info: division check proved (CodePeer)
 instr.adb:55:07: info: range check proved (CVC4: 2 VC)
 instr.adb:55:41: info: length check proved (CVC4: 1 VC)
 instr.adb:56:07: info: range check proved (CVC4: 1 VC; Z3: 1 VC)
@@ -48,39 +48,39 @@ instr.adb:62:07: warning: assuming "Put" has no effect on global items
 instr.adb:62:07: warning: no Global contract available for "Put"
 instr.adb:68:07: warning: assuming "Put" has no effect on global items
 instr.adb:68:07: warning: no Global contract available for "Put"
-instr.adb:68:57: info: division check proved (CVC4: 1 VC)
+instr.adb:68:57: info: division check proved (CodePeer)
 instr.adb:69:07: warning: assuming "Put" has no effect on global items
 instr.adb:69:07: warning: no Global contract available for "Put"
-instr.adb:69:57: info: division check proved (CVC4: 1 VC)
+instr.adb:69:57: info: division check proved (CodePeer)
 instr.adb:70:07: warning: assuming "Put" has no effect on global items
 instr.adb:70:07: warning: no Global contract available for "Put"
 instr.adb:71:07: warning: assuming "Put" has no effect on global items
 instr.adb:71:07: warning: no Global contract available for "Put"
-instr.adb:71:59: info: division check proved (CVC4: 1 VC)
+instr.adb:71:59: info: division check proved (CodePeer)
 instr.adb:72:07: warning: assuming "Put" has no effect on global items
 instr.adb:72:07: warning: no Global contract available for "Put"
-instr.adb:72:59: info: division check proved (CVC4: 1 VC)
+instr.adb:72:59: info: division check proved (CodePeer)
 instr.adb:73:07: warning: assuming "Put" has no effect on global items
 instr.adb:73:07: warning: no Global contract available for "Put"
 instr.adb:74:07: warning: assuming "Put" has no effect on global items
 instr.adb:74:07: warning: no Global contract available for "Put"
-instr.adb:74:59: info: division check proved (CVC4: 1 VC)
+instr.adb:74:59: info: division check proved (CodePeer)
 instr.adb:75:07: warning: assuming "Put" has no effect on global items
 instr.adb:75:07: warning: no Global contract available for "Put"
-instr.adb:75:59: info: division check proved (CVC4: 1 VC)
+instr.adb:75:59: info: division check proved (CodePeer)
 instr.adb:82:31: medium: overflow check might fail (e.g. when Inc = 2147483647 and X = (Name => (others => 0), Seconds => 1, Minutes => 1, Hours => 0))
-instr.adb:82:38: info: division check proved (CVC4: 1 VC)
+instr.adb:82:38: info: division check proved (CodePeer)
 instr.adb:83:26: medium: overflow check might fail
-instr.adb:83:33: info: division check proved (CVC4: 1 VC)
+instr.adb:83:33: info: division check proved (CodePeer)
 instr.adb:84:31: info: overflow check proved (CodePeer)
 instr.adb:84:33: info: initialization of "nInc" proved
-instr.adb:84:39: info: division check proved (CVC4: 1 VC)
+instr.adb:84:39: info: division check proved (CodePeer)
 instr.adb:85:26: info: overflow check proved (CodePeer)
 instr.adb:85:28: info: initialization of "nInc" proved
-instr.adb:85:34: info: division check proved (CVC4: 1 VC)
+instr.adb:85:34: info: division check proved (CodePeer)
 instr.adb:86:27: info: overflow check proved (CodePeer)
 instr.adb:86:29: info: initialization of "nInc" proved
-instr.adb:86:35: info: division check proved (CVC4: 1 VC)
+instr.adb:86:35: info: division check proved (CodePeer)
 instr.adb:108:23: info: overflow check proved (CodePeer)
 instr.adb:108:35: info: overflow check proved (CodePeer)
 instr.adb:108:40: info: overflow check proved (CodePeer)
@@ -90,21 +90,21 @@ instr.adb:110:07: warning: no Global contract available for "Put"
 instr.adb:111:07: warning: assuming "Put" has no effect on global items
 instr.adb:111:07: warning: no Global contract available for "Put"
 instr.adb:111:50: info: initialization of "V" proved
-instr.adb:111:52: info: division check proved (CVC4: 1 VC)
-instr.adb:111:60: info: division check proved (CVC4: 1 VC)
+instr.adb:111:52: info: division check proved (CodePeer)
+instr.adb:111:60: info: division check proved (CodePeer)
 instr.adb:112:07: warning: assuming "Put" has no effect on global items
 instr.adb:112:07: warning: no Global contract available for "Put"
 instr.adb:112:50: info: initialization of "V" proved
-instr.adb:112:52: info: division check proved (CVC4: 1 VC)
-instr.adb:112:59: info: division check proved (CVC4: 1 VC)
+instr.adb:112:52: info: division check proved (CodePeer)
+instr.adb:112:59: info: division check proved (CodePeer)
 instr.adb:113:07: warning: assuming "Put" has no effect on global items
 instr.adb:113:07: warning: no Global contract available for "Put"
 instr.adb:113:50: info: initialization of "V" proved
-instr.adb:113:52: info: division check proved (CVC4: 1 VC)
-instr.adb:113:58: info: division check proved (CVC4: 1 VC)
+instr.adb:113:52: info: division check proved (CodePeer)
+instr.adb:113:58: info: division check proved (CodePeer)
 instr.adb:114:07: warning: assuming "Put" has no effect on global items
 instr.adb:114:07: warning: no Global contract available for "Put"
 instr.adb:114:49: info: initialization of "V" proved
-instr.adb:114:51: info: division check proved (CVC4: 1 VC)
+instr.adb:114:51: info: division check proved (CodePeer)
 instr.adb:115:07: warning: assuming "Put" has no effect on global items
 instr.adb:115:07: warning: no Global contract available for "Put"
