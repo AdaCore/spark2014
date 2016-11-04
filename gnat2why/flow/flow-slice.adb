@@ -367,11 +367,6 @@ package body Flow.Slice is
          --  add them respectively to Local_Variables and Local_Subprograms.
          --  ??? respect SPARK_Mode => Off
 
-         procedure Delete_PO_And_Task_Parts;
-         --  Delete those of Local_Variables that are Part_Of a singleton
-         --  protected object or a singleton task. We don't do this when
-         --  we process tasks.
-
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
          ------------------------------------------
@@ -497,6 +492,7 @@ package body Flow.Slice is
                      --     aspect.
 
                      if not In_Generic_Actual (E)
+                       and then not Is_Part_Of_Concurrent_Object (E)
                        and then Exposed_As_State (E)
                      then
                         case Ekind (E) is
@@ -551,7 +547,9 @@ package body Flow.Slice is
                   --  State abstractions appear as local variables
                   for State of Iter (Abstract_States (Defining_Entity (N)))
                   loop
-                     if not Is_Null_State (State) then
+                     if not Is_Null_State (State)
+                       and not Is_Part_Of_Concurrent_Object (State)
+                     then
                         Local_Variables.Insert (State);
                      end if;
                   end loop;
@@ -567,33 +565,6 @@ package body Flow.Slice is
 
             return OK;
          end Get_Object_Or_Subprogram_Declaration;
-
-         ------------------------------
-         -- Delete_PO_And_Task_Parts --
-         ------------------------------
-
-         procedure Delete_PO_And_Task_Parts is
-         begin
-            if FA.Kind /= Kind_Task then
-               declare
-                  Part_Of_Vars : Node_Lists.List;
-                  --  Containers with variables to be deleted; needed because
-                  --  deleting an element while iterating over container would
-                  --  tamper with cursors.
-
-               begin
-                  for Var of Local_Variables loop
-                     if Is_Part_Of_Concurrent_Object (Var) then
-                        Part_Of_Vars.Append (Var);
-                     end if;
-                  end loop;
-
-                  for V of Part_Of_Vars loop
-                     Local_Variables.Delete (V);
-                  end loop;
-               end;
-            end if;
-         end Delete_PO_And_Task_Parts;
 
          procedure Gather_Local_Variables_And_Subprograms is
             new Traverse_Proc (Get_Object_Or_Subprogram_Declaration);
@@ -626,9 +597,6 @@ package body Flow.Slice is
                end if;
          end case;
 
-         --  Delete from Local_Variables the variables which are parts of
-         --  singelton protected objects and singleton tasks.
-         Delete_PO_And_Task_Parts;
       end Get_Local_Variables_And_Subprograms;
 
       -------------------------------
