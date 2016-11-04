@@ -1,0 +1,10 @@
+foo.adb:29:20: info: initialization of "X" proved
+foo.adb:34:20: info: initialization of "X" proved
+foo.adb:42:17: info: initialization of "Tmp" proved
+foo.adb:57:17: info: initialization of "Tmp" proved
+foo.adb:67:13: "V1" cannot act as global item of nonvolatile function "Test_01"
+foo.adb:71:14: info: initialization of "Tmp" proved
+foo.adb:75:13: function with output global "V2" is not allowed in SPARK
+foo.adb:88:14: info: initialization of "Tmp" proved
+foo.adb:92:13: function with output global "V2" is not allowed in SPARK
+gnatprove: error during flow analysis and proof
