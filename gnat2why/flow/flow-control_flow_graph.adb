@@ -3243,7 +3243,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  We ignore declarations of objects that are Part_Of a single
-      --  concurrent type.
+      --  concurrent object.
       if Is_Part_Of_Concurrent_Object (E) then
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
@@ -6230,7 +6230,7 @@ package body Flow.Control_Flow_Graph is
                False, FA);
 
             --  Collect unsynchronized accesses by excluding states and objects
-            --  that are synchronized or are Part_Of single concurrent types.
+            --  that are synchronized or are Part_Of single concurrent objects.
             if not Is_Synchronized (E) then
                FA.Tasking (Unsynch_Accesses).Include (E);
             end if;
