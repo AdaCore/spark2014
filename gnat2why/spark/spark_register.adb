@@ -24,10 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Atree;                  use Atree;
+with Common_Containers;      use Common_Containers;
 with Einfo;                  use Einfo;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body SPARK_Register is
 
@@ -76,23 +78,43 @@ package body SPARK_Register is
          then
             declare
                E : constant Entity_Id := Entity (N);
+
+               subtype N_Call is Node_Kind with
+                 Static_Predicate => N_Call in N_Subprogram_Call |
+                                               N_Entry_Call_Statement;
+
             begin
                case Ekind (E) is
-                  when Subprogram_Kind =>
-                     begin
-                        case Nkind (Parent (Parent (E))) is
-                           when N_Subprogram_Body
-                              | N_Subprogram_Declaration
-                           =>
-                              Register_Entity (E);
+                  when Subprogram_Kind | Entry_Kind =>
+                     case Nkind (Parent (N)) is
+                        --  Register ordinary subprogram calls and internal
+                        --  calls to protected subprograms and entries.
+                        when N_Call =>
+                           Register_Entity (E);
 
-                           when others =>
-                              null;
-                        end case;
-                     end;
+                           --  Register external calls to protected subprograms
+                           --  and entries.
+                        when N_Selected_Component =>
+                           case Nkind (Parent (Parent (N))) is
+                              when N_Call =>
+                                 Register_Entity (E);
 
-                  when E_Entry =>
-                     Register_Entity (E);
+                              --  Register calls to entry families, internal
+                              --  and external.
+                              when N_Indexed_Component =>
+                                 if Nkind (Parent (Parent (Parent (N)))) =
+                                   N_Entry_Call_Statement
+                                 then
+                                    Register_Entity (E);
+                                 end if;
+
+                              when others =>
+                                 null;
+                           end case;
+
+                        when others =>
+                           null;
+                     end case;
 
                   when E_Constant
                      | E_Variable
@@ -128,11 +150,52 @@ package body SPARK_Register is
             Process_Tree (Original_Node (N));
          end if;
 
-         --  Register packages and protected types; ??? why?
+         --  Special-case type aspect subprograms
+         --
+         --  Default_Initial_Condition: expression is not part of the tree and
+         --  thus needs to be explicitly traversed. The DIC procedure need not
+         --  be registered, because the DIC expression either evaluates to true
+         --  or raises an exception. None of these cause flow information (and
+         --  that's why it is not registered in Direct_Calls).
+         --
+         --  Predicate: opposite of DIC, i.e. expression is traversed anyway
+         --  and unlike DIC we need to register them, because when called in
+         --  type memberhsip test it will affect the information flow (and
+         --  that's why it is registered in Direct_Calls).
+
          if Nkind (N) in N_Entity
-           and then Ekind (N) in E_Package | E_Protected_Type
+           and then Is_Type (N)
          then
-            Register_Entity (N);
+            --  Only care about DIC of a base type (because derived types and
+            --  subtypes just reuse the same expression and we want to repeat
+            --  the work).
+
+            if Has_Own_DIC (N)
+              and then N = Base_Type (N)
+            then
+               declare
+                  DIC_Proc : constant Node_Id := DIC_Procedure (N);
+
+                  Expr : Node_Id;
+
+               begin
+                  --  Default_Initial_Condition may be given without any
+                  --  expression, which means it defaults to True.
+                  if Present (DIC_Proc) then
+                     Expr := Get_Expr_From_Check_Only_Proc (DIC_Proc);
+
+                     Process_Tree (Expr);
+                  end if;
+               end;
+            end if;
+
+            --  We register type predicate functions unlike other subprograms,
+            --  i.e. when they are declared and not when they are (implicitly)
+            --  referenced.
+
+            if Has_Predicates (N) then
+               Register_Entity (Predicate_Function (N));
+            end if;
          end if;
 
          --  In many places we manipulate objects represented by names which is
@@ -180,7 +243,9 @@ package body SPARK_Register is
                   end case;
                end;
 
-            when N_Task_Type_Declaration =>
+            when N_Package_Declaration        |
+                 N_Protected_Type_Declaration |
+                 N_Task_Type_Declaration      =>
                Register_Entity (Defining_Entity (N));
 
             when others =>

@@ -455,18 +455,10 @@ package body Flow_Generated_Globals.Phase_2 is
    end Generated_Calls;
 
    function Generated_Calls (E : Entity_Id) return Node_Lists.List is
-      Callee_E : Entity_Id;
-
       Direct_Calls : Node_Lists.List := Node_Lists.Empty_List;
    begin
       for Callee of Generated_Calls (To_Entity_Name (E)) loop
-         Callee_E := Find_Entity (Callee);
-         --  ??? We need to check if Entity_Id is present because we are
-         --  currently not registering some mapping between Entity_Name and
-         --  Entity_Id. See PA21-027.
-         if Present (Callee_E) then
-            Direct_Calls.Append (Callee_E);
-         end if;
+         Direct_Calls.Append (Find_Entity (Callee));
       end loop;
       return Direct_Calls;
    end Generated_Calls;
