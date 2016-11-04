@@ -2749,7 +2749,10 @@ package body SPARK_Definition is
            and then not Has_Initial_Value (E)
            and then not Is_Imported (E)
          then
-            Mark_Violation ("not fully initialized part of protected type",
+            Mark_Violation ("not fully initialized part of " &
+                            (if Ekind (Etype (Encap_Id)) = E_Task_Type
+                             then "task"
+                             else "protected") & " type",
                             Def, SRM_Reference => "SPARK RM 9.4");
          end if;
 
