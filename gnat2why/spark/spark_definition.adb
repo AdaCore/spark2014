@@ -32,7 +32,6 @@ with Common_Iterators;                use Common_Iterators;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
-with Fname;                           use Fname;
 with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
@@ -2504,35 +2503,25 @@ package body SPARK_Definition is
       elsif Subprogram_Is_Ignored_For_Proof (E) then
          raise Program_Error;
 
-      else
-         declare
-            Unit : constant Unit_Number_Type := Get_Source_Unit (Sloc (E));
-            File : constant File_Name_Type   := Unit_File_Name (Unit);
-         begin
-            --  Issue a warning for calls to subprograms with no
-            --  Global contract, either manually-written or
-            --  computed. This is the case for standard and external
-            --  library subprograms for which no Global contract is
-            --  supplied. Note that subprograms for which an external
-            --  axiomatization is provided are exempted, as they
-            --  should not have any effect on global items. Exempt
-            --  also pure subprograms which have no global effects.
+      --  Warn about calls to predefined and imported subprograms with no
+      --  manually-written Global or Depends contracts. Exempt calls to pure
+      --  subprograms (because Pure acts as "Global => null"), and subprograms
+      --  with external axioms (because that's what we decided).
 
-            if Emit_Warning_Info_Messages
-              and then SPARK_Pragma_Is (Opt.On)
-              and then ((Is_Imported (E)
-                           and then Convention (E) not in Convention_Ada)
-                          or else Is_Internal_File_Name (File))
-              and then No (Get_Pragma (E, Pragma_Global))
-              and then not Entity_In_Ext_Axioms (E)
-              and then not Is_Pure (E)
-            then
-               Error_Msg_NE
-                 ("?no Global contract available for &", N, E);
-               Error_Msg_NE
-                 ("\\assuming & has no effect on global items", N, E);
-            end if;
-         end;
+      elsif Emit_Warning_Info_Messages
+        and then SPARK_Pragma_Is (Opt.On)
+        and then No (Get_Pragma (E, Pragma_Global))
+        and then No (Get_Pragma (E, Pragma_Depends))
+        and then ((Is_Imported (E) and then
+                     Convention (E) not in Convention_Ada)
+                  or else In_Predefined_Unit (E))
+        and then not Entity_In_Ext_Axioms (E)
+        and then not Is_Pure (E)
+      then
+         Error_Msg_NE
+           ("?no Global contract available for &", N, E);
+         Error_Msg_NE
+           ("\\assuming & has no effect on global items", N, E);
       end if;
    end Mark_Call;
 
