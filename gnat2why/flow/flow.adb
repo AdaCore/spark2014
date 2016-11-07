@@ -1291,7 +1291,7 @@ package body Flow is
                      --  or intrinsic.
                      else
                         if not Entity_Body_In_SPARK (E)
-                          and then not Is_Predefined (E)
+                          and then not In_Predefined_Unit (E)
                           and then not Is_Imported (E)
                           and then not (Ekind (E) in E_Function | E_Procedure
                                         and then Is_Intrinsic_Subprogram (E))
