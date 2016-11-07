@@ -131,6 +131,8 @@ Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes
 Inline_Always      	      Yes
 Linker_Section      	      Yes
+No_Elaboration_Code_All       Yes
+No_Heap_Finalization          Yes
 Overflow_Mode                 Yes
 Pure_Function      	      Yes
 Restriction_Warnings  	      Yes

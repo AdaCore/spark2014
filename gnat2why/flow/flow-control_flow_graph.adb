@@ -5469,6 +5469,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Inspection_Point             |
               Pragma_Linker_Section               |
               Pragma_No_Elaboration_Code_All      |
+              Pragma_No_Heap_Finalization         |
               Pragma_No_Tagged_Streams            |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
