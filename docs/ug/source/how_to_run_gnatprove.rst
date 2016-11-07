@@ -222,11 +222,8 @@ required to proved an example can be accessed by running |GNATprove| the option
 ``--report=statistics``.
 
 |GNATprove| also supports using the static analysis tool |CodePeer| as an
-additional source for the proof of checks. If |CodePeer| is installed and in
-the PATH, it is sufficient to specify the command line option
-``--codepeer=on`` to enable this feature. |CodePeer| will be run before the
-other SPARK analyses. If it proves a check, |GNATprove| will not attempt to
-run another prover on this check.
+additional source for the proof of checks, by specifying the command line
+option ``--codepeer=on`` (see :ref:`Using CodePeer Static Analysis`).
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
@@ -478,6 +475,52 @@ used, a warning is emitted for every operation that could be re-ordered:
   operation;
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
   binary multiplying operation.
+
+.. _Using CodePeer Static Analysis:
+
+Using CodePeer Static Analysis
+------------------------------
+
+.. note::
+
+   |CodePeer| is only available as part of SPARK Pro 17 and beyond, but is not
+   available to SPARK Discovery customers and SPARK Community users.
+
+|CodePeer| is a static analysis tool developed and commercialized by AdaCore
+(see http://www.adacore.com/codepeer). |GNATprove| supports using |CodePeer| as
+an additional source for the proof of checks, by specifying the command line
+option ``--codepeer=on``. |CodePeer| will be run before automatic provers. If
+it proves a check, |GNATprove| will not attempt to run another prover on this
+check.
+
+When run by |GNATprove|, |CodePeer| does not attempt to generate preconditions,
+and relies instead on user-provided preconditions for its analysis. |CodePeer|
+analysis inside |GNATprove| is sound, in that it does not allow to prove a check
+that could fail. |CodePeer| analysis may allow to prove more properties than
+the strict contract-based reasoning performed in |SPARK| allow in general:
+
+#. |CodePeer| generates a sound approximation of data dependencies for
+   subprograms based on the implementation of subprograms and the call-graph
+   relating subprograms. Hence |CodePeer| may be able to prove properties which
+   cannot be deduced otherwise based on too coarse user-provided data
+   dependencies.
+
+#. |CodePeer| generates a sound approximation of loop invariants for
+   loops. Hence |CodePeer| may be able to prove properties which cannot be
+   deduced otherwise based on imprecise loop invariants, or in absence of a
+   loop invariant.
+
+In addition, |CodePeer| is using the same choice as GNAT compiler for the
+rounding of fixed-point multiplication and division. This makes it more precise
+for the analysis of code compiled with GNAT. If some code using fixed-point
+arithmetic is compiled with another compiler than GNAT, and the code uses
+fixed-point multiplication or division, the choice of rounding made in
+|CodePeer| may not be suitable, in which case ``--codepeer=on`` should not be
+used.
+
+|CodePeer| analysis is particularly interesting when analyzing code using
+floating-point computations, as |CodePeer| is both fast and precise for proving
+bounds of floating-point operations.
 
 .. _Running GNATprove from GPS:
 

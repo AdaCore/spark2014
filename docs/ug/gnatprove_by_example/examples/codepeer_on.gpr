@@ -1,0 +1,10 @@
+project CodePeer_On is
+
+   for Source_Dirs use ("../examples");
+   for Source_List_File use "codepeer_on.txt";
+
+   package Prove is
+      for Switches use ("--codepeer=on");
+   end Prove;
+
+end CodePeer_On;

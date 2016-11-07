@@ -153,12 +153,12 @@ first iteration and all remaining iterations:
    :language: none
    :lines: 7,8
 
-But it is not sufficient that a loop invariant is true for |GNATprove| to prove
-it. The loop invariant should also be `inductive`: it should be precise enough
-that |GNATprove| can check loop invariant preservation by assuming `only` that
-the loop invariant held during the last iteration. For example, the following
-loop is the same as the previous one, except the loop invariant is true but not
-inductive:
+In general, it is not sufficient that a loop invariant is true for |GNATprove|
+to prove it. The loop invariant should also be `inductive`: it should be
+precise enough that |GNATprove| can check loop invariant preservation by
+assuming `only` that the loop invariant held during the last iteration. For
+example, the following loop is the same as the previous one, except the loop
+invariant is true but not inductive:
 
 .. literalinclude:: ../gnatprove_by_example/examples/simple_loops.adb
    :language: ada
@@ -170,8 +170,17 @@ inductive:
    :language: none
    :lines: 11,13
 
-The reasoning of |GNATprove| for checking property 2 in that case can be
-summarized as follows:
+But note that using |CodePeer| static analysis allows here to fully prove the
+loop invariant, which is possible because |CodePeer| generates its own sound
+approximation of loop invariants (see :ref:`Using CodePeer Static Analysis` for
+details):
+
+.. literalinclude:: ../gnatprove_by_example/results/simple_loops_cdp.prove
+   :language: none
+   :lines: 10
+
+Returning to the case where |CodePeer| is not used, the reasoning of
+|GNATprove| for checking property 2 in that case can be summarized as follows:
 
 * Let's take iteration K of the loop, where K > 1 (not the first iteration).
 * Let's assume that the loop invariant held during iteration K-1, so we know
