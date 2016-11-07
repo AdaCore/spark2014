@@ -47,12 +47,13 @@ with Why.Gen.Terms;          use Why.Gen.Terms;
 
 package body Gnat2Why.Expr.Loops.Inv is
 
-   type Write_Kind is (Entire_Object, Record_Fields, Array_Elmts, Discard);
+   type Write_Kind is
+     (Entire_Object, Record_Components, Array_Components, Discard);
    --  The status of a variable or a part of a variable.
    --   * Entire_Object the object is entirely written.
-   --   * Record_Fields some fields (maybe all) of the record object are
+   --   * Record_Components some fields (maybe all) of the record object are
    --                   written.
-   --   * Array_Elmts   some indexes (maybe all) of the array object are
+   --   * Array_Components  some indexes (maybe all) of the array object are
    --                   written.
    --   * Discard       we don't care about the variable and won't output any
    --                   invariant for it (typically for local variables).
@@ -67,34 +68,52 @@ package body Gnat2Why.Expr.Loops.Inv is
       Equivalent_Keys => "=");
    use Write_Status_Maps;
 
+   package Array_Constraints_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Boolean,
+      Hash            => Common_Containers.Node_Hash,
+      Equivalent_Keys => "=");
+
    type Write_Status (Kind : Write_Kind) is limited record
       case Kind is
          when Entire_Object | Discard => null;
-         when Record_Fields =>
-            Field_Status : Write_Status_Maps.Map;
-         when Array_Elmts   =>
-            Elmt_Status  : Write_Status_Access;
+         when Record_Components =>
+            Component_Status  : Write_Status_Maps.Map;
+         when Array_Components  =>
+            Write_Constraints : Array_Constraints_Maps.Map;
+            Content_Status    : Write_Status_Access;
       end case;
    end record;
    --  If only some parts of the object are written, we store their write
-   --  status in Write_Status additional fields. We do not keep track of
-   --  which array indexes are written.
+   --  status in Write_Status additional fields. To keep track of which array
+   --  indexes are written, we store array writes in the Write_Constraints
+   --  field. We map them to a boolean which is True if the loop invariant has
+   --  already been encountered when the update occurs and False otherwise.
 
-   function Equality_Of_Preserved_Fields
-     (Expr     : W_Expr_Id;
-      At_Entry : W_Expr_Id;
-      Expr_Ty  : Entity_Id;
-      Status   : in out Write_Status_Access)
+   function Equality_Of_Preserved_Components
+     (Loop_Idx  : Entity_Id;
+      Is_Rev    : Boolean;
+      Var_Known : Boolean;
+      Loop_Vars : Flow_Id_Sets.Set;
+      Expr      : W_Expr_Id;
+      At_Entry  : W_Expr_Id;
+      Expr_Ty   : Entity_Id;
+      Status    : in out Write_Status_Access)
       return W_Pred_Id
    with
      Pre => Status /= null and then Status.Kind /= Discard;
    --  Compute a predicate which assumes preservation of every unmodified
    --  part of an expression. Status is finalized by the call for sanity
    --  checking purpose.
-   --  @param Expr Why expression at the current loop index.
-   --  @param At_Entry Why expression at the loop's entry.
-   --  @param Expr_Ty Ada type of Expr.
-   --  @param Status Write_Status of Expr.
+   --  @param Loop_Idx Ada entity of the loop index if any
+   --  @param Is_Rev True if the loop is reversed
+   --  @param Var_Known True if flow analysis was run and Loop_Vars is
+   --         populated.
+   --  @param Loop_Vars set of Flow_Ids modified by the loop statement
+   --  @param Expr Why expression at the current loop index
+   --  @param At_Entry Why expression at the loop's entry
+   --  @param Expr_Ty Ada type of Expr
+   --  @param Status Write_Status of Expr
    --  @return a predicate stating that fields not written in Status are equal
    --          in Expr and At_Entry.
 
@@ -169,6 +188,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Update_Status
      (New_Write      : Node_Id;
       Loop_Writes    : in out Write_Status_Maps.Map;
+      Inv_Seen       : Boolean;
       Expected_Kind  : Write_Kind;
       Expected_Type  : out Entity_Id;
       Updated_Status : out Write_Status_Access)
@@ -179,13 +199,16 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  several updates if New_Write is a complex variable name.
    --  @param New_Write variable name which has been written.
    --  @param Loop_Writes map between entities and their write status.
+   --  @param Inv_Seen True if the current update occurs after the loop
+   --         invariant in the top level loop.
    --  @param Expected_Kind expected kind of the updated status.
    --  @param Expected_Type type of the actual updated object part.
    --  @param Updated_Status access to New_Write's write status.
 
    procedure Update_Status
      (New_Write   : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map);
+      Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Seen    : Boolean);
    --  Same as before except that Expected_Kind is set to Entire_Object and
    --  Expected_Type and Updated_Status are discarded.
 
@@ -204,102 +227,365 @@ package body Gnat2Why.Expr.Loops.Inv is
 
    procedure Process_Call_Statement
      (Call        : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map);
+      Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Seen    : Boolean);
    --  Update a status map for every variable written by a call statement.
    --  @param Call considered call statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
+   --  @param Inv_Seen True if the statement occurs after the loop invariant
+   --         in the top level loop.
 
    procedure Process_Loop_Statement
      (Loop_Stmt   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean);
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean);
    --  Traverse a loop statement and update a status map for every variable
    --  potentially written by the loop.
    --  @param Loop_Stmt considered loop statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
-   --  @param Keep_Local False if local variables should be discarded.
+   --  @param Inv_Seen True if the statement occurs after the loop invariant
+   --         in the top level loop.
+   --  @param In_Nested True if the statement occurs inside a nested statement.
 
    procedure Process_Statement
      (N           : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean);
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean);
    --  Traverse a statement and update a status map for every variable
    --  potentially written by the statement.
    --  @param N considered statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
-   --  @param Keep_Local False if local variables should be discarded.
+   --  @param Inv_Seen True if the statement occurs after the loop invariant
+   --         in the top level loop.
+   --  @param In_Nested True if the statement occurs inside a nested statement.
 
    procedure Process_Statement_List
      (L           : List_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean);
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean);
    --  Process every statement of a list.
    --  @param L considered list of statements.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
-   --  @param Keep_Local False if local variables should be discarded.
+   --  @param Inv_Seen True if the statement occurs after the loop invariant
+   --         in the top level loop.
+   --  @param In_Nested True if the statement occurs inside a nested statement.
 
-   ----------------------------------
-   -- Equality_Of_Preserved_Fields --
-   ----------------------------------
+   --------------------------------------
+   -- Equality_Of_Preserved_Components --
+   --------------------------------------
 
-   function Equality_Of_Preserved_Fields
-     (Expr     : W_Expr_Id;
-      At_Entry : W_Expr_Id;
-      Expr_Ty  : Entity_Id;
-      Status   : in out Write_Status_Access)
+   function Equality_Of_Preserved_Components
+     (Loop_Idx  : Entity_Id;
+      Is_Rev    : Boolean;
+      Var_Known : Boolean;
+      Loop_Vars : Flow_Id_Sets.Set;
+      Expr      : W_Expr_Id;
+      At_Entry  : W_Expr_Id;
+      Expr_Ty   : Entity_Id;
+      Status    : in out Write_Status_Access)
       return W_Pred_Id
    is
-      Preserved_Fields : W_Pred_Id := True_Pred;
+      Preserved_Components : W_Pred_Id := True_Pred;
 
-      procedure Handle_Field (Field : Entity_Id);
-      --  Generate the appropriate equality if the field is preserved and calls
-      --  Equality_Of_Preserved_Fields recursively otherwise.
+      function Build_Array_Constraints
+        (Updates : Array_Constraints_Maps.Map;
+         Indices : W_Expr_Array)
+         return W_Pred_Id;
+      --  Generate an approximation of the set of preserved indexes in an
+      --  array from the set of all its updates in the loop statement.
 
-      procedure Handle_Field (Field : Entity_Id) is
+      procedure Handle_Record_Component (Component : Entity_Id);
+      --  Generate the appropriate equality if the field is preserved and call
+      --  Equality_Of_Preserved_Components recursively otherwise.
+
+      function Build_Array_Constraints
+        (Updates : Array_Constraints_Maps.Map;
+         Indices : W_Expr_Array)
+         return W_Pred_Id
+      is
+         function Is_Constant (Expr : Node_Id) return Boolean is
+           (Var_Known
+            and then Get_Variables_For_Proof (Expr, Expr).Intersection
+            (Loop_Vars).Is_Empty);
+         --  Check whether an expression is constant in the loop statement. If
+         --  the variables modified in the loop are not known, assume nothing
+         --  is constant.
+
+         function Is_Loop_Idx (Expr : Node_Id) return Boolean is
+           (Present (Loop_Idx)
+            and then Nkind (Expr) in N_Identifier | N_Expanded_Name
+            and then Entity (Expr) = Loop_Idx);
+         --  Check whether an expression is the loop index
+
+         function Mk_Lt
+           (Left, Right : W_Expr_Id;
+            Typ         : W_Type_Id;
+            Or_Eq       : Boolean := False) return W_Pred_Id;
+         --  Create a comparison between Left and Right. If Or_Eq is True, the
+         --  operator is <= else it is <.
+
+         -----------
+         -- Mk_Lt --
+         -----------
+
+         function Mk_Lt
+           (Left, Right : W_Expr_Id;
+            Typ         : W_Type_Id;
+            Or_Eq       : Boolean := False) return W_Pred_Id
+         is
+            Symb : constant W_Identifier_Id :=
+              (if Typ = EW_Int_Type
+               then (if Or_Eq then Int_Infix_Le else Int_Infix_Lt)
+               elsif Why_Type_Is_BitVector (Typ)
+               then (if Or_Eq then MF_BVs (Typ).Ule
+                 else MF_BVs (Typ).Ult)
+               else raise Program_Error);
+         begin
+            return +New_Comparison (Symb, Left, Right, EW_Pred);
+         end Mk_Lt;
+
+         use Array_Constraints_Maps;
+         Constraints : W_Pred_Id := True_Pred;
+
+      begin
+         --  Iterate over the set of writes to array components and generate a
+         --  predicate representing cases where we are sure that the array is
+         --  not written. All the cases are joined using 'and' connectors.
+
+         for C in Updates.Iterate loop
+            declare
+               Update   : constant Node_Id := Key (C);
+               Inv_Seen : constant Boolean := Element (C);
+            begin
+               if Nkind (Update) = N_Slice then
+                  pragma Assert (Indices'Length = 1);
+
+                  --  The assignment is a slice. There can be several cases
+                  --  for which we know the components are preserved. Link them
+                  --  with 'or' connectors.
+
+                  declare
+                     Rng        : constant Node_Id :=
+                       Get_Range (Discrete_Range (Update));
+                     Low        : constant Node_Id := Low_Bound (Rng);
+                     High       : constant Node_Id := High_Bound (Rng);
+                     Typ        : constant W_Type_Id := Get_Type (Indices (1));
+                     Constraint : W_Pred_Id := False_Pred;
+
+                  begin
+                     --  If Low is constant, generate I < Low
+
+                     if Is_Constant (Low) then
+                        Constraint :=
+                          +New_Or_Else_Expr
+                          (Left   => +Mk_Lt
+                             (Left   => Indices (1),
+                              Right  => Transform_Expr
+                                (Expr          => Low,
+                                 Domain        => EW_Term,
+                                 Params        => Body_Params,
+                                 Expected_Type => Typ),
+                              Typ    => Typ),
+                           Right  => +Constraint,
+                           Domain => EW_Pred);
+
+                     --  If the loop is reversed and Low is Loop_Idx, generate
+                     --  I < Low if the statement occurs before the invariant
+                     --  and I <= Low otherwise.
+
+                     elsif Is_Rev and then Is_Loop_Idx (Low) then
+                        Constraint :=
+                          +New_Or_Else_Expr
+                          (Left   => +Mk_Lt
+                             (Left   => Indices (1),
+                              Right  => Transform_Expr
+                                (Expr          => Low,
+                                 Domain        => EW_Term,
+                                 Params        => Body_Params,
+                                 Expected_Type => Typ),
+                              Typ    => Typ,
+                              Or_Eq  => Inv_Seen),
+                           Right  => +Constraint,
+                           Domain => EW_Pred);
+                     end if;
+
+                     --  If High is constant, generate High < I
+
+                     if  Is_Constant (High) then
+                        Constraint :=
+                          +New_Or_Else_Expr
+                          (Left   => +Mk_Lt
+                             (Left   => Transform_Expr
+                                (Expr          => High,
+                                 Domain        => EW_Term,
+                                 Params        => Body_Params,
+                                 Expected_Type => Typ),
+                              Right  => Indices (1),
+                              Typ    => Typ),
+                           Right  => +Constraint,
+                           Domain => EW_Pred);
+
+                     --  If the loop is not reversed and High is Loop_Idx
+                     --  generate High < I if the statement occurs before the
+                     --  invariant and High <= I otherwise.
+
+                     elsif not Is_Rev and then Is_Loop_Idx (High) then
+                        Constraint :=
+                          +New_Or_Else_Expr
+                          (Left   => +Mk_Lt
+                             (Left   => Transform_Expr
+                                (Expr          => High,
+                                 Domain        => EW_Term,
+                                 Params        => Body_Params,
+                                 Expected_Type => Typ),
+                              Right  => Indices (1),
+                              Typ    => Typ,
+                              Or_Eq  => Inv_Seen),
+                           Right  => +Constraint,
+                           Domain => EW_Pred);
+                     end if;
+
+                     Constraints := +New_And_Then_Expr
+                       (Left   => +Constraint,
+                        Right  => +Constraints,
+                        Domain => EW_Pred);
+                  end;
+               else
+
+                  --  The assignment is a indexed component. Loop through the
+                  --  array indices to generate cases in which we know the
+                  --  components are preserved. Link them with 'or' connectors.
+
+                  declare
+                     Expression : Node_Id := First (Expressions (Update));
+                     Constraint : W_Pred_Id := False_Pred;
+                  begin
+                     for I in Indices'Range loop
+                        pragma Assert (Present (Expression));
+
+                        declare
+                           Typ  : constant W_Type_Id := Get_Type (Indices (I));
+                           Expr : constant W_Expr_Id :=
+                             Transform_Expr
+                               (Expr          => Expression,
+                                Domain        => EW_Term,
+                                Params        => Body_Params,
+                                Expected_Type => Typ);
+
+                        begin
+                           --  If Expression is Loop_Idx, generate:
+                           --  - I < Expr if the iteration is reversed and the
+                           --        statement occurs before the invariant,
+                           --  - I <= Expr if the iteration is reversed and
+                           --        the statement occurs after the invariant,
+                           --  - Expr < I if the iteration is not reversed and
+                           --        the statement occurs before the invariant,
+                           --  - Expr <= I if the iteration is not reversed and
+                           --        the statement occurs after the invariant.
+
+                           if Is_Loop_Idx (Expression) then
+                              if Is_Rev then
+                                 Constraint :=
+                                   +New_Or_Else_Expr
+                                   (Left   => +Mk_Lt
+                                      (Left   => Indices (I),
+                                       Right  => Expr,
+                                       Typ    => Typ,
+                                       Or_Eq  => Inv_Seen),
+                                    Right  => +Constraint,
+                                    Domain => EW_Pred);
+                              else
+                                 Constraint :=
+                                   +New_Or_Else_Expr
+                                   (Left   => +Mk_Lt
+                                      (Left   => Expr,
+                                       Right  => Indices (I),
+                                       Typ    => Typ,
+                                       Or_Eq  => Inv_Seen),
+                                    Right  => +Constraint,
+                                    Domain => EW_Pred);
+                              end if;
+
+                           --  If Expression is constant, generate I /= Expr
+
+                           elsif Is_Constant (Expression) then
+                              Constraint :=
+                                +New_Or_Else_Expr
+                                (Left   => New_Comparison
+                                   (Symbol => Why_Neq,
+                                    Left   => Expr,
+                                    Right  => Indices (I),
+                                    Domain => EW_Pred),
+                                 Right  => +Constraint,
+                                 Domain => EW_Pred);
+                           end if;
+                        end;
+                        Expression := Next (Expression);
+                     end loop;
+
+                     Constraints := +New_And_Then_Expr
+                       (Left   => +Constraint,
+                        Right  => +Constraints,
+                        Domain => EW_Pred);
+                  end;
+               end if;
+            end;
+         end loop;
+         return Constraints;
+      end Build_Array_Constraints;
+
+      procedure Handle_Record_Component (Component : Entity_Id) is
          F_Expr_Ty  : constant Entity_Id :=
-           Retysp (Etype (Field));
+           Retysp (Etype (Component));
          F_Expr     : constant W_Expr_Id :=
            New_Ada_Record_Access (Ada_Node => Empty,
                                   Name     => Expr,
                                   Domain   => EW_Term,
-                                  Field    => Field,
+                                  Field    => Component,
                                   Ty       => Expr_Ty);
          F_At_Entry : constant W_Expr_Id :=
            New_Ada_Record_Access (Ada_Node => Empty,
                                   Name     => At_Entry,
                                   Domain   => EW_Term,
-                                  Field    => Field,
+                                  Field    => Component,
                                   Ty       => Expr_Ty);
          Inv        : W_Pred_Id;
 
       begin
-         --  Field is modified
+         --  Component is modified
 
-         if Status.Field_Status.Contains (Field) then
+         if Status.Component_Status.Contains (Component) then
 
             declare
                F_Status : Write_Status_Access :=
-                 Status.Field_Status.Element (Field);
+                 Status.Component_Status.Element (Component);
             begin
 
                --  Look for its preserved subfields
 
-               Inv := Equality_Of_Preserved_Fields
-                 (Expr     => F_Expr,
-                  At_Entry => F_At_Entry,
-                  Expr_Ty  => F_Expr_Ty,
-                  Status   => F_Status);
+               Inv := Equality_Of_Preserved_Components
+                 (Loop_Idx  => Loop_Idx,
+                  Is_Rev    => Is_Rev,
+                  Var_Known => Var_Known,
+                  Loop_Vars => Loop_Vars,
+                  Expr      => F_Expr,
+                  At_Entry  => F_At_Entry,
+                  Expr_Ty   => F_Expr_Ty,
+                  Status    => F_Status);
             end;
 
             --  Remove visited fields for sanity checking
 
-            Status.Field_Status.Exclude (Field);
+            Status.Component_Status.Exclude (Component);
 
-            --  Field is preserved
+            --  Component is preserved
 
          else
             Inv := +New_Comparison (Symbol => Why_Eq,
@@ -308,11 +594,13 @@ package body Gnat2Why.Expr.Loops.Inv is
                                     Domain => EW_Pred);
          end if;
 
-         Preserved_Fields :=
-           +New_And_Expr (Left   => +Preserved_Fields,
+         Preserved_Components :=
+           +New_And_Expr (Left   => +Preserved_Components,
                           Right  => +Inv,
                           Domain => EW_Pred);
-      end Handle_Field;
+      end Handle_Record_Component;
+
+   --  Start of processing for Equality_Of_Preserved_Components
 
    begin
       case Status.Kind is
@@ -320,51 +608,92 @@ package body Gnat2Why.Expr.Loops.Inv is
             raise Program_Error;
 
          when Entire_Object =>
-            Preserved_Fields := True_Pred;
+            Preserved_Components := True_Pred;
 
-         when Record_Fields =>
+         when Record_Components =>
 
-            --  Only consider fields which are mutable, hence not discriminants
-            --  of types without default discriminants or of constrained types.
+            --  As discriminants may occur in bounds of types of other fields,
+            --  store them in the Symbol_Table.
 
-            if Has_Discriminants (Expr_Ty)
-              and then Has_Defaulted_Discriminants (Expr_Ty)
-              and then not Is_Constrained (Expr_Ty)
-            then
-               declare
-                  Discr : Entity_Id := First_Discriminant (Expr_Ty);
-               begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                  while Present (Discr) loop
+            declare
+               Discrs  : constant Natural :=
+                 (if Has_Discriminants (Expr_Ty)
+                  or else Has_Unknown_Discriminants (Expr_Ty)
+                  then Natural (Number_Discriminants (Expr_Ty))
+                  else 0);
+               Discr   : Node_Id :=
+                 (if Has_Discriminants (Expr_Ty)
+                  or else Has_Unknown_Discriminants (Expr_Ty)
+                  then First_Discriminant (Expr_Ty)
+                  else Empty);
+               Tmps    : W_Identifier_Array (1 .. Discrs);
+               Binds   : W_Expr_Array (1 .. Discrs);
+               I       : Positive := 1;
+            begin
 
-                     if not Is_Completely_Hidden (Discr) then
-                        Handle_Field (Discr);
+               while Present (Discr) loop
+                  if Is_Not_Hidden_Discriminant (Discr) then
+                     Tmps (I) := New_Temp_Identifier
+                       (Discr, EW_Abstract (Etype (Discr)));
+                     Binds (I) := New_Ada_Record_Access
+                       (Empty, EW_Term, Expr, Discr, Expr_Ty);
+
+                     Insert_Entity (Discr, Tmps (I));
+
+                     --  Only consider fields which are mutable, hence not
+                     --  discriminants of types without default discriminants
+                     --  or of constrained types.
+
+                     if Has_Discriminants (Expr_Ty)
+                       and then Has_Defaulted_Discriminants (Expr_Ty)
+                       and then not Is_Constrained (Expr_Ty)
+                     then
+                        Handle_Record_Component (Discr);
                      end if;
+                  end if;
 
-                     Discr := Next_Discriminant (Discr);
+                  Next_Discriminant (Discr);
+                  I := I + 1;
+               end loop;
+
+               for Component of Get_Component_Set (Expr_Ty) loop
+
+                  --  Only consider fields which are visible in Expr_Ty.
+
+                  if Component_Is_Visible_In_Type (Expr_Ty, Component) then
+                     Handle_Record_Component (Component);
+                  end if;
+               end loop;
+
+               --  Introduce bindings for the discriminants if any
+
+               if Preserved_Components /= True_Pred then
+                  for I in 1 .. Discrs loop
+                     Preserved_Components := +New_Typed_Binding
+                       (Domain  => EW_Pred,
+                        Name    => Tmps (I),
+                        Def     => Binds (I),
+                        Context => +Preserved_Components);
                   end loop;
-               end;
-            end if;
-
-            for Field of Get_Component_Set (Expr_Ty) loop
-
-               --  Only consider fields which are visible in Expr_Ty.
-
-               if Component_Is_Visible_In_Type (Expr_Ty, Field) then
-                  Handle_Field (Field);
                end if;
-            end loop;
+            end;
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
             --  Sanity checking: all the non-visited fields are discarded
 
-            pragma Assert (for all E of Status.Field_Status =>
+            pragma Assert (for all E of Status.Component_Status =>
                              E.Kind = Discard);
 
          --  For arrays, generate:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-         --    Equality_Of_Preserved_Fields (get <Expr> i1 .. in)
+         --    (if Array_Constraints i1 ... in
+         --     then get <Expr> i1 .. in = get <At_Entry> i1 .. in
+         --     else Equality_Of_Preserved_Components (get <Expr> i1 .. in))
 
-         when Array_Elmts =>
+         when Array_Components =>
             declare
                Dim        : constant Positive :=
                  Positive (Number_Dimensions (Expr_Ty));
@@ -396,36 +725,51 @@ package body Gnat2Why.Expr.Loops.Inv is
                pragma Assert (I = Indices'Last + 1);
 
                declare
-                  E_Expr_Ty   : constant Entity_Id :=
+                  E_Expr_Ty        : constant Entity_Id :=
                     Retysp (Component_Type (Expr_Ty));
-                  E_Expr      : constant W_Expr_Id :=
+                  E_Expr           : constant W_Expr_Id :=
                     New_Array_Access (Empty, Expr, Indices, EW_Term);
-                  E_At_Entry  : constant W_Expr_Id :=
+                  E_At_Entry       : constant W_Expr_Id :=
                     New_Array_Access (Empty, At_Entry, Indices, EW_Term);
-                  Elmt_Fields : W_Expr_Id :=
-                    +Equality_Of_Preserved_Fields
-                      (Expr     => E_Expr,
-                       At_Entry => E_At_Entry,
-                       Expr_Ty  => E_Expr_Ty,
-                       Status   => Status.Elmt_Status);
+                  Constraints      : constant W_Pred_Id :=
+                    Build_Array_Constraints
+                      (Status.Write_Constraints, Indices);
+                  Component_Status : W_Pred_Id :=
+                    +New_Simpl_Conditional
+                    (Domain    => EW_Pred,
+                     Condition => +Constraints,
+                     Then_Part =>
+                       +New_Comparison (Symbol => Why_Eq,
+                                        Left   => E_Expr,
+                                        Right  => E_At_Entry,
+                                        Domain => EW_Pred),
+                     Else_Part =>
+                       +Equality_Of_Preserved_Components
+                       (Loop_Idx  => Loop_Idx,
+                        Is_Rev    => Is_Rev,
+                        Loop_Vars => Loop_Vars,
+                        Var_Known => Var_Known,
+                        Expr      => E_Expr,
+                        At_Entry  => E_At_Entry,
+                        Expr_Ty   => E_Expr_Ty,
+                        Status    => Status.Content_Status));
                begin
-                  if +Elmt_Fields /= True_Pred then
-                     Elmt_Fields := New_Conditional
-                       (Domain    => EW_Pred,
-                        Condition => +Range_Expr,
-                        Then_Part => Elmt_Fields,
+                  if +Component_Status /= True_Pred then
+                     Component_Status := New_Conditional
+                       (Condition => +Range_Expr,
+                        Then_Part => +Component_Status,
                         Typ       => EW_Bool_Type);
 
-                     Preserved_Fields := New_Universal_Quantif
+                     Preserved_Components := New_Universal_Quantif
                        (Binders => Vars,
-                        Pred    => +Elmt_Fields);
+                        Pred    => +Component_Status);
                   end if;
                end;
             end;
       end case;
       Finalize (Status);
-      return Preserved_Fields;
-   end Equality_Of_Preserved_Fields;
+      return Preserved_Components;
+   end Equality_Of_Preserved_Components;
 
    --------------
    -- Finalize --
@@ -444,12 +788,12 @@ package body Gnat2Why.Expr.Loops.Inv is
             | Discard
          =>
             null;
-         when Record_Fields =>
-            for E of Status.Field_Status loop
+         when Record_Components =>
+            for E of Status.Component_Status loop
                Finalize (E);
             end loop;
-         when Array_Elmts   =>
-            Finalize (Status.Elmt_Status);
+         when Array_Components   =>
+            Finalize (Status.Content_Status);
       end case;
 
       Free (Status);
@@ -467,7 +811,21 @@ package body Gnat2Why.Expr.Loops.Inv is
       Loop_Writes   : constant Map :=
         Get_Loop_Writes (Loop_Stmt, Has_Loop_Invariant);
       Loop_Id       : constant Entity_Id := Entity (Identifier (Loop_Stmt));
+      Param_Spec    : constant Node_Id :=
+        (if Present (Iteration_Scheme (Loop_Stmt))
+         then Loop_Parameter_Specification (Iteration_Scheme (Loop_Stmt))
+         else Empty);
+      Loop_Index    : constant Entity_Id :=
+        (if Present (Param_Spec) then Defining_Identifier (Param_Spec)
+         else Empty);
+      Is_Reverse    : constant Boolean :=
+        Present (Param_Spec)
+        and then Reverse_Present (Param_Spec);
       Scope         : constant Entity_Id := Enclosing_Unit (Loop_Id);
+      Modified      : constant Flow_Id_Sets.Set :=
+        (if Loop_Writes_Known (Loop_Id)
+         then To_Entire_Variables (Flow_Utility.Get_Loop_Writes (Loop_Id))
+         else Flow_Id_Sets.Empty_Set);
       N             : Node_Id;
       Dyn_Types_Inv : W_Pred_Id := True_Pred;
 
@@ -476,52 +834,47 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Check that we have at least every variable modified in the loop.
 
       if Loop_Writes_Known (Loop_Id) then
-         declare
-            Modified : constant Flow_Id_Sets.Set :=
-              To_Entire_Variables (Flow_Utility.Get_Loop_Writes (Loop_Id));
-         begin
-            for F of Modified loop
+         for F of Modified loop
 
-               --  We do not care about Magic_Strings which are translated as
-               --  private in Why.
+            --  We do not care about Magic_Strings which are translated as
+            --  private in Why.
 
-               if F.Kind = Direct_Mapping then
+            if F.Kind = Direct_Mapping then
 
-                  --  We don't care about constant objects and objects
-                  --  with asynchronous readers as we don't want to assume
-                  --  anything on them. We also don't consider abstract
-                  --  states.
-                  --  For loops inside a single task, flow analysis returns the
-                  --  task object as written. We don't care as single
-                  --  tasks can't have (mutable) discriminants and thus cannot
-                  --  be modified from a proof point of view. We still want to
-                  --  issue an error if flow analysis returns a task with
-                  --  mutable discriminants that we did not find.
+               --  We don't care about constant objects and objects
+               --  with asynchronous readers as we don't want to assume
+               --  anything on them. We also don't consider abstract
+               --  states.
+               --  For loops inside a single task, flow analysis returns the
+               --  task object as written. We don't care as single
+               --  tasks can't have (mutable) discriminants and thus cannot
+               --  be modified from a proof point of view. We still want to
+               --  issue an error if flow analysis returns a task with
+               --  mutable discriminants that we did not find.
 
-                  declare
-                     E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  begin
-                     if not Loop_Writes.Contains (E)
-                       and then Ekind (E) in Object_Kind
-                       and then Is_Mutable_In_Why (E)
-                       and then not Has_Async_Writers (F)
-                       and then
-                         (not Is_Task_Type (Etype (E))
-                          or else Has_Discriminants (Etype (E)))
-                     then
-                        Ada.Text_IO.Put_Line
-                          ("error in computation of loop frame condition for "
-                           & Full_Name (Get_Direct_Mapping_Id (F)));
-                        raise Program_Error;
-                     end if;
-                  end;
-               end if;
-            end loop;
-         end;
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  if not Loop_Writes.Contains (E)
+                    and then Ekind (E) in Object_Kind
+                    and then Is_Mutable_In_Why (E)
+                    and then not Has_Async_Writers (F)
+                    and then
+                      (not Is_Task_Type (Etype (E))
+                       or else Has_Discriminants (Etype (E)))
+                  then
+                     Ada.Text_IO.Put_Line
+                       ("error in computation of loop frame condition for "
+                        & Full_Name (Get_Direct_Mapping_Id (F)));
+                     raise Program_Error;
+                  end if;
+               end;
+            end if;
+         end loop;
       end if;
 
-      --  Assume the dynamic invariant of every variable in Loop_Writes if
-      --  it was not discarded.
+      --  Assume the dynamic invariant and frame condition of every variable in
+      --  Loop_Writes if it was not discarded.
 
       for C in Loop_Writes.Iterate loop
          N := Key (C);
@@ -561,13 +914,17 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                      --  Unmodified fields are preserved
 
-                     3 => +Equality_Of_Preserved_Fields
-                       (Expr     => Expr,
-                        At_Entry => +Name_For_Loop_Entry
+                     3 => +Equality_Of_Preserved_Components
+                       (Loop_Idx  => Loop_Index,
+                        Is_Rev    => Is_Reverse,
+                        Var_Known => Loop_Writes_Known (Loop_Id),
+                        Loop_Vars => Modified,
+                        Expr      => Expr,
+                        At_Entry  => +Name_For_Loop_Entry
                           (Expr    => N,
                            Loop_Id => Loop_Id),
-                        Expr_Ty  => Retysp (Etype (N)),
-                        Status   => Status)));
+                        Expr_Ty   => Retysp (Etype (N)),
+                        Status    => Status)));
             end;
          end if;
       end loop;
@@ -593,7 +950,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       return Loop_Writes : Write_Status_Maps.Map do
          Process_Loop_Statement (Loop_Stmt, Loop_Writes,
-                                 Keep_Local => Has_Loop_Invariant);
+                                 Inv_Seen  => not Has_Loop_Invariant,
+                                 In_Nested => False);
       end return;
    end Get_Loop_Writes;
 
@@ -622,11 +980,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                raise Program_Error;
             when Entire_Object =>
                return new Write_Status'(Kind => Entire_Object);
-            when Record_Fields =>
+            when Record_Components =>
                if Retysp_Kind (Etype (New_Write)) in Record_Kind | Private_Kind
                then
-                  return new Write_Status'(Kind         => Record_Fields,
-                                           Field_Status => Empty_Map);
+                  return new
+                    Write_Status'(Kind             => Record_Components,
+                                  Component_Status => Empty_Map);
                else
 
                   --  We only handle separately parts of arrays and records.
@@ -634,9 +993,12 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   return new Write_Status'(Kind => Entire_Object);
                end if;
-            when Array_Elmts =>
-               return new Write_Status'(Kind        => Array_Elmts,
-                                        Elmt_Status => null);
+            when Array_Components =>
+               return
+               new Write_Status'(Kind              => Array_Components,
+                                 Write_Constraints =>
+                                    Array_Constraints_Maps.Empty_Map,
+                                 Content_Status    => null);
          end case;
       end if;
    end New_Status;
@@ -708,7 +1070,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             New_Item => new Write_Status'(Kind => Entire_Object));
 
          --  Sanity check: the kind of a variable cannot change from
-         --  Array_Elmt to Record_Fields or reverse.
+         --  Array_Elmt to Record_Components or reverse.
 
       elsif Expected_Kind /= Entire_Object
         and then Element (C).Kind not in Entire_Object | Discard
@@ -740,7 +1102,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
    procedure Process_Call_Statement
      (Call        : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map)
+      Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Seen    : Boolean)
    is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Update Loop_Writes with Actual if Formal is an out or an in out
@@ -753,7 +1116,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
       begin
          if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter then
-            Update_Status (Actual, Loop_Writes);
+            Update_Status (Actual, Loop_Writes, Inv_Seen);
          end if;
       end Process_Param;
 
@@ -827,7 +1190,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                pragma Assert
                  (Has_Async_Writers
                     (Direct_Mapping_Id (Entity (Call_Prefix))));
-               Update_Status (Call_Prefix, Loop_Writes);
+               Update_Status (Call_Prefix, Loop_Writes, Inv_Seen);
 
             --  Internal call, we currently do not handle the implicit self
             --  reference.
@@ -846,7 +1209,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Loop_Statement
      (Loop_Stmt   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean)
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean)
    is
       Stmts  : constant List_Id := Statements (Loop_Stmt);
       Scheme : constant Node_Id := Iteration_Scheme (Loop_Stmt);
@@ -869,20 +1233,20 @@ package body Gnat2Why.Expr.Loops.Inv is
                  Defining_Identifier (Iterator_Specification (Scheme));
             end if;
 
-            --  For the loop index of the top-level loop, for which Keep_Local
-            --  is True, consider the variable as completely written instead of
-            --  discarded, as this allows stating the dynamic property of the
-            --  loop index in the frame condition.
+            --  For the loop index of the top-level loop, for which In_Nested
+            --  is False, consider the variable as completely written instead
+            --  of discarded, as this allows stating the dynamic property of
+            --  the loop index in the frame condition.
 
             One_Level_Update (New_Write      => Loop_Param_Ent,
                               Loop_Writes    => Loop_Writes,
-                              Discard_Writes => not Keep_Local);
+                              Discard_Writes => In_Nested or else Inv_Seen);
          end;
       end if;
 
       --  Process the statement list
 
-      Process_Statement_List (Stmts, Loop_Writes, Keep_Local);
+      Process_Statement_List (Stmts, Loop_Writes, Inv_Seen, In_Nested);
    end Process_Loop_Statement;
 
    -----------------------
@@ -892,15 +1256,16 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement
      (N           : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean)
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean)
    is
    begin
       case Nkind (N) is
          when N_Assignment_Statement =>
-            Update_Status (Sinfo.Name (N), Loop_Writes);
+            Update_Status (Sinfo.Name (N), Loop_Writes, Inv_Seen);
 
          --  Possibly record writes on variables local to the block (if
-         --  Keep_Local is still True at this point) as a Loop_Invariant
+         --  In_Nested is still False at this point) as a Loop_Invariant
          --  is allowed to appear in a block.
 
          when N_Block_Statement =>
@@ -912,10 +1277,11 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             begin
                if Present (Decls) then
-                  Process_Statement_List (Decls, Loop_Writes, Keep_Local);
+                  Process_Statement_List
+                    (Decls, Loop_Writes, Inv_Seen, In_Nested);
                end if;
 
-               Process_Statement (HSS, Loop_Writes, Keep_Local);
+               Process_Statement (HSS, Loop_Writes, Inv_Seen, In_Nested);
             end;
 
          --  Discard writes to variables local to a case statement
@@ -926,14 +1292,15 @@ package body Gnat2Why.Expr.Loops.Inv is
             begin
                while Present (Alternative) loop
                   Process_Statement_List
-                    (Statements (Alternative), Loop_Writes,
-                     Keep_Local => False);
+                    (Statements (Alternative), Loop_Writes, Inv_Seen,
+                     In_Nested => True);
                   Next (Alternative);
                end loop;
             end;
 
-         --  Discard writes to N if we are not interested in local objects.
-         --  The goal of passing Keep_Local (starting from value True) from
+         --  Discard writes to N if we are in a nested scope or if a loop
+         --  invariant has already been encountered in the outer loop. The
+         --  goal of passing In_Nested and Inv_Seen (starting from False) from
          --  the top-level call to Process_Loop_Statement through all calls
          --  traversing the tree is that we keep stating the dynamic property
          --  of local variables declared inside the loop before the loop
@@ -952,12 +1319,12 @@ package body Gnat2Why.Expr.Loops.Inv is
          --     end;
          --  end loop;
          --
-         --  As Keep_Local is True when processing the declaration of X, the
+         --  As Inv_Seen is False when processing the declaration of X, the
          --  assignment to X is not discarded. Instead, X is marked as being
          --  completely written. As a result, the dynamic property of X is
          --  stated in the generated frame condition, which may be useful.
          --
-         --  As Keep_Local is False when processing the declaration of Y, the
+         --  As Inv_Seen is True when processing the declaration of Y, the
          --  assignment to Y is discarded, and so Y is ignored in the generated
          --  frame condition. This is an optimisation, to avoid generating
          --  useless frame conditions, as Y cannot be mentioned in the frame
@@ -969,18 +1336,19 @@ package body Gnat2Why.Expr.Loops.Inv is
             begin
                if Is_Mutable_In_Why (E) then
                   One_Level_Update (E, Loop_Writes,
-                                    Discard_Writes => not Keep_Local);
+                                    Discard_Writes =>
+                                      In_Nested or else Inv_Seen);
                end if;
             end;
 
          when N_Elsif_Part =>
             Process_Statement_List
-              (Then_Statements (N), Loop_Writes, Keep_Local => False);
+              (Then_Statements (N), Loop_Writes, Inv_Seen, In_Nested => True);
 
          when N_Entry_Call_Statement
             | N_Procedure_Call_Statement
          =>
-            Process_Call_Statement (N, Loop_Writes);
+            Process_Call_Statement (N, Loop_Writes, Inv_Seen);
 
          --  Discard writes to variables local to a return statement
 
@@ -988,26 +1356,28 @@ package body Gnat2Why.Expr.Loops.Inv is
             One_Level_Update (Return_Statement_Entity (N), Loop_Writes,
                               Discard_Writes => True);
             Process_Statement_List
-              (Return_Object_Declarations (N), Loop_Writes,
-               Keep_Local => False);
+              (Return_Object_Declarations (N), Loop_Writes, Inv_Seen,
+               In_Nested => True);
 
          --  Discard writes to variables local to an if statement
 
          when N_If_Statement =>
             Process_Statement_List (Then_Statements (N), Loop_Writes,
-                                    Keep_Local => False);
+                                    Inv_Seen, In_Nested => True);
             Process_Statement_List (Else_Statements (N), Loop_Writes,
-                                    Keep_Local => False);
+                                    Inv_Seen, In_Nested => True);
             Process_Statement_List (Elsif_Parts (N), Loop_Writes,
-                                    Keep_Local => False);
+                                    Inv_Seen, In_Nested => True);
 
          when N_Handled_Sequence_Of_Statements =>
-            Process_Statement_List (Statements (N), Loop_Writes, Keep_Local);
+            Process_Statement_List
+              (Statements (N), Loop_Writes, Inv_Seen, In_Nested);
 
          --  Discard writes to variables local to a local loop statement
 
          when N_Loop_Statement =>
-            Process_Loop_Statement (N, Loop_Writes, Keep_Local => False);
+            Process_Loop_Statement
+              (N, Loop_Writes, Inv_Seen, In_Nested => True);
 
          when N_Abstract_Subprogram_Declaration
             | N_Delay_Relative_Statement
@@ -1071,23 +1441,28 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Process_Statement_List
      (L           : List_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Keep_Local  : Boolean)
+      Inv_Seen    : Boolean;
+      In_Nested   : Boolean)
    is
       N    : Node_Id := First (L);
-      Keep : Boolean := Keep_Local;
+      Seen : Boolean := Inv_Seen;
 
    begin
       while Present (N) loop
 
-         --  No need to keep variables declared after the loop invariant,
-         --  as there is no meaningful use of these variables in the frame
-         --  condition.
+         --  If we are not in a nested loop, update Inv_Seen if the invariant
+         --  is seen.
 
-         if Is_Pragma_Check (N, Name_Loop_Invariant) then
-            Keep := False;
+         if not In_Nested
+           and then (Is_Pragma_Check (N, Name_Loop_Invariant)
+                     or else Is_Pragma (N, Pragma_Loop_Variant))
+         then
+            Seen := True;
          end if;
 
-         Process_Statement (N, Loop_Writes, Keep);
+         Process_Statement (N, Loop_Writes,
+                            Inv_Seen  => Seen,
+                            In_Nested => In_Nested);
          Next (N);
       end loop;
    end Process_Statement_List;
@@ -1099,6 +1474,7 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Update_Status
      (New_Write      : Node_Id;
       Loop_Writes    : in out Write_Status_Maps.Map;
+      Inv_Seen       : Boolean;
       Expected_Kind  : Write_Kind;
       Expected_Type  : out Entity_Id;
       Updated_Status : out Write_Status_Access)
@@ -1135,6 +1511,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          =>
             Update_Status (New_Write      => Expression (New_Write),
                            Loop_Writes    => Loop_Writes,
+                           Inv_Seen       => Inv_Seen,
                            Expected_Kind  => Expected_Kind,
                            Expected_Type  => Expected_Type,
                            Updated_Status => Updated_Status);
@@ -1142,52 +1519,54 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Selected_Component =>
 
             --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
-            --  to Record_Fields to create a status for it.
+            --  to Record_Components to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
                            Loop_Writes    => Loop_Writes,
-                           Expected_Kind  => Record_Fields,
+                           Inv_Seen       => Inv_Seen,
+                           Expected_Kind  => Record_Components,
                            Expected_Type  => Expected_Type,
                            Updated_Status => Updated_Status);
 
             pragma Assert (Updated_Status.Kind in Entire_Object
-                             | Discard | Record_Fields);
+                             | Discard | Record_Components);
 
             --  If Prefix (New_Write) is entirely written or if it is
             --  discarded, there is nothing to do.
 
-            if Updated_Status.Kind = Record_Fields then
+            if Updated_Status.Kind = Record_Components then
 
                --  Get the corresponding field of the expected type so that
                --  the fields are found when we search for them during the
                --  construction of the frame condition.
 
                declare
-                  Updated_Field  : constant Entity_Id :=
+                  Updated_Component  : constant Entity_Id :=
                     Entity (Selector_Name (New_Write));
-                  Expected_Field : constant Entity_Id :=
-                    Search_Component_By_Name (Expected_Type, Updated_Field);
+                  Expected_Component : constant Entity_Id :=
+                    Search_Component_By_Name (Expected_Type,
+                                              Updated_Component);
 
                begin
                   --  If no corresponding field is found, the field must not be
                   --  visible in Expected_Type. This may occur if the entity is
                   --  downcasted before being assigned. Just discard it.
 
-                  if No (Expected_Field) then
+                  if No (Expected_Component) then
                      declare
-                        Discarded_Field : constant Entity_Id :=
-                          Original_Record_Component (Updated_Field);
+                        Discarded_Component : constant Entity_Id :=
+                          Original_Record_Component (Updated_Component);
                      begin
                         pragma Assert
-                          (if Updated_Status.Field_Status.Contains
-                             (Discarded_Field)
+                          (if Updated_Status.Component_Status.Contains
+                             (Discarded_Component)
                            then
-                             Updated_Status.Field_Status.Element
-                               (Discarded_Field).Kind = Discard);
+                             Updated_Status.Component_Status.Element
+                               (Discarded_Component).Kind = Discard);
 
                         One_Level_Update
-                          (New_Write      => Discarded_Field,
-                           Loop_Writes    => Updated_Status.Field_Status,
+                          (New_Write      => Discarded_Component,
+                           Loop_Writes    => Updated_Status.Component_Status,
                            Expected_Kind  => Expected_Kind,
                            Discard_Writes => True,
                            Updated_Status => Updated_Status);
@@ -1197,17 +1576,17 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Expected_Type := Empty;
                      end;
 
-                  --  Otherwise update Expected_Field in Field_Status
+                  --  Otherwise update Expected_Component in Component_Status
 
                   else
                      One_Level_Update
-                       (New_Write      => Expected_Field,
-                        Loop_Writes    => Updated_Status.Field_Status,
+                       (New_Write      => Expected_Component,
+                        Loop_Writes    => Updated_Status.Component_Status,
                         Expected_Kind  => Expected_Kind,
                         Discard_Writes => False,
                         Updated_Status => Updated_Status);
 
-                     Expected_Type := Retysp (Etype (Expected_Field));
+                     Expected_Type := Retysp (Etype (Expected_Component));
                   end if;
                end;
             end if;
@@ -1216,27 +1595,28 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Slice
          =>
             --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
-            --  to Array_Elmts to create a status for it.
+            --  to Array_Components to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
                            Loop_Writes    => Loop_Writes,
-                           Expected_Kind  => Array_Elmts,
+                           Inv_Seen       => Inv_Seen,
+                           Expected_Kind  => Array_Components,
                            Expected_Type  => Expected_Type,
                            Updated_Status => Updated_Status);
 
             pragma Assert (Updated_Status.Kind in Entire_Object
-                             | Discard | Array_Elmts);
+                             | Discard | Array_Components);
 
             --  If Prefix (New_Write) is entirely written or if it is
             --  discarded, there is nothing to do.
 
-            if Updated_Status.Kind = Array_Elmts then
+            if Updated_Status.Kind = Array_Components then
 
-               --  If Updated_Status.Elmt_Status is null, create a new status
-               --  for it.
+               --  If Updated_Status.Content_Status is null, create a new
+               --  status for it.
 
-               if Updated_Status.Elmt_Status = null then
-                  Updated_Status.Elmt_Status :=
+               if Updated_Status.Content_Status = null then
+                  Updated_Status.Content_Status :=
                     New_Status
                       (New_Write, Discard_Writes => False,
                        Expected_Kind => Expected_Kind);
@@ -1245,29 +1625,33 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  to Entire_Object if needed.
 
                elsif Expected_Kind = Entire_Object
-                 and then not (Updated_Status.Elmt_Status.Kind in
+                 and then not (Updated_Status.Content_Status.Kind in
                                  Entire_Object | Discard)
                then
                   declare
                      Old_Status : Write_Status_Access :=
-                       Updated_Status.Elmt_Status;
+                       Updated_Status.Content_Status;
                   begin
                      Finalize (Old_Status);
                   end;
 
-                  Updated_Status.Elmt_Status :=
+                  Updated_Status.Content_Status :=
                     new Write_Status'(Kind => Entire_Object);
 
                --  Sanity check: the kind of a variable cannot change from
-               --  Array_Elmt to Record_Fields or reverse.
+               --  Array_Elmt to Record_Components or reverse.
 
                elsif Expected_Kind /= Entire_Object
-                 and then not (Updated_Status.Elmt_Status.Kind in
+                 and then not (Updated_Status.Content_Status.Kind in
                                  Entire_Object | Discard)
                then
                   pragma Assert
-                    (Updated_Status.Elmt_Status.Kind = Expected_Kind);
+                    (Updated_Status.Content_Status.Kind = Expected_Kind);
                end if;
+
+               --  Store the new write in Updated_Status.Write_Constraints
+
+               Updated_Status.Write_Constraints.Insert (New_Write, Inv_Seen);
 
                --  If we are updating a slice of an array, it is exactly as
                --  if we were updating the array as a whole.
@@ -1275,7 +1659,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  status.
 
                if Nkind (New_Write) = N_Indexed_Component then
-                  Updated_Status := Updated_Status.Elmt_Status;
+                  Updated_Status := Updated_Status.Content_Status;
                   Expected_Type := Retysp (Component_Type (Expected_Type));
                end if;
             end if;
@@ -1289,7 +1673,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
    procedure Update_Status
      (New_Write   : Node_Id;
-      Loop_Writes : in out Write_Status_Maps.Map)
+      Loop_Writes : in out Write_Status_Maps.Map;
+      Inv_Seen    : Boolean)
    is
       Updated_Status : Write_Status_Access;
       Expected_Type  : Entity_Id;
@@ -1297,6 +1682,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       Update_Status
         (New_Write      => New_Write,
          Loop_Writes    => Loop_Writes,
+         Inv_Seen       => Inv_Seen,
          Expected_Kind  => Entire_Object,
          Expected_Type  => Expected_Type,
          Updated_Status => Updated_Status);

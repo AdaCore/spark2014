@@ -202,5 +202,5 @@ fib.ads:51:57: info: index check proved (CVC4: 2 VC)
 fib.ads:52:54: info: index check proved (CVC4: 2 VC)
 fib.ads:52:66: info: index check proved (CVC4: 2 VC)
 fib.ads:53:49: medium: "A1" might not be initialized
-fib.ads:53:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) (e.g. when A1 = (100 => 0, others => 1) and A2 = (100 => -1, others => 0) and I = 100)
+fib.ads:53:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) (e.g. when A1 = (99 => 0, 100 => 0, others => 1) and A2 = (100 => -1, others => 0) and I = 100)
 fib.ads:53:57: medium: "A2" might not be initialized

@@ -442,7 +442,8 @@ package body Gnat2Why.Expr.Loops is
 
          Dyn_Types_Inv :=
            Generate_Frame_Condition (Stmt,
-             Has_Loop_Invariant => not Loop_Invariants.Is_Empty);
+             Has_Loop_Invariant => not (Loop_Invariants.Is_Empty
+                                        and then Loop_Variants.Is_Empty));
 
          --  Generate the loop invariants VCs
 

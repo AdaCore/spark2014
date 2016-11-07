@@ -574,7 +574,8 @@ is
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
    with Pre => Ekind (E) = E_Loop and then
                Loop_Writes_Known (E);
-   --  Returns the set of variables a given loop *may* write to. Please note
+   --  Returns the set of variables a given loop *may* write to as well as all
+   --  the variables that may be declared locally in the loop. Please note
    --  that if a function returns inside a loop, the name of the function will
    --  be "written to" and will be returned here.
 
