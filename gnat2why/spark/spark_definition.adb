@@ -2503,8 +2503,7 @@ package body SPARK_Definition is
 
       --  Warn about calls to predefined and imported subprograms with no
       --  manually-written Global or Depends contracts. Exempt calls to pure
-      --  subprograms (because Pure acts as "Global => null"), and subprograms
-      --  with external axioms (because that's what we decided).
+      --  subprograms (because Pure acts as "Global => null").
 
       elsif Emit_Warning_Info_Messages
         and then SPARK_Pragma_Is (Opt.On)
@@ -2513,7 +2512,6 @@ package body SPARK_Definition is
         and then ((Is_Imported (E) and then
                      Convention (E) not in Convention_Ada)
                   or else In_Internal_Unit (E))
-        and then not Entity_In_Ext_Axioms (E)
         and then not Is_Pure (E)
       then
          Error_Msg_NE
