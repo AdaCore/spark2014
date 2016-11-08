@@ -353,11 +353,232 @@ membership primitives provided on red black trees.
 % avoid copies, use forest
 % it is bounded
 % values and colors are outside, in separate array (to avoid having them in the frame)
-% provide plug/extract to modify the forest while keepong the invariant
+% provide plug/extract to modify the forest while keeping the invariant
 % rotate_left and rotate_right preserve the order
+
+From a software verification perspective, it may seem strange to present the implementation
+before the specification. Here we do so because the implementation is comparatively
+simpler and more widely known than the specification. And indeed, our implementation
+ressemble standard imperative implementations of red black trees except for to two notable
+points. The first one, is that we had to comply with the restriction imposed by the
+SPARK language, most notably, the forbiddance of pointers (access types in Ada). To
+alleviate this restriction, we choose to implement binary trees inside an array, indexes
+working as pointers in a memory region. To simplify our implentation, we do not consider
+node deallocation, so that unallocated cells are located after a given index in the array.
+The Ada type of binary trees is given in Figure~\ref{fig-binary-typ}.
+Note that, our trees are bounded by the size of the underlying array.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+type Cell is record
+   Left, Right, Parent : Extended_Index_Type := Empty;
+   Position            : Position_Type := Top;
+end record;
+type Cell_Array is array (Index_Type) of Cell;
+
+type Forest is record
+   S : Extended_Index_Type := Empty;
+   C : Cell_Array;
+end record
+  with Type_Invariant => Tree_Structure (Forest);
+--  Component S gives the size of the forest. Only the cells up to
+--  index S belong to the forest. Cells after index S are free.
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-binary-typ} Implementation of binary trees.}
+\end{figure}
+
+The other specificity of our implementation is of course the layered design. Since we
+have chosen to associate a type invariant to binary trees, the Forest type is defined as
+a private type and it can only be modified by users using functions which abide by the
+invariant. Therefore, we cannot change the values of the Cell record components individually 
+from outside of binary trees implementation. We have resorted to defining functions
+doing unitary modfications of the tree while preserving the invariant. The unitary
+functions provided for binary trees are given in Figure~\ref{fig-binary-fun}.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+function Parent (F : Forest; I : Index_Type)
+    return Extended_Index_Type;
+--  Parent in the tree structure
+
+function Position (F : Forest; I : Index_Type) return Direction;
+--  Position (Left or Right) in the tree structure
+
+function Peek (F : Forest; I : Index_Type; D : Direction)
+    return Extended_Index_Type;
+--  Left or right child in the tree structure
+   
+procedure Init (F : in out Forest; Root : out Index_Type);
+--  Initialize a new tree in F
+
+procedure Extract (F       : in out Forest;
+                   Root, I : Index_Type;
+                   D       : Direction;
+                   V       : out Extended_Index_Type);
+--  Extract the subtree starting at position D after I in the tree
+--  rooted at root in a separate tree. Store its root into V.
+
+procedure Plug (F       : in out Forest;
+                Root, I : Index_Type;
+                D       : Direction;
+                V       : Extended_Index_Type);
+--  Plug the tree rooted at V in F into the tree rooted at Root as
+--  a subtree starting at position D after I.
+
+procedure Insert (F       : in out Forest;
+                  Root, I : Index_Type;
+                  D       : Direction;
+                  V       : out Index_Type);
+--  Insert a new node in F into the tree rooted at Root at position
+--  D after node I. This is equivalent to calling succesively Init
+--  and Plug.
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-binary-fun} Functions on binary trees.}
+\end{figure}
+
+Note that we are dealing everywhere with forests of binary trees instead of a single
+binary tree. This is because, as we are using arrays instead of pointers, we cannot divide a
+tree object into separate objects without copying the array arround. To keep an efficient
+implementation, we resorted to processing the whole memory region as a whole, therefore
+introducing forests of trees, in which every allocated node with a Top position is a
+valid root.
+
+As type invariants can be temporarily broken inside the data structure implementation, the body
+of the unitary functions can directly modify the internal structure of the tree. The implementation
+of Plug is presented in Figure~\ref{fig-binary-body}.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+procedure Plug (F       : in out Forest;
+                Root, I : Index_Type;
+                D       : Direction;
+                V       : Extended_Index_Type) is
+begin
+   if V /= Empty then
+      if D = Left then
+         F.C (I).Left := V;
+      else
+         F.C (I).Right := V;
+      end if;
+      
+      F.C (V).Position := D;
+      F.C (V).Parent := I;
+   end if;
+end Plug;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-binary-body} Implementation of Plug.}
+\end{figure}
+
+Following our leveled approach, search trees are defined outside of binary tree's implementation.
+They are binary trees along with an additional array of values. Also, as we never need to consider
+parts of search trees, we no longer work on complete forests but rather on a single tree. More
+precisely, we store a single root index in the search tree data structure.
+The Ada type of search trees is given in Figure~\ref{fig-search-typ}.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+type Value_Array is array (Index_Type) of Natural;
+
+type Search_Tree is record
+   Root   : Extended_Index_Type := Empty;
+   Struct : Forest;
+   Values : Value_Array := (others => 0);
+end record
+  with Type_Invariant => ...;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-search-typ} Implementation of search trees.}
+\end{figure}
+
+The functions provided on search trees are basic set functions, namely inserting a value into the tree
+and testing a value for membership into the tree. To allow implementation of red black trees above
+search trees, balancing functions are also provided. Defining them inside the implementation of
+search trees rather than inside the implementation of red black tree allow to keep all order related
+concerns into the serach tree layer. Indeed, balancing functions do not preserve balancedness, as they
+are to be called on unbalanced trees, but they do preserve order. Note that implementing the balancing
+functions at this level avoids the need of lifting low level tree handling functions such as Plug and
+Extract. All the functions defined on search trees are implemented using
+functions over binary forests. The functions provided for search trees are given in 
+Figure~\ref{fig-search-fun}. We only give the implementation of \verb|Right_Rotate| as an
+example.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+function Mem (T : Search_Tree; V : Natural) return Boolean;
+--  Test for membership of V in T
+
+procedure Insert
+  (T : in out Search_Tree; V : Natural; I : out Extended_Index_Type);
+--  Insert V in T. I is the new allocated node.
+
+procedure Left_Rotate (T : in out Search_Tree; I : Index_Type);
+--  Rotate the subtree rooted at I in T to the left
+
+procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) is
+   X, Y    : Index_Type;
+   XR      : Extended_Index_Type;
+   Is_Root : constant Boolean := I = Root (T);
+   P       : Index_Type;
+   D       : Direction;
+   
+begin
+   --  Y is the subtree located at I. Extract it as a separate tree.
+   --  If Y is not a root, P is its parent.
+
+   if Is_Root then
+      Y := T.Root;
+   else
+      P := Parent (T.Struct, I);
+      D := Position (T.Struct, I);
+      Extract (T.Struct, T.Root, P, D, Y);
+   end if;
+
+   --  X is the left subtree of Y. Extract it as a separate tree.
+
+   Extract (T.Struct, Y, Y, Left, X);
+
+   --  XR is the right subtree of X. Extract it as a separate tree.
+
+   Extract (T.Struct, X, X, Right, XR);
+
+   --  Plug XR as the left subtree of Y
+
+   Plug (T.Struct, Y, Y, Left, XR);
+
+   --  Plug Y as the right subtree of X
+
+   Plug (T.Struct, X, X, Right, Y);
+
+   --  X takes the place of Y in the tree
+
+   if Is_Root then
+      T.Root := X;
+   else
+      Plug (T.Struct, T.Root, P, D, X);
+   end if;
+end Right_Rotate;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-search-fun} Functions on binary trees.}
+\end{figure}
+
+Red black trees are implemented in the same way as search trees by adding an array of
+colors to a search tree and using balancing functions rebalance the tree after an insertion.
+
 \subsection{Specification}
 % use parent/position and model
 % model can be derived from parent and position but have it in post to do inductive proofs only once
+% invariant about no memory leak derived from post
+% - of binary trees: we never have ill formed cyclic trees
+% - of search trees: all cells remain accessible from the root
 \subsection{Auto-active Verification}
 % factored out in ghost procedures to keep efficiency
 % with or without contracts (inlining)
