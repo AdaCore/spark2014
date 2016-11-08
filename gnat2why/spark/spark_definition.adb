@@ -5381,9 +5381,12 @@ package body SPARK_Definition is
             --  If the current declaration does not come from source, we
             --  consider it to be part of the preceding one as far as pragma
             --  Annotate is concerned, so we don't update the "preceding" node
-            --  in that case.
+            --  in that case. The exception to this rule are expression
+            --  functions.
 
-            if Comes_From_Source (Cur) then
+            if Comes_From_Source (Cur)
+              or else Nkind (Original_Node (Cur)) = N_Expression_Function
+            then
                Preceding := Cur;
                Is_Parent := False;
             end if;
