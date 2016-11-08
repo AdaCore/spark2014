@@ -1,0 +1,44 @@
+main.adb:13:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:13:04: warning: no Global contract available for "Put_Line"
+main.adb:13:23: low: range check might fail
+main.adb:13:49: info: initialization of "X21" proved
+main.adb:14:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:14:04: warning: no Global contract available for "Put_Line"
+main.adb:14:23: low: range check might fail
+main.adb:14:49: info: initialization of "X22" proved
+main.adb:15:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:15:04: warning: no Global contract available for "Put_Line"
+main.adb:15:23: low: range check might fail
+main.adb:15:49: info: initialization of "X23" proved
+main.adb:16:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:16:04: warning: no Global contract available for "Put_Line"
+main.adb:16:23: low: range check might fail
+main.adb:16:49: info: initialization of "X24" proved
+main.adb:17:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:17:04: warning: no Global contract available for "Put_Line"
+main.adb:17:23: low: range check might fail
+main.adb:17:49: info: initialization of "X25" proved
+numerics-algo.adb:13:16: info: precondition proved (CVC4: 1 VC)
+numerics-algo.adb:13:18: info: initialization of "X1" proved
+numerics-algo.adb:15:13: info: range check proved (Interval)
+numerics-algo.adb:15:17: info: precondition proved (CVC4: 1 VC)
+numerics-algo.adb:15:19: info: initialization of "X2" proved
+numerics-algo.adb:17:16: info: precondition proved (CVC4: 1 VC)
+numerics-algo.adb:17:18: info: initialization of "X3" proved
+numerics-algo.adb:19:17: info: precondition proved (Z3: 1 VC)
+numerics-algo.adb:19:23: medium: precondition check might fail
+numerics-algo.adb:19:25: info: initialization of "X4" proved
+numerics-algo.adb:20:17: medium: precondition check might fail
+numerics-algo.ads:6:20: info: initialization of "X1" proved
+numerics-algo.ads:7:20: info: initialization of "X2" proved
+numerics-algo.ads:8:20: info: initialization of "X3" proved
+numerics-algo.ads:9:20: info: initialization of "X4" proved
+numerics-algo.ads:10:20: info: initialization of "X5" proved
+numerics.ads:20:99: info: range check proved (Interval)
+numerics.ads:21:04: warning: no check message justified by this pragma
+numerics.ads:23:99: info: range check proved (Interval)
+numerics.ads:24:04: warning: no check message justified by this pragma
+numerics.ads:26:99: info: range check proved (Interval)
+numerics.ads:27:04: warning: no check message justified by this pragma
+numerics.ads:29:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:29:99: info: range check proved (Interval)
