@@ -295,14 +295,30 @@ package body Configuration is
 
          CL_Switches.File_List.Append (Switch);
 
-      --  We can ignore -X switches, have been parsed by the first pass
+      --  Switches related to project loading like -X and -aP make no sense to
+      --  be specified *in* the project file. It's not easy to check, because
+      --  it would require parsing the Switches attribute in the project file
+      --  separately. Instead, we check that every -X or -aP switch found here
+      --  has already been parsed in the first pass.
 
       elsif Switch'Length >= 2
         and then Switch (Switch'First + 1) = 'X'
       then
-         null;
+         if not CL_Switches.X.Contains (Switch) then
+            Put_Line
+              (Standard_Error,
+               "warning: switch " & Switch & " specified in the project file" &
+                 " will be ignored. It needs to be specified on the command " &
+                 "line directly.");
+         end if;
       elsif Switch = "-aP" then
-         null;
+         if not CL_Switches.GPR_Project_Path.Contains (Parameter) then
+            Put_Line
+              (Standard_Error,
+               "warning: switch " & Switch & " specified in the project file" &
+                 " will be ignored. It needs to be specified on the command " &
+                 "line directly.");
+         end if;
       else
          raise Invalid_Switch;
       end if;

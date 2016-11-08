@@ -1,0 +1,6 @@
+project Test2 is
+
+   package Prove is
+      for Switches use ("-XBuild=Prod");
+   end Prove;
+end Test2;
