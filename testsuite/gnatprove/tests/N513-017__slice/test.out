@@ -39,8 +39,8 @@ sorters.adb:61:13: info: initialization of "Smallest" proved
 sorters.adb:62:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:62:26: info: range check proved (CVC4: 2 VC)
 sorters.adb:63:26: info: initialization of "Smallest" proved
-sorters.adb:67:13: info: loop invariant initialization proved (CVC4: 3 VC)
-sorters.adb:67:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
+sorters.adb:67:13: info: loop invariant initialization proved (CVC4: 4 VC)
+sorters.adb:67:13: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC)
 sorters.adb:69:22: info: range check proved (CVC4: 2 VC)
 sorters.adb:69:66: info: overflow check proved (CVC4: 1 VC)
 sorters.adb:70:24: info: index check proved (CVC4: 2 VC)

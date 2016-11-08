@@ -118,6 +118,7 @@ math_simple_half.adb:36:16: info: initialization of "C" proved
 math_simple_half.adb:37:25: info: division check proved (CVC4: 2 VC)
 math_simple_half.adb:37:29: info: initialization of "C" proved
 math_simple_half.adb:37:41: info: division check proved (CVC4: 2 VC)
+math_simple_half.adb:38:36: info: initialization of "C" proved
 math_simple_half.adb:38:36: info: loop invariant initialization proved (CVC4: 1 VC)
 math_simple_half.adb:38:36: info: loop invariant preservation proved (CVC4: 1 VC)
 math_simple_half.adb:39:36: info: loop invariant initialization proved (altergo: 1 VC)
@@ -126,7 +127,7 @@ math_simple_half.adb:39:49: info: initialization of "C" proved
 math_simple_half.adb:40:52: info: range check proved (CVC4: 1 VC)
 math_simple_half.adb:40:71: info: range check proved (CVC4: 1 VC)
 math_simple_half.adb:41:18: info: initialization of "C" proved
-math_simple_half.adb:41:20: medium: range check might fail
+math_simple_half.adb:41:20: info: range check proved (CVC4: 1 VC)
 math_simple_half.adb:44:17: info: initialization of "C" proved
 math_simple_half.ads:3:63: info: division check proved (CVC4: 1 VC)
 math_simple_half.ads:6:14: info: postcondition proved (CVC4: 1 VC; altergo: 2 VC)
