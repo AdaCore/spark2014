@@ -193,8 +193,7 @@ package body SPARK_Util is
         (Component : in out Entity_Id)
       is
          function Is_Ancestor_Component (Component : Entity_Id) return Boolean;
-         --  Returns True if the component in question comes from the
-         --  ancestor.
+         --  Returns True if the component in question comes from the ancestor
 
          ---------------------------
          -- Is_Ancestor_Component --
@@ -229,6 +228,8 @@ package body SPARK_Util is
 
             return False;
          end Is_Ancestor_Component;
+
+      --  Start of processing for Skip_Ancestor_And_Generated_Components
 
       begin
          while Present (Component)
