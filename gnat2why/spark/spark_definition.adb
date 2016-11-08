@@ -35,7 +35,6 @@ with Exp_Util;                        use Exp_Util;
 with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
-with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Nmake;                           use Nmake;
@@ -2513,7 +2512,7 @@ package body SPARK_Definition is
         and then No (Get_Pragma (E, Pragma_Depends))
         and then ((Is_Imported (E) and then
                      Convention (E) not in Convention_Ada)
-                  or else In_Predefined_Unit (E))
+                  or else In_Internal_Unit (E))
         and then not Entity_In_Ext_Axioms (E)
         and then not Is_Pure (E)
       then
