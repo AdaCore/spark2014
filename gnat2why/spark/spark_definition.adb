@@ -1183,7 +1183,9 @@ package body SPARK_Definition is
                Mark (Condition (N));
             end if;
 
-         when N_Expanded_Name =>
+         when N_Expanded_Name
+            | N_Identifier
+         =>
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
@@ -1225,9 +1227,6 @@ package body SPARK_Definition is
 
          when N_Handled_Sequence_Of_Statements =>
             Mark_Handled_Statements (N);
-
-         when N_Identifier =>
-            Mark_Identifier_Or_Expanded_Name (N);
 
          when N_If_Expression =>
             Mark_If_Expression (N);
