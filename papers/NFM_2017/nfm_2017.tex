@@ -129,12 +129,11 @@ Certification and dependability
 
 Though they are relatively complex data structures, implementing red black trees
 correctly is not a challenge as numerous implementations and descriptions of the
-algorithm are readily available.
-However, it is generally agreed that, to achieve
-full static verification of a complex algorithm, it is better to design the
-software from the start with proof in mind (cite?).
+algorithm are readily available. However, the algorithm is already complicated
+enough for full static verification to require re designing the
+software from the start with proof in mind.
 To this aim, we have divided our implementation of red black trees in three
-distinct parts, each concerned only in part of the data structure properties.
+distinct parts, each concerned only with parts of the data structure properties.
 
 The first part defines binary trees. It is only concerned with properties
 relative to the tree structure of the underlying memory.
@@ -151,7 +150,7 @@ More precisely, the property that should be ensured at each level (tree structur
 order of values, or balancedness) is enforced at the boundary of every function
 of this level and then assumed in upper levels.
 
-As an example, let us look at the invariant of binary trees. Binary trees are
+For example, let us look at the invariant of binary trees. Binary trees are
 encoded using an imperative datastructure as represented in Figure~\ref{fig-binary}.
 Each node contains a reference to is right and left child if any as well as a
 reference to its parent and a position, which may be Top, for the root, or
@@ -159,8 +158,8 @@ Right or Left depending on their position with respect to their parent.
 
 \begin{figure}[ht]
 \begin{center}
-\includegraphics[width=4cm]{tree_structure.pdf}
-\includegraphics[width=5cm]{binary_1.pdf}
+\includegraphics[width=4cm]{tree_structure.pdf}\hfill
+\includegraphics[width=5cm]{binary_1.pdf}\hfill
 \includegraphics[width=2cm]{binary_2.pdf}
 \caption{\label{fig-binary} From left to right: Representation of nodes in binary trees.
 Example of a binary tree, for readability, parents and positions are not represented.
@@ -173,25 +172,22 @@ As can be seen, it is only concerned with low level sanity of the
 tree representation.
 
 \begin{figure}[ht]
+\begin{small}
 \begin{lstlisting}
  --  Cells that are not allocated yet have default values
-
 (for all I in F.S + 1 .. Max => F.C (I) = (Empty, Empty, Empty, Top))
 
 --  Parent and children of all cells are allocated or empty
-
 and then (for all I in Index_Type => F.C (I).Parent in Empty .. F.S)
 and then (for all I in Index_Type => F.C (I).Left in Empty .. F.S)
 and then (for all I in Index_Type => F.C (I).Right in Empty .. F.S)
 
 --  If a cell is the root of a tree (position Top) it has no parent
-
 and then (for all I in Index_Type =>
            (if F.C (I).Position = Top then F.C (I).Parent = Empty))
 
 --  If a cell I has a left child, then its left child has position
 --  Left and parent I.
-
 and then (for all I in Index_Type =>
            (if F.C (I).Left /= Empty then
               F.C (F.C (I).Left).Position = Left
@@ -199,7 +195,6 @@ and then (for all I in Index_Type =>
 
 --  If a cell I has a right child, then its right child has position
 --  Right and parent I.
-
 and then (for all I in Index_Type =>
            (if F.C (I).Right /= Empty then
              F.C (F.C (I).Right).Position = Right
@@ -207,7 +202,6 @@ and then (for all I in Index_Type =>
 
 --  If a cell is a child (position Left or Right), then it is the
 --  child of its parent.
-
 and then (for all I in Index_Type =>
            (if F.C (I).Parent /= Empty and then F.C (I).Position = Left
             then F.C (F.C (I).Parent).Left = I))
@@ -215,13 +209,18 @@ and then (for all I in Index_Type =>
            (if F.C (I).Parent /= Empty and then F.C (I).Position = Right
             then F.C (F.C (I).Parent).Right = I))
 \end{lstlisting}
+\end{small}
 \caption{\label{fig-binary-inv} Type invariant of binary trees.}
 \end{figure}
 
 {\color{red} TODO: Rewrite using Parent (I) instead of F.C (I).Parent?
 Remove reference to size or explain it?}
 
-So that the properties deriving from lower levels is available to upper levels, we
+{\color{red} TODO: Describe the invariant}
+
+To enforce division of concerns, we want properties deriving from lower levels to
+be readily available in upper levels, without having to re verify them. To be
+able to easily express complex properties on the data structure, we
 introduce model functions. These functions rely on the private invariant of the type
 to construct a high level view of the datastructure that can then be used to express
 complex porperties over the structure.
@@ -234,6 +233,7 @@ a model of binary trees allowing to reason easily about branches in the tree, se
 Figure~\ref{fig-binary-mod}.
 
 \begin{figure}[ht]
+\begin{small}
 \begin{lstlisting}
 type Position_Type is (Left, Right, Top);
 subtype Direction is Position_Type range Left .. Right;
@@ -256,13 +256,17 @@ with Predicate => Length (A) <= Max;
 --    - if a node is not in the tree, the corresponding path will have
 --      K = False and A will be empty.
 \end{lstlisting}
+\end{small}
 \caption{\label{fig-binary-mod} Model of branches in a binary tree.}
 \end{figure}
 
 The model of a binary tree associates a sequence of directions, namely
 Right or Left, to each node in the binary tree. An additional boolean encodes
-whether the is reachable from the root. Figure~\ref{fig-binary-mod-ex} gives
-the model of the binary tree presented in Figure~\ref{fig-binary}.
+whether the node is reachable from the root. Figure~\ref{fig-binary-mod-ex} gives
+the model of the binary tree presented in Figure~\ref{fig-binary}. In this
+example, all the nodes are reachable from the root except the last one. The
+pathes written below each node can be used to reconstruct easily the high level
+view of the tree.
 
 \begin{figure}[ht]
 \begin{center}
@@ -276,22 +280,24 @@ only works on trees for which the tree structure invariant holds. As a result,
 we cannot use this model function inside the implemenation of binary tree,
 for example to state in the invariant that all the nodes are reachable from the
 root (there is no memory leak). However, as type invariants always hold outside
-of data structures implementation, the path model can safely be used on any
+of data structures implementation, the path model can safely be used for any
 binary tree in the implementation of search trees. In particular, we use it
 in the invariant of search trees, which is given in Figure~\ref{fig-search-inv}.
 
 \begin{figure}[ht]
+\begin{small}
 \begin{lstlisting}
 (for all I in Index_Type =>
   (for all J in Index_Type =>
     (if Model (F, Root) (I).K
        and then Model (F, Root) (J).K
        and then Model (F, Root) (I).A < Model (F, Root) (J).A
-     then (if Get (Model (F, Root) (J).A,
-                   Length (Model (F, Root) (I).A) + 1) = Left
+     then (if Get (Model (F, Root) (J).A, Length (Model (F, Root) (I).A) + 1)
+              = Left
            then Values (J) < Values (I)
            else Values (J) > Values (I)))))
 \end{lstlisting}
+\end{small}
 \caption{\label{fig-search-inv} Type invariant of search trees.}
 \end{figure}
 
@@ -310,6 +316,11 @@ of the path leading to V and the next element in the sequence is Right.
 \caption{\label{fig-search} Ordered nodes in a search tree.}
 \end{center}
 \end{figure}
+
+Search trees are usually used to implement ordered sets. Though it is not needed to
+specify the invariant of red black trees, we provide a model function returning the
+set of all the values contained in the tree. We use it to annotate the insertion and
+membership primitives provided on red black trees.
 
 {\color{red} TODO: speak about red black trees}
 
