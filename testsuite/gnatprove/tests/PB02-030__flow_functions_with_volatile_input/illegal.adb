@@ -1,16 +1,6 @@
 with System;
 
-package body Foo is
-
-   V1 : Integer with
-     Volatile, Async_Readers, Async_Writers, Effective_Writes,
-     Address => System'To_Address (16#DEADBEEF#), Import;
-   --  Lacks effective_reads
-
-   V2 : Integer with
-     Volatile,
-     Address => System'To_Address (16#C0FFEE#), Import;
-   --  Fully volatile
+package body Illegal is
 
    V3 : Integer with
      Volatile, Async_Readers, Async_Writers, Effective_Writes,
@@ -64,40 +54,7 @@ package body Foo is
       end;
    end;
 
-   function Test_01 return Integer
-   is
-      Tmp : Integer := V1;
-   begin
-      return Tmp;
-   end;
-   --  Bad
+   function F2 return Integer is (PO_V3.F);
+   -- Not OK because it calls volatile function in interfering context
 
-   function Test_02 return Integer
-   is
-      Tmp : Integer := V2;
-   begin
-      return Tmp;
-   end;
-   --  Bad
-
-   function Test_03 return Integer
-   with Volatile_Function
-   is
-      Tmp : Integer := V1;
-   begin
-      return Tmp;
-   end;
-   --  OK
-
-   function Test_04 return Integer
-   with Volatile_Function
-   is
-      Tmp : Integer := V2;
-   begin
-      return Tmp;
-   end;
-   --  Bad
-
-   --  TODO: tests for functions and procedures using the POs
-
-end Foo;
+end Illegal;

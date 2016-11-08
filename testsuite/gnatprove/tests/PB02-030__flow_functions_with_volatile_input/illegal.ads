@@ -1,4 +1,4 @@
 pragma Warnings (Off, "analyzing unreferenced *");
 
-package Foo with Elaborate_Body is
-end Foo;
+package Illegal with Elaborate_Body is
+end Illegal;
