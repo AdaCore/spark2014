@@ -26,9 +26,9 @@ numerics-algo.adb:15:19: info: initialization of "X2" proved
 numerics-algo.adb:17:16: info: precondition proved (CVC4: 1 VC)
 numerics-algo.adb:17:18: info: initialization of "X3" proved
 numerics-algo.adb:19:17: info: precondition proved (Z3: 1 VC)
-numerics-algo.adb:19:23: medium: precondition check might fail
+numerics-algo.adb:19:23: info: precondition proved (CVC4: 1 VC)
 numerics-algo.adb:19:25: info: initialization of "X4" proved
-numerics-algo.adb:20:17: medium: precondition check might fail
+numerics-algo.adb:20:17: info: precondition proved (Z3: 1 VC)
 numerics-algo.ads:6:20: info: initialization of "X1" proved
 numerics-algo.ads:7:20: info: initialization of "X2" proved
 numerics-algo.ads:8:20: info: initialization of "X3" proved
