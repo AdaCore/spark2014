@@ -4408,8 +4408,8 @@ package body SPARK_Definition is
       --  axioms are handled by a specific mechanism and thus should not be
       --  translated.
       if not Entity_In_Ext_Axioms (E) then
-         --  Protected type needs to go before its visible declarations (which
-         --  reference it as an implicit input).
+         --  Concurrent types need to go before their visible declarations
+         --  (because declarations reference them as implicit inputs).
          if Ekind (E) in E_Protected_Type | E_Task_Type then
 
             pragma Assert
@@ -4419,7 +4419,7 @@ package body SPARK_Definition is
 
             --  If there were no entities defined within concurrent types then
             --  Next will advance the cursor to No_Element and Insert will be
-            --  equivalent to Append. This is pricesely what we need.
+            --  equivalent to Append. This is precisely what we need.
             Entity_List.Insert (Before   => Current_Concurrent_Insert_Pos,
                                 New_Item => E);
          else
