@@ -1451,6 +1451,22 @@ package body Configuration is
          --  sub-directory "gnatprove" set through Set_Object_Subdir.
          Main_Subdir := new String'(Proj_Type.Artifacts_Dir.Display_Full_Name);
 
+         --  Setting the socket name used by the why3server. This name has
+         --  to comply to several constraints:
+         --
+         --  - It has to be unique for each project. This is because we want to
+         --    allow simultaneous gnatprove runs on different projects, and on
+         --    Windows, sockets/named pipes live in a global name space.
+         --
+         --  - It should be the same for each invocation of gnatprove of a
+         --    given project. This is because we pass the socket name to
+         --    gnatwhy3 via gnat2why command line (via Gnat2why_Args more
+         --    precisely). If the command line changed on every invocation of
+         --    gnatprove, gprbuild would rerun gnat2why even when not
+         --    necessary.
+         --
+         --  What we have come up with until now is a hash of the project dir.
+
          declare
             Obj_Dir_Hash : constant Hash_Type :=
               Full_Name_Hash (Proj_Type.Artifacts_Dir);
