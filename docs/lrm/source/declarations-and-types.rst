@@ -137,7 +137,7 @@ Static predicates are in |SPARK|. Dynamic predicates are also in
   an extension aggregate, or an update expression (see section
   :ref:`update-expressions`).
   These are assignment operations but not assignment statements.]
-  
+
 .. _etu-subtype_predicates-02:
 
 
@@ -255,7 +255,7 @@ The following rules apply to discriminants in |SPARK|.
 3. [The ``default_expression`` of a ``discriminant_specification``
    shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
-   
+
 .. _etu-discriminants:
 
 .. _record_types:
@@ -263,8 +263,7 @@ The following rules apply to discriminants in |SPARK|.
 Record Types
 ------------
 
-|SPARK| does not permit partial default initialization of record objects
-and the default initialization expressions must not have variable inputs.
+Default initialization expressions must not have variable inputs in |SPARK|.
 
 .. centered:: **Legality Rules**
 
@@ -300,7 +299,7 @@ and the default initialization expressions must not have variable inputs.
 includes the case of a ``component_declaration`` which is a
 ``protected_element_declaration``. In other words, these rules also apply to
 components of a protected type.]
-   
+
 Tagged Types and Type Extensions
 --------------------------------
 

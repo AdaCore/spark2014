@@ -1,5 +1,0 @@
-types.ads:9:09: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
-types.ads:9:09: violation of pragma SPARK_Mode at line 1
-types.ads:18:09: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
-types.ads:18:09: violation of pragma SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof

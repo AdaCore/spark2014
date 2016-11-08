@@ -1,6 +1,7 @@
-p.ads:87:09: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
-p.ads:87:09: violation of aspect SPARK_Mode at line 2
+p.ads:111:04: medium: type "T4" is not fully initialized
+p.ads:125:04: medium: type "T5" is not fully initialized
+p.ads:178:04: medium: type "T10" is not fully initialized
+p.ads:188:04: medium: type "T11" is not fully initialized
 q.ads:37:04: medium: type "T1" is not fully initialized
 q.ads:42:04: medium: type "T3" is not fully initialized
 q.ads:47:04: medium: type "T5" is not fully initialized
-gnatprove: error during flow analysis and proof
