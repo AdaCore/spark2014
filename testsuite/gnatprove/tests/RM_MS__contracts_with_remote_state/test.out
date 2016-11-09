@@ -8,6 +8,7 @@ processing.ads:13:22: violation of aspect SPARK_Mode at line 4
 processing.ads:13:22: violation of aspect SPARK_Mode at line 4
 raw_data.adb:12:04: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.adb:30:40: info: initialization of "Last_Read" constituent of "State" proved
+raw_data.adb:36:14: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.ads:6:13: warning: volatile function "Data_Is_Valid" has no volatile effects
 raw_data.ads:10:13: warning: volatile function "Get_Value" has no volatile effects
 gnatprove: error during flow analysis and proof
