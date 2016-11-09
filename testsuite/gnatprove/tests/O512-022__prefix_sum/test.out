@@ -14,7 +14,7 @@ prefixsum.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum.adb:33:44: info: initialization of "Space" proved
 prefixsum.adb:35:18: info: initialization of "Space" proved
 prefixsum.adb:37:16: info: initialization of "Left" proved
-prefixsum.adb:39:15: info: loop invariant initialization proved (CVC4: 3 VC; altergo: 2 VC)
+prefixsum.adb:39:15: info: loop invariant initialization proved (CVC4: 4 VC; altergo: 2 VC)
 prefixsum.adb:39:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum.adb:39:16: info: initialization of "Left" proved
 prefixsum.adb:39:26: info: division check proved (CVC4: 1 VC)
@@ -131,7 +131,7 @@ prefixsum_expanded.adb:52:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
-prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 3 VC; altergo: 2 VC)
+prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 4 VC; altergo: 2 VC)
 prefixsum_expanded.adb:58:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved (CVC4: 1 VC)
