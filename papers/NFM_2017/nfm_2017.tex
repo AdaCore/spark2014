@@ -15,6 +15,7 @@
    basicstyle={\scriptsize \sffamily},
    commentstyle=\color{red}\textit,
    stringstyle=\color{MidnightBlue}\ttfamily,
+   string=[b]",  % remove ' from string delimiter as it interfers with attributes
    showtabs=false,
    showstringspaces=false,
    morekeywords=[1]Pre,
@@ -110,6 +111,7 @@ Certification and dependability
 
 \section{Red-Black Trees in SPARK}
 \subsection{Invariants and Models}
+\label{sec-rbt-inv}
 % invariants of data structures
 % relation between invariants and models
 % public model of RBT
@@ -330,24 +332,6 @@ membership primitives provided on red black trees.
 \end{center}
 \end{figure}
 
-\subsection{Proof Principles}
-% principle of inductive proofs on size of path
-% principles of dealing with the frame condition: unmodified trees in forest
-
-% reachability requires proof by induction on the size of the path
-%   This is done using loops and loop invariants
-% order requires case split
-%   This is done using if statements
-\subsection{Ghost Code}
-% different uses of ghost code
-
-% For specification purpose:
-% - typically ghost functions used in contracts
-% - can be interesting to execute as test oracles
-% For verification purpose:
-% - typically ghost procedures containing proofs by induction (loops), by case analysis...
-% - no need to execute them, they do not bring anything
-% No way to distinguish between both right now.
 \subsection{Implementation}
 % no pointer in spark => indexes inside an array
 % avoid copies, use forest
@@ -506,10 +490,10 @@ are to be called on unbalanced trees, but they do preserve order. Note that impl
 functions at this level avoids the need for lifting low level tree handling functions such as Plug and
 Extract. All the functions defined on search trees are implemented using
 functions over binary forests. The functions provided for search trees are given in
-Figure~\ref{fig-search-fun}. We only give the implementation of \verb|Right_Rotate| as an
+Figure~\ref{fig-search-fun}. We only give the implementation of Right\_Rotate as an
 example.
 
-\begin{figure}[ht]
+\begin{figure}
 \begin{small}
 \begin{lstlisting}
 function Mem (T : Search_Tree; V : Natural) return Boolean;
@@ -579,7 +563,217 @@ colors to a search tree and using balancing functions to rebalance the tree afte
 % invariant about no memory leak derived from post
 % - of binary trees: we never have ill formed cyclic trees
 % - of search trees: all cells remain accessible from the root
-\subsection{Auto-active Verification}
+
+In this example, we concentrate on functional requirements of two kinds. The most important one is the
+preservation of the data structure invariants. As a proof of concept, we have also considered
+function specific requirements, describing the effect of the insertion and membership functions with
+respect to the set of values contained in the red black tree. The function specific requirements are the
+simplest. They are expressed as contracts on the tree functions. The set of values contains in a red black
+tree is accessed using the appropriate model function. These contracts are presented in
+Figure~\ref{fig-rbt-spec}.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+function Values (T : Rbt) return Value_Set with
+  Post => (if Size (T) = 0 then Is_Empty (Values'Result));
+
+function Mem (T : Rbt; V : Natural) return Boolean with
+  Post => Mem'Result = Mem (Values (T), V);
+
+procedure Insert (T : in out Rbt; V : Natural) with
+  Pre  => Size (T) < Max,
+  Post => (if Mem (T'Old, V) then Values (T) = Values (T'Old)
+           else Is_Add (Values (T'Old), V, Values (T)));
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-rbt-spec} Specification of red black trees.}
+\end{figure}
+
+Let us now consider the requirements dealing with data struture invariants.
+
+\begin{enumerate}
+ \item A red black tree is always a valid binary tree (we can navigate it from the root using Peek, Parent,
+ and Position in the expected way).
+ \item There is no memory leak (if we have inserted less than Max elements, there is still room enough in the
+ data structure to insert a new element).
+ \item The values stored in the tree are ordered (it is a valid search tree).
+ \item The tree stays balanced (we only verify part of it, that is, that red nodes can only have black children).
+\end{enumerate}
+
+The specification of these invariants is not grouped in one point but rather separated at between the various levels,
+so that every part is expressed at the place were it can be most naturally expressed. The first requirement is
+enforced at the binary tree level. The tree structure invariant (see Section~\ref{sec-rbt-inv}),
+ensures that the various cell components (Parent, Position, Left, and Right) are consistent. This is not enough
+to ensure that all the allocated nodes in the forest belong to well-formed binary trees though, as it does
+not rule out degenerated, root-less, cyclic structures that would arise from linking the root of a binary tree as the
+child of one of its leafs. Still, this is enough to ensure that red black trees are always well formed, as red black
+trees always have a specified root. Note that the fact that every node in the forest is part of
+a well formed binary tree is ensured at the level of binary trees by enforcing that such degenerated structures can
+never be created in the contracts of the data structure modification functions.
+
+As a the level of binary trees we are dealing with forests, the second requirement is rather enforced at the level of
+search trees. It is specified as a postcondition of every modification function of the search tree level. 
+Figure~\ref{fig-spec-no-leak} shows the part of the postcondtion of Right\_Rotate ensuring that it hasn't introduced
+any dangling node. It uses the model function Model described in Section~\ref{sec-rbt-inv} to reason about reachability
+in the tree structure.
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
+  Post =>
+    --  The size of the tree is preserved
+    Size (T) = Size (T)'Old
+
+    --  Nodes in the tree are preserved
+    and then (for all J in Index_Type =>
+               (if Model (T) (J).K then Model (T'Old) (J).K))
+    and then (for all J in Index_Type =>
+               (if Model (T'Old) (J).K then Model (T) (J).K));
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-spec-no-leak} Postcondition of Right\_Rotate dealing with abscence of memory leaks.}
+\end{figure}
+
+The third and fourth requirements are expressed in the type invariant of respectively search trees and red black trees
+as explained in Section~\ref{sec-rbt-inv}.
+
+But the functional requirements are not the only part of the specification. Indeed, as GNATprove works in a per
+subprogram modular basis, specification also has to convey enough information, at each level, to verify not only the
+requirements specified at this level, but also all the requirements specified at upper levels. For example, as
+Right\_Rotate calls Plug and Extract, the specification of these functions need to provide enough information to
+verify both the absence of memory leaks as stated in the postcondition of Right\_Rotate, but also the preservation of
+the order of values, as stated in search trees invariant. The postcondition of Plug is given in 
+Figure~\ref{fig-spec-binary}.
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+procedure Plug (F       : in out Forest;
+                Root, I : Index_Type;
+                D       : Direction;
+                V       : Extended_Index_Type)
+   --  Plug the tree rooted at V in F into the tree rooted at Root as a subtree
+   --  starting at position D after I.
+
+with
+  Pre =>
+    --  Root is the root of a tree
+    Valid_Root (F, Root)
+
+    --  I is a node in this tree
+    and then Model (F, Root) (I).K
+
+    --  I has no child for direction D
+    and then Peek (F, I, D) = Empty
+
+    --  Root and V are different nodes
+    and then Root /= V
+
+    --  V is either empty or the root of a tree
+    and then (if V /= Empty then Valid_Root (F, V)),
+  Post =>
+    --  The size of the forest does not change
+    Size (F) = Size (F'Old)
+
+    --  V is inserted in the tree as child D of I
+    and then V = Peek (F, I, D)
+
+    --  Except for V, roots are preserved
+    and then (for all J in Index_Type =>
+               (if Valid_Root (F'Old, J) and then J /= V then Valid_Root (F, J)))
+    and then (for all J in Index_Type =>
+               (if Valid_Root (F, J) then Valid_Root (F'Old, J)))
+
+    --  Except for V, the value of parent link is preserved
+    and then (for all J in Index_Type =>
+               (if J /= V
+                then Parent (F, J) = Parent (F'Old, J)))
+
+    --  Except for V, the value of position is preserved for nodes which have
+    --  a parent.
+    and then (for all J in Index_Type =>
+               (if J /= V and Parent (F, J) /= Empty
+                then Position (F, J) = Position (F'Old, J)))
+
+    --  Except at I for child D, all other children are preserved
+    and then (for all J in Index_Type =>
+               (for all E in Direction =>
+                 (if J /= I or else E /= D
+                  then Peek (F, J, E) = Peek (F'Old, J, E))))
+
+    --  Nodes previously in the tree rooted at Root are still in the tree
+    --  rooted at Root.
+    and then (for all J in Index_Type =>
+               (if Model (F, Root)'Old (J).K then Model (F, Root) (J).K))
+
+    --  Nodes previously in the tree rooted at V are now in the tree rooted
+    --  at Root.
+    and then (for all J in Index_Type =>
+               (if V /= Empty and then Model (F'Old, V) (J).K
+                then Model (F, Root) (J).K))
+
+    --  Nodes in the tree rooted at Root come either from the tree previously
+    --  rooted at Root, or for those nodes which have V on their path, from
+    --  the tree previously rooted at V.
+    and then (for all I in Index_Type =>
+               (if Model (F, Root) (I).K
+                then (if V /= Empty and then Model (F, Root) (V).A <= Model (F, Root) (I).A
+                      then Model (F'Old, V) (I).K
+                      else Model (F'Old, Root) (I).K)))
+
+    --  Paths are preserved for nodes that were previously in the tree
+    and then (for all J in Index_Type =>
+               (if Model (F'Old, Root) (J).K
+                then Model (F, Root) (J).A = Model (F'Old, Root) (J).A))
+
+    --  The path for nodes in the tree previously rooted at V is obtained
+    --  by concatenating the path from Root to V and the path from V to the
+    --  node.
+    and then (for all J in Index_Type =>
+               (if V /= Empty and then Model (F'Old, V) (J).K
+                then Is_Concat (Q => Model (F, Root) (V).A,
+                                V => Model (F'Old, V) (J).A,
+                                P => Model (F, Root) (J).A)))
+
+    --  All other trees in the forest are preserved
+    and then (for all T in Index_Type =>
+               (if Valid_Root (F'Old, T) and then Root /= T and then V /= T
+                then Model (F, T) = Model (F'Old, T)));
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-spec-binary} Contract of Plug.}
+\end{figure}
+{\color{red} TODO: find a way to make Figure~\ref{fig-spec-binary} fit in the page.}
+
+
+The postcondition of Plug describes how it modifies the tree structure. Theoretically,
+describing how Parent and Position fields are updated by the call should be enough to
+describe the effect on the whole structure. Still, to avoid having to redo complex
+proofs each time Plug is call, we choose to also describe the effect of the modification
+of Peek, and, more importantly, Model. This allows to clearly separate concerns and allow
+the implementation of search trees to only concentrate on order related issues.
+
+\subsection{Proof Principles}
+% principle of inductive proofs on size of path
+% principles of dealing with the frame condition: unmodified trees in forest
+
+% reachability requires proof by induction on the size of the path
+%   This is done using loops and loop invariants
+% order requires case split
+%   This is done using if statements
+\subsection{Ghost Code}
+% different uses of ghost code
+
+% For specification purpose:
+% - typically ghost functions used in contracts
+% - can be interesting to execute as test oracles
+% For verification purpose:
+% - typically ghost procedures containing proofs by induction (loops), by case analysis...
+% - no need to execute them, they do not bring anything
+% No way to distinguish between both right now.
+
 % factored out in ghost procedures to keep efficiency
 % with or without contracts (inlining)
 
