@@ -31,27 +31,18 @@ with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
-with Atree;   use Atree;
-with Einfo;   use Einfo;
-with Hashing; use Hashing;
-with Namet;   use Namet;
-with Sinfo;   use Sinfo;
-with Types;   use Types;
---  This package contains a few common types (and expression functions)
---  which are used throughout gnat2why (frame conditions, flow and why
---  generation).
+with Atree;         use Atree;
+with Einfo;         use Einfo;
+with Hashing;       use Hashing;
+with Namet;         use Namet;
+with Types;         use Types;
+
+with Checked_Types; use Checked_Types;
+
+--  This package contains a few common types (and expression functions) which
+--  are used throughout gnat2why (frame conditions, flow and why generation).
 
 package Common_Containers is
-
-   subtype Checked_Entity_Id is Entity_Id with
-     Predicate => Nkind (Checked_Entity_Id) in N_Entity;
-
-   subtype Subprogram_Entity_Id is Checked_Entity_Id with
-     Predicate => Ekind (Subprogram_Entity_Id) in Subprogram_Kind
-                                                | Entry_Kind;
-
-   subtype Type_Entity_Id is Checked_Entity_Id with
-     Predicate => Ekind (Type_Entity_Id) in Type_Kind;
 
    package Node_Lists is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
    --  Standard list of nodes. It is often more convenient to use these,

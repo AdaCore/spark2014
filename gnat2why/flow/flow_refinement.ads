@@ -31,6 +31,7 @@ with Sem_Util;          use Sem_Util;
 with Snames;            use Snames;
 with Types;             use Types;
 
+with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
 with SPARK_Util.Types;  use SPARK_Util.Types;
 
@@ -230,14 +231,14 @@ package Flow_Refinement is
    --  Otherwise returns False since we can't decide (nor need an answer,
    --  since we won't analyze the body).
 
-   function Nested_Within_Concurrent_Type (T : Type_Entity_Id;
+   function Nested_Within_Concurrent_Type (T : Type_Id;
                                            S : Flow_Scope)
                                            return Boolean
    with Pre => Ekind (T) in Concurrent_Kind;
    --  Returns True iff S is nested inside a concurrent type T
 
-   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Entity_Id;
-                                             Typ        : Type_Entity_Id)
+   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
+                                             Typ        : Type_Id)
                                              return Boolean
    with Pre => Has_Invariants_In_SPARK (Typ);
 

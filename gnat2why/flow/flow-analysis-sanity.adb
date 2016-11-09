@@ -30,13 +30,14 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 
+with Checked_Types;          use Checked_Types;
+with Common_Iterators;       use Common_Iterators;
 with Gnat2Why_Args;
 with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
+with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
-with Common_Iterators;       use Common_Iterators;
 
 with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Utility;           use Flow_Utility;
@@ -224,7 +225,7 @@ package body Flow.Analysis.Sanity is
                | N_Private_Extension_Declaration
             =>
                declare
-                  Typ : constant Type_Entity_Id := Defining_Identifier (N);
+                  Typ : constant Type_Id := Defining_Identifier (N);
                begin
                   if Has_Predicates (Typ) then
                      declare

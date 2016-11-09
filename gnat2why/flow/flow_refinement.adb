@@ -832,7 +832,7 @@ package body Flow_Refinement is
    -- Nested_Within_Concurrent_Type --
    -----------------------------------
 
-   function Nested_Within_Concurrent_Type (T : Type_Entity_Id;
+   function Nested_Within_Concurrent_Type (T : Type_Id;
                                            S : Flow_Scope)
                                            return Boolean
    is (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
@@ -841,8 +841,8 @@ package body Flow_Refinement is
    -- Is_Boundary_Subprogram_For_Type --
    -------------------------------------
 
-   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Entity_Id;
-                                             Typ        : Type_Entity_Id)
+   function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;
+                                             Typ        : Type_Id)
                                              return Boolean
    is
    begin

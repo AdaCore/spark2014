@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;             use Atree;
+with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with Impunit;           use Impunit;
