@@ -740,7 +740,7 @@ package body Flow_Error_Messages is
       Prefix     : constant String :=
         (if Continuation then "\" else "") &
         (case Severity is
-            when Info_Kind         => "info: ?",
+            when Info_Kind         => "info: ",
             when Low_Check_Kind    => "low: ",
             when Medium_Check_Kind => "medium: ",
             when High_Check_Kind   => "high: ",
