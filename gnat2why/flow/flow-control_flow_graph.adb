@@ -254,6 +254,23 @@ package body Flow.Control_Flow_Graph is
                                Src : Union_Id);
    --  Create the connection map for Dst and copies all fields from Src to it
 
+   procedure fndi (E : Entity_Id; N : Node_Id);
+   --  This is a debug procedure that is called whenever we add a vertex N to
+   --  the graph for entity E. The name is "flow node debug info". It is here
+   --  so we can break on it in the debugger.
+
+   ----------
+   -- fndi --
+   ----------
+
+   procedure fndi (E : Entity_Id; N : Node_Id)
+   is
+      pragma Unreferenced (E);
+      pragma Unreferenced (N);
+   begin
+      null;
+   end fndi;
+
    -------------
    -- Context --
    -------------
@@ -920,6 +937,9 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
    begin
+      if F.Kind in Direct_Mapping | Record_Field then
+         fndi (FA.Spec_Entity, F.Node);
+      end if;
       FA.CFG.Add_Vertex (F, V);
       FA.Atr.Insert (V, A);
    end Add_Vertex;
@@ -930,6 +950,9 @@ package body Flow.Control_Flow_Graph is
                          V  : out Flow_Graphs.Vertex_Id)
    is
    begin
+      if F.Kind in Direct_Mapping | Record_Field then
+         fndi (FA.Spec_Entity, F.Node);
+      end if;
       FA.CFG.Add_Vertex (F, V);
       FA.Atr.Insert (V, A);
    end Add_Vertex;
@@ -3641,7 +3664,6 @@ package body Flow.Control_Flow_Graph is
 
          Visible_Decls : constant List_Id := Visible_Declarations (Spec);
          Private_Decls : constant List_Id := Private_Declarations (Spec);
-
       begin
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
 
