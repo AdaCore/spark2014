@@ -35,10 +35,7 @@ numerics-algo.ads:8:20: info: initialization of "X3" proved
 numerics-algo.ads:9:20: info: initialization of "X4" proved
 numerics-algo.ads:10:20: info: initialization of "X5" proved
 numerics.ads:20:99: info: range check proved (Interval)
-numerics.ads:21:04: warning: no check message justified by this pragma
 numerics.ads:23:99: info: range check proved (Interval)
-numerics.ads:24:04: warning: no check message justified by this pragma
 numerics.ads:26:99: info: range check proved (Interval)
-numerics.ads:27:04: warning: no check message justified by this pragma
 numerics.ads:29:99: info: division check proved (CVC4: 1 VC)
 numerics.ads:29:99: info: range check proved (Interval)
