@@ -634,7 +634,8 @@ package body Flow.Analysis is
          Sanity.Check_Generated_Refined_Global'Access,
          Sanity.Check_Illegal_Writes'Access,
          Sanity.Check_All_Variables_Known'Access,
-         Sanity.Check_Part_Of'Access);
+         Sanity.Check_Part_Of'Access,
+         Sanity.Check_Side_Effects_In_Protected_Functions'Access);
    begin
       for C of Sanity_Checks loop
          C (FA, Sane);

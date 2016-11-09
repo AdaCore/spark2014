@@ -81,4 +81,19 @@ private package Flow.Analysis.Sanity is
    --  Note that deferred constants are exempt since they are visible and thus
    --  are not hidden state.
 
+   procedure Check_Side_Effects_In_Protected_Functions
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
+   --  Checks for side effects in protected functions. It detects functions
+   --  that make uses of volatile variables with Effective_Reads and which are
+   --  declared as Part_Of the PO. Issues an error message when this happens.
+   --
+   --  In Flow.Control_Flow_Graphs a similar check is carried on. In
+   --  particular, there we detect uses of volatile variables with
+   --  Effective_Reads which are globals of the analyzed subprogram. In the
+   --  case of a protected function that uses a volatile variable with
+   --  Effective_Reads and which is declared as Part_Of the protected object,
+   --  the variable is no longer seen as a global and therefore we need this
+   --  extra check.
+
 end Flow.Analysis.Sanity;

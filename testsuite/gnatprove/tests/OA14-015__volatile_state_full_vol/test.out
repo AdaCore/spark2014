@@ -1,0 +1,2 @@
+prot.ads:7:16: protected function with effective reads "G" is not allowed in SPARK
+gnatprove: error during flow analysis and proof

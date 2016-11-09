@@ -1107,4 +1107,37 @@ package body Flow.Analysis.Sanity is
 
    end Check_Part_Of;
 
+   -----------------------------------------------
+   -- Check_Side_Effects_In_Protected_Functions --
+   -----------------------------------------------
+
+   procedure Check_Side_Effects_In_Protected_Functions
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
+   is
+   begin
+      Sane := True;
+
+      if Ekind (FA.Spec_Entity) = E_Function
+        and then Ekind (Scope (FA.Spec_Entity)) = E_Protected_Type
+      then
+         for F of FA.All_Vars loop
+            if Belongs_To_Protected_Type (F)
+              and then Has_Effective_Reads (F)
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "protected function with effective reads & is " &
+                    "not allowed in SPARK",
+                  N        => FA.Spec_Entity,
+                  F1       => F,
+                  Severity => Error_Kind,
+                  Tag      => Side_Effects);
+
+               Sane := False;
+            end if;
+         end loop;
+      end if;
+   end Check_Side_Effects_In_Protected_Functions;
+
 end Flow.Analysis.Sanity;
