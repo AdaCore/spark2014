@@ -1,0 +1,38 @@
+numerics.ads:10:100: info: postcondition proved (CVC4: 1 VC)
+numerics.ads:10:142: info: overflow check proved (CVC4: 1 VC)
+numerics.ads:10:142: info: range check proved (Interval)
+numerics.ads:13:100: info: postcondition proved (CVC4: 1 VC)
+numerics.ads:13:142: info: overflow check proved (CVC4: 1 VC)
+numerics.ads:13:142: info: range check proved (Interval)
+numerics.ads:16:100: info: postcondition proved (CVC4: 1 VC)
+numerics.ads:16:142: info: overflow check proved (CVC4: 1 VC)
+numerics.ads:16:142: info: range check proved (Interval)
+numerics.ads:19:108: info: postcondition proved (CVC4: 1 VC)
+numerics.ads:19:150: info: division check proved (CVC4: 1 VC)
+numerics.ads:19:150: info: overflow check proved (CVC4: 1 VC)
+numerics.ads:19:150: info: range check proved (Interval)
+numerics.ads:23:99: info: range check proved (Interval)
+numerics.ads:26:99: info: range check proved (Interval)
+numerics.ads:29:99: info: range check proved (Interval)
+numerics.ads:32:99: info: division check proved (CVC4: 1 VC)
+numerics.ads:32:99: info: range check proved (Interval)
+run.adb:8:15: medium: precondition might fail
+run.adb:14:15: info: precondition proved (CVC4: 1 VC)
+run.adb:20:15: info: precondition proved (CVC4: 1 VC)
+run.adb:26:15: info: precondition proved (CVC4: 1 VC)
+run.adb:32:15: info: precondition proved (CVC4: 1 VC)
+run.ads:10:24: info: initialization of "Y" proved
+run.ads:13:34: info: initialization of "Y" proved
+run.ads:15:19: info: initialization of "Y" proved
+run.ads:15:19: info: postcondition proved (Z3: 1 VC)
+run.ads:18:34: info: initialization of "Y" proved
+run.ads:19:21: info: precondition proved (CVC4: 1 VC)
+run.ads:20:19: info: initialization of "Y" proved
+run.ads:20:19: info: postcondition proved (CVC4: 1 VC)
+run.ads:23:36: info: initialization of "Y" proved
+run.ads:25:19: info: initialization of "Y" proved
+run.ads:25:19: info: postcondition proved (Z3: 1 VC)
+run.ads:28:37: info: initialization of "Y" proved
+run.ads:29:21: info: precondition proved (CVC4: 1 VC)
+run.ads:30:19: info: initialization of "Y" proved
+run.ads:30:19: info: postcondition proved (CVC4: 1 VC)
