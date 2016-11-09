@@ -85,7 +85,7 @@ are in |SPARK|.
    its "owner". This can be useful if, for example, a protected object's
    operations need to reference an object whose Address aspect is specified.
    The protected (as opposed to task) case corresponds to the previous notion
-   of "virtual protected" objects in RavenSPARK.]
+   of "virtual protected elements" in RavenSPARK.]
 
    An object or state abstraction which "belongs" to a task unit in this way
    is treated as a local object of the task (e.g., it cannot be
