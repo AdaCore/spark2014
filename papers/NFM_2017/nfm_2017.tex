@@ -130,7 +130,7 @@ Certification and dependability
 Though they are relatively complex data structures, implementing red black trees
 correctly is not a challenge as numerous implementations and descriptions of the
 algorithm are readily available. However, the algorithm is already complicated
-enough for full static verification to require re designing the
+enough for full static verification to require re-designing the
 software from the start with proof in mind.
 To this aim, we have divided our implementation of red black trees in three
 distinct parts, each concerned only with parts of the data structure properties.
@@ -139,19 +139,19 @@ The first part defines binary trees. It is only concerned with properties
 relative to the tree structure of the underlying memory.
 The second part associates values to nodes of binary trees to define search trees.
 It is concerned with order of values in the tree.
-The third part enforces balancedness using the classical red black tree coloring
+The third part enforces balancing using the classical red black tree coloring
 mechanism.
 
 At each level, the separation of concerns is ensured by the use of type invariants.
-As defined by Ada 2012 standard, type invariants are boolan properties associated
-to private types which can be temporarily violated in the private functions of the
-type but must always hold outside of the type's private scope.
+As defined by Ada 2012 standard, type invariants are boolean properties associated
+with private types which can be temporarily violated in the private functions of the
+type but must always hold outside of private scope of the type.
 More precisely, the property that should be ensured at each level (tree structure,
-order of values, or balancedness) is enforced at the boundary of every function
+order of values, or balancing) is enforced at the boundary of every function
 of this level and then assumed in upper levels.
 
 For example, let us look at the invariant of binary trees. Binary trees are
-encoded using an imperative datastructure as represented in Figure~\ref{fig-binary}.
+encoded using an imperative data structure as represented in Figure~\ref{fig-binary}.
 Each node contains a reference to is right and left child if any as well as a
 reference to its parent and a position, which may be Top, for the root, or
 Right or Left depending on their position with respect to their parent.
@@ -219,11 +219,11 @@ Remove reference to size or explain it?}
 {\color{red} TODO: Describe the invariant}
 
 To enforce division of concerns, we want properties deriving from lower levels to
-be readily available in upper levels, without having to re verify them. To be
+be readily available in upper levels, without having to re-verify them. To be
 able to easily express complex properties on the data structure, we
 introduce model functions. These functions rely on the private invariant of the type
-to construct a high level view of the datastructure that can then be used to express
-complex porperties over the structure.
+to construct a high level view of the data structure that can then be used to express
+complex properties over the structure.
 
 As an example, reachability in the tree structure is a complex property, that is
 crucial to reason about search trees. Reachability is difficult to tackle for SPARK
@@ -265,7 +265,7 @@ Right or Left, to each node in the binary tree. An additional boolean encodes
 whether the node is reachable from the root. Figure~\ref{fig-binary-mod-ex} gives
 the model of the binary tree presented in Figure~\ref{fig-binary}. In this
 example, all the nodes are reachable from the root except the last one. The
-pathes written below each node can be used to reconstruct easily the high level
+paths written below each node can be used to reconstruct easily the high level
 view of the tree.
 
 \begin{figure}[ht]
@@ -305,7 +305,7 @@ The invariant of search trees states that the value stored in each node of the
 tree is bigger than all the values stored in the subtree rooted at its left
 child and smaller than all the values stored in the subtree rooted at its right
 child. An example of values that would fit the tree from Figure~\ref{fig-binary}
-is given in Figure~\ref{fig-search}. To express this invariant, we use the 
+is given in Figure~\ref{fig-search}. To express this invariant, we use the
 model of the underlying binary tree. A value V is stored in the subtree rooted
 at the right child of a node if the path leading to this value is a supersequence
 of the path leading to V and the next element in the sequence is Right.
@@ -359,14 +359,14 @@ membership primitives provided on red black trees.
 From a software verification perspective, it may seem strange to present the implementation
 before the specification. Here we do so because the implementation is comparatively
 simpler and more widely known than the specification. And indeed, our implementation
-ressemble standard imperative implementations of red black trees except for to two notable
-points. The first one, is that we had to comply with the restriction imposed by the
-SPARK language, most notably, the forbiddance of pointers (access types in Ada). To
-alleviate this restriction, we choose to implement binary trees inside an array, indexes
-working as pointers in a memory region. To simplify our implentation, we do not consider
+resemble standard imperative implementations of red black trees except for to two notable
+points. The first one is that we had to comply with the restrictions imposed by the
+SPARK language, most notably, the forbidding of pointers (access types in Ada). To
+alleviate this restriction, we chose to implement binary trees inside an array, indexes
+working as pointers in a memory region. To simplify our implementation, we do not consider
 node deallocation, so that unallocated cells are located after a given index in the array.
 The Ada type of binary trees is given in Figure~\ref{fig-binary-typ}.
-Note that, our trees are bounded by the size of the underlying array.
+Note that our trees are bounded by the size of the underlying array.
 
 \begin{figure}[ht]
 \begin{small}
@@ -392,9 +392,9 @@ end record
 The other specificity of our implementation is of course the layered design. Since we
 have chosen to associate a type invariant to binary trees, the Forest type is defined as
 a private type and it can only be modified by users using functions which abide by the
-invariant. Therefore, we cannot change the values of the Cell record components individually 
+invariant. Therefore, we cannot change the values of the Cell record components individually
 from outside of binary trees implementation. We have resorted to defining functions
-doing unitary modfications of the tree while preserving the invariant. The unitary
+doing single modifications of the tree while preserving the invariant. The modification
 functions provided for binary trees are given in Figure~\ref{fig-binary-fun}.
 
 \begin{figure}[ht]
@@ -410,7 +410,7 @@ function Position (F : Forest; I : Index_Type) return Direction;
 function Peek (F : Forest; I : Index_Type; D : Direction)
     return Extended_Index_Type;
 --  Left or right child in the tree structure
-   
+
 procedure Init (F : in out Forest; Root : out Index_Type);
 --  Initialize a new tree in F
 
@@ -443,12 +443,12 @@ procedure Insert (F       : in out Forest;
 Note that we are dealing everywhere with forests of binary trees instead of a single
 binary tree. This is because, as we are using arrays instead of pointers, we cannot divide a
 tree object into separate objects without copying the array arround. To keep an efficient
-implementation, we resorted to processing the whole memory region as a whole, therefore
+implementation, we resorted to processing the memory region as a whole, therefore
 introducing forests of trees, in which every allocated node with a Top position is a
 valid root.
 
 As type invariants can be temporarily broken inside the data structure implementation, the body
-of the unitary functions can directly modify the internal structure of the tree. The implementation
+of the modification functions can directly modify the internal structure of the tree. The implementation
 of Plug is presented in Figure~\ref{fig-binary-body}.
 
 \begin{figure}[ht]
@@ -465,7 +465,7 @@ begin
       else
          F.C (I).Right := V;
       end if;
-      
+
       F.C (V).Position := D;
       F.C (V).Parent := I;
    end if;
@@ -475,7 +475,7 @@ end Plug;
 \caption{\label{fig-binary-body} Implementation of Plug.}
 \end{figure}
 
-Following our leveled approach, search trees are defined outside of binary tree's implementation.
+Following our leveled approach, search trees are defined outside of binary tree implementation.
 They are binary trees along with an additional array of values. Also, as we never need to consider
 parts of search trees, we no longer work on complete forests but rather on a single tree. More
 precisely, we store a single root index in the search tree data structure.
@@ -500,12 +500,12 @@ end record
 The functions provided on search trees are basic set functions, namely inserting a value into the tree
 and testing a value for membership into the tree. To allow implementation of red black trees above
 search trees, balancing functions are also provided. Defining them inside the implementation of
-search trees rather than inside the implementation of red black tree allow to keep all order related
-concerns into the serach tree layer. Indeed, balancing functions do not preserve balancedness, as they
+search trees rather than inside the implementation of red black tree allow to keep all order-related
+concerns in the search tree layer. Indeed, balancing functions do not preserve balancing, as they
 are to be called on unbalanced trees, but they do preserve order. Note that implementing the balancing
-functions at this level avoids the need of lifting low level tree handling functions such as Plug and
+functions at this level avoids the need for lifting low level tree handling functions such as Plug and
 Extract. All the functions defined on search trees are implemented using
-functions over binary forests. The functions provided for search trees are given in 
+functions over binary forests. The functions provided for search trees are given in
 Figure~\ref{fig-search-fun}. We only give the implementation of \verb|Right_Rotate| as an
 example.
 
@@ -528,7 +528,7 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) is
    Is_Root : constant Boolean := I = Root (T);
    P       : Index_Type;
    D       : Direction;
-   
+
 begin
    --  Y is the subtree located at I. Extract it as a separate tree.
    --  If Y is not a root, P is its parent.
@@ -571,7 +571,7 @@ end Right_Rotate;
 \end{figure}
 
 Red black trees are implemented in the same way as search trees by adding an array of
-colors to a search tree and using balancing functions rebalance the tree after an insertion.
+colors to a search tree and using balancing functions to rebalance the tree after an insertion.
 
 \subsection{Specification}
 % use parent/position and model
