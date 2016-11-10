@@ -188,45 +188,6 @@ Returning to the case where |CodePeer| is not used, the reasoning of
 * The previous assumption can be rewritten: if K > 2 then Prop.
 * But all we know is that K > 1, so we cannot deduce Prop.
 
-When a loop modifies a collection, which can be either an array or a container
-(see :ref:`Formal Containers Library`), it is in general necessary to state in
-the loop invariant those parts of the collection that have not been modified up
-to the current iteration. This property called `frame condition` in the
-scientific literature is essential for |GNATprove|, which otherwise must assume
-that all elements in the collection may have been modified. Special care should
-be taken to write adequate frame conditions, as they usually look obvious to
-programmers, and so it is very common to forget to write them and not being
-able to realize what's the problem afterwards. For example, consider the
-following loop invariant expressing that, after ``J`` iterations, the part of
-the boolean array ``Arr`` already seen has been set to ``True``:
-
-.. literalinclude:: ../gnatprove_by_example/examples/array_loops.adb
-   :language: ada
-   :lines: 7-11
-
-|GNATprove| does not prove property 2 in that case:
-
-.. literalinclude:: ../gnatprove_by_example/results/array_loops.prove
-   :language: none
-   :lines: 3,5
-
-The counterexample displayed by |GNATprove| mentions an array ``Arr`` where all
-components would be ``False`` at the end of a loop iteration, which is not
-possible. To make it possible for |GNATprove| to prove that, let's add a loop
-invariant stating that the part of the boolean array ``Arr`` not already seen
-is still set to ``False`` (the frame condition), so that changing ``Arr(J)`` in
-``not Arr(J)`` can only change ``False`` into ``True``:
-
-.. literalinclude:: ../gnatprove_by_example/examples/array_loops.adb
-   :language: ada
-   :lines: 13-18
-
-|GNATprove| is able to prove property 2 with this more precise loop invariant:
-
-.. literalinclude:: ../gnatprove_by_example/results/array_loops.prove
-   :language: none
-   :lines: 9-10,13-14
-
 See :ref:`How to Write Loop Invariants` for further guidelines.
 
 Pragma ``Loop_Invariant`` may appear anywhere at the top level of a loop: it is

@@ -17,11 +17,16 @@ In general, |GNATprove| relies on the user to manually supply the necessary
 information about variables modified by loop statements in the loop invariant.
 Though variables which are not modified in the loop need not be mentioned in
 the invariant, it is in general necessary to state explicitly the preservation
-of unmodified object parts, such as record fields or array elements. These
-preservation properties form the loop's `frame condition` (see :ref:`Loop
-Invariants`). As it may seem obvious to the user, the frame condition is
-unfortunately often forgotten when writing a loop invariant, leading to
-unprovable checks.
+of unmodified object parts, such as record fields or array elements. In
+particular, when a loop modifies a collection, which can be either an array or
+a container (see :ref:`Formal Containers Library`), it may be necessary to
+state in the loop invariant those parts of the collection that have not been
+modified up to the current iteration. This property called `frame condition` in
+the scientific literature is essential for |GNATprove|, which otherwise must
+assume that all elements in the collection may have been modified. Special care
+should be taken to write adequate frame conditions, as they usually look
+obvious to programmers, and so it is very common to forget to write them and
+not being able to realize what's the problem afterwards.
 
 To alleviate this problem, the |GNATprove| tool generates automatically frame
 conditions in some cases. In particular, it is able to infer the preservation of

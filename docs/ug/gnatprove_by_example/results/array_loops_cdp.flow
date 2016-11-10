@@ -1,5 +1,0 @@
-array_loops_cdp.adb:9:21: info: initialization of "Arr" proved
-array_loops_cdp.adb:10:61: info: initialization of "Arr" proved
-array_loops_cdp.adb:15:21: info: initialization of "Arr" proved
-array_loops_cdp.adb:16:61: info: initialization of "Arr" proved
-array_loops_cdp.adb:17:68: info: initialization of "Arr" proved
