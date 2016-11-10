@@ -512,7 +512,7 @@ package SPARK_Util.Types is
    --  @return the protected definition for the given type
 
    function Requires_Interrupt_Priority (E : Entity_Id) return Boolean
-   with Pre => Is_Protected_Type (E);
+   with Pre => Ekind (E) = E_Protected_Type;
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
    --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar

@@ -659,7 +659,7 @@ is
                                                           Object_Kind);
    --  As above, but using a Flow_Id
 
-   function Search_Contract (Unit     : Node_Id;
+   function Search_Contract (Unit     : Entity_Id;
                              Contract : Pragma_Id;
                              Output   : Entity_Id;
                              Input    : Entity_Id := Empty)

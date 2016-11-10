@@ -215,11 +215,6 @@ package body SPARK_Util.Subprograms is
                end loop;
             end if;
 
-         when Name_Global
-            | Name_Depends
-         =>
-            raise Why.Not_Implemented;
-
          when others =>
             raise Program_Error;
       end case;

@@ -95,7 +95,8 @@ package Gnat2Why.Subprograms is
 
    procedure Generate_VCs_For_Protected_Type
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Ekind (E) = E_Protected_Type;
 
    procedure Translate_Subprogram_Spec
      (File : W_Section_Id;

@@ -100,14 +100,19 @@ package SPARK_Util.Subprograms is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-   with Pre => Ekind (E) in E_Function     |
-                            E_Package      |
-                            E_Procedure    |
-                            Entry_Kind     |
-                            Protected_Kind |
-                            Task_Kind
+   with Pre => Ekind (E) in E_Function       |
+                            E_Package        |
+                            E_Procedure      |
+                            Entry_Kind       |
+                            E_Protected_Type |
+                            E_Task_Type
+               and then Name in Name_Precondition      |
+                                Name_Postcondition     |
+                                Name_Refined_Post      |
+                                Name_Contract_Cases    |
+                                Name_Initial_Condition
                and then not (Classwide and Inherited);
-   --  @param E subprogram or package
+   --  @param E entry, subprogram, package, task or protected type
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
@@ -237,12 +242,12 @@ package SPARK_Util.Subprograms is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in E_Function      |
-                            E_Package       |
-                            E_Procedure     |
-                            Entry_Kind      |
-                            Protected_Kind  |
-                            Task_Kind;
+   with Pre => Ekind (E) in E_Function       |
+                            E_Package        |
+                            E_Procedure      |
+                            Entry_Kind       |
+                            E_Protected_Type |
+                            E_Task_Type;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -259,7 +264,10 @@ package SPARK_Util.Subprograms is
    --  Check if subprogram body N contains no potentially blocking statements
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre => Ekind (E) in E_Function  |
+                            E_Procedure |
+                            Entry_Kind  |
+                            E_Task_Type;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
