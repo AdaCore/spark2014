@@ -140,6 +140,7 @@ overflow and division-by-zero, and that the functional contracts are correctly
 implemented.
 
 \subsection{Auto-active Verification}
+\label{sec-prelim-auto-active}
 
 The term \emph{auto-active verification} was coined in 2010 by researcher
 Rustan Leino~\cite{Leino10usableauto-active} to designate \textit{tools where
@@ -855,6 +856,237 @@ the implementation of search trees to only concentrate on order related issues.
 %   This is done using loops and loop invariants
 % order requires case split
 %   This is done using if statements
+
+Verifying our red balck tree implementation has proved to be challenging, and above the
+purely automatic capacity of the GNATprove tool. There are several reasons for this:
+
+\begin{itemize}
+ \item The imperative, pointer based implementation of red black trees makes it difficult
+ to reson about disjointness of different trees/subtrees in the forest.
+ \item Reasoning about reachability involves inductive proofs, which automatic provers are
+ notoriously bad at.
+ \item Reasoning about ordering involves using transitivity relations, that is, coming up with
+ an intermediate value to consider, which usually eludes automatic provers.
+ \item The size of the formulas to verified, number of verification conditions, and number of
+ paths in the program are important enough to defy provers scalabiity.
+\end{itemize}
+
+To work around these limitations, we resorted to using auto-active verification techniques, which,
+as described in Section~\ref{sec-prelim-auto-active}, allow to guide automatic provers without
+resorting to a proof assistant. We explain some of these techniques in this section.
+
+\paragraph{Intermediate lemmas:}
+One of the most classical technique in manual proof consists in factoring some usefull
+part of a proof in an intermediate lemma so that it can be verified independently and
+use as many time as necessary. In auto-active verification, this can be done by introducing
+a procedure with no output, which, when called, will cause the deductive engine to verify
+its precondition and assume its postcondition. In Figure~\ref{fig-proof-lem}, we show an
+intermediate lemma which can be used to verify that two trees of a single forest with different
+roots are disjoint. A caller of this function will have to verify the T1 and T2 are different
+valid root in F and get for free that there can be no node reachable from both roots in F.
+Naturally, the lemma is not assumed, its actual proof is done when verifying the procedure
+Prove\_Model\_Distinct.
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
+--  Trees rooted at different indexes in the forest are disjoint.
+
+  Pre  => T1 /= T2
+    and then Valid_Root (F, T1)
+    and then Valid_Root (F, T2),
+  Post => (for all I in Index_Type =>
+            (not Model (F, T1) (I).K or not Model (F, T2) (I).K));
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-proof-lem} Intermediate lemma stating disjointness of trees in a forest.}
+\end{figure}
+
+\paragraph{Reasoning by induction:}
+Though some automatic provers are in fact able of doing simple inductive proofs, inductive reasoning
+still most of the time requires manual interaction. In auto-active style, an inductive proof can be done
+using loop annotations named loop invariants. In SPARK, loop invariants are normal assertions occuring in
+loop statements but which are handled in an inductive way by GNATprove. Namely, the prover splits its
+verification in two parts. First, it verifies that the invariant holds in the first iteration of the
+loop and then that it holds in any following iteration knowing that it held in the previous one.
+This behavior is exactly what we want for a proof by induction. For example, Figure~\ref{fig-proof-ind}
+demonstrates how the intermediate lemma presented in Figure~\ref{fig-proof-lem} can be verified
+using a loop to perform an induction over the size of the path from the T1 to any node reachable
+from T1 in F. The loop goes from 1 to the maximum size of any branch in the forest F. As an
+invariant, we have written the property we wanted to prove. To verify this procedure, GNATprove will
+first check that the invariant holds in the first iteration of the loop, that is, that T1 itself cannot
+be reached from T2. Then, it will proceed by induction to show that this holds for any node reachable
+from T1 in F.
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) is
+begin
+   for N in Index_Type loop
+      pragma Loop_Invariant
+        (for all I in Index_Type =>
+          (if Model (F, T1) (I).K and Length (Model (F, T1) (I).A) < N
+           then not Model (F, T2) (I).K));
+   end loop;
+end Prove_Model_Distinct;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-proof-ind} Proof by induction over the length of the path from the root to a node in the tree.}
+\end{figure}
+
+\paragraph{Case analysis}
+As the number of cases to consider can sometimes confuse the prover, it is often usefull to split the
+problem in a sensible way. A proof by case analysis is nothing more than an if statement, each branch
+narrowing the cases to consider and possibly providing additional informations on how to carry out
+the proof in this particular case. Figure~\ref{fig-proof-ca} shows how case analysis was used to
+prove how tree models are modified by an application of Plug. It is divided in two cases: either
+the node was already reachable from the actual root and then its model is unchanged, or it was reachable
+from the plugged root, in which case the path leading to it from the new root is the path leading to
+the plugged root in the new tree concatenated with the path leading from the plugged root to the node
+in the old tree. 
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+--  Nodes have the same path in F_Old and F, or for those nodes
+--  for which V is on the path, their path is obtained by
+--  concatenating the path from Root to V and the path from V to
+--  the node.
+for KI in Index_Type loop
+
+   --  Case 1: node KI is in the tree rooted at Root in F_Old. Use
+   --  Preserve_Equal to prove the property for node KI, based on
+   --  the knowledge that it holds for the parent of node KI.
+
+   if Model (F, Root) (KI).K
+     and then Length (Model (F, Root) (KI).A) = N
+     and then Model (F_Old, Root) (KI).K
+   then
+      Preserve_Equal (S1 => Model (F, Root) (F.C (KI).Parent).A,
+                      S2 => Model (F_Old, Root) (F.C (KI).Parent).A,
+                      S3 => Model (F, Root) (KI).A,
+                      S4 => Model (F_Old, Root) (KI).A,
+                      D  => F.C (KI).Position);
+   end if;
+
+   --  Case 2: node KI is in the tree rooted at V in F_Old. Use
+   --  Preserve_Concat to prove the property for node KI, based
+   --  on the knowledge that it holds for the parent of node KI.
+
+   if Model (F, Root) (KI).K
+     and then Length (Model (F, Root) (KI).A) = N
+     and then Model (F_Old, V) (KI).K
+     and then KI /= V
+   then
+      Preserve_Concat (S1 => Model (F_Old, V) (F.C (KI).Parent).A,
+                       S2 => Model (F, Root) (F.C (KI).Parent).A,
+                       S3 => Model (F_Old, V) (KI).A,
+                       S4 => Model (F, Root) (KI).A,
+                       T  => Model (F, Root) (V).A,
+                       D  => F.C (KI).Position);
+   end if;
+
+   --  Accumulate the knowledge that the property holds up to node
+   --  KI.
+
+   pragma Loop_Invariant
+     (for all I in 1 .. KI =>
+       (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N then
+          (if Model (F_Old, Root) (I).K then Model (F, Root) (I).A = Model (F_Old, Root) (I).A)));
+   pragma Loop_Invariant
+     (for all I in 1 .. KI =>
+       (if Model (F, Root) (I).K and then Length (Model (F, Root) (I).A) <= N then
+         (if Model (F_Old, V) (I).K then
+            Is_Concat (Q => Model (F, Root) (V).A,
+                       V => Model (F_Old, V) (I).A,
+                       P => Model (F, Root) (I).A))));
+end loop;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-proof-ca} Proof by case analysis of the effect of Plug on models.}
+\end{figure}
+
+Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure.
+Also note that, to be able to apply this reasoning on every node of the memory array, the case
+analysis had to be enclosed in a loop. As GNATprove cannot accumulated knowledge without a loop
+invariant, we had to restate everything tha was proved so far in the loop as a loop invariant.
+Also note that this reasoning is a part of a reasoning by induction over the size of the path
+leading to the node in the new tree, which is why we aready know the proposition holds for the
+node's parent.
+
+\paragraph{Guiding the proof}
+There are other useful ways to guide the proof engine.
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+procedure Prove_Order_Total (T : Search_Tree; L : Index_Type; V : Natural)
+   with
+     Ghost,
+     Global => null,
+     Pre  =>
+       --  The tree is not empty
+       Size (T.Struct) > 0
+
+       --  Repeat relevant parts of the search tree invariant
+       and then T.Root /= Empty
+       and then Valid_Root (T.Struct, T.Root)
+       and then Ordered_Leafs (T.Struct, T.Root, T.Values)
+
+       --  V is not found at the leaf
+       and then T.Values (L) /= V
+
+       --  The leaf L is in the tree, and does not have the correct child for
+       --  continuing the search for V.
+       and then Model (T.Struct, T.Root) (L).K
+       and then (if V < T.Values (L) then Peek (T.Struct, L, Left) = Empty
+                 else Peek (T.Struct, L, Right) = Empty)
+
+       --  V is less than all the left ancestors up to L and greater than all
+       --  the right ancestors up to L.
+       and then (for all I in Index_Type =>
+                  (if Model (T.Struct, T.Root) (I).K then
+                    (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (L).A
+                     then (if Get (Model (T.Struct, T.Root) (L).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
+                           then V < T.Values (I)
+                           else V > T.Values (I))))),
+     Post =>
+       (for all I in Index_Type =>
+         (if Model (T.Struct, T.Root) (I).K then T.Values (I) /= V))
+   is
+   begin
+      --  Case 1: given a node I which does not have L on its path, consider
+      --  the common ancestor of L and I returned by Find_Root. Instantiating
+      --  Ordered_Leafs once with this common ancestor and L, and another time
+      --  with this common ancestor and I, allows to prove that V cannot be the
+      --  same as the value at I.
+      pragma Assert
+        (for all I in Index_Type =>
+          (if Model (T.Struct, T.Root) (I).K
+           then Model (T.Struct, T.Root) (Find_Root (T.Struct, T.Root, I, L)).K));
+
+      --  Case 2: given a node I which has L on its path, use Prove_Model_Total
+      --  to prove that it is necessarily on the other side of where V would be
+      --  found.
+
+      if V < T.Values (L) then
+         Prove_Model_Total (T.Struct, T.Root, L, Left);
+      else
+         Prove_Model_Total (T.Struct, T.Root, L, Right);
+      end if;
+      pragma Assert
+        (for all I in Index_Type =>
+           (if Model (T.Struct, T.Root) (I).K
+            and then Find_Root (T.Struct, T.Root, I, L) = L
+            then T.Values (I) /= V));
+   end Prove_Order_Total;
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-proof-guide} Guide the proof to show that if V has not been found along the expected path in T, then it is not in T.}
+\end{figure}
+
 \subsection{Ghost Code}
 % different uses of ghost code
 
