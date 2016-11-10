@@ -16,7 +16,7 @@ Automatically Generated Loop Invariants
 In general, |GNATprove| relies on the user to manually supply the necessary
 information about variables modified by loop statements in the loop invariant.
 Though variables which are not modified in the loop need not be mentioned in
-the invariant, it is in general necessary to state explicitly the preservation
+the invariant, it is usually necessary to state explicitly the preservation
 of unmodified object parts, such as record fields or array elements. In
 particular, when a loop modifies a collection, which can be either an array or
 a container (see :ref:`Formal Containers Library`), it may be necessary to
@@ -32,14 +32,14 @@ To alleviate this problem, the |GNATprove| tool generates automatically frame
 conditions in some cases. In particular, it is able to infer the preservation of
 unmodified fields of record variables. It also handles unmodified fields of
 array components as long as they are preserved at every index in the array.
-As an example, GNATprove does not need any loop invariant to verify the
-following loop:
+As an example, consider the following loop which only updates some record
+component of a nested data structure:
 
 .. literalinclude:: ../gnatprove_by_example/examples/preserved_fields.adb
    :language: ada
    :linenos:
 
-Note that despite the complete absence of a loop invariant in the above code,
+Despite the complete absence of a loop invariant in the above code,
 |GNATprove| is able to prove that the assertions on lines 19-21 about variable
 ``D`` which is modified in the loop are proved, thanks to the generated loop
 invariants:
@@ -48,10 +48,32 @@ invariants:
    :language: none
    :linenos:
 
-Note that GNATprove will not generate a frame condition for a record field if
+Note that |GNATprove| will not generate a frame condition for a record field if
 the record object is modified as a whole either through an assignment or
 through a procedure call, and so, even if the field happens to be preserved
 by the modification.
+
+|GNATprove| can also infer preservation of unmodified array components for arrays
+that are only updated at constant indexes or at indexes equal to the loop index.
+As an example, consider the following loops, only updating some cells of a
+matrix of arrays:
+
+.. literalinclude:: ../gnatprove_by_example/examples/preserved_components.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| can succesfully verify the assertion on line 13 thanks to the
+generated loop invariant. Note that loop invariant generation for preserved
+array components is based on heuristics, and that it is therefore far from
+complete. In particular, it does not handle updates to variable indexes different
+from the loop index, as can be seen by the failed attempt to verify the
+assertion on line 22. |GNATprove| does not either handle dependences between
+indexes in an update, resulting in the failed attempt to verify the
+assertion on line 33:
+
+.. literalinclude:: ../gnatprove_by_example/results/preserved_components.prove
+   :language: none
+   :linenos:
 
 The Four Properties of a Good Loop Invariant
 --------------------------------------------
