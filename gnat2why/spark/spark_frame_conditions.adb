@@ -33,6 +33,7 @@ with Get_SPARK_Xrefs;
 with Lib.Xref;                       use Lib.Xref;
 with Sem_Aux;                        use Sem_Aux;
 with Snames;                         use Snames;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
 
 package body SPARK_Frame_Conditions is
@@ -891,9 +892,8 @@ package body SPARK_Frame_Conditions is
             --  Get_Proof_Global to work out the Globals from that. Otherwise,
             --  we use the Globals that we gathered from the ALI files.
 
-            if Present (E) and then
-              (Present (Get_Pragma (E, Pragma_Global)) or else
-               Present (Get_Pragma (E, Pragma_Depends)))
+            if Present (E)
+              and then Has_User_Supplied_Globals (E)
             then
                declare
                   Read_Ids  : Flow_Types.Flow_Id_Sets.Set;

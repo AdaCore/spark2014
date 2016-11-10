@@ -1344,9 +1344,7 @@ package body Flow is
                            end;
                         end if;
 
-                        if Present (Get_Pragma (E, Pragma_Global))
-                          or else Present (Get_Pragma (E, Pragma_Depends))
-                        then
+                        if Has_User_Supplied_Globals (E) then
                            --  If we have a user-provided Global or Depends
                            --  contract then we use Get_Globals to parse it. In
                            --  such a case components *_Calls and Local_* will
