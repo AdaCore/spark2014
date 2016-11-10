@@ -6,7 +6,7 @@ pack.adb:5:04: info: initialization of "A" constituent of "State1" proved
 pack.adb:5:07: info: initialization of "B" constituent of "State1" proved
 pack.adb:12:07: info: initialization of "Inner_Var" constituent of "Pack.State2" proved
 pack.adb:12:07: info: initialization of "Var" proved
+pack.adb:24:41: info: initialization of "A" constituent of "State1" proved
+pack.adb:24:44: info: initialization of "B" constituent of "State1" proved
 pack.adb:33:04: info: initialization of "B" constituent of "State1" proved
 pack.ads:5:04: info: initialization of "Var" proved
-pack.ads:7:14: info: initialization of "A" constituent of "State1" proved
-pack.ads:7:14: info: initialization of "B" constituent of "State1" proved

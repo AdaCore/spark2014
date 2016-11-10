@@ -145,13 +145,45 @@ package body SPARK_Util.Subprograms is
          when Pragma_Refined_Global
             | Pragma_Refined_Depends
          =>
-            --  ??? how about stubs?
             declare
-               Body_E : constant Entity_Id := Get_Body_Entity (E);
+               Body_N : constant Node_Id := Get_Body (E);
             begin
-               return (if Present (Body_E)
-                       then Get_Pragma (Body_E, Prag)
-                       else Empty);
+               if Present (Body_N) then
+                  --  Refined contracts on separate subprograms are attached to
+                  --  the stub entity (which is neither the unique entity nor
+                  --  the body entity). Detect these by checking whether the
+                  --  body defintion is in a subunit.
+
+                  --  ??? here we essentially do what Get_Body_Or_Stub is doing
+                  --  but intentionally this routine is not reused, because it
+                  --  is confusing and should be removed.
+
+                  declare
+                     Context : constant Node_Id := Parent (Body_N);
+
+                     pragma Assert
+                       (Nkind (Context) in N_Subunit
+                                         | N_Block_Statement
+                                         | N_Compilation_Unit
+                                         | N_Entry_Body
+                                         | N_Protected_Body
+                                         | N_Package_Body
+                                         | N_Package_Specification
+                                         | N_Subprogram_Body
+                                         | N_Task_Body);
+
+                  begin
+                     return
+                       Get_Pragma
+                         (Defining_Entity
+                            ((if Nkind (Context) = N_Subunit
+                             then Corresponding_Stub (Context)
+                             else Body_N)),
+                          Prag);
+                  end;
+               else
+                  return Empty;
+               end if;
             end;
 
          when others =>
@@ -214,6 +246,8 @@ package body SPARK_Util.Subprograms is
             if Name = Name_Refined_Post then
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
+                  --  ??? here we shall check for stubs, just like we do in
+                  --  Find_Contracts above.
                begin
                   Contr := (if Present (Body_E)
                             then Contract (Body_E)
