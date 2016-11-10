@@ -366,25 +366,26 @@ package body Flow_Refinement is
                                C : Contract_T)
                                return Node_Id
    is
-      Body_E : constant Entity_Id := Get_Body_Entity (E);
-      Prag   : Node_Id;
+      Prag : Node_Id;
 
    begin
       if Subprogram_Refinement_Is_Visible (E, S) then
          Prag :=
-           Get_Pragma (Get_Body_Or_Stub (Body_E),
-                       (case C is
-                           when Global_Contract  => Pragma_Refined_Global,
-                           when Depends_Contract => Pragma_Refined_Depends));
+           Find_Contract
+             (E,
+              (case C is
+                  when Global_Contract  => Pragma_Refined_Global,
+                  when Depends_Contract => Pragma_Refined_Depends));
       else
          Prag := Empty;
       end if;
 
       if No (Prag) then
-         Prag := Get_Pragma (E,
-                             (case C is
-                                 when Global_Contract  => Pragma_Global,
-                                 when Depends_Contract => Pragma_Depends));
+         Prag :=
+           Find_Contract (E,
+                          (case C is
+                              when Global_Contract  => Pragma_Global,
+                              when Depends_Contract => Pragma_Depends));
       end if;
 
       return Prag;
@@ -790,13 +791,15 @@ package body Flow_Refinement is
    begin
       if Present (Body_E) then
          declare
-            Depends_N : constant Node_Id := Get_Pragma (E, Pragma_Depends);
-            Global_N  : constant Node_Id := Get_Pragma (E, Pragma_Global);
+            Depends_N : constant Node_Id :=
+              Find_Contract (E, Pragma_Depends);
+            Global_N  : constant Node_Id :=
+              Find_Contract (E, Pragma_Global);
 
             Refined_Depends_N : constant Node_Id :=
-              Get_Pragma (Body_E, Pragma_Refined_Depends);
+              Find_Contract (E, Pragma_Refined_Depends);
             Refined_Global_N  : constant Node_Id :=
-              Get_Pragma (Body_E, Pragma_Refined_Global);
+              Find_Contract (E, Pragma_Refined_Global);
 
             B_Scope : constant Flow_Scope := Get_Flow_Scope (Body_E);
 

@@ -2985,7 +2985,7 @@ package body Flow_Utility is
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean is
    begin
-      return Present (Get_Pragma (Subprogram, Pragma_Depends));
+      return Present (Find_Contract (Subprogram, Pragma_Depends));
    end Has_Depends;
 
    ----------------------------
@@ -3782,16 +3782,12 @@ package body Flow_Utility is
    begin
       case Contract is
          when Pragma_Depends =>
-            declare
-               Body_E : constant Node_Id := Get_Body_Entity (Unit);
-            begin
-               Contract_N := (if Present (Body_E)
-                              then Get_Pragma (Body_E, Pragma_Refined_Depends)
-                              else Empty);
-            end;
+            Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
+
             if No (Contract_N) then
                Contract_N := Get_Pragma (Unit, Pragma_Depends);
             end if;
+
             if No (Contract_N) then
                return Unit;
             end if;

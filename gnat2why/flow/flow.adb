@@ -1059,17 +1059,11 @@ package body Flow is
 
             FA.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
-            FA.Depends_N := Get_Pragma (E, Pragma_Depends);
-            FA.Global_N  := Get_Pragma (E, Pragma_Global);
+            FA.Depends_N := Find_Contract (E, Pragma_Depends);
+            FA.Global_N  := Find_Contract (E, Pragma_Global);
 
-            declare
-               Body_E : constant Entity_Id := Get_Body_Entity (E);
-            begin
-               FA.Refined_Depends_N := Get_Pragma (Body_E,
-                                                   Pragma_Refined_Depends);
-               FA.Refined_Global_N  := Get_Pragma (Body_E,
-                                                   Pragma_Refined_Global);
-            end;
+            FA.Refined_Depends_N := Find_Contract (E, Pragma_Refined_Depends);
+            FA.Refined_Global_N  := Find_Contract (E, Pragma_Refined_Global);
 
             FA.Is_Generative := Refinement_Needed (E);
 

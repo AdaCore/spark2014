@@ -270,19 +270,13 @@ package body Flow.Analysis is
                      Traverse (Get_Pragma (S, Pragma_Initializes));
 
                   when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
-                     declare
-                        Body_E : constant Entity_Id := Get_Body_Entity (S);
-                     begin
-                        if Present (Body_E) then
-                           Traverse
-                             (Get_Pragma (Body_E, Pragma_Refined_Global));
-                           if Result /= S then
-                              return Result;
-                           end if;
-                        end if;
-                     end;
+                     Traverse (Find_Contract (S, Pragma_Refined_Global));
 
-                     Traverse (Get_Pragma (S, Pragma_Global));
+                     if Result /= S then
+                        return Result;
+                     end if;
+
+                     Traverse (Find_Contract (S, Pragma_Global));
 
                   when others =>
                      raise Program_Error;

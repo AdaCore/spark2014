@@ -122,6 +122,43 @@ package body SPARK_Util.Subprograms is
       return Corresponding_Body (Ptr);
    end Entry_Body_Entity;
 
+   -------------------
+   -- Find_Contract --
+   -------------------
+
+   function Find_Contract (E : Entity_Id; Prag : Pragma_Id) return Node_Id is
+   begin
+      case Prag is
+         when Pragma_Global
+            | Pragma_Depends
+            | Pragma_Priority
+            | Pragma_Interrupt_Priority
+         =>
+            --  ??? pragmas Priority and Interrupt_Priority given in private
+            --  part with SPARK_Mode => Off should be ignored.
+            return Get_Pragma ((if Ekind (E) = E_Task_Type
+                                  and then Is_Single_Concurrent_Type (E)
+                                then Anonymous_Object (E)
+                                else E),
+                               Prag);
+
+         when Pragma_Refined_Global
+            | Pragma_Refined_Depends
+         =>
+            --  ??? how about stubs?
+            declare
+               Body_E : constant Entity_Id := Get_Body_Entity (E);
+            begin
+               return (if Present (Body_E)
+                       then Get_Pragma (Body_E, Prag)
+                       else Empty);
+            end;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Find_Contract;
+
    --------------------
    -- Find_Contracts --
    --------------------
@@ -439,18 +476,24 @@ package body SPARK_Util.Subprograms is
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    is
       Pragma_Priority_Node : constant Node_Id :=
-        Get_Pragma (E, Pragma_Priority);
+        Find_Contract (E, Pragma_Priority);
    begin
+      --  First look for pragma Priority, which can apply to protected types,
+      --  task types and main-like subprograms.
+
       if Present (Pragma_Priority_Node) then
          --  Expression is mandatory for pragma Priority
 
          return Expression
            (First (Pragma_Argument_Associations (Pragma_Priority_Node)));
 
-      else
+      --  Then look for pragma Interrupt_Priority, which can only apply to
+      --  protected types
+
+      elsif Is_Protected_Type (E) then
          declare
             Interrupt_Priority_Pragma_Node : constant Node_Id :=
-              Get_Pragma (E, Pragma_Interrupt_Priority);
+              Find_Contract (E, Pragma_Interrupt_Priority);
          begin
             if Present (Interrupt_Priority_Pragma_Node) then
                declare
@@ -465,14 +508,13 @@ package body SPARK_Util.Subprograms is
                           --  Here priority defaults to Interrupt_Priority'Last
                           else Empty);
                end;
-            else
-               --  None of pragma Priority or Interrupt_Priority is present
-
-               return Empty;
             end if;
          end;
       end if;
 
+      --  None of pragma Priority or Interrupt_Priority is present
+
+      return Empty;
    end Get_Priority_Or_Interrupt_Priority;
 
    -------------------
@@ -516,8 +558,8 @@ package body SPARK_Util.Subprograms is
    -------------------------------
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean is
-     (Present (Get_Pragma (E, Pragma_Global))
-        or else Present (Get_Pragma (E, Pragma_Depends)));
+     (Present (Find_Contract (E, Pragma_Global))
+        or else Present (Find_Contract (E, Pragma_Depends)));
 
    -------------------------------------
    -- Has_Only_Nonblocking_Statements --

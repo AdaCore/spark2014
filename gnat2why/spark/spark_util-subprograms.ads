@@ -95,6 +95,47 @@ package SPARK_Util.Subprograms is
    --            type
    --  @return the enclosing protected type
 
+   function Find_Contract (E : Entity_Id; Prag : Pragma_Id) return Node_Id
+   with Pre  => (case Prag is
+                    when Pragma_Global
+                       | Pragma_Depends
+                       | Pragma_Refined_Global
+                       | Pragma_Refined_Depends
+                    =>
+                       Ekind (E) in Entry_Kind
+                                  | E_Function
+                                  | E_Procedure
+                                  | E_Task_Type,
+
+                    when Pragma_Interrupt_Priority
+                    =>
+                       Ekind (E) in Concurrent_Kind,
+
+                    when Pragma_Priority
+                    =>
+                       Ekind (E) in E_Function
+                                  | E_Procedure
+                                  | Concurrent_Kind,
+
+                    when others
+                    =>
+                        False),
+        Post => (if Present (Find_Contract'Result)
+                 then Nkind (Find_Contract'Result) = N_Pragma);
+   --  Contract pragmas might be attached to non-obvious entities, e.g. for
+   --  single concurrent types they are attached to the corresponding anonymous
+   --  concurrent object and "refined" pragmas are attached to the body. This
+   --  wrapper hides this details and should be used instead of the low-level
+   --  Get_Pragma.
+   --
+   --  Note: for contracts that can be repeated use Find_Contracts (plural).
+   --
+   --  ??? perhaps here we should support Classwide and Inherited arguments too
+   --
+   --  @param E unique entity to which a contract applies
+   --  @param Prag contract identified
+   --  @return pragma node or empty if no contract is present
+
    function Find_Contracts
      (E         : Entity_Id;
       Name      : Name_Id;
