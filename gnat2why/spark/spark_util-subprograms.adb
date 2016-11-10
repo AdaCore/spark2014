@@ -176,10 +176,10 @@ package body SPARK_Util.Subprograms is
          =>
             if Name = Name_Refined_Post then
                declare
-                  Body_N : constant Node_Id := Get_Body (E);
+                  Body_E : constant Entity_Id := Get_Body_Entity (E);
                begin
-                  Contr := (if Present (Body_N)
-                            then Contract (Defining_Entity (Body_N))
+                  Contr := (if Present (Body_E)
+                            then Contract (Body_E)
                             else Empty);
                end;
 
