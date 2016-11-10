@@ -337,6 +337,13 @@ auditlog.adb:1169:34: info: initialization of "NumberEntries" proved
 auditlog.adb:1178:37: info: initialization of "FileH" proved
 auditlog.adb:1180:22: info: initialization of "OK" proved
 auditlog.adb:1180:32: info: initialization of "TimeOK" proved
+auditlog.adb:1201:30: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1201:33: info: initialization of "Status" proved
+auditlog.adb:1202:33: info: initialization of "FileH" proved
+auditlog.adb:1203:30: info: initialization of "FileAges" proved
+auditlog.adb:1203:33: info: initialization of "FirstTime" proved
+auditlog.adb:1204:30: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.adb:1204:33: info: initialization of "NumberEntries" proved
 auditlog.adb:1216:31: info: initialization of "OK" proved
 auditlog.adb:1218:07: info: initialization of "AuditSystemFault" constituent of "State" proved
 auditlog.adb:1224:13: info: initialization of "LogFilesStatus" constituent of "State" proved
@@ -1786,6 +1793,8 @@ enclave.adb:189:22: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:226:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:250:22: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:250:23: info: initialization of "Status" constituent of "State" proved
+enclave.adb:262:16: info: precondition proved (CVC4: 1 VC)
+enclave.adb:262:41: info: initialization of "TheCurrentFloppy" proved
 enclave.adb:267:10: info: initialization of "DataOK" proved
 enclave.adb:274:18: medium: precondition might fail
 enclave.adb:286:18: medium: precondition might fail
@@ -1839,6 +1848,7 @@ enclave.adb:889:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:943:27: medium: precondition might fail
 enclave.adb:945:06: info: postcondition proved (CVC4: 7 VC)
 enclave.adb:956:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:986:26: info: initialization of "TheCurrentFloppy" proved
 enclave.adb:990:13: info: initialization of "ConfigDataOK" proved
 enclave.adb:997:15: info: precondition proved (CVC4: 2 VC)
 enclave.adb:1020:33: info: initialization of "Status" constituent of "State" proved
@@ -2835,11 +2845,15 @@ tismain.adb:1235:39: info: initialization of "Latch.Output" proved
 tismain.adb:1236:39: info: initialization of "Latch.State" proved
 tismain.adb:1237:40: info: initialization of "Screen.Output" proved
 tismain.adb:1238:34: info: initialization of "TheAdmin" proved
+tismain.adb:1269:14: info: initialization of "Door.State" proved
+tismain.adb:1269:14: info: initialization of "Latch.State" proved
+tismain.adb:1271:39: info: initialization of "TheAdmin" proved
 tismain.adb:1290:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1291:41: info: initialization of "Display.Output" proved
 tismain.adb:1292:39: info: initialization of "Latch.Output" proved
 tismain.adb:1293:40: info: initialization of "Screen.Output" proved
 tismain.adb:1294:34: info: initialization of "TheAdmin" proved
+tismain.adb:1336:39: info: initialization of "TheAdmin" proved
 tismain.adb:1347:10: info: loop invariant preservation proved (CVC4: 19 VC)
 tismain.adb:1347:23: info: initialization of "Enclave.State" proved
 tismain.adb:1347:57: info: initialization of "KeyStore.State" proved
@@ -2882,7 +2896,20 @@ tismain.adb:1443:22: medium: precondition might fail
 tismain.adb:1449:23: medium: precondition might fail
 tismain.adb:1456:22: medium: precondition might fail
 tismain.adb:1482:10: info: initialization of "SystemFault" proved
+tismain.adb:1484:10: info: initialization of "AuditLog.State" proved
+tismain.adb:1484:10: info: initialization of "ConfigData.State" proved
+tismain.adb:1484:10: info: initialization of "Display.State" proved
+tismain.adb:1484:10: info: initialization of "Screen.State" proved
+tismain.adb:1484:10: info: initialization of "TheStats" proved
 tismain.adb:1489:18: info: initialization of "AuditLog.State" proved
+tismain.adb:1491:10: info: initialization of "AuditLog.State" proved
+tismain.adb:1491:10: info: initialization of "Clock.CurrentTime" proved
+tismain.adb:1491:10: info: initialization of "ConfigData.State" proved
+tismain.adb:1491:10: info: initialization of "Display.State" proved
+tismain.adb:1491:10: info: initialization of "Door.State" proved
+tismain.adb:1491:10: info: initialization of "Latch.State" proved
+tismain.adb:1491:10: info: initialization of "Screen.State" proved
+tismain.adb:1491:10: info: initialization of "TheStats" proved
 tismain.adb:1497:10: info: assertion proved (CVC4: 21 VC)
 tismain.adb:1497:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1497:40: info: initialization of "SystemFault" proved
