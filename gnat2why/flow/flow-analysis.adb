@@ -285,7 +285,6 @@ package body Flow.Analysis is
                      Traverse (Get_Pragma (S, Pragma_Global));
 
                   when others =>
-                     --  ??? E_Generic_Package, E_Generic_Package?
                      raise Program_Error;
                end case;
 

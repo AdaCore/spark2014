@@ -113,7 +113,7 @@ package Flow_Generated_Globals.Phase_2 is
       S : Flow_Scope)
       return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Package | E_Generic_Package;
+               Ekind (E) = E_Package;
    --  @param E is the entity name whose generated initialize aspect we want
    --  @param S is the Flow_Scope at which we need to up project the results
    --  @return the generated initializes if it exists or an empty dependency

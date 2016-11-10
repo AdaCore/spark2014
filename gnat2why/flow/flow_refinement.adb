@@ -227,7 +227,7 @@ package body Flow_Refinement is
       return
         Get_Flow_Scope
           (Parent (case Ekind (S.Ent) is
-                      when E_Generic_Package | E_Package =>
+                      when E_Package =>
                          Package_Body (S.Ent),
                       when E_Protected_Type =>
                          Protected_Body (S.Ent),
