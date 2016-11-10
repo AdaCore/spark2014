@@ -106,8 +106,100 @@ Certification and dependability
 
 \section{Preliminaries}
 \subsection{SPARK 2014}
+
+SPARK is a subset of the Ada programming language targeted at safety-
+and security-critical applications. SPARK builds on the strengths of
+Ada for creating highly reliable and long-lived software. SPARK
+restrictions ensure that the behavior of a SPARK program is
+unambiguously defined, and simple enough that formal verification
+tools can perform an automatic diagnosis of conformance between a
+program specification and its implementation. The SPARK language and
+toolset for formal verification has been applied over many years to
+on-board aircraft systems, control systems, cryptographic systems, and
+rail systems~\cite{sparkbook2012,oneill2012}.
+
+In the versions of SPARK up to SPARK 2005, specifications are written as
+special annotations in comments. Since version SPARK 2014~\cite{sparkERTS2014},
+specifications are written as special Ada constructs attached to
+declarations. In particular, various contracts can be attached to subprograms:
+data flow contracts (introduced by \texttt{global}), information flow contracts,
+and functional contracts (preconditions and postconditions, introduced
+respectively by \texttt{pre} and \texttt{post}). An important difference
+between SPARK 2005 and SPARK 2014 is that functional contracts are executable in
+SPARK 2014, which greatly facilitates the combination between test and proof
+(see Section~\ref{sec:test-and-proof}). The definition of the language subset
+is motivated by the simplicity and feasability of formal analysis and the need
+for an unambiguous semantics. Tools are available that provide flow analysis
+and proof of SPARK programs.
+
+Flow analysis checks correct access to data in the program: correct access to
+global variables (as specified in data and information flow contracts) and
+correct access to initialized data. Proof is used to demonstrate that the
+program is free from run-time errors such as arithmetic overflow, buffer
+overflow and division-by-zero, and that the functional contracts are correctly
+implemented.
+
 \subsection{Auto-active Verification}
+
+The term \emph{auto-active verification} was coined in 2010 by researcher
+Rustan Leino~\cite{Leino10usableauto-active} to designate \textit{tools where
+  user input is supplied before VC generation [and] therefore lie between
+  automatic and interactive verification} (hence the name auto-active). This is
+in contrast to fully automatic verifiers for which \textit{the specification is
+  fixed} and interactive verifiers for which \textit{the user input is supplied
+  after VC generation, which is the typical case when the reasoning engine is
+  an interactive proof assistant}. Auto-active verification is at the center of
+the academic formal program verification toolsets Dafny~\cite{Leino2010Dafny},
+the Eiffel Verification Environment (EVE)~\cite{Furia2016},
+Why3~\cite{filliatre2013Why3} as well as the industrial formal program
+verification toolsets Frama-C and SPARK.
+
+In all these toolsets, auto-active verification consists in a set of
+specification features at the level of the source language, and a set of tool
+capabilities to interact with users at the level of the source code. The
+specification features consist at least in constructs to specify function
+contracts (preconditions and postconditions) and data invariants, as well as
+specialized forms of assertions (loop invariants and loop variants, assumptions
+and assertions). All the toolsets mentioned above also support a feature to
+instrument code for verification, usually referred to as ghost code. Ghost
+functions may be referred to as lemmas when they are used to prove a property
+that is used at the point where the function is called. See
+\cite{kosmatov:hal-01344110} for a comparison of how ghost code differs between
+Why3, Frama-C and SPARK. Various tool capabilities facilitate user interaction
+at source level: fast running time that exploits multiprocessor architectures
+and minimizes rework between runs, ability to trade running time for more
+verification power, feedback from the toolset when verification is unsuccessful
+(counterexamples in particular).
+
+Auto-active verification in the above toolsets has been used to fully verify
+algorithms, libraries and even complete applications: examples include a
+container library in Eiffel~\cite{Polikarpova2015}, distributed systems in
+Dafny~\cite{Hawblitzel2015IronFleet}, secure execution of apps in
+Dafny~\cite{Hawblitzel2014Ironclad}, binary heaps in Why3~\cite{tafat11rr},
+allocators in SPARK~\cite{Dross2016}.
+
 \subsection{Red-Black Trees}
+
+Red-black trees are a kind of self-balancing binary search trees. Nodes in the
+tree are colored red or black, and balance is maintained by ensuring that two
+properties are preserved: (1) a red node can only have black children, and (2)
+every path from the root to a leaf has the same number of black nodes. The
+consequence of these two properties is that the path from the root to a leaf
+can be at most twice as long as the path from the root to another leaf.
+
+Implementations of red-black trees are used in the Linux kernel (in C) and
+standard container libraries for various languages (C++ STL, Java.util,
+Ada). The insertion and deletion algorithms work by inserting or deleting the
+node as in a binary search tree, which may violate properties (1) and (2)
+above, and then restore the balance by working their way up on the path from
+the root to the point of insertion or deletion. At every node on this path, the
+algorithms may \emph{rotate} the subtree, which consists in a local
+rearrangement of nodes to restore properties (1) and (2). These algorithms are
+sufficiently complex that no implementation of imperative red-black trees has
+been fully verified. See Section~\ref{related-work} for a list of the closest
+works, including some using auto-active verification. We are following the
+algorithm from Cormen et al.~\cite{Cormen2009} for insertion in a red-black
+tree. We did not implement the deletion algorithm.
 
 \section{Red-Black Trees in SPARK}
 \subsection{Invariants and Models}
@@ -613,7 +705,7 @@ a well formed binary tree is ensured at the level of binary trees by enforcing t
 never be created in the contracts of the data structure modification functions.
 
 As a the level of binary trees we are dealing with forests, the second requirement is rather enforced at the level of
-search trees. It is specified as a postcondition of every modification function of the search tree level. 
+search trees. It is specified as a postcondition of every modification function of the search tree level.
 Figure~\ref{fig-spec-no-leak} shows the part of the postcondtion of Right\_Rotate ensuring that it hasn't introduced
 any dangling node. It uses the model function Model described in Section~\ref{sec-rbt-inv} to reason about reachability
 in the tree structure.
@@ -644,7 +736,7 @@ subprogram modular basis, specification also has to convey enough information, a
 requirements specified at this level, but also all the requirements specified at upper levels. For example, as
 Right\_Rotate calls Plug and Extract, the specification of these functions need to provide enough information to
 verify both the absence of memory leaks as stated in the postcondition of Right\_Rotate, but also the preservation of
-the order of values, as stated in search trees invariant. The postcondition of Plug is given in 
+the order of values, as stated in search trees invariant. The postcondition of Plug is given in
 Figure~\ref{fig-spec-binary}.
 
 \begin{figure}
@@ -783,6 +875,7 @@ the implementation of search trees to only concentrate on order related issues.
 % feedback from development and verification cycles
 
 \section{Related Work}
+\label{related-work}
 
 \section{Conclusion}
 
