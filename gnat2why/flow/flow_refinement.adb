@@ -344,7 +344,7 @@ package body Flow_Refinement is
       --  (which is never the case if we look from the Standard scope).
       return
         Present (Body_E)
-        and then Is_Visible (Get_Body_Or_Stub (Body_E), S);
+        and then Is_Visible (Body_E, S);
    end Subprogram_Refinement_Is_Visible;
 
    ---------------------------------
@@ -502,26 +502,6 @@ package body Flow_Refinement is
 
       return Empty;
    end Find_In_Initializes;
-
-   ----------------------
-   -- Get_Body_Or_Stub --
-   ----------------------
-
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id is
-      P : constant Node_Id := Parent (N);
-   begin
-      if Nkind (P) = N_Subunit then
-         declare
-            Stub : constant Node_Id := Corresponding_Stub (P);
-         begin
-            if Present (Stub) then
-               return Stub;
-            end if;
-         end;
-      end if;
-
-      return N;
-   end Get_Body_Or_Stub;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

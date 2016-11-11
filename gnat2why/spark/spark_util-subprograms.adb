@@ -154,10 +154,6 @@ package body SPARK_Util.Subprograms is
                   --  the body entity). Detect these by checking whether the
                   --  body defintion is in a subunit.
 
-                  --  ??? here we essentially do what Get_Body_Or_Stub is doing
-                  --  but intentionally this routine is not reused, because it
-                  --  is confusing and should be removed.
-
                   declare
                      Context : constant Node_Id := Parent (Body_N);
 
