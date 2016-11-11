@@ -25,6 +25,7 @@
 
 with Ada.Characters.Handling;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNATCOLL.Utils;        use GNATCOLL.Utils;
 
 package body String_Utils is
 
@@ -43,6 +44,22 @@ package body String_Utils is
    begin
       S (S'First) := Ada.Characters.Handling.To_Upper (S (S'First));
    end Capitalize_First;
+
+   ---------------------------
+   -- Case_Insensitive_Find --
+   ---------------------------
+
+   function Case_Insensitive_Find (SL : String_Lists.List; Item : String)
+                                   return String_Lists.Cursor is
+      use String_Lists;
+   begin
+      for C in SL.Iterate loop
+         if Case_Insensitive_Equal (Element (C), Item) then
+            return C;
+         end if;
+      end loop;
+      return String_Lists.No_Element;
+   end Case_Insensitive_Find;
 
    ----------------
    -- Hash_Image --

@@ -34,6 +34,8 @@ package String_Utils is
    package String_Lists is new
      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
+   use type String_Lists.Cursor;
+
    package String_Sets is new
      Ada.Containers.Indefinite_Hashed_Sets
        (Element_Type        => String,
@@ -60,5 +62,16 @@ package String_Utils is
 
    function Trimi (S : String; C : Character) return String;
    --  Trimi returns a copy of S with all occurences of C removed.
+
+   function Case_Insensitive_Find (SL : String_Lists.List; Item : String)
+                                   return String_Lists.Cursor;
+   --  @param SL a list of strings
+   --  @param Item a string to be found in the list
+   --  @return True if a String S is in the list SL which is equal modulo
+   --    casing to Item
+
+   function Case_Insensitive_Contains (SL : String_Lists.List; Item : String)
+                                       return Boolean is
+     (Case_Insensitive_Find (SL, Item) /= String_Lists.No_Element);
 
 end String_Utils;

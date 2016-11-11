@@ -332,7 +332,8 @@ package body Configuration is
    begin
       return Provers.Length = 1
         and then
-          (Provers.Contains ("coq") or else Provers.Contains ("isabelle"));
+          (Case_Insensitive_Contains (Provers, "coq")
+           or else Case_Insensitive_Contains (Provers, "isabelle"));
    end Is_Manual_Prover;
 
    -------------------
@@ -341,7 +342,8 @@ package body Configuration is
 
    function Is_Coq_Prover return Boolean is
    begin
-      return Provers.Length = 1 and then Provers.Contains ("coq");
+      return Provers.Length = 1 and then
+        (Case_Insensitive_Contains (Provers, "coq"));
    end Is_Coq_Prover;
 
    ------------------------
@@ -597,7 +599,7 @@ package body Configuration is
          ------------------
 
          procedure Remove_Prover (Name : String) is
-            C : String_Lists.Cursor := Provers.Find (Name);
+            C : String_Lists.Cursor := Case_Insensitive_Find (Provers, Name);
          begin
             if String_Lists.Has_Element (C) then
                Provers.Delete (C);
