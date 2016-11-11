@@ -3745,18 +3745,14 @@ package body Flow.Control_Flow_Graph is
         Entity_Body_In_SPARK (Package_Spec);
 
       Pkg_Body : constant Node_Id := Package_Body (Package_Spec);
+      --  Proper body, irrespecitve whether N is a stub or not
+
+      pragma Assert (Nkind (Pkg_Body) = N_Package_Body);
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
       Initializes_Scope : constant Flow_Scope :=
-        (case Nkind (N) is
-         when N_Package_Body      => Get_Enclosing_Body_Flow_Scope
-                                       (Get_Flow_Scope (Pkg_Body)),
-         when N_Package_Body_Stub => Get_Flow_Scope
-                                       (Get_Body_Or_Stub (Pkg_Body)),
-         when others              => raise Program_Error);
-      --  Scope of the nested package. In the case of a stub we look at where
-      --  the stub is placed instead.
+        Get_Enclosing_Body_Flow_Scope (Get_Flow_Scope (Pkg_Body));
 
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Get_Pragma (Package_Spec, Pragma_Initializes),

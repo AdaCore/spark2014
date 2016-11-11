@@ -26,7 +26,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Nlists;                 use Nlists;
 with Output;                 use Output;
 with Sem_Aux;                use Sem_Aux;
-with Sinfo;                  use Sinfo;
 with Sprint;                 use Sprint;
 with Stand;                  use Stand;
 
@@ -223,18 +222,45 @@ package body Flow_Refinement is
    -----------------------------------
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
+
+      --  Up-traverse to a proper parent of the current scope, i.e. to the
+      --  parent of the body node (if the current scope is non-separate) or of
+      --  the stub node (if the current scope is separate).
+
+      Proper_Body : constant Node_Id :=
+        (case Ekind (S.Ent) is
+            when E_Package =>
+              Package_Body (S.Ent),
+            when E_Protected_Type =>
+              Protected_Body (S.Ent),
+            when E_Task_Type =>
+              Task_Body (S.Ent),
+            when others =>
+              raise Program_Error);
+
+      Body_Parent : constant Node_Id := Parent (Proper_Body);
+
+      Proper_Parent : constant Node_Id :=
+        (if Nkind (Body_Parent) = N_Subunit
+         then Parent (Corresponding_Stub (Body_Parent))
+         else Body_Parent);
+      --  ??? perhaps re-use True_Parent from the body of Sem_Ch12 package
+
+      --  Proper parent can be anything with a declarative_part, e.g. package
+      --  body or task body (which immediately are what we are looking for) but
+      --  also entry body or a block statement (which we still need to
+      --  up-traverse); just call Get_Flow_Scope to complete the work.
+
+      Enclosing : constant Flow_Scope := Get_Flow_Scope (Proper_Parent);
+
+      pragma Assert
+        (if Nkind (Proper_Parent) in N_Package_Body
+                                   | N_Protected_Body
+                                   | N_Task_Body
+         then Enclosing.Ent = Unique_Defining_Entity (Proper_Parent));
+
    begin
-      return
-        Get_Flow_Scope
-          (Parent (case Ekind (S.Ent) is
-                      when E_Package =>
-                         Package_Body (S.Ent),
-                      when E_Protected_Type =>
-                         Protected_Body (S.Ent),
-                      when E_Task_Type =>
-                         Task_Body (S.Ent),
-                      when others =>
-                         raise Program_Error));
+      return Enclosing;
    end Get_Enclosing_Body_Flow_Scope;
 
    --------------------
@@ -247,14 +273,30 @@ package body Flow_Refinement is
 
    begin
       loop
-         Context := Get_Body_Or_Stub (Context);
-
          case Nkind (Context) is
-            when N_Package_Body        |
-                 N_Protected_Body      |
+            --  Borders between subprogram stubs and their proper bodies are
+            --  traversed transparently.
+
+            when N_Subunit =>
+               pragma Assert
+                 (Nkind (Proper_Body (Context)) = N_Subprogram_Body);
+
+               Context := Corresponding_Stub (Context);
+
+               pragma Assert
+                 (Nkind (Context) = N_Subprogram_Body_Stub);
+
+            --  Borders between other stubs should not be traversed, because
+            --  the proper bodies act as flow scopes.
+
+            when N_Package_Body_Stub   |
                  N_Protected_Body_Stub |
-                 N_Task_Body           |
                  N_Task_Body_Stub      =>
+               raise Program_Error;
+
+            when N_Package_Body   |
+                 N_Protected_Body |
+                 N_Task_Body      =>
 
                return (Ent  => Unique_Defining_Entity (Context),
                        Part => Body_Part);

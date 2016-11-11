@@ -29,6 +29,7 @@ with Atree;             use Atree;
 with Einfo;             use Einfo;
 with Sem_Util;          use Sem_Util;
 with Snames;            use Snames;
+with Sinfo;             use Sinfo;
 with Types;             use Types;
 
 with Checked_Types;     use Checked_Types;
@@ -127,9 +128,10 @@ package Flow_Refinement is
    --  Returns True iff Target_Scope is visible from the scope S
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   with Pre => Present (N);
+   with Pre => Nkind (N) not in N_Subunit | N_Body_Stub;
    --  Given (almost) any node in the AST, work out which flow scope we are in.
-   --  If the scope is Standard, return Null_Flow_Scope instead.
+   --  If the scope is Standard, return Null_Flow_Scope instead. For stubs use
+   --  the node of the corresponding proper body.
 
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)
