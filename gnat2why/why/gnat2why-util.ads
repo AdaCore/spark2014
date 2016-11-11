@@ -29,8 +29,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
-with Namet;                 use Namet;
 with Sinfo;                 use Sinfo;
+with Snames;                use Snames;
 with SPARK_Util;            use SPARK_Util;
 with SPARK_Util.Types;      use SPARK_Util.Types;
 with Types;                 use Types;
@@ -282,13 +282,15 @@ package Gnat2Why.Util is
    function Compute_Spec
      (Params    : Transformation_Params;
       E         : Entity_Id;
-      Kind      : Name_Id;
+      Kind      : Pragma_Id;
       Domain    : EW_Domain;
       Classwide : Boolean := False;
-      Inherited : Boolean := False) return W_Expr_Id;
+      Inherited : Boolean := False) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Compute the precondition or postcondition of the generated Why function.
-   --  Kind is Name_Precondition or Name_Postcondition to specify which one is
-   --  computed.
+   --  Kind specifies which one is computed.
 
    function Create_Zero_Binding
      (Vars : Why_Node_Lists.List;
@@ -298,39 +300,39 @@ package Gnat2Why.Util is
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id;
 
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id;
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id;
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 

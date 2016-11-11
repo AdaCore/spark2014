@@ -1657,10 +1657,10 @@ package body Flow_Utility is
       case Ekind (E) is
          when Subprogram_Kind | E_Entry =>
             if Refined then
-               P_Expr := Find_Contracts (E, Name_Refined_Post);
+               P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
-               P_Expr := Find_Contracts (E, Name_Postcondition);
-               P_CC   := Find_Contracts (E, Name_Contract_Cases);
+               P_Expr := Find_Contracts (E, Pragma_Postcondition);
+               P_CC   := Find_Contracts (E, Pragma_Contract_Cases);
 
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
@@ -1682,7 +1682,7 @@ package body Flow_Utility is
             if Refined then
                P_Expr := Node_Lists.Empty_List;
             else
-               P_Expr := Find_Contracts (E, Name_Initial_Condition);
+               P_Expr := Find_Contracts (E, Pragma_Initial_Condition);
             end if;
 
          when others =>
@@ -1700,9 +1700,9 @@ package body Flow_Utility is
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    is
       Precondition_Expressions : Node_Lists.List :=
-        Find_Contracts (E, Name_Precondition);
+        Find_Contracts (E, Pragma_Precondition);
       Contract_Case            : constant Node_Lists.List :=
-        Find_Contracts (E, Name_Contract_Cases);
+        Find_Contracts (E, Pragma_Contract_Cases);
    begin
       --  If a Contract_Cases aspect was found then we pull out every
       --  condition apart from the others.

@@ -11651,7 +11651,7 @@ package body Gnat2Why.Expr is
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
-         elsif Has_Contracts (Subp, Name_Refined_Post)
+         elsif Has_Contracts (Subp, Pragma_Refined_Post)
            and then Has_Visibility_On_Refined (Expr, Subp)
          then
             Refine
@@ -14370,7 +14370,7 @@ package body Gnat2Why.Expr is
                   --  of the program function, which has the appropriate
                   --  refined contract.
 
-                  elsif Has_Contracts (Subp, Name_Refined_Post)
+                  elsif Has_Contracts (Subp, Pragma_Refined_Post)
                     and then Has_Visibility_On_Refined (Stmt_Or_Decl, Subp)
                   then
                      Refine
@@ -15285,9 +15285,9 @@ package body Gnat2Why.Expr is
       Selector : Selection_Kind := Why.Inter.Standard) return Boolean
    is
       Has_Precondition : constant Boolean :=
-        Has_Contracts (E, Name_Precondition);
+        Has_Contracts (E, Pragma_Precondition);
       Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (E, Name_Precondition,
+        Has_Contracts (E, Pragma_Precondition,
                        Classwide => True,
                        Inherited => True);
    begin

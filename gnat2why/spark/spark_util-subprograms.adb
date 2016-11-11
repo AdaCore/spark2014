@@ -197,7 +197,7 @@ package body SPARK_Util.Subprograms is
 
    function Find_Contracts
      (E         : Entity_Id;
-      Name      : Name_Id;
+      Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
    is
@@ -237,13 +237,13 @@ package body SPARK_Util.Subprograms is
 
    begin
       case Name is
-         when Name_Precondition
-            | Name_Postcondition
-            | Name_Refined_Post
-            | Name_Contract_Cases
-            | Name_Initial_Condition
+         when Pragma_Precondition
+            | Pragma_Postcondition
+            | Pragma_Refined_Post
+            | Pragma_Contract_Cases
+            | Pragma_Initial_Condition
          =>
-            if Name = Name_Refined_Post then
+            if Name = Pragma_Refined_Post then
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
                   --  ??? here we shall check for stubs, just like we do in
@@ -261,22 +261,22 @@ package body SPARK_Util.Subprograms is
             if Present (Contr) then
                Prag :=
                  (case Name is
-                     when Name_Precondition  |
-                          Name_Postcondition |
-                          Name_Refined_Post  =>
+                     when Pragma_Precondition  |
+                          Pragma_Postcondition |
+                          Pragma_Refined_Post  =>
                         Pre_Post_Conditions (Contr),
 
-                     when Name_Initial_Condition =>
+                     when Pragma_Initial_Condition =>
                         Classifications (Contr),
 
-                     when Name_Contract_Cases =>
+                     when Pragma_Contract_Cases =>
                         Contract_Test_Cases (Contr),
 
                      when others =>
                         raise Program_Error);
 
                while Present (Prag) loop
-                  if Chars (Pragma_Identifier (Prag)) = Name
+                  if Get_Pragma_Id (Prag) = Name
                     and then Class_Present (Prag) = Class_Expected
                   then
                      Pragmas.Append (Prag);
@@ -557,7 +557,7 @@ package body SPARK_Util.Subprograms is
 
    function Has_Contracts
      (E         : Entity_Id;
-      Name      : Name_Id;
+      Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
    is
@@ -1087,9 +1087,9 @@ package body SPARK_Util.Subprograms is
            and then Is_Modular_Integer_Type (Etype (E))
 
            --  without functional contract
-           and then not Has_Contracts (E, Name_Precondition)
-           and then not Has_Contracts (E, Name_Postcondition)
-           and then not Has_Contracts (E, Name_Contract_Cases)
+           and then not Has_Contracts (E, Pragma_Precondition)
+           and then not Has_Contracts (E, Pragma_Postcondition)
+           and then not Has_Contracts (E, Pragma_Contract_Cases)
 
            --  which corresponds to a shift or rotate
            and then

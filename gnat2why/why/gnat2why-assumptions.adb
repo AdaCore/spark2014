@@ -178,7 +178,7 @@ package body Gnat2Why.Assumptions is
       Assume_For_Claim (C      => (Kind => Claim_Effects, E => Caller),
                         Assume => Assumptions);
 
-      if Has_Contracts (Callee, Name_Postcondition) then
+      if Has_Contracts (Callee, Pragma_Postcondition) then
          Assumptions.Append ((Kind => Claim_Post, E => Callee));
       end if;
 
@@ -197,7 +197,7 @@ package body Gnat2Why.Assumptions is
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
       Register_Claim ((E => E, Kind => Claim_AoRTE));
-      if Has_Contracts (E, Name_Postcondition) then
+      if Has_Contracts (E, Pragma_Postcondition) then
          Register_Claim ((E => E, Kind => Claim_Post));
       end if;
    end Register_Proof_Claims;

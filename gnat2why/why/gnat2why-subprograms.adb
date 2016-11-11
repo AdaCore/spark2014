@@ -229,8 +229,11 @@ package body Gnat2Why.Subprograms is
 
    function Get_Location_For_Aspect
      (E         : Entity_Id;
-      Kind      : Name_Id;
-      Classwide : Boolean := False) return Node_Id;
+      Kind      : Pragma_Id;
+      Classwide : Boolean := False) return Node_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any.
 
@@ -2291,16 +2294,16 @@ package body Gnat2Why.Subprograms is
       --  subprograms it overrides.
 
       Inherited_Pre_List := Find_Contracts
-        (E, Name_Precondition, Inherited => True);
+        (E, Pragma_Precondition, Inherited => True);
       Classwide_Pre_List := Find_Contracts
-        (E, Name_Precondition, Classwide => True);
-      Pre_List := Find_Contracts (E, Name_Precondition);
+        (E, Pragma_Precondition, Classwide => True);
+      Pre_List := Find_Contracts (E, Pragma_Precondition);
 
       Inherited_Post_List := Find_Contracts
-        (E, Name_Postcondition, Inherited => True);
+        (E, Pragma_Postcondition, Inherited => True);
       Classwide_Post_List := Find_Contracts
-        (E, Name_Postcondition, Classwide => True);
-      Post_List := Find_Contracts (E, Name_Postcondition);
+        (E, Pragma_Postcondition, Classwide => True);
+      Post_List := Find_Contracts (E, Pragma_Postcondition);
 
       --  Then, generate suitable predicates based on the specified contracts,
       --  with appropriate True defaults.
@@ -2349,7 +2352,7 @@ package body Gnat2Why.Subprograms is
            New_Assume_Statement (Pred => Inherited_Pre_Spec);
 
          Classwide_Pre_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition,
+           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition,
                                                  Classwide => True),
             Pred     => Classwide_Pre_Spec,
             Reason   => VC_Weaker_Classwide_Pre,
@@ -2372,10 +2375,10 @@ package body Gnat2Why.Subprograms is
       if not Pre_List.Is_Empty then
          Classwide_Pre_Assume :=
            New_Assume_Statement (Pred =>
-             Get_LSP_Contract (Params, E, Name_Precondition));
+             Get_LSP_Contract (Params, E, Pragma_Precondition));
 
          Pre_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
+           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
             Pred     => Pre_Spec,
             Reason   => (if Classwide_Pre_List.Is_Empty and then
                             Inherited_Pre_List.Is_Empty
@@ -2409,14 +2412,14 @@ package body Gnat2Why.Subprograms is
       then
          Pre_Assume :=
            New_Assume_Statement (Pred =>
-             Get_Static_Call_Contract (Params, E, Name_Precondition));
+             Get_Static_Call_Contract (Params, E, Pragma_Precondition));
 
          Post_Assume := New_Assume_Statement (Pred => Post_Spec);
 
          Classwide_Post_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition),
+           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Postcondition),
             Pred     =>
-              Get_LSP_Contract (Params, E, Name_Postcondition),
+              Get_LSP_Contract (Params, E, Pragma_Postcondition),
             Reason   => VC_Stronger_Post,
             Kind     => EW_Assert);
 
@@ -2457,7 +2460,7 @@ package body Gnat2Why.Subprograms is
               New_Assume_Statement (Pred => Classwide_Post_Spec);
 
             Inherited_Post_Check := New_Located_Assert
-              (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition,
+              (Ada_Node => Get_Location_For_Aspect (E, Pragma_Postcondition,
                                                     Classwide => True),
                Pred     => Inherited_Post_Spec,
                Reason   => VC_Stronger_Classwide_Post,
@@ -3138,7 +3141,7 @@ package body Gnat2Why.Subprograms is
             Gen_Marker  => False,
             Ref_Allowed => True);
          Pre : W_Pred_Id :=
-           Get_Static_Call_Contract (Params, E, Name_Precondition);
+           Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
       begin
 
@@ -3148,7 +3151,7 @@ package body Gnat2Why.Subprograms is
          if not Is_Entry (E) and then Might_Be_Main (E) then
             Stmt :=
               New_Located_Assert
-                (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
+                (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition),
                  Pred     => Pre,
                  Reason   => VC_Precondition_Main,
                  Kind     => EW_Assert);
@@ -3201,8 +3204,8 @@ package body Gnat2Why.Subprograms is
          return
            Sequence
              (New_Ignore
-                (Prog =>
-                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
+                (Prog => +Compute_Spec (Params,
+                                        E, Pragma_Postcondition, EW_Prog)),
               Compute_Contract_Cases_Exit_Checks
                 (Params             => Params,
                  E                  => E,
@@ -3248,20 +3251,20 @@ package body Gnat2Why.Subprograms is
 
          Prog : W_Prog_Id := Arg;
       begin
-         if Has_Contracts (E, Name_Refined_Post) then
+         if Has_Contracts (E, Pragma_Refined_Post) then
             Prog :=
               Sequence
                 (Prog,
                  New_Ignore
                    (Prog => +Compute_Spec
-                      (Params, E, Name_Refined_Post, EW_Prog)));
+                      (Params, E, Pragma_Refined_Post, EW_Prog)));
             Prog :=
               New_Located_Abstract
-                (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
+                (Ada_Node => Get_Location_For_Aspect (E, Pragma_Refined_Post),
                  Expr => Prog,
                  Reason => VC_Refined_Post,
                  Post => +Compute_Spec
-                   (Params, E, Name_Refined_Post, EW_Pred));
+                   (Params, E, Pragma_Refined_Post, EW_Pred));
             Prog := Sequence
               (Prog,
                New_Assume_Statement
@@ -3347,13 +3350,13 @@ package body Gnat2Why.Subprograms is
          --  classwide or inherited postcondition is checked if present. Locate
          --  it on E for the inherited case.
 
-         if Has_Contracts (E, Name_Postcondition) then
-            Post_N := Get_Location_For_Aspect (E, Name_Postcondition);
-         elsif Has_Contracts (E, Name_Postcondition, Classwide => True) then
+         if Has_Contracts (E, Pragma_Postcondition) then
+            Post_N := Get_Location_For_Aspect (E, Pragma_Postcondition);
+         elsif Has_Contracts (E, Pragma_Postcondition, Classwide => True) then
             Post_N :=
               Get_Location_For_Aspect
-               (E, Name_Postcondition, Classwide => True);
-         elsif Has_Contracts (E, Name_Postcondition, Inherited => True) then
+               (E, Pragma_Postcondition, Classwide => True);
+         elsif Has_Contracts (E, Pragma_Postcondition, Inherited => True) then
             Post_N := E;
          else
             Post_N := Empty;
@@ -3370,7 +3373,7 @@ package body Gnat2Why.Subprograms is
                return
                  +New_VC_Expr (Post_N,
                                +Get_Static_Call_Contract
-                                 (Mark_Params, E, Name_Postcondition),
+                                 (Mark_Params, E, Pragma_Postcondition),
                                VC_Postcondition,
                                EW_Pred);
             end if;
@@ -3391,7 +3394,7 @@ package body Gnat2Why.Subprograms is
             Ref_Allowed => True);
 
          Pre   : constant W_Prog_Id :=
-           +Compute_Spec (Params, E, Name_Precondition, EW_Prog);
+           +Compute_Spec (Params, E, Pragma_Precondition, EW_Prog);
 
       begin
          return
@@ -3819,14 +3822,14 @@ package body Gnat2Why.Subprograms is
 
    function Get_Location_For_Aspect
      (E         : Entity_Id;
-      Kind      : Name_Id;
+      Kind      : Pragma_Id;
       Classwide : Boolean := False) return Node_Id is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
       --  the postcondition; simply return the subprogram entity node.
 
-      if Kind = Name_Postcondition
+      if Kind = Pragma_Postcondition
         and then No_Return (E)
       then
          return E;
@@ -3921,23 +3924,24 @@ package body Gnat2Why.Subprograms is
          end;
       end loop;
 
-      Pre := +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+      Pre := +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
       Post :=
         +New_And_Expr
         (Left   =>
-           +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
+           +Compute_Spec (Params, E, Pragma_Postcondition, EW_Pred),
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
          Dispatch_Post :=
-           Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
+           Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
       end if;
 
-      if Has_Contracts (E, Name_Refined_Post) then
-         Refined_Post := +Compute_Spec (Params, E, Name_Refined_Post, EW_Pred);
+      if Has_Contracts (E, Pragma_Refined_Post) then
+         Refined_Post := +Compute_Spec (Params,
+                                        E, Pragma_Refined_Post, EW_Pred);
       end if;
 
       declare
@@ -4041,7 +4045,7 @@ package body Gnat2Why.Subprograms is
                              Dispatch_Post);
          end if;
 
-         if Has_Contracts (E, Name_Refined_Post) then
+         if Has_Contracts (E, Pragma_Refined_Post) then
             Emit_Post_Axiom (Post_Refine_Axiom,
                              Refine_Logic_Id,
                              Pre,
@@ -4145,11 +4149,11 @@ package body Gnat2Why.Subprograms is
 
       Effects := Compute_Effects (E);
 
-      Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
+      Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
       end if;
 
       --  For a subprogram marked with No_Return, the postcondition at call
@@ -4163,7 +4167,7 @@ package body Gnat2Why.Subprograms is
             Dispatch_Post := False_Pred;
          end if;
 
-         if Has_Contracts (E, Name_Refined_Post) then
+         if Has_Contracts (E, Pragma_Refined_Post) then
             Refined_Post := False_Pred;
          end if;
 
@@ -4174,18 +4178,18 @@ package body Gnat2Why.Subprograms is
          Post :=
            +New_And_Expr
            (Left   =>
-              +Get_Static_Call_Contract (Params, E, Name_Postcondition),
+              +Get_Static_Call_Contract (Params, E, Pragma_Postcondition),
             Right  => +Compute_Contract_Cases_Postcondition (Params, E),
             Domain => EW_Pred);
 
          if Is_Dispatching_Operation (E) then
             Dispatch_Post :=
-              Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
+              Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
          end if;
 
-         if Has_Contracts (E, Name_Refined_Post) then
+         if Has_Contracts (E, Pragma_Refined_Post) then
             Refined_Post :=
-              Get_Static_Call_Contract (Params, E, Name_Refined_Post);
+              Get_Static_Call_Contract (Params, E, Pragma_Refined_Post);
          end if;
       end if;
 
@@ -4336,7 +4340,7 @@ package body Gnat2Why.Subprograms is
                                     Args => (Res_Expr, Expr_Body),
                                     Typ  => EW_Bool_Type));
                begin
-                  if Has_Contracts (E, Name_Refined_Post) then
+                  if Has_Contracts (E, Pragma_Refined_Post) then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
                   else
@@ -4377,7 +4381,7 @@ package body Gnat2Why.Subprograms is
                              Post     => Dispatch_Post))));
             end if;
 
-            if Has_Contracts (E, Name_Refined_Post) then
+            if Has_Contracts (E, Pragma_Refined_Post) then
                Emit
                  (File,
                   New_Namespace_Declaration
@@ -4464,7 +4468,7 @@ package body Gnat2Why.Subprograms is
                              Post        => False_Pred))));
             end if;
 
-            if Has_Contracts (E, Name_Refined_Post) then
+            if Has_Contracts (E, Pragma_Refined_Post) then
                Emit
                  (File,
                   New_Namespace_Declaration
@@ -4573,7 +4577,7 @@ package body Gnat2Why.Subprograms is
         To_Binder_Array (Logic_Func_Binders);
       Logic_Id           : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Term, Local => False,
-                   Selector => (if Has_Contracts (E, Name_Refined_Post)
+                   Selector => (if Has_Contracts (E, Pragma_Refined_Post)
                                 then Refine
                                 else Why.Inter.Standard));
 
@@ -4720,7 +4724,7 @@ package body Gnat2Why.Subprograms is
                Guard   : constant W_Pred_Id :=
                  Compute_Guard_Formula (Logic_Func_Binders);
                Pre     : constant W_Pred_Id :=
-                 +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+                 +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
             begin
                Emit
                  (File,
@@ -4844,7 +4848,7 @@ package body Gnat2Why.Subprograms is
                              Return_Type => Why_Type))));
             end if;
 
-            if Has_Contracts (E, Name_Refined_Post) then
+            if Has_Contracts (E, Pragma_Refined_Post) then
                Emit
                  (File,
                   New_Namespace_Declaration
@@ -4925,7 +4929,7 @@ package body Gnat2Why.Subprograms is
 
       for J in Inherit_Subp'Range loop
          Contracts := Find_Contracts
-           (Inherit_Subp (J), Name_Precondition, Classwide => True);
+           (Inherit_Subp (J), Pragma_Precondition, Classwide => True);
 
          if not Contracts.Is_Empty then
             Subp_For_Pre := Inherit_Subp (J);
@@ -4937,7 +4941,7 @@ package body Gnat2Why.Subprograms is
 
       for J in Inherit_Subp'Range loop
          Contracts := Find_Contracts
-           (Inherit_Subp (J), Name_Postcondition, Classwide => True);
+           (Inherit_Subp (J), Pragma_Postcondition, Classwide => True);
 
          if not Contracts.Is_Empty then
             Subp_For_Post := Inherit_Subp (J);

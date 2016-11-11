@@ -262,7 +262,7 @@ package body Gnat2Why.Annotate is
 
       --  It must have a postcondition
 
-      Nodes := Find_Contracts (E, Name_Postcondition, False, False);
+      Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
 
       if Nodes.Length /= 1 then
          Error_Msg_N

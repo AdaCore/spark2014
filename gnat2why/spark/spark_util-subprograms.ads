@@ -138,7 +138,7 @@ package SPARK_Util.Subprograms is
 
    function Find_Contracts
      (E         : Entity_Id;
-      Name      : Name_Id;
+      Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
    with Pre => Ekind (E) in E_Function       |
@@ -147,14 +147,14 @@ package SPARK_Util.Subprograms is
                             Entry_Kind       |
                             E_Protected_Type |
                             E_Task_Type
-               and then Name in Name_Precondition      |
-                                Name_Postcondition     |
-                                Name_Refined_Post      |
-                                Name_Contract_Cases    |
-                                Name_Initial_Condition
+               and then Name in Pragma_Precondition      |
+                                Pragma_Postcondition     |
+                                Pragma_Refined_Post      |
+                                Pragma_Contract_Cases    |
+                                Pragma_Initial_Condition
                and then not (Classwide and Inherited);
    --  @param E entry, subprogram, package, task or protected type
-   --  @param Name contract name
+   --  @param Name contract pragma identifier
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
    --  @return the list of pragma nodes of E for contract Name
@@ -280,7 +280,7 @@ package SPARK_Util.Subprograms is
 
    function Has_Contracts
      (E         : Entity_Id;
-      Name      : Name_Id;
+      Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
    with Pre => Ekind (E) in E_Function       |

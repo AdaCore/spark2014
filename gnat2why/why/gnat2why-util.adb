@@ -29,8 +29,8 @@ with Eval_Fat;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Namet;                  use Namet;
 with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
@@ -440,7 +440,7 @@ package body Gnat2Why.Util is
    function Compute_Spec
      (Params    : Transformation_Params;
       E         : Entity_Id;
-      Kind      : Name_Id;
+      Kind      : Pragma_Id;
       Domain    : EW_Domain;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return W_Expr_Id
@@ -527,7 +527,7 @@ package body Gnat2Why.Util is
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
@@ -548,7 +548,7 @@ package body Gnat2Why.Util is
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id is
+      Kind   : Pragma_Id) return W_Pred_Id is
    begin
       return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Dispatching_Call_Contract;
@@ -560,7 +560,7 @@ package body Gnat2Why.Util is
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
@@ -576,7 +576,7 @@ package body Gnat2Why.Util is
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id is
+      Kind   : Pragma_Id) return W_Pred_Id is
    begin
       return +Get_LSP_Contract (Params, E, Kind, EW_Pred);
    end Get_LSP_Contract;
@@ -656,7 +656,7 @@ package body Gnat2Why.Util is
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id;
+      Kind   : Pragma_Id;
       Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
@@ -671,7 +671,7 @@ package body Gnat2Why.Util is
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Name_Id) return W_Pred_Id is
+      Kind   : Pragma_Id) return W_Pred_Id is
    begin
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
