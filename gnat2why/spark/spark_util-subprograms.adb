@@ -561,23 +561,24 @@ package body SPARK_Util.Subprograms is
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
    is
-      Contracts : Node_Lists.List;
-
    begin
+      --  If classwide or inherited is specified then check only there
+
       if Classwide or Inherited then
-         if Classwide then
-            Contracts := Find_Contracts (E, Name, Classwide => True);
+         if Classwide
+           and then not Find_Contracts (E, Name, Classwide => True).Is_Empty
+         then
+            return True;
          end if;
 
-         if Contracts.Is_Empty and then Inherited then
-            Contracts := Find_Contracts (E, Name, Inherited => True);
-         end if;
+         return Inherited
+           and then not Find_Contracts (E, Name, Inherited => True).Is_Empty;
+
+      --  Otherwise check the ordinary contract
 
       else
-         Contracts := Find_Contracts (E, Name);
+         return not Find_Contracts (E, Name).Is_Empty;
       end if;
-
-      return not Contracts.Is_Empty;
    end Has_Contracts;
 
    ----------------------------
