@@ -528,6 +528,7 @@ package body SPARK_Frame_Conditions is
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
+            --  ??? how about entities represented by entity names?
             if Present (Read)
               and then Ekind (Read) = E_Variable
               and then Present (Get_Pragma (Read, Pragma_Effective_Reads))
