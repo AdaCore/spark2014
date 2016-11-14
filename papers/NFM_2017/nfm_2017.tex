@@ -1020,7 +1020,7 @@ prove how tree models are modified by an application of Plug. It is divided in t
 the node was already reachable from the actual root and then its model is unchanged, or it was reachable
 from the plugged root, in which case the path leading to it from the new root is the path leading to
 the plugged root in the new tree concatenated with the path leading from the plugged root to the node
-in the old tree. 
+in the old tree.
 
 \begin{figure}
 \begin{small}
@@ -1109,6 +1109,33 @@ node's parent.
 % number of assertions, loc of ghost code, etc.
 % data on automatic verification
 % feedback from development and verification cycles
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{l|rrr|r}
+                & code       & contracts  &      ghost  & total \\ \hline
+binary trees    & 92  (10\%) & 250 (28\%) & 548  (62\%) & 890 \\
+search trees    & 127 (12\%) & 188 (17\%) & 780  (71\%) & 1095 \\
+red-black trees & 67  (52\%) & 18  (14\%) & 45   (35\%) & 130 \\ \hline
+total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
+\end{tabular}
+\caption{\label{tab-sloc} Repartition of lines of code between operational code, contracts and ghost code.}
+\end{center}
+\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{l|rrrr|r}
+                & on types & on subprograms & on loops & assertions & total \\ \hline
+binary trees    & 10       & 155            & 42       & 12         & 219 \\
+search trees    & 2        & 138            & 20       & 68         & 228 \\
+red-black trees & 2        & 4              & 8        & 10         & 24 \\ \hline
+total           & 14       & 297            & 70       & 90         & 471
+\end{tabular}
+\caption{\label{tab-sloc} Number of conjuncts in contracts on types, on subprograms, in loop invariants and in assertions.}
+\end{center}
+\end{figure}
+
 
 \section{Related Work}
 \label{related-work}
