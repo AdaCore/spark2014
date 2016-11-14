@@ -1,0 +1,8 @@
+term.ads:7:13: info: subprogram will terminate
+term.ads:9:13: info: subprogram will terminate
+term.ads:9:19: warning: unused variable "X"
+term.ads:11:12: info: subprogram will terminate
+term.ads:11:12: non-pure actual "Eq" in instance with external axioms not yet supported
+term.ads:17:04: info: initialization of private part of "S" proved
+compilation abandoned due to previous error
+gnatprove: error during flow analysis and proof
