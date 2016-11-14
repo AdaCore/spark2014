@@ -4181,10 +4181,9 @@ package body Flow.Analysis is
    --  Start of processing for Check_Function_For_Volatile_Effects
 
    begin
-      if Ekind (FA.Analyzed_Entity) not in E_Function | E_Generic_Function
-      then
-         --  If we are not dealing with a [generic] function then we have
-         --  nothing to do here.
+      if Ekind (FA.Analyzed_Entity) /= E_Function then
+         --  If we are not dealing with a function then we have nothing to do
+         --  here.
          return;
       end if;
 

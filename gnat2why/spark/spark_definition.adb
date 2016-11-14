@@ -2467,7 +2467,7 @@ package body SPARK_Definition is
       --  Current_Protected_Type is either empty or points to what is says
       pragma Assert (Present (Scope (E)));
 
-      if Ekind (E) in E_Function | E_Generic_Function
+      if Ekind (E) in E_Function
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
         and then Is_Volatile_Call (E)
