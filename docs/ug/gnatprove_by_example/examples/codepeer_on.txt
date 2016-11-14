@@ -1,2 +1,1 @@
 simple_loops_cdp.adb
-array_loops_cdp.adb
