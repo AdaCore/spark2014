@@ -84,6 +84,27 @@
 \maketitle
 
 \paragraph{Abstract}
+Formal program verification can guarantee that a program is free from broad
+classes of errors (like reads of uninitialized data and run-time errors) and
+that it complies with its specification. Tools such as SPARK make it cost
+effective to target the former in an industrial context, but the latter is much
+less common in industry, owing to the cost of specifying the behavior of
+programs and even more the cost of achieving proof of such specifications. We
+have chosen in SPARK to rely on the techniques of auto-active verification for
+providing cost effective formal verification of functional properties. These
+techniques consist in providing annotations in the source code that will be
+used by automatic provers to complete the proof automatically. To demonstrate
+the feasibility of this approach, we have chosen to formally specify a library
+of red-black trees in SPARK, and to prove its functionality using auto-active
+verification. To the best of our knowledge, this is the most advanced use of
+auto-active verification so far.
+
+\paragraph{Keywords}
+System formal development, Verification and validation,
+Certification and dependability
+
+\section{Introduction}
+
 SPARK is a subset of the Ada programming language targeted at safety- and
 security-critical applications. SPARK formal verification toolset allows to
 guarantee that a SPARK program is free from broad classes of errors (like reads
@@ -97,12 +118,6 @@ interacting with automatic provers. In this paper, we present how we applied
 auto-active verification to formally verify a library of red-black trees. To
 the best of our knowledge, this is the most advanced use of auto-active
 verification so far.
-
-\paragraph{Keywords}
-System formal development, Verification and validation,
-Certification and dependability
-
-\section{Introduction}
 
 \section{Preliminaries}
 \subsection{SPARK 2014}
@@ -122,15 +137,15 @@ In the versions of SPARK up to SPARK 2005, specifications are written as
 special annotations in comments. Since version SPARK 2014~\cite{sparkERTS2014},
 specifications are written as special Ada constructs attached to
 declarations. In particular, various contracts can be attached to subprograms:
-data flow contracts (introduced by \texttt{global}), information flow contracts,
-and functional contracts (preconditions and postconditions, introduced
-respectively by \texttt{pre} and \texttt{post}). An important difference
-between SPARK 2005 and SPARK 2014 is that functional contracts are executable in
-SPARK 2014, which greatly facilitates the combination between test and proof
-(see Section~\ref{sec:test-and-proof}). The definition of the language subset
-is motivated by the simplicity and feasibility of formal analysis and the need
-for an unambiguous semantics. Tools are available that provide flow analysis
-and proof of SPARK programs.
+data flow contracts (introduced by \texttt{global}), information flow
+contracts, and functional contracts (preconditions and postconditions,
+introduced respectively by \texttt{pre} and \texttt{post}). An important
+difference between SPARK 2005 and SPARK 2014 is that functional contracts are
+executable in SPARK 2014, which greatly facilitates the combination between
+test and proof. The definition of the language subset is motivated by the
+simplicity and feasibility of formal analysis and the need for an unambiguous
+semantics. Tools are available that provide flow analysis and proof of SPARK
+programs.
 
 Flow analysis checks correct access to data in the program: correct access to
 global variables (as specified in data and information flow contracts) and
@@ -998,7 +1013,7 @@ function Find_Root (F : Forest; Root, I, J : Index_Type) return Index_Type with
                 or else J = Find_Root'Result
                 or else Get (Model (F, Root) (I).A,
                              Length (Model (F, Root) (Find_Root'Result).A) + 1)
-                     /= Get (Model (F, Root) (J).A, 
+                     /= Get (Model (F, Root) (J).A,
                              Length (Model (F, Root) (Find_Root'Result).A) + 1));
 \end{lstlisting}
 \end{small}
