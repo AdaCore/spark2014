@@ -3103,7 +3103,8 @@ package body Flow.Control_Flow_Graph is
                   else
                     Priority_Value'
                       (Kind  => (if Present
-                                   (Get_Pragma (T, Pragma_Interrupt_Priority))
+                                   (Find_Contract
+                                      (T, Pragma_Interrupt_Priority))
                                  then
                                    Last_Interrupt_Prio
 
