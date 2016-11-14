@@ -128,7 +128,7 @@ respectively by \texttt{pre} and \texttt{post}). An important difference
 between SPARK 2005 and SPARK 2014 is that functional contracts are executable in
 SPARK 2014, which greatly facilitates the combination between test and proof
 (see Section~\ref{sec:test-and-proof}). The definition of the language subset
-is motivated by the simplicity and feasability of formal analysis and the need
+is motivated by the simplicity and feasibility of formal analysis and the need
 for an unambiguous semantics. Tools are available that provide flow analysis
 and proof of SPARK programs.
 
@@ -402,7 +402,7 @@ child and smaller than all the values stored in the subtree rooted at its right
 child. An example of values that would fit the tree from Figure~\ref{fig-binary}
 is given in Figure~\ref{fig-search}. To express this invariant, we use the
 model of the underlying binary tree. A value V is stored in the subtree rooted
-at the right child of a node if the path leading to this value is a supersequence
+at the right child of a node if the path leading to this value is a super sequence
 of the path leading to V and the next element in the sequence is Right.
 
 \begin{figure}[ht]
@@ -519,7 +519,7 @@ procedure Insert (F       : in out Forest;
 
 Note that we are dealing everywhere with forests of binary trees instead of a single
 binary tree. This is because, as we are using arrays instead of pointers, we cannot divide a
-tree object into separate objects without copying the array arround. To keep an efficient
+tree object into separate objects without copying the array around. To keep an efficient
 implementation, we resorted to processing the memory region as a whole, therefore
 introducing forests of trees, in which every allocated node with a Top position is a
 valid root.
@@ -550,6 +550,12 @@ end Plug;
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-binary-body} Implementation of Plug.}
+\end{figure}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=2cm]{plug.pdf}
+\caption{\label{fig-binary-body2} Example of application of Plug.}
+\end{center}
 \end{figure}
 
 Following our leveled approach, search trees are defined outside of binary tree implementation.
@@ -646,6 +652,12 @@ end Right_Rotate;
 \end{small}
 \caption{\label{fig-search-fun} Functions on binary trees.}
 \end{figure}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=5cm]{rotate_right.pdf}
+\caption{\label{fig-search-fun2} Example of application of Right\_Rotate.}
+\end{center}
+\end{figure}
 
 Red black trees are implemented in the same way as search trees by adding an array of
 colors to a search tree and using balancing functions to rebalance the tree after an insertion.
@@ -683,7 +695,7 @@ procedure Insert (T : in out Rbt; V : Natural) with
 \caption{\label{fig-rbt-spec} Specification of red black trees.}
 \end{figure}
 
-Let us now consider the requirements dealing with data struture invariants.
+Let us now consider the requirements dealing with data structure invariants.
 
 \begin{enumerate}
  \item A red black tree is always a valid binary tree (we can navigate it from the root using Peek, Parent,
@@ -707,7 +719,7 @@ never be created in the contracts of the data structure modification functions.
 
 As a the level of binary trees we are dealing with forests, the second requirement is rather enforced at the level of
 search trees. It is specified as a postcondition of every modification function of the search tree level.
-Figure~\ref{fig-spec-no-leak} shows the part of the postcondtion of Right\_Rotate ensuring that it hasn't introduced
+Figure~\ref{fig-spec-no-leak} shows the part of the postcondition of Right\_Rotate ensuring that it hasn't introduced
 any dangling node. It uses the model function Model described in Section~\ref{sec-rbt-inv} to reason about reachability
 in the tree structure.
 
@@ -726,7 +738,7 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
                (if Model (T'Old) (J).K then Model (T) (J).K));
 \end{lstlisting}
 \end{small}
-\caption{\label{fig-spec-no-leak} Postcondition of Right\_Rotate dealing with abscence of memory leaks.}
+\caption{\label{fig-spec-no-leak} Postcondition of Right\_Rotate dealing with absence of memory leaks.}
 \end{figure}
 
 The third and fourth requirements are expressed in the type invariant of respectively search trees and red black trees
@@ -857,18 +869,18 @@ the implementation of search trees to only concentrate on order related issues.
 % order requires case split
 %   This is done using if statements
 
-Verifying our red balck tree implementation has proved to be challenging, and above the
+Verifying our red black tree implementation has proved to be challenging, and above the
 purely automatic capacity of the GNATprove tool. There are several reasons for this:
 
 \begin{itemize}
  \item The imperative, pointer based implementation of red black trees makes it difficult
- to reson about disjointness of different trees/subtrees in the forest.
+ to reason about disjointness of different trees/subtrees in the forest.
  \item Reasoning about reachability involves inductive proofs, which automatic provers are
  notoriously bad at.
- \item Reasoning about ordering involves using transitivity relations, that is, coming up with
- an intermediate value to consider, which usually eludes automatic provers.
+ \item Reasoning about value ordering involves using transitivity relations, that is, coming
+ up with an intermediate value to consider, which usually eludes automatic provers.
  \item The size of the formulas to verified, number of verification conditions, and number of
- paths in the program are important enough to defy provers scalabiity.
+ paths in the program are important enough to defy provers scalability.
 \end{itemize}
 
 To work around these limitations, we resorted to using auto-active verification techniques, which,
@@ -876,13 +888,13 @@ as described in Section~\ref{sec-prelim-auto-active}, allow to guide automatic p
 resorting to a proof assistant. We explain some of these techniques in this section.
 
 \paragraph{Intermediate lemmas:}
-One of the most classical technique in manual proof consists in factoring some usefull
+One of the most classical techniques in manual proof consists in factoring some useful
 part of a proof in an intermediate lemma so that it can be verified independently and
 use as many time as necessary. In auto-active verification, this can be done by introducing
 a procedure with no output, which, when called, will cause the deductive engine to verify
 its precondition and assume its postcondition. In Figure~\ref{fig-proof-lem}, we show an
 intermediate lemma which can be used to verify that two trees of a single forest with different
-roots are disjoint. A caller of this function will have to verify the T1 and T2 are different
+roots are disjoint. A caller of this function will have to verify that T1 and T2 are different
 valid root in F and get for free that there can be no node reachable from both roots in F.
 Naturally, the lemma is not assumed, its actual proof is done when verifying the procedure
 Prove\_Model\_Distinct.
@@ -904,9 +916,9 @@ procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
 \end{figure}
 
 \paragraph{Reasoning by induction:}
-Though some automatic provers are in fact able of doing simple inductive proofs, inductive reasoning
+Though some automatic provers are able to discharge simple inductive proofs, inductive reasoning
 still most of the time requires manual interaction. In auto-active style, an inductive proof can be done
-using loop annotations named loop invariants. In SPARK, loop invariants are normal assertions occuring in
+using loop annotations named loop invariants. In SPARK, loop invariants are normal assertions occurring in
 loop statements but which are handled in an inductive way by GNATprove. Namely, the prover splits its
 verification in two parts. First, it verifies that the invariant holds in the first iteration of the
 loop and then that it holds in any following iteration knowing that it held in the previous one.
@@ -935,9 +947,72 @@ end Prove_Model_Distinct;
 \end{small}
 \caption{\label{fig-proof-ind} Proof by induction over the length of the path from the root to a node in the tree.}
 \end{figure}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=25mm]{induction.pdf}
+\caption{\label{fig-proof-ind2} Induction over the length of the path from the root to a node in the tree.}
+\end{center}
+\end{figure}
 
-\paragraph{Case analysis}
-As the number of cases to consider can sometimes confuse the prover, it is often usefull to split the
+\paragraph{Providing witnesses:}
+When reasoning about value ordering, it is common to use transitivity. For example, when searching for
+a value in a search tree, we only compare the requested value with values stored along a single path in
+the tree, that is, the path were it was expected to be stored. All other values are ruled out by
+transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
+automatic solvers at the background of GNATprove can have troubles with coming up with the appropriate
+intermediate value to use in the transitivity relation. To achieve the proofs, we resorted to providing
+the solvers we the appropriate term whenever necessary. For example, the function Find\_Root in
+Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
+the order invariant stated in Figure~\ref{fig-search-inv} only compares values on a single path, this
+is the node to consider to be able to order values stored at arbitrary nodes.
+
+\begin{figure}
+\begin{small}
+\begin{lstlisting}
+--  Auxiliary function used in Prove_Order_Total to retrieve the common
+--  ancestor to nodes I and J in a tree rooted at Root.
+
+function Find_Root (F : Forest; Root, I, J : Index_Type) return Index_Type with
+  Pre  =>
+    --  Root is the root of a tree
+    Valid_Root (F, Root)
+
+    --  I is in this tree
+    and then Model (F, Root) (I).K
+
+    --  J is in this tree
+    and then Model (F, Root) (J).K,
+  Post =>
+    --  The node returned is in the tree
+    Model (F, Root) (Find_Root'Result).K
+
+    --  The node returned is on the path of I
+    and then Model (F, Root) (Find_Root'Result).A <= Model (F, Root) (I).A
+
+    --  The node returned is on the path of J
+    and then Model (F, Root) (Find_Root'Result).A <= Model (F, Root) (J).A
+
+    --  The common ancestor of I and J is either I, or J, or an ancestor node
+    --  such that the paths of I and J diverge at this point.
+    and then (I = Find_Root'Result
+                or else J = Find_Root'Result
+                or else Get (Model (F, Root) (I).A,
+                             Length (Model (F, Root) (Find_Root'Result).A) + 1)
+                     /= Get (Model (F, Root) (J).A, 
+                             Length (Model (F, Root) (Find_Root'Result).A) + 1));
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-proof-wit} Function that computes a witness for transitivity applications}
+\end{figure}
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=28mm]{transitivity.pdf}
+\caption{\label{fig-proof-wit2} Application of transitivity to order different values}
+\end{center}
+\end{figure}
+
+\paragraph{Case analysis:}
+As the number of cases to consider can sometimes confuse the prover, it is often useful to split the
 problem in a sensible way. A proof by case analysis is nothing more than an if statement, each branch
 narrowing the cases to consider and possibly providing additional informations on how to carry out
 the proof in this particular case. Figure~\ref{fig-proof-ca} shows how case analysis was used to
@@ -1011,81 +1086,10 @@ end loop;
 Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure.
 Also note that, to be able to apply this reasoning on every node of the memory array, the case
 analysis had to be enclosed in a loop. As GNATprove cannot accumulated knowledge without a loop
-invariant, we had to restate everything tha was proved so far in the loop as a loop invariant.
+invariant, we had to restate everything that was proved so far by the loop as a loop invariant.
 Also note that this reasoning is a part of a reasoning by induction over the size of the path
-leading to the node in the new tree, which is why we aready know the proposition holds for the
+leading to the node in the new tree, which is why we already know the proposition holds for the
 node's parent.
-
-\paragraph{Guiding the proof}
-There are other useful ways to guide the proof engine.
-
-\begin{figure}
-\begin{small}
-\begin{lstlisting}
-procedure Prove_Order_Total (T : Search_Tree; L : Index_Type; V : Natural)
-   with
-     Ghost,
-     Global => null,
-     Pre  =>
-       --  The tree is not empty
-       Size (T.Struct) > 0
-
-       --  Repeat relevant parts of the search tree invariant
-       and then T.Root /= Empty
-       and then Valid_Root (T.Struct, T.Root)
-       and then Ordered_Leafs (T.Struct, T.Root, T.Values)
-
-       --  V is not found at the leaf
-       and then T.Values (L) /= V
-
-       --  The leaf L is in the tree, and does not have the correct child for
-       --  continuing the search for V.
-       and then Model (T.Struct, T.Root) (L).K
-       and then (if V < T.Values (L) then Peek (T.Struct, L, Left) = Empty
-                 else Peek (T.Struct, L, Right) = Empty)
-
-       --  V is less than all the left ancestors up to L and greater than all
-       --  the right ancestors up to L.
-       and then (for all I in Index_Type =>
-                  (if Model (T.Struct, T.Root) (I).K then
-                    (if Model (T.Struct, T.Root) (I).A < Model (T.Struct, T.Root) (L).A
-                     then (if Get (Model (T.Struct, T.Root) (L).A, Length (Model (T.Struct, T.Root) (I).A) + 1) = Left
-                           then V < T.Values (I)
-                           else V > T.Values (I))))),
-     Post =>
-       (for all I in Index_Type =>
-         (if Model (T.Struct, T.Root) (I).K then T.Values (I) /= V))
-   is
-   begin
-      --  Case 1: given a node I which does not have L on its path, consider
-      --  the common ancestor of L and I returned by Find_Root. Instantiating
-      --  Ordered_Leafs once with this common ancestor and L, and another time
-      --  with this common ancestor and I, allows to prove that V cannot be the
-      --  same as the value at I.
-      pragma Assert
-        (for all I in Index_Type =>
-          (if Model (T.Struct, T.Root) (I).K
-           then Model (T.Struct, T.Root) (Find_Root (T.Struct, T.Root, I, L)).K));
-
-      --  Case 2: given a node I which has L on its path, use Prove_Model_Total
-      --  to prove that it is necessarily on the other side of where V would be
-      --  found.
-
-      if V < T.Values (L) then
-         Prove_Model_Total (T.Struct, T.Root, L, Left);
-      else
-         Prove_Model_Total (T.Struct, T.Root, L, Right);
-      end if;
-      pragma Assert
-        (for all I in Index_Type =>
-           (if Model (T.Struct, T.Root) (I).K
-            and then Find_Root (T.Struct, T.Root, I, L) = L
-            then T.Values (I) /= V));
-   end Prove_Order_Total;
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-proof-guide} Guide the proof to show that if V has not been found along the expected path in T, then it is not in T.}
-\end{figure}
 
 \subsection{Ghost Code}
 % different uses of ghost code
