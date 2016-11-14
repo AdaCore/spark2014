@@ -17,7 +17,7 @@ In general, |GNATprove| relies on the user to manually supply the necessary
 information about variables modified by loop statements in the loop invariant.
 Though variables which are not modified in the loop need not be mentioned in
 the invariant, it is usually necessary to state explicitly the preservation
-of unmodified object parts, such as record fields or array elements. In
+of unmodified object parts, such as record or array components. In
 particular, when a loop modifies a collection, which can be either an array or
 a container (see :ref:`Formal Containers Library`), it may be necessary to
 state in the loop invariant those parts of the collection that have not been
@@ -29,9 +29,36 @@ obvious to programmers, and so it is very common to forget to write them and
 not being able to realize what's the problem afterwards.
 
 To alleviate this problem, the |GNATprove| tool generates automatically frame
-conditions in some cases. In particular, it is able to infer the preservation of
-unmodified fields of record variables. It also handles unmodified fields of
-array components as long as they are preserved at every index in the array.
+conditions in some cases. As examples of use of such generated frame
+conditions, consider the code of procedures ``Update_Arr`` and ``Update_Rec``
+below:
+
+.. literalinclude:: ../gnatprove_by_example/examples/frame_condition.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: ../gnatprove_by_example/examples/frame_condition.adb
+   :language: ada
+   :linenos:
+
+Without this feature, |GNATprove| would not be able to prove the postconditions
+of either procedure because:
+
+* To prove the postcondition of ``Update_Arr``, one needs to know that only the
+  indexes up to ``Idx`` have been updated in the loop.
+* To prove the postcondition of ``Update_Rec``, one needs to know that only the
+  component ``A`` of record ``R`` has been updated in the loop.
+
+Thanks to this feature, |GNATprove| automatically proves the postconditions of
+both procedures, without the need for loop invariants:
+
+.. literalinclude:: ../gnatprove_by_example/results/frame_condition.prove
+   :language: none
+   :linenos:
+
+In particular, it is able to infer the preservation of
+unmodified components of record variables. It also handles unmodified components of
+array variables as long as they are preserved at every index in the array.
 As an example, consider the following loop which only updates some record
 component of a nested data structure:
 
@@ -39,7 +66,7 @@ component of a nested data structure:
    :language: ada
    :linenos:
 
-Despite the complete absence of a loop invariant in the above code,
+Despite the absence of a loop invariant in the above code,
 |GNATprove| is able to prove that the assertions on lines 19-21 about variable
 ``D`` which is modified in the loop are proved, thanks to the generated loop
 invariants:
@@ -48,9 +75,9 @@ invariants:
    :language: none
    :linenos:
 
-Note that |GNATprove| will not generate a frame condition for a record field if
-the record object is modified as a whole either through an assignment or
-through a procedure call, and so, even if the field happens to be preserved
+Note that |GNATprove| will not generate a frame condition for a record component if
+the record variable is modified as a whole either through an assignment or
+through a procedure call, and so, even if the component happens to be preserved
 by the modification.
 
 |GNATprove| can also infer preservation of unmodified array components for arrays
@@ -62,6 +89,7 @@ matrix of arrays:
    :language: ada
    :linenos:
 
+Despite the absence of a loop invariant in the above code,
 |GNATprove| can succesfully verify the assertion on line 13 thanks to the
 generated loop invariant. Note that loop invariant generation for preserved
 array components is based on heuristics, and that it is therefore far from
@@ -74,6 +102,13 @@ assertion on line 33:
 .. literalinclude:: ../gnatprove_by_example/results/preserved_components.prove
    :language: none
    :linenos:
+
+.. note::
+
+   The generation of loop invariants for unmodified components of record
+   variables is available starting with SPARK Pro 17. The generation of loop
+   invariants for unmodified array components for arrays up to the current loop
+   index is available starting with SPARK Pro 18 wavefronts.
 
 The Four Properties of a Good Loop Invariant
 --------------------------------------------
