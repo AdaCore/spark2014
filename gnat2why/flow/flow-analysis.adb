@@ -4102,7 +4102,6 @@ package body Flow.Analysis is
          Writes    : Flow_Id_Sets.Set;
 
          G_Out     : Entity_Id;
-         CAE       : Node_Id;
          CAE_Scope : Flow_Scope;
       begin
          Get_Globals (Subprogram => FA.Analyzed_Entity,
@@ -4117,27 +4116,20 @@ package body Flow.Analysis is
                G_Out     := Get_Direct_Mapping_Id (W);
                CAE_Scope := Get_Flow_Scope (G_Out);
 
-               if CAE_Scope /= Null_Flow_Scope then
-                  CAE := Empty;
-
-                  if Ekind (G_Out) = E_Variable then
-                     CAE := Get_Pragma (G_Out,
-                                        Pragma_Constant_After_Elaboration);
-                  end if;
-
-                  if Is_Constant_After_Elaboration (CAE)
-                    and then not In_Body_Part (CAE_Scope)
-                  then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "constant after elaboration & must not" &
-                                    " be an output of procedure &",
-                        Severity => High_Check_Kind,
-                        N        => FA.Analyzed_Entity,
-                        F1       => W,
-                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Tag      => Not_Constant_After_Elaboration);
-                  end if;
+               if CAE_Scope /= Null_Flow_Scope
+                 and then not In_Body_Part (CAE_Scope)
+                 and then Ekind (G_Out) = E_Variable
+                 and then Is_Constant_After_Elaboration (G_Out)
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "constant after elaboration & " &
+                                 "must not be an output of procedure &",
+                     Severity => High_Check_Kind,
+                     N        => FA.Analyzed_Entity,
+                     F1       => W,
+                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag      => Not_Constant_After_Elaboration);
                end if;
             end if;
          end loop;
@@ -4392,13 +4384,10 @@ package body Flow.Analysis is
       begin
          if F.Kind in Direct_Mapping | Record_Field then
             declare
-               E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
-               CAE : constant Node_Id :=
-                 (if Ekind (E) = E_Variable
-                  then Get_Pragma (E, Pragma_Constant_After_Elaboration)
-                  else Empty);
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return Is_Constant_After_Elaboration (CAE);
+               return Ekind (E) = E_Variable
+                 and then Is_Constant_After_Elaboration (E);
             end;
 
          else

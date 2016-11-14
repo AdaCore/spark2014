@@ -33,7 +33,6 @@ with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
-with Sem_Eval;                        use Sem_Eval;
 with Sem_Type;                        use Sem_Type;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
@@ -3311,33 +3310,6 @@ package body Flow_Utility is
 
       Init_Done := True;
    end Initialize;
-
-   -----------------------------------
-   -- Is_Constant_After_Elaboration --
-   -----------------------------------
-
-   function Is_Constant_After_Elaboration (N : Node_Id) return Boolean is
-      Expr : Node_Id;
-   begin
-      if No (N) then
-         --  Trivially false
-         return False;
-      end if;
-
-      Expr := (if Present (Pragma_Argument_Associations (N))
-               then Expression (First (Pragma_Argument_Associations (N)))
-               else Empty);
-
-      --  The pragma has an optional Boolean expression, the related
-      --  property is enabled only when the expression evaluates to True.
-
-      if Present (Expr) then
-         return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
-      else
-         --  Otherwise the lack of expression enables the property by default
-         return True;
-      end if;
-   end Is_Constant_After_Elaboration;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

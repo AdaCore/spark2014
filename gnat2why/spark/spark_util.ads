@@ -257,6 +257,11 @@ package SPARK_Util is
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
 
+   function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) = E_Variable;
+   --  @param E entity of a variable
+   --  @return True iff a Constant_After_Elaboration applies to E
+
    function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a

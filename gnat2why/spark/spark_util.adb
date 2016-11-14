@@ -30,6 +30,7 @@ with Fname;                              use Fname;
 with Nlists;                             use Nlists;
 with Output;
 with Pprint;                             use Pprint;
+with Sem_Eval;                           use Sem_Eval;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
@@ -960,6 +961,41 @@ package body SPARK_Util is
             when others =>
                False);
    end Is_Action;
+
+   -----------------------------------
+   -- Is_Constant_After_Elaboration --
+   -----------------------------------
+
+   function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean is
+      Prag : constant Node_Id :=
+        Get_Pragma (E, Pragma_Constant_After_Elaboration);
+   begin
+      if Present (Prag) then
+         declare
+            PAA : constant List_Id := Pragma_Argument_Associations (Prag);
+         begin
+            --  The pragma has an optional Boolean expression. The related
+            --  property is enabled only when the expression evaluates to True.
+            if Present (PAA) then
+               declare
+                  Expr : constant Node_Id := Expression (First (PAA));
+               begin
+                  return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
+               end;
+
+            --  The lack of expression means the property is enabled
+
+            else
+               return True;
+            end if;
+         end;
+
+      --  No pragma means not constant after elaboration
+
+      else
+         return False;
+      end if;
+   end Is_Constant_After_Elaboration;
 
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --
