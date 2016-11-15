@@ -164,9 +164,6 @@ procedure Gnatprove with SPARK_Mode is
       Arguments : String_Lists.List) return Process_Descriptor;
    --  Spawn a process in a non-blocking way
 
-   procedure Kill (P : in out Process_Descriptor);
-   --  Kill the process
-
    function Replace_Config_File_If_Needed
      (Config_File : String;
       New_File    : String) return String;
@@ -586,7 +583,10 @@ procedure Gnatprove with SPARK_Mode is
          if Status = 0 and then not Debug then
             GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
          end if;
-         Kill (Id);
+         Close (Id);
+         GNAT.OS_Lib.Delete_File
+           (Compose (Proj.Root_Project.Artifacts_Dir.Display_Full_Name,
+            Socket_Name.all), Del_Succ);
       end;
    end Flow_Analysis_And_Proof;
 
@@ -676,15 +676,6 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end if;
    end Generate_SPARK_Report;
-
-   ----------
-   -- Kill --
-   ----------
-
-   procedure Kill (P : in out Process_Descriptor) is
-   begin
-      Close (P);
-   end Kill;
 
    ------------------------
    -- Non_Blocking_Spawn --
