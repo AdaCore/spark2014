@@ -195,6 +195,7 @@ Dafny~\cite{Hawblitzel2014Ironclad}, binary heaps in Why3~\cite{tafat11rr},
 allocators in SPARK~\cite{Dross2016}.
 
 \subsection{Red-Black Trees}
+\label{sec-prelim-rbt}
 
 Red-black trees are a kind of self-balancing binary search trees. Nodes in the
 tree are colored red or black, and balance is maintained by ensuring that two
@@ -390,7 +391,7 @@ only works on trees for which the tree structure invariant holds. As a result,
 we cannot use this model function inside the implemenation of binary tree,
 for example to state in the invariant that all the nodes are reachable from the
 root (there is no memory leak). However, as type invariants always hold outside
-of data structures implementation, the path model can safely be used for any
+the data structures implementations, the path model can safely be used for any
 binary tree in the implementation of search trees. In particular, we use it
 in the invariant of search trees, which is given in Figure~\ref{fig-search-inv}.
 
@@ -427,17 +428,35 @@ of the path leading to V and the next element in the sequence is Right.
 \end{center}
 \end{figure}
 
-Search trees are usually used to implement ordered sets. Though it is not needed to
-specify the invariant of red black trees, we provide a model function returning the
-set of all the values contained in the tree. We use it to annotate the insertion and
-membership primitives provided on red black trees.
-
-{\color{red} TODO: speak about red black trees}
+Finally, the last level of our tree implementation is concerned with balancanceness.
+As explained in Section~\ref{sec-prelim-rbt}, each node is colored either black or red
+and invariants are maintained to ensure that the longest branch in the tree is at most
+twice as long as the shortest branch. Figure~\ref{fig-rbt} demonstrates a coloring of
+the tree from Figure~\ref{fig-search}.
 
 \begin{figure}[ht]
 \begin{center}
 \includegraphics[width=2cm]{red_black.pdf}
+\caption{\label{fig-rbt} Type invariant of search trees.}
 \end{center}
+\end{figure}
+
+In our implemenation, we have only verified the simplest part of the red black tree invariant,
+that is, that a red node can only have black children. It is given in Figure~\ref{fig-rbt-inv}.
+The verifying the other part, that is, that each branch contains the same number of black
+nodes, would require implementing a new inductive model function, like the one we defined for
+reachability. It is doable, but we did not think it was worthwhile for this demonstration. 
+
+\begin{figure}[ht]
+\begin{small}
+\begin{lstlisting}
+(for all I in Index_Type =>
+   (if Parent (T.Struct, I) = Empty
+      or else T.Color (Parent (T.Struct, I)) = Red
+    then T.Color (I) = Black))
+\end{lstlisting}
+\end{small}
+\caption{\label{fig-rbt-inv} Type invariant of red black trees.}
 \end{figure}
 
 \subsection{Implementation}
@@ -541,7 +560,7 @@ valid root.
 
 As type invariants can be temporarily broken inside the data structure implementation, the body
 of the modification functions can directly modify the internal structure of the tree. The implementation
-of Plug is presented in Figure~\ref{fig-binary-body}.
+of Plug is presented in Figure~\ref{fig-binary-body}, it is schematized in Figure~\ref{fig-binary-body2}.
 
 \begin{figure}[ht]
 \begin{small}
@@ -605,7 +624,7 @@ functions at this level avoids the need for lifting low level tree handling func
 Extract. All the functions defined on search trees are implemented using
 functions over binary forests. The functions provided for search trees are given in
 Figure~\ref{fig-search-fun}. We only give the implementation of Right\_Rotate as an
-example.
+example. Its effect is demonstrated in Figure~\ref{fig-search-fun2}.
 
 \begin{figure}
 \begin{small}
@@ -940,7 +959,9 @@ loop and then that it holds in any following iteration knowing that it held in t
 This behavior is exactly what we want for a proof by induction. For example, Figure~\ref{fig-proof-ind}
 demonstrates how the intermediate lemma presented in Figure~\ref{fig-proof-lem} can be verified
 using a loop to perform an induction over the size of the path from the T1 to any node reachable
-from T1 in F. The loop goes from 1 to the maximum size of any branch in the forest F. As an
+from T1 in F. The proof considers every node in the tree, starting from those closer to the root
+as demonstrated in Figure~\ref{fig-proof-ind2}. The loop goes from 1 to the maximum size of any branch
+in the forest F. As an
 invariant, we have written the property we wanted to prove. To verify this procedure, GNATprove will
 first check that the invariant holds in the first iteration of the loop, that is, that T1 itself cannot
 be reached from T2. Then, it will proceed by induction to show that this holds for any node reachable
@@ -979,7 +1000,8 @@ intermediate value to use in the transitivity relation. To achieve the proofs, w
 the solvers we the appropriate term whenever necessary. For example, the function Find\_Root in
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
 the order invariant stated in Figure~\ref{fig-search-inv} only compares values on a single path, this
-is the node to consider to be able to order values stored at arbitrary nodes.
+is the node to consider to be able to order values stored at arbitrary nodes. An example of this
+reasoning is schematized in Figure~\ref{fig-proof-wit2}.
 
 \begin{figure}
 \begin{small}
@@ -1147,7 +1169,7 @@ search trees    & 2        & 138            & 20       & 68         & 228 \\
 red-black trees & 2        & 4              & 8        & 10         & 24 \\ \hline
 total           & 14       & 297            & 70       & 90         & 471
 \end{tabular}
-\caption{\label{tab-sloc} Number of conjuncts in contracts on types, on subprograms, in loop invariants and in assertions.}
+\caption{\label{tab-sloc2} Number of conjuncts in contracts on types, on subprograms, in loop invariants and in assertions.}
 \end{center}
 \end{figure}
 
