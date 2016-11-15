@@ -1006,6 +1006,32 @@ node's parent.
 % factored out in ghost procedures to keep efficiency
 % with or without contracts (inlining)
 
+In this development, we made an extensive use of ghost code, that is, code meant only for verification,
+that has no effect on the program behavior. We used it for two different purposes. First, the model
+functions introduced to enhance the expressivity of our specification are ghost functions. Indeed, we
+never need to refer to reachability in the tree structure or to the set of elements contained in a
+search tree inside the program implementation. It is only necessary to be able to express complex
+properties about our algorithms in the specification.
+
+In SPARK, ghost code is executable, that is, the compiler can be instructed to generate code for ghost
+entities so that the contracts using them can be checked at runtime. In this spirit, ghost model functions
+can be used to produce complex test oracles that can be exercised in the test campaign.
+
+The second use of ghost code in our development is for auto-active verification. In particular, the procedures
+used to encode intermediate lemmas are ghost, as they have no effect. What is more, we have striven to
+keep all ineffective code inside ghost procedures so that it can be removed by the compiler and won't
+slow down the execution of the program. It is all the more important since the code is really inefficient, involving
+multiple loops and model constructions. As functional behaviors are complex, coming up with contracts for
+these ghost procedure can be painful, and produce huge, hardly readable specification. To alleviate this
+problem, we can benefit from a feature of SPARK which in-lines local subprograms with no contracts, allowing
+the proof to go through with less annotation burden. In this way, we can choose, on a case by case basis, if
+it is worthwhile to turn a chunk of auto-active proof into an intermediate lemma by supplying a pre and
+postcondition, allowing for a modular verification, or if we prefer to have the tool automatically in-line the
+proof wherever we call the ghost procedure.
+
+Note that, though it makes sense to execute ghost code used for subprogram specification, there is no benefit in
+executing code solely written for auto-active verification. 
+
 \section{Development and Verification Data}
 % number of assertions, loc of ghost code, etc.
 % data on automatic verification
