@@ -1,0 +1,5 @@
+main.adb:5:24: warning: unused variable "A"
+main.adb:9:24: info: range check proved (CVC4: 1 VC)
+main.adb:11:14: high: "Z.Plop.X" is not initialized
+main.adb:11:14: high: "Z.Plop.Y" is not initialized
+main.adb:14:23: info: precondition proved (CVC4: 1 VC)
