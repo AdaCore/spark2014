@@ -1040,12 +1040,14 @@ package body Why.Gen.Arrays is
                                              Params => Params),
                To     => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
          end;
-      else
+      elsif Is_Static_Array_Type (Ty) then
          pragma Assert (Is_Constrained (Ty));
-
          return
            New_Discrete_Constant (Value => Static_Array_Length (Ty, Dim),
                                   Typ   => Typ);
+      else
+         pragma Assert (Is_Constrained (Ty));
+         return Build_Length_Expr (Domain, Ty, Dim, Typ);
       end if;
    end Get_Array_Attr;
 
