@@ -23,15 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Maps;
 
 package body Assumptions.Search is
 
-   package Goal_Maps is new Ada.Containers.Hashed_Maps
+   package Goal_Maps is new Ada.Containers.Ordered_Maps
      (Key_Type        => Token,
       Element_Type    => Token_Sets.Set,
-      Hash            => Hash_Token,
-      Equivalent_Keys => "=",
+      "<"             => "<",
       "="             => Token_Sets."=");
 
    Goals : Goal_Maps.Map := Goal_Maps.Empty_Map;

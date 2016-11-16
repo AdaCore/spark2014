@@ -25,7 +25,7 @@
 
 with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Ordered_Sets;
 
 with Assumption_Types;      use Assumption_Types;
 
@@ -51,10 +51,14 @@ package Assumptions is
      (Ada.Containers.Hash_Type (Claim_Kind'Pos (X.Predicate)) +
           3 * Hash (X.Arg));
 
-   package Token_Sets is new Ada.Containers.Hashed_Sets
+   function "<" (Left, Right : Token) return Boolean is
+     (Left.Predicate < Right.Predicate or else
+        (Left.Predicate = Right.Predicate and then
+         Left.Arg < Right.Arg));
+
+   package Token_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type        => Token,
-      Hash                => Hash_Token,
-      Equivalent_Elements => "=",
+      "<"                 => "<",
       "="                 => "=");
 
    type Rule is record
