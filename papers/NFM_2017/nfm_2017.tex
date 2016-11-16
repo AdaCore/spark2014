@@ -1063,9 +1063,33 @@ total           & 14       & 297            & 70       & 90         & 471
 \end{center}
 \end{figure}
 
-
 \section{Related Work}
 \label{related-work}
+There have been several previous attempts at verifying red black trees implementations. In particular, red black trees are
+used in the implementation of ordered sets and maps in the standard library of the Coq proof
+assistant~\cite{filliatre2004functors,appel2011efficient}. As part of these library, the implementations have been proven
+correct using interactive proofs in Coq. These implementations notably differ from our work because they are written in
+a functional style, using recursive data types instead of pointers and recursive functions instead of loops. Similar
+libraries are provided for the Isabelle proof assistant~\cite{lammich2010isabelle}. Functional implementations of
+red black trees have also been verified outside proof assistant, using characteristic formulas~\cite{chargueraud2010program},
+or in the Why3 programming language as part of VACID-0 competition~\cite{leino2010vacid}. This last implementation differs from
+the previous ones in that it is mostly auto-active, even if it uses Coq for a few verification conditions.
+
+Verifying imperative implementations of red black trees is more challenging as it involves reasoning about the well formedness
+of the tree structure, witch comes for free in the functional implementations. As part of VACID-0, attempts have been made at
+verifying red black trees in C using VCC and in Java using KeY~\cite{bruns2011specification}.
+Both attempts seem to have been left in preliminary stages
+though, as the Java version only focuses on expressing the invariants, without attempting to verify them, while the C
+version only verifies properties relative to the well formedness of their tree structure.
+
+More recently, imperative implementations of red black trees in C and Java have been verified using more specialized logics.
+Enea et al. obtained an automated verification of a C implementation of red black trees using separation logic, a logic
+specialized for the verification of heap manipulating programs~\cite{enea2015automated}. In the
+same way, Stef{\u{a}}nescu et al. were able to verify several implementations of red black trees in particular in Java and
+C using matching logic~\cite{stefuanescu2016semantics}. As used in this work, matching logic provides a very precise, low
+level view of the heap structure, allowing for powerful proofs on this kind of programs. Both works use specialized tools,
+which are specifically designed for verifying low level, heap manipulating programs but which have never been used, at the best
+of our knowledge, to verify higher level software, due to the specifications being too low level.
 
 \section{Conclusion}
 
