@@ -424,7 +424,7 @@ In our implemenation, we have only verified the simplest part of the red black t
 that is, that a red node can only have black children. It is given in Figure~\ref{fig-rbt}.
 The verifying the other part, that is, that each branch contains the same number of black
 nodes, would require implementing a new inductive model function, like the one we defined for
-reachability. It is doable, but we did not think it was worthwhile for this demonstration. 
+reachability. It is doable, but we did not think it was worthwhile for this demonstration.
 
 \begin{figure}[ht]
 \begin{minipage}[c]{.77\linewidth}
@@ -831,7 +831,7 @@ from \texttt{T1} in \texttt{F}.
 \begin{minipage}[c]{.75\linewidth}
 \begin{small}
 \begin{lstlisting}
-procedure Prove_Model_Distinct 
+procedure Prove_Model_Distinct
    (F : Forest; T1, T2 : Index_Type) is
 begin
    for N in Index_Type loop
@@ -1030,14 +1030,26 @@ postcondition, allowing for a modular verification, or if we prefer to have the 
 proof wherever we call the ghost procedure.
 
 Note that, though it makes sense to execute ghost code used for subprogram specification, there is no benefit in
-executing code solely written for auto-active verification. 
+executing code solely written for auto-active verification.
 
 \section{Development and Verification Data}
 % number of assertions, loc of ghost code, etc.
 % data on automatic verification
 % feedback from development and verification cycles
 
-\begin{figure}[ht]
+The code implementing the core algorithm for red-black trees, even when split
+in three modules for binary trees, search trees and red-black trees, is quite
+small, only 286 lines overall. But this code only accounts for 14\% of the
+total lines of code, when taking into account contracts (22\%) and more
+importantly ghost code (64\%). Table~\ref{tab-sloc} summarizes the logical
+lines of code as counted by the tool GNATmetric. The imbalance would be even
+more pronounced if we looked at the effort required to produce the operational
+code, contracts and ghost code. The ratio for efforts would be closer to 9 to 1
+when comparing ghost code with operational code, as in the most complex cases
+developing ghost code required interacting with automatic provers to find a
+suitable division of proof objectives that was amenable to automatic proof.
+
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{l|rrr|r}
                 & code       & contracts  &      ghost  & total \\ \hline
@@ -1048,20 +1060,51 @@ total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 \end{tabular}
 \caption{\label{tab-sloc} Repartition of lines of code between operational code, contracts and ghost code.}
 \end{center}
-\end{figure}
+\end{table}
 
-\begin{figure}[ht]
+There are few top-level contracts for red-black trees: just one precondition on
+the insertion procedure to state that there should be still room for insertion,
+and three postconditions on insertion, membership and the ghost function to get
+the set of values. As contracts can be arbitrarily complex, we prefer to count
+the number of conjuncts than the number of preconditions and
+postconditions. Each of the contracts on red-black trees consists in just one
+conjunct, hence the total number of conjuncts for external contracts is only
+four.
+
+But many more contracts and assertions are needed for auto-active
+verification. First, contracts are needed on subprograms in binary trees (155
+conjuncts) and search trees (138 conjuncts), roughly half of which on internal
+subprograms. Second, contracts are needed on types, in the form of type
+invariants and type default initial conditions. Third, loop invariants are
+needed on loops (70 conjuncts in total). Finally, intermediate assertions are
+needed to split the work between automatic provers and facilitate work of
+individual provers (90 conjuncts in total). The effort required to achieve
+automatic proof is much greater where intermediate assertions are needed, as
+more interaction with automatic provers is required in that case.
+
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{l|rrrr|r}
                 & on types & on subprograms & on loops & assertions & total \\ \hline
-binary trees    & 10       & 155            & 42       & 12         & 219 \\
-search trees    & 2        & 138            & 20       & 68         & 228 \\
-red-black trees & 2        & 4              & 8        & 10         & 24 \\ \hline
-total           & 14       & 297            & 70       & 90         & 471
+binary trees    & 10       & 155 (73)       & 42       & 12         & 219 \\
+search trees    & 2        & 138 (60)       & 20       & 68         & 228 \\
+red-black trees & 2        & 4 (4)          & 8        & 10         & 24 \\ \hline
+total           & 14       & 297 (177)      & 70       & 90         & 471
 \end{tabular}
-\caption{\label{tab-sloc2} Number of conjuncts in contracts on types, on subprograms, in loop invariants and in assertions.}
+\caption{\label{tab-sloc2} Number of conjuncts in contracts on types, on
+  subprograms, in loop invariants and in assertions. Numbers in parentheses
+  correspond to conjuncts for contracts on external subprograms.}
 \end{center}
-\end{figure}
+\end{table}
+
+Taking both tables into account, it is clear that verification of search trees
+was the most costly in terms of overall efforts, with a large part of ghost
+code (71\%) and many intermediate assertions needed (68
+conjuncts). Verification of red-black trees in the contrary was relatively
+straighforward, with fewer ghost code than operational code (35\% compared to
+52\%) and few intermediate assertions needed (10 conjuncts). This matches well
+the cognitive effort required to understand the correction of search trees
+compared to red-black trees.
 
 \section{Related Work}
 \label{related-work}
