@@ -1245,9 +1245,9 @@ package body SPARK_Util is
           --  subprograms nested in the type itself.
    end Is_Synchronized;
 
-   ----------------------------
-   -- Iterate_Call_Arguments --
-   ----------------------------
+   -----------------------------
+   -- Iterate_Call_Parameters --
+   -----------------------------
 
    procedure Iterate_Call_Parameters (Call : Node_Id)
    is
