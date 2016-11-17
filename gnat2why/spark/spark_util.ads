@@ -470,7 +470,8 @@ package SPARK_Util is
 
    generic
       with procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
-   procedure Iterate_Call_Parameters (Call : Node_Id);
+   procedure Iterate_Call_Parameters (Call : Node_Id)
+   with Pre => Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Call [Handle_Parameter] for each pair of formal and actual parameters
    --  of a function or procedure call.
    --  @param Call function or procedure call
