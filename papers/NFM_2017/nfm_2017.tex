@@ -1159,7 +1159,17 @@ which are specifically designed for verifying low level, heap manipulating progr
 of our knowledge, to verify higher level software, due to the specifications being too low level.
 
 \section{Conclusion}
+In this article, we have explained how, using auto-active techniques, we could achieve formal verification of key functional
+properties on an imperative red black tree implementation using SPARK. This is not an example of what should be a regular
+use of the SPARK toolset but rather a tour de force, which aims at demonstrating how far we can go using the tool.
 
+Still the techniques presented on this example can be reused on a much smaller scale. In particular, we have shown that
+inductive proofs can be achieved rather straightforwardly using auto-active reasoning. The multi-layered approach, using
+type invariants and model functions to separate concerns, can also be reused to reason about complex data structures.
+
+To democratize the use of auto-active techniques, we are also working on integrating simple iteractive proof capabilities
+in GNATprove. This would allow to apply the same techniques in a simpler, more straightforward way, and also to avoid
+polluting the program space with ghost code which is never meant to be executed.
 
 \paragraph*{Acknowledgements.}
 

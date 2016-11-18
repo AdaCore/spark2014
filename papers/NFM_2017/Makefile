@@ -3,7 +3,7 @@ DOC=nfm_2017
 all: doc
 
 clean:
-	rm -f *.bbl *.aux *.log *.dvi *.blg *.pdf
+	rm -f *.bbl *.aux *.log *.dvi *.blg
 
 abstract:
 	make clean
