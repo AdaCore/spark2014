@@ -106,6 +106,38 @@ auto-active verification so far.
 
 \section{Introduction}
 
+Formal program verification allows programmers to guarantee that the programs
+they write have some desired properties. These properties may be simply that
+the program does not crash or behaves erratically, or more complex critical
+properties related to safety or security. Being able to guarantee such
+properties will be essential for high assurance software as requirements are
+increasingly complex and security attacks more pervasive.
+
+SPARK is a subset of the Ada programming language targeted at safety- and
+security-critical applications. GNATprove is a tool that analyzes SPARK code
+and can prove absence of run-time errors and user-specified properties
+expressed as contracts. GNATprove is based on modular deductive verification of
+programs, analyzing each function in isolation based on its contract and the
+contracts of the functions it calls. The main benefit of this approach is that
+it allows using very precise semantics of programming constructs and powerful
+automatic provers. The main drawback is that top-level specifications are not
+sufficient. Programmers need to provide many intermediate specifications in the
+form of additional contracts, loop invariants and assertions.
+
+The folklore surrounding the art of providing the right intermediate
+specifications has been given firmer ground in the recent years under the name
+of \emph{auto-active verification}. Various languages and tools now provide
+features for effective auto-active verification. SPARK is naturally among
+these. In this paper, we explore the capabilities of auto-active verification
+for proving automatically complex algorithms. We have chosen to target
+red-black trees because they are well-known, commonly used in practice, and yet
+sufficiently complex that no implementation of imperative red-black trees has
+been formally verified using auto-active verification. Our implementation of
+red-black trees, with all the code for auto-active verification, is publicly
+available in the github repository of
+SPARK.~\footnote{\url{https://github.com/AdaCore/spark2014/tree/master/testsuite/gnatprove/tests/red_black_trees}}
+
+
 % implem available on github
 
 %% \spark is a subset of the Ada programming language targeted at safety- and
@@ -217,7 +249,7 @@ the root to the point of insertion or deletion. At every node on this path, the
 algorithms may \emph{rotate} the subtree, which consists in a local
 rearrangement of nodes to restore properties~(1) and~(2). These algorithms are
 sufficiently complex that no implementation of imperative red-black trees has
-been fully formally verified in Dafny, Eiffel or Why3. See
+been formally verified in Dafny, Eiffel or Why3. See
 Section~\ref{related-work} for a list of the closest works, including some
 using auto-active verification. We are following the algorithm from Cormen et
 al.~\cite{Cormen2009} for insertion in a red-black tree. We did not implement
