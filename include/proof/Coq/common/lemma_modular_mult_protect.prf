@@ -1,6 +1,6 @@
 intros pre.
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds arg1) as arg1_type; clearbody arg1_type.
@@ -37,7 +37,7 @@ destruct (Z.eq_dec (to_uint arg2) 0) as [arg2_zero|arg2_not_zero].
   unfold EuclideanDivision.div in arg1_le_arg2.
   case Z_le_dec as [hyp|neg_hyp] in arg1_le_arg2; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
   assert (0 < to_uint arg2) as arg2_pos by auto with zarith.
-  apply (SPARK.div_then_mult _ _ _ arg2_pos upper_bound_lb arg1_le_arg2).
+  apply (div_then_mult _ _ _ arg2_pos upper_bound_lb arg1_le_arg2).
 
   rewrite BV_Gen.mod1_out.
 

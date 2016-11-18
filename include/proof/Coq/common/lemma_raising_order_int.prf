@@ -1,0 +1,11 @@
+Require Import SPARK.
+
+assert (Htrans: Relation_Definitions.transitive _ (fun (x y: integer) => (to_rep x) < (to_rep y))).
+{
+  intro; intros.
+
+  (* Apply transitivity to prove transitive property *)
+  transitivity (to_rep y); auto.
+}
+
+eapply (generic_raising_order_minus _ _ Htrans _); eauto; intuition.

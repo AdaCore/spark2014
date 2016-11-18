@@ -1,0 +1,16 @@
+Require Import SPARK.
+(* Create appropriate Hint Database (for auto).
+   When using "auto with element_db", it will use its usual lemmas + range_axiom.
+   When using "autorewrite with element_db", it will use its usual lemmas + range_axiom  *)
+Hint Rewrite  lt_finite : element_db.
+Hint Resolve range_axiom: element_db.
+assert (Htrans: Relation_Definitions.transitive _ (fun (x y: float) => lt (to_rep x) (to_rep y))).
+{
+  (* Translate lt to the lt of Coq *)
+  intro; intros; autorewrite with element_db in *; eauto with element_db.
+
+  (* Apply transitivity to prove transitive property *)
+  eapply Rlt_trans; eauto.
+}
+
+eapply (generic_raising_order_minus _ _ Htrans _ ); eauto; intuition.

@@ -1,3 +1,12 @@
+a.adb:7:04: warning: in instantiation at spark-unconstrained_array_lemmas.ads:50
+a.adb:7:04: warning: postcondition does not check the outcome of calling "Lemma_Transitive_Order"
+a.adb:15:22: info: assertion proved (CVC4: 1 VC)
+a.adb:22:09: info: precondition proved (CVC4: 1 VC)
+a.adb:22:34: info: range check proved (CVC4: 1 VC)
+a.adb:22:49: info: range check proved (CVC4: 1 VC)
+a.adb:23:22: info: assertion proved (CVC4: 1 VC)
+a.ads:9:14: warning: subprogram "Test" has no effect
+a.ads:13:14: warning: subprogram "Test_Float" has no effect
 spark-arithmetic_lemmas.ads:90:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:90:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:101:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -22,10 +31,6 @@ spark-test_array_lemmas.ads:57:19: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:57:31: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:65:19: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:65:31: info: index check proved (CVC4: 2 VC)
-sv.adb:13:48: info: division check proved (CVC4: 1 VC)
-sv.adb:13:48: info: range check proved (CVC4: 1 VC)
-sv.adb:15:07: info: precondition proved (CVC4: 3 VC)
-sv.adb:17:40: info: range check proved (CVC4: 1 VC)
-sv.adb:18:53: info: initialization of "Res" proved
-sv.adb:19:14: info: initialization of "Res" proved
-sv.ads:17:14: info: postcondition proved (CVC4: 1 VC)
+spark-unconstrained_array_lemmas.ads:49:41: info: index check proved (CVC4: 2 VC), in instantiation at a.adb:7
+spark-unconstrained_array_lemmas.ads:49:48: info: overflow check proved (CVC4: 1 VC), in instantiation at a.adb:7
+spark-unconstrained_array_lemmas.ads:49:58: info: index check proved (CVC4: 2 VC), in instantiation at a.adb:7

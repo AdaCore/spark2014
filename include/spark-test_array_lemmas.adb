@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                        SPARK LIBRARY COMPONENTS                          --
+--                         SPARK LIBRARY COMPONENTS                         --
 --                                                                          --
---           S P A R K . M O D _ A R I T H M E T I C _ L E M M A S          --
+--              S P A R K . T E S T _ A R R A Y _ L E M M A S               --
 --                                                                          --
---                                 B o d y                                  --
+--                                 C o d e                                  --
 --                                                                          --
 --                       Copyright (C) 2016, AdaCore                        --
 --                                                                          --
@@ -26,55 +26,55 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body SPARK.Mod_Arithmetic_Lemmas
-  with SPARK_Mode => Off -- TEST_ON
+with SPARK.Unconstrained_Array_Lemmas;
+with SPARK.Constrained_Array_Lemmas;
+
+package body SPARK.Test_Array_Lemmas
+with SPARK_Mode => Off -- TEST_ON
 is
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Uint;
-      Val2  : Uint;
-      Denom : Pos)
-   is null;
+   pragma Warnings
+     (Off, "postcondition does not check the outcome of calling");
 
-   procedure Lemma_Div_Then_Mult_Bounds
-     (Arg1 : Uint;
-      Arg2 : Pos;
-      Res  : Uint)
-   is null;
+   pragma Warnings
+     (Off, "has no effect");
 
-   procedure Lemma_Mult_Is_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Uint)
-   is null;
+   package Test_Uint is new SPARK.Unconstrained_Array_Lemmas
+     (Index_Type => Integer,
+      Element_T  => Integer,
+      A          => Arr_Int_Unconstrained,
+      Less       => "<");
 
-   procedure Lemma_Mult_Is_Strictly_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Pos)
-   is null;
+   package Test_Ufloat is new SPARK.Unconstrained_Array_Lemmas
+     (Index_Type => Integer,
+      Element_T  => Float,
+      A          => Arr_Float_Unconstrained,
+      Less       => "<");
 
-   procedure Lemma_Mult_Protect
-     (Arg1        : Uint;
-      Arg2        : Uint;
-      Upper_Bound : Uint)
-   is null;
+   --  For now, constrained array need a type conversion. In the future,
+   --  there will be a constrained array library.
+   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Constrained) is
+   begin
+      Test_UInt.Lemma_Transitive_Order
+        (Arr_Int_Unconstrained (Arr));
+   end Test_Transitive_Order_Int;
 
-   procedure Lemma_Mult_Scale
-     (Val         : Uint;
-      Scale_Num   : Uint;
-      Scale_Denom : Pos;
-      Res         : Uint)
-   is null;
+   procedure Test_Transitive_Order_Float (Arr : Arr_Float_Constrained) is
+   begin
+      Test_UFloat.Lemma_Transitive_Order
+        (Arr_Float_Unconstrained (Arr));
+   end Test_Transitive_Order_Float;
 
-   procedure Lemma_Mult_Then_Div_Is_Ident
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
+   procedure Test_Transitive_Order_Int (Arr : Arr_Int_Unconstrained) is
+   begin
+      Test_Uint.Lemma_Transitive_Order (Arr);
+   end Test_Transitive_Order_Int;
 
-   procedure Lemma_Mult_Then_Mod_Is_Zero
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
+   procedure Test_Transitive_Order_Float
+     (Arr : Arr_Float_Unconstrained) is
+   begin
+      Test_Ufloat.Lemma_Transitive_Order (Arr);
+   end Test_Transitive_Order_Float;
 
-end SPARK.Mod_Arithmetic_Lemmas;
+
+end SPARK.Test_Array_Lemmas;

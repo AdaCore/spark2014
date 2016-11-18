@@ -1,6 +1,6 @@
 intros (scale_denom_type,(scale_ratio,(mul_no_ovfl,res_def))).
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds val__) as val_type; clearbody val_type.
@@ -31,7 +31,7 @@ destruct (Z.eq_dec (to_uint scale_num) 0) as [scale_num_zero|scale_num_not_zero]
 * rewrite BV_Gen.mod1_out.
 
   (* val * num / denom <= val *)
-  + apply (SPARK.mul_ratio _ _ _ val_lb scale_num_lb scale_denom_pos scale_ratio).
+  + apply (mul_ratio _ _ _ val_lb scale_num_lb scale_denom_pos scale_ratio).
 
   (* no overflow in val * num *)
   + split; [auto with zarith|].
@@ -43,6 +43,6 @@ destruct (Z.eq_dec (to_uint scale_num) 0) as [scale_num_zero|scale_num_not_zero]
     apply Zle_lt_succ.
     assert (0 < to_uint scale_num) as scale_num_pos by auto with zarith.
     assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.
-    apply (SPARK.div_then_mult _ _ _ scale_num_pos uint_max_nat val_le_div).
+    apply (div_then_mult _ _ _ scale_num_pos uint_max_nat val_le_div).
 
 Qed.

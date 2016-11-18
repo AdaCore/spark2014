@@ -2,7 +2,7 @@
 
 intros (arg1_type,(arg2_type,(upper_bound_type,pre))).
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 unfold in_range in arg1_type, arg2_type, upper_bound_type.
@@ -19,6 +19,6 @@ destruct (Z.eq_dec arg2 0) as [arg2_zero|arg2_not_zero].
 * destruct pre as [arg2_zero|arg1_le_arg2]; try easy.
   rewrite Zquot.Zquot_Zdiv_pos in arg1_le_arg2 by auto.
   assert (0 < arg2) as arg2_pos by auto with zarith.
-  apply (SPARK.div_then_mult _ _ _ arg2_pos upper_bound_lb arg1_le_arg2).
+  apply (div_then_mult _ _ _ arg2_pos upper_bound_lb arg1_le_arg2).
 
 Qed.

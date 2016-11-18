@@ -1,6 +1,6 @@
 intros (arg2_type,pre).
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds arg1) as arg1_type.
@@ -20,7 +20,7 @@ rewrite to_uint_urem.
 rewrite to_uint_mul.
 assert (to_uint arg1 * to_uint arg2 <= SPARK_MAX_UINT) as no_ovfl_mult.
 assert (0 <= SPARK_MAX_UINT) as uint_last_nat by auto with zarith.
-apply (SPARK.div_then_mult _ _ _ arg2_pos uint_last_nat pre).
+apply (div_then_mult _ _ _ arg2_pos uint_last_nat pre).
 assert (EuclideanDivision.mod1 (to_uint arg1 * to_uint arg2) SPARK_MAX_UINT_PLUS1 = to_uint arg1 * to_uint arg2) as mod_noop_on_mult.
 rewrite BV_Gen.mod1_out by auto with zarith.
 trivial.

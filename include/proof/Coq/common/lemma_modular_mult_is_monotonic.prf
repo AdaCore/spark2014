@@ -1,6 +1,6 @@
 intros (pre_val1_le_val2,pre_val2_ub).
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds val1) as val1_type; clearbody val1_type.
@@ -33,7 +33,7 @@ destruct (Z.eq_dec (to_uint factor) 0) as [factor_zero|factor_not_zero].
     unfold EuclideanDivision.div in pre_val2_ub.
     case Z_le_dec as [hyp|neg_hyp] in pre_val2_ub; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
     assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.
-    apply (SPARK.div_then_mult _ _ _ factor_pos uint_max_nat pre_val2_ub).
+    apply (div_then_mult _ _ _ factor_pos uint_max_nat pre_val2_ub).
   }
 
   (* shared lemma val1 * factor <= val2 * factor *)

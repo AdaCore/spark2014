@@ -1,0 +1,14 @@
+
+
+* To rebuild everything from scratch (make a save of sessions/proofs if needed) use:
+     python generate_session.py
+  If this fails, try removing obj and sessions first:
+     rm -rf obj/
+     rm -rf proof/sessions/
+     python generate_session.py
+
+  If this still fails (it should not), try increasing the levels in generate_session.py.
+  If this comes from a Coq proof, try to find it in proof/Coq/common.
+
+* When you add a manual proof, please add the corresponding check in manual.in.
+  Check that this is buildable with generate_session.py

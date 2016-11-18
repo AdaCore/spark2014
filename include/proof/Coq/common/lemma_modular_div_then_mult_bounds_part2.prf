@@ -2,7 +2,7 @@
 
 intros (arg2_type,pre).
 Open Scope Z_scope.
-Require SPARK.
+Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds arg1) as arg1_type.
@@ -23,7 +23,7 @@ split.
 }
 {
   assert (to_uint arg1 / to_uint arg2 * to_uint arg2 <= to_uint arg1) as inter_ineq.
-  apply (SPARK.div_mul_le _ _ arg1_lb arg2_pos).
+  apply (div_mul_le _ _ arg1_lb arg2_pos).
   auto with zarith.
 }
 
@@ -34,7 +34,7 @@ unfold EuclideanDivision.div.
 case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
 rewrite BV_Gen.mod1_out.
 (* apply theorem *)
-{ apply (SPARK.div_mul_le _ _ arg1_lb arg2_pos). }
+{ apply (div_mul_le _ _ arg1_lb arg2_pos). }
 (* no overflow in (arg1 / arg2) * arg2 *)
 { exact no_ovfl_div_mul. }
 

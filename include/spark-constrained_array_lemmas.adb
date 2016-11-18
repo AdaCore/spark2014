@@ -2,7 +2,7 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---           S P A R K . M O D _ A R I T H M E T I C _ L E M M A S          --
+--       S P A R K . C O N S T R A I N E D _ A R R A Y _ L E M M A S        --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -26,55 +26,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body SPARK.Mod_Arithmetic_Lemmas
-  with SPARK_Mode => Off -- TEST_ON
+--  ??? Do not work yet
+with SPARK.Unconstrained_Array_Lemmas;
+
+package body SPARK.Constrained_Array_Lemmas
+with SPARK_Mode => Off -- TEST_ON
 is
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Uint;
-      Val2  : Uint;
-      Denom : Pos)
-   is null;
+   type A_Unconstrained is array (Index_Type range <>) of Element_T;
 
-   procedure Lemma_Div_Then_Mult_Bounds
-     (Arg1 : Uint;
-      Arg2 : Pos;
-      Res  : Uint)
-   is null;
+   package Test is new SPARK.Unconstrained_Array_Lemmas
+     (Index_Type => Index_Type,
+      Element_T  => Element_T,
+      A          => A_Unconstrained,
+      Less       => Less);
 
-   procedure Lemma_Mult_Is_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Uint)
-   is null;
+   procedure Lemma_Transitive_Order (Arr : A) is
+      Arr_T : constant A_Unconstrained := A_Unconstrained (Arr);
+   begin
+      Test.Lemma_Transitive_Order (Arr_T);
+   end Lemma_Transitive_Order;
 
-   procedure Lemma_Mult_Is_Strictly_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Pos)
-   is null;
-
-   procedure Lemma_Mult_Protect
-     (Arg1        : Uint;
-      Arg2        : Uint;
-      Upper_Bound : Uint)
-   is null;
-
-   procedure Lemma_Mult_Scale
-     (Val         : Uint;
-      Scale_Num   : Uint;
-      Scale_Denom : Pos;
-      Res         : Uint)
-   is null;
-
-   procedure Lemma_Mult_Then_Div_Is_Ident
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
-
-   procedure Lemma_Mult_Then_Mod_Is_Zero
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
-
-end SPARK.Mod_Arithmetic_Lemmas;
+end SPARK.Constrained_Array_Lemmas;

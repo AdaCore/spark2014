@@ -1,10 +1,10 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                        SPARK LIBRARY COMPONENTS                          --
+--                         SPARK LIBRARY COMPONENTS                         --
 --                                                                          --
---           S P A R K . M O D _ A R I T H M E T I C _ L E M M A S          --
+--     S P A R K . U N C O N S T R A I N E D _ A R R A Y _ L E M M A S      --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                       Copyright (C) 2016, AdaCore                        --
 --                                                                          --
@@ -26,55 +26,29 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body SPARK.Mod_Arithmetic_Lemmas
-  with SPARK_Mode => Off -- TEST_ON
+generic
+   type Index_Type is (<>);
+   type Element_T is private;
+   type A is array (Index_Type range <>) of Element_T;
+   --  This function has to be transitive like "<" in ada:
+   --  transitivity: forall x y z, x < y -> y < z -> x < z
+   --  If this property is not ensured, the lemmas are likely to
+   --  introduce inconsistencies.
+   with function Less (X, Y : Element_T) return Boolean;
+
+package SPARK.Unconstrained_Array_Lemmas
+  with SPARK_Mode,
+       Pure,
+       Ghost
 is
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Uint;
-      Val2  : Uint;
-      Denom : Pos)
-   is null;
+   procedure Lemma_Transitive_Order (Arr : A) with
+       Pre =>
+         (for all I in Arr'Range =>
+            (if I /= Arr'First then
+                   Less (Arr (Index_Type'Pred (I)), Arr (I)))),
+       Post => (for all I in Arr'Range =>
+                  (for all J in Arr'Range =>
+                     (if I < J then Less (Arr (I), Arr (J)))));
 
-   procedure Lemma_Div_Then_Mult_Bounds
-     (Arg1 : Uint;
-      Arg2 : Pos;
-      Res  : Uint)
-   is null;
-
-   procedure Lemma_Mult_Is_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Uint)
-   is null;
-
-   procedure Lemma_Mult_Is_Strictly_Monotonic
-     (Val1   : Uint;
-      Val2   : Uint;
-      Factor : Pos)
-   is null;
-
-   procedure Lemma_Mult_Protect
-     (Arg1        : Uint;
-      Arg2        : Uint;
-      Upper_Bound : Uint)
-   is null;
-
-   procedure Lemma_Mult_Scale
-     (Val         : Uint;
-      Scale_Num   : Uint;
-      Scale_Denom : Pos;
-      Res         : Uint)
-   is null;
-
-   procedure Lemma_Mult_Then_Div_Is_Ident
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
-
-   procedure Lemma_Mult_Then_Mod_Is_Zero
-     (Arg1 : Uint;
-      Arg2 : Pos)
-   is null;
-
-end SPARK.Mod_Arithmetic_Lemmas;
+end SPARK.Unconstrained_Array_Lemmas;
