@@ -1106,6 +1106,29 @@ straighforward, with fewer ghost code than operational code (35\% compared to
 the cognitive effort required to understand the correction of search trees
 compared to red-black trees.
 
+As the code has been fully proved to be free of run-time errors and that all
+contracts have been proved, it is safe to compile it with no run-time checks,
+and only the precondition on insertion in red-black trees activated (since this
+might be violated by an external call). Disabling run-time checks is done
+through a compiler switch (-gnatp) and only enabling preconditions in red-black
+trees is done through a configuration pragma in the unit. Inserting one million
+integers in the red-black tree from 1 to 1 million leads to a violation of the
+invariant in 999,998 cases, which requires 999,963 left rotations and zero
+right rotations. On a Core i7 with 2,8 GHz and 16 Go RAM, the running time for
+performing these 1 million insertions is 0.65 seconds without run-time checks,
+and 0.70 seconds with run-time checks, or 0.65 microseconds (respectively 0.70
+microseconds) per insertion.
+
+Enabling all contracts and assertions at run-time is also possible during
+tests. Here, ghost code is particularly expensive to run, as constructing the
+model for a binary tree is at worst quadratic in the size of the tree, and
+contracts contain quantifications on the maximal size of the tree that call
+functions which themselves quantify over the same size in their own contracts
+or code. In addition, the expensive operation of constructing the model is
+performed repeatedly in contracts, as SPARK does not yet provide a
+let-expression form.  As a result, inserting one element in a tree of size one
+takes 20 minutes on Core i7 with 2,8 GHz and 16 Go RAM.
+
 \section{Related Work}
 \label{related-work}
 There have been several previous attempts at verifying red black trees implementations. In particular, red black trees are
