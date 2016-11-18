@@ -300,10 +300,6 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
-   function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean
-   with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
-   --  Check if subprogram body N contains no potentially blocking statements
-
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |
                             E_Procedure |
@@ -344,6 +340,9 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
+
+   function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean;
+   --  Check if entity E is a predefined potentially blocking subprogram
 
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean;
    --  @param E any entity

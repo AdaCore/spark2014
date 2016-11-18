@@ -1034,6 +1034,7 @@ package body Flow is
       FA.PDG                                  := Create;
       FA.No_Errors_Or_Warnings                := True;
       FA.Has_Potentially_Nonterminating_Loops := False;
+      FA.Has_Only_Nonblocking_Statements      := True;
       FA.Has_Only_Exceptional_Paths           := False;
 
       --  Generate Globals (gg) or Flow Analysis (fa)
@@ -1196,6 +1197,23 @@ package body Flow is
          end case;
       end if;
 
+      --  We register nonblocking subprograms and packages
+      if FA.Generating_Globals
+        and then FA.Has_Only_Nonblocking_Statements
+      then
+         case FA.Kind is
+            when Kind_Subprogram
+               | Kind_Package_Body
+            =>
+               GG_Register_Nonblocking (To_Entity_Name (FA.Spec_Entity));
+
+            when Kind_Task
+               | Kind_Package
+            =>
+               null;
+         end case;
+      end if;
+
       --  Register tasking-related information
       if FA.Generating_Globals then
          Debug_GG_Tasking_Info;
@@ -1260,20 +1278,6 @@ package body Flow is
                  (E, With_Inlined => True)
                  and then Entity_In_SPARK (E)
                then
-
-                  --  Check for potentially blocking statements in callable
-                  --  entities, i.e. entries and subprograms.
-                  --  ??? also analyze spec
-
-                  if Generating_Globals
-                     and then Ekind (E) /= E_Task_Type
-                     and then Entity_Body_In_SPARK (E)
-                  then
-                     if Has_Only_Nonblocking_Statements (Get_Body (E)) then
-                        GG_Register_Nonblocking (To_Entity_Name (E));
-                     end if;
-                  end if;
-
                   if Generating_Globals
                     and then Ekind (E) in E_Function | E_Procedure | Entry_Kind
                   then

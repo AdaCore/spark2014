@@ -219,6 +219,9 @@ package Flow is
       --  * for on an iterable container
       --  without Loop_Variant.
 
+      Has_Only_Nonblocking_Statements : Boolean;
+      --  True for entities that only contain nonblocking statements
+
       Base_Filename : Unbounded_String;
       --  A string with the name of the entity that is being analysed. It
       --  follows the convention that we use for naming the .dot and .pdf

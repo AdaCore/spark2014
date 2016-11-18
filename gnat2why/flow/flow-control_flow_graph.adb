@@ -1652,6 +1652,13 @@ package body Flow.Control_Flow_Graph is
       Calendar_Clock  : constant String := "ada__calendar__clock_time";
 
    begin
+      --  Here we flag a delay statement as potentially blocking
+      if FA.Generating_Globals
+        and then FA.Has_Only_Nonblocking_Statements
+      then
+         FA.Has_Only_Nonblocking_Statements := False;
+      end if;
+
       --  Gather variables used in the expression of the delay statement
       Vars_Used := Get_Variables
                      (Expression (N),
@@ -3247,6 +3254,15 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Object_Declaration
 
    begin
+      --  Task creation and activation in a protected action are potentially
+      --  blocking.
+      if FA.Generating_Globals
+        and then FA.Has_Only_Nonblocking_Statements
+        and then Has_Task (Etype (Defining_Identifier (N)))
+      then
+         FA.Has_Only_Nonblocking_Statements := False;
+      end if;
+
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
       if Constant_Present (N) then
@@ -4148,6 +4164,30 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Call_Statement
 
    begin
+      --  Here we flag entry call statements and predefined potentially
+      --  blocking procedures as potentially blocking.
+      if FA.Generating_Globals
+        and then FA.Has_Only_Nonblocking_Statements
+      then
+         case Nkind (N) is
+            when N_Entry_Call_Statement =>
+               if Convention (Entity (Selector_Name (Name (N)))) =
+                 Convention_Entry
+               then
+                  FA.Has_Only_Nonblocking_Statements := False;
+               end if;
+
+            when N_Procedure_Call_Statement =>
+               if Is_Predefined_Potentially_Blocking (Get_Called_Entity (N))
+               then
+                  FA.Has_Only_Nonblocking_Statements := False;
+               end if;
+
+            when others =>
+               null;
+         end case;
+      end if;
+
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
 
