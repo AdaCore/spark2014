@@ -220,6 +220,33 @@ This program offers a nice display of many |SPARK| features in a simple setting:
 
 The original code was contributed by Guillaume Foliard.
 
+.. rubric:: ``red_black_trees``
+
+This example demonstrates :ref:`Type Invariants` and :ref:`Manual Proof Using Ghost Code` on an implementation of red black trees. It features a minimalist library of trees providing only membership test and insertion. The complexity of this example lies in the invariants that are maintained on the data-structure. Namely, it implements a balanced binary search tree, balancing being enforced by red black coloring.
+
+The implementation is divided in three layers, each concerned with only a part
+of the global data structure invariant. The first package, named
+``Binary_Trees``, is only concerned with the tree structure, whereas
+``Search_Trees`` imposes ordering properties and ``Red_Black_Trees``
+enforces balancing. At each level, the relevant properties are expressed using
+a ``Type Invariant``. It allows to show each independent invariant at the
+boundary of its layer, assuming that it holds when working on upper layers.
+
+The example features several particularities which make it complex beyond
+purely automated reasoning. First, the tree structure is encoded using
+references in an array, which makes it difficult to reason about disjointness
+of different branches of a tree. Then, reasoning about reachability in the tree
+structure requires induction, which is often out of the reach of automatic
+solvers. Finally, reasoning about value ordering is also a pain point for
+automatic solvers, as it requires coming up with intermediate values on which
+to apply transitivity.
+
+To achieve full functional verification of this example, it resorts to
+manually helping automatic solvers using auto-active techniques. For example,
+ghost procedures are used to introduce intermediate lemmas, loop invariants are
+written to achieve inductive proofs, and assertions are introduced to provide
+new values to be used for transitivity relations.
+
 .. rubric:: ``railway_signaling``
 
 This program implements a simple signaling algorithm to avoid collision of

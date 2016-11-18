@@ -296,6 +296,8 @@ Thus, not all violations of the dynamic predicate are caught at run time. On
 the contrary, during analysis, |GNATprove| checks that initialized variables
 whose type has a predicate always contain a value allowed by the predicate.
 
+.. _Type Invariants:
+
 Type Invariants
 ---------------
 
