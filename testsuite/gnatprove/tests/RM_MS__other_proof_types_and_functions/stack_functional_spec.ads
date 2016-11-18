@@ -1,3 +1,4 @@
+pragma Unevaluated_Use_Of_Old(Allow);
 package Stack_Functional_Spec
   with SPARK_Mode,
        Abstract_State    => State,

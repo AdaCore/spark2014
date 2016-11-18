@@ -1,3 +1,4 @@
+pragma Unevaluated_Use_Of_Old(Allow);
 procedure String_Old with SPARK_Mode is
    procedure Do_Nothing (S : in out String) with
      Contract_Cases =>
