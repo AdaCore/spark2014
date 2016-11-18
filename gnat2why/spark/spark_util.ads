@@ -476,6 +476,14 @@ package SPARK_Util is
    --  of a function or procedure call.
    --  @param Call function or procedure call
 
+   generic
+      with procedure Handle_Actual (Actual : Node_Id);
+   procedure Iterate_Generic_Actual_Parameters (Instance : Node_Id)
+   with Pre => Nkind (Instance) = N_Package_Instantiation;
+   --  Call [Handle_Actual] for each generic actual parameter of a generic
+   --  instance.
+   --  @param Instance represents the instantiation node
+
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
    --  @return the number of N_Component_Association nodes in N.

@@ -69,11 +69,17 @@ package Flow_Generated_Globals.Phase_1 is
    procedure GG_Register_Nonreturning (EN : Entity_Name)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register:
+   --  Register nonreturning subprogram. This information will be used in
+   --  phase 2 to determine termination of subprograms (when calling the
+   --  function Is_Potentially_Nonreturning). In particular we register:
    --  * subprograms which contain possibly nonterminating loops
    --  * procedures annotated with No_Return
    --  * subprograms that call predefined procedures with No_Return
-   --  * subprograms with no body or body not in SPARK.
+   --  * subprograms with body not in SPARK unless if they are:
+   --    - predefined
+   --    - imported
+   --    - intrinsic
+   --    - have no body yet and are not procedure annotated with No_Return.
 
    procedure GG_Register_Terminating (EN : Entity_Name)
    with Pre  => GG_Mode = GG_Write_Mode,

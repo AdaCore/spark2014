@@ -223,6 +223,38 @@ package Flow_Generated_Globals.Phase_2 is
    --  * contains possibly nonterminating loops
    --  * is recursive
    --  * calls a potentially nonreturning subprogram.
+   --
+   --  In particular:
+   --  * if a subprogram is annotated with the Terminating annotation then this
+   --    is always assumed to terminate. In case our analysis does not reach
+   --    the same conclusion, we will issue a message but still consider it
+   --    terminating when called from other subprograms.
+   --  * if a subprogram is not annotated with the Terminating annotation we
+   --    then register it as nonreturning if:
+   --    - it is annotated with No_Return
+   --    - contains possibily nonterminating loops
+   --    - is recursive
+   --    - calls procedures annotated with No_Return.
+   --
+   --    The case of a subprogram with body not SPARK needs a closer look. In
+   --    fact we will need to look at calls that might come from its contracts.
+   --    In particular:
+   --    1) if a subprogram does not have a body yet (no .adb) then
+   --       - if it does not call any subprogram in its contracts we assume it
+   --         to terminate
+   --       - if it does call subprograms which are nonreturning then we assume
+   --         it to be nonreturning
+   --       - if it does call subprograms which are returning then we assume it
+   --         to terminate.
+   --    2) if a subprogram is Intrinsic or Imported we can apply the same
+   --       reasoning described above.
+   --    3) if a subprogram has a body and this is not in SPARK then we always
+   --       assume it to be nonreturning.
+   --    4) if a subprogram is in a generic predefined unit then:
+   --       - if the generic is instantiated with returning subprograms, we
+   --         consider it to be returning
+   --       - if the generic is instantiated with nonreturning subprograms, we
+   --         consider it to be nonreturning.
 
    function Tasking_Objects
      (Kind : Tasking_Owning_Kind;

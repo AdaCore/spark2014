@@ -414,6 +414,7 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Terminating_Subprograms  => Terminating_Subprograms);
       Write_To_ALI (V);
 
+      --  Write direct calls
       for Direct_Calls of Direct_Calls_List loop
          V := (Kind                      => EK_Direct_Calls,
                The_Caller                => Direct_Calls.Caller,

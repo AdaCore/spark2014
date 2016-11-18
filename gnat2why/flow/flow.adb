@@ -49,7 +49,9 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Osint;                          use Osint;
 with Output;                         use Output;
+with Sem_Aux;                        use Sem_Aux;
 with Sem_Ch7;                        use Sem_Ch7;
+with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Snames;                         use Snames;
@@ -1170,7 +1172,7 @@ package body Flow is
             when Kind_Subprogram =>
                --  We register the subprogram
                GG_Register_Nonreturning
-                 (To_Entity_Name (FA.Analyzed_Entity));
+                 (To_Entity_Name (FA.Spec_Entity));
 
             when Kind_Package_Body =>
                --  If there is a package whose elaboration contains a
@@ -1179,7 +1181,7 @@ package body Flow is
                --  nonreturning.
                declare
                   E_Subprogram : constant Entity_Id :=
-                    Enclosing_Subprogram (FA.Analyzed_Entity);
+                    Enclosing_Subprogram (FA.Spec_Entity);
 
                begin
                   if Present (E_Subprogram) then
@@ -1281,16 +1283,39 @@ package body Flow is
                         GG_Register_Terminating (To_Entity_Name (E));
 
                      --  We register subprograms with body not in SPARK as
-                     --  nonreturning except when they are predefined, imported
-                     --  or intrinsic.
+                     --  nonreturning except when they are:
+                     --  * predefined
+                     --  * imported
+                     --  * intrinsic
+                     --  * have no body yet (no .adb) and are not procedures
+                     --    annotated with No_Return.
                      else
-                        if not Entity_Body_In_SPARK (E)
-                          and then not In_Predefined_Unit (E)
-                          and then not Is_Imported (E)
-                          and then not (Ekind (E) in E_Function | E_Procedure
-                                        and then Is_Intrinsic_Subprogram (E))
-                        then
-                           GG_Register_Nonreturning (To_Entity_Name (E));
+                        if not Entity_Body_In_SPARK (E) then
+                           declare
+                              function Has_No_Body_Yet (E : Entity_Id)
+                                                        return Boolean;
+                              --  Returns True if subprogram E does not have
+                              --  a body yet (no .adb).
+
+                              ---------------------
+                              -- Has_No_Body_Yet --
+                              ---------------------
+
+                              function Has_No_Body_Yet (E : Entity_Id)
+                                                        return Boolean
+                              is (Ekind (E) in E_Function | E_Procedure
+                                  and then No (Subprogram_Body_Entity (E)));
+
+                           begin
+                              if not In_Predefined_Unit (E)
+                                and then not Is_Imported (E)
+                                and then not Is_Intrinsic (E)
+                                and then not (Has_No_Body_Yet (E)
+                                              and then not No_Return (E))
+                              then
+                                 GG_Register_Nonreturning (To_Entity_Name (E));
+                              end if;
+                           end;
                         end if;
                      end if;
                   end if;
@@ -1415,6 +1440,53 @@ package body Flow is
                                  Local_Variables       => <>,
                                  Local_Subprograms     => <>,
                                  Local_Definite_Writes => <>);
+                           end;
+                        end if;
+
+                        --  In case of a subprogram in a generic predefined
+                        --  unit with its body not in SPARK, we also register
+                        --  any subprograms that are generic actual parameters
+                        --  in its instantiation.
+                        --  ??? we are not dealing with subprograms declared in
+                        --  packages nested in generics.
+                        if Ekind (E) in E_Function
+                                      | E_Procedure
+                          and then In_Predefined_Unit (E)
+                          and then Is_Generic_Instance (Scope (E))
+                        then
+                           declare
+                              Inst : constant Node_Id :=
+                                Get_Package_Instantiation_Node (Scope (E));
+
+                              procedure Actual_Sub (Actual : Node_Id);
+                              --  Given an Actual, include it in the
+                              --  Contract_Calls if it is a function or a
+                              --  procedure.
+
+                              procedure Register_Actual_Subprograms is new
+                                Iterate_Generic_Actual_Parameters (Actual_Sub);
+
+                              ----------------
+                              -- Actual_Sub --
+                              ----------------
+
+                              procedure Actual_Sub (Actual : Node_Id) is
+                                 E_Actual : Entity_Id;
+                              begin
+                                 if Nkind (Actual) in N_Has_Entity then
+                                    E_Actual := Entity (Actual);
+
+                                    if Present (E_Actual)
+                                      and then Ekind (E_Actual) in E_Function
+                                                                 | E_Procedure
+                                    then
+                                       Contract_Calls.Include (E_Actual);
+                                    end if;
+                                 end if;
+                              end Actual_Sub;
+
+                           begin
+                              Register_Actual_Subprograms (Inst);
                            end;
                         end if;
 

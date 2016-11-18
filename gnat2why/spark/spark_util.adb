@@ -1296,6 +1296,27 @@ package body SPARK_Util is
       end loop;
    end Iterate_Call_Parameters;
 
+   ---------------------------------------
+   -- Iterate_Generic_Actual_Parameters --
+   ---------------------------------------
+
+   procedure Iterate_Generic_Actual_Parameters (Instance : Node_Id)
+   is
+      Params     : constant List_Id := Generic_Associations (Instance);
+      Cur_Actual : Node_Id := First (Params);
+      Actual     : Node_Id;
+   begin
+      while Present (Cur_Actual) loop
+         pragma Assert (Nkind (Cur_Actual) = N_Generic_Association);
+
+         Actual := Explicit_Generic_Actual_Parameter (Cur_Actual);
+
+         Handle_Actual (Actual);
+
+         Next (Cur_Actual);
+      end loop;
+   end Iterate_Generic_Actual_Parameters;
+
    ----------------------------------
    -- Location_In_Standard_Library --
    ----------------------------------

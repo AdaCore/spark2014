@@ -63,8 +63,7 @@ package Flow_Generated_Globals is
    --
    --    * We collect potentially nonreturning subprograms.
    --
-   --    * We also collect subprograms with Terminating annotation.
-
+   --    * We also collect subprograms with the Terminating annotation.
    --
    --  During the second pass:
    --
@@ -105,7 +104,7 @@ package Flow_Generated_Globals is
    --  * Volatile variables and external state abstractions
    --  * Nonblocking subprograms
    --  * Potentially nonreturning subprograms
-   --  * Subprograms with Terminating annotation
+   --  * Subprograms with the Terminating annotation
    --  * Tasking-related information.
    --    - suspension objects that call suspends on
    --    - protected objects whose entries are called

@@ -1,3 +1,9 @@
+call_proc_no_body.adb:4:07: medium: precondition might fail
+call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
+call_proc_no_body.ads:4:14: info: subprogram will terminate
+call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
+call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
+call_proc_no_body.ads:6:14: warning: subprogram might not terminate
 container.adb:7:32: info: length check proved (CVC4: 1 VC)
 container.adb:8:04: info: initialization of "My_Container.A" proved
 container.adb:8:39: info: initialization of "Arr" proved
@@ -73,6 +79,21 @@ container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram will terminate
 container.ads:23:13: info: subprogram will terminate
 container.ads:27:14: warning: subprogram might not terminate
+formal_cont.adb:11:14: info: initialization of "Result" proved
+formal_cont.adb:15:07: info: initialization of private part of "L" proved
+formal_cont.adb:17:21: info: precondition proved (CVC4: 1 VC)
+formal_cont.adb:17:32: info: initialization of private part of "L" proved
+formal_cont.adb:26:07: info: initialization of private part of "L" proved
+formal_cont.adb:28:21: info: precondition proved (CVC4: 1 VC)
+formal_cont.adb:28:32: info: initialization of private part of "L" proved
+formal_cont.ads:9:13: warning: subprogram might not terminate
+formal_cont.ads:12:12: warning: subprogram might not terminate
+formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
+formal_cont.ads:18:14: warning: subprogram might not terminate
+formal_cont.ads:23:13: info: subprogram will terminate
+formal_cont.ads:26:12: info: subprogram will terminate
+formal_cont.ads:32:14: info: subprogram will terminate
+formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:14:14: warning: subprogram might not terminate
@@ -84,10 +105,15 @@ functions.ads:6:13: warning: subprogram might not terminate
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram might not terminate
-imported.adb:5:07: warning: assuming "P" has no effect on global items
-imported.adb:5:07: warning: no Global contract available for "P"
-imported.ads:7:14: info: subprogram will terminate
-imported.ads:7:14: warning: subprogram "Q" has no effect
+imported.adb:5:07: warning: assuming "P_01" has no effect on global items
+imported.adb:5:07: warning: no Global contract available for "P_01"
+imported.adb:10:07: medium: precondition might fail
+imported.adb:10:07: warning: assuming "P_02" has no effect on global items
+imported.adb:10:07: warning: no Global contract available for "P_02"
+imported.ads:9:14: info: subprogram will terminate
+imported.ads:9:14: warning: subprogram "Q_01" has no effect
+imported.ads:16:14: warning: subprogram "Q_02" has no effect
+imported.ads:16:14: warning: subprogram might not terminate
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:14: warning: subprogram might not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
@@ -155,6 +181,9 @@ p.adb:39:14: warning: subprogram might not terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:41:14: warning: subprogram might not terminate
 p.adb:61:14: info: initialization of "B" proved
+preconditions.adb:9:14: info: initialization of "Result" proved
+preconditions.ads:2:14: info: subprogram will terminate
+preconditions.ads:6:13: warning: subprogram might not terminate
 r.adb:7:13: high: potentially blocking operation in protected operation "E"
 r.adb:7:13: warning: subprogram might not terminate
 r.adb:8:17: warning: subprogram might not terminate

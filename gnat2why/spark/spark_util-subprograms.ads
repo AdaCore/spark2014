@@ -325,6 +325,13 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is marked No_Return and is considered to always
    --     terminate abnormally.
 
+   function Is_Intrinsic (E : Entity_Id) return Boolean
+   is
+     (Ekind (E) in E_Function | E_Procedure
+      and then Is_Intrinsic_Subprogram (E));
+   --  @param E subprogram
+   --  @return True iff E is an intrinsic subprogram
+
    function Is_Invisible_Dispatching_Operation
      (E : Entity_Id) return Boolean
    with Pre => Is_Dispatching_Operation (E);

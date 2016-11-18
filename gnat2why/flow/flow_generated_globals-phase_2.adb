@@ -375,6 +375,9 @@ package body Flow_Generated_Globals.Phase_2 is
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns callees of a Caller
 
+   function Is_Potentially_Nonreturning (EN : Entity_Name) return Boolean;
+   --  See comment for Is_Potentially_Nonreturning with Entity_Id as an input
+
    function Is_Recursive (EN : Entity_Name) return Boolean;
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects a subprogram to itself.
@@ -2013,12 +2016,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      pragma Assert (Inserted);
 
-                     --  ??? cannot use Copy as To is not a variable
+                     --  ??? cannot use Merge as To is not a variable
                      while Name_Lists.Has_Element (Callee) loop
                         Direct_Calls (Caller).Insert (V.The_Callees (Callee));
                         Name_Lists.Next (Callee);
                      end loop;
                   end;
+
             end case;
          end Parse_GG_Line;
 
@@ -2546,9 +2550,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Is_Potentially_Nonreturning --
    ---------------------------------
 
-   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
-      EN : constant Entity_Name := To_Entity_Name (E);
-      --  Entity name
+   function Is_Potentially_Nonreturning (EN : Entity_Name) return Boolean is
 
       function Calls_Potentially_Nonreturning_Subprogram return Boolean;
       --  Returns True iff the called subprogram, the callee, is potentially
@@ -2577,7 +2579,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --  subprogram if the callee does not have the Terminating
                --  annotation and:
                --  * has already been detected as potentially nonreturning
-               --    in phase 1
+               --    in phase 1 (is contained in Nonreturning_Subprograms)
                --  * is recursive.
                if not Terminating_Subprograms.Contains (Callee)
                  and then (Nonreturning_Subprograms.Contains (Callee)
@@ -2593,10 +2595,21 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Start of processing for Is_Potentially_Nonreturning
 
    begin
+      --  Returns True if it has been registered as nonreturning in phase 1
+      --  (see usage of GG_Register_Nonreturning in flow.adb), is recursive or
+      --  calls a potentially nonreturning subprogram. The latter is checked
+      --  using a call graph where vertexes are subprograms and edges
+      --  represents subprogram calls.
+      --  Always returns False if the subprogram has been annotated with the
+      --  Terminating annotation, which is also detected in phase 1 (see
+      --  GG_Register_Terminating).
       return Nonreturning_Subprograms.Contains (EN)
         or else Is_Recursive (EN)
         or else Calls_Potentially_Nonreturning_Subprogram;
    end Is_Potentially_Nonreturning;
+
+   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
+     (Is_Potentially_Nonreturning (To_Entity_Name (E)));
 
    ------------------
    -- Is_Recursive --
