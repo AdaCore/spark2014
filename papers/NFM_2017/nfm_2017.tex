@@ -94,31 +94,33 @@ programs and even more the cost of achieving proof of such specifications. We
 have chosen in \spark to rely on the techniques of auto-active verification for
 providing cost effective formal verification of functional properties. These
 techniques consist in providing annotations in the source code that will be
-used by automatic provers to complete the proof automatically. To demonstrate
+used by automatic provers to complete the proof. To demonstrate
 the feasibility of this approach, we have chosen to formally specify a library
 of red-black trees in \spark, and to prove its functionality using auto-active
 verification. To the best of our knowledge, this is the most advanced use of
 auto-active verification so far.
 
-\paragraph{Keywords}
-System formal development, Verification and validation,
-Certification and dependability
+%% \paragraph{Keywords}
+%% System formal development, Verification and validation,
+%% Certification and dependability
 
 \section{Introduction}
 
-\spark is a subset of the Ada programming language targeted at safety- and
-security-critical applications. \spark formal verification toolset allows to
-guarantee that a \spark program is free from broad classes of errors (like reads
-of uninitialized data and run-time errors) and that it complies with its
-specification. While the former is a well adopted practice among \spark users,
-the latter is used much more narrowly, owing to the cost of specifying the
-behavior of programs and even more the cost of achieving proof of such
-specifications. \spark relies on automatic provers to keep the cost of formal
-verification reasonable, and on the techniques of auto-active verification for
-interacting with automatic provers. In this paper, we present how we applied
-auto-active verification to formally verify a library of red-black trees. To
-the best of our knowledge, this is the most advanced use of auto-active
-verification so far.
+% implem available on github
+
+%% \spark is a subset of the Ada programming language targeted at safety- and
+%% security-critical applications. \spark formal verification toolset allows to
+%% guarantee that a \spark program is free from broad classes of errors (like reads
+%% of uninitialized data and run-time errors) and that it complies with its
+%% specification. While the former is a well adopted practice among \spark users,
+%% the latter is used much more narrowly, owing to the cost of specifying the
+%% behavior of programs and even more the cost of achieving proof of such
+%% specifications. \spark relies on automatic provers to keep the cost of formal
+%% verification reasonable, and on the techniques of auto-active verification for
+%% interacting with automatic provers. In this paper, we present how we applied
+%% auto-active verification to formally verify a library of red-black trees. To
+%% the best of our knowledge, this is the most advanced use of auto-active
+%% verification so far.
 
 \section{Preliminaries}
 \subsection{\spark 2014}
@@ -132,28 +134,28 @@ tools can perform an automatic diagnosis of conformance between a
 program specification and its implementation. The \spark language and
 toolset for formal verification has been applied over many years to
 on-board aircraft systems, control systems, cryptographic systems, and
-rail systems~\cite{sparkbook2012,oneill2012}.
+rail systems~\cite{oneill2012}.
 
 In the versions of \spark up to \spark 2005, specifications are written as
-special annotations in comments. Since version \spark 2014~\cite{sparkERTS2014},
+special annotations in comments. Since version \spark 2014~\cite{mccormick15},
 specifications are written as special Ada constructs attached to
 declarations. In particular, various contracts can be attached to subprograms:
-data flow contracts (introduced by \texttt{global}), information flow
-contracts, and functional contracts (preconditions and postconditions,
-introduced respectively by \texttt{pre} and \texttt{post}). An important
-difference between \spark 2005 and \spark 2014 is that functional contracts are
-executable in \spark 2014, which greatly facilitates the combination between
-test and proof. The definition of the language subset is motivated by the
-simplicity and feasibility of formal analysis and the need for an unambiguous
-semantics. Tools are available that provide flow analysis and proof of \spark
-programs.
+data flow contracts, information flow contracts, and functional contracts
+(preconditions and postconditions, introduced respectively by \texttt{Pre} and
+\texttt{Post}). An important difference between \spark 2005 and \spark 2014 is
+that functional contracts are executable in \spark 2014, which greatly
+facilitates the combination between test and proof. The definition of the
+language subset is motivated by the simplicity and feasibility of formal
+analysis and the need for an unambiguous semantics. Tools are available that
+provide flow analysis and proof of \spark programs.
 
 Flow analysis checks correct access to data in the program: correct access to
 global variables (as specified in data and information flow contracts) and
 correct access to initialized data. Proof is used to demonstrate that the
 program is free from run-time errors such as arithmetic overflow, buffer
 overflow and division-by-zero, and that the functional contracts are correctly
-implemented.
+implemented. \gnatprove is the tool implementing both flow analysis and proof
+of SPARK code.
 
 \subsection{Auto-active Verification}
 \label{sec-prelim-auto-active}
@@ -169,7 +171,8 @@ in contrast to fully automatic verifiers for which \textit{the specification is
 the academic formal program verification toolsets Dafny~\cite{Leino2010Dafny},
 the Eiffel Verification Environment (EVE)~\cite{Furia2016},
 Why3~\cite{filliatre2013Why3} as well as the industrial formal program
-verification toolsets Frama-C and \spark.
+verification toolsets Frama-C~\footnote{\url{http://frama-c.com/}} and
+\spark~\footnote{\url{http://www.adacore.com/sparkpro/}}.
 
 In all these toolsets, auto-active verification consists in a set of
 specification features at the level of the source language, and a set of tool
@@ -177,16 +180,16 @@ capabilities to interact with users at the level of the source code. The
 specification features consist at least in constructs to specify function
 contracts (preconditions and postconditions) and data invariants, as well as
 specialized forms of assertions (loop invariants and loop variants, assumptions
-and assertions). All the toolsets mentioned above also support a feature to
+and assertions). All the toolsets mentioned above also support features to
 instrument code for verification, usually referred to as ghost code. Ghost
-functions may be referred to as lemmas when they are used to prove a property
-that is used at the point where the function is called. See
-\cite{kosmatov:hal-01344110} for a comparison of how ghost code differs between
-Why3, Frama-C and \spark. Various tool capabilities facilitate user interaction
-at source level: fast running time that exploits multiprocessor architectures
-and minimizes rework between runs, ability to trade running time for more
-verification power, feedback from the toolset when verification is unsuccessful
-(counterexamples in particular).
+functions are also called lemmas when their main purpose is to support the
+proof of a property, that is later used at the point where the function is
+called. See \cite{kosmatov:hal-01344110} for a comparison of how ghost code
+differs between Why3, Frama-C and \spark. Various tool capabilities facilitate
+user interaction at source level: fast running time that exploits
+multiprocessor architectures and minimizes rework between runs, ability to
+trade running time for more verification power, feedback from the toolset when
+verification is unsuccessful (counterexamples in particular).
 
 Auto-active verification in the above toolsets has been used to fully verify
 algorithms, libraries and even complete applications: examples include a
@@ -200,24 +203,25 @@ allocators in \spark~\cite{Dross2016}.
 
 Red-black trees are a kind of self-balancing binary search trees. Nodes in the
 tree are colored red or black, and balance is maintained by ensuring that two
-properties are preserved: (1) a red node can only have black children, and (2)
-every path from the root to a leaf has the same number of black nodes. The
+properties are preserved: (1)~a red node can only have black children, and
+(2)~every path from the root to a leaf has the same number of black nodes. The
 consequence of these two properties is that the path from the root to a leaf
 can be at most twice as long as the path from the root to another leaf.
 
 Implementations of red-black trees are used in the Linux kernel (in C) and
 standard container libraries for various languages (C++ STL, Java.util,
 Ada). The insertion and deletion algorithms work by inserting or deleting the
-node as in a binary search tree, which may violate properties (1) and (2)
+node as in a binary search tree, which may violate properties~(1) and~(2)
 above, and then restore the balance by working their way up on the path from
 the root to the point of insertion or deletion. At every node on this path, the
 algorithms may \emph{rotate} the subtree, which consists in a local
-rearrangement of nodes to restore properties (1) and (2). These algorithms are
+rearrangement of nodes to restore properties~(1) and~(2). These algorithms are
 sufficiently complex that no implementation of imperative red-black trees has
-been fully verified. See Section~\ref{related-work} for a list of the closest
-works, including some using auto-active verification. We are following the
-algorithm from Cormen et al.~\cite{Cormen2009} for insertion in a red-black
-tree. We did not implement the deletion algorithm.
+been fully formally verified in Dafny, Eiffel or Why3. See
+Section~\ref{related-work} for a list of the closest works, including some
+using auto-active verification. We are following the algorithm from Cormen et
+al.~\cite{Cormen2009} for insertion in a red-black tree. We did not implement
+the deletion algorithm, which would be very similar to insertion.
 
 \section{Red-Black Trees in \spark}
 \subsection{Invariants and Models}
@@ -239,130 +243,141 @@ tree. We did not implement the deletion algorithm.
 %  ex: provide a model of reachability
 % primitives needed by upper levels provided at lower level were they abide by the invariant
 
-Though they are relatively complex data structures, implementing red black trees
-correctly is not a challenge as numerous implementations and descriptions of the
-algorithm are readily available. However, the algorithm is already complicated
-enough for full static verification to require re-designing the
-software from the start with proof in mind.
-To this aim, we have divided our implementation of red black trees in three
-distinct parts, each concerned only with parts of the data structure properties.
+Implementing red black trees correctly from the algorithm is straightforward,
+but this implementation is hard to verified formally, as it forces one to
+reason about different levels of properties all at once. Instead, we have
+divided the implementation into three distinct parts, each one concerned with
+one level of properties: binary trees, search trees and red-black trees. Binary
+trees maintain a tree structure on the underlying memory. Search trees build on
+binary trees by associating values to tree nodes and maintain the order of
+values in the tree. Red-black trees build on search trees and enforce balancing
+using the classical red-black tree coloring mechanism.
 
-The first part defines binary trees. It is only concerned with properties
-relative to the tree structure of the underlying memory.
-The second part associates values to nodes of binary trees to define search trees.
-It is concerned with order of values in the tree.
-The third part enforces balancing using the classical red black tree coloring
-mechanism.
+The property enforced at each level is expressed in a type invariant. In SPARK,
+the invariant may be temporarily violated inside the implementation of the
+functions that operate on the type, but are guaranteed to hold for external
+users of objects of that type. More precisely, external functions that operate
+on a type can assume the invariant on entry and must restore it on exit (which
+leads to verification conditions in SPARK).
+%%  while internal functions need not
+%% assume nor restore the invariant. The invariant must also be restored for any
+%% parameter or global variable that is an input of a possibly reentrant call
+%% (which also leads to verification conditions in SPARK). At each level, the type
+%% invariant supports the proof of postconditions for functions that operate on
+%% the type.
 
-At each level, the separation of concerns is ensured by the use of type invariants.
-As defined by Ada 2012 standard, type invariants are boolean properties associated
-with private types which can be temporarily violated in the private functions of the
-type but must always hold outside of private scope of the type.
-More precisely, the property that should be ensured at each level (tree structure,
-order of values, or balancing) is enforced at the boundary of every function
-of this level and then assumed in upper levels.
-
-For example, let us look at the invariant of binary trees. Binary trees are
-encoded using an imperative data structure as represented in Figure~\ref{fig-binary}.
-Each node contains a reference to is right and left child if any as well as a
-reference to its parent and a position, which may be Top, for the root, or
-Right or Left depending on their position with respect to their parent.
+As explained in Section~\ref{sec-implementation}, binary trees are encoded
+inside arrays, using the representation described in Figure~\ref{fig-binary}.
+Each node contains a reference to its left and right children, if any, as well
+as a reference to its parent and a position, which may be Top for the root,
+Right or Left otherwise depending on the node position with respect to its
+parent. The invariant of binary trees states that values of these fields are
+consistent across the tree. For example, the left child of a node has position
+Left and the node as parent.
 
 \begin{figure}[ht]
 \begin{center}
+%\hrulefill
 \includegraphics[width=4cm]{tree_structure.pdf}\hfill
 \includegraphics[width=5cm]{binary_1.pdf}\hfill
 \includegraphics[width=2cm]{binary_2.pdf}
-\caption{\label{fig-binary} From left to right: Representation of nodes in binary trees.
+\caption{(from left to right) Representation of nodes in binary trees.
 Example of a binary tree, for readability, parents and positions are not represented.
-The binary tree represented in previous figure.}
+The binary tree represented in the previous figure.}
+%\hrulefill
+%\vspace*{-10mm}
+\label{fig-binary}
 \end{center}
 \end{figure}
 
-The invariant of binary trees is given in Figure~\ref{fig-binary-inv}.
-As can be seen, it is only concerned with low level sanity of the
-tree representation.
+%% \begin{figure}[ht]
+%% \begin{small}
+%% \begin{lstlisting}
+%% -- If a cell is the root of a tree (position Top) it has no parent
+%% (for all I in Index_Type =>
+%%    (if Position (I) = Top then Parent (I) = Empty))
 
-\begin{figure}[ht]
-\begin{small}
-\begin{lstlisting}
--- If a cell is the root of a tree (position Top) it has no parent
-(for all I in Index_Type =>
-   (if Position (I) = Top then Parent (I) = Empty))
+%% -- If a cell I has a left child, then its left child has position
+%% -- Left and parent I.
+%% and then (for all I in Index_Type =>
+%%            (if Left (I) /= Empty then
+%%               Position (Left (I)) = Left and Parent (Left (I)) = I))
 
--- If a cell I has a left child, then its left child has position
--- Left and parent I.
-and then (for all I in Index_Type =>
-           (if Left (I) /= Empty then
-              Position (Left (I)) = Left and Parent (Left (I)) = I))
+%% -- If a cell I has a right child, then its right child has position
+%% -- Right and parent I.
+%% and then (for all I in Index_Type =>
+%%            (if Right (I) /= Empty then
+%%              Position (Right (I)) = Right and Parent (Right (I)) = I))
 
--- If a cell I has a right child, then its right child has position
--- Right and parent I.
-and then (for all I in Index_Type =>
-           (if Right (I) /= Empty then
-             Position (Right (I)) = Right and Parent (Right (I)) = I))
-
--- If a cell is a child (position Left or Right), then it is the
--- child of its parent.
-and then (for all I in Index_Type =>
-           (if Position (I) = Left then Left (Parent (I)) = I))
-and then (for all I in Index_Type =>
-           (if Position (I) = Right then Right (Parent (I)) = I))
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-binary-inv} Type invariant of binary trees.}
-\end{figure}
+%% -- If a cell is a child (position Left or Right), then it is the
+%% -- child of its parent.
+%% and then (for all I in Index_Type =>
+%%            (if Position (I) = Left then Left (Parent (I)) = I))
+%% and then (for all I in Index_Type =>
+%%            (if Position (I) = Right then Right (Parent (I)) = I))
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-binary-inv} Type invariant of binary trees.}
+%% \end{figure}
 % Do we want to write Position (F, I) instead of Position (I)?
 
-To enforce division of concerns, we want properties deriving from lower levels to
-be readily available in upper levels, without having to re-verify them. To be
-able to easily express complex properties on the data structure, we
-introduce model functions. These functions rely on the private invariant of the type
-to construct a high level view of the data structure that can then be used to express
-complex properties over the structure.
+While the invariant on binary trees is concerned with the low-level details of
+the tree structure representation, the model of binary trees explicits
+\emph{access paths} from the root to every node in the tree. Contrary to the invariant,
+the model needs to be visible outside of the implementation of binary trees, in
+order to express more complex properties. It associates a sequence of
+directions, namely Right or Left, to each node in the binary tree,
+corresponding to the path from the root to the node. As the underlying array
+also contains unused cells that do not correspond to tree nodes, an additional
+boolean encodes whether the node belongs to the
+tree. Figure~\ref{fig-binary-mod-ex} gives the model of the binary tree
+presented in Figure~\ref{fig-binary}. In this example, all the nodes belong to
+the tree except the last one. The access paths written below each node can be used to
+reconstruct easily the high level view of the tree.
 
-As an example, reachability in the tree structure is a complex property, that is
-crucial to reason about search trees. Reachability is difficult to tackle for \spark
-as it is an inductive porperty, and therefore requires inductive proofs. To factor out
-this complexity at the binary tree level, we introduce
-a model of binary trees allowing to reason easily about branches in the tree, see
-Figure~\ref{fig-binary-mod}.
+We define a function \texttt{Model} that
+returns the model of a binary tree. This function has a rich postcondition that
+uniquely defines the model. For example, the access path for a node is
+computed from the access path for its parent. Proof of the function \texttt{Model}
+relies on the invariant over binary trees. Its definition
+is then available for users of binary trees who can call function
+\texttt{Model} to express complex properties over the structure.
 
-\begin{figure}[ht]
-\begin{small}
-\begin{lstlisting}
-type Position_Type is (Left, Right, Top);
-subtype Direction is Position_Type range Left .. Right;
+%% As an example, reachability in the tree structure is a complex property, that is
+%% crucial to reason about search trees. Reachability is difficult to tackle for \spark
+%% as it is an inductive porperty, and therefore requires inductive proofs. To factor out
+%% this complexity at the binary tree level, we introduce
+%% a model of binary trees allowing to reason easily about branches in the tree, see
+%% Figure~\ref{fig-binary-mod}.
 
-package D_Seq is new Conts.Functional.Sequences
-  (Positive_Count_Type, Direction);
-use D_Seq;
---  Sequence of directions modelling a path from the root of the tree
---  to a node in the tree.
+%% \begin{figure}[ht]
+%% \begin{small}
+%% \begin{lstlisting}
+%% type Position_Type is (Left, Right, Top);
+%% subtype Direction is Position_Type range Left .. Right;
 
-type Path_Type is record
-   A : Sequence;
-   K : Boolean := False;
-end record
-with Predicate => Length (A) <= Max;
---  Type used to model the path from the root of a tree to a given,
---  node which may or not be in the tree:
---    - if a node is in the tree, the corresponding path will have K =
---      True, and A will denote the path from the root to this node.
---    - if a node is not in the tree, the corresponding path will have
---      K = False and A will be empty.
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-binary-mod} Model of branches in a binary tree.}
-\end{figure}
+%% package D_Seq is new Conts.Functional.Sequences
+%%   (Positive_Count_Type, Direction);
+%% use D_Seq;
+%% --  Sequence of directions modelling a path from the root of the tree
+%% --  to a node in the tree.
 
-The model of a binary tree associates a sequence of directions, namely
-Right or Left, to each node in the binary tree. An additional boolean encodes
-whether the node is reachable from the root. Figure~\ref{fig-binary-mod-ex} gives
-the model of the binary tree presented in Figure~\ref{fig-binary}. In this
-example, all the nodes are reachable from the root except the last one. The
-paths written below each node can be used to reconstruct easily the high level
-view of the tree.
+%% type Path_Type is record
+%%    A : Sequence;
+%%    K : Boolean := False;
+%% end record
+%% with Predicate => Length (A) <= Max;
+%% --  Type used to model the path from the root of a tree to a given,
+%% --  node which may or not be in the tree:
+%% --    - if a node is in the tree, the corresponding path will have K =
+%% --      True, and A will denote the path from the root to this node.
+%% --    - if a node is not in the tree, the corresponding path will have
+%% --      K = False and A will be empty.
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-binary-mod} Model of branches in a binary tree.}
+%% \end{figure}
+
 
 \begin{figure}[ht]
 \begin{center}
@@ -371,14 +386,14 @@ view of the tree.
 \end{center}
 \end{figure}
 
-Only valid binary trees are associated a model, that is, the model function
-only works on trees for which the tree structure invariant holds. As a result,
-we cannot use this model function inside the implemenation of binary tree,
-for example to state in the invariant that all the nodes are reachable from the
-root (there is no memory leak). However, as type invariants always hold outside
-the data structures implementations, the path model can safely be used for any
-binary tree in the implementation of search trees. In particular, we use it
-in the invariant of search trees, which is given in Figure~\ref{fig-search}.
+%% Only valid binary trees are associated a model, that is, the model function
+%% only works on trees for which the tree structure invariant holds. As a result,
+%% we cannot use this model function inside the implemenation of binary tree,
+%% for example to state in the invariant that all the nodes are reachable from the
+%% root (there is no memory leak). However, as type invariants always hold outside
+%% the data structures implementations, the path model can safely be used for any
+%% binary tree in the implementation of search trees. In particular, we use it
+%% in the invariant of search trees, which is given in Figure~\ref{fig-search}.
 
 \begin{figure}[ht]
 \hspace{-2mm}
@@ -409,23 +424,29 @@ in the invariant of search trees, which is given in Figure~\ref{fig-search}.
 The invariant of search trees states that the value stored in each node of the
 tree is bigger than all the values stored in the subtree rooted at its left
 child and smaller than all the values stored in the subtree rooted at its right
-child. An example of values that would fit the tree from Figure~\ref{fig-binary}
-is given in Figure~\ref{fig-search}. To express this invariant, we use the
-model of the underlying binary tree. A value V is stored in the subtree rooted
-at the right child of a node if the path leading to this value is a super sequence
-of the path leading to V and the next element in the sequence is Right.
+child. It is given in Figure~\ref{fig-search}. An example of values that would
+fit the tree from Figure~\ref{fig-binary} is also given in
+Figure~\ref{fig-search}. To express this invariant, we use the model of the
+underlying binary tree. The value stored at node J belonging to the subtree
+rooted at node I (where path inclusion from the root is used to determine that
+J belongs to the subtree rooted at node I) is smaller (resp. greater) than the
+value stored at node I if J belongs to the subtree rooted at the left
+(resp. right) child of I.
 
-Finally, the last level of our tree implementation is concerned with balancanceness.
-As explained in Section~\ref{sec-prelim-rbt}, each node is colored either black or red
-and invariants are maintained to ensure that the longest branch in the tree is at most
-twice as long as the shortest branch. Figure~\ref{fig-rbt} demonstrates a coloring of
-the tree from Figure~\ref{fig-search}.
+The invariant of red-black trees states that a red node can only have black
+children. It is given in Figure~\ref{fig-rbt}. An example of colors that would
+fit the tree from Figure~\ref{fig-search} is also given in
+Figure~\ref{fig-rbt}.  This corresponds to property~(1) of red-black trees as
+presented in Section~\ref{sec-prelim-rbt}. Verifying property~(2) would require
+implementing a new inductive model function over binary trees, like the one we
+defined for reachability. As it would be very similar to the work presented
+here, and would essentially double the effort, we did not attempt it.
 
-In our implemenation, we have only verified the simplest part of the red black tree invariant,
-that is, that a red node can only have black children. It is given in Figure~\ref{fig-rbt}.
-The verifying the other part, that is, that each branch contains the same number of black
-nodes, would require implementing a new inductive model function, like the one we defined for
-reachability. It is doable, but we did not think it was worthwhile for this demonstration.
+%% Finally, the last level of our tree implementation is concerned with balancanceness.
+%% As explained in Section~\ref{sec-prelim-rbt}, each node is colored either black or red
+%% and invariants are maintained to ensure that the longest branch in the tree is at most
+%% twice as long as the shortest branch. Figure~\ref{fig-rbt} demonstrates a coloring of
+%% the tree from Figure~\ref{fig-search}.
 
 \begin{figure}[ht]
 \begin{minipage}[c]{.77\linewidth}
@@ -447,6 +468,7 @@ reachability. It is doable, but we did not think it was worthwhile for this demo
 \end{figure}
 
 \subsection{Implementation}
+\label{sec-implementation}
 % no pointer in spark => indexes inside an array
 % avoid copies, use forest
 % it is bounded
@@ -454,46 +476,74 @@ reachability. It is doable, but we did not think it was worthwhile for this demo
 % provide plug/extract to modify the forest while keeping the invariant
 % rotate_left and rotate_right preserve the order
 
-From a software verification perspective, it may seem strange to present the implementation
-before the specification. Here we do so because the implementation is comparatively
-simpler and more widely known than the specification. And indeed, our implementation
-resemble standard imperative implementations of red black trees except for two notable
-points. The first one is that we had to comply with the restrictions imposed by the
-\spark language, most notably, the forbidding of pointers (access types in Ada). To
-alleviate this restriction, we chose to implement binary trees inside an array, indexes
-working as pointers in a memory region. To simplify our implementation, we do not consider
-node deallocation, so that unallocated cells are located after a given index in the array.
-The Ada type of binary trees is given in Figure~\ref{fig-binary-typ}.
-Note that our trees are bounded by the size of the underlying array.
+Our implementation of red-black trees differs on two accounts from the
+straighforward implementation of the algorithm. First, we used an array as the
+underlying memory for trees, instead of dynamically allocating nodes. This is
+to comply with a restriction of SPARK which does not allow pointers, but only
+references and addresses. The rationale for this restriction is that pointers
+make automatic proof very difficult due to possible aliasing. Hence trees are
+bounded by the size of the underlying array. As the algorithm for balancing
+red-black trees requires splitting and merging trees, we had the choice of
+either copying arrays for generating new trees, or to share the same array
+between disjoint trees (coming from the splitting of a unique tree). For
+obvious efficiency reasons, we chose the latter. Hence we are defining a type
+\texttt{Forest} for possibly representing disjoint binary trees sharing the
+same underlying array.
 
-\begin{figure}[ht]
-\begin{small}
-\begin{lstlisting}
-type Cell is record
-   Left, Right, Parent : Extended_Index_Type := Empty;
-   Position            : Position_Type := Top;
-end record;
-type Cell_Array is array (Index_Type) of Cell;
+%% Note that we are dealing everywhere with forests of binary trees instead of a single
+%% binary tree. This is because, as we are using arrays instead of pointers, we cannot divide a
+%% tree object into separate objects without copying the array around. To keep an efficient
+%% implementation, we resorted to processing the memory region as a whole, therefore
+%% introducing forests of trees, in which every allocated node with a \texttt{Top} position is a
+%% valid root.
 
-type Forest is record
-   S : Extended_Index_Type := Empty;
-   C : Cell_Array;
-end record
-  with Type_Invariant => Tree_Structure (Forest);
---  Component S gives the size of the forest. Only the cells up to
---  index S belong to the forest. Cells after index S are free.
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-binary-typ} Implementation of binary trees.}
-\end{figure}
+%% From a software verification perspective, it may seem strange to present the implementation
+%% before the specification. Here we do so because the implementation is comparatively
+%% simpler and more widely known than the specification. And indeed, our implementation
+%% resemble standard imperative implementations of red black trees except for two notable
+%% points. The first one is that we had to comply with the restrictions imposed by the
+%% \spark language, most notably, the forbidding of pointers (access types in Ada). To
+%% alleviate this restriction, we chose to implement binary trees inside an array, indexes
+%% working as pointers in a memory region. To simplify our implementation, we do not consider
+%% node deallocation, so that unallocated cells are located after a given index in the array.
+%% The Ada type of binary trees is given in Figure~\ref{fig-binary-typ}.
+%% Note that our trees are bounded by the size of the underlying array.
 
-The other specificity of our implementation is of course the layered design. Since we
-have chosen to associate a type invariant to binary trees, the \texttt{Forest} type is defined as
-a private type and it can only be modified by users using functions which abide by the
-invariant. Therefore, we cannot change the values of the \texttt{Cell} record components individually
-from outside of binary trees implementation. We have resorted to defining functions
-doing single modifications of the tree while preserving the invariant. The modification
-functions provided for binary trees are given in Figure~\ref{fig-binary-fun}.
+%% \begin{figure}[ht]
+%% \begin{small}
+%% \begin{lstlisting}
+%% type Cell is record
+%%    Left, Right, Parent : Extended_Index_Type := Empty;
+%%    Position            : Position_Type := Top;
+%% end record;
+%% type Cell_Array is array (Index_Type) of Cell;
+
+%% type Forest is record
+%%    S : Extended_Index_Type := Empty;
+%%    C : Cell_Array;
+%% end record
+%%   with Type_Invariant => Tree_Structure (Forest);
+%% --  Component S gives the size of the forest. Only the cells up to
+%% --  index S belong to the forest. Cells after index S are free.
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-binary-typ} Implementation of binary trees.}
+%% \end{figure}
+
+%% The other specificity of our implementation is of course the layered design. Since we
+%% have chosen to associate a type invariant to binary trees, the \texttt{Forest} type is defined as
+%% a private type and it can only be modified by users using functions which abide by the
+%% invariant. Therefore, we cannot change the values of the \texttt{Cell} record components individually
+%% from outside of binary trees implementation. We have resorted to defining functions
+%% doing single modifications of the tree while preserving the invariant. The modification
+%% functions provided for binary trees are given in Figure~\ref{fig-binary-fun}.
+
+The other specificity of our implementation is the layered design. Each module
+defining a type with an invariant also needs to provide functions for
+manipulating objects of the type while preserving their invariant. In the case
+of type \texttt{Forest} for binary trees, functions \texttt{Extract} and
+\texttt{Plug} whose signatures are given in Figure~\ref{fig-binary-fun} split
+and merge disjoint trees.
 
 \begin{figure}[ht]
 \begin{minipage}[c]{.75\linewidth}
@@ -524,75 +574,73 @@ procedure Plug (F    : in out Forest;
 \caption{\label{fig-binary-fun} Functions on binary trees.}
 \end{figure}
 
-Note that we are dealing everywhere with forests of binary trees instead of a single
-binary tree. This is because, as we are using arrays instead of pointers, we cannot divide a
-tree object into separate objects without copying the array around. To keep an efficient
-implementation, we resorted to processing the memory region as a whole, therefore
-introducing forests of trees, in which every allocated node with a \texttt{Top} position is a
-valid root.
+%% As type invariants can be temporarily broken inside the data structure implementation, the body
+%% of the modification functions can directly modify the internal structure of the tree. The implementation
+%% of \texttt{Plug} is presented in Figure~\ref{fig-binary-body}.
 
-As type invariants can be temporarily broken inside the data structure implementation, the body
-of the modification functions can directly modify the internal structure of the tree. The implementation
-of \texttt{Plug} is presented in Figure~\ref{fig-binary-body}.
+%% \begin{figure}[ht]
+%% \begin{small}
+%% \begin{lstlisting}
+%% procedure Plug (F    : in out Forest;
+%%                 R, I : Index_Type;
+%%                 D    : Direction;
+%%                 V    : Extended_Index_Type) is
+%% begin
+%%    if V /= Empty then
+%%       if D = Left then
+%%          F.C (I).Left := V;
+%%       else
+%%          F.C (I).Right := V;
+%%       end if;
 
-\begin{figure}[ht]
-\begin{small}
-\begin{lstlisting}
-procedure Plug (F    : in out Forest;
-                R, I : Index_Type;
-                D    : Direction;
-                V    : Extended_Index_Type) is
-begin
-   if V /= Empty then
-      if D = Left then
-         F.C (I).Left := V;
-      else
-         F.C (I).Right := V;
-      end if;
+%%       F.C (V).Position := D;
+%%       F.C (V).Parent := I;
+%%    end if;
+%% end Plug;
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-binary-body} Implementation of \texttt{Plug}.}
+%% \end{figure}
 
-      F.C (V).Position := D;
-      F.C (V).Parent := I;
-   end if;
-end Plug;
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-binary-body} Implementation of \texttt{Plug}.}
-\end{figure}
+At the next layer, search trees are defined as binary trees along with an
+additional array of values. As we only need to consider complete search trees,
+the underlying forest needs to only hold one tree, which is identified through
+its root. The module defining search trees provides basic set functions, namely
+inserting a value into the tree and testing a value for membership into the
+tree. It also provides balancing functions for the upper later of red-black
+trees. They allow to rotate nodes of a search tree to the left or to the right
+while preserving the order between values. An example of such a rotation is
+given in Figure~\ref{fig-search-rot}.  Defining these balancing functions
+inside the implementation of search trees rather than inside the implementation
+of red-black trees allow to keep all order-related concerns in the search tree
+layer. Indeed, balancing functions do not preserve balance, as they are to be
+called on unbalanced trees, but they do preserve order. Note that implementing
+the balancing functions at this level avoids the need for lifting low-level
+tree handling functions such as \texttt{Plug} and \texttt{Extract} at the next
+layer. All the functions defined on search trees are implemented using
+functions over binary trees.
 
-Following our leveled approach, search trees are defined outside of binary tree implementation.
-They are binary trees along with an additional array of values. Also, as we never need to consider
-parts of search trees, we no longer work on complete forests but rather on a single tree. More
-precisely, we store a single root index in the search tree data structure.
-The Ada type of search trees is given in Figure~\ref{fig-search-typ}.
+%% Following our leveled approach, search trees are defined outside of binary tree implementation.
+%% They are binary trees along with an additional array of values. Also, as we never need to consider
+%% parts of search trees, we no longer work on complete forests but rather on a single tree. More
+%% precisely, we store a single root index in the search tree data structure.
+%% The Ada type of search trees is given in Figure~\ref{fig-search-typ}.
 
-\begin{figure}[ht]
-\begin{small}
-\begin{lstlisting}
-type Value_Array is array (Index_Type) of Natural;
+%% \begin{figure}[ht]
+%% \begin{small}
+%% \begin{lstlisting}
+%% type Value_Array is array (Index_Type) of Natural;
 
-type Search_Tree is record
-   Root   : Extended_Index_Type := Empty;
-   Struct : Forest;
-   Values : Value_Array := (others => 0);
-end record
-  with Type_Invariant => ...;
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-search-typ} Implementation of search trees.}
-\end{figure}
-
-The functions provided on search trees are basic set functions, namely inserting a value into the tree
-and testing a value for membership into the tree. To allow implementation of red black trees above
-search trees, balancing functions are also provided. They allow to rotate nodes of a search tree to the
-left or to the right while preserving the value order. An example of such a rotation is given in
-Figure~\ref{fig-search-rot}.
-Defining these balancing functions inside the implementation of
-search trees rather than inside the implementation of red black tree allow to keep all order-related
-concerns in the search tree layer. Indeed, balancing functions do not preserve balancing, as they
-are to be called on unbalanced trees, but they do preserve order. Note that implementing the balancing
-functions at this level avoids the need for lifting low level tree handling functions such as \texttt{Plug} and
-\texttt{Extract}. All the functions defined on search trees are implemented using
-functions over binary forests.
+%% type Search_Tree is record
+%%    Root   : Extended_Index_Type := Empty;
+%%    Struct : Forest;
+%%    Values : Value_Array := (others => 0);
+%% end record
+%%   with Type_Invariant => ...;
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-search-typ} Implementation of search trees.}
+%% \end{figure}
 
 \begin{figure}[ht]
 \begin{center}
@@ -601,8 +649,9 @@ functions over binary forests.
 \end{center}
 \end{figure}
 
-Red black trees are implemented in the same way as search trees by adding an array of
-colors to a search tree and using balancing functions to rebalance the tree after an insertion.
+Red-black trees are implemented in the same way as search trees by adding an
+array of colors to a search tree and using balancing functions to rebalance the
+tree after an insertion.
 
 \subsection{Specification}
 % use parent/position and model
@@ -611,13 +660,18 @@ colors to a search tree and using balancing functions to rebalance the tree afte
 % - of binary trees: we never have ill formed cyclic trees
 % - of search trees: all cells remain accessible from the root
 
-In this example, we concentrate on functional requirements of two kinds. The most important one is the
-preservation of the data structure invariants. As a proof of concept, we have also considered
-function specific requirements, describing the effect of the insertion and membership functions with
-respect to the set of values contained in the red black tree. The function specific requirements are the
-simplest. They are expressed as contracts on the tree functions. The set of values contains in a red black
-tree is accessed using a specific model function named \texttt{Values} defined at the search tree level.
-These contracts are presented in Figure~\ref{fig-rbt-spec}.
+Specifications on the insertion and membership functions that operate on
+red-black trees consist in simple contracts (preconditions and postconditions)
+presented in Figure~\ref{fig-rbt-spec}. These contracts use function
+\texttt{Values} that returns the set of values in the tree.
+
+%% In this example, we concentrate on functional requirements of two kinds. The most important one is the
+%% preservation of the data structure invariants. As a proof of concept, we have also considered
+%% function specific requirements, describing the effect of the insertion and membership functions with
+%% respect to the set of values contained in the red black tree. The function specific requirements are the
+%% simplest. They are expressed as contracts on the tree functions. The set of values contains in a red black
+%% tree is accessed using a specific model function named \texttt{Values} defined at the search tree level.
+%% These contracts are presented in Figure~\ref{fig-rbt-spec}.
 
 \begin{figure}[ht]
 \begin{small}
@@ -637,32 +691,37 @@ procedure Insert (T : in out Rbt; V : Natural) with
 \caption{\label{fig-rbt-spec} Specification of red black trees.}
 \end{figure}
 
-Let us now consider the requirements dealing with data structure invariants. We divide them in four parts:
-
+We must separately specify four properties over red-black trees:
 \begin{enumerate}
- \item A red black tree is always a valid binary tree (we can navigate it from the root in the expected way).
- \item There is no memory leak (if we have inserted less than \texttt{Max} elements, there is still room
- enough in the data structure to insert a new element).
+ \item A red-black tree is always a valid binary tree (we can navigate it from
+   the root in the expected way).
+ \item There is no memory leak (if we have inserted less than \texttt{Max}
+   elements, there is still room enough in the data structure to insert a new
+   element).
  \item The values stored in the tree are ordered (it is a valid search tree).
- \item The tree stays balanced (we only verify part of it, that is, that red nodes can only have black children).
+ \item The tree stays balanced (we only verify part of it, that is, that red
+   nodes can only have black children).
 \end{enumerate}
 
-The specification of these invariants is not grouped in one point but rather separated between the various levels,
-so that every part is expressed at the place where it can be most naturally written. The first requirement is
-enforced at the binary tree level. The tree structure invariant (see Section~\ref{sec-rbt-inv}),
-ensures that the various cell components (Parent, Position, Left, and Right) are consistent. This is not enough
-to ensure that all the allocated nodes in the forest belong to well-formed binary trees though, as it does
-not rule out degenerated, root-less, cyclic structures that would arise from linking the root of a binary tree as the
-child of one of its leafs. Still, this is enough to ensure that red black trees are always well formed, as red black
-trees always have a root. Note that the fact that every node in the forest is part of
-a well formed binary tree is ensured at the level of binary trees by enforcing that such degenerated structures can
-never be created in the contracts of the data structure modification functions.
+As already discussed, each property is specified at the most appropriate layer.
+The first property is enforced at the level of binary trees. The invariant on
+binary trees (see Section~\ref{sec-rbt-inv}) ensures that the fields of a node
+(Parent, Position, Left, and Right) are consistent. This is not enough to
+ensure that all the allocated nodes in the forest belong to well-formed binary
+trees though, as it does not rule out degenerated, root-less, cyclic structures
+that would arise from linking the root of a binary tree as the child of one of
+its leafs. Still, this is enough to ensure that red-black trees are always well
+formed, as red black trees always have a root. Note that the fact that every
+node in the forest is part of a well formed binary tree is ensured at the level
+of binary trees by enforcing that such degenerated structures can never be
+created in the contracts of functions operating on binary trees.
 
-As a the level of binary trees we are dealing with forests, the second requirement is rather enforced at the level of
-search trees. It is specified as a postcondition of every modification function of the search tree level.
-Figure~\ref{fig-spec-no-leak} shows the part of the postcondition of \texttt{Right\_Rotate} ensuring that it hasn't introduced
-any dangling node. It uses the model function Model described in Section~\ref{sec-rbt-inv} to reason about reachability
-in the tree structure.
+The second property is enforced at the level of search trees. It is specified
+as a postcondition of every function operating on search trees.
+Figure~\ref{fig-spec-no-leak} shows the part of the postcondition of
+\texttt{Right\_Rotate} ensuring that it has not introduced any dangling
+node. It uses the function \texttt{Model} described in
+Section~\ref{sec-rbt-inv} to reason about node reachability.
 
 \begin{figure}[ht]
 \begin{small}
@@ -682,79 +741,85 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
 \caption{\label{fig-spec-no-leak} Postcondition of \texttt{Right\_Rotate} dealing with absence of memory leaks.}
 \end{figure}
 
-The third and fourth requirements are expressed in the type invariant of respectively search trees and red black trees
-as explained in Section~\ref{sec-rbt-inv}.
+The third and fourth properties are expressed in the type invariant of
+respectively search trees and red-black trees as explained in
+Section~\ref{sec-rbt-inv}.
 
-But the functional requirements are not the only part of the specification. Indeed, as \gnatprove works in a per
-subprogram modular basis, specification also has to convey enough information, at each level, to verify not only the
-requirements specified at this level, but also all the requirements specified at upper levels. For example, as
-\texttt{Right\_Rotate} calls \texttt{Plug} and \texttt{Extract}, the specification of these functions need to provide
-enough information to
-verify both the absence of memory leaks as stated in the postcondition of \texttt{Right\_Rotate}, but also the preservation of
-the order of values, as stated in search trees invariant. A part of the postcondition of \texttt{Plug} is given in
-Figure~\ref{fig-spec-binary}.
+Apart from these top-level specifications, many more specifications are needed
+on subprograms at lower layers (binary trees and search trees) in order to be
+able to prove the properties at higher layers (respectively search trees and
+red-black trees). This is inherent to the modular style of verification
+supported by \gnatprove. For example, as \texttt{Right\_Rotate} on search trees
+calls \texttt{Plug} and \texttt{Extract} on binary trees, the contracts for
+these functions need to provide enough information to verify both the absence
+of memory leaks as stated in the postcondition of \texttt{Right\_Rotate} and
+the preservation of the order of values as stated in the invariant of search
+trees.
 
-\begin{figure}
-\begin{small}
-\begin{lstlisting}
-procedure Plug (F    : in out Forest;
-                R, I : Index_Type;
-                D    : Direction;
-                V    : Extended_Index_Type)
-   --  Plug the tree rooted at V in F into the tree rooted at R as a
-   --  subtree starting at position D after I.
+%% A part of the postcondition of \texttt{Plug} is given in
+%% Figure~\ref{fig-spec-binary}.
 
-with
-  Pre  => ...,
-  Post =>
-    --  The size of the forest does not change
-    Size (F) = Size (F'Old)
+%% \begin{figure}
+%% \begin{small}
+%% \begin{lstlisting}
+%% procedure Plug (F    : in out Forest;
+%%                 R, I : Index_Type;
+%%                 D    : Direction;
+%%                 V    : Extended_Index_Type)
+%%    --  Plug the tree rooted at V in F into the tree rooted at R as a
+%%    --  subtree starting at position D after I.
 
-    --  V is inserted in the tree as child D of I
-    and (if D = Left then V = Left (F, I) else V = Right (F, I))
+%% with
+%%   Pre  => ...,
+%%   Post =>
+%%     --  The size of the forest does not change
+%%     Size (F) = Size (F'Old)
 
-    --  Except for V, the value of parent link is preserved
-    and (for all J in Index_Type =>
-          (if J /= V then Parent (F, J) = Parent (F'Old, J)))
+%%     --  V is inserted in the tree as child D of I
+%%     and (if D = Left then V = Left (F, I) else V = Right (F, I))
 
-    --  Except for V, the value of position is preserved for nodes which have
-    --  a parent.
-    and (for all J in Index_Type =>
-          (if J /= V then Position (F, J) = Position (F'Old, J)))
+%%     --  Except for V, the value of parent link is preserved
+%%     and (for all J in Index_Type =>
+%%           (if J /= V then Parent (F, J) = Parent (F'Old, J)))
 
-    --  Nodes in the tree rooted at R come either from the tree previously
-    --  rooted at R, or for those nodes which have V on their path, from
-    --  the tree previously rooted at V.
-    and (for all I in Index_Type =>
-          (if Model (F, R) (I).K then
-            (if V /= Empty and Model (F, R) (V).A <= Model (F, R) (I).A
-             then Model (F'Old, V) (I).K
-             else Model (F'Old, R) (I).K)))
+%%     --  Except for V, the value of position is preserved for nodes which have
+%%     --  a parent.
+%%     and (for all J in Index_Type =>
+%%           (if J /= V then Position (F, J) = Position (F'Old, J)))
 
-    --  Paths are preserved for nodes that were previously in the tree
-    and (for all J in Index_Type =>
-          (if Model (F'Old, R) (J).K
-           then Model (F, R) (J).A = Model (F'Old, R) (J).A))
+%%     --  Nodes in the tree rooted at R come either from the tree previously
+%%     --  rooted at R, or for those nodes which have V on their path, from
+%%     --  the tree previously rooted at V.
+%%     and (for all I in Index_Type =>
+%%           (if Model (F, R) (I).K then
+%%             (if V /= Empty and Model (F, R) (V).A <= Model (F, R) (I).A
+%%              then Model (F'Old, V) (I).K
+%%              else Model (F'Old, R) (I).K)))
 
-    --  The path for nodes in the tree previously rooted at V is obtained
-    --  by concatenating the path from R to V and the path from V to the
-    --  node.
-    and (for all J in Index_Type =>
-          (if V /= Empty and then Model (F'Old, V) (J).K
-           then Is_Concat (Left   => Model (F, R) (V).A,
-                           Right  => Model (F'Old, V) (J).A,
-                           Result => Model (F, R) (J).A)));
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-spec-binary} Contract of Plug.}
-\end{figure}
+%%     --  Paths are preserved for nodes that were previously in the tree
+%%     and (for all J in Index_Type =>
+%%           (if Model (F'Old, R) (J).K
+%%            then Model (F, R) (J).A = Model (F'Old, R) (J).A))
 
-The postcondition of \texttt{Plug} describes how it modifies the tree structure. Theoretically,
-describing how \texttt{Parent} and \texttt{Position} fields are updated by the call should be enough to
-describe the effect on the whole structure. Still, to avoid having to redo complex
-proofs each time \texttt{Plug} is call, we choose to also describe the effect of the modification
-of \texttt{Model}. This allows to clearly separate concerns and allow
-the implementation of search trees to only concentrate on order related issues.
+%%     --  The path for nodes in the tree previously rooted at V is obtained
+%%     --  by concatenating the path from R to V and the path from V to the
+%%     --  node.
+%%     and (for all J in Index_Type =>
+%%           (if V /= Empty and then Model (F'Old, V) (J).K
+%%            then Is_Concat (Left   => Model (F, R) (V).A,
+%%                            Right  => Model (F'Old, V) (J).A,
+%%                            Result => Model (F, R) (J).A)));
+%% \end{lstlisting}
+%% \end{small}
+%% \caption{\label{fig-spec-binary} Contract of Plug.}
+%% \end{figure}
+
+%% The postcondition of \texttt{Plug} describes how it modifies the tree structure. Theoretically,
+%% describing how \texttt{Parent} and \texttt{Position} fields are updated by the call should be enough to
+%% describe the effect on the whole structure. Still, to avoid having to redo complex
+%% proofs each time \texttt{Plug} is call, we choose to also describe the effect of the modification
+%% of \texttt{Model}. This allows to clearly separate concerns and allow
+%% the implementation of search trees to only concentrate on order related issues.
 
 \subsection{Proof Principles}
 % principle of inductive proofs on size of path
@@ -765,17 +830,18 @@ the implementation of search trees to only concentrate on order related issues.
 % order requires case split
 %   This is done using if statements
 
-Verifying our red black tree implementation has proved to be challenging, and above the
-purely automatic capacity of the \gnatprove tool. There are several reasons for this:
+Verifying our implementation of red-black trees has proved to be challenging,
+and above the purely automatic proving capabilities of \gnatprove. There
+are several reasons for this:
 
 \begin{itemize}
- \item The imperative, pointer based implementation of red black trees makes it difficult
+ \item The imperative, pointer-based implementation of red-black trees makes it difficult
  to reason about disjointness of different trees/subtrees in the forest.
  \item Reasoning about reachability in the tree structure involves inductive proofs, which
  automatic provers are notoriously bad at.
  \item Reasoning about value ordering involves using transitivity relations, that is, coming
  up with an intermediate value to consider, which usually eludes automatic provers.
- \item The size of the formulas to verified, number of verification conditions, and number of
+ \item The size of the formulas to verify, number of verification conditions, and number of
  paths in the program are important enough to defy provers scalability.
 \end{itemize}
 
@@ -786,12 +852,12 @@ resorting to a proof assistant. We explain some of these techniques in this sect
 \paragraph{Intermediate lemmas:}
 One of the most classical techniques in manual proof consists in factoring some useful
 part of a proof in an intermediate lemma so that it can be verified independently and
-use as many time as necessary. In auto-active verification, this can be done by introducing
+used as many time as necessary. In auto-active verification, this can be done by introducing
 a procedure with no output, which, when called, will cause the deductive engine to verify
 its precondition and assume its postcondition. In Figure~\ref{fig-proof-lem}, we show an
 intermediate lemma which can be used to verify that two trees of a single forest with different
 roots are disjoint. A caller of this function will have to verify that \texttt{T1} and \texttt{T2} are different
-valid root in \texttt{F} and get for free that there can be no node reachable from both roots in \texttt{F}.
+valid roots in \texttt{F} and it will get for free that there can be no node reachable from both roots in \texttt{F}.
 Naturally, the lemma is not assumed, its actual proof is done when verifying the procedure
 \texttt{Prove\_Model\_Distinct}.
 
@@ -800,7 +866,6 @@ Naturally, the lemma is not assumed, its actual proof is done when verifying the
 \begin{lstlisting}
 procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
 --  Trees rooted at different indexes in the forest are disjoint.
-
   Pre  => T1 /= T2
     and then Valid_Root (F, T1)
     and then Valid_Root (F, T2),
@@ -813,17 +878,15 @@ procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
 
 \paragraph{Reasoning by induction:}
 Though some automatic provers are able to discharge simple inductive proofs, inductive reasoning
-still most of the time requires manual interaction. In auto-active style, an inductive proof can be done
-using loop annotations named loop invariants. In \spark, loop invariants are normal assertions occurring in
-loop statements but which are handled in an inductive way by \gnatprove. Namely, the prover splits its
-verification in two parts. First, it verifies that the invariant holds in the first iteration of the
+still requires manual interaction in most cases. In auto-active style, an inductive proof can be done
+using loop invariants. \gnatprove splits the
+verification of a loop invariant in two parts. First, it verifies that the invariant holds in the first iteration of the
 loop and then that it holds in any following iteration knowing that it held in the previous one.
 This behavior is exactly what we want for a proof by induction. For example, Figure~\ref{fig-proof-ind}
 demonstrates how the intermediate lemma presented in Figure~\ref{fig-proof-lem} can be verified
-using a loop to perform an induction over the size of the path from the \texttt{T1} to any node reachable
+using a loop to perform an induction over the size of the path from the root \texttt{T1} to any node reachable
 from \texttt{T1} in \texttt{F}. The loop goes from 1 to the maximum size of any branch
-in the forest \texttt{F}. As an
-invariant, we have written the property we wanted to prove. To verify this procedure, \gnatprove will
+in the forest \texttt{F}. We have written the property we wanted to prove as a loop invariant. To verify this procedure, \gnatprove will
 first check that the invariant holds in the first iteration of the loop, that is, that \texttt{T1} itself cannot
 be reached from \texttt{T2}. Then, it will proceed by induction to show that this holds for any node reachable
 from \texttt{T1} in \texttt{F}.
@@ -859,12 +922,12 @@ When reasoning about value ordering, it is common to use transitivity. For examp
 a value in a search tree, we only compare the requested value with values stored along a single path in
 the tree, that is, the path were it was expected to be stored. All other values are ruled out by
 transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
-automatic solvers at the background of \gnatprove can have troubles with coming up with the appropriate
+automatic proves used in \gnatprove are usually unable to come up with the appropriate
 intermediate value to use in the transitivity relation. To achieve the proofs, we resorted to providing
-the solvers we the appropriate term whenever necessary. For example, the function \texttt{Find\_Root} in
+provers with the appropriate term whenever necessary. For example, function \texttt{Find\_Root} in
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
 the order invariant stated in Figure~\ref{fig-search} only compares values on a single path, this
-is the node to consider to be able to order values stored at arbitrary nodes.
+is the node to consider to be able to order values stored in arbitrary nodes.
 
 \begin{figure}
 \begin{minipage}[c]{\linewidth}
@@ -909,7 +972,7 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 \includegraphics[width=28mm]{transitivity.pdf}
 \end{center}
 \end{minipage}
-\caption{\label{fig-proof-wit} Function that computes a witness for transitivity applications}
+\caption{\label{fig-proof-wit} Function that computes a witness for transitivity applications.}
 \end{figure}
 
 \paragraph{Case analysis:}
@@ -918,10 +981,9 @@ problem in a sensible way. A proof by case analysis is nothing more than an if s
 narrowing the cases to consider and possibly providing additional informations on how to carry out
 the proof in this particular case. Figure~\ref{fig-proof-ca} shows how case analysis was used to
 prove how tree models are modified by an application of \texttt{Plug}. It is divided in two cases: either
-the node was already reachable from the actual root and then its model is unchanged, or it was reachable
-from the plugged root, in which case the path leading to it from the new root is the path leading to
-the plugged root in the new tree concatenated with the path leading from the plugged root to the node
-in the old tree.
+the node was already reachable from the root and then its model is unchanged, or it belonged to
+the subtree being plugged, in which case the path leading to it from the root consists in concatenating
+two subpaths.
 
 \begin{figure}
 \begin{small}
@@ -985,13 +1047,13 @@ end loop;
 \caption{\label{fig-proof-ca} Proof by case analysis of the effect of Plug on models.}
 \end{figure}
 
-Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure.
+Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure (\texttt{Preserve\_Equal} and \texttt{Preserve\_Concat}).
 Also note that, to be able to apply this reasoning on every node of the memory array, the case
 analysis had to be enclosed in a loop. As \gnatprove cannot accumulated knowledge without a loop
 invariant, we had to restate everything that was proved so far by the loop as a loop invariant.
-Also note that this reasoning is a part of a reasoning by induction over the size of the path
+Also note that this reasoning is a part of a reasoning by induction over the size \texttt{N} of the path
 leading to the node in the new tree, which is why we already know the proposition holds for the
-node's parent.
+parent of the current node.
 
 \subsection{Ghost Code}
 % different uses of ghost code
@@ -1019,15 +1081,15 @@ entities so that the contracts using them can be checked at runtime. In this spi
 can be used to produce complex test oracles that can be exercised in the test campaign.
 
 The second use of ghost code in our development is for auto-active verification. In particular, the procedures
-used to encode intermediate lemmas are ghost, as they have no effect. What is more, we have striven to
-keep all ineffective code inside ghost procedures so that it can be removed by the compiler and won't
+used to encode intermediate lemmas are ghost, as they have no effect. What is more, we strived to
+keep all ineffective code inside ghost procedures so that it can be removed by the compiler and will not
 slow down the execution of the program. It is all the more important since the code is really inefficient, involving
 multiple loops and model constructions. As functional behaviors are complex, coming up with contracts for
-these ghost procedure can be painful, and produce huge, hardly readable specification. To alleviate this
-problem, we can benefit from a feature of SPARK which in-lines local subprograms with no contracts, allowing
-the proof to go through with less annotation burden. In this way, we can choose, on a case by case basis, if
-it is worthwhile to turn a chunk of auto-active proof into an intermediate lemma by supplying a pre and
-postcondition, allowing for a modular verification, or if we prefer to have the tool automatically in-line the
+these ghost procedure can be painful, and produce huge, hard to read specifications. To alleviate this
+problem, we can benefit from a feature of \gnatprove which inlines local subprograms with no contracts, allowing
+the proof to go through with less annotation burden. In this way, we can choose, on a case-by-case basis, if
+it is worthwhile to turn a chunk of auto-active proof into an intermediate lemma with its own contract,
+allowing for a modular verification, or if we prefer to have the tool automatically inline the
 proof wherever we call the ghost procedure.
 
 Note that, though it makes sense to execute ghost code used for subprogram specification, there is no benefit in
@@ -1059,7 +1121,9 @@ search trees    & 127 (12\%) & 188 (17\%) & 780  (71\%) & 1095 \\
 red-black trees & 67  (52\%) & 18  (14\%) & 45   (35\%) & 130 \\ \hline
 total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 \end{tabular}
+\vspace*{5mm}
 \caption{\label{tab-sloc} Repartition of lines of code between operational code, contracts and ghost code.}
+\vspace*{-10mm}
 \end{center}
 \end{table}
 
@@ -1092,9 +1156,11 @@ search trees    & 2        & 138 (60)       & 20       & 68         & 228 \\
 red-black trees & 2        & 4 (4)          & 8        & 10         & 24 \\ \hline
 total           & 14       & 297 (177)      & 70       & 90         & 471
 \end{tabular}
+\vspace*{5mm}
 \caption{\label{tab-sloc2} Number of conjuncts in contracts on types, on
   subprograms, in loop invariants and in assertions. Numbers in parentheses
   correspond to conjuncts for contracts on external subprograms.}
+\vspace*{-10mm}
 \end{center}
 \end{table}
 
@@ -1132,42 +1198,43 @@ takes 20 minutes on Core i7 with 2,8 GHz and 16 Go RAM.
 
 \section{Related Work}
 \label{related-work}
-There have been several previous attempts at verifying red black trees implementations. In particular, red black trees are
+There have been several previous attempts at verifying red-black trees implementations. In particular, red-black trees are
 used in the implementation of ordered sets and maps in the standard library of the Coq proof
-assistant~\cite{filliatre2004functors,appel2011efficient}. As part of these library, the implementations have been proven
+assistant~\cite{appel2011efficient,filliatre2004functors}. As part of these libraries, the implementations have been proven
 correct using interactive proofs in Coq. These implementations notably differ from our work because they are written in
 a functional style, using recursive data types instead of pointers and recursive functions instead of loops. Similar
 libraries are provided for the Isabelle proof assistant~\cite{lammich2010isabelle}. Functional implementations of
-red black trees have also been verified outside proof assistant, using characteristic formulas~\cite{chargueraud2010program},
+red-black trees have also been verified outside of proof assistants, using characteristic formulas~\cite{chargueraud2010program},
 or in the Why3 programming language as part of VACID-0 competition~\cite{leino2010vacid}. This last implementation differs from
 the previous ones in that it is mostly auto-active, even if it uses Coq for a few verification conditions.
 
-Verifying imperative implementations of red black trees is more challenging as it involves reasoning about the well formedness
-of the tree structure, witch comes for free in the functional implementations. As part of VACID-0, attempts have been made at
-verifying red black trees in C using VCC and in Java using KeY~\cite{bruns2011specification}.
+Verifying imperative implementations of red-black trees is more challenging as it involves reasoning about the well-formedness
+of the tree structure, which comes for free in the functional implementations. As part of VACID-0, attempts have been made at
+verifying red-black trees in C using VCC and in Java using KeY~\cite{bruns2011specification}.
 Both attempts seem to have been left in preliminary stages
-though, as the Java version only focuses on expressing the invariants, without attempting to verify them, while the C
-version only verifies properties relative to the well formedness of their tree structure.
+though.
+%%  as the Java version only focuses on expressing the invariants, without attempting to verify them, while the C
+%% version only verifies properties relative to the well formedness of their tree structure.
 
-More recently, imperative implementations of red black trees in C and Java have been verified using more specialized logics.
-Enea et al. obtained an automated verification of a C implementation of red black trees using separation logic, a logic
+More recently, imperative implementations of red-black trees in C and Java have been verified using more specialized logics.
+Enea et al. obtained an automatic verification of a C implementation of red-black trees using separation logic, a logic
 specialized for the verification of heap manipulating programs~\cite{enea2015automated}. In the
-same way, Stef{\u{a}}nescu et al. were able to verify several implementations of red black trees in particular in Java and
-C using matching logic~\cite{stefuanescu2016semantics}. As used in this work, matching logic provides a very precise, low
-level view of the heap structure, allowing for powerful proofs on this kind of programs. Both works use specialized tools,
-which are specifically designed for verifying low level, heap manipulating programs but which have never been used, at the best
-of our knowledge, to verify higher level software, due to the specifications being too low level.
+same way, Stef{\u{a}}nescu et al. were able to verify several implementations of red-black trees in particular in Java and
+C using matching logic~\cite{stefuanescu2016semantics}. As used in this work, matching logic provides a very precise,
+low-level view of the heap structure, allowing for powerful proofs on this kind of programs. Both works use specialized tools,
+which are specifically designed for verifying low-level, heap manipulating programs but which have never been used, at the best
+of our knowledge, to verify higher-level software.
 
 \section{Conclusion}
 In this article, we have explained how, using auto-active techniques, we could achieve formal verification of key functional
-properties on an imperative red black tree implementation using SPARK. This is not an example of what should be a regular
-use of the SPARK toolset but rather a tour de force, which aims at demonstrating how far we can go using the tool.
+properties of an imperative implementation of red-black trees in SPARK. This is not an example of what should be a regular
+use of the SPARK toolset but rather a tour-de-force, which aims at demonstrating how far we can go using such technology.
 
-Still the techniques presented on this example can be reused on a much smaller scale. In particular, we have shown that
+However, the techniques presented on this example can be reused with much benefits on a much smaller scale. In particular, we have shown that
 inductive proofs can be achieved rather straightforwardly using auto-active reasoning. The multi-layered approach, using
 type invariants and model functions to separate concerns, can also be reused to reason about complex data structures.
 
-To democratize the use of auto-active techniques, we are also working on integrating simple iteractive proof capabilities
+To democratize the use of auto-active techniques, we are also working on integrating simple interactive proof capabilities
 in GNATprove. This would allow to apply the same techniques in a simpler, more straightforward way, and also to avoid
 polluting the program space with ghost code which is never meant to be executed.
 
