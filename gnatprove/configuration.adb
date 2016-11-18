@@ -430,7 +430,7 @@ package body Configuration is
       end Compile_Lib;
 
    begin
-      --  Compilation of [ Why3| SPARK]'s Coq library.
+      --  Compilation of [Why3|SPARK]'s Coq libraries
       --
       --  This list of files comes from the Why3 Makefile. We compile these
       --  files here, when the user runs gnatprove with Coq prover, because we
