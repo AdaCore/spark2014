@@ -1090,8 +1090,8 @@ package body Configuration is
          First : Integer;
          S : constant String :=
            (if CL_Switches.Prover /= null then CL_Switches.Prover.all else "");
-      begin
 
+      begin
          --  This procedure is called when the Provers list is already filled
          --  with the defaults from the --level switch.
          --  In replay mode, we only want to take into account provers when
@@ -1635,11 +1635,8 @@ package body Configuration is
    -- Set_RTS_Dir --
    -----------------
 
-   procedure Set_RTS_Dir
-     (Config    : Command_Line_Configuration)
-   is
+   procedure Set_RTS_Dir (Config : Command_Line_Configuration) is
    begin
-
       RTS_Dir := CL_Switches.RTS;
 
       --  When command-line switch --RTS is not provided, consider attribute
