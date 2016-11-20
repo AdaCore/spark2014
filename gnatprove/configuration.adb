@@ -381,8 +381,8 @@ package body Configuration is
       begin
          if not Exists (Compose (Target_Dir, Name => File & ".vo")) then
             declare
-               Source_Dest : String_Access :=
-                 new String'(Compose (Target_Dir, Name => File & ".v"));
+               Source_Dest : constant String :=
+                 Compose (Target_Dir, Name => File & ".v");
             begin
                --  Copy file
                Create_Path (Prover_Obj_Dir);
@@ -390,7 +390,7 @@ package body Configuration is
                   Create_Directory (Target_Dir);
                end if;
                Copy_File (Compose (Lib_Dir, Name => File & ".v"),
-                          Source_Dest.all);
+                          Source_Dest);
                --  Build it
                declare
                   Coqc_Bin : String_Access :=
@@ -399,7 +399,7 @@ package body Configuration is
                     (1 => new String'("-R"),
                      2 => new String'(Prover_Obj_Dir),
                      3 => new String'("Why3"),
-                     4 => Source_Dest);
+                     4 => new String'(Source_Dest));
                begin
                   if Coqc_Bin = null then
                      Abort_Msg (Config,
@@ -413,7 +413,7 @@ package body Configuration is
                      Abort_Msg (Config,
                                 Msg       =>
                                   "error during compilations of " &
-                                  Source_Dest.all,
+                                  Source_Dest,
                                 With_Help => False);
                   end if;
 
@@ -422,7 +422,6 @@ package body Configuration is
                   for It in Args'Range loop
                      Free (Args (It));
                   end loop;
-                  Source_Dest := null;
                end;
             end;
          end if;
