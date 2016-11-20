@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 
 package body String_Utils is
@@ -85,14 +84,16 @@ package body String_Utils is
    -----------
 
    function Trimi (S : String; C : Character) return String is
-      R : Unbounded_String := To_Unbounded_String ("");
+      R : String (1 .. S'Last);
+      J : Natural := 0;
    begin
       for I of S loop
          if I /= C then
-            R := R & I;
+            J := J + 1;
+            R (J) := I;
          end if;
       end loop;
-      return To_String (R);
+      return R (1 .. J);
    end Trimi;
 
 end String_Utils;

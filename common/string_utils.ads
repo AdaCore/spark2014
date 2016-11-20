@@ -61,7 +61,7 @@ package String_Utils is
    --  Return True iff S is null or the empty string
 
    function Trimi (S : String; C : Character) return String;
-   --  Trimi returns a copy of S with all occurences of C removed.
+   --  Return a copy of S with all occurences of C removed
 
    function Case_Insensitive_Find (SL : String_Lists.List; Item : String)
                                    return String_Lists.Cursor;

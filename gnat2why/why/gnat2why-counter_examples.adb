@@ -356,14 +356,14 @@ package body Gnat2Why.Counter_Examples is
                           V    : String;
                           Name : String) is
          NV : String_Split.Slice_Set;
-         --  Remove parenthesis around counterex and space inside it
-         Rv : constant String :=
-                Trimi (V (V'First + 1 .. V'Last - 1), ' ');
-         New_Values : Array_Record_Value.Map :=
-                     Array_Record_Value.Empty_Map;
+         --  Remove parenthesis around counterex and spaces inside it
+         Rv : constant String := Trimi (V (V'First + 1 .. V'Last - 1), ' ');
+
+         New_Values : Array_Record_Value.Map := Array_Record_Value.Empty_Map;
+
       begin
          --  V is the value of an array of projected record which looks like
-         --  "i1 => v1, i2 => v2, .... in => vn". We split on "," to have
+         --  "i1 => v1, i2 => v2, ..., in => vn". We split on "," to have
          --  single assignment pairs.
          Non_Empty_Split (S          => NV,
                           From       => Rv,
