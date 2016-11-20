@@ -766,13 +766,12 @@ package body Configuration is
 
                if Limit_String /= null then
                   declare
-                     Index : Integer := Limit_String.all'First;
+                     Colon_Index : constant Natural :=
+                       Ada.Strings.Fixed.Index (Source  => Limit_String.all,
+                                                Pattern => ":");
+
                   begin
-                     while Index < Limit_String.all'Last and then
-                       Limit_String.all (Index) /= ':' loop
-                        Index := Index + 1;
-                     end loop;
-                     if Index = Limit_String.all'Last then
+                     if Colon_Index = 0 then
                         Abort_Msg
                           (Config,
                            "limit-line: incorrect line specification" &
@@ -781,7 +780,7 @@ package body Configuration is
                      end if;
                      CL_Switches.File_List.Append
                        (Limit_String.all
-                          (Limit_String.all'First .. Index - 1));
+                          (Limit_String.all'First .. Colon_Index - 1));
                   end;
                end if;
             end;
@@ -1029,23 +1028,19 @@ package body Configuration is
       --------------------
 
       procedure Set_Proof_Mode is
-         Find_Colon : Integer := 0;
-         Input : constant String := CL_Switches.Proof.all;
+         Input : String renames CL_Switches.Proof.all;
+         Colon_Index : constant Natural :=
+           Index (Source => Input, Pattern => ":");
+
       begin
          Lazy := True;
-         for I in Input'Range loop
-            if Input (I) = ':' then
-               Find_Colon := I;
-               exit;
-            end if;
-         end loop;
 
          declare
             Proof_Input : constant String :=
-              (if Find_Colon /= 0 then Input (Input'First .. Find_Colon - 1)
+              (if Colon_Index /= 0 then Input (Input'First .. Colon_Index - 1)
                else Input);
             Lazy_Input : constant String :=
-              (if Find_Colon /= 0 then Input (Find_Colon + 1 .. Input'Last)
+              (if Colon_Index /= 0 then Input (Colon_Index + 1 .. Input'Last)
                else "");
          begin
             if Proof_Input = "" then
