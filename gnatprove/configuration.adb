@@ -352,7 +352,6 @@ package body Configuration is
 
    procedure Prepare_Prover_Lib (Config : Command_Line_Configuration) is
 
-      Success : Boolean := True;
       Prover_Name : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
@@ -400,6 +399,9 @@ package body Configuration is
                      2 => new String'(Prover_Obj_Dir),
                      3 => new String'("Why3"),
                      4 => new String'(Source_Dest));
+
+                  Success : Boolean;
+
                begin
                   if Coqc_Bin = null then
                      Abort_Msg (Config,
