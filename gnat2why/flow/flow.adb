@@ -1197,21 +1197,14 @@ package body Flow is
          end case;
       end if;
 
-      --  We register nonblocking subprograms and packages
+      --  We register nonblocking subprograms and (nested) packages, but not
+      --  tasks, because they are not callable and a blocking statement there
+      --  is perfectly fine.
       if FA.Generating_Globals
+        and then FA.Kind /= Kind_Task
         and then FA.Has_Only_Nonblocking_Statements
       then
-         case FA.Kind is
-            when Kind_Subprogram
-               | Kind_Package_Body
-            =>
-               GG_Register_Nonblocking (To_Entity_Name (FA.Spec_Entity));
-
-            when Kind_Task
-               | Kind_Package
-            =>
-               null;
-         end case;
+         GG_Register_Nonblocking (To_Entity_Name (FA.Spec_Entity));
       end if;
 
       --  Note if this is a subprogram with no effects; needed only in phase 2

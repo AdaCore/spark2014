@@ -4168,17 +4168,6 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Do_Call_Statement
 
    begin
-      --  Here we flag entry call statements and predefined potentially
-      --  blocking procedures as potentially blocking.
-      if FA.Generating_Globals
-        and then FA.Has_Only_Nonblocking_Statements
-        and then (Is_Entry (Called_Thing)
-                     or else
-                  Is_Predefined_Potentially_Blocking (Called_Thing))
-      then
-         FA.Has_Only_Nonblocking_Statements := False;
-      end if;
-
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
 
@@ -6342,6 +6331,19 @@ package body Flow.Control_Flow_Graph is
                   Linkup (FA, FA.End_Vertex, V);
                end if;
             end;
+
+            --  Calls to entries and to predefined potentially blocking
+            --  subprograms make this entity potentially blocking. We do
+            --  this here, because otherwise we would have to do it in both
+            --  Do_Call_Statement and Callect_Functions_And_Read_Locked_POs.
+            if FA.Has_Only_Nonblocking_Statements
+              and then Ekind (E) /= E_Package
+              and then (Is_Entry (E)
+                          or else
+                        Is_Predefined_Potentially_Blocking (E))
+            then
+               FA.Has_Only_Nonblocking_Statements := False;
+            end if;
          end loop;
       end if;
 

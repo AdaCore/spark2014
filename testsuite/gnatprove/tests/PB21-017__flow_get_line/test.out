@@ -5,3 +5,5 @@ p.adb:13:13: warning: initialization of L has no effect
 p.adb:19:50: warning: assuming "Get_Line" has no effect on global items
 p.adb:19:50: warning: no Global contract available for "Get_Line"
 p.adb:21:22: info: range check proved (CVC4: 1 VC)
+p.ads:3:17: high: potentially blocking operation in protected operation "Dummy1"
+p.ads:4:17: high: potentially blocking operation in protected operation "Dummy2"
