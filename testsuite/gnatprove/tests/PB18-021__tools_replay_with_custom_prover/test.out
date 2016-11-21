@@ -1,5 +1,1 @@
 foo.adb:3:14: info: postcondition proved (CVC4_Alt: 4 VC)
-could not replay goal due to missing prover CVC4_Alt
-could not replay goal due to missing prover CVC4_Alt
-could not replay goal due to missing prover CVC4_Alt
-could not replay goal due to missing prover CVC4_Alt
