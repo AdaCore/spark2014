@@ -58,7 +58,7 @@ else
 	cd gnat_src && cp -p *.ads ../obj && cp -p *.adb ../obj
 endif
 	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
-	  ada.ads gnat.ads interfac.ads && \
+	  ada.ads gnat.ads interfac.ads unch*.ads text_io.ads && \
 	$(RM) ?-*.ad? && \
 	mv -f ada_get_targ.adb get_targ.adb
 
