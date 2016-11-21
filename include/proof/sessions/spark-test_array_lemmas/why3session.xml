@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="4">
+<prover id="0" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
+<file name="../../../obj/gnatprove/spark-test_array_lemmas.mlw" expanded="true">
+<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_long_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_long_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__natural" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__natural__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__positive" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__positive__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_float__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_character__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Array__Int__Standard__character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Array__Int__Standard__wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Array__Int__Standard__wide_wide_character" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_string" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__duration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_8" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_8__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_16" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_16__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_32" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_32__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_64" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_64__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__universal_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__universal_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tindex_typeB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tindex_typeB__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__index_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__index_type__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Array__Int__Standard__integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tarr_int_constrainedB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_int_constrained" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Array__Int__Standard__float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tarr_float_constrainedB" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_float_constrained" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L18s__T19s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L18s__T19s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__T21s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__T21s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__L22s__T23s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__L22s__T23s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L24s__T25s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L24s__T25s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__T27s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__T27s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__L28s__T29s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__L28s__T29s__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_int_unconstrained" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_float_unconstrained" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L30s__T31s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__T33s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__L34s__T35s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L36s__T37s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__T39s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__L40s__T41s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__index_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__index_type__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__element_t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__element_t__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L5b__T6b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__T8b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__L9b__T10b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__TS22bP1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__S22b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__index_type" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__index_type__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__element_t" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__element_t__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__arr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__arr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L14b__T15b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__T17b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__L18b__T19b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__TS23bP1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__S23b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__TS20bP1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__S20b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__TS21bP1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__S21b" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__natural___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__positive___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__short_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__wide_wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__duration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_8___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_16___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__integer_64___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tindex_typeB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__index_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tarr_int_constrainedB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_int_constrained___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__Tarr_float_constrainedB___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_float_constrained___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L18s__T19s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__T21s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__L20s__L22s__T23s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L24s__T25s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__T27s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__L26s__L28s__T29s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_int_unconstrained___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__arr_float_unconstrained___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L30s__T31s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__T33s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__L32s__L34s__T35s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L36s__T37s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__T39s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__L38s__L40s__T41s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__index_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__element_t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L5b__T6b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__T8b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__L7b__L9b__T10b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__TS22bP1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__S22b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__index_type___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__element_t___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L14b__T15b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__T17b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__L16b__L18b__T19b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__TS23bP1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__S23b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__TS20bP1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__S20b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__TS21bP1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__S21b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__test_array_lemmas__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__subprogram_def" sum="905a7cafb5a3d92f112f8a2a898198b9" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="35"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. precondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="60"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. postcondition">
+  <proof prover="0"><result status="valid" time="0.04" steps="146"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__subprogram_def" sum="90c7dd2e4ad5c294ddda7200e52305c4" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.08" steps="172"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. precondition">
+  <proof prover="0"><result status="valid" time="0.08" steps="201"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. postcondition">
+  <proof prover="0"><result status="valid" time="0.13" steps="1180"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_int__2__subprogram_def" sum="3684c79c92f9774f42bf152e875b035b" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="5. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="6. precondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="104"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="7. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="8. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="9. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="10. assertion">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="11. postcondition">
+  <proof prover="0"><result status="valid" time="0.04" steps="154"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_transitive_order_float__2__subprogram_def" sum="4cfa85e7630fbbab41b9392faec43c5e" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. assertion">
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="5. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="6. precondition">
+  <proof prover="0"><result status="valid" time="0.08" steps="245"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="7. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="8. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="9. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="10. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="11. postcondition">
+  <proof prover="0"><result status="valid" time="0.13" steps="1174"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_uint__lemma_transitive_order__subprogram_def" sum="09128c3d9db44a4a1cd6cf6bef7d30c5" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="19"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="5. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="6. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="7. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="8. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="9. assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="10. postcondition">
+  <proof prover="0"><result status="timeout" time="10.00"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_uint__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.45"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__subprogram_def" sum="ee2a0fc492cc9a2c0272d782ab0dd4e2" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. precondition">
+  <proof prover="0"><result status="valid" time="0.05" steps="19"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="4. assertion">
+  <proof prover="0"><result status="valid" time="0.05" steps="19"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="5. assertion">
+  <proof prover="0"><result status="valid" time="0.05" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="6. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="7. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="8. assertion">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="9. assertion">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="10. postcondition">
+  <proof prover="0"><result status="timeout" time="10.00"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-test_array_lemmas/Spark__test_array_lemmas__test_ufloat__lemma_transitive_order__pragargs__forall.v"><result status="valid" time="0.60"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

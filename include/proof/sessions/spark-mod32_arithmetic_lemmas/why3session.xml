@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
-<prover id="1" name="Coq" version="8.4pl6" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="1" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="2" name="Z3" version="4.4.1" timelimit="5" steplimit="0" memlimit="0"/>
 <prover id="3" name="altergo" version="0.99.1" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-mod32_arithmetic_lemmas.mlw" expanded="true">
@@ -560,7 +560,7 @@
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.43"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.48"/></proof>
   </goal>
  </transf>
  </goal>
@@ -579,7 +579,7 @@
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
   <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="2.39" steps="14497"/></proof>
+  <proof prover="3"><result status="valid" time="2.41" steps="14497"/></proof>
   </goal>
  </transf>
  </goal>
@@ -592,7 +592,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.48"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.57"/></proof>
   </goal>
  </transf>
  </goal>
@@ -605,7 +605,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.55"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.58"/></proof>
   </goal>
  </transf>
  </goal>
@@ -618,7 +618,7 @@
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.44"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.42"/></proof>
   </goal>
  </transf>
  </goal>
@@ -627,14 +627,14 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="0.57"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="0.53"/></proof>
   </goal>
  </transf>
  </goal>
@@ -643,14 +643,14 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="valid" time="0.51"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="valid" time="0.46"/></proof>
   </goal>
  </transf>
  </goal>
@@ -666,7 +666,7 @@
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="valid" time="0.52"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="valid" time="0.51"/></proof>
   </goal>
  </transf>
  </goal>
