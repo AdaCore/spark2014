@@ -1,5 +1,7 @@
 package body Foo is
 
+   pragma Warnings (GNATprove, Off, "analyzing unreferenced procedure");
+
    type Float64 is digits 15;
 
    subtype Unit_T is Float64 range -1.0 .. 1.0;
@@ -17,7 +19,7 @@ package body Foo is
       elsif X in -0.0025 .. -0.0 then
          Y := Inv_T'First;
       else
-         Y := 1.0 / X;  --  codepeer can prove this
+         Y := 1.0 / X;
       end if;
    end Test_01;
 
@@ -25,6 +27,7 @@ package body Foo is
                       Y : out Inv_T)
    is
    begin
+      pragma Assert (X not in -0.0025 .. 0.0025);
       Y := 1.0 / X;
    end Test_02;
 
@@ -33,11 +36,11 @@ package body Foo is
    is
    begin
       if X not in -0.0025 .. 0.0025 then
-         Y := 1.0 / X;  --  codepeer can prove this
-      elsif X >= 0.0025 then
+         Y := 1.0 / X;
+      elsif X >= 0.0 then
          Y := Inv_T'Last;
       else
-         pragma Assert (X <= -0.0025);
+         pragma Assert (X <= 0.0);
          Y := Inv_T'First;
       end if;
    end Test_03;

@@ -1,16 +1,14 @@
-foo.adb:11:04: warning: analyzing unreferenced procedure "Test_01"
-foo.adb:12:23: info: initialization of "Y" proved
-foo.adb:20:19: info: division check proved (CVC4: 1 VC)
-foo.adb:20:19: medium: overflow check might fail
-foo.adb:20:19: medium: range check might fail
-foo.adb:24:04: warning: analyzing unreferenced procedure "Test_02"
-foo.adb:25:23: info: initialization of "Y" proved
-foo.adb:28:16: info: division check proved (CVC4: 1 VC)
-foo.adb:28:16: medium: overflow check might fail
-foo.adb:28:16: medium: range check might fail
-foo.adb:31:04: warning: analyzing unreferenced procedure "Test_03"
-foo.adb:32:23: info: initialization of "Y" proved
-foo.adb:36:19: info: division check proved (CVC4: 1 VC)
-foo.adb:36:19: medium: overflow check might fail
-foo.adb:36:19: medium: range check might fail
-foo.adb:40:25: medium: assertion might fail, cannot prove X <= -2.5E-3
+foo.adb:14:23: info: initialization of "Y" proved
+foo.adb:22:19: info: division check proved (CodePeer)
+foo.adb:22:19: info: overflow check proved (CodePeer)
+foo.adb:22:19: info: range check proved (CodePeer)
+foo.adb:27:23: info: initialization of "Y" proved
+foo.adb:30:22: info: assertion proved (CVC4: 1 VC)
+foo.adb:31:16: info: division check proved (CodePeer)
+foo.adb:31:16: info: overflow check proved (CodePeer)
+foo.adb:31:16: info: range check proved (CodePeer)
+foo.adb:35:23: info: initialization of "Y" proved
+foo.adb:39:19: info: division check proved (CodePeer)
+foo.adb:39:19: info: overflow check proved (CodePeer)
+foo.adb:39:19: info: range check proved (CodePeer)
+foo.adb:43:25: info: assertion proved (CodePeer)
