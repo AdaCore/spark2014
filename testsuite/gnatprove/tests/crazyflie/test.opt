@@ -1,4 +1,3 @@
-Darwin XFAIL CVC4 crashes on 3 VCs on Mac (O911-020)
 NT DEAD too slow on windows (PA06-025)
 assertions DEAD too slow for run assertions
 !large SKIP part of large testsuite
