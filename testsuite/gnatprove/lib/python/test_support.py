@@ -80,7 +80,10 @@ def print_sorted(strlist):
 def build_prover_switch(proverlist):
     """from a list of prover names, produce the option to be passed to
        gnatprove"""
-    return "--prover=" + ','.join(proverlist)
+    if len(proverlist) == 0:
+        return []
+    else:
+        return ["--prover=" + ','.join(proverlist)]
 
 
 def cat(filename, sort=False):
@@ -651,9 +654,9 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     if inverse_prover():
         inverse = prover[:]
         inverse.reverse()
-        fullopt += [build_prover_switch(inverse)]
+        fullopt += build_prover_switch(inverse)
     else:
-        fullopt += [build_prover_switch(prover)]
+        fullopt += build_prover_switch(prover)
     if benchmark_mode():
         fullopt += ["--benchmark"]
     if not counterexample:
