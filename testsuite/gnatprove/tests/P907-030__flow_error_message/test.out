@@ -1,0 +1,7 @@
+dp.adb:11:04: info: initialization of "The_T.X" constituent of "T" proved
+dp.adb:11:04: info: initialization of "The_T.Y" constituent of "T" proved
+p.ads:6:23: info: initialization of "Y" proved
+p_run.adb:11:25: high: "Dp.T" is not initialized
+p_run.adb:13:09: high: "Dp.T" is not initialized
+p_run.adb:13:22: info: initialization of "Y" proved
+p_run.ads:8:34: info: initialization of "Dp.T" proved
