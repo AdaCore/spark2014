@@ -32,12 +32,8 @@ with SPARK.Constrained_Array_Lemmas;
 package body SPARK.Test_Array_Lemmas
 with SPARK_Mode => Off -- TEST_ON
 is
-
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
-
-   pragma Warnings
-     (Off, "has no effect");
 
    package Test_Uint is new SPARK.Unconstrained_Array_Lemmas
      (Index_Type => Integer,
@@ -75,6 +71,5 @@ is
    begin
       Test_Ufloat.Lemma_Transitive_Order (Arr);
    end Test_Transitive_Order_Float;
-
 
 end SPARK.Test_Array_Lemmas;
