@@ -726,95 +726,118 @@ package body SPARK_Util.Subprograms is
             return False;
       end case;
 
-      --  All subprograms in the child packages of Ada are blocking
-      if Scope_Name (2) in Name_Directories   |
-                           Name_Direct_IO     |
-                           Name_Sequential_IO |
-                           Name_Streams
-      then
-         --  Ada.Directories.Hierarchical_File_Names seems nonblocking. We
-         --  conciously ignore it, since it is not yet implemented in GNAT
+      case Scope_Name (2) is
+         --  All subprograms in the child packages of these are blocking
+         --
+         --  Note: Ada.Directories.Hierarchical_File_Names seems nonblocking.
+         --  We conciously ignore it, since it is not yet implemented in GNAT
          --  and extremely unlikely to be needed in nonblocking contexts.
-         return True;
 
-         --  Child packages of Ada.[Wide_[Wide_]]Text_IO are identical
-      elsif Scope_Name (2) in Name_Text_IO         |
-                              Name_Wide_Text_IO    |
-                              Name_Wide_Wide_Text_IO
-      then
-         --  Operations on bounded/unbounded strings either print or read
-         --  them and thus are potentially blocking.
-         if Scope_Name (3) in Name_Bounded_IO | Name_Unbounded_IO
-         then
+         when Name_Directories
+            | Name_Direct_IO
+            | Name_Sequential_IO
+            | Name_Streams
+         =>
             return True;
 
-            --  These generics have both blocking and nonblocking Put/Get
-         elsif Scope_Name (3) in Name_Complex_IO | Text_IO_Package_Name
-         then
-            --  The name of the subproram (i.e. Put or Get) makes
-            --  no difference (and it troublesome to know because of
-            --  overriding). Blocking/Nonblocking status is determined
-            --  by the name of the first formal parameter.
-            --  * "File" means input/output to a specific file
-            --  * "Item" means input/output to a default file
-            --  * anything else means input/output to a string buffer
-            return Chars (First_Formal (E)) in Name_File | Name_Item;
+         --  Detect Ada.Dispatching.Yield
 
-            --  These packages operate only on internal data structers and thus
-            --  are nonblocking.
-         elsif Scope_Name (3) in Name_C_Streams          |
-                                 Name_Text_Streams       |
-                                 Name_Reset_Standard_Files
-         then
-            return False;
+         when Name_Dispatching
+         =>
+            return Scope_Name (3) = Name_Yield;
 
-            --  Ada.Text_IO.Editing is nonblocking, except for Decimal_IO
-         elsif Scope_Name (3) = Name_Editing
-         then
-            if Scope_Name (4) = Name_Decimal_IO then
-               --  The only blocking subprograms are:
+         --  Detect Ada.Synchronous_Barriers.Wait_For_Release
+
+         when Name_Synchronous_Barriers
+         =>
+            return Scope_Name (3) = Name_Wait_For_Release;
+
+         --  Detect
+         --    Ada.Synchronous_Task_Control.Suspend_Until_True
+         --    Ada.Synchronous_Task_Control.EDF.
+         --        Suspend_Until_True_And_Set_Deadline.
+
+         when Name_Synchronous_Task_Control
+         =>
+            return
+              Scope_Name (3) = Name_Suspend_Until_True
+                 or else
+              (Scope_Name (3) = Name_EDF
+                 and then
+               Scope_Name (4) = Name_Suspend_Until_True_And_Set_Deadline);
+
+         --  Detect Ada.Task_Identification.Abort_Task
+
+         when Name_Task_Identification
+         =>
+            return Scope_Name (3) = Name_Abort_Task;
+
+         when Name_Text_IO
+            | Name_Wide_Text_IO
+            | Name_Wide_Wide_Text_IO
+         =>
+            case Scope_Name (3) is
+               --  Operations on bounded/unbounded strings either print or read
+               --  them and thus are potentially blocking.
+
+               when Name_Bounded_IO
+                  | Name_Unbounded_IO
+               =>
+                  return True;
+
+               --  These generics have both blocking and nonblocking Put/Get
+
+               when Name_Complex_IO
+                  | Text_IO_Package_Name
+               =>
+                  --  The name of the subprogram (i.e. Put or Get) makes
+                  --  no difference (and it troublesome to know because of
+                  --  overriding). Blocking/Nonblocking status is determined
+                  --  by the name of the first formal parameter.
+                  --  * "File" means input/output to a specific file
+                  --  * "Item" means input/output to a default file
+                  --  * anything else means input/output to a string buffer
+                  return Chars (First_Formal (E)) in Name_File | Name_Item;
+
+               --  These packages operate only on internal data structers and
+               --  thus are nonblocking.
+
+               when Name_C_Streams
+                  | Name_Text_Streams
+                  | Name_Reset_Standard_Files
+               =>
+                  return False;
+
+               --  Ada.Text_IO.Editing is nonblocking, except for Decimal_IO,
+               --  where the only blocking subprograms are:
                --    procedure Put (File : Ada.Text_IO.File_Type; ...)
                --    procedure Put (Item : Num; ...)
-               --  and they are also detected by the name of the first
-               --  formal parameter.
-               return Ekind (E) = E_Procedure and then
-                 Chars (First_Formal (E)) in Name_File | Name_Item;
-            else
-               return False;
-            end if;
-         else
-            --  Assume that all subprograms directly within Ada.Text_IO
-            --  are potentially blocking. This is true for most of them,
-            --  e.g. for Create/Open/Close/Delete, but in GNAT there few
-            --  exceptions, e.g. Mode/Name/Form/Is_Open. However, they can
-            --  be blocking in other compilers, so assume the worst case.
-            return True;
-         end if;
+               --  and they are also detected by the name of the first formal
+               --  parameter.
 
-      elsif Scope_Name (2) = Name_Dispatching then
-         return Scope_Name (3) = Name_Yield;
+               when Name_Editing
+               =>
+                  return
+                    Scope_Name (4) = Name_Decimal_IO
+                    and then Ekind (E) = E_Procedure
+                    and then Chars (First_Formal (E)) in Name_File | Name_Item;
 
-      elsif Scope_Name (2) = Name_Task_Identification then
-         return Scope_Name (3) = Name_Abort_Task;
+               --  Assume that all subprograms directly within Ada.Text_IO
+               --  are potentially blocking. This is true for most of them,
+               --  e.g. for Create/Open/Close/Delete, but in GNAT there few
+               --  exceptions, e.g. Mode/Name/Form/Is_Open. However, they can
+               --  be blocking in other compilers, so assume the worst case.
 
-      elsif Scope_Name (2) = Name_Synchronous_Task_Control then
+               when others
+               =>
+                  return True;
+            end case;
 
-         if Scope_Name (3) = Name_Suspend_Until_True then
-            return True;
-         elsif Scope_Name (3) = Name_EDF then
-            return Scope_Name (4) =
-              Name_Suspend_Until_True_And_Set_Deadline;
-         else
+         --  All other predefined subprograms are nonblocking
+
+         when others =>
             return False;
-         end if;
-
-      elsif Scope_Name (2) = Name_Synchronous_Barriers then
-         return Scope_Name (3) = Name_Wait_For_Release;
-
-      else
-         --  All other predefined subprograms are nonblocking.
-         return False;
-      end if;
+      end case;
 
    end Is_Predefined_Potentially_Blocking;
 

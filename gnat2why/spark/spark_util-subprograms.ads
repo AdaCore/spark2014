@@ -341,8 +341,10 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
 
-   function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean;
-   --  Check if entity E is a predefined potentially blocking subprogram
+   function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure;
+   --  @param E subprogram
+   --  @return True iff E is a predefined potentially blocking subprogram
 
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean;
    --  @param E any entity
