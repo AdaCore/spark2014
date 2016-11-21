@@ -1,4 +1,4 @@
-q.adb:14:19: info: range check proved (CVC4: 1 VC)
+q.adb:14:19: info: range check proved (Interval)
 q.adb:14:27: info: division check proved (CVC4: 1 VC)
 q.adb:14:27: info: overflow check proved (Interval)
 q.adb:16:10: info: initialization of "X" proved

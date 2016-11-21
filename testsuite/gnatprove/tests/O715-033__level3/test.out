@@ -5,7 +5,7 @@ hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
 hard_stuff.adb:5:52: info: overflow check proved
-hard_stuff.adb:5:65: medium: overflow check might fail
+hard_stuff.adb:5:65: info: overflow check proved
 hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
 hard_stuff.adb:5:77: info: overflow check proved
@@ -20,7 +20,7 @@ hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
 hard_stuff.adb:5:52: info: overflow check proved
-hard_stuff.adb:5:65: medium: overflow check might fail
+hard_stuff.adb:5:65: info: overflow check proved
 hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
 hard_stuff.adb:5:77: info: overflow check proved

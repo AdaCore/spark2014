@@ -30,7 +30,7 @@ nose_gear.adb:218:23: info: initialization of "To_int32_Left_2_out1" proved
 nose_gear.adb:218:45: info: overflow check proved (CVC4: 1 VC)
 nose_gear.adb:218:48: info: initialization of "To_int32_Right_2_out1" proved
 nose_gear.adb:222:48: info: initialization of "Sum_out1" proved
-nose_gear.adb:222:48: info: range check proved (CVC4: 1 VC)
+nose_gear.adb:222:48: info: range check proved (Interval)
 nose_gear.adb:226:22: info: initialization of "Max_uint16_out1" proved
 nose_gear.adb:226:39: info: overflow check proved (CVC4: 1 VC)
 nose_gear.adb:226:42: info: initialization of "Sum1_out1" proved
@@ -58,11 +58,11 @@ nose_gear.adb:275:47: info: range check proved (CVC4: 1 VC)
 nose_gear.adb:279:47: info: initialization of "Left_2_out1" proved
 nose_gear.adb:279:47: info: range check proved (CVC4: 1 VC)
 nose_gear.adb:283:40: info: initialization of "To_uint16_Result_out1" proved
-nose_gear.adb:283:40: info: range check proved (CVC4: 1 VC)
+nose_gear.adb:283:40: info: range check proved (Interval)
 nose_gear.adb:283:64: medium: overflow check might fail
 nose_gear.adb:283:67: info: initialization of "Wheel_Circunference_out1" proved
 nose_gear.adb:287:43: info: initialization of "To_uint16_Result_1_out1" proved
-nose_gear.adb:287:43: info: range check proved (CVC4: 1 VC)
+nose_gear.adb:287:43: info: range check proved (Interval)
 nose_gear.adb:287:69: info: division check proved (CVC4: 1 VC)
 nose_gear.adb:287:69: medium: overflow check might fail
 nose_gear.adb:287:72: info: initialization of "ms_in_hour_out1" proved

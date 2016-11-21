@@ -48,7 +48,7 @@ errorexample.adb:28:22: info: assertion proved (CVC4: 1 VC)
 errorexample.adb:38:65: info: division check proved (CodePeer)
 errorexample.adb:47:22: medium: assertion might fail, cannot prove Long_Float (Abs_out1)) <= (0.01
 errorexample.adb:47:35: info: initialization of "Abs_out1" proved
-errorexample.adb:47:35: info: range check proved (CVC4: 1 VC)
+errorexample.adb:47:35: info: range check proved (Interval)
 errorexample.adb:52:25: info: initialization of "Abs_out1" proved
 errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: initialization of "Relative_Error" proved
@@ -117,34 +117,34 @@ simulink_functions.adb:349:47: medium: overflow check might fail
 simulink_functions.adb:349:56: medium: overflow check might fail
 simulink_functions.adb:362:22: medium: overflow check might fail
 simulink_functions.adb:363:29: medium: range check might fail
-simulink_functions.adb:363:44: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:363:44: info: range check proved (Interval)
 simulink_functions.adb:363:50: info: division check proved (CodePeer)
 simulink_functions.adb:363:50: info: overflow check proved (CodePeer)
-simulink_functions.adb:363:59: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:363:59: info: range check proved (Interval)
 simulink_functions.adb:363:68: medium: overflow check might fail
 simulink_functions.adb:376:22: medium: overflow check might fail
 simulink_functions.adb:377:30: medium: range check might fail
-simulink_functions.adb:377:45: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:377:45: info: range check proved (Interval)
 simulink_functions.adb:377:51: info: division check proved (CodePeer)
 simulink_functions.adb:377:51: info: overflow check proved (CodePeer)
-simulink_functions.adb:377:60: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:377:60: info: range check proved (Interval)
 simulink_functions.adb:377:69: medium: overflow check might fail
 simulink_functions.adb:390:22: medium: overflow check might fail
 simulink_functions.adb:391:30: medium: range check might fail
-simulink_functions.adb:391:45: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:391:45: info: range check proved (Interval)
 simulink_functions.adb:391:51: info: division check proved (CodePeer)
 simulink_functions.adb:391:51: info: overflow check proved (CodePeer)
-simulink_functions.adb:391:60: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:391:60: info: range check proved (Interval)
 simulink_functions.adb:391:69: medium: overflow check might fail
 simulink_functions.adb:404:30: info: division check proved (CodePeer)
 simulink_functions.adb:417:30: info: division check proved (CodePeer)
 simulink_functions.adb:430:30: info: division check proved (CodePeer)
 simulink_functions.adb:443:22: medium: overflow check might fail
 simulink_functions.adb:444:27: medium: range check might fail
-simulink_functions.adb:444:42: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:444:42: info: range check proved (Interval)
 simulink_functions.adb:444:48: info: division check proved (CodePeer)
 simulink_functions.adb:444:48: info: overflow check proved (CodePeer)
-simulink_functions.adb:444:57: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:444:57: info: range check proved (Interval)
 simulink_functions.adb:444:66: medium: overflow check might fail
 simulink_functions.adb:457:22: medium: overflow check might fail
 simulink_functions.adb:457:42: info: division check proved (CodePeer)
@@ -178,17 +178,17 @@ simulink_functions.adb:567:49: medium: divide by zero might fail
 simulink_functions.adb:567:49: medium: overflow check might fail
 simulink_functions.adb:567:58: medium: overflow check might fail
 simulink_functions.adb:577:26: medium: range check might fail
-simulink_functions.adb:577:39: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:577:39: info: range check proved (Interval)
 simulink_functions.adb:587:27: medium: range check might fail
-simulink_functions.adb:587:40: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:587:40: info: range check proved (Interval)
 simulink_functions.adb:597:27: medium: range check might fail
-simulink_functions.adb:597:40: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:597:40: info: range check proved (Interval)
 simulink_functions.adb:607:25: medium: range check might fail
-simulink_functions.adb:607:38: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:607:38: info: range check proved (Interval)
 simulink_functions.adb:617:26: medium: range check might fail
-simulink_functions.adb:617:39: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:617:39: info: range check proved (Interval)
 simulink_functions.adb:627:26: medium: range check might fail
-simulink_functions.adb:627:39: info: range check proved (CVC4: 1 VC)
+simulink_functions.adb:627:39: info: range check proved (Interval)
 simulink_functions.adb:637:21: medium: range check might fail
 simulink_functions.adb:1194:21: medium: range check might fail
 simulink_functions.adb:1209:31: info: division check proved (CVC4: 1 VC)
@@ -255,3 +255,42 @@ smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

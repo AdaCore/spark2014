@@ -34,6 +34,7 @@ with Checks;                  use Checks;
 with Common_Containers;       use Common_Containers;
 with Einfo;                   use Einfo;
 with Errout;                  use Errout;
+with Eval_Fat;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -1685,8 +1686,43 @@ package body Why.Gen.Expr is
                Lov := Expr_Value_R (Tlo);
                Hiv := Expr_Value_R (Thi);
 
-               Determine_Range_R
-                 (Ada_Node, OK, Lo, Hi, Assume_Valid => True);
+               --  Call Determine_Range_R on floating-point values
+
+               if Is_Floating_Point_Type (Etype (Ada_Node)) then
+                  Determine_Range_R (Ada_Node, OK, Lo, Hi,
+                                     Assume_Valid => True);
+
+               --  Call Determine_Range on integer values, which may happen
+               --  when converting an integer to a floating-point type.
+
+               elsif Is_Discrete_Type (Etype (Ada_Node)) then
+                  declare
+                     use Eval_Fat;
+
+                     function Round_Machine (B : Ureal) return Ureal is
+                       (Machine (Range_Type, B, Round_Even, Ada_Node));
+                     --  This is similar to the homonym function in
+                     --  Checks.Determine_Range_R. It rounds a real bound B
+                     --  using mode Round_Even. The underlying floating-point
+                     --  type used is Range_Type.
+
+                     Lo_Int, Hi_Int : Uint;
+                  begin
+                     Determine_Range (Ada_Node, OK, Lo_Int, Hi_Int,
+                                      Assume_Valid => True);
+
+                     if OK then
+                        Lo := Round_Machine (UR_From_Uint (Lo_Int));
+                        Hi := Round_Machine (UR_From_Uint (Hi_Int));
+                     end if;
+                  end;
+
+               --  Neither a floating-point nor an integer value, hence
+               --  fixed-point value. This case is not optimized for now.
+
+               else
+                  OK := False;
+               end if;
 
                if OK then
 
