@@ -431,6 +431,13 @@ package body Configuration is
 
    begin
       --  Compilation of [ Why3| SPARK]'s Coq library.
+      --
+      --  This list of files comes from the Why3 Makefile. We compile these
+      --  files here, when the user runs gnatprove with Coq prover, because we
+      --  do not ship Coq ourselves, so cannot compile these files in advance.
+      --  The order of files is important, dependencies of some file need to
+      --  be compiled before that file.
+
       Compile_Lib ("", "BuiltIn");
       Compile_Lib ("", "HighOrd");
       Compile_Lib ("int", "Int");
