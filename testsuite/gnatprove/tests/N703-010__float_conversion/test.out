@@ -2,3 +2,5 @@ foo.adb:13:15: info: initialization of "A" proved
 foo.adb:13:15: medium: range check might fail
 foo.adb:23:15: info: initialization of "A" proved
 foo.adb:23:15: info: range check proved (Z3: 1 VC)
+foo.ads:3:14: warning: subprogram "Test_Err" has no effect
+foo.ads:4:14: warning: subprogram "Test_Ok" has no effect
