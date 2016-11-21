@@ -621,6 +621,7 @@ package body SPARK_Util.Subprograms is
       --    Ada.Direct_IO.*
       --    Ada.Sequential_IO.*
       --    Ada.Streams.*
+      --    Ada.Strings.[[Wide_]Wide_]Unbounded.[[Wide_]Wide_]Text_IO
       --
       --  with notable exception of
       --    Ada.Storage_IO (input-output to memory buffer).
@@ -745,6 +746,25 @@ package body SPARK_Util.Subprograms is
          when Name_Dispatching
          =>
             return Scope_Name (3) = Name_Yield;
+
+         --  Detect all subprograms in
+         --    Ada.Strings.[[Wide_]Wide_]Unbounded.[[Wide_]Wide_]Text_IO.
+
+         when Name_Strings
+         =>
+            return
+              (case Scope_Name (3) is
+                  when Name_Unbounded =>
+                     Scope_Name (4) = Name_Text_IO,
+
+                  when Name_Wide_Unbounded =>
+                     Scope_Name (4) = Name_Wide_Text_IO,
+
+                  when Name_Wide_Wide_Unbounded =>
+                     Scope_Name (4) = Name_Wide_Wide_Text_IO,
+
+                  when others =>
+                     False);
 
          --  Detect Ada.Synchronous_Barriers.Wait_For_Release
 
