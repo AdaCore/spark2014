@@ -369,8 +369,8 @@ reconstruct easily the high level view of the tree.
 
 We define a function \texttt{Model} that
 returns the model of a binary tree. This function has a rich postcondition that
-uniquely defines the model. For example, the access path for a node is
-computed from the access path for its parent. Proof of the function \texttt{Model}
+uniquely defines the model. The access path of the root is empty and the access path of other nodes is
+computed from the access path of their parent. Proof of the function \texttt{Model}
 relies on the invariant over binary trees. Its definition
 is then available for users of binary trees who can call function
 \texttt{Model} to express complex properties over the structure.
@@ -723,7 +723,8 @@ procedure Insert (T : in out Rbt; V : Natural) with
 \caption{\label{fig-rbt-spec} Specification of red black trees.}
 \end{figure}
 
-We must separately specify four properties over red-black trees:
+The most complex specifications have to do with the four properties to maintain
+over red-black trees:
 \begin{enumerate}
  \item A red-black tree is always a valid binary tree (we can navigate it from
    the root in the expected way).
@@ -954,7 +955,7 @@ When reasoning about value ordering, it is common to use transitivity. For examp
 a value in a search tree, we only compare the requested value with values stored along a single path in
 the tree, that is, the path were it was expected to be stored. All other values are ruled out by
 transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
-automatic proves used in \gnatprove are usually unable to come up with the appropriate
+automatic provers used in \gnatprove are usually unable to come up with the appropriate
 intermediate value to use in the transitivity relation. To achieve the proofs, we resorted to providing
 provers with the appropriate term whenever necessary. For example, function \texttt{Find\_Root} in
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
