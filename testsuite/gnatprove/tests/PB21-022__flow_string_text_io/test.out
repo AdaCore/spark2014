@@ -1,0 +1,6 @@
+p.adb:15:39: warning: assuming "Put" has no effect on global items
+p.adb:15:39: warning: no Global contract available for "Put"
+p.adb:20:49: warning: assuming "Put" has no effect on global items
+p.adb:20:49: warning: no Global contract available for "Put"
+p.adb:25:59: warning: assuming "Put" has no effect on global items
+p.adb:25:59: warning: no Global contract available for "Put"
