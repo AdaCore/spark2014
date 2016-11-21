@@ -6236,16 +6236,23 @@ package body Flow.Control_Flow_Graph is
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
 
-      --  Assemble the set of directly called subprograms.
-      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
-      end loop;
-      pragma Assert (for all E of FA.Direct_Calls => Nkind (E) in N_Entity);
-
       --  In GG mode, we now assemble globals and retroactively make some
       --  initial and final vertices, which is the only reason for this code
       --  to be here.
       if FA.Generating_Globals then
+         --  Assemble the set of directly called subprograms
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
+         end loop;
+
+         --  Direct calls might only contain callable entities and nested
+         --  packages.
+         pragma Assert (for all E of FA.Direct_Calls =>
+                          Ekind (E) in Entry_Kind
+                                     | E_Function
+                                     | E_Package
+                                     | E_Procedure);
+
          declare
             --  ??? this block should operate just on Entity_Ids
             Known_Vars : constant Flow_Id_Sets.Set :=
