@@ -1,0 +1,2 @@
+instances.ads:19:18: info: precondition proved (CVC4: 1 VC)
+instances.ads:29:14: medium: the task might terminate, which is not allowed in SPARK
