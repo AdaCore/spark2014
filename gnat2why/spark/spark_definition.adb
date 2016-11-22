@@ -3692,12 +3692,6 @@ package body SPARK_Definition is
             end;
          end if;
 
-         --  Record position of where to insert concurrent type on the
-         --  Entity_List.
-         if Ekind (E) in E_Protected_Type | E_Task_Type then
-            Current_Concurrent_Insert_Pos := Entity_List.Last;
-         end if;
-
          --  Now mark the type itself
 
          --  Components of a record type should be in SPARK for the record type
@@ -3711,16 +3705,66 @@ package body SPARK_Definition is
 
             begin
                while Present (Comp) loop
+
+                  --  Do not mark components which are declared in a part with
+                  --  SPARK_Mode => Off.
+
                   if Component_Is_Visible_In_SPARK (Comp) then
                      Mark_Entity (Etype (Comp));
 
                      --  Mark default value of component or discriminant
+
                      Mark_Default_Expression (Comp);
                   end if;
 
                   Next_Component_Or_Discriminant (Comp);
                end loop;
             end;
+         elsif Ekind (E) in E_Protected_Type | E_Task_Type then
+            declare
+               Save_SPARK_Pragma : constant Node_Id :=
+                 Current_SPARK_Pragma;
+               Comp              : Node_Id;
+
+            begin
+               --  Mark discriminants of the protected type
+
+               if Has_Discriminants (E) then
+                  Comp := First_Discriminant (E);
+
+                  while Present (Comp) loop
+                     Mark_Entity (Etype (Comp));
+                     Next_Discriminant (Comp);
+                  end loop;
+               end if;
+
+               --  Components of protected objects may be subjected to a
+               --  different SPARK_Mode.
+
+               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+
+               --  Do not mark components which are declared in a part with
+               --  SPARK_Mode => Off.
+
+               if not SPARK_Pragma_Is (Opt.Off) then
+
+                  Comp := First_Component (E);
+
+                  while Present (Comp) loop
+                     Mark_Entity (Etype (Comp));
+                     Next_Component (Comp);
+                  end loop;
+               end if;
+
+               Current_SPARK_Pragma := Save_SPARK_Pragma;
+            end;
+         end if;
+
+         --  Record position of where to insert concurrent type on the
+         --  Entity_List.
+
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
+            Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
 
          if Has_Own_Invariants (E) then
@@ -4152,7 +4196,6 @@ package body SPARK_Definition is
                            C := First_Discriminant (E);
                            while Present (C) loop
                               Mark_Entity (C);
-                              Mark_Entity (Etype (C));
                               Mark_Default_Expression (C);
                               Next_Discriminant (C);
                            end loop;
