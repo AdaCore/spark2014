@@ -1,13 +1,9 @@
 from test_support import *
-prove_all(prover=["cvc4","z3","alt-ergo"],
-          steps=1,
-          no_output=True,
-          counterexample=False)
-prove_all(prover=["alt-ergo"],
-          steps=2300,
-          no_output=True,
-          counterexample=False)
-prove_all(prover=["cvc4"],
-          steps=2300,
-          no_fail=True,
-          counterexample=False)
+
+# We use a different configuration for CVC4 here to fully complete the
+# proof. We keep having issues with bitvector-heavy code, and a CBQI and a
+# different decision heuristic is quite useful here. However, its much
+# worse overall so we don't have it enabled by default.
+prove_all(no_fail=True,
+          opt=["--why3-conf=why3.conf", "--replay"],
+          prover=["cvc4", "cvc4_alt", "z3", "altergo"])

@@ -8,7 +8,7 @@ p.adb:9:19: info: assertion proved (CVC4: 1 VC)
 p.adb:9:19: info: initialization of "F" proved
 p.adb:10:19: info: initialization of "F" proved
 p.adb:10:19: medium: assertion might fail, cannot prove F+1.0 > X
-p.adb:10:20: info: overflow check proved (Z3: 1 VC)
+p.adb:10:20: medium: overflow check might fail
 p.adb:11:19: info: initialization of "R" proved
 p.adb:11:19: medium: assertion might fail, cannot prove R = C or else R = F
 p.adb:11:23: info: initialization of "C" proved

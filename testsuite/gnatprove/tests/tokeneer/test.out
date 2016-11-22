@@ -141,7 +141,7 @@ admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget (e.g. when AuthCert = (Valid => False))
+admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
@@ -243,7 +243,7 @@ auditlog.adb:536:26: info: initialization of "TheFile" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:636
-auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636 (e.g. when ElementID = StartUnenrolledTIS)
+auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:591:17: info: initialization of "ElementText" proved
 auditlog.adb:591:17: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:601:14: info: initialization of "OK" proved
@@ -254,13 +254,13 @@ auditlog.adb:610:52: info: initialization of "Now.Month" proved
 auditlog.adb:610:52: info: initialization of "Now.Year" proved
 auditlog.adb:636:35: info: initialization of "C76b" proved
 auditlog.adb:667:14: info: initialization of "OK" proved
-auditlog.adb:717:59: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
+auditlog.adb:717:59: medium: range check might fail
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1 (e.g. when CurrentLogFile = 1 and LogFileEntries = (1 => 1024, others => 0))
+auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
@@ -285,7 +285,7 @@ auditlog.adb:942:22: info: initialization of "Head" proved
 auditlog.adb:945:22: info: initialization of "Head" proved
 auditlog.adb:949:50: info: range check proved (CVC4: 1 VC)
 auditlog.adb:951:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1008:56: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
+auditlog.adb:1008:56: medium: range check might fail
 auditlog.adb:1008:61: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1009:39: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1010:19: info: postcondition proved (CVC4: 2 VC)
@@ -355,9 +355,9 @@ auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent o
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
 auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1236:64: medium: range check might fail (e.g. when UsedLogFiles = (List => (others => 0), Head => 17, LastI => 17, Length => 0))
+auditlog.adb:1236:64: medium: range check might fail
 auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1237:65: medium: range check might fail (e.g. when UsedLogFiles = (List => (others => 0), Head => 17, LastI => 17, Length => 17))
+auditlog.adb:1237:65: medium: range check might fail
 auditlog.adb:1238:26: info: range check proved (CVC4: 2 VC)
 auditlog.adb:1239:32: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
@@ -368,9 +368,9 @@ auditlog.adb:1241:69: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1248:64: medium: range check might fail (e.g. when UsedLogFiles = (List => (others => 0), Head => 17, LastI => 17, Length => 0))
+auditlog.adb:1248:64: medium: range check might fail
 auditlog.adb:1249:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1249:65: medium: range check might fail (e.g. when UsedLogFiles = (List => (others => 0), Head => 17, LastI => 17, Length => 17))
+auditlog.adb:1249:65: medium: range check might fail
 auditlog.adb:1250:60: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1250:60: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1258:10: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
@@ -474,21 +474,21 @@ bio.adb:122:25: info: initialization of "C30b" proved, in call inlined at bio.ad
 bio.adb:122:25: info: initialization of "C5b" proved
 bio.adb:127:14: info: initialization of "Result" proved
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2147483646 and FullString'Last = 2147483646 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
-bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 1 and TheCodeName = BioApiOk)
+bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:183
-bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 2)
-bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 2 and ReturnValue = 0)
-bio.adb:167:56: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 2)
+bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:56: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.adb:183
 bio.adb:173:42: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
 bio.adb:173:45: info: initialization of "FullString" proved
 bio.adb:173:45: info: initialization of "FullString" proved, in call inlined at bio.adb:183
-bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 11)
+bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
 bio.adb:175:23: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
-bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2)
+bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
 bio.adb:241:27: info: initialization of "C44b" proved
@@ -747,9 +747,9 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" 
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
-cert-attr.adb:38:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483639 and FullString'Last = 2147483639)
-cert-attr.adb:39:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483627 and FullString'Last = 2147483627)
-cert-attr.adb:40:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 1)
+cert-attr.adb:38:09: low: range check might fail
+cert-attr.adb:39:09: low: range check might fail
+cert-attr.adb:40:09: low: range check might fail
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
 cert-attr.adb:47:43: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:47:46: info: initialization of "FullString" proved
@@ -824,9 +824,9 @@ cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
-cert.adb:63:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483639 and FullString'Last = 2147483639)
-cert.adb:64:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483627 and FullString'Last = 2147483627)
-cert.adb:65:09: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 1)
+cert.adb:63:09: low: range check might fail
+cert.adb:64:09: low: range check might fail
+cert.adb:65:09: low: range check might fail
 cert.adb:71:43: info: initialization of "LocalUser" proved
 cert.adb:71:43: info: length check proved (CVC4: 1 VC)
 cert.adb:71:46: info: initialization of "FullString" proved
@@ -848,13 +848,13 @@ certificatestore.adb:190:35: info: initialization of "Success" proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
 certificatestore.adb:221:23: info: range check proved (CVC4: 1 VC)
-certificatestore.adb:221:31: medium: range check might fail (e.g. when Length = 0)
+certificatestore.adb:221:31: medium: range check might fail
 certificatestore.adb:222:18: info: initialization of "Length" proved
 certificatestore.adb:222:26: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:26: medium: "Text" might not be initialized
 certificatestore.adb:222:29: info: initialization of "Str" proved
 certificatestore.adb:222:29: info: length check proved (CVC4: 1 VC)
-certificatestore.adb:222:29: medium: range check might fail (e.g. when Str'First = 3 and Text = (others => 0))
+certificatestore.adb:222:29: medium: range check might fail
 certificatestore.adb:222:36: info: initialization of "Length" proved
 certificatestore.adb:223:15: info: initialization of "Length" proved
 certificatestore.adb:223:42: info: initialization of "Text" proved
@@ -1505,17 +1505,17 @@ configdata.ads:247:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Year" proved
 configuration.adb:99:57: info: division check proved (CVC4: 1 VC)
-configuration.adb:99:63: low: range check might fail (e.g. when TheAlarmSilentDuration = 10)
-configuration.adb:100:12: low: range check might fail (e.g. when TheLatchUnlockDuration = 10)
+configuration.adb:99:63: low: range check might fail
+configuration.adb:100:12: low: range check might fail
 configuration.adb:100:59: info: division check proved (CVC4: 1 VC)
 configuration.adb:100:65: low: range check might fail
-configuration.adb:101:12: low: range check might fail (e.g. when TheTokenRemovalDuration = 10)
+configuration.adb:101:12: low: range check might fail
 configuration.adb:101:60: info: division check proved (CVC4: 1 VC)
 configuration.adb:101:66: low: range check might fail
-configuration.adb:102:12: low: range check might fail (e.g. when TheFingerWaitDuration = 10)
+configuration.adb:102:12: low: range check might fail
 configuration.adb:102:58: info: division check proved (CVC4: 1 VC)
 configuration.adb:102:64: low: range check might fail
-configuration.adb:103:12: low: range check might fail (e.g. when TheEnclaveClearance = Unmarked)
+configuration.adb:103:12: low: range check might fail
 configuration.adb:103:58: low: range check might fail
 configuration.adb:104:12: low: range check might fail
 configuration.adb:104:19: info: range check proved (CVC4: 4 VC)
@@ -1706,7 +1706,7 @@ door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail (e.g. when CurrentDoor = Open and DoorAlarm = Silent and ID = StartUnenrolledTIS and NewDoor = Open and SystemFault = True)
+door.adb:169:30: medium: refined postcondition might fail
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
@@ -1739,7 +1739,7 @@ door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and DoorAlarm = Silent)
+door.adb:347:30: medium: refined postcondition might fail
 door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1780,9 +1780,9 @@ doorapi.adb:48:10: info: initialization of "CommsIsOK" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Data" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Length" proved
 doorapi.adb:52:46: info: initialization of "Msg" proved
-doorapi.adb:54:28: medium: precondition might fail (e.g. when IsOp = False and StateDict = (others => 0) and StateDict'First = 2 and StateDict'Last = 1)
+doorapi.adb:54:28: medium: precondition might fail
 doorapi.adb:56:25: info: initialization of "StateDict" proved
-doorapi.adb:57:32: medium: precondition might fail (e.g. when StateDict = (others => 0) and StateDict'First = 2 and StateDict'Last = 1)
+doorapi.adb:57:32: medium: precondition might fail
 doorapi.adb:58:47: info: initialization of "StateDict" proved
 doorapi.adb:61:13: info: initialization of "IsOp" proved
 doorapi.adb:62:16: info: initialization of "IsClosed" proved
@@ -1865,7 +1865,7 @@ enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
 enclave.adb:1215:18: medium: precondition might fail
-enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly (e.g. when Status = ShutDown)
+enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
 enclave.adb:1249:19: medium: precondition might fail
@@ -1874,7 +1874,7 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin) (e.g. when Status = EnclaveQuiescent)
+enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
@@ -1893,16 +1893,16 @@ enclave.adb:1623:12: info: initialization of "LocalStatus" proved
 enclave.adb:1625:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1628:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1631:13: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1670:31: medium: refined postcondition might fail (e.g. when Status = EnclaveQuiescent)
+enclave.adb:1670:31: medium: refined postcondition might fail
 enclave.adb:1685:21: medium: precondition might fail
 enclave.adb:1704:18: medium: precondition might fail
 enclave.adb:1731:47: medium: "Floppy.Output" might not be written
-enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when LocalStatus = WaitingRemoveAdminTokenFail and Status = EnclaveQuiescent)
+enclave.adb:1887:06: medium: refined postcondition might fail
 enclave.adb:1906:18: medium: precondition might fail
 enclave.adb:1912:19: medium: precondition might fail
 enclave.adb:1937:18: medium: precondition might fail
 enclave.adb:1943:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1947:42: medium: range check might fail (e.g. when LocalStatus = NotEnrolled and Status = EnclaveQuiescent)
+enclave.adb:1947:42: medium: range check might fail
 enclave.adb:1949:12: info: initialization of "LocalStatus" proved
 enclave.adb:1952:13: info: precondition proved (CVC4: 7 VC)
 enclave.adb:1957:13: info: precondition proved (CVC4: 13 VC)
@@ -1948,9 +1948,9 @@ enclave.ads:603:13: info: postcondition proved (CVC4: 16 VC)
 enclave.ads:632:29: medium: precondition might fail
 enclave.ads:642:29: medium: precondition might fail
 enclave.ads:648:30: medium: precondition might fail
-enrolment.adb:66:66: low: range check might fail (e.g. when CertNo = 1)
+enrolment.adb:66:66: low: range check might fail
 enrolment.adb:67:55: low: range check might fail
-enrolment.adb:67:63: low: range check might fail (e.g. when Detail = (others => 0) and Detail'First = 1 and Detail'Last = 2147483613)
+enrolment.adb:67:63: low: range check might fail
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved (CVC4: 1 VC)
 enrolment.adb:71:43: info: length check proved (CVC4: 1 VC)
@@ -2010,7 +2010,7 @@ enrolment.adb:228:27: info: overflow check proved (CVC4: 1 VC)
 enrolment.adb:229:10: info: initialization of "CertNo" proved
 enrolment.adb:236:45: info: initialization of "DataOK" proved
 enrolment.adb:238:23: info: initialization of "CertNo" proved
-enrolment.adb:238:30: medium: overflow check might fail (e.g. when CertNo = 2147483647)
+enrolment.adb:238:30: medium: overflow check might fail
 enrolment.adb:239:13: info: initialization of "CertNo" proved
 enrolment.adb:250:14: info: initialization of "ClosedOK" proved
 enrolment.adb:251:25: info: initialization of "CertNo" proved
@@ -2018,7 +2018,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent) (e.g. when DataOK = True)
+enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
@@ -2417,7 +2417,7 @@ screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:597
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:603
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:609
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:591 (e.g. when Str = (others => 0) and ValueStr'First = 1 and ValueStr'Last = 0)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:591
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609
@@ -2439,7 +2439,7 @@ screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at sc
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:597
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:603
 screen.adb:440:44: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:609
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591 (e.g. when Str = (others => 0) and ValueStr'First = 3)
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:609
@@ -2638,10 +2638,10 @@ screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at sc
 screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:812
 screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:818
 screen.adb:784:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:824
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824
 screen.adb:785:17: info: initialization of "Result" proved
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:806
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:812
@@ -2828,7 +2828,7 @@ tismain.adb:749:43: medium: "UserToken.Output" might not be written
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
-tismain.adb:1121:13: medium: postcondition might fail, cannot prove Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault (e.g. when SystemFault = False)
+tismain.adb:1121:13: medium: postcondition might fail, cannot prove Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1156:25: medium: precondition might fail
@@ -2933,15 +2933,15 @@ tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:164:07: info: no contextual analysis of "MakeDescription" (nested subprogram)
-tokenreader.adb:173:47: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2147483646 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
-tokenreader.adb:174:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2 and TheCodeName = Success)
-tokenreader.adb:174:55: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
-tokenreader.adb:175:12: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2 and ResponseCode = 0)
-tokenreader.adb:175:56: low: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 2)
+tokenreader.adb:173:47: low: range check might fail
+tokenreader.adb:174:12: low: range check might fail
+tokenreader.adb:174:55: low: range check might fail
+tokenreader.adb:175:12: low: range check might fail
+tokenreader.adb:175:56: low: range check might fail
 tokenreader.adb:180:43: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 150)
+tokenreader.adb:180:46: medium: length check might fail
 tokenreader.adb:182:23: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 151)
+tokenreader.adb:182:23: medium: range check might fail
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
@@ -3036,7 +3036,7 @@ userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:476:15: low: range check might fail (e.g. when AchievedFAR = 0 and FullString = (others => 0) and FullString'First = 2147483632 and FullString'Last = 2147483632)
+userentry.adb:476:15: low: range check might fail
 userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
 userentry.adb:482:48: info: initialization of "FullString" proved
 userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
@@ -3074,7 +3074,7 @@ userentry.adb:923:33: info: initialization of "Status" constituent of "State" pr
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = GotUserToken and Status = Quiescent and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0))
+userentry.adb:1183:13: medium: refined postcondition might fail
 userentry.adb:1197:37: info: range check proved (CVC4: 1 VC)
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)

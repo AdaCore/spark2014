@@ -92,7 +92,7 @@ math_simple_abstract.adb:46:46: info: initialization of "C" proved
 math_simple_abstract.adb:47:49: info: range check proved (CVC4: 1 VC)
 math_simple_abstract.adb:47:68: info: range check proved (CVC4: 1 VC)
 math_simple_abstract.adb:48:15: info: initialization of "C" proved
-math_simple_abstract.adb:48:17: info: range check proved (Z3: 1 VC)
+math_simple_abstract.adb:48:17: medium: range check might fail
 math_simple_abstract.adb:51:07: info: precondition proved (altergo: 1 VC)
 math_simple_abstract.adb:51:26: info: initialization of "C" proved
 math_simple_abstract.adb:52:07: info: precondition proved (altergo: 1 VC)

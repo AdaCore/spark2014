@@ -157,7 +157,7 @@ skein.adb:804:26: info: initialization of "Local_Ctx.B" proved, in call inlined 
 skein.adb:804:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:842
 skein.adb:805:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:842
 skein.adb:805:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:842
-skein.adb:810:12: info: length check proved (altergo: 1 VC)
+skein.adb:810:12: info: length check proved (CVC4: 1 VC)
 skein.adb:813:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:817:16: info: initialization of "Local_Ctx.B" proved
 skein.adb:818:29: info: initialization of "Local_Ctx.H.Byte_Count" proved

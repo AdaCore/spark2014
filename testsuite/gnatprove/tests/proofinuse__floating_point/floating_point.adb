@@ -269,7 +269,7 @@ is
       pragma Assert (Res);     -- valid
    end User_Rule_10;
 
-   --  The counterexample to 11 involves infinity.
+   --  The counterexample to 11 involves infinity (a = 0, c = Float'Last)
 
    procedure User_Rule_11 (A, B, C, D : Float;
                            Res        : out Boolean)
@@ -277,8 +277,8 @@ is
    begin
       pragma Assume (A >= 0.0);
       pragma Assume (B >= 0.0);
-      Res := (C * C) * A + (D * D) * B >= 0.0;
-      pragma Assert (Res);     --@ASSERT:FAIL
+      Res := (C * C) * A + (D * D) * B >= 0.0; --@OVERFLOW_CHECK:FAIL
+      pragma Assert (Res);
    end User_Rule_11;
 
    procedure User_Rule_12 (A, B, C, D : Float;
