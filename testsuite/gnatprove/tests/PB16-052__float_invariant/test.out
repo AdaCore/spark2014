@@ -1,0 +1,38 @@
+attempt_1.adb:14:17: info: range check proved (Interval)
+attempt_1.adb:14:20: info: overflow check proved (Interval)
+attempt_1.adb:14:27: info: overflow check proved (Interval)
+attempt_1.adb:17:17: info: range check proved (Interval)
+attempt_1.adb:17:20: info: overflow check proved (Interval)
+attempt_1.adb:17:24: info: overflow check proved (Interval)
+attempt_1.adb:25:33: info: initialization of "New_Speed" proved
+attempt_1.adb:26:33: info: initialization of "Average" proved
+attempt_1.adb:30:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+attempt_1.adb:30:32: info: range check proved (CVC4: 1 VC)
+attempt_1.adb:30:37: info: initialization of "New_Speed" proved
+attempt_1.adb:33:30: info: overflow check proved (CodePeer)
+attempt_1.adb:33:40: info: overflow check proved (Interval)
+attempt_1.adb:33:44: info: overflow check proved (Interval)
+attempt_1.adb:34:31: info: overflow check proved (CodePeer)
+attempt_1.adb:34:33: info: initialization of "New_Speed" proved
+attempt_1.adb:34:44: info: division check proved (CodePeer)
+attempt_1.adb:34:44: info: overflow check proved (Interval)
+attempt_2.adb:16:18: info: range check proved (Interval)
+attempt_2.adb:16:18: medium: overflow check might fail
+attempt_2.adb:16:22: info: overflow check proved (Interval)
+attempt_2.adb:16:37: info: overflow check proved (Interval)
+attempt_2.adb:19:18: info: range check proved (Interval)
+attempt_2.adb:19:18: medium: overflow check might fail
+attempt_2.adb:19:22: info: overflow check proved (Interval)
+attempt_2.adb:19:36: info: overflow check proved (Interval)
+attempt_2.adb:27:33: info: initialization of "New_Speed" proved
+attempt_2.adb:28:33: info: initialization of "Average" proved
+attempt_2.adb:32:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+attempt_2.adb:32:32: info: range check proved (CVC4: 1 VC)
+attempt_2.adb:32:37: info: initialization of "New_Speed" proved
+attempt_2.adb:35:30: info: overflow check proved (CodePeer)
+attempt_2.adb:35:40: info: overflow check proved (Interval)
+attempt_2.adb:35:44: info: overflow check proved (Interval)
+attempt_2.adb:36:31: info: overflow check proved (CodePeer)
+attempt_2.adb:36:33: info: initialization of "New_Speed" proved
+attempt_2.adb:36:44: info: division check proved (CodePeer)
+attempt_2.adb:36:44: info: overflow check proved (Interval)

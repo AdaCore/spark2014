@@ -1,4 +1,4 @@
-package body Foo is
+package body Attempt_1 is
 
    type Float64 is digits 15;
 
@@ -8,18 +8,13 @@ package body Foo is
 
    G : constant := 3.711; -- gravitational constant on mars
 
-   subtype Min_Range_T is Float64
-     range Float64 (Frame'Last) * (-G) * Frame_Length .. 0.0;
-   subtype Max_Range_T is Float64
-     range 0.0 .. Float64 (Frame'Last) * G * Frame_Length;
-
    subtype Ratio_T is Float64 range -1.0 .. 1.0;
 
-   function Low_Bound (N : Frame) return Min_Range_T
-   is (Float64 (N) * (-G) * Frame_Length);
+   function Low_Bound (N : Frame) return Float64
+   is (Float64 (N) * (-G) * Frame_Length); --@OVERFLOW_CHECK:PASS
 
-   function High_Bound (N : Frame) return Max_Range_T
-   is (Float64 (N) * G * Frame_Length);
+   function High_Bound (N : Frame) return Float64
+   is (Float64 (N) * G * Frame_Length); --@OVERFLOW_CHECK:PASS
 
    function Invariant (N : Frame; Speed : Float64) return Boolean
    is (Speed in Low_Bound (N) .. High_Bound (N));
@@ -32,15 +27,11 @@ package body Foo is
    with Global => null,
         Pre    => N < Frame'Last and then
                   Invariant (N, Old_Speed),
-        Post   => Invariant (N + 1, New_Speed)
+        Post   => Invariant (N + 1, New_Speed) --@POSTCONDITION:FAIL
    is
-      pragma Assert (Low_Bound (N) >= Low_Bound (N + 1));
-      pragma Assert (High_Bound (N) <= High_Bound (N + 1));
    begin
-      New_Speed := Old_Speed + (Factor * G * Frame_Length);
-      pragma Assert (New_Speed >= Low_Bound (N + 1));
-      pragma Assert (New_Speed <= High_Bound (N + 1));
-      Average   := (Old_Speed + New_Speed) / 2.0;
+      New_Speed := Old_Speed + (Factor * G * Frame_Length); --@OVERFLOW_CHECK:PASS
+      Average   := (Old_Speed + New_Speed) / 2.0;           --@OVERFLOW_CHECK:PASS
    end Faceplant_On_Mars;
 
-end Foo;
+end Attempt_1;
