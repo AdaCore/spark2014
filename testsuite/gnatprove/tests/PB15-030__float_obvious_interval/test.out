@@ -1,2 +1,1 @@
 foo.adb:7:23: info: initialization of "B" proved
-foo.adb:11:16: medium: range check might fail
