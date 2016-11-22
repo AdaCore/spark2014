@@ -128,10 +128,12 @@ package Gnat2Why.Annotate is
    --  where
    --    GNATprove           is a fixed identifier
    --    Terminating         is a fixed identifier
-   --    E                   is a subprogram entity
+   --    E                   is a subprogram or a package entity
 
-   --  When such an annotation is provided, E is assumed to terminate as far as
-   --  proof is concerned.
+   --  When such an annotation is provided for a subprogram E, it is assumed to
+   --  terminate as far as proof is concerned. If it is provided for a package,
+   --  then all the subprograms declared in this package are assumed to
+   --  terminate.
 
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;

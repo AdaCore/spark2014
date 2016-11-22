@@ -87,7 +87,7 @@ package body Gnat2Why.Annotate is
 
    Terminate_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  Stores function entities with a pragma Annotate
+   --  Stores subprogram and package entities with a pragma Annotate
    --  (GNATprove, Terminating, E).
 
    procedure Insert_Annotate_Range
@@ -465,14 +465,17 @@ package body Gnat2Why.Annotate is
 
       --  This entity must be a function
 
-      if Ekind (E) not in Subprogram_Kind then
+      if Ekind (E) not in Subprogram_Kind | E_Package then
          Error_Msg_N
-           ("Entity parameter of a pragma Terminating must be a subprogram",
+           ("Entity parameter of a pragma Terminating must be a subprogram or "
+            & "a package",
             Arg3_Exp);
          return;
       end if;
 
-      Terminate_Annotations.Include (E);
+      --  Go through renamings to find the appropriate entity
+
+      Terminate_Annotations.Include (Get_Renamed_Entity (E));
    end Check_Terminate_Annotation;
 
    -----------------------------------------------
@@ -510,8 +513,15 @@ package body Gnat2Why.Annotate is
    -- Has_Terminate_Annotation --
    ------------------------------
 
-   function Has_Terminate_Annotation (E : Entity_Id) return Boolean renames
-     Terminate_Annotations.Contains;
+   function Has_Terminate_Annotation (E : Entity_Id) return Boolean is
+      Unit : constant Entity_Id :=
+        (if Present (Scope (E)) then Enclosing_Unit (E) else Empty);
+   begin
+      return Terminate_Annotations.Contains (E)
+        or else (Present (Unit)
+                 and then Ekind (Unit) = E_Package
+                 and then Has_Terminate_Annotation (Unit));
+   end Has_Terminate_Annotation;
 
    ---------------------------
    -- Insert_Annotate_Range --
