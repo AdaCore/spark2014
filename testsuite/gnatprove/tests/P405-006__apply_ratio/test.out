@@ -57,3 +57,7 @@ spark-mod_arithmetic_lemmas.ads:106:32: info: division check proved, in instanti
 spark-mod_arithmetic_lemmas.ads:106:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:114:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:114:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-test_array_lemmas.ads:64:19: info: index check proved
+spark-test_array_lemmas.ads:64:31: info: index check proved
+spark-test_array_lemmas.ads:73:19: info: index check proved
+spark-test_array_lemmas.ads:73:31: info: index check proved
