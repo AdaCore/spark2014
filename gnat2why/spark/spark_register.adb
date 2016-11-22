@@ -92,8 +92,8 @@ package body SPARK_Register is
                         when N_Call =>
                            Register_Entity (E);
 
-                           --  Register external calls to protected subprograms
-                           --  and entries.
+                        --  Register external calls to protected subprograms
+                        --  and entries.
                         when N_Selected_Component =>
                            case Nkind (Parent (Parent (N))) is
                               when N_Call =>
@@ -111,6 +111,15 @@ package body SPARK_Register is
                               when others =>
                                  null;
                            end case;
+
+                        when N_Block_Statement
+                           | N_Null_Statement
+                        =>
+                           if Nkind (Original_Node (Parent (N))) =
+                             N_Procedure_Call_Statement
+                           then
+                              Register_Entity (E);
+                           end if;
 
                         when others =>
                            null;
