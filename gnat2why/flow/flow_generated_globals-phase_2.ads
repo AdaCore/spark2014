@@ -184,11 +184,11 @@ package Flow_Generated_Globals.Phase_2 is
                            | E_Package
                            | E_Procedure
                            | E_Task_Type,
-        Post => (for all Calle of Generated_Calls'Result
-                   => Ekind (Calle) in Entry_Kind
-                                     | E_Function
-                                     | E_Package
-                                     | E_Procedure);
+        Post => (for all Callee of Generated_Calls'Result
+                   => Ekind (Callee) in Entry_Kind
+                                      | E_Function
+                                      | E_Package
+                                      | E_Procedure);
    --  Returns callees of entity E
 
    function Is_Potentially_Blocking (E : Entity_Id) return Boolean
