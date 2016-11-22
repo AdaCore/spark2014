@@ -1214,6 +1214,27 @@ package body Flow is
          end case;
       end if;
 
+      --  Note if this is a subprogram with no effects; needed only in phase 2
+      --  to disable some checks.
+      if not FA.Generating_Globals then
+         case FA.Kind is
+            when Kind_Subprogram =>
+               FA.No_Effects :=
+                 (for all F of FA.All_Vars =>
+                     not FA.Atr (FA.CFG.Get_Vertex
+                                 (Change_Variant (F, Final_Value))).Is_Export);
+
+            when Kind_Task =>
+               FA.No_Effects := False;
+
+            --  Otherwise No_Effects is not part of discriminated record, do
+            --  not touch it.
+
+            when others =>
+               null;
+         end case;
+      end if;
+
       --  Register tasking-related information
       if FA.Generating_Globals then
          Debug_GG_Tasking_Info;

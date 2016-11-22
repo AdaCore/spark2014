@@ -6336,21 +6336,6 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end if;
 
-      --  Note if this is a subprogram with no effects.
-      case FA.Kind is
-         when Kind_Subprogram =>
-            FA.No_Effects :=
-              (for all F of FA.All_Vars =>
-                  not FA.Atr (FA.CFG.Get_Vertex
-                    (Change_Variant (F, Final_Value))).Is_Export);
-
-         when Kind_Task =>
-            FA.No_Effects := False;
-
-         when others =>
-            null; --  leave as uninitialized for sanity checking
-      end case;
-
       --  Finally, make sure that all extra checks for folded functions have
       --  been processed and other context information has been dropped.
       pragma Assert (The_Context = No_Context);
