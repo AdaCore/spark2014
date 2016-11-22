@@ -3632,7 +3632,17 @@ package body Flow.Control_Flow_Graph is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
    begin
-      FA.Direct_Calls.Insert (Spec_E);
+      --  Pretend that declaration of a nested package is a "call", so that
+      --  calls from the elaboration of that package will appear as calls from
+      --  the analyzed entity.
+      --
+      --  Don't do this for wrapper packages, because they are not
+      --  flow-analyzed and we do not get direct calls for them; in effect, we
+      --  wouldn't be able to resolve calls from their elaboration (but there
+      --  shouldn't be any such calls anyway).
+      if not Is_Wrapper_Package (Spec_E) then
+         FA.Direct_Calls.Insert (Spec_E);
+      end if;
 
       --  Introduce variables from the Abstract_State aspect of the nested
       --  package.

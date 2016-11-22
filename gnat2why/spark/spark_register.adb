@@ -258,6 +258,7 @@ package body SPARK_Register is
             when N_Package_Declaration        |
                  N_Protected_Type_Declaration |
                  N_Task_Type_Declaration      =>
+               --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
 
             when others =>
