@@ -428,17 +428,17 @@ is then available for users of binary trees who can call function
 %% in the invariant of search trees, which is given in Figure~\ref{fig-search}.
 
 \begin{figure}[ht]
-\hspace{-2mm}
-\begin{minipage}[c]{.78\linewidth}
+\hspace{-3mm}
+\begin{minipage}[c]{.79\linewidth}
 \begin{small}
 \begin{lstlisting}
 (for all I in Index_Type =>
   (for all J in Index_Type =>
-    (if Model (F, Root) (I).K
-      and Model (F, Root) (J).K
-      and Model (F, Root) (I).A < Model (F, Root) (J).A
-     then (if Get (Model (F, Root) (J).A,
-                   Length (Model (F, Root) (I).A) + 1)
+    (if Model (F, Root) (I).Reachable
+      and Model (F, Root) (J).Reachable
+      and Model (F, Root) (I).Path < Model (F, Root) (J).Path
+     then (if Get (Model (F, Root) (J).Path,
+                   Length (Model (F, Root) (I).Path) + 1)
               = Left
            then Values (J) < Values (I)
            else Values (J) > Values (I)))))
@@ -450,7 +450,12 @@ is then available for users of binary trees who can call function
 \includegraphics[width=2cm]{search.pdf}
 \end{center}
 \end{minipage}
-\caption{\label{fig-search} Type invariant of search trees.}
+\caption{\label{fig-search} Type invariant of search trees. For a forest \texttt{F}
+and an index \texttt{Root}, \texttt{Model (F, Root)} returns the model of the tree
+rooted at \texttt{Root} in \texttt{F}. For each index \texttt{I} in the underlying
+array, if \texttt{Model (F, Root) (I).Reachable} is true then \texttt{I} is reachable from
+\texttt{Root} in \texttt{F} and \texttt{Model (F, Root) (I).Path} is the sequence
+of directions corresponding to the path from \texttt{Root} to \texttt{I}.}
 \end{figure}
 
 The invariant of search trees states that the value stored in each node of the
@@ -765,10 +770,10 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
     Size (T) = Size (T)'Old
 
     --  Nodes in the tree are preserved
-    and then (for all J in Index_Type =>
-               (if Model (T) (J).K then Model (T'Old) (J).K))
-    and then (for all J in Index_Type =>
-               (if Model (T'Old) (J).K then Model (T) (J).K));
+    and (for all J in Index_Type =>
+          (if Model (T) (J).Reachable then Model (T'Old) (J).Reachable))
+    and (for all J in Index_Type =>
+          (if Model (T'Old) (J).Reachable then Model (T) (J).Reachable));
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-spec-no-leak} Postcondition of \texttt{Right\_Rotate} dealing with absence of memory leaks.}
@@ -824,24 +829,24 @@ trees.
 %%     --  rooted at R, or for those nodes which have V on their path, from
 %%     --  the tree previously rooted at V.
 %%     and (for all I in Index_Type =>
-%%           (if Model (F, R) (I).K then
-%%             (if V /= Empty and Model (F, R) (V).A <= Model (F, R) (I).A
-%%              then Model (F'Old, V) (I).K
-%%              else Model (F'Old, R) (I).K)))
+%%           (if Model (F, R) (I).Reachable then
+%%             (if V /= Empty and Model (F, R) (V).Path <= Model (F, R) (I).Path
+%%              then Model (F'Old, V) (I).Reachable
+%%              else Model (F'Old, R) (I).Reachable)))
 
 %%     --  Paths are preserved for nodes that were previously in the tree
 %%     and (for all J in Index_Type =>
-%%           (if Model (F'Old, R) (J).K
-%%            then Model (F, R) (J).A = Model (F'Old, R) (J).A))
+%%           (if Model (F'Old, R) (J).Reachable
+%%            then Model (F, R) (J).Path = Model (F'Old, R) (J).Path))
 
 %%     --  The path for nodes in the tree previously rooted at V is obtained
 %%     --  by concatenating the path from R to V and the path from V to the
 %%     --  node.
 %%     and (for all J in Index_Type =>
-%%           (if V /= Empty and then Model (F'Old, V) (J).K
-%%            then Is_Concat (Left   => Model (F, R) (V).A,
-%%                            Right  => Model (F'Old, V) (J).A,
-%%                            Result => Model (F, R) (J).A)));
+%%           (if V /= Empty and then Model (F'Old, V) (J).Reachable
+%%            then Is_Concat (Left   => Model (F, R) (V).Path,
+%%                            Right  => Model (F'Old, V) (J).Path,
+%%                            Result => Model (F, R) (J).Path)));
 %% \end{lstlisting}
 %% \end{small}
 %% \caption{\label{fig-spec-binary} Contract of Plug.}
@@ -903,7 +908,8 @@ procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
     and then Valid_Root (F, T1)
     and then Valid_Root (F, T2),
   Post => (for all I in Index_Type =>
-            (not Model (F, T1) (I).K or not Model (F, T2) (I).K));
+            (not Model (F, T1) (I).Reachable
+               or not Model (F, T2) (I).Reachable));
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-proof-lem} Intermediate lemma stating disjointness of trees in a forest.}
@@ -934,9 +940,9 @@ begin
    for N in Index_Type loop
       pragma Loop_Invariant
         (for all I in Index_Type =>
-          (if Model (F, T1) (I).K
-             and Length (Model (F, T1) (I).A) < N
-           then not Model (F, T2) (I).K));
+          (if Model (F, T1) (I).Reachable
+             and Length (Model (F, T1) (I).Path) < N
+           then not Model (F, T2) (I).Reachable));
    end loop;
 end Prove_Model_Distinct;
 \end{lstlisting}
@@ -974,34 +980,34 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
     Valid_Root (F, R)
 
     --  I is in this tree
-    and then Model (F, R) (I).K
+    and then Model (F, R) (I).Reachable
 
     --  J is in this tree
-    and then Model (F, R) (J).K,
+    and then Model (F, R) (J).Reachable,
   Post =>
     --  The node returned is in the tree
-    Model (F, R) (Find_Root'Result).K
+    Model (F, R) (Find_Root'Result).Reachable
 
     --  The node returned is on the path of I
-    and Model (F, R) (Find_Root'Result).A <= Model (F, R) (I).A
+    and Model (F, R) (Find_Root'Result).Path <= Model (F, R) (I).Path
 
     --  The node returned is on the path of J
-    and Model (F, R) (Find_Root'Result).A <= Model (F, R) (J).A
+    and Model (F, R) (Find_Root'Result).Path <= Model (F, R) (J).Path
 
     --  The common ancestor of I and J is either I, or J, or an ancestor
     --  node such that the paths of I and J diverge at this point.
     and (I = Find_Root'Result
            or else J = Find_Root'Result
-           or else Get (Model (F, R) (I).A,
-                        Length (Model (F, R) (Find_Root'Result).A) + 1)
-                /= Get (Model (F, R) (J).A,
-                        Length (Model (F, R) (Find_Root'Result).A) + 1));
+           or else Get (Model (F, R) (I).Path,
+                        Length (Model (F, R) (Find_Root'Result).Path) + 1)
+                /= Get (Model (F, R) (J).Path,
+                        Length (Model (F, R) (Find_Root'Result).Path) + 1));
 \end{lstlisting}
 \end{small}
 \end{minipage}\hspace*{-30mm}
 \begin{minipage}[c]{.22\linewidth}
 \begin{center}
-\vspace*{-35mm}
+\vspace*{-30mm}
 \includegraphics[width=28mm]{transitivity.pdf}
 \end{center}
 \end{minipage}
@@ -1031,14 +1037,14 @@ for J in Index_Type loop
    --  Preserve_Equal to prove the property for node J, based on
    --  the knowledge that it holds for the parent of node J.
 
-   if Model (F, R) (J).K
-     and then Length (Model (F, R) (J).A) = N
-     and then Model (F_Old, R) (J).K
+   if Model (F, R) (J).Reachable
+     and then Length (Model (F, R) (J).Path) = N
+     and then Model (F_Old, R) (J).Reachable
    then
-      Preserve_Equal (S1 => Model (F, R) (Parent (F, J)).A,
-                      S2 => Model (F_Old, R) (Parent (F, J)).A,
-                      S3 => Model (F, R) (J).A,
-                      S4 => Model (F_Old, R) (J).A,
+      Preserve_Equal (S1 => Model (F, R) (Parent (F, J)).Path,
+                      S2 => Model (F_Old, R) (Parent (F, J)).Path,
+                      S3 => Model (F, R) (J).Path,
+                      S4 => Model (F_Old, R) (J).Path,
                       D  => F.C (J).Position);
    end if;
 
@@ -1046,16 +1052,16 @@ for J in Index_Type loop
    --  Preserve_Concat to prove the property for node J, based
    --  on the knowledge that it holds for the parent of node J.
 
-   if Model (F, R) (J).K
-     and then Length (Model (F, R) (J).A) = N
-     and then Model (F_Old, V) (J).K
+   if Model (F, R) (J).Reachable
+     and then Length (Model (F, R) (J).Path) = N
+     and then Model (F_Old, V) (J).Reachable
      and then J /= V
    then
-      Preserve_Concat (S1 => Model (F_Old, V) (Parent (F, J)).A,
-                       S2 => Model (F, R) (Parent (F, J)).A,
-                       S3 => Model (F_Old, V) (J).A,
-                       S4 => Model (F, R) (J).A,
-                       T  => Model (F, R) (V).A,
+      Preserve_Concat (S1 => Model (F_Old, V) (Parent (F, J)).Path,
+                       S2 => Model (F, R) (Parent (F, J)).Path,
+                       S3 => Model (F_Old, V) (J).Path,
+                       S4 => Model (F, R) (J).Path,
+                       T  => Model (F, R) (V).Path,
                        D  => F.C (J).Position);
    end if;
 
@@ -1064,16 +1070,16 @@ for J in Index_Type loop
 
    pragma Loop_Invariant
      (for all I in 1 .. J =>
-       (if Model (F, R) (I).K and Length (Model (F, R) (I).A) <= N then
-          (if Model (F_Old, R) (I).K
-           then Model (F, R) (I).A = Model (F_Old, R) (I).A)));
+       (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
+          (if Model (F_Old, R) (I).Reachable
+           then Model (F, R) (I).Path = Model (F_Old, R) (I).Path)));
    pragma Loop_Invariant
      (for all I in 1 .. J =>
-       (if Model (F, R) (I).K and Length (Model (F, R) (I).A) <= N then
-         (if Model (F_Old, V) (I).K then
-            Is_Concat (Q => Model (F, R) (V).A,
-                       V => Model (F_Old, V) (I).A,
-                       P => Model (F, R) (I).A))));
+       (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
+         (if Model (F_Old, V) (I).Reachable then
+            Is_Concat (Q => Model (F, R) (V).Path,
+                       V => Model (F_Old, V) (I).Path,
+                       P => Model (F, R) (I).Path))));
 end loop;
 \end{lstlisting}
 \end{small}
