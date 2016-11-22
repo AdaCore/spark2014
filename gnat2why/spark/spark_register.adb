@@ -114,9 +114,10 @@ package body SPARK_Register is
 
                         when N_Block_Statement
                            | N_Null_Statement
+                           | N_Unchecked_Type_Conversion
                         =>
-                           if Nkind (Original_Node (Parent (N))) =
-                             N_Procedure_Call_Statement
+                           if Nkind (Original_Node (Parent (N))) in
+                             N_Subprogram_Call
                            then
                               Register_Entity (E);
                            end if;
@@ -152,9 +153,11 @@ package body SPARK_Register is
             end;
          end if;
 
-         --  Explicitly traverse procedure calls rewritten as null statements
-         if Nkind (N) in N_Null_Statement | N_Block_Statement
-           and then Nkind (Original_Node (N)) = N_Procedure_Call_Statement
+         --  Explicitly traverse rewritten subprogram calls
+         if Nkind (N) in N_Block_Statement
+                       | N_Null_Statement
+                       | N_Unchecked_Type_Conversion
+           and then Nkind (Original_Node (N)) in N_Subprogram_Call
          then
             Process_Tree (Original_Node (N));
          end if;
