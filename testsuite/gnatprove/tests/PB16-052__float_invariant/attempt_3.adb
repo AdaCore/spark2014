@@ -35,6 +35,17 @@ package body Attempt_3 is
    is
    begin
       New_Speed := Old_Speed + (Factor * G * Frame_Length);
+
+      pragma Assert (Factor * G * Frame_Length <= 1.0);
+      pragma Assert (New_Speed <= Old_Speed + 1.0);
+      pragma Assert (Old_Speed <= High_Bound (N));
+      pragma Assert (Old_Speed + 1.0 <= High_Bound (N) + 1.0);
+      pragma Assert (New_Speed <= High_Bound(N) + 1.0);
+
+      pragma Assert (Float64(N) * 65.0 + 1.0 <= Float64(N+1) * 65.0);
+      pragma Assert (High_Bound(N) + 1.0 <= High_Bound(N+1));
+      pragma Assert (New_Speed <= High_Bound(N+1));
+
       Average   := (Old_Speed + New_Speed) / 2.0;
       Distance  := Distance + Average * Frame_Length;
    end Faceplant_On_Mars;
