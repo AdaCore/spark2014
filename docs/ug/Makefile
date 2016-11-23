@@ -55,8 +55,8 @@ generate:
 
 generate-nightly:
 	@echo "Generating GNATprove results..."
-	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results clean)
-	(cd examples; make -f Makefile.examples gnatprove clean)
+	(cd gnatprove_by_example; make -f Makefile.examples clean gnatprove results clean)
+	(cd examples; make -f Makefile.examples clean gnatprove clean)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
