@@ -9,7 +9,9 @@ update_uninitialized.adb:30:40: medium: "Element" might not be initialized
 update_uninitialized.ads:9:33: info: initialization of "Element" proved
 update_uninitialized.ads:13:33: info: initialization of "Element" proved
 update_uninitialized_2.adb:16:32: medium: "Z" might not be initialized
+update_uninitialized_2.adb:19:25: high: "Z" is not an input in the Global contract of subprogram "P" at line 15
 update_uninitialized_2.adb:19:25: high: "Z" is not initialized
+update_uninitialized_2.adb:19:25: high: either make "Z" an input in the Global contract or initialize it before use
 update_uninitialized_2.adb:21:21: medium: overflow check might fail
 update_uninitialized_2.adb:28:04: warning: analyzing unreferenced procedure "P2"
 update_uninitialized_3.adb:9:04: info: initialization of "Rec.X" constituent of "State" proved

@@ -25,8 +25,12 @@ foo.adb:123:31: info: initialization of "G1" proved
 foo.adb:123:35: info: initialization of "G2" proved
 foo.adb:126:12: medium: precondition might fail
 foo.adb:127:40: medium: overflow check might fail
+foo.adb:128:29: high: "G1" is not an input in the Global contract of subprogram "Test_07_E" at line 120
 foo.adb:128:29: high: "G1" is not initialized
+foo.adb:128:29: high: "G2" is not an input in the Global contract of subprogram "Test_07_E" at line 120
 foo.adb:128:29: high: "G2" is not initialized
+foo.adb:128:29: high: either make "G1" an input in the Global contract or initialize it before use
+foo.adb:128:29: high: either make "G2" an input in the Global contract or initialize it before use
 foo.adb:128:29: medium: precondition might fail
 foo.adb:129:31: high: "A" is not initialized
 foo.adb:129:38: high: "B" is not initialized

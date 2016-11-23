@@ -2430,6 +2430,7 @@ package body Flow.Analysis is
                if Is_Final_Use and not Is_Global then
                   Append (Msg, " in &");
                end if;
+
             when others =>
                null;
          end case;
@@ -2506,6 +2507,44 @@ package body Flow.Analysis is
                To        => V_Goal,
                Var       => Var,
                V_Allowed => V_Allowed);
+         end if;
+
+         --  In case of a subprogram with an output global which is actually
+         --  used as an input in its body, we add more information to the error
+         --  message.
+         if Kind = Err
+           and then not Default_Init
+           and then Is_Global
+         then
+            Error_Msg_Flow (FA           => FA,
+                            Msg          => "& is not an input " &
+                              "in the Global contract of subprogram " &
+                              "#",
+                            Severity     => High_Check_Kind,
+                            N            => N,
+                            F1           => Var,
+                            F2           =>
+                              Direct_Mapping_Id (FA.Spec_Entity),
+                            Tag          => Uninitialized,
+                            Continuation => True);
+
+            declare
+               Msg : constant String :=
+                 (if Has_Async_Readers (Var)
+                  then "either make & an input in the Global contract or " &
+                    "write to it before use"
+                  else "either make & an input in the Global contract or " &
+                    "initialize it before use");
+
+            begin
+               Error_Msg_Flow (FA           => FA,
+                               Msg          => Msg,
+                               Severity     => High_Check_Kind,
+                               N            => N,
+                               F1           => Var,
+                               Tag          => Uninitialized,
+                               Continuation => True);
+            end;
          end if;
       end Emit_Message;
 

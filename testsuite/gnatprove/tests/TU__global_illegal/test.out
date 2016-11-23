@@ -24,7 +24,9 @@ global_illegal_3.adb:32:19: "Y" must be listed in the Global aspect of "P1" (SPA
 global_illegal_3.adb:43:09: "X" must be a global output of "P2" (SPARK RM 6.1.4(16))
 global_illegal_3.adb:53:07: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4(13))
 global_illegal_3.adb:80:32: low: unused global "X"
+global_illegal_3.adb:81:32: high: "Y" is not an input in the Global contract of subprogram "P5" at line 69
 global_illegal_3.adb:81:32: high: "Y" is not initialized
+global_illegal_3.adb:81:32: high: either make "Y" an input in the Global contract or initialize it before use
 global_illegal_3.adb:81:32: low: unused global "Y"
 global_illegal_3.adb:82:32: low: unused global "Z"
 global_illegal_3.adb:82:32: warning: "Z" is not modified, could be INPUT

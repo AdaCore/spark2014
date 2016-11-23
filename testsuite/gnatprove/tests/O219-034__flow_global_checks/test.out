@@ -6,12 +6,18 @@ foo.adb:41:09: "Y" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK 
 foo.adb:46:40: info: initialization of "N" proved
 foo.adb:47:40: info: initialization of "M" proved
 foo.adb:48:40: info: initialization of "O" proved
+foo.adb:49:31: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:49:31: high: "X" is not initialized
+foo.adb:49:31: high: either make "X" an input in the Global contract or initialize it before use
 foo.adb:49:34: info: initialization of "Y" proved
 foo.adb:49:37: info: initialization of "Z.F" proved
 foo.adb:49:40: info: initialization of "W" proved
+foo.adb:52:12: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:52:12: high: "X" is not initialized
+foo.adb:52:12: high: either make "X" an input in the Global contract or initialize it before use
+foo.adb:53:12: high: "Y" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:53:12: high: "Y" is not initialized
+foo.adb:53:12: high: either make "Y" an input in the Global contract or initialize it before use
 foo.adb:63:40: info: initialization of "N" proved
 foo.adb:64:31: warning: "X" is not modified, could be INPUT
 foo.adb:64:34: warning: unused initial value of "Y"

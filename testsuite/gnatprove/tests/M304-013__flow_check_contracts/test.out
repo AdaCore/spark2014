@@ -3,7 +3,9 @@ test.adb:6:11: medium: missing dependency "null => X"
 test.adb:7:23: medium: missing dependency "Y => Y"
 test.adb:7:28: medium: incorrect dependency "Y => X"
 test.adb:16:33: info: initialization of "G" proved
+test.adb:26:33: high: "G" is not an input in the Global contract of subprogram "Test_02" at line 25
 test.adb:26:33: high: "G" is not initialized
+test.adb:26:33: high: either make "G" an input in the Global contract or initialize it before use
 test.adb:26:33: low: unused global "G"
 test.adb:33:14: medium: overflow check might fail
 test.adb:37:32: low: unused global "G"

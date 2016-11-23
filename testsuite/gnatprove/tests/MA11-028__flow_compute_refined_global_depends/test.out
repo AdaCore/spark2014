@@ -40,7 +40,9 @@ lots_of_tests.adb:147:40: info: initialization of "G1" proved
 lots_of_tests.adb:154:44: warning: "C" constituent of "State2" is not modified, could be INPUT
 lots_of_tests.adb:155:40: info: initialization of "G1" proved
 lots_of_tests.adb:173:40: info: initialization of "B" constituent of "State" proved
+lots_of_tests.adb:183:07: high: "A" constituent of "State" is not an input in the Global contract of subprogram "Internal_User_Of_G_RD_BAD" at lots_of_tests.ads:105
 lots_of_tests.adb:183:07: high: "A" constituent of "State" is not initialized
+lots_of_tests.adb:183:07: high: either make "A" constituent of "State" an input in the Global contract or initialize it before use
 lots_of_tests.adb:207:07: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(13))
 lots_of_tests.ads:5:04: info: initialization of "G1" proved
 lots_of_tests.ads:5:08: info: initialization of "G2" proved

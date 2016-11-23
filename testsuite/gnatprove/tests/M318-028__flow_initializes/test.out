@@ -1,6 +1,8 @@
 test_01.adb:4:32: medium: "Pkg_A.State" might not be initialized after elaboration of main program "Test_01"
 test_02.adb:4:32: info: initialization of "Pkg_A.State" proved
+test_02.adb:7:09: high: "Pkg_A.State" is not an input in the Global contract of subprogram "Test_02" at line 3
 test_02.adb:7:09: high: "Pkg_A.State" is not initialized
+test_02.adb:7:09: high: either make "Pkg_A.State" an input in the Global contract or initialize it before use
 test_03.adb:4:32: info: initialization of "Pkg_A.State" proved
 test_03.adb:8:09: info: initialization of "Pkg_A.State" proved
 test_04.adb:4:32: info: initialization of "Pkg_B.State" proved

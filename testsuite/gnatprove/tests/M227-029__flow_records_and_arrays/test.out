@@ -26,7 +26,9 @@ parameter_tests.adb:15:27: info: initialization of "F" proved
 parameter_tests.adb:21:32: info: initialization of "C.X" proved
 parameter_tests.adb:21:32: info: initialization of "C.Y" proved
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
+parameter_tests.adb:36:32: high: "G.Y" is not an input in the Global contract of subprogram "Set_Global_X" at line 35
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
+parameter_tests.adb:36:32: high: either make "G.Y" an input in the Global contract or initialize it before use
 parameter_tests.adb:36:32: info: initialization of "G.X" proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT

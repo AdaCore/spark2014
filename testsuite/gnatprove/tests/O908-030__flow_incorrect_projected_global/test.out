@@ -28,5 +28,7 @@ pkg_c.ads:11:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:13:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:15:14: info: initialization of "G1" constituent of "State" proved
 use_counting.adb:3:11: info: initialization of "Counting.State" proved
+use_counting.adb:5:05: high: "Counting.State" is not an input in the Global contract of subprogram "Use_Counting" at line 3
 use_counting.adb:5:05: high: "Counting.State" is not initialized
+use_counting.adb:5:05: high: either make "Counting.State" an input in the Global contract or initialize it before use
 use_counting.adb:6:05: info: initialization of "Counting.State" proved

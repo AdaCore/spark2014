@@ -23,9 +23,13 @@ violations.ads:3:13: violation of pragma SPARK_Mode at test.adc:1
 violations.ads:7:09: access type is not allowed in SPARK
 violations.ads:7:09: violation of pragma SPARK_Mode at test.adc:1
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log"
+all_violations.adb:24:14: high: "Last" is not an input in the Global contract of subprogram "Call_Increment_And_Log" at line 24
 all_violations.adb:24:14: high: "Last" is not initialized
+all_violations.adb:24:14: high: either make "Last" an input in the Global contract or initialize it before use
 all_violations.adb:27:09: warning: unused assignment
+all_violations.adb:27:12: high: "Last" is not an input in the Global contract of subprogram "Call_Increment_And_Log" at line 24
 all_violations.adb:27:12: high: "Last" is not initialized
+all_violations.adb:27:12: high: either make "Last" an input in the Global contract or initialize it before use
 all_violations.adb:27:12: side effects of function "Increment_And_Log" are not modeled in SPARK
 all_violations.ads:5:13: function with output global "Count" is not allowed in SPARK
 all_violations.ads:9:13: function with output global "Last" is not allowed in SPARK

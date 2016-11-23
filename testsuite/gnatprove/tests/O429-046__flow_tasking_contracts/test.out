@@ -4,7 +4,9 @@ alarm.adb:23:09: info: initialization of "Blinken_Task" constituent of "Blinkenl
 alarm.adb:23:09: info: nontermination of task proved (CVC4: 1 VC)
 main.adb:5:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 sensor.ads:5:20: info: initialization of "T" proved
+watchdog.adb:6:07: high: "Alarm.Blinkenlights" is not an input in the Global contract of subprogram "Watchdog_Task" at watchdog.ads:6
 watchdog.adb:6:07: high: "Alarm.Blinkenlights" is not written
+watchdog.adb:6:07: high: either make "Alarm.Blinkenlights" an input in the Global contract or write to it before use
 watchdog.adb:9:13: info: initialization of "T" proved
 watchdog.adb:10:13: info: initialization of "Alarm.Blinkenlights" proved
 watchdog.adb:12:13: info: initialization of "Alarm.Blinkenlights" proved
