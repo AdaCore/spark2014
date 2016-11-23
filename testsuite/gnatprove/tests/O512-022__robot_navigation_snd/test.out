@@ -9,7 +9,7 @@ algorithm.adb:111:42: info: overflow check proved (Interval)
 algorithm.adb:111:49: medium: divide by zero might fail
 algorithm.adb:111:49: medium: overflow check might fail
 algorithm.adb:114:43: info: initialization of "d" proved
-algorithm.adb:150:63: info: range check proved (CVC4: 1 VC)
+algorithm.adb:150:63: info: range check proved (Interval)
 algorithm.adb:150:70: medium: overflow check might fail
 algorithm.adb:154:70: info: overflow check proved (CVC4: 1 VC)
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
@@ -266,7 +266,7 @@ algorithm.adb:589:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:596:10: info: initialization of "iNumLPs" proved
 algorithm.adb:601:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:605:67: medium: overflow check might fail
-algorithm.adb:605:101: medium: range check might fail
+algorithm.adb:605:101: info: range check proved (Interval)
 algorithm.adb:605:103: info: initialization of "iNumLPs" proved
 algorithm.adb:605:111: info: division check proved (CVC4: 1 VC)
 algorithm.adb:608:31: info: assertion proved (CVC4: 1 VC)
@@ -358,7 +358,7 @@ algorithm.adb:766:35: info: initialization of "pBestValley.value.risingGap.beari
 algorithm.adb:766:46: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:766:88: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:766:99: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:766:115: info: range check proved (CVC4: 1 VC)
+algorithm.adb:766:115: info: range check proved (Interval)
 algorithm.adb:766:122: medium: overflow check might fail
 algorithm.adb:768:16: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:768:27: info: discriminant check proved (CVC4: 1 VC)

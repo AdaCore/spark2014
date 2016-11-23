@@ -44,7 +44,7 @@ average.adb:12:23: warning: no Global contract available for "Get"
 average.adb:13:15: warning: assuming "New_Line" has no effect on global items
 average.adb:13:15: warning: no Global contract available for "New_Line"
 average.adb:15:16: info: initialization of "A" proved
-average.adb:15:18: info: range check proved (CVC4: 1 VC)
+average.adb:15:18: info: range check proved (Interval)
 average.adb:15:18: medium: overflow check might fail
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
@@ -66,7 +66,7 @@ average_with_use.adb:12:04: warning: no Global contract available for "Get"
 average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global items
 average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
-average_with_use.adb:15:18: info: range check proved (CVC4: 1 VC)
+average_with_use.adb:15:18: info: range check proved (Interval)
 average_with_use.adb:15:18: medium: overflow check might fail
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
@@ -597,13 +597,13 @@ density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude.adb:24:29: info: initialization of "Temperature" proved
-density_altitude.adb:24:29: info: range check proved (CVC4: 1 VC)
+density_altitude.adb:24:29: info: range check proved (Interval)
 density_altitude.adb:24:42: medium: overflow check might fail
 density_altitude.adb:25:29: info: initialization of "Pressure" proved
 density_altitude.adb:25:39: medium: overflow check might fail
 density_altitude.adb:25:39: medium: range check might fail
 density_altitude.adb:26:29: info: initialization of "Humidity" proved
-density_altitude.adb:26:29: info: range check proved (CVC4: 1 VC)
+density_altitude.adb:26:29: info: range check proved (Interval)
 density_altitude.ads:7:20: info: initialization of "Value" proved
 display_control.adb:16:18: warning: assuming "Put" has no effect on global items
 display_control.adb:16:18: warning: no Global contract available for "Put"
@@ -1964,23 +1964,3 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
