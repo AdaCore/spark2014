@@ -12545,12 +12545,6 @@ package body Gnat2Why.Expr is
          when Pragma_Extensions_Visible =>
             return +Void;
 
-         --  Do not issue a warning on unknown pragmas, as one is already
-         --  issued in SPARK.Definition.
-
-         when Unknown_Pragma =>
-            return +Void;
-
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -12821,6 +12815,15 @@ package body Gnat2Why.Expr is
             | Pragma_Lock_Free
             | Pragma_Storage_Size
          =>
+            return +Void;
+
+         --  Unknown_Pragma is treated here. We use an OTHERS case in order to
+         --  deal with all the more recent pragmas introduced in GNAT for which
+         --  we have not yet defined how they are supported in SPARK. Do not
+         --  issue a warning on unknown pragmas, as an error is issued in
+         --  SPARK.Definition.
+
+         when Unknown_Pragma =>
             return +Void;
       end case;
    end Transform_Pragma;

@@ -4924,10 +4924,6 @@ package body SPARK_Definition is
          when Pragma_Priority =>
             Mark (Expression (Arg1));
 
-         when Unknown_Pragma =>
-            Error_Msg_Name_1 := Pname;
-            Mark_Violation ("unknown pragma %", N);
-
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -5210,6 +5206,14 @@ package body SPARK_Definition is
                Error_Msg_Name_1 := Pname;
                Error_Msg_N ("?pragma % ignored (not yet supported)", N);
             end if;
+
+         --  Unknown_Pragma is treated here. We use an OTHERS case in order to
+         --  deal with all the more recent pragmas introduced in GNAT for which
+         --  we have not yet defined how they are supported in SPARK.
+
+         when others =>
+            Error_Msg_Name_1 := Pname;
+            Mark_Violation ("unknown pragma %", N);
       end case;
    end Mark_Pragma;
 

@@ -5428,12 +5428,6 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Type_Invariant_Class =>
             return False;
 
-         --  Do not issue a warning on unknown pragmas, as one is already
-         --  issued in SPARK.Definition.
-
-         when Unknown_Pragma =>
-            return False;
-
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -5710,6 +5704,15 @@ package body Flow.Control_Flow_Graph is
          --  ??? ignored for now, see NA03-003
 
          when Pragma_Extensions_Visible =>
+            return False;
+
+         --  Unknown_Pragma is treated here. We use an OTHERS case in order to
+         --  deal with all the more recent pragmas introduced in GNAT for which
+         --  we have not yet defined how they are supported in SPARK. Do not
+         --  issue a warning on unknown pragmas, as an error is issued in
+         --  SPARK.Definition.
+
+         when others =>
             return False;
       end case;
 
