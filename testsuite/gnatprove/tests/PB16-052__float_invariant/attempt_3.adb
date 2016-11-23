@@ -14,10 +14,10 @@ package body Attempt_3 is
    subtype Drag_T is Float64 range -64.0 .. 64.0;
 
    function Low_Bound (N : Frame) return Float64
-   is (Float64 (N) * Drag_T'First - Float64'Ceiling (G * Frame_Length));
+   is (Float64 (N) * (Drag_T'First - Float64'Ceiling (G * Frame_Length)));
 
    function High_Bound (N : Frame) return Float64
-   is (Float64 (N) * Drag_T'Last + Float64'Ceiling (G * Frame_Length));
+   is (Float64 (N) * (Drag_T'Last + Float64'Ceiling (G * Frame_Length)));
 
    function Invariant (N : Frame; Speed : Float64) return Boolean
    is (Speed in Low_Bound (N) .. High_Bound (N));
