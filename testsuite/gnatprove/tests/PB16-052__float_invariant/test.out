@@ -36,3 +36,24 @@ attempt_2.adb:36:31: info: overflow check proved (CodePeer)
 attempt_2.adb:36:33: info: initialization of "New_Speed" proved
 attempt_2.adb:36:44: info: division check proved (CodePeer)
 attempt_2.adb:36:44: info: overflow check proved (Interval)
+attempt_3.adb:17:17: info: range check proved (Interval)
+attempt_3.adb:17:20: info: overflow check proved (Interval)
+attempt_3.adb:17:35: info: overflow check proved (Interval)
+attempt_3.adb:20:17: info: range check proved (Interval)
+attempt_3.adb:20:20: info: overflow check proved (Interval)
+attempt_3.adb:20:34: info: overflow check proved (Interval)
+attempt_3.adb:28:33: info: initialization of "New_Speed" proved
+attempt_3.adb:29:33: info: initialization of "Average" proved
+attempt_3.adb:34:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+attempt_3.adb:34:32: info: range check proved (CVC4: 1 VC)
+attempt_3.adb:34:37: info: initialization of "New_Speed" proved
+attempt_3.adb:37:30: info: overflow check proved (CodePeer)
+attempt_3.adb:37:40: info: overflow check proved (Interval)
+attempt_3.adb:37:44: info: overflow check proved (Interval)
+attempt_3.adb:38:31: info: overflow check proved (CodePeer)
+attempt_3.adb:38:33: info: initialization of "New_Speed" proved
+attempt_3.adb:38:44: info: division check proved (CodePeer)
+attempt_3.adb:38:44: info: overflow check proved (Interval)
+attempt_3.adb:39:29: info: overflow check proved (CodePeer)
+attempt_3.adb:39:31: info: initialization of "Average" proved
+attempt_3.adb:39:39: info: overflow check proved (Interval)
