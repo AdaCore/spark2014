@@ -354,6 +354,11 @@ subprogram, package, task or protected spec/body, then its
 value is inherited from the current mode that is active at the point
 where the declaration occurs.
 
+Note that a generic package instance is considered to be declared
+at its instantiation point. For example, a generic package
+cannot be both marked ``SPARK_Mode`` and instantiated in
+a subprogram body.
+
 Consistency Rules
 -----------------
 
