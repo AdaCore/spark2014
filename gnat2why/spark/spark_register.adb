@@ -50,6 +50,16 @@ package body SPARK_Register is
       ------------------
 
       function Process_Node (N : Node_Id) return Traverse_Result is
+         subtype Rewriten_Call is Node_Kind with
+           Static_Predicate => Rewriten_Call in N_Block_Statement
+                                              | N_Identifier
+                                              | N_Null_Statement
+                                              | N_Unchecked_Type_Conversion;
+         --  Type with kinds of nodes that may represent rewritten subprogram
+         --  calls.
+         --  ??? this is quite subtle, perhaps we should just check the kind of
+         --  the original node.
+
       begin
          --  First rewrite the node
 
@@ -112,10 +122,7 @@ package body SPARK_Register is
                                  null;
                            end case;
 
-                        when N_Block_Statement
-                           | N_Null_Statement
-                           | N_Unchecked_Type_Conversion
-                        =>
+                        when Rewriten_Call =>
                            if Nkind (Original_Node (Parent (N))) in
                              N_Subprogram_Call
                            then
@@ -154,9 +161,7 @@ package body SPARK_Register is
          end if;
 
          --  Explicitly traverse rewritten subprogram calls
-         if Nkind (N) in N_Block_Statement
-                       | N_Null_Statement
-                       | N_Unchecked_Type_Conversion
+         if Nkind (N) in Rewriten_Call
            and then Nkind (Original_Node (N)) in N_Subprogram_Call
          then
             Process_Tree (Original_Node (N));
