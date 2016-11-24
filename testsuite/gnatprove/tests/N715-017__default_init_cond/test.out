@@ -3,15 +3,21 @@ default_init.adb:11:07: info: initialization of "P1" proved
 default_init.adb:12:07: info: initialization of "P2" proved
 default_init.adb:13:07: info: initialization of "P3" proved
 default_init.adb:15:22: info: assertion proved (CVC4: 1 VC)
+default_init.adb:15:22: info: function contract not available for proof ("Simple_Priv_Ok" may not return)
 default_init.adb:15:38: info: initialization of "P1" proved
 default_init.adb:16:22: info: assertion proved (CVC4: 1 VC)
+default_init.adb:16:22: info: function contract not available for proof ("Wrong_Priv_Ok" may not return)
 default_init.adb:16:37: info: initialization of "P2" proved
 default_init.adb:17:22: info: assertion proved (CVC4: 1 VC)
+default_init.adb:17:22: info: function contract not available for proof ("Priv_With_Glob_Ok" may not return)
 default_init.adb:17:41: info: initialization of "P3" proved
 default_init.adb:19:22: info: assertion proved (CVC4: 1 VC)
+default_init.adb:19:22: info: function contract not available for proof ("Simple_Priv_Ok" may not return)
 default_init.adb:19:38: info: initialization of "P1" proved
 default_init.adb:20:22: info: assertion proved (CVC4: 1 VC)
+default_init.adb:20:22: info: function contract not available for proof ("Wrong_Priv_Ok" may not return)
 default_init.adb:20:37: info: initialization of "P2" proved
+default_init.adb:21:22: info: function contract not available for proof ("Priv_With_Glob_Ok" may not return)
 default_init.adb:21:22: medium: assertion might fail, cannot prove Priv_With_Glob_Ok (P3)
 default_init.adb:21:41: info: initialization of "P3" proved
 default_init.adb:25:07: info: initialization of "R.F" proved
@@ -70,3 +76,9 @@ default_init.ads:63:52: info: range check proved (CVC4: 1 VC)
 default_init.ads:85:39: info: precondition proved (CVC4: 1 VC)
 default_init.ads:92:64: info: precondition proved (CVC4: 1 VC)
 default_init.ads:98:20: info: discriminant check proved (CVC4: 1 VC)
+private_default.ads:3:35: info: function contract not available for proof ("Simple_Priv_Ok" may not return)
+private_default.ads:3:35: info: function contract not available for proof ("Simple_Priv_Ok" may not return)
+private_default.ads:5:35: info: function contract not available for proof ("Wrong_Priv_Ok" may not return)
+private_default.ads:5:35: info: function contract not available for proof ("Wrong_Priv_Ok" may not return)
+private_default.ads:7:35: info: function contract not available for proof ("Priv_With_Glob_Ok" may not return)
+private_default.ads:7:35: info: function contract not available for proof ("Priv_With_Glob_Ok" may not return)

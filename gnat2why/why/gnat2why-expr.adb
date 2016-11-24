@@ -11710,6 +11710,26 @@ package body Gnat2Why.Expr is
             T := +Sequence (Compute_Tag_Check (Expr, Params),
                             +T);
          end if;
+
+      --  If for some reason we have not generated a contract for Subp and
+      --  Subp is called in the logic domain, notify the user that the contract
+      --  will not be available.
+
+      elsif Domain in EW_Pred | EW_Term
+        and then not No_Return (Subp)
+        and then not Entity_In_Ext_Axioms (Subp)
+      then
+         if Is_Recursive (Subp) then
+            Error_Msg_NE
+              ("info: function contract not available for proof (& is "
+               & "recursive)", Expr, Subp);
+         elsif Is_Potentially_Nonreturning (Subp)
+           and then not Has_Terminate_Annotation (Subp)
+         then
+            Error_Msg_NE
+              ("info: function contract not available for proof (& may not "
+               & "return)", Expr, Subp);
+         end if;
       end if;
 
       --  SPARK function cannot have side-effects

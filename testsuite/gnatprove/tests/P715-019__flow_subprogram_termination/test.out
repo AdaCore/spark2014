@@ -79,6 +79,28 @@ container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram will terminate
 container.ads:23:13: info: subprogram will terminate
 container.ads:27:14: warning: subprogram might not terminate
+decl_only.ads:8:18: info: function contract not available for proof ("Nonreturning_Precondition" may not return)
+decl_only.ads:8:18: info: function contract not available for proof ("Nonreturning_Precondition" may not return)
+file_io.ads:50:33: info: function contract not available for proof ("Size" may not return)
+file_io.ads:50:33: info: function contract not available for proof ("Size" may not return)
+file_io.ads:55:17: info: function contract not available for proof ("Index" may not return)
+file_io.ads:55:17: info: function contract not available for proof ("Index" may not return)
+file_io.ads:61:17: info: function contract not available for proof ("Size" may not return)
+file_io.ads:61:17: info: function contract not available for proof ("Size" may not return)
+file_io.ads:61:28: info: function contract not available for proof ("Size" may not return)
+file_io.ads:61:28: info: function contract not available for proof ("Size" may not return)
+file_io.ads:62:17: info: function contract not available for proof ("Index" may not return)
+file_io.ads:62:17: info: function contract not available for proof ("Index" may not return)
+file_io.ads:62:30: info: function contract not available for proof ("Size" may not return)
+file_io.ads:62:30: info: function contract not available for proof ("Size" may not return)
+file_io.ads:63:42: info: function contract not available for proof ("Index" may not return)
+file_io.ads:63:42: info: function contract not available for proof ("Index" may not return)
+file_io.ads:63:54: info: function contract not available for proof ("Index" may not return)
+file_io.ads:63:54: info: function contract not available for proof ("Index" may not return)
+file_io.ads:64:42: info: function contract not available for proof ("Index" may not return)
+file_io.ads:64:42: info: function contract not available for proof ("Index" may not return)
+file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
+file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
 formal_cont.adb:11:14: info: initialization of "Result" proved
 formal_cont.adb:15:07: info: initialization of private part of "L" proved
 formal_cont.adb:17:21: info: precondition proved (CVC4: 1 VC)
@@ -102,6 +124,8 @@ functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.ads:3:13: warning: subprogram might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
 functions.ads:6:13: warning: subprogram might not terminate
+functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" may not return)
+functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" may not return)
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram might not terminate
@@ -112,6 +136,7 @@ imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.ads:9:14: info: subprogram will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
+imported.ads:14:13: info: function contract not available for proof ("Nonreturning_Precondition" may not return)
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
 imported.ads:16:14: warning: subprogram might not terminate
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"

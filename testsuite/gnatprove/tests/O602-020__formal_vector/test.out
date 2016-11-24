@@ -1,0 +1,36 @@
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Is_Empty" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Is_Empty" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
+fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:113
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:120
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:127
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:127
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:135
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:135
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:143
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:151
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:163
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:163
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:164
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:164
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:171
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:178
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:224
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:224
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:232
+fvectors.ads:4:04: info: instantiation error at a-cofove.ads:232

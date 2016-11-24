@@ -1,0 +1,5 @@
+my_lists.ads:9:17: info: function contract not available for proof ("Get_Model" may not return)
+my_lists.ads:12:17: info: function contract not available for proof ("Get_Model" may not return)
+my_lists.ads:15:17: info: function contract not available for proof ("Get_Model" may not return)
+my_lists.ads:16:17: info: function contract not available for proof ("Get_Model" may not return)
+my_lists.ads:16:47: info: function contract not available for proof ("Get_Model" may not return)
