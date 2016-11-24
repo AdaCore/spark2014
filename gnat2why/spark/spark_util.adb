@@ -534,7 +534,17 @@ package body SPARK_Util is
    begin
       if Ekind (E) = E_Discriminant then
          return True;
+      elsif Is_Concurrent_Type (E) then
+
+         --  Components of a concurrent type are visible except if the type
+         --  full view is not in SPARK.
+
+         return not Full_View_Not_In_SPARK (E);
       else
+
+         --  Find the first record type in the hierarchy in which the field is
+         --  present and see if it is in SPARK.
+
          declare
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);
             Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);

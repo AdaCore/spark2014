@@ -66,6 +66,10 @@ package body SPARK_Util.Types is
       return Entity_Id
      with Pre => Ekind (Comp) in E_Component | Type_Kind;
 
+   procedure Init_Component_Info_For_Subtypes
+     (E    : Entity_Id;
+      Info : in out Record_Info);
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -927,11 +931,14 @@ package body SPARK_Util.Types is
       case Ekind (Ty) is
          when E_Record_Subtype
             | E_Record_Subtype_With_Private
+            | E_Protected_Subtype
+            | E_Task_Subtype
          =>
             return Comp_Info (Retysp (Etype (Ty))).Variant_Info;
          when E_Record_Type
             | E_Record_Type_With_Private
-            | Concurrent_Kind
+            | E_Protected_Type
+            | E_Task_Type
          =>
             return Comp_Info (Ty).Variant_Info;
          when others =>
@@ -1007,9 +1014,9 @@ package body SPARK_Util.Types is
          return False;
       end if;
 
-      --  Return True if Ty is a private type
+      --  Return True if Ty is a private type or a protected type
 
-      return Ekind (Ty) in Private_Kind;
+      return Ekind (Ty) in Private_Kind | Protected_Kind;
    end Has_Private_Fields;
 
    -----------------------------------
@@ -1179,19 +1186,7 @@ package body SPARK_Util.Types is
       --  to take the most precise ones from the subtype.
 
       if Ekind (E) in Subtype_Kind then
-         for Field of Get_Component_Set (Etype (E)) loop
-
-            --  If field is hidden in Etype (E), copy it to E
-
-            if Ekind (Field) in Type_Kind
-              or else No (Search_Component_By_Name (E, Field))
-            then
-               Comp_Info (Position).Components.Insert (Field);
-            else
-               Comp_Info (Position).Components.Insert
-                 (Search_Component_By_Name (E, Field));
-            end if;
-         end loop;
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       else
          Init_Component_Info (E, Comp_Info (Position));
       end if;
@@ -1202,31 +1197,74 @@ package body SPARK_Util.Types is
    ---------------------------------------------
 
    procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
-      Info  : Info_Maps.Map;
-      Comps : Node_Sets.Set;
-      Field : Entity_Id := First_Entity (E);
+      Position : Info_Map_Maps.Cursor;
+      Inserted : Boolean;
    begin
-      while Present (Field) loop
-         if Ekind (Field) in E_Discriminant | E_Component then
-            Info.Insert
-              (Field,
-               Component_Info'(others => Empty));
+      Comp_Info.Insert (Key      => E,
+                        Position => Position,
+                        Inserted => Inserted);
 
-            if Ekind (Field) = E_Component then
-               pragma Assert (Component_Is_Visible_In_SPARK (Field));
-               Comps.Insert (Field);
+      pragma Assert (Inserted);
+
+      --  We can only initialize Variant_Info on new type definitions. For
+      --  subtypes, we copy the parent's Components and update the fields
+      --  to take the most precise ones from the subtype.
+
+      if Ekind (E) in Subtype_Kind then
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
+      else
+         declare
+            Field : Node_Id;
+         begin
+            if Has_Discriminants (E) then
+               Field := First_Discriminant (E);
+               while Present (Field) loop
+                  Comp_Info (Position).Variant_Info.Insert
+                    (Field,
+                     Component_Info'(others => Empty));
+                  Next_Discriminant (Field);
+               end loop;
             end if;
-         end if;
 
-         Next_Entity (Field);
-      end loop;
-
-      if Has_Private_Fields (E) then
-         Comps.Insert (E);
+            if Full_View_Not_In_SPARK (E) then
+               Comp_Info (Position).Components.Insert (E);
+            else
+               Field := First_Component (E);
+               while Present (Field) loop
+                  pragma Assert (Component_Is_Visible_In_SPARK (Field));
+                  Comp_Info (Position).Variant_Info.Insert
+                    (Field,
+                     Component_Info'(others => Empty));
+                  Comp_Info (Position).Components.Insert (Field);
+                  Next_Component (Field);
+               end loop;
+            end if;
+         end;
       end if;
-
-      Comp_Info.Insert (E, (Variant_Info => Info, Components => Comps));
    end Init_Component_Info_For_Protected_Types;
+
+   --------------------------------------
+   -- Init_Component_Info_For_Subtypes --
+   --------------------------------------
+
+   procedure Init_Component_Info_For_Subtypes
+     (E    : Entity_Id;
+      Info : in out Record_Info)
+   is
+   begin
+      for Field of Get_Component_Set (Etype (E)) loop
+
+         --  If field is hidden in Etype (E), copy it to E
+
+         if Ekind (Field) in Type_Kind
+           or else No (Search_Component_By_Name (E, Field))
+         then
+            Info.Components.Insert (Field);
+         else
+            Info.Components.Insert (Search_Component_By_Name (E, Field));
+         end if;
+      end loop;
+   end Init_Component_Info_For_Subtypes;
 
    ------------------------------
    -- Invariant_Check_Needed --
