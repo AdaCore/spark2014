@@ -3713,6 +3713,7 @@ package body SPARK_Definition is
                Save_SPARK_Pragma : constant Node_Id :=
                  Current_SPARK_Pragma;
                Comp              : Node_Id;
+               Fullview_In_SPARK : Boolean;
 
             begin
                --  Mark discriminants of the protected type
@@ -3721,7 +3722,15 @@ package body SPARK_Definition is
                   Comp := First_Discriminant (E);
 
                   while Present (Comp) loop
-                     Mark_Entity (Etype (Comp));
+
+                     --  Mark type and default value of discriminant
+
+                     if In_SPARK (Etype (Comp)) then
+                        Mark_Default_Expression (Comp);
+                     else
+                        Mark_Violation (Comp, From => Etype (Comp));
+                     end if;
+
                      Next_Discriminant (Comp);
                   end loop;
                end if;
@@ -3734,17 +3743,85 @@ package body SPARK_Definition is
                --  Do not mark components which are declared in a part with
                --  SPARK_Mode => Off.
 
-               if not SPARK_Pragma_Is (Opt.Off) then
+               if Ekind (E) = E_Protected_Type
+                 and then not SPARK_Pragma_Is (Opt.Off)
+               then
+                  declare
+                     Save_Protected_Type : constant Entity_Id :=
+                       Current_Protected_Type;
+                     Save_Violation_Detected : constant Boolean :=
+                       Violation_Detected;
 
-                  Comp := First_Component (E);
+                  begin
+                     Current_Protected_Type := E;
 
-                  while Present (Comp) loop
-                     Mark_Entity (Etype (Comp));
-                     Next_Component (Comp);
-                  end loop;
+                     Comp := First_Component (E);
+                     while Present (Comp) loop
+
+                        --  Mark type and default value of component
+
+                        if In_SPARK (Etype (Comp)) then
+                           Mark_Default_Expression (Comp);
+                        else
+                           Mark_Violation (Comp, From => Etype (Comp));
+                        end if;
+
+                        Next_Component (Comp);
+                     end loop;
+
+                     --  Protected types need full default initialization. No
+                     --  check needed if the private view of the type is not in
+                     --  SPARK.
+
+                     if SPARK_Util.Types.Default_Initialization (E) not in
+                       Full_Default_Initialization | No_Possible_Initialization
+                     then
+                        Mark_Violation ("protected type "
+                                        & "with no default initialization",
+                                        E,
+                                        SRM_Reference => "SPARK RM 9.4");
+                     end if;
+
+                     --  If a violation has been found while marking the
+                     --  private components of the protected type, then its
+                     --  full view is not in SPARK. The type itself can still
+                     --  be in SPARK if no SPARK_Mode has been specified.
+
+                     if not SPARK_Pragma_Is (Opt.On) then
+                        Fullview_In_SPARK := not Violation_Detected;
+                        Violation_Detected := Save_Violation_Detected;
+
+                     --  If the private part is marked On, then the full view
+                     --  of the type is forced to be SPARK. Violations found
+                     --  during marking of the private part are not reverted.
+
+                     else
+                        Fullview_In_SPARK := True;
+                     end if;
+                     Current_Protected_Type := Save_Protected_Type;
+                  end;
+
+               --  Tasks are considered as always having a private part which
+               --  is not visible to the prover.
+
+               else
+                  Fullview_In_SPARK := False;
                end if;
 
                Current_SPARK_Pragma := Save_SPARK_Pragma;
+
+               --  If the protected type is in SPARK but not its full view,
+               --  store it in Full_Views_Not_In_SPARK.
+
+               if not Violation_Detected and then not Fullview_In_SPARK then
+                  if Is_Nouveau_Type (E) then
+                     Full_Views_Not_In_SPARK.Insert (E, E);
+                  else
+                     pragma Assert
+                       (Full_Views_Not_In_SPARK.Contains (Retysp (Etype (E))));
+                     Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+                  end if;
+               end if;
             end;
          end if;
 
@@ -3866,18 +3943,6 @@ package body SPARK_Definition is
                   Next_Component_Or_Discriminant (Comp);
                end loop;
             end;
-         end if;
-
-         --  Protected types need full default initialization
-         if Ekind (E) = E_Protected_Type
-              and then
-            SPARK_Util.Types.Default_Initialization (E) not in
-               Full_Default_Initialization | No_Possible_Initialization
-         then
-            Mark_Violation ("protected type "
-                              & "with no default initialization",
-                            E,
-                            SRM_Reference => "SPARK RM 9.4");
          end if;
 
          if Is_Array_Type (E) then
@@ -4184,7 +4249,6 @@ package body SPARK_Definition is
                            C := First_Discriminant (E);
                            while Present (C) loop
                               Mark_Entity (C);
-                              Mark_Default_Expression (C);
                               Next_Discriminant (C);
                            end loop;
                         end if;
@@ -4201,7 +4265,9 @@ package body SPARK_Definition is
 
                            begin
                               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                              if not SPARK_Pragma_Is (Opt.Off) then
+                              if not SPARK_Pragma_Is (Opt.Off)
+                                and then not Full_View_Not_In_SPARK (E)
+                              then
                                  declare
                                     Save_Protected_Type : constant Entity_Id :=
                                       Current_Protected_Type;
@@ -4214,22 +4280,6 @@ package body SPARK_Definition is
 
                                     Mark_Stmt_Or_Decl_List
                                       (Private_Declarations (Type_Def));
-
-                                    --  Default expression needs an extra check
-                                    --  for references to the current type
-                                    --  itself.
-                                    --
-                                    --  ??? this marks them for the second time
-                                    --  which is not perfect but acceptable;
-                                    --  marking of default expressions in
-                                    --  record types, protected types and
-                                    --  subprogram parameters should be
-                                    --  unified.
-                                    C := First_Component (E);
-                                    while Present (C) loop
-                                       Mark_Default_Expression (C);
-                                       Next_Component (C);
-                                    end loop;
 
                                     Current_Protected_Type :=
                                       Save_Protected_Type;
