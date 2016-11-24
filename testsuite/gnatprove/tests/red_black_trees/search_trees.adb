@@ -98,8 +98,8 @@ package body Search_Trees with SPARK_Mode is
       KJ : Index_Type := J;
    begin
       while KI /= KJ loop
-         pragma Loop_Invariant (M (KI).A <= M (I).A);
-         pragma Loop_Invariant (M (KI).K);
+         pragma Loop_Variant (Decreases => Length (M (KI).A), Decreases => Length (M (KJ).A));
+         pragma Loop_Invariant (M (KI).K and then M (KI).A <= M (I).A);
          pragma Loop_Invariant (M (KJ).A <= M (J).A);
          pragma Loop_Invariant (M (KJ).K);
          pragma Loop_Invariant
@@ -1166,7 +1166,7 @@ package body Search_Trees with SPARK_Mode is
       while Current /= Empty loop
          --  Current is in the tree
          pragma Loop_Invariant (Model (T.Struct, T.Root) (Current).K);
-
+         pragma Loop_Variant (Increases => Length (Model (T.Struct, T.Root) (Current).A));
          --  Accumulate the knowledge that the V is less than all the left
          --  ancestors up to Current and greater than all the right ancestors
          --  up to Current.

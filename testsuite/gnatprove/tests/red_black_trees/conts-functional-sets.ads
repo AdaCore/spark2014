@@ -27,7 +27,7 @@ generic
    type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 package Conts.Functional.Sets with SPARK_Mode is
-
+   pragma Annotate (GNATprove, Terminating, Sets);
    pragma Assertion_Policy
       (Pre => Suppressible, Ghost => Suppressible, Post => Ignore);
 

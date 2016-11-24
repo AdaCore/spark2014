@@ -28,7 +28,7 @@ generic
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 package Conts.Functional.Sets with SPARK_Mode is
    pragma Warnings (Off, "unused variable");
-
+   pragma Annotate (GNATprove, Terminating, Sets);
    type Set is private with
      Default_Initial_Condition => Is_Empty (Set) and then Length (Set) = 0,
      Iterable                  => (First       => Iter_First,

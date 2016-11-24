@@ -30,7 +30,7 @@ generic
 
    type Element_Type (<>) is private;
 package Conts.Functional.Sequences with SPARK_Mode is
-
+   pragma Annotate (GNATprove, Terminating, Sequences);
    subtype Extended_Index is Index_Type'Base range
      Index_Type'Pred (Index_Type'First) .. Index_Type'Last;
    --  Index_Type with one more element to the left.

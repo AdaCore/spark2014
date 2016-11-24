@@ -5,7 +5,7 @@ with Ada.Containers.Indefinite_Vectors;
 generic
    type Element_Type (<>) is private;
 package Functional_Sequences with SPARK_Mode is
-   pragma Annotate (GNATprove, Terminating, Entity => Functional_Sequences);
+   pragma Annotate (GNATprove, Terminating, Functional_Sequences);
    type Sequence is private
      with Default_Initial_Condition => Natural'(Length (Sequence)) = 0;
    --  Sequences are empty when default initialized.
