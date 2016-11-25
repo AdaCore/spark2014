@@ -1,1 +1,1 @@
-no output
+binary_search.ads:21:49: medium: postcondition might fail, cannot prove A (Index) /= I (e.g. when A = (1 => -1, others => 0) and A'First = 1 and A'Last = 2 and I = 0 and Index = 2 and Search'Result = 0)

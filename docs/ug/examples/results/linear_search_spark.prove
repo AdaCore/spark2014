@@ -1,1 +1,1 @@
-no output
+linear_search.adb:23:14: high: "Res.At_Index" is not initialized
