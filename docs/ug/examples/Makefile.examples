@@ -1,5 +1,3 @@
-DUMMY:=$(shell mkdir -p prove)
-
 .PHONY: gnatprove prove results result clean force
 
 RESULTS=$(PWD)/results
@@ -14,6 +12,7 @@ EXPECTED_ERRORS=linear_search_ada linear_search_flow
 # success expected for all other examples
 
 $(RESULTS)/%.prove: force
+	mkdir -p prove
 	cd prove && \
 	cp -rf ../$* . && \
 	cd $* && \
