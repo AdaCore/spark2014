@@ -3755,9 +3755,7 @@ package body Flow.Control_Flow_Graph is
         Get_Enclosing_Body_Flow_Scope (Get_Flow_Scope (Pkg_Body));
 
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (Get_Pragma (Package_Spec, Pragma_Initializes),
-                           Package_Spec,
-                           Initializes_Scope);
+        Parse_Initializes (Package_Spec, Initializes_Scope);
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -5965,9 +5963,7 @@ package body Flow.Control_Flow_Graph is
                --  repetition.
 
                DM : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Initializes_N,
-                                    FA.Spec_Entity,
-                                    FA.S_Scope);
+                 Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
             begin
                for C in DM.Iterate loop

@@ -525,8 +525,7 @@ package body Flow_Refinement is
 
       declare
          M : constant Dependency_Maps.Map :=
-           Parse_Initializes (Get_Pragma (P, Pragma_Initializes),
-                              P, Get_Flow_Scope (P));
+           Parse_Initializes (P, Get_Flow_Scope (P));
 
       begin
          for Initialized_Var in M.Iterate loop

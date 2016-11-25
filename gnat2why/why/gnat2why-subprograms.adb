@@ -843,9 +843,8 @@ package body Gnat2Why.Subprograms is
 
          declare
             Init_Map : constant Dependency_Maps.Map :=
-              Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
-                                 E,
-                                 Get_Flow_Scope (E));
+              Parse_Initializes (E, Get_Flow_Scope (E));
+
          begin
             for S of Init_Map loop
                for Y of S loop
@@ -1321,9 +1320,8 @@ package body Gnat2Why.Subprograms is
       if not Is_Wrapper_Package (E) then
          declare
             Init_Map : constant Dependency_Maps.Map :=
-              Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
-                                 E,
-                                 Get_Flow_Scope (E));
+              Parse_Initializes (E, Get_Flow_Scope (E));
+
             Cu       : Dependency_Maps.Cursor := Init_Map.First;
          begin
             while Dependency_Maps.Has_Element (Cu) loop

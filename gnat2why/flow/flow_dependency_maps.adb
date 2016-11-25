@@ -247,19 +247,19 @@ package body Flow_Dependency_Maps is
    -----------------------
 
    function Parse_Initializes
-     (N : Node_Id;
-      P : Entity_Id;
+     (P : Entity_Id;
       S : Flow_Scope)
       return Dependency_Maps.Map
    is
+      Initializes  : constant Node_Id  := Get_Pragma (P, Pragma_Initializes);
       Abstr_States : constant Elist_Id := Abstract_States (P);
 
       M : Dependency_Maps.Map;
 
    begin
       --  If an initializes aspect exists then we use it
-      if Present (N) then
-         M := Parse_Raw_Dependency_Map (N);
+      if Present (Initializes) then
+         M := Parse_Raw_Dependency_Map (Initializes);
 
       --  If an initializes aspect does not exist but the global generation
       --  phase has been completed then look for the generated initializes.

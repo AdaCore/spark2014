@@ -54,12 +54,10 @@ package Flow_Dependency_Maps is
    with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Refined_Depends;
 
    function Parse_Initializes
-     (N : Node_Id;
-      P : Entity_Id;
+     (P : Entity_Id;
       S : Flow_Scope)
       return Dependency_Maps.Map
-   with Pre => Ekind (P) in E_Package | E_Generic_Package and then
-               N = Get_Pragma (P, Pragma_Initializes);
+   with Pre => Ekind (P) = E_Package;
    --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
@@ -69,8 +67,7 @@ package Flow_Dependency_Maps is
    --  initialized. In effect, we may return a Dependency map even if there
    --  is no Initializes aspect to begin with.
    --
-   --  @param N node of the Initializes aspect
-   --  @param P entity of the enclosing package
+   --  @param P package entity
    --  @param S is the Flow_Scope at which we need to up project the results
    --  @returns the dependency map representing the initializes aspect
 

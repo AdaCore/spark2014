@@ -3114,7 +3114,7 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Initializes_N, FA.Spec_Entity, FA.S_Scope);
+        Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       Outputs_Of_Procs : Flow_Id_Sets.Set;
       --  Abstracts states that are written by procedures declared in package
@@ -3816,8 +3816,7 @@ package body Flow.Analysis is
       end Write_Tracefile;
 
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Initializes_N,
-                           FA.Spec_Entity,
+        Parse_Initializes (FA.Spec_Entity,
                            Null_Flow_Scope);
 
    --  Start of processing for Check_Initializes_Contract
