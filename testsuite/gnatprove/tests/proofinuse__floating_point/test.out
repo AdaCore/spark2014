@@ -54,7 +54,7 @@ floating_point.adb:89:18: medium: overflow check might fail
 floating_point.adb:97:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:97:32: info: range check proved (Interval)
 floating_point.adb:98:16: info: division check proved (Z3_noquant: 1 VC)
-floating_point.adb:98:16: info: overflow check proved (altergo: 1 VC)
+floating_point.adb:98:16: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:98:28: info: range check proved (Interval)
 floating_point.adb:108:13: info: assertion proved (Z3_noquant: 2 VC)
 floating_point.adb:108:13: info: initialization of "Tmp" proved
@@ -148,15 +148,15 @@ floating_point.adb:280:22: medium: overflow check might fail
 floating_point.adb:280:26: medium: overflow check might fail
 floating_point.adb:280:31: medium: overflow check might fail
 floating_point.adb:280:36: medium: overflow check might fail
-floating_point.adb:281:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:281:22: info: initialization of "Res" proved
-floating_point.adb:293:17: info: overflow check proved (altergo: 1 VC)
+floating_point.adb:281:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:293:17: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:293:22: medium: overflow check might fail
 floating_point.adb:293:26: medium: overflow check might fail
 floating_point.adb:293:31: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:293:36: medium: overflow check might fail
-floating_point.adb:294:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:294:22: info: initialization of "Res" proved
+floating_point.adb:294:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:304:17: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:304:24: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:304:30: info: overflow check proved (Z3_noquant: 1 VC)
@@ -165,8 +165,8 @@ floating_point.adb:305:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:316:17: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:316:24: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:316:30: info: overflow check proved (Z3_noquant: 1 VC)
-floating_point.adb:317:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:317:22: info: initialization of "Res" proved
+floating_point.adb:317:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:327:16: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:327:20: info: overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:327:24: info: overflow check proved (Z3_noquant: 1 VC)
@@ -181,11 +181,11 @@ floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial
 floating_point.adb:349:14: warning: subprogram "Polynomial" has no effect
 floating_point.adb:353:22: medium: assertion might fail, cannot prove X + 2.0) * X + 3.0) + 4.0) * X + 5.0 in Float'range
 floating_point.adb:353:27: info: overflow check proved (Z3_noquant: 2 VC)
-floating_point.adb:353:34: info: overflow check proved (Z3_noquant: 1 VC; altergo: 1 VC)
+floating_point.adb:353:34: medium: overflow check might fail
 floating_point.adb:353:38: info: overflow check proved (Z3_noquant: 2 VC)
 floating_point.adb:353:45: info: overflow check proved (Z3_noquant: 2 VC)
 floating_point.adb:353:52: medium: overflow check might fail
-floating_point.adb:353:56: info: overflow check proved (Z3_noquant: 2 VC)
+floating_point.adb:353:56: medium: overflow check might fail
 floating_point.adb:359:16: medium: overflow check might fail
 floating_point.adb:360:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:360:22: info: initialization of "Res" proved

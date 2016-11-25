@@ -107,7 +107,7 @@ generic_float_tests.adb:152:30: info: overflow check proved (Z3: 1 VC), in insta
 generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:155:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:159:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:159:22: medium: assertion might fail, cannot prove 1.0 / X > 0.0, in instantiation at foo.ads:15
+generic_float_tests.adb:159:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:159:26: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:159:26: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:159:26: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -193,7 +193,7 @@ generic_float_tests.adb:252:14: info: overflow check proved (CVC4: 1 VC), in ins
 generic_float_tests.adb:255:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:255:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:259:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:259:22: medium: assertion might fail, cannot prove X / X = 1.0, in instantiation at foo.ads:15
+generic_float_tests.adb:259:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:259:24: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:259:24: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:259:24: info: overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10
@@ -215,8 +215,8 @@ generic_float_tests.adb:272:16: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:272:18: info: initialization of "A" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:272:18: info: initialization of "A" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:273:16: info: division check proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:273:16: info: division check proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:273:16: info: overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:273:16: medium: divide by zero might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:273:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:273:18: info: initialization of "B" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:273:18: info: initialization of "B" proved, in instantiation at foo.ads:15
@@ -243,8 +243,8 @@ generic_float_tests.adb:282:16: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:282:18: info: initialization of "A" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:282:18: info: initialization of "A" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: info: division check proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:283:16: info: division check proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: info: overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:283:16: medium: divide by zero might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:283:18: info: initialization of "B" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:283:18: info: initialization of "B" proved, in instantiation at foo.ads:15
