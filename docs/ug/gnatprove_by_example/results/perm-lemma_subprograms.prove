@@ -1,4 +1,6 @@
+perm-lemma_subprograms.adb:5:14: info: function contract not available for proof ("Occ" may not return)
 perm-lemma_subprograms.adb:5:14: info: postcondition proved
+perm-lemma_subprograms.adb:5:27: info: function contract not available for proof ("Occ" may not return)
 perm-lemma_subprograms.adb:13:14: info: index check proved
 perm-lemma_subprograms.adb:14:25: info: assertion proved
 perm-lemma_subprograms.adb:14:29: info: index check proved
@@ -25,4 +27,20 @@ perm-lemma_subprograms.ads:8:47: info: index check proved
 perm-lemma_subprograms.ads:13:39: info: precondition proved
 perm-lemma_subprograms.ads:15:08: info: postcondition proved
 perm-lemma_subprograms.ads:15:19: info: index check proved
+perm-lemma_subprograms.ads:15:27: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:15:27: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:15:40: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:15:40: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:16:26: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:16:26: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:16:39: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:16:39: info: function contract not available for proof ("Occ" may not return)
 perm-lemma_subprograms.ads:17:18: info: index check proved
+perm-lemma_subprograms.ads:17:30: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:17:30: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:17:43: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:17:43: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:18:14: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:18:14: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:18:27: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.ads:18:27: info: function contract not available for proof ("Occ" may not return)

@@ -1,1 +1,1 @@
-no output
+exclude_unit_body.ads:10:14: info: function contract not available for proof ("Get_Value" may not return)
