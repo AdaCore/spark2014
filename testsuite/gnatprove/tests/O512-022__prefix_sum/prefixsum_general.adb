@@ -113,7 +113,7 @@ package body PrefixSum_General is pragma SPARK_Mode (On);
         Pre  => Start_Pos <= End_Pos,
         Post => (if Start_Pos = End_Pos then
                    Rec_Summation'Result = A (Start_Pos));
-
+      pragma Annotate (GNATprove, Terminating, Rec_Summation);
       function Rec_Summation (A : Input; 
                               Start_Pos,
                               End_Pos : Index) 
