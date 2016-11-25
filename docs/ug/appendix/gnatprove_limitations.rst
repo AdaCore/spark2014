@@ -191,8 +191,3 @@ Proof Limitations
 
 #. Preconditions on arithmetic and conversion operators (including Time_Of) in
    Ada.Calendar package are not yet implemented.
-
-#. Functions not annotated with No_Return are assumed to terminate by
-   the tool. This means that, if a function happens to not terminate on some inputs,
-   an inconsistency might appear when verifying the code of its callers that would
-   cause the tool to miss some checks.

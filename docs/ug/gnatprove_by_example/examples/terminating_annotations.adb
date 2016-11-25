@@ -18,7 +18,14 @@ package body Terminating_Annotations with SPARK_Mode is
       return Y;
    end F_While;
 
-   function F_Not_SPARK (X : Natural) return Natural is (0) with SPARK_Mode => Off;
+   function F_Not_SPARK (X : Natural) return Natural with SPARK_Mode => Off is
+      Y : Natural := X;
+   begin
+      while Y > 0 loop
+         Y := Y - 1;
+      end loop;
+      return Y;
+   end F_Not_SPARK;
 
    procedure Not_SPARK (X : Natural) with SPARK_Mode => Off is
    begin
