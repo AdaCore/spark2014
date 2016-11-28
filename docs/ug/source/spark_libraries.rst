@@ -289,6 +289,11 @@ Currenly, the SPARK lemma library provides the following lemmas:
   ``spark-mod32_arithmetic_lemmas.ads`` and for 64 bits modular integers
   (``Interfaces.Unsigned_64``) in file ``spark-mod64_arithmetic_lemmas.ads``.
 
+* Lemmas on unconstrained arrays in file
+  ``spark-unconstrained_array_lemmas.ads``, that need to be instantiated by the
+  user for her specific type of index and element, and specific ordering
+  function between elements.
+
 To apply lemmas to signed or modular integers of different types than the ones
 used in the instances provided in the library, just convert the expressions
 passed in arguments, as follows:
