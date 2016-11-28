@@ -116,4 +116,7 @@ is
    procedure Sub_Then_Add1 (X, Y : Float_32; Res : out Float_32);
    procedure Sub_Then_Add2 (X, Y : Float_32; Res : out Float_32);
 
+   --  from PB25-029 (industrial user)
+   procedure Half_Bound (X : Float_32; Res : out Float_64);
+
 end Floating_Point;

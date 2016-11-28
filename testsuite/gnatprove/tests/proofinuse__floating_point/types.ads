@@ -42,6 +42,7 @@ is
    --  Same as standard floating point type
 
    type Float_32 is new Float;
+   type Float_64 is new Long_Float;
 
    --  Array of 10 integers
 

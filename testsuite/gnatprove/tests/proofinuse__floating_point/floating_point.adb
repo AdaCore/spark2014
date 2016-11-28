@@ -394,4 +394,11 @@ is
       pragma Assert (Res >= Y);
    end Sub_Then_Add2;
 
+   procedure Half_Bound (X : Float_32; Res : out Float_64) is
+   begin
+      pragma Assume (X in -1.0 .. 1.0);
+      Res := Float_64 (X * 0.5);
+      pragma Assert (Res in -1.0 .. 1.0);
+   end Half_Bound;
+
 end Floating_Point;

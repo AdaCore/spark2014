@@ -208,6 +208,9 @@ floating_point.adb:393:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:393:22: info: initialization of "Res" proved
 floating_point.adb:394:22: info: initialization of "Res" proved
 floating_point.adb:394:22: medium: assertion might fail, cannot prove Res >= Y
+floating_point.adb:400:26: info: overflow check proved (Interval)
+floating_point.adb:401:22: info: assertion proved (Z3_noquant: 2 VC)
+floating_point.adb:401:22: info: initialization of "Res" proved
 floating_point.ads:8:39: info: initialization of "Res" proved
 floating_point.ads:11:40: info: initialization of "Res" proved
 floating_point.ads:14:50: info: initialization of "Res" proved
@@ -238,3 +241,4 @@ floating_point.ads:110:46: info: initialization of "Res" proved
 floating_point.ads:113:14: warning: subprogram "Diffs" has no effect
 floating_point.ads:116:46: info: initialization of "Res" proved
 floating_point.ads:117:46: info: initialization of "Res" proved
+floating_point.ads:120:40: info: initialization of "Res" proved
