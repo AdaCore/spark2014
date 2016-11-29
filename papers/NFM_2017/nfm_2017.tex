@@ -107,7 +107,7 @@ auto-active verification so far.
 \section{Introduction}
 
 Formal program verification allows programmers to guarantee that the programs
-they write have some desired properties. These properties may be simply that
+they write have some desired properties. These properties may simply be that
 the program does not crash or behaves erratically, or more complex critical
 properties related to safety or security. Being able to guarantee such
 properties will be essential for high assurance software as requirements are
@@ -127,9 +127,9 @@ form of additional contracts, loop invariants and assertions.
 The folklore surrounding the art of providing the right intermediate
 specifications has been given firmer ground in the recent years under the name
 of \emph{auto-active verification}. Various languages and tools now provide
-features for effective auto-active verification. SPARK is naturally among
+features for effective auto-active verification. SPARK is among
 these. In this paper, we explore the capabilities of auto-active verification
-for proving automatically complex algorithms. We have chosen to target
+for automatically proving complex algorithms. We have chosen to target
 red-black trees because they are well-known, commonly used in practice, and yet
 sufficiently complex that no implementation of imperative red-black trees has
 been formally verified using auto-active verification. Our implementation of
@@ -193,7 +193,7 @@ of SPARK code.
 \label{sec-prelim-auto-active}
 
 The term \emph{auto-active verification} was coined in 2010 by researcher
-Rustan Leino~\cite{Leino10usableauto-active} to designate \textit{tools where
+Rustan Leino~\cite{Leino10usableauto-active} to characterise \textit{tools where
   user input is supplied before VC generation [and] therefore lie between
   automatic and interactive verification} (hence the name auto-active). This is
 in contrast to fully automatic verifiers for which \textit{the specification is
@@ -212,8 +212,8 @@ capabilities to interact with users at the level of the source code. The
 specification features consist at least in constructs to specify function
 contracts (preconditions and postconditions) and data invariants, as well as
 specialized forms of assertions (loop invariants and loop variants, assumptions
-and assertions). All the toolsets mentioned above also support features to
-instrument code for verification, usually referred to as ghost code. Ghost
+and assertions). All the toolsets mentioned above also support \emph{ghost code},
+a feature to instrument code for verification. Ghost
 functions are also called lemmas when their main purpose is to support the
 proof of a property, that is later used at the point where the function is
 called. See \cite{kosmatov:hal-01344110} for a comparison of how ghost code
@@ -224,7 +224,7 @@ trade running time for more verification power, feedback from the toolset when
 verification is unsuccessful (counterexamples in particular).
 
 Auto-active verification in the above toolsets has been used to fully verify
-algorithms, libraries and even complete applications: examples include a
+algorithms, libraries and even full applications: examples include a
 container library in Eiffel~\cite{Polikarpova2015}, distributed systems in
 Dafny~\cite{Hawblitzel2015IronFleet}, secure execution of apps in
 Dafny~\cite{Hawblitzel2014Ironclad}, binary heaps in Why3~\cite{tafat11rr},
@@ -276,7 +276,7 @@ the deletion algorithm, which would be very similar to insertion.
 % primitives needed by upper levels provided at lower level were they abide by the invariant
 
 Implementing red black trees correctly from the algorithm is straightforward,
-but this implementation is hard to verified formally, as it forces one to
+but this implementation is hard to verify formally, as it forces one to
 reason about different levels of properties all at once. Instead, we have
 divided the implementation into three distinct parts, each one concerned with
 one level of properties: binary trees, search trees and red-black trees. Binary
@@ -315,7 +315,7 @@ Left and the node as parent.
 \includegraphics[width=2cm]{binary_2.pdf}
 \caption{(from left to right) Representation of nodes in binary trees.
 Example of a binary tree, for readability, parents and positions are not represented.
-The binary tree represented in the previous figure.}
+A higher level view of the same binary tree.}
 %\hrulefill
 %\vspace*{-10mm}
 \label{fig-binary}
@@ -1098,7 +1098,7 @@ In this development, we made an extensive use of ghost code, that is, code meant
 that has no effect on the program behavior. We used it for two different purposes. First, the model
 functions introduced to enhance the expressivity of our specification are ghost functions. Indeed, we
 never need to refer to reachability in the tree structure or to the set of elements contained in a
-search tree inside the program implementation. It is only necessary to be able to express complex
+search tree inside the program implementation. It is only used to express complex
 properties about our algorithms in the specification.
 
 In SPARK, ghost code is executable, that is, the compiler can be instructed to generate code for ghost
