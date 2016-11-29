@@ -317,9 +317,9 @@ algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:673:72: medium: overflow check might fail
 algorithm.adb:674:43: info: range check proved (Z3: 1 VC)
 algorithm.adb:674:49: info: initialization of "distToClosestObstacle" proved
+algorithm.adb:679:31: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 algorithm.adb:679:31: info: initialization of "distToGoal" proved
 algorithm.adb:679:68: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:679:68: medium: assertion might fail, cannot prove distToClosestObstacle > This.robot.robot_radius
 algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
 algorithm.adb:680:46: info: division check proved (CVC4: 1 VC)
 algorithm.adb:680:46: info: overflow check proved (Interval)
