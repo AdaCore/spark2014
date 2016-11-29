@@ -244,7 +244,7 @@ Implementations of red-black trees are used in the Linux kernel (in C) and
 standard container libraries for various languages (C++ STL, Java.util,
 Ada). The insertion and deletion algorithms work by inserting or deleting the
 node as in a binary search tree, which may violate properties~(1) and~(2)
-above, and then restore the balance by working their way up on the path from
+above, and then restoring the balance by working their way up on the path from
 the root to the point of insertion or deletion. At every node on this path, the
 algorithms may \emph{rotate} the subtree, which consists in a local
 rearrangement of nodes to restore properties~(1) and~(2). These algorithms are
@@ -288,7 +288,7 @@ using the classical red-black tree coloring mechanism.
 The property enforced at each level is expressed in a type invariant. In SPARK,
 the invariant may be temporarily violated inside the implementation of the
 functions that operate on the type, but are guaranteed to hold for external
-users of objects of that type. More precisely, external functions that operate
+users of objects of that type. More precisely, functions that operate
 on a type can assume the invariant on entry and must restore it on exit (which
 leads to verification conditions in SPARK).
 %%  while internal functions need not
@@ -353,7 +353,7 @@ A higher level view of the same binary tree.}
 %% \end{figure}
 % Do we want to write Position (F, I) instead of Position (I)?
 
-To reason about the tree structure at a higher level, we provide a model of binary trees 
+To reason about the tree structure at a higher level, we provide a model of binary trees
 which explicits
 \emph{access paths} from the root to every node in the tree.
 % Contrary to the invariant,
@@ -429,6 +429,7 @@ reconstruct easily the high level view of the tree.
 %% binary tree in the implementation of search trees. In particular, we use it
 %% in the invariant of search trees, which is given in Figure~\ref{fig-search}.
 
+\vspace{-1cm}
 \begin{figure}[ht]
 \hspace{-3mm}
 \begin{minipage}[c]{.79\linewidth}
@@ -521,7 +522,7 @@ references and addresses. The rationale for this restriction is that pointers
 make automatic proof very difficult due to possible aliasing. Hence trees are
 bounded by the size of the underlying array. As the algorithm for balancing
 red-black trees requires splitting and merging trees, we had the choice of
-either copying arrays for generating new trees, or to share the same array
+either copying arrays for generating new trees, or sharing the same array
 between disjoint trees (coming from the splitting of a unique tree). For
 obvious efficiency reasons, we chose the latter. Hence we are defining a type
 \texttt{Forest} for possibly representing disjoint binary trees sharing the
@@ -593,7 +594,7 @@ trees, but using two new functions, \texttt{Extract} and
 % -- Extract the subtree starting at position D after
 % -- I in the tree rooted at R in a separate tree.
 % -- Store its root into V.
-% 
+%
 % procedure Plug (F    : in out Forest;
 %                 R, I : Index_Type;
 %                 D    : Direction;
@@ -888,7 +889,7 @@ resorting to a proof assistant. We explain some of these techniques in this sect
 \paragraph{Intermediate lemmas:}
 One of the most classical techniques in manual proof consists in factoring some useful
 part of a proof in an intermediate lemma so that it can be verified independently and
-used as many time as necessary. In auto-active verification, this can be done by introducing
+used as many times as necessary. In auto-active verification, this can be done by introducing
 a procedure with no output, which, when called, will cause the deductive engine to verify
 its precondition and assume its postcondition. In Figure~\ref{fig-proof-lem}, we show an
 intermediate lemma which can be used to verify that two trees of a single forest with different
@@ -1009,7 +1010,7 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % the node was already reachable from the root and then its model is unchanged, or it belonged to
 % the subtree being plugged, in which case the path leading to it from the root consists in concatenating
 % two subpaths.
-% 
+%
 % \begin{figure}
 % \begin{small}
 % \begin{lstlisting}
@@ -1018,11 +1019,11 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % --  concatenating the path from R to V and the path from V to
 % --  the node.
 % for J in Index_Type loop
-% 
+%
 %    --  Case 1: node J is in the tree rooted at R in F_Old. Use
 %    --  Preserve_Equal to prove the property for node J, based on
 %    --  the knowledge that it holds for the parent of node J.
-% 
+%
 %    if Model (F, R) (J).Reachable
 %      and then Length (Model (F, R) (J).Path) = N
 %      and then Model (F_Old, R) (J).Reachable
@@ -1033,11 +1034,11 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 %                       S4 => Model (F_Old, R) (J).Path,
 %                       D  => F.C (J).Position);
 %    end if;
-% 
+%
 %    --  Case 2: node J is in the tree rooted at V in F_Old. Use
 %    --  Preserve_Concat to prove the property for node J, based
 %    --  on the knowledge that it holds for the parent of node J.
-% 
+%
 %    if Model (F, R) (J).Reachable
 %      and then Length (Model (F, R) (J).Path) = N
 %      and then Model (F_Old, V) (J).Reachable
@@ -1050,10 +1051,10 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 %                        T  => Model (F, R) (V).Path,
 %                        D  => F.C (J).Position);
 %    end if;
-% 
+%
 %    --  Accumulate the knowledge that the property holds up to node
 %    --  J.
-% 
+%
 %    pragma Loop_Invariant
 %      (for all I in 1 .. J =>
 %        (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
@@ -1071,7 +1072,7 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % \end{small}
 % \caption{\label{fig-proof-ca} Proof by case analysis of the effect of Plug on models.}
 % \end{figure}
-% 
+%
 % Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure (\texttt{Preserve\_Equal} and \texttt{Preserve\_Concat}).
 % Also note that, to be able to apply this reasoning on every node of the memory array, the case
 % analysis had to be enclosed in a loop. As \gnatprove cannot accumulated knowledge without a loop
@@ -1108,7 +1109,7 @@ can be used to produce complex test oracles that can be exercised in the test ca
 The second use of ghost code in our development is for auto-active verification. In particular, the procedures
 used to encode intermediate lemmas are ghost, as they have no effect. What is more, we strived to
 keep all ineffective code inside ghost procedures so that it can be removed by the compiler and will not
-slow down the execution of the program. It is all the more important since the code is really inefficient, involving
+slow down the execution of the program. It is all the more important since the code is very inefficient, involving
 multiple loops and model constructions. As functional behaviors are complex, coming up with contracts for
 these ghost procedure can be painful, and produce huge, hard to read specifications. To alleviate this
 problem, we can benefit from a feature of \gnatprove which inlines local subprograms with no contracts, allowing
@@ -1138,6 +1139,7 @@ lines of code as counted by the tool GNATmetric.
 % developing ghost code required interacting with automatic provers to find a
 % suitable division of proof objectives that was amenable to automatic proof.
 
+\vspace{-0.5cm}
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{l|rrr|r}
@@ -1157,26 +1159,22 @@ total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 % the insertion procedure to state that there should be still room for insertion,
 % and three postconditions on insertion, membership and the ghost function to get
 % the set of values.
-As contracts can be arbitrarily complex, we prefer to count
-the number of conjuncts than the number of preconditions and
-postconditions. 
-There are few simple top-level contracts for red-black trees, hence
 % Each of the contracts on red-black trees consists in just one
-% conjunct, hence 
-the small number of conjuncts for external contracts.
+% conjunct, hence
 % is only four.
 
-But many more contracts and assertions are needed for auto-active
-verification. First, contracts are needed on subprograms in binary trees (155
-conjuncts) and search trees (138 conjuncts), roughly half of which on internal
-subprograms. Second, contracts are needed on types, in the form of type
-invariants and type default initial conditions. Third, loop invariants are
-needed on loops (70 conjuncts in total). Finally, intermediate assertions are
-needed to split the work between automatic provers and facilitate work of
-individual provers (90 conjuncts in total). The effort required to achieve
-automatic proof is much greater where intermediate assertions are needed, as
-more interaction with automatic provers is required in that case.
+%% As contracts can be arbitrarily complex, we prefer to count
+%% the number of conjuncts than the number of preconditions and
+%% postconditions.
+There are few simple top-level contracts for red-black trees.  Many more
+contracts and assertions are needed for auto-active verification, in the form
+of subprogram contracts, type invariants, type default initial conditions, loop
+invariants and intermediate assertions which split the work between automatic
+provers and facilitate work of individual provers. The effort required to
+achieve automatic proof is much greater where intermediate assertions are
+needed, as more interaction with automatic provers is required in that case.
 
+\vspace{-0.5cm}
 \begin{table}[h]
 \begin{center}
 \begin{tabular}{l|rrrr|r}
@@ -1203,6 +1201,16 @@ straighforward, with fewer ghost code than operational code (35\% compared to
 the cognitive effort required to understand the correction of search trees
 compared to red-black trees.
 
+The automatic verification that the code (including ghost code) is free of
+run-time errors and that it respects its contracts takes less than 30 minutes
+on a Core i7 with 2,8 GHz and 16 Go RAM, using 4 cores and two successive runs
+of GNATprove at proof levels 2 and 3. As automatic provers CVC4, Z3 and
+Alt-Ergo are called in sequence on unproved Verification Conditions (VCs), it
+is not surprising that CVC4 proves a majority of VCs (3763), while Z3 proves
+103 VCs left unproved by CVC4 and Alt-Ergo proves the last 3 remaining VCs, for
+a total of 3869 VCs issued from 2414 source code checks (1185 run-time checks,
+231 assertions and 998 functional contracts).
+
 As the code has been fully proved to be free of run-time errors and that all
 contracts have been proved, it is safe to compile it with no run-time checks,
 and only the precondition on insertion in red-black trees activated (since this
@@ -1224,7 +1232,7 @@ functions which themselves quantify over the same size in their own contracts
 or code. In addition, the expensive operation of constructing the model is
 performed repeatedly in contracts, as SPARK does not yet provide a
 let-expression form.  As a result, inserting one element in a tree of size one
-takes 20 minutes on Core i7 with 2,8 GHz and 16 Go RAM.
+takes 2 minutes on a Core i7 with 2,8 GHz and 16 Go RAM.
 
 \section{Related Work}
 \label{related-work}
