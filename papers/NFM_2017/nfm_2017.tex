@@ -771,9 +771,7 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
 
     --  Nodes in the tree are preserved
     and (for all J in Index_Type =>
-          (if Model (T) (J).Reachable then Model (T'Old) (J).Reachable))
-    and (for all J in Index_Type =>
-          (if Model (T'Old) (J).Reachable then Model (T) (J).Reachable));
+          Model (T) (J).Reachable = Model (T'Old) (J).Reachable);
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-spec-no-leak} Postcondition of \texttt{Right\_Rotate} dealing with absence of memory leaks.}
