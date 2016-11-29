@@ -1,0 +1,6 @@
+floats.adb:5:31: info: overflow check proved (Interval)
+floats.adb:6:31: info: overflow check proved (Interval)
+floats.adb:7:31: info: overflow check proved (Interval)
+floats.adb:9:22: info: assertion proved (Z3: 2 VC)
+floats.adb:10:22: info: assertion proved (Z3: 2 VC)
+floats.adb:11:22: info: assertion proved (Z3: 2 VC)
