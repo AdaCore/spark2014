@@ -436,12 +436,11 @@ reconstruct easily the high level view of the tree.
 \begin{lstlisting}
 (for all I in Index_Type =>
   (for all J in Index_Type =>
-    (if Model (F, Root) (I).Reachable
-      and Model (F, Root) (J).Reachable
-      and Model (F, Root) (I).Path < Model (F, Root) (J).Path
-     then (if Get (Model (F, Root) (J).Path,
-                   Length (Model (F, Root) (I).Path) + 1)
-              = Left
+    (if Model (T) (I).Reachable
+      and Model (T) (J).Reachable
+      and Model (T) (I).Path < Model (T) (J).Path
+     then (if Get (Model (T) (J).Path,
+                   Length (Model (T) (I).Path) + 1) = Left
            then Values (J) < Values (I)
            else Values (J) > Values (I)))))
 \end{lstlisting}
@@ -452,12 +451,12 @@ reconstruct easily the high level view of the tree.
 \includegraphics[width=2cm]{search.pdf}
 \end{center}
 \end{minipage}
-\caption{\label{fig-search} Type invariant of search trees. For a forest \texttt{F}
-and an index \texttt{Root}, \texttt{Model (F, Root)} returns the model of the tree
-rooted at \texttt{Root} in \texttt{F}. For each index \texttt{I} in the underlying
-array, if \texttt{Model (F, Root) (I).Reachable} is true then \texttt{I} is reachable from
-\texttt{Root} in \texttt{F} and \texttt{Model (F, Root) (I).Path} is the sequence
-of directions corresponding to the path from \texttt{Root} to \texttt{I}.}
+\caption{\label{fig-search} Type invariant of search trees. For a search tree \texttt{T},
+\texttt{Model (T)} returns the model of the underlying binary tree of \texttt{T}.
+For each index \texttt{I} in the underlying
+array, if \texttt{Model (T) (I).Reachable} is true then \texttt{I} is reachable
+in \texttt{T} and \texttt{Model (T) (I).Path} is the sequence
+of directions corresponding to the path from the root of \texttt{T} to \texttt{I}.}
 \end{figure}
 
 The invariant of search trees states that the value stored in each node of the
