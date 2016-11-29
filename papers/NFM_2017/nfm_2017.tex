@@ -134,7 +134,7 @@ red-black trees because they are well-known, commonly used in practice, and yet
 sufficiently complex that no implementation of imperative red-black trees has
 been formally verified using auto-active verification. Our implementation of
 red-black trees, with all the code for auto-active verification, is publicly
-available in the github repository of
+available in the repository of
 SPARK.~\footnote{\url{https://github.com/AdaCore/spark2014/tree/master/testsuite/gnatprove/tests/red_black_trees}}
 
 
@@ -353,11 +353,13 @@ The binary tree represented in the previous figure.}
 %% \end{figure}
 % Do we want to write Position (F, I) instead of Position (I)?
 
-While the invariant on binary trees is concerned with the low-level details of
-the tree structure representation, the model of binary trees explicits
-\emph{access paths} from the root to every node in the tree. Contrary to the invariant,
-the model needs to be visible outside of the implementation of binary trees, in
-order to express more complex properties. It associates a sequence of
+To reason about the tree structure at a higher level, we provide a model of binary trees 
+which explicits
+\emph{access paths} from the root to every node in the tree.
+% Contrary to the invariant,
+% the model needs to be visible outside of the implementation of binary trees, in
+% order to express more complex properties.
+It associates a sequence of
 directions, namely Right or Left, to each node in the binary tree,
 corresponding to the path from the root to the node. As the underlying array
 also contains unused cells that do not correspond to tree nodes, an additional
@@ -367,13 +369,13 @@ presented in Figure~\ref{fig-binary}. In this example, all the nodes belong to
 the tree except the last one. The access paths written below each node can be used to
 reconstruct easily the high level view of the tree.
 
-We define a function \texttt{Model} that
-returns the model of a binary tree. This function has a rich postcondition that
-uniquely defines the model. The access path of the root is empty and the access path of other nodes is
-computed from the access path of their parent. Proof of the function \texttt{Model}
-relies on the invariant over binary trees. Its definition
-is then available for users of binary trees who can call function
-\texttt{Model} to express complex properties over the structure.
+% We define a function \texttt{Model} that
+% returns the model of a binary tree. This function has a rich postcondition that
+% uniquely defines the model. The access path of the root is empty and the access path of other nodes is
+% computed from the access path of their parent. Proof of the function \texttt{Model}
+% relies on the invariant over binary trees. Its definition
+% is then available for users of binary trees who can call function
+% \texttt{Model} to express complex properties over the structure.
 
 %% As an example, reachability in the tree structure is a complex property, that is
 %% crucial to reason about search trees. Reachability is difficult to tackle for \spark
@@ -461,14 +463,13 @@ of directions corresponding to the path from \texttt{Root} to \texttt{I}.}
 The invariant of search trees states that the value stored in each node of the
 tree is bigger than all the values stored in the subtree rooted at its left
 child and smaller than all the values stored in the subtree rooted at its right
-child. It is given in Figure~\ref{fig-search}. An example of values that would
-fit the tree from Figure~\ref{fig-binary} is also given in
-Figure~\ref{fig-search}. To express this invariant, we use the model of the
-underlying binary tree. The value stored at node J belonging to the subtree
-rooted at node I (where path inclusion from the root is used to determine that
-J belongs to the subtree rooted at node I) is smaller (resp. greater) than the
-value stored at node I if J belongs to the subtree rooted at the left
-(resp. right) child of I.
+child. It is given in Figure~\ref{fig-search}, together with an example of values that would
+fit the tree from Figure~\ref{fig-binary}. To express this invariant, we use the model of the
+underlying binary tree. The value stored at node \texttt{J} belonging to the subtree
+rooted at node \texttt{I} (where path inclusion from the root is used to determine that
+\texttt{J} belongs to the subtree rooted at node \texttt{I}) is smaller (resp. greater) than the
+value stored at node \texttt{I} if \texttt{J} belongs to the subtree rooted at the left
+(resp. right) child of \texttt{I}.
 
 The invariant of red-black trees states that a red node can only have black
 children. It is given in Figure~\ref{fig-rbt}. An example of colors that would
@@ -577,39 +578,39 @@ same underlying array.
 
 The other specificity of our implementation is the layered design. Each module
 defining a type with an invariant also needs to provide functions for
-manipulating objects of the type while preserving their invariant. In the case
-of type \texttt{Forest} for binary trees, functions \texttt{Extract} and
-\texttt{Plug} whose signatures are given in Figure~\ref{fig-binary-fun} split
-and merge disjoint trees.
+manipulating objects of the type while preserving their invariant. As an example,
+binary trees are not updated by direct assignments in the implementation of search
+trees, but using two new functions, \texttt{Extract} and
+\texttt{Plug}, which split and merge disjoint trees while preserving the forest invariant.
 
-\begin{figure}[ht]
-\begin{minipage}[c]{.75\linewidth}
-\begin{small}
-\begin{lstlisting}
-procedure Extract (F    : in out Forest;
-                   R, I : Index_Type;
-                   D    : Direction;
-                   V    : out Extended_Index_Type);
--- Extract the subtree starting at position D after
--- I in the tree rooted at R in a separate tree.
--- Store its root into V.
-
-procedure Plug (F    : in out Forest;
-                R, I : Index_Type;
-                D    : Direction;
-                V    : Extended_Index_Type);
--- Plug the tree rooted at V in F into the tree
--- rooted at R as a subtree starting at position D
--- after I.
-\end{lstlisting}
+% \begin{figure}[ht]
+% \begin{minipage}[c]{.75\linewidth}
+% \begin{small}
+% \begin{lstlisting}
+% procedure Extract (F    : in out Forest;
+%                    R, I : Index_Type;
+%                    D    : Direction;
+%                    V    : out Extended_Index_Type);
+% -- Extract the subtree starting at position D after
+% -- I in the tree rooted at R in a separate tree.
+% -- Store its root into V.
+% 
+% procedure Plug (F    : in out Forest;
+%                 R, I : Index_Type;
+%                 D    : Direction;
+%                 V    : Extended_Index_Type);
+% -- Plug the tree rooted at V in F into the tree
+% -- rooted at R as a subtree starting at position D
+% -- after I.
 % \end{lstlisting}
-\end{small}
-\end{minipage} \hfill
-\begin{minipage}[c]{.23\linewidth}
-\includegraphics[width=2cm]{plug.pdf}
-\end{minipage}
-\caption{\label{fig-binary-fun} Functions on binary trees.}
-\end{figure}
+% % \end{lstlisting}
+% \end{small}
+% \end{minipage} \hfill
+% \begin{minipage}[c]{.23\linewidth}
+% \includegraphics[width=2cm]{plug.pdf}
+% \end{minipage}
+% \caption{\label{fig-binary-fun} Functions on binary trees.}
+% \end{figure}
 
 %% As type invariants can be temporarily broken inside the data structure implementation, the body
 %% of the modification functions can directly modify the internal structure of the tree. The implementation
@@ -644,12 +645,12 @@ additional array of values. As we only need to consider complete search trees,
 the underlying forest needs to only hold one tree, which is identified through
 its root. The module defining search trees provides basic set functions, namely
 inserting a value into the tree and testing a value for membership into the
-tree. It also provides balancing functions for the upper later of red-black
+tree. It also provides balancing functions for the upper layer of red-black
 trees. They allow to rotate nodes of a search tree to the left or to the right
 while preserving the order between values. An example of such a rotation is
 given in Figure~\ref{fig-search-rot}.  Defining these balancing functions
 inside the implementation of search trees rather than inside the implementation
-of red-black trees allow to keep all order-related concerns in the search tree
+of red-black trees allows to keep all order-related concerns in the search tree
 layer. Indeed, balancing functions do not preserve balance, as they are to be
 called on unbalanced trees, but they do preserve order. Note that implementing
 the balancing functions at this level avoids the need for lifting low-level
@@ -969,21 +970,10 @@ the order invariant stated in Figure~\ref{fig-search} only compares values on a 
 is the node to consider to be able to order values stored in arbitrary nodes.
 
 \begin{figure}
-\begin{minipage}[c]{\linewidth}
+% \begin{minipage}[c]{\linewidth}
 \begin{small}
 \begin{lstlisting}
---  Retrieve the common ancestor to nodes I and J in a tree rooted at R.
-
 function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
-  Pre  =>
-    --  R is the root of a tree
-    Valid_Root (F, R)
-
-    --  I is in this tree
-    and then Model (F, R) (I).Reachable
-
-    --  J is in this tree
-    and then Model (F, R) (J).Reachable,
   Post =>
     --  The node returned is in the tree
     Model (F, R) (Find_Root'Result).Reachable
@@ -1004,95 +994,94 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
                         Length (Model (F, R) (Find_Root'Result).Path) + 1));
 \end{lstlisting}
 \end{small}
-\end{minipage}\hspace*{-30mm}
-\begin{minipage}[c]{.22\linewidth}
-\begin{center}
-\vspace*{-30mm}
-\includegraphics[width=28mm]{transitivity.pdf}
-\end{center}
-\end{minipage}
+% \end{minipage}\hspace*{-30mm}
+% \begin{minipage}[c]{.22\linewidth}
+% \begin{center}
+% \includegraphics[width=28mm]{transitivity.pdf}
+% \end{center}
+% \end{minipage}
 \caption{\label{fig-proof-wit} Function that computes a witness for transitivity applications.}
 \end{figure}
 
-\paragraph{Case analysis:}
-As the number of cases to consider can sometimes confuse the prover, it is often useful to split the
-problem in a sensible way. A proof by case analysis is nothing more than an if statement, each branch
-narrowing the cases to consider and possibly providing additional informations on how to carry out
-the proof in this particular case. Figure~\ref{fig-proof-ca} shows how case analysis was used to
-prove how tree models are modified by an application of \texttt{Plug}. It is divided in two cases: either
-the node was already reachable from the root and then its model is unchanged, or it belonged to
-the subtree being plugged, in which case the path leading to it from the root consists in concatenating
-two subpaths.
-
-\begin{figure}
-\begin{small}
-\begin{lstlisting}
---  Nodes have the same path in F_Old and F, or for those nodes
---  for which V is on the path, their path is obtained by
---  concatenating the path from R to V and the path from V to
---  the node.
-for J in Index_Type loop
-
-   --  Case 1: node J is in the tree rooted at R in F_Old. Use
-   --  Preserve_Equal to prove the property for node J, based on
-   --  the knowledge that it holds for the parent of node J.
-
-   if Model (F, R) (J).Reachable
-     and then Length (Model (F, R) (J).Path) = N
-     and then Model (F_Old, R) (J).Reachable
-   then
-      Preserve_Equal (S1 => Model (F, R) (Parent (F, J)).Path,
-                      S2 => Model (F_Old, R) (Parent (F, J)).Path,
-                      S3 => Model (F, R) (J).Path,
-                      S4 => Model (F_Old, R) (J).Path,
-                      D  => F.C (J).Position);
-   end if;
-
-   --  Case 2: node J is in the tree rooted at V in F_Old. Use
-   --  Preserve_Concat to prove the property for node J, based
-   --  on the knowledge that it holds for the parent of node J.
-
-   if Model (F, R) (J).Reachable
-     and then Length (Model (F, R) (J).Path) = N
-     and then Model (F_Old, V) (J).Reachable
-     and then J /= V
-   then
-      Preserve_Concat (S1 => Model (F_Old, V) (Parent (F, J)).Path,
-                       S2 => Model (F, R) (Parent (F, J)).Path,
-                       S3 => Model (F_Old, V) (J).Path,
-                       S4 => Model (F, R) (J).Path,
-                       T  => Model (F, R) (V).Path,
-                       D  => F.C (J).Position);
-   end if;
-
-   --  Accumulate the knowledge that the property holds up to node
-   --  J.
-
-   pragma Loop_Invariant
-     (for all I in 1 .. J =>
-       (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
-          (if Model (F_Old, R) (I).Reachable
-           then Model (F, R) (I).Path = Model (F_Old, R) (I).Path)));
-   pragma Loop_Invariant
-     (for all I in 1 .. J =>
-       (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
-         (if Model (F_Old, V) (I).Reachable then
-            Is_Concat (Q => Model (F, R) (V).Path,
-                       V => Model (F_Old, V) (I).Path,
-                       P => Model (F, R) (I).Path))));
-end loop;
-\end{lstlisting}
-\end{small}
-\caption{\label{fig-proof-ca} Proof by case analysis of the effect of Plug on models.}
-\end{figure}
-
-Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure (\texttt{Preserve\_Equal} and \texttt{Preserve\_Concat}).
-Also note that, to be able to apply this reasoning on every node of the memory array, the case
-analysis had to be enclosed in a loop. As \gnatprove cannot accumulated knowledge without a loop
-invariant, we had to restate everything that was proved so far by the loop as a loop invariant.
-Also note that this reasoning is a part of a reasoning by induction over the size \texttt{N} of the path
-leading to the node in the new tree, which is why we already know the proposition holds for the
-parent of the current node.
+% \paragraph{Case analysis:}
+% As the number of cases to consider can sometimes confuse the prover, it is often useful to split the
+% problem in a sensible way. A proof by case analysis is nothing more than an if statement, each branch
+% narrowing the cases to consider and possibly providing additional informations on how to carry out
+% the proof in this particular case. Figure~\ref{fig-proof-ca} shows how case analysis was used to
+% prove how tree models are modified by an application of \texttt{Plug}. It is divided in two cases: either
+% the node was already reachable from the root and then its model is unchanged, or it belonged to
+% the subtree being plugged, in which case the path leading to it from the root consists in concatenating
+% two subpaths.
+% 
+% \begin{figure}
+% \begin{small}
+% \begin{lstlisting}
+% --  Nodes have the same path in F_Old and F, or for those nodes
+% --  for which V is on the path, their path is obtained by
+% --  concatenating the path from R to V and the path from V to
+% --  the node.
+% for J in Index_Type loop
+% 
+%    --  Case 1: node J is in the tree rooted at R in F_Old. Use
+%    --  Preserve_Equal to prove the property for node J, based on
+%    --  the knowledge that it holds for the parent of node J.
+% 
+%    if Model (F, R) (J).Reachable
+%      and then Length (Model (F, R) (J).Path) = N
+%      and then Model (F_Old, R) (J).Reachable
+%    then
+%       Preserve_Equal (S1 => Model (F, R) (Parent (F, J)).Path,
+%                       S2 => Model (F_Old, R) (Parent (F, J)).Path,
+%                       S3 => Model (F, R) (J).Path,
+%                       S4 => Model (F_Old, R) (J).Path,
+%                       D  => F.C (J).Position);
+%    end if;
+% 
+%    --  Case 2: node J is in the tree rooted at V in F_Old. Use
+%    --  Preserve_Concat to prove the property for node J, based
+%    --  on the knowledge that it holds for the parent of node J.
+% 
+%    if Model (F, R) (J).Reachable
+%      and then Length (Model (F, R) (J).Path) = N
+%      and then Model (F_Old, V) (J).Reachable
+%      and then J /= V
+%    then
+%       Preserve_Concat (S1 => Model (F_Old, V) (Parent (F, J)).Path,
+%                        S2 => Model (F, R) (Parent (F, J)).Path,
+%                        S3 => Model (F_Old, V) (J).Path,
+%                        S4 => Model (F, R) (J).Path,
+%                        T  => Model (F, R) (V).Path,
+%                        D  => F.C (J).Position);
+%    end if;
+% 
+%    --  Accumulate the knowledge that the property holds up to node
+%    --  J.
+% 
+%    pragma Loop_Invariant
+%      (for all I in 1 .. J =>
+%        (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
+%           (if Model (F_Old, R) (I).Reachable
+%            then Model (F, R) (I).Path = Model (F_Old, R) (I).Path)));
+%    pragma Loop_Invariant
+%      (for all I in 1 .. J =>
+%        (if Model (F, R) (I).Reachable and Length (Model (F, R) (I).Path) <= N then
+%          (if Model (F_Old, V) (I).Reachable then
+%             Is_Concat (Q => Model (F, R) (V).Path,
+%                        V => Model (F_Old, V) (I).Path,
+%                        P => Model (F, R) (I).Path))));
+% end loop;
+% \end{lstlisting}
+% \end{small}
+% \caption{\label{fig-proof-ca} Proof by case analysis of the effect of Plug on models.}
+% \end{figure}
+% 
+% Note that, to prove each cases, we use an intermediate lemma by calling the associated procedure (\texttt{Preserve\_Equal} and \texttt{Preserve\_Concat}).
+% Also note that, to be able to apply this reasoning on every node of the memory array, the case
+% analysis had to be enclosed in a loop. As \gnatprove cannot accumulated knowledge without a loop
+% invariant, we had to restate everything that was proved so far by the loop as a loop invariant.
+% Also note that this reasoning is a part of a reasoning by induction over the size \texttt{N} of the path
+% leading to the node in the new tree, which is why we already know the proposition holds for the
+% parent of the current node.
 
 \subsection{Ghost Code}
 % different uses of ghost code
@@ -1131,8 +1120,8 @@ it is worthwhile to turn a chunk of auto-active proof into an intermediate lemma
 allowing for a modular verification, or if we prefer to have the tool automatically inline the
 proof wherever we call the ghost procedure.
 
-Note that, though it makes sense to execute ghost code used for subprogram specification, there is no benefit in
-executing code solely written for auto-active verification.
+% Note that, though it makes sense to execute ghost code used for subprogram specification, there is no benefit in
+% executing code solely written for auto-active verification.
 
 \section{Development and Verification Data}
 % number of assertions, loc of ghost code, etc.
@@ -1144,12 +1133,13 @@ in three modules for binary trees, search trees and red-black trees, is quite
 small, only 286 lines overall. But this code only accounts for 14\% of the
 total lines of code, when taking into account contracts (22\%) and more
 importantly ghost code (64\%). Table~\ref{tab-sloc} summarizes the logical
-lines of code as counted by the tool GNATmetric. The imbalance would be even
-more pronounced if we looked at the effort required to produce the operational
-code, contracts and ghost code. The ratio for efforts would be closer to 9 to 1
-when comparing ghost code with operational code, as in the most complex cases
-developing ghost code required interacting with automatic provers to find a
-suitable division of proof objectives that was amenable to automatic proof.
+lines of code as counted by the tool GNATmetric.
+% The imbalance would be even
+% more pronounced if we looked at the effort required to produce the operational
+% code, contracts and ghost code. The ratio for efforts would be closer to 9 to 1
+% when comparing ghost code with operational code, as in the most complex cases
+% developing ghost code required interacting with automatic provers to find a
+% suitable division of proof objectives that was amenable to automatic proof.
 
 \begin{table}[h]
 \begin{center}
@@ -1166,14 +1156,18 @@ total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 \end{center}
 \end{table}
 
-There are few top-level contracts for red-black trees: just one precondition on
-the insertion procedure to state that there should be still room for insertion,
-and three postconditions on insertion, membership and the ghost function to get
-the set of values. As contracts can be arbitrarily complex, we prefer to count
+% There are few top-level contracts for red-black trees: just one precondition on
+% the insertion procedure to state that there should be still room for insertion,
+% and three postconditions on insertion, membership and the ghost function to get
+% the set of values.
+As contracts can be arbitrarily complex, we prefer to count
 the number of conjuncts than the number of preconditions and
-postconditions. Each of the contracts on red-black trees consists in just one
-conjunct, hence the total number of conjuncts for external contracts is only
-four.
+postconditions. 
+There are few simple top-level contracts for red-black trees, hence
+% Each of the contracts on red-black trees consists in just one
+% conjunct, hence 
+the small number of conjuncts for external contracts.
+% is only four.
 
 But many more contracts and assertions are needed for auto-active
 verification. First, contracts are needed on subprograms in binary trees (155
