@@ -699,7 +699,7 @@ tree after an insertion.
 
 Specifications on the insertion and membership functions that operate on
 red-black trees consist in simple contracts (preconditions and postconditions)
-presented in Figure~\ref{fig-rbt-spec}. These contracts use function
+presented in Figure~\ref{fig-rbt-spec}. These contracts use a model function
 \texttt{Values} that returns the set of values in the tree.
 
 %% In this example, we concentrate on functional requirements of two kinds. The most important one is the
@@ -965,7 +965,7 @@ automatic provers used in \gnatprove are usually unable to come up with the appr
 intermediate value to use in the transitivity relation. To achieve the proofs, we resorted to providing
 provers with the appropriate term whenever necessary. For example, function \texttt{Find\_Root} in
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
-the order invariant stated in Figure~\ref{fig-search} only compares values on a single path, this
+the order invariant stated in Figure~\ref{fig-search} compares values on a single path, this
 is the node to consider to be able to order values stored in arbitrary nodes.
 
 \begin{figure}
@@ -1211,8 +1211,8 @@ and only the precondition on insertion in red-black trees activated (since this
 might be violated by an external call). Disabling run-time checks is done
 through a compiler switch (-gnatp) and only enabling preconditions in red-black
 trees is done through a configuration pragma in the unit. Inserting one million
-integers in the red-black tree from 1 to 1 million leads to a violation of the
-invariant in 999,998 cases, which requires 999,963 left rotations and zero
+integers in a red-black tree from 1 to 1 million leads to a violation of the
+balancing in 999,998 cases, which requires 999,963 left rotations and no
 right rotations. On a Core i7 with 2,8 GHz and 16 Go RAM, the running time for
 performing these 1 million insertions is 0.65 seconds without run-time checks,
 and 0.70 seconds with run-time checks, or 0.65 microseconds (respectively 0.70
