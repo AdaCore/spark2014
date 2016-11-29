@@ -42,7 +42,6 @@ with Opt;                             use Opt;
 with Restrict;                        use Restrict;
 with Rident;                          use Rident;
 with Sem_Aux;                         use Sem_Aux;
-with Sem_Ch12;                        use Sem_Ch12;
 with Sem_Disp;                        use Sem_Disp;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Util;                        use Sem_Util;
@@ -2768,7 +2767,10 @@ package body SPARK_Definition is
          --  Mark types, subprograms and objects from a package with external
          --  axioms.
 
-         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
+         procedure Mark_Actual (Formal : Node_Id; Actual : Node_Id);
+
+         procedure Mark_Generic_Parameters_External_Axioms is new
+           Iterate_Generic_Parameters (Mark_Actual);
          --  Mark actual parameters of a package with external axioms
 
          ---------------------------------------------
@@ -2855,57 +2857,44 @@ package body SPARK_Definition is
             end loop;
          end Declare_In_Package_With_External_Axioms;
 
-         ---------------------------------------------
-         -- Mark_Generic_Parameters_External_Axioms --
-         ---------------------------------------------
+         -----------------
+         -- Mark_Actual --
+         -----------------
 
-         procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id) is
-            Cur_Assoc : Node_Id := First (Assoc);
+         procedure Mark_Actual (Formal : Node_Id; Actual : Node_Id) is
+            pragma Unreferenced (Formal);
          begin
-            while Present (Cur_Assoc) loop
+            if Nkind (Actual) in N_Identifier | N_Expanded_Name then
                declare
-                  Actual : constant Node_Id :=
-                    Explicit_Generic_Actual_Parameter (Cur_Assoc);
+                  E_Actual : constant Entity_Id :=
+                    (if Ekind (Entity (Actual)) = E_Function then
+                        Get_Renamed_Entity (Entity (Actual))
+                     else Entity (Actual));
                begin
-                  --  For entities passed as actual, mark the entity directly
-                  --  instead of the expression.
+                  if Ekind (E_Actual) /= E_Operator then
 
-                  if Nkind (Actual) in N_Identifier | N_Expanded_Name then
-                     declare
-                        EActual : constant Entity_Id :=
-                          (if Ekind (Entity (Actual)) = E_Function then
-                             Get_Renamed_Entity (Entity (Actual))
-                           else Entity (Actual));
-                     begin
-                        if Ekind (EActual) /= E_Operator then
-
-                           --  Mark the entity of the actual
-
-                           Mark_Entity (EActual);
-                        end if;
-                     end;
-
-                  --  For anonymous classwide types T'Class passed as actual,
-                  --  mark the corresponding type entity.
-
-                  elsif Nkind (Actual) in N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (Actual)) =
-                      Attribute_Class
-                  then
-                     Mark_Entity (Etype (Actual));
-
-                  --  For constant parameters, the actual may be an expression
-                  --  instead of a name. In that case, mark the expression of
-                  --  the actual.
-
-                  else
-                     Mark (Actual);
+                     --  Mark the entity of the actual
+                     Mark_Entity (E_Actual);
                   end if;
                end;
 
-               Next (Cur_Assoc);
-            end loop;
-         end Mark_Generic_Parameters_External_Axioms;
+            --  For anonymous classwide types T'Class passed as actual,
+            --  mark the corresponding type entity.
+
+            elsif Nkind (Actual) in N_Attribute_Reference
+              and then Get_Attribute_Id (Attribute_Name (Actual)) =
+                Attribute_Class
+            then
+               Mark_Entity (Etype (Actual));
+
+            --  For constant parameters, the actual may be an expression
+            --  instead of a name. In that case, mark the expression of
+            --  the actual.
+
+            else
+               Mark (Actual);
+            end if;
+         end Mark_Actual;
 
          Vis_Decls : constant List_Id :=
            Visible_Declarations (Package_Specification (E));
@@ -2924,7 +2913,7 @@ package body SPARK_Definition is
 
             pragma Assert
               (Present (SPARK_Pragma (E))
-                 and then
+               and then
                Get_SPARK_Mode_From_Annotation (SPARK_Pragma (E)) = On);
 
             --  For other verifications, use the SPARK pragma of the package
@@ -2939,11 +2928,10 @@ package body SPARK_Definition is
                declare
                   G_Parent : constant Node_Id :=
                     Generic_Parent (Package_Specification (E));
+
                begin
                   if Present (G_Parent) then
-                     Mark_Generic_Parameters_External_Axioms
-                       (Generic_Associations
-                          (Get_Package_Instantiation_Node (E)));
+                     Mark_Generic_Parameters_External_Axioms (E);
                   end if;
                end;
 

@@ -51,7 +51,6 @@ with Osint;                          use Osint;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Ch7;                        use Sem_Ch7;
-with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Util;                       use Sem_Util;
 with Sinfo;                          use Sinfo;
 with Snames;                         use Snames;
@@ -1473,23 +1472,23 @@ package body Flow is
                           and then Is_Generic_Instance (Scope (E))
                         then
                            declare
-                              Inst : constant Node_Id :=
-                                Get_Package_Instantiation_Node (Scope (E));
-
-                              procedure Actual_Sub (Actual : Node_Id);
+                              procedure Actual_Sub (Formal : Node_Id;
+                                                    Actual : Node_Id);
                               --  Given an Actual, include it in the
                               --  Contract_Calls if it is a function or a
                               --  procedure.
 
                               procedure Register_Actual_Subprograms is new
-                                Iterate_Generic_Actual_Parameters (Actual_Sub);
+                                Iterate_Generic_Parameters (Actual_Sub);
 
                               ----------------
                               -- Actual_Sub --
                               ----------------
 
-                              procedure Actual_Sub (Actual : Node_Id) is
+                              procedure Actual_Sub (Formal : Node_Id;
+                                                    Actual : Node_Id) is
                                  E_Actual : Entity_Id;
+                                 pragma Unreferenced (Formal);
                               begin
                                  if Nkind (Actual) in N_Has_Entity then
                                     E_Actual := Entity (Actual);
@@ -1504,7 +1503,7 @@ package body Flow is
                               end Actual_Sub;
 
                            begin
-                              Register_Actual_Subprograms (Inst);
+                              Register_Actual_Subprograms (Scope (E));
                            end;
                         end if;
 

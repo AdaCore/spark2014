@@ -30,6 +30,8 @@ with Fname;                              use Fname;
 with Nlists;                             use Nlists;
 with Output;
 with Pprint;                             use Pprint;
+with Sem_Aux;                            use Sem_Aux;
+with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
@@ -1296,26 +1298,52 @@ package body SPARK_Util is
       end loop;
    end Iterate_Call_Parameters;
 
-   ---------------------------------------
-   -- Iterate_Generic_Actual_Parameters --
-   ---------------------------------------
+   --------------------------------
+   -- Iterate_Generic_Parameters --
+   --------------------------------
 
-   procedure Iterate_Generic_Actual_Parameters (Instance : Node_Id)
+   procedure Iterate_Generic_Parameters (E : Entity_Id)
    is
-      Params     : constant List_Id := Generic_Associations (Instance);
-      Cur_Actual : Node_Id := First (Params);
-      Actual     : Node_Id;
+      Instance : constant Node_Id := Get_Package_Instantiation_Node (E);
+
+      pragma Assert (Nkind (Instance) = N_Package_Instantiation);
+
+      function Get_Label_List (E : Entity_Id) return List_Id;
+      --  Use Parent field to reach N_Generic_Package_Declaration
+      --  ??? See Gnat2Why.External_Axioms.Get_Label_List
+
+      --------------------
+      -- Get_Label_List --
+      --------------------
+
+      function Get_Label_List (E : Entity_Id) return List_Id is
+         P : Node_Id := Generic_Parent (Package_Specification (E));
+      begin
+         while Nkind (P) /= N_Generic_Package_Declaration loop
+            P := Parent (P);
+         end loop;
+
+         return Generic_Formal_Declarations (P);
+      end Get_Label_List;
+
+      Params  : constant List_Id := Generic_Associations (Instance);
+      Formals : constant List_Id := Get_Label_List (E);
+
+      Param  : Node_Id := First (Params);
+      Formal : Node_Id := First (Formals);
+
+   --  Start of processing for Iterate_Generic_Parameters
+
    begin
-      while Present (Cur_Actual) loop
-         pragma Assert (Nkind (Cur_Actual) = N_Generic_Association);
+      while Present (Param) loop
+         pragma Assert (Nkind (Param) = N_Generic_Association);
 
-         Actual := Explicit_Generic_Actual_Parameter (Cur_Actual);
+         Handle_Parameters (Formal, Explicit_Generic_Actual_Parameter (Param));
 
-         Handle_Actual (Actual);
-
-         Next (Cur_Actual);
+         Next (Param);
+         Next (Formal);
       end loop;
-   end Iterate_Generic_Actual_Parameters;
+   end Iterate_Generic_Parameters;
 
    ----------------------------------
    -- Location_In_Standard_Library --

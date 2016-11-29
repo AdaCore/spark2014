@@ -27,7 +27,6 @@ with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Rtsfind;                            use Rtsfind;
 with Sem_Aux;                            use Sem_Aux;
-with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Type;                           use Sem_Type;
 with Sem_Util;                           use Sem_Util;
@@ -5791,26 +5790,29 @@ package body Flow.Control_Flow_Graph is
 
             if Is_Generic_Instance (FA.Spec_Entity) then
                declare
-                  Instance    : constant Node_Id :=
-                    Get_Package_Instantiation_Node (FA.Spec_Entity);
-                  Association : Node_Id;
-                  Parameter   : Node_Id;
-               begin
-                  --  Sanity check for the kind of Instance node
-                  pragma Assert (Nkind (Instance) = N_Package_Instantiation);
+                  procedure Create_In_And_Fin_Vert (Formal    : Node_Id;
+                                                    Parameter : Node_Id);
 
-                  Association := First (Generic_Associations (Instance));
-                  while Present (Association) loop
-                     Parameter := Explicit_Generic_Actual_Parameter
-                                    (Association);
+                  procedure Create_Vertices is new
+                    Iterate_Generic_Parameters (Create_In_And_Fin_Vert);
 
-                     if Nkind (Parent (Parameter)) in
+                  ----------------------------
+                  -- Create_In_And_Fin_Vert --
+                  ----------------------------
+
+                  procedure Create_In_And_Fin_Vert (Formal    : Node_Id;
+                                                    Parameter : Node_Id)
+                  is
+                     pragma Unreferenced (Formal);
+                     Parent_N : constant Node_Id := Parent (Parameter);
+                  begin
+                     if Nkind (Parent_N) in
                        N_Object_Declaration | N_Object_Renaming_Declaration
                      then
                         Create_Initial_And_Final_Vertices
                           (Direct_Mapping_Id
-                             (Defining_Identifier (Parent (Parameter))),
-                           (case (Nkind (Parent (Parameter))) is
+                             (Defining_Identifier (Parent_N)),
+                           (case (Nkind (Parent_N)) is
                                when N_Object_Declaration =>
                                   Mode_In,
                                when N_Object_Renaming_Declaration =>
@@ -5820,9 +5822,10 @@ package body Flow.Control_Flow_Graph is
                            False,
                            FA);
                      end if;
+                  end Create_In_And_Fin_Vert;
 
-                     Next (Association);
-                  end loop;
+               begin
+                  Create_Vertices (FA.Spec_Entity);
                end;
             end if;
       end case;
