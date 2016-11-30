@@ -1126,6 +1126,9 @@ proof wherever we call the ghost procedure.
 % data on automatic verification
 % feedback from development and verification cycles
 
+All the execution times and verification times reported in this section were
+obtained on a Core i7 with 2,8 GHz and 16 GB RAM.
+
 The code implementing the core algorithm for red-black trees, even when split
 in three modules for binary trees, search trees and red-black trees, is quite
 small, only 286 lines overall. But this code only accounts for 14\% of the
@@ -1202,8 +1205,8 @@ the cognitive effort required to understand the correction of search trees
 compared to red-black trees.
 
 The automatic verification that the code (including ghost code) is free of
-run-time errors and that it respects its contracts takes less than 30 minutes
-on a Core i7 with 2,8 GHz and 16 GB RAM, using 4 cores and two successive runs
+run-time errors and that it respects its contracts takes less than 30 minutes,
+using 4 cores and two successive runs
 of GNATprove at proof levels 2 and 3. As automatic provers CVC4, Z3 and
 Alt-Ergo are called in sequence on unproved Verification Conditions (VCs), it
 is not surprising that CVC4 proves a majority of VCs (3763), while Z3 proves
@@ -1219,7 +1222,7 @@ through a compiler switch (-gnatp) and only enabling preconditions in red-black
 trees is done through a configuration pragma in the unit. Inserting one million
 integers in a red-black tree from 1 to 1 million leads to a violation of the
 balancing in 999,998 cases, which requires 999,963 left rotations and no
-right rotations. On a Core i7 with 2,8 GHz and 16 GB RAM, the running time for
+right rotations. The running time for
 performing these 1 million insertions is 0.65 seconds without run-time checks,
 and 0.70 seconds with run-time checks, or 0.65 microseconds (respectively 0.70
 microseconds) per insertion.
@@ -1232,7 +1235,7 @@ functions which themselves quantify over the same size in their own contracts
 or code. In addition, the expensive operation of constructing the model is
 performed repeatedly in contracts, as SPARK does not yet provide a
 let-expression form.  As a result, inserting one element in a tree of size one
-takes 2 minutes on a Core i7 with 2,8 GHz and 16 GB RAM.
+takes 2 minutes.
 
 \section{Related Work}
 \label{related-work}
