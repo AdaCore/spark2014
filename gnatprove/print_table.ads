@@ -51,50 +51,116 @@ package Print_Table with SPARK_Mode is
    end record;
 
    function Create_Table (Lines, Cols : Natural) return Table
-   with
-     Global => null,
-     Pre    => Lines <= Max_Size and Cols <= Max_Size;
    --  create a table and set the current cell to the upper-left cell.
    --  @param Lines
    --  @param Cols
    --  @return a table of size Lines x Cols
+   with
+     Global => null,
+     Pre    => Lines <= Max_Size and Cols <= Max_Size,
+     Post   =>
+
+   --  Create_Table returns a table of size Lines x Cols
+
+       Create_Table'Result.L = Lines and Create_Table'Result.C = Cols
+
+   --  The cursors designate the first slot in the table
+
+     and Create_Table'Result.Cur_Line = 1 and Create_Table'Result.Cur_Col = 1;
+
+   function Is_Set
+     (T    : Table_Content;
+      L, C : Less_Than_Max_Size;
+      S    : String;
+      A    : Alignment_Type;
+      R    : Table_Content) return Boolean
+   --  Return True if R is S updated at position (L, C) with Cell (S, A)
+
+   is
+
+      --  T and R range over the same ranges
+
+     (T'First (1) = R'First (1) and then T'Last (1) = R'Last (1)
+      and then T'First (2) = R'First (2) and then T'Last (2) = R'Last (2)
+
+      --  They contain the same values except at position L, C where R contains
+      --  S and A.
+
+      and then L in T'Range (1) and then C in T'Range (2)
+      and then To_String (R (L, C).Content) = S
+      and then R (L, C).Align = A
+      and then (for all I in T'Range (1) =>
+                  (for all J in T'Range (2) =>
+                       (if I /= L and J /= C then R (I, J) = T (I, J)))))
+   with Ghost;
 
    procedure Put_Cell
      (T     : in out Table;
       S     : String;
       Align : Alignment_Type := Right_Align)
-   with
-     Global => null,
-     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
-     and then S'Length <= Max_Size;
    --  print a string into the current cell of the table, and move to the next
    --  cell. Note that this does not move to the next line, you need to call
    --  New_Line below after printing to the last cell of a line.
    --  @param T the table which contains the cell
    --  @param S the string to be put into the current cell
    --  @param Align the selected alignment for this cell
+   with
+     Global => null,
+     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
+     and then S'Length <= Max_Size,
+
+     --  S has been printed inside the current cell with alignment Align
+
+     Post   => Is_Set (T => T.Content'Old,
+                       L => T.Cur_Line'Old,
+                       C => T.Cur_Col'Old,
+                       S => S,
+                       A => Align,
+                       R => T.Content)
+
+     --  We have moved to the next cell, but not moved to the next line, even
+     --  if needed.
+
+      and T.Cur_Line = T.Cur_Line'Old and T.Cur_Col = T.Cur_Col'Old + 1;
 
    procedure Put_Cell
      (T     : in out Table;
       S     : Natural;
       Align : Alignment_Type := Right_Align)
-   with
-     Global => null,
-     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C;
    --  same as Put_Cell for strings, but for numbers; if S is 0, prints a dot
    --  instead
    --  @param T the table which contains the cell
    --  @param S the number to be printed
    --  @param Align the selected alignment for this cell
 
-   procedure New_Line (T : in out Table)
    with
      Global => null,
-     Pre    => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L;
+     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C,
+
+     --  S has been printed inside the current cell with alignment A; if S is
+     --  0, prints a dot instead.
+
+     Post   => Is_Set (T => T.Content'Old,
+                       L => T.Cur_Line'Old,
+                       C => T.Cur_Col'Old,
+                       S => (if S = 0 then " ." else Integer'Image (S)),
+                       A => Align,
+                       R => T.Content)
+
+     --  We have moved to the next cell, but not moved to the next line, even
+     --  if needed.
+
+      and T.Cur_Line = T.Cur_Line'Old and T.Cur_Col = T.Cur_Col'Old + 1;
+
+   procedure New_Line (T : in out Table)
    --  make sure that the current cell is the last cell of the line, and then
    --  set the current cell to the first cell of the next line
    --  @param T the table, this parameter is used only to check that the table
    --           has the expected number of columns.
+   with
+     Global => null,
+     Pre    => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L,
+     Post   => T = T'Old'Update (Cur_Col => 1, Cur_Line => T.Cur_Line'Old + 1);
 
    procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table)
    with
