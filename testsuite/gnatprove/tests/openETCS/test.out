@@ -215,9 +215,9 @@ step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:113:56: info: initialization of "i2" proved
 step_function.adb:115:13: info: loop invariant initialization proved (CVC4: 1 VC)
+step_function.adb:115:13: info: loop invariant preservation proved (altergo: 1 VC)
 step_function.adb:115:29: info: initialization of "im" proved
 step_function.adb:116:15: info: initialization of "Merge.Step" proved
-step_function.adb:116:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved (CVC4: 2 VC)
 step_function.adb:116:54: info: index check proved (CVC4: 2 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC4: 1 VC)

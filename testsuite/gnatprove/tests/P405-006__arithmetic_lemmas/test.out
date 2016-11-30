@@ -39,7 +39,7 @@ test_arith.adb:66:14: info: initialization of "R1" proved
 test_arith.adb:66:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:66:19: info: initialization of "R2" proved
 test_arith.adb:69:21: info: overflow check proved (altergo: 1 VC)
-test_arith.adb:70:15: info: overflow check proved (Z3: 1 VC)
+test_arith.adb:70:15: info: overflow check proved (altergo: 1 VC)
 test_arith.adb:70:19: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:70:23: info: overflow check proved (altergo: 1 VC)
 test_arith.adb:75:40: info: initialization of "R" proved

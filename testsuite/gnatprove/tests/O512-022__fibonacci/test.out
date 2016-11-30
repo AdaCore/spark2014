@@ -60,7 +60,7 @@ fib.adb:51:16: info: initialization of "a1" proved
 fib.adb:55:10: info: initialization of "a2" proved
 fib.adb:56:16: info: initialization of "a2" proved
 fib.adb:66:11: info: range check proved (CVC4: 2 VC)
-fib.adb:67:17: info: range check proved (Z3: 1 VC)
+fib.adb:67:17: info: range check proved (altergo: 1 VC)
 fib.adb:67:17: medium: overflow check might fail
 fib.adb:67:19: info: initialization of "p" proved
 fib.adb:69:14: info: initialization of "p" proved
@@ -69,7 +69,7 @@ fib.adb:76:33: info: initialization of "p1" proved
 fib.adb:76:33: medium: loop invariant might fail after first iteration, cannot prove p1 = Factorial(i - 1)
 fib.adb:76:33: medium: loop invariant might fail in first iteration, cannot prove p1 = Factorial(i - 1) (e.g. when i = 2 and p1 = 1)
 fib.adb:76:38: info: precondition proved (CVC4: 1 VC)
-fib.adb:77:18: info: range check proved (Z3: 1 VC)
+fib.adb:77:18: info: range check proved (altergo: 1 VC)
 fib.adb:77:18: medium: overflow check might fail
 fib.adb:77:20: info: initialization of "p1" proved
 fib.adb:80:11: info: range check proved (CVC4: 2 VC)
@@ -77,7 +77,7 @@ fib.adb:81:33: info: initialization of "p2" proved
 fib.adb:81:33: medium: loop invariant might fail after first iteration, cannot prove p2 = Factorial(i - 1)
 fib.adb:81:33: medium: loop invariant might fail in first iteration, cannot prove p2 = Factorial(i - 1)
 fib.adb:81:38: info: precondition proved (CVC4: 1 VC)
-fib.adb:82:18: info: range check proved (Z3: 1 VC)
+fib.adb:82:18: info: range check proved (altergo: 1 VC)
 fib.adb:82:18: medium: overflow check might fail
 fib.adb:82:20: info: initialization of "p2" proved
 fib.adb:93:14: info: initialization of "k1" proved

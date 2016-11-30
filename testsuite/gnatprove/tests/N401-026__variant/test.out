@@ -5,7 +5,7 @@ loop_tutorial.adb:11:40: medium: overflow check might fail
 loop_tutorial.adb:11:56: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:21:20: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:27:33: info: initialization of "Lower" proved
-loop_tutorial.adb:27:33: info: loop invariant initialization proved (CVC4: 4 VC; Z3: 1 VC)
+loop_tutorial.adb:27:33: info: loop invariant initialization proved (CVC4: 4 VC; altergo: 1 VC)
 loop_tutorial.adb:27:33: info: loop invariant preservation proved (CVC4: 3 VC; altergo: 2 VC)
 loop_tutorial.adb:28:37: info: initialization of "Upper" proved
 loop_tutorial.adb:30:43: medium: overflow check might fail

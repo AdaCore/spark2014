@@ -930,17 +930,17 @@ no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
 operator_overload.adb:16:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:16:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
+operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:16:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:16:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:16:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
+operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:17:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:17:38: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
+operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:17:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:17:59: info: overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:30
+operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
@@ -1019,7 +1019,7 @@ raster_graphics.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:16:39: medium: range check might fail
 raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
 raster_graphics.adb:18:20: info: overflow check proved (altergo: 1 VC)
-raster_graphics.adb:18:24: medium: overflow check might fail
+raster_graphics.adb:18:24: info: overflow check proved (altergo: 1 VC)
 raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
 raster_graphics.adb:18:33: info: overflow check proved (altergo: 1 VC)
 raster_graphics.adb:27:10: info: initialization of "Status" proved
@@ -1214,22 +1214,22 @@ shapes.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:13:34: info: range check proved (CVC4: 1 VC)
 shapes.adb:14:14: info: initialization of "Delta_X" proved
 shapes.adb:14:21: info: overflow check proved (altergo: 1 VC)
-shapes.adb:14:30: medium: overflow check might fail
+shapes.adb:14:30: info: overflow check proved (altergo: 1 VC)
 shapes.adb:14:32: info: initialization of "Delta_Y" proved
 shapes.adb:14:39: info: overflow check proved (altergo: 1 VC)
 shapes.adb:14:75: info: overflow check proved (altergo: 1 VC)
-shapes.adb:14:75: medium: range check might fail
+shapes.adb:14:75: info: range check proved (altergo: 1 VC)
 shapes2.adb:12:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:12:34: info: range check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: range check proved (CVC4: 1 VC)
 shapes2.adb:14:14: info: initialization of "Delta_X" proved
 shapes2.adb:14:21: info: overflow check proved (altergo: 1 VC)
-shapes2.adb:14:30: medium: overflow check might fail
+shapes2.adb:14:30: info: overflow check proved (altergo: 1 VC)
 shapes2.adb:14:32: info: initialization of "Delta_Y" proved
 shapes2.adb:14:39: info: overflow check proved (altergo: 1 VC)
 shapes2.adb:14:75: info: overflow check proved (altergo: 1 VC)
-shapes2.adb:14:75: medium: range check might fail
+shapes2.adb:14:75: info: range check proved (altergo: 1 VC)
 shapes3.adb:7:08: info: refined post proved (CVC4: 4 VC)
 shapes3.adb:18:10: info: initialization of "R" proved
 shapes3.adb:19:36: info: range check proved (CVC4: 1 VC)
@@ -1246,7 +1246,7 @@ shapes3.adb:42:34: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes3.adb:43:14: info: initialization of "Delta_X" proved
 shapes3.adb:43:21: info: overflow check proved (altergo: 1 VC)
-shapes3.adb:43:30: medium: overflow check might fail
+shapes3.adb:43:30: info: overflow check proved (altergo: 1 VC)
 shapes3.adb:43:32: info: initialization of "Delta_Y" proved
 shapes3.adb:43:39: info: overflow check proved (altergo: 1 VC)
 shapes3.adb:43:75: info: overflow check proved (altergo: 1 VC)
@@ -1267,7 +1267,7 @@ shapes4.adb:26:34: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:26:34: info: range check proved (CVC4: 1 VC)
 shapes4.adb:27:14: info: initialization of "Delta_X" proved
 shapes4.adb:27:21: info: overflow check proved (altergo: 1 VC)
-shapes4.adb:27:30: medium: overflow check might fail
+shapes4.adb:27:30: info: overflow check proved (altergo: 1 VC)
 shapes4.adb:27:32: info: initialization of "Delta_Y" proved
 shapes4.adb:27:39: info: overflow check proved (altergo: 1 VC)
 shapes4.adb:27:75: info: overflow check proved (altergo: 1 VC)
@@ -1290,11 +1290,11 @@ shapes5.adb:43:34: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:44:14: info: initialization of "Delta_X" proved
 shapes5.adb:44:21: info: overflow check proved (altergo: 1 VC)
-shapes5.adb:44:30: medium: overflow check might fail
+shapes5.adb:44:30: info: overflow check proved (altergo: 1 VC)
 shapes5.adb:44:32: info: initialization of "Delta_Y" proved
 shapes5.adb:44:39: info: overflow check proved (altergo: 1 VC)
 shapes5.adb:44:75: info: overflow check proved (altergo: 1 VC)
-shapes5.adb:44:75: medium: range check might fail
+shapes5.adb:44:75: info: range check proved (altergo: 1 VC)
 shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
 shapes5.ads:21:04: info: initialization of "Wild_Man" proved
 silly.adb:3:21: info: initialization of "Result" proved

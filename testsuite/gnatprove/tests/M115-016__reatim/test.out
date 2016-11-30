@@ -7,7 +7,7 @@ pck.adb:33:20: info: overflow check proved (altergo: 1 VC)
 pck.adb:33:20: info: range check proved (altergo: 1 VC)
 pck.adb:34:15: info: initialization of "V_Lo" proved
 pck.adb:34:20: info: overflow check proved (altergo: 1 VC)
-pck.adb:34:20: info: range check proved (Z3: 1 VC)
+pck.adb:34:20: info: range check proved (altergo: 1 VC)
 pck.adb:35:15: info: initialization of "V_Hi" proved
 pck.adb:35:20: medium: overflow check might fail
 pck.adb:35:22: info: initialization of "V_Lo" proved

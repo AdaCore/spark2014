@@ -37,7 +37,7 @@ inrange3.adb:12:10: info: loop variant proved (CVC4: 1 VC)
 inrange3.adb:12:43: info: initialization of "I" proved
 inrange3.adb:14:12: info: initialization of "I" proved
 inrange3.adb:14:12: info: loop invariant initialization proved (CVC4: 3 VC)
-inrange3.adb:14:12: info: loop invariant preservation proved (CVC4: 2 VC; altergo: 1 VC)
+inrange3.adb:14:12: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
 inrange3.adb:15:37: info: range check proved (CVC4: 2 VC)
 inrange3.adb:16:29: info: initialization of "I" proved
 inrange3.adb:19:15: info: initialization of "I" proved

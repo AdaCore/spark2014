@@ -10,5 +10,5 @@ arithmetic.adb:7:38: info: division check proved (altergo: 1 VC)
 arithmetic.adb:14:20: info: initialization of "R" proved
 arithmetic.adb:15:33: info: initialization of "R" proved
 arithmetic.adb:15:33: medium: loop invariant might fail after first iteration, cannot prove R = I
-arithmetic.adb:16:39: medium: loop invariant might fail in first iteration, cannot prove N > R + R + 1
+arithmetic.adb:15:33: medium: loop invariant might fail in first iteration, cannot prove R = I
 arithmetic.adb:19:14: info: initialization of "R" proved
