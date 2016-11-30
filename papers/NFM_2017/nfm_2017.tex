@@ -108,7 +108,7 @@ auto-active verification so far.
 
 Formal program verification allows programmers to guarantee that the programs
 they write have some desired properties. These properties may simply be that
-the program does not crash or behaves erratically, or more complex critical
+the program does not crash or behave erratically, or more complex critical
 properties related to safety or security. Being able to guarantee such
 properties will be essential for high assurance software as requirements are
 increasingly complex and security attacks more pervasive.
@@ -124,9 +124,9 @@ automatic provers. The main drawback is that top-level specifications are not
 sufficient. Programmers need to provide many intermediate specifications in the
 form of additional contracts, loop invariants and assertions.
 
-The folklore surrounding the art of providing the right intermediate
-specifications has been given firmer ground in the recent years under the name
-of \emph{auto-active verification}. Various languages and tools now provide
+Providing the right intermediate specifications is a difficult art, but
+progress has been achieved in recent years through a method known as
+auto-active verification. Various languages and tools now provide
 features for effective auto-active verification. SPARK is among
 these. In this paper, we explore the capabilities of auto-active verification
 for automatically proving complex algorithms. We have chosen to target
@@ -164,7 +164,7 @@ restrictions ensure that the behavior of a \spark program is
 unambiguously defined, and simple enough that formal verification
 tools can perform an automatic diagnosis of conformance between a
 program specification and its implementation. The \spark language and
-toolset for formal verification has been applied over many years to
+toolset for formal verification have been applied over many years to
 on-board aircraft systems, control systems, cryptographic systems, and
 rail systems~\cite{oneill2012}.
 
@@ -176,7 +176,7 @@ data flow contracts, information flow contracts, and functional contracts
 (preconditions and postconditions, introduced respectively by \texttt{Pre} and
 \texttt{Post}). An important difference between \spark 2005 and \spark 2014 is
 that functional contracts are executable in \spark 2014, which greatly
-facilitates the combination between test and proof. The definition of the
+facilitates the combination of test and proof. The definition of the
 language subset is motivated by the simplicity and feasibility of formal
 analysis and the need for an unambiguous semantics. Tools are available that
 provide flow analysis and proof of \spark programs.
@@ -215,11 +215,11 @@ specialized forms of assertions (loop invariants and loop variants, assumptions
 and assertions). All the toolsets mentioned above also support \emph{ghost code},
 a feature to instrument code for verification. Ghost
 functions are also called lemmas when their main purpose is to support the
-proof of a property, that is later used at the point where the function is
+proof of a property that is later used at the point where the function is
 called. See \cite{kosmatov:hal-01344110} for a comparison of how ghost code
 differs between Why3, Frama-C and \spark. Various tool capabilities facilitate
 user interaction at source level: fast running time that exploits
-multiprocessor architectures and minimizes rework between runs, ability to
+multiprocessor architectures and minimizes rework between runs, the ability to
 trade running time for more verification power, feedback from the toolset when
 verification is unsuccessful (counterexamples in particular).
 
@@ -275,11 +275,11 @@ the deletion algorithm, which would be very similar to insertion.
 %  ex: provide a model of reachability
 % primitives needed by upper levels provided at lower level were they abide by the invariant
 
-Implementing red black trees correctly from the algorithm is straightforward,
+Implementing red-black trees correctly from the algorithm is straightforward,
 but this implementation is hard to verify formally, as it forces one to
 reason about different levels of properties all at once. Instead, we have
 divided the implementation into three distinct parts, each one concerned with
-one level of properties: binary trees, search trees and red-black trees. Binary
+one property level: binary trees, search trees and red-black trees. Binary
 trees maintain a tree structure on the underlying memory. Search trees build on
 binary trees by associating values to tree nodes and maintain the order of
 values in the tree. Red-black trees build on search trees and enforce balancing
@@ -298,8 +298,8 @@ leads to verification conditions in SPARK).
 %% invariant supports the proof of postconditions for functions that operate on
 %% the type.
 
-As explained in Section~\ref{sec-implementation}, binary trees are encoded
-inside arrays, using the representation described in Figure~\ref{fig-binary}.
+As explained in Section~\ref{sec-implementation}, binary trees are
+implemented as arrays, using the representation described in Figure~\ref{fig-binary}.
 Each node contains a reference to its left and right children, if any, as well
 as a reference to its parent and a position, which may be Top for the root,
 Right or Left otherwise depending on the node position with respect to its
@@ -354,13 +354,13 @@ A higher level view of the same binary tree.}
 % Do we want to write Position (F, I) instead of Position (I)?
 
 To reason about the tree structure at a higher level, we provide a model of binary trees
-which explicits
+which makes explicit the
 \emph{access paths} from the root to every node in the tree.
 % Contrary to the invariant,
 % the model needs to be visible outside of the implementation of binary trees, in
 % order to express more complex properties.
 It associates a sequence of
-directions, namely Right or Left, to each node in the binary tree,
+directions, namely Right or Left, with each node in the binary tree,
 corresponding to the path from the root to the node. As the underlying array
 also contains unused cells that do not correspond to tree nodes, an additional
 boolean encodes whether the node belongs to the
@@ -461,7 +461,7 @@ of directions corresponding to the path from the root of \texttt{T} to \texttt{I
 \end{figure}
 
 The invariant of search trees states that the value stored in each node of the
-tree is bigger than all the values stored in the subtree rooted at its left
+tree is larger than all the values stored in the subtree rooted at its left
 child and smaller than all the values stored in the subtree rooted at its right
 child. It is given in Figure~\ref{fig-search}, together with an example of values that would
 fit the tree from Figure~\ref{fig-binary}. To express this invariant, we use the model of the
@@ -502,7 +502,7 @@ here, and would essentially double the effort, we did not attempt it.
 \includegraphics[width=2cm]{red_black.pdf}
 \end{center}
 \end{minipage}
-\caption{\label{fig-rbt} Type invariant of red black trees.}
+\caption{\label{fig-rbt} Type invariant of red-black trees.}
 \end{figure}
 
 \subsection{Implementation}
@@ -538,7 +538,7 @@ same underlying array.
 %% From a software verification perspective, it may seem strange to present the implementation
 %% before the specification. Here we do so because the implementation is comparatively
 %% simpler and more widely known than the specification. And indeed, our implementation
-%% resemble standard imperative implementations of red black trees except for two notable
+%% resemble standard imperative implementations of red-black trees except for two notable
 %% points. The first one is that we had to comply with the restrictions imposed by the
 %% \spark language, most notably, the forbidding of pointers (access types in Ada). To
 %% alleviate this restriction, we chose to implement binary trees inside an array, indexes
@@ -576,7 +576,7 @@ same underlying array.
 %% doing single modifications of the tree while preserving the invariant. The modification
 %% functions provided for binary trees are given in Figure~\ref{fig-binary-fun}.
 
-The other specificity of our implementation is the layered design. Each module
+The other distinguishing feature of our implementation is the layered design. Each module
 defining a type with an invariant also needs to provide functions for
 manipulating objects of the type while preserving their invariant. As an example,
 binary trees are not updated by direct assignments in the implementation of search
@@ -644,13 +644,13 @@ At the next layer, search trees are defined as binary trees along with an
 additional array of values. As we only need to consider complete search trees,
 the underlying forest needs to only hold one tree, which is identified through
 its root. The module defining search trees provides basic set functions, namely
-inserting a value into the tree and testing a value for membership into the
+inserting a value into the tree and testing a value for membership in the
 tree. It also provides balancing functions for the upper layer of red-black
-trees. They allow to rotate nodes of a search tree to the left or to the right
+trees. They allow rotating nodes of a search tree to the left or to the right
 while preserving the order between values. An example of such a rotation is
 given in Figure~\ref{fig-search-rot}.  Defining these balancing functions
 inside the implementation of search trees rather than inside the implementation
-of red-black trees allows to keep all order-related concerns in the search tree
+of red-black trees allows keeping all order-related concerns in the search tree
 layer. Indeed, balancing functions do not preserve balance, as they are to be
 called on unbalanced trees, but they do preserve order. Note that implementing
 the balancing functions at this level avoids the need for lifting low-level
@@ -698,7 +698,7 @@ tree after an insertion.
 % - of binary trees: we never have ill formed cyclic trees
 % - of search trees: all cells remain accessible from the root
 
-Specifications on the insertion and membership functions that operate on
+Functional specifications of the insertion and membership functions that operate on
 red-black trees consist in simple contracts (preconditions and postconditions)
 presented in Figure~\ref{fig-rbt-spec}. These contracts use a model function
 \texttt{Values} that returns the set of values in the tree.
@@ -706,8 +706,8 @@ presented in Figure~\ref{fig-rbt-spec}. These contracts use a model function
 %% In this example, we concentrate on functional requirements of two kinds. The most important one is the
 %% preservation of the data structure invariants. As a proof of concept, we have also considered
 %% function specific requirements, describing the effect of the insertion and membership functions with
-%% respect to the set of values contained in the red black tree. The function specific requirements are the
-%% simplest. They are expressed as contracts on the tree functions. The set of values contains in a red black
+%% respect to the set of values contained in the red-black tree. The function specific requirements are the
+%% simplest. They are expressed as contracts on the tree functions. The set of values contains in a red-black
 %% tree is accessed using a specific model function named \texttt{Values} defined at the search tree level.
 %% These contracts are presented in Figure~\ref{fig-rbt-spec}.
 
@@ -726,7 +726,7 @@ procedure Insert (T : in out Rbt; V : Natural) with
            else Is_Add (Values (T'Old), V, Values (T)));
 \end{lstlisting}
 \end{small}
-\caption{\label{fig-rbt-spec} Specification of red black trees.}
+\caption{\label{fig-rbt-spec} Specification of red-black trees.}
 \end{figure}
 
 The most complex specifications have to do with the four properties to maintain
@@ -734,11 +734,11 @@ over red-black trees:
 \begin{enumerate}
  \item A red-black tree is always a valid binary tree (we can navigate it from
    the root in the expected way).
- \item There is no memory leak (if we have inserted less than \texttt{Max}
+ \item There is no memory leak (if we have inserted fewer than \texttt{Max}
    elements, there is still room enough in the data structure to insert a new
    element).
  \item The values stored in the tree are ordered (it is a valid search tree).
- \item The tree stays balanced (we only verify part of it, that is, that red
+ \item The tree stays balanced (we only verify this property partially, that is, that red
    nodes can only have black children).
 \end{enumerate}
 
@@ -747,12 +747,12 @@ The first property is enforced at the level of binary trees. The invariant on
 binary trees (see Section~\ref{sec-rbt-inv}) ensures that the fields of a node
 (Parent, Position, Left, and Right) are consistent. This is not enough to
 ensure that all the allocated nodes in the forest belong to well-formed binary
-trees though, as it does not rule out degenerated, root-less, cyclic structures
+trees though, as it does not rule out degenerate, root-less, cyclic structures
 that would arise from linking the root of a binary tree as the child of one of
 its leafs. Still, this is enough to ensure that red-black trees are always well
-formed, as red black trees always have a root. Note that the fact that every
+formed, as red-black trees always have a root. Note that the fact that every
 node in the forest is part of a well formed binary tree is ensured at the level
-of binary trees by enforcing that such degenerated structures can never be
+of binary trees by enforcing that such degenerate structures can never be
 created in the contracts of functions operating on binary trees.
 
 The second property is enforced at the level of search trees. It is specified
@@ -879,23 +879,23 @@ are several reasons for this:
  \item Reasoning about value ordering involves using transitivity relations, that is, coming
  up with an intermediate value to consider, which usually eludes automatic provers.
  \item The size of the formulas to verify, number of verification conditions, and number of
- paths in the program are important enough to defy provers scalability.
+ paths in the program are large enough to defy provers scalability.
 \end{itemize}
 
-To work around these limitations, we resorted to using auto-active verification techniques, which,
-as described in Section~\ref{sec-prelim-auto-active}, allow to guide automatic provers without
-resorting to a proof assistant. We explain some of these techniques in this section.
+To work around these limitations, we used auto-active verification techniques, which,
+as described in Section~\ref{sec-prelim-auto-active}, can guide automatic provers without
+requiring a proof assistant. We explain some of these techniques in this section.
 
 \paragraph{Intermediate lemmas:}
-One of the most classical techniques in manual proof consists in factoring some useful
+One of the classical techniques in manual proof consists in factoring some useful
 part of a proof in an intermediate lemma so that it can be verified independently and
 used as many times as necessary. In auto-active verification, this can be done by introducing
 a procedure with no output, which, when called, will cause the deductive engine to verify
 its precondition and assume its postcondition. In Figure~\ref{fig-proof-lem}, we show an
 intermediate lemma which can be used to verify that two trees of a single forest with different
 roots are disjoint. A caller of this function will have to verify that \texttt{T1} and \texttt{T2} are different
-valid roots in \texttt{F} and it will get for free that there can be no node reachable from both roots in \texttt{F}.
-Naturally, the lemma is not assumed, its actual proof is done when verifying the procedure
+valid roots in \texttt{F} and as a consequence we know that there can be no node reachable from both roots in \texttt{F}.
+Naturally, the lemma is not assumed, its actual proof is performed when verifying the procedure
 \texttt{Prove\_Model\_Distinct}.
 
 \begin{figure}
@@ -961,7 +961,7 @@ a value in a search tree, we only compare the requested value with values stored
 the tree, that is, the path were it was expected to be stored. All other values are ruled out by
 transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
 automatic provers used in \gnatprove are usually unable to come up with the appropriate
-intermediate value to use in the transitivity relation. To achieve the proofs, we resorted to providing
+intermediate value to use in the transitivity relation. To achieve the proofs, we provided
 provers with the appropriate term whenever necessary. For example, function \texttt{Find\_Root} in
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
 the order invariant stated in Figure~\ref{fig-search} compares values on a single path, this
@@ -1095,23 +1095,23 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % factored out in ghost procedures to keep efficiency
 % with or without contracts (inlining)
 
-In this development, we made an extensive use of ghost code, that is, code meant only for verification,
+In this experiment, we made an extensive use of ghost code, that is, code meant only for verification,
 that has no effect on the program behavior. We used it for two different purposes. First, the model
-functions introduced to enhance the expressivity of our specification are ghost functions. Indeed, we
+functions introduced to enhance the expressiveness of our specification are ghost functions. Indeed, we
 never need to refer to reachability in the tree structure or to the set of elements contained in a
 search tree inside the program implementation. It is only used to express complex
 properties about our algorithms in the specification.
 
-In SPARK, ghost code is executable, that is, the compiler can be instructed to generate code for ghost
+In SPARK, ghost code can be executable, that is, the compiler can be instructed to generate code for ghost
 entities so that the contracts using them can be checked at runtime. In this spirit, ghost model functions
 can be used to produce complex test oracles that can be exercised in the test campaign.
 
-The second use of ghost code in our development is for auto-active verification. In particular, the procedures
+The second use of ghost code in our experiment is for auto-active verification. In particular, the procedures
 used to encode intermediate lemmas are ghost, as they have no effect. What is more, we strived to
-keep all ineffective code inside ghost procedures so that it can be removed by the compiler and will not
+keep all verification-only code inside ghost procedures so that it can be removed by the compiler and will not
 slow down the execution of the program. It is all the more important since the code is very inefficient, involving
 multiple loops and model constructions. As functional behaviors are complex, coming up with contracts for
-these ghost procedure can be painful, and produce huge, hard to read specifications. To alleviate this
+these ghost procedures can be painful, and produce huge, hard to read specifications. To alleviate this
 problem, we can benefit from a feature of \gnatprove which inlines local subprograms with no contracts, allowing
 the proof to go through with less annotation burden. In this way, we can choose, on a case-by-case basis, if
 it is worthwhile to turn a chunk of auto-active proof into an intermediate lemma with its own contract,
@@ -1150,7 +1150,7 @@ red-black trees & 67  (52\%) & 18  (14\%) & 45   (35\%) & 130 \\ \hline
 total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 \end{tabular}
 \vspace*{5mm}
-\caption{\label{tab-sloc} Repartition of lines of code between operational code, contracts and ghost code.}
+\caption{\label{tab-sloc} Categorization of lines of code between operational code, contracts and ghost code.}
 \vspace*{-10mm}
 \end{center}
 \end{table}
@@ -1185,7 +1185,7 @@ red-black trees & 2        & 4 (4)          & 8        & 10         & 24 \\ \hli
 total           & 14       & 297 (177)      & 70       & 90         & 471
 \end{tabular}
 \vspace*{5mm}
-\caption{\label{tab-sloc2} Number of conjuncts in contracts on types, on
+\caption{\label{tab-sloc2} Number of conjuncts (and-ed subexpressions) in contracts on types, on
   subprograms, in loop invariants and in assertions. Numbers in parentheses
   correspond to conjuncts for contracts on external subprograms.}
 \vspace*{-10mm}
@@ -1195,15 +1195,15 @@ total           & 14       & 297 (177)      & 70       & 90         & 471
 Taking both tables into account, it is clear that verification of search trees
 was the most costly in terms of overall efforts, with a large part of ghost
 code (71\%) and many intermediate assertions needed (68
-conjuncts). Verification of red-black trees in the contrary was relatively
-straighforward, with fewer ghost code than operational code (35\% compared to
+conjuncts). Verification of red-black trees on the contrary was relatively
+straighforward, with less ghost code than operational code (35\% compared to
 52\%) and few intermediate assertions needed (10 conjuncts). This matches well
 the cognitive effort required to understand the correction of search trees
 compared to red-black trees.
 
 The automatic verification that the code (including ghost code) is free of
 run-time errors and that it respects its contracts takes less than 30 minutes
-on a Core i7 with 2,8 GHz and 16 Go RAM, using 4 cores and two successive runs
+on a Core i7 with 2,8 GHz and 16 GB RAM, using 4 cores and two successive runs
 of GNATprove at proof levels 2 and 3. As automatic provers CVC4, Z3 and
 Alt-Ergo are called in sequence on unproved Verification Conditions (VCs), it
 is not surprising that CVC4 proves a majority of VCs (3763), while Z3 proves
@@ -1219,7 +1219,7 @@ through a compiler switch (-gnatp) and only enabling preconditions in red-black
 trees is done through a configuration pragma in the unit. Inserting one million
 integers in a red-black tree from 1 to 1 million leads to a violation of the
 balancing in 999,998 cases, which requires 999,963 left rotations and no
-right rotations. On a Core i7 with 2,8 GHz and 16 Go RAM, the running time for
+right rotations. On a Core i7 with 2,8 GHz and 16 GB RAM, the running time for
 performing these 1 million insertions is 0.65 seconds without run-time checks,
 and 0.70 seconds with run-time checks, or 0.65 microseconds (respectively 0.70
 microseconds) per insertion.
@@ -1232,7 +1232,7 @@ functions which themselves quantify over the same size in their own contracts
 or code. In addition, the expensive operation of constructing the model is
 performed repeatedly in contracts, as SPARK does not yet provide a
 let-expression form.  As a result, inserting one element in a tree of size one
-takes 2 minutes on a Core i7 with 2,8 GHz and 16 Go RAM.
+takes 2 minutes on a Core i7 with 2,8 GHz and 16 GB RAM.
 
 \section{Related Work}
 \label{related-work}
@@ -1260,20 +1260,20 @@ specialized for the verification of heap manipulating programs~\cite{enea2015aut
 same way, Stef{\u{a}}nescu et al. were able to verify several implementations of red-black trees in particular in Java and
 C using matching logic~\cite{stefuanescu2016semantics}. As used in this work, matching logic provides a very precise,
 low-level view of the heap structure, allowing for powerful proofs on this kind of programs. Both works use specialized tools,
-which are specifically designed for verifying low-level, heap manipulating programs but which have never been used, at the best
+which are specifically designed for verifying low-level, heap manipulating programs but which have never been used, to the best
 of our knowledge, to verify higher-level software.
 
 \section{Conclusion}
 In this article, we have explained how, using auto-active techniques, we could achieve formal verification of key functional
 properties of an imperative implementation of red-black trees in SPARK. This is not an example of what should be a regular
-use of the SPARK toolset but rather a tour-de-force, which aims at demonstrating how far we can go using such technology.
+use of the SPARK toolset but rather a successful demonstration of how far we can go using such technology.
 
-However, the techniques presented on this example can be reused with much benefits on a much smaller scale. In particular, we have shown that
+However, the techniques presented on this example can be reused with significant benefits on a much smaller scale. In particular, we have shown that
 inductive proofs can be achieved rather straightforwardly using auto-active reasoning. The multi-layered approach, using
 type invariants and model functions to separate concerns, can also be reused to reason about complex data structures.
 
-To democratize the use of auto-active techniques, we are also working on integrating simple interactive proof capabilities
-in GNATprove. This would allow to apply the same techniques in a simpler, more straightforward way, and also to avoid
+To popularize the use of auto-active techniques, we are also working on integrating simple interactive proof capabilities
+in GNATprove. This would allow applying the same techniques in a simpler, more straightforward way, and also to avoid
 polluting the program space with ghost code which is never meant to be executed.
 
 \paragraph*{Acknowledgements.}
