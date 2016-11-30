@@ -697,6 +697,9 @@ package body SPARK_Definition is
    procedure Mark_Package_Body                (N : Node_Id);
    procedure Mark_Package_Declaration         (N : Node_Id);
 
+   procedure Mark_Concurrent_Type_Declaration (N : Node_Id);
+   --  Mark declarations of concurrent types
+
    procedure Mark_Protected_Body              (N : Node_Id);
    --  Mark bodies of protected types
 
@@ -735,6 +738,11 @@ package body SPARK_Definition is
    procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
    --  Mark a list of statements and declarations, and register any pragma
    --  Annotate (GNATprove) which may be part of that list.
+
+   procedure Mark_Aspect_Clauses_And_Pragmas_In_List (L : List_Id);
+   --  Mark only pragmas and aspect clauses in a list of statements and
+   --  declarations. Do not register pragmas Annotate (GNATprove) which are
+   --  part of that list.
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
@@ -1767,6 +1775,7 @@ package body SPARK_Definition is
                   begin
                      Current_SPARK_Pragma := SPARK_Pragma (E);
                      Mark_Entity (E);
+                     Mark_Concurrent_Type_Declaration (N);
                      Current_SPARK_Pragma := Save_SPARK_Pragma;
                   end;
                else
@@ -2073,6 +2082,27 @@ package body SPARK_Definition is
 
       Inside_Actions := Save_Inside_Actions;
    end Mark_Actions;
+
+   ---------------------------------------------
+   -- Mark_Aspect_Clauses_And_Pragmas_In_List --
+   ---------------------------------------------
+
+   procedure Mark_Aspect_Clauses_And_Pragmas_In_List (L : List_Id) is
+      Cur : Node_Id := First (L);
+
+   begin
+      --  Only mark pragmas and aspect clauses. Do not mark GNATprove annotate
+      --  pragmas here.
+
+      while Present (Cur) loop
+         if Nkind (Cur) in N_Pragma | N_Representation_Clause
+           and then not Is_Pragma_Annotate_GNATprove (Cur)
+         then
+            Mark (Cur);
+         end if;
+         Next (Cur);
+      end loop;
+   end Mark_Aspect_Clauses_And_Pragmas_In_List;
 
    ------------------------------
    -- Mark_Attribute_Reference --
@@ -2644,6 +2674,65 @@ package body SPARK_Definition is
          Mark_Subtype_Indication (Subtype_Indication (Def));
       end if;
    end Mark_Component_Declaration;
+
+   --------------------------------------
+   -- Mark_Concurrent_Type_Declaration --
+   --------------------------------------
+
+   procedure Mark_Concurrent_Type_Declaration (N : Node_Id) is
+      E                       : constant Entity_Id := Defining_Entity (N);
+      Type_Def                : constant Node_Id :=
+        (if Ekind (E) = E_Protected_Type
+         then Protected_Definition (N)
+         else Task_Definition (N));
+      Save_Violation_Detected : constant Boolean := Violation_Detected;
+
+   begin
+      Violation_Detected := False;
+
+      if Has_Discriminants (E) then
+         declare
+            D : Entity_Id := First_Discriminant (E);
+         begin
+            while Present (D) loop
+               Mark_Entity (D);
+               Next_Discriminant (D);
+            end loop;
+         end;
+      end if;
+
+      if Present (Type_Def) then
+         Mark_Stmt_Or_Decl_List
+           (Visible_Declarations (Type_Def));
+
+         declare
+            Save_SPARK_Pragma : constant Node_Id :=
+              Current_SPARK_Pragma;
+
+         begin
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+            if not SPARK_Pragma_Is (Opt.Off) then
+               declare
+                  Save_Protected_Type : constant Entity_Id :=
+                    Current_Protected_Type;
+
+               begin
+                  Current_Protected_Type := E;
+
+                  Mark_Stmt_Or_Decl_List
+                    (Private_Declarations (Type_Def));
+
+                  Current_Protected_Type :=
+                    Save_Protected_Type;
+               end;
+            end if;
+
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
+         end;
+      end if;
+
+      Violation_Detected := Save_Violation_Detected;
+   end Mark_Concurrent_Type_Declaration;
 
    -----------------
    -- Mark_Entity --
@@ -4233,6 +4322,14 @@ package body SPARK_Definition is
                         Mark_Violation (E, From => Base_Type (E));
                      end if;
 
+                     --  A concurent subtype may have a type with full_view not
+                     --  in SPARK as an etype. In this case, the subype has
+                     --  fullview not in SPARK.
+
+                     if Full_View_Not_In_SPARK (Etype (E)) then
+                        Full_Views_Not_In_SPARK.Insert (E, Etype (E));
+                     end if;
+
                   when E_Protected_Type | E_Task_Type =>
                      declare
                         Type_Decl : constant Node_Id := Parent (E);
@@ -4241,22 +4338,15 @@ package body SPARK_Definition is
                            then Protected_Definition (Type_Decl)
                            else Task_Definition (Type_Decl));
 
-                        C : Entity_Id;
-                        --  Component or discriminant
-
                      begin
-                        if Has_Discriminants (E) then
-                           C := First_Discriminant (E);
-                           while Present (C) loop
-                              Mark_Entity (C);
-                              Next_Discriminant (C);
-                           end loop;
-                        end if;
-
                         Mark_List (Interface_List (Type_Decl));
 
+                        --  Traverse the visible and private declarations of
+                        --  the type to mark pragmas and representation
+                        --  clauses.
+
                         if Present (Type_Def) then
-                           Mark_Stmt_Or_Decl_List
+                           Mark_Aspect_Clauses_And_Pragmas_In_List
                              (Visible_Declarations (Type_Def));
 
                            declare
@@ -4265,9 +4355,7 @@ package body SPARK_Definition is
 
                            begin
                               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                              if not SPARK_Pragma_Is (Opt.Off)
-                                and then not Full_View_Not_In_SPARK (E)
-                              then
+                              if SPARK_Pragma_Is (Opt.On) then
                                  declare
                                     Save_Protected_Type : constant Entity_Id :=
                                       Current_Protected_Type;
@@ -4278,7 +4366,7 @@ package body SPARK_Definition is
 
                                     Current_Protected_Type := E;
 
-                                    Mark_Stmt_Or_Decl_List
+                                    Mark_Aspect_Clauses_And_Pragmas_In_List
                                       (Private_Declarations (Type_Def));
 
                                     Current_Protected_Type :=
@@ -4406,6 +4494,11 @@ package body SPARK_Definition is
                end;
             end if;
          end;
+
+      --  Get appropriate SPARK_Mode for subprograms
+
+      elsif Is_Subprogram (E) or else Is_Entry (E) then
+         Current_SPARK_Pragma := SPARK_Pragma (E);
       end if;
 
       --  Include entity E in the set of marked entities
