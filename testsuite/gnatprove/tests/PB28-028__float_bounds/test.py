@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=100000, prover=["z3"], no_fail=True)
+prove_all(prover=["z3"], codepeer=True, no_fail=True)
