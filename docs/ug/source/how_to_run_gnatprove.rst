@@ -484,7 +484,7 @@ Using CodePeer Static Analysis
 .. note::
 
    |CodePeer| is only available as part of SPARK Pro 17 and beyond, but is not
-   available to SPARK Discovery customers and SPARK Community users.
+   included in SPARK Discovery.
 
 |CodePeer| is a static analysis tool developed and commercialized by AdaCore
 (see http://www.adacore.com/codepeer). |GNATprove| supports using |CodePeer| as

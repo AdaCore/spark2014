@@ -3,8 +3,8 @@
 Alternative Provers
 ===================
 
-Installed with |SPARK|
-----------------------
+Installed with |SPARK| Pro
+--------------------------
 
 The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool. By
 default, |GNATprove| uses prover CVC4 only. Switch ``--level`` changes the
@@ -18,7 +18,22 @@ found on their respective websites:
 
  * Alt-Ergo: http://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.nyu.edu
- * Z3: https://z3.codeplex.com
+ * Z3: https://github.com/Z3Prover/z3
+
+Installed with |SPARK| Discovery
+--------------------------------
+
+In this case, only prover Alt-Ergo is installed with the |SPARK| tool. Hence,
+by default |GNATprove| only uses prover Alt-Ergo. In particular, switch
+``--level`` has no impact on the use of different provers. If provers CVC4 and
+Z3 are separately installed by the user and available on the execution path,
+then |GNATprove| will use them as documented in this User's Guide. In
+particular, CVC4 will then become the default prover instead of
+Alt-Ergo. Sources and binaries for provers CVC4 and Z3 can be found on their
+respective websites:
+
+ * CVC4: http://cvc4.cs.nyu.edu
+ * Z3: https://github.com/Z3Prover/z3
 
 Other Automatic or Manual Provers
 ---------------------------------
@@ -92,4 +107,3 @@ not part of the |SPARK| distribution. If you want to use Coq with |SPARK|, you
 need to install it yourself on your system and put it in your ``PATH``
 environment variable. Then, you can simply provide ``--prover=coq`` to
 ``gnatprove``.
-

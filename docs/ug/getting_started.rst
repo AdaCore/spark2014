@@ -10,18 +10,29 @@ illustration.
 
 .. note::
 
-   This User's Guide applies to the latest development version of the |SPARK|
-   toolset. If you're using a SPARK GPL release, some of the described features
-   do not apply. Refer to the version of the SPARK 2014 User's Guide
-   shipping with your release, available through :menuselection:`Help -->
-   SPARK` in GPS and GNATbench IDEs, or under ``share/doc/spark`` in your
-   |SPARK| installation.
+   The online version of this User's Guide applies to the latest development
+   version of the |SPARK| toolset. If you're using an official release, some of
+   the described features may not apply. Refer to the version of the SPARK 2014
+   User's Guide shipping with your release, available through
+   :menuselection:`Help --> SPARK` in GPS and GNATbench IDEs, or under
+   ``share/doc/spark`` in your |SPARK| installation.
 
 As a prerequisite, it is assumed that the |SPARK| tools have already been
 installed. As a minimum you should install:
 
- - |GNATprove|
- - GPS
+ - |SPARK| Pro or |SPARK| Discovery
+ - GPS or the GNATbench plug-in of Eclipse
+
+|SPARK| Pro is the most complete toolset for |SPARK|. |SPARK| Discovery is a
+reduced toolset that still allows to perform all analyses presented in this
+User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
+|SPARK| Discovery:
+
+ * only comes with one automatic prover instead of three
+ * does not integrate the static analyzer |CodePeer|
+ * does not generate counterexamples for failed proofs
+ * has limited proof support for programs using modular arithmetic or
+   floating-point arithmetic
 
 Note that GPS is not strictly required for |SPARK| as all the commands can be
 invoked from the command line, or from Eclipse using the GNATbench plug-in, but

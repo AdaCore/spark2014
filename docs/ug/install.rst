@@ -49,7 +49,7 @@ Installation under Windows
 --------------------------
 
 If not already done, first run the GPS installer by e.g. double clicking
-on `gps-6.0.2-i686-pc-mingw32.exe` and follow the instructions.
+on `gps-<version>-i686-pc-mingw32.exe` and follow the instructions.
 
 .. note::
 
@@ -57,7 +57,7 @@ on `gps-6.0.2-i686-pc-mingw32.exe` and follow the instructions.
   the GNAT GPL installer, which installs GPS.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
-`spark-15.0.2-x86-windows-bin.exe`.
+`spark-<version>-x86-windows-bin.exe`.
 
 You should have sufficient rights for installing the package (administrator
 or normal rights depending on whether it is installed for all users or a
@@ -69,8 +69,8 @@ Installation under Linux/Mac
 If not already done, you need to extract and install the GPS compressed
 tarball and then run the install, e.g.::
 
-  $ gzip -dc gps-6.0.2-x86_64-linux-bin.tar.gz | tar xf -
-  $ cd gps-6.0.2-x86_64-linux-bin
+  $ gzip -dc gps-<version>-<platform>-bin.tar.gz | tar xf -
+  $ cd gps-<version>-<platform>-bin
   $ ./doinstall
 
 Then follow the instructions displayed.
@@ -82,8 +82,8 @@ Then follow the instructions displayed.
 
 Then do the same with the SPARK tarball, e.g.::
 
-  $ gzip -dc spark-15.0.2-x86_64-linux-bin.tar.gz | tar xf -
-  $ cd spark-15.0.2-x86_64-linux-bin
+  $ gzip -dc spark-<version>-<platform>-bin.tar.gz | tar xf -
+  $ cd spark-<version>-<platform>-bin
   $ ./doinstall
 
 Note that you need to have sufficient rights for installing the package at the
