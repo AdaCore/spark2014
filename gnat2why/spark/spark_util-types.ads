@@ -179,7 +179,7 @@ package SPARK_Util.Types is
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
        Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
-     and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+     and then Get_Component_Set (Rec).Contains (Comp);
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return True if Comp is visible in Rec, that is, it has not been hidden
@@ -197,7 +197,8 @@ package SPARK_Util.Types is
    --  @return E the set of E's components. It also includes components which
    --  have been defined in E's ancestors but are hidden in E. Components that
    --  are not in SPARK are modeled by the type entity of the first ancestor of
-   --  E in which they exist. Components have the most precise possible type.
+   --  E in which they exist. It also includes Part_Of constituents of
+   --  protected objects. Components have the most precise possible type.
 
    procedure Init_Component_Info (E : Entity_Id)
      with Pre => Ekind (E) in Record_Kind | Private_Kind;
@@ -401,8 +402,9 @@ package SPARK_Util.Types is
    --     ancestor at the Why3 level (due either to a private ancestor or
    --     a root type whose full view not in SPARK).
 
-   function Has_Private_Fields (E : Entity_Id) return Boolean;
-   --  @param E any type
+   function Has_Private_Fields (E : Entity_Id) return Boolean with
+     Pre => Has_Private_Type (E) or else Has_Record_Type (E);
+   --  @param E a private or record type
    --  @return True iff E's translation into Why3 requires the use of a main
    --     field to represent invisible fields that are not derived from an
    --     ancestor.
