@@ -323,7 +323,7 @@ lsc-bignum.adb:676:16: info: initialization of "Aux3" proved
 lsc-bignum.adb:677:16: info: initialization of "Aux4" proved
 lsc-bignum.adb:677:33: medium: overflow check might fail
 lsc-bignum.adb:677:33: medium: range check might fail
-lsc-bignum.adb:677:54: info: range check proved (CVC4: 1 VC)
+lsc-bignum.adb:677:54: medium: range check might fail
 lsc-bignum.adb:677:68: info: initialization of "W" proved
 lsc-bignum.adb:677:75: medium: overflow check might fail
 lsc-bignum.adb:677:78: info: initialization of "L" proved
