@@ -1,7 +1,7 @@
 main.adb:4:19: info: assertion proved (CVC4: 1 VC)
 main.adb:7:35: info: length check proved (CVC4: 1 VC)
-main.adb:10:45: low: range check might fail (e.g. when catstring = (others => 0) and catstring'First = 1 and catstring'Last = 24 and vstring = (others => 0) and vstring'First = 2147483636 and vstring'Last = 2147483646)
-main.adb:10:55: low: range check might fail (e.g. when catstring = (others => 0) and catstring'First = 2147483646 and catstring'Last = 2147483647 and vstring = (others => 0) and vstring'First = 2147483646 and vstring'Last = 2147483646)
+main.adb:10:45: low: range check might fail
+main.adb:10:55: low: range check might fail
 main.adb:11:46: info: range check proved (CVC4: 1 VC)
 main.adb:11:57: info: range check proved (CVC4: 1 VC)
 main.adb:12:45: info: range check proved (CVC4: 1 VC)

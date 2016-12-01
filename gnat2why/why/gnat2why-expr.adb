@@ -53,6 +53,7 @@ with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
+with Stringt;                        use Stringt;
 with Ttypes;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
@@ -10683,7 +10684,11 @@ package body Gnat2Why.Expr is
                     Module   => M,
                     Symbol   => Get_Name (M),
                     Typ      => New_Abstract_Base_Type (Type_Of_Node (Expr)));
-               T := +Id;
+               T := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => Id,
+                              Args     => (1 .. 1 => +Void),
+                              Typ      => Get_Typ (Id));
             end;
 
          when N_Identifier
@@ -14715,13 +14720,14 @@ package body Gnat2Why.Expr is
      (Params : Transformation_Params;
       N      : Node_Id)
    is
-      Name      : constant String := New_Temp_Identifier;
+      Name      : constant String := New_Temp_Identifier ("String_Literal");
       Ty        : constant Entity_Id := Type_Of_Node (N);
       Why_Type  : constant W_Type_Id := New_Abstract_Base_Type (Ty);
       Id        : constant W_Identifier_Id :=
         New_Identifier (Ada_Node => N,
                         Name     => Name,
                         Typ      => Why_Type);
+      Binders   : constant Binder_Array := (1 .. 1 => Unit_Param);
       Decl_File : constant W_Section_Id := Dispatch_Entity (N);
       Save_Theory : W_Theory_Declaration_Id;
    begin
@@ -14741,14 +14747,96 @@ package body Gnat2Why.Expr is
                             " defined at " & Build_Location_String (Sloc (N))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Generate an abstract logic function for the Why3 map of the literal.
+      --  Use a function with a unit parameter instead of a constant so that
+      --  the axiom is only instanciated when the literal is used.
+
       Emit
         (Decl_File,
-         Why.Atree.Builders.New_Function_Decl
+         New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
             Labels      => Name_Id_Sets.Empty_Set,
-            Binders     => (1 .. 0 => <>),
+            Binders     => Binders,
             Return_Type => Why_Type));
+
+      --  We now generate an axiom which gives the values stored in Id
+
+      declare
+         Call         : constant W_Term_Id :=
+           +New_Call (Domain  => EW_Term,
+                      Name    => Id,
+                      Binders => Binders,
+                      Typ     => Why_Type);
+         Axiom_Name   : constant String := Name & "__" & Def_Axiom;
+         Str_Value    : constant String_Id := Strval (N);
+         Len          : constant Nat := String_Length (Str_Value);
+         Low_Bound    : constant Int :=
+           UI_To_Int (Expr_Value (String_Literal_Low_Bound (Ty)));
+         Value_String : String (1 .. Natural (Len));
+         B_Ty         : constant W_Type_Id :=
+           Nth_Index_Rep_Type_No_Bool (Ty, 1);
+         Def          : W_Pred_Id := True_Pred;
+
+      begin
+         --  Fetch the value of the string literal
+
+         String_To_Name_Buffer (Str_Value);
+         Value_String := Name_Buffer (1 .. Natural (Len));
+
+         --  For each index in the string, add an assumption specifying the
+         --  value stored in Id at this index.
+
+         if Len > 0 then
+            for I in 1 .. Len loop
+               declare
+                  Arr_Val : constant W_Expr_Id :=
+                    New_Array_Access
+                      (Ada_Node => Empty,
+                       Ar       => +Call,
+                       Index    =>
+                         (1 => New_Discrete_Constant
+                            (Value => UI_From_Int (I - 1 + Low_Bound),
+                             Typ   => B_Ty)),
+                       Domain   => EW_Term);
+                  Char   : constant W_Expr_Id :=
+                    New_Integer_Constant
+                      (Value => UI_From_CC
+                         (Get_Char_Code (Value_String (Positive (I)))));
+
+               begin
+                  Def :=
+                    +New_And_Expr
+                    (Left   => +Def,
+                     Right  =>
+                       New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => Insert_Simple_Conversion
+                            (Domain         => EW_Term,
+                             Expr           => Arr_Val,
+                             To             => EW_Int_Type),
+                          Right  => Char,
+                          Domain => EW_Pred),
+                     Domain => EW_Pred);
+               end;
+            end loop;
+         end if;
+
+         --  Emit an axiom containing all the assumptions
+
+         Emit
+           (Decl_File,
+            New_Axiom
+              (Ada_Node => N,
+               Name     => NID (Axiom_Name),
+               Def      => New_Universal_Quantif
+                 (Binders  => Binders,
+                  Triggers => New_Triggers
+                    (Triggers => (1 => New_Trigger (Terms => (1 => +Call)))),
+                  Pred     => Def)));
+      end;
+
       Close_Theory (Decl_File,
                     Kind => Definition_Theory,
                     Defined_Entity => N);
