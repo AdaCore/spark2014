@@ -25,7 +25,6 @@
 
 with Common_Containers;          use Common_Containers;
 with Elists;                     use Elists;
-with Flow_Utility;               use Flow_Utility;
 with GNAT.Source_Info;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Namet;                      use Namet;
@@ -1436,20 +1435,6 @@ package body Why.Gen.Records is
                  (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
                   others => <>);
                Index := Index + 1;
-            end if;
-
-            if Is_Protected_Type (E) then
-               for Part of Get_Part_Of_Variables (E) loop
-                  Binders_F (Index) :=
-                    (B_Name =>
-                       To_Why_Id
-                         (Part,
-                          Rec   => E,
-                          Local => True,
-                          Typ   => EW_Abstract (Etype (Part))),
-                     others => <>);
-                  Index := Index + 1;
-               end loop;
             end if;
 
             pragma Assert (Index = Binders_F'Last + 1);

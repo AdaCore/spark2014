@@ -4335,6 +4335,18 @@ package body SPARK_Definition is
 
                      end;
 
+                     --  Mark Part_Of variables of single protected objects
+
+                     if Ekind (E) = E_Protected_Type
+                       and then Is_Single_Concurrent_Type (E)
+                     then
+                        for Part of
+                          Iter (Part_Of_Constituents (Anonymous_Object (E)))
+                        loop
+                           Mark_Entity (Part);
+                        end loop;
+                     end if;
+
                   when others =>
                      raise Program_Error;
 
@@ -4399,20 +4411,21 @@ package body SPARK_Definition is
          Actions_Entity_Set.Insert (E);
       end if;
 
-      --  Types may be marked out of order, because completions of private
-      --  types need to be marked at the point of their partial view
+      --  Entities may be marked out of order, for example because completions
+      --  of private types need to be marked at the point of their partial view
       --  declaration, to avoid out-of-order declarations in Why.
       --  Retrieve the appropriate SPARK_Mode pragma before marking.
       --
-      --  For concurrent types SPARK_Mode can be queried directly and should be
-      --  already set by the caller.
-      --
+      --  For concurrent types SPARK_Mode can be queried directly
+
+      if Ekind (E) in E_Protected_Type | E_Task_Type then
+
+         Current_SPARK_Pragma := SPARK_Pragma (E);
+
       --  ??? perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
       --  for itypes.
 
-      if Is_Type (E)
-        and then not Is_Concurrent_Type (E)
-      then
+      elsif Is_Type (E) or else Is_Object (E) then
          declare
             Decl : constant Node_Id :=
               (if Is_Itype (E)

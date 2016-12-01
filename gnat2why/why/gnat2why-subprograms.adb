@@ -2923,7 +2923,7 @@ package body Gnat2Why.Subprograms is
             F_Check : W_Prog_Id;
          begin
             for Field of Get_Component_Set (E) loop
-               if Component_Is_Visible_In_Type (E, Field) then
+               if Ekind (Field) in E_Component | E_Discriminant then
 
                   if Present (Expression (Parent (Field))) then
 

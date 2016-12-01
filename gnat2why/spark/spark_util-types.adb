@@ -24,9 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Aspects;                            use Aspects;
+with Common_Iterators;                   use Common_Iterators;
 with Elists;                             use Elists;
-with Flow_Types;                         use Flow_Types;
-with Flow_Utility;                       use Flow_Utility;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
@@ -295,8 +294,10 @@ package body SPARK_Util.Types is
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    is
-     (Ekind (Comp) in E_Discriminant | E_Component
-      and then Present (Search_Component_By_Name (Rec, Comp)));
+     (if Ekind (Comp) in E_Variable then Entity_In_SPARK (Comp)
+      elsif Ekind (Comp) in E_Discriminant | E_Component
+      then Present (Search_Component_By_Name (Rec, Comp))
+      else False);
 
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
@@ -354,14 +355,6 @@ package body SPARK_Util.Types is
       if Is_Tagged_Type (E) then
          Count := Count + 1;
       end if;
-
-      if Is_Protected_Type (E) then
-         for Part of Get_Part_Of_Variables (E) loop
-            pragma Unreferenced (Part);
-            Count := Count + 1;
-         end loop;
-      end if;
-
       return Count;
    end Count_Why_Regular_Fields;
 
@@ -1014,9 +1007,9 @@ package body SPARK_Util.Types is
          return False;
       end if;
 
-      --  Return True if Ty is a private type or a protected type
+      --  Return True if Ty is a private type
 
-      return Ekind (Ty) in Private_Kind | Protected_Kind;
+      return Ekind (Ty) in Private_Kind;
    end Has_Private_Fields;
 
    -----------------------------------
@@ -1214,8 +1207,12 @@ package body SPARK_Util.Types is
          Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       else
          declare
-            Field : Node_Id;
+            Needs_Private_Part : Boolean := False;
+            Field              : Node_Id;
          begin
+
+            --  Init info for discriminants
+
             if Has_Discriminants (E) then
                Field := First_Discriminant (E);
                while Present (Field) loop
@@ -1226,8 +1223,10 @@ package body SPARK_Util.Types is
                end loop;
             end if;
 
+            --  Init info for components
+
             if Full_View_Not_In_SPARK (E) then
-               Comp_Info (Position).Components.Insert (E);
+               Needs_Private_Part := True;
             else
                Field := First_Component (E);
                while Present (Field) loop
@@ -1238,6 +1237,25 @@ package body SPARK_Util.Types is
                   Comp_Info (Position).Components.Insert (Field);
                   Next_Component (Field);
                end loop;
+            end if;
+
+            --  Init info for part_of variables
+
+            if Ekind (E) = E_Protected_Type
+              and then Is_Single_Concurrent_Type (E)
+            then
+               for Part of Iter (Part_Of_Constituents (Anonymous_Object (E)))
+               loop
+                  if Entity_In_SPARK (Part) then
+                     Comp_Info (Position).Components.Insert (Part);
+                  else
+                     Needs_Private_Part := True;
+                  end if;
+               end loop;
+            end if;
+
+            if Needs_Private_Part then
+               Comp_Info (Position).Components.Insert (E);
             end if;
          end;
       end if;
