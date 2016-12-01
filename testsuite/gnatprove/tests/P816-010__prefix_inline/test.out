@@ -15,16 +15,16 @@ some_package.adb:8:04: info: function contract not available for proof ("Full" m
 some_package.adb:8:04: info: function contract not available for proof ("Length" may not return)
 some_package.adb:8:04: info: function contract not available for proof ("Length" may not return)
 some_package.adb:8:04: info: function contract not available for proof ("Length" may not return)
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:27
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:33
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:37
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:41
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:42
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:46
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:52
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:53
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:57
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:61
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:65
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:69
-some_package.adb:8:04: info: instantiation error at generic_queue.ads:73
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:27
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:33
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:37
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:41
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:42
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:46
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:52
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:53
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:57
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:61
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:65
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:69
+some_package.adb:8:04: info: in instantiation at generic_queue.ads:73
