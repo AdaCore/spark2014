@@ -1,0 +1,3 @@
+abstract_state_part_of_concurrent.ads:10:44: abstract state Part_Of constituent of a protected object is not yet supported
+abstract_state_part_of_concurrent.ads:17:44: abstract state Part_Of constituent of a task object is not yet supported
+gnatprove: error during flow analysis and proof
