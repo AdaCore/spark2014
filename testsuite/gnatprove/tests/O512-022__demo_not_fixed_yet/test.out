@@ -41,7 +41,7 @@ main.adb:14:14: medium: overflow check might fail (e.g. when X = -2147483648)
 main.adb:14:25: side effects of function "Pop" are not modeled in SPARK
 main.adb:15:21: medium: "My_Stack" might not be initialized
 main.adb:16:12: info: initialization of "Y" proved
-main.adb:16:14: medium: overflow check might fail (e.g. when X = -2147483648)
+main.adb:16:14: medium: overflow check might fail (e.g. when Y = -2147483648)
 main.adb:16:16: info: initialization of "A" proved
 main.adb:17:59: info: initialization of "My_Stack" proved
 main.adb:20:07: info: initialization of "X" proved
