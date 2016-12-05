@@ -55,7 +55,17 @@ package body Attempt_3 is
       pragma Assert (Old_Speed + 1.0 <= High_Bound(N) + 1.0);
       pragma Assert (New_Speed <= High_Bound(N) + 1.0);
 
-      pragma Assert (Float64(N) * 65.0 + 1.0 <= Float64(N+1) * 65.0);
+      declare
+         FNT65   : constant Float64 := Float64(N) * 65.0;
+         FNP1T65 : constant Float64 := Float64(N+1) * 65.0;
+      begin
+         pragma Assert (N * 65 + 1 <= (N+1) * 65);
+         pragma Assert (Float64(N * 65 + 1) <= Float64((N+1) * 65));
+         pragma Assert (FNT65 + 1.0 = Float64(N * 65 + 1));
+         pragma Assert (FNP1T65 = Float64((N+1) * 65));
+         pragma Assert (FNT65 + 1.0 <= FNP1T65);
+      end;
+
       pragma Assert (High_Bound(N) + 1.0 <= High_Bound(N+1));
       pragma Assert (New_Speed <= High_Bound(N+1));
 
