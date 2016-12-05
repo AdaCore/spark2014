@@ -1,4 +1,5 @@
-pragma Profile(Ravenscar);
+pragma Profile(GNAT_Extended_Ravenscar);
+pragma Restrictions (No_Entry_Queue);
 pragma Partition_Elaboration_Policy(Sequential);
 pragma SPARK_Mode(On);
 
@@ -39,9 +40,7 @@ package Core is
       Next_In  : Message_Index := Message_Index'First;
       Next_Out : Message_Index := Message_Index'First;
       Count    : Message_Count := 0;
-      Message_Waiting : Boolean := False;
    end Mailbox;
 
 
 end Core;
-

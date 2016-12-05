@@ -1,4 +1,5 @@
-pragma Profile(Ravenscar);
+pragma Profile(GNAT_Extended_Ravenscar);
+pragma Restrictions (No_Entry_Queue);
 pragma Partition_Elaboration_Policy(Sequential);
 pragma SPARK_Mode(On);
 
@@ -17,18 +18,15 @@ package body Core is
             Messages(Next_In).Size := 0;
             Next_In := Next_In + 1;
             Count := Count + 1;
-            Message_Waiting := True;
          end if;
       end Install_Message;
 
 
-      entry Get_Message(N : out Integer) when Message_Waiting is
+      entry Get_Message(N : out Integer) when Count > 0 is
       begin
-         pragma Assert (Message_Waiting); --@ASSERT:PASS
          N := Messages(Next_Out).Value;
          Next_Out := Next_Out + 1;
          Count := Count - 1;
-         Message_Waiting := (Count > 0);
       end Get_Message;
 
    end Mailbox;
