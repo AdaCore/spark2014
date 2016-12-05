@@ -33,7 +33,6 @@ with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
-with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 with SPARK_Definition;                   use SPARK_Definition;
@@ -1700,51 +1699,47 @@ package body SPARK_Util is
       return Name_Buffer (1 .. Name_Len);
    end String_Value;
 
-   ---------------------
-   -- Is_Part_Of_Type --
-   ---------------------
-
-   generic
-      with function Is_Some_Type (E : Entity_Id) return Boolean;
-   function Is_Part_Of_Type (E : Entity_Id) return Boolean;
-   --  Common routine for checking parts of concurrent and protected objects
-
-   function Is_Part_Of_Type (E : Entity_Id) return Boolean is
-   begin
-      if Ekind (E) in E_Constant | E_Variable then
-         declare
-            Part_Of_Pragma : constant Node_Id :=
-              Get_Pragma (E, Pragma_Part_Of);
-
-         begin
-            return Present (Part_Of_Pragma)
-              and then
-                Is_Some_Type
-                  (Etype (Expression (Get_Argument (Part_Of_Pragma))));
-         end;
-      else
-         return False;
-      end if;
-   end Is_Part_Of_Type;
-
    ----------------------------------
    -- Is_Part_Of_Concurrent_Object --
    ----------------------------------
 
-   function Is_Part_Of_Concurrent is
-     new Is_Part_Of_Type (Is_Concurrent_Type);
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+   begin
+      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+         declare
+            Encapsulating : constant Entity_Id := Encapsulating_State (E);
 
-   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean
-     renames Is_Part_Of_Concurrent;
+         begin
+            return Present (Encapsulating)
+              and then Ekind (Encapsulating) = E_Variable
+              and then Ekind (Etype (Encapsulating)) in E_Protected_Type
+                                                      | E_Task_Type;
+         end;
+
+      else
+         return False;
+      end if;
+   end Is_Part_Of_Concurrent_Object;
 
    ---------------------------------
    -- Is_Part_Of_Protected_Object --
    ---------------------------------
 
-   function Is_Part_Of_Protected is
-     new Is_Part_Of_Type (Is_Protected_Type);
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
+   begin
+      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+         declare
+            Encapsulating : constant Entity_Id := Encapsulating_State (E);
 
-   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
-                                         renames Is_Part_Of_Protected;
+         begin
+            return Present (Encapsulating)
+              and then Ekind (Encapsulating) = E_Variable
+              and then Ekind (Etype (Encapsulating)) = E_Protected_Type;
+         end;
+
+      else
+         return False;
+      end if;
+   end Is_Part_Of_Protected_Object;
 
 end SPARK_Util;

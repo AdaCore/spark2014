@@ -49,9 +49,8 @@ Tool Limitations
 #. Constrained subtypes of class-wide types and 'Class attributes of
    constrained record types are not supported.
 
-#. Abstract states cannot be marked ``Part_Of`` a single task declaration or a
-   single protected declaration (see |SPARK| RM 9(3)). An error is raised
-   instead in such cases.
+#. Abstract states cannot be marked ``Part_Of`` a single concurrent object (see
+   |SPARK| RM 9(3)). An error is raised instead in such cases.
 
 #. Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
    supported.

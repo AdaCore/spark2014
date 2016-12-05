@@ -4562,26 +4562,11 @@ package body SPARK_Definition is
             --  If an abstract state is a Part_Of constituent of a single
             --  concurrent object then raise a violation.
 
-            declare
-               Encapsulating_Entity : constant Entity_Id :=
-                 Encapsulating_State (E);
-
-            begin
-               if Present (Encapsulating_Entity)
-                 and then Ekind (Encapsulating_Entity) = E_Variable
-               then
-                  Mark_Unsupported
-                    ("abstract state Part_Of constituent of a " &
-                      (case Ekind (Etype (Encapsulating_Entity)) is
-                          when E_Protected_Type =>
-                             "protected object",
-                          when E_Task_Type      =>
-                             "task object",
-                          when others           =>
-                            raise Program_Error),
-                     E);
-               end if;
-            end;
+            if Is_Part_Of_Concurrent_Object (E) then
+               Mark_Unsupported
+                 ("abstract state Part_Of constituent of " &
+                  "a single concurrent object", E);
+            end if;
 
          when Entry_Kind       => Mark_Subprogram_Entity (E);
 
