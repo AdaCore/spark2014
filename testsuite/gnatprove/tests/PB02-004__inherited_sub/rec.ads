@@ -1,4 +1,4 @@
-package Rec is
+package Rec with SPARK_Mode is
 
    type Enum is (A, B, C);
 
@@ -15,6 +15,20 @@ package Rec is
 
    type Sub_Rec (Z : Enum) is record
       Plop : My_Rec (Z);
+   end record;
+
+   type Sub_Rec_OK (Z : Enum) is record
+      case Z is
+         when Sub_Enum =>
+            Plop : My_Rec (Z);
+         when others => null;
+      end case;
+   end record;
+
+   type My_Array is array (Positive range <>) of Natural;
+
+   type Sub_Arr (F, L : Natural) is record
+      Content : My_Array (F .. L);
    end record;
 
 end Rec;
