@@ -147,8 +147,7 @@ nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: info: subprogram will terminate
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: warning: statement has no effect
-nest_in_proc.ads:1:11: medium: subprogram might not terminate, terminating annotation could be incorrect
-nest_in_proc.ads:1:11: warning: subprogram might not terminate
+nest_in_proc.ads:1:11: info: subprogram will terminate
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: subprogram will terminate

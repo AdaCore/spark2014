@@ -1,0 +1,4 @@
+nest_in_proc.adb:4:17: warning: subprogram "Dummy" has no effect
+nest_in_proc.adb:8:17: warning: subprogram "Dummy" has no effect
+nest_in_proc.adb:14:18: warning: statement has no effect
+nest_in_proc.adb:22:18: warning: statement has no effect

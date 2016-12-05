@@ -1157,43 +1157,19 @@ package body Flow is
       --  (using control-flow traversal) and register the results.
       Control_Flow_Graph.Create (FA);
 
-      --  We register the following:
-      --  * subprograms which contain at least one loop that may not terminate
-      --  * procedures annotated with No_Return
-      --  * subprograms which call predefined procedures with No_Return.
+      --  We register subprograms and packages that:
+      --  * contain loops that may not terminate
+      --  * are annotated with No_Return (applies only to procedures)
+      --  * call predefined procedures annotated with No_Return
       if FA.Generating_Globals
+        and then (FA.Kind in Kind_Subprogram | Kind_Package_Body)
         and then (FA.Has_Potentially_Nonterminating_Loops
                     or else No_Return (FA.Spec_Entity)
                     or else (for some Callee of FA.Direct_Calls
                              => (In_Predefined_Unit (Callee)
                                    and then No_Return (Callee))))
       then
-         case FA.Kind is
-            when Kind_Subprogram =>
-               --  We register the subprogram
-               GG_Register_Nonreturning
-                 (To_Entity_Name (FA.Spec_Entity));
-
-            when Kind_Package_Body =>
-               --  If there is a package whose elaboration contains a
-               --  potentially nonterminating loop and it is nested within a
-               --  subprogram, then we register this subprogram as potentially
-               --  nonreturning.
-               declare
-                  E_Subprogram : constant Entity_Id :=
-                    Enclosing_Subprogram (FA.Spec_Entity);
-
-               begin
-                  if Present (E_Subprogram) then
-                     GG_Register_Nonreturning (To_Entity_Name (E_Subprogram));
-                  end if;
-               end;
-
-            when Kind_Task
-               | Kind_Package
-             =>
-               null;
-         end case;
+         GG_Register_Nonreturning (To_Entity_Name (FA.Spec_Entity));
       end if;
 
       --  We register nonblocking subprograms and (nested) packages, but not
