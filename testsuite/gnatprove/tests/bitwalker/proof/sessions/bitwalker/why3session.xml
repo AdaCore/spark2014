@@ -975,7 +975,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="1"><result status="valid" time="0.00" steps="99"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="225"/></proof>
   <proof prover="2"><result status="highfailure" time="0.00"/></proof>
   <proof prover="3"><result status="highfailure" time="0.00"/></proof>
   </goal>
@@ -983,7 +983,7 @@
   <proof prover="3"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.00" steps="930"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="953"/></proof>
   <proof prover="2"><result status="highfailure" time="0.00"/></proof>
   <proof prover="3"><result status="highfailure" time="0.00"/></proof>
   </goal>
@@ -1012,7 +1012,7 @@
   <proof prover="3"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. assertion">
-  <proof prover="1"><result status="valid" time="0.00" steps="105"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="415"/></proof>
   <proof prover="2"><result status="highfailure" time="0.00"/></proof>
   <proof prover="3"><result status="highfailure" time="0.00"/></proof>
   </goal>
@@ -1667,7 +1667,7 @@
   <proof prover="3"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. assertion">
-  <proof prover="1"><result status="valid" time="0.00" steps="326"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="725"/></proof>
   <proof prover="2"><result status="highfailure" time="0.00"/></proof>
   <proof prover="3"><result status="highfailure" time="0.00"/></proof>
   </goal>
