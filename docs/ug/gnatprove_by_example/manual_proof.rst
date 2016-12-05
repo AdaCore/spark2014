@@ -297,9 +297,7 @@ puts all universally quantified variables and all hypotheses in the
 environment. The goal is reduced to a simple inequality, with all potentially
 useful information in the environment.
 
-Here is the state of the proof as displayed in a suitable IDE for Coq:
-
-.. code-block:: coq
+Here is the state of the proof as displayed in a suitable IDE for Coq::
 
   1 subgoals, subgoal 1 (ID 331)
 
@@ -328,9 +326,7 @@ Next, we can use the ``subst`` tactic to automaticaly replace variables by
 terms to which they are equal (as stated by the hypotheses in the current
 environment) and clean the environment of replaced variables. Here, we can
 get rid of ``r11``, ``r21``, ``r1`` and ``r2``: ``subst r11 r21 r1 r2.`` (note
-the presence of the ``.`` at the end of each tactic). The new state is:
-
-.. code-block:: coq
+the presence of the ``.`` at the end of each tactic). The new state is::
 
   1 subgoals, subgoal 1 (ID 343)
 
@@ -351,9 +347,7 @@ of ``a`` by ``b`` in the current goal and ``rewrite <- H.`` will replace all
 occurences of ``b`` by ``a`` (``a`` and ``b`` are terms, not necessarily just
 variables). You can also rewrite terms in other hypotheses instead of the
 current goal: ``rewrite H in H2.``. In this case, to replace ``to_int o`` and
-``to_int o1``, we use ``rewrite h2. rewrite h5.``:
-
-.. code-block:: coq
+``to_int o1``, we use ``rewrite h2. rewrite h5.``::
 
   1 subgoals, subgoal 1 (ID 345)
 
@@ -372,11 +366,9 @@ to find theorems and definition concerning its argument. For instance, to find
 the theorems referring to the operator ``÷``, we use ``SearchAbout Z.quot.``,
 where ``Z.quot`` is the underlying function for the ``÷`` operator.  Among the
 theorems displayed, the conclusion (the rightmost term separated by ``->``
-operator) of one of them seems to match our current goal:
+operator) of one of them seems to match our current goal::
 
-.. code-block:: coq
-
-  Z.quot_le_compat_l:
+   Z.quot_le_compat_l:
      forall p q r : int, (0 <= p)%Z -> (0 < q <= r)%Z -> (p ÷ r <= p ÷ q)%Z
 
 The tactic ``apply`` allows the use of a theorem or an hypothesis on the
@@ -386,9 +378,7 @@ goal. If it succeeds, one subgoal per hypothesis in the theorem will be
 generated to verify that the terms matched with the theorem variables satisfy
 the hypotheses on those variables required by the theorem.  In this
 case, ``p`` is matched with ``to_int1 x``, ``q`` with ``to_int1 z`` and
-``r`` with ``to_int1 y`` and the new state is:
-
-.. code-block:: coq
+``r`` with ``to_int1 y`` and the new state is::
 
   2 subgoals, subgoal 1 (ID 346)
 
@@ -427,9 +417,7 @@ using tactic ``apply Zle_trans.`` will generate an error stating that Coq was
 not able to find a term for the variable ``m``.  In this case, ``m`` needs to
 be instantiated explicitly, here with the value 1: ``apply Zle_trans with (m:=
 1%Z).`` There are two new subgoals, one to prove that ``0 <= 1`` and the other
-that ``1 <= to_int1 x``:
-
-.. code-block:: coq
+that ``1 <= to_int1 x``::
 
   3 subgoals, subgoal 1 (ID 348)
 
@@ -448,9 +436,7 @@ that ``1 <= to_int1 x``:
 
 To prove that ``0 <= 1``, the theorem ``Lemma Zle_0_1 : (0 <= 1)%Z.`` is used.
 ``apply Zle_0_1`` will not generate any new subgoals since it does not contain
-implications. Coq passes to the next subgoal:
-
-.. code-block:: coq
+implications. Coq passes to the next subgoal::
 
   2 subgoals, subgoal 1 (ID 349)
 
@@ -466,9 +452,7 @@ implications. Coq passes to the next subgoal:
    (0 < to_int1 z <= to_int1 y)%Z
 
 This goal is now adapted to the ``range_axiom1`` which does not introduce
-subgoals, so the subgoal 1 is fully proved, and all that remains is subgoal 2:
-
-.. code-block:: coq
+subgoals, so the subgoal 1 is fully proved, and all that remains is subgoal 2::
 
   1 subgoals, subgoal 1 (ID 360)
 
@@ -488,9 +472,7 @@ worked. Now, let's see that proof doesn't have to be this detailed. The first
 thing to do is to add the fact that ``1 <= to_int1 z`` to the current
 environment: ``destruct range_axiom1 with (x:= z).`` or ``destruct
 (range_axiom1 z).`` will separate the conjunctions and add them as different
-hypotheses in the environment:
-
-.. code-block:: coq
+hypotheses in the environment::
 
   1 subgoals, subgoal 1 (ID 360)
 
