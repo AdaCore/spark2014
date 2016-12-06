@@ -3877,8 +3877,7 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
         or else Is_Recursive (E)
-        or else (Is_Potentially_Nonreturning (E)
-                 and then not Has_Terminate_Annotation (E))
+        or else Is_Potentially_Nonreturning (E)
         or else (Is_Volatile_Function (E) and not Is_Protected_Subprogram (E))
       then
          return;
@@ -4698,8 +4697,7 @@ package body Gnat2Why.Subprograms is
          --      forall x:natural. f x = of_int (to_int(largest_int) + 1)
 
          if Is_Recursive (E)
-           or else (Is_Potentially_Nonreturning (E)
-                    and then not Has_Terminate_Annotation (E))
+           or else Is_Potentially_Nonreturning (E)
            or else not Has_Scalar_Type (Etype (E))
            or else Use_Split_Form_For_Type (Etype (E))
          then

@@ -4622,7 +4622,7 @@ package body Flow.Analysis is
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
    begin
       if Has_Terminate_Annotation (FA.Spec_Entity)
-        and then Is_Potentially_Nonreturning (FA.Spec_Entity)
+        and then Is_Potentially_Nonreturning_Internal (FA.Spec_Entity)
       then
          Error_Msg_Flow (FA         => FA,
                          Msg        => "subprogram might not terminate, " &
@@ -4638,16 +4638,23 @@ package body Flow.Analysis is
 
    procedure Check_Termination (FA : in out Flow_Analysis_Graphs) is
    begin
-      if Is_Potentially_Nonreturning (FA.Analyzed_Entity) then
+      if Is_Potentially_Nonreturning (FA.Spec_Entity) then
          Error_Msg_Flow (FA         => FA,
                          Msg        => "subprogram might not terminate",
                          Severity   => Warning_Kind,
-                         N          => FA.Analyzed_Entity);
+                         N          => FA.Spec_Entity);
       else
-         Error_Msg_Flow (FA         => FA,
-                         Msg        => "subprogram will terminate",
-                         Severity   => Info_Kind,
-                         N          => FA.Analyzed_Entity);
+         --  In case a check has been raised with the
+         --  Check_Terminating_Annotation then we do not emit the info message.
+         if not (Has_Terminate_Annotation (FA.Spec_Entity)
+                 and then
+                 Is_Potentially_Nonreturning_Internal (FA.Spec_Entity))
+         then
+            Error_Msg_Flow (FA         => FA,
+                            Msg        => "subprogram will terminate",
+                            Severity   => Info_Kind,
+                            N          => FA.Spec_Entity);
+         end if;
       end if;
    end Check_Termination;
 

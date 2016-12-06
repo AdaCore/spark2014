@@ -36,6 +36,7 @@ with Snames;                     use Snames;
 
 with Call;                       use Call;
 with Debug.Timing;               use Debug.Timing;
+with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
@@ -375,7 +376,8 @@ package body Flow_Generated_Globals.Phase_2 is
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns callees of a Caller
 
-   function Is_Potentially_Nonreturning (EN : Entity_Name) return Boolean;
+   function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
+                                                  return Boolean;
    --  See comment for Is_Potentially_Nonreturning with Entity_Id as an input
 
    function Is_Recursive (EN : Entity_Name) return Boolean;
@@ -1419,23 +1421,26 @@ package body Flow_Generated_Globals.Phase_2 is
 
                begin
                   --  Add callees of the caller into the graph, but do nothing
-                  --  if the caller itself is nonreturning or annotated with
-                  --  the Terminating annotation.
-                  if not Nonreturning_Subprograms.Contains (Caller)
-                    and then not Terminating_Subprograms.Contains (Caller)
-                  then
+                  --  if the caller itself is nonreturning. The caller can be
+                  --  a subprogram annotated with the Terminating annotation.
+                  if not Nonreturning_Subprograms.Contains (Caller) then
                      for Callee of Generated_Calls (Caller) loop
-                        --  Get vertex for the callee
-                        V_Callee := Call_Graph.Get_Vertex (Callee);
+                        --  If the Callee is annotated with the Terminating
+                        --  annotation do not create an edge between the caller
+                        --  and the callee.
+                        if not Terminating_Subprograms.Contains (Callee) then
+                           --  Get vertex for the callee
+                           V_Callee := Call_Graph.Get_Vertex (Callee);
 
-                        --  If there is no vertex for the callee then create
-                        --  one and put the callee on the stack.
-                        if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                           Call_Graph.Add_Vertex (Callee, V_Callee);
-                           Stack.Insert (Callee);
+                           --  If there is no vertex for the callee then create
+                           --  one and put the callee on the stack.
+                           if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                              Call_Graph.Add_Vertex (Callee, V_Callee);
+                              Stack.Insert (Callee);
+                           end if;
+
+                           Call_Graph.Add_Edge (V_Caller, V_Callee);
                         end if;
-
-                        Call_Graph.Add_Edge (V_Caller, V_Callee);
                      end loop;
                   end if;
 
@@ -2546,11 +2551,13 @@ package body Flow_Generated_Globals.Phase_2 is
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
-   ---------------------------------
-   -- Is_Potentially_Nonreturning --
-   ---------------------------------
+   ------------------------------------------
+   -- Is_Potentially_Nonreturning_Internal --
+   ------------------------------------------
 
-   function Is_Potentially_Nonreturning (EN : Entity_Name) return Boolean is
+   function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
+                                                  return Boolean
+   is
 
       function Calls_Potentially_Nonreturning_Subprogram return Boolean;
       --  Returns True iff the called subprogram, the callee, is potentially
@@ -2606,10 +2613,20 @@ package body Flow_Generated_Globals.Phase_2 is
       return Nonreturning_Subprograms.Contains (EN)
         or else Is_Recursive (EN)
         or else Calls_Potentially_Nonreturning_Subprogram;
-   end Is_Potentially_Nonreturning;
+   end Is_Potentially_Nonreturning_Internal;
+
+   function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
+                                                  return Boolean
+   is
+     (Is_Potentially_Nonreturning_Internal (To_Entity_Name (E)));
+
+   ---------------------------------
+   -- Is_Potentially_Nonreturning --
+   ---------------------------------
 
    function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
-     (Is_Potentially_Nonreturning (To_Entity_Name (E)));
+     (not Has_Terminate_Annotation (E)
+      and then Is_Potentially_Nonreturning_Internal (E));
 
    ------------------
    -- Is_Recursive --

@@ -1,0 +1,2 @@
+terminating_annotations.ads:6:14: medium: subprogram might not terminate, terminating annotation could be incorrect
+terminating_annotations.ads:6:22: warning: unused variable "X"

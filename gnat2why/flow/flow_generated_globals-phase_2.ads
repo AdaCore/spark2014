@@ -212,7 +212,8 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
-   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean
+   function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
+                                                  return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
                Ekind (E) in E_Entry     |
@@ -224,17 +225,16 @@ package Flow_Generated_Globals.Phase_2 is
    --  * is recursive
    --  * calls a potentially nonreturning subprogram.
    --
-   --  In particular:
-   --  * if a subprogram is annotated with the Terminating annotation then this
-   --    is always assumed to terminate. In case our analysis does not reach
-   --    the same conclusion, we will issue a message but still consider it
-   --    terminating when called from other subprograms.
-   --  * if a subprogram is not annotated with the Terminating annotation we
-   --    then register it as nonreturning if:
-   --    - it is annotated with No_Return
+   --  It does not take into account the Terminating annotation for subprogram
+   --  E which is taken into account by the function
+   --  Is_Potentially_Nonreturning.
+   --
+   --  This function relies on the work carried on in phase 1 where we register
+   --  a subprogram as nonreturning if:
    --    - contains possibily nonterminating loops
-   --    - is recursive
-   --    - calls procedures annotated with No_Return.
+   --    - it is annotated with No_Return
+   --    - calls predefined procedures annotated with No_Return
+   --    - has its body not in SPARK.
    --
    --    The case of a subprogram with body not SPARK needs a closer look. In
    --    fact we will need to look at calls that might come from its contracts.
@@ -255,6 +255,20 @@ package Flow_Generated_Globals.Phase_2 is
    --         consider it to be returning
    --       - if the generic is instantiated with nonreturning subprograms, we
    --         consider it to be nonreturning.
+
+   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean
+   with Pre => GG_Has_Been_Generated and then
+               Entity_In_SPARK (E) and then
+               Ekind (E) in E_Entry     |
+                            E_Procedure |
+                            E_Function;
+   --  Returns True iff E is not annotated as terminating and is indeed
+   --  (potentially) nonreturning for some reason.
+   --
+   --  Note: if a subprogram is annotated as terminating then we trust that it
+   --  indeed terminates when called from other subprograms. If our analysis
+   --  thinks otherwise, we will issue a message but still trust the
+   --  user-provided annotation.
 
    function Tasking_Objects
      (Kind : Tasking_Owning_Kind;
