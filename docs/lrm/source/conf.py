@@ -23,7 +23,7 @@ except ImportError:
     use_adacore_parser = False
 
 def setup(app):
-    app.add_config_value('Display_Trace_Units','',True)
+    app.add_config_value('Display_Trace_Units',False,True)
     if use_adacore_parser:
     	app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
 
