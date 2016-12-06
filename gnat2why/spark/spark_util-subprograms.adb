@@ -937,6 +937,7 @@ package body SPARK_Util.Subprograms is
          B : constant Node_Id := Subprogram_Body (E);
       begin
          return Present (B)
+           and then Is_List_Member (B)
            and then Present (Prev (B))
            and then Nkind (Prev (B)) = N_Subprogram_Renaming_Declaration
            and then Corresponding_Spec (Prev (B)) = E;
