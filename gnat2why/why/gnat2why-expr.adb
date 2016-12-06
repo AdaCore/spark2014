@@ -9791,8 +9791,7 @@ package body Gnat2Why.Expr is
                                      or else Has_Unknown_Discriminants (Base)
                                      then First_Discriminant (Base)
                                      else Empty);
-               Elmt  : Elmt_Id :=
-                 First_Elmt (Stored_Constraint (Ent));
+               Elmt  : Elmt_Id := First_Elmt (Stored_Constraint (Ent));
             begin
                while Present (Discr) loop
                   declare
@@ -9944,9 +9943,10 @@ package body Gnat2Why.Expr is
             | N_Full_Type_Declaration
             =>
             declare
-               Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
+               Ent  : Entity_Id := Unique_Defining_Entity (Decl);
                Base : Entity_Id := Get_Base_Type (Decl);
             begin
+               Ent := Retysp (Ent);
                if Present (Base) then
                   Base := Retysp (Base);
                end if;
@@ -10072,19 +10072,17 @@ package body Gnat2Why.Expr is
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
 
-                  when E_Protected_Subtype
-                     | E_Task_Subtype      =>
+                  when Concurrent_Kind
+                     | Private_Kind
+                  =>
 
                      --  We need to check that the new discriminants of the
                      --  subtype fit into the base type.
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
 
-                  when Private_Kind
-                     | E_Class_Wide_Type
+                  when E_Class_Wide_Type
                      | E_Class_Wide_Subtype
-                     | E_Protected_Type
-                     | E_Task_Type
                   =>
                      null;
 

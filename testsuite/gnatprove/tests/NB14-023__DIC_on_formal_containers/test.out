@@ -1,11 +1,19 @@
 dic_of_cont.adb:3:07: info: initialization of private part of "Dlli" proved
+dic_of_cont.adb:3:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:4:07: info: initialization of private part of "Dhama" proved
+dic_of_cont.adb:4:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:4:45: info: precondition proved (CVC4: 1 VC)
+dic_of_cont.adb:4:45: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:5:07: info: initialization of private part of "Dhase" proved
+dic_of_cont.adb:5:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:5:45: info: precondition proved (CVC4: 1 VC)
+dic_of_cont.adb:5:45: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:6:07: info: initialization of private part of "Dorma" proved
+dic_of_cont.adb:6:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:7:07: info: initialization of private part of "Dorse" proved
+dic_of_cont.adb:7:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:8:07: info: initialization of private part of "Dfove" proved
+dic_of_cont.adb:8:31: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:10:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:10:29: info: precondition proved (CVC4: 1 VC)
 dic_of_cont.adb:10:40: info: initialization of private part of "Dlli" proved

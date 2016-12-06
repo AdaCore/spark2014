@@ -43,6 +43,7 @@ list.adb:43:23: info: precondition proved (CVC4: 1 VC)
 list.adb:43:28: info: initialization of "S" proved
 list.adb:44:10: info: precondition proved (CVC4: 1 VC)
 list.adb:44:15: info: initialization of "S" proved
+list.ads:10:38: info: range check proved (CVC4: 1 VC)
 list.ads:13:14: info: postcondition proved (CVC4: 1 VC)
 list.ads:13:28: info: precondition proved (CVC4: 1 VC)
 list.ads:13:47: info: precondition proved (CVC4: 1 VC)

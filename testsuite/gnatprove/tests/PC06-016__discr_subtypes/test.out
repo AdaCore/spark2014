@@ -1,0 +1,14 @@
+discr_checks.adb:5:28: medium: range check might fail
+discr_checks.adb:11:29: medium: range check might fail
+discr_checks.adb:17:29: medium: range check might fail
+discr_checks.adb:23:30: info: range check proved (CVC4: 1 VC)
+discr_checks.adb:23:30: medium: range check might fail
+discr_checks.adb:29:29: medium: range check might fail
+discr_checks.adb:43:26: medium: range check might fail
+discr_checks.ads:8:14: warning: subprogram "Check_Subtype_Rec" has no effect
+discr_checks.ads:10:14: warning: subprogram "Check_Derived_Rec" has no effect
+discr_checks.ads:12:14: warning: subprogram "Check_Subtype_Priv" has no effect
+discr_checks.ads:14:14: warning: subprogram "Check_Derived_Priv" has no effect
+discr_checks.ads:16:14: warning: subprogram "Check_Subtype_Prot" has no effect
+discr_checks.ads:20:14: warning: subprogram "Check_Subtype_Task" has no effect
+my_types.ads:10:14: medium: the task might terminate, which is not allowed in SPARK

@@ -1,3 +1,5 @@
+private_with_attributes.ads:16:63: info: range check proved (CVC4: 1 VC)
+use_private_attributes.adb:7:39: info: range check proved (CVC4: 1 VC)
 use_private_attributes.adb:10:22: info: assertion proved (CVC4: 1 VC)
 use_private_attributes.adb:11:22: info: assertion proved (CVC4: 1 VC)
 use_private_attributes.adb:12:22: info: assertion proved (CVC4: 1 VC)
