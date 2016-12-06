@@ -1,7 +1,11 @@
 test_vdll.adb:9:04: info: initialization of private part of "L1" proved
+test_vdll.adb:9:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:10:04: info: initialization of private part of "L2" proved
+test_vdll.adb:10:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:11:04: info: initialization of private part of "L3" proved
+test_vdll.adb:11:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:12:04: info: initialization of private part of "L4" proved
+test_vdll.adb:12:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:20:08: medium: precondition might fail
 test_vdll.adb:24:04: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:24:23: info: precondition proved (CVC4: 1 VC)

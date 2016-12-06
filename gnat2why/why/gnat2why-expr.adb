@@ -9697,8 +9697,7 @@ package body Gnat2Why.Expr is
                                      or else Has_Unknown_Discriminants (Base)
                                      then First_Discriminant (Base)
                                      else Empty);
-               Elmt  : Elmt_Id :=
-                 First_Elmt (Stored_Constraint (Ent));
+               Elmt  : Elmt_Id := First_Elmt (Stored_Constraint (Ent));
             begin
                while Present (Discr) loop
                   declare
@@ -9976,9 +9975,10 @@ package body Gnat2Why.Expr is
             | N_Full_Type_Declaration
             =>
             declare
-               Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
+               Ent  : Entity_Id := Unique_Defining_Entity (Decl);
                Base : Entity_Id := Get_Base_Type (Decl);
             begin
+               Ent := Retysp (Ent);
                if Present (Base) then
                   Base := Retysp (Base);
                end if;

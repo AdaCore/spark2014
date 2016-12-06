@@ -1,3 +1,5 @@
+formal_list.ads:18:30: info: range check proved (CVC4: 1 VC)
+formal_list.ads:22:30: info: range check proved (CVC4: 1 VC)
 informal_list.ads:3:09: cannot read theory file informal_list.mlw
 informal_list.ads:3:09: cannot read theory file informal_list.mlw
 test.adb:4:17: info: initialization of "A" proved

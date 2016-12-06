@@ -1,4 +1,5 @@
 my_lists.adb:5:07: info: initialization of private part of "L1" proved
+my_lists.adb:5:18: info: range check proved (CVC4: 1 VC)
 my_lists.adb:6:07: info: initialization of private part of "L2" proved
 my_lists.adb:6:23: info: discriminant check proved (CVC4: 1 VC)
 my_lists.adb:6:23: info: initialization of private part of "L1" proved
@@ -21,4 +22,9 @@ my_lists.adb:22:07: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:23:07: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:24:07: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:25:07: info: assertion proved (CVC4: 1 VC)
+my_lists.ads:16:29: info: range check proved (CVC4: 1 VC)
+my_lists.ads:18:30: info: range check proved (CVC4: 1 VC)
+my_lists.ads:24:31: info: range check proved (CVC4: 1 VC)
+my_lists.ads:26:32: info: range check proved (CVC4: 1 VC)
+my_lists.ads:28:31: info: range check proved (CVC4: 1 VC)
 my_lists.ads:32:14: warning: subprogram "P" has no effect
