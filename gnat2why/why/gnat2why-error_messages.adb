@@ -552,7 +552,6 @@ package body Gnat2Why.Error_Messages is
             return "default initial condition might fail";
          when VC_Precondition              =>
             if Nkind (Node) in N_Entry_Call_Statement
-                             | N_Function_Call
                              | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
@@ -826,7 +825,6 @@ package body Gnat2Why.Error_Messages is
             return "default initial condition proved";
          when VC_Precondition              =>
             if Nkind (Node) in N_Entry_Call_Statement
-                             | N_Function_Call
                              | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
