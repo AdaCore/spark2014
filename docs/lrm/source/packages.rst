@@ -2530,6 +2530,15 @@ Default_Initial_Condition Aspects
    (i.e., at run-time) bound to the corresponding operations of the type of the
    object being "initialized by default" (see Ada RM 3.3.1).
 
+.. centered:: **Legality Rules**
+
+.. _tu-default_initial_condition-01:
+
+1. [A Default_Initial_Condition expression shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
+
+.. _etu-default_initial_condition-01:
+
 Deferred Constants
 ------------------
 
