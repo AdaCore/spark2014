@@ -923,18 +923,36 @@ package body SPARK_Util.Types is
       Ty : constant Entity_Id := Retysp (E);
    begin
       case Ekind (Ty) is
+
+         --  Subtypes do not have their own variant part, rather use the one
+         --  from their Etype.
+
          when E_Record_Subtype
             | E_Record_Subtype_With_Private
             | E_Protected_Subtype
             | E_Task_Subtype
          =>
             return Comp_Info (Retysp (Etype (Ty))).Variant_Info;
+
+         --  Record types always have their own variant part
+
          when E_Record_Type
             | E_Record_Type_With_Private
-            | E_Protected_Type
-            | E_Task_Type
          =>
             return Comp_Info (Ty).Variant_Info;
+
+         --  Concurrent types only have their own variant part if their are
+         --  nouveau. If they are derived types, use the variant type of their
+         --  Etype.
+
+         when E_Protected_Type
+            | E_Task_Type
+         =>
+            return (if Nkind (Parent (Ty)) in N_Protected_Type_Declaration
+                                            | N_Task_Type_Declaration
+                    then Comp_Info (Ty).Variant_Info
+                    else Comp_Info (Retysp (Etype (Ty))).Variant_Info);
+
          when others =>
             return Info_Maps.Empty_Map;
       end case;
@@ -1204,9 +1222,9 @@ package body SPARK_Util.Types is
       --  subtypes, we copy the parent's Components and update the fields
       --  to take the most precise ones from the subtype.
 
-      if Ekind (E) in Subtype_Kind then
-         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
-      else
+      if Nkind (Parent (E)) in N_Protected_Type_Declaration
+                             | N_Task_Type_Declaration
+      then
          declare
             Needs_Private_Part : Boolean := False;
             Field              : Node_Id;
@@ -1259,6 +1277,8 @@ package body SPARK_Util.Types is
                Comp_Info (Position).Components.Insert (E);
             end if;
          end;
+      else
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       end if;
    end Init_Component_Info_For_Protected_Types;
 

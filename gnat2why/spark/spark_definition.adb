@@ -1715,9 +1715,7 @@ package body SPARK_Definition is
          when N_Full_Type_Declaration
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
-            | N_Protected_Type_Declaration
             | N_Subtype_Declaration
-            | N_Task_Type_Declaration
          =>
             declare
                E  : constant Entity_Id := Defining_Entity (N);
@@ -1765,26 +1763,30 @@ package body SPARK_Definition is
                   end if;
                end if;
 
-               if Ekind (E) in E_Protected_Type | E_Task_Type then
-
-                  --  Pick SPARK_Mode from the concurrent type definition
-
-                  declare
-                     Save_SPARK_Pragma : constant Node_Id :=
-                       Current_SPARK_Pragma;
-                  begin
-                     Current_SPARK_Pragma := SPARK_Pragma (E);
-                     Mark_Entity (E);
-                     Mark_Concurrent_Type_Declaration (N);
-                     Current_SPARK_Pragma := Save_SPARK_Pragma;
-                  end;
-               else
-                  Mark_Entity (E);
-               end if;
+               Mark_Entity (E);
 
                if Is_Itype (BT) then
                   Mark_Entity (BT);
                end if;
+            end;
+
+         when N_Task_Type_Declaration
+            | N_Protected_Type_Declaration
+         =>
+
+            --  Pick SPARK_Mode from the concurrent type definition
+
+            declare
+               Save_SPARK_Pragma : constant Node_Id :=
+                 Current_SPARK_Pragma;
+               E                 : constant Entity_Id := Defining_Entity (N);
+            begin
+               Current_SPARK_Pragma := SPARK_Pragma (E);
+               Mark_Entity (E);
+
+               Mark_Concurrent_Type_Declaration (N);
+
+               Current_SPARK_Pragma := Save_SPARK_Pragma;
             end;
 
          --  Supported tasking constructs
@@ -3797,6 +3799,7 @@ package body SPARK_Definition is
                   Next_Component_Or_Discriminant (Comp);
                end loop;
             end;
+
          elsif Ekind (E) in E_Protected_Type | E_Task_Type then
             declare
                Save_SPARK_Pragma : constant Node_Id :=
@@ -4316,86 +4319,96 @@ package body SPARK_Definition is
 
             if Is_SPARK_Tasking_Configuration then
 
-               case Ekind (E) is
-                  when E_Protected_Subtype | E_Task_Subtype =>
-                     if not In_SPARK (Base_Type (E)) then
-                        Mark_Violation (E, From => Base_Type (E));
+               --  Only mark declarations of base protected types
+
+               if Ekind (E) in E_Protected_Type | E_Task_Type
+                 and then
+                   Nkind (Parent (E)) in N_Protected_Type_Declaration
+                                       | N_Task_Type_Declaration
+               then
+
+                  declare
+                     Type_Decl : constant Node_Id := Parent (E);
+                     Type_Def  : constant Node_Id :=
+                       (if Ekind (E) = E_Protected_Type
+                        then Protected_Definition (Type_Decl)
+                        else Task_Definition (Type_Decl));
+
+                  begin
+                     Mark_List (Interface_List (Type_Decl));
+
+                     --  Traverse the visible and private declarations of the
+                     --  type to mark pragmas and representation clauses.
+
+                     if Present (Type_Def) then
+                        Mark_Aspect_Clauses_And_Pragmas_In_List
+                          (Visible_Declarations (Type_Def));
+
+                        declare
+                           Save_SPARK_Pragma : constant Node_Id :=
+                             Current_SPARK_Pragma;
+
+                        begin
+                           Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+                           if SPARK_Pragma_Is (Opt.On) then
+                              declare
+                                 Save_Protected_Type : constant Entity_Id :=
+                                   Current_Protected_Type;
+
+                              begin
+                                 --  Private section may contain pragmas and
+                                 --  they are marked here.
+
+                                 Current_Protected_Type := E;
+
+                                 Mark_Aspect_Clauses_And_Pragmas_In_List
+                                   (Private_Declarations (Type_Def));
+
+                                 Current_Protected_Type :=
+                                   Save_Protected_Type;
+                              end;
+                           end if;
+
+                           Current_SPARK_Pragma := Save_SPARK_Pragma;
+                        end;
                      end if;
 
-                     --  A concurent subtype may have a type with full_view not
-                     --  in SPARK as an etype. In this case, the subype has
-                     --  fullview not in SPARK.
+                  end;
 
-                     if Full_View_Not_In_SPARK (Etype (E)) then
-                        Full_Views_Not_In_SPARK.Insert (E, Etype (E));
-                     end if;
+                  --  Mark Part_Of variables of single protected objects
 
-                  when E_Protected_Type | E_Task_Type =>
-                     declare
-                        Type_Decl : constant Node_Id := Parent (E);
-                        Type_Def  : constant Node_Id :=
-                          (if Ekind (E) = E_Protected_Type
-                           then Protected_Definition (Type_Decl)
-                           else Task_Definition (Type_Decl));
+                  if Ekind (E) = E_Protected_Type
+                    and then Is_Single_Concurrent_Type (E)
+                  then
+                     for Part of
+                       Iter (Part_Of_Constituents (Anonymous_Object (E)))
+                     loop
+                        Mark_Entity (Part);
+                     end loop;
+                  end if;
 
-                     begin
-                        Mark_List (Interface_List (Type_Decl));
+               --  We have a concurrent subtype or derived type. It is in SPARK
+               --  if its Etype is in SPARK.
 
-                        --  Traverse the visible and private declarations of
-                        --  the type to mark pragmas and representation
-                        --  clauses.
+               else
+                  pragma Assert
+                    (Ekind (E) in E_Protected_Subtype | E_Task_Subtype
+                     or else (Nkind (Parent (E)) = N_Full_Type_Declaration
+                       and then Nkind (Type_Definition (Parent (E))) =
+                         N_Derived_Type_Definition));
 
-                        if Present (Type_Def) then
-                           Mark_Aspect_Clauses_And_Pragmas_In_List
-                             (Visible_Declarations (Type_Def));
+                  if not In_SPARK (Etype (E)) then
+                     Mark_Violation (E, From => Etype (E));
+                  end if;
 
-                           declare
-                              Save_SPARK_Pragma : constant Node_Id :=
-                                Current_SPARK_Pragma;
+                  --  A concurrent type may have a type with full_view not in
+                  --  SPARK as an etype. In this case, the subype has fullview
+                  --  not in SPARK.
 
-                           begin
-                              Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                              if SPARK_Pragma_Is (Opt.On) then
-                                 declare
-                                    Save_Protected_Type : constant Entity_Id :=
-                                      Current_Protected_Type;
-
-                                 begin
-                                    --  Private section may contain pragmas and
-                                    --  they are marked here.
-
-                                    Current_Protected_Type := E;
-
-                                    Mark_Aspect_Clauses_And_Pragmas_In_List
-                                      (Private_Declarations (Type_Def));
-
-                                    Current_Protected_Type :=
-                                      Save_Protected_Type;
-                                 end;
-                              end if;
-
-                              Current_SPARK_Pragma := Save_SPARK_Pragma;
-                           end;
-                        end if;
-
-                     end;
-
-                     --  Mark Part_Of variables of single protected objects
-
-                     if Ekind (E) = E_Protected_Type
-                       and then Is_Single_Concurrent_Type (E)
-                     then
-                        for Part of
-                          Iter (Part_Of_Constituents (Anonymous_Object (E)))
-                        loop
-                           Mark_Entity (Part);
-                        end loop;
-                     end if;
-
-                  when others =>
-                     raise Program_Error;
-
-               end case;
+                  if Full_View_Not_In_SPARK (Etype (E)) then
+                     Full_Views_Not_In_SPARK.Include (E, Etype (E));
+                  end if;
+               end if;
 
                --  Store information about E's components
 
