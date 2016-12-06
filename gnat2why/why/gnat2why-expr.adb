@@ -10019,10 +10019,14 @@ package body Gnat2Why.Expr is
                         --  is not necessary to do that check on discriminants,
                         --  as the type of discriminants are directly
                         --  subtype_marks, not subtype_indications.
-                        --  ??? what about invisible components?
+                        --  We only check newly declared components as
+                        --  inherited components should be checked as part of
+                        --  some ancestor type declaration.
 
                         for Comp of Get_Component_Set (Ent) loop
-                           if Component_Is_Visible_In_Type (Ent, Comp) then
+                           if Ekind (Comp) = E_Component
+                             and then Original_Declaration (Comp) = Ent
+                           then
                               Typ := Subtype_Indication
                                 (Component_Definition (Parent (Comp)));
 
