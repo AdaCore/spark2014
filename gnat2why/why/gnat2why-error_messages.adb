@@ -33,12 +33,15 @@ with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
+with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why_Args;             use Gnat2Why_Args;
+with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
+with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with SPARK_Util;                use SPARK_Util;
@@ -553,8 +556,21 @@ package body Gnat2Why.Error_Messages is
                              | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
-               return
-                 "call to nonreturning subprogram might be executed";
+               declare
+                  Subp : constant Entity_Id :=
+                    Unique_Entity
+                      (Lib.Xref.SPARK_Specific.
+                         Enclosing_Subprogram_Or_Library_Package (Node));
+               begin
+                  if Ekind (Subp) = E_Procedure
+                    and then Is_Error_Signaling_Procedure (Subp)
+                  then
+                     return "precondition might fail";
+                  else
+                     return
+                       "call to nonreturning subprogram might be executed";
+                  end if;
+               end;
             else
                return "precondition might fail";
             end if;
@@ -814,7 +830,20 @@ package body Gnat2Why.Error_Messages is
                              | N_Procedure_Call_Statement
               and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
             then
-               return "call to nonreturning procedure never executed";
+               declare
+                  Subp : constant Entity_Id :=
+                    Unique_Entity
+                      (Lib.Xref.SPARK_Specific.
+                         Enclosing_Subprogram_Or_Library_Package (Node));
+               begin
+                  if Ekind (Subp) = E_Procedure
+                    and then Is_Error_Signaling_Procedure (Subp)
+                  then
+                     return "precondition proved";
+                  else
+                     return "call to nonreturning procedure never executed";
+                  end if;
+               end;
             else
                return "precondition proved";
             end if;
