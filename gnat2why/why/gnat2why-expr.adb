@@ -9996,6 +9996,9 @@ package body Gnat2Why.Expr is
                         Index_Base  : Entity_Id;
                         Typ         : constant Node_Id :=
                           (if Nkind (Decl) = N_Full_Type_Declaration
+                           and then Nkind (Type_Definition (Decl)) in
+                               N_Constrained_Array_Definition
+                             | N_Unconstrained_Array_Definition
                            then Subtype_Indication
                              (Component_Definition (Type_Definition (Decl)))
                            else Empty);
