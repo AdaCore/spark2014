@@ -38,6 +38,7 @@ with GNAT.Source_Info;
 with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Lib.Xref;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;
@@ -14387,18 +14388,23 @@ package body Gnat2Why.Expr is
             | N_Entry_Call_Statement
          =>
             declare
-               Nb_Of_Refs : Natural;
-               Nb_Of_Lets : Natural;
-               Call       : W_Expr_Id;
-               Subp       : constant Entity_Id :=
+               Nb_Of_Refs     : Natural;
+               Nb_Of_Lets     : Natural;
+               Call           : W_Expr_Id;
+               Subp           : constant Entity_Id :=
                  Get_Called_Entity (Stmt_Or_Decl);
 
-               Args       : constant W_Expr_Array :=
+               Args           : constant W_Expr_Array :=
                  Compute_Call_Args
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
                     Params => Body_Params);
 
-               Selector   : constant Selection_Kind :=
+               Enclosing_Subp : constant Entity_Id :=
+                 Unique_Entity
+                   (Lib.Xref.SPARK_Specific.
+                      Enclosing_Subprogram_Or_Library_Package (Stmt_Or_Decl));
+
+               Selector       : constant Selection_Kind :=
                   --  When calling an error-signaling procedure outside another
                   --  error-signaling procedure, use the No_Return variant of
                   --  the program function, which has a precondition of False.
@@ -14406,7 +14412,9 @@ package body Gnat2Why.Expr is
                   --  to detect when they are reachable.
 
                  (if Is_Error_Signaling_Procedure (Subp)
-                    and then not Is_Error_Signaling_Procedure (Current_Subp)
+                    and then not
+                      (Ekind (Enclosing_Subp) in E_Procedure
+                        and then Is_Error_Signaling_Procedure (Enclosing_Subp))
                   then
                      No_Return
 
@@ -14434,7 +14442,7 @@ package body Gnat2Why.Expr is
 
                   else Why.Inter.Standard);
 
-               Why_Name   : constant W_Identifier_Id :=
+               Why_Name : constant W_Identifier_Id :=
                  W_Identifier_Id
                    (Transform_Identifier (Params   => Body_Params,
                                           Expr     => Stmt_Or_Decl,
