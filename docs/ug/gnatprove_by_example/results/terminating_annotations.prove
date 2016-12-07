@@ -15,3 +15,4 @@ terminating_annotations.adb:51:17: info: range check proved
 terminating_annotations.adb:53:14: info: initialization of "Y" proved
 terminating_annotations.ads:3:13: medium: subprogram might not terminate, terminating annotation could be incorrect
 terminating_annotations.ads:6:13: medium: subprogram might not terminate, terminating annotation could be incorrect
+terminating_annotations.ads:13:13: medium: subprogram might not terminate, terminating annotation could be incorrect
