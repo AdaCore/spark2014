@@ -9994,7 +9994,29 @@ package body Gnat2Why.Expr is
                      declare
                         Index       : Node_Id;
                         Index_Base  : Entity_Id;
+                        Typ         : constant Node_Id :=
+                          (if Nkind (Decl) = N_Full_Type_Declaration
+                           then Subtype_Indication
+                             (Component_Definition (Type_Definition (Decl)))
+                           else Empty);
+
                      begin
+                        --  If the component type of the array has a non-static
+                        --  subtype_indication, we generate a check that the
+                        --  range_constraint is compatible with the subtype.
+
+                        if Present (Typ)
+                          and then Nkind (Typ) = N_Subtype_Indication
+                          and then Comes_From_Source (Typ)
+                        then
+                           R := Sequence
+                             (Check_Subtype_Indication
+                                (Params   => Body_Params,
+                                 N        => Typ,
+                                 Sub_Type => Component_Type (Ent)),
+                              R);
+                        end if;
+
                         --  For each discrete_subtype_definition that is a
                         --  non-static subtype_indication, we generate a check
                         --  that the range_constraint is compatible with the
