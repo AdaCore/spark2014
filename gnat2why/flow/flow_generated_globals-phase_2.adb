@@ -384,6 +384,18 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects a subprogram to itself.
 
+   function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean is
+     (Nonreturning_Subprograms.Contains (EN)
+      or else Is_Recursive (EN));
+   --  Returns True iff subprogram EN does not return directly because of a
+   --  non-returning statement or a (possibly indirect) recursive call.
+   --
+   --  It should be used only after the call graph for detecting recursive
+   --  subprograms has been created and closed. ??? perhaps add Pre for this
+   --
+   --  Note: subprogram may still not return because of a call to non-returning
+   --  subprogram.
+
    ----------------------------------------------------------------------
    --  Debug routines
    ----------------------------------------------------------------------
@@ -1423,7 +1435,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Add callees of the caller into the graph, but do nothing
                   --  if the caller itself is nonreturning. The caller can be
                   --  a subprogram annotated with the Terminating annotation.
-                  if not Nonreturning_Subprograms.Contains (Caller) then
+                  if not Is_Directly_Nonreturning (Caller) then
                      for Callee of Generated_Calls (Caller) loop
                         --  If the Callee is annotated with the Terminating
                         --  annotation do not create an edge between the caller
@@ -2589,8 +2601,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --    in phase 1 (is contained in Nonreturning_Subprograms)
                --  * is recursive.
                if not Terminating_Subprograms.Contains (Callee)
-                 and then (Nonreturning_Subprograms.Contains (Callee)
-                           or else Is_Recursive (Callee))
+                 and then Is_Directly_Nonreturning (Callee)
                then
                   return True;
                end if;
@@ -2610,8 +2621,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Always returns False if the subprogram has been annotated with the
       --  Terminating annotation, which is also detected in phase 1 (see
       --  GG_Register_Terminating).
-      return Nonreturning_Subprograms.Contains (EN)
-        or else Is_Recursive (EN)
+      return Is_Directly_Nonreturning (EN)
         or else Calls_Potentially_Nonreturning_Subprogram;
    end Is_Potentially_Nonreturning_Internal;
 
