@@ -579,6 +579,9 @@ floating-point types:
 * The base type of a fixed-point type is implementation defined (Ada RM
   3.5.9(12-16)), which has an impact on possible overflows.
 
+* The rounded result of an ordinary fixed-point multiplication or division is
+  implementation defined (Ada RM G.2.3(10)).
+
 * For some combinations of types of operands and results for fixed-point
   multiplication and division, the value of the result belongs to an
   implementation defined set of values (Ada RM G.2.3(5)).

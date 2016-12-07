@@ -39,7 +39,7 @@ assertions. These include Loop_Variant, Loop_Invariant, Assert_And_Cut,
 Contract_Cases, Initial_Condition, and Refined_Postcondition. Because
 |SPARK| requires that the success of these assertions must be statically
 proven (and that the evaluation of the asserted condition can have no side
-effects), the run-time behavior a program is unaffected if they are ignored
+effects), the run-time behavior of a program is unaffected if they are ignored
 by a compiler.
 
 The situation with pragma Assume is slightly different because the
