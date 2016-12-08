@@ -1,1 +1,2 @@
 ALL XFAIL waiting for P428-015 and P428-013
+!large SKIP part of large testsuite
