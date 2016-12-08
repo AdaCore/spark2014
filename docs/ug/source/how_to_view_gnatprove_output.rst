@@ -96,8 +96,10 @@ check messages and information messages.
   suppressed like warnings, but they can be individually justified with pragma
   ``Annotate``, see section :ref:`Justifying Check Messages`.
 
-* Information messages are issued for proved checks in some modes of
-  |GNATprove|.
+* Information messages are issued to notify the user of limitations of
+  |GNATprove| on some constructs, or to prevent possible confusion in
+  understanding the output of |GNATprove|. They are also issued to report
+  proved checks in some modes of |GNATprove|.
 
 .. _Effect of Mode on Output:
 

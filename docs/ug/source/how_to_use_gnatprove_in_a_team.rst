@@ -132,6 +132,14 @@ as such.
 
 See the |GNAT Pro| Reference Manual for more details.
 
+.. _Suppressing Information Messages:
+
+Suppressing Information Messages
+--------------------------------
+
+Information messages can be suppressed by the use of pragma ``Warnings`` in the
+source code, like for warnings.
+
 .. _Justifying Check Messages:
 
 Justifying Check Messages
@@ -261,7 +269,7 @@ be preferred. In particular:
                      "because for these internal reasons I know it holds");
       External_Call;
 
-  If the precondition of ``External_Call`` changes, it may not be valid anymore 
+  If the precondition of ``External_Call`` changes, it may not be valid anymore
   to assume it here, though the assumption will stay True for the same reasons
   it used to be. Incompatible changes in the precondition of ``External_Call``
   will lead to a failure in the proof of External_Call's precondition.
