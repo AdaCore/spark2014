@@ -1,0 +1,1 @@
+ALL XFAIL missing range check on out parameter of inlined procedure
