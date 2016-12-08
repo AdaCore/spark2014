@@ -6,7 +6,7 @@ package P is
    end;
 
    type Rec is record
-      PO : PT (Zero);
+      PO : PT (Zero); --@RANGE_CHECK:FAIL
    end record with Volatile;
 
    type Arr is array (Boolean) of PT (Zero) with Volatile;

@@ -1,1 +1,2 @@
 primitives.adb:10:19: info: non-aliasing of formal parameters "Branch" and "Iterator" proved
+primitives.ads:12:45: info: range check proved

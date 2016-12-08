@@ -9801,6 +9801,11 @@ package body Gnat2Why.Expr is
       --  of Ent are in fact allowed by Base. Return Void if there is nothing
       --  to check.
 
+      function Check_Itypes_Of_Components (Ent : Entity_Id) return W_Prog_Id;
+      --  @param Ent a type entity
+      --  @return a program to check that the Itypes introduced for components
+      --      of Ent are valid.
+
       function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id
       is
          R : W_Prog_Id := +Void;
@@ -9840,6 +9845,132 @@ package body Gnat2Why.Expr is
          end if;
          return R;
       end Check_Discr_Of_Subtype;
+
+      --------------------------------
+      -- Check_Itypes_Of_Components --
+      --------------------------------
+
+      function Check_Itypes_Of_Components (Ent : Entity_Id) return W_Prog_Id is
+         N      : constant Natural :=
+           (if not Is_Constrained (Ent)
+            and then (Has_Discriminants (Ent)
+              or else Has_Unknown_Discriminants (Ent))
+            then Natural (Number_Discriminants (Ent)) else 0);
+         Vars   : W_Identifier_Array (1 .. N);
+         Vals   : W_Expr_Array (1 .. N);
+         Discr  : Entity_Id :=
+           (if N > 0 then First_Discriminant (Ent) else Empty);
+         Checks : W_Prog_Id := +Void;
+         I      : Positive := 1;
+
+      begin
+         --  For:
+         --     type My_Rec (D : T) is record
+         --       A : Array_Type (1 .. D);
+         --       R : Rec_Type (D);
+         --     end record;
+         --  Generate:
+         --     let d = any T in
+         --       check_scalar_range (Array_Type (1 .. D), Array_Type);
+         --       check_discr_of_subtype (Rec_Type (D), Rec_Type)
+
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         --  For unconstrained types with discriminants, store a value for each
+         --  discriminant in the symbol table as discrimiants can appear in
+         --  Type constraints of components. Don't do it for constrained type.
+         --  Indeed, discriminants of constrained types cannot be used for
+         --  new component definitions.
+
+         while Present (Discr) loop
+            declare
+               Typ : constant W_Type_Id := Type_Of_Node (Discr);
+            begin
+               Vars (I) := New_Temp_Identifier
+                 (Base_Name => Short_Name (Discr),
+                  Typ       => Typ);
+               Insert_Entity (Discr, Vars (I));
+
+               Vals (I) := +New_Any_Statement
+                 (Post        => Compute_Dynamic_Invariant
+                    (Expr        => +New_Result_Ident (Typ),
+                     Ty          => Etype (Discr),
+                     Initialized => True_Term,
+                     Params      => Body_Params),
+                  Return_Type => Typ);
+            end;
+            I := I + 1;
+            Next_Discriminant (Discr);
+         end loop;
+
+         --  For each component declared in Ent for the first type, check the
+         --  constraints on the introduced Itype if any.
+
+         for Comp of Get_Component_Set (Ent) loop
+            if Ekind (Comp) = E_Component
+              and then Original_Declaration (Comp) = Ent
+              and then Is_Itype (Etype (Comp))
+            then
+               declare
+                  Typ   : constant Entity_Id :=
+                    Retysp (Etype (Comp));
+                  Base  : constant Entity_Id :=
+                    (if Full_View_Not_In_SPARK (Typ)
+                     then Get_First_Ancestor_In_SPARK (Typ)
+                     else Retysp (Etype (Typ)));
+                  Check : W_Prog_Id := +Void;
+
+               begin
+                  --  Check range constraint of array indexes
+
+                  if Has_Array_Type (Typ)
+                    and then not Is_Constrained (Base)
+                  then
+                     declare
+                        Index      : Node_Id := First_Index (Typ);
+                        Index_Base : Node_Id := First_Index (Base);
+                     begin
+
+                        while Present (Index) loop
+                           Check := Check_Scalar_Range
+                             (Params => Body_Params,
+                              N      => Etype (Index),
+                              Base   => Etype (Index_Base));
+
+                           Next (Index);
+                           Next (Index_Base);
+                        end loop;
+                     end;
+
+                  --  And discriminants of record / private / concurrent types
+
+                  elsif Has_Discriminants (Typ)
+                    and then not Is_Constrained (Base)
+                  then
+                     Check :=  Check_Discr_Of_Subtype (Base, Typ);
+                  end if;
+
+                  Checks := Sequence (Check, Checks);
+               end;
+            end if;
+         end loop;
+
+         --  Introduce bindings for the discriminants
+
+         if Checks /= +Void then
+            for I in Vars'Range loop
+               Checks := +New_Typed_Binding
+                 (Domain   => EW_Prog,
+                  Name     => Vars (I),
+                  Def      => Vals (I),
+                  Context  => +Checks);
+            end loop;
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+         return Checks;
+      end Check_Itypes_Of_Components;
 
       -------------------
       -- Get_Base_Type --
@@ -10056,55 +10187,57 @@ package body Gnat2Why.Expr is
 
                   when E_Record_Type
                      | E_Record_Subtype
-                  =>
-                     declare
-                        Typ  : Node_Id;
-                     begin
-                        --  For each component_definition that is a non-static
-                        --  subtype_indication, we generate a check that the
-                        --  range_constraint is compatible with the subtype. It
-                        --  is not necessary to do that check on discriminants,
-                        --  as the type of discriminants are directly
-                        --  subtype_marks, not subtype_indications.
-                        --  We only check newly declared components as
-                        --  inherited components should be checked as part of
-                        --  some ancestor type declaration.
-
-                        for Comp of Get_Component_Set (Ent) loop
-                           if Ekind (Comp) = E_Component
-                             and then Original_Declaration (Comp) = Ent
-                           then
-                              Typ := Subtype_Indication
-                                (Component_Definition (Parent (Comp)));
-
-                              if Present (Typ)
-                                and then Nkind (Typ) = N_Subtype_Indication
-                                and then Comes_From_Source (Typ)
-                              then
-                                 R := Sequence
-                                   (Check_Subtype_Indication
-                                      (Params   => Body_Params,
-                                       N        => Typ,
-                                       Sub_Type => Etype (Comp)),
-                                    R);
-                              end if;
-                           end if;
-                        end loop;
-                     end;
-
-                     --  We need to check that the new discriminants of the
-                     --  subtype fit into the base type.
-
-                     R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
-
-                  when Concurrent_Kind
+                     | Concurrent_Kind
                      | Private_Kind
                   =>
+                     --  For each component_definition that is a non-static
+                     --  subtype_indication, we generate a check that the
+                     --  range_constraint is compatible with the subtype. It is
+                     --  not necessary to do that check on discriminants, as
+                     --  the type of discriminants are directly subtype_marks,
+                     --  not subtype_indications.
+                     --  We only check newly declared components as inherited
+                     --  components should be checked as part of some ancestor
+                     --  type declaration.
+
+                     if Ekind (Ent) in E_Record_Type | E_Record_Subtype then
+                        declare
+                           Typ  : Node_Id;
+                        begin
+                           for Comp of Get_Component_Set (Ent) loop
+                              if Ekind (Comp) = E_Component
+                                and then Original_Declaration (Comp) = Ent
+                              then
+                                 Typ := Subtype_Indication
+                                   (Component_Definition (Parent (Comp)));
+
+                                 if Present (Typ)
+                                   and then Nkind (Typ) = N_Subtype_Indication
+                                   and then Comes_From_Source (Typ)
+                                 then
+                                    R := Sequence
+                                      (Check_Subtype_Indication
+                                         (Params   => Body_Params,
+                                          N        => Typ,
+                                          Sub_Type => Etype (Comp)),
+                                       R);
+                                 end if;
+                              end if;
+                           end loop;
+                        end;
+                     end if;
 
                      --  We need to check that the new discriminants of the
                      --  subtype fit into the base type.
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
+
+                     if Ekind (Ent) in E_Record_Type
+                                     | E_Record_Subtype
+                                     | Concurrent_Kind
+                     then
+                        R := Sequence (Check_Itypes_Of_Components (Ent), R);
+                     end if;
 
                   when E_Class_Wide_Type
                      | E_Class_Wide_Subtype

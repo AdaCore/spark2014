@@ -1,3 +1,7 @@
+foo.adb:18:18: info: range check proved (CVC4: 1 VC)
+foo.adb:19:18: info: range check proved (CVC4: 1 VC)
+foo.adb:20:18: info: range check proved (CVC4: 1 VC)
+foo.adb:24:18: info: range check proved (CVC4: 1 VC)
 foo.adb:27:04: warning: analyzing unreferenced procedure "Test_01_Ok"
 foo.adb:30:10: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:30:28: info: discriminant check proved (CVC4: 1 VC)

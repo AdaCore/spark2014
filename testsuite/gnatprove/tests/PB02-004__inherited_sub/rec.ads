@@ -14,7 +14,7 @@ package Rec with SPARK_Mode is
    end record;
 
    type Sub_Rec (Z : Enum) is record
-      Plop : My_Rec (Z);
+      Plop : My_Rec (Z); --@RANGE_CHECK:FAIL
    end record;
 
    type Sub_Rec_OK (Z : Enum) is record
@@ -28,6 +28,10 @@ package Rec with SPARK_Mode is
    type My_Array is array (Positive range <>) of Natural;
 
    type Sub_Arr (F, L : Natural) is record
+      Content : My_Array (F .. L); --@RANGE_CHECK:FAIL
+   end record;
+
+   type Sub_Arr_OK (F : Positive; L : Natural) is record
       Content : My_Array (F .. L);
    end record;
 

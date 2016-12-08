@@ -4,3 +4,4 @@ p.ads:3:18: warning: unused variable "X"
 q.adb:4:26: warning: statement has no effect
 q.ads:4:18: warning: "X" is not modified, could be IN
 q.ads:4:18: warning: unused variable "X"
+t.ads:5:07: info: range check proved (CVC4: 2 VC)

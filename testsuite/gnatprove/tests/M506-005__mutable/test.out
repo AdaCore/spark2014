@@ -2,6 +2,7 @@ const.adb:2:13: info: range check proved (CVC4: 1 VC)
 const.adb:6:19: info: index check proved (CVC4: 2 VC)
 const.adb:22:09: warning: unused assignment
 const.adb:22:19: info: index check proved (CVC4: 2 VC)
+const.ads:9:07: info: range check proved (CVC4: 2 VC)
 const.ads:12:13: warning: subprogram "Simple" has no effect
 mutable.adb:2:13: info: range check proved (CVC4: 1 VC)
 mutable.adb:6:19: info: index check proved (CVC4: 2 VC)
@@ -10,4 +11,5 @@ mutable.adb:12:09: medium: discriminant check might fail
 mutable.adb:12:19: info: length check proved (CVC4: 1 VC)
 mutable.adb:23:07: warning: unused assignment
 mutable.adb:23:17: info: index check proved (CVC4: 2 VC)
+mutable.ads:9:07: info: range check proved (CVC4: 2 VC)
 mutable.ads:12:13: warning: subprogram "Simple" has no effect
