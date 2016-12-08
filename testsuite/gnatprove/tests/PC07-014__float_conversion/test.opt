@@ -1,1 +1,2 @@
 ALL XFAIL Z3 does not prove anything when int/float involved (and leads to timeout)
+!large SKIP part of large testsuite
