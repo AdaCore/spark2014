@@ -351,6 +351,9 @@ package body Flow_Generated_Globals.Phase_2 is
       Writes      : out Name_Sets.Set);
    --  Gets the most refined globals of a subprogram
 
+   function Is_Predefined (EN : Entity_Name) return Boolean;
+   --  Check if EN is in a unit predefined by the Ada RM
+
    procedure Register_Task_Object
      (Type_Name : Entity_Name;
       Object    : Task_Object);
@@ -654,6 +657,15 @@ package body Flow_Generated_Globals.Phase_2 is
          then Package_To_Locals_Map (EN)
          else Name_Sets.Empty_Set);
    end GG_Get_Local_Variables;
+
+   -------------------
+   -- Is_Predefined --
+   -------------------
+
+   function Is_Predefined (EN : Entity_Name) return Boolean is
+   begin
+      return Match (Predefined, To_String (EN));
+   end Is_Predefined;
 
    ---------------------------------
    -- GG_Get_Most_Refined_Globals --
@@ -1437,10 +1449,14 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  a subprogram annotated with the Terminating annotation.
                   if not Is_Directly_Nonreturning (Caller) then
                      for Callee of Generated_Calls (Caller) loop
-                        --  If the Callee is annotated with the Terminating
-                        --  annotation do not create an edge between the caller
-                        --  and the callee.
-                        if not Terminating_Subprograms.Contains (Callee) then
+                        --  If the Callee is predefined then it has been
+                        --  already taken into account in phase 1; if it is
+                        --  annotated with the Terminating annotation do not
+                        --  create an edge between the caller and the callee.
+                        if not Is_Predefined (Callee)
+                          and then
+                           not Terminating_Subprograms.Contains (Callee)
+                        then
                            --  Get vertex for the callee
                            V_Callee := Call_Graph.Get_Vertex (Callee);
 
@@ -2466,9 +2482,6 @@ package body Flow_Generated_Globals.Phase_2 is
          function Calls_Same_Target_Type (S : Entity_Name) return Boolean;
          --  Check if subprogram S calls the enclosing protected type of E
 
-         function Is_Predefined (Subprogram : String) return Boolean;
-         --  Check if Subprogram is in a unit predefined by the Ada RM
-
          ----------------------------
          -- Calls_Same_Target_Type --
          ----------------------------
@@ -2502,15 +2515,6 @@ package body Flow_Generated_Globals.Phase_2 is
             return False;
          end Calls_Same_Target_Type;
 
-         -------------------
-         -- Is_Predefined --
-         -------------------
-
-         function Is_Predefined (Subprogram : String) return Boolean is
-         begin
-            return Match (Predefined, Subprogram);
-         end Is_Predefined;
-
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
 
       begin
@@ -2524,7 +2528,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Callee_E : constant Entity_Id := Find_Entity (Callee);
                --  Entities from other compilation units have empty id
             begin
-               if Is_Predefined (To_String (Callee)) then
+               if Is_Predefined (Callee) then
                   --  All user-defined callers of predefined potentially
                   --  blocking subprograms have been already marked as
                   --  potentially blocking, so here we can safely assume
