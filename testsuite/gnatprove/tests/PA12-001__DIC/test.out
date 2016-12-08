@@ -1,0 +1,10 @@
+containers.ads:11:04: medium: type "Container" is not fully initialized
+dic_pred.ads:2:09: medium: default initial condition might fail
+use_dic_pred.ads:4:04: info: initialization of "X" proved
+use_dic_pred.ads:5:04: info: initialization of private part of "V" proved
+use_dic_pred.ads:5:04: medium: default initial condition might fail (e.g. when V = (C => ?, L => 0, V => (others => 0)))
+use_dic_pred.ads:5:30: info: range check proved (CVC4: 1 VC)
+use_dic_pred.ads:7:43: info: range check proved (CVC4: 1 VC)
+use_dic_pred.ads:9:49: info: range check proved (CVC4: 1 VC)
+use_dic_pred.ads:15:04: medium: type "Container2" is not fully initialized
+use_dic_pred.ads:15:49: info: range check proved (CVC4: 1 VC)
