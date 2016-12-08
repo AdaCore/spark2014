@@ -106,6 +106,7 @@ generic_queue_pack.ads:23:07: medium: "Item.Port" might not be initialized in "D
 generic_queue_pack.ads:23:07: medium: "Item.Raw" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Reserved" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Size" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:42:33: info: range check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:49:10: info: initialization of "Has_Succeed" proved, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:53:10: medium: "Item.Channel" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:53:10: medium: "Item.Data_1" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
@@ -124,4 +125,5 @@ generic_queue_pack.ads:58:68: info: initialization of "Item.Port" proved, in ins
 generic_queue_pack.ads:58:68: info: initialization of "Item.Raw" proved, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:58:68: info: initialization of "Item.Reserved" proved, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:58:68: info: initialization of "Item.Size" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:71:07: info: range check proved (CVC4: 2 VC), in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:71:50: info: length check proved (CVC4: 1 VC), in instantiation at crtp_pack.ads:167

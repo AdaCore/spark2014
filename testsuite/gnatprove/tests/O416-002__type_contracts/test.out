@@ -12,6 +12,7 @@ communications.ads:10:13: medium: invariant check might fail
 communications.ads:12:14: info: invariant check proved (CVC4: 1 VC)
 communications.ads:12:31: warning: unused initial value of "Com"
 communications.ads:16:09: medium: invariant check might fail on default value
+communications.ads:17:07: info: range check proved (CVC4: 2 VC)
 communications.ads:21:30: info: index check proved (CVC4: 2 VC)
 communications.ads:21:69: info: index check proved (CVC4: 2 VC)
 communications.ads:21:69: info: overflow check proved (CVC4: 1 VC)
