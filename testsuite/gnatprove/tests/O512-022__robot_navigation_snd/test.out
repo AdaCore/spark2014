@@ -460,6 +460,7 @@ algorithm.adb:874:29: info: initialization of "driveSpeed" proved
 algorithm.adb:874:41: info: initialization of "driveTurnRate" proved
 algorithm.adb:878:28: info: initialization of "driveSpeed" proved
 algorithm.adb:880:33: info: initialization of "driveTurnRate" proved
+algorithm.ads:45:38: info: range check proved (CVC4: 1 VC)
 algorithm.ads:91:14: info: postcondition proved (CVC4: 1 VC)
 formal-numerics-elementary_functions.ads:91:22: info: division check proved (CVC4: 1 VC)
 formal-numerics-elementary_functions.ads:91:52: info: overflow check proved (Interval)
