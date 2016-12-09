@@ -126,7 +126,9 @@ section_3_5_3.adb:35:16: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:35: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
 section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
+section_3_5_3.ads:49:49: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:51:53: info: precondition proved (CVC4: 1 VC)
+section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect

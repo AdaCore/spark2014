@@ -1,4 +1,5 @@
 bounded.adb:11:07: info: initialization of private part of "V" proved
+bounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 bounded.adb:13:07: info: precondition proved (CVC4: 1 VC)
 bounded.adb:13:14: info: initialization of private part of "V" proved
 bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
@@ -245,6 +246,7 @@ bounded.adb:115:22: info: precondition proved (CVC4: 1 VC)
 bounded.adb:115:32: info: initialization of private part of "V" proved
 bounded.adb:117:37: medium: assertion might fail, cannot prove false
 bounded.ads:13:14: warning: subprogram "Test" has no effect
+indefinite_bounded.adb:10:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded.adb:12:07: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded.adb:12:14: info: initialization of private part of "V" proved
 indefinite_bounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
@@ -490,6 +492,7 @@ indefinite_bounded.adb:114:22: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded.adb:114:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:116:37: medium: assertion might fail, cannot prove false
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect
+indefinite_bounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:14:07: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:14:14: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
@@ -735,6 +738,7 @@ indefinite_bounded_tagged.adb:116:22: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:116:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:118:37: medium: assertion might fail, cannot prove false
 indefinite_bounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
+indefinite_unbounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 indefinite_unbounded.adb:13:07: info: precondition proved (CVC4: 1 VC)
 indefinite_unbounded.adb:13:14: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
@@ -980,6 +984,7 @@ indefinite_unbounded.adb:117:22: medium: assertion might fail, cannot prove Capa
 indefinite_unbounded.adb:117:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:119:37: medium: assertion might fail, cannot prove false
 indefinite_unbounded.ads:16:14: warning: subprogram "Test" has no effect
+indefinite_unbounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:14:07: info: precondition proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:14:14: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
@@ -1226,6 +1231,7 @@ indefinite_unbounded_tagged.adb:118:32: info: initialization of private part of 
 indefinite_unbounded_tagged.adb:120:37: medium: assertion might fail, cannot prove false
 indefinite_unbounded_tagged.ads:22:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: initialization of private part of "V" proved
+unbounded.adb:10:19: info: range check proved (CVC4: 1 VC)
 unbounded.adb:12:07: info: precondition proved (CVC4: 1 VC)
 unbounded.adb:12:14: info: initialization of private part of "V" proved
 unbounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
