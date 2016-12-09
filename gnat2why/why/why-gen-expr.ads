@@ -267,9 +267,18 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id;
+      Lvalue   : Boolean := False) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr possibly inserting
    --  checks during the conversion.
+   --  @param Ada_Node node which causes the check to be inserted. This node
+   --     is used to retrieve the type and kind of check.
+   --  @param Domain check is actually only inserted when domain is EW_Prog
+   --  @param Expr expression to be converted
+   --  @param To type to convert to
+   --  @param Lvalue True iff this is applied to the left-hand side of an
+   --     assignment. This has an effect on retrieving the type for the check.
+   --  @result converted expression of Expr to type To, with possible check
 
    function Insert_Simple_Conversion
      (Ada_Node : Node_Id := Empty;
@@ -281,22 +290,32 @@ package Why.Gen.Expr is
    --  check is inserted in the conversion.
 
    function Insert_Scalar_Conversion
-     (Domain      : EW_Domain;
-      Ada_Node    : Node_Id := Empty;
-      Expr        : W_Expr_Id;
-      To          : W_Type_Id;
-      Do_Check    : Boolean := False) return W_Expr_Id;
+     (Domain   : EW_Domain;
+      Ada_Node : Node_Id := Empty;
+      Expr     : W_Expr_Id;
+      To       : W_Type_Id;
+      Do_Check : Boolean := False;
+      Lvalue   : Boolean := False) return W_Expr_Id;
    --  We insert a conversion on Expr so that its type corresponds to "To".
    --  When Range_Check is set, a range check is inserted into the conversion,
    --  and the node Ada_Node is used to determine the kind of the check.
+   --  @param Domain domain for the returned expression
+   --  @param Ada_Node node associated to the conversion
+   --  @param Expr expression to be converted
+   --  @param To type to convert to
+   --  @param Do_Check True iff a check should be inserted
+   --  @param Lvalue True iff this is applied to the left-hand side of an
+   --     assignment. This has an effect on retrieving the type for the check.
+   --  @result converted expression of Expr to type To
 
    function Insert_Scalar_Conversion
-     (Domain        : EW_Domain;
-      Ada_Node      : Node_Id := Empty;
-      Expr          : W_Expr_Id;
-      To            : W_Type_Id;
-      Range_Type    : Entity_Id;
-      Check_Kind    : Range_Check_Kind) return W_Expr_Id;
+     (Domain     : EW_Domain;
+      Ada_Node   : Node_Id := Empty;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Range_Type : Entity_Id;
+      Check_Kind : Range_Check_Kind;
+      Lvalue     : Boolean := False) return W_Expr_Id;
    --  Same as the above except that we take directly the kind of check as
    --  input.
 

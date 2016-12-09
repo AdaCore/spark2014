@@ -1,0 +1,3 @@
+demo.adb:4:22: info: initialization of "a" proved
+demo.adb:6:07: medium: range check might fail, in call inlined at demo.adb:14
+demo.ads:7:22: info: initialization of "b" proved
