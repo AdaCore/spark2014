@@ -1654,7 +1654,7 @@ package body Flow_Utility is
       P_CC   : Node_Lists.List;
    begin
       case Ekind (E) is
-         when Subprogram_Kind | E_Entry =>
+         when Subprogram_Kind | Entry_Kind =>
             if Refined then
                P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
