@@ -15223,8 +15223,8 @@ package body Gnat2Why.Expr is
 
                --  Remove parameter of DIC procedure
 
-               Variables.Difference (Get_Variables_For_Proof (Init_Param,
-                                                              Ty_Ext));
+               Variables.Exclude
+                 (Direct_Mapping_Id (Unique_Entity (Init_Param)));
             end if;
          end;
       end if;
@@ -15417,7 +15417,7 @@ package body Gnat2Why.Expr is
 
       --  Remove parameter of invariant procedure
 
-      Variables.Difference (Get_Variables_For_Proof (Inv_Param, Rep_Type));
+      Variables.Exclude (Direct_Mapping_Id (Unique_Entity (Inv_Param)));
    end Variables_In_Type_Invariant;
 
    -------------------------------
