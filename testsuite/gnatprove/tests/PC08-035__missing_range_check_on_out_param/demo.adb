@@ -3,7 +3,7 @@ with SPARK_Mode => On is
 
    procedure called (a : out range_A) is
    begin
-      a := range_a'Last;
+      a := range_a'Last; --@RANGE_CHECK:FAIL
    end called;
 
 
@@ -11,7 +11,7 @@ with SPARK_Mode => On is
    begin
       -- Since a and b are of disjoint sub range of float, we get a constraint
       -- error. The prover did not report this.
-      called (a => b); --@RANGE_CHECK:FAIL
+      called (a => b);
    end caller;
 
 end Demo;

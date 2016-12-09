@@ -657,7 +657,8 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id) return W_Expr_Id
+      To       : W_Type_Id;
+      Lvalue   : Boolean := False) return W_Expr_Id
    is
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
@@ -741,11 +742,12 @@ package body Why.Gen.Expr is
                    and then Do_Range_Check (Parent (Ada_Node))));
 
          begin
-            T := Insert_Scalar_Conversion (Domain      => Domain,
-                                           Ada_Node    => Ada_Node,
-                                           Expr        => T,
-                                           To          => To,
-                                           Do_Check    => Do_Check);
+            T := Insert_Scalar_Conversion (Domain   => Domain,
+                                           Ada_Node => Ada_Node,
+                                           Expr     => T,
+                                           To       => To,
+                                           Do_Check => Do_Check,
+                                           Lvalue   => Lvalue);
          end;
       end if;
 
@@ -1226,7 +1228,8 @@ package body Why.Gen.Expr is
       Ada_Node : Node_Id := Empty;
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
-      Do_Check : Boolean := False) return W_Expr_Id
+      Do_Check : Boolean := False;
+      Lvalue   : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1240,6 +1243,7 @@ package body Why.Gen.Expr is
 
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
+         Lvalue     : Boolean;
          Check_Type : out Entity_Id;
          Check_Kind : out Range_Check_Kind);
       --  The frontend sets Do_Range_Check flag to True both for range checks
@@ -1256,6 +1260,7 @@ package body Why.Gen.Expr is
 
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
+         Lvalue     : Boolean;
          Check_Type : out Entity_Id;
          Check_Kind : out Range_Check_Kind)
       is
@@ -1289,12 +1294,15 @@ package body Why.Gen.Expr is
 
          --  Frontend may have introduced unchecked type conversions on
          --  expressions or variables assigned to, which require range
-         --  checking.
+         --  checking. When applied to a left-hand side of an assignment,
+         --  the target type for the range check is the type of the object
+         --  being converted. Otherwise, the target type is the type of the
+         --  conversion.
 
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
          =>
-            Check_Type := Etype (Par);
+            Check_Type := (if Lvalue then Etype (Expr) else Etype (Par));
 
          when N_Qualified_Expression =>
             Check_Type := Etype (Par);
@@ -1607,7 +1615,7 @@ package body Why.Gen.Expr is
       --  Retrieve range check information
 
       if Do_Check then
-         Get_Range_Check_Info (Ada_Node, Range_Type, Check_Kind);
+         Get_Range_Check_Info (Ada_Node, Lvalue, Range_Type, Check_Kind);
       end if;
 
       return Insert_Scalar_Conversion
@@ -1616,16 +1624,18 @@ package body Why.Gen.Expr is
          Expr        => Expr,
          To          => To,
          Range_Type  => Range_Type,
-         Check_Kind  => Check_Kind);
+         Check_Kind  => Check_Kind,
+         Lvalue      => Lvalue);
    end Insert_Scalar_Conversion;
 
    function Insert_Scalar_Conversion
-     (Domain        : EW_Domain;
-      Ada_Node      : Node_Id := Empty;
-      Expr          : W_Expr_Id;
-      To            : W_Type_Id;
-      Range_Type    : Entity_Id;
-      Check_Kind    : Range_Check_Kind) return W_Expr_Id
+     (Domain     : EW_Domain;
+      Ada_Node   : Node_Id := Empty;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Range_Type : Entity_Id;
+      Check_Kind : Range_Check_Kind;
+      Lvalue     : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1655,10 +1665,12 @@ package body Why.Gen.Expr is
       --  parameters of calls, as Determine_Range_R does not work for out and
       --  in out parameters, as it will return the range of the actual based
       --  on its type rather than based on the type of the formal parameter.
+      --  For the same reason, do not apply also this optimization on lvalues.
 
       if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)
-        and then not Is_Converted_Actual_Output_Parameter (Ada_Node)
+        and then not
+          (Is_Converted_Actual_Output_Parameter (Ada_Node) or else Lvalue)
       then
          declare
             Tlo : constant Node_Id := Type_Low_Bound  (Range_Type);

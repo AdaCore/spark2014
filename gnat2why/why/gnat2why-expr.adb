@@ -4917,12 +4917,27 @@ package body Gnat2Why.Expr is
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
-                  N := Expression (N);
+               N := Expression (N);
+
+               --  Due to inlining in GNATprove mode, left-hand side of
+               --  assignment may contain a type conversion on scalar
+               --  variable that must be range checked.
+
+               if Do_Range_Check (N) then
+                  Expr :=
+                    +Insert_Checked_Conversion
+                      (Ada_Node => N,
+                       Domain   => EW_Prog,
+                       Expr     => +Expr,
+                       To       => EW_Abstract (Etype (N)),
+                       Lvalue   => True);
+               else
                   Expr :=
                     +Insert_Simple_Conversion
                       (Domain => EW_Prog,
                        Expr   => +Expr,
-                       To     => Type_Of_Node (Etype (N)));
+                       To     => EW_Abstract (Etype (N)));
+               end if;
 
             when N_Selected_Component
                | N_Indexed_Component
@@ -4969,7 +4984,9 @@ package body Gnat2Why.Expr is
       --  object which will be assigned to in Why3. So start with skipping all
       --  view conversions, so that the correct type of object is used later.
 
-      while Nkind (Left_Side) in N_Type_Conversion loop
+      while Nkind (Left_Side) in N_Type_Conversion
+                               | N_Unchecked_Type_Conversion
+      loop
          Shift_Rvalue (Left_Side, Right_Side);
       end loop;
 
@@ -4992,6 +5009,16 @@ package body Gnat2Why.Expr is
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side);
       end loop;
+
+      --  In those cases where the left-hand side is type converted, the type
+      --  of the Left_Side and Right_Side may not coincide here. Convert the
+      --  Right_Side to the type of the Left_Side. Possible checks were taken
+      --  into account before.
+
+      Right_Side :=
+        +Insert_Simple_Conversion (Domain => EW_Pterm,
+                                   To     => Type_Of_Node (Left_Side),
+                                   Expr   => +Right_Side);
 
       --  In the case of protected components, we have to generate the record
       --  code ourselves on top.
@@ -8284,7 +8311,6 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id is
       Lvalue     : constant Node_Id := Sinfo.Name (Stmt);
-      Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
       L_Type     : constant W_Type_Id := Type_Of_Node (Etype (Lvalue));
       T          : W_Prog_Id :=
         +Transform_Expr
@@ -8454,11 +8480,6 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      T :=
-        +Insert_Simple_Conversion
-        (Domain => EW_Pterm,
-         To     => Exp_Entity,
-         Expr   => +T);
       T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
       return
         Gnat2Why.Expr.New_Assignment
