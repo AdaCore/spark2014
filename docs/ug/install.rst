@@ -3,8 +3,11 @@
 Installation of |GNATprove|
 ===========================
 
-We recommend to first install GPS (and optionally GNAT), and then install
-|GNATprove| under the same location. Alternatively, you can install the
+In general, you will need to install a recent version of GNAT (that supports
+Ada 2012 syntax) to compile |SPARK| programs.
+
+For analyzing |SPARK| programs, we recommend to first install GPS and then
+install |GNATprove| under the same location. Alternatively, you can install the
 GNATbench plug-in for Eclipse instead of GPS, using the Eclipse installation
 mechanism.
 
