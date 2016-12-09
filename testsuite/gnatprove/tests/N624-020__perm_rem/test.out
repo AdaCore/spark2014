@@ -66,7 +66,7 @@ perm.adb:62:39: info: range check proved (CVC4: 1 VC)
 perm.adb:62:44: info: precondition proved (CVC4: 3 VC)
 perm.adb:62:55: info: range check proved (CVC4: 1 VC)
 perm.adb:64:22: info: assertion proved (CVC4: 2 VC)
-perm.adb:69:16: medium: subprogram might not terminate, terminating annotation could be incorrect
+perm.adb:69:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:71:17: info: postcondition proved (CVC4: 2 VC)
 perm.adb:71:54: info: function contract not available for proof ("Is_Perm" is recursive)
 perm.adb:71:54: info: precondition proved (CVC4: 2 VC)
@@ -78,7 +78,7 @@ perm.adb:80:58: info: precondition proved (CVC4: 3 VC)
 perm.adb:80:70: info: range check proved (CVC4: 1 VC)
 perm.adb:82:28: info: assertion proved (CVC4: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC4: 3 VC)
-perm.adb:93:16: medium: subprogram might not terminate, terminating annotation could be incorrect
+perm.adb:93:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:94:63: info: function contract not available for proof ("Is_Perm" is recursive)
 perm.adb:94:63: info: precondition proved (CVC4: 2 VC)
 perm.adb:95:17: info: postcondition proved (CVC4: 2 VC)
@@ -140,7 +140,7 @@ perm.adb:147:30: info: precondition proved (CVC4: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC4: 2 VC)
 perm.adb:148:43: info: function contract not available for proof ("Is_Perm" is recursive)
 perm.adb:148:43: info: precondition proved (CVC4: 2 VC)
-perm.adb:152:16: medium: subprogram might not terminate, terminating annotation could be incorrect
+perm.adb:152:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:154:33: info: function contract not available for proof ("Is_Perm" is recursive)
 perm.adb:154:33: info: precondition proved (CVC4: 2 VC)
 perm.adb:155:54: info: function contract not available for proof ("Is_Perm" is recursive)
@@ -384,7 +384,7 @@ perm.adb:290:54: info: range check proved (CVC4: 1 VC)
 perm.adb:292:17: info: initialization of "IH" proved
 perm.adb:297:25: info: precondition proved (CVC4: 3 VC)
 perm.adb:299:14: info: initialization of "HR" proved
-perm.adb:304:16: medium: subprogram might not terminate, terminating annotation could be incorrect
+perm.adb:304:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:306:18: info: function contract not available for proof ("Is_Perm" is recursive)
 perm.adb:306:18: info: precondition proved (CVC4: 2 VC)
 perm.adb:306:42: info: function contract not available for proof ("Is_Perm" is recursive)
@@ -469,7 +469,7 @@ perm.ads:22:27: info: precondition proved (CVC4: 3 VC)
 perm.ads:27:14: info: postcondition proved (CVC4: 2 VC)
 perm.ads:27:40: info: precondition proved (CVC4: 3 VC)
 perm.ads:27:56: info: precondition proved (CVC4: 3 VC)
-perm.ads:29:13: medium: subprogram might not terminate, terminating annotation could be incorrect
+perm.ads:29:13: medium: subprogram "Is_Perm" might not terminate, terminating annotation could be incorrect
 perm.ads:35:50: info: index check proved (CVC4: 2 VC)
 perm.ads:35:59: info: index check proved (CVC4: 2 VC)
 perm.ads:36:21: info: function contract not available for proof ("Is_Perm" is recursive)
