@@ -22,7 +22,7 @@ If you want to get started quickly, and assuming a standard naming scheme using
 ``.ads/.adb`` lower case files and a single source directory, then your project
 file will look like:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   project My_Project is
      for Source_Dirs use (".");
@@ -38,7 +38,7 @@ GNAT and |GNATprove|, for example use warning switches only for compilation, in
 the same project file. In that case, you can use a scenario variable to specify
 different switches for compilation and verification:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   project My_Project is
 
@@ -397,7 +397,9 @@ the same as the host on which you run |GNATprove|, you have to tell
 Note that the ``Target`` attribute of Project files is currently silently
 ignored.
 
-Instead, you need to add the following to your project file::
+Instead, you need to add the following to your project file:
+
+.. code-block:: gpr
 
   project My_Project is
      [...]

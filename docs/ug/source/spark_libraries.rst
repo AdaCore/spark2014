@@ -194,7 +194,7 @@ project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr`. To use this
 library in a program, you need to add a corresponding dependency in your
 project file, for example:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   with "spark_lemmas";
   project My_Project is

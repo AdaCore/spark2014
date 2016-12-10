@@ -25,6 +25,7 @@ except ImportError:
 def setup(app):
     if use_adacore_parser:
     	app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
+        app.add_lexer('gpr', gnatpython.ada_pygments.GNATProjectLexer())
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

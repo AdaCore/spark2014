@@ -123,7 +123,7 @@ There are two possible defaults:
 Here is how to specify a value of ``SPARK_Mode => On`` as a configuration
 pragma:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   project My_Project is
      package Builder is
@@ -156,7 +156,7 @@ of various project attributes in the mode used for formal verification:
 
 For example:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   project My_Project is
 
@@ -196,7 +196,7 @@ of various project attributes in the mode used for formal verification:
 
 For example:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   project My_Project is
      package Builder is
@@ -230,7 +230,7 @@ different defaults, with each source file in one of the projects only. Files in
 one project can still refer to files in the other project by using a ``limited
 with`` clause between projects, as follows:
 
-.. code-block:: ada
+.. code-block:: gpr
 
   limited with "project_b"
   project My_Project_A is
@@ -240,7 +240,7 @@ with`` clause between projects, as follows:
      for Source_Files use ("file1.ads", "file2.ads", "file1.adb", "file2.adb");
   end My_Project_A;
 
-.. code-block:: ada
+.. code-block:: gpr
 
   limited with "project_a"
   project My_Project_B is
