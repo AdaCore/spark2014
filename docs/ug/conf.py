@@ -19,8 +19,8 @@ sys.path.append('.')
 import ada_pygments
 
 def setup(app):
-  app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
-  app.add_lexer('gpr', gnatpython.ada_pygments.GNATProjectLexer())
+  app.add_lexer('ada', ada_pygments.AdaLexer())
+  app.add_lexer('gpr', ada_pygments.GNATProjectLexer())
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
