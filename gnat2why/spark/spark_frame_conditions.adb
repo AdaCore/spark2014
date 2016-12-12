@@ -454,14 +454,14 @@ package body SPARK_Frame_Conditions is
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    is
+      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
+      --  Alias is empty for entries and meaningless for entry families
+
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
-
-      pragma Assert (if Is_Entry (E) then No (Alias (E)));
-      --  Alias is always empty for entries
 
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -498,14 +498,14 @@ package body SPARK_Frame_Conditions is
    ---------------------
 
    function Computed_Writes (E : Entity_Id) return Name_Sets.Set is
+      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
+      --  Alias is empty for entries and meaningless for entry families
+
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
-
-      pragma Assert (if Is_Entry (E) then No (Alias (E)));
-      --  Alias is always empty for entries
 
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -1065,14 +1065,14 @@ package body SPARK_Frame_Conditions is
       Inputs  : out Name_Sets.Set;
       Outputs : out Name_Sets.Set)
    is
+      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
+      --  Alias is empty for entries and meaningless for entry families
+
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure
            and then Present (Alias (E))
          then Ultimate_Alias (E)
          else E);
-
-      pragma Assert (if Is_Entry (E) then No (Alias (E)));
-      --  Alias is always empty for entries
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on

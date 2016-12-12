@@ -229,7 +229,8 @@ package body Flow_Generated_Globals.Partial is
    function Analyze_Body (E : Entity_Id) return Contract;
 
    function Analyze_Spec (E : Entity_Id) return Contract
-   with Pre => not Entity_Body_In_SPARK (E);
+   with Pre => (if Entity_In_SPARK (E)
+                then not Entity_Body_In_SPARK (E));
 
    function Contract_Calls (E : Entity_Id) return Node_Sets.Set
    with Pre => Ekind (E) in Entry_Kind
@@ -581,7 +582,8 @@ package body Flow_Generated_Globals.Partial is
             | E_Procedure
             | E_Task_Type
          =>
-            Contr := (if Entity_Body_In_SPARK (Analyzed)
+            Contr := (if Entity_In_SPARK (Analyzed)
+                        and then Entity_Body_In_SPARK (Analyzed)
                       then Analyze_Body (Analyzed)
                       else Analyze_Spec (Analyzed));
 

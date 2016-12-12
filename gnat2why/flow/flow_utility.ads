@@ -509,7 +509,7 @@ is
    --  should never be called when it's true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
    --  Given the entity for a subprogram, return the expression(s) for its
    --  precondition and the condition(s) of its Contract_Cases (or return
    --  the empty list if none of these exist).
@@ -517,7 +517,7 @@ is
    function Get_Postcondition_Expressions (E       : Entity_Id;
                                            Refined : Boolean)
                                            return Node_Lists.List
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Package | E_Procedure;
    --  Given the entity for a subprogram or package, return all expression(s)
    --  associated with postconditions: the postcondition, the rhs for contract
    --  cases and the initial condition; or an empty list of none of these
