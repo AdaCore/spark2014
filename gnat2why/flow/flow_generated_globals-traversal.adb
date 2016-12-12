@@ -22,126 +22,133 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
-with Atree;       use Atree;
-with Einfo;       use Einfo;
-with Lib.Xref;
-with Sem_Util;    use Sem_Util;
-with Sinfo;       use Sinfo;
-with SPARK_Util;  use SPARK_Util;
+with Ada.Containers.Hashed_Maps;
+with Nlists;           use Nlists;
+with Sem_Util;         use Sem_Util;
+with Sinfo;            use Sinfo;
+--  with SPARK_Util;       use SPARK_Util;
+with SPARK_Definition; use SPARK_Definition;
 
 package body Flow_Generated_Globals.Traversal is
 
-   Entity_Tree : Node_Trees.Tree;
-   --  Hierarchical container with entities processed by the flow analysis,
-   --  i.e. packages, subprograms, entries and task types. The hierarchy of
-   --  its contents mirrors the hierarchy of the analyzed code; the ordering of
-   --  siblings is that packages go first and subprograms/entries/task types go
-   --  after them.
+   Debug : constant Boolean := False;
 
-   Current_Scope       : Node_Trees.Cursor := Entity_Tree.Root;
-   First_Non_Pkg_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
-   --  Cursors to the current package/subprogram/entry/task type (which are the
-   --  entities processed by the flow analyzis) and to the first non-package
-   --  inserted under the current scope (sibling packages goes first and then
-   --  go other entities).
+   type Nested is record
+      Subprograms : Node_Lists.List;
+      Packages    : Node_Lists.List;
+      Parent      : Entity_Id;
+   end record;
+
+   package Nested_Scopes is new
+     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
+                                 Element_Type    => Nested,
+                                 Hash            => Node_Hash,
+                                 Equivalent_Keys => "=",
+                                 "="             => "=");
+
+   Scope_Map : Nested_Scopes.Map;
+   --  Hierarchical container with entities processed by the flow analysis,
+   --  i.e. functions, procedures, entries (collectively known as subprograms)
+   --  and packages, protected types and task types (collectively known as
+   --  packages, sic). The hierarchy of its contents mirrors the hierarchy
+   --  of the analyzed code.
+
+   Root : Entity_Id := Empty;
+
+   generic
+      with procedure Process (N : Node_Id) is <>;
+   procedure Traverse_Compilation_Unit (CU : Node_Id);
+   --  Call Process on all declarations within compilation unit CU. Unlike in
+   --  standard front end traversal traverses into stubs, but not into generic
+   --  units and stops while hitting the SPARK_Mode boundary.
+   --
+   --  ??? shamelessly stolen from Lib.Xref.SPARK_Specific which does not
+   --  respect the SPARK_Mode boundary.
+
+   ----------------
+   -- Build_Tree --
+   ----------------
 
    procedure Build_Tree (CU : Node_Id) is
 
-      Debug : constant Boolean := False;
-
-      use type Node_Trees.Cursor;
-
-      subtype Container_Scope is Entity_Kind
-        with Static_Predicate => Container_Scope in Entry_Kind       |
-                                                    E_Function       |
-                                                    E_Package        |
-                                                    E_Procedure      |
-                                                    E_Protected_Type |
-                                                    E_Task_Type;
-
-      procedure Enter_Spec (E : Entity_Id)
-        with Pre => Ekind (E) in Container_Scope;
-      --  Create new scope in the scope tree and enter it
-
-      procedure Enter_Body (Spec_E : Entity_Id)
-        with Pre => Ekind (Spec_E) in Container_Scope;
-      --  Forward Current_Scope to the spec of E and enter it; only for bodies
-
-      function Save return Tree_Cursor;
-      --  Returns a copy of the cursor to first non-pkg child
-
-      procedure Restore (Old : Tree_Cursor);
-      --  Restore current tree cursor from a copy; if Is_Package is false and
-      --  we are in the first non-package child of the current scope then cache
-      --  it.
+      function Parent_Scope (E : Entity_Id) return Entity_Id
+        with Pre  => Ekind (E) in Container_Scope,
+             Post => Ekind (Parent_Scope'Result) in Container_Scope;
 
       procedure Process (N : Node_Id);
       --  Process declaration to build the hierarchical scope structure
 
-      procedure Traverse is new
-        Lib.Xref.SPARK_Specific.Traverse_Compilation_Unit (Process);
+      procedure Traverse is new Traverse_Compilation_Unit (Process);
 
-      ----------------
-      -- Enter_Body --
-      ----------------
+      ------------------
+      -- Parent_Scope --
+      ------------------
 
-      procedure Enter_Body (Spec_E : Entity_Id) is
+      function Parent_Scope (E : Entity_Id) return Entity_Id is
+         P : Entity_Id := Scope (E);
       begin
-         if Debug then
-            for D in 0 .. Node_Trees.Depth (Current_Scope) loop
-               Ada.Text_IO.Put (" ");
-            end loop;
-            Ada.Text_IO.Put_Line (Full_Source_Name (Spec_E) & " (body)");
-         end if;
-
-         --  First forward the current scope
-         Current_Scope := Node_Trees.First_Child (Current_Scope);
+         while Ekind (P) not in Container_Scope
+           or else Is_Wrapper_Package (P)
          loop
-            pragma Loop_Invariant (Node_Trees.Has_Element (Current_Scope));
-            if Entity_Tree (Current_Scope) = Spec_E then
-               exit;
-            end if;
-            Node_Trees.Next_Sibling (Current_Scope);
+            P := Scope (P);
          end loop;
 
-         --  Then the first non-pkg scope
-         First_Non_Pkg_Scope := Node_Trees.First_Child (Current_Scope);
-         while Node_Trees.Has_Element (First_Non_Pkg_Scope)
-           and then
-             Ekind (Node_Trees.Element (First_Non_Pkg_Scope)) = E_Package
-         loop
-            Node_Trees.Next_Sibling (First_Non_Pkg_Scope);
-         end loop;
-      end Enter_Body;
-
-      ----------------
-      -- Enter_Spec --
-      ----------------
-
-      procedure Enter_Spec (E : Entity_Id) is
-      begin
-         if Debug then
-            for D in 0 .. Node_Trees.Depth (Current_Scope) loop
-               Ada.Text_IO.Put (" ");
-            end loop;
-            Ada.Text_IO.Put_Line (Full_Source_Name (E));
-         end if;
-
-         Entity_Tree.Insert_Child
-           (Parent   => Current_Scope,
-            Before   => (if Ekind (E) = E_Package
-                         then First_Non_Pkg_Scope
-                         else Node_Trees.No_Element),
-            New_Item => E,
-            Position => Current_Scope);
-         First_Non_Pkg_Scope := Node_Trees.No_Element;
-      end Enter_Spec;
+         return P;
+      end Parent_Scope;
 
       -------------
       -- Process --
       -------------
 
       procedure Process (N : Node_Id) is
+
+         procedure Insert (E : Entity_Id)
+         with Pre => Ekind (E) in Container_Scope;
+
+         ------------
+         -- Insert --
+         ------------
+
+         procedure Insert (E : Entity_Id) is
+         begin
+            if not Is_Wrapper_Package (E)
+              and then not (Ekind (E) = E_Procedure
+                              and then Is_Eliminated (E)
+                              and then not Comes_From_Source (E))
+            then
+               declare
+                  P : constant Entity_Id := Parent_Scope (E);
+               begin
+                  if Present (Root) then
+                     case Container_Scope (Ekind (E)) is
+                        when E_Function | E_Procedure | Entry_Kind =>
+                           Scope_Map (P).Subprograms.Append (E);
+
+                        when E_Package | E_Protected_Type | E_Task_Type =>
+                           Scope_Map (P).Packages.Append (E);
+                     end case;
+                  else
+                     Root := E;
+                  end if;
+
+                  if Debug then
+                     Ada.Text_IO.Put_Line
+                       (Unique_Name (P) & P'Img &
+                          " -> " &
+                          Unique_Name (E) & E'Img &
+                          " (" & Scope_Map.Length'Img & " )");
+                  end if;
+
+                  Scope_Map.Insert (Key      => E,
+                                    New_Item => (Packages    => <>,
+                                                 Subprograms => <>,
+                                                 Parent      => P));
+               end;
+            end if;
+         end Insert;
+
+      --  Start of processing for Process
+
       begin
          case Nkind (N) is
             when N_Entry_Declaration          |
@@ -149,156 +156,527 @@ package body Flow_Generated_Globals.Traversal is
                  N_Protected_Type_Declaration |
                  N_Subprogram_Declaration     |
                  N_Task_Type_Declaration      =>
-               declare
-                  Scopes : constant Tree_Cursor := Save;
-               begin
-                  Enter_Spec (Defining_Entity (N));
-                  Restore (Scopes);
-               end;
+               Insert (Defining_Entity (N));
 
-            when N_Entry_Body      |
-                 N_Package_Body    |
-                 N_Protected_Body  |
-                 N_Subprogram_Body |
-                 N_Task_Body       =>
-
-               declare
-                  E : constant Entity_Id := Unique_Defining_Entity (N);
-               begin
-                  --  Skip bodies of generic packages and subprograms; also
-                  --  subprograms that front-end generates to analyze default
-                  --  expressions, see Mark_Subprogram_Body for details.
-                  if (Nkind (N) = N_Package_Body and then
-                        Ekind (E) = E_Generic_Package)
-                    or else
-                      (Nkind (N) = N_Subprogram_Body and then
-                       (Is_Generic_Subprogram (E) or else
-                        (Is_Eliminated (E) and not Comes_From_Source (E))))
-                  then
-                     return;
-                  end if;
-
-                  declare
-                     Scopes : constant Tree_Cursor := Save;
-                  begin
-                     if Nkind (N) = N_Subprogram_Body
-                       and then Acts_As_Spec (N)
-                     then
-                        --  ??? this can be optimized
-                        Enter_Spec (E);
-                        Restore (Scopes);
-                     end if;
-                     Enter_Body (E);
-                     Restore (Scopes);
-                  end;
-               end;
-
-            --  Subprogram stubs may act as declarations ???
+            when N_Subprogram_Body =>
+               if Acts_As_Spec (N) then
+                  Insert (Defining_Entity (N));
+               end if;
 
             when N_Subprogram_Body_Stub =>
-               declare
-                  E      : constant Entity_Id := Unique_Defining_Entity (N);
-                  Scopes : constant Tree_Cursor := Save;
-               begin
-                  if No (Corresponding_Spec_Of_Stub (N)) then
-                     Enter_Spec (E);
-                     Restore (Scopes);
-                  end if;
-                  Enter_Body (E);
-                  Restore (Scopes);
-               end;
+               if No (Corresponding_Spec_Of_Stub (N)) then
+                  Insert (Unique_Defining_Entity (N));
+               end if;
 
             when others =>
                null;
+
          end case;
       end Process;
-
-      -------------
-      -- Restore --
-      -------------
-
-      procedure Restore (Old : Tree_Cursor)
-      is
-         Is_Package : constant Boolean :=
-           (Ekind (Entity_Tree (Current_Scope)) = E_Package);
-
-      begin
-         First_Non_Pkg_Scope :=
-           (if not Is_Package
-            and then Old = Node_Trees.No_Element
-            then Current_Scope
-            else Old);
-         Current_Scope := Node_Trees.Parent (Current_Scope);
-      end Restore;
-
-      ----------
-      -- Save --
-      ----------
-
-      function Save return Tree_Cursor is
-      begin
-         return First_Non_Pkg_Scope;
-      end Save;
 
    --  Start of processing for Build_Tree
 
    begin
-      pragma Assert (Current_Scope = Entity_Tree.Root);
-
-      Traverse (CU, Inside_Stubs => True);
-
-      pragma Assert (Current_Scope = Entity_Tree.Root);
+      Traverse (CU);
    end Build_Tree;
 
+   ---------------
+   -- Dump_Tree --
+   ---------------
+
+   procedure Dump_Tree is
+
+      procedure Dump (E : Entity_Id);
+
+      procedure Dump_Children is new Fold0 (Dump);
+
+      ----------
+      -- Dump --
+      ----------
+
+      procedure Dump (E : Entity_Id) is
+      begin
+         Dump_Children (E);
+         Ada.Text_IO.Put_Line ("***" & Unique_Name (E));
+      end Dump;
+
+   --  Start of processing for Dump_Tree
+
+   begin
+      if Debug then
+         Dump (Root);
+      end if;
+   end Dump_Tree;
+
    -------------
-   -- Iterate --
+   -- Is_Leaf --
    -------------
 
-   procedure Iterate
+   function Is_Leaf (E : Entity_Id) return Boolean is
+      C : constant Nested_Scopes.Cursor := Scope_Map.Find (E);
+   begin
+      return Scope_Map (C).Packages.Is_Empty
+        and then Scope_Map (C).Subprograms.Is_Empty;
+   end Is_Leaf;
+
+   -----------
+   -- Fold0 --
+   -----------
+
+   procedure Fold0 (E : Entity_Id) is
+      N : Nested renames Scope_Map (E);
+   begin
+      for P of N.Packages loop
+         Process (P);
+      end loop;
+
+      for S of N.Subprograms loop
+         Process (S);
+      end loop;
+   end Fold0;
+
+   -----------
+   -- Fold1 --
+   -----------
+
+   procedure Fold1 (E : Entity_Id; Ctx : in out Context) is
+
+      procedure Wrapper (E : Entity_Id);
+
+      -------------
+      -- Wrapper --
+      -------------
+
+      procedure Wrapper (E : Entity_Id) is
+      begin
+         Process (E, Ctx);
+      end Wrapper;
+
+      procedure Fold is new Fold0 (Wrapper);
+
+   --  Start of processing for Fold1
+
+   begin
+      Fold (E);
+   end Fold1;
+
+   -----------
+   -- Fold2 --
+   -----------
+
+   procedure Fold2 (E    :        Entity_Id;
+                    Ctx1 :        Context1;
+                    Ctx2 : in out Context2)
+   is
+
+      procedure Wrapper (E : Entity_Id);
+
+      -------------
+      -- Wrapper --
+      -------------
+
+      procedure Wrapper (E : Entity_Id) is
+      begin
+         Process (E, Ctx1, Ctx2);
+      end Wrapper;
+
+      procedure Fold is new Fold0 (Wrapper);
+
+   --  Start of processing for Fold2
+
+   begin
+      Fold (E);
+   end Fold2;
+
+   -----------
+   -- Fold3 --
+   -----------
+
+   procedure Fold3 (E    :        Entity_Id;
+                    Ctx1 :        Context1;
+                    Ctx2 :        Context2;
+                    Ctx3 : in out Context3)
+   is
+      procedure Wrapper (E : Entity_Id);
+
+      -------------
+      -- Wrapper --
+      -------------
+
+      procedure Wrapper (E : Entity_Id) is
+      begin
+         Process (E, Ctx1, Ctx2, Ctx3);
+      end Wrapper;
+
+      procedure Fold is new Fold0 (Wrapper);
+
+   --  Start of processing for Fold3
+
+   begin
+      Fold (E);
+   end Fold3;
+
+   -----------------------
+   -- Iterate_Main_Unit --
+   -----------------------
+
+   procedure Iterate_Main_Unit
      (Process : not null access procedure (E : Entity_Id))
    is
 
-      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor);
+      procedure Wrapper (E : Entity_Id);
 
-      ---------------------
-      -- Iterate_Subtree --
-      ---------------------
+      procedure Iterate_All_Children is new Fold0 (Wrapper);
 
-      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor) is
-         Debug_Tree_Traversal : constant Boolean := False;
-         --  Display the entity name as the entity tree is traversed
+      -------------
+      -- Wrapper --
+      -------------
 
+      procedure Wrapper (E : Entity_Id) is
       begin
-         --  This is a helper function to recursively iterate over all the
-         --  nodes in a subtree, in depth-first fashion. It first visits the
-         --  children and then the root.
+         Iterate_All_Children (E);
 
-         Node_Trees.Iterate_Children (Parent  => Subtree,
-                                      Process => Iterate_Subtree'Access);
-         Process (Entity_Tree (Subtree));
+         Process (E);
+      end Wrapper;
 
-         if Debug_Tree_Traversal then
-            Ada.Text_IO.Put
-              (Ada.Containers.Count_Type'Image
-                 (Node_Trees.Depth (Subtree)));
-            Ada.Text_IO.Put (" ");
-            Ada.Text_IO.Put_Line
-              (To_String
-                 (To_Entity_Name (Entity_Tree (Subtree))));
-         end if;
-      end Iterate_Subtree;
-
-      --  Start of processing for Iterate_Entities
+   --  Start of processing for Iterate_Main_Unit
 
    begin
-      Node_Trees.Iterate_Children (Parent  => Entity_Tree.Root,
-                                   Process => Iterate_Subtree'Access);
-   end Iterate;
+      --  Library-level renamings have no entities; ignore them
+      if Present (Root) then
+         Wrapper (Root);
+      end if;
+   end Iterate_Main_Unit;
+
+   ------------------
+   -- Parent_Scope --
+   ------------------
+
+   function Parent_Scope (E : Entity_Id) return Entity_Id is
+     (Scope_Map (E).Parent);
 
    -----------------
    -- Root_Entity --
    -----------------
 
-   function Root_Entity return Tree_Cursor is (Entity_Tree.Root);
+   function Root_Entity return Entity_Id is (Root);
+
+   -------------------------------
+   -- Traverse_Compilation_Unit --
+   -------------------------------
+
+   procedure Traverse_Compilation_Unit (CU : Node_Id)
+   is
+      procedure Traverse_Block                      (N : Node_Id);
+      procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
+      procedure Traverse_Declarations_And_HSS       (N : Node_Id);
+      procedure Traverse_Declarations_Or_Statements (L : List_Id);
+      procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
+      procedure Traverse_Package_Body               (N : Node_Id);
+      procedure Traverse_Visible_And_Private_Parts  (N : Node_Id);
+      procedure Traverse_Protected_Body             (N : Node_Id);
+      procedure Traverse_Subprogram_Body            (N : Node_Id);
+      procedure Traverse_Task_Body                  (N : Node_Id);
+
+      --  Traverse corresponding construct, calling Process on all declarations
+
+      --------------------
+      -- Traverse_Block --
+      --------------------
+
+      procedure Traverse_Block (N : Node_Id) renames
+        Traverse_Declarations_And_HSS;
+
+      ---------------------------------------
+      -- Traverse_Declaration_Or_Statement --
+      ---------------------------------------
+
+      procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
+         function Traverse_Stub (N : Node_Id) return Boolean;
+         --  Returns True iff stub N should be traversed
+
+         function Traverse_Stub (N : Node_Id) return Boolean is
+         begin
+            pragma Assert (Nkind_In (N, N_Package_Body_Stub,
+                                        N_Protected_Body_Stub,
+                                        N_Subprogram_Body_Stub,
+                                        N_Task_Body_Stub));
+
+            return Present (Library_Unit (N));
+         end Traverse_Stub;
+
+      --  Start of processing for Traverse_Declaration_Or_Statement
+
+      begin
+         case Nkind (N) is
+            when N_Package_Declaration =>
+               Traverse_Visible_And_Private_Parts (Specification (N));
+
+            when N_Package_Body =>
+               Traverse_Package_Body (N);
+
+            when N_Package_Body_Stub =>
+               if Traverse_Stub (N) then
+                  Traverse_Package_Body (Get_Body_From_Stub (N));
+               end if;
+
+            when N_Subprogram_Body =>
+               Traverse_Subprogram_Body (N);
+
+            when N_Entry_Body =>
+               Traverse_Subprogram_Body (N);
+
+            when N_Subprogram_Body_Stub =>
+               if Traverse_Stub (N) then
+                  Traverse_Subprogram_Body (Get_Body_From_Stub (N));
+               end if;
+
+            when N_Protected_Body =>
+               Traverse_Protected_Body (N);
+
+            when N_Protected_Body_Stub =>
+               if Traverse_Stub (N) then
+                  Traverse_Protected_Body (Get_Body_From_Stub (N));
+               end if;
+
+            when N_Protected_Type_Declaration =>
+               Traverse_Visible_And_Private_Parts (Protected_Definition (N));
+
+            when N_Task_Definition =>
+               Traverse_Visible_And_Private_Parts (N);
+
+            when N_Task_Body =>
+               Traverse_Task_Body (N);
+
+            when N_Task_Body_Stub =>
+               if Traverse_Stub (N) then
+                  Traverse_Task_Body (Get_Body_From_Stub (N));
+               end if;
+
+            when N_Block_Statement =>
+               Traverse_Block (N);
+
+            when N_If_Statement =>
+
+               --  Traverse the statements in the THEN part
+
+               Traverse_Declarations_Or_Statements (Then_Statements (N));
+
+               --  Loop through ELSIF parts if present
+
+               if Present (Elsif_Parts (N)) then
+                  declare
+                     Elif : Node_Id := First (Elsif_Parts (N));
+
+                  begin
+                     while Present (Elif) loop
+                        Traverse_Declarations_Or_Statements
+                          (Then_Statements (Elif));
+                        Next (Elif);
+                     end loop;
+                  end;
+               end if;
+
+               --  Finally traverse the ELSE statements if present
+
+               Traverse_Declarations_Or_Statements (Else_Statements (N));
+
+            when N_Case_Statement =>
+
+               --  Process case branches
+
+               declare
+                  Alt : Node_Id := First (Alternatives (N));
+               begin
+                  loop
+                     Traverse_Declarations_Or_Statements (Statements (Alt));
+                     Next (Alt);
+                     exit when No (Alt);
+                  end loop;
+               end;
+
+            when N_Extended_Return_Statement =>
+               Traverse_Handled_Statement_Sequence
+                 (Handled_Statement_Sequence (N));
+
+            when N_Loop_Statement =>
+               Traverse_Declarations_Or_Statements (Statements (N));
+
+               --  Generic declarations are ignored
+
+            when others =>
+               null;
+         end case;
+      end Traverse_Declaration_Or_Statement;
+
+      -----------------------------------
+      -- Traverse_Declarations_And_HSS --
+      -----------------------------------
+
+      procedure Traverse_Declarations_And_HSS (N : Node_Id) is
+      begin
+         Traverse_Declarations_Or_Statements (Declarations (N));
+         Traverse_Handled_Statement_Sequence (Handled_Statement_Sequence (N));
+      end Traverse_Declarations_And_HSS;
+
+      -----------------------------------------
+      -- Traverse_Declarations_Or_Statements --
+      -----------------------------------------
+
+      procedure Traverse_Declarations_Or_Statements (L : List_Id) is
+         N : Node_Id;
+
+      begin
+         --  Loop through statements or declarations
+
+         N := First (L);
+         while Present (N) loop
+
+            --  Call Process on all declarations
+
+            if Nkind (N) in N_Declaration
+              or else Nkind (N) in N_Later_Decl_Item
+              or else Nkind (N) = N_Entry_Body
+            then
+               Process (N);
+            end if;
+
+            Traverse_Declaration_Or_Statement (N);
+
+            Next (N);
+         end loop;
+      end Traverse_Declarations_Or_Statements;
+
+      -----------------------------------------
+      -- Traverse_Handled_Statement_Sequence --
+      -----------------------------------------
+
+      procedure Traverse_Handled_Statement_Sequence (N : Node_Id) is
+         Handler : Node_Id;
+
+      begin
+         if Present (N) then
+            Traverse_Declarations_Or_Statements (Statements (N));
+
+            if Present (Exception_Handlers (N)) then
+               Handler := First (Exception_Handlers (N));
+               while Present (Handler) loop
+                  Traverse_Declarations_Or_Statements (Statements (Handler));
+                  Next (Handler);
+               end loop;
+            end if;
+         end if;
+      end Traverse_Handled_Statement_Sequence;
+
+      ---------------------------
+      -- Traverse_Package_Body --
+      ---------------------------
+
+      procedure Traverse_Package_Body (N : Node_Id) is
+         Spec_E : constant Entity_Id := Unique_Defining_Entity (N);
+
+      begin
+         case Ekind (Spec_E) is
+            when E_Package =>
+               Traverse_Declarations_Or_Statements (Declarations (N));
+               Traverse_Handled_Statement_Sequence
+                 (Handled_Statement_Sequence (N));
+
+            when E_Generic_Package =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Traverse_Package_Body;
+
+      -----------------------------
+      -- Traverse_Protected_Body --
+      -----------------------------
+
+      procedure Traverse_Protected_Body (N : Node_Id) is
+      begin
+         if Entity_Body_In_SPARK (Unique_Defining_Entity (N)) then
+            Traverse_Declarations_Or_Statements (Declarations (N));
+         end if;
+      end Traverse_Protected_Body;
+
+      ------------------------------
+      -- Traverse_Subprogram_Body --
+      ------------------------------
+
+      procedure Traverse_Subprogram_Body (N : Node_Id) is
+      begin
+         case Ekind (Unique_Defining_Entity (N)) is
+            when Entry_Kind
+               | E_Function
+               | E_Procedure
+            =>
+               Traverse_Declarations_And_HSS (N);
+
+            when Generic_Subprogram_Kind =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Traverse_Subprogram_Body;
+
+      ------------------------
+      -- Traverse_Task_Body --
+      ------------------------
+
+      procedure Traverse_Task_Body (N : Node_Id) is
+      begin
+         if Entity_Body_In_SPARK (Unique_Defining_Entity (N)) then
+            Traverse_Declarations_And_HSS (N);
+         end if;
+      end Traverse_Task_Body;
+
+      ----------------------------------------
+      -- Traverse_Visible_And_Private_Parts --
+      ----------------------------------------
+
+      procedure Traverse_Visible_And_Private_Parts (N : Node_Id) is
+      begin
+         Traverse_Declarations_Or_Statements (Visible_Declarations (N));
+         Traverse_Declarations_Or_Statements (Private_Declarations (N));
+      end Traverse_Visible_And_Private_Parts;
+
+      --  Local variables
+
+      Lu : Node_Id;
+
+   --  Start of processing for Traverse_Compilation_Unit
+
+   begin
+      --  Get Unit (checking case of subunit)
+
+      Lu := Unit (CU);
+
+      if Nkind (Lu) = N_Subunit then
+         Lu := Proper_Body (Lu);
+      end if;
+
+      --  Do not add scopes for generic units
+
+      if Nkind (Lu) = N_Package_Body
+        and then Ekind (Corresponding_Spec (Lu)) in Generic_Unit_Kind
+      then
+         return;
+      end if;
+
+      --  Call Process on all declarations
+
+      if Nkind (Lu) in N_Declaration
+        or else Nkind (Lu) in N_Later_Decl_Item
+      then
+         Process (Lu);
+      end if;
+
+      --  Traverse the unit
+
+      Traverse_Declaration_Or_Statement (Lu);
+   end Traverse_Compilation_Unit;
 
 end Flow_Generated_Globals.Traversal;

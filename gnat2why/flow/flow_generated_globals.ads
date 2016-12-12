@@ -24,9 +24,11 @@
 --  This package implements writing, reading and computing global contracts
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
+with Einfo;                              use Einfo;
 with Flow;                               use Flow;
-with Flow_Types;                         use Flow_Types;
+with GNATCOLL.Terminal;                  use GNATCOLL.Terminal;
 with Types;                              use Types;
 
 package Flow_Generated_Globals is
@@ -127,26 +129,42 @@ package Flow_Generated_Globals is
    --  Flow     : Produced using flow analysis
    --  Frontend : Produced from the XREF sections of the ALI files
 
-   type Global_Phase_1_Info is record
+   type Globals is record
+      Proof_Ins : Name_Sets.Set;          --  Flow/User
+      Inputs    : Name_Sets.Set;          --  Flow/Frontend/User
+      Outputs   : Name_Sets.Set;          --  Flow/Frontend/User
+   end record;
+
+   type Partial_Contract is record
       Name                  : Entity_Name;
-      Kind                  : Analyzed_Subject_Kind;
+      Local                 : Boolean;
+      Kind                  : Entity_Kind;
       Origin                : Globals_Origin_T;
-      Inputs_Proof          : Name_Sets.Set; --  Flow/User
-      Inputs                : Name_Sets.Set; --  Flow/Frontend/User
-      Outputs               : Name_Sets.Set; --  Flow/Frontend/User
+
+      Proper                : Globals;
+      Refined               : Globals;
+
       Proof_Calls           : Name_Sets.Set; --  Flow
       Definite_Calls        : Name_Sets.Set; --  Flow
       Conditional_Calls     : Name_Sets.Set; --  Flow/Frontend
+
       Local_Variables       : Name_Sets.Set; --  Flow
       Local_Subprograms     : Name_Sets.Set; --  Flow
       Local_Definite_Writes : Name_Sets.Set; --  Flow (only for packages)
+
+      Tasking               : Tasking_Info;
+
+      Has_Terminate         : Boolean;
+      Recursive             : Boolean;
+      Nonreturning          : Boolean;
+      Nonblocking           : Boolean;
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and
-   --  update Null_Global_Info.
+   --  update Null_Partial_Contract.
 
-   package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Global_Phase_1_Info);
+   package Partial_Contract_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Partial_Contract);
 
    ----------------------------------------------------------------------
    --  Protected types instances
@@ -194,12 +212,23 @@ package Flow_Generated_Globals is
    --  Protected object and its priority
 
 private
-   Current_Mode  : GG_Mode_T := GG_No_Mode with Ghost;
+   Current_Mode : GG_Mode_T := GG_No_Mode with Ghost;
 
    -------------
    -- GG_Mode --
    -------------
 
    function GG_Mode return GG_Mode_T is (Current_Mode);
+
+   Term_Info : GNATCOLL.Terminal.Terminal_Info;
+   --  For colored debug output; ??? should be global for Flow
+
+   XXX : constant Boolean := False;
+
+   Debug_Partial_Contracts : constant Boolean := True and XXX;
+   --  Display contracts as they are built
+
+   procedure Debug_Traversal (E : Entity_Id) with Pre => Present (E);
+   --  Display order of traversal
 
 end Flow_Generated_Globals;

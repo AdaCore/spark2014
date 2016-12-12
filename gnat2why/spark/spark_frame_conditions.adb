@@ -443,7 +443,7 @@ package body SPARK_Frame_Conditions is
    -- Computed_Calls --
    --------------------
 
-   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
+   function Computed_Calls (E : Entity_Name) return Name_Sets.Set
      renames Calls.Element;
 
    --------------------
@@ -523,7 +523,9 @@ package body SPARK_Frame_Conditions is
       --  Go through the reads and check if the entities corresponding to
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
-
+      --
+      --  ??? call to Computed_Reads repeats what is already done here; this
+      --  should be refactored.
       for E_N of Computed_Reads (E, False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
@@ -1059,10 +1061,9 @@ package body SPARK_Frame_Conditions is
    -------------------------------------
 
    procedure Collect_Direct_Computed_Globals
-     (E                  : Entity_Id;
-      Inputs             : out Name_Sets.Set;
-      Outputs            : out Name_Sets.Set;
-      Called_Subprograms : out Name_Sets.Set)
+     (E       : Entity_Id;
+      Inputs  : out Name_Sets.Set;
+      Outputs : out Name_Sets.Set)
    is
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure
@@ -1073,8 +1074,6 @@ package body SPARK_Frame_Conditions is
       pragma Assert (if Is_Entry (E) then No (Alias (E)));
       --  Alias is always empty for entries
 
-      E_Name : Entity_Name;
-
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
@@ -1083,18 +1082,14 @@ package body SPARK_Frame_Conditions is
         and then Is_Abstract_Subprogram (E_Alias)
       then
          --  Initialize to empty sets and return
-         Inputs             := Name_Sets.Empty_Set;
-         Outputs            := Name_Sets.Empty_Set;
-         Called_Subprograms := Name_Sets.Empty_Set;
+         Inputs  := Name_Sets.Empty_Set;
+         Outputs := Name_Sets.Empty_Set;
 
          return;
       end if;
 
-      E_Name := To_Entity_Name (E_Alias);
-
-      Called_Subprograms := Calls (E_Name);
-      Inputs             := Computed_Reads (E, False);
-      Outputs            := Computed_Writes (E);
+      Inputs  := Computed_Reads (E, False);
+      Outputs := Computed_Writes (E);
 
       --  Add variables written to variables read
       --  ??? for composite variables fine, but why for simple ones?

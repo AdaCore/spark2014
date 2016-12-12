@@ -22,10 +22,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Atree;                              use Atree;
-with Einfo;                              use Einfo;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Flow_Refinement;                    use Flow_Refinement;
+with Flow_Types;                         use Flow_Types;
 with Sinfo;                              use Sinfo;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
@@ -75,15 +74,6 @@ package Flow_Generated_Globals.Phase_2 is
    --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
 
-   function GG_Exist (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Entry     |
-                            E_Function  |
-                            E_Procedure |
-                            E_Task_Type and then
-               GG_Mode = GG_Read_Mode;
-   --  Returns True if generated globals have been computed for the
-   --  given entity.
-
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  Returns true if E is a constituent of some state abstraction
@@ -98,8 +88,7 @@ package Flow_Generated_Globals.Phase_2 is
                 Ekind (E) in E_Entry     |
                              E_Function  |
                              E_Procedure |
-                             E_Task_Type and then
-                GG_Exist (E),
+                             E_Task_Type,
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
 

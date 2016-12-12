@@ -60,20 +60,6 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   Nonblocking_Subprograms : Name_Lists.List;
-   --  Subprograms, entries and tasks that do not contain potentially blocking
-   --  statements (but still may call another blocking subprogram).
-
-   Nonreturning_Subprograms : Name_Lists.List;
-   --  We save here:
-   --  * procedures annotated with No_Return
-   --  * subprograms that call a predefined procedure with No_Return
-   --  * subprograms that contain a possibly nonterminating loop
-   --  * subprograms with body not in SPARK.
-
-   Terminating_Subprograms : Name_Lists.List;
-   --  We save here subprograms with Terminating annotation
-
    type Accessed_Tasking_Objects is record
       Caller  : Entity_Name;
       Entries : Entry_Call_Sets.Set;
@@ -87,11 +73,11 @@ package body Flow_Generated_Globals.Phase_1 is
    Tasking_Info_List : Tasking_Info_Lists.List;
    --  List with tasking objects directly accessed by subprograms
 
-   Entitiy_Infos : Global_Info_Lists.List;
+   Entitiy_Infos : Partial_Contract_Lists.List;
    --  Entity-specific information as discovered by their analysis
    --
    --  ??? we keep this locally only because in the ALI file we first want to
-   --  have entity-indenpendent info; perhaps we do not care and can safely
+   --  have entity-independent info; perhaps we do not care and can safely
    --  dump information locally for each scope.
 
    type Abstract_State_Constituents is record
@@ -126,6 +112,9 @@ package body Flow_Generated_Globals.Phase_1 is
 
    Direct_Calls_List : Direct_Call_Lists.List;
    --  Container with direct calls for subprograms, entries and tasks types
+
+   Remote_Calls_List : Direct_Call_Lists.List;
+   --  Container with calls to subprograms in other compilation units
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -165,7 +154,7 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Global_Info --
    -----------------------------
 
-   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
+   procedure GG_Register_Global_Info (GI : Partial_Contract) is
 
       procedure Process_Volatiles_And_States
         (Names      : Name_Sets.Set;
@@ -214,32 +203,21 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoints, so it is more efficient to process them separately instead
       --  of doing an expensive union to have a single procedure call.
-      Process_Volatiles_And_States (GI.Inputs_Proof);
-      Process_Volatiles_And_States (GI.Inputs);
-      Process_Volatiles_And_States (GI.Outputs);
-      Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
+      if not GI.Local then
+         Process_Volatiles_And_States (GI.Proper.Proof_Ins);
+         Process_Volatiles_And_States (GI.Proper.Inputs);
+         Process_Volatiles_And_States (GI.Proper.Outputs);
+         Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
+      end if;
+
+      --  Register tasking-related information; ignore packages because they
+      --  are elaborated sequentially anyway.
+      if GI.Kind in Entry_Kind | E_Function | E_Procedure | E_Task_Type then
+         Tasking_Info_List.Append ((Caller  => GI.Name,
+                                    Entries => Entry_Call_Sets.Empty_Set,
+                                    Objects => GI.Tasking));
+      end if;
    end GG_Register_Global_Info;
-
-   -----------------------------
-   -- GG_Register_Nonblocking --
-   -----------------------------
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name) renames
-     Nonblocking_Subprograms.Append;
-
-   ------------------------------
-   -- GG_Register_Nonreturning --
-   ------------------------------
-
-   procedure GG_Register_Nonreturning (EN : Entity_Name) renames
-     Nonreturning_Subprograms.Append;
-
-   -----------------------------
-   -- GG_Register_Terminating --
-   -----------------------------
-
-   procedure GG_Register_Terminating (EN : Entity_Name) renames
-     Terminating_Subprograms.Append;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -253,15 +231,34 @@ package body Flow_Generated_Globals.Phase_1 is
                                    Priority => Prio));
    end GG_Register_Protected_Object;
 
+   ------------------------------
+   -- GG_Register_Remote_Calls --
+   ------------------------------
+
+   procedure GG_Register_Remote_Calls (E : Entity_Id; Calls : Node_Sets.Set) is
+   begin
+      --  ??? code duplication with GG_Register_Direct_Calls
+      Remote_Calls_List.Append ((Caller  => To_Entity_Name (E),
+                                 Callees => <>));
+
+      declare
+         Callees : Name_Lists.List renames
+           Remote_Calls_List (Remote_Calls_List.Last).Callees;
+
+      begin
+         for Call of Calls loop
+            Callees.Append (To_Entity_Name (Call));
+         end loop;
+      end;
+   end GG_Register_Remote_Calls;
+
    ----------------------------------
    -- GG_Register_State_Refinement --
    ----------------------------------
 
-   procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
-   is
-      Pkg_Spec : constant Entity_Id := Unique_Entity (Pkg_Body);
+   procedure GG_Register_State_Refinement (E : Entity_Id) is
    begin
-      for State of Iter (Abstract_States (Pkg_Spec)) loop
+      for State of Iter (Abstract_States (E)) loop
          --  Append an empty container and then populate it
          State_Constituents.Append
            ((State        => To_Entity_Name (State),
@@ -272,6 +269,7 @@ package body Flow_Generated_Globals.Phase_1 is
               State_Constituents (State_Constituents.Last).Constituents;
 
          begin
+            --  ??? how about Part_Of_Constituents?
             for Constituent of Iter (Refinement_Constituents (State)) loop
                if Nkind (Constituent) = N_Null then
                   null;
@@ -298,20 +296,6 @@ package body Flow_Generated_Globals.Phase_1 is
       Task_Instances.Append ((Type_Name => Type_Name,
                               Object    => Object));
    end GG_Register_Task_Object;
-
-   ------------------------------
-   -- GG_Register_Tasking_Info --
-   ------------------------------
-
-   procedure GG_Register_Tasking_Info (Caller  : Entity_Name;
-                                       Entries : Entry_Call_Sets.Set;
-                                       Objects : Tasking_Info)
-   is
-   begin
-      Tasking_Info_List.Append ((Caller  => Caller,
-                                 Entries => Entries,
-                                 Objects => Objects));
-   end GG_Register_Tasking_Info;
 
    -----------------------
    -- Register_Volatile --
@@ -397,21 +381,6 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Async_Writers    => Async_Writers_Vars,
             The_Effective_Reads  => Effective_Reads_Vars,
             The_Effective_Writes => Effective_Writes_Vars);
-      Write_To_ALI (V);
-
-      --  Write nonblocking subprograms
-      V := (Kind                        => EK_Nonblocking,
-            The_Nonblocking_Subprograms => Nonblocking_Subprograms);
-      Write_To_ALI (V);
-
-      --  Write nonreturning subprograms
-      V := (Kind                         => EK_Nonreturning,
-            The_Nonreturning_Subprograms => Nonreturning_Subprograms);
-      Write_To_ALI (V);
-
-      --  Write terminating subprograms
-      V := (Kind                         => EK_Terminating,
-            The_Terminating_Subprograms  => Terminating_Subprograms);
       Write_To_ALI (V);
 
       --  Write direct calls

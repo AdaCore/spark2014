@@ -30,10 +30,15 @@ package body Flow_Generated_Globals.ALI_Serialization is
    --  Special dummy value for serialization which is not expected to represent
    --  any valid entity name, yet it must reside in the Entity_Name type.
 
-   Null_Global_Info : constant Global_Phase_1_Info :=
-     (Name   => Invalid_Entity_Name,
-      Kind   => Analyzed_Subject_Kind'First,
-      Origin => Globals_Origin_T'First,
+   Null_Partial_Contract : constant Partial_Contract :=
+     (Name          => Invalid_Entity_Name,
+      Local         => Boolean'First,
+      Kind          => Entity_Kind'First,
+      Origin        => Globals_Origin_T'First,
+      Has_Terminate => Boolean'First,
+      Recursive     => Boolean'First,
+      Nonreturning  => Boolean'First,
+      Nonblocking   => Boolean'First,
       others => <>);
    --  Dummy value required only for the serialization API
 
@@ -53,7 +58,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 others => <>),
 
       EK_Globals            => (Kind            => EK_Globals,
-                                The_Global_Info => Null_Global_Info),
+                                The_Global_Info => Null_Partial_Contract),
 
       EK_Protected_Instance => (Kind         => EK_Protected_Instance,
                                 The_Variable => Invalid_Entity_Name,
@@ -71,15 +76,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Tasking_Info       => (Kind       => EK_Tasking_Info,
                                 The_Entity => Invalid_Entity_Name,
                                 others     => <>),
-
-      EK_Nonblocking        => (Kind   => EK_Nonblocking,
-                                others => <>),
-
-      EK_Nonreturning       => (Kind   => EK_Nonreturning,
-                                others => <>),
-
-      EK_Terminating        => (Kind   => EK_Terminating,
-                                others => <>),
 
       EK_Direct_Calls       => (Kind       => EK_Direct_Calls,
                                 The_Caller => Invalid_Entity_Name,
@@ -106,7 +102,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
    procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
 
-   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info);
+   procedure Serialize (A : in out Archive; V : in out Partial_Contract);
 
    ---------------
    -- Serialize --
@@ -143,26 +139,49 @@ package body Flow_Generated_Globals.ALI_Serialization is
       end loop;
    end Serialize;
 
-   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
+   procedure Serialize (A : in out Archive; V : in out Partial_Contract) is
       procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Analyzed_Subject_Kind);
+        (T => Entity_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Boolean);
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Globals_Origin_T);
 
+      procedure Serialize (A : in out Archive; G : in out Globals);
+
+      procedure Serialize (A : in out Archive; G : in out Globals) is
+      begin
+         Serialize (A, G.Proof_Ins, "proof_in");
+         Serialize (A, G.Inputs,    "input");
+         Serialize (A, G.Outputs,   "output");
+      end Serialize;
+
+   --  Start of processing for Serialize
+
    begin
       Serialize (A, V.Name);
+      Serialize (A, V.Local, "local");
       Serialize (A, V.Kind);
       Serialize (A, V.Origin);
-      Serialize (A, V.Inputs_Proof,          "var_proof");
-      Serialize (A, V.Inputs,                "var_in");
-      Serialize (A, V.Outputs,               "var_out");
+      Serialize (A, V.Proper);
+      Serialize (A, V.Refined);
       Serialize (A, V.Proof_Calls,           "calls_proof");
       Serialize (A, V.Definite_Calls,        "calls");
       Serialize (A, V.Conditional_Calls,     "calls_conditional");
       Serialize (A, V.Local_Variables,       "local_var");
       Serialize (A, V.Local_Subprograms,     "local_sub");
-      if V.Kind in Kind_Package | Kind_Package_Body then
+      if V.Kind = E_Package then
          Serialize (A, V.Local_Definite_Writes, "local_init");
+      end if;
+
+      if V.Kind in Entry_Kind
+                 | E_Function
+                 | E_Procedure
+      then
+         Serialize (A, V.Has_Terminate);
+         Serialize (A, V.Recursive);
+         Serialize (A, V.Nonreturning);
+         Serialize (A, V.Nonblocking);
       end if;
    end Serialize;
 
@@ -239,15 +258,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
          when EK_Tasking_Info =>
             Serialize (A, V.The_Entity);
             Serialize (A, V.The_Tasking_Info);
-
-         when EK_Nonblocking =>
-            Serialize (A, V.The_Nonblocking_Subprograms);
-
-         when EK_Nonreturning =>
-            Serialize (A, V.The_Nonreturning_Subprograms);
-
-         when EK_Terminating =>
-            Serialize (A, V.The_Terminating_Subprograms);
 
          when EK_Direct_Calls =>
             Serialize (A, V.The_Caller);

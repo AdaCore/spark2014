@@ -21,9 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                use Atree;
-with Einfo;                use Einfo;
-with Sinfo;                use Sinfo;
+with Sinfo; use Sinfo;
 
 package Flow_Generated_Globals.Phase_1 is
 
@@ -46,45 +44,34 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register direct calls without caring if they are proof-only, definite or
    --  conditional.
 
-   procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
+   procedure GG_Register_Remote_Calls (E : Entity_Id; Calls : Node_Sets.Set)
    with Pre  => GG_Mode = GG_Write_Mode and then
-                Ekind (Pkg_Body) = E_Package_Body,
+                Ekind (E) in Entry_Kind  |
+                             E_Function  |
+                             E_Package   |
+                             E_Procedure |
+                             E_Task_Type and then
+                (for all C of Calls => Ekind (C) in Entry_Kind |
+                                                    E_Function |
+                                                    E_Package  |
+                                                    E_Procedure),
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register calls to subprograms in other compilation units
+
+   procedure GG_Register_State_Refinement (E : Entity_Id)
+   with Pre  => GG_Mode = GG_Write_Mode and then
+                Ekind (E) = E_Package,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information related to state abstractions and their
    --  refinements. This will later be used to return the appropriate view
    --  depending on the caller (as opposed to always returning the most
    --  refined view). It also stores information related to external states.
 
-   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info)
+   procedure GG_Register_Global_Info (GI : Partial_Contract)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register information needed later to compute globals. It also stores
    --  information related to volatiles and remote states.
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register entity with no potentially blocking statements
-
-   procedure GG_Register_Nonreturning (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register nonreturning subprogram. This information will be used in
-   --  phase 2 to determine termination of subprograms (when calling the
-   --  function Is_Potentially_Nonreturning). In particular we register:
-   --  * subprograms which contain possibly nonterminating loops
-   --  * procedures annotated with No_Return
-   --  * subprograms that call predefined procedures with No_Return
-   --  * subprograms with body not in SPARK unless if they are:
-   --    - predefined
-   --    - imported
-   --    - intrinsic
-   --    - have no body yet and are not procedure annotated with No_Return.
-
-   procedure GG_Register_Terminating (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register subprograms with the Terminating annotation
 
    procedure GG_Register_Protected_Object (PO   : Entity_Name;
                                            Prio : Priority_Value)
@@ -98,13 +85,6 @@ package Flow_Generated_Globals.Phase_1 is
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
 
-   procedure GG_Register_Tasking_Info (Caller  : Entity_Name;
-                                       Entries : Entry_Call_Sets.Set;
-                                       Objects : Tasking_Info)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register tasking-related information for entity
-
    -------------
    -- Writing --
    -------------
@@ -117,7 +97,8 @@ package Flow_Generated_Globals.Phase_1 is
    --  GG_Write_Package_Info.
 
    procedure GG_Write_Finalize
-   with Pre => GG_Mode = GG_Write_Mode;
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_No_Mode;
    --  Appends all collected information to the ALI file
 
 end Flow_Generated_Globals.Phase_1;

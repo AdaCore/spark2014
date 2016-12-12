@@ -102,7 +102,10 @@ package Common_Containers is
    function To_Entity_Name (S : String) return Entity_Name;
 
    function To_Entity_Name (E : Entity_Id) return Entity_Name
-     with Pre => Ekind (E) not in E_Package_Body | E_Subprogram_Body;
+     with Pre => Ekind (E) not in E_Package_Body    |
+                                  E_Protected_Body  |
+                                  E_Subprogram_Body |
+                                  E_Task_Body;
 
    function To_String (E : Entity_Name) return String;
 
@@ -116,6 +119,10 @@ package Common_Containers is
      (Element_Type        => Entity_Name,
       Hash                => Name_Hash,
       Equivalent_Elements => "=");
+
+   procedure pnames (S : Name_Sets.Set);
+   pragma Export (Ada, pnames);
+   --  Print set of nodes; for use in gdb
 
    package Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
