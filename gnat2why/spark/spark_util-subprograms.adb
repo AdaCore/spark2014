@@ -34,6 +34,7 @@ with Gnat2Why_Args;
 with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Nlists;                             use Nlists;
+with Rtsfind;                            use Rtsfind;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;
@@ -546,6 +547,13 @@ package body SPARK_Util.Subprograms is
 
       return Empty;
    end Get_Priority_Or_Interrupt_Priority;
+
+   --------------------------
+   -- Includes_Current_Task --
+   --------------------------
+
+   function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean is
+      (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
 
    -------------------
    -- Has_Contracts --

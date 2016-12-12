@@ -309,6 +309,14 @@ package SPARK_Util.Subprograms is
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
 
+   function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean
+   with Pre => (for all Call of Calls => Ekind (Call) in Entry_Kind
+                                                       | E_Function
+                                                       | E_Package
+                                                       | E_Procedure);
+   --  @param callable entities
+   --  @return True iff Calls include Ada.Task_Identification.Current_Task
+
    function Is_Error_Signaling_Procedure
      (E        : Entity_Id;
       After_GG : Boolean := True)

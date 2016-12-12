@@ -155,7 +155,7 @@ package body Flow_Generated_Globals.Partial is
       --  Proper and refined globals
 
       Initializes : Node_Sets.Set;
-      --  ??? only for packages
+      --  Only meaningful for packages
 
       Proof_Calls       : Node_Sets.Set;
       Conditional_Calls : Node_Sets.Set;
@@ -172,12 +172,17 @@ package body Flow_Generated_Globals.Partial is
       Has_Terminate : Boolean;
       --  Only meaningful for subprograms and entries
 
-      Recursive    : Boolean;
-      Nonreturning : Boolean;
-      Nonblocking  : Boolean;
-      --  Only meaningfull only for entries, functions and procedures
+      Recursive          : Boolean;
+      Nonreturning       : Boolean;
+      Nonblocking        : Boolean;
+      Entry_Calls        : Entry_Call_Sets.Set;
+      Tasking            : Tasking_Info;
+      Calls_Current_Task : Boolean;
+      --  Only meaningfull only for entries, functions and procedures and
+      --  initially for packages (nested in entries, functions or procedures).
+      --
+      --  Only recorded to the ALI files for entries, functions and procedures
 
-      Tasking : Tasking_Info;
    end record;
 
    package Entity_Contract_Maps is new Ada.Containers.Hashed_Maps
@@ -606,6 +611,8 @@ package body Flow_Generated_Globals.Partial is
          then Has_Terminate_Annotation (Analyzed)
          else Meaningless);
 
+      Contr.Calls_Current_Task := Includes_Current_Task (Contr.Direct_Calls);
+
       Contracts.Insert (Analyzed, Contr);
 
       if Analyzed = Root_Entity
@@ -697,8 +704,6 @@ package body Flow_Generated_Globals.Partial is
                Contr.Proper  := Contract_Globals (E, Refined => False);
                Contr.Refined := Contract_Globals (E, Refined => True);
 
-               Contr.Tasking := FA.Tasking;
-
             when E_Package =>
                null;
 
@@ -749,6 +754,10 @@ package body Flow_Generated_Globals.Partial is
          then FA.Has_Only_Nonblocking_Statements
          else Meaningless);
 
+      --  Deal with tasking-related stuff
+      Contr.Tasking     := FA.Tasking;
+      Contr.Entry_Calls := FA.Entries;
+
       return Contr;
    end Analyze_Body;
 
@@ -760,48 +769,50 @@ package body Flow_Generated_Globals.Partial is
 
       Contr : Contract;
 
-      procedure Collect_Unsynchronized_Globals
-        (Globals : Node_Sets.Set);
-      pragma Unreferenced (Collect_Unsynchronized_Globals);
-      --  Collect unsynchronized globals accessed by Info
+      function Unsynchronized_Globals (G : Global_Nodes) return Node_Sets.Set;
+      --  Returns unsynchronized globals from G
 
-      function Has_No_Body_Yet (E : Entity_Id)
-                                return Boolean;
-      --  Returns True if subprogram E does not have
-      --  a body yet (no .adb).
+      function Has_No_Body_Yet (E : Entity_Id) return Boolean is
+        (Ekind (E) in E_Function | E_Procedure
+         and then No (Subprogram_Body_Entity (E)));
+      --  Returns True if subprogram E does not have a body yet (no .adb)
 
-      ---------------------
-      -- Has_No_Body_Yet --
-      ---------------------
+      ----------------------------
+      -- Unsynchronized_Globals --
+      ----------------------------
 
-      function Has_No_Body_Yet (E : Entity_Id)
-                                return Boolean
+      function Unsynchronized_Globals (G : Global_Nodes) return Node_Sets.Set
       is
-      begin
-         --  ??? GNAT has problem if this is an expression function and
-         --      Sem_Aux is not withed.
-         return (Ekind (E) in E_Function | E_Procedure
-                 and then No (Subprogram_Body_Entity (E)));
-      end Has_No_Body_Yet;
+         Unsynch : Node_Sets.Set;
 
-      ------------------------------------
-      -- Collect_Unsynchronized_Globals --
-      ------------------------------------
+         procedure Collect (Vars : Node_Sets.Set);
 
-      procedure Collect_Unsynchronized_Globals
-        (Globals : Node_Sets.Set)
-      is
+         -------------
+         -- Collect --
+         -------------
+
+         procedure Collect (Vars : Node_Sets.Set) is
+         begin
+            for E of Vars loop
+               if not (Is_Heap_Entity (E)
+                       or else Is_Synchronized_Object (E)
+                       or else Is_Synchronized_State (E)
+                       or else Is_Part_Of_Concurrent_Object (E))
+               then
+                  Contr.Tasking (Unsynch_Accesses).Include (E);
+               end if;
+            end loop;
+         end Collect;
+
+      --  Start of processing for Unsynchronized_Globals
+
       begin
-         for E of Globals loop
-            if not (Is_Heap_Entity (E)
-                    or else Is_Synchronized_Object (E)
-                    or else Is_Synchronized_State (E)
-                    or else Is_Part_Of_Concurrent_Object (E))
-            then
-               Contr.Tasking (Unsynch_Accesses).Include (E);
-            end if;
-         end loop;
-      end Collect_Unsynchronized_Globals;
+         Collect (G.Proof_Ins);
+         Collect (G.Inputs);
+         Collect (G.Outputs);
+
+         return Unsynch;
+      end Unsynchronized_Globals;
 
    --  Start of processing for Analyze_Spec
 
@@ -816,6 +827,9 @@ package body Flow_Generated_Globals.Partial is
             --  Pretend that user supplied refined globals
             Contr.Proper := Contract_Globals (E, Refined => False);
 
+            Contr.Tasking (Unsynch_Accesses) :=
+              Unsynchronized_Globals (Contr.Proper);
+
          --  Capture (Yannick's) "frontend globals"; once they will end up in
          --  the ALI file they should be indistinguishable from other globals.
 
@@ -825,10 +839,14 @@ package body Flow_Generated_Globals.Partial is
             --  Frontend globals does not distinguish Proof_Ins from Inputs;
             --  conservatively assume that all reads belong to Inputs.
             pragma Assert (Contr.Refined.Proof_Ins.Is_Empty);
+
+            Contr.Tasking (Unsynch_Accesses) :=
+              Unsynchronized_Globals (Contr.Refined);
          end if;
       end if;
 
-      Contr.Conditional_Calls := Frontend_Calls (E);
+      Contr.Direct_Calls      := Frontend_Calls (E);
+      Contr.Conditional_Calls := Contr.Direct_Calls;
 
       pragma Assert
         (if Is_Proper_Callee (E)
@@ -862,6 +880,15 @@ package body Flow_Generated_Globals.Partial is
         (if Is_Callee (E)
          then False --  ??? first approximation
          else Meaningless);
+
+      --  In a contract it is syntactically not allowed to suspend on a
+      --  suspension object, call a protected procedure or entry, and it is
+      --  semantically not allowed to externally call a protected function
+      --  (because such calls are volatile and they would occur in an
+      --  interfering context).
+      pragma Assert (Contr.Tasking (Suspends_On).Is_Empty);
+      pragma Assert (Contr.Tasking (Locks).Is_Empty);
+      pragma Assert (Contr.Entry_Calls.Is_Empty);
 
       return Contr;
    end Analyze_Spec;
