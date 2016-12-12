@@ -642,7 +642,11 @@ package body Flow_Generated_Globals.Partial is
       end if;
 
       --  ??? this is probably wrong place to filter locals
-      if Ekind (Analyzed) in E_Function | E_Procedure then
+      if Ekind (Analyzed) in Entry_Kind
+                           | E_Function
+                           | E_Procedure
+                           | E_Task_Type
+      then
          declare
             C : Contract renames Contracts (Analyzed);
 
@@ -1142,8 +1146,11 @@ package body Flow_Generated_Globals.Partial is
 
    begin
       for N of Nodes loop
+         --  Filter variables declared within E and the E itself (which occurs
+         --  as a global when E is a single concurrent type). Heap is never a
+         --  local variable, so it must be always kept while filtering.
          if Is_Heap_Entity (N)
-           or else not Scope_Within (N, E)
+           or else not Scope_Within_Or_Same (N, E)
          then
             Remote.Insert (N);
          end if;
