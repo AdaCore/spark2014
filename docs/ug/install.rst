@@ -3,13 +3,17 @@
 Installation of |GNATprove|
 ===========================
 
-In general, you will need to install a recent version of GNAT (that supports
-Ada 2012 syntax) to compile |SPARK| programs.
+In general, you will need to install a recent version of GNAT toolchain (that
+supports Ada 2012 syntax) to compile |SPARK| programs. You will need to install
+one toolchain for each platform that you target, for example one toolchain for
+native compilation on your machine and one toolchain for cross compilation to
+an embedded platform.
 
 For analyzing |SPARK| programs, we recommend to first install GPS and then
 install |GNATprove| under the same location. Alternatively, you can install the
 GNATbench plug-in for Eclipse instead of GPS, using the Eclipse installation
-mechanism.
+mechanism. The same version of GPS or GNATbench can support both native and
+cross compilations, as well as |SPARK| analysis.
 
 If you choose to install |GNATprove| in a different location, you should also
 modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
