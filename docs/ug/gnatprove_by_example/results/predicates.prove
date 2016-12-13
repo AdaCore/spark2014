@@ -12,4 +12,5 @@ predicates.ads:38:10: info: function contract not available for proof ("Get_GCD"
 predicates.ads:38:24: info: overflow check proved
 predicates.ads:44:52: info: function contract not available for proof ("Get_GCD" is recursive)
 predicates.ads:48:09: info: range check proved
+predicates.ads:50:07: info: range check proved
 predicates.ads:58:89: info: index check proved
