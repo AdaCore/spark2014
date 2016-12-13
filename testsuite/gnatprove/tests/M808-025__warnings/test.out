@@ -95,7 +95,7 @@ p.adb:12:04: warning: "X" is not modified, could be declared constant
 p.adb:14:07: info: initialization of "X" proved
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
@@ -105,7 +105,7 @@ p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:07: info: initialization of "X" proved
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 
 Do not issue any compilation warnings, do not issue flow warnings and continue:
@@ -114,7 +114,7 @@ p.adb:1:14: info: initialization of "Y" proved
 p.adb:14:07: info: initialization of "X" proved
 p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)
 p.adb:18:19: info: initialization of "X" proved
 Stop at compilation:
 --------------------
@@ -220,7 +220,7 @@ p.adb:12:04: warning: "X" is not modified, could be declared constant
 p.adb:14:07: info: initialization of "X" proved[#1]
 p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
 completed 1 out of 1 (100%)...
 
@@ -231,7 +231,7 @@ p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:07: info: initialization of "X" proved[#1]
 p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
 completed 1 out of 1 (100%)...
 
@@ -241,7 +241,7 @@ p.adb:1:14: info: initialization of "Y" proved[#0]
 p.adb:14:07: info: initialization of "X" proved[#1]
 p.adb:15:12: info: initialization of "X" proved[#2]
 p.adb:17:09: info: initialization of "X" proved[#3]
-p.adb:18:19: info: assertion proved (CVC4: 1 VC)[#5]
+p.adb:18:04: info: assertion proved (CVC4: 1 VC)[#5]
 p.adb:18:19: info: initialization of "X" proved[#4]
 completed 1 out of 1 (100%)...
 p.adb:1:14: info: initialization of "Y" proved
