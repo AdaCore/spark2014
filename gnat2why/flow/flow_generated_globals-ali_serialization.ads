@@ -36,11 +36,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Globals,
                            EK_Protected_Instance,
                            EK_Task_Instance,
-                           EK_Tasking_Info,
                            EK_Direct_Calls);
-
-   type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
-   --  Similar to Tasking_Info_Bag, but with sets of object names
 
    type ALI_Entry (Kind : ALI_Entry_Kind := EK_Error) is record
       case Kind is
@@ -64,9 +60,6 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Task_Instance =>
             The_Type                     : Entity_Name;
             The_Object                   : Task_Object;
-         when EK_Tasking_Info =>
-            The_Entity                   : Entity_Name;
-            The_Tasking_Info             : Name_Tasking_Info;
          when EK_Direct_Calls =>
             The_Caller                   : Entity_Name;
             The_Callees                  : Name_Lists.List;

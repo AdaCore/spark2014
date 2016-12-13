@@ -24,7 +24,6 @@
 with Ada.Strings.Unbounded;
 
 with Lib.Util;                use Lib.Util;
-with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
@@ -60,20 +59,7 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   type Accessed_Tasking_Objects is record
-      Caller  : Entity_Name;
-      Entries : Entry_Call_Sets.Set;
-      Objects : Tasking_Info;
-   end record;
-
-   package Tasking_Info_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Accessed_Tasking_Objects);
-   --  Containers with tasking objects accessed by a given caller
-
-   Tasking_Info_List : Tasking_Info_Lists.List;
-   --  List with tasking objects directly accessed by subprograms
-
-   Entitiy_Infos : Partial_Contract_Lists.List;
+   Entity_Infos : Partial_Contract_Lists.List;
    --  Entity-specific information as discovered by their analysis
    --
    --  ??? we keep this locally only because in the ALI file we first want to
@@ -198,7 +184,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Start of processing for GG_Register_Global_Info
 
    begin
-      Entitiy_Infos.Append (GI);
+      Entity_Infos.Append (GI);
 
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoints, so it is more efficient to process them separately instead
@@ -208,14 +194,6 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Volatiles_And_States (GI.Proper.Inputs);
          Process_Volatiles_And_States (GI.Proper.Outputs);
          Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
-      end if;
-
-      --  Register tasking-related information; ignore packages because they
-      --  are elaborated sequentially anyway.
-      if GI.Kind in Entry_Kind | E_Function | E_Procedure | E_Task_Type then
-         Tasking_Info_List.Append ((Caller  => GI.Name,
-                                    Entries => Entry_Call_Sets.Empty_Set,
-                                    Objects => GI.Tasking));
       end if;
    end GG_Register_Global_Info;
 
@@ -369,7 +347,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Write_To_ALI (V);
 
       --  Write entity-specific info
-      for Info of Entitiy_Infos loop
+      for Info of Entity_Infos loop
          V := (Kind            => EK_Globals,
                The_Global_Info => Info);
          Write_To_ALI (V);
@@ -385,34 +363,9 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Write direct calls
       for Direct_Calls of Direct_Calls_List loop
-         V := (Kind                      => EK_Direct_Calls,
-               The_Caller                => Direct_Calls.Caller,
-               The_Callees               => Direct_Calls.Callees);
-         Write_To_ALI (V);
-      end loop;
-
-      for Subprogram : Accessed_Tasking_Objects of Tasking_Info_List loop
-         V := (Kind             => EK_Tasking_Info,
-               The_Entity       => Subprogram.Caller,
-               The_Tasking_Info => <>);
-
-         for EC : Entry_Call of Subprogram.Entries loop
-            --  For entry calls pretend that we are accessing an object
-            --  Package_Name.Object_Name.Entry_Name.
-            V.The_Tasking_Info (Entry_Calls).Insert
-              (To_Entity_Name
-                  (Unique_Name (EC.Obj) &
-                   "__" &
-                   Get_Name_String (Chars (EC.Entr))));
-         end loop;
-
-         for Kind in Subprogram.Objects'Range loop
-            for N of Subprogram.Objects (Kind) loop
-               pragma Assert (Ekind (N) in E_Abstract_State | Object_Kind);
-               V.The_Tasking_Info (Kind).Insert (To_Entity_Name (N));
-            end loop;
-         end loop;
-
+         V := (Kind        => EK_Direct_Calls,
+               The_Caller  => Direct_Calls.Caller,
+               The_Callees => Direct_Calls.Callees);
          Write_To_ALI (V);
       end loop;
 

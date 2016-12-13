@@ -135,6 +135,9 @@ package Flow_Generated_Globals is
       Outputs   : Name_Sets.Set;          --  Flow/Frontend/User
    end record;
 
+   type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
+   --  Tasking objects accessed by a given entity
+
    type Partial_Contract is record
       Name                  : Entity_Name;
       Local                 : Boolean;
@@ -152,7 +155,7 @@ package Flow_Generated_Globals is
       Local_Subprograms     : Name_Sets.Set; --  Flow
       Local_Definite_Writes : Name_Sets.Set; --  Flow (only for packages)
 
-      Tasking               : Tasking_Info;
+      Tasking               : Name_Tasking_Info;
 
       Has_Terminate         : Boolean;
       Recursive             : Boolean;

@@ -1499,6 +1499,14 @@ package body Flow_Generated_Globals.Phase_2 is
                   Phase_1_Info.Insert (Key      => V.The_Global_Info.Name,
                                        New_Item => V.The_Global_Info);
 
+                  for Kind in Tasking_Info_Kind loop
+                     if not V.The_Global_Info.Tasking (Kind).Is_Empty then
+                        Tasking_Info_Bag (GG_Phase_1, Kind).Insert
+                          (V.The_Global_Info.Name,
+                           V.The_Global_Info.Tasking (Kind));
+                     end if;
+                  end loop;
+
                   case V.The_Global_Info.Kind is
                      when Entry_Kind  |
                           E_Function  |
@@ -1547,15 +1555,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Task_Instance =>
                   Register_Task_Object (V.The_Type, V.The_Object);
-
-               when EK_Tasking_Info =>
-                  for Kind in Tasking_Info_Kind loop
-                     if not V.The_Tasking_Info (Kind).Is_Empty then
-                        Tasking_Info_Bag (GG_Phase_1, Kind).Insert
-                          (V.The_Entity,
-                           V.The_Tasking_Info (Kind));
-                     end if;
-                  end loop;
 
                when EK_Direct_Calls =>
                   declare

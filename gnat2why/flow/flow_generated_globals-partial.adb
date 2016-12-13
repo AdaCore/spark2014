@@ -35,8 +35,10 @@ with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Gnat2Why.Annotate;                use Gnat2Why.Annotate;
 with Graphs;
 with Lib;                              use Lib;
+with Namet;                            use Namet;
 with Sem_Aux;                          use Sem_Aux;
 with Sem_Util;                         use Sem_Util;
+with Sinfo;                            use Sinfo;
 with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
@@ -182,7 +184,6 @@ package body Flow_Generated_Globals.Partial is
       --  initially for packages (nested in entries, functions or procedures).
       --
       --  Only recorded to the ALI files for entries, functions and procedures
-
    end record;
 
    package Entity_Contract_Maps is new Ada.Containers.Hashed_Maps
@@ -291,6 +292,12 @@ package body Flow_Generated_Globals.Partial is
      (Names :     Name_Sets.Set;
       Nodes : out Node_Sets.Set);
    --  Convert names to nodes
+
+   function To_Names
+     (Entries : Entry_Call_Sets.Set;
+      Objects : Tasking_Info)
+      return Name_Tasking_Info;
+   --  Convert tasking info from nodes to names
 
    procedure Write_Contracts_To_ALI
      (E :        Entity_Id;
@@ -1655,6 +1662,38 @@ package body Flow_Generated_Globals.Partial is
       end if;
    end Print_Partial_Graph;
 
+   --------------
+   -- To_Names --
+   --------------
+
+   function To_Names
+     (Entries : Entry_Call_Sets.Set;
+      Objects : Tasking_Info)
+      return Name_Tasking_Info
+   is
+      Result : Name_Tasking_Info;
+
+   begin
+      for EC of Entries loop
+         --  For entry calls pretend that we are accessing an object
+         --  Package_Name.Object_Name.Entry_Name.
+         Result (Entry_Calls).Insert
+           (To_Entity_Name
+              (Unique_Name (EC.Obj) &
+                 "__" &
+               Get_Name_String (Chars (EC.Entr))));
+      end loop;
+
+      for Kind in Objects'Range loop
+         for N of Objects (Kind) loop
+            pragma Assert (Ekind (N) in E_Abstract_State | Object_Kind);
+            Result (Kind).Insert (To_Entity_Name (N));
+         end loop;
+      end loop;
+
+      return Result;
+   end To_Names;
+
    -----------------
    -- To_Node_Set --
    -----------------
@@ -1721,7 +1760,8 @@ package body Flow_Generated_Globals.Partial is
              Recursive             => Contr.Recursive,
              Nonreturning          => Contr.Nonreturning,
              Nonblocking           => Contr.Nonblocking,
-             Tasking               => Contr.Tasking));
+             Tasking               => To_Names (Contr.Entry_Calls,
+                                                Contr.Tasking)));
       end if;
 
       --  Register abstract state components; if any then there
