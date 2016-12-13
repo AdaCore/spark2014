@@ -1,5 +1,5 @@
 enums.adb:10:19: info: postcondition proved (CVC4: 2 VC)
-enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True)
+enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B (e.g. when A = Elem_1 and B = Elem_0 and Enum_Equals_Broken_A'Result = True)
 enums.adb:23:14: info: initialization of "Tmp" proved
 enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True)
 enums.adb:36:19: info: postcondition proved (CVC4: 2 VC)
@@ -33,9 +33,9 @@ enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:206:14: info: initialization of "Tmp.F" proved
 counterexample expected for check at enums.adb:19
-  trace at enums.adb:16 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = False
-  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
-  trace at enums.adb:21 --> Tmp = Elem_0
+  trace at enums.adb:16 --> A = Elem_1 and B = Elem_0 and Enum_Equals_Broken_A'Result = False
+  trace at enums.adb:19 --> A = Elem_1 and B = Elem_0 and Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:21 --> Tmp = Elem_1
   trace at enums.adb:23 --> Enum_Equals_Broken_A'Result = True
 counterexample expected for check at enums.adb:27
   trace at enums.adb:26 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = False

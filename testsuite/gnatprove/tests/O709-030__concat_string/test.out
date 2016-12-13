@@ -1,4 +1,4 @@
-concat_string.adb:4:21: low: range check might fail (e.g. when S = (others => 0) and S'First = 1 and S'Last = 2147483647 and S1 = (others => 0) and S1'First = 1 and S1'Last = 1)
+concat_string.adb:4:21: low: range check might fail (e.g. when S = (others => 0) and S'First = 1 and S'Last = 2147483647 and S1 = (others => 0) and S1'First = 2147483647 and S1'Last = 2147483647)
 concat_string.adb:5:31: low: range check might fail (e.g. when S2 = (others => 0) and S2'First = 1 and S2'Last = 1)
 concat_string.adb:7:11: info: initialization of "S1" proved
 concat_string.adb:7:14: low: range check might fail (e.g. when S1'First = 1 and S1'Last = 1 and S2'First = 1 and S2'Last = 2147483647)
