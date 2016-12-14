@@ -302,7 +302,8 @@ package body SPARK_Util.Subprograms is
          begin
             for J in Inherit_Subp'Range loop
                Inherit_Pragmas :=
-                 Filter_Classwide_Contracts (Pragmas, Inherit_Subp (J));
+                 Filter_Classwide_Contracts
+                   (Pragmas, Ultimate_Alias (Inherit_Subp (J)));
                exit when not Inherit_Pragmas.Is_Empty;
             end loop;
             Pragmas := Inherit_Pragmas;
