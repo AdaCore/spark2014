@@ -1,3 +1,4 @@
 Darwin SKIP too slow on darwin
+NT SKIP too slow on windows
 !large SKIP part of large testsuite
 ALL RLIMIT 2000
