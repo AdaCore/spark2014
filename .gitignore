@@ -18,6 +18,7 @@
 *.pyc
 *.swp
 auto.cgpr
+conf.py
 GNAT-*
 gnat_src
 install
