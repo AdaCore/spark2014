@@ -26,7 +26,7 @@ unit1.ads:32:20: info: postcondition proved (CVC4: 1 VC)
 unit1.ads:32:20: medium: postcondition might be weaker than class-wide postcondition (e.g. when X = (C1 => 0))
 unit1.ads:32:36: info: overflow check proved (CVC4: 1 VC)
 unit2.adb:13:12: info: precondition proved (CVC4: 1 VC)
-unit2.adb:14:20: medium: overflow check might fail (e.g. when X = (C1 => -1, C2 => 2147483647))
+unit2.adb:14:20: medium: overflow check might fail (e.g. when X = (C1 => 0, C2 => 2147483647))
 unit2.ads:11:22: info: initialization of "X.C1" proved
 unit2.ads:11:22: info: initialization of "X.C2" proved
 unit2.ads:12:14: info: initialization of "X.C1" proved

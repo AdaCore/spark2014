@@ -474,7 +474,7 @@ bio.adb:122:25: info: initialization of "C30b" proved, in call inlined at bio.ad
 bio.adb:122:25: info: initialization of "C5b" proved
 bio.adb:127:14: info: initialization of "Result" proved
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2147483646 and FullString'Last = 2147483646 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
+bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 1 and Text = (others => 0) and Text'First = 1 and Text'Last = 2147483646)
 bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 1 and FullString'Last = 1 and TheCodeName = BioApiOk)
 bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:183
 bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183 (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 2)
@@ -1706,7 +1706,7 @@ door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail (e.g. when CurrentDoor = Open and DoorAlarm = Silent and ID = StartUnenrolledTIS and NewDoor = Open and SystemFault = True)
+door.adb:169:30: medium: refined postcondition might fail (e.g. when CurrentDoor = Closed and DoorAlarm = Silent and ID = DoorClosed and NewDoor = Closed and SystemFault = False)
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
