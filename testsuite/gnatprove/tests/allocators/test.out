@@ -130,14 +130,14 @@ list_mod_allocator.adb:83:16: info: loop invariant preservation proved (Z3: 2 VC
 list_mod_allocator.adb:83:16: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:83:29: info: initialization of "Alloc" proved
 list_mod_allocator.adb:85:16: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:85:16: info: loop invariant preservation proved (Z3: 2 VC)
+list_mod_allocator.adb:85:16: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:85:16: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:85:29: info: initialization of "Unseen" proved
 list_mod_allocator.adb:87:16: info: loop invariant initialization proved (Z3: 1 VC)
 list_mod_allocator.adb:87:16: info: loop invariant preservation proved (Z3: 1 VC)
 list_mod_allocator.adb:88:62: info: initialization of "Alloc" proved
 list_mod_allocator.adb:90:16: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:90:16: info: loop invariant preservation proved (Z3: 2 VC)
+list_mod_allocator.adb:90:16: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:91:28: info: index check proved (Z3: 2 VC)
 list_mod_allocator.adb:91:58: info: initialization of "Alloc" proved
 list_mod_allocator.adb:91:65: info: range check proved (Z3: 1 VC)
@@ -172,12 +172,12 @@ list_mod_allocator.adb:112:39: info: loop invariant initialization proved (Z3: 1
 list_mod_allocator.adb:112:39: info: loop invariant preservation proved (Z3: 1 VC)
 list_mod_allocator.adb:112:47: info: initialization of "Avail" proved
 list_mod_allocator.adb:112:76: info: initialization of "Unseen" proved
-list_mod_allocator.adb:114:19: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:114:19: info: loop invariant initialization proved (Z3: 1 VC)
 list_mod_allocator.adb:114:19: info: loop invariant preservation proved (CVC4: 1 VC)
 list_mod_allocator.adb:115:69: info: initialization of "Avail" proved
 list_mod_allocator.adb:116:31: info: initialization of "Unseen" proved
 list_mod_allocator.adb:118:19: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:118:19: info: loop invariant preservation proved (Z3: 2 VC)
+list_mod_allocator.adb:118:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:118:27: info: initialization of "Avail" proved
 list_mod_allocator.adb:118:47: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:120:19: info: loop invariant initialization proved (Z3: 1 VC)
@@ -221,14 +221,14 @@ list_mod_allocator.adb:150:57: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:157:14: warning: subprogram "Prove_Is_Preprend" has no effect
 list_mod_allocator.adb:165:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:165:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
-list_mod_allocator.adb:165:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:165:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
+list_mod_allocator.adb:165:13: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:165:40: info: overflow check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:165:40: info: overflow check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:198
 list_mod_allocator.adb:167:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:167:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
-list_mod_allocator.adb:167:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:167:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
+list_mod_allocator.adb:167:13: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:168:15: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:168:15: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:198
 list_mod_allocator.adb:168:29: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:185
@@ -237,8 +237,8 @@ list_mod_allocator.adb:168:40: info: overflow check proved (Z3: 1 VC), in call i
 list_mod_allocator.adb:168:40: info: overflow check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:198
 list_mod_allocator.adb:170:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:170:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
-list_mod_allocator.adb:170:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:170:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:198
+list_mod_allocator.adb:170:13: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:170:33: info: overflow check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:185
 list_mod_allocator.adb:170:33: info: overflow check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:198
 list_mod_allocator.adb:171:15: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:185
@@ -257,7 +257,7 @@ list_mod_allocator.adb:195:16: info: index check proved (Z3: 2 VC)
 list_mod_allocator.adb:198:33: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:202:14: warning: subprogram "Prove_Init" has no effect
 list_mod_allocator.adb:210:13: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
-list_mod_allocator.adb:210:13: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
+list_mod_allocator.adb:210:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:210:36: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:210:65: info: range check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:216:42: info: initialization of "Data" constituent of "State" proved

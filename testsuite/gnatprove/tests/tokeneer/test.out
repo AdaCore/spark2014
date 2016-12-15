@@ -137,11 +137,11 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:22: medium: postcondition might fail
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm-interfac.ads:51:22: info: function contract not available for proof ("IsAlarming" may not return)

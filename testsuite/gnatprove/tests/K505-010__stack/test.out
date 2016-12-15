@@ -1,7 +1,7 @@
 error.ads:7:14: info: initialization of "MyState" proved
 error.ads:9:14: info: initialization of "MyState" proved
-stacks.adb:10:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => 2147483647, Data => (others => 0)))
-stacks.adb:11:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)))
+stacks.adb:10:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => 2147483647, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
+stacks.adb:11:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CodePeer)
 stacks.ads:20:14: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 1, Data => (others => 0)))
 stacks.ads:21:14: info: postcondition proved (CVC4: 1 VC)

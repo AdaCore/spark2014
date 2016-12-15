@@ -4489,7 +4489,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.04" steps="32"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="32"/></proof>
   <proof prover="1"><result status="failure" time="0.08"/></proof>
   <proof prover="2"><result status="unknown" time="0.02" steps="41437"/></proof>
   <proof prover="3"><result status="unknown" time="0.03" steps="31"/></proof>
@@ -4519,7 +4519,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="24"/></proof>
+  <proof prover="0"><result status="unknown" time="0.03" steps="24"/></proof>
   <proof prover="1"><result status="failure" time="0.06"/></proof>
   <proof prover="2"><result status="unknown" time="0.02" steps="41330"/></proof>
   <proof prover="3"><result status="unknown" time="0.02" steps="18"/></proof>

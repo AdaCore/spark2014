@@ -47,9 +47,9 @@ records.adb:166:22: info: initialization of "Dst.Exists" proved
 records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:178:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:187:23: info: initialization of "Tmp" proved
-records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?)))
+records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
 records.adb:201:23: info: initialization of "Tmp" proved
-records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?)))
+records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
 records.adb:215:30: info: assertion proved (CVC4: 2 VC)
 records.adb:216:36: info: initialization of "Tmp" proved
 records.adb:219:10: info: assertion proved (CVC4: 2 VC)
@@ -59,12 +59,12 @@ records.adb:227:22: info: postcondition proved (CVC4: 4 VC)
 records.adb:237:26: info: initialization of "Tmp" proved
 records.adb:243:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:251:23: info: initialization of "Tmp" proved
-records.adb:256:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:256:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
 records.adb:265:23: info: initialization of "Tmp" proved
-records.adb:270:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
+records.adb:270:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:280:26: info: initialization of "Tmp" proved
 records.adb:286:22: info: postcondition proved (CVC4: 4 VC)
-records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => ?, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
+records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?)))
 records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:316:14: info: initialization of "Tmp.Exists" proved
 records.adb:316:14: info: initialization of "Tmp.The_Pair.A" proved
@@ -136,33 +136,33 @@ counterexample expected for check at records.adb:166
   trace at records.adb:170 --> Dst = (Exists => False, The_Pair => (A => 0, B => 0))
   trace at records.adb:172 --> Dst = (Exists => False, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:195
-  trace at records.adb:190 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
-  trace at records.adb:195 --> X = (Exists => True, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?))
-  trace at records.adb:199 --> Tmp = 0
-  trace at records.adb:200 --> X = (Exists => True, The_Pair => (A => 0, B => 0))
-  trace at records.adb:201 --> X = (Exists => True, The_Pair => (A => 0, B => 0))
+  trace at records.adb:190 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
+  trace at records.adb:195 --> X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))
+  trace at records.adb:199 --> Tmp = 1
+  trace at records.adb:200 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:201 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:209
-  trace at records.adb:204 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
-  trace at records.adb:209 --> X = (Exists => True, The_Pair => (A => ?, B => 0)) and X'Old = (Exists => ?, The_Pair => (A => 1, B => ?))
-  trace at records.adb:212 --> X_Old = (Exists => True, The_Pair => (A => 1, B => 0))
-  trace at records.adb:214 --> Tmp = 0
-  trace at records.adb:217 --> X = (Exists => True, The_Pair => (A => 0, B => 0))
-  trace at records.adb:222 --> X = (Exists => True, The_Pair => (A => 0, B => 0))
+  trace at records.adb:204 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
+  trace at records.adb:209 --> X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))
+  trace at records.adb:212 --> X_Old = (Exists => True, The_Pair => (A => 0, B => 1))
+  trace at records.adb:214 --> Tmp = 1
+  trace at records.adb:217 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:222 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:256
-  trace at records.adb:254 --> X = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:256 --> X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:263 --> Tmp = 0
-  trace at records.adb:264 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:265 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
+  trace at records.adb:254 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:256 --> X = (Exists => False, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:263 --> Tmp = 1
+  trace at records.adb:264 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:265 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:270
-  trace at records.adb:268 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
-  trace at records.adb:270 --> X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:268 --> X = (Exists => False, The_Pair => (A => 1, B => 0))
+  trace at records.adb:270 --> X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:278 --> Tmp = 0
   trace at records.adb:279 --> X = (Exists => False, The_Pair => (A => 1, B => 1))
-  trace at records.adb:280 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:280 --> X = (Exists => False, The_Pair => (A => 1, B => 0))
 counterexample expected for check at records.adb:300
   trace at records.adb:295 --> X = (Exists => True, The_Pair => (A => 0, B => 5))
-  trace at records.adb:300 --> X = (Exists => True, The_Pair => (A => ?, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))
+  trace at records.adb:300 --> X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => ?, The_Pair => (A => 0, B => ?))
   trace at records.adb:303 --> X = (Exists => True, The_Pair => (A => 5, B => 5))
 counterexample expected for check at records.adb:323
   trace at records.adb:319 --> Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 0))
@@ -197,10 +197,10 @@ counterexample expected for check at records.adb:453
   trace at records.adb:452 --> R = (A => 255, B => 255)
   trace at records.adb:453 --> R = (A => 255, B => ?)
 counterexample expected for check at records.adb:483
-  trace at records.adb:480 --> R = (Exists => False, The_Pair => (A => 0, B => 0))
+  trace at records.adb:480 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:481 --> X = 1
   trace at records.adb:483 --> R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1
-  trace at records.adb:488 --> R_Old = (Exists => False, The_Pair => (A => 0, B => 0))
+  trace at records.adb:488 --> R_Old = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:490 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:494 --> R = (Exists => False, The_Pair => (A => 1, B => 0))
 counterexample expected for check at records.adb:504

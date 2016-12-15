@@ -31,8 +31,8 @@ main.adb:35:16: warning: no Global contract available for "Put_Line"
 main.adb:36:16: info: initialization of private part of "S" proved
 main.adb:37:16: warning: assuming "New_Line" has no effect on global items
 main.adb:37:16: warning: no Global contract available for "New_Line"
-stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => 2147483647, Data => (others => 0)))
-stacks.adb:12:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)))
+stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => 2147483647, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
+stacks.adb:12:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:24:14: info: range check proved (CVC4: 1 VC)
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items

@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="5" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
 <file name="../../../gnatprove/cert-id.mlw" expanded="true">
 <theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6358,11 +6358,11 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__extract__subprogram_def" sum="8afb0b21f245b70d83cbd34af37bd3b2" expanded="true">
+<theory name="Cert__id__extract__subprogram_def" sum="9ee40a388d9bfadb04b15bed21d735fe" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

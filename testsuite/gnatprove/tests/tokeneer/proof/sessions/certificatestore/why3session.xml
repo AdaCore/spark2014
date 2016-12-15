@@ -4844,7 +4844,7 @@
   <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.03" steps="34"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="34"/></proof>
   <proof prover="1"><result status="failure" time="0.06"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="45155"/></proof>
   <proof prover="3"><result status="unknown" time="0.04" steps="28"/></proof>
@@ -4886,7 +4886,7 @@
   <proof prover="3" timelimit="5" steplimit="0"><result status="valid" time="0.00" steps="22"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.03" steps="115"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="115"/></proof>
   <proof prover="1"><result status="unknown" time="0.03"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="25027"/></proof>
   <proof prover="3"><result status="unknown" time="0.03" steps="121"/></proof>
@@ -4900,7 +4900,7 @@
   <proof prover="3" timelimit="5" steplimit="0"><result status="valid" time="0.00" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="0"><result status="unknown" time="0.03" steps="64"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="64"/></proof>
   <proof prover="1"><result status="unknown" time="0.03"/></proof>
   <proof prover="2"><result status="unknown" time="0.02" steps="25400"/></proof>
   <proof prover="3"><result status="unknown" time="0.04" steps="70"/></proof>

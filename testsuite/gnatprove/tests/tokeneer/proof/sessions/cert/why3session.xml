@@ -6322,7 +6322,7 @@
   <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.06" steps="125"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="125"/></proof>
   <proof prover="1"><result status="failure" time="0.10"/></proof>
   <proof prover="2"><result status="unknown" time="0.04" steps="52334"/></proof>
   <proof prover="3"><result status="unknown" time="0.05" steps="90"/></proof>
@@ -6334,7 +6334,7 @@
   <proof prover="3"><result status="unknown" time="0.05" steps="244"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="unknown" time="0.63" steps="15002"/></proof>
+  <proof prover="0"><result status="unknown" time="0.42" steps="15002"/></proof>
   <proof prover="1"><result status="failure" time="0.10"/></proof>
   <proof prover="2"><result status="unknown" time="0.04" steps="89913"/></proof>
   <proof prover="3"><result status="unknown" time="0.47" steps="15014"/></proof>

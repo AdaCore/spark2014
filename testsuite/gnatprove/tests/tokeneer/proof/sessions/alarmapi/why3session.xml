@@ -2936,7 +2936,7 @@
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.07" steps="706"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="706"/></proof>
   <proof prover="1"><result status="failure" time="0.04"/></proof>
   <proof prover="2"><result status="unknown" time="0.05" steps="57849"/></proof>
   <proof prover="3"><result status="unknown" time="0.04" steps="448"/></proof>
@@ -2951,7 +2951,7 @@
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.09" steps="741"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="741"/></proof>
   <proof prover="1"><result status="failure" time="0.04"/></proof>
   <proof prover="2"><result status="unknown" time="0.02" steps="57945"/></proof>
   <proof prover="3"><result status="unknown" time="0.05" steps="464"/></proof>

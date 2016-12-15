@@ -6234,13 +6234,13 @@
   <proof prover="3"><result status="unknown" time="0.05" steps="90"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.07" steps="185"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="185"/></proof>
   <proof prover="1"><result status="failure" time="0.11"/></proof>
   <proof prover="2"><result status="unknown" time="0.05" steps="62452"/></proof>
   <proof prover="3"><result status="unknown" time="0.06" steps="244"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="unknown" time="0.61" steps="15002"/></proof>
+  <proof prover="0"><result status="unknown" time="0.36" steps="15002"/></proof>
   <proof prover="1"><result status="failure" time="0.11"/></proof>
   <proof prover="2"><result status="unknown" time="0.04" steps="90314"/></proof>
   <proof prover="3"><result status="unknown" time="0.49" steps="15014"/></proof>
