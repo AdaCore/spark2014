@@ -1,0 +1,2 @@
+foo.adb:29:04: warning: analyzing unreferenced procedure "Fiddle"
+foo.adb:38:22: info: assertion proved (CVC4: 3 VC)
