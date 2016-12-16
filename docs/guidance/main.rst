@@ -77,7 +77,7 @@ SPARK analysis can be applied to the complete program or only parts of it. SPARK
    "Strict clear syntax",  "static",  "static"
 
 
-The main benefit of formal program verification, as proposed in SPARK and similarly with Frama-C for C code, is that they allow verifying properties that are difficult or very costly to verify by other methods, like testing or reviews. The difficulty may originate in the complexity of the software, the complexity of the requirement, or the unknown capabilities of attackers. Formal verification allows to give guarantees that some properties are always verified, however complex the context. The latest versions of international certification standards for avionics (DO-178C) and railway (CENELEC 20128:2011) have recognized these benefits by augmenting the role that formal methods can play in the development of critical software.
+The main benefit of formal program verification, as proposed in SPARK and similarly with Frama-C for C code, is that they allow verifying properties that are difficult or very costly to verify by other methods, like testing or reviews. The difficulty may originate in the complexity of the software, the complexity of the requirement, or the unknown capabilities of attackers. Formal verification allows to give guarantees that some properties are always verified, however complex the context. The latest versions of international certification standards for avionics (DO-178C) and railway (CENELEC 50128:2011) have recognized these benefits by augmenting the role that formal methods can play in the development of critical software.
 
 Levels of SPARK Use
 -------------------
