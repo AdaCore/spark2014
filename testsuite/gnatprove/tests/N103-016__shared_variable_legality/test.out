@@ -3,6 +3,4 @@ p.ads:23:07: component "F2" of non-volatile type "R2" cannot be volatile
 p.ads:26:13: discriminant cannot be volatile
 p.ads:30:09: discriminated type "R4" cannot be volatile
 p.ads:38:04: discriminated object "SV" cannot be volatile
-p.ads:40:09: tagged type "R6" cannot be volatile
-p.ads:48:04: tagged object "SV2" cannot be volatile
 gnatprove: error during generation of Global contracts
