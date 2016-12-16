@@ -1,3 +1,3 @@
 linear_search.adb:23:14: high: "Res.At_Index" is not initialized
-linear_search.ads:29:20: medium: contract case might fail (e.g. when A = (9 => 1, others => 0) and Search'Result = (Found => ?, At_Index => 2) and Val = 0)
-linear_search.ads:31:67: medium: contract case might fail (e.g. when A = (9 => 1, 1 => 1, others => 0) and Search'Result = (Found => False, At_Index => ?) and Val = 0)
+linear_search.ads:29:20: medium: contract case might fail (e.g. when A = (others => 0) and Search'Result = (Found => True, At_Index => 2) and Val = 0)
+linear_search.ads:31:67: medium: contract case might fail (e.g. when A = (9 => 1, 1 => 1, others => 0) and Search'Result = (Found => False, At_Index => 1) and Val = 0)
