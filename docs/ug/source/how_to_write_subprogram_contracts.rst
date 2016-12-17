@@ -60,11 +60,9 @@ program.
 
 .. note::
 
-   In absence of data dependencies, |GNATprove| does generate a contract using
-   one of the techniques described in the following. To state that a subprogram
-   has no data dependencies and prevent the automatic generation of data
-   dependencies by |GNATprove|, a user should write an explicit ``Global =>
-   null`` contract.
+   Intrinsic subprograms such as arithmetic operations, and shift/rotate
+   functions without user-provided functional contracts (precondition,
+   postcondition or contract cases) are handled specially by |GNATProve|.
 
 .. _Auto Completion for Incomplete Contracts:
 
@@ -572,6 +570,13 @@ may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
    :ref:`Specifying Files To Analyze` and :ref:`Excluding Files From
    Analysis`), is treated by |GNATprove| like an imported subprogram.
 
+.. note::
+
+   Intrinsic subprograms such as arithmetic operations and shift/rotate
+   functions are handled specially by GNATprove. Except for shift/rotate
+   operations with a user-provided functional contract (precondition,
+   postcondition or contract cases) which are treated like regular functions.
+
 For example, unit ``Gen_Imported_Global`` is a modified version of the
 ``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency
 Contracts`, where procedure ``Get_Global`` is imported from C:
@@ -739,7 +744,7 @@ the following implementation of the five ``F`` functions:
 
 As can be easily verified by review, all these functions terminate, and all
 return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
-``F_While``, and ``F_Call`` terminate. 
+``F_While``, and ``F_Call`` terminate.
 
 .. literalinclude:: ../gnatprove_by_example/results/terminating_annotations.flow
    :language: none
@@ -766,7 +771,7 @@ number of possible iterations of the loop has been bounded using a
 annotation and consider them as terminating when verifying ``F_Term``.
 
 .. note::
-   
+
    Possible nontermination of a subprogram may influence |GNATprove| proof
    capabilities. Indeed, to avoid soundness issues due to nontermination in
    logical formulas, GNATprove will not be able to see the contract of
