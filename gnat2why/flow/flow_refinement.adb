@@ -807,49 +807,40 @@ package body Flow_Refinement is
    -----------------------
 
    function Refinement_Needed (E : Entity_Id) return Boolean is
-      Body_E : constant Entity_Id := Get_Body_Entity (E);
+      Depends_N : constant Node_Id :=
+        Find_Contract (E, Pragma_Depends);
+      Global_N  : constant Node_Id :=
+        Find_Contract (E, Pragma_Global);
+
+      Refined_Depends_N : constant Node_Id :=
+        Find_Contract (E, Pragma_Refined_Depends);
+      Refined_Global_N  : constant Node_Id :=
+        Find_Contract (E, Pragma_Refined_Global);
+
+      B_Scope : constant Flow_Scope := Get_Flow_Scope (Get_Body_Entity (E));
 
    begin
-      if Present (Body_E) then
-         declare
-            Depends_N : constant Node_Id :=
-              Find_Contract (E, Pragma_Depends);
-            Global_N  : constant Node_Id :=
-              Find_Contract (E, Pragma_Global);
+      return
+        --  1) No Global and no Depends aspect
+        (No (Global_N) and then No (Depends_N))
 
-            Refined_Depends_N : constant Node_Id :=
-              Find_Contract (E, Pragma_Refined_Depends);
-            Refined_Global_N  : constant Node_Id :=
-              Find_Contract (E, Pragma_Refined_Global);
+          or else
 
-            B_Scope : constant Flow_Scope := Get_Flow_Scope (Body_E);
+        --  2) Global refers to state abstraction with visible refinement but
+        --     no Refined_Global is present.
+        (Present (Global_N) and then
+         No (Refined_Global_N) and then
+         No (Refined_Depends_N) and then  -- ???
+         Mentions_State_With_Visible_Refinement (Global_N, B_Scope))
 
-         begin
-            return
-              --  1) No Global and no Depends aspect
-              (No (Global_N) and then No (Depends_N))
+          or else
 
-                or else
-
-              --  2) Global refers to state abstraction with visible refinement
-              --     but no Refined_Global is present.
-              (Present (Global_N) and then
-                 No (Refined_Global_N) and then
-                 No (Refined_Depends_N) and then  -- ???
-                 Mentions_State_With_Visible_Refinement (Global_N, B_Scope))
-
-                or else
-
-              --  3) Depends refers to state abstraction with visible
-              --     refinement but no Refined_Depends is present.
-              (Present (Depends_N) and then
-                 No (Refined_Depends_N) and then
-                 No (Refined_Global_N) and then  -- ???
-                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
-         end;
-      end if;
-
-      return False;
+        --  3) Depends refers to state abstraction with visible refinement but
+        --     no Refined_Depends is present.
+        (Present (Depends_N) and then
+         No (Refined_Depends_N) and then
+         No (Refined_Global_N) and then  -- ???
+         Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
    end Refinement_Needed;
 
    -----------------------------------

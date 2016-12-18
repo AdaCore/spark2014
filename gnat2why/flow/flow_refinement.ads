@@ -34,6 +34,7 @@ with Types;             use Types;
 
 with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
+with SPARK_Definition;  use SPARK_Definition;
 with SPARK_Util.Types;  use SPARK_Util.Types;
 
 package Flow_Refinement is
@@ -215,18 +216,16 @@ package Flow_Refinement is
    --  abstraction whose refinement is visible from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
+               and then Entity_Body_In_SPARK (E);
    --  Returns True if a refinement is needed for the given subprogram, entry
-   --  or task E.
+   --  or task E. Only meaningful when entity body is present and is in SPARK.
    --
    --  If a body is present then we need a refinement if either:
    --     * no Global and no Depends is present
    --     * Global mentions state with visible refinement but no Refined_Global
    --       is present
    --     * ditto for Depends and Refined_Depends
-   --
-   --  Otherwise returns False since we can't decide (nor need an answer,
-   --  since we won't analyze the body).
 
    function Nested_Within_Concurrent_Type (T : Type_Id;
                                            S : Flow_Scope)
