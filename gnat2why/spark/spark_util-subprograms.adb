@@ -977,7 +977,7 @@ package body SPARK_Util.Subprograms is
       case Ekind (E) is
 
          --  Entries are always protected subprograms
-         when E_Entry =>
+         when Entry_Kind =>
             return True;
 
          --  Detect subprograms declared in scope of a protected type

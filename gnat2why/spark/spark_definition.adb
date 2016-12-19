@@ -2495,6 +2495,31 @@ package body SPARK_Definition is
          E := Get_Called_Entity (N);
       end if;
 
+      --  External calls to non-library-level objects are not yet supported
+      if Ekind (Scope (E)) = E_Protected_Type
+        and then Is_External_Call (N)
+      then
+         declare
+            Obj : constant Entity_Id :=
+              Get_Enclosing_Object (Prefix (Name (N)));
+         begin
+            case Ekind (Obj) is
+               when Formal_Kind =>
+                  Mark_Unsupported
+                    ("call to operation of a formal protected parameter", N);
+                  return;
+
+               --  External calls prefixed with library-level objects are fine
+
+               when E_Variable =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end;
+      end if;
+
       --  Current_Protected_Type is either empty or points to what is says
       pragma Assert (Present (Scope (E)));
 

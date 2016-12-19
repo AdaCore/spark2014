@@ -65,6 +65,9 @@ Tool Limitations
    * on components of tagged types if the tagged type is visble from inside the
      scope of the invariant bearing type.
 
+#. Calls to protected subprograms and protected entries whose prefix denotes a
+   formal subprogram parameter are not supported.
+
 Legality Rules
 --------------
 
