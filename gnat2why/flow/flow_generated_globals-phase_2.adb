@@ -345,11 +345,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  not exist it returns Null_Entity_Name.
 
    procedure GG_Get_Most_Refined_Globals
-     (Subprogram  : Entity_Name;
+     (Caller      :     Entity_Name;
       Proof_Reads : out Name_Sets.Set;
       Reads       : out Name_Sets.Set;
       Writes      : out Name_Sets.Set);
-   --  Gets the most refined globals of a subprogram
+   --  Gets the most refined globals of a caller
 
    function Is_Predefined (EN : Entity_Name) return Boolean;
    --  Check if EN is in a unit predefined by the Ada RM
@@ -672,15 +672,15 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------------------
 
    procedure GG_Get_Most_Refined_Globals
-     (Subprogram  : Entity_Name;
+     (Caller      :     Entity_Name;
       Proof_Reads : out Name_Sets.Set;
       Reads       : out Name_Sets.Set;
       Writes      : out Name_Sets.Set)
    is
       procedure Most_Refined (Kind   :     Global_Kind;
                               Result : out Name_Sets.Set);
-      --  Compute vertices that can be reached from Subprogram'Kind vertex and
-      --  are of the kind Variable.
+      --  Compute vertices that can be reached from Caller'Kind vertex and are
+      --  of the kind Variable.
 
       ------------------
       -- Most_Refined --
@@ -695,7 +695,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Start_V : Vertex_Id;
 
       begin
-         Start_G.Name := Subprogram;
+         Start_G.Name := Caller;
          Start_V      := Global_Graph.Get_Vertex (Start_G);
 
          Result := Name_Sets.Empty_Set;
@@ -1718,56 +1718,51 @@ package body Flow_Generated_Globals.Phase_2 is
                   end if;
                end loop;
 
-               --  Add the intersection of pure outputs (outputs that are not
-               --  also read) of definite calls and local variables to LHS.
-               --  Additionally, add Reads and Proof_Reads of definite calls
-               --  to RHS and RHS_Proof respectively.
-               declare
-                  Outputs : Name_Sets.Set;
-                  --  Outputs of Definite Calls
-               begin
-                  for Definite_Call of P.Definite_Calls loop
+               --  Extend the LHS with pure outputs (outputs that are not also
+               --  inputs) of definite calls that are local to the currently
+               --  analyzed package. Also, add Inputs and Proof_Ins of definite
+               --  calls to RHS and RHS_Proof respectively.
+               for Definite_Call of P.Definite_Calls loop
+                  if GG_Exists.Subprograms.Contains (Definite_Call) then
                      declare
-                        Proof_Reads : Name_Sets.Set;
-                        Reads       : Name_Sets.Set;
-                        Writes      : Name_Sets.Set;
+                        Proof_Ins : Name_Sets.Set;
+                        Inputs    : Name_Sets.Set;
+                        Outputs   : Name_Sets.Set;
                      begin
-                        if GG_Exists.Subprograms.Contains (Definite_Call) then
-                           GG_Get_Most_Refined_Globals
-                             (Subprogram  => Definite_Call,
-                              Proof_Reads => Proof_Reads,
-                              Reads       => Reads,
-                              Writes      => Writes);
+                        GG_Get_Most_Refined_Globals
+                          (Caller      => Definite_Call,
+                           Proof_Reads => Proof_Ins,
+                           Reads       => Inputs,
+                           Writes      => Outputs);
 
-                           II.RHS_Proof.Union (Proof_Reads);
-                           II.RHS.Union (Reads);
-                           Outputs.Union (Writes - Reads);
-                        end if;
+                        II.RHS_Proof.Union (Proof_Ins);
+                        II.RHS.Union (Inputs);
+                        II.LHS.Union ((Outputs - Inputs)       --  pure outputs
+                                      and Local_Non_Ghost_Vars);
                      end;
-                  end loop;
-                  II.LHS.Union (Local_Non_Ghost_Vars and Outputs);
-               end;
+                  end if;
+               end loop;
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
                for Conditional_Call of P.Conditional_Calls loop
-                  declare
-                     Proof_Reads : Name_Sets.Set;
-                     Reads       : Name_Sets.Set;
-                     Writes      : Name_Sets.Set;
-                  begin
-                     if GG_Exists.Subprograms.Contains (Conditional_Call) then
+                  if GG_Exists.Subprograms.Contains (Conditional_Call) then
+                     declare
+                        Proof_Ins : Name_Sets.Set;
+                        Inputs    : Name_Sets.Set;
+                        Outputs   : Name_Sets.Set;
+                     begin
                         GG_Get_Most_Refined_Globals
-                          (Subprogram  => Conditional_Call,
-                           Proof_Reads => Proof_Reads,
-                           Reads       => Reads,
-                           Writes      => Writes);
+                          (Caller      => Conditional_Call,
+                           Proof_Reads => Proof_Ins,
+                           Reads       => Inputs,
+                           Writes      => Outputs);
 
-                        II.RHS_Proof.Union (Proof_Reads);
-                        II.RHS.Union (Reads);
-                        II.RHS.Union (Writes);
-                     end if;
-                  end;
+                        II.RHS_Proof.Union (Proof_Ins);
+                        II.RHS.Union (Inputs);
+                        II.RHS.Union (Outputs);
+                     end;
+                  end if;
                end loop;
 
                --  Remove local variables from the RHSs since they should not
