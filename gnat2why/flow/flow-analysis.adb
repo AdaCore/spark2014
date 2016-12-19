@@ -3827,13 +3827,12 @@ package body Flow.Analysis is
          return;
       end if;
 
-      declare
-         Found_Uninitialized : Boolean := False;
-      begin
-         --  If we are dealing with a library level package then we check if
-         --  everything in the RHS of an initialization_item has been
-         --  initialized.
-         if Is_Library_Level_Entity (FA.Analyzed_Entity) then
+      --  For library-level packages check if everything in the RHS of an
+      --  initialization_item is indeed initialized.
+      if Is_Library_Level_Entity (FA.Analyzed_Entity) then
+         declare
+            Found_Uninitialized : Boolean := False;
+         begin
             for C in DM.Iterate loop
                declare
                   The_Out : Flow_Id          renames Dependency_Maps.Key (C);
@@ -3859,15 +3858,15 @@ package body Flow.Analysis is
                   end loop;
                end;
             end loop;
-         end if;
 
-         --  If a variable or state abstraction that has not been mentioned in
-         --  an Initializes aspect was found in the RHS of an
-         --  initialization_item then we don't do any further analysis.
-         if Found_Uninitialized then
-            return;
-         end if;
-      end;
+            --  If a variable or state abstraction that has not been
+            --  mentioned in an Initializes aspect was found in the RHS of
+            --  an initialization_item then we don't do any further analysis.
+            if Found_Uninitialized then
+               return;
+            end if;
+         end;
+      end if;
 
       --  If we are dealing with a generated initializes aspect then we have no
       --  more checks to do.
@@ -3900,7 +3899,7 @@ package body Flow.Analysis is
                         S    => FA.B_Scope)));
             end loop;
 
-            --  Populate the All_Actual_Outs and All_Actual_Ins sets
+            --  Populate All_Actual_Outs and All_Actual_Ins
             for O in FA.Dependency_Map.Iterate loop
                declare
                   Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
@@ -3912,8 +3911,8 @@ package body Flow.Analysis is
                end;
             end loop;
 
-            --  Raise medium checks for actual inputs that are not mentioned by
-            --  the Initializes.
+            --  Complain about actual inputs that are not mentioned in the
+            --  Initializes.
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In)
                  and then not All_Contract_Outs.Contains (Actual_In)
@@ -3946,8 +3945,8 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Raise medium checks for inputs mentioned in the Initializes
-            --  that are not actual inputs.
+            --  Complain about inputs mentioned in the Initializes that are not
+            --  actual inputs.
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
                   if Is_Variable (Contract_In) then
@@ -3980,8 +3979,8 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Raise medium checks for outputs that are constants and should
-            --  consequently not be mention in an initializes aspect.
+            --  Complain about outputs that are constants and should
+            --  consequently not be mentioned in an initializes aspect.
             for Contract_Out of All_Contract_Outs loop
                if not Is_Variable (Contract_Out) then
                   --  Output is a constant without variable input
