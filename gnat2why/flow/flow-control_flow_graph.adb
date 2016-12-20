@@ -4103,67 +4103,6 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
 
-      function Suspends_On_Suspension_Object return Boolean;
-      --  Check if Called_Thing suspends on a suspension object, i.e. it is
-      --  Ada.Synchronous_Task_Control.Suspend_Until_True or
-      --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline
-
-      -----------------------------------
-      -- Suspends_On_Suspension_Object --
-      -----------------------------------
-
-      function Suspends_On_Suspension_Object return Boolean is
-         Scop : Entity_Id := Called_Thing;
-         --  Currently analyzed scope
-
-         procedure Scope_Up;
-         --  Climb up the scope
-
-         --------------
-         -- Scope_Up --
-         --------------
-
-         procedure Scope_Up is
-         begin
-            Scop := Scope (Scop);
-         end Scope_Up;
-
-         Called_String : constant String := Get_Name_String (Chars (Scop));
-         --  Name of the called procedure
-
-      --  Start of processing for Suspends_On_Suspension_Object
-
-      begin
-         if Called_String = "suspend_until_true" then
-            Scope_Up;
-         elsif Called_String = "suspend_until_true_and_set_deadline" then
-            Scope_Up;
-            if Get_Name_String (Chars (Scop)) = "edf" then
-               Scope_Up;
-            else
-               return False;
-            end if;
-         else
-            return False;
-         end if;
-
-         if Chars (Scop) = Name_Synchronous_Task_Control then
-            Scope_Up;
-         else
-            return False;
-         end if;
-
-         if Chars (Scop) = Name_Ada then
-            Scope_Up;
-         else
-            return False;
-         end if;
-
-         return Scop = Standard_Standard;
-      end Suspends_On_Suspension_Object;
-
-   --  Start of processing for Do_Call_Statement
-
    begin
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
@@ -4230,7 +4169,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Check for suspending on a suspension object
-      if Suspends_On_Suspension_Object then
+      if Suspends_On_Suspension_Object (Called_Thing) then
          FA.Tasking (Suspends_On).Include
            (Get_Enclosing_Object (First_Actual (N)));
       end if;

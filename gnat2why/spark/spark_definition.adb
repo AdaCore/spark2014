@@ -2520,6 +2520,23 @@ package body SPARK_Definition is
          end;
       end if;
 
+      --  Similar limitation for suspending on suspension objects
+      if Suspends_On_Suspension_Object (E) then
+         case Ekind (Get_Enclosing_Object (First_Actual (N))) is
+            when Formal_Kind =>
+               Mark_Unsupported ("suspension on a formal parameter", N);
+               return;
+
+            --  Suspension on library-level objects is fine
+
+            when E_Variable =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end if;
+
       --  Current_Protected_Type is either empty or points to what is says
       pragma Assert (Present (Scope (E)));
 

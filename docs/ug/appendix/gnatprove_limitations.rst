@@ -66,7 +66,8 @@ Tool Limitations
      scope of the invariant bearing type.
 
 #. Calls to protected subprograms and protected entries whose prefix denotes a
-   formal subprogram parameter are not supported.
+   formal subprogram parameter are not supported. Similarly, suspension on
+   suspension objects given as formal subprogram parameters is not supported.
 
 Legality Rules
 --------------

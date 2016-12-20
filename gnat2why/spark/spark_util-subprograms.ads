@@ -418,6 +418,11 @@ package SPARK_Util.Subprograms is
    --  @return True whenever an invariant check may be needed when calling E
    --          from inside the current compilation unit.
 
+   function Suspends_On_Suspension_Object (E : Entity_Id) return Boolean;
+   --  Return True iff E suspends on a suspension object, i.e. it is either
+   --  Ada.Synchronous_Task_Control.Suspend_Until_True or
+   --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline.
+
    --------------------------------
    -- Queries related to entries --
    --------------------------------

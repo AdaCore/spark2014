@@ -1228,6 +1228,57 @@ package body SPARK_Util.Subprograms is
            or else
          Is_DIC_Procedure (E)));
 
+   -----------------------------------
+   -- Suspends_On_Suspension_Object --
+   -----------------------------------
+
+   function Suspends_On_Suspension_Object (E : Entity_Id) return Boolean is
+      Scop : Entity_Id := E;
+      --  Currently analyzed entity
+
+      procedure Scope_Up;
+      --  Climb up the scope
+
+      --------------
+      -- Scope_Up --
+      --------------
+
+      procedure Scope_Up is
+      begin
+         Scop := Scope (Scop);
+      end Scope_Up;
+
+   --  Start of processing for Suspends_On_Suspension_Object
+
+   begin
+      if Chars (Scop) = Name_Suspend_Until_True then
+         Scope_Up;
+      elsif Chars (Scop) = Name_Suspend_Until_True_And_Set_Deadline then
+         Scope_Up;
+         if Chars (Scop) = Name_EDF then
+            Scope_Up;
+         else
+            return False;
+         end if;
+      else
+         return False;
+      end if;
+
+      if Chars (Scop) = Name_Synchronous_Task_Control then
+         Scope_Up;
+      else
+         return False;
+      end if;
+
+      if Chars (Scop) = Name_Ada then
+         Scope_Up;
+      else
+         return False;
+      end if;
+
+      return Scop = Standard_Standard;
+   end Suspends_On_Suspension_Object;
+
    --------------
    -- Get_Body --
    --------------
