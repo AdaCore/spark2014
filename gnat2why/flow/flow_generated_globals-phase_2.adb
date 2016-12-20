@@ -895,33 +895,39 @@ package body Flow_Generated_Globals.Phase_2 is
 
                --  Create a vertex for every local variable and link it to the
                --  enclosing subprogram.
-               for Local_Variable of Info.Local_Variables loop
-                  --  Create a vertex for every local variable if one does not
-                  --  already exist.
-                  Local_Graph.Include_Vertex (Local_Variable);
+               declare
+                  All_Local_Variables : constant Name_Sets.Set :=
+                    Info.Local_Variables or Info.Local_Ghost_Variables;
+               begin
+                  for Local_Variable of All_Local_Variables loop
+                     --  Create a vertex for every local variable if one does
+                     --  not already exist.
+                     Local_Graph.Include_Vertex (Local_Variable);
 
-                  --  Link enclosing subprogram to local variable
-                  Local_Graph.Add_Edge (Info.Name, Local_Variable);
-               end loop;
-
-               --  Create a vertex for every local subprogram and link it to
-               --  the enclosing subprogram.
-               for Local_Subprogram of Info.Local_Subprograms loop
-                  --  Create a vertex for every local subprogram if one does
-                  --  not already exist.
-                  Local_Graph.Include_Vertex (Local_Subprogram);
-
-                  --  Link enclosing subprogram to local subprogram
-                  Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
-               end loop;
-
-               --  Link all local variables to all local subprograms (this
-               --  effectively means that they can act as their globals).
-               for Local_Variable of Info.Local_Variables loop
-                  for Local_Subprogram of Info.Local_Subprograms loop
-                     Local_Graph.Add_Edge (Local_Variable, Local_Subprogram);
+                     --  Link enclosing subprogram to local variable
+                     Local_Graph.Add_Edge (Info.Name, Local_Variable);
                   end loop;
-               end loop;
+
+                  --  Create a vertex for every local subprogram and link it to
+                  --  the enclosing subprogram.
+                  for Local_Subprogram of Info.Local_Subprograms loop
+                     --  Create a vertex for every local subprogram if one does
+                     --  not already exist.
+                     Local_Graph.Include_Vertex (Local_Subprogram);
+
+                     --  Link enclosing subprogram to local subprogram
+                     Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
+                  end loop;
+
+                  --  Link all local variables to all local subprograms (this
+                  --  effectively means that they can act as their globals).
+                  for Local_Variable of All_Local_Variables loop
+                     for Local_Subprogram of Info.Local_Subprograms loop
+                        Local_Graph.Add_Edge (Local_Variable,
+                                              Local_Subprogram);
+                     end loop;
+                  end loop;
+               end;
             end loop;
 
             --  Close graph
@@ -1055,8 +1061,9 @@ package body Flow_Generated_Globals.Phase_2 is
                          2 => (Inputs,    Inputs),
                          3 => (Outputs,   Outputs)));
 
-               --  For conditional calls do as above, but also add an edge from
-               --  the subprogram's Ins vertex to the callee's Outs vertex.
+               --  For conditional calls do as above, but also add an edge
+               --  from the subprogram's Inputs vertex to the callee's Outputs
+               --  vertex. See graph building in phase 1 for explanation.
                Connect (Info.Conditional_Calls,
                         (1 => (Proof_Ins, Proof_Ins),
                          2 => (Inputs,    Inputs),
@@ -1677,10 +1684,11 @@ package body Flow_Generated_Globals.Phase_2 is
          for P of Package_Info_List loop
             declare
                II : Initializes_Info :=
-                 (LHS       => <>,
-                  LHS_Proof => <>,
-                  RHS       => P.Inputs,
-                  RHS_Proof => P.Inputs_Proof);
+                 (LHS_Proof => P.Local_Definite_Writes
+                               and P.Local_Ghost_Variables,
+                  LHS       => P.Local_Definite_Writes and P.Local_Variables,
+                  RHS_Proof => P.Inputs_Proof,
+                  RHS       => P.Inputs);
                --  The new name dependency map for package P
                --
                --  LHS and LHS_Proof represent the left hand side of the
@@ -1689,37 +1697,8 @@ package body Flow_Generated_Globals.Phase_2 is
                --  they are initialized with package inputs and proof inputs,
                --  respectively.
 
-               Local_Non_Ghost_Vars : Name_Sets.Set;
-               --  Local non-proof variables/states
-
             begin
-               --  Collect local non-ghost variables
-               for Var of P.Local_Variables loop
-                  --  ??? for non-visible entities this is imprecise
-                  declare
-                     E : constant Entity_Id := Find_Entity (Var);
-                  begin
-                     if Present (E)
-                       and then Is_Ghost_Entity (E)
-                     then
-                        null;
-                     else
-                        Local_Non_Ghost_Vars.Insert (Var);
-                     end if;
-                  end;
-               end loop;
-
-               --  Split local definite writes to ghost and normal variables
-               --  re-using classification already done for local variables.
-               for Var of P.Local_Definite_Writes loop
-                  if Local_Non_Ghost_Vars.Contains (Var) then
-                     II.LHS.Insert (Var);
-                  else
-                     II.LHS_Proof.Insert (Var);
-                  end if;
-               end loop;
-
-               --  Extend the LHS with pure outputs (outputs that are not also
+               --  Extend the LHSs with pure outputs (outputs that are not also
                --  inputs) of definite calls that are local to the currently
                --  analyzed package. Also, add Inputs and Proof_Ins of definite
                --  calls to RHS and RHS_Proof respectively.
@@ -1729,6 +1708,9 @@ package body Flow_Generated_Globals.Phase_2 is
                         Proof_Ins : Name_Sets.Set;
                         Inputs    : Name_Sets.Set;
                         Outputs   : Name_Sets.Set;
+
+                        Pure_Outputs : Name_Sets.Set;
+
                      begin
                         GG_Get_Most_Refined_Globals
                           (Caller      => Definite_Call,
@@ -1736,16 +1718,20 @@ package body Flow_Generated_Globals.Phase_2 is
                            Reads       => Inputs,
                            Writes      => Outputs);
 
-                        II.RHS_Proof.Union (Proof_Ins);
+                        Pure_Outputs := Outputs - Inputs;
+
+                        II.LHS_Proof.Union
+                          (Pure_Outputs and P.Local_Ghost_Variables);
+                        II.LHS.Union (Pure_Outputs and P.Local_Variables);
+
                         II.RHS.Union (Inputs);
-                        II.LHS.Union ((Outputs - Inputs)       --  pure outputs
-                                      and Local_Non_Ghost_Vars);
+                        II.RHS_Proof.Union (Proof_Ins);
                      end;
                   end if;
                end loop;
 
-               --  Add Reads and Writes of conditional calls to the RHS set and
-               --  their Proof_Reads to the RHS_Proof set.
+               --  Add Inputs and Outputs of conditional calls to the RHS and
+               --  their Proof_Ins to the RHS_Proof.
                for Conditional_Call of P.Conditional_Calls loop
                   if GG_Exists.Subprograms.Contains (Conditional_Call) then
                      declare
@@ -1760,8 +1746,7 @@ package body Flow_Generated_Globals.Phase_2 is
                            Writes      => Outputs);
 
                         II.RHS_Proof.Union (Proof_Ins);
-                        II.RHS.Union (Inputs);
-                        II.RHS.Union (Outputs);
+                        II.RHS.Union (Inputs or Outputs);
                      end;
                   end if;
                end loop;
@@ -1769,7 +1754,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --  Remove local variables from the RHSs since they should not
                --  appear in Initializes aspects.
                II.RHS.Difference (P.Local_Variables);
-               II.RHS_Proof.Difference (P.Local_Variables);
+               II.RHS_Proof.Difference (P.Local_Ghost_Variables);
 
                --  Add state abstractions to Initialized_Vars_And_States when
                --  all constituents are initialized and remove constituents of
@@ -2923,6 +2908,7 @@ package body Flow_Generated_Globals.Phase_2 is
       Print_Name_Set ("Definite calls       :", Info.Definite_Calls);
       Print_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
       Print_Name_Set ("Local variables      :", Info.Local_Variables);
+      Print_Name_Set ("Local ghost variables:", Info.Local_Ghost_Variables);
 
       if Info.Kind in Kind_Package | Kind_Package_Body then
          Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);

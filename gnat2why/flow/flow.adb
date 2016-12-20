@@ -1394,6 +1394,7 @@ package body Flow is
                                  Definite_Calls        => <>,
                                  Conditional_Calls     => <>,
                                  Local_Variables       => <>,
+                                 Local_Ghost_Variables => <>,
                                  Local_Subprograms     => <>,
                                  Local_Definite_Writes => <>);
                            end;
@@ -1431,6 +1432,7 @@ package body Flow is
                                  Definite_Calls        => <>,
                                  Conditional_Calls     => Calls,
                                  Local_Variables       => <>,
+                                 Local_Ghost_Variables => <>,
                                  Local_Subprograms     => <>,
                                  Local_Definite_Writes => <>);
                            end;
@@ -1879,6 +1881,7 @@ package body Flow is
                Definite_Calls        : Node_Sets.Set;
                Conditional_Calls     : Node_Sets.Set;
                Local_Variables       : Node_Sets.Set;
+               Local_Ghost_Variables : Node_Sets.Set;
                Local_Subprograms     : Node_Sets.Set;
                Local_Definite_Writes : Node_Sets.Set;
                Global_Info           : Global_Phase_1_Info;
@@ -1891,6 +1894,7 @@ package body Flow is
                                 Definite_Calls        => Definite_Calls,
                                 Conditional_Calls     => Conditional_Calls,
                                 Local_Variables       => Local_Variables,
+                                Local_Ghost_Variables => Local_Ghost_Variables,
                                 Local_Subprograms     => Local_Subprograms,
                                 Local_Definite_Writes =>
                                   Local_Definite_Writes);
@@ -1917,6 +1921,9 @@ package body Flow is
                   Write_Str ("Local variables      : ");
                   Print_Node_Set (Local_Variables);
 
+                  Write_Str ("Local ghost variables      : ");
+                  Print_Node_Set (Local_Ghost_Variables);
+
                   Write_Str ("Local subprograms    : ");
                   Print_Node_Set (Local_Subprograms);
 
@@ -1940,6 +1947,7 @@ package body Flow is
                   Definite_Calls        => To_Name_Set (Definite_Calls),
                   Conditional_Calls     => To_Name_Set (Conditional_Calls),
                   Local_Variables       => To_Name_Set (Local_Variables),
+                  Local_Ghost_Variables => To_Name_Set (Local_Ghost_Variables),
                   Local_Subprograms     => To_Name_Set (Local_Subprograms),
                   Local_Definite_Writes =>
                     To_Name_Set (Local_Definite_Writes));

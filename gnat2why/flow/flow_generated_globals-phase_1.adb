@@ -222,12 +222,16 @@ package body Flow_Generated_Globals.Phase_1 is
       Entity_Infos.Append (GI);
 
       --  Collect volatile variables and state abstractions; these sets are
-      --  disjoints, so it is more efficient to process them separately instead
+      --  disjoint, so it is more efficient to process them separately instead
       --  of doing an expensive union to have a single procedure call.
       Process_Volatiles_And_States (GI.Inputs_Proof);
       Process_Volatiles_And_States (GI.Inputs);
       Process_Volatiles_And_States (GI.Outputs);
-      Process_Volatiles_And_States (GI.Local_Variables, Local_Vars => True);
+
+      Process_Volatiles_And_States (GI.Local_Variables,
+                                    Local_Vars => True);
+      Process_Volatiles_And_States (GI.Local_Ghost_Variables,
+                                    Local_Vars => True);
    end GG_Register_Global_Info;
 
    -----------------------------

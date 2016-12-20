@@ -290,6 +290,7 @@ package body Flow.Slice is
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
       Local_Variables       : out Node_Sets.Set;
+      Local_Ghost_Variables : out Node_Sets.Set;
       Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    is
@@ -321,10 +322,12 @@ package body Flow.Slice is
       --  Get subprograms that are definitely called
 
       procedure Get_Local_Variables_And_Subprograms
-      with Global => (Output => (Local_Variables, Local_Subprograms));
+      with Global => (Output => (Local_Variables,
+                                 Local_Ghost_Variables,
+                                 Local_Subprograms));
       --  Traverses the tree under FA.Analyzed_Entity and gathers all object
-      --  and subprogram declarations and puts them in Local_Variables and
-      --  Local_Subprograms, respectively.
+      --  and subprogram declarations and puts them in Local_Variables,
+      --  Local_Ghost_Variables and Local_Subprograms, respectively.
 
       procedure Get_Local_Definite_Writes
       with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
@@ -388,6 +391,10 @@ package body Flow.Slice is
             --  ??? what if it is already exposed as a part of (nested)
             --  abstract state?
 
+            procedure Insert_Local_Variable (E : Entity_Id);
+            --  Insert E to either Local_Variables or Local_Ghost_Variables
+            --  depending on its Ghost status.
+
             -----------------------
             -- Exposed_As_State --
             -----------------------
@@ -421,6 +428,19 @@ package body Flow.Slice is
                   return True;
                end if;
             end Exposed_As_State;
+
+            ---------------------------
+            -- Insert_Local_Variable --
+            ---------------------------
+
+            procedure Insert_Local_Variable (E : Entity_Id) is
+            begin
+               if Is_Ghost_Entity (E) then
+                  Local_Ghost_Variables.Insert (E);
+               else
+                  Local_Variables.Insert (E);
+               end if;
+            end Insert_Local_Variable;
 
          --  Start of processing for Get_Object_Or_Subprogram_Declaration
 
@@ -473,7 +493,7 @@ package body Flow.Slice is
                         E : constant Entity_Id := Defining_Identifier (N);
                      begin
                         pragma Assert (Exposed_As_State (E));
-                        Local_Variables.Insert (E);
+                        Insert_Local_Variable (E);
                      end;
                   end if;
 
@@ -497,19 +517,25 @@ package body Flow.Slice is
                      then
                         case Ekind (E) is
                            when E_Variable =>
-                              Local_Variables.Insert (E);
+                              Insert_Local_Variable (E);
 
                            when E_Constant =>
                               --  ??? there is no point in checking both the
                               --  partial and the full views; also no need to
                               --  include the full view for the second time.
-                              if Has_Variable_Input (E)
-                              then
+                              if Has_Variable_Input (E) then
                                  --  If the Full_View is present then add that
-                                 Local_Variables.Include
-                                   (if Present (Full_View (E))
-                                    then Full_View (E)
-                                    else E);
+                                 if Is_Ghost_Entity (E) then
+                                    Local_Ghost_Variables.Include
+                                      (if Present (Full_View (E))
+                                       then Full_View (E)
+                                       else E);
+                                 else
+                                    Local_Variables.Include
+                                      (if Present (Full_View (E))
+                                       then Full_View (E)
+                                       else E);
+                                 end if;
                               end if;
 
                            when others =>
@@ -550,7 +576,7 @@ package body Flow.Slice is
                      if not Is_Null_State (State)
                        and not Is_Part_Of_Concurrent_Object (State)
                      then
-                        Local_Variables.Insert (State);
+                        Insert_Local_Variable (State);
                      end if;
                   end loop;
 
@@ -574,10 +600,13 @@ package body Flow.Slice is
       begin
          --  Initialize Local_Variables and Local_Subprograms: collect formal
          --  parameters of the entry/subprogram/task.
-         Local_Variables :=
-           (if FA.Kind in Kind_Subprogram | Kind_Task
-            then Get_Formals (FA.Analyzed_Entity)
-            else Node_Sets.Empty_Set);
+         if FA.Kind in Kind_Subprogram | Kind_Task then
+            if Is_Ghost_Entity (FA.Analyzed_Entity) then
+               Local_Ghost_Variables := Get_Formals (FA.Analyzed_Entity);
+            else
+               Local_Variables := Get_Formals (FA.Analyzed_Entity);
+            end if;
+         end if;
 
          Local_Subprograms := Node_Sets.Empty_Set;
 
@@ -604,9 +633,12 @@ package body Flow.Slice is
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
+         All_Local_Variables : constant Node_Sets.Set :=
+           Local_Variables or Local_Ghost_Variables;
+
       begin
          --  Detect initialized local variables
-         for LV of Local_Variables loop
+         for LV of All_Local_Variables loop
 
             --  Null abstract states and abstract states with null refinements
             --  are trivially initialized but are not detected by the condition

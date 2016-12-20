@@ -61,6 +61,7 @@ package Flow.Slice is
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
       Local_Variables       : out Node_Sets.Set;
+      Local_Ghost_Variables : out Node_Sets.Set;
       Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    with Pre  => (FA.Generating_Globals and then
@@ -70,7 +71,13 @@ package Flow.Slice is
                 and then Proof_Calls.Intersection
                            (Definite_Calls or Conditional_Calls).Is_Empty
                 and then Inputs_Proof.Intersection
-                           (Inputs or Outputs).Is_Empty;
+                           (Inputs or Outputs).Is_Empty
+                and then Local_Definite_Writes.Is_Subset
+                         (Of_Set => Local_Variables or Local_Ghost_Variables)
+                and then (for all V of Local_Variables =>
+                             not Is_Ghost_Entity (V))
+                and then (for all V of Local_Ghost_Variables =>
+                             Is_Ghost_Entity (V));
    --  Computes globals (and procedure calls) from the given graphs
    --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --
@@ -84,8 +91,9 @@ package Flow.Slice is
    --    Inputs but not with Inputs_Proof)
    --  @param Proof_Calls are subprograms called exclusively in proof contexts
    --  @param Definite_Calls are subprograms definitely called
-   --  @param Conditionl_Calls are subprograms conditionally called
+   --  @param Conditional_Calls are subprograms conditionally called
    --  @param Local_Variables are local variables (including formal paramaters)
+   --  @param Local_Ghost_Variables are local ghost variables
    --  @param Local_Subprograms are nested subprograms
    --  @param Local_Definite_Writes are local variables that are definitely
    --    initialized after package elaboration.
