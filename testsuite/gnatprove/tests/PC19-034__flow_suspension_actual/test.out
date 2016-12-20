@@ -1,0 +1,6 @@
+p.ads:13:14: info: nontermination of task proved (CVC4: 1 VC)
+p.ads:15:09: high: multiple tasks might suspend on suspension object "p.suspend.arg" (SPARK RM 9(11))
+p.ads:15:09: high: with task "p.to1"
+p.ads:15:09: high: with task "p.to2"
+q.ads:13:14: info: nontermination of task proved (CVC4: 1 VC)
+q.ads:14:14: info: nontermination of task proved (CVC4: 1 VC)
