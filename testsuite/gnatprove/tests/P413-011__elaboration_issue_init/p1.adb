@@ -2,6 +2,6 @@ with P2;
 package body P1 is
   procedure P is null;
 begin
-  pragma Assert (P2.Body_Elaborated);
-  Body_Elaborated := True;
+  pragma Assert (P2.Body2_Elaborated);
+  Body1_Elaborated := True;
 end;
