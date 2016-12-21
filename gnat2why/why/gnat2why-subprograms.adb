@@ -1308,10 +1308,9 @@ package body Gnat2Why.Subprograms is
      (E      : Entity_Id;
       Params : Transformation_Params) return W_Pred_Id
    is
-
       Inv_Pred : W_Pred_Id := True_Pred;
-   begin
 
+   begin
       --  We use the Initializes aspect to get the variables initialized during
       --  elaboration.
       --  We don't do it for wrapper packages as they do not have local
@@ -1322,11 +1321,10 @@ package body Gnat2Why.Subprograms is
             Init_Map : constant Dependency_Maps.Map :=
               Parse_Initializes (E, Get_Flow_Scope (E));
 
-            Cu       : Dependency_Maps.Cursor := Init_Map.First;
          begin
-            while Dependency_Maps.Has_Element (Cu) loop
+            for Cu in Init_Map.Iterate loop
                declare
-                  K  : constant Flow_Id := Dependency_Maps.Key (Cu);
+                  K  : Flow_Id renames Dependency_Maps.Key (Cu);
                   FS : constant Flow_Id_Sets.Set :=
                     Expand_Abstract_State (K, Erase_Constants => False);
                   E  : Entity_Id;
@@ -1370,7 +1368,6 @@ package body Gnat2Why.Subprograms is
                      end if;
                   end loop;
                end;
-               Dependency_Maps.Next (Cu);
             end loop;
          end;
       end if;
