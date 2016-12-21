@@ -1,0 +1,4 @@
+tasking.adb:3:20: warning: statement has no effect
+tasking.ads:19:04: high: multiple tasks might queue on protected entry "tasking.ro1.e" (SPARK RM 9(11))
+tasking.ads:19:04: high: with task "tasking.to1"
+tasking.ads:19:04: high: with task "tasking.to2"
