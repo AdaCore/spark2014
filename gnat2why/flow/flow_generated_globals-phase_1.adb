@@ -87,7 +87,7 @@ package body Flow_Generated_Globals.Phase_1 is
    Tasking_Info_List : Tasking_Info_Lists.List;
    --  List with tasking objects directly accessed by subprograms
 
-   Entitiy_Infos : Global_Info_Lists.List;
+   Entity_Infos : Global_Info_Lists.List;
    --  Entity-specific information as discovered by their analysis
    --
    --  ??? we keep this locally only because in the ALI file we first want to
@@ -209,7 +209,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Start of processing for GG_Register_Global_Info
 
    begin
-      Entitiy_Infos.Append (GI);
+      Entity_Infos.Append (GI);
 
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoints, so it is more efficient to process them separately instead
@@ -385,7 +385,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Write_To_ALI (V);
 
       --  Write entity-specific info
-      for Info of Entitiy_Infos loop
+      for Info of Entity_Infos loop
          V := (Kind            => EK_Globals,
                The_Global_Info => Info);
          Write_To_ALI (V);
@@ -428,13 +428,9 @@ package body Flow_Generated_Globals.Phase_1 is
                The_Tasking_Info => <>);
 
          for EC : Entry_Call of Subprogram.Entries loop
-            --  For entry calls pretend that we are accessing an object
-            --  Package_Name.Object_Name.Entry_Name.
             V.The_Tasking_Info (Entry_Calls).Insert
-              (To_Entity_Name
-                  (Unique_Name (EC.Obj) &
-                   "__" &
-                   Get_Name_String (Chars (EC.Entr))));
+              (To_Entity_Name (To_String (EC.Obj) & "__" &
+                 Get_Name_String (Chars (EC.Entr))));
          end loop;
 
          for Kind in Subprogram.Objects'Range loop

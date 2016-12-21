@@ -120,17 +120,14 @@ package Flow is
    end record;
 
    type Entry_Call is record
-      Obj  : Entity_Id;        --  library-level object
+      Obj  : Entity_Name;      --  library-level object
       Entr : Entity_Id;        --  protected entry
    end record
-   with Predicate => Ekind (Entry_Call.Obj) = E_Variable and then
-                     Is_Entry (Entry_Call.Entr);
+   with Predicate => Is_Entry (Entry_Call.Entr);
    --  Unique representation of a call to protected entry of a library-level
    --  protected object.
    --
-   --  Note: it is represented as two entities, since the only single
-   --  node that contains this information is N_Selected_Component (or
-   --  N_Indexed_Component for entry families), but these nodes are not unique.
+   --  Note: it is represented as an entity name and an entity.
    --  Alternatively, we could represent this as a symbol here, i.e. as a
    --  pointer to string as it is written in the ALI file, but it is cleaner
    --  use these strings only for the serialization.

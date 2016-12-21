@@ -3130,6 +3130,7 @@ package body Flow.Control_Flow_Graph is
             --  Ignore record variants and simply find any protected components
             declare
                C : Entity_Id := First_Component (T);
+
             begin
                while Present (C) loop
                   Find_Protected_Components (Etype (C));
@@ -4152,20 +4153,18 @@ package body Flow.Control_Flow_Graph is
         and then Is_External_Call (N)
       then
          declare
-            The_PO : constant Entity_Id :=
-              Get_Enclosing_Object (Prefix (Name (N)));
+            Protected_Object : constant Node_Id := Prefix (Name (N));
 
          begin
-            pragma Assert (Is_Object (The_PO));
-
             if Is_Entry (Called_Thing) then
                FA.Entries.Include
-                 (Entry_Call'(Obj  => The_PO,
+                 (Entry_Call'(Obj  => To_Entity_Name
+                                        (Full_Entry_Name (Protected_Object)),
                               Entr => Called_Thing));
             end if;
-
-            FA.Tasking (Locks).Include (The_PO);
          end;
+
+         FA.Tasking (Locks).Include (Get_Enclosing_Object (Prefix (Name (N))));
       end if;
 
       --  Check for suspending on a suspension object

@@ -633,6 +633,52 @@ package body SPARK_Util is
       end if;
    end File_Name_Without_Suffix;
 
+   ---------------------
+   -- Full_Entry_Name --
+   ---------------------
+
+   function Full_Entry_Name (N : Node_Id) return String is
+
+      function This_Name (N : Node_Id) return String;
+
+      ---------------
+      -- This_Name --
+      ---------------
+
+      function This_Name (N : Node_Id) return String is
+      begin
+         return Get_Name_String (Chars (N));
+      end This_Name;
+
+   --  Start of processing for Full_Entry_Name
+
+   begin
+      case Nkind (N) is
+         when N_Selected_Component
+            | N_Expanded_Name
+         =>
+            return Full_Entry_Name (Prefix (N)) &
+              "__" & This_Name (Selector_Name (N));
+
+         when N_Indexed_Component =>
+            return Full_Entry_Name (Prefix (N));
+
+         when N_Identifier =>
+            if Scope (Entity (N)) = Standard_Standard then
+               return This_Name (N);
+            else
+               return Full_Entry_Name (Scope (Entity (N))) &
+                 "__" & This_Name (N);
+            end if;
+
+         when N_Defining_Identifier =>
+            return This_Name (N);
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Full_Entry_Name;
+
    ---------------
    -- Full_Name --
    ---------------

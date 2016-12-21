@@ -404,6 +404,15 @@ package SPARK_Util is
    --  @return True iff N is fully initialized. For the aggregate extension,
    --      this only deals with the extension components.
 
+   function Full_Entry_Name (N : Node_Id) return String
+     with Pre => Nkind (N) in N_Selected_Component
+                            | N_Expanded_Name
+                            | N_Indexed_Component
+                            | N_Defining_Identifier
+                            | N_Identifier;
+   --  @param N is a component of the whole prefix for an entry call
+   --  @return the full name for an entry call
+
    function Get_Called_Entity (N : Node_Id) return Entity_Id
      with Pre  => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call,
           Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
