@@ -45,7 +45,7 @@ themselves records.
 
 1. The visible state of a package P consists of:
 
-   * any variables, or constants *with variable inputs*, declared immediately
+   * any variables, or *constants with variable inputs*, declared immediately
      within the visible part of package P; and
 
    * the state abstractions declared by the Abstract_State aspect specification
@@ -56,7 +56,7 @@ themselves records.
 
 2. The hidden state of a package P consists of:
 
-   * any variables, or constants *with variable inputs*, declared immediately
+   * any variables, or *constants with variable inputs*, declared immediately
      in the private part or body of P; and
 
    * the visible state of any packages declared immediately within
@@ -852,7 +852,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 12. Any ``initialization_item`` that is a constant shall be a *constant
     with variable input*. Any entity in an ``input_list`` that is a
-    constant shall be a parameter or constant *with variable input*.
+    constant shall be a parameter or *constant with variable input*.
 
 .. _tu-nt-initializes_aspects-note_1:
 
