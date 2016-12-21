@@ -1,5 +1,5 @@
-p1.adb:3:14: "Body_Elaborated" must be listed in the Initializes aspect of "P1" (SPARK RM 7.1.5(12))
+p1.adb:2:14: "Body_Elaborated" must be listed in the Initializes aspect of "P1" (SPARK RM 7.1.5(12))
 p1.ads:3:13: warning: subprogram "P" has no effect
-p2.adb:3:14: "Body_Elaborated" must be listed in the Initializes aspect of "P2" (SPARK RM 7.1.5(12))
-p2.ads:4:13: warning: subprogram "P" has no effect
+p2.adb:2:14: "Body_Elaborated" must be listed in the Initializes aspect of "P2" (SPARK RM 7.1.5(12))
+p2.ads:3:13: warning: subprogram "P" has no effect
 gnatprove: error during flow analysis and proof

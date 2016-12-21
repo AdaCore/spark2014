@@ -1,4 +1,3 @@
-
 with Root_Pkg;
 pragma Elaborate_All (Root_Pkg);
 package Extension_Pkg is

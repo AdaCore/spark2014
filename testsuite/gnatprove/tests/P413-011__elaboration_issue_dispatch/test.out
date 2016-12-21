@@ -1,4 +1,4 @@
-extension_pkg.adb:9:19: high: modification of "Body_Elaborated" in elaboration requires Elaborate_Body on package "Extension_Pkg"
-extension_pkg.ads:5:03: warning: initialization of Body_Elaborated has no effect
-extension_pkg.ads:7:23: class-wide proof_in "Body_Elaborated" must also be a class-wide (proof) input of overridden subprogram "Op" at root_pkg.ads:3 (SPARK RM 6.1.6)
+extension_pkg.adb:8:19: high: modification of "Body_Elaborated" in elaboration requires Elaborate_Body on package "Extension_Pkg"
+extension_pkg.ads:4:03: warning: initialization of Body_Elaborated has no effect
+extension_pkg.ads:6:23: class-wide proof_in "Body_Elaborated" must also be a class-wide (proof) input of overridden subprogram "Op" at root_pkg.ads:3 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof
