@@ -5916,7 +5916,7 @@ package body Flow.Control_Flow_Graph is
                      Global_Ins.Union (The_Ins);
 
                      if Present (The_Out) then
-                        Package_Writes.Include (The_Out);
+                        Package_Writes.Insert (The_Out);
                      end if;
                   end;
                end loop;
