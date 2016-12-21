@@ -223,11 +223,11 @@ package body Flow_Classwide is
       --  dealt with separately.
 
       --  each Output-mode item of G1 which is not a state abstraction whose
-      --  refinment is visible at the point of G2 is an Output-mode item of
+      --  refinement is visible at the point of G2 is an Output-mode item of
       --  G2; and
 
       --  for each Output-mode item of G1 which is a state abstraction whose
-      --  refinment is visible at the point of G2, each direct or indirect
+      --  refinement is visible at the point of G2, each direct or indirect
       --  constituent thereof is an Output-mode item of G2.
       for F_Out of Anc_Write loop
          declare
