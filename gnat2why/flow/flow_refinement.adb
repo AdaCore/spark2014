@@ -532,7 +532,7 @@ package body Flow_Refinement is
             declare
                F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
             begin
-               if F.Kind in Direct_Mapping | Record_Field
+               if F.Kind = Direct_Mapping
                  and then Get_Direct_Mapping_Id (F) = Target_Ent
                then
                   return Target_Ent;

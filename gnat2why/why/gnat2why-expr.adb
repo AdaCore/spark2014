@@ -10345,7 +10345,7 @@ package body Gnat2Why.Expr is
                            declare
                               E_Name : constant Entity_Name :=
                                 (case X.Kind is
-                                    when Direct_Mapping | Record_Field =>
+                                    when Direct_Mapping =>
                                        To_Entity_Name (X.Node),
                                     when Magic_String =>
                                        X.Name,

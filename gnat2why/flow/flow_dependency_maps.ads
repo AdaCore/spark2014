@@ -57,7 +57,10 @@ package Flow_Dependency_Maps is
      (P : Entity_Id;
       S : Flow_Scope)
       return Dependency_Maps.Map
-   with Pre => Ekind (P) = E_Package;
+   with Pre  => Ekind (P) = E_Package,
+        Post => (for all C in Parse_Initializes'Result.Iterate =>
+                    Dependency_Maps.Key (C).Kind in Direct_Mapping
+                                                  | Magic_String);
    --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state

@@ -861,11 +861,14 @@ package body Gnat2Why.Subprograms is
 
                      for X of Reads loop
                         case X.Kind is
-                        when Direct_Mapping | Record_Field =>
+                        when Direct_Mapping =>
                            Entity := Find_Entity (To_Entity_Name (X.Node));
                         when Magic_String =>
                            Entity := Find_Entity (X.Name);
-                        when Null_Value | Synthetic_Null_Export =>
+                        when Null_Value
+                           | Record_Field
+                           | Synthetic_Null_Export
+                        =>
                            raise Program_Error;
                         end case;
 
