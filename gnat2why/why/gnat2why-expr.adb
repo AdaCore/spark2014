@@ -10318,7 +10318,6 @@ package body Gnat2Why.Expr is
 
                      begin
                         if Present (Entity)
-                          and then Nkind (Entity) in N_Entity
                           and then (Is_Object (Entity)
                                     or else Is_Named_Number (Entity))
                           and then Entity_In_SPARK (Entity)
