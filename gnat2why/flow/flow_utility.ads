@@ -665,9 +665,15 @@ is
                              Input    : Entity_Id := Empty)
                              return Node_Id
    with Pre  => Contract in Pragma_Depends | Pragma_Initializes
-                  and then Nkind (Output) in N_Defining_Identifier
-                  and then (if Present (Input)
-                            then Nkind (Input) in N_Defining_Identifier),
+                and then Ekind (Output) in Assignable_Kind
+                                         | E_Abstract_State
+                                         | E_Constant
+                                         | E_Function
+                                         | E_Task_Type
+                and then (if Present (Input)
+                          then Ekind (Input) in E_Abstract_State
+                                              | E_Task_Type
+                                              | Object_Kind),
         Post => Present (Search_Contract'Result);
    --  Search the Contract of Unit for the given Output. If Input is
    --  also given, search for that Input of the given Output. For now

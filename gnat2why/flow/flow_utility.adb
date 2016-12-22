@@ -3599,8 +3599,8 @@ package body Flow_Utility is
       Needle     : Node_Id := Empty;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Searches under contract for Output and sets needle to the
-      --  node, if found.
+      --  Searches under contract for Output and sets Needle to the node, if
+      --  found.
 
       ----------
       -- Proc --
@@ -3760,34 +3760,23 @@ package body Flow_Utility is
                Contract_N := Get_Pragma (Unit, Pragma_Depends);
             end if;
 
-            if No (Contract_N) then
-               return Unit;
-            end if;
-
-            Find_Export_Internal (Contract_N);
-            if Present (Needle) then
-               return Needle;
-            else
-               return Contract_N;
-            end if;
-
          when Pragma_Initializes =>
             Contract_N := Get_Pragma (Unit, Pragma_Initializes);
 
-            if No (Contract_N) then
-               return Unit;
-            end if;
-
-            Find_Export_Internal (Contract_N);
-            if Present (Needle) then
-               return Needle;
-            else
-               return Contract_N;
-            end if;
-
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
+
+      if Present (Contract_N) then
+         Find_Export_Internal (Contract_N);
+
+         return (if Present (Needle)
+                   then Needle
+                   else Contract_N);
+      else
+         return Unit;
+      end if;
+
    end Search_Contract;
 
    --------------------
