@@ -786,12 +786,15 @@ package body Gnat2Why.Subprograms is
       Includes            : Node_Sets.Set;
       Dynamic_Prop_Inputs : W_Prog_Id := +Void;
 
-   --  Start of processing for Compute_Dynamic_Property_For_Inputs
-
    begin
       --  Collect global variables read or written in E
 
-      if Ekind (E) in E_Function | E_Procedure | E_Task_Type | E_Entry then
+      case Ekind (E) is
+         when E_Entry
+            | E_Function
+            | E_Procedure
+            | E_Task_Type
+         =>
          declare
             Write_Ids : Flow_Types.Flow_Id_Sets.Set;
             Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
@@ -831,78 +834,84 @@ package body Gnat2Why.Subprograms is
 
             Include (Read_Ids);
             Include (Write_Ids);
-
          end;
 
-      elsif Ekind (E) = E_Package and then not Is_Wrapper_Package (E) then
+         --  Collect parameters of E if any
+         --  ??? We may want to collect discriminants of task types and self
+         --      references from protected subprograms.
 
-         --  For packages, we use the Initializes aspect to get the variables
-         --  referenced during elaboration.
-         --  We don't do it for wrapper packages as Initializes are not
-         --  generated for them.
-
-         declare
-            Init_Map : constant Dependency_Maps.Map :=
-              Parse_Initializes (E, Get_Flow_Scope (E));
-
-         begin
-            for S of Init_Map loop
-               for Y of S loop
-
-                  --  Expand Abstract_State if any
-
-                  declare
-                     Reads : constant Flow_Id_Sets.Set :=
-                       Expand_Abstract_State (Y, Erase_Constants => False);
-                  begin
-
-                     --  Get the entity associated with the Flow_Ids
-                     for X of Reads loop
-                        case X.Kind is
-                           when Direct_Mapping =>
-                              Includes.Include (Get_Direct_Mapping_Id (X));
-
-                           when Magic_String =>
-                              declare
-                                 Entity : constant Entity_Id :=
-                                   Find_Entity (X.Name);
-                              begin
-                                 if Present (Entity) then
-                                    Includes.Include (Entity);
-                                 end if;
-                              end;
-
-                           when Null_Value
-                              | Record_Field
-                              | Synthetic_Null_Export
-                           =>
-                              raise Program_Error;
-                        end case;
-                     end loop;
-                  end;
+         if Ekind (E) in E_Function | E_Procedure | E_Entry then
+            declare
+               Params : constant List_Id :=
+                 Parameter_Specifications (if Is_Entry (E)
+                                           then Parent (E)
+                                           else Subprogram_Specification (E));
+               Param  : Node_Id;
+            begin
+               Param := First (Params);
+               while Present (Param) loop
+                  Includes.Include (Defining_Identifier (Param));
+                  Next (Param);
                end loop;
-            end loop;
-         end;
-      end if;
+            end;
+         end if;
 
-      --  Collect parameters of E if any
-      --  ??? We may want to account for discriminants of task types and self
-      --  reference of protected subprograms.
+         when E_Package =>
+            if not Is_Wrapper_Package (E) then
 
-      if Ekind (E) in E_Function | E_Procedure | E_Entry then
-         declare
-            Params : constant List_Id :=
-              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
-               else Parameter_Specifications (Subprogram_Specification (E)));
-            Param  : Node_Id;
-         begin
-            Param := First (Params);
-            while Present (Param) loop
-               Includes.Include (Defining_Identifier (Param));
-               Next (Param);
-            end loop;
-         end;
-      end if;
+               --  For packages, we use the Initializes aspect to get the
+               --  variables referenced during elaboration.
+               --  We don't do it for wrapper packages as Initializes are not
+               --  generated for them.
+
+               declare
+                  Init_Map : constant Dependency_Maps.Map :=
+                    Parse_Initializes (E, Get_Flow_Scope (E));
+
+               begin
+                  for S of Init_Map loop
+                     for Y of S loop
+
+                        --  Expand Abstract_State if any
+
+                        declare
+                           Reads : constant Flow_Id_Sets.Set :=
+                             Expand_Abstract_State (Y,
+                                                    Erase_Constants => False);
+                        begin
+
+                           --  Get the entity associated with the Flow_Ids
+                           for X of Reads loop
+                              case X.Kind is
+                              when Direct_Mapping =>
+                                 Includes.Include (Get_Direct_Mapping_Id (X));
+
+                              when Magic_String =>
+                                 declare
+                                    Entity : constant Entity_Id :=
+                                      Find_Entity (X.Name);
+                                 begin
+                                    if Present (Entity) then
+                                       Includes.Include (Entity);
+                                    end if;
+                                 end;
+
+                              when Null_Value
+                                 | Record_Field
+                                 | Synthetic_Null_Export
+                              =>
+                                 raise Program_Error;
+                              end case;
+                           end loop;
+                        end;
+                     end loop;
+                  end loop;
+               end;
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
 
       declare
          Already_Included : Node_Sets.Set := Node_Sets.Empty_Set;
