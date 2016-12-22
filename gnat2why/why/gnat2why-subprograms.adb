@@ -852,29 +852,32 @@ package body Gnat2Why.Subprograms is
                   --  Expand Abstract_State if any
 
                   declare
-                     Reads  : constant Flow_Id_Sets.Set :=
+                     Reads : constant Flow_Id_Sets.Set :=
                        Expand_Abstract_State (Y, Erase_Constants => False);
-                     Entity : Entity_Id;
                   begin
 
                      --  Get the entity associated with the Flow_Ids
-
                      for X of Reads loop
                         case X.Kind is
-                        when Direct_Mapping =>
-                           Entity := Find_Entity (To_Entity_Name (X.Node));
-                        when Magic_String =>
-                           Entity := Find_Entity (X.Name);
-                        when Null_Value
-                           | Record_Field
-                           | Synthetic_Null_Export
-                        =>
-                           raise Program_Error;
-                        end case;
+                           when Direct_Mapping =>
+                              Includes.Include (Get_Direct_Mapping_Id (X));
 
-                        if Present (Entity) then
-                           Includes.Include (Entity);
-                        end if;
+                           when Magic_String =>
+                              declare
+                                 Entity : constant Entity_Id :=
+                                   Find_Entity (X.Name);
+                              begin
+                                 if Present (Entity) then
+                                    Includes.Include (Entity);
+                                 end if;
+                              end;
+
+                           when Null_Value
+                              | Record_Field
+                              | Synthetic_Null_Export
+                           =>
+                              raise Program_Error;
+                        end case;
                      end loop;
                   end;
                end loop;
