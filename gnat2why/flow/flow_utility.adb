@@ -3757,7 +3757,7 @@ package body Flow_Utility is
             Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
 
             if No (Contract_N) then
-               Contract_N := Get_Pragma (Unit, Pragma_Depends);
+               Contract_N := Find_Contract (Unit, Pragma_Depends);
             end if;
 
          when Pragma_Initializes =>
