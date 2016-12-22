@@ -807,17 +807,24 @@ package body Gnat2Why.Subprograms is
             -------------
 
             procedure Include (S : Flow_Types.Flow_Id_Sets.Set) is
-               Names : constant Name_Sets.Set := Flow_Types.To_Name_Set (S);
-               --  ??? why not directly convert from Flow_Id to Entity?
             begin
-               for N of Names loop
-                  declare
-                     Entity : constant Entity_Id := Find_Entity (N);
-                  begin
-                     if Present (Entity) then
-                        Includes.Include (Entity);
-                     end if;
-                  end;
+               for F of S loop
+                  case F.Kind is
+                     when Direct_Mapping =>
+                        Includes.Include (Get_Direct_Mapping_Id (F));
+
+                     when Magic_String =>
+                        declare
+                           Entity : constant Entity_Id := Find_Entity (F.Name);
+                        begin
+                           if Present (Entity) then
+                              Includes.Include (Entity);
+                           end if;
+                        end;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
                end loop;
             end Include;
 
