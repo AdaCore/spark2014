@@ -849,7 +849,7 @@ package body Gnat2Why.Subprograms is
             for S of Init_Map loop
                for Y of S loop
 
-                  --  Expand Abstract_State if any.
+                  --  Expand Abstract_State if any
 
                   declare
                      Reads  : constant Flow_Id_Sets.Set :=
@@ -857,7 +857,7 @@ package body Gnat2Why.Subprograms is
                      Entity : Entity_Id;
                   begin
 
-                     --  Get the entity associated with the Flow_Ids.
+                     --  Get the entity associated with the Flow_Ids
 
                      for X of Reads loop
                         case X.Kind is
