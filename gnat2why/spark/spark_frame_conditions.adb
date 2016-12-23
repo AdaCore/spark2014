@@ -524,7 +524,7 @@ package body SPARK_Frame_Conditions is
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
 
-      for E_N of Computed_Reads (E, False) loop
+      for E_N of Computed_Reads (E, Include_Constants => False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
@@ -1093,7 +1093,7 @@ package body SPARK_Frame_Conditions is
       E_Name := To_Entity_Name (E_Alias);
 
       Called_Subprograms := Calls (E_Name);
-      Inputs             := Computed_Reads (E, False);
+      Inputs             := Computed_Reads (E, Include_Constants => False);
       Outputs            := Computed_Writes (E);
 
       --  Add variables written to variables read
