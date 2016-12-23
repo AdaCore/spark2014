@@ -5770,9 +5770,9 @@ package body Flow.Control_Flow_Graph is
 
       --  Collect globals for the analyzed entity and create initial and final
       --  vertices.
-      case FA.Kind is
-         when Kind_Subprogram | Kind_Task =>
-            if not FA.Generating_Globals then
+      if not FA.Generating_Globals then
+         case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
                declare
                   type G_Prop is record
                      Is_Read     : Boolean;
@@ -5883,7 +5883,6 @@ package body Flow.Control_Flow_Graph is
                      end;
                   end loop;
                end;
-            end if;
 
          when Kind_Package | Kind_Package_Body =>
             --  Packages have no obvious globals, but we can extract a list of
@@ -5969,8 +5968,8 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
             end if;
-
-      end case;
+         end case;
+      end if;
 
       --  If we are dealing with a function, we use its entity as a vertex for
       --  the returned value.
