@@ -1109,23 +1109,37 @@ package body Flow_Utility is
       E : Entity_Id := Find_Entity (Name);
    begin
       if Present (E) then
-         --  We found an entity, now we make some effort to canonicalize.
-         --  First we make sure we use the full view (if present).
-         if Ekind (E) in Type_Kind | E_Constant
-           and then Present (Full_View (E))
-           and then (No (Scope)
-                       or else Is_Visible (Full_View (E), Scope))
-         then
-            E := Full_View (E);
-         end if;
+         --  We found an entity, now we make some effort to canonicalize
 
-         --  Then also, if this comes from a limited with, we need to use
-         --  the non-limited version.
-         if Ekind (E) = E_Abstract_State
-           and then Present (Non_Limited_View (E))
-         then
-            E := Non_Limited_View (E);
-         end if;
+         case Ekind (E) is
+            --  Use the full view (if present and visible)
+            when Type_Kind | E_Constant =>
+               declare
+                  Full : constant Entity_Id := Full_View (E);
+               begin
+                  if Present (Full)
+                    and then (No (Scope)
+                              or else Is_Visible (Full, Scope))
+                  then
+                     E := Full;
+                  end if;
+               end;
+
+            --  If E comes from a limited with then use the non-limited
+            --  version.
+            when E_Abstract_State =>
+               declare
+                  Non_Limited : constant Entity_Id := Non_Limited_View (E);
+               begin
+                  if Present (Non_Limited) then
+                     E := Non_Limited;
+                  end if;
+               end;
+
+            when others =>
+               null;
+
+         end case;
 
          return Direct_Mapping_Id (E, View);
       else
