@@ -355,9 +355,9 @@ package Flow_Types is
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state.
 
-   function Is_Constant (F : Flow_Id) return Boolean;
-   --  Checks if F is either a constant or a constant with variable input
-   --  (i.e. is an Ada constant).
+   function Is_Constant (F : Flow_Id) return Boolean
+   with Pre => Present (F);
+   --  Checks if F represents a constant object
 
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state.
@@ -365,10 +365,6 @@ package Flow_Types is
    function Is_Function_Entity (F : Flow_Id) return Boolean;
    --  Checks if F is a function entity (and thus used to capture the
    --  function's return value).
-
-   function Is_Loop_Variable (F : Flow_Id) return Boolean;
-   --  Checks if F comes from a quantifier or loop. Returns False otherwise
-   --  or if we don't know for sure.
 
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)

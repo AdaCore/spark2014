@@ -717,7 +717,8 @@ is
    --  might not be accurate (this means that some constant that might not
    --  actually have variable input will be reported as having variable input).
 
-   function Is_Variable (F : Flow_Id) return Boolean;
+   function Is_Variable (F : Flow_Id) return Boolean
+   with Pre => Present (F);
    --  Returns True if F is either not a constant or is a constant
    --  with variable input.
    --  @param F is the Flow_Id that we check

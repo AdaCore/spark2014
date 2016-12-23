@@ -510,14 +510,16 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            return Ekind (F.Node) = E_Constant;
-            --  ??? Is_Constant_Object?
+            return Is_Constant_Object (F.Node);
 
          when Magic_String =>
             return Is_Constant (F.Name);
 
-         when Null_Value | Synthetic_Null_Export =>
+         when Synthetic_Null_Export =>
             return False;
+
+         when Null_Value =>
+            raise Program_Error;
       end case;
    end Is_Constant;
 
@@ -553,21 +555,6 @@ package body Flow_Types is
      (F.Kind in Direct_Mapping | Record_Field
       and then Nkind (F.Node) in N_Entity
       and then Ekind (F.Node) in E_Function);
-
-   ----------------------
-   -- Is_Loop_Variable --
-   ----------------------
-
-   function Is_Loop_Variable (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
-         when Direct_Mapping =>
-            return Nkind (F.Node) in N_Entity and then
-              Ekind (F.Node) = E_Loop_Parameter;
-         when others =>
-            return False;
-      end case;
-   end Is_Loop_Variable;
 
    ---------------------
    -- Magic_String_Id --

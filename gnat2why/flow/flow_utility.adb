@@ -3454,20 +3454,27 @@ package body Flow_Utility is
 
    function Is_Variable (F : Flow_Id) return Boolean is
    begin
-      if F.Kind in Direct_Mapping | Record_Field then
-         declare
-            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-         begin
-            return not Is_Constant_Object (E)
-              or else Has_Variable_Input (E);
-         end;
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return not Is_Constant_Object (E)
+                 or else Has_Variable_Input (E);
+            end;
 
-      --  Consider anything that is not a Direct_Mapping or a Record_Field to
-      --  be a variable.
+         when Magic_String =>
+            return not Is_Constant (F.Name);
 
-      else
-         return True;
-      end if;
+         --  Consider anything that is not a Direct_Mapping or a Record_Field
+         --  to be a variable.
+
+         when Synthetic_Null_Export =>
+            return True;
+
+         when Null_Value =>
+            raise Program_Error;
+      end case;
    end Is_Variable;
 
    -----------------------

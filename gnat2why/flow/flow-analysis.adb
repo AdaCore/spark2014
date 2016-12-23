@@ -4595,12 +4595,10 @@ package body Flow.Analysis is
             declare
                Var : Flow_Id renames FA.Spec_Vars (C);
             begin
-               if Is_Loop_Variable (Var) then
-                  --  We do not check loop variables that are part of our
-                  --  local context.
-                  null;
-               elsif Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
-                 not Is_Constant (Var)
+               --  Ignore loop variables, in parameters and constants that are
+               --  part of our local context.
+               if not Is_Constant (Var)
+                 and then Is_Initialized_At_Elaboration (Var, FA.S_Scope)
                then
                   Visible_Vars.Insert (Var);
                end if;
