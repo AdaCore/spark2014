@@ -871,6 +871,19 @@ package body Flow_Generated_Globals.Phase_2 is
          --  subprogram is nested in which one); used to determine which
          --  local variables may act as globals to which subprograms.
 
+         type Kinds is record
+            Source, Target : Global_Kind;
+         end record;
+
+         type Kinds_Array is array (Positive range <>) of Kinds;
+
+         procedure Connect
+           (Source_Name : Entity_Name;
+            Targets     : Name_Sets.Set;
+            Connections : Kinds_Array);
+         --  Connect Source to Targets using a given connection source and
+         --  target kind.
+
          procedure Create_Local_Graph;
          --  Creates a graph used to prevent adding edges to local variables in
          --  the Global_Graph.
@@ -879,6 +892,37 @@ package body Flow_Generated_Globals.Phase_2 is
                                  return Boolean;
          --  Check if we should add the given edge to the graph based whether
          --  it is in the local graph or not.
+
+         -------------
+         -- Connect --
+         -------------
+
+         procedure Connect
+           (Source_Name : Entity_Name;
+            Targets     : Name_Sets.Set;
+            Connections : Kinds_Array)
+         is
+         begin
+            for Target_Name of Targets loop
+               for Connection of Connections loop
+                  declare
+                     subtype Source_Global_Kind is
+                       Global_Id (Connection.Source);
+
+                     subtype Target_Global_Kind is
+                       Global_Id (Connection.Target);
+
+                     Source : Source_Global_Kind;
+                     Target : Target_Global_Kind;
+
+                  begin
+                     Source.Name := Source_Name;
+                     Target.Name := Target_Name;
+                     Global_Graph.Add_Edge (Source, Target);
+                  end;
+               end loop;
+            end loop;
+         end Connect;
 
          ------------------------
          -- Create_Local_Graph --
@@ -996,80 +1040,38 @@ package body Flow_Generated_Globals.Phase_2 is
 
          --  Process subprograms with a GG info
          for Info of Subprogram_Info_List loop
-            declare
-               type Kinds is record
-                  Source, Target : Global_Kind;
-               end record;
+            --  Connect the subprogram's variables: proof inputs, inputs and
+            --  outputs, to corresponding vertices.
+            Connect (Info.Name, Info.Inputs_Proof,
+                     (1 => (Proof_Ins, Variable)));
+            Connect (Info.Name, Info.Inputs,
+                     (1 => (Inputs,    Variable)));
+            Connect (Info.Name, Info.Outputs,
+                     (1 => (Outputs,   Variable)));
 
-               type Kinds_Array is array (Positive range <>) of Kinds;
+            --  For proof calls connect the caller's to callee's vertices;
+            --  note that callee's Inputs become caller's Proof_Ins.
+            Connect (Info.Name, Info.Proof_Calls,
+                     (1 => (Proof_Ins, Proof_Ins),
+                      2 => (Proof_Ins, Inputs),
+                      3 => (Outputs,   Outputs)));
 
-               procedure Connect
-                 (Targets     : Name_Sets.Set;
-                  Connections : Kinds_Array);
-               --  Connect Targets names using a given connection source and
-               --  target kind.
+            --  For definite calls connect the subprogram's Proof_Ins, Ins and
+            --  Outs vertices respectively to the callee's Proof_Ins, Ins and
+            --  Outs vertices.
+            Connect (Info.Name, Info.Definite_Calls,
+                     (1 => (Proof_Ins, Proof_Ins),
+                      2 => (Inputs,    Inputs),
+                      3 => (Outputs,   Outputs)));
 
-               -------------
-               -- Connect --
-               -------------
-
-               procedure Connect
-                 (Targets     : Name_Sets.Set;
-                  Connections : Kinds_Array)
-               is
-               begin
-                  for Target_Name of Targets loop
-                     for Connection of Connections loop
-                        declare
-                           subtype Source_Global_Kind is
-                             Global_Id (Connection.Source);
-
-                           subtype Target_Global_Kind is
-                             Global_Id (Connection.Target);
-
-                           Source : Source_Global_Kind;
-                           Target : Target_Global_Kind;
-
-                        begin
-                           Source.Name := Info.Name;
-                           Target.Name := Target_Name;
-                           Global_Graph.Add_Edge (Source, Target);
-                        end;
-                     end loop;
-                  end loop;
-               end Connect;
-
-            begin
-               --  Connect the subprogram's variables: proof inputs, inputs and
-               --  outputs, to corresponding vertices.
-               Connect (Info.Inputs_Proof, (1 => (Proof_Ins, Variable)));
-               Connect (Info.Inputs,       (1 => (Inputs,    Variable)));
-               Connect (Info.Outputs,      (1 => (Outputs,   Variable)));
-
-               --  For proof calls connect the caller's to callee's vertices;
-               --  note that callee's Inputs become caller's Proof_Ins.
-               Connect (Info.Proof_Calls,
-                        (1 => (Proof_Ins, Proof_Ins),
-                         2 => (Proof_Ins, Inputs),
-                         3 => (Outputs,   Outputs)));
-
-               --  For definite calls connect the subprogram's Proof_Ins, Ins
-               --  and Outs vertices respectively to the callee's Proof_Ins,
-               --  Ins and Outs vertices.
-               Connect (Info.Definite_Calls,
-                        (1 => (Proof_Ins, Proof_Ins),
-                         2 => (Inputs,    Inputs),
-                         3 => (Outputs,   Outputs)));
-
-               --  For conditional calls do as above, but also add an edge
-               --  from the subprogram's Inputs vertex to the callee's Outputs
-               --  vertex. See graph building in phase 1 for explanation.
-               Connect (Info.Conditional_Calls,
-                        (1 => (Proof_Ins, Proof_Ins),
-                         2 => (Inputs,    Inputs),
-                         3 => (Inputs,    Outputs),
-                         4 => (Outputs,   Outputs)));
-            end;
+            --  For conditional calls do as above, but also add an edge from
+            --  the subprogram's Inputs vertex to the callee's Outputs vertex.
+            --  See graph building in phase 1 for explanation.
+            Connect (Info.Name, Info.Conditional_Calls,
+                     (1 => (Proof_Ins, Proof_Ins),
+                      2 => (Inputs,    Inputs),
+                      3 => (Inputs,    Outputs),
+                      4 => (Outputs,   Outputs)));
          end loop;
 
          --  Process subprograms without a GG info
@@ -1079,67 +1081,47 @@ package body Flow_Generated_Globals.Phase_2 is
             begin
                if Present (Subprogram) then
                   declare
-                     FS_Proof_Ins, FS_Reads, FS_Writes : Flow_Id_Sets.Set;
+                     FS_Proof_Ins, FS_Inputs, FS_Outputs : Flow_Id_Sets.Set;
+                     NS_Proof_Ins, NS_Inputs, NS_Outputs : Name_Sets.Set;
+                     --  Globals as Flow_Ids and Entity_Names
 
-                     procedure Add_Edges_For_FS
-                       (FS          : Flow_Id_Sets.Set;
-                        Source_Kind : Global_Kind);
-                     --  Adds an edge from From to every Flow_Id in FS
+                     procedure Include_Global_Var (C : Name_Sets.Cursor);
+                     --  Include vertex for global variable pointed to by C in
+                     --  the global graph.
 
-                     ----------------------
-                     -- Add_Edges_For_FS --
-                     ----------------------
+                     ------------------------
+                     -- Include_Global_Var --
+                     ------------------------
 
-                     procedure Add_Edges_For_FS
-                       (FS          : Flow_Id_Sets.Set;
-                        Source_Kind : Global_Kind)
-                     is
-                        subtype Source_Global is Global_Id (Source_Kind);
+                     procedure Include_Global_Var (C : Name_Sets.Cursor) is
 
-                        Source : Source_Global;
+                        Target : constant Global_Id (Variable) :=
+                          (Kind => Variable,
+                           Name => Name_Sets.Element (C));
 
                      begin
-                        Source.Name := N;
-
-                        for F of FS loop
-                           declare
-                              Nam : constant Entity_Name :=
-                                (case F.Kind is
-                                    when Direct_Mapping |
-                                         Record_Field   =>
-                                       To_Entity_Name
-                                         (Get_Direct_Mapping_Id (F)),
-
-                                    when Magic_String =>
-                                       F.Name,
-
-                                    when others =>
-                                       raise Program_Error);
-
-                              Target : constant Global_Id (Variable) :=
-                                (Kind => Variable,
-                                 Name => Nam);
-
-                           begin
-                              Global_Graph.Include_Vertex (Target);
-
-                              --  Add edge or do nothing if it already exists
-                              Global_Graph.Add_Edge (Source, Target);
-                           end;
-                        end loop;
-                     end Add_Edges_For_FS;
+                        Global_Graph.Include_Vertex (Target);
+                     end Include_Global_Var;
 
                   begin
                      Get_Globals (Subprogram => Subprogram,
                                   Scope      => Get_Flow_Scope (Subprogram),
                                   Classwide  => False,
                                   Proof_Ins  => FS_Proof_Ins,
-                                  Reads      => FS_Reads,
-                                  Writes     => FS_Writes);
+                                  Reads      => FS_Inputs,
+                                  Writes     => FS_Outputs);
 
-                     Add_Edges_For_FS (FS_Proof_Ins, Proof_Ins);
-                     Add_Edges_For_FS (FS_Reads,     Inputs);
-                     Add_Edges_For_FS (FS_Writes,    Outputs);
+                     NS_Proof_Ins := To_Name_Set (FS_Proof_Ins);
+                     NS_Inputs    := To_Name_Set (FS_Inputs);
+                     NS_Outputs   := To_Name_Set (FS_Outputs);
+
+                     NS_Proof_Ins.Iterate (Include_Global_Var'Access);
+                     NS_Inputs.Iterate    (Include_Global_Var'Access);
+                     NS_Outputs.Iterate   (Include_Global_Var'Access);
+
+                     Connect (N, NS_Proof_Ins, (1 => (Proof_Ins, Variable)));
+                     Connect (N, NS_Inputs,    (1 => (Inputs,    Variable)));
+                     Connect (N, NS_Outputs,   (1 => (Outputs,   Variable)));
                   end;
                end if;
             end;
