@@ -37,9 +37,9 @@
    "Initialization", ":ref:`ja Data Initialization Policy` の検証"
    "Non-Aliasing", ":ref:`ja Absence of Interferences` の検証"
    "Run-time Checks", "実行時エラーがないことを検証（Verification of absence of run-time errors (AoRTE) (``Storage_Error`` の送出を除く)）"
-   "Assertions", ":ref:`ja Assertion Pragmas` の検証"
-   "Functional Contracts", "機能的契約の検証 (:ref:`ja Subprogram Contracts`, :ref:`ja Package Contracts` と :ref:`ja Type Contracts` を含む)"
-   "LSP Verification", ":ref:`ja Object Oriented Programming and Liskov Substitution Principle` （オブジェクト指向プログラムとLiskov の代替原則）関連の検証"
+   "Assertions", "Assertion Pragmas の検証"
+   "Functional Contracts", "機能的契約の検証 (:ref:`ja Subprogram Contracts`, Package Contracts と Type Contracts を含む)"
+   "LSP Verification", "Object Oriented Programming and Liskov Substitution Principle （オブジェクト指向プログラムとLiskov の代替原則）関連の検証"
 
 テーブルの各カラムの意味は次の通りです．
 
