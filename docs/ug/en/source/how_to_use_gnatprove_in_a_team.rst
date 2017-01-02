@@ -102,7 +102,7 @@ Both types of warnings can be suppressed selectively by the use of pragma
 on procedure ``Warn``, which are suppressed by the three pragma ``Warnings`` in
 the source code:
 
-.. literalinclude:: ../gnatprove_by_example/examples/warn.adb
+.. literalinclude:: /gnatprove_by_example/examples/warn.adb
    :language: ada
    :linenos:
 
@@ -119,7 +119,7 @@ Pragma ``Warnings`` can also take a first argument of ``GNAT`` or ``GNATprove``
 to specify that it applies only to GNAT compiler or GNATprove. For example, the
 previous example can be modified to use these refined pragma ``Warnings``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/warn2.adb
+.. literalinclude:: /gnatprove_by_example/examples/warn2.adb
    :language: ada
    :linenos:
 
@@ -221,18 +221,18 @@ Users should take care to not justify checks which were not intended to be
 justified, when placing pragma Annotate in such places.
 
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.ads
+.. literalinclude:: /gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 4-7
 
 or on the body when it is an implementation choice that needs not be visible
 to users of the unit:
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.ads
+.. literalinclude:: /gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 9-10
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.adb
+.. literalinclude:: /gnatprove_by_example/examples/justifications.adb
    :language: ada
    :lines: 10-16
 
@@ -251,7 +251,7 @@ indirectly by adding a :ref:`Pragma Assume` in the source code, which allows the
 check to be proved. For example, the check message about a possible integer
 overflow in the assignment statement below can be justified as follows:
 
-.. literalinclude:: ../gnatprove_by_example/examples/assumptions.adb
+.. literalinclude:: /gnatprove_by_example/examples/assumptions.adb
    :language: ada
    :lines: 8-13
 

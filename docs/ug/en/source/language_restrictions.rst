@@ -74,11 +74,11 @@ following features are allowed in |SPARK|, but only partially analyzed by
 
 This is illustrated in the following example:
 
-.. literalinclude:: ../gnatprove_by_example/examples/validity.ads
+.. literalinclude:: /gnatprove_by_example/examples/validity.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/validity.adb
+.. literalinclude:: /gnatprove_by_example/examples/validity.adb
    :language: ada
    :linenos:
 
@@ -86,7 +86,7 @@ This is illustrated in the following example:
 that the evaluation of attribute ``Valid`` on both input parameter ``X`` and
 the result of the call to ``Unchecked_Conversion`` return True:
 
-.. literalinclude:: ../gnatprove_by_example/results/validity.prove
+.. literalinclude:: /gnatprove_by_example/results/validity.prove
    :language: none
 
 .. _Data Initialization Policy:
@@ -132,7 +132,7 @@ variable) is `read` when returning from the subprogram.
 aforementioned data initialization policy. For example, consider a procedure
 ``Proc`` which has a parameter and a global item of each mode:
 
-.. literalinclude:: ../gnatprove_by_example/examples/data_initialization.ads
+.. literalinclude:: /gnatprove_by_example/examples/data_initialization.ads
    :language: ada
    :linenos:
 
@@ -141,14 +141,14 @@ but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
 calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
 the call, but it only initalizes ``G1`` completely.
 
-.. literalinclude:: ../gnatprove_by_example/examples/data_initialization.adb
+.. literalinclude:: /gnatprove_by_example/examples/data_initialization.adb
    :language: ada
    :linenos:
 
 On this program, |GNATprove| issues 6 high check messages, corresponding to
 the violations of the data initialization policy:
 
-.. literalinclude:: ../gnatprove_by_example/results/data_initialization.flow
+.. literalinclude:: /gnatprove_by_example/results/data_initialization.flow
    :language: none
 
 While a user can justify individually such messages with pragma ``Annotate``
@@ -189,7 +189,7 @@ object` (a notion formally defined in Ada RM).
 
 For example, in the following example:
 
-.. literalinclude:: ../gnatprove_by_example/examples/aliasing.ads
+.. literalinclude:: /gnatprove_by_example/examples/aliasing.ads
    :language: ada
    :linenos:
 
@@ -206,27 +206,27 @@ the case if these input parameters were of a record or array type.
 For example, here are examples of correct and illegal (according to Ada and
 SPARK rules) calls to procedure ``Whatever``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/check_param_aliasing.adb
+.. literalinclude:: /gnatprove_by_example/examples/check_param_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| (like |GNAT Pro| compiler, since these are also Ada rules)
 correctly detects the two illegal calls and issues errors:
 
-.. literalinclude:: ../gnatprove_by_example/results/check_param_aliasing.flow
+.. literalinclude:: /gnatprove_by_example/results/check_param_aliasing.flow
    :language: none
 
 Here are other examples of correct and incorrect calls (according to SPARK
 rules) to procedure ``Whatever``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/check_aliasing.adb
+.. literalinclude:: /gnatprove_by_example/examples/check_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| correctly detects the two incorrect calls and issues high check
 messages:
 
-.. literalinclude:: ../gnatprove_by_example/results/check_aliasing.flow
+.. literalinclude:: /gnatprove_by_example/results/check_aliasing.flow
    :language: none
    :lines: 3,5
 
@@ -262,11 +262,11 @@ Multiple error signaling mechanisms are treated the same way:
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/abnormal_terminations.ads
+.. literalinclude:: /gnatprove_by_example/examples/abnormal_terminations.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/abnormal_terminations.adb
+.. literalinclude:: /gnatprove_by_example/examples/abnormal_terminations.adb
    :language: ada
    :linenos:
 
@@ -282,7 +282,7 @@ During proof, |GNATprove| generates a check that the
 thanks to the precondition of ``Check_OK`` which states that parameter
 ``OK`` should always be ``True`` on entry:
 
-.. literalinclude:: ../gnatprove_by_example/results/abnormal_terminations.prove
+.. literalinclude:: /gnatprove_by_example/results/abnormal_terminations.prove
    :language: none
 
 |GNATprove| also checks that procedures that are marked with aspect or pragma

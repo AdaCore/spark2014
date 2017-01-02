@@ -86,7 +86,7 @@ to false alarms because it is imprecise.
 Take for example procedures ``Add`` and ``Swap`` for which data dependencies
 are given, but no flow dependencies:
 
-.. literalinclude:: ../gnatprove_by_example/examples/only_data_dependencies.ads
+.. literalinclude:: /gnatprove_by_example/examples/only_data_dependencies.ads
    :language: ada
    :linenos:
 
@@ -109,7 +109,7 @@ would be compatible with the given data dependencies of ``Add`` and
 this corresponds to the actual contract for ``Add``, but to an imprecise
 contract for ``Swap``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/only_data_dependencies.adb
+.. literalinclude:: /gnatprove_by_example/examples/only_data_dependencies.adb
    :language: ada
    :linenos:
 
@@ -117,7 +117,7 @@ This results in false alarms when |GNATprove| verifies the dependency contract
 of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in verifying
 the dependency contract of ``Call_Add`` which calls ``Add``:
 
-.. literalinclude:: ../gnatprove_by_example/results/only_data_dependencies.flow
+.. literalinclude:: /gnatprove_by_example/results/only_data_dependencies.flow
    :language: none
 
 The most precise dependency contract for ``Swap`` would be:
@@ -145,13 +145,13 @@ completes it with the only compatible data dependencies.
 Take for example procedures ``Add`` and ``Swap`` as previously, expect now flow
 dependencies are given, but no data dependencies:
 
-.. literalinclude:: ../gnatprove_by_example/examples/only_flow_dependencies.ads
+.. literalinclude:: /gnatprove_by_example/examples/only_flow_dependencies.ads
    :language: ada
    :linenos:
 
 The body of the unit is the same as before:
 
-.. literalinclude:: ../gnatprove_by_example/examples/only_flow_dependencies.adb
+.. literalinclude:: /gnatprove_by_example/examples/only_flow_dependencies.adb
    :language: ada
    :linenos:
 
@@ -181,11 +181,11 @@ Case 1: No State Abstraction
 Take for example a procedure ``Set_Global`` without contract which initializes
 a global variable ``V`` and is called in a number of contexts:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_global.ads
+.. literalinclude:: /gnatprove_by_example/examples/gen_global.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_global.adb
+.. literalinclude:: /gnatprove_by_example/examples/gen_global.adb
    :language: ada
    :linenos:
 
@@ -211,7 +211,7 @@ call useless as the value written in ``V`` is immediately overwritten by the
 second call. This is detected by |GNATprove|, which issues two warnings on
 line 18:
 
-.. literalinclude:: ../gnatprove_by_example/results/gen_global.flow
+.. literalinclude:: /gnatprove_by_example/results/gen_global.flow
    :language: none
 
 Note that |GNATprove| also issues a warning on subprogram ``Do_Nothing`` which
@@ -240,11 +240,11 @@ For example, take unit ``Gen_Global`` previously seen, where an abstract state
 ``State`` is defined for package ``Gen_Abstract_Global``, and refined into
 global variable ``V`` in the body of the package:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_abstract_global.ads
+.. literalinclude:: /gnatprove_by_example/examples/gen_abstract_global.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_abstract_global.adb
+.. literalinclude:: /gnatprove_by_example/examples/gen_abstract_global.adb
    :language: ada
    :linenos:
 
@@ -256,7 +256,7 @@ could also have kept it local to the unit.
 for the possible error in ``Set_Global_Twice`` and it verifies the contract
 given by the user for ``Set_Global_Conditionally``:
 
-.. literalinclude:: ../gnatprove_by_example/results/gen_abstract_global.flow
+.. literalinclude:: /gnatprove_by_example/results/gen_abstract_global.flow
    :language: none
 
 Case 3: State Abstraction Without Refined Dependencies
@@ -271,11 +271,11 @@ for subprogram implementations.
 For example, take unit ``Gen_Abstract_Global`` previously seen, where only
 abstract data and flow dependencies are specified:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_refined_global.ads
+.. literalinclude:: /gnatprove_by_example/examples/gen_refined_global.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_refined_global.adb
+.. literalinclude:: /gnatprove_by_example/examples/gen_refined_global.adb
    :language: ada
    :linenos:
 
@@ -283,7 +283,7 @@ abstract data and flow dependencies are specified:
 for the possible error in ``Set_Global_Twice`` and it verifies the contract
 given by the user for ``Set_Global_Conditionally``:
 
-.. literalinclude:: ../gnatprove_by_example/results/gen_refined_global.flow
+.. literalinclude:: /gnatprove_by_example/results/gen_refined_global.flow
    :language: none
 
 Note that although abstract and refined dependencies are the same here, this is
@@ -308,11 +308,11 @@ reads and writes to variables in the subprogram body:
 For example, take unit ``Gen_Global`` previously seen, where the body of
 ``Set_Global`` is marked with ``SPARK_Mode => Off``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_ada_global.ads
+.. literalinclude:: /gnatprove_by_example/examples/gen_ada_global.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_ada_global.adb
+.. literalinclude:: /gnatprove_by_example/examples/gen_ada_global.adb
    :language: ada
    :linenos:
 
@@ -332,7 +332,7 @@ false alarms because it is imprecise. Here, |GNATprove| generates a wrong
 high message that the call to ``Set_Global`` on line 25 reads an uninitialized value
 for ``V``:
 
-.. literalinclude:: ../gnatprove_by_example/results/gen_ada_global.flow
+.. literalinclude:: /gnatprove_by_example/results/gen_ada_global.flow
    :language: none
 
 This is because the generated contract for ``Set_Global`` is not precise
@@ -418,11 +418,11 @@ preconditions:
   checking, as the property that ``Snd`` is less than ``Max`` expressed in
   ``Invariant`` should be always respected.
 
-.. literalinclude:: ../gnatprove_by_example/examples/integrity.ads
+.. literalinclude:: /gnatprove_by_example/examples/integrity.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/integrity.adb
+.. literalinclude:: /gnatprove_by_example/examples/integrity.adb
    :language: ada
    :linenos:
 
@@ -438,7 +438,7 @@ respected. Namely, it cannot verify that the call to ``Update`` inside
 ``Seen_One`` respects its precondition, as it is not known from the calling
 context that ``Invariant`` holds:
 
-.. literalinclude:: ../gnatprove_by_example/results/integrity.prove
+.. literalinclude:: /gnatprove_by_example/results/integrity.prove
    :language: none
 
 Note that, although ``Invariant`` is not required to hold either on entry to
@@ -449,17 +449,17 @@ To prove completely the integrity of unit ``Integrity``, it is sufficient to
 add ``Invariant`` as a precondition and postcondition on every subprogram which
 modifies the value of global variables ``Max`` and ``Snd``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/integrity_proved.ads
+.. literalinclude:: /gnatprove_by_example/examples/integrity_proved.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/integrity_proved.adb
+.. literalinclude:: /gnatprove_by_example/examples/integrity_proved.adb
    :language: ada
    :linenos:
 
 Here is the result of running |GNATprove|:
 
-.. literalinclude:: ../gnatprove_by_example/results/integrity_proved.prove
+.. literalinclude:: /gnatprove_by_example/results/integrity_proved.prove
    :language: none
 
 .. _Writing Contracts for Functional Correctness:
@@ -500,11 +500,11 @@ accessor functions ``Max_Value_Seen`` and ``Second_Max_Value_Seen``. These
 accessor functions can be declared after the contracts in which they appear, as
 contracts are semantically analyzed only at the end of package declaration.
 
-.. literalinclude:: ../gnatprove_by_example/examples/functional.ads
+.. literalinclude:: /gnatprove_by_example/examples/functional.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/functional.adb
+.. literalinclude:: /gnatprove_by_example/examples/functional.adb
    :language: ada
    :linenos:
 
@@ -513,7 +513,7 @@ contracts, except for the postcondition of ``Seen_Two`` (note in particular the
 proof that the contract cases for ``Seen_One`` on line 10 are disjoint and
 complete):
 
-.. literalinclude:: ../gnatprove_by_example/results/functional.prove
+.. literalinclude:: /gnatprove_by_example/results/functional.prove
    :language: none
 
 The counterexample displayed for the postcondition not proved corresponds to a
@@ -536,14 +536,14 @@ The missing piece of information here is that ``Max`` and ``Snd`` are never
 equal, except when they are both zero (the initial value). This can be added to
 function ``Invariant`` as follows:
 
-.. literalinclude:: ../gnatprove_by_example/examples/functional_proved.adb
+.. literalinclude:: /gnatprove_by_example/examples/functional_proved.adb
    :language: ada
    :lines: 7-8
 
 With this more precise definition for ``Invariant``, all contracts are now
 proved by |GNATprove|:
 
-.. literalinclude:: ../gnatprove_by_example/results/functional_proved.prove
+.. literalinclude:: /gnatprove_by_example/results/functional_proved.prove
    :language: none
 
 In general, it may be needed to further refine the preconditions of subprograms
@@ -581,7 +581,7 @@ For example, unit ``Gen_Imported_Global`` is a modified version of the
 ``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency
 Contracts`, where procedure ``Get_Global`` is imported from C:
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_imported_global.ads
+.. literalinclude:: /gnatprove_by_example/examples/gen_imported_global.ads
    :language: ada
    :linenos:
 
@@ -590,7 +590,7 @@ be used to analyze its callers. We did not add flow dependencies, as
 they are the same as the auto completed ones (see :ref:`Auto Completion for
 Incomplete Contracts`).
 
-.. literalinclude:: ../gnatprove_by_example/examples/gen_imported_global.adb
+.. literalinclude:: /gnatprove_by_example/examples/gen_imported_global.adb
    :language: ada
    :linenos:
 
@@ -601,7 +601,7 @@ can be read/written from a C file.
 for the possible error in ``Set_Global_Twice`` and it verifies the contract
 given by the user for ``Set_Global_Conditionally``:
 
-.. literalinclude:: ../gnatprove_by_example/results/gen_imported_global.flow
+.. literalinclude:: /gnatprove_by_example/results/gen_imported_global.flow
    :language: none
 
 It is also possible to add functional contracts on imported subprograms, which
@@ -626,11 +626,11 @@ For example, unit ``Functional_Imported`` is a modified version of the
 Functional Correctness`, where procedures ``Update`` and ``Seen_One`` are
 imported from C:
 
-.. literalinclude:: ../gnatprove_by_example/examples/functional_imported.ads
+.. literalinclude:: /gnatprove_by_example/examples/functional_imported.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/functional_imported.adb
+.. literalinclude:: /gnatprove_by_example/examples/functional_imported.adb
    :language: ada
    :linenos:
 
@@ -639,7 +639,7 @@ Note that we added data dependencies to the imported procedures, as
 
 As before, all contracts are proved by |GNATprove|:
 
-.. literalinclude:: ../gnatprove_by_example/results/functional_imported.prove
+.. literalinclude:: /gnatprove_by_example/results/functional_imported.prove
    :language: none
 
 .. _Contextual Analysis of Subprograms Without Contracts:
@@ -656,7 +656,7 @@ calls.
 
 Let's consider as previously a subprogram which adds two to its integer input:
 
-.. literalinclude:: ../gnatprove_by_example/examples/arith_with_local_subp.ads
+.. literalinclude:: /gnatprove_by_example/examples/arith_with_local_subp.ads
    :language: ada
    :linenos:
 
@@ -664,7 +664,7 @@ And let's implement it by calling two local subprograms without contracts
 (which may or not have a separate declaration), which each increment the input
 by one:
 
-.. literalinclude:: ../gnatprove_by_example/examples/arith_with_local_subp.adb
+.. literalinclude:: /gnatprove_by_example/examples/arith_with_local_subp.adb
    :language: ada
    :linenos:
 
@@ -676,7 +676,7 @@ it analyzes these subprograms in the context of their calls only, it proves
 here that no overflow is possible, and that the two increments correctly
 implement the contract of ``Add_Two``:
 
-.. literalinclude:: ../gnatprove_by_example/results/arith_with_local_subp.prove
+.. literalinclude:: /gnatprove_by_example/results/arith_with_local_subp.prove
    :language: none
    :linenos:
 
@@ -722,7 +722,7 @@ can be instructed to do so using a |GNATprove| specific Annotate pragma. On the
 following example, we instruct |GNATprove| that the five ``F`` functions should
 terminate:
 
-.. literalinclude:: ../gnatprove_by_example/examples/terminating_annotations.ads
+.. literalinclude:: /gnatprove_by_example/examples/terminating_annotations.ads
    :language: ada
    :linenos:
 
@@ -738,7 +738,7 @@ calls and calls to subprograms which are not known to be terminating. If
 terminating, it will then emit a failed check. As an example, let us consider
 the following implementation of the five ``F`` functions:
 
-.. literalinclude:: ../gnatprove_by_example/examples/terminating_annotations.adb
+.. literalinclude:: /gnatprove_by_example/examples/terminating_annotations.adb
    :language: ada
    :linenos:
 
@@ -746,7 +746,7 @@ As can be easily verified by review, all these functions terminate, and all
 return 0. As can be seen below, |GNATprove| will fail to verify that ``F_Rec``,
 ``F_While``, and ``F_Call`` terminate.
 
-.. literalinclude:: ../gnatprove_by_example/results/terminating_annotations.flow
+.. literalinclude:: /gnatprove_by_example/results/terminating_annotations.flow
    :language: none
    :linenos:
 

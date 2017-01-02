@@ -150,7 +150,7 @@ definition of the ``Account_Management`` task type was not in |SPARK|. Indeed,
 data races could occur when accessing the global variable ``Num_Accounts``, as
 detected by |GNATprove|:
 
-.. literalinclude:: ../gnatprove_by_example/results/bank1.flow
+.. literalinclude:: /gnatprove_by_example/results/bank1.flow
    :language: none
 
 To avoid this problem, shared variable ``Num_Account`` can be declared atomic:
@@ -168,7 +168,7 @@ With this modification, |GNATprove| now alerts us that the increment of
 atomic variables) cannot be read as a subexpression of a larger expression in
 |SPARK|:
 
-.. literalinclude:: ../gnatprove_by_example/results/account2.flow
+.. literalinclude:: /gnatprove_by_example/results/account2.flow
    :language: none
 
 This can be fixed by copying the current value of ``Num_Account`` in a

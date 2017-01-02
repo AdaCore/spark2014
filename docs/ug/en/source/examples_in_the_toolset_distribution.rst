@@ -286,7 +286,7 @@ Applications with SPARK` written by Prof. John McCormick from University of
 Northern Iowa and Prof. Peter Chapin from Vermont Technical College, published
 by Cambridge University Press:
 
-.. image:: ../static/spark_book.jpg
+.. image:: /static/spark_book.jpg
    :align: center
    :alt: Cover of SPARK Book
 

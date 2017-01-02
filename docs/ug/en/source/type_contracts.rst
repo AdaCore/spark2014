@@ -87,7 +87,7 @@ between two variants of the record for logging either only the minimum and
 maximum entries or the last entries, and a discriminant ``Capacity`` specifying
 the maximum number of entries logged:
 
-.. literalinclude:: ../gnatprove_by_example/examples/logging_discr.ads
+.. literalinclude:: /gnatprove_by_example/examples/logging_discr.ads
    :language: ada
    :linenos:
 
@@ -95,7 +95,7 @@ Subtypes of ``Log_Type`` can specify fixed values for ``Kind`` and
 ``Capacity``, like in ``Min_Max_Log`` and ``Ten_Values_Log``. The discriminants
 ``Kind`` and ``Capacity`` are accessed like regular components, for example:
 
-.. literalinclude:: ../gnatprove_by_example/examples/logging_discr.adb
+.. literalinclude:: /gnatprove_by_example/examples/logging_discr.adb
    :language: ada
    :linenos:
 
@@ -105,7 +105,7 @@ in raising an exception at run time. During analysis, |GNATprove| checks that
 components accessed are present, and that array components are accessed within
 bounds:
 
-.. literalinclude:: ../gnatprove_by_example/results/logging_discr.prove
+.. literalinclude:: /gnatprove_by_example/results/logging_discr.prove
    :language: none
 
 .. _Predicates:
@@ -311,7 +311,7 @@ invariant to a type. Aspect ``Invariant`` is specific to |GNAT Pro| and can be
 used instead of ``Type_Invariant``.
 
 |GNATprove| checks that, outside of the immediate scope of a type with an
-invariant, all values of this type are allowed by its invariant. 
+invariant, all values of this type are allowed by its invariant.
 In order to provide such a strong guarantee, |GNATprove| generates an invariant
 check even in cases where there is no corresponding run-time check, for example
 on global variables that are modified by a subprogram. |GNATprove| also uses
@@ -328,11 +328,11 @@ the elements stored in it:
    package P is
 
       type Stack is private;
-   
+
       function Max (S : Stack) return Element;
 
    private
-   
+
 
 In the implementation, an additional component is allocated for the maximum,
 which is kept up to date by the implementation of the stack. This information is
@@ -341,19 +341,19 @@ a type invariant, which can be specified using a ``Type_Invariant`` aspect:
 .. code-block:: ada
 
    private
-   
+
       type Stack is record
          Content : Element_Array := (others => 0);
          Size    : My_Length := 0;
          Max     : Element := 0;
       end record with
         Type_Invariant => Is_Valid (Stack);
-   
+
       function Is_Valid (S : Stack) return Boolean is
         ((for all I in 1 .. S.Size => S.Content (I) <= S.Max)
          and (if S.Max > 0 then
                   (for some I in 1 .. S.Size => S.Content (I) = S.Max)));
-   
+
       function Max (S : Stack) return Element is (S.Max);
 
    end P;
@@ -373,9 +373,9 @@ type ``Stack`` altogether by using a :ref:`Default Initial Condition` of
 ``False``:
 
 .. code-block:: ada
-   
+
    type Stack is private with Default_Initial_Condition => False;
-   
+
    type Stack is record
       Content : Element_Array;
       Size    : My_Length;
@@ -392,7 +392,7 @@ object declared in the scope of ``Stack`` after it has been initialized:
       The_Stack : Stack := (Content => (others => 1),
                             Size    => 5,
                             Max     => 0);
-      
+
    begin
 
       The_Stack.Max := 1;
@@ -421,10 +421,10 @@ specification of ``P``:
 .. code-block:: ada
 
    function Size (S : Stack) return My_Length;
-   
-   procedure Push (S : in out Stack; E : Element) with 
+
+   procedure Push (S : in out Stack; E : Element) with
      Pre => Size (S) < My_Length'Last;
-   
+
    procedure Push_Zero (S : in out Stack) with
      Pre => Size (S) < My_Length'Last;
 
@@ -432,7 +432,7 @@ It is then implemented using an internal procedure ``Push_Internal`` declared
 in the body of ``P``:
 
 .. code-block:: ada
-   
+
    procedure Push_Internal (S : in out Stack; E : Element) with
      Pre  => S.Size < My_Length'Last,
      Post => S.Size = S.Size'Old + 1 and S.Content (S.Size) = E
@@ -443,7 +443,7 @@ in the body of ``P``:
       S.Size := S.Size + 1;
       S.Content (S.Size) := E;
    end Push_Internal;
-   
+
    procedure Push (S : in out Stack; E : Element) is
    begin
       Push_Internal (S, E);
@@ -451,7 +451,7 @@ in the body of ``P``:
          S.Max := E;
       end if;
    end Push;
-   
+
    procedure Push_Zero (S : in out Stack) is
    begin
       Push (S, 0);
@@ -479,7 +479,7 @@ stack ``The_Stack`` instead of taking it as a parameter, there will be a failed
 invariant check on exit of ``Push_Internal``:
 
 .. code-block:: ada
-   
+
    procedure Push_Internal (E : Element) with
      Pre  => The_Stack.Size < My_Length'Last
    is
@@ -487,7 +487,7 @@ invariant check on exit of ``Push_Internal``:
       The_Stack.Size := The_Stack.Size + 1;
       The_Stack.Content (The_Stack.Size) := E;
    end Push_Internal;
-      
+
    procedure Push (E : Element) is
    begin
       Push_Internal (E);
@@ -515,7 +515,7 @@ condition specifying that the size of the log is initially zero, where uses of
 the name of the private type ``Log_Type`` in the argument refer to variables of
 this type:
 
-.. literalinclude:: ../gnatprove_by_example/examples/logging_priv.ads
+.. literalinclude:: /gnatprove_by_example/examples/logging_priv.ads
    :language: ada
    :linenos:
 
@@ -538,7 +538,7 @@ definition of the private type is in |SPARK|, |GNATprove| also checks that the
 type is indeed fully default initialized, and if not issues a message like
 here:
 
-.. literalinclude:: ../gnatprove_by_example/results/logging_priv.flow
+.. literalinclude:: /gnatprove_by_example/results/logging_priv.flow
    :language: none
 
 If partial default initialization of the type is intended, in general for

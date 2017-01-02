@@ -28,12 +28,12 @@ SPARK 2014 User's Guide
       :maxdepth: 3
       :numbered: 4
 
-      getting_started
-      introduction
-      install
-      spark_mode
-      spark_2014
-      gnatprove
+      en/getting_started
+      en/introduction
+      en/install
+      en/spark_mode
+      en/spark_2014
+      en/gnatprove
       gfdl
 
 .. only:: full
@@ -42,15 +42,29 @@ SPARK 2014 User's Guide
       :maxdepth: 3
       :numbered: 4
 
-      getting_started
-      introduction
-      install
-      spark_mode
-      spark_2014
-      tutorial
-      gnatprove
-      usage_scenarios
-      appendix
+      en/getting_started
+      en/introduction
+      en/install
+      en/spark_mode
+      en/spark_2014
+      en/tutorial
+      en/gnatprove
+      en/usage_scenarios
+      en/appendix
+      gfdl
+
+.. only:: core_ja
+
+   .. toctree::
+      :maxdepth: 3
+      :numbered: 4
+
+      ja/getting_started_ja
+      ja/introduction_ja
+      ja/install_ja
+      ja/spark_mode_ja
+      ja/spark_2014_ja
+      ja/gnatprove_ja
       gfdl
 
 .. Indices and tables

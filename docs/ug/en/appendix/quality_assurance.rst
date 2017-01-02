@@ -34,7 +34,7 @@ a report about errors found and proved or unproved properties. Looking more
 closely at how this is achieved, one can see this high-level structure of
 SPARK:
 
-.. image:: ../static/spark_structure.png
+.. image:: /static/spark_structure.png
 
 
 The development of the GNAT front-end and GNAT2Why components entirely follows

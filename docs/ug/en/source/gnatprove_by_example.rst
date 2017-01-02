@@ -25,6 +25,6 @@ menu item.
    :maxdepth: 1
    :numbered: 2
 
-   ../gnatprove_by_example/basic
-   ../gnatprove_by_example/loop
-   ../gnatprove_by_example/manual_proof
+   /gnatprove_by_example/basic
+   /gnatprove_by_example/loop
+   /gnatprove_by_example/manual_proof

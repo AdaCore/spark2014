@@ -20,11 +20,11 @@ presented in :ref:`Class-Wide Subprogram Contracts`, where no dispatching is
 allowed. Then, it is possible to use regular preconditions and postconditions
 as contracts:
 
-.. literalinclude:: ../gnatprove_by_example/examples/logging_no_dispatch.ads
+.. literalinclude:: /gnatprove_by_example/examples/logging_no_dispatch.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: ../gnatprove_by_example/examples/range_logging_no_dispatch.ads
+.. literalinclude:: /gnatprove_by_example/examples/range_logging_no_dispatch.ads
    :language: ada
    :linenos:
 
@@ -32,10 +32,10 @@ as contracts:
 ``Append_To_Log`` in both units is stronger than the default class-wide
 precondition of ``True``:
 
-.. literalinclude:: ../gnatprove_by_example/results/logging_no_dispatch.prove
+.. literalinclude:: /gnatprove_by_example/results/logging_no_dispatch.prove
    :language: none
 
-.. literalinclude:: ../gnatprove_by_example/results/range_logging_no_dispatch.prove
+.. literalinclude:: /gnatprove_by_example/results/range_logging_no_dispatch.prove
    :language: none
 
 Indeed, should the program dispatch on any of these procedures, |GNATprove|
@@ -72,7 +72,7 @@ Subprogram Contracts`.
 
 Let's consider the various cases that may occur when overridding a subprogram:
 
-.. literalinclude:: ../gnatprove_by_example/examples/geometry.ads
+.. literalinclude:: /gnatprove_by_example/examples/geometry.ads
    :language: ada
    :linenos:
 
@@ -122,18 +122,18 @@ the default postcondition of ``Shape.Set_Default_No_Post``.
 
 Hence the results of |GNATprove|'s analysis on this program:
 
-.. literalinclude:: ../gnatprove_by_example/results/geometry.prove
+.. literalinclude:: /gnatprove_by_example/results/geometry.prove
    :language: none
 
 Let's consider now calls to these subprograms in procedure ``Use_Geometry``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/use_geometry.adb
+.. literalinclude:: /gnatprove_by_example/examples/use_geometry.adb
    :language: ada
    :linenos:
 
 Here are the results of |GNATprove|'s analysis on this program:
 
-.. literalinclude:: ../gnatprove_by_example/results/use_geometry.prove
+.. literalinclude:: /gnatprove_by_example/results/use_geometry.prove
    :language: none
 
 Parameter ``S`` is of class-wide type ``Shape'Class``, so it can be dynamically
@@ -167,7 +167,7 @@ dispatching though, like in the code. For example, consider procedure
 ``Shape'Class``, which can all be dynamically of both types ``Shape`` or
 ``Rectangle``:
 
-.. literalinclude:: ../gnatprove_by_example/examples/more_use_geometry.adb
+.. literalinclude:: /gnatprove_by_example/examples/more_use_geometry.adb
    :language: ada
    :linenos:
 
@@ -190,5 +190,5 @@ precondition or test or call ensures that the precondition to the call to
 ``S4.Operate`` on line 17 is satisfied. Hence the results of |GNATprove|'s
 analysis on this program:
 
-.. literalinclude:: ../gnatprove_by_example/results/more_use_geometry.prove
+.. literalinclude:: /gnatprove_by_example/results/more_use_geometry.prove
    :language: none

@@ -105,7 +105,7 @@ For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
 there is one, and the special cursor ``No_Element`` otherwise:
 
-.. literalinclude:: ../gnatprove_by_example/examples/my_find.ads
+.. literalinclude:: /gnatprove_by_example/examples/my_find.ads
    :language: ada
    :linenos:
 
@@ -115,13 +115,13 @@ Invariants` to refer to parts of containers. For example, here, ghost function
 searched is not contained in the part of the container already traversed
 (otherwise the loop would have exited):
 
-.. literalinclude:: ../gnatprove_by_example/examples/my_find.adb
+.. literalinclude:: /gnatprove_by_example/examples/my_find.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves that function ``My_Find`` implements its specification:
 
-.. literalinclude:: ../gnatprove_by_example/results/my_find.prove
+.. literalinclude:: /gnatprove_by_example/results/my_find.prove
    :language: none
 
 Function ``Strict_Equal`` is mostly useful to state which parts of a container
@@ -271,7 +271,7 @@ of the |SPARK| product under directory
 ``Lemma_Div_Is_Monotonic`` is a Coq proof of the mathematical property (in Coq
 syntax):
 
-.. image:: ../static/div_is_monotonic_in_coq.png
+.. image:: /static/div_is_monotonic_in_coq.png
    :width: 400 px
    :align: center
    :alt: Property that division is monotonic in Coq syntax

@@ -54,7 +54,7 @@ To begin with, launch GPS with a new default project and check that the
 Now open a new file in GPS and type the following short program into it.
 Save this file as ``diff.adb``.
 
-.. literalinclude:: gnatprove_by_example/examples/diff.adb
+.. literalinclude:: /gnatprove_by_example/examples/diff.adb
    :language: ada
    :linenos:
 
@@ -66,7 +66,7 @@ as you may have noticed, there is a bug in the code. Note the use of aspect
 tools.  To analyze this program, select :menuselection:`SPARK --> Examine File`
 from the menu in GPS. |GNATprove| executes in flow analysis mode and reports:
 
-.. literalinclude:: gnatprove_by_example/results/diff.flow
+.. literalinclude:: /gnatprove_by_example/results/diff.flow
    :language: none
 
 These warnings are informing us that there is a discrepancy between the
@@ -87,7 +87,7 @@ the assignment statement in red, reporting:
 ..  correction version of diff.adb written in diff2.adb (to be able to use
 ..  automatic generation of output)
 
-.. literalinclude:: gnatprove_by_example/results/diff2.prove
+.. literalinclude:: /gnatprove_by_example/results/diff2.prove
    :language: none
 
 This means that the tools are unable to show that the result of subtracting one
