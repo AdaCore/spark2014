@@ -56,6 +56,9 @@ gnatprove advanced switches:
  --flow-debug        Extra debugging for flow analysis (requires graphviz)
  --limit-line=s      Limit analysis to given file and line
  --limit-subp=s      Limit analysis to subprogram defined by file and line
+ --memcached-server=host:portnumber
+                     Specify a memcached instance that will be used for
+                     caching of proof results.
  --pedantic          Use a strict interpretation of the Ada standard
  --proof=g[:l]       Set the proof modes for generation of formulas
                      (g=per_check*, per_path, progressive) (l=lazy*, all)

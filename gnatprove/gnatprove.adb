@@ -381,8 +381,9 @@ procedure Gnatprove with SPARK_Mode is
       --  the first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it
 
-      if Caching then
-         Args.Append ("cache_wrapper");
+      if Memcached_Server /= null and then Memcached_Server.all /= "" then
+         Args.Append ("spark_memcached_wrapper");
+         Args.Append (Memcached_Server.all);
          Args.Append ("gnatwhy3");
       else
          Args.Append ("gnatwhy3");
