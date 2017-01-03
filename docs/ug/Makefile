@@ -9,6 +9,20 @@
 #    toctree for core mode. Indeed, Sphinx does not support currently
 #    conditional changes to the toctree, so leaving these lines uncommented
 #    leads to broken toctree.
+#  - core_ja for the Japanese version of the core subset of the documentation.
+#    To build the Japanese HTML version, type
+#      MODE=core_ja make html
+#    To build the Japanese PDF version, follow the following instructions:
+#      - install all texlive packages that are needed to compile the english
+#        version of the PDF, like texlive-fonts-recommended and
+#        texlive-latex-extra
+#      - install the texlive-lang-japanese package
+#      - $ MODE=core_ja make latex
+#      - $ cd _build/latex
+#      - edit spark2014_ug.tex and add the following line before package
+#        sphinx is included:
+#        \usepackage[dvipdfmx]{graphicx}
+#      - $ make all-pdf-ja
 MODE ?= full
 
 # You can set these variables from the command line.
