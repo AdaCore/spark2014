@@ -63,12 +63,18 @@ endif
 	mv -f ada_get_targ.adb get_targ.adb
 
 build: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -largs $(LDFLAGS)
+	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
 
-coverage: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) \
-	  -cargs -fprofile-arcs -ftest-coverage \
-	  -largs $(LDFLAGS) -fprofile-arcs -ftest-coverage
+# Compilation and linking settings for coverage and profiling; for details see
+# "Code Coverage and Profiling" in GNAT User's Guide.
+
+coverage: CFLAGS = -fprofile-arcs -ftest-coverage
+coverage: LDFLAGS += -fprofile-arcs
+coverage: build
+
+profile: CFLAGS = -pg
+profile: LDFLAGS += -pg
+profile: build
 
 force:
 

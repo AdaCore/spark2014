@@ -25,6 +25,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with ALI.Util;                        use ALI.Util;
@@ -523,6 +524,23 @@ package body Gnat2Why.Driver is
          end if;
          Create_JSON_File (Proof_Done);
       end if;
+
+      --  If gnat2why is compiled with support for profiling then separate
+      --  profiling data for each phase. For file foo.ads two files will be
+      --  generated in gnatprove directory: foo_phase1_gmon.out.${PID} and
+      --  foo_phase2_gmon.out.${PID} (with different PIDs).
+      --
+      --  The target file is intentionally set at the very end of the gnat2why,
+      --  to not affect other executables (e.g. provers, gnatwhy3, etc.).
+
+      Ada.Environment_Variables.Set
+        (Name  => "GMON_OUT_PREFIX",
+         Value =>
+           Ada.Directories.Compose
+             (Name      => Unit_Name & (if Gnat2Why_Args.Global_Gen_Mode
+                                        then "_phase1"
+                                        else "_phase2") & "_gmon",
+              Extension => "out"));
 
    end GNAT_To_Why;
 
