@@ -1,2 +1,2 @@
-Darwin RLIMIT 1000
+Darwin SKIP too slow
 !large SKIP part of large testsuite
