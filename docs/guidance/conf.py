@@ -250,8 +250,8 @@ htmlhelp_basename = 'SPARKGuidancedoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
-with open('gfdl.tex', 'r') as fd:
-   gfdl = fd.read()
+with open('licence.tex', 'r') as fd:
+   licence = fd.read()
 
 latex_elements = {
      # The paper size ('letterpaper' or 'a4paper').
@@ -265,7 +265,7 @@ latex_elements = {
      # Additional stuff for the LaTeX preamble.
      #
      # 'preamble': '',
-'tableofcontents': gfdl + '\n\n\\tableofcontents\n',
+'tableofcontents': licence + '\n\n\\tableofcontents\n',
 
      # Latex figure (float) alignment
      #
