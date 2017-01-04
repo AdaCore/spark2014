@@ -537,6 +537,7 @@ procedure Gnatprove with SPARK_Mode is
               Obj_Dir           => Obj_Dir,
               Proj_Name         => Project_File);
          Del_Succ : Boolean;
+         pragma Unreferenced (Del_Succ);
          Id       : Process_Descriptor;
       begin
 
