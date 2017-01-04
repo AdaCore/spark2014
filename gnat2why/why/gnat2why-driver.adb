@@ -137,9 +137,8 @@ package body Gnat2Why.Driver is
    -- Global Variables --
    ----------------------
 
-   Timing     : Time_Token;
-   --  this variable stores the timing results of the various phases in
-   --  gnat2why
+   Timing : Time_Token;
+   --  Timing of various gnat2why phases
 
    --------------------------
    -- Complete_Declaration --
