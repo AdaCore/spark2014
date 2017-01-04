@@ -1,6 +1,5 @@
 gen.ads:5:27: info: initialization of "X" proved, in instantiation at user.adb:7
 gen.ads:5:27: info: initialization of "Y" proved, in instantiation at user.adb:8
-gen.ads:6:06: warning: postcondition does not check the outcome of calling "Set"
 gen.ads:6:16: info: initialization of "X" proved, in instantiation at user.adb:7
 gen.ads:6:16: info: initialization of "Y" proved, in instantiation at user.adb:8
 gen.ads:6:16: info: postcondition proved (CVC4: 1 VC), in instantiation at user.adb:7
