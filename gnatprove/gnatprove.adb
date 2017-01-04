@@ -776,8 +776,8 @@ procedure Gnatprove with SPARK_Mode is
       Target_Set : Boolean := False;
 
       procedure Copy_Replace_Line (Line : String);
-      --  copy the given line over to Handle. If the line corresponds to the
-      --  Runtime_library pattern, replace it by
+      --  Copy the given line over to Handle. If the line corresponds to the
+      --  Runtime_Library_Dir pattern, replace it by
       --    for Runtime_Library_Dir ("Ada") use ("dir");
 
       -----------------------
