@@ -13027,7 +13027,7 @@ package body Gnat2Why.Expr is
          --  issue a warning on unknown pragmas, as an error is issued in
          --  SPARK.Definition.
 
-         when Unknown_Pragma =>
+         when others =>
             return +Void;
       end case;
    end Transform_Pragma;
