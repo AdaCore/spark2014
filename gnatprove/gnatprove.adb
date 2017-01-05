@@ -381,8 +381,9 @@ procedure Gnatprove with SPARK_Mode is
       --  the first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it
 
-      if Caching then
-         Args.Append ("cache_wrapper");
+      if Memcached_Server /= null and then Memcached_Server.all /= "" then
+         Args.Append ("spark_memcached_wrapper");
+         Args.Append (Memcached_Server.all);
          Args.Append ("gnatwhy3");
       else
          Args.Append ("gnatwhy3");
@@ -537,6 +538,7 @@ procedure Gnatprove with SPARK_Mode is
               Obj_Dir           => Obj_Dir,
               Proj_Name         => Project_File);
          Del_Succ : Boolean;
+         pragma Unreferenced (Del_Succ);
          Id       : Process_Descriptor;
       begin
 
@@ -772,8 +774,8 @@ procedure Gnatprove with SPARK_Mode is
       New_File    : String) return String
    is
       Handle     : File_Type;
-      RTS_Set    : Boolean := False;
-      Target_Set : Boolean := False;
+      RTS_Set    : Boolean;
+      Target_Set : Boolean;
 
       procedure Copy_Replace_Line (Line : String);
       --  Copy the given line over to Handle. If the line corresponds to the
@@ -814,12 +816,9 @@ procedure Gnatprove with SPARK_Mode is
       then
          return Config_File;
       end if;
-      if RTS_Dir.all /= "" then
-         RTS_Set := True;
-      end if;
-      if not Null_Or_Empty_String (Prj_Attr.Target) then
-         Target_Set := True;
-      end if;
+
+      RTS_Set    := RTS_Dir.all /= "";
+      Target_Set := not Null_Or_Empty_String (Prj_Attr.Target);
 
       Create (Handle, Out_File, New_File);
       Copy_File (Config_File);

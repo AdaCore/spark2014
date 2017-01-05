@@ -12,7 +12,7 @@ SPARK 2014 User's Guide
 
 .. only:: html
 
-   Copyright (C) 2011-2016, AdaCore and Altran UK Ltd
+   Copyright (C) 2011-2017, AdaCore and Altran UK Ltd
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
@@ -21,6 +21,10 @@ SPARK 2014 User's Guide
    Back-Cover Texts.
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
+
+   .. only:: core_ja
+
+      Translation to Japanese by Mr. Masao Ito (NIL)
 
 .. only : : core
 
