@@ -33,6 +33,7 @@ with Einfo;                        use Einfo;
 with Errout;                       use Errout;
 with Gnat2Why_Args;
 with GNAT.Regpat;                  use GNAT.Regpat;
+with Lib.Xref;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Util;                     use Sem_Util;
@@ -484,7 +485,6 @@ package body Gnat2Why.Annotate is
 
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
-
       --  If the analysis is requested for a specific subprogram/task, we do
       --  not issue this warning, because it's likely to be a false positive.
 
@@ -493,11 +493,25 @@ package body Gnat2Why.Annotate is
       end if;
 
       --  We do not issue any warnings on nodes which stem from inlining or
-      --  instantiation.
+      --  instantiation, or in subprograms or library packages whose analysis
+      --  has not been requested, such as subprograms that are always inlined
+      --  in proof.
 
       for Prag of Pragma_Set loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
-            Error_Msg_N ("?no check message justified by this pragma", Prag);
+            declare
+               Subp : constant Entity_Id :=
+                 Lib.Xref.SPARK_Specific.
+                   Enclosing_Subprogram_Or_Library_Package (Prag);
+            begin
+               if Present (Subp)
+                 and then Analysis_Requested (Unique_Entity (Subp),
+                                              With_Inlined => False)
+               then
+                  Error_Msg_N
+                    ("?no check message justified by this pragma", Prag);
+               end if;
+            end;
          end if;
       end loop;
       for Prag of Proved_Pragma loop

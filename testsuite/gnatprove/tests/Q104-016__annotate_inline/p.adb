@@ -5,8 +5,8 @@ procedure P is
    procedure Inner (X : Integer);
 
    procedure Inner (X : Integer) is
+      Dummy : constant One_to_Ten := X;  --  @RANGE_CHECK:NONE
       pragma Annotate (GNATprove, Intentional, "range check might fail", "just to demonstrate");
-      Dummy : constant One_to_Ten := X; --  the above pragma should justify this range check
    begin
       pragma Assert (Dummy in 1 .. 10);
    end;
