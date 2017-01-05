@@ -145,6 +145,7 @@ modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:14: warning: subprogram "Test_01" might not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
 nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate
+nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate, terminating annotation has been proved
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: info: subprogram "Nothing2" will terminate
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect

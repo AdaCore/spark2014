@@ -4618,15 +4618,30 @@ package body Flow.Analysis is
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
    begin
-      if Has_Terminate_Annotation (FA.Spec_Entity)
-        and then Is_Potentially_Nonreturning_Internal (FA.Spec_Entity)
-      then
-         Error_Msg_Flow (FA       => FA,
-                         Msg      => "subprogram & might not terminate, " &
-                           "terminating annotation could be incorrect",
-                         Severity => Medium_Check_Kind,
-                         N        => FA.Spec_Entity,
-                         F1       => Direct_Mapping_Id (FA.Spec_Entity));
+      if Has_Terminate_Annotation (FA.Spec_Entity) then
+         declare
+            Proved : constant Boolean :=
+              Is_Potentially_Nonreturning_Internal (FA.Spec_Entity);
+
+            Msg : constant String :=
+              (if Proved
+               then "subprogram & might not terminate, " &
+                    "terminating annotation could be incorrect"
+               else "subprogram & will terminate, " &
+                    "terminating annotation has been proved");
+
+            Severity : constant Msg_Severity :=
+              (if Proved
+               then Medium_Check_Kind
+               else Info_Kind);
+
+         begin
+            Error_Msg_Flow (FA       => FA,
+                            Msg      => Msg,
+                            Severity => Severity,
+                            N        => FA.Spec_Entity,
+                            F1       => Direct_Mapping_Id (FA.Spec_Entity));
+         end;
       end if;
    end Check_Terminating_Annotation;
 
