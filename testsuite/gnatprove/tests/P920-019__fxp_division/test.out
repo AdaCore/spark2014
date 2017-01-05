@@ -1,0 +1,5 @@
+delay_cal1.adb:7:43: warning: assuming "-" has no effect on global items
+delay_cal1.adb:7:43: warning: no Global contract available for "-"
+delay_cal1.adb:7:68: medium: divide by zero might fail
+delay_cal1.adb:7:68: medium: overflow check might fail
+delay_cal1.adb:7:68: warning: universal_fixed expression interpreted as type "Standard.Duration"
