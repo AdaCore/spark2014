@@ -1,0 +1,69 @@
+tagged_component_check.ads:14:28: medium: range check might fail
+tagged_component_check.ads:17:28: medium: range check might fail
+tagged_component_check.ads:23:28: medium: range check might fail
+tagged_component_check.ads:28:28: medium: range check might fail
+tagged_component_check.ads:34:28: medium: range check might fail
+tagged_component_check.ads:39:28: medium: range check might fail
+tagged_component_check.ads:45:28: medium: range check might fail
+tagged_component_check.ads:68:25: medium: range check might fail
+tagged_component_check.ads:72:25: medium: range check might fail
+tagged_component_check.ads:76:25: medium: range check might fail
+tagged_component_check.ads:80:25: medium: range check might fail
+tagged_component_check.ads:84:25: medium: range check might fail
+tagged_component_check.ads:88:04: info: initialization of "X1.F" proved
+tagged_component_check.ads:88:04: info: initialization of "X1.G" proved
+tagged_component_check.ads:88:04: info: initialization of "X1.H" proved
+tagged_component_check.ads:89:04: info: initialization of "X2.F" proved
+tagged_component_check.ads:89:04: info: initialization of "X2.H" proved
+tagged_component_check.ads:89:04: info: initialization of private part of "X2" proved
+tagged_component_check.ads:90:04: info: initialization of "X3.F" proved
+tagged_component_check.ads:90:04: info: initialization of "X3.H" proved
+tagged_component_check.ads:90:04: info: initialization of private part of "X3" proved
+tagged_component_check.ads:91:04: info: initialization of "X4.F" proved
+tagged_component_check.ads:91:04: info: initialization of "X4.H" proved
+tagged_component_check.ads:91:04: info: initialization of private part of "X4" proved
+tagged_component_check.ads:92:04: info: initialization of "X5.F" proved
+tagged_component_check.ads:92:04: info: initialization of "X5.H" proved
+tagged_component_check.ads:92:04: info: initialization of private part of "X5" proved
+tagged_component_check.ads:97:28: medium: range check might fail
+tagged_component_check.ads:100:28: medium: range check might fail
+tagged_component_check.ads:106:28: medium: range check might fail
+tagged_component_check.ads:111:28: medium: range check might fail
+tagged_component_check.ads:117:28: medium: range check might fail
+tagged_component_check.ads:122:28: medium: range check might fail
+tagged_component_check.ads:128:28: medium: range check might fail
+tagged_component_check.ads:163:25: medium: range check might fail
+tagged_component_check.ads:167:25: medium: range check might fail
+tagged_component_check.ads:171:25: medium: range check might fail
+tagged_component_check.ads:175:25: medium: range check might fail
+tagged_component_check.ads:179:25: medium: range check might fail
+tagged_component_check.ads:183:04: info: initialization of "Y1.F" proved
+tagged_component_check.ads:183:04: info: initialization of "Y1.G" proved
+tagged_component_check.ads:183:04: info: initialization of private part of "Y1" proved
+tagged_component_check.ads:184:04: info: initialization of "Y2.F" proved
+tagged_component_check.ads:184:04: info: initialization of private part of "Y2" proved
+tagged_component_check.ads:185:04: info: initialization of "Y3.F" proved
+tagged_component_check.ads:185:04: info: initialization of private part of "Y3" proved
+tagged_component_check.ads:186:04: info: initialization of "Y4.F" proved
+tagged_component_check.ads:186:04: info: initialization of private part of "Y4" proved
+tagged_component_check.ads:187:04: info: initialization of "Y5.F" proved
+tagged_component_check.ads:187:04: info: initialization of private part of "Y5" proved
+tagged_component_check.ads:192:28: medium: range check might fail
+tagged_component_check.ads:195:28: medium: range check might fail
+tagged_component_check.ads:201:28: medium: range check might fail
+tagged_component_check.ads:206:28: medium: range check might fail
+tagged_component_check.ads:212:28: medium: range check might fail
+tagged_component_check.ads:217:28: medium: range check might fail
+tagged_component_check.ads:223:28: medium: range check might fail
+tagged_component_check.ads:258:25: medium: range check might fail
+tagged_component_check.ads:262:25: medium: range check might fail
+tagged_component_check.ads:266:25: medium: range check might fail
+tagged_component_check.ads:270:25: medium: range check might fail
+tagged_component_check.ads:274:25: medium: range check might fail
+tagged_component_check.ads:278:04: info: initialization of "Z1.F" proved
+tagged_component_check.ads:278:04: info: initialization of "Z1.G" proved
+tagged_component_check.ads:278:04: info: initialization of private part of "Z1" proved
+tagged_component_check.ads:279:04: info: initialization of "Z2.F" proved
+tagged_component_check.ads:279:04: info: initialization of private part of "Z2" proved
+tagged_component_check.ads:281:04: info: initialization of "Z4.F" proved
+tagged_component_check.ads:281:04: info: initialization of private part of "Z4" proved
