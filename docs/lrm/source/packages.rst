@@ -425,7 +425,7 @@ Async_Writers aspect specification.
      non-interfering context; or
 
    * the prefix of an ``attribute_reference`` whose ``attribute_designator`` is
-     either Address, Alignment, Component_Size, First_Bit, Last_Bit, Position,
+     either Alignment, Component_Size, First_Bit, Last_Bit, Position,
      Size, or Storage_Size; or
 
    * the expression of a type conversion occurring in a non-interfering context; or

@@ -18,7 +18,9 @@ is
       end if;
    end Worker_Test;
 
-   procedure Worker_Loop is
+   procedure Worker_Loop
+     with SPARK_Mode => Off  --  due to use of Work'Address
+   is
       Work : Worker_Work := (None, System.Null_Address);
       Res : Integer;
    begin
@@ -42,7 +44,9 @@ is
 
    function Worker_Schedule
      (Func_ID : Integer;
-      Arg     : Pvoid) return Integer is
+      Arg     : Pvoid) return Integer
+     with SPARK_Mode => Off  --  due to use of Work'Address
+   is
       Work : Worker_Work;
       Res : Integer;
    begin

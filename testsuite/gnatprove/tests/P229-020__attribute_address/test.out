@@ -1,4 +1,3 @@
-addr_constant.adb:4:11: warning: subprogram "Addr_Constant" has no effect
-addr_constant.adb:5:12: medium: postcondition might fail, cannot prove false
-address.adb:7:30: attribute "Address" not on variable or constant is not yet supported
+addr_constant.adb:9:27: attribute "Address" is not permitted in SPARK
+address.adb:7:30: attribute "Address" is not permitted in SPARK
 gnatprove: error during flow analysis and proof

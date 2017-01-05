@@ -18,9 +18,6 @@ is
 
    function Alignment_Of_R return Natural;
 
-   function Address_Of_V return System.Address
-     with Global => (Input => V);
-
    function Order_Of_R return System.Bit_Order;
 
    function CS_Of_A return Natural;

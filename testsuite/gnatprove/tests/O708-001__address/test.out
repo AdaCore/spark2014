@@ -1,1 +1,2 @@
-addr.adb:6:14: warning: subprogram "Do_Stuff" has no effect
+addr.adb:12:04: attribute "Address" is not permitted in SPARK
+gnatprove: error during flow analysis and proof

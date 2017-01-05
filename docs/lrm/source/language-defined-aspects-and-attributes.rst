@@ -11,6 +11,7 @@ Language-Defined Aspects
 ============================= ====================== ===============================================
 Aspect                        Allowed in SPARK 2014  Comment
 ============================= ====================== ===============================================
+Address	    		      Yes
 Alignment (object)	      Yes
 Alignment (subtype)	      Yes
 All_Calls_Remote	      No
@@ -128,7 +129,7 @@ Attribute                              Allowed in SPARK 2014 Comment
 ===================================== ====================== ====================================================
 P'Access			      No		     No access types
 X'Access	    		      No
-X'Address	    		      Warn		     Warning in pedantic mode
+X'Address	    		      No                     Only allowed in representation clauses
 S'Adjacent	    		      Yes
 S'Aft				      Yes
 S'Alignment	    		      Warn                   Warning in pedantic mode

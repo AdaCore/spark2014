@@ -23,7 +23,7 @@ is
       end if;
    end Worker_Test;
 
-   procedure Worker_Loop
+   procedure Worker_Loop with SPARK_Mode => Off
    is
       Work : Worker_Work := (None, System.Null_Address);
       Res : Integer := 0;
@@ -53,7 +53,7 @@ is
       end if;
    end Worker_Loop;
 
-   function Worker_Schedule(Func_ID : Integer; Arg : Pvoid) return Integer
+   function Worker_Schedule(Func_ID : Integer; Arg : Pvoid) return Integer with SPARK_Mode => Off
    is
       Work : Worker_Work := (None, System.Null_Address);
       Res : Integer := 0;

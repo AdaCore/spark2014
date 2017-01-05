@@ -1,7 +1,6 @@
 package body Pedantic
 is
 
-
    function Alignment_Of (X : in R) return Natural
    is
    begin
@@ -13,12 +12,6 @@ is
    begin
       return R'Alignment;
    end Alignment_Of_R;
-
-   function Address_Of_V return System.Address
-   is
-   begin
-      return V'Address;
-   end Address_Of_V;
 
    function Order_Of_R return System.Bit_Order
    is

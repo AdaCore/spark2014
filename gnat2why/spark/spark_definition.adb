@@ -2202,8 +2202,7 @@ package body SPARK_Definition is
          --  These attributes are supported, but generate a warning in
          --  "pedantic" mode, owing to their implemention-defined status.
          --  These are the attributes marked "Warn" in SPARK RM 15.2.
-         when Attribute_Address     |
-           Attribute_Alignment      |
+         when Attribute_Alignment   |
            Attribute_Bit_Order      |
            Attribute_Component_Size |
            Attribute_First_Bit      |
@@ -2217,26 +2216,6 @@ package body SPARK_Definition is
                Error_Msg_Name_1 := Aname;
                Error_Msg_N
                  ("?attribute % has an implementation-defined value", N);
-            end if;
-
-            --  Only support X'Address where X is a variable or a constant
-
-            if Attr_Id = Attribute_Address then
-               if Nkind (P) in N_Has_Entity
-                 and then Present (Entity (P))
-                 and then Ekind (Entity (P)) in Object_Kind
-               then
-                  null;
-
-               --  In all other cases (prefix is a program unit, a label, or
-               --  any object that is not a variable or constant), issue an
-               --  error. Some of these cases could be supported in the future
-               --  if needed.
-
-               else
-                  Mark_Unsupported
-                    ("attribute % not on variable or constant", N, Aname);
-               end if;
             end if;
 
          when Attribute_Valid =>
