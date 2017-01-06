@@ -4620,11 +4620,11 @@ package body Flow.Analysis is
    begin
       if Has_Terminate_Annotation (FA.Spec_Entity) then
          declare
-            Proved : constant Boolean :=
+            Not_Proved : constant Boolean :=
               Is_Potentially_Nonreturning_Internal (FA.Spec_Entity);
 
             Msg : constant String :=
-              (if Proved
+              (if Not_Proved
                then "subprogram & might not terminate, " &
                     "terminating annotation could be incorrect"
                else "subprogram & will terminate, " &
