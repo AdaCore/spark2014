@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2016-2016, AdaCore                  --
+--                        Copyright (C) 2016-2017, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -72,6 +72,15 @@ package body SPARK_Util.Types is
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
+
+   function Base_Retysp (T : Entity_Id) return Entity_Id is
+      E : Entity_Id := Retysp (T);
+   begin
+      while not Is_Base_Type (E) loop
+         E := Retysp (Base_Type (E));
+      end loop;
+      return E;
+   end Base_Retysp;
 
    --  This function is similar to Sem_Eval.Is_Static_Subtype, except it only
    --  considers scalar subtypes (otherwise returns False), and looks past

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1521,11 +1521,11 @@ package body Why.Gen.Expr is
 
             case Get_Aspect_Id (Par) is
             when Aspect_Default_Component_Value =>
-               pragma Assert (Is_Array_Type (Entity (Par)));
-               Check_Type := Component_Type (Entity (Par));
+               pragma Assert (Is_Array_Type (Retysp (Entity (Par))));
+               Check_Type := Component_Type (Retysp (Entity (Par)));
             when Aspect_Default_Value =>
-               pragma Assert (Is_Scalar_Type (Entity (Par)));
-               Check_Type := Entity (Par);
+               pragma Assert (Is_Scalar_Type (Retysp (Entity (Par))));
+               Check_Type := Retysp (Entity (Par));
             when others =>
                Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] aspect ="
                                      & Aspect_Id'Image (Get_Aspect_Id (Par)));

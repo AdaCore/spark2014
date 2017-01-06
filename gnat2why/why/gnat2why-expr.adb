@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2182,18 +2182,20 @@ package body Gnat2Why.Expr is
 
    begin
       if Is_Scalar_Type (Ty_Ext) then
-         if Has_Default_Aspect (Ty_Ext) then
+         if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
             declare
                Default_Expr : constant W_Expr_Id :=
                  Transform_Expr
-                   (Expr          => Default_Aspect_Value (Ty_Ext),
+                   (Expr          =>
+                      Default_Aspect_Value (Base_Retysp (Ty_Ext)),
                     Expected_Type => Base_Why_Type (Ty_Ext),
                     Domain        => EW_Prog,
                     Params        => Params);
                Range_Check  : constant W_Expr_Id :=
                  Insert_Scalar_Conversion
                    (Domain     => EW_Prog,
-                    Ada_Node   => Default_Aspect_Value (Ty_Ext),
+                    Ada_Node   =>
+                      Default_Aspect_Value (Base_Retysp (Ty_Ext)),
                     Expr       => Default_Expr,
                     To         => Type_Of_Node (Ty_Ext),
                     Range_Type => Ty_Ext,
@@ -2242,9 +2244,10 @@ package body Gnat2Why.Expr is
 
             --  If Ty_Ext has a Default_Component_Value aspect, use it
 
-            if Has_Default_Aspect (Ty_Ext) then
+            if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
                T_Comp := Transform_Expr
-                 (Expr          => Default_Aspect_Component_Value (Ty_Ext),
+                 (Expr          => Default_Aspect_Component_Value
+                    (Base_Retysp (Ty_Ext)),
                   Expected_Type => Type_Of_Node (Component_Type (Ty_Ext)),
                   Domain        => EW_Prog,
                   Params        => Params);
@@ -2709,7 +2712,7 @@ package body Gnat2Why.Expr is
          C_Ty   : Entity_Id) return W_Pred_Id
       is
       begin
-         if Has_Default_Aspect (Ty_Ext) then
+         if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
             return +New_Comparison
               (Symbol => Why_Eq,
                Left   => Insert_Simple_Conversion
@@ -2717,7 +2720,8 @@ package body Gnat2Why.Expr is
                   Expr   => +C_Expr,
                   To     => Type_Of_Node (C_Ty)),
                Right  => Transform_Expr
-                 (Expr          => Default_Aspect_Component_Value (Ty_Ext),
+                 (Expr          => Default_Aspect_Component_Value
+                      (Base_Retysp (Ty_Ext)),
                   Expected_Type => Type_Of_Node (C_Ty),
                   Domain        => EW_Term,
                   Params        => Params),
@@ -2877,11 +2881,12 @@ package body Gnat2Why.Expr is
                              Typ  => EW_Bool_Type);
          end;
       elsif Is_Scalar_Type (Ty_Ext) then
-         if Has_Default_Aspect (Ty_Ext) then
+         if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
             declare
                Default_Expr : constant W_Expr_Id :=
                  Transform_Expr
-                   (Expr          => Default_Aspect_Value (Ty_Ext),
+                   (Expr          => Default_Aspect_Value
+                      (Base_Retysp (Ty_Ext)),
                     Expected_Type => Base_Why_Type (Ty_Ext),
                     Domain        => EW_Term,
                     Params        => Params);
@@ -15001,9 +15006,10 @@ package body Gnat2Why.Expr is
       Ty_Ext : constant Entity_Id := Retysp (Ty);
    begin
       if Is_Scalar_Type (Ty_Ext) then
-         if Has_Default_Aspect (Ty_Ext) then
+         if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
             Variables.Union (Get_Variables_For_Proof
-                               (Default_Aspect_Value (Ty_Ext), Ty_Ext));
+                             (Default_Aspect_Value
+                                (Base_Retysp (Ty_Ext)), Ty_Ext));
          end if;
       elsif Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
@@ -15016,13 +15022,14 @@ package body Gnat2Why.Expr is
          --    get (<Expr>, i1, ...) = <Default_Component_Value>    <if any>
          --    default_init (get (<Expr>, i1, ...), Component_Type) <otherwise>
 
-         if Has_Default_Aspect (Ty_Ext) then
+         if Has_Default_Aspect (Base_Retysp (Ty_Ext)) then
 
             --  if Ty_Ext as a Default_Component_Value aspect,
             --  generate get (<Expr>, i1, ...) = <Default_Component_Value>
 
             Variables.Union (Get_Variables_For_Proof
-                               (Default_Aspect_Component_Value (Ty_Ext),
+                               (Default_Aspect_Component_Value
+                                (Base_Retysp (Ty_Ext)),
                                 Ty_Ext));
          else
 
