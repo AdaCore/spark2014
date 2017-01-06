@@ -1,5 +1,4 @@
 pragma Profile(GNAT_Extended_Ravenscar);
-pragma Restrictions (No_Entry_Queue);
 pragma Partition_Elaboration_Policy(Sequential);
 pragma SPARK_Mode(On);
 
