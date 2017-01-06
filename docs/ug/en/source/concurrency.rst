@@ -784,3 +784,44 @@ must be annotated using the ``Synchronous`` aspect:
        Synchronous_Abstractions.Do_Something;
      end loop;
    end Use_Synchronized_State;
+
+Project-wide Tasking Analysis
+-----------------------------
+
+Tasking-related analysis, as currently implemented in |GNATprove|, is subject to
+two limitations:
+
+First, the analysis is always done when processing a source file with task
+objects or with a subprogram that can be used as a main subprogram of a
+partition (i.e. is at library level, has no parameters, and is either a
+procedure or a function returning an integer type).
+
+In effect, you might get spurious checks when:
+
+* a subprogram satisfies conditions for being used as a main subprogram of a
+  partition but is not really used that way, i.e. it is not specified in the
+  Main attribute of the GNAT project file you use to build executables, and
+* it "withs" or is "withed" (directly or indirectly) from a library-level
+  package that declares some task object, and
+* both the fake "main" subprogram and the task object access the same resource in a
+  way that violates tasking-related rules (e.g. suspends on the same suspension
+  object).
+
+As a workaround, either wrap the fake "main" subprogram in a library-level package
+or give it a dummy parameter.
+
+Second, the analysis is only done in the context of all the units "withed"
+(directly and indirectly) by the currently analyzed source file.
+
+In effect, you might miss checks when:
+
+* building a library that declares tasks objects in unrelated source files,
+  i.e. files that are never "withed" (directly or indirectly) from the same
+  file, and those tasks objects access the same resource in a way that violates
+  tasking-related rules, or
+* using a library that internally declares some tasks objects, they access some
+  tasking-sensitive resource, and your main subprogram also accesses this
+  resource.
+
+As a workaround, when building library projects add a dummy main subprogram
+that "withs" all the library-level packages of your project.
