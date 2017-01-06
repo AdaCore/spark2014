@@ -73,6 +73,15 @@ package body SPARK_Util.Types is
    -- Queries related to representative types --
    ---------------------------------------------
 
+   function Base_Retysp (T : Entity_Id) return Entity_Id is
+      E : Entity_Id := Retysp (T);
+   begin
+      while not Is_Base_Type (E) loop
+         E := Retysp (Base_Type (E));
+      end loop;
+      return E;
+   end Base_Retysp;
+
    --  This function is similar to Sem_Eval.Is_Static_Subtype, except it only
    --  considers scalar subtypes (otherwise returns False), and looks past
    --  private types.

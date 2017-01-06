@@ -86,6 +86,12 @@ package SPARK_Util.Types is
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
 
+   function Base_Retysp (T : Entity_Id) return Entity_Id
+   with Pre => Is_Type (T);
+   --  @param T any type
+   --  @return the representative of the base type of T, or the result of
+   --    Base_Retysp on this representative if it is a subtype.
+
    --  The following functions provide wrappers for the query functions in
    --  Einfo, that apply the query on the "Representative Type in SPARK" of
    --  its argument, hence skipping all layers of private types. To avoid
