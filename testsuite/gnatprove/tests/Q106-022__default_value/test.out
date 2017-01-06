@@ -1,0 +1,9 @@
+check_component_default_value.ads:7:33: info: range check proved (CVC4: 1 VC)
+check_component_default_value.ads:8:15: info: range check proved (CVC4: 2 VC)
+check_component_default_value.ads:10:36: medium: range check might fail
+check_default_value.ads:8:33: info: range check proved (CVC4: 1 VC)
+check_default_value.ads:9:15: info: range check proved (CVC4: 2 VC)
+check_default_value.ads:11:12: info: range check proved (CVC4: 2 VC)
+check_default_value.ads:11:55: info: range check proved (CVC4: 1 VC)
+check_default_value.ads:11:55: medium: range check might fail
+check_default_value.ads:15:12: info: range check proved (CVC4: 2 VC)
