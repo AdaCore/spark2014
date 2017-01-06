@@ -196,7 +196,7 @@ package body Flow_Classwide is
       end loop;
 
       --  each Output-mode item of G2 is an Output-mode or In_Out-mode item
-      --  of G1 or a direct or indirect constituent therof; and
+      --  of G1 or a direct or indirect constituent thereof; and
       for F of My_Write loop
          if not Anc_Write.Contains (F) then
             Error_Msg_Flow
