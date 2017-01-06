@@ -78,6 +78,11 @@ procedure SPARK_Memcached_Wrapper is
    --  @return a connection to the memcached server specified by the first
    --    command line argument
 
+   procedure Report_Error (Msg : String)
+     with No_Return;
+   --  @param Msg error message to be reported
+   --  Quit the program and transmit a message in gnatwhy3 style
+
    ----------------------
    -- Hash_Commandline --
    ----------------------
@@ -133,14 +138,33 @@ procedure SPARK_Memcached_Wrapper is
    -----------------
 
    function Init_Client return Memcache_Client.Cache_Connection is
-      Info     : String renames Argument (1);
-      Colon    : constant Positive :=
+      Info  : String renames Argument (1);
+      Colon : constant Natural :=
         Ada.Strings.Fixed.Index (Info, ":");
-      Hostname : String renames Info (Info'First .. Colon - 1);
-      Port     : constant Port_Type :=
-        Port_Type'Value (Info (Colon + 1 .. Info'Last));
+
+      Wrong_Port_Msg : constant String :=
+        ("port value should be an integer between 1 and 65535");
+
    begin
-      return Memcache_Client.Init (Hostname, Port);
+      if Colon = 0 then
+         Report_Error
+           ("the expected format of option --memcached-server " &
+              "is hostname:portnumber, but no colon was found");
+      end if;
+      declare
+         Hostname : String renames Info (Info'First .. Colon - 1);
+         Port     : constant Port_Type :=
+           Port_Type'Value (Info (Colon + 1 .. Info'Last));
+
+      begin
+         if Port = No_Port then
+            Report_Error (Wrong_Port_Msg);
+         else
+            return Memcache_Client.Init (Hostname, Port);
+         end if;
+      end;
+   exception
+      when Constraint_Error => Report_Error (Wrong_Port_Msg);
    end Init_Client;
 
    --------------------
@@ -162,6 +186,25 @@ procedure SPARK_Memcached_Wrapper is
          end;
       end loop;
    end Hash_Proof_Dir;
+
+   ------------------
+   -- Report_Error --
+   ------------------
+
+   procedure Report_Error (Msg : String) is
+      Res : constant JSON_Value := Create_Object;
+   begin
+      --  Currently, gnatwhy3 is the only program to be wrapped by this
+      --  wrapper. Therefore we can emulate it's output in case of error. This
+      --  is done here by creating a JSON record with the error message. See
+      --  why3/src/gnat/gnat_report.mli for the format of this output.
+
+      Set_Field (Res, "error", Msg);
+      Set_Field (Res, "internal", Create (False));
+      Set_Field (Res, "results", Create (Empty_Array));
+      Ada.Text_IO.Put_Line (Write (Res));
+      GNAT.OS_Lib.OS_Exit (1);
+   end Report_Error;
 
    -----------------
    -- Compute_Key --
@@ -217,19 +260,5 @@ begin
    end;
 exception
    when Error : GNAT.Sockets.Socket_Error =>
-
-      --  Currently, gnatwhy3 is the only program to be wrapped by this
-      --  wrapper. Therefore we can emulate it's output in case of error. This
-      --  is done here by creating a JSON record with the error message. See
-      --  why3/src/gnat/gnat_report.mli for the format of this output.
-
-      declare
-         Res : constant JSON_Value := Create_Object;
-      begin
-         Set_Field (Res, "error",
-                    Create (Ada.Exceptions.Exception_Message (Error)));
-         Set_Field (Res, "internal", Create (False));
-         Set_Field (Res, "results", Create (Empty_Array));
-         Ada.Text_IO.Put_Line (Write (Res));
-      end;
+      Report_Error (Ada.Exceptions.Exception_Message (Error));
 end SPARK_Memcached_Wrapper;
