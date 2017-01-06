@@ -396,50 +396,9 @@ package body SPARK_Definition is
       Prefix_Node     : Node_Id;
       Node            : Node_Id;
 
-      Profile : constant Profile_Data :=
-        --  Restrictions for GNAT_Extended_Ravenscar =
-        --    Restricted profile ..
-        (Set   =>
-           (No_Abort_Statements                      => True,
-            No_Asynchronous_Control                  => True,
-            No_Dynamic_Attachment                    => True,
-            No_Dynamic_Priorities                    => True,
-            No_Entry_Queue                           => True, --  TO LIFT
-            No_Local_Protected_Objects               => True,
-            No_Protected_Type_Allocators             => True,
-            No_Requeue_Statements                    => True,
-            No_Task_Allocators                       => True,
-            No_Task_Attributes_Package               => True,
-            No_Task_Hierarchy                        => True,
-            No_Terminate_Alternatives                => True,
-            Max_Asynchronous_Select_Nesting          => True,
-            Max_Select_Alternatives                  => True,
-            Max_Task_Entries                         => True,
-
-            --  plus these additional restrictions:
-
-            No_Implicit_Task_Allocations             => True,
-            No_Implicit_Protected_Object_Allocations => True,
-
-            No_Local_Timing_Events                   => True,
-            No_Select_Statements                     => True,
-            No_Specific_Termination_Handlers         => True,
-            No_Task_Termination                      => True,
-            Pure_Barriers                            => True,
-            others                                   => False),
-
-         --  Value settings for Ravenscar (same as Restricted)
-
-         Value =>
-           (Max_Asynchronous_Select_Nesting => 0,
-            Max_Select_Alternatives         => 0,
-            Max_Task_Entries                => 0,
-            others                          => 0));
-      --  A profile that is in the middle between extended and strict Ravenscar
-      --
-      --  ??? restrictions marked as "TO LIFT" should be removed one-by-one;
-      --  once none are left this constant should be replaced with
-      --  Profile_Info (GNAT_Extended_Ravenscar) from System.Rident.
+      Profile : Profile_Data renames Profile_Info (GNAT_Extended_Ravenscar);
+      --  A minimal settings required for tasking constructs to be allowed in
+      --  SPARK.
 
       function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
       --  Check if restriction No_Dependence is set for Unit.
@@ -5111,6 +5070,9 @@ package body SPARK_Definition is
          when Pragma_Priority =>
             Mark (Expression (Arg1));
 
+         when Pragma_Max_Queue_Length =>
+            Mark (Expression (Arg1));
+
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -5310,7 +5272,6 @@ package body SPARK_Definition is
            Pragma_Machine_Attribute              |
            Pragma_Main                           |
            Pragma_Main_Storage                   |
-           Pragma_Max_Queue_Length               |
            Pragma_Memory_Size                    |
            Pragma_No_Body                        |
            Pragma_No_Inline                      |

@@ -3063,11 +3063,16 @@ package body Flow.Control_Flow_Graph is
       Expr : constant Node_Id := Expression (N);
       --  Object's initialization expression
 
-      procedure Find_Protected_Components (T : Entity_Id)
+      procedure Find_Protected_Components (T : Entity_Id; Prefix : String)
       with Pre => Is_Type (T);
-      --  Update map with priorities of protected components
+      --  Update map with priorities of protected components.
+      --  T is the type and Prefix represents the entire object name.
 
-      procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean)
+      subtype Size_Type is Int range -1 .. Int'Last;
+      --  Used for size of an array type. -1 stands for many components, in
+      --  case we are not able to determine the exact number.
+
+      procedure Find_Tasks (T : Entity_Id; Size : Size_Type)
       with Pre => Is_Type (T);
       --  Update the map with number of task instances.
       --
@@ -3082,7 +3087,7 @@ package body Flow.Control_Flow_Graph is
       -- Find_Protected_Components --
       -------------------------------
 
-      procedure Find_Protected_Components (T : Entity_Id) is
+      procedure Find_Protected_Components (T : Entity_Id; Prefix : String) is
          Dummy : constant Int := 0;
          --  Dummy priority value, only used to ensure full initialization
 
@@ -3122,8 +3127,29 @@ package body Flow.Control_Flow_Graph is
                                  else
                                    Default_Prio),
                        Value => Dummy));
+
+               Ent : Entity_Id := First_Entity (T);
             begin
                GG_Register_Protected_Object (Object_Name, Priority);
+
+               --  Register value of Max_Queue_Length for an entry
+               while Present (Ent) loop
+                  if Ekind (Ent) = E_Entry then
+                     declare
+                        Max_Queue_Length : constant Nat :=
+                          UI_To_Int (Get_Max_Queue_Length (Ent));
+                        --  Zero is returned when the pragma is not present and
+                        --  it stands for unbounded queue length.
+
+                     begin
+                        GG_Register_Max_Queue_Length
+                          (To_Entity_Name
+                             (Prefix & "__" & Get_Name_String (Chars (Ent))),
+                           Max_Queue_Length);
+                     end;
+                  end if;
+                  Next_Entity (Ent);
+               end loop;
             end;
 
          elsif Is_Record_Type (T) then
@@ -3133,13 +3159,15 @@ package body Flow.Control_Flow_Graph is
 
             begin
                while Present (C) loop
-                  Find_Protected_Components (Etype (C));
-                  Next_Component (C);
+                  Find_Protected_Components
+                    (Etype (C),
+                     Prefix => Prefix & "__" & Get_Name_String (Chars (C)));
+                     Next_Component (C);
                end loop;
             end;
 
          elsif Is_Array_Type (T) then
-            Find_Protected_Components (Component_Type (T));
+            Find_Protected_Components (Component_Type (T), Prefix);
          end if;
 
       end Find_Protected_Components;
@@ -3148,12 +3176,9 @@ package body Flow.Control_Flow_Graph is
       -- Find_Tasks --
       ----------------
 
-      procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean) is
+      procedure Find_Tasks (T : Entity_Id; Size : Size_Type) is
 
-         type Array_Elements is (Zero, One, Many);
-         --  Type for checking the number of elements in an array
-
-         function Number_Elements return Array_Elements
+         function Number_Elements return Size_Type
            with Pre => Is_Array_Type (T);
          --  Returns the number of elements in the array type T
 
@@ -3161,11 +3186,11 @@ package body Flow.Control_Flow_Graph is
          -- Number_Elements --
          ---------------------
 
-         function Number_Elements return Array_Elements is
+         function Number_Elements return Size_Type is
             C : Entity_Id;
             X : Node_Id := First_Index (T);
 
-            S : Array_Elements := One;
+            S : Size_Type := 1;
             --  Number of elements in the array
          begin
             --  Check whether the array is empty (at least one index range
@@ -3176,21 +3201,26 @@ package body Flow.Control_Flow_Graph is
                C := Etype (X);
 
                if not Is_OK_Static_Subtype (C) then
-                  S := Many;
+                  --  In case we are not able to determine the exact size, we
+                  --  set S to -1, giving it the meaning of many.
+                  S := -1;
                else
                   declare
                      Length : constant Uint :=
                        (UI_Max (Uint_0,
                         Expr_Value (Type_High_Bound (C)) -
                           Expr_Value (Type_Low_Bound (C)) + Uint_1));
+
                   begin
-                     if Length = Uint_0 then
-                        S := Zero;
+                     if Length = 0 then
+                        S := 0;
                         exit;
-                     elsif Length = Uint_1 then
-                        null;
                      else
-                        S := Many;
+                        if S = -1 then
+                           null;
+                        else
+                           S := S * UI_To_Int (Length);
+                        end if;
                      end if;
                   end;
                end if;
@@ -3217,9 +3247,9 @@ package body Flow.Control_Flow_Graph is
                  (Type_Name => TN,
                   Object    => (Name      => Object_Name,
                                 Instances =>
-                                  (if Array_Component
-                                   then Many
-                                   else One),
+                                  (if Size > 1 or else Size = -1
+                                   then Size
+                                   else 1),
                                 Node => N));
             end;
 
@@ -3233,19 +3263,19 @@ package body Flow.Control_Flow_Graph is
 
             begin
                while Present (C) loop
-                  Find_Tasks (Etype (C), Array_Component);
+                  Find_Tasks (Etype (C), Size);
                   Next_Component (C);
                end loop;
             end;
 
          elsif Is_Array_Type (T) then
             declare
-               Size : constant Array_Elements := Number_Elements;
-               --  Number of components
+               S : constant Size_Type := Number_Elements;
+
             begin
-               if Size /= Zero then
+               if S /= 0 then
                   Find_Tasks (Component_Type (T),
-                              Array_Component => Size = Many);
+                              Size => S);
                end if;
             end;
          end if;
@@ -3609,12 +3639,13 @@ package body Flow.Control_Flow_Graph is
       then
          declare
             T : constant Entity_Id := Etype (E);
+
          begin
             --  Register task objects
-            Find_Tasks (T, Array_Component => False);
+            Find_Tasks (T, Size => 0);
 
             --  Register priorities of protected components
-            Find_Protected_Components (T);
+            Find_Protected_Components (T, Prefix => To_String (Object_Name));
          end;
       end if;
    end Do_Object_Declaration;
@@ -5440,6 +5471,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
               Pragma_Linker_Section               |
+              Pragma_Max_Queue_Length             |
               Pragma_No_Elaboration_Code_All      |
               Pragma_No_Heap_Finalization         |
               Pragma_No_Tagged_Streams            |
@@ -5539,7 +5571,6 @@ package body Flow.Control_Flow_Graph is
            Pragma_Machine_Attribute              |
            Pragma_Main                           |
            Pragma_Main_Storage                   |
-           Pragma_Max_Queue_Length               |
            Pragma_Memory_Size                    |
            Pragma_No_Body                        |
            Pragma_No_Inline                      |

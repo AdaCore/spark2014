@@ -105,6 +105,12 @@ package Flow_Generated_Globals.Phase_1 is
         Post => GG_Mode = GG_Write_Mode;
    --  Register tasking-related information for entity
 
+   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
+                                           Length : Nat)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register the value of Max_Queue_Length for an entry
+
    -------------
    -- Writing --
    -------------

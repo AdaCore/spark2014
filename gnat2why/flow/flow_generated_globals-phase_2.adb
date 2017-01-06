@@ -1200,7 +1200,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   Register_Task_Object (Type_Name => Main_Entity_Name,
                                         Object    =>
                                           (Name      => Main_Entity_Name,
-                                           Instances => One,
+                                           Instances => 1,
                                            Node      => S));
                   --  Register the main-like subprogram as a task, but use the
                   --  same entity name for type and object name.
@@ -2016,6 +2016,11 @@ package body Flow_Generated_Globals.Phase_2 is
                            V.The_Tasking_Info (Kind));
                      end if;
                   end loop;
+
+               when EK_Max_Queue_Length =>
+                  Max_Queue_Length_Map.Insert
+                    (Key      => V.The_Entry,
+                     New_Item => V.The_Max_Queue_Length);
 
                when EK_Nonblocking =>
                   Merge (From => V.The_Nonblocking_Subprograms,

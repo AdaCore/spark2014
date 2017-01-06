@@ -65,12 +65,16 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 The_Type   => Invalid_Entity_Name,
                                 The_Object => Task_Object'
                                   (Name      => Invalid_Entity_Name,
-                                   Instances => Instance_Number'First,
+                                   Instances => 1,
                                    Node      => Empty)),
 
       EK_Tasking_Info       => (Kind       => EK_Tasking_Info,
                                 The_Entity => Invalid_Entity_Name,
                                 others     => <>),
+
+      EK_Max_Queue_Length   => (Kind                 => EK_Max_Queue_Length,
+                                The_Entry            => Invalid_Entity_Name,
+                                The_Max_Queue_Length => Nat'First),
 
       EK_Nonblocking        => (Kind   => EK_Nonblocking,
                                 others => <>),
@@ -239,6 +243,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
          when EK_Tasking_Info =>
             Serialize (A, V.The_Entity);
             Serialize (A, V.The_Tasking_Info);
+
+         when EK_Max_Queue_Length =>
+            Serialize (A, V.The_Entry);
+            Serialize (A, V.The_Max_Queue_Length);
 
          when EK_Nonblocking =>
             Serialize (A, V.The_Nonblocking_Subprograms);

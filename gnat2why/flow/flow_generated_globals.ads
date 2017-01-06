@@ -59,7 +59,8 @@ package Flow_Generated_Globals is
    --      constituents are collected and this info is stored in the ALI file.
    --
    --    * We collect some data relevant to tasking: a set of nonblocking
-   --      subprograms, instance counts, etc.
+   --      subprograms, instance counts, the value of Max_Queue_Length if
+   --      present, etc.
    --
    --    * We collect potentially nonreturning subprograms.
    --
@@ -112,6 +113,7 @@ package Flow_Generated_Globals is
    --    - protected objects write-locked by procedure calls
    --    - accessed unsynchronized objects
    --    - task instances and their number (one or more)
+   --    - value of Max_Queue_Length, if present on an entry
    --
    ----------------------------------------------------------------------
 
@@ -171,8 +173,12 @@ package Flow_Generated_Globals is
    --  Task types instances
    ----------------------------------------------------------------------
 
-   type Instance_Number is (One, Many);
-   --  Number of task type instances in an object declaration
+   subtype Instance_Number is Int range -1 .. Int'Last
+   with Static_Predicate => Instance_Number /= 0;
+   --  For Instances we use type Instance_Number with the following meaning:
+   --  * Instances > 0 represents the number of instances that we counted
+   --  * Instances = -1 stands for "many" instances, i.e. we are not able to
+   --    determine the exact number.
 
    type Task_Object is
       record
@@ -181,10 +187,10 @@ package Flow_Generated_Globals is
          Node      : Node_Id;
       end record;
    --  Task object with the name of the library-level object and task type
-   --  instances (which can be many, e.g. for task arrays or records with
-   --  two components of a given task type).
+   --  instances (which can be many, e.g. for task arrays or records with two
+   --  components of a given task type).
    --
-   --  Error messages related to a task object will be attached to Node
+   --  Error messages related to a task object will be attached to Node.
 
    type Object_Priority is
       record
@@ -194,7 +200,7 @@ package Flow_Generated_Globals is
    --  Protected object and its priority
 
 private
-   Current_Mode  : GG_Mode_T := GG_No_Mode with Ghost;
+   Current_Mode : GG_Mode_T := GG_No_Mode with Ghost;
 
    -------------
    -- GG_Mode --

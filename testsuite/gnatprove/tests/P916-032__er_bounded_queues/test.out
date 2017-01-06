@@ -1,0 +1,13 @@
+util.adb:9:23: warning: statement has no effect
+util.adb:14:23: warning: statement has no effect
+util.ads:19:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+util.ads:19:14: info: nontermination of task proved (CVC4: 1 VC)
+util.ads:20:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+util.ads:20:14: info: nontermination of task proved (CVC4: 1 VC)
+util.ads:21:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+util.ads:21:14: info: nontermination of task proved (CVC4: 1 VC)
+util.ads:26:16: high: more tasks than allowed might queue on protected entry "util.po.e_02" (Max_Queue_Length = 3) (SPARK RM 9(11))
+util.ads:26:16: high: task "util.t3" is queueing
+util.ads:26:16: high: task "util.t4" is queueing
+util.ads:26:16: high: task "util.t5" is queueing
+util.ads:26:16: high: task "util.t6" is queueing

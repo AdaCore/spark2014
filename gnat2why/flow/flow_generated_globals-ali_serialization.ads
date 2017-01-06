@@ -37,6 +37,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Protected_Instance,
                            EK_Task_Instance,
                            EK_Tasking_Info,
+                           EK_Max_Queue_Length,
                            EK_Nonblocking,
                            EK_Nonreturning,
                            EK_Terminating,
@@ -70,6 +71,9 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Tasking_Info =>
             The_Entity                   : Entity_Name;
             The_Tasking_Info             : Name_Tasking_Info;
+         when EK_Max_Queue_Length  =>
+            The_Entry                    : Entity_Name;
+            The_Max_Queue_Length         : Nat;
          when EK_Nonblocking =>
             The_Nonblocking_Subprograms  : Name_Lists.List;
          when EK_Nonreturning =>

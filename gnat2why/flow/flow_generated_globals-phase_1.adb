@@ -94,6 +94,16 @@ package body Flow_Generated_Globals.Phase_1 is
    --  have entity-indenpendent info; perhaps we do not care and can safely
    --  dump information locally for each scope.
 
+   type Entry_With_Max_Queue_Length is record
+      Entry_Name       : Entity_Name;
+      Max_Queue_Length : Nat;
+   end record;
+
+   package Entries_Max_Queue_Length_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Entry_With_Max_Queue_Length);
+
+   Entries_Max_Queue_Length : Entries_Max_Queue_Length_Lists.List;
+
    type Abstract_State_Constituents is record
       State        : Entity_Name;
       Constituents : Name_Lists.List;
@@ -313,6 +323,19 @@ package body Flow_Generated_Globals.Phase_1 is
                                  Objects => Objects));
    end GG_Register_Tasking_Info;
 
+   ----------------------------------
+   -- GG_Register_Max_Queue_Length --
+   ----------------------------------
+
+   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
+                                           Length : Nat)
+
+   is
+   begin
+      Entries_Max_Queue_Length.Append ((Entry_Name       => EN,
+                                        Max_Queue_Length => Length));
+   end GG_Register_Max_Queue_Length;
+
    -----------------------
    -- Register_Volatile --
    -----------------------
@@ -440,6 +463,13 @@ package body Flow_Generated_Globals.Phase_1 is
             end loop;
          end loop;
 
+         Write_To_ALI (V);
+      end loop;
+
+      for Entry_List of Entries_Max_Queue_Length loop
+         V := (Kind                 => EK_Max_Queue_Length,
+               The_Entry            => Entry_List.Entry_Name,
+               The_Max_Queue_Length => Entry_List.Max_Queue_Length);
          Write_To_ALI (V);
       end loop;
 

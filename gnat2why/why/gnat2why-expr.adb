@@ -12838,6 +12838,7 @@ package body Gnat2Why.Expr is
             | Pragma_Ignore_Pragma
             | Pragma_Inline_Always
             | Pragma_Linker_Section
+            | Pragma_Max_Queue_Length
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
             | Pragma_No_Tagged_Streams
@@ -12941,7 +12942,6 @@ package body Gnat2Why.Expr is
             | Pragma_Machine_Attribute
             | Pragma_Main
             | Pragma_Main_Storage
-            | Pragma_Max_Queue_Length
             | Pragma_Memory_Size
             | Pragma_No_Body
             | Pragma_No_Inline
