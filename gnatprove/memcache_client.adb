@@ -58,8 +58,17 @@ package body Memcache_Client is
    is
       Host : constant Host_Entry_Type := Get_Host_By_Name (Hostname);
       Result : Cache_Connection;
+      Status : Boolean;
    begin
       Create_Socket (Result.Sock);
+
+      --  Make socket available only to wrapper, not to the wrapped executable
+      Set_Close_On_Exec (Socket        => Result.Sock,
+                         Close_On_Exec => True,
+                         Status        => Status);
+
+      pragma Assert (Status);
+
       Connect_Socket (Result.Sock,
                       (Family => Family_Inet,
                        Addr   => Addresses (Host),
