@@ -4853,7 +4853,7 @@ package body Flow.Analysis is
                     "terminating annotation has been proved");
 
             Severity : constant Msg_Severity :=
-              (if Proved
+              (if Not_Proved
                then Medium_Check_Kind
                else Info_Kind);
 
