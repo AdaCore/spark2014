@@ -25,7 +25,6 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
-with Ada.Direct_IO;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
@@ -34,6 +33,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.SHA1;
 with GNAT.Sockets; use GNAT.Sockets;
 with GNATCOLL.JSON; use GNATCOLL.JSON;
+with GNATCOLL.Mmap;
 with Memcache_Client;
 
 procedure SPARK_Memcached_Wrapper is
@@ -120,17 +120,24 @@ procedure SPARK_Memcached_Wrapper is
    ---------------
 
    procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String) is
-      File_Size : constant Natural := Natural (Ada.Directories.Size (Fn));
-      subtype File_String is String (1 .. File_Size);
-      package File_String_IO is new Ada.Direct_IO (File_String);
-      File     : File_String_IO.File_Type;
-      Contents : File_String;
+      use GNATCOLL.Mmap;
+      File : Mapped_File;
+
    begin
-      File_String_IO.Open  (File, Mode => File_String_IO.In_File,
-                            Name => Fn);
-      File_String_IO.Read  (File, Item => Contents);
-      File_String_IO.Close (File);
-      GNAT.SHA1.Update (C, Contents);
+      File := Open_Read (Fn);
+
+      Read (File);
+
+      declare
+         S : String (1 .. Integer (Length (File)));
+         for S'Address use Data (File).all'Address;
+         --  A fake string directly mapped onto the file contents
+
+      begin
+         GNAT.SHA1.Update (C, S);
+      end;
+
+      GNATCOLL.Mmap.Close (File);
    end Hash_File;
 
    -----------------
