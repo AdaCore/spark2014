@@ -535,19 +535,33 @@ package body SPARK_Util is
    -----------------------------------
 
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Scope (E);
+
    begin
       if Ekind (E) = E_Discriminant then
          return True;
-      elsif Is_Concurrent_Type (E) then
 
-         --  Components of a concurrent type are visible except if the type
-         --  full view is not in SPARK.
+      --  Components of a concurrent type are visible except if the type full
+      --  view is not in SPARK.
 
-         return not Full_View_Not_In_SPARK (E);
+      elsif Is_Concurrent_Type (Ty) then
+
+         return not Full_View_Not_In_SPARK (Ty);
+
+      --  If the type itself is private, no components can be visible in it.
+      --  This case has to be handled specifically to prevent visible
+      --  components of hidden ancestors from leaking in.
+
+      elsif Full_View_Not_In_SPARK (Ty)
+        and then Get_First_Ancestor_In_SPARK (Ty) = Ty
+      then
+
+         return False;
+
+      --  Find the first record type in the hierarchy in which the field is
+      --  present and see if it is in SPARK.
+
       else
-
-         --  Find the first record type in the hierarchy in which the field is
-         --  present and see if it is in SPARK.
 
          declare
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);

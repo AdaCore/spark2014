@@ -3702,13 +3702,14 @@ package body SPARK_Definition is
                Full_Views_Not_In_SPARK.Insert (E, E);
                Discard_Underlying_Type (E);
 
-            --  The same is true for a subtype or a derived type of such a
-            --  type or of types whose fullview is not in SPARK.
+            --  The same is true for an untagged subtype or a derived type of
+            --  such a type or of types whose fullview is not in SPARK.
 
             elsif not Is_Nouveau_Type (E)
+              and then not Is_Tagged_Type (E)
               and then Full_View_Not_In_SPARK (Etype (E))
             then
-               Full_Views_Not_In_SPARK.Insert (E, Etype (E));
+               Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
                Discard_Underlying_Type (E);
             else
                declare
@@ -3718,8 +3719,11 @@ package body SPARK_Definition is
                   --  Mark the fullview of the type if present before the
                   --  underlying type as this underlying type may not be in
                   --  SPARK.
+
                begin
-                  if not In_SPARK (Utype) then
+                  if not In_SPARK (Etype (E)) then
+                     pragma Assert (Violation_Detected);
+                  elsif not In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
                        (E, (if Is_Nouveau_Type (E) then E
                         else Retysp (Etype (E))));
