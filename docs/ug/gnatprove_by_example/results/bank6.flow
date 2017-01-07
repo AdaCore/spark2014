@@ -1,3 +1,3 @@
-bank6.ads:9:04: high: multiple tasks might queue on protected entry "account6.num_accounts.incr" (SPARK RM 9(11))
-bank6.ads:9:04: high: with task "bank6.all_accounts"
-bank6.ads:9:04: high: with task "bank6.special_accounts"
+bank6.ads:9:04: high: more tasks than allowed might queue on protected entry "account6.num_accounts.incr" (restriction No_Entry_Queue active) (SPARK RM 9(11))
+bank6.ads:9:04: high: task "bank6.all_accounts" is queueing
+bank6.ads:9:04: high: task "bank6.special_accounts" is queueing
