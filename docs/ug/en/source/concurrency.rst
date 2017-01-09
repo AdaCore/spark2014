@@ -25,19 +25,11 @@ start of files:
    pragma Partition_Elaboration_Policy (Sequential);
 
 While the Ravenscar profile is recommended for high-integrity concurrent
-applications, GNATprove also partly supports the GNAT Extended Ravenscar
-profile (see Section 4.5 "The Extended Ravenscar Profiles" in GNAT User’s Guide
-Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security). To lift
-some of the Ravenscar restrictions use the following configuration pragmas
-instead:
-
-.. code-block:: ada
-
-   pragma Profile (GNAT_Extended_Ravenscar);
-   pragma Restrictions (No_Entry_Queue);
-   --  Enforce Ravenscar restriction still present within the supported subset
-   --  of the GNAT Extended Ravenscar profile.
-   pragma Partition_Elaboration_Policy (Sequential);
+applications, GNATprove also supports the GNAT Extended Ravenscar profile
+(see Section 4.5 "The Extended Ravenscar Profiles" in GNAT User’s Guide
+Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security).
+To use the GNAT Extended Ravenscar profile simply replace ``Ravenscar`` with
+``GNAT_Extended_Ravenscar`` in the pragma ``Profile`` in the above code.
 
 In particular, the GNAT Extended Ravenscar profile allows the use of two forms
 of the delay statements depending on the type of their expression:
