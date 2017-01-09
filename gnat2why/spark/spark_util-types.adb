@@ -271,7 +271,7 @@ package body SPARK_Util.Types is
       --  No check needed when converting to base type (for a subtype) or to
       --  parent type (for a derived type).
 
-      elsif To_R = Etype (From_R) then
+      elsif To_R = Retysp (Etype (From_R)) then
          return False;
 
       --  Converting to unconstrained record types does not require a
