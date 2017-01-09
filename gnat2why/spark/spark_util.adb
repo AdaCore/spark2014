@@ -552,8 +552,9 @@ package body SPARK_Util is
       --  This case has to be handled specifically to prevent visible
       --  components of hidden ancestors from leaking in.
 
-      elsif Full_View_Not_In_SPARK (Ty)
-        and then Get_First_Ancestor_In_SPARK (Ty) = Ty
+      elsif not Entity_In_SPARK (Ty)
+        or else (Full_View_Not_In_SPARK (Ty)
+                 and then Get_First_Ancestor_In_SPARK (Ty) = Ty)
       then
 
          return False;

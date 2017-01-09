@@ -3686,7 +3686,7 @@ package body SPARK_Definition is
                end;
             end if;
 
-         elsif Is_Private_Type (E) then
+         elsif Is_Private_Type (E) and then not Violation_Detected then
 
             --  When a private type is defined in a package with external
             --  axiomatization or whose private part has SPARK_Mode => Off, we
@@ -3721,9 +3721,7 @@ package body SPARK_Definition is
                   --  SPARK.
 
                begin
-                  if not In_SPARK (Etype (E)) then
-                     pragma Assert (Violation_Detected);
-                  elsif not In_SPARK (Utype) then
+                  if not In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
                        (E, (if Is_Nouveau_Type (E) then E
                         else Retysp (Etype (E))));
@@ -3890,13 +3888,9 @@ package body SPARK_Definition is
                --  store it in Full_Views_Not_In_SPARK.
 
                if not Violation_Detected and then not Fullview_In_SPARK then
-                  if Is_Nouveau_Type (E) then
-                     Full_Views_Not_In_SPARK.Insert (E, E);
-                  else
-                     pragma Assert
-                       (Full_Views_Not_In_SPARK.Contains (Retysp (Etype (E))));
-                     Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
-                  end if;
+                  Full_Views_Not_In_SPARK.Insert
+                    (E, (if Is_Nouveau_Type (E) then E
+                         else Retysp (Etype (E))));
                end if;
             end;
          end if;
