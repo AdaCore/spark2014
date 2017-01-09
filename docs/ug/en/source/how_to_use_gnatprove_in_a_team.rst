@@ -206,7 +206,10 @@ if-statement.
 If the preceding or enclosing construct is a subprogram
 body, the pragma applies to both the subprogram body and the spec including its
 contract. This allows to place a justification for a check message issued by
-|GNATprove| either on the spec when it is relevant for callers:
+|GNATprove| either on the spec when it is relevant for callers. Note that
+this placement of a justification is ineffective on subprograms analyzed
+only in the context of their calls (see details in
+:ref:`Contextual Analysis of Subprograms Without Contracts`).
 
 As a point of caution, the following placements of pragma Annotate will apply
 the pragma to a possibly large range of source lines:
