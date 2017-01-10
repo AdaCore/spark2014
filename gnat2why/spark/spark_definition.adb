@@ -788,6 +788,30 @@ package body SPARK_Definition is
                Set_Field (V, "spark", SPARK_Status);
                Append (SPARK_Status_JSON, V);
             end;
+
+         elsif Ekind (E) in Type_Kind
+           and then Needs_Default_Checks_At_Decl (E)
+           and then Analysis_Requested (E, With_Inlined => True)
+         then
+
+            --  If the entity is a record or private type with fields hidden
+            --  from SPARK, then the default initialization was not verified.
+
+            declare
+               V            : constant JSON_Value :=
+                 To_JSON (Entity_To_Subp (E));
+               SPARK_Status : constant String :=
+                 (if Entity_In_SPARK (E)
+                   and then
+                     (not (Has_Record_Type (E) or else Has_Private_Type (E))
+                       or else
+                      not Has_Private_Fields (E))
+                  then "all"
+                  else "no");
+            begin
+               Set_Field (V, "spark", SPARK_Status);
+               Append (SPARK_Status_JSON, V);
+            end;
          end if;
       end loop;
 
@@ -3738,10 +3762,30 @@ package body SPARK_Definition is
          --  If the type has a Default_Initial_Condition aspect, store the
          --  corresponding procedure in the Delayed_Type_Aspects map.
 
-         if (Has_DIC (E)
-             or else Has_Inherited_DIC (E))
-           and then Present (DIC_Procedure (E))
-         then
+         if Has_Own_DIC (E) and then Present (DIC_Procedure (E)) then
+
+            --  Non dispatching calls to tagged primitives of the current type
+            --  are not supported yet, as they should be verified in the
+            --  context of all descendant.
+            --  Only mark the full view of the type as out of SPARK. We cannot
+            --  verify the type's default initilization, but its partial view
+            --  can still be used in SPARK code.
+
+            if Is_Tagged_Type (E)
+              and then Is_Full_View (E)
+              and then Expression_Contains_Primitives_Calls_Of
+                (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E)
+            then
+               declare
+                  DIC_Pragma : constant Node_Id :=
+                    Get_Pragma (E, Pragma_Default_Initial_Condition);
+               begin
+                  Mark_Unsupported
+                    ("call to a tagged primitive in default initial condition",
+                     (if Present (DIC_Pragma) then DIC_Pragma else E));
+               end;
+            end if;
+
             declare
                Delayed_Mapping : constant Node_Id :=
                  (if Present (Current_SPARK_Pragma)

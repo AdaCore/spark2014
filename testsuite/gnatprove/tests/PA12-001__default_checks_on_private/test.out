@@ -1,0 +1,43 @@
+dic_and_predicate_checks.ads:10:12: info: default initial condition proved (CVC4: 1 VC)
+dic_and_predicate_checks.ads:14:07: medium: type "T" is not fully initialized
+dic_and_predicate_checks.ads:14:28: medium: predicate check might fail on default value
+dic_and_predicate_checks.ads:22:23: medium: predicate check might fail on default value
+dic_and_predicate_checks.ads:24:12: info: default initial condition proved (CVC4: 1 VC)
+dic_and_predicate_checks.ads:28:07: medium: type "T" is not fully initialized
+dic_and_predicate_checks.ads:33:12: medium: default initial condition might fail
+dic_and_predicate_checks.ads:37:07: medium: type "P" is not fully initialized
+dic_and_predicate_checks.ads:41:09: info: predicate check proved on default value (CVC4: 1 VC)
+dic_and_predicate_checks.ads:53:04: info: initialization of "X1" proved
+dic_and_predicate_checks.ads:54:04: info: initialization of "X2" proved
+private_types.ads:10:32: medium: range check might fail
+private_types.ads:24:32: medium: range check might fail
+private_types.ads:29:14: info: range check proved (CVC4: 1 VC)
+private_types.ads:31:25: info: range check proved (CVC4: 1 VC)
+private_types.ads:40:32: medium: range check might fail
+private_types.ads:45:07: info: initialization of "X.F" proved
+private_types.ads:45:14: info: range check proved (CVC4: 1 VC)
+private_types.ads:56:32: medium: range check might fail
+private_types.ads:61:25: info: range check proved (CVC4: 1 VC)
+tagged_component_check.ads:28:28: medium: range check might fail
+tagged_component_check.ads:34:28: medium: range check might fail
+tagged_component_check.ads:39:28: medium: range check might fail
+tagged_component_check.ads:105:28: medium: range check might fail
+tagged_component_check.ads:111:28: medium: range check might fail
+tagged_component_check.ads:116:28: medium: range check might fail
+tagged_component_check.ads:157:25: medium: range check might fail
+tagged_component_check.ads:161:25: medium: range check might fail
+tagged_component_check.ads:165:25: medium: range check might fail
+tagged_component_check.ads:169:25: medium: range check might fail
+tagged_component_check.ads:173:25: medium: range check might fail
+tagged_component_check.ads:180:28: medium: range check might fail
+tagged_component_check.ads:183:28: medium: range check might fail
+tagged_component_check.ads:189:28: medium: range check might fail
+tagged_component_check.ads:194:28: medium: range check might fail
+tagged_component_check.ads:200:28: medium: range check might fail
+tagged_component_check.ads:205:28: medium: range check might fail
+tagged_component_check.ads:211:28: medium: range check might fail
+tagged_component_check.ads:246:25: medium: range check might fail
+tagged_component_check.ads:250:25: medium: range check might fail
+tagged_component_check.ads:254:25: medium: range check might fail
+tagged_component_check.ads:258:25: medium: range check might fail
+tagged_component_check.ads:262:25: medium: range check might fail

@@ -2,7 +2,10 @@ with DIC_Pred; use DIC_Pred;
 with Containers;
 package Use_Dic_Pred with SPARK_Mode is
    X : T;
+   Y : S;
    V : Containers.Container (10);
+
+   function Get_Y return S is (Y);
 
    subtype scont is Containers.Container (8);
 

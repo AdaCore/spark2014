@@ -15,8 +15,8 @@ list.adb:20:23: medium: precondition might fail (e.g. when S = (N => ?, Top => 0
 list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail (e.g. when S = (N => ?, Top => 0, Content => (others => 0)) and S.Content'First = 1 and S.Content'Last = 1)
 list.adb:21:15: medium: private part of "S" might not be initialized
+list.adb:22:33: info: loop invariant initialization proved (CVC4: 1 VC)
 list.adb:22:54: medium: loop invariant might fail after first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) (e.g. when I = 2 and J = 1)
-list.adb:22:54: medium: loop invariant might fail in first iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) (e.g. when I = 1 and J = 1)
 list.adb:22:54: medium: precondition might fail
 list.adb:22:63: info: initialization of private part of "Res" proved
 list.adb:22:68: info: range check proved (CVC4: 1 VC)

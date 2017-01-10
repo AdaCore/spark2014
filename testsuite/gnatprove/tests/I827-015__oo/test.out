@@ -108,3 +108,4 @@ instr.adb:114:49: info: initialization of "V" proved
 instr.adb:114:51: info: division check proved (CodePeer)
 instr.adb:115:07: warning: assuming "Put" has no effect on global items
 instr.adb:115:07: warning: no Global contract available for "Put"
+instr.ads:87:37: info: length check proved (CVC4: 1 VC)

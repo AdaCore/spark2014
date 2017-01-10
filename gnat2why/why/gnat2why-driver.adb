@@ -351,19 +351,32 @@ package body Gnat2Why.Driver is
                Generate_VCs_For_Package_Elaboration (WF_Main, E);
             end if;
 
-         when E_Task_Type =>
-            if Entity_Spec_In_SPARK (E) and then
+         when Type_Kind =>
+            if Entity_In_SPARK (E) and then
+              Needs_Default_Checks_At_Decl (E) and then
               Analysis_Requested (E, With_Inlined => False)
             then
-               Generate_VCs_For_Task (WF_Main, E);
+               Generate_VCs_For_Type (WF_Main, E);
             end if;
 
-         when E_Protected_Type =>
-            if Entity_Spec_In_SPARK (E) and then
-              Analysis_Requested (E, With_Inlined => False)
-            then
-               Generate_VCs_For_Protected_Type (WF_Main, E);
-            end if;
+            case Ekind (E) is
+               when E_Task_Type =>
+                  if Entity_Spec_In_SPARK (E) and then
+                    Analysis_Requested (E, With_Inlined => False)
+                  then
+                     Generate_VCs_For_Task (WF_Main, E);
+                  end if;
+
+               when E_Protected_Type =>
+                  if Entity_Spec_In_SPARK (E) and then
+                    Analysis_Requested (E, With_Inlined => False)
+                  then
+                     Generate_VCs_For_Protected_Type (WF_Main, E);
+                  end if;
+
+               when others =>
+                  null;
+            end case;
 
          when others =>
             null;

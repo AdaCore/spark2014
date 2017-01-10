@@ -31,6 +31,7 @@ with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 
 package body SPARK_Util.Types is
 
@@ -879,6 +880,53 @@ package body SPARK_Util.Types is
       end if;
    end Get_Full_Type_Without_Checking;
 
+   -------------------------------
+   -- Get_Initial_DIC_Procedure --
+   -------------------------------
+
+   function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id is
+      Ty  : Entity_Id := Retysp (E);
+      Anc : Entity_Id;
+
+   begin
+      --  If E has no DIC procedure, or if its DIC procedure has an associated
+      --  body, return it.
+
+      if No (DIC_Procedure (E))
+        or else Present (Get_Body (DIC_Procedure (E)))
+      then
+         pragma Assert (if Present (DIC_Procedure (E)) then Has_Own_DIC (E));
+         return DIC_Procedure (E);
+      end if;
+
+      --  An inherited DIC procedure may have no body. Go to the ancestor to
+      --  find the body.
+
+      loop
+         pragma Assert (Has_Inherited_DIC (Ty));
+         Anc := Ty;
+         if Full_View_Not_In_SPARK (Ty) then
+            Ty := Get_First_Ancestor_In_SPARK (Ty);
+         else
+            Ty := Retysp (Etype (Ty));
+         end if;
+
+         pragma Assert (Present (DIC_Procedure (Ty)));
+
+         exit when Anc = Ty or else Present (Get_Body (DIC_Procedure (Ty)));
+      end loop;
+
+      if Present (Get_Body (DIC_Procedure (Ty))) then
+         return DIC_Procedure (Ty);
+
+      --  The DIC has been inherited in a part not in SPARK. Ignore it.
+
+      else
+         pragma Assert (Full_View_Not_In_SPARK (Ty));
+         return Empty;
+      end if;
+   end Get_Initial_DIC_Procedure;
+
    ---------------------------------
    -- Get_Iterable_Type_Primitive --
    ---------------------------------
@@ -1405,32 +1453,36 @@ package body SPARK_Util.Types is
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
 
-   ---------------------
-   -- Needs_DIC_Check --
-   ---------------------
+   ----------------------------------
+   -- Needs_Default_Checks_At_Decl --
+   ----------------------------------
 
-   function Needs_DIC_Check (Ty : Entity_Id) return Boolean is
-      E   : Entity_Id := Ty;
-      Old : Entity_Id with Ghost;
+   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean is
+      Decl : constant Node_Id := Parent (E);
 
    begin
-      --  Search for the type holding the DIC to see if it is a private type
+      --  If the type is not private, its default initialization will be
+      --  checked when used.
 
-      while Full_View_Not_In_SPARK (E)
-        and then Has_Inherited_DIC (E)
-      loop
-         Old := E;
-         E := Get_First_Ancestor_In_SPARK (E);
-         pragma Assert (Old /= E);
-      end loop;
+      return Nkind (Decl) in N_Private_Extension_Declaration
+                           | N_Private_Type_Declaration
 
-      --  Either we have found the type holding the DIC or we have found a type
-      --  whose fullview is in SPARK. In the first case, we need a check only
-      --  if E is not a private type.
+        --  Classwide types cannot be default initialized
 
-      return Has_Inherited_DIC (E)
-        or else (Has_DIC (E) and then not Has_Private_Type (E));
-   end Needs_DIC_Check;
+        and then not Is_Class_Wide_Type (E)
+
+        --  To avoid duplicate checks, only check a partial view if its full
+        --  view does not need the check.
+
+        and then (if Is_Partial_View (E)
+                  then Nkind (Parent (Full_View (E))) not in
+                      N_Private_Extension_Declaration
+                    | N_Private_Type_Declaration)
+
+        --  Types with unknown discriminants cannot be default initialized
+
+        and then not Has_Unknown_Discriminants (E);
+   end Needs_Default_Checks_At_Decl;
 
    --------------------
    -- Nth_Index_Type --

@@ -1,7 +1,13 @@
+p.ads:56:09: medium: default initial condition might fail
+p.ads:61:09: medium: default initial condition might fail
+p.ads:66:09: medium: default initial condition might fail
 p.ads:111:04: medium: type "T4" is not fully initialized
 p.ads:125:04: medium: type "T5" is not fully initialized
 p.ads:178:04: medium: type "T10" is not fully initialized
 p.ads:188:04: medium: type "T11" is not fully initialized
 q.ads:37:04: medium: type "T1" is not fully initialized
+q.ads:40:28: info: range check proved (CVC4: 1 VC)
 q.ads:42:04: medium: type "T3" is not fully initialized
 q.ads:47:04: medium: type "T5" is not fully initialized
+types.ads:9:28: info: range check proved (CVC4: 1 VC)
+types.ads:12:28: info: range check proved (CVC4: 1 VC)

@@ -209,16 +209,6 @@ package body Gnat2Why.Subprograms is
    --  @result a sequence of assumptions, one for each withed unit which has an
    --          Initial_Condition.
 
-   procedure Assume_Value_Of_Constants
-     (Why_Expr : in out W_Prog_Id;
-      Scope    : Entity_Id;
-      Params   : Transformation_Params);
-   --  Go through Why_Expr to find all the Ada node referencing constants with
-   --  no variable input to assume their definition.
-   --  ??? This is especially needed for record aggregates containing floating
-   --      point numbers and should not be needed anymore once floating point
-   --      numbers are properly handled by solvers.
-
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array;
    --  Return Why binders for the parameters of subprogram E. The array is
    --  empty if E has no parameters.
@@ -364,36 +354,6 @@ package body Gnat2Why.Subprograms is
 
       return Assumption;
    end Assume_Initial_Condition_Of_Withed_Units;
-
-   -------------------------------
-   -- Assume_Value_Of_Constants --
-   -------------------------------
-
-   procedure Assume_Value_Of_Constants
-     (Why_Expr : in out W_Prog_Id;
-      Scope    : Entity_Id;
-      Params   : Transformation_Params)
-   is
-      Include : constant Node_Sets.Set := Compute_Ada_Node_Set (+Why_Expr);
-      Assumes : W_Prog_Id := +Void;
-   begin
-      for N of Include loop
-         if Present (N)
-           and then Nkind (N) in N_Entity
-           and then Ekind (N) = E_Constant
-           and then not Has_Variable_Input (N)
-           and then not Is_Declared_In_Unit (N, Scope)
-         then
-            Assume_Declaration_Of_Entity
-              (E             => N,
-               Params        => Params,
-               Initialized   => True,
-               Top_Predicate => True,
-               Context       => Assumes);
-         end if;
-      end loop;
-      Why_Expr := Sequence (Assumes, Why_Expr);
-   end Assume_Value_Of_Constants;
 
    ----------------------------
    -- Check_Ceiling_Protocol --
@@ -783,8 +743,7 @@ package body Gnat2Why.Subprograms is
       Pred_Fun_Param : Entity_Id := Empty;
       Initialized    : Boolean   := False) return W_Prog_Id
    is
-      Includes            : Node_Sets.Set;
-      Dynamic_Prop_Inputs : W_Prog_Id := +Void;
+      Includes : Node_Sets.Set;
 
    begin
       --  Collect global variables read or written in E
@@ -920,73 +879,12 @@ package body Gnat2Why.Subprograms is
             raise Program_Error;
       end case;
 
-      declare
-         Already_Included : Node_Sets.Set := Node_Sets.Empty_Set;
-         Prop_For_Include : W_Prog_Id;
-         Top_Predicate    : Boolean;
-         Variables        : Flow_Id_Sets.Set;
-         --  Set of variable inputs used in the assumed dynamic invariants.
-         --  We will also need to assume their dynamic invariant.
-
-      begin
-         while not Node_Sets.Is_Empty (Includes) loop
-            Prop_For_Include := +Void;
-            Flow_Id_Sets.Clear (Variables);
-            for Obj of Includes loop
-
-               --  No need to assume anything if Obj is not an object, if it is
-               --  not in SPARK or if it is a local object of the unit.
-
-               if not (Nkind (Obj) in N_Entity)
-                 or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
-                 or else not Entity_In_SPARK (Obj)
-                 or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-                 or else Is_Declared_In_Unit (Obj, E)
-               then
-                  null;
-               else
-                  --  If Obj is the parameter of a predicate function, do not
-                  --  assume the toplevel predicate for checking absence of RTE
-                  --  in the predicate function itself.
-
-                  Top_Predicate := Obj /= Pred_Fun_Param;
-
-                  Assume_Declaration_Of_Entity
-                    (E             => Obj,
-                     Params        => Params,
-                     Initialized   =>
-                       (if Is_Object (Obj)
-                        and then Is_Mutable_In_Why (Obj)
-                        and then not Initialized
-                        then Is_Initialized (Obj, E)
-                        else True),
-                     Top_Predicate => Top_Predicate,
-                     Context       => Prop_For_Include);
-
-                  --  Add all the variable inputs of the dynamic invariant
-                  --  to the set of variables to consider.
-
-                  Variables_In_Dynamic_Invariant (Etype (Obj), Variables);
-               end if;
-            end loop;
-
-            Dynamic_Prop_Inputs := Sequence
-              (Prop_For_Include, Dynamic_Prop_Inputs);
-            Node_Sets.Union (Already_Included, Includes);
-            Includes := Compute_Ada_Node_Set (+Prop_For_Include);
-
-            --  Add the variable inputs of dynamic predicates to Includes so
-            --  that their dynamic invariant can be assumed.
-
-            for Name of To_Name_Set (Variables) loop
-               Node_Sets.Include (Includes, Find_Entity (Name));
-            end loop;
-
-            Node_Sets.Difference (Includes, Already_Included);
-         end loop;
-      end;
-
-      return Dynamic_Prop_Inputs;
+      return Assume_Dynamic_Invariant_For_Variables
+        (Vars             => Includes,
+         Params           => Params,
+         Scope            => E,
+         Exclude_Top_Pred => Pred_Fun_Param,
+         Initialized      => Initialized);
    end Compute_Dynamic_Property_For_Inputs;
 
    ------------------------------------------

@@ -48,7 +48,7 @@ package body Aida.Containers.Formal_Vectors is
       return Vector_Type_Owner.Length (Container.Hidden_Vector);
    end Length;
 
-   function Is_Empty (Container : Vector_Type)
+   function Is_Empty (Container : Vector_Type'Class)
                       return Boolean is
    begin
       return Vector_Type_Owner.Is_Empty (Container.Hidden_Vector);

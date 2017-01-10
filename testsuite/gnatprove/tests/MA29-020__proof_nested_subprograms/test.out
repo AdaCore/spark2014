@@ -89,12 +89,14 @@ Total 56 28 (50%) . . 25 (45%) . 3 (5%)
 
 
 Analyzed 1 unit
-in unit skein, 7 subprograms and packages out of 7 analyzed
+in unit skein, 8 subprograms and packages out of 8 analyzed
  Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
 absence of run-time errors of Skein fully established
  Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
+ Skein.Skein_512_Context at skein.ads:88 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+absence of run-time errors of Skein.Skein_512_Context fully established
  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 18 checks out of 21 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on

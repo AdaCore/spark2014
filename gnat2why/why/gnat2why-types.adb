@@ -24,35 +24,38 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Atree;               use Atree;
-with Common_Containers;   use Common_Containers;
-with Einfo;               use Einfo;
-with Flow_Types;          use Flow_Types;
+with Atree;                   use Atree;
+with Common_Containers;       use Common_Containers;
+with Einfo;                   use Einfo;
+with Flow_Types;              use Flow_Types;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Namet;               use Namet;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with Sinput;              use Sinput;
-with SPARK_Definition;    use SPARK_Definition;
-with SPARK_Util;          use SPARK_Util;
-with SPARK_Util.Types;    use SPARK_Util.Types;
-with Stand;               use Stand;
-with Why;                 use Why;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Gen.Binders;     use Why.Gen.Binders;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Records;     use Why.Gen.Records;
-with Why.Gen.Scalars;     use Why.Gen.Scalars;
-with Why.Inter;           use Why.Inter;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Types;           use Why.Types;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Namet;                   use Namet;
+with Sem_Util;                use Sem_Util;
+with Sinfo;                   use Sinfo;
+with Sinput;                  use Sinput;
+with SPARK_Definition;        use SPARK_Definition;
+with SPARK_Util;              use SPARK_Util;
+with SPARK_Util.Types;        use SPARK_Util.Types;
+with Stand;                   use Stand;
+with Why;                     use Why;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Builders;      use Why.Atree.Builders;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Arrays;          use Why.Gen.Arrays;
+with Why.Gen.Binders;         use Why.Gen.Binders;
+with Why.Gen.Decl;            use Why.Gen.Decl;
+with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Records;         use Why.Gen.Records;
+with Why.Gen.Scalars;         use Why.Gen.Scalars;
+with Why.Inter;               use Why.Inter;
+with Why.Sinfo;               use Why.Sinfo;
+with Why.Types;               use Why.Types;
 
 package body Gnat2Why.Types is
 
@@ -534,6 +537,90 @@ package body Gnat2Why.Types is
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
    end Generate_Type_Completion;
+
+   ---------------------------
+   -- Generate_VCs_For_Type --
+   ---------------------------
+
+   procedure Generate_VCs_For_Type
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   is
+      Decl     : constant Node_Id := Parent (E);
+      Name     : constant String := Full_Name (E);
+      Params   : Transformation_Params;
+      Why_Body : W_Prog_Id := +Void;
+
+   begin
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__default_checks"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for checking DIC of default value and absence"
+                   & " of runtime errors in the private part of "
+                   & """" & Get_Name_String (Chars (E)) & """"
+                   & (if Sloc (E) > 0 then
+                        " defined at " & Build_Location_String (Sloc (E))
+                     else "")
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Params :=
+        (File        => File,
+         Phase       => Generate_VCs_For_Body,
+         Gen_Marker  => False,
+         Ref_Allowed => True);
+
+      Current_Subp := E;
+
+      Register_VC_Entity (E);
+
+      --  For private and private extension declaration, check the default
+      --  expression of newly declared fields.
+
+      Why_Body := Sequence
+        (Why_Body,
+         Compute_Default_Check
+           (Ty               => Retysp (E),
+            Params           => Params,
+            Skip_Last_Cond   => True,
+            Include_Subtypes => True,
+            New_Components   =>
+              Nkind (Decl) = N_Private_Extension_Declaration));
+
+      --  If the type has a DIC and this DIC should be checked at
+      --  declaration, check that there can be no runtime error in the DIC
+      --  and that default values of the type and all its subtypes respect
+      --  the DIC.
+
+      if Has_DIC (E) and then Needs_DIC_Check_At_Decl (E) then
+         Why_Body := Sequence
+           (Why_Body,
+            Check_Type_With_DIC (Params => Params,
+                                 N      => E));
+      end if;
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => Def_Name,
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Def     => +Why_Body));
+      end;
+
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory,
+                    Defined_Entity => E);
+   end Generate_VCs_For_Type;
 
    -----------------------
    -- Ident_Of_Ada_Type --

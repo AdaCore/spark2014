@@ -26,6 +26,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
+with Einfo;                      use Einfo;
 with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Util;                 use SPARK_Util;
@@ -197,7 +198,12 @@ package body Gnat2Why.Assumptions is
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
       Register_Claim ((E => E, Kind => Claim_AoRTE));
-      if Has_Contracts (E, Pragma_Postcondition) then
+      if Ekind (E) in E_Function
+                    | E_Package
+                    | E_Procedure
+                    | Entry_Kind
+        and then Has_Contracts (E, Pragma_Postcondition)
+      then
          Register_Claim ((E => E, Kind => Claim_Post));
       end if;
    end Register_Proof_Claims;

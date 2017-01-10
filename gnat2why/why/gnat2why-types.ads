@@ -95,4 +95,11 @@ package Gnat2Why.Types is
    --  Generate the Why3 completion module for the type entity in argument.
    --  Today, this is useful only for user-defined equalities
 
+   procedure Generate_VCs_For_Type
+     (File : W_Section_Id;
+      E    : Entity_Id);
+   --  Generate a module for the VCs associated to a type declaration. We
+   --  isolate in this separate module those checks that should be done
+   --  independently from the value of variables at the point of declaration.
+
 end Gnat2Why.Types;

@@ -82,6 +82,33 @@ package Gnat2Why.Expr is
    --  @result Why3 program assuming the dynamic invariant of type [Ty]
    --     over [Expr].
 
+   function Assume_Dynamic_Invariant_For_Variables
+     (Vars             : Node_Sets.Set;
+      Params           : Transformation_Params;
+      Scope            : Entity_Id := Empty;
+      Exclude_Top_Pred : Entity_Id := Empty;
+      Initialized      : Boolean   := False) return W_Prog_Id;
+   --  @param Vars a set of variables
+   --  @param Params transformation parameters
+   --  @param Scope the scope in which these variables are considered. it will
+   --     be used to determine whether or not variables are initialized.
+   --  @param Exclude_Top_Pred entity of for which we do not want to assume the
+   --     top predicate.
+   --  @param Initialized True if all variables sould be considered
+   --     initialized.
+   --  @result Why3 program assuming the dynamic invariant of variables from
+   --     Vars. As well as all variables used in their dynamic invariant.
+
+   procedure Assume_Value_Of_Constants
+     (Why_Expr : in out W_Prog_Id;
+      Scope    : Entity_Id;
+      Params   : Transformation_Params);
+   --  Go through Why_Expr to find all the Ada node referencing constants with
+   --  no variable input to assume their definition.
+   --  ??? This is especially needed for record aggregates containing floating
+   --      point numbers and should not be needed anymore once floating point
+   --      numbers are properly handled by solvers.
+
    function Check_Scalar_Range
      (Params : Transformation_Params;
       N      : Entity_Id;
@@ -106,22 +133,36 @@ package Gnat2Why.Expr is
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.
 
-   function Check_Type_With_Invariants
+   function Check_Type_With_DIC
      (Params : Transformation_Params;
       N      : Entity_Id) return W_Prog_Id;
-   --  Generate checks for absence of runtime errors in the type invariant's
-   --  expression. It also checks that the invariant holds for default values
-   --  of the type.
+   --  Generate checks for absence of runtime errors in the default initial
+   --  condition. It also checks that the DIC holds for default values of the
+   --  type.
    --  @param Params transformation parameters
-   --  @param N a type with a type invariant visible in SPARK
-   --  @return a program that checks that no error can appear in N's type
-   --          invariant nor in default value of this type.
+   --  @param N a type with a defult initial condition that needs to be checked
+   --  @return a program that checks that no error can appear in N's DIC
+   --          and it holds for default values of type N.
 
    function Compute_Default_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id;
-   --  Compute Why3 code to check for absence of runtime errors in default
-   --  initialization of Expr of type Ty.
+     (Ty               : Entity_Id;
+      Params           : Transformation_Params;
+      Skip_Last_Cond   : Boolean := False;
+      Include_Subtypes : Boolean := False;
+      New_Components   : Boolean := False) return W_Prog_Id
+   with Pre => (if not Include_Subtypes
+                then Can_Be_Default_Initialized (Retysp (Ty)));
+   --  @param Ty The type for which we want to check the default expression
+   --  @param Params Transformation parameters
+   --  @param Skip_Last_Cond Do not check the top-level
+   --         Default_Initial_Condition of Ty if any.
+   --  @param Include_Subtypes True if we also check any subtype of Ty. In
+   --         particular, if Ty is a record type with defaulted discriminants,
+   --         we only assume the value of its discriminants to be the defaults
+   --         if Include_Subtypes is false.
+   --  @prama New_Components Do not check inherited components
+   --  @result Why3 code to check for absence of runtime errors in default
+   --         initialization of Expr of type Ty.
 
    function Compute_Default_Init
      (Expr             : W_Expr_Id;
@@ -130,7 +171,8 @@ package Gnat2Why.Expr is
       Skip_Last_Cond   : W_Term_Id := False_Term;
       Use_Pred         : Boolean := True;
       Include_Subtypes : Boolean := False) return W_Pred_Id
-   with Pre => (if not Include_Subtypes then Can_Be_Default_Initialized (Ty));
+   with Pre => (if not Include_Subtypes
+                then Can_Be_Default_Initialized (Retysp (Ty)));
    --  @param Expr Expression for which we want the default initialization
    --  @param Ty The type of the expression Expr
    --  @param Params Transformation parameters

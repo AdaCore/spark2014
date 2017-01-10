@@ -30,10 +30,13 @@ with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with Stand;                  use Stand;
 with String_Utils;           use String_Utils;
 with Urealp;                 use Urealp;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -43,7 +46,6 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
-with Stand;                  use Stand;
 
 package body Gnat2Why.Util is
 
@@ -53,6 +55,16 @@ package body Gnat2Why.Util is
      (Kind : W_Section_Id; Section : out Why_Section)
      with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
    --  Return an empty Why_Section with the given kind
+
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
+     Pre => Present (Get_Initial_DIC_Procedure (E));
+   --  @param Ty type entity with a DIC (inherited or not)
+   --  @return True if the DIC expression depends on the current type instance.
+   --        If it depends on the type instance, it is considered as a
+   --        postcondtion of the default initialization of the private type,
+   --        and is checked at declaration. If it does not depend on the type
+   --        instance, it is considered as a precondition of the default
+   --        initialization, and is checked at use.
 
    --------------------
    -- Ada_Ent_To_Why --
@@ -399,6 +411,24 @@ package body Gnat2Why.Util is
               elsif Typ = EW_BitVector_64_Type then Uint_64
               else raise Program_Error);
    end BitVector_Type_Size;
+
+   ------------------------------
+   -- Check_DIC_At_Declaration --
+   ------------------------------
+
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
+      Ty                : constant Entity_Id := Retysp (E);
+      Default_Init_Subp : constant Entity_Id := Get_Initial_DIC_Procedure (E);
+      Default_Init_Expr : constant Node_Id :=
+        Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+      Init_Param        : constant Entity_Id :=
+        Defining_Entity (First (Parameter_Specifications
+                          (Subprogram_Specification (Default_Init_Subp))));
+   begin
+      return Present (Default_Init_Expr)
+        and then Flow_Utility.Get_Variables_For_Proof (Default_Init_Expr, Ty)
+         .Contains (Flow_Types.Direct_Mapping_Id (Unique_Entity (Init_Param)));
+   end Check_DIC_At_Declaration;
 
    ------------------
    -- Compute_Spec --
@@ -1154,15 +1184,29 @@ package body Gnat2Why.Util is
       Section.Cur_Theory := Why.Types.Why_Empty;
    end Make_Empty_Why_Section;
 
-   ----------------
-   -- Short_Name --
-   ----------------
+   -----------------------------
+   -- Needs_DIC_Check_At_Decl --
+   -----------------------------
 
-   function Short_Name (E : Entity_Id) return String
-   is
+   function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean is
+      E : constant Entity_Id := Retysp (Ty);
+
    begin
-      return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
-   end Short_Name;
+      return Has_Own_DIC (Ty)
+        and then Present (DIC_Procedure (Ty))
+        and then not Is_Private_Type (E)
+        and then Present (Get_Initial_DIC_Procedure (E))
+        and then Check_DIC_At_Declaration (E);
+   end Needs_DIC_Check_At_Decl;
+
+   ----------------------------
+   -- Needs_DIC_Check_At_Use --
+   ----------------------------
+
+   function Needs_DIC_Check_At_Use (Ty : Entity_Id) return Boolean is
+     (Present (DIC_Procedure (Ty))
+       and then Present (Get_Initial_DIC_Procedure (Ty))
+       and then not Check_DIC_At_Declaration (Ty));
 
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
@@ -1179,6 +1223,13 @@ package body Gnat2Why.Util is
              then Retysp (Etype (E))
              else E),
             Dim)));
+
+   ----------------
+   -- Short_Name --
+   ----------------
+
+   function Short_Name (E : Entity_Id) return String is
+     (Avoid_Why3_Keyword (Get_Name_String (Chars (E))));
 
    -----------------------------
    -- Type_Is_Modeled_As_Base --

@@ -12,6 +12,7 @@ aggs.ads:31:21: info: initialization of "X" proved
 aggs.ads:34:21: info: initialization of "X" proved
 aggs.ads:36:22: info: initialization of "X" proved
 aggs.ads:36:22: info: postcondition proved (CVC4: 1 VC)
+aggs.ads:40:28: info: range check proved (CVC4: 1 VC)
 dynval.adb:1:11: warning: subprogram "Dynval" has no effect
 dynval.adb:4:12: info: range check proved (CVC4: 2 VC)
 dynval.adb:5:61: medium: range check might fail

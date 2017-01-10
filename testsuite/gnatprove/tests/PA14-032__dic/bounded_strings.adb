@@ -3,7 +3,7 @@ pragma SPARK_Mode(On);
 package body Bounded_Strings is
 
    function Make(Upper_Bound : Index_Type; Initializer : Character) return Bounded_String is
-      Result : Bounded_String(Upper_Bound); --@DEFAULT_INITIAL_CONDITION:PASS
+      Result : Bounded_String(Upper_Bound);
    begin
       Result.Text := (others => ' ');
       Result.Text(1) := Initializer;

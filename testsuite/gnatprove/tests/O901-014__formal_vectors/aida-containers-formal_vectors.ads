@@ -58,7 +58,7 @@ package Aida.Containers.Formal_Vectors is
    function Length (Container : Vector_Type) return Capacity_Range with
      Global => null;
 
-   function Is_Empty (Container : Vector_Type) return Boolean with
+   function Is_Empty (Container : Vector_Type'Class) return Boolean with
      Global => null;
 
    procedure Clear (Container : in out Vector_Type) with

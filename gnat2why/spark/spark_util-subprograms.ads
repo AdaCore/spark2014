@@ -404,8 +404,7 @@ package SPARK_Util.Subprograms is
    function Subp_Location (E : Entity_Id) return String
    with Pre => Ekind (E) in Subprogram_Kind |
                             E_Package       |
-                            Task_Kind       |
-                            Protected_Kind  |
+                            Type_Kind       |
                             Entry_Kind;
    --  @param E subprogram, package, task or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and

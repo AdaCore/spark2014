@@ -283,6 +283,13 @@ package SPARK_Util.Types is
    --  the predicate expression, use the procedure generated to check the
    --  predicate.
 
+   function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id with
+     Pre => Is_Type (E) and then Has_DIC (E);
+   --  @param E a type with a DIC
+   --  @return the DIC procedure defined on the ancestor of E which has a body
+   --     if any. This is necessary as inherited DIC procedures don't have a
+   --     body.
+
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
    with Pre => Present (N);
    --  Get the type of the given entity. This function looks through
@@ -340,10 +347,11 @@ package SPARK_Util.Types is
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True
 
-   function Needs_DIC_Check (Ty : Entity_Id) return Boolean;
-   --  @param Ty type entity
-   --  @return True if Ty has a (inherited) DIC which applies to a non private
-   --          type.
+   function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in Type_Kind;
+   --  @param E type
+   --  @return True if E needs a specific module to check its default
+   --     expression at declaration.
 
    --------------------------------
    -- Queries related to records --

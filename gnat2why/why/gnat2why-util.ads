@@ -362,6 +362,20 @@ package Gnat2Why.Util is
    --  constant (for an initialization expression) or the corresponding
    --  aggregate/slice/string literal should be declared.
 
+   function Is_Initialized
+     (Obj   : Entity_Id;
+      Scope : Entity_Id)
+      return Boolean
+   with
+     Pre => Ekind (Scope) in E_Entry | E_Function | E_Procedure | E_Package
+                           | E_Task_Type
+       and then not Is_Declared_In_Unit (Obj, Scope)
+       and then Is_Mutable_In_Why (Obj);
+   --  Returns True if Obj is always initialized in the scope of Scope
+   --  @param Obj the entity of an object global to Scope which is variable in
+   --         why.
+   --  @param Scope the entity of a package, entry, task, or subprogram.
+
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
 
@@ -369,6 +383,19 @@ package Gnat2Why.Util is
      Pre => Nkind (E) in N_Defining_Identifier | N_Defining_Operator_Symbol;
    --  Given an identifier, decide if it denotes a variable that is mutable in
    --  the Why translation.
+
+   function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean with
+     Pre => Has_DIC (Ty);
+   --  @param Ty type entity with a DIC
+   --  @return True if Ty is the first in its hierarchy to define a non empty
+   --     DIC, if its full view is in SPARK, and if its DIC mentions the
+   --     current type instance.
+
+   function Needs_DIC_Check_At_Use (Ty : Entity_Id) return Boolean with
+     Pre => Has_DIC (Ty);
+   --  @param Ty type entity with a DIC
+   --  @return True if Ty has a non empty DIC which does not mention the
+   --     current type instance.
 
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean with
      Pre => Is_Type (T);
@@ -395,20 +422,6 @@ package Gnat2Why.Util is
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type.
    --  This function should be used on entities denoting an object.
-
-   function Is_Initialized
-     (Obj   : Entity_Id;
-      Scope : Entity_Id)
-      return Boolean
-   with
-     Pre => Ekind (Scope) in E_Entry | E_Function | E_Procedure | E_Package
-                           | E_Task_Type
-       and then not Is_Declared_In_Unit (Obj, Scope)
-       and then Is_Mutable_In_Why (Obj);
-   --  Returns True if Obj is always initialized in the scope of Scope
-   --  @param Obj the entity of an object global to Scope which is variable in
-   --         why.
-   --  @param Scope the entity of a package, entry, task, or subprogram.
 
    ------------------------------
    -- Symbol table subprograms --
