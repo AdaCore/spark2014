@@ -1047,13 +1047,4 @@ stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M3" constituent
 stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
 worker_pack.adb:8:52: medium: range check might fail
 worker_pack.adb:8:58: info: division check proved (CodePeer)
-worker_pack.adb:29:23: info: initialization of "Res" proved
-worker_pack.adb:31:18: info: initialization of "Work.Func" proved
-worker_pack.adb:33:35: info: initialization of "Work.Arg" proved
-worker_pack.adb:35:42: info: initialization of "Work.Arg" proved
-worker_pack.adb:54:17: warning: unused assignment
-worker_pack.adb:54:32: info: range check proved (CodePeer)
-worker_pack.adb:55:16: warning: unused assignment
-worker_pack.adb:59:10: info: initialization of "Res" proved
 worker_pack.ads:26:04: info: initialization of "Worker_Queue" proved
-worker_pack.ads:51:07: warning: unused initial value of "Arg"
