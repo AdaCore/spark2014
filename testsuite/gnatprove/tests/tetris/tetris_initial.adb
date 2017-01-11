@@ -67,7 +67,7 @@ is
    -- Delete_Complete_Lines --
    ---------------------------
 
-   procedure Delete_Complete_Lines is
+   procedure Delete_Complete_Lines (Num_Deleted : out Natural) is
       Empty_Line : constant Line := (others => Empty);
 
       To_Line : Y_Coord := Y_Coord'Last;
@@ -86,12 +86,15 @@ is
 
       --  iteratively move non-empty lines to the bottom of the board
 
+      Num_Deleted := 0;
+
       if Has_Complete_Lines then
          for From_Line in reverse Y_Coord'First .. To_Line - 1 loop
             if not Is_Empty_Line (Cur_Board (From_Line)) then
                Cur_Board (To_Line) := Cur_Board (From_Line);
                Cur_Board (From_Line) := Empty_Line;
                To_Line := To_Line - 1;
+               Num_Deleted := Num_Deleted + 1;
             end if;
          end loop;
       end if;

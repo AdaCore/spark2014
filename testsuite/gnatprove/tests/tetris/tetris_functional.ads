@@ -217,7 +217,7 @@ is
    --  transition from state where a piece is falling to its integration in the
    --  board when it cannot fall anymore.
 
-   procedure Delete_Complete_Lines with
+   procedure Delete_Complete_Lines (Num_Deleted : out Natural) with
      Global => (Proof_In => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
      Pre    => Cur_State = Board_Before_Clean and then
                Valid_Configuration,

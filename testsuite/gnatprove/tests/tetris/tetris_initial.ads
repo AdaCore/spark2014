@@ -178,7 +178,7 @@ is
    --  transition from state where a piece is falling to its integration in the
    --  board when it cannot fall anymore.
 
-   procedure Delete_Complete_Lines;
+   procedure Delete_Complete_Lines (Num_Deleted : out Natural);
    --  remove all complete lines from the board
 
 end Tetris_Initial;
