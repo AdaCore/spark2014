@@ -151,6 +151,22 @@ is
               (for all X in Three_Delta =>
                  (if Possible_Three_Shapes (P.S, P.D) (Y, X) then Is_Empty (B, P.Y + Y, P.X + X)))));
 
+   function Within_Bounds (Y : Integer; X : Integer) return Boolean is
+      (Y in Y_Coord and then X in X_Coord);
+
+   function Within_Bounds (P : Piece) return Boolean is
+      (case P.S is
+         when O => Within_Bounds (P.Y, P.X) and then
+                   Within_Bounds (P.Y + 1, P.X + 1),
+         when I =>
+           (for all Y in I_Delta =>
+              (for all X in I_Delta =>
+                 (if Possible_I_Shapes (P.D) (Y, X) then Within_Bounds (P.Y + Y, P.X + X)))),
+         when Three_Shape =>
+           (for all Y in Three_Delta =>
+              (for all X in Three_Delta =>
+                 (if Possible_Three_Shapes (P.S, P.D) (Y, X) then Within_Bounds (P.Y + Y, P.X + X)))));
+
    --  movements of the piece in the 3 possible directions
 
    type Action is (Move_Left, Move_Right, Move_Down, Turn_Counter_Clockwise, Turn_Clockwise);
@@ -185,7 +201,7 @@ is
 
    procedure Include_Piece_In_Board with
      Global => (Input => Cur_Piece, In_Out => Cur_Board),
-     Pre    => No_Overlap (Cur_Board, Cur_Piece);
+     Pre    => Within_Bounds (Cur_Piece);
    --  transition from state where a piece is falling to its integration in the
    --  board when it cannot fall anymore.
 

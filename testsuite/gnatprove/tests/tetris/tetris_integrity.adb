@@ -44,13 +44,6 @@ is
             Cur_Board (Cur_Piece.Y + 1) (Cur_Piece.X + 1) := Cur_Piece.S;
 
          when I =>
-            --  intermediate assertion needed for proof
-            pragma Assert
-              (for all YY in I_Delta =>
-                 (for all XX in I_Delta =>
-                    (if Possible_I_Shapes (Cur_Piece.D) (YY, XX) then
-                       Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
-
             for Y in I_Delta loop
                for X in I_Delta loop
                   if Possible_I_Shapes (Cur_Piece.D) (Y, X) then
@@ -60,13 +53,6 @@ is
             end loop;
 
          when Three_Shape =>
-            --  intermediate assertion needed for proof
-            pragma Assert
-              (for all YY in Three_Delta =>
-                 (for all XX in Three_Delta =>
-                    (if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (YY, XX) then
-                       Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
-
             for Y in Three_Delta loop
                for X in Three_Delta loop
                   if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (Y, X) then

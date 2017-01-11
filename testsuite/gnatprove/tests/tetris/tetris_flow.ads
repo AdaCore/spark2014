@@ -175,7 +175,8 @@ is
          when Move_Down   => P'Update (Y => P.Y + 1),
          when Turn_Action => P'Update (D => Turn_Direction (P.D, A)));
 
-   procedure Do_Action (A : Action; Success : out Boolean);
+   procedure Do_Action (A : Action; Success : out Boolean) with
+     Global => (Input => Cur_Board, In_Out => Cur_Piece);
 
    procedure Include_Piece_In_Board with
      Global => (Input => Cur_Piece, In_Out => Cur_Board);

@@ -69,39 +69,36 @@ tetris_functional.adb:43:33: info: index check proved (CVC4: 2 VC)
 tetris_functional.adb:43:50: info: index check proved (CVC4: 2 VC)
 tetris_functional.adb:44:36: info: index check proved (CVC4: 2 VC)
 tetris_functional.adb:44:54: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:49:16: info: assertion proved (CVC4: 1 VC)
-tetris_functional.adb:57:45: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:57:63: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:65:16: info: assertion proved (CVC4: 1 VC)
-tetris_functional.adb:67:57: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:72:54: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:73:45: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:73:63: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:89:37: info: length check proved (CVC4: 1 VC)
-tetris_functional.adb:102:28: info: assertion proved (CVC4: 2 VC)
-tetris_functional.adb:105:13: info: loop invariant initialization proved (CVC4: 1 VC)
-tetris_functional.adb:105:13: info: loop invariant preservation proved (CVC4: 1 VC)
-tetris_functional.adb:105:88: info: index check proved (CVC4: 2 VC)
-tetris_functional.adb:110:10: info: initialization of "Has_Complete_Lines" proved
-tetris_functional.adb:111:52: info: initialization of "To_Line" proved
-tetris_functional.adb:112:36: info: loop invariant initialization proved (CVC4: 1 VC)
-tetris_functional.adb:112:36: info: loop invariant preservation proved (CVC4: 1 VC)
-tetris_functional.adb:113:36: info: loop invariant initialization proved (CVC4: 1 VC)
-tetris_functional.adb:113:36: info: loop invariant preservation proved (CVC4: 1 VC)
-tetris_functional.adb:113:48: info: initialization of "To_Line" proved
-tetris_functional.adb:115:36: info: initialization of "To_Line" proved
-tetris_functional.adb:117:27: info: initialization of "To_Line" proved
-tetris_functional.adb:117:35: info: range check proved (CVC4: 1 VC)
-tetris_functional.adb:118:31: info: assertion proved (CVC4: 1 VC)
-tetris_functional.adb:136:23: info: precondition proved (CVC4: 1 VC)
-tetris_functional.adb:138:36: info: initialization of "Candidate.D" proved
-tetris_functional.adb:138:36: info: initialization of "Candidate.S" proved
-tetris_functional.adb:138:36: info: initialization of "Candidate.X" proved
-tetris_functional.adb:138:36: info: initialization of "Candidate.Y" proved
-tetris_functional.adb:139:26: info: initialization of "Candidate.D" proved
-tetris_functional.adb:139:26: info: initialization of "Candidate.S" proved
-tetris_functional.adb:139:26: info: initialization of "Candidate.X" proved
-tetris_functional.adb:139:26: info: initialization of "Candidate.Y" proved
+tetris_functional.adb:50:45: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:50:63: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:58:54: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:59:45: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:59:63: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:75:37: info: length check proved (CVC4: 1 VC)
+tetris_functional.adb:88:28: info: assertion proved (CVC4: 2 VC)
+tetris_functional.adb:91:13: info: loop invariant initialization proved (CVC4: 1 VC)
+tetris_functional.adb:91:13: info: loop invariant preservation proved (CVC4: 1 VC)
+tetris_functional.adb:91:88: info: index check proved (CVC4: 2 VC)
+tetris_functional.adb:96:10: info: initialization of "Has_Complete_Lines" proved
+tetris_functional.adb:97:52: info: initialization of "To_Line" proved
+tetris_functional.adb:98:36: info: loop invariant initialization proved (CVC4: 1 VC)
+tetris_functional.adb:98:36: info: loop invariant preservation proved (CVC4: 1 VC)
+tetris_functional.adb:99:36: info: loop invariant initialization proved (CVC4: 1 VC)
+tetris_functional.adb:99:36: info: loop invariant preservation proved (CVC4: 1 VC)
+tetris_functional.adb:99:48: info: initialization of "To_Line" proved
+tetris_functional.adb:101:36: info: initialization of "To_Line" proved
+tetris_functional.adb:103:27: info: initialization of "To_Line" proved
+tetris_functional.adb:103:35: info: range check proved (CVC4: 1 VC)
+tetris_functional.adb:104:31: info: assertion proved (CVC4: 1 VC)
+tetris_functional.adb:122:23: info: precondition proved (CVC4: 1 VC)
+tetris_functional.adb:124:36: info: initialization of "Candidate.D" proved
+tetris_functional.adb:124:36: info: initialization of "Candidate.S" proved
+tetris_functional.adb:124:36: info: initialization of "Candidate.X" proved
+tetris_functional.adb:124:36: info: initialization of "Candidate.Y" proved
+tetris_functional.adb:125:26: info: initialization of "Candidate.D" proved
+tetris_functional.adb:125:26: info: initialization of "Candidate.S" proved
+tetris_functional.adb:125:26: info: initialization of "Candidate.X" proved
+tetris_functional.adb:125:26: info: initialization of "Candidate.Y" proved
 tetris_functional.ads:104:06: info: length check proved (CVC4: 1 VC)
 tetris_functional.ads:104:07: info: length check proved (CVC4: 2 VC)
 tetris_functional.ads:105:07: info: length check proved (CVC4: 2 VC)
@@ -212,32 +209,29 @@ tetris_integrity.adb:43:33: info: index check proved (CVC4: 2 VC)
 tetris_integrity.adb:43:50: info: index check proved (CVC4: 2 VC)
 tetris_integrity.adb:44:36: info: index check proved (CVC4: 2 VC)
 tetris_integrity.adb:44:54: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:49:16: info: assertion proved (CVC4: 1 VC)
-tetris_integrity.adb:57:45: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:57:63: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:65:16: info: assertion proved (CVC4: 1 VC)
-tetris_integrity.adb:67:57: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:72:54: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:73:45: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:73:63: info: index check proved (CVC4: 2 VC)
-tetris_integrity.adb:85:37: info: length check proved (CVC4: 1 VC)
-tetris_integrity.adb:103:10: info: initialization of "Has_Complete_Lines" proved
-tetris_integrity.adb:104:52: info: initialization of "To_Line" proved
-tetris_integrity.adb:105:36: info: loop invariant initialization proved (CVC4: 1 VC)
-tetris_integrity.adb:105:36: info: loop invariant preservation proved (CVC4: 1 VC)
-tetris_integrity.adb:105:48: info: initialization of "To_Line" proved
-tetris_integrity.adb:107:36: info: initialization of "To_Line" proved
-tetris_integrity.adb:109:27: info: initialization of "To_Line" proved
-tetris_integrity.adb:109:35: info: range check proved (CVC4: 1 VC)
-tetris_integrity.adb:123:23: info: precondition proved (CVC4: 1 VC)
-tetris_integrity.adb:125:36: info: initialization of "Candidate.D" proved
-tetris_integrity.adb:125:36: info: initialization of "Candidate.S" proved
-tetris_integrity.adb:125:36: info: initialization of "Candidate.X" proved
-tetris_integrity.adb:125:36: info: initialization of "Candidate.Y" proved
-tetris_integrity.adb:126:26: info: initialization of "Candidate.D" proved
-tetris_integrity.adb:126:26: info: initialization of "Candidate.S" proved
-tetris_integrity.adb:126:26: info: initialization of "Candidate.X" proved
-tetris_integrity.adb:126:26: info: initialization of "Candidate.Y" proved
+tetris_integrity.adb:50:45: info: index check proved (CVC4: 2 VC)
+tetris_integrity.adb:50:63: info: index check proved (CVC4: 2 VC)
+tetris_integrity.adb:58:54: info: index check proved (CVC4: 2 VC)
+tetris_integrity.adb:59:45: info: index check proved (CVC4: 2 VC)
+tetris_integrity.adb:59:63: info: index check proved (CVC4: 2 VC)
+tetris_integrity.adb:71:37: info: length check proved (CVC4: 1 VC)
+tetris_integrity.adb:89:10: info: initialization of "Has_Complete_Lines" proved
+tetris_integrity.adb:90:52: info: initialization of "To_Line" proved
+tetris_integrity.adb:91:36: info: loop invariant initialization proved (CVC4: 1 VC)
+tetris_integrity.adb:91:36: info: loop invariant preservation proved (CVC4: 1 VC)
+tetris_integrity.adb:91:48: info: initialization of "To_Line" proved
+tetris_integrity.adb:93:36: info: initialization of "To_Line" proved
+tetris_integrity.adb:95:27: info: initialization of "To_Line" proved
+tetris_integrity.adb:95:35: info: range check proved (CVC4: 1 VC)
+tetris_integrity.adb:109:23: info: precondition proved (CVC4: 1 VC)
+tetris_integrity.adb:111:36: info: initialization of "Candidate.D" proved
+tetris_integrity.adb:111:36: info: initialization of "Candidate.S" proved
+tetris_integrity.adb:111:36: info: initialization of "Candidate.X" proved
+tetris_integrity.adb:111:36: info: initialization of "Candidate.Y" proved
+tetris_integrity.adb:112:26: info: initialization of "Candidate.D" proved
+tetris_integrity.adb:112:26: info: initialization of "Candidate.S" proved
+tetris_integrity.adb:112:26: info: initialization of "Candidate.X" proved
+tetris_integrity.adb:112:26: info: initialization of "Candidate.Y" proved
 tetris_integrity.ads:92:06: info: length check proved (CVC4: 1 VC)
 tetris_integrity.ads:92:07: info: length check proved (CVC4: 2 VC)
 tetris_integrity.ads:93:07: info: length check proved (CVC4: 2 VC)
@@ -267,10 +261,11 @@ tetris_integrity.ads:126:08: info: length check proved (CVC4: 2 VC)
 tetris_integrity.ads:133:54: info: index check proved (CVC4: 2 VC)
 tetris_integrity.ads:133:57: info: index check proved (CVC4: 2 VC)
 tetris_integrity.ads:152:46: info: index check proved (CVC4: 2 VC)
-tetris_integrity.ads:164:77: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:166:77: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:177:49: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:178:49: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:179:49: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:180:66: info: range check proved (CVC4: 1 VC)
-tetris_integrity.ads:184:37: info: initialization of "Success" proved
+tetris_integrity.ads:168:46: info: index check proved (CVC4: 2 VC)
+tetris_integrity.ads:180:77: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:182:77: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:193:49: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:194:49: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:195:49: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:196:66: info: range check proved (CVC4: 1 VC)
+tetris_integrity.ads:200:37: info: initialization of "Success" proved
