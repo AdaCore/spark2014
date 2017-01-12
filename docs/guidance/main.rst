@@ -142,7 +142,7 @@ Switch -j0 is used to analyze files from the project in parallel, using as many 
 
 
 If you installed SPARK in a different repository from GNAT, you may get errors about project files not found if your project depends on XML/Ada or GNATCOLL or any other project distributed with GNAT. In that case, you should update environment variable GPR_PROJECT_PATH as indicated in the SPARK User’s Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/install.html
+http://docs.adacore.com/spark2014-docs/html/ug/en/install.html
 
 
 After you manage to run GNATprove without errors, pick a simple unit in the project, preferably a leaf unit that does not depend on other units, and apply the “SPARK_Mode” marker to it, by adding the following pragma at the start of the spec file (typically a file with extension “ads”) and the body file (typically a file with extension “adb”) for this unit:
@@ -705,7 +705,7 @@ The following messages output by GNATprove are check messages and should have th
 First comes the severity of the check. It is one of low/medium/high and reflects both the likelihood that the reported problem is indeed a bug and its criticality. After the colon is the kind of the check message, here a potential read of an uninitialized variable. They should be located in your code at the point where the error can occur, and the corresponding line in GPS editor should be highlighted in red.
 
 Flow analysis can issue several kinds of check messages. In this document, we concentrate on the two most common ones. Initialization checks are about uses of uninitialized data. They are described in section “Initialization Checks”. Section “Aliasing” dwells on check messages relative to aliasing of subprogram parameters and global variables. Other specific check messages can also be issued when volatile variables or tasking constructs are used. More information about these additional checks can be found in
-http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_view_gnatprove_output.html#description-of-messages.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html#description-of-messages.
 
 Once every check message has been addressed, flow analysis can be run again with the box “Report checks proved” checked to see the verifications successfully performed by GNATprove. It should only issue “info” messages, highlighted in green in GPS, like the following::
 
@@ -781,7 +781,7 @@ If a global variable is completely initialized by a subprogram, it is considered
    end P;
 
 
-More information about SPARK’s data initialization policy can be found in the SPARK User’s Guide: http://docs.adacore.com/spark2014-docs/html/ug/source/language_restrictions.html#data-initialization-policy.
+More information about SPARK’s data initialization policy can be found in the SPARK User’s Guide: http://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#data-initialization-policy.
 
 
 This initialization policy may be too constraining in some cases. For example, consider the following “Search” procedure:
@@ -959,7 +959,7 @@ A pragma Annotate expects exactly 4 arguments. The first one is fixed and should
 
 
 A complete description of how checks can be justified can be found in the SPARK User’s Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
 
 
 On the code below, GNATprove is unable to verify that the array A is initialized by successive initialization of its elements:
@@ -1100,7 +1100,7 @@ Like for aliasing between parameters, aliasing is allowed if the input parameter
 
 
 Note that aliasing can also occur between parts of composite variables such as components of records or elements of arrays. More information about aliasing can be found in the SPARK User’s  Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/source/language_restrictions.html#absence-of-interferences.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/language_restrictions.html#absence-of-interferences.
 
 Dealing with Unproved Aliasing Checks
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1182,7 +1182,7 @@ A common rule applied in practice is that the reason should also identify the au
 
 
 How warnings can be suppressed in GNATprove is described in the SPARK User’s Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_use_gnatprove_in_a_team.html#suppressing-warnings.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#suppressing-warnings.
 
 
 The rest of this section lists warnings that may be emitted by GNATprove and explains their meaning.
@@ -1311,7 +1311,7 @@ This annotation is in general the most common one as most subprograms do not use
 No Global contracts are mandatory. However, whenever a contract is provided, it must be correct and complete, that is, it must mention every global variable accessed by the subprogram with the correct mode. Like for subprogram parameter modes, global contracts are checked by the tool in flow analysis mode and checks and warnings are emitted in case of non-conformance. To verify manually supplied global contracts, run GNATprove in flow analysis mode by selecting menu SPARK → Examine File, select the “flow” mode in the GPS panel, check the box “Do not report warnings”, uncheck the box “Report checks proved”, and click on “Execute”.
 
 Global contracts are described more precisely in the SPARK User’s Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/source/subprogram_contracts.html#data-dependencies.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/subprogram_contracts.html#data-dependencies.
 
 Constants with Variable Inputs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1337,7 +1337,7 @@ When a subprogram accesses a constant whose value depends on variable inputs (th
    end Set_X_To_Y;
 
 More information about constants with variable inputs can be found in the SPARK User’s Guide:
-http://docs.adacore.com/spark2014-docs/html/ug/source/package_contracts.html#special-cases-of-state-abstraction.
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#special-cases-of-state-abstraction.
 
 Abstract State
 ^^^^^^^^^^^^^^
@@ -1403,7 +1403,7 @@ An Abstract_State annotation is not mandatory though it may be necessary to anno
    end P;
 
 
-When an abstract state is supplied, it must be refined into its constituents in the package body using the Refined_State aspect or pragma. Furthermore, to be able to analyze the package specification independently, every private variable must be linked to an abstract state using the Part_Of aspect. More information about state abstraction can be found in the SPARK User’s Guide: http://docs.adacore.com/spark2014-docs/html/ug/source/package_contracts.html#state-abstraction.
+When an abstract state is supplied, it must be refined into its constituents in the package body using the Refined_State aspect or pragma. Furthermore, to be able to analyze the package specification independently, every private variable must be linked to an abstract state using the Part_Of aspect. More information about state abstraction can be found in the SPARK User’s Guide: http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#state-abstraction.
 
 .. _Silver Level:
 
@@ -1474,7 +1474,7 @@ The following messages output by GNATprove are check messages and should have th
 
 First comes the severity of the check. It is one of low/medium/high and reflects both the likelihood of the reported problem indeed being a bug and its criticality. After the colon is the kind of the check message, here a potential arithmetic overflow. They should be located in your code at the point where the error can occur, and the corresponding line in GPS editor should be highlighted in red.
 
-Proof can issue several kinds of check messages. In this document, we concentrate on the five most common ones: division by zero, array index, arithmetic overflow, value in range and correct discriminant. They are described in section “Run-time Checks”. Other specific check messages can also be issued when tagged types or tasking constructs are used. More information about these additional checks can be found in http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_view_gnatprove_output.html#description-of-messages.
+Proof can issue several kinds of check messages. In this document, we concentrate on the five most common ones: division by zero, array index, arithmetic overflow, value in range and correct discriminant. They are described in section “Run-time Checks”. Other specific check messages can also be issued when tagged types or tasking constructs are used. More information about these additional checks can be found in http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html#description-of-messages.
 
 Proving absence of run-time errors (AoRTE) requires interacting with GNATprove inside GPS, to either fix the code, add annotations, and finally succeed in proving the check or else justify the innocuity of the message. This process is explained in section “Investigating Unproved Run-time Checks”.
 
@@ -1695,10 +1695,10 @@ For each unproved run-time check in this subprogram, you should follow the follo
 
 #. Understand why the run-time check cannot fail at run time. If you do not understand why a run-time check never fails, GNATprove cannot understand it either. You may discover at this stage that indeed the run-time check may fail at run time, in which case you will need to first correct the program so that it is not possible.
 #. Determine if the reasons for the check to always succeed are known locally. GNATprove analysis is modular, which means that it only looks at locally available information to determine whether a check succeeds or not. This information consists mostly in the types of parameters and global variables, the precondition of the subprogram, and the postconditions of the subprogram it calls. If the information is not locally available, you should change types and/or add contracts to make it locally available to the analysis. See the paragraphs below on “More Precise Types” and “Useful Contracts”.
-#. If the run-time check depends on the value of a variable being modified in a loop, you may need to add a loop invariant, i.e. a specific annotation in the form of a pragma Loop_Invariant inside the loop, that summarizes the effect of the loop on the variable value. See the specific section of the SPARK User’s Guide on that topic: http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_write_loop_invariants.html.
+#. If the run-time check depends on the value of a variable being modified in a loop, you may need to add a loop invariant, i.e. a specific annotation in the form of a pragma Loop_Invariant inside the loop, that summarizes the effect of the loop on the variable value. See the specific section of the SPARK User’s Guide on that topic: http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_write_loop_invariants.html.
 #. Once you are confident this check should be provable, run SPARK in proof mode on the specific line with the check by right-clicking on this line in the editor panel inside GPS, and select SPARK → Prove Line from the contextual menu. In the GPS panel, select “2” as value for “Proof level”, check the box “Report checks proved”, and click on “Execute”. GNATprove should output either a message that confirms that the check is proved, or the same message as before. In the latter case, you will need to interact with GNATprove to investigate why the check is still not proved.
-#. It may be difficult sometimes to distinguish cases where some information is missing for the provers to prove the check from cases where the provers are incapable of proving the check. Multiple actions may help distinguishing those cases, as documented in a specific section of the SPARK User’s Guide on that topic (see subsections on “Investigating Unprovable Properties” and “Investigating Prover Shortcomings”): http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_investigate_unproved_checks.html. The most generally useful action to narrow down the issue to its core is to insert assertions in the code that “test” whether the check can be proved at some specific point in the program. For example, if a check message is issued about a possible division by zero on expression X/Y, and the implementation contains many branches and paths before this program point, try adding assertions that Y /= 0 in the various branches. This may point to a specific path in the program which cause the issue. This may also help provers to manage to prove both the assertion and the check. In such a case, it is good practice to retain in the code only those essential assertions that help getting automatic proof, and to remove other intermediate assertions that were inserted during interaction.
-#. If the check turns out to be unprovable due to limitations in the proving technology, you will have to justify its presence so that future runs of GNATprove will not report it again, by inserting a pragma Annotate after the line where the check message is reported. See SPARK User’s Guide at http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_investigate_unproved_checks.html.
+#. It may be difficult sometimes to distinguish cases where some information is missing for the provers to prove the check from cases where the provers are incapable of proving the check. Multiple actions may help distinguishing those cases, as documented in a specific section of the SPARK User’s Guide on that topic (see subsections on “Investigating Unprovable Properties” and “Investigating Prover Shortcomings”): http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html. The most generally useful action to narrow down the issue to its core is to insert assertions in the code that “test” whether the check can be proved at some specific point in the program. For example, if a check message is issued about a possible division by zero on expression X/Y, and the implementation contains many branches and paths before this program point, try adding assertions that Y /= 0 in the various branches. This may point to a specific path in the program which cause the issue. This may also help provers to manage to prove both the assertion and the check. In such a case, it is good practice to retain in the code only those essential assertions that help getting automatic proof, and to remove other intermediate assertions that were inserted during interaction.
+#. If the check turns out to be unprovable due to limitations in the proving technology, you will have to justify its presence so that future runs of GNATprove will not report it again, by inserting a pragma Annotate after the line where the check message is reported. See SPARK User’s Guide at http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
 
 
 In the following, we describe how you can change types to be more precise for analysis, and how you can add contracts that will make it possible to prove AoRTE.
@@ -1978,7 +1978,7 @@ Typically, the current state of the program may be stored in a global ghost vari
 
 
 See the SPARK User’s Guide for more examples of ghost code:
-http://docs.adacore.com/spark2014-docs/html/ug/source/specification_features.html#ghost-code
+http://docs.adacore.com/spark2014-docs/html/ug/en/source/specification_features.html#ghost-code
 
 Investigating Unproved Properties
 ---------------------------------
@@ -2002,10 +2002,10 @@ For each unproved property in this subprogram, you should follow the following s
 
 #. Understand why the property cannot fail at run time. If you do not understand why a property holds, GNATprove cannot understand it either. You may discover at this stage that indeed the property may fail at run time, in which case you will need to first correct the program so that it is not possible.
 #. Determine if the reasons for the property to hold are known locally. GNATprove analysis is modular, which means that it only looks at locally available information to determine whether a check succeeds or not. This information consists mostly in the types of parameters and global variables, the precondition of the subprogram, and the postconditions of the subprogram it calls. If the information is not locally available, you should change types and/or add contracts to make it locally available to the analysis.
-#. If the property depends on the value of a variable being modified in a loop, you may need to add a loop invariant, i.e. a specific annotation in the form of a pragma Loop_Invariant inside the loop, that summarizes the effect of the loop on the variable value. See the specific section of the SPARK User’s Guide on that topic: http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_write_loop_invariants.html.
+#. If the property depends on the value of a variable being modified in a loop, you may need to add a loop invariant, i.e. a specific annotation in the form of a pragma Loop_Invariant inside the loop, that summarizes the effect of the loop on the variable value. See the specific section of the SPARK User’s Guide on that topic: http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_write_loop_invariants.html.
 #. Once you are confident this property should be provable, run SPARK in proof mode on the specific line with the check by right-clicking on this line in the editor panel inside GPS, and select SPARK → Prove Line from the contextual menu. In the GPS panel, select “2” as value for “Proof level” (and possibly set the switches --prover=cvc4 --steps=0 --timeout=30 in the textual box, as described above), check the box “Report checks proved”, and click on “Execute”. GNATprove should output either a message that confirms that the check is proved, or the same message as before. In the latter case, you will need to interact with GNATprove to investigate why the check is still not proved.
-#. It may be difficult sometimes to distinguish cases where some information is missing for the provers to prove the property from cases where the provers are incapable of proving the property. Multiple actions may help distinguishing those cases, as documented in a specific section of the SPARK User’s Guide on that topic (see subsections on “Investigating Unprovable Properties” and “Investigating Prover Shortcomings”): http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_investigate_unproved_checks.html The most generally useful action to narrow down the issue to its core is to insert assertions in the code that “test” whether the property (or part of it) can be proved at some specific point in the program. For example, if a postcondition states a property (P or Q), and the implementation contains many branches and paths, try adding assertions that P holds or Q holds where they are expected to hold. This may point to a specific path in the program, and a specific part of the property, which cause the issue. This may also help provers to manage to prove both the assertion and the property. In such a case, it is good practice to retain in the code only those essential assertions that help getting automatic proof, and to remove other intermediate assertions that were inserted during interaction.
-#. If the check turns out to be unprovable due to limitations in the proving technology, you will have to justify its presence so that future runs of GNATprove will not report it again, by inserting a pragma Annotate after the line where the check message is reported. See SPARK User’s Guide at http://docs.adacore.com/spark2014-docs/html/ug/source/how_to_investigate_unproved_checks.html.
+#. It may be difficult sometimes to distinguish cases where some information is missing for the provers to prove the property from cases where the provers are incapable of proving the property. Multiple actions may help distinguishing those cases, as documented in a specific section of the SPARK User’s Guide on that topic (see subsections on “Investigating Unprovable Properties” and “Investigating Prover Shortcomings”): http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html The most generally useful action to narrow down the issue to its core is to insert assertions in the code that “test” whether the property (or part of it) can be proved at some specific point in the program. For example, if a postcondition states a property (P or Q), and the implementation contains many branches and paths, try adding assertions that P holds or Q holds where they are expected to hold. This may point to a specific path in the program, and a specific part of the property, which cause the issue. This may also help provers to manage to prove both the assertion and the property. In such a case, it is good practice to retain in the code only those essential assertions that help getting automatic proof, and to remove other intermediate assertions that were inserted during interaction.
+#. If the check turns out to be unprovable due to limitations in the proving technology, you will have to justify its presence so that future runs of GNATprove will not report it again, by inserting a pragma Annotate after the line where the check message is reported. See SPARK User’s Guide at http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
 
 
 .. _Example:
@@ -2238,27 +2238,24 @@ References
 The e-learning website AdaCore University proposes a freely available course on SPARK in five lessons at http://university.adacore.com/courses/spark-2014/
 
 
-The SPARK User’s Guide is available at http://docs.adacore.com/spark2014-docs/html/ug/
+The SPARK User's Guide is available at http://docs.adacore.com/spark2014-docs/html/ug/
 
 
 The SPARK Reference Manual is available at http://docs.adacore.com/spark2014-docs/html/lrm/
 
 
-The official book on SPARK is “Building High Integrity Applications with SPARK” by McCormick and Chapin, edited by Cambridge University Press. It is sold online by Amazon and many others.
+The official book on SPARK is "Building High Integrity Applications with SPARK" by McCormick and Chapin, edited by Cambridge University Press. It is sold online by Amazon and many others.
 
 
 
-
-
-
-For a historical account of the evolution of SPARK technology and its use in industry, see the article “Are We There Yet? 20 Years of Industrial Theorem Proving with SPARK” by Chapman and Schanda, at http://proteancode.com/keynote.pdf
+For a historical account of the evolution of SPARK technology and its use in industry, see the article "Are We There Yet? 20 Years of Industrial Theorem Proving with SPARK" by Chapman and Schanda, at http://proteancode.com/keynote.pdf
 
 
 The website http://www.spark-2014.org/ is a portal for up-to-date information and resources on SPARK, including an active blog detailing the latest evolutions.
 
 
-The document “AdaCore Technologies for CENELEC EN 50128:2011” presents the usage of AdaCore’s technology in conjunction with the CENELEC EN 50128:2011 standard. It describes in particular where the SPARK technology fits best and how it can best be used to meet various requirements of the standard. See:
+The document "AdaCore Technologies for CENELEC EN 50128:2011" presents the usage of AdaCore's technology in conjunction with the CENELEC EN 50128:2011 standard. It describes in particular where the SPARK technology fits best and how it can best be used to meet various requirements of the standard. See:
 http://www.adacore.com/knowledge/technical-papers/adacore-technologies-for-cenelec-en-501282011/
 
 
-A similar document “AdaCore Technologies for DO-178C/ED-12C” will be available soon, presenting the usage of AdaCore’s technology in conjunction with the DO-178C/ED-12C standard, and describing in particular the use of SPARK in relation with the Formal Methods supplement DO-333/ED-216.
+A similar document "AdaCore Technologies for DO-178C/ED-12C" will be available soon, presenting the usage of AdaCore's technology in conjunction with the DO-178C/ED-12C standard, and describing in particular the use of SPARK in relation with the Formal Methods supplement DO-333/ED-216.
