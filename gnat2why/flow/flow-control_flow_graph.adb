@@ -5804,9 +5804,9 @@ package body Flow.Control_Flow_Graph is
             when Kind_Subprogram | Kind_Task =>
                declare
                   type G_Prop is record
+                     Is_Proof_In : Boolean;
                      Is_Read     : Boolean;
                      Is_Write    : Boolean;
-                     Is_Proof_In : Boolean;
                   end record;
 
                   package Global_Maps is new Ada.Containers.Hashed_Maps
@@ -5829,17 +5829,20 @@ package body Flow.Control_Flow_Graph is
                                Writes     => Writes);
 
                   for G of Proof_Ins loop
-                     Globals.Include (Change_Variant (G, Normal_Use),
-                                      G_Prop'(Is_Read     => False,
-                                              Is_Write    => False,
-                                              Is_Proof_In => True));
+                     Globals.Insert (Change_Variant (G, Normal_Use),
+                                     G_Prop'(Is_Proof_In => True,
+                                             Is_Read     => False,
+                                             Is_Write    => False));
                   end loop;
 
                   for G of Reads loop
+                     --  ??? here we should call Insert, because no global can
+                     --  be both a Proof_In and Input. But it is not always the
+                     --  case: apparently due to some bug in generated globals.
                      Globals.Include (Change_Variant (G, Normal_Use),
-                                      G_Prop'(Is_Read     => True,
-                                              Is_Write    => False,
-                                              Is_Proof_In => False));
+                                      G_Prop'(Is_Proof_In => False,
+                                              Is_Read     => True,
+                                              Is_Write    => False));
                   end loop;
 
                   for G of Writes loop
@@ -5847,22 +5850,23 @@ package body Flow.Control_Flow_Graph is
                         Position : Global_Maps.Cursor;
                         Inserted : Boolean;
 
-                        P : constant G_Prop := (Is_Read     => False,
-                                                Is_Write    => True,
-                                                Is_Proof_In => False);
-
                      begin
                         --  Attempt to insert mapping from G to P; if insertion
                         --  fails it means that a mapping was already present.
                         --  In this case update the existing property as write.
                         Globals.Insert
                           (Key      => Change_Variant (G, Normal_Use),
-                           New_Item => P,
+                           New_Item => (Is_Proof_In => False,
+                                        Is_Read     => False,
+                                        Is_Write    => True),
                            Position => Position,
                            Inserted => Inserted);
 
                         if not Inserted then
                            Globals (Position).Is_Write := True;
+
+                           --  Check that G is not both a Proof_In and Output
+                           pragma Assert (not Globals (Position).Is_Proof_In);
                         end if;
 
                         --  Emit error if it is a global output of a function;
