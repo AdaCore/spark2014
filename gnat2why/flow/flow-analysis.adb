@@ -653,18 +653,25 @@ package body Flow.Analysis is
          declare
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
-               when Kind_Subprogram |
-                    Kind_Task       => (if Refined
-                                        then "Refined_Global"
-                                        else "Global"),
-               when others => "Initializes");
+               when Kind_Subprogram =>
+                  (if Refined
+                   then "Refined_Global"
+                   else "Global"),
+
+               when Kind_Package
+                  | Kind_Package_Body
+               =>
+                  "Initializes",
+
+               when Kind_Task =>
+                  raise Program_Error);
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-               when Kind_Subprogram   |
-                    Kind_Task         => "6.1.4(13)",
-               when Kind_Package      |
-                    Kind_Package_Body => "7.1.5(12)");
+               when Kind_Subprogram   => "6.1.4(13)",
+               when Kind_Package
+                  | Kind_Package_Body => "7.1.5(12)",
+               when Kind_Task         => raise Program_Error);
 
          begin
             if Refined then
@@ -730,11 +737,7 @@ package body Flow.Analysis is
                            Reduced              => True,
                            Use_Computed_Globals => True));
 
-                  when Kind_Task =>
-                     --  Nothing to do - no pre or postconditions.
-                     Vars_Used := Flow_Id_Sets.Empty_Set;
-
-                  when others =>
+                  when Kind_Package | Kind_Package_Body =>
                      Vars_Used := To_Entire_Variables
                        (Get_Variables
                           (Expr,
@@ -744,6 +747,10 @@ package body Flow.Analysis is
                            Fold_Functions       => False,
                            Reduced              => True,
                            Use_Computed_Globals => True));
+
+                  when Kind_Task =>
+                     raise Program_Error;
+
                end case;
                Vars_Used.Difference (Quantified_Variables (Expr));
 
