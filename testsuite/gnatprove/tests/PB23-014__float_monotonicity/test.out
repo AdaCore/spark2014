@@ -1,9 +1,4 @@
-add.adb:8:16: medium: postcondition might fail, cannot prove X1 <= X2
-add.adb:11:13: medium: overflow check might fail
-add.adb:12:13: medium: overflow check might fail
-add.adb:8:16: info: postcondition proved (CVC4: 1 VC)
-add.adb:11:13: info: overflow check proved (CVC4: 1 VC)
-add.adb:12:13: info: overflow check proved (CVC4: 1 VC)
-add.adb:8:16: medium: postcondition might fail, cannot prove X1 <= X2
-add.adb:11:13: info: overflow check proved (Z3: 1 VC)
-add.adb:12:13: medium: overflow check might fail
+add.adb:10:16: info: postcondition proved (CVC4: 1 VC)
+add.adb:13:04: info: precondition proved (CVC4: 7 VC)
+add.adb:14:13: info: overflow check proved (CVC4: 1 VC)
+add.adb:15:13: info: overflow check proved (CVC4: 1 VC)

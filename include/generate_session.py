@@ -48,8 +48,6 @@ def change_all_spark_mode(b):
 def kill_and_regenerate_all():
     change_all_spark_mode(False)
     os.system("make clean")
-    os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 --level=4 \
--f --no-counterexample -j0")
 #   Force regeneration of coq files where necessary.
 #   This step is used to generate the fake coq files and put the names of
 #   coq files inside the session. This cannot be done in one step because
@@ -64,10 +62,12 @@ def kill_and_regenerate_all():
     with open("manual_proof.in") as v:
         for i in v:
             exec_gnatprove(i)
+    os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 \
+--level=4 --no-counterexample -j0")
 #   discharge the remaining proofs with z3 and alt-ergo
     os.system("gnatprove -P spark_lemmas.gpr --prover=z3 \
 --level=2 --no-counterexample -j0")
-    os.system("gnatprove -P spark_lemmas.gpr --report=all \
+    os.system("gnatprove -P spark_lemmas.gpr --report=statistics \
 --prover=alt-ergo --level=4 --no-counterexample -j0")
     change_all_spark_mode(True)
 

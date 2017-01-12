@@ -1,0 +1,91 @@
+assert (to_real l4 = b / a) as l4real by (rewrite l_real4; auto).
+
+(* add the finitness of the concerned literals in the proof context *)
+pose proof l_is_finite as lfin.
+pose proof l_is_finite1 as l1fin.
+pose proof l_is_finite2 as l2fin.
+pose proof l_is_finite3 as l3fin.
+pose proof l_is_finite4 as l4fin.
+
+(* project the le predicate on float to inequalities on reals *)
+rewrite le_finite in h4, h5, h6, h7, h8, h9, h10; auto.
+
+(* assert that l4 is strictly positive *)
+assert (0 < to_real l4) as l4_pos by
+ (rewrite l4real; apply Rdiv_lt_0_compat; auto).
+
+assert (to_real val3 <> 0) as v3real_neq_zero by (intro i; rewrite i in h8; fourier).
+
+(* the following three lemmas specify that the division is finite *)
+assert (~ eq val3 zeroF) as v3_not_zero by
+      (rewrite zero_to_real; intros (_,i); rewrite i in v3real_neq_zero; auto).
+
+assert (no_overflow RNE (to_real val1 / to_real val3)) as no_ov_v1v3.
+{ apply Bounded_real_no_overflow.
+  apply Abs.Abs_le.
+  apply Rle_trans with (r2:=to_real l2 * / to_real l4); auto.
+  unfold Rdiv.
+  rewrite Abs.Abs_prod.
+  apply Rmult_le_compat; try (apply Abs.Abs_pos).
+  - rewrite Abs.Abs_le; rewrite l_real3, l_real2 in *; auto.
+  - rewrite Rbasic_fun.Rabs_right.
+    apply Rinv_le_contravar; auto.
+    apply Rle_ge.
+    left; apply Rinv_0_lt_compat.
+    fourier.
+  - rewrite l4real, Rinv_Rdiv.
+    unfold Rdiv.
+    rewrite <-Rmult_assoc.
+    apply Rmult_le_reg_r with (r:=b); auto.
+    field_simplify (to_real l2 * a * / b * b).
+    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
+    unfold a, b.
+    repeat rewrite <-Z2R_mult.
+    apply Z2R_le.
+    ring_simplify; omega.
+
+    intro i; rewrite i in b_pos; fourier.
+    intro i; rewrite i in b_pos; fourier.
+    intro i; rewrite i in a_pos; fourier. }
+
+assert (no_overflow RNE (to_real val2 / to_real val3)) as no_ov_v2v3.
+{ apply Bounded_real_no_overflow.
+  apply Abs.Abs_le.
+  apply Rle_trans with (r2:=to_real l2 * / to_real l4); auto.
+  unfold Rdiv.
+  rewrite Abs.Abs_prod.
+  apply Rmult_le_compat; try (apply Abs.Abs_pos).
+  - rewrite Abs.Abs_le; rewrite l_real3, l_real2 in *; auto.
+  - rewrite Rbasic_fun.Rabs_right.
+    apply Rinv_le_contravar; auto.
+    apply Rle_ge.
+    left; apply Rinv_0_lt_compat.
+    fourier.
+  - rewrite l4real, Rinv_Rdiv.
+    unfold Rdiv.
+    rewrite <-Rmult_assoc.
+    apply Rmult_le_reg_r with (r:=b); auto.
+    field_simplify (to_real l2 * a * / b * b).
+    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
+    unfold a, b.
+    repeat rewrite <-Z2R_mult.
+    apply Z2R_le.
+    ring_simplify; omega.
+
+    intro i; rewrite i in b_pos; fourier.
+    intro i; rewrite i in b_pos; fourier.
+    intro i; rewrite i in a_pos; fourier. }
+
+(* deduce the projections of val1 / val3 and val2 * val3 and that they
+   are finite *)
+destruct (div_finite RNE _ _ h1 h3 v3_not_zero no_ov_v1v3) as (v1v3_finite,to_real_v1v3).
+destruct (div_finite RNE _ _ h2 h3 v3_not_zero no_ov_v2v3) as (v2v3_finite,to_real_v2v3).
+
+(* project to real and conclude the proof using the monotonicity of
+   round and monotonicity of the real multiplication *)
+rewrite le_finite; auto.
+rewrite to_real_v1v3, to_real_v2v3.
+apply Round_monotonic.
+apply Rmult_le_compat_r; auto.
+left; apply Rinv_0_lt_compat; fourier.
+Qed.

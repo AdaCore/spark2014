@@ -1,0 +1,47 @@
+(* add the finitness of the concerned literals in the proof context *)
+pose proof l_is_finite2 as l1_finite.
+pose proof l_is_finite3 as l2_finite.
+pose proof l_is_finite4 as l3_finite.
+
+(* project the le predicate on float to inequalities on reals *)
+rewrite le_finite in h4, h5, h6, h7, h8, h9, h10; auto.
+
+(* lemma to help prove that abs (to_real val3) <= to_real l4 below *)
+assert (to_real l4 <= to_real val3) as l4_le_v3.
+{ rewrite l_real4, l_real3 in *.
+  apply Rle_trans with (r2:=0); [|fourier].
+  left; apply Ropp_lt_gt_0_contravar.
+  prove_sup0. }
+
+(* proof that val1 * val3 does not overflow to be able to use mul_finite *)
+assert (no_overflow RNE (to_real val1 * to_real val3)) as no_ov_v1v3.
+{ apply Bounded_real_no_overflow.
+  apply Abs.Abs_le.
+  apply Rle_trans with (r2:=to_real l2 * to_real l2); auto.
+  rewrite Abs.Abs_prod.
+  apply Rmult_le_compat; try (apply Abs.Abs_pos);
+      rewrite Abs.Abs_le, l_real2, l_real4 in *; auto. }
+
+(* proof that val2 * val3 does not overflow to be able to use mul_finite *)
+assert (no_overflow RNE (to_real val2 * to_real val3)) as no_ov_v2v3.
+{ apply Bounded_real_no_overflow.
+  apply Abs.Abs_le.
+  apply Rle_trans with (r2:=to_real l2 * to_real l2); auto.
+  rewrite Abs.Abs_prod.
+  apply Rmult_le_compat; try (apply Abs.Abs_pos);
+      rewrite Abs.Abs_le, l_real2, l_real4 in *; auto. }
+
+(* deduce the projections of val1 * val3 and val2 * val3 and that they
+   are finite *)
+destruct (mul_finite RNE _ _ h1 h3 no_ov_v1v3) as (v1v3_finite, v1v3_real).
+destruct (mul_finite RNE _ _ h2 h3 no_ov_v2v3) as (v2v3_finite, v2v3_real).
+
+(* project to real and conclude the proof using the monotonicity of
+   round and monotonicity of the real multiplication *)
+rewrite le_finite; auto.
+rewrite v1v3_real, v2v3_real.
+apply Round_monotonic.
+apply Rmult_le_compat_r.
+rewrite l_real3 in h8; fourier.
+fourier.
+Qed.
