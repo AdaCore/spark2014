@@ -1668,7 +1668,7 @@ package body Flow_Utility is
       P_CC   : Node_Lists.List;
    begin
       case Ekind (E) is
-         when Subprogram_Kind | Entry_Kind =>
+         when Entry_Kind | E_Function | E_Procedure =>
             if Refined then
                P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
@@ -1678,6 +1678,10 @@ package body Flow_Utility is
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
                if not P_CC.Is_Empty then
+
+                  --  At the most one Contract_Cases expression is allowed
+                  pragma Assert (P_CC.Length = 1);
+
                   declare
                      Ptr : Node_Id;
                   begin
@@ -1685,7 +1689,7 @@ package body Flow_Utility is
                                      (P_CC.First_Element));
                      while Present (Ptr) loop
                         P_Expr.Append (Expression (Ptr));
-                        Ptr := Next (Ptr);
+                        Next (Ptr);
                      end loop;
                   end;
                end if;
