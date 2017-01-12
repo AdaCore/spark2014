@@ -6304,10 +6304,10 @@ package body Flow.Control_Flow_Graph is
             --  this here, because otherwise we would have to do it in both
             --  Do_Call_Statement and Callect_Functions_And_Read_Locked_POs.
             if FA.Has_Only_Nonblocking_Statements
-              and then Ekind (E) /= E_Package
               and then (Is_Entry (E)
                           or else
-                        Is_Predefined_Potentially_Blocking (E))
+                        (Ekind (E) in E_Function | E_Procedure
+                         and then Is_Predefined_Potentially_Blocking (E)))
             then
                FA.Has_Only_Nonblocking_Statements := False;
             end if;
