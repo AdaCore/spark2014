@@ -1,25 +1,25 @@
-ic.adb:14:32: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:16:07: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:24:36: "Y" constituent of "IC.State_B" must be initialized at elaboration
-ic.adb:26:07: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:32:32: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:34:07: high: "X" constituent of "IC.State_A" is not initialized
+ic.adb:14:32: info: initialization of "X01" constituent of "IC.State_A" proved
+ic.adb:16:07: info: initialization of "X01" constituent of "IC.State_A" proved
+ic.adb:24:38: "Y02" constituent of "IC.State_B" must be initialized at elaboration
+ic.adb:26:07: info: initialization of "X02" constituent of "IC.State_A" proved
+ic.adb:32:32: info: initialization of "X03" constituent of "IC.State_A" proved
+ic.adb:34:07: high: "X01" constituent of "IC.State_A" is not initialized
 ic.adb:34:07: high: initialization of "IC.State_A" is specified at ic.ads:3
-ic.adb:34:07: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:40:43: "Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
-ic.adb:42:07: high: "X" constituent of "IC.State_A" is not initialized
+ic.adb:34:07: info: initialization of "X03" constituent of "IC.State_A" proved
+ic.adb:40:45: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
+ic.adb:42:07: high: "X01" constituent of "IC.State_A" is not initialized
 ic.adb:42:07: high: initialization of "IC.State_A" is specified at ic.ads:3
-ic.adb:42:07: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:49:34: "X" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
-ic.adb:49:34: "Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:42:07: info: initialization of "X04" constituent of "IC.State_A" proved
+ic.adb:49:34: "X01" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:49:34: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
 ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
 ic.adb:91:31: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
-ic.adb:109:35: "Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
-ic.adb:118:41: "Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
-ic.adb:125:14: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:126:21: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:132:14: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:133:41: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:109:37: "Y02" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
+ic.adb:118:41: "Y01" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
+ic.adb:125:14: info: initialization of "X01" constituent of "IC.State_A" proved
+ic.adb:126:21: info: initialization of "X01" constituent of "IC.State_A" proved
+ic.adb:132:14: info: initialization of "X01" constituent of "IC.State_A" proved
+ic.adb:133:41: info: initialization of "X01" constituent of "IC.State_A" proved
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
 main.adb:7:44: info: initialization of "Uninitialized.State" proved

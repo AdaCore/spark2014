@@ -1,46 +1,46 @@
 package body IC
-with Refined_State => (State_A => (Test_01.X,
-                                   Test_02.X,
-                                   Test_03.X,
-                                   Test_04.X),
-                       State_B => (Test_01.Y,
-                                   Test_02.Y,
-                                   Test_03.Y,
-                                   Test_04.Y,
+with Refined_State => (State_A => (Test_01.X01,
+                                   Test_02.X02,
+                                   Test_03.X03,
+                                   Test_04.X04),
+                       State_B => (Test_01.Y01,
+                                   Test_02.Y02,
+                                   Test_03.Y03,
+                                   Test_04.Y04,
                                    Test_06.S))
 is
    package Test_01
-     with Initializes => X,
-          Initial_Condition => X > 0
+     with Initializes => X01,
+          Initial_Condition => X01 > 0
    is
-      X : Integer;
-      Y : Integer;
+      X01 : Integer;
+      Y01 : Integer;
 
       function Get_Stuff return Integer;
    end Test_01;
 
    package Test_02
-     with Initializes => X,
-          Initial_Condition => X = Y  --  use of uninitialized variable
+     with Initializes => X02,
+          Initial_Condition => X02 = Y02  --  use of uninitialized variable
    is
-      X : Integer;
-      Y : Integer;
+      X02 : Integer;
+      Y02 : Integer;
    end Test_02;
 
    package Test_03
-     with Initializes => (X => Test_01.X),
-          Initial_Condition => X = Test_01.X
+     with Initializes => (X03 => Test_01.X01),
+          Initial_Condition => X03 = Test_01.X01
    is
-      X : Integer;
-      Y : Integer;
+      X03 : Integer;
+      Y03 : Integer;
    end Test_03;
 
    package Test_04
-     with Initializes => (X => Test_01.X),
-          Initial_Condition => X = Test_01.Get_Stuff  -- y not visible
+     with Initializes => (X04 => Test_01.X01),
+          Initial_Condition => X04 = Test_01.Get_Stuff  -- y not visible
    is
-      X : Integer;
-      Y : Integer;
+      X04 : Integer;
+      Y04 : Integer;
    end Test_04;
 
    package Test_05
@@ -61,19 +61,19 @@ is
    package body Test_03
    is
    begin
-      X := Test_01.X;
+      X03 := Test_01.X01;
    end Test_03;
 
    package body Test_02
    is
    begin
-      X := 5;
+      X02 := 5;
    end Test_02;
 
    package body Test_04
    is
    begin
-      X := Test_01.X;
+      X04 := Test_01.X01;
    end Test_04;
 
    package body Test_05
@@ -98,44 +98,44 @@ is
 
    package body Test_01
    is
-      function Get_Stuff return Integer is (X + Y);
+      function Get_Stuff return Integer is (X01 + Y01);
    begin
-      X := 5;
+      X01 := 5;
    end Test_01;
 
 
    procedure Sanity_Check_1 with
-     Global => (Output => Test_01.X),
-     Post   => Test_01.X = Test_02.Y   -- y not visible
+     Global => (Output => Test_01.X01),
+     Post   => Test_01.X01 = Test_02.Y02   -- y not visible
    is
    begin
-      Test_01.X := 0;
+      Test_01.X01 := 0;
    end Sanity_Check_1;
 
    procedure Sanity_Check_2 (B : Boolean) with
-     Global => (Output => Test_01.X),
-     Contract_Cases => (B     => Test_01.X > 0,
-                        not B => Test_01.Y > 0)  -- y not visible
+     Global => (Output => Test_01.X01),
+     Contract_Cases => (B     => Test_01.X01 > 0,
+                        not B => Test_01.Y01 > 0)  -- y not visible
    is
       pragma Unreferenced (B);
    begin
-      Test_01.X := 0;
+      Test_01.X01 := 0;
    end Sanity_Check_2;
 
    procedure Sanity_Check_3 with
-     Post => Test_01.X = Test_02.Y   -- ok, because y is visible
+     Post => Test_01.X01 = Test_02.Y02   -- ok, because y is visible
    is
    begin
-      Test_01.X := 0;
+      Test_01.X01 := 0;
    end Sanity_Check_3;
 
    procedure Sanity_Check_4 (B : Boolean) with
-     Contract_Cases => (B     => Test_01.X > 0,
-                        not B => Test_01.Y > 0)  -- ok, because y is visible
+     Contract_Cases => (B     => Test_01.X01 > 0,
+                        not B => Test_01.Y01 > 0)  -- ok, because y is visible
    is
       pragma Unreferenced (B);
    begin
-      Test_01.X := 0;
+      Test_01.X01 := 0;
    end Sanity_Check_4;
 
 end IC;
