@@ -731,32 +731,26 @@ package body Flow.Analysis is
             for Expr of Get_Postcondition_Expressions (FA.Spec_Entity,
                                                        Refined)
             loop
-               case FA.Kind is
-                  when Kind_Subprogram =>
-                     Vars_Used := To_Entire_Variables
-                       (Get_Variables
-                          (Expr,
-                           Scope                => Get_Flow_Scope (Expr),
-                           Local_Constants      => FA.Local_Constants,
-                           Fold_Functions       => False,
-                           Reduced              => True,
-                           Use_Computed_Globals => True));
+               Vars_Used :=
+                 To_Entire_Variables
+                   (Get_Variables
+                      (Expr,
+                       Scope                => (case FA.Kind is
+                                                when Kind_Subprogram =>
+                                                   Get_Flow_Scope (Expr),
 
-                  when Kind_Package | Kind_Package_Body =>
-                     Vars_Used := To_Entire_Variables
-                       (Get_Variables
-                          (Expr,
-                           Scope                => Private_Scope
+                                                when Kind_Package
+                                                   | Kind_Package_Body =>
+                                                     Private_Scope
                                                      (Get_Flow_Scope (Expr)),
-                           Local_Constants      => FA.Local_Constants,
-                           Fold_Functions       => False,
-                           Reduced              => True,
-                           Use_Computed_Globals => True));
 
-                  when Kind_Task =>
-                     raise Program_Error;
+                                                when Kind_Task =>
+                                                   raise Program_Error),
+                       Local_Constants      => FA.Local_Constants,
+                       Fold_Functions       => False,
+                       Reduced              => True,
+                       Use_Computed_Globals => True));
 
-               end case;
                Vars_Used.Difference (Quantified_Variables (Expr));
 
                for Var of Vars_Used loop
