@@ -433,7 +433,8 @@ package body Flow.Control_Flow_Graph is
       Mode          : Param_Mode;
       Uninitialized : Boolean;
       FA            : in out Flow_Analysis_Graphs)
-   with Pre => F.Kind in Direct_Mapping | Magic_String;
+   with Pre => F.Kind in Direct_Mapping | Magic_String
+               and then F.Variant = Normal_Use;
    --  Create the 'initial and 'final vertices for the given global and link
    --  them up to the start and end vertices.
 
@@ -1150,7 +1151,9 @@ package body Flow.Control_Flow_Graph is
    is
       M : Param_Mode;
 
-      procedure Process (F : Flow_Id);
+      procedure Process (F : Flow_Id)
+      with Pre => F.Kind in Direct_Mapping | Record_Field
+                  and then F.Variant = Normal_Use;
 
       -------------
       -- Process --
@@ -1293,7 +1296,9 @@ package body Flow.Control_Flow_Graph is
       Uninitialized : Boolean;
       FA            : in out Flow_Analysis_Graphs)
    is
-      procedure Process (F : Flow_Id);
+      procedure Process (F : Flow_Id)
+      with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String
+                  and then F.Variant = Normal_Use;
 
       -------------
       -- Process --
