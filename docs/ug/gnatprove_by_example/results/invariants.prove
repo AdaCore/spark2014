@@ -28,6 +28,7 @@ invariants.ads:22:13: info: invariant check proved
 invariants.ads:24:14: info: invariant check proved
 invariants.ads:25:13: info: invariant check proved
 invariants.ads:31:09: info: invariant check proved on default value
+invariants.ads:32:34: info: length check proved
 invariants.ads:39:47: info: index check proved
 invariants.ads:41:57: info: index check proved
 invariants.ads:47:04: medium: type "Stack_2" is not fully initialized
