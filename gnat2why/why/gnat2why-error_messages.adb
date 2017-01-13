@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
@@ -303,13 +305,9 @@ package body Gnat2Why.Error_Messages is
 
       function Nice_Float (F : Float) return String is
          S : String (1 .. 10);
-         Index : Integer := 1;
       begin
          Ada.Float_Text_IO.Put (S, F, 1, 0);
-         while S (Index) = ' ' loop
-            Index := Index + 1;
-         end loop;
-         return S (Index .. S'Last);
+         return Ada.Strings.Fixed.Trim (S, Ada.Strings.Left);
       end Nice_Float;
 
       ------------------
