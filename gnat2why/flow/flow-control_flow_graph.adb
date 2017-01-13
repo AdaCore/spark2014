@@ -1167,17 +1167,20 @@ package body Flow.Control_Flow_Graph is
             else
                M);
 
+         F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
+         F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
+
          Initial_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (FA    => FA,
-              F_Ent => Change_Variant (F, Initial_Value),
+              F_Ent => F_Initial,
               Mode  => PM,
               E_Loc => E);
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (FA    => FA,
-              F_Ent => Change_Variant (F, Final_Value),
+              F_Ent => F_Final,
               Mode  => PM,
               E_Loc => E);
 
@@ -1187,19 +1190,19 @@ package body Flow.Control_Flow_Graph is
          --  for declarative parts.
          Add_Vertex
            (FA,
-            Change_Variant (F, Initial_Value),
+            F_Initial,
             Initial_Atr,
             Initial_V);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
-         Create_Record_Tree (Change_Variant (F, Initial_Value),
+         Create_Record_Tree (F_Initial,
                              Initial_Atr,
                              FA);
 
          --  Setup the n'final vertex
          Add_Vertex
            (FA,
-            Change_Variant (F, Final_Value),
+            F_Final,
             Final_Atr,
             Final_V);
          Linkup (FA, FA.End_Vertex, Final_V);
@@ -1297,17 +1300,20 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Process (F : Flow_Id) is
+         F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
+         F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
+
          Initial_Atr : constant V_Attributes :=
            Make_Global_Variable_Attributes
              (FA     => FA,
-              F      => Change_Variant (F, Initial_Value),
+              F      => F_Initial,
               Mode   => Mode,
               Uninit => Uninitialized);
 
          Final_Atr : constant V_Attributes :=
            Make_Global_Variable_Attributes
              (FA   => FA,
-              F    => Change_Variant (F, Final_Value),
+              F    => F_Final,
               Mode => Mode);
 
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
@@ -1316,19 +1322,19 @@ package body Flow.Control_Flow_Graph is
          --  mode.
          Add_Vertex
            (FA,
-            Change_Variant (F, Initial_Value),
+            F_Initial,
             Initial_Atr,
             Initial_V);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
-         Create_Record_Tree (Change_Variant (F, Initial_Value),
+         Create_Record_Tree (F_Initial,
                              Initial_Atr,
                              FA);
 
          --  Setup the F'final vertex
          Add_Vertex
            (FA,
-            Change_Variant (F, Final_Value),
+            F_Final,
             Final_Atr,
             Final_V);
          Linkup (FA, FA.End_Vertex, Final_V);
