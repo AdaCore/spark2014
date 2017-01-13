@@ -687,17 +687,35 @@ package body Flow.Analysis is
                        To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
 
                      declare
-                        Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
+                        Proof_Ins, Inputs, Outputs : Flow_Id_Sets.Set;
                      begin
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,
-                                     Proof_Ins  => Tmp_A,
-                                     Reads      => Tmp_B,
-                                     Writes     => Tmp_C);
+                                     Proof_Ins  => Proof_Ins,
+                                     Reads      => Inputs,
+                                     Writes     => Outputs);
 
-                        for F of To_Entire_Variables (Tmp_A or Tmp_B or Tmp_C)
-                        loop
+                        --  Globals are disjoint except for an overlap between
+                        --  inputs and outputs (which cannot be union-ed
+                        --  because they differ in Flow_Id_Variant). Just
+                        --  iterate sets one-by-one using Include where Insert
+                        --  would crash on globals that are both Input and
+                        --  Output.
+
+                        for F of Proof_Ins loop
+                           Vars_Known.Insert (Change_Variant (F, Normal_Use));
+                        end loop;
+
+                        for F of Inputs loop
+                           --   ??? here we should use Insert here, but we
+                           --   can't since Edit_Proof_Ins is broken for
+                           --   abstract states. This does not affect the final
+                           --   contents of the Vars_Known container.
+                           Vars_Known.Include (Change_Variant (F, Normal_Use));
+                        end loop;
+
+                        for F of Outputs loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
                      end;
