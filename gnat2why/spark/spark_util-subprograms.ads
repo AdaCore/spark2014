@@ -158,6 +158,8 @@ package SPARK_Util.Subprograms is
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
    --  @return the list of pragma nodes of E for contract Name
+   --  ??? contract should detect invalid combinations of Ekind (E) and Name,
+   --      just like it is done in Find_Contract.
 
    function Get_Body (E : Entity_Id) return Node_Id
    with Pre  => Ekind (E) in Entry_Kind       |
@@ -288,7 +290,12 @@ package SPARK_Util.Subprograms is
                             E_Procedure      |
                             Entry_Kind       |
                             E_Protected_Type |
-                            E_Task_Type;
+                            E_Task_Type
+             and then Name in Pragma_Precondition      |
+                              Pragma_Postcondition     |
+                              Pragma_Refined_Post      |
+                              Pragma_Contract_Cases    |
+                              Pragma_Initial_Condition;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
