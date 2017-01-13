@@ -706,16 +706,21 @@ package body Flow.Analysis is
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
                      for F of To_Entire_Variables (FA.Visible_Vars) loop
-                        if F.Kind in Direct_Mapping | Record_Field then
-                           Vars_Known.Union
-                             (To_Flow_Id_Set
-                                (Down_Project
-                                   (Node_Sets.To_Set
-                                      (Get_Direct_Mapping_Id (F)),
-                                    FA.S_Scope)));
-                        else
-                           Vars_Known.Include (F);
-                        end if;
+                        case F.Kind is
+                           when Direct_Mapping =>
+                              Vars_Known.Union
+                                (To_Flow_Id_Set
+                                   (Down_Project
+                                        (Node_Sets.To_Set
+                                             (Get_Direct_Mapping_Id (F)),
+                                         FA.S_Scope)));
+
+                           when Record_Field =>
+                              raise Program_Error;
+
+                           when others =>
+                              Vars_Known.Include (F);
+                        end case;
                      end loop;
 
                   when Kind_Task =>
