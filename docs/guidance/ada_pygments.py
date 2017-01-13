@@ -46,7 +46,7 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
             # Match use and with statements
             # The first part of the pattern is be sure we don't match
             # for/use constructs.
-            (r'(\n\s*|;\s*)(with|use)(\s+[\w\.]+)',
+            (r'(\n\s*|;\s*)(with|use)(\s+[\w\.]+\s*;)',
              bygroups(Punctuation, Keyword.Reserved, Name.Namespace)),
             # Match procedure, package and function declarations
             (r'end\s+(if|loop|record)', Keyword),
