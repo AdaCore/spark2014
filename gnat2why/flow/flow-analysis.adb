@@ -749,9 +749,8 @@ package body Flow.Analysis is
                        Local_Constants      => FA.Local_Constants,
                        Fold_Functions       => False,
                        Reduced              => True,
-                       Use_Computed_Globals => True));
-
-               Vars_Used.Difference (Quantified_Variables (Expr));
+                       Use_Computed_Globals => True))
+                 - Quantified_Variables (Expr);
 
                for Var of Vars_Used loop
                   if not Vars_Known.Contains (Var) then
