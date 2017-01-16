@@ -57,7 +57,7 @@
 
     デフォルトでは |GNATprove| は，警告を出しますが，解析は停止しません．
 
-ソースコード中で，　``Warnings`` pragma を用いることで，どちらのタイプの警告も選択的に抑制することができます．例えば， |GNATprove| は，手続き ``Warn`` 中で，3つの警告を発行するとします．これらはソースコード中で，3つの ``Warnings`` pragma を使用することで抑制できます．
+ソースコード中で， ``Warnings`` pragma を用いることで，どちらのタイプの警告も選択的に抑制することができます．例えば， |GNATprove| は，手続き ``Warn`` 中で，3つの警告を発行するとします．これらはソースコード中で，3つの ``Warnings`` pragma を使用することで抑制できます．
 
 .. literalinclude:: /gnatprove_by_example/examples/warn.adb
    :language: ada
@@ -142,18 +142,18 @@ pragma は次の形式を持ちます．
 
 ユーザは，適切に， ``Annotate`` を記載すべきです．そうすべきではない検査を正当化しないように注意する必要があります．
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.ads
+.. literalinclude:: /gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 4-7
 
 
 或いは，そのユニットのユーザにとって不可視である必要があるという実装時選択があるときは，ボディ部上で正当化を行います．
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.ads
+.. literalinclude:: /gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 9-10
 
-.. literalinclude:: ../gnatprove_by_example/examples/justifications.adb
+.. literalinclude:: /gnatprove_by_example/examples/justifications.adb
    :language: ada
    :lines: 10-16
 
@@ -166,7 +166,7 @@ Pragma Assume による間接的正当化
 
 |GNATprove| の証明によって生成される検査メッセージは，ソースコード中に， :ref:`Pragma Assume` を付加することによって，代替として間接的に正当化することができます．これによって，検査項目は証明されます．例えば，以下に示す割り当て文において整数オーバーフローの可能性に関する検査メッセージは，次のように正当化することができます．
 
-.. literalinclude:: ../gnatprove_by_example/examples/assumptions.adb
+.. literalinclude:: /gnatprove_by_example/examples/assumptions.adb
    :language: ada
    :lines: 8-13
 
