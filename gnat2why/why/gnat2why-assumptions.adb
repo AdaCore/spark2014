@@ -198,8 +198,11 @@ package body Gnat2Why.Assumptions is
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
       Register_Claim ((E => E, Kind => Claim_AoRTE));
+
+      --  ??? Add proper handling of Initial_Condition
+      --  (for E whose Ekind = E_Package), currently ignored.
+
       if Ekind (E) in E_Function
-                    | E_Package
                     | E_Procedure
                     | Entry_Kind
         and then Has_Contracts (E, Pragma_Postcondition)
