@@ -584,7 +584,7 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
     if verbose_mode():
         cmd += ["--verbose"]
     if cache_allowed and cache_mode():
-        cmd += ["--cache"]
+        cmd += ["--memcached-server=localhost:11211"]
     cmd += to_list(opt)
     if verbose_mode():
         print ' '.join(cmd)

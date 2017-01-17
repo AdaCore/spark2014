@@ -64,7 +64,7 @@ package Configuration is
 
       Assumptions       : aliased Boolean;
       Benchmark         : aliased Boolean;
-      Cache             : aliased Boolean;
+      Memcached_Server  : aliased GNAT.Strings.String_Access;
       Cargs_List        : String_Lists.List;
       CodePeer          : aliased GNAT.Strings.String_Access;
       D                 : aliased Boolean;
@@ -160,7 +160,7 @@ package Configuration is
    Counterexample    : Boolean;
    Mode              : GP_Mode;
    Warning_Mode      : Gnat2Why_Args.SPARK_Warning_Mode_Type;
-   Caching           : Boolean;
+   Memcached_Server  : GNAT.Strings.String_Access;
    --  enable caching through memcached
    Report            : Report_Mode_Type;
    Proof             : Proof_Mode;

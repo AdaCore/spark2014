@@ -309,6 +309,17 @@ is needed for the code to work). Indirect justifications with pragma
 ``Assume`` should be carefully inspected as they can easily introduce errors
 in the verification process.
 
+Sharing Proof Results Via a Memcached Server
+--------------------------------------------
+
+|GNATprove| can cache and share results between distinct runs of the tool,
+even across several computers, via a Memcached server. To use this feature, you
+need to setup a memcached server (see https://memcached.org/) on your network
+or on your local machine. Then, if you add the option
+``--memcached-server=hostname:portnumber`` to your invocation of gnatprove (or
+use the ``Switches`` Attribute of the ``Prove`` Package of your project file),
+then caching will be used, and speedups should be observed in many cases.
+
 .. _Managing Assumptions:
 
 Managing Assumptions

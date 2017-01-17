@@ -198,8 +198,12 @@ htmlhelp_basename = 'SPARK2014UsersGuidedoc'
 
 # -- Options for LaTeX output --------------------------------------------------
 
-with open('gfdl.tex', 'r') as fd:
-   gfdl = fd.read()
+if tags.has('core_ja'):
+  with open('ja/gfdl_ja.tex', 'r') as fd:
+    gfdl = fd.read()
+else:
+  with open('en/gfdl.tex', 'r') as fd:
+    gfdl = fd.read()
 
 latex_elements = {
 # The paper size ('letter' or 'a4').

@@ -698,7 +698,7 @@ package body Configuration is
          IDE_Mode := CL_Switches.IDE_Progress_Bar;
          Limit_Line := CL_Switches.Limit_Line;
          Limit_Subp := CL_Switches.Limit_Subp;
-         Caching := CL_Switches.Cache;
+         Memcached_Server := CL_Switches.Memcached_Server;
          Why3_Config_File := CL_Switches.Why3_Conf;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
@@ -1456,12 +1456,9 @@ package body Configuration is
          (Config, CL_Switches.Benchmark'Access,
           Long_Switch => "--benchmark");
 
-      --  This switch is not documented on purpose. This enables memcached
-      --  caching for developers.
-
       Define_Switch
-         (Config, CL_Switches.Cache'Access,
-          Long_Switch => "--cache");
+         (Config, CL_Switches.Memcached_Server'Access,
+          Long_Switch => "--memcached-server=");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");

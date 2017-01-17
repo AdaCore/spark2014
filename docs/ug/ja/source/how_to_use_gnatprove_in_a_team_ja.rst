@@ -7,7 +7,7 @@
 
 全てのケースで，ソースコードを（例えば共有ドライブ上で）直接に共有すべきではありません．この場合，ファイルのアクセス権や同時アクセスの問題を引き起こすことになります．従って，典型的な利用法としては，各ユーザがソースコードや環境をチェックアウトすることです．物理的に全てのユーザでソースコードを共有するのではなく，自分たちのソースコードのバージョン／コピーやプロジェクトファイルを使用します．
 
-また，プロジェクトファイルでは，ローカル・非共有・書き込み可能ディレクトリをオブジェクトディレクトリとして指定します（明示的か暗黙的かに関わらず，オブジェクトディレクトリが存在しないと，プロジェクトファイルが置かれているディレクトリがオブジェクトディレクトリとして利用されます）．
+また，プロジェクトファイル中では常に，ローカル・非共有・書き込み可能ディレクトリをオブジェクトディレクトリとして指定します（明示的か暗黙的かに関わらず，オブジェクトディレクトリが存在しないと，プロジェクトファイルが置かれているディレクトリがオブジェクトディレクトリとして利用されます）．
 
 幾つかのワークフロー
 -----------------------
@@ -57,23 +57,30 @@
 
     デフォルトでは |GNATprove| は，警告を出しますが，解析は停止しません．
 
-ソースコード中で，　``Warnings`` pragma を用いることで，どちらのタイプの警告も選択的に抑制することができます．例えば， |GNATprove| は，手続き ``Warn`` 中で，3つの警告を発行するとします．これらはソースコード中で，3つの ``Warnings`` pragma を使用することで抑制できます．
+ソースコード中で， ``Warnings`` pragma を用いることで，どちらのタイプの警告も選択的に抑制することができます．例えば， |GNATprove| は，手続き ``Warn`` 中で，3つの警告を発行するとします．これらはソースコード中で，3つの ``Warnings`` pragma を使用することで抑制できます．
 
 .. literalinclude:: /gnatprove_by_example/examples/warn.adb
    :language: ada
    :linenos:
 
-``Warnings Off`` pragma から開始し， ``Warnings On`` pragma ないしは関係するスコープの終了場所で囲まれた領域内で，特定のメッセージを持った警告を，抑制することができます． ``Reason`` 根拠文字列を使用することもできます．ある特定の形式を持った全ての警告を抑制するために，正規表現を用いて，特定のメッセージの代わりに与えることができます．プロジェクトの全てのユニットで横断的に，関連する警告を抑制するために，構成ファイル中に， ``Warnings Off`` pragma を加えることができます．特定のエンティティに ``Warnings Off`` pragma を指定することで，このエンティティに関係した全ての警告を抑制することができます．
+ここで ``Warnings Off`` pragma から開始し， ``Warnings On`` pragma ないしは関係するスコープの終了場所で囲まれた領域内で，特定のメッセージを持った警告を，抑制することができます． ``Reason`` 根拠文字列を使用することもできます．ある特定の形式を持った全ての警告を抑制するために，正規表現を用いて，特定のメッセージの代わりに与えることができます．プロジェクトの全てのユニットで横断的に，関連する警告を抑制するために，構成ファイル中に， ``Warnings Off`` pragma を加えることができます．特定のエンティティに ``Warnings Off`` pragma を指定することで，このエンティティに関係した全ての警告を抑制することができます．
 
-``Warnings`` pragma は，GNAT コンパイラ或いは GNATprove に対してのみ適用することを示すために  ``GNAT`` 或いは ``GNATprove`` を第一引数にとることも可能です．
+この ``Warnings`` pragma は，GNAT コンパイラ或いは GNATprove に対してのみ適用することを示すために  ``GNAT`` 或いは ``GNATprove`` を第一引数にとることも可能です．
 
 .. literalinclude:: /gnatprove_by_example/examples/warn2.adb
    :language: ada
    :linenos:
 
-``Warnings`` pragma という洗練したバージョンを用いることの利点は文書化という他に，スイッチ  ``-gnatw.w`` とともに用いることで，警告を全く抑制しない意味の無い ``Warnings`` pragma を見つけることができます．実際このスイッチは，コンパイル中は GNAT とともに使うことができ，形式検証中は，GNAT prove とともに使うことができます．これは， ``Warnings`` pragma をどちらかのツールのみに適用できることと同様です．
+洗練したバージョンである ``Warnings`` pragma を用いることの利点は文書化という他に，スイッチ  ``-gnatw.w`` とともに用いることで，警告を全く抑制しない意味の無い ``Warnings`` pragma を見つけることができます．実際このスイッチは，コンパイル中は GNAT とともに使うことができ，形式検証中は，GNAT prove とともに使うことができます．これは， ``Warnings`` pragma をどちらかのツールのみに適用できることと同様です．
 
 詳しくは， |GNAT Pro| 参照マニュアルをご覧下さい．
+
+.. _ja Suppressing Information Messages:
+
+情報メッセージを抑制する
+--------------------------------
+
+情報メッセージは，ソースコード中で，pragma ``Warnings`` を用いることで，警告と同様に，抑制することができます．
 
 .. _ja Justifying Check Messages:
 
@@ -107,14 +114,14 @@ pragma は次の形式を持ちます．
    :header: "項目", "説明"
    :widths: 1, 4
 
-    "GNATprove",   "固定の識別子"
-    "Category",    "``False_Positive`` か ``Intentional`` のいずれか"
-    "Pattern",     "正当化されるべき検査メッセージのパターンを記述した文字列リテラル"
-    "Reason",      "レビューのための正当化を提供する文字列リテラル"
+   "GNATprove",   "固定の識別子である"
+   "Category",    "``False_Positive`` か ``Intentional`` のいずれかである"
+   "Pattern",     "正当化されるべき検査メッセージのパターンを記述した文字列リテラルである"
+   "Reason",      "レビューのための正当化を提供する文字列リテラルである"
 
-全ての引数を記述する必要があります．
+全ての論拠を示す必要があります．
 
-*Category* は現時点では，ツールのふるまいになんの影響も与えません．文書化の目的のみです．
+項目 *Category* は現時点では，ツールのふるまいになんの影響も与えません．文書化の目的のみです．
 
 * ``False_Positive`` は， |GNATprove| は証明できていませんが，検査が不合格ではないということを示します．
 
@@ -122,13 +129,23 @@ pragma は次の形式を持ちます．
 
 *Pattern* は，正当化すべき検査メッセージの副文字列になります．
 
-*Reason* は，正当化としてレビューするためにユーザが示す文字列です．この理由（reason）は， |GNATprove| のレポート中に記載されます．
+*Reason* は，正当化としてレビューに対してユーザが示す文字列です．この論拠（reason）は， |GNATprove| のレポート中に記載されます．
 
-記載方法に関するルールは次の通りです．命令文リストないしは宣言文リスト中で， ``Annotate`` pragma は，リスト中の先行するアイテムに適用され，他の ``Annotate`` pragma を無視します．もし，先行するアイテムがない場合は，pragma は，内包構成要素に適用されます．もし先行するあるいは内包構成要素が，サブプログラムのボディ部である場合，pragma は，サブプログラムのボディ部と契約を含んでいる仕様部に適用されます．このことで，呼び出し元に関係しているとき，仕様部で |GNATprove| が出力する検査メッセージに対する正当化を行うことができます．
+記載方法に関するルールは次の通りです．命令文リストないしは宣言文リスト中で， ``Annotate`` pragma は，リスト中の先行するアイテムに適用され，他の ``Annotate`` pragma を無視します．もし，先行するアイテムがない場合は，pragma は，内包構成要素に適用されます．例えば，if 文で，ガード条件が成立したときの処理（then-branch）における最初の要素がこの pragma であれば，if 文中のガード条件に適用されます．
+
+もし先行するあるいは内包構成要素が，サブプログラムのボディ部である場合，pragma は，サブプログラムのボディ部と契約を含んでいる仕様部に適用されます．このことで，呼び出し元に関係しているとき，仕様部で |GNATprove| が出力する検査メッセージに対する正当化を行うことができます．
+
+注意点としては，ソースコード中で，pragma ``Annotate`` の書かれたあと，極力広い範囲にわたって， pragma が適用されるということです．
+
+* （新しい）pragma が，ブロック中の命令文リストに現れたときは，それがブロック全体（if文中では，全ての分岐を含む if ブロック内，ループ文の場合は，ループ文全体）に適用されることになります．
+* pragma が，サブプログラムボディ部の先頭にあるとき，その pragma は，ボディ部全体とサブプログラムの仕様部に適用されます．
+
+ユーザは，適切に， ``Annotate`` を記載すべきです．そうすべきではない検査を正当化しないように注意する必要があります．
 
 .. literalinclude:: /gnatprove_by_example/examples/justifications.ads
    :language: ada
    :lines: 4-7
+
 
 或いは，そのユニットのユーザにとって不可視である必要があるという実装時選択があるときは，ボディ部上で正当化を行います．
 
@@ -140,18 +157,59 @@ pragma は次の形式を持ちます．
    :language: ada
    :lines: 10-16
 
-検査メッセージに対する正当化を行わない上記のような ``Annotate`` pragma 形式は，役に立たず， |GNATprove| は警告を発行します． |GNATprove| が発行する他の警告と同様に，この警告は，``--warnings=error`` スイッチが設定された場合，エラーとして扱われます．
+検査メッセージに対する正当化を行わない上記のような ``Annotate`` pragma 形式は，役に立たず， |GNATprove| は警告を発行します． |GNATprove| が発行する他の警告と同様に，この警告は， ``--warnings=error`` スイッチが設定された場合，エラーとして扱われます．
 
-Assume Pragma による間接的正当化
+.. _ja Indirect Justification with Pragma Assume:
+
+Pragma Assume による間接的正当化
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|GNATprove| の証明によって生成される検査メッセージは，ソースコード中に， Pragma Assume を付加することによって，代替として間接的に正当化することができます．これによって，検査項目は証明されます．例えば，以下に示す割り当て文において整数オーバーフローの可能性に関する検査メッセージは，次のように正当化することができます．
+|GNATprove| の証明によって生成される検査メッセージは，ソースコード中に， :ref:`Pragma Assume` を付加することによって，代替として間接的に正当化することができます．これによって，検査項目は証明されます．例えば，以下に示す割り当て文において整数オーバーフローの可能性に関する検査メッセージは，次のように正当化することができます．
 
 .. literalinclude:: /gnatprove_by_example/examples/assumptions.adb
    :language: ada
    :lines: 8-13
 
-``Assume`` pragma は， ``Annotate`` pragma を利用するよりも強力です．このプロパティの仮定は，一つ以上の検査項目の証明に用いることができるからです．従って， ``Assume`` pragma を用いた間接的正当化は，``Assume`` pragma を用いた直接的正当化以上に，注意してレビューすべきです．
+pragma ``Assume`` は， ``Annotate`` pragma を利用するよりも強力です．このプロパティの仮定は，一つ以上の検査項目の証明に用いることができるからです．従って，単純な実行時検査を正当化するためには， ``Assume`` pragma を用いるよりも，一般的には， ``Annotate`` pragma を用いるべきです．以下の幾つかの例で ``Assume`` を使用することが望ましい場合を示します．
+
+* 仮定を局所化するために：
+
+  .. code-block:: ada
+
+      pragma Assume (<External_Call's precondition>,
+                     "because for these internal reasons I know it holds");
+      External_Call;
+
+  もし， ``External_Call`` の事前条件が変化した場合，仮定は引き続き論拠に対して有効であっても，ここでの仮定は有効ではなくなるかもしれません． ``External_Call`` の事前条件中の変化によって，ここで不整合が生じると， ``External_Call`` の証明ができなくなります．
+
+* レビューを容易化するために，対象の外部から期待されていることをまとめておく：
+
+  .. code-block:: ada
+
+      External_Find (A, E, X);
+      pragma Assume (X = 0 or (X in A'Range and A (X) = E),
+                     "because of the documentation of External_Find");
+
+  幾つかの progma ``Annotate`` を用いて情報を分散するよりも，たった一つの pragma ``Assume`` を用いる方が，保守やレビューが容易になります．もし，複数の場所で情報が必要ならば，pragma ``Assume`` を幾つかの手続きに分割します．
+
+  .. code-block:: ada
+
+      function External_Find_Assumption (A : Array, E : Element, X : Index) return Boolean
+      is (X = 0 or (X in A'Range and A (X) = E))
+      with Ghost;
+
+      procedure Assume_External_Find_Assumption (A : Array, E : Element, X : Index) with
+       Ghost,
+       Post => External_Find_Assumption (A, E, X)
+      is
+         pragma Assume (External_Find_Assumption (A, E, X),
+                        "because of the documentation of External_Find");
+      end Assume_External_Find_Assumption;
+
+      External_Find (A, E, X);
+      Assume_External_Find_Assumption (A, E, X);
+
+一般的に，仮定は可能な限り小さくすべきです（コードを動作させるための必要なもののみとする）．pragma ``Assume`` を用いた間接的正当化は，注意深く調べるべきです．なぜならば，検証プロセス中に容易にエラーを持ち込む可能性があるからです．
 
 .. _ja Managing Assumptions:
 

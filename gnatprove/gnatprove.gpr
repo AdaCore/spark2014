@@ -13,6 +13,7 @@ project GNATprove is
 
    for Main use ("gnatprove.adb",
                  "spark_report.adb",
+                 "spark_memcached_wrapper.adb",
                  "spark_codepeer_wrapper.adb");
 
    Common_Switches := ("-gnat2012", "-gnatyg", "-g");
@@ -21,6 +22,8 @@ project GNATprove is
       for Executable ("gnatprove.adb") use "gnatprove";
       for Executable ("spark_report.adb") use "spark_report";
       for Executable ("spark_codepeer_wrapper.adb") use "spark_codepeer_wrapper";
+      for Executable ("spark_memcached_wrapper.adb") use
+         "spark_memcached_wrapper";
 
       case Build is
          when "Debug" =>
