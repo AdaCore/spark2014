@@ -1740,25 +1740,20 @@ package body Flow.Analysis is
                   N    := Error_Location (FA.PDG, FA.Atr, V);
 
                   if Atr.Is_Parameter or Atr.Is_Global_Parameter then
-                     if Atr.Is_Parameter
-                       and then Key.Variant = In_View
+                     --  Suppress error messages for:
+                     --  * IN parameters
+                     --  * IN views of globals
+                     --  * discriminants and bounds of parameters
+                     if (Atr.Is_Parameter
+                         and then Key.Variant = In_View)
+                       or else
+                        (Atr.Is_Global_Parameter
+                         and then Atr.Parameter_Formal.Variant = In_View)
+                       or else
+                         Atr.Is_Discr_Or_Bounds_Parameter
+                       or else
+                         Is_Bound (Key)
                      then
-                        --  For in parameters we do not emit the ineffective
-                        --  assignment error as it is a bit confusing.
-                        null;
-
-                     elsif Atr.Is_Global_Parameter
-                       and then Atr.Parameter_Formal.Variant = In_View
-                     then
-                        --  Ditto for globals in views
-                        null;
-
-                     elsif Atr.Is_Discr_Or_Bounds_Parameter
-                       or else Is_Bound (Key)
-                     then
-                        --  These are not there by choice, so the user can't
-                        --  do anything to fix those. If its really unused the
-                        --  non-discriminated part will be ineffective.
                         null;
 
                      else
