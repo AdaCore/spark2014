@@ -129,6 +129,21 @@ package body Flow_Utility is
    --  @return all component and discriminants of the type or the empty list
    --    if none exists
 
+   ------------------------
+   -- Classwide_Pre_Post --
+   ------------------------
+
+   function Classwide_Pre_Post (E : Entity_Id; Contract : Pragma_Id)
+                                return Node_Lists.List
+   is (Find_Contracts (E         => E,
+                       Name      => Contract,
+                       Classwide => not Present (Overridden_Operation (E)),
+                       Inherited => Present (Overridden_Operation (E))))
+   with Pre => Is_Dispatching_Operation (E)
+     and then Contract in Pragma_Precondition
+                        | Pragma_Postcondition;
+   --  Return the list of the classwide pre- or post-conditions for entity E
+
    --------------
    -- Add_Loop --
    --------------
@@ -1675,6 +1690,12 @@ package body Flow_Utility is
                P_Expr := Find_Contracts (E, Pragma_Postcondition);
                P_CC   := Find_Contracts (E, Pragma_Contract_Cases);
 
+               if Is_Dispatching_Operation (E) then
+                  for Post of Classwide_Pre_Post (E, Pragma_Postcondition) loop
+                     P_Expr.Append (Post);
+                  end loop;
+               end if;
+
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
                if not P_CC.Is_Empty then
@@ -1721,6 +1742,12 @@ package body Flow_Utility is
       Contract_Case            : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Contract_Cases);
    begin
+      if Is_Dispatching_Operation (E) then
+         for Pre of Classwide_Pre_Post (E, Pragma_Precondition) loop
+            Precondition_Expressions.Append (Pre);
+         end loop;
+      end if;
+
       --  If a Contract_Cases aspect was found then we pull out every
       --  condition apart from the others.
       if not Contract_Case.Is_Empty then

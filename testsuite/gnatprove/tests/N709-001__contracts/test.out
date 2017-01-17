@@ -17,6 +17,12 @@ main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:19:04: warning: no Global contract available for "Put_Line"
 unit1.adb:12:20: info: overflow check proved (CVC4: 1 VC)
 unit1.ads:9:22: info: initialization of "X.C1" proved
+unit1.ads:11:20: info: initialization of "X.C1" proved
+unit1.ads:11:20: info: initialization of "X.C1" proved, in inherited contract at unit2.ads:11
+unit1.ads:11:20: info: initialization of "X.C1" proved, in inherited contract at unit2.ads:11
+unit1.ads:11:20: info: initialization of "X.C2" proved, in inherited contract at unit2.ads:11
+unit1.ads:11:20: info: initialization of "X.C2" proved, in inherited contract at unit2.ads:11
+unit1.ads:11:20: info: initialization of "X.C3" proved, in inherited contract at unit2.ads:11
 unit1.ads:12:20: info: initialization of "X.C1" proved
 unit1.ads:12:20: info: postcondition is stronger than class-wide postcondition (CVC4: 1 VC)
 unit1.ads:12:20: info: postcondition proved (CVC4: 1 VC)
