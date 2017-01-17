@@ -1681,7 +1681,6 @@ package body Flow.Analysis is
             Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
-            Tmp       : Flow_Id;
             Tracefile : constant String := Fresh_Trace_File;
          begin
             if Atr.Is_Program_Node or
@@ -1741,54 +1740,56 @@ package body Flow.Analysis is
                   N    := Error_Location (FA.PDG, FA.Atr, V);
 
                   if Atr.Is_Parameter or Atr.Is_Global_Parameter then
-                     if Atr.Is_Parameter then
-                        Tmp := Direct_Mapping_Id
-                          (Skip_Any_Conversions
-                             (Get_Direct_Mapping_Id (Atr.Parameter_Actual)));
-                     else
-                        Tmp := Atr.Parameter_Formal;
-                     end if;
-
-                     if Atr.Is_Parameter and then Key.Variant = In_View then
+                     if Atr.Is_Parameter
+                       and then Key.Variant = In_View
+                     then
                         --  For in parameters we do not emit the ineffective
                         --  assignment error as it is a bit confusing.
                         null;
 
-                     elsif Atr.Is_Global_Parameter and then
-                       Atr.Parameter_Formal.Variant = In_View
+                     elsif Atr.Is_Global_Parameter
+                       and then Atr.Parameter_Formal.Variant = In_View
                      then
-                        --  Ditto for globals in views.
+                        --  Ditto for globals in views
                         null;
 
-                     elsif Atr.Is_Discr_Or_Bounds_Parameter or else
-                       Is_Bound (Key)
+                     elsif Atr.Is_Discr_Or_Bounds_Parameter
+                       or else Is_Bound (Key)
                      then
-                        --  These are not there by choice, so the user
-                        --  can't do anything to fix those. If its really
-                        --  unused the non-discriminated part will be
-                        --  ineffective.
+                        --  These are not there by choice, so the user can't
+                        --  do anything to fix those. If its really unused the
+                        --  non-discriminated part will be ineffective.
                         null;
-
-                     elsif Is_Easily_Printable (Tmp) then
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Tracefile,
-                           Msg       => "unused assignment to &",
-                           N         => Error_Location (FA.PDG, FA.Atr, V),
-                           F1        => Tmp,
-                           Tag       => Tag,
-                           Severity  => Warning_Kind,
-                           Vertex    => V);
 
                      else
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Tracefile,
-                           Msg       => "unused assignment",
-                           N         => Error_Location (FA.PDG, FA.Atr, V),
-                           Tag       => Tag,
-                           Severity  => Warning_Kind,
-                           Vertex    => V);
+                        declare
+                           Target : constant Flow_Id :=
+                             (if Atr.Is_Parameter
+                              then Direct_Mapping_Id
+                                     (Skip_Any_Conversions
+                                        (Get_Direct_Mapping_Id
+                                           (Atr.Parameter_Actual)))
+                              else
+                                Atr.Parameter_Formal);
+
+                           Printable_Target : constant Boolean :=
+                             Is_Easily_Printable (Target);
+
+                        begin
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => (if Printable_Target
+                                            then "unused assignment to &"
+                                            else "unused assignment"),
+                              N         => Error_Location (FA.PDG, FA.Atr, V),
+                              F1        => (if Printable_Target
+                                            then Target
+                                            else Null_Flow_Id),
+                              Tag       => Tag,
+                              Severity  => Warning_Kind,
+                              Vertex    => V);
+                        end;
                      end if;
 
                   elsif Nkind (N) = N_Assignment_Statement then
