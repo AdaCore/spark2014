@@ -598,16 +598,20 @@ package body Flow.Analysis.Sanity is
             Variables_Referenced : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
 
-            F : Flow_Id;
          begin
             for Var of Variables_Referenced loop
-               F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or else Synthetic (F)) then
+               --  Ignore know variables and synthetic null export
+               if FA.All_Vars.Contains (Change_Variant (Var, Normal_Use))
+                    or else
+                  Synthetic (Var)
+               then
+                  null;
 
-                  --  Here we are dealing with a missing global
+               --  Here we are dealing with a missing global
 
-                  case F.Kind is
+               else
+                  case Var.Kind is
                      when Direct_Mapping
                         | Record_Field
                      =>
