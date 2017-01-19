@@ -764,7 +764,7 @@ package body Flow.Analysis is
                                                         Scope   => FA.B_Scope,
                                                         Var     => Var,
                                                         Precise => False),
-                        F1       => Entire_Variable (Var),
+                        F1       => Var,
                         F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                         Severity => Error_Kind);
                      Sane := False;
