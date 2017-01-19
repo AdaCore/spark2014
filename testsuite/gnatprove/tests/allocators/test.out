@@ -1,15 +1,11 @@
-conts-functional-sequences.ads:65:55: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:41
-conts-functional-sequences.ads:65:55: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:30
-conts-functional-sequences.ads:108:55: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:41
-conts-functional-sequences.ads:108:55: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:30
-conts-functional-sequences.ads:133:56: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:41
-conts-functional-sequences.ads:133:56: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:30
-conts-functional-sets.ads:147:28: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:45
-conts-functional-sets.ads:147:28: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:34
-conts-functional-sets.ads:147:28: info: overflow check proved (Z3: 1 VC), in instantiation at simple_allocator.ads:25
-conts-functional-sets.ads:148:22: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:45
-conts-functional-sets.ads:148:22: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:34
-conts-functional-sets.ads:148:22: info: overflow check proved (Z3: 1 VC), in instantiation at simple_allocator.ads:25
+a-cofuse.ads:159:28: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:43
+a-cofuse.ads:159:28: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:32
+a-cofuse.ads:159:28: info: overflow check proved (Z3: 1 VC), in instantiation at simple_allocator.ads:24
+a-cofuse.ads:160:22: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:43
+a-cofuse.ads:160:22: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:32
+a-cofuse.ads:160:22: info: overflow check proved (Z3: 1 VC), in instantiation at simple_allocator.ads:24
+a-cofuve.ads:168:41: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:168:41: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:14:04: info: initialization of "Data" constituent of "State" proved
 list_allocator.adb:14:16: info: length check proved (Z3: 1 VC)
 list_allocator.adb:15:04: info: initialization of "First_Available" constituent of "State" proved
@@ -57,12 +53,13 @@ list_allocator.adb:73:30: info: index check proved (Z3: 2 VC)
 list_allocator.adb:74:16: info: index check proved (Z3: 2 VC)
 list_allocator.adb:74:21: info: initialization of "Res" proved
 list_allocator.adb:75:29: info: initialization of "Next_Avail" proved
-list_allocator.adb:77:29: info: precondition proved (Z3: 2 VC)
+list_allocator.adb:77:29: info: precondition proved (CVC4: 3 VC; Z3: 1 VC)
 list_allocator.adb:78:29: info: precondition proved (CVC4: 2 VC)
 list_allocator.adb:78:51: info: initialization of "Res" proved
 list_allocator.adb:86:44: info: index check proved (Z3: 2 VC)
 list_allocator.adb:87:16: info: index check proved (Z3: 2 VC)
 list_allocator.adb:90:29: info: precondition proved (CVC4: 1 VC)
+list_allocator.adb:91:29: info: precondition proved (CVC4: 2 VC; Z3: 1 VC)
 list_allocator.adb:97:42: info: initialization of "Data" constituent of "State" proved
 list_allocator.adb:97:47: info: range check proved (Z3: 2 VC)
 list_allocator.adb:99:10: info: loop invariant initialization proved (Z3: 1 VC)
@@ -76,28 +73,33 @@ list_allocator.adb:101:30: info: loop invariant preservation proved (Z3: 1 VC)
 list_allocator.adb:102:30: info: loop invariant initialization proved (Z3: 1 VC)
 list_allocator.adb:102:30: info: loop invariant preservation proved (Z3: 1 VC)
 list_allocator.adb:102:62: info: initialization of "Data" constituent of "State" proved
-list_allocator.ads:13:03: info: initial condition proved (Z3: 2 VC)
-list_allocator.ads:13:24: info: initialization of "Data" constituent of "State" proved
-list_allocator.ads:13:42: info: initialization of "First_Available" constituent of "State" proved
-list_allocator.ads:13:42: info: initialization of "Model.Allocated" proved
-list_allocator.ads:13:42: info: initialization of "Model.Available" proved
-list_allocator.ads:30:06: info: initial condition proved (Z3: 6 VC)
-list_allocator.ads:31:19: info: initialization of "Model.Allocated" proved
-list_allocator.ads:33:17: info: initialization of "Model.Available" proved
-list_allocator.ads:35:09: info: precondition proved (Z3: 2 VC)
-list_allocator.ads:37:41: info: precondition proved (Z3: 2 VC)
-list_allocator.ads:54:53: info: precondition proved (Z3: 2 VC)
-list_allocator.ads:61:07: info: initialization of "Model.Allocated" proved
-list_allocator.ads:61:07: info: initialization of "Model.Available" proved
-list_allocator.ads:69:21: info: initialization of "Res" proved
-list_allocator.ads:71:14: info: postcondition proved (CVC4: 1 VC)
-list_allocator.ads:77:38: info: contract case proved (Z3: 3 VC)
-list_allocator.ads:78:11: info: initialization of "Res" proved
-list_allocator.ads:84:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-list_allocator.ads:85:40: info: initialization of "Res" proved
-list_allocator.ads:91:14: info: postcondition proved (CVC4: 1 VC)
-list_allocator.ads:96:36: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-list_allocator.ads:103:16: info: contract case proved (Z3: 2 VC)
+list_allocator.ads:11:03: info: initial condition proved (Z3: 2 VC)
+list_allocator.ads:11:24: info: initialization of "Data" constituent of "State" proved
+list_allocator.ads:11:42: info: initialization of "First_Available" constituent of "State" proved
+list_allocator.ads:11:42: info: initialization of "Model.Allocated" proved
+list_allocator.ads:11:42: info: initialization of "Model.Available" proved
+list_allocator.ads:28:06: info: initial condition proved (Z3: 6 VC)
+list_allocator.ads:29:19: info: initialization of "Model.Allocated" proved
+list_allocator.ads:31:17: info: initialization of "Model.Available" proved
+list_allocator.ads:33:09: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:35:41: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:52:53: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:60:48: info: overflow check proved (Z3: 1 VC)
+list_allocator.ads:61:19: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:63:25: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:63:40: info: overflow check proved (Z3: 1 VC)
+list_allocator.ads:63:47: info: precondition proved (Z3: 2 VC)
+list_allocator.ads:70:07: info: initialization of "Model.Allocated" proved
+list_allocator.ads:70:07: info: initialization of "Model.Available" proved
+list_allocator.ads:76:21: info: initialization of "Res" proved
+list_allocator.ads:78:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:84:38: info: contract case proved (Z3: 3 VC)
+list_allocator.ads:85:11: info: initialization of "Res" proved
+list_allocator.ads:91:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+list_allocator.ads:92:40: info: initialization of "Res" proved
+list_allocator.ads:98:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:103:36: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+list_allocator.ads:110:16: info: contract case proved (Z3: 2 VC)
 list_mod_allocator.adb:14:04: info: initialization of "Data" constituent of "State" proved
 list_mod_allocator.adb:14:16: info: length check proved (Z3: 1 VC)
 list_mod_allocator.adb:15:04: info: initialization of "First_Available" constituent of "State" proved
@@ -137,7 +139,7 @@ list_mod_allocator.adb:87:16: info: loop invariant initialization proved (Z3: 1 
 list_mod_allocator.adb:87:16: info: loop invariant preservation proved (Z3: 1 VC)
 list_mod_allocator.adb:88:62: info: initialization of "Alloc" proved
 list_mod_allocator.adb:90:16: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:90:16: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
+list_mod_allocator.adb:90:16: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 2 VC)
 list_mod_allocator.adb:91:28: info: index check proved (Z3: 2 VC)
 list_mod_allocator.adb:91:58: info: initialization of "Alloc" proved
 list_mod_allocator.adb:91:65: info: range check proved (Z3: 1 VC)
@@ -177,7 +179,7 @@ list_mod_allocator.adb:114:19: info: loop invariant preservation proved (CVC4: 1
 list_mod_allocator.adb:115:69: info: initialization of "Avail" proved
 list_mod_allocator.adb:116:31: info: initialization of "Unseen" proved
 list_mod_allocator.adb:118:19: info: loop invariant initialization proved (Z3: 2 VC)
-list_mod_allocator.adb:118:19: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
+list_mod_allocator.adb:118:19: info: loop invariant preservation proved (Z3: 2 VC)
 list_mod_allocator.adb:118:27: info: initialization of "Avail" proved
 list_mod_allocator.adb:118:47: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:120:19: info: loop invariant initialization proved (Z3: 1 VC)
@@ -209,7 +211,7 @@ list_mod_allocator.adb:131:54: info: initialization of "Avail" proved
 list_mod_allocator.adb:133:30: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:133:47: info: precondition proved (Z3: 2 VC)
 list_mod_allocator.adb:135:19: info: loop invariant initialization proved (Z3: 1 VC)
-list_mod_allocator.adb:135:19: info: loop invariant preservation proved (Z3: 1 VC)
+list_mod_allocator.adb:135:19: info: loop invariant preservation proved (CVC4: 1 VC)
 list_mod_allocator.adb:136:65: info: initialization of "Avail" proved
 list_mod_allocator.adb:140:33: info: initialization of "Avail" proved
 list_mod_allocator.adb:140:53: info: initialization of "Alloc" proved
@@ -257,7 +259,7 @@ list_mod_allocator.adb:195:16: info: index check proved (Z3: 2 VC)
 list_mod_allocator.adb:198:33: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:202:14: warning: subprogram "Prove_Init" has no effect
 list_mod_allocator.adb:210:13: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
-list_mod_allocator.adb:210:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:224
+list_mod_allocator.adb:210:13: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:210:36: info: precondition proved (Z3: 2 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:210:65: info: range check proved (Z3: 1 VC), in call inlined at list_mod_allocator.adb:224
 list_mod_allocator.adb:216:42: info: initialization of "Data" constituent of "State" proved
@@ -283,39 +285,39 @@ list_mod_allocator.adb:226:13: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 list_mod_allocator.adb:226:18: info: precondition proved (Z3: 1 VC)
 list_mod_allocator.adb:226:52: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.adb:226:52: info: precondition proved (Z3: 1 VC)
-list_mod_allocator.ads:13:03: info: initial condition proved (Z3: 2 VC)
-list_mod_allocator.ads:13:24: info: initialization of "Data" constituent of "State" proved
-list_mod_allocator.ads:13:42: info: initialization of "First_Available" constituent of "State" proved
-list_mod_allocator.ads:43:53: info: precondition proved (Z3: 2 VC)
-list_mod_allocator.ads:51:48: info: overflow check proved (Z3: 1 VC)
-list_mod_allocator.ads:52:19: info: precondition proved (Z3: 2 VC)
-list_mod_allocator.ads:54:25: info: precondition proved (Z3: 2 VC)
-list_mod_allocator.ads:54:40: info: overflow check proved (Z3: 1 VC)
-list_mod_allocator.ads:54:47: info: precondition proved (Z3: 2 VC)
-list_mod_allocator.ads:67:17: info: postcondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:75:21: info: initialization of "Res" proved
-list_mod_allocator.ads:77:14: info: postcondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:83:17: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:83:38: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-list_mod_allocator.ads:84:11: info: initialization of "Res" proved
-list_mod_allocator.ads:86:11: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:86:19: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:90:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-list_mod_allocator.ads:91:25: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:91:42: info: initialization of "Res" proved
-list_mod_allocator.ads:91:57: info: precondition proved (Z3: 1 VC)
-list_mod_allocator.ads:93:19: info: precondition proved (Z3: 1 VC)
-list_mod_allocator.ads:93:55: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:97:14: info: postcondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:102:14: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:102:36: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-list_mod_allocator.ads:103:25: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:103:61: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:105:19: info: precondition proved (Z3: 1 VC)
-list_mod_allocator.ads:105:51: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:109:16: info: contract case proved (CVC4: 1 VC; Z3: 1 VC)
-list_mod_allocator.ads:110:11: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:110:19: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:11:03: info: initial condition proved (Z3: 2 VC)
+list_mod_allocator.ads:11:24: info: initialization of "Data" constituent of "State" proved
+list_mod_allocator.ads:11:42: info: initialization of "First_Available" constituent of "State" proved
+list_mod_allocator.ads:41:53: info: precondition proved (Z3: 2 VC)
+list_mod_allocator.ads:49:48: info: overflow check proved (Z3: 1 VC)
+list_mod_allocator.ads:50:19: info: precondition proved (Z3: 2 VC)
+list_mod_allocator.ads:52:25: info: precondition proved (Z3: 2 VC)
+list_mod_allocator.ads:52:40: info: overflow check proved (Z3: 1 VC)
+list_mod_allocator.ads:52:47: info: precondition proved (Z3: 2 VC)
+list_mod_allocator.ads:65:17: info: postcondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:73:21: info: initialization of "Res" proved
+list_mod_allocator.ads:75:14: info: postcondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:81:17: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:81:38: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+list_mod_allocator.ads:82:11: info: initialization of "Res" proved
+list_mod_allocator.ads:84:11: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:84:19: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:88:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+list_mod_allocator.ads:89:25: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:89:42: info: initialization of "Res" proved
+list_mod_allocator.ads:89:57: info: precondition proved (Z3: 1 VC)
+list_mod_allocator.ads:91:19: info: precondition proved (Z3: 1 VC)
+list_mod_allocator.ads:91:55: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:95:14: info: postcondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:100:14: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:100:36: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+list_mod_allocator.ads:101:25: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:101:61: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:103:19: info: precondition proved (Z3: 1 VC)
+list_mod_allocator.ads:103:51: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:107:16: info: contract case proved (Z3: 2 VC)
+list_mod_allocator.ads:108:11: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:108:19: info: precondition proved (CVC4: 1 VC)
 simple_allocator.adb:11:04: info: initialization of "Data" constituent of "State" proved
 simple_allocator.adb:11:16: info: length check proved (Z3: 1 VC)
 simple_allocator.adb:14:39: info: index check proved (Z3: 2 VC)
@@ -347,13 +349,13 @@ simple_allocator.adb:67:13: info: loop invariant preservation proved (Z3: 2 VC)
 simple_allocator.adb:68:53: info: index check proved (Z3: 2 VC)
 simple_allocator.adb:75:44: info: index check proved (Z3: 2 VC)
 simple_allocator.adb:76:16: info: index check proved (Z3: 2 VC)
-simple_allocator.ads:9:03: info: initial condition proved (Z3: 1 VC)
-simple_allocator.ads:9:24: info: initialization of "Data" constituent of "State" proved
-simple_allocator.ads:40:44: info: postcondition proved (Z3: 1 VC)
-simple_allocator.ads:46:21: info: initialization of "Res" proved
-simple_allocator.ads:52:36: info: contract case proved (CVC4: 1 VC; Z3: 2 VC)
-simple_allocator.ads:53:11: info: initialization of "Res" proved
-simple_allocator.ads:59:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
-simple_allocator.ads:60:36: info: initialization of "Res" proved
-simple_allocator.ads:69:36: info: contract case proved (Z3: 3 VC)
-simple_allocator.ads:76:16: info: contract case proved (Z3: 2 VC)
+simple_allocator.ads:8:03: info: initial condition proved (Z3: 1 VC)
+simple_allocator.ads:8:24: info: initialization of "Data" constituent of "State" proved
+simple_allocator.ads:39:44: info: postcondition proved (Z3: 1 VC)
+simple_allocator.ads:45:21: info: initialization of "Res" proved
+simple_allocator.ads:51:36: info: contract case proved (CVC4: 1 VC; Z3: 2 VC)
+simple_allocator.ads:52:11: info: initialization of "Res" proved
+simple_allocator.ads:58:16: info: contract case proved (CVC4: 2 VC; Z3: 1 VC)
+simple_allocator.ads:59:36: info: initialization of "Res" proved
+simple_allocator.ads:68:36: info: contract case proved (Z3: 3 VC)
+simple_allocator.ads:75:16: info: contract case proved (Z3: 2 VC)

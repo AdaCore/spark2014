@@ -90,8 +90,8 @@ is
               (for all E in 1 .. R - 1 =>
                  (if Data (E).Stat = Allocated then Mem (Alloc, E)
                   else Mem (Unseen, E)));
-            pragma Loop_Invariant (Length (Alloc) <= Conts.Count_Type (R - 1));
-            pragma Loop_Invariant (Length (Unseen) <= Conts.Count_Type (R - 1));
+            pragma Loop_Invariant (Length (Alloc) <= Ada.Containers.Count_Type (R - 1));
+            pragma Loop_Invariant (Length (Unseen) <= Ada.Containers.Count_Type (R - 1));
             if Data (R).Stat = Allocated then
                Alloc := Add (Alloc, R);
             else

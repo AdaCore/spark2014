@@ -1,7 +1,7 @@
 with Tree_Model; use Tree_Model;
 use Tree_Model.D_Seq;
 use Tree_Model.V_Set;
-with Conts; use Conts;
+with Ada.Containers; use Ada.Containers;
 with Binary_Trees; use Binary_Trees;
 
 --  This package provides an implementation of binary search trees on top of the

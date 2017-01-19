@@ -1,10 +1,8 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Conts.Functional.Sequences;
-pragma Elaborate_All (Conts.Functional.Sequences);
-with Conts.Functional.Sets;
-pragma Elaborate_All (Conts.Functional.Sets);
-with Conts;
-use type Conts.Count_Type;
+with Ada.Containers.Functional_Vectors;
+with Ada.Containers.Functional_Sets;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 
 package List_Allocator with
   SPARK_Mode,
@@ -38,11 +36,11 @@ is
           and then
         (for all RR in 1 .. Capacity => Mem (Model.Available, Resource (RR))))
    is
-      package S1 is new Conts.Functional.Sequences (Index_Type => Positive,
-                                                    Element_Type => Resource);
+      package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
+                                                           Element_Type => Resource);
       use S1;
 
-      package S2 is new Conts.Functional.Sets (Element_Type => Resource);
+      package S2 is new Ada.Containers.Functional_Sets (Element_Type => Resource);
       use S2;
 
       type T is record
@@ -53,6 +51,17 @@ is
       function Mem (S : Sequence; E : Resource) return Boolean is
         (for some I in 1 .. Integer (Length (S)) => Get (S, I) = E);
 
+      function Is_Prepend
+        (S : Sequence; E : Resource; Result : Sequence) return Boolean
+      --  Returns True if Result is S prepended with E.
+
+      is
+        (Length (S) < Ada.Containers.Count_Type'Last
+         and then Length (Result) = Length (S) + 1
+         and then Get (Result, 1) = E
+         and then (for all M in 1 .. Integer (Length (S)) =>
+                        Get (Result, M + 1) = Get (S, M)));
+
       function "=" (X, Y : T) return Boolean is
         (X.Available = Y.Available
            and then
@@ -61,9 +70,7 @@ is
       Model : T;
 
       function Is_Valid return Boolean;
-
    end M;
-
    use M; use M.S1; use M.S2;
 
    procedure Alloc (Res : out Resource) with

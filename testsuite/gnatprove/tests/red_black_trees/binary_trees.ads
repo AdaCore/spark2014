@@ -1,6 +1,6 @@
 with Tree_Model; use Tree_Model;
 use Tree_Model.D_Seq;
-with Conts; use Conts;
+with Ada.Containers; use Ada.Containers;
 
 --  This packages provides a SPARK implementation of binary trees. Since SPARK
 --  forbids the use of pointers, trees are modeled using indexes inside an

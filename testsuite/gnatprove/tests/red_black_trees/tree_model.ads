@@ -1,6 +1,6 @@
-with Conts.Functional.Sequences;
-with Conts.Functional.Sets;
-use Conts;
+with Ada.Containers.Functional_Vectors;
+with Ada.Containers.Functional_Sets;
+use Ada.Containers;
 
 package Tree_Model with SPARK_Mode is
 
@@ -18,7 +18,8 @@ package Tree_Model with SPARK_Mode is
    type Position_Type is (Left, Right, Top);
    subtype Direction is Position_Type range Left .. Right;
 
-   package D_Seq is new Conts.Functional.Sequences
+   subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
+   package D_Seq is new Ada.Containers.Functional_Vectors
      (Positive_Count_Type, Direction);
    use D_Seq;
    --  Sequence of directions modelling a path from the root of the tree to a
@@ -45,14 +46,6 @@ package Tree_Model with SPARK_Mode is
                  Get (V, I - Length (Q)) = Get (P, I)))
    with Pre => Length (Q) <= Max;
 
-   function "<" (S1, S2 : Sequence) return Boolean is
-     (Length (S1) < Length (S2)
-      and then (for all I in 1 .. Length (S1) => Get (S1, I) = Get (S2, I)));
-
-   function "<=" (S1, S2 : Sequence) return Boolean is
-     (Length (S1) <= Length (S2)
-      and then (for all I in 1 .. Length (S1) => Get (S1, I) = Get (S2, I)));
-
    type Model_Type is array (Index_Type) of Path_Type;
    --  Type used to model the set of paths from the root of a tree to all nodes.
    --  This is useful to reason about reachability properties over a tree.
@@ -77,7 +70,7 @@ package Tree_Model with SPARK_Mode is
        and then Is_Add (S2, D, S4),
      Post => Is_Concat (T, S3, S4);
 
-   package V_Set is new Conts.Functional.Sets (Natural);
+   package V_Set is new Ada.Containers.Functional_Sets (Natural);
    subtype Value_Set is V_Set.Set;
 
 end Tree_Model;

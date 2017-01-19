@@ -74,7 +74,7 @@ is
          Data (Res) := Cell'(Stat => Allocated, Next => No_Resource);
          First_Available := Next_Avail;
 
-         Model.Available := Delete (Model.Available, 1);
+         Model.Available := Remove (Model.Available, 1);
          Model.Allocated := Add (Model.Allocated, Res);
       else
          Res := No_Resource;
@@ -88,7 +88,7 @@ is
          First_Available := Res;
 
          Model.Allocated := Remove (Model.Allocated, Res);
-         Model.Available := Prepend (Model.Available, Res);
+         Model.Available := Insert (Model.Available, 1, Res);
       end if;
    end Free;
 

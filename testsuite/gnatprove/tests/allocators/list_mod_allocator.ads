@@ -1,10 +1,8 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Conts.Functional.Sequences;
-pragma Elaborate_All (Conts.Functional.Sequences);
-with Conts.Functional.Sets;
-pragma Elaborate_All (Conts.Functional.Sets);
-with Conts;
-use type Conts.Count_Type;
+with Ada.Containers.Functional_Vectors;
+with Ada.Containers.Functional_Sets;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 
 package List_Mod_Allocator with
   SPARK_Mode,
@@ -27,11 +25,11 @@ is
    function All_Available return Boolean with Ghost;
 
    package M with Ghost is
-      package S1 is new Conts.Functional.Sequences (Index_Type => Positive,
-                                                    Element_Type => Resource);
+      package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
+                                                           Element_Type => Resource);
       use S1;
 
-      package S2 is new Conts.Functional.Sets (Element_Type => Resource);
+      package S2 is new Ada.Containers.Functional_Sets (Element_Type => Resource);
       use S2;
 
       type T is record
@@ -47,7 +45,7 @@ is
       --  Returns True if Result is S prepended with E.
 
       is
-        (Length (S) < Conts.Count_Type'Last
+        (Length (S) < Ada.Containers.Count_Type'Last
          and then Length (Result) = Length (S) + 1
          and then Get (Result, 1) = E
          and then (for all M in 1 .. Integer (Length (S)) =>
