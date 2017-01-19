@@ -711,15 +711,15 @@ package body Flow.Analysis is
                               Vars_Known.Union
                                 (To_Flow_Id_Set
                                    (Down_Project
-                                        (Node_Sets.To_Set
-                                             (Get_Direct_Mapping_Id (F)),
-                                         FA.S_Scope)));
+                                      (Node_Sets.To_Set
+                                         (Get_Direct_Mapping_Id (F)),
+                                       FA.S_Scope)));
 
-                           when Record_Field =>
-                              raise Program_Error;
+                           when Magic_String =>
+                              Vars_Known.Insert (F);
 
                            when others =>
-                              Vars_Known.Include (F);
+                              raise Program_Error;
                         end case;
                      end loop;
 
