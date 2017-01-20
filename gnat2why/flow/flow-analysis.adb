@@ -670,7 +670,7 @@ package body Flow.Analysis is
               (case FA.Kind is
                when Kind_Subprogram   => "6.1.4(13)",
                when Kind_Package
-                  | Kind_Package_Body => "7.1.5(12)",
+                  | Kind_Package_Body => "7.1.5(11)",
                when Kind_Task         => raise Program_Error);
 
          begin
