@@ -290,6 +290,7 @@ package body Gnat2Why.Error_Messages is
       Extra_Msg  : String := "";
       Tracefile  : String := "";
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd : String := "") is
@@ -395,6 +396,7 @@ package body Gnat2Why.Error_Messages is
          Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
          Cntexmp     => Cntexmp,
+         Check_Tree  => Check_Tree,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
          Stats       => Stats,
@@ -637,6 +639,7 @@ package body Gnat2Why.Error_Messages is
          Editor_Cmd : Unbounded_String;
          Stats      : Prover_Stat_Maps.Map;
          Cntexmp    : JSON_Value;
+         Check_Tree : JSON_Value;
       end record;
 
       function Parse_Why3_Prove_Result (V : JSON_Value)
@@ -689,6 +692,7 @@ package body Gnat2Why.Error_Messages is
             How_Proved  => PC_Prover,
             Tracefile   => To_String (Rec.Tracefile),
             Cntexmp     => Rec.Cntexmp,
+            Check_Tree  => Rec.Check_Tree,
             VC_File     => To_String (Rec.VC_File),
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
@@ -737,6 +741,9 @@ package body Gnat2Why.Error_Messages is
                else Prover_Stat_Maps.Empty_Map),
             Cntexmp    =>
               (if Has_Field (V, "cntexmp") then Get (V, "cntexmp")
+               else Create_Object),
+            Check_Tree =>
+              (if Has_Field (V, "check_tree") then Get (V, "check_tree")
                else Create_Object));
       end Parse_Why3_Prove_Result;
 

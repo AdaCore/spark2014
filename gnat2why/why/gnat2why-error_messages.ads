@@ -77,6 +77,7 @@ package Gnat2Why.Error_Messages is
       Extra_Msg  : String := "";
       Tracefile  : String := "";
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd : String := "");

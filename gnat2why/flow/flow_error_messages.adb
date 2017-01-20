@@ -94,6 +94,7 @@ package body Flow_Error_Messages is
       How_Proved  : Prover_Category;
       Tracefile   : String := "";
       Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree  : JSON_Value;
       VC_File     : String := "";
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "");
@@ -375,6 +376,7 @@ package body Flow_Error_Messages is
             Msg_List   => Flow_Msgs,
             E          => E,
             Tracefile  => Tracefile,
+            Check_Tree => Create_Object,
             Msg_Id     => Msg_Id);
       else
          Suppressed := True;
@@ -446,12 +448,13 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp     : JSON_Value := Create_Object;
+      Cntexmp     : JSON_Value;
+      Check_Tree  : JSON_Value;
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean)
    is
 
@@ -560,6 +563,7 @@ package body Flow_Error_Messages is
          E           => E,
          Tracefile   => Tracefile,
          Cntexmp     => Pretty_Cntexmp,
+         Check_Tree  => Check_Tree,
          VC_File     => VC_File,
          How_Proved  => How_Proved,
          Stats       => Stats,
@@ -661,6 +665,7 @@ package body Flow_Error_Messages is
       How_Proved  : Prover_Category;
       Tracefile   : String := "";
       Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree  : JSON_Value;
       VC_File     : String := "";
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "")
@@ -690,6 +695,7 @@ package body Flow_Error_Messages is
       Set_Field (Value, "rule", Tag);
       Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
       Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
+      Set_Field (Value, "check_tree", Check_Tree);
 
       if Tracefile /= "" then
          Set_Field (Value, "tracefile", Tracefile);

@@ -123,12 +123,13 @@ package Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp     : JSON_Value := Create_Object;
+      Cntexmp     : JSON_Value;
+      Check_Tree  : JSON_Value;
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
