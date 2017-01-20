@@ -75,14 +75,14 @@ Fixpoint array_eq (a : map.Map.map t component_type)
   | S (n) => andb (Z.eqb (map.Map.get a af) (map.Map.get b bf)) (array_eq a (af + 1)%Z b (bf + 1)%Z n)
   end.
 
-Lemma array_eq_def: 
+Lemma array_eq_def:
 forall (a:(map.Map.map t component_type)),
  forall (af:t),
   forall (b:(map.Map.map t component_type)),
    forall (bf:t),
     forall (h:nat),
       array_eq a af b bf h = true <->
-      (forall (i:t), 
+      (forall (i:t),
         (af <= i <= af + Z.of_nat h)%Z ->
             map.Map.get a i = map.Map.get b ((bf - af) + i))%Z.
 intros a af b bf h.
@@ -104,7 +104,7 @@ induction h; intros af bf; split.
    destruct (Z.eqb (Map.get a af) (Map.get b bf)) eqn:Heq;
    [apply Z.eqb_eq in Heq|intro Hwrong; contradict Hwrong; auto].
    intros Helmt i [Hil Hir].
-   rewrite <- NPeano.Nat.add_1_r in Hir.
+   rewrite <- Nat.add_1_r in Hir.
    rewrite Nat2Z.inj_add in Hir; simpl in Hir.
    rewrite <- (Zminus_plus_simpl_r bf af 1%Z).
    destruct (Z_le_lt_eq_dec _ _ Hil) as [Haf | Haf].
@@ -121,7 +121,7 @@ induction h; intros af bf; split.
    intros i [Hil Hir].
    rewrite Zminus_plus_simpl_r.
    apply Helmt.
-   rewrite <- NPeano.Nat.add_1_r.
+   rewrite <- Nat.add_1_r.
    rewrite Nat2Z.inj_add; simpl.
    split; omega.
 Qed.
@@ -248,7 +248,7 @@ forall (a:(map.Map.map t component_type)) (b:(map.Map.map t component_type)),
     ((map.Map.get (concat a a_first a_last b b_first b_last) i) = (map.Map.get a
                                                                     i)))
    /\ ((gt i a_last) ->
-       ((map.Map.get (concat a a_first a_last b b_first b_last) i) = 
+       ((map.Map.get (concat a a_first a_last b b_first b_last) i) =
        (map.Map.get b (add (sub i a_last) (sub b_first one))))).
 intros (a) (b) a_first a_last b_first b_last i.
 unfold Map.get; unfold concat; unfold sub; unfold add; unfold one;
@@ -277,4 +277,3 @@ forall (v:component_type),
 intros v i.
 apply map.Const.Const.
 Qed.
-
