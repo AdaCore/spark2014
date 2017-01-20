@@ -33,6 +33,8 @@ Tool Limitations
    These restrictions ensure that the result of fixed-point operations always
    belongs to the *perfect result set* as defined in Ada RM G.2.3.
 
+#. Multidimensional array types are supported up to 4 dimensions.
+
 #. Loop_Invariant and Loop_Variant pragmas must appear before any non-scalar
    object declaration.
 
