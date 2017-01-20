@@ -978,36 +978,43 @@ A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
 above should not be enabled during compilation, otherwise a compilation error
 is issued.
 
-..
-   .. _Removal of Ghost Code:
+.. _Removal of Ghost Code:
 
-   Removal of Ghost Code
-   ^^^^^^^^^^^^^^^^^^^^^
+Removal of Ghost Code
+^^^^^^^^^^^^^^^^^^^^^
 
-   By default, |GNAT Pro| completely discards ghost code during compilation, so
-   that no ghost code is present in the object code or the executable. This
-   ensures that, even if parts of the ghost could have side-effects when executed
-   (writing to variables, performing system calls, raising exceptions, etc.), by
-   default the compiler ensures that it cannot have any effect on the behavior of
-   the program.
+By default, |GNAT Pro| completely discards ghost code during compilation, so
+that no ghost code is present in the object code or the executable. This
+ensures that, even if parts of the ghost could have side-effects when executed
+(writing to variables, performing system calls, raising exceptions, etc.), by
+default the compiler ensures that it cannot have any effect on the behavior of
+the program.
 
-   This is also essential in domains submitted to certification where all
-   instructions in the object code should be traceable to source code and
-   requirements, and where testing should ensure coverage of the object code. As
-   ghost code is not present in the object code, there is no additional cost for
-   maintaining its traceability and ensuring its coverage by tests.
+This is also essential in domains submitted to certification where all
+instructions in the object code should be traceable to source code and
+requirements, and where testing should ensure coverage of the object code. As
+ghost code is not present in the object code, there is no additional cost for
+maintaining its traceability and ensuring its coverage by tests.
 
-   |GNAT Pro| provides an easy means to check that no ignored ghost code is
-   present in a given object code or executable, which relies on the property
-   that, by definition, each ghost declaration or ghost statement mentions at
-   least one ghost entity. |GNAT Pro| prefixes all names of such ignored ghost
-   entities in the object code with the string ``___ghost``. The initial triple
-   underscore ensures that this substring cannot appear anywhere in the name of
-   non-ghost entities or ghost entities that are not ignored. Thus, one only
-   needs to check that the substring ``___ghost`` does not appear in the list of
-   names from the object code or executable.
+|GNAT Pro| provides an easy means to check that no ignored ghost code is
+present in a given object code or executable, which relies on the property
+that, by definition, each ghost declaration or ghost statement mentions at
+least one ghost entity. |GNAT Pro| prefixes all names of such ignored ghost
+entities in the object code with the string ``___ghost_`` (except for names of
+ghost compilation units). The initial triple underscore ensures that this
+substring cannot appear anywhere in the name of non-ghost entities or ghost
+entities that are not ignored. Thus, one only needs to check that the substring
+``___ghost_`` does not appear in the list of names from the object code or
+executable.
 
-   On Unix-like platforms, this can done by checking that the following command
-   does not output anything::
+On Unix-like platforms, this can done by checking that the following command
+does not output anything::
 
-     nm <object files or executable> | grep ___ghost
+  nm <object files or executable> | grep ___ghost_
+
+The same can be done to check that a ghost compilation unit called ``my_unit``
+(whatever the capitalization) is not included at all (entities in that unit
+would have been detected by the previous check) in the object code or
+executable. For example on Unix-like platforms:
+
+  nm <object files or executable> | grep my_unit
