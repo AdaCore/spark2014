@@ -13,7 +13,7 @@ instr-child.adb:10:07: warning: no Global contract available for "Put"
 instr-child.adb:10:60: info: division check proved (CodePeer)
 instr-child.adb:15:39: medium: overflow check might fail (e.g. when X = (Name => (others => 0), Seconds => 0, Minutes => 0, Hours => 0, MilliSec => 1) and inc = 2147483647)
 instr-child.adb:15:46: info: division check proved (CodePeer)
-instr-child.adb:16:32: medium: overflow check might fail (e.g. when X = (MilliSec => 1000, others => ?) and inc = 2147482648)
+instr-child.adb:16:32: info: overflow check proved (CodePeer)
 instr-child.adb:16:39: info: division check proved (CodePeer)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:7:18: medium: array index check might fail (e.g. when J = 15)
