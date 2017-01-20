@@ -1,13 +1,13 @@
 Objectives and Contents
 =======================
 
-This document was written to facilitate the adoption of SPARK. It targets team leaders and technology experts, who will find a description of the various assurance levels at which the technology can be used, with the associated costs and benefits. It targets software developers (with some knowledge of Ada language and AdaCore technology), who will find detailed guidance of how to adopt SPARK at every assurance level.
+This document was written to facilitate the adoption of SPARK. It targets team leaders and technology experts, who will find a description of the various levels of software assurance at which the technology can be used, with the associated costs and benefits. It targets software developers (with some knowledge of Ada language and AdaCore technology), who will find detailed guidance of how to adopt SPARK at every level of software assurance.
 
 
 Section :ref:`Assurance Levels` presents the four assurance levels considered in this document. It starts with a brief introduction of the Ada programming language and its SPARK subset. It then presents the levels Stone, Bronze, Silver and Gold that can be achieved with the use of SPARK language and toolset, from simply applying the language subset up to using the most powerful analyses. The lowest levels are the simplest to adopt and already bring significant benefits. The highest levels require more effort to adopt and bring the most guarantees. This section is particularly suited for team leaders and technology experts who want to understand how SPARK could be useful in their context.
 
 
-Sections :ref:`Stone Level` to :ref:`Gold Level` present in details the four assurance levels. Each section starts with a short description of three key aspects to adopt SPARK at that level:
+Sections :ref:`Stone Level` to :ref:`Gold Level` present in details the four levels of software assurance. Each section starts with a short description of three key aspects to adopt SPARK at that level:
 
 
 * Benefits - What is gained from adopting SPARK?
@@ -25,8 +25,8 @@ This version of the document uses the tool versions SPARK Pro 17 and GPS 17. Fur
 
 .. _Assurance Levels:
 
-Assurance Levels
-================
+Levels of Software Assurance
+============================
 
 Ada
 ---
