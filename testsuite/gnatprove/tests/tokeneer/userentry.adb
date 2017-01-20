@@ -860,10 +860,10 @@ is
                 Door.TheCurrentDoor = Door.Open and
                 Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
                                          Door.alarm_Timeout)) =
-               (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+               (Door.TheDoorAlarm = AlarmTypes.Alarming))
 
-            (Latch.IsLocked'Old and
-               not Latch.IsLocked)
+
+
    is
    begin
 
@@ -1184,10 +1184,10 @@ is
                 Door.TheCurrentDoor = Door.Open and
                 Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
                                           Door.alarm_Timeout)) =
-               (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+               (Door.TheDoorAlarm = AlarmTypes.Alarming))
 
-            (Latch.IsLocked'Old and
-               not Latch.IsLocked)
+
+
    is
       subtype ActiveStatusT is StatusT
         range GotUserToken .. WaitingRemoveTokenFail;

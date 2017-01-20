@@ -265,15 +265,15 @@ is
                  Door.TheCurrentDoor = Door.Open and
                  Clock.GreaterThanOrEqual (Clock.TheCurrentTime,
                                            Door.Alarm_Timeout)))
-             = (Door.TheDoorAlarm = AlarmTypes.Alarming)) and
+             = (Door.TheDoorAlarm = AlarmTypes.Alarming));
 
-            ---------------------------------------------------------
-            -- PROOF ANNOTATIONS FOR SECURITY PROPERTY 1           --
-            --=====================================================--
-            -- Holding place for the user entry part of property 1 --
-            ---------------------------------------------------------
-            (Latch.IsLocked'Old and
-               not Latch.IsLocked);
+
+
+
+
+
+
+
 
    ------------------------------------------------------------------
    -- StartEntry
