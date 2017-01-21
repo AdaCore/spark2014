@@ -29,7 +29,8 @@ gnatprove basic switches:
                        provers, statistics)
  -v, --verbose         Output extra verbose information
      --version         Output version of the tool and exit
-     --warnings=w      Set the warning mode of GNATprove (w=off, continue*, error)
+     --warnings=w      Set the warning mode of GNATprove
+                       (w=off, continue*, error)
 
  * Main mode values
    . check         - Fast partial check for SPARK violations
