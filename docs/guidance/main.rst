@@ -628,7 +628,7 @@ with value On as follows:
    end Pack_To_Exclude;
 
 
-Note that cases 2 and 3 above are not exclusive: a can violation occur
+Note that cases 2 and 3 above are not exclusive: a violation can occur
 inside the private part of the package spec. In case 2, all declarations in
 the visible part of the package are analyzed as well as their bodies when
 explicitly marked with a SPARK_Mode aspect. In case 3, only those
@@ -2046,7 +2046,7 @@ GNATprove at each call.
 
 .. rubric:: Benefits
 
-The SPARK code is guaranteed to be free from run-time errors (Absense of
+The SPARK code is guaranteed to be free from run-time errors (Absence of
 Run Time Errors - AoRTE) plus all the defects already detected at Bronze
 level: no reads of uninitialized variables, no possible interference
 between parameters and/or global variables, and no unintended access to
