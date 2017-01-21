@@ -50,25 +50,27 @@ gnatprove basic switches:
    . error         - Treat warnings as errors
 
 gnatprove advanced switches:
- --no-counterexample Do not generate a counterexample for unproved formulas
- -d, --debug         Debug mode
- --dbg-proof-only    Disable flow analysis (possibly unsound results)
- --flow-debug        Extra debugging for flow analysis (requires graphviz)
- --limit-line=s      Limit analysis to given file and line
- --limit-subp=s      Limit analysis to subprogram defined by file and line
+ --no-counterexample  Do not generate a counterexample for unproved formulas
+ -d, --debug          Debug mode
+ --dbg-proof-only     Disable flow analysis (possibly unsound results)
+ --flow-debug         Extra debugging for flow analysis (requires graphviz)
+ --limit-line=f:l     Limit analysis to given file and line
+ --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
+                      check
+ --limit-subp=s       Limit analysis to subprogram defined by file and line
  --memcached-server=host:portnumber
-                     Specify a memcached instance that will be used for
-                     caching of proof results.
- --pedantic          Use a strict interpretation of the Ada standard
- --proof=g[:l]       Set the proof modes for generation of formulas
-                     (g=per_check*, per_path, progressive) (l=lazy*, all)
- --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
- --RTS=dir           Specify the Ada runtime name/location
- --steps=nnn         Set the maximum number of proof steps (prover-specific)
-                     Use value 0 for no steps limit.
- --timeout=nnn       Set the prover timeout in seconds
-                     Use value 0 for no timeout.
- --why3-conf=f       Specify a configuration file for why3
+                      Specify a memcached instance that will be used for
+                      caching of proof results.
+ --pedantic           Use a strict interpretation of the Ada standard
+ --proof=g[:l]        Set the proof modes for generation of formulas
+                      (g=per_check*, per_path, progressive) (l=lazy*, all)
+ --prover=s[,s]*      Use given provers (s=altergo, cvc4*, z3, ...)
+ --RTS=dir            Specify the Ada runtime name/location
+ --steps=nnn          Set the maximum number of proof steps (prover-specific)
+                      Use value 0 for no steps limit.
+ --timeout=nnn        Set the prover timeout in seconds
+                      Use value 0 for no timeout.
+ --why3-conf=f        Specify a configuration file for why3
 
  * Proof mode values for generation
    . per_check     - Generate one formula per check (default)
