@@ -395,8 +395,6 @@ package body Flow.Analysis.Sanity is
 
       procedure Do_Checks is new Traverse_Proc (Check_Expression);
 
-      Unused : Unbounded_String;
-
    --  Start of processing for Check_Expressions
 
    begin
@@ -447,7 +445,6 @@ package body Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
-      Unused : Unbounded_String;
    begin
       Sane := True;
 
@@ -562,8 +559,6 @@ package body Flow.Analysis.Sanity is
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
-      Unused : Unbounded_String;
-
       Aspect_To_Fix : constant String :=
         (case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
