@@ -76,16 +76,17 @@
 --  ------------------
 --
 --  Entries for proof are of the following form: proof_result =
---    { file       : string,
---      line       : int,
---      col        : int,
---      suppressed : string,
---      rule       : string,
---      severity   : string,
---      tracefile  : string,
---      msg_id     : int,
---      how_proved : string,
---      entity     : entity }
+--    { file           : string,
+--      line           : int,
+--      col            : int,
+--      suppressed     : string,
+--      rule           : string,
+--      severity       : string,
+--      tracefile      : string,
+--      check_tree     : list goal,
+--      msg_id         : int,
+--      how_proved     : string,
+--      entity         : entity }
 --  - (file, line, col) describe the source location of the message.
 --  - "rule" describes the kind of VC, the possible values are described
 --    in the file vc_kinds.ads.
@@ -104,7 +105,21 @@
 --    designate the special interval analysis, done in the frontend, and the
 --    CodePeer analysis, respectively. Both have their own column in the
 --    summary table.
+--  - "check_tree" basically contains a copy of the session
+--    tree in JSON format. It's a tree structure whose nodes are goals,
+--    transformations and proof attempts:
 --
+--   goal = { transformations : list trans,
+--            pa : proof_attempt }
+--
+--   trans = { [transname : goal] }
+--
+--   proof_attempt = { [prover : infos] }
+--
+--   infos = { time : float,
+--             steps : integer,
+--             result : string }
+
 --  -----------------
 --  --  Flow Entry --
 --  -----------------
