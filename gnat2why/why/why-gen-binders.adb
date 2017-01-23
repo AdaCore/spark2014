@@ -539,6 +539,7 @@ package body Why.Gen.Binders is
         and then Is_Array_Type (Ty)
         and then not Is_Static_Array_Type (Ty)
         and then Is_Mutable_In_Why (E)
+        and then Ekind (E) /= E_Loop_Parameter
       then
 
          --  Binders for mutable unconstrained array parameters and objects are
@@ -590,6 +591,7 @@ package body Why.Gen.Binders is
       elsif Entity_In_SPARK (Ty)
         and then (Is_Record_Type (Ty) or else Is_Private_Type (Ty))
         and then Is_Mutable_In_Why (E)
+        and then Ekind (E) /= E_Loop_Parameter
         and then Count_Why_Top_Level_Fields (Ty) > 0
         and then (not Full_View_Not_In_SPARK (Ty)
                   or else Get_First_Ancestor_In_SPARK (Ty) /= Ty
