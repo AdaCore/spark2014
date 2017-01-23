@@ -615,9 +615,8 @@ is
    function Get_Implicit_Formal (E : Entity_Id) return Entity_Id
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
         Post => (if Present (Get_Implicit_Formal'Result)
-                 then Ekind (Get_Implicit_Formal'Result) in E_Protected_Type |
-                                                            E_Task_Type      |
-                                                            E_Variable);
+                 then Ekind (Get_Implicit_Formal'Result) in E_Protected_Type
+                                                          | E_Task_Type);
    --  Returns implicit formals, i.e. the protected type for protected
    --  subprograms and entries and the task type itself for task types; returns
    --  Empty for ordinary subprograms.
