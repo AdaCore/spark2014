@@ -7,8 +7,6 @@ lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "
 lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/Coq/lemmas/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
 lemmas.ads:15:19: info: division check proved (CVC4: 1 VC)
 lemmas.ads:15:35: info: division check proved (CVC4: 1 VC)
-<W> Grammar extension: in [constr:operconstr] some rule has been masked
-<W> Grammar extension: in [constr:pattern] some rule has been masked
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
 lemmas.ads:15:14: info: postcondition proved (Coq: 1 VC)
@@ -19,6 +17,21 @@ lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "
 lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < Val2 / Denom, vc file: gnatprove/../proof/Coq/lemmas/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
 lemmas.ads:15:19: info: division check proved (CVC4: 1 VC)
 lemmas.ads:15:34: info: division check proved (CVC4: 1 VC)
+ "(val1 ÷ denom ?= val2 ÷ denom) = Lt".
+<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
+<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
+<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
+<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
+<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
+Error:
+File "gnatprove/../proof/Coq/lemmas/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v", line 255, characters 6-20:
+In environment
+Unable to unify "(?M2188 ÷ ?M2190 ?= ?M2189 ÷ ?M2190) = Gt -> False" with
+Welcome to Coq 8.5pl2 (November 2016)
+h1 : in_range val1
+h2 : in_range val2
+h3 : 1 <= denom <= 2147483647
+h4 : val1 <= val2
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
 lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < Val2 / Denom
 lemmas.ads:15:19: info: division check proved (CVC4: 1 VC)
