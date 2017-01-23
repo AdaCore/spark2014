@@ -601,7 +601,7 @@ package body Flow.Analysis.Sanity is
          begin
             for Var of Variables_Referenced loop
 
-               --  Ignore know variables and synthetic null export
+               --  Ignore known variables and synthetic null export
                if FA.All_Vars.Contains (Change_Variant (Var, Normal_Use))
                     or else
                   Synthetic (Var)
