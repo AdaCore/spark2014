@@ -4,15 +4,17 @@ At level 3
 hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
-hard_stuff.adb:5:52: info: overflow check proved
-hard_stuff.adb:5:65: info: overflow check proved
+hard_stuff.adb:5:52: info: float overflow check proved
+hard_stuff.adb:5:65: info: float overflow check proved
 hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
-hard_stuff.adb:5:77: info: overflow check proved
+hard_stuff.adb:5:77: info: float overflow check proved
 hard_stuff.adb:6:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
-hard_stuff.adb:13:17: info: overflow check proved
-hard_stuff.adb:13:21: info: overflow check proved
+hard_stuff.adb:13:17: info: float overflow check proved
+hard_stuff.adb:13:21: info: float overflow check proved
 hard_stuff.adb:14:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy
+
+
 
 
 Equivalent switches
@@ -20,12 +22,12 @@ Equivalent switches
 hard_stuff.adb:5:04: warning: statement has no effect
 hard_stuff.adb:5:49: info: range check proved
 hard_stuff.adb:5:52: info: division check proved
-hard_stuff.adb:5:52: info: overflow check proved
-hard_stuff.adb:5:65: info: overflow check proved
+hard_stuff.adb:5:52: info: float overflow check proved
+hard_stuff.adb:5:65: info: float overflow check proved
 hard_stuff.adb:5:74: info: range check proved
 hard_stuff.adb:5:77: info: division check proved
-hard_stuff.adb:5:77: info: overflow check proved
+hard_stuff.adb:5:77: info: float overflow check proved
 hard_stuff.adb:6:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
-hard_stuff.adb:13:17: info: overflow check proved
-hard_stuff.adb:13:21: info: overflow check proved
+hard_stuff.adb:13:17: info: float overflow check proved
+hard_stuff.adb:13:21: info: float overflow check proved
 hard_stuff.adb:14:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy

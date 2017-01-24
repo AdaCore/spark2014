@@ -1,5 +1,5 @@
-counter_examples.adb:8:38: info: overflow check proved (CVC4: 1 VC)
-counter_examples.adb:9:16: medium: overflow check might fail
+counter_examples.adb:8:38: info: float overflow check proved (CVC4: 1 VC)
+counter_examples.adb:9:16: medium: float overflow check might fail
 counter_examples.adb:17:24: info: division check proved (CVC4: 1 VC)
 counter_examples.adb:18:07: warning: statement has no effect
 counter_examples.adb:19:25: info: initialization of "Res" proved

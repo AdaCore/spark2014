@@ -1,2 +1,2 @@
-crash.adb:10:18: medium: overflow check might fail
+crash.adb:10:18: medium: float overflow check might fail
 crash.adb:11:14: info: initialization of "X_New" proved

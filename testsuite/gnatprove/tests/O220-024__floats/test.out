@@ -1,6 +1,6 @@
-test_pack.adb:7:32: medium: overflow check might fail
-test_pack.ads:12:43: info: overflow check proved (CVC4: 1 VC)
-test_pack.ads:14:42: info: overflow check proved (CVC4: 1 VC)
+test_pack.adb:7:32: medium: float overflow check might fail
+test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
+test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)
 wibble.adb:11:03: medium: precondition might fail
 wibble.adb:11:15: info: initialization of "X.Desired" proved
 wibble.adb:11:15: info: initialization of "X.Error" proved

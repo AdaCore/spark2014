@@ -237,7 +237,8 @@ package body Gnat2Why.Expr is
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
-      In_Type  : Entity_Id) return W_Expr_Id
+      In_Type  : Entity_Id;
+      Is_Float : Boolean) return W_Expr_Id
      with Pre => Is_Scalar_Type (In_Type);
    --  Inserts an overflow check on top of the Why expression T, using the
    --  bounds of the base type of In_Type. Use Ada_Node for the VC location.
@@ -4234,7 +4235,8 @@ package body Gnat2Why.Expr is
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
-      In_Type  : Entity_Id) return W_Expr_Id
+      In_Type  : Entity_Id;
+      Is_Float : Boolean) return W_Expr_Id
    is
       Base : constant Entity_Id := Base_Type (In_Type);
 
@@ -4243,7 +4245,9 @@ package body Gnat2Why.Expr is
                           Ada_Node => Ada_Node,
                           Name     => E_Symb (Base, WNE_Range_Check_Fun),
                           Progs    => (1 => +T),
-                          Reason   => VC_Overflow_Check,
+                          Reason   =>
+                            (if Is_Float then VC_FP_Overflow_Check
+                             else VC_Overflow_Check),
                           Typ      => Get_Type (T));
    end Insert_Overflow_Check;
 
@@ -11914,9 +11918,11 @@ package body Gnat2Why.Expr is
 
                case Mode is
                   when Strict =>
-                     T := Insert_Overflow_Check (Expr, T, Expr_Type);
+                     T := Insert_Overflow_Check (Expr, T, Expr_Type,
+                                                 Is_Float => False);
                   when Minimized =>
-                     T := Insert_Overflow_Check (Expr, T, Standard_Integer_64);
+                     T := Insert_Overflow_Check (Expr, T, Standard_Integer_64,
+                                                 Is_Float => False);
                   when Eliminated =>
                      null;
                   when Not_Set =>
@@ -11963,13 +11969,14 @@ package body Gnat2Why.Expr is
 
                      if Lo > Lov and then Hi < Hiv then
                         True_Check_Inserted := True;
-                        Emit_Always_True_Range_Check (Expr, RCK_Overflow);
+                        Emit_Always_True_Range_Check (Expr, RCK_FP_Overflow);
                      end if;
                   end if;
                end if;
 
                if not True_Check_Inserted then
-                  T := Insert_Overflow_Check (Expr, T, Expr_Type);
+                  T := Insert_Overflow_Check (Expr, T, Expr_Type,
+                                              Is_Float => True);
                end if;
             end;
 
@@ -11977,7 +11984,7 @@ package body Gnat2Why.Expr is
          --  the overflow check.
 
          else
-            T := Insert_Overflow_Check (Expr, T, Expr_Type);
+            T := Insert_Overflow_Check (Expr, T, Expr_Type, Is_Float => False);
          end if;
       end if;
 

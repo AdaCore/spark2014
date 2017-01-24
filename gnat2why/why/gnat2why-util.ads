@@ -495,6 +495,7 @@ package Gnat2Why.Util is
 
    type Range_Check_Kind is
      (RCK_Overflow,
+      RCK_FP_Overflow,
       RCK_Range,
       RCK_Length,
       RCK_Index,
@@ -507,6 +508,7 @@ package Gnat2Why.Util is
    is
      (case R is
          when RCK_Overflow           => VC_Overflow_Check,
+         when RCK_FP_Overflow        => VC_FP_Overflow_Check,
          when RCK_Range              => VC_Range_Check,
          when RCK_Length             => VC_Length_Check,
          when RCK_Index              => VC_Index_Check,

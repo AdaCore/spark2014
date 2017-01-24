@@ -1,5 +1,5 @@
-package_1.adb:11:29: info: overflow check proved (CVC4: 1 VC)
-package_1.adb:12:29: info: overflow check proved (CVC4: 1 VC)
+package_1.adb:11:29: info: float overflow check proved (CVC4: 1 VC)
+package_1.adb:12:29: info: float overflow check proved (CVC4: 1 VC)
 package_1.ads:15:27: info: initialization of "Res_1" proved
 package_1.ads:16:27: info: initialization of "Res_2" proved
 package_1.ads:17:27: info: initialization of "Res_3" proved

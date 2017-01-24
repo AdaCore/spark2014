@@ -1,4 +1,4 @@
 add.adb:10:16: info: postcondition proved (CVC4: 1 VC)
 add.adb:13:04: info: precondition proved (CVC4: 7 VC)
-add.adb:14:13: info: overflow check proved (CVC4: 1 VC)
-add.adb:15:13: info: overflow check proved (CVC4: 1 VC)
+add.adb:14:13: info: float overflow check proved (CVC4: 1 VC)
+add.adb:15:13: info: float overflow check proved (CVC4: 1 VC)

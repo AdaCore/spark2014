@@ -728,6 +728,7 @@ failing condition reported by |GNATprove|:
    "divide by zero might fail",                            "VC_DIVISION_CHECK"
    "array index check might fail",                         "VC_INDEX_CHECK"
    "overflow check might fail",                            "VC_OVERFLOW_CHECK"
+   "float overflow check might fail",                      "VC_FP_OVERFLOW_CHECK"
    "range check might fail",                               "VC_RANGE_CHECK"
    "predicate check might fail",                           "VC_PREDICATE_CHECK"
    "predicate check might fail on default value",          "VC_PREDICATE_CHECK_ON_DEFAULT_VALUE"

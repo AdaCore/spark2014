@@ -1,2 +1,2 @@
 expo.adb:6:11: medium: divide by zero might fail
-expo.adb:6:11: medium: overflow check might fail
+expo.adb:6:11: medium: float overflow check might fail

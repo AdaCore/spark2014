@@ -178,7 +178,8 @@ The following table shows the kinds of check messages issued by proof.
    **run-time checks**
    "divide by zero", "Check that the second operand of the division, mod or rem operation is different from zero."
    "index check", "Check that the given index is within the bounds of the array."
-   "overflow check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
+   "overflow check", "Check that the result of the given integer arithmetic operation is within the bounds of the base type."
+   "fp_overflow check", "Check that the result of the given floating point operation is within the bounds of the base type."
    "range check", "Check that the given value is within the bounds of the expected scalar subtype."
    "predicate check", "Check that the given value respects the applicable type predicate."
    "predicate check on default value", "Check that the default value for the type respects the applicable type predicate."

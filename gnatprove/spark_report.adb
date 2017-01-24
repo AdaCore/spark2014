@@ -803,6 +803,7 @@ procedure SPARK_Report is
          when VC_Division_Check
             | VC_Index_Check
             | VC_Overflow_Check
+            | VC_FP_Overflow_Check
             | VC_Range_Check
             | VC_Predicate_Check
             | VC_Predicate_Check_On_Default_Value

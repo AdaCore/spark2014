@@ -1,5 +1,5 @@
-safety_pack.ads:15:16: info: overflow check proved (CVC4: 1 VC)
-safety_pack.ads:17:16: info: overflow check proved (CVC4: 1 VC)
+safety_pack.ads:15:16: info: float overflow check proved (CVC4: 1 VC)
+safety_pack.ads:17:16: info: float overflow check proved (CVC4: 1 VC)
 safety_pack.ads:55:21: info: range check proved (Z3: 1 VC)
 safety_pack.ads:63:10: info: predicate check proved (CVC4: 1 VC)
 safety_pack.ads:65:10: info: predicate check proved (CVC4: 1 VC)

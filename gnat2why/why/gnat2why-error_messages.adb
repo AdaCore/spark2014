@@ -193,7 +193,7 @@ package body Gnat2Why.Error_Messages is
                        SA_Message'(Array_Index_Check,
                                    Statically_Known_Success));
 
-            when VC_Overflow_Check =>
+            when VC_Overflow_Check | VC_FP_Overflow_Check =>
                return (True,
                        SA_Message'(SA_Messages.Overflow_Check,
                                    Statically_Known_Success));
@@ -519,6 +519,8 @@ package body Gnat2Why.Error_Messages is
             return "array index check might fail";
          when VC_Overflow_Check            =>
             return "overflow check might fail";
+         when VC_FP_Overflow_Check            =>
+            return "float overflow check might fail";
          when VC_Range_Check               =>
             return "range check might fail";
          when VC_Predicate_Check           =>
@@ -803,6 +805,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Division_Check            => return "division check proved";
          when VC_Index_Check               => return "index check proved";
          when VC_Overflow_Check            => return "overflow check proved";
+         when VC_FP_Overflow_Check         =>
+            return "float overflow check proved";
          when VC_Range_Check               => return "range check proved";
          when VC_Predicate_Check           => return "predicate check proved";
          when VC_Predicate_Check_On_Default_Value =>

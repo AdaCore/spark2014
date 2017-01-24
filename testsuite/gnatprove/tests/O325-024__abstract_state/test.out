@@ -1,11 +1,11 @@
-stabilizer_pack.adb:21:22: medium: overflow check might fail
-stabilizer_pack.adb:21:34: medium: overflow check might fail
-stabilizer_pack.adb:21:44: medium: overflow check might fail
-stabilizer_pack.adb:21:51: info: overflow check proved (Z3: 1 VC)
-stabilizer_pack.adb:22:32: medium: overflow check might fail
-stabilizer_pack.adb:23:09: medium: overflow check might fail
-stabilizer_pack.adb:23:19: medium: overflow check might fail
-stabilizer_pack.adb:23:26: info: overflow check proved (Z3: 1 VC)
+stabilizer_pack.adb:21:22: medium: float overflow check might fail
+stabilizer_pack.adb:21:34: medium: float overflow check might fail
+stabilizer_pack.adb:21:44: medium: float overflow check might fail
+stabilizer_pack.adb:21:51: info: float overflow check proved (Z3: 1 VC)
+stabilizer_pack.adb:22:32: medium: float overflow check might fail
+stabilizer_pack.adb:23:09: medium: float overflow check might fail
+stabilizer_pack.adb:23:19: medium: float overflow check might fail
+stabilizer_pack.adb:23:26: info: float overflow check proved (Z3: 1 VC)
 stabilizer_pack.ads:16:04: info: initialization of "Temperature" constituent of "Asl_Variables" proved
 stabilizer_pack.ads:18:04: info: initialization of "Pressure" constituent of "Asl_Variables" proved
 stabilizer_pack.ads:20:04: info: initialization of "Asl" constituent of "Asl_Variables" proved

@@ -46,7 +46,7 @@ test.adb:6:11: medium: "Default_Exp" might not be initialized after elaboration 
 test.adb:6:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Test"
 test.adb:8:33: info: range check proved (Interval)
 test.adb:8:36: info: division check proved (CVC4: 1 VC)
-test.adb:8:36: info: overflow check proved (Interval)
+test.adb:8:36: info: float overflow check proved (Interval)
 test.adb:11:15: warning: assuming "Put" has no effect on global items
 test.adb:11:15: warning: no Global contract available for "Put"
 test.adb:12:21: warning: assuming "Put" has no effect on global items

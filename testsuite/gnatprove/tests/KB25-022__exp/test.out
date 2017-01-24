@@ -2,4 +2,4 @@ gp_exp.adb:1:11: warning: subprogram "Gp_Exp" has no effect
 gp_exp.adb:5:11: medium: overflow check might fail
 gp_exp.adb:5:14: medium: range check might fail
 gp_exp.adb:6:11: medium: overflow check might fail
-gp_exp.adb:7:11: medium: overflow check might fail
+gp_exp.adb:7:11: medium: float overflow check might fail

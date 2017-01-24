@@ -15,7 +15,7 @@ div_lemmas.adb:40:42: info: initialization of "Res" proved
 div_lemmas.adb:42:14: info: initialization of "Res" proved
 div_lemmas.adb:42:14: medium: postcondition might fail, cannot prove Res >= 1.0
 div_lemmas.adb:45:16: info: division check proved (CVC4: 1 VC)
-div_lemmas.adb:45:16: medium: overflow check might fail
+div_lemmas.adb:45:16: medium: float overflow check might fail
 div_lemmas.adb:53:04: info: precondition proved (CVC4: 1 VC)
 div_lemmas.adb:53:14: info: initialization of "X" proved
 div_lemmas.adb:56:04: info: precondition proved (CVC4: 1 VC)

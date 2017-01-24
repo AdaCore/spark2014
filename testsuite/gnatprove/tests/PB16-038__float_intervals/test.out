@@ -1,14 +1,14 @@
 foo.adb:14:23: info: initialization of "Y" proved
 foo.adb:22:19: info: division check proved (CodePeer)
-foo.adb:22:19: info: overflow check proved (CodePeer)
+foo.adb:22:19: info: float overflow check proved (CodePeer)
 foo.adb:22:19: info: range check proved (CodePeer)
 foo.adb:27:23: info: initialization of "Y" proved
 foo.adb:30:22: info: assertion proved (CVC4: 1 VC)
 foo.adb:31:16: info: division check proved (CodePeer)
-foo.adb:31:16: info: overflow check proved (CodePeer)
+foo.adb:31:16: info: float overflow check proved (CodePeer)
 foo.adb:31:16: info: range check proved (CodePeer)
 foo.adb:35:23: info: initialization of "Y" proved
 foo.adb:39:19: info: division check proved (CodePeer)
-foo.adb:39:19: info: overflow check proved (CodePeer)
+foo.adb:39:19: info: float overflow check proved (CodePeer)
 foo.adb:39:19: info: range check proved (CodePeer)
 foo.adb:43:25: info: assertion proved (CodePeer)

@@ -1,6 +1,6 @@
 nonlinear.adb:1:11: warning: subprogram "Nonlinear" has no effect
-nonlinear.adb:9:20: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:10:16: medium: overflow check might fail
-nonlinear.adb:10:20: medium: overflow check might fail
+nonlinear.adb:9:20: info: float overflow check proved (CVC4: 1 VC)
+nonlinear.adb:10:16: medium: float overflow check might fail
+nonlinear.adb:10:20: medium: float overflow check might fail
 nonlinear.adb:11:19: info: initialization of "Result" proved
 nonlinear.adb:11:19: medium: assertion might fail, cannot prove Result >= 0.0

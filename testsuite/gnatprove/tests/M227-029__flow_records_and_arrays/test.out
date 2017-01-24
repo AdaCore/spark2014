@@ -4,7 +4,7 @@ message_tests.adb:23:04: warning: analyzing unreferenced procedure "Not_All_Used
 message_tests.adb:24:33: info: initialization of "B" proved
 message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used_In_3"
 message_tests.adb:33:33: info: initialization of "W" proved
-message_tests.adb:37:16: medium: overflow check might fail
+message_tests.adb:37:16: medium: float overflow check might fail
 message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4"
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:41:33: info: initialization of "W" proved
@@ -84,7 +84,7 @@ untangle_tests.adb:55:22: info: initialization of "P" proved
 untangle_tests.adb:56:21: info: initialization of "N" proved
 untangle_tests.adb:56:23: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
-untangle_tests.adb:69:60: medium: overflow check might fail
-untangle_tests.adb:70:60: medium: overflow check might fail
-untangle_tests.adb:71:60: medium: overflow check might fail
+untangle_tests.adb:69:60: medium: float overflow check might fail
+untangle_tests.adb:70:60: medium: float overflow check might fail
+untangle_tests.adb:71:60: medium: float overflow check might fail
 untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"
