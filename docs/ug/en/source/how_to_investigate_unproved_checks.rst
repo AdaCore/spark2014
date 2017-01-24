@@ -189,3 +189,95 @@ To be able to inspect these files, you should instruct |GNATprove| to keep them
 around by adding the switch ``-d`` to |GNATprove|'s command line. You can also
 use the switch ``-v`` to get a detailed log of which proof files |GNATprove| is
 producing and attempting to prove.
+
+Looking at Machine-Parsable |GNATprove| Output
+----------------------------------------------
+
+|GNATprove| generates files which contain the results of SPARK analysis in
+machine-parsable form. These files are located in the ``gnatprove``
+subdirectory of the project object directory, and have the suffix ``.spark``.
+The structure of these files exposes internal details such as the exact way
+some VCs are proved, therefore the structure of these files may change. Still,
+we provide here the structure of these files for convenience.
+
+At various places in these files, we refer to entities. These are Ada
+entities, either subprograms or packages. Entities are defined by their name and
+their source location (file and line). In JSON this translates to the
+following dictionary for entities::
+
+  { "name" : string,
+    "file" : string,
+    "line" : int }
+
+A ``.spark`` file is of this form::
+
+  { "spark" : list spark_result,
+    "flow"  : list flow_result,
+    "proof" : list proof_result }
+
+Each entry is mapped to a list of entries whose format is described below.
+
+The ``spark_result`` entry is simply an entity, with an extra field for spark
+status, so that the entire dictionary looks like this::
+
+  spark_result = { "name"  : string,
+                   "file"  : string,
+                   "line"  : int,
+                   "spark" : string }
+
+Field "spark" takes value in "spec", "all" or "no" to denote
+respectively that only the spec is in SPARK, both spec/body are in SPARK
+(or spec is in SPARK for a package without body), or the spec is not in
+SPARK.
+
+Entries for proof are of the following form::
+
+  proof_result =
+    { "file"       : string,
+      "line"       : int,
+      "col"        : int,
+      "suppressed" : string,
+      "rule"       : string,
+      "severity"   : string,
+      "tracefile"  : string,
+      "check_tree" : list goal,
+      "msg_id"     : int,
+      "how_proved" : string,
+      "entity"     : entity }
+
+* ("file", "line", "col") describe the source location of the message.
+* "rule" describes the kind of VC.
+* "severity" describes the kind status of the message, possible values used
+  by gnatwhy3 are "info", "low", "medium", "high" and "error".
+* "tracefile" contains the name of a trace file, if any.
+* "entity" contains the entity dictionary for the entity that this VC
+  belongs to.
+* "msg_id" - if present indicates that this entry corresponds to a message
+  issued on the commandline, with the exact same msg_id in brackets:
+  "[#12]"
+* "suppressed" - if present, the message is in fact suppressed by a pragma
+  Annotate, and this field contains the justification message.
+* "how_proved" - if present, indicates how the VC has been proved (i.e.
+  which prover). Special values are "interval" and "codepeer", which
+  designate the special interval analysis, done in the frontend, and the
+  CodePeer analysis, respectively. Both have their own column in the
+  summary table.
+* "check_tree" basically contains a copy of the session
+  tree in JSON format. It's a tree structure whose nodes are goals,
+  transformations and proof attempts::
+
+   goal = { "transformations" : list trans,
+            "pa"              : proof_attempt }
+
+   trans = { [transname : goal] }
+
+   proof_attempt = { [prover : infos] }
+
+   infos = { "time"   : float,
+             "steps"  : integer,
+             "result" : string }
+
+
+Flow entries are of the same form as for proof. Differences are in the
+possible values for "rule", which can only be the ones for flow messages.
+Also "how_proved" field is never set.
