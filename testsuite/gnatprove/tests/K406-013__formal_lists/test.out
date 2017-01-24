@@ -1,21 +1,24 @@
-a-cfdlli.ads:130:52: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:162:52: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:463:51: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:580:51: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:661:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:710:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:787:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:787:39: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:942:45: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1090:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1207:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1219:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1231:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1244:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1263:13: info: precondition proved (CVC4: 2 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1305:13: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1309:26: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cofuve.ads:184:45: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
+a-cfdlli.ads:87:55: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:405:51: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:523:51: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:604:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:664:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:741:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:741:39: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:904:45: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1052:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1169:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1181:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1193:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1206:18: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1225:14: info: precondition proved (CVC4: 2 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1267:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1271:32: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cofuve.ads:227:61: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
+a-cofuve.ads:229:19: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
+a-cofuve.ads:229:36: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
+a-cofuve.ads:229:48: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
+a-cofuve.ads:288:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at formal_container.ads:7
 test_vdll.adb:9:04: info: initialization of private part of "L1" proved
 test_vdll.adb:9:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:10:04: info: initialization of private part of "L2" proved
@@ -80,14 +83,14 @@ test_vdll.adb:56:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:56:54: info: initialization of private part of "L2" proved
 test_vdll.adb:58:04: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:58:25: info: initialization of private part of "L1" proved
+test_vdll.adb:61:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:61:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:61:19: medium: assertion might fail, cannot prove Find (L1, 3, No_Element) = Next (L1, First (L1)
 test_vdll.adb:61:25: info: initialization of private part of "L1" proved
 test_vdll.adb:61:47: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:62:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:62:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:62:19: medium: assertion might fail, cannot prove Find (L1, 4, No_Element) = Last (L1)
 test_vdll.adb:62:25: info: initialization of private part of "L1" proved
-test_vdll.adb:63:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:63:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:63:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:63:25: info: initialization of private part of "L1" proved
 test_vdll.adb:63:47: info: precondition proved (CVC4: 1 VC)
@@ -103,13 +106,13 @@ test_vdll.adb:71:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:71:27: info: initialization of private part of "L3" proved
 test_vdll.adb:74:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:74:43: info: initialization of private part of "L3" proved
+test_vdll.adb:75:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:75:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:75:19: medium: assertion might fail, cannot prove Test_Element (L3, First (L3), 1)
 test_vdll.adb:75:44: info: initialization of private part of "L3" proved
 test_vdll.adb:76:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:76:36: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:76:53: info: initialization of private part of "L3" proved
-test_vdll.adb:77:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:77:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:77:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:77:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:77:54: info: initialization of private part of "L3" proved
@@ -118,14 +121,14 @@ test_vdll.adb:80:40: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:80:46: info: initialization of private part of "L1" proved
 test_vdll.adb:80:50: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:80:67: info: initialization of private part of "L3" proved
-test_vdll.adb:83:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:83:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:83:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:83:25: info: initialization of private part of "L3" proved
 test_vdll.adb:83:47: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:84:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:84:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:84:25: info: initialization of private part of "L3" proved
-test_vdll.adb:85:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:85:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:85:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:85:25: info: initialization of private part of "L3" proved
 test_vdll.adb:86:19: info: assertion proved (CVC4: 1 VC)
@@ -148,18 +151,18 @@ test_vdll.adb:105:16: info: initialization of private part of "L1" proved
 test_vdll.adb:106:30: info: initialization of private part of "L4" proved
 test_vdll.adb:109:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:109:43: info: initialization of private part of "L4" proved
+test_vdll.adb:110:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:110:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:110:19: medium: assertion might fail, cannot prove Test_Element (L4, First (L4), 1)
 test_vdll.adb:110:44: info: initialization of private part of "L4" proved
-test_vdll.adb:113:19: medium: assertion might fail, cannot prove not Has_Element (L4, Next (L1, First (L4)
-test_vdll.adb:113:40: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:113:19: info: assertion proved (Z3: 1 VC)
+test_vdll.adb:113:40: info: precondition proved (Z3: 1 VC)
 test_vdll.adb:113:46: info: initialization of private part of "L1" proved
 test_vdll.adb:113:57: info: initialization of private part of "L4" proved
 test_vdll.adb:116:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:116:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:116:25: info: initialization of private part of "L4" proved
 test_vdll.adb:124:12: medium: precondition might fail
-test_vdll.adb:125:18: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:125:18: info: precondition proved (Z3: 1 VC)
 test_vdll.adb:125:24: info: initialization of private part of "L1" proved
 test_vdll.adb:126:31: info: initialization of private part of "L4" proved
 test_vdll.adb:127:30: info: assertion proved (CVC4: 1 VC)
@@ -176,21 +179,21 @@ test_vdll.adb:137:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:137:27: info: initialization of private part of "L3" proved
 test_vdll.adb:140:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:140:43: info: initialization of private part of "L3" proved
+test_vdll.adb:141:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:141:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:141:19: medium: assertion might fail, cannot prove Test_Element (L3, First (L3), 3)
 test_vdll.adb:141:44: info: initialization of private part of "L3" proved
 test_vdll.adb:142:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:142:36: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:142:53: info: initialization of private part of "L3" proved
+test_vdll.adb:143:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:143:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:143:19: medium: assertion might fail, cannot prove Test_Element (L3, Next (L3, First (L3)), 4)
 test_vdll.adb:143:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:143:54: info: initialization of private part of "L3" proved
 test_vdll.adb:146:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:146:36: info: initialization of private part of "L3" proved
 test_vdll.adb:146:47: info: initialization of private part of "L1" proved
+test_vdll.adb:149:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:149:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:149:19: medium: assertion might fail, cannot prove Find (L3, 4, No_Element) = Next (L3, First (L3)
 test_vdll.adb:149:25: info: initialization of private part of "L3" proved
 test_vdll.adb:149:47: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:152:19: info: precondition proved (CVC4: 1 VC)
@@ -209,10 +212,10 @@ test_vdll.adb:168:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:168:27: info: initialization of private part of "L4" proved
 test_vdll.adb:171:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:171:43: info: initialization of private part of "L4" proved
+test_vdll.adb:172:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:172:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:172:19: medium: assertion might fail, cannot prove Test_Element (L4, First (L4), 4)
 test_vdll.adb:172:44: info: initialization of private part of "L4" proved
-test_vdll.adb:175:19: medium: assertion might fail, cannot prove not Has_Element (L4, Next (L1, First (L1)
+test_vdll.adb:175:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:175:36: info: initialization of private part of "L4" proved
 test_vdll.adb:175:40: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:175:57: info: initialization of private part of "L1" proved
