@@ -1,7 +1,7 @@
-a-cofuse.ads:159:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
-a-cofuse.ads:159:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
-a-cofuse.ads:160:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
-a-cofuse.ads:160:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
+a-cofuse.ads:172:20: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
+a-cofuse.ads:172:20: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
+a-cofuse.ads:172:63: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
+a-cofuse.ads:172:63: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 call_proc_no_body.adb:4:07: medium: precondition might fail
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
@@ -128,7 +128,7 @@ formal_cont.ads:12:04: info: function contract not available for proof ("Length"
 formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
-formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
@@ -147,42 +147,42 @@ formal_cont.ads:12:04: info: function contract not available for proof ("My_Equa
 formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:100
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:100
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:101
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:102
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:110
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:111
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:112
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:120
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:122
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:128
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:129
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:104
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:104
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:106
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:107
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:115
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:117
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:118
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:130
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:131
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:140
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:140
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:138
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:139
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:141
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:148
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:149
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:150
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:159
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:159
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:151
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:151
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:152
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:160
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:161
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:161
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:162
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:163
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:177
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:180
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:43
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:43
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:66
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:73
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:74
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:90
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:91
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:91
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:92
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:172
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:172
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:174
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:175
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:175
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:176
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:192
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:196
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:44
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:44
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:67
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:75
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:76
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:93
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:94
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:95
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:95
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:96
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
 formal_cont.ads:18:14: warning: subprogram "Test_01" might not terminate
 formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate

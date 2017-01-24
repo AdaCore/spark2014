@@ -53,6 +53,11 @@ package Tree_Model with SPARK_Mode is
    function "=" (M1, M2 : Model_Type) return Boolean is
      (for all I in Index_Type => M1 (I).A = M2 (I).A and M1 (I).K = M2 (I).K);
 
+   function Is_Add (S1 : Sequence; D : Direction; S2 : Sequence) return Boolean
+   is
+     (Length (S2) - 1 = Length (S1) and then S1 < S2
+      and then Get (S2, Length (S2)) = D);
+
    procedure Preserve_Equal (S1, S2, S3, S4 : Sequence; D : Direction) with
      Ghost,
      Global => null,

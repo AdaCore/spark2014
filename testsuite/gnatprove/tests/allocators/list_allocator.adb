@@ -88,7 +88,7 @@ is
          First_Available := Res;
 
          Model.Allocated := Remove (Model.Allocated, Res);
-         Model.Available := Insert (Model.Available, 1, Res);
+         Model.Available := Add (Model.Available, 1, Res);
       end if;
    end Free;
 
