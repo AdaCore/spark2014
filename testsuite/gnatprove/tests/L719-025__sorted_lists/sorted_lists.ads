@@ -12,8 +12,8 @@ package Sorted_Lists is pragma SPARK_Mode (On);
      (I1 < I2);
 
    package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (Element_Type, My_Eq);
-   use My_Lists;
+     (Element_Type);
+   use My_Lists; use Formal_Model;
 
    package My_Sort is new Generic_Sorting ("<" => My_Lt);
 
@@ -24,12 +24,12 @@ package Sorted_Lists is pragma SPARK_Mode (On);
      Post =>
        Has_Element (Container, Position) and then
      Element (Container, Position) = New_Item and then
-     (Strict_Equal (First_To_Previous (Container, Position),
-                    First_To_Previous (Container'Old,
-                                       Next (Container, Position))) and
-        Strict_Equal (Current_To_Last (Container, Next (Container, Position)),
-                      Current_To_Last (Container'Old,
-                                       Next (Container, Position))) and
-        (if My_Sort.Is_Sorted (Container'Old) then My_Sort.Is_Sorted (Container)));
+     (for all I in 1 .. P.Get (Positions (Container), Position) - 1 =>
+        Element (Model (Container), I) = Element (Model (Container'Old), I))
+     and then
+     (for all I in P.Get (Positions (Container), Position) .. Length (Container) - 1 =>
+        Element (Model (Container), I + 1) = Element (Model (Container'Old), I))
+     and then
+       (if My_Sort.Is_Sorted (Container'Old) then My_Sort.Is_Sorted (Container));
 
 end Sorted_Lists;

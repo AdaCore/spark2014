@@ -1,10 +1,27 @@
-p.adb:25:13: info: precondition proved (CVC4: 1 VC)
-p.adb:26:14: info: initialization of "C" proved
+a-cfdlli.ads:130:52: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:162:52: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:463:51: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:580:51: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:661:57: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:710:57: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:787:28: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:787:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:942:45: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1090:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1207:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1219:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1231:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1244:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1263:13: info: precondition proved (CVC4: 2 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1305:13: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cfdlli.ads:1309:26: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:15
+a-cofuve.ads:184:45: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at p.ads:15
+p.adb:26:14: info: initialization of "C.Node" proved
 p.adb:27:18: info: initialization of "Sum" proved
-p.adb:27:22: medium: overflow check might fail (e.g. when Sum = -1)
-p.adb:27:32: medium: precondition might fail (e.g. when Sum = 0)
-p.adb:27:44: info: initialization of "C" proved
-p.adb:28:19: medium: precondition might fail
-p.adb:28:29: info: initialization of "C" proved
+p.adb:27:22: medium: overflow check might fail (e.g. when Sum = 0)
+p.adb:27:32: medium: precondition might fail (e.g. when C = (Node => 2) and Sum = 0)
+p.adb:27:44: info: initialization of "C.Node" proved
+p.adb:28:19: medium: precondition might fail (e.g. when C = (Node => 2) and No_Element = (Node => 0))
+p.adb:28:29: info: initialization of "C.Node" proved
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect

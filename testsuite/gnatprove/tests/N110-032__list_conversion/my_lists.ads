@@ -9,7 +9,7 @@ package My_Lists is
      (I1 = I2);
 
    package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (Element_Type, My_Eq);
+     (Element_Type);
 
    use My_Lists;
 
@@ -27,7 +27,7 @@ package My_Lists is
 
    subtype C_List21 is List2 (100);
 
-   --  type C_List22 is new List2 (100);
+   type C_List22 is new List2 (100);
 
    procedure P;
 end;

@@ -4,7 +4,7 @@ package body Lists with SPARK_Mode is
    begin
       while Has_Element (L, C) loop
          pragma Loop_Invariant
-           (for all Cu in First_To_Previous (L, C) => Element (L, Cu) /= 0);
+           (for all I in 1 .. P.Get (Positions (L), C) - 1 => Element (Model (L), I) /= 0);
          if Element (L, C) = 0 then
             return C;
          end if;

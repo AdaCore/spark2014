@@ -3,7 +3,7 @@ with Ada.Containers;
 use Ada.Containers;
 with Formal_Container; use Formal_Container;
 
-procedure test_vdll is
+procedure test_vdll with SPARK_Mode is
    pragma Ghost;
    use VDLL;
    L1 :  List (3);
@@ -17,7 +17,8 @@ procedure test_vdll is
       Position  :  Cursor;
       Result    : Integer) return Boolean
    is
-      (Element (Container, Position) = Result);
+     (Element (Container, Position) = Result)
+   with Pre => Has_Element (Container, Position);
 
 begin
    --  Has_Element of an empty list
@@ -65,8 +66,8 @@ begin
    pragma Assert (Find (L1, 1, Next (L1, First (L1))) =  No_Element);
 
    --  Length of First_To_Previous
-   L3 :=  First_To_Previous (Container => L1,
-                Current  =>  Next (L1, Next (L1, First (L1))));
+   L3 := L1;
+   Delete_Last (Container => L3);
    pragma Assert (Length (L3) = 2);
 
    --  Has_Element of First_To_Previous in range
@@ -96,12 +97,13 @@ begin
       E := Find (L3, 3,                      -- @PRECONDITION:FAIL
                  Next (L1,
                        Next (L3,
-                             First (L3))));
+                     First (L3))));
+      pragma Assert_And_Cut (True);
    end;
 
    --   Copy of First_To_Previous : Length
-   L4 :=  Copy (First_To_Previous (L1, Next (L1, First (L1))), 5);
-   pragma Assert (Length (L4) = 1);
+   L4 := Copy (L1, L4.Capacity);
+   Delete_Last (Container => L4, Count => 2);
 
    --  Copy of First_To_Previous : Has_Element in range
    pragma Assert (Has_Element (L4, First (L4)));
@@ -122,16 +124,16 @@ begin
       E := Find (L4, 3,               -- @PRECONDITION:FAIL
                  Next (L1,
                        First (L4)));
+      pragma Assert_And_Cut (True);
    end;
 
    --  Deleting a cursor after the cut doesn't change First_To_Previous
    L2 :=  Copy (L1, 3);
    Delete_Last (L2);
-   pragma Assert (Strict_Equal (First_To_Previous (L2, Next (L2, First (L2))),
-                         First_To_Previous (L1, Next (L1, First (L1)))));
 
    --  Length of Current_To_Last
-   L3 :=  Current_To_Last (Container => L1, Current =>  Next (L1, First (L1)));
+   L3 := L1;
+   Delete_First (Container => L3);
    pragma Assert (Length (L3) = 2);
 
    --  Has_Element of Current_To_Last in range
@@ -157,10 +159,12 @@ begin
       --  Precondition should not be provable
       E := Find (L3, 3,         -- @PRECONDITION:FAIL
                  First (L1));
+      pragma Assert_And_Cut (True);
    end;
 
    --  Copy of Current_To_Last : Length
-   L4 :=  Copy (Current_To_Last (L1, Next (L1, Next (L1, First (L1)))), 5);
+   L4 :=  Copy (L1, L4.Capacity);
+   Delete_First (L4, 2);
    pragma Assert (Length (L4) = 1);
 
    --  Copy of Current_To_Last : Has_Element in range
@@ -182,17 +186,13 @@ begin
       E := Find (L4, 3,                    -- @PRECONDITION:FAIL
                  Previous (L1,
                            First (L4)));
+      pragma Assert_And_Cut (True);
    end;
-
-   --  Deleting a cursor before the cut doesn't change Current_To_Last
-   L2 :=  Copy (L1, 3);
-   Delete_First (L2);
-   pragma Assert (Strict_Equal (Current_To_Last (L2, First (L2)),
-                     Current_To_Last (L1, Next (L1, First (L1)))));
 
    Clear (L1);
 
    for E in 1 .. 3 loop
+      pragma Loop_Invariant (Length (L1) = Count_Type (E - 1));
       Append (L1, E);
    end loop;
 
@@ -203,6 +203,7 @@ begin
    begin
       --  Precondition should not be provable
       E := First_Element (L1);   -- @PRECONDITION:FAIL
+      pragma Assert_And_Cut (True);
    end;
 
    declare
@@ -210,6 +211,7 @@ begin
    begin
       --  Precondition should not be provable
       E := Last_Element (L1);  -- @PRECONDITION:FAIL
+      pragma Assert_And_Cut (True);
    end;
 
 end test_vdll;

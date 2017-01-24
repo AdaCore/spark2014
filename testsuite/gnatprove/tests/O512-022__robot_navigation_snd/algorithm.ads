@@ -38,9 +38,7 @@ is
    subtype Gap_ID is Integer range 1 .. Max_Gaps;
 
    package Gap_Vectors is new
-     Ada.Containers.Formal_Doubly_Linked_Lists (
-                                    Gaps.Gap,
-                                    Gaps.Equal);
+     Ada.Containers.Formal_Doubly_Linked_Lists (Gaps.Gap);
 
    subtype List is Gap_Vectors.List (Max_Gaps);
 

@@ -12,9 +12,9 @@ package body Formal_Cont with Spark_Mode is
    end My_Equal_01;
 
    procedure Test_01 is
-      L : New_List_01.List (3);
+      L : New_Set_01.Set;
    begin
-      if New_List_01.Is_Empty (L) then
+      if New_Set_01.Is_Empty (L) then
          null;
       end if;
    end Test_01;
@@ -23,9 +23,9 @@ package body Formal_Cont with Spark_Mode is
    function My_Equal_02 (A, B : Integer) return Boolean is (A = B);
 
    procedure Test_02 is
-      L : New_List_02.List (3);
+      L : New_Set_02.Set;
    begin
-      if New_List_02.Is_Empty (L) then
+      if New_Set_02.Is_Empty (L) then
          null;
       end if;
    end Test_02;

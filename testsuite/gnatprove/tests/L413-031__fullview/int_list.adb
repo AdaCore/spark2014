@@ -9,13 +9,14 @@ package body Int_List is pragma SPARK_Mode (On);
    begin
       while Has_Element (L, C) loop
          pragma Loop_Invariant
-           (Has_Element (L'Loop_Entry, C) and then
-            Length (L) = Length (L'Loop_Entry) and then
-            Strict_Equal (Current_To_Last (L, C),
-              Current_To_Last (L'Loop_Entry, C)) and then
-              (for all D in First_To_Previous (L, C) =>
-                   Has_Element (L'Loop_Entry, D) and then
-                   Element (L, D) = Element (L'Loop_Entry, D) + 1));
+           (Length (L) = Length (L'Loop_Entry));
+         pragma Loop_Invariant (Positions (L) = Positions (L)'Loop_Entry);
+         pragma Loop_Invariant
+           (for all I in 1 .. P.Get (Positions (L), C) - 1 =>
+              Element (Model (L), I) = Element (Model (L'Loop_Entry), I) + 1);
+         pragma Loop_Invariant
+           (for all I in P.Get (Positions (L), C) .. Length (L) =>
+              Element (Model (L), I) = Element (Model (L'Loop_Entry), I));
          Replace_Element (L, C, Element (L, C) + 1);
          Next (L, C);
       end loop;

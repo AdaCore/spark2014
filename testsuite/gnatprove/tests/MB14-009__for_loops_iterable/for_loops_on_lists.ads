@@ -3,7 +3,7 @@ with Ada.Containers.Formal_Doubly_Linked_Lists;
 package For_Loops_On_Lists with SPARK_Mode is
    package My_Lists is new Formal_Doubly_Linked_Lists
      (Element_Type => Natural);
-   use My_Lists;
+   use My_Lists; use My_Lists.Formal_Model;
 
    function Search_0_For_In (L : List) return Cursor with
      Post => (Has_Element (L, Search_0_For_In'Result) and then
@@ -14,12 +14,13 @@ package For_Loops_On_Lists with SPARK_Mode is
    function Contains_0_For_Of (L : List) return Boolean with
      Post => (if Contains_0_For_Of'Result then (for some E of L => E = 0));
 
-   procedure Search_For_In (L : in out List; P : out Cursor) with
-     Post => (if Has_Element (L, P) then Element (L, P) = 0)
-     and then (for all Cu in First_To_Previous (L, P) =>
-                   Has_Element (L'Old, Cu) and then
-                   Element (L'Old, Cu) > 0 and then
-                   Element (L, Cu) = Element (L'Old, Cu) - 1);
+   procedure Search_For_In (L : in out List; C : out Cursor) with
+     Post => (if Has_Element (L, C) then Element (L, C) = 0)
+     and then (for all I in 1 .. (if C = No_Element then Length (L)
+                                  else P.Get (Positions (L), C) - 1) =>
+                 Element (Model (L)'Old, I) > 0
+               and then Element (Model (L), I)
+                      = Element (Model (L'Old), I) - 1);
 
    function Count_For_Of (L : List) return Boolean with
      Post => (if Count_For_Of'Result then

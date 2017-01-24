@@ -5,7 +5,7 @@ package Inst_Ext_Ax with SPARK_Mode is
    package OK_Lists1 is new Ada.Containers.Formal_Doubly_Linked_Lists
      (Element_Type => Natural);
    package OK_Lists2 is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (Element_Type => Natural, "=" => "=");
+     (Element_Type => Natural);
 
    subtype Int100 is Integer range 0 .. 100;
    subtype Int200 is Integer range 0 .. 200;

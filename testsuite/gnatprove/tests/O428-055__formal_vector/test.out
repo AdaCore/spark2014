@@ -1,25 +1,34 @@
-init_list_zero.adb:3:27: low: input value of private part of "L" might be used in "Init_List_Zero"
-init_list_zero.adb:5:11: info: postcondition proved (CVC4: 1 VC)
-init_list_zero.adb:5:12: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:5:25: low: input value of private part of "L" might be used
-init_list_zero.adb:7:19: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:7:26: medium: input value of private part of "L" will be used
-init_list_zero.adb:9:10: info: precondition proved (CVC4: 2 VC)
-init_list_zero.adb:9:23: medium: input value of private part of "L" will be used
-init_list_zero.adb:9:26: info: initialization of "Cu" proved
-init_list_zero.adb:10:30: info: loop invariant initialization proved (CVC4: 1 VC)
-init_list_zero.adb:10:30: info: loop invariant preservation proved (CVC4: 1 VC)
-init_list_zero.adb:10:30: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:10:45: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:10:64: low: input value of private part of "L" might be used
-init_list_zero.adb:10:67: info: initialization of "Cu" proved
-init_list_zero.adb:10:74: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:11:07: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:11:24: low: input value of private part of "L" might be used
-init_list_zero.adb:11:27: info: initialization of "Cu" proved
-init_list_zero.adb:12:07: info: precondition proved (CVC4: 1 VC)
-init_list_zero.adb:12:13: info: initialization of private part of "L" proved
-init_list_zero.adb:12:16: info: initialization of "Cu" proved
+a-cfdlli.ads:130:52: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:162:52: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:463:51: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:580:51: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:661:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:710:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:787:28: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:787:39: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:942:45: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1090:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1207:18: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1219:18: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1231:18: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1244:18: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1263:13: info: precondition proved (CVC4: 2 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1305:13: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1309:26: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cofuve.ads:184:45: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at loop_types.ads:15
+init_list_zero.adb:7:11: info: postcondition proved (CVC4: 1 VC)
+init_list_zero.adb:7:12: info: precondition proved (CVC4: 1 VC)
+init_list_zero.adb:7:12: info: precondition proved (CVC4: 2 VC)
+init_list_zero.adb:11:26: info: initialization of "Cu.Node" proved
+init_list_zero.adb:12:30: info: loop invariant initialization proved (CVC4: 1 VC)
+init_list_zero.adb:12:30: info: loop invariant preservation proved (CVC4: 1 VC)
+init_list_zero.adb:12:49: info: precondition proved (CVC4: 1 VC)
+init_list_zero.adb:12:70: info: initialization of "Cu.Node" proved
+init_list_zero.adb:13:32: info: precondition proved (CVC4: 2 VC)
+init_list_zero.adb:14:07: info: precondition proved (CVC4: 1 VC)
+init_list_zero.adb:14:27: info: initialization of "Cu.Node" proved
+init_list_zero.adb:15:07: info: precondition proved (CVC4: 1 VC)
+init_list_zero.adb:15:16: info: initialization of "Cu.Node" proved
 init_vec_zero.adb:3:26: low: input value of private part of "V" might be used in "Init_Vec_Zero"
 init_vec_zero.adb:5:11: info: postcondition proved (CVC4: 1 VC)
 init_vec_zero.adb:5:25: info: precondition proved (CVC4: 1 VC)
@@ -46,42 +55,31 @@ init_vec_zero.adb:11:43: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:11:56: info: initialization of private part of "V" proved
 init_vec_zero.adb:11:67: info: precondition proved (CVC4: 2 VC)
 init_vec_zero.adb:11:79: info: range check proved (CVC4: 1 VC)
-update_list_zero.adb:5:11: info: postcondition proved (CVC4: 1 VC; Z3: 1 VC)
-update_list_zero.adb:5:12: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:5:31: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:6:16: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:6:38: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:6:83: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:8:19: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:10:10: info: precondition proved (CVC4: 2 VC)
-update_list_zero.adb:10:26: info: initialization of "Cu" proved
-update_list_zero.adb:11:30: info: loop invariant initialization proved (CVC4: 1 VC)
-update_list_zero.adb:11:30: info: loop invariant preservation proved (CVC4: 1 VC)
-update_list_zero.adb:11:30: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:11:45: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:11:67: info: initialization of "Cu" proved
-update_list_zero.adb:12:32: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:13:30: info: loop invariant initialization proved (CVC4: 1 VC)
-update_list_zero.adb:13:30: info: loop invariant preservation proved (CVC4: 1 VC)
-update_list_zero.adb:13:30: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:13:45: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:13:67: info: initialization of "Cu" proved
-update_list_zero.adb:14:32: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:14:55: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:14:108: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:7:11: info: postcondition proved (CVC4: 1 VC)
+update_list_zero.adb:8:16: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:9:20: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:10:22: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:14:26: info: initialization of "Cu.Node" proved
 update_list_zero.adb:15:30: info: loop invariant initialization proved (CVC4: 1 VC)
 update_list_zero.adb:15:30: info: loop invariant preservation proved (CVC4: 1 VC)
-update_list_zero.adb:15:30: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:15:44: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:15:80: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:15:100: info: initialization of "Cu" proved
-update_list_zero.adb:16:30: info: loop invariant initialization proved (CVC4: 1 VC)
-update_list_zero.adb:16:30: info: loop invariant preservation proved (CVC4: 1 VC)
-update_list_zero.adb:16:30: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:16:57: info: initialization of "Cu" proved
-update_list_zero.adb:17:10: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:17:22: info: initialization of "Cu" proved
-update_list_zero.adb:18:10: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:18:30: info: initialization of "Cu" proved
-update_list_zero.adb:20:07: info: precondition proved (CVC4: 1 VC)
-update_list_zero.adb:20:16: info: initialization of "Cu" proved
+update_list_zero.adb:17:10: info: loop invariant initialization proved (CVC4: 1 VC)
+update_list_zero.adb:17:10: info: loop invariant preservation proved (CVC4: 1 VC)
+update_list_zero.adb:17:29: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:17:50: info: initialization of "Cu.Node" proved
+update_list_zero.adb:18:16: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:19:20: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:20:22: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:22:10: info: loop invariant initialization proved (CVC4: 1 VC)
+update_list_zero.adb:22:10: info: loop invariant preservation proved (CVC4: 1 VC)
+update_list_zero.adb:22:24: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:22:45: info: initialization of "Cu.Node" proved
+update_list_zero.adb:23:16: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:23:36: info: range check proved (CVC4: 1 VC)
+update_list_zero.adb:23:41: info: precondition proved (CVC4: 2 VC)
+update_list_zero.adb:23:72: info: range check proved (CVC4: 1 VC)
+update_list_zero.adb:24:10: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:24:22: info: initialization of "Cu.Node" proved
+update_list_zero.adb:25:10: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:25:30: info: initialization of "Cu.Node" proved
+update_list_zero.adb:27:07: info: precondition proved (CVC4: 1 VC)
+update_list_zero.adb:27:16: info: initialization of "Cu.Node" proved

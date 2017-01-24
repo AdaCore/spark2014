@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
+with Ada.Containers.Functional_Sets; use Ada.Containers;
 
 package Formal_Cont with
   SPARK_Mode
@@ -9,10 +9,10 @@ is
    function My_Equal_01 (A, B : Integer) return Boolean;
 
    -- Package instantiation with nonreturning subprogram
-   package New_List_01 is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package New_Set_01 is new Ada.Containers.Functional_Sets
      (Element_Type => Integer,
       "="          => My_Equal_01);
-   use New_List_01;
+   use New_Set_01;
 
    -- Test procedure for nonreturning instantiation
    procedure Test_01;
@@ -23,10 +23,10 @@ is
    function My_Equal_02 (A, B : Integer) return Boolean;
 
    -- Package instantiation with returning subprogram
-   package New_List_02 is new Ada.Containers.Formal_Doubly_Linked_Lists
+   package New_Set_02 is new Ada.Containers.Functional_Sets
      (Element_Type => Integer,
       "="          => My_Equal_02);
-   use New_List_02;
+   use New_Set_02;
 
    -- Test procedure for returning instantiation
    procedure Test_02;

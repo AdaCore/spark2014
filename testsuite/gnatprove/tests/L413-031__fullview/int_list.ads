@@ -8,8 +8,8 @@ package Int_List is pragma SPARK_Mode (On);
    function My_Eq (I1 : My_Int; I2 : My_Int) return Boolean is (I1 = I2);
 
    package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (My_Int, "=" => My_Eq);
-   use My_Lists;
+     (My_Int);
+   use My_Lists; use Formal_Model;
 
    procedure Add (L : in out List; I : My_Int) with
      Pre  => Length (L) < L.Capacity,

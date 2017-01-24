@@ -16,26 +16,23 @@ is
 
    subtype Val is Integer range -2 ** 31 .. 2 ** 31 - 1;
 
-   function Eq (I1 : Val; I2 : Val) return Boolean
-   is (I1 = I2);
-
-   package MyLists is new Ada.Containers.Formal_Doubly_Linked_Lists
-        (Val, "=" => Eq);
-   use MyLists;
+   package MyLists is new Ada.Containers.Formal_Doubly_Linked_Lists (Val);
+   use MyLists; use MyLists.Formal_Model;
 
    function Front (Q : in List) return Val
      with Pre  => Length (Q) > 0,
           Post => Last_Element (Q) = Front'Result;
 
-   function Tail (Q : in List) return List
-     with Pre  => Length (Q) > 0,
-          Post => Strict_Equal (Tail'Result, First_To_Previous (Q, Last (Q)));
+   function Tail (Q : in List) return List with
+     Pre  => Length (Q) > 0,
+     Post => Length (Tail'Result) = Length (Q) - 1
+     and Model (Tail'Result) < Model (Q);
 
-   function Enqueue (Q : in List; V : in Val) return List
-     with Pre  => Length (Q) < Q.Capacity,
-          Post => Length (Enqueue'Result) > 0 and then
-                  First_Element (Enqueue'Result) = V and then
-                  Strict_Equal (Current_To_Last (Enqueue'Result,
-                    Next (Enqueue'Result, First (Enqueue'Result))), Q);
+   function Enqueue (Q : in List; V : in Val) return List with
+     Pre  => Length (Q) < Q.Capacity,
+     Post => Length (Enqueue'Result) = Length (Q) + 1
+     and First_Element (Enqueue'Result) = V
+     and (for all I in 2 .. Length (Q) + 1 =>
+             Element (Model (Enqueue'Result), I) = Element (Model (Q), I - 1));
 
 end Queue;

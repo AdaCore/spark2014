@@ -12,10 +12,10 @@ is
    subtype Index is Index_Count range 0 .. Index_Count'Last - 1;
    type Set is array (Index) of Positive;
 
-   function Eq_Positive (Left, Right : Positive) return Boolean is (Left = Right);
+
    package Partitioning_Sets is new
-     Formal_Doubly_Linked_Lists (Element_Type => Positive,
-                                 "="          => Eq_Positive);
+     Formal_Doubly_Linked_Lists (Element_Type => Positive);
+
    subtype Partitioning_Set is Partitioning_Sets.List;
    use Partitioning_Sets;
 

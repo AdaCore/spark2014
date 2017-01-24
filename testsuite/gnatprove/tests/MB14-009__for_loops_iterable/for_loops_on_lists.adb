@@ -4,7 +4,8 @@ package body For_Loops_On_Lists with SPARK_Mode is
    begin
       for Cu in L loop
          pragma Loop_Invariant
-           (for all Cu2 in First_To_Previous (L, Cu) => Element (L, Cu2) /= 0);
+           (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
+              Element (Model (L), I) /= 0);
          if Element (L, Cu) = 0 then
             return Cu;
          end if;
@@ -22,28 +23,29 @@ package body For_Loops_On_Lists with SPARK_Mode is
       return False;
    end Contains_0_For_Of;
 
-   procedure Search_For_In (L : in out List; P : out Cursor) is
+   procedure Search_For_In (L : in out List; C : out Cursor) is
    begin
       for Cu in L loop
          if Element (L, Cu) = 0 then
-            P := Cu;
+            C := Cu;
             return;
          end if;
 
-         pragma Loop_Invariant (Has_Element (L'Loop_Entry, Cu));
+         pragma Loop_Invariant (Length (L) = Length (L'Loop_Entry));
          pragma Loop_Invariant
-           (Strict_Equal (Current_To_Last (L, Cu),
-            Current_To_Last (L'Loop_Entry, Cu)));
+           (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
+              Element (Model (L'Loop_Entry), I) > 0
+            and then Element (Model (L), I)
+                   = Element (Model (L'Loop_Entry), I) - 1);
          pragma Loop_Invariant
-           (for all Cu2 in First_To_Previous (L, Cu) =>
-                Has_Element (L'Loop_Entry, Cu2)
-            and then Element (L'Loop_Entry, Cu2) > 0
-            and then Element (L, Cu2) = Element (L'Loop_Entry, Cu2) - 1);
+           (for all I in P.Get (Positions (L), Cu) .. Length (L) =>
+                Element (Model (L), I)
+              = Element (Model (L'Loop_Entry), I));
          pragma Loop_Invariant (Element (L, Cu) /= 0);
 
          Replace_Element (L, Cu, Element (L, Cu) - 1);
       end loop;
-      P := No_Element;
+      C := No_Element;
    end Search_For_In;
 
    function Count_For_Of (L : List) return Boolean is

@@ -12,7 +12,7 @@ package P is
 
    function My_Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
 
-   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer, My_Eq);
+   package My_Lists is new Ada.Containers.Formal_Doubly_Linked_Lists (Integer);
    use My_Lists;
 
    procedure Iter_Over_Lists (X : My_Lists.List);

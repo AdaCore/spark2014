@@ -1,3 +1,7 @@
+a-cofuse.ads:159:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
+a-cofuse.ads:159:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
+a-cofuse.ads:160:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
+a-cofuse.ads:160:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 call_proc_no_body.adb:4:07: medium: precondition might fail
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
@@ -102,20 +106,86 @@ file_io.ads:64:42: info: function contract not available for proof ("Index" may 
 file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
 file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
 formal_cont.adb:11:14: info: initialization of "Result" proved
-formal_cont.adb:15:07: info: initialization of private part of "L" proved
-formal_cont.adb:15:29: info: range check proved (CVC4: 1 VC)
-formal_cont.adb:17:21: info: precondition proved (CVC4: 1 VC)
-formal_cont.adb:17:32: info: initialization of private part of "L" proved
-formal_cont.adb:26:07: info: initialization of private part of "L" proved
-formal_cont.adb:26:29: info: range check proved (CVC4: 1 VC)
-formal_cont.adb:28:21: info: precondition proved (CVC4: 1 VC)
-formal_cont.adb:28:32: info: initialization of private part of "L" proved
+formal_cont.adb:15:07: info: initialization of "L" proved
+formal_cont.adb:17:31: info: initialization of "L" proved
+formal_cont.adb:26:07: info: initialization of "L" proved
+formal_cont.adb:28:31: info: initialization of "L" proved
 formal_cont.ads:9:13: warning: subprogram "My_Equal_01" might not terminate
-formal_cont.ads:12:12: warning: subprogram "Oeq" might not terminate
+formal_cont.ads:12:04: info: function contract not available for proof ("Is_Add" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Is_Add" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Is_Empty" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Is_Intersection" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Is_Union" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Iter_Has_Element" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Iter_Has_Element" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Length" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Mem" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("My_Equal_01" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:100
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:100
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:101
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:102
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:110
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:111
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:112
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:120
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:122
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:128
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:129
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:131
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:140
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:140
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:141
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:148
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:149
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:150
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:159
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:159
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:160
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:161
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:161
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:162
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:163
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:177
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:180
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:43
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:43
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:66
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:73
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:74
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:90
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:91
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:91
+formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:92
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
 formal_cont.ads:18:14: warning: subprogram "Test_01" might not terminate
 formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate
-formal_cont.ads:26:12: info: subprogram "Oeq" will terminate
 formal_cont.ads:32:14: info: subprogram "Test_02" will terminate
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally

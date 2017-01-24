@@ -8,9 +8,9 @@ is
    function Eq (Left, Right : T) return Boolean is (Left = Right);
 
    package Lists is new Ada.Containers.Formal_Doubly_Linked_Lists
-     (Element_Type => T,
-      "="          => Eq);
+     (Element_Type => T);
    use Lists;
+
 
    procedure Test_01 (X : out T)
    is

@@ -6,7 +6,8 @@ package body Linked_List is pragma SPARK_Mode (On);
       while Cu /= No_Element loop
          pragma Loop_Invariant
            (Has_Element (L, Cu) and then
-                not Contains (First_To_Previous (L, Cu), 0));
+                (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
+                     Element (Model (L), I) /= 0));
 
          if Element (L, Cu) = 0 then
             return Cu;

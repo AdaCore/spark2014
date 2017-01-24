@@ -188,7 +188,9 @@ is
          pragma Loop_Invariant (for all C in X => Contains (D, Element (X, C)));
          pragma Loop_Invariant (for all J in Index => Contains (D, A(J)));
 
-         pragma Loop_Variant (Decreases => Length (Current_To_Last (X, C)));
+         pragma Loop_Variant (Increases =>
+                                (if C = Partitioning_Sets.No_Element then Length (X)
+                                 else Formal_Model.P.Get (Positions (X), C) - 1));
       end loop;
 
       Make_New_Partitions (P, F);

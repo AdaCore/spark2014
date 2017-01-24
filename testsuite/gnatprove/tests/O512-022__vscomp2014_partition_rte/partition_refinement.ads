@@ -14,10 +14,10 @@ is
 
    function Eq_Positive (Left, Right : Positive) return Boolean is (Left = Right);
    package Partitioning_Sets is new
-     Formal_Doubly_Linked_Lists (Element_Type => Positive,
-                                 "="          => Eq_Positive);
+     Formal_Doubly_Linked_Lists (Element_Type => Positive);
    subtype Partitioning_Set is Partitioning_Sets.List;
    use Partitioning_Sets;
+   use Partitioning_Sets.Formal_Model;
 
    function Lt_Positive (Left, Right : Positive) return Boolean is (Left < Right);
    function Eq_Index (Left, Right : Index) return Boolean is (Left = Right);
