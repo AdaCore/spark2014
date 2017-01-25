@@ -12,7 +12,7 @@ package Binary_Trees with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    type Forest is private with Default_Initial_Condition => Size (Forest) = 0;
-   --  Memory region shaped as a set of related binary trees
+   --  Containsory region shaped as a set of related binary trees
 
    function Size (F : Forest) return Extended_Index_Type;
    --  Number of allocated nodes in the forest

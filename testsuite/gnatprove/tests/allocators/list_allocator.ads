@@ -34,13 +34,14 @@ is
           and then
         (for all RR in 1 .. Capacity => Get (Model.Available, RR) = Resource (RR))
           and then
-        (for all RR in 1 .. Capacity => Mem (Model.Available, Resource (RR))))
+        (for all RR in 1 .. Capacity => Contains (Model.Available, Resource (RR))))
    is
       package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
                                                            Element_Type => Resource);
       use S1;
 
-      package S2 is new Ada.Containers.Functional_Sets (Element_Type => Resource);
+      package S2 is new Ada.Containers.Functional_Sets
+        (Element_Type => Resource, Equivalent_Elements => "=");
       use S2;
 
       type T is record
@@ -48,7 +49,7 @@ is
          Allocated : S2.Set;
       end record;
 
-      function Mem (S : Sequence; E : Resource) return Boolean is
+      function Contains (S : Sequence; E : Resource) return Boolean is
         (for some I in 1 .. Integer (Length (S)) => Get (S, I) = E);
 
       function Is_Prepend
@@ -59,8 +60,17 @@ is
         (Length (S) < Ada.Containers.Count_Type'Last
          and then Length (Result) = Length (S) + 1
          and then Get (Result, 1) = E
-         and then (for all M in 1 .. Integer (Length (S)) =>
-                        Get (Result, M + 1) = Get (S, M)));
+         and then Range_Shifted (S, Result, 1, Last (S), Offset => 1));
+
+      function Is_Add
+        (S : S2.Set; E : Resource; Result : S2.Set) return Boolean
+      --  Returns True if Result is S plus E.
+
+      is
+        (not Contains (S, E)
+         and then Contains (Result, E)
+         and then Included_Except (Result, S, E)
+         and then S <= Result);
 
       function "=" (X, Y : T) return Boolean is
         (X.Available = Y.Available
@@ -100,7 +110,7 @@ is
 
        --  When the resource is allocated, make it available
 
-       (Mem (Model.Allocated, Res) =>
+       (Contains (Model.Allocated, Res) =>
           Is_Prepend (Model.Available'Old, Res, Result => Model.Available)
             and then
           Is_Add (Model.Allocated, Res, Result => Model.Allocated'Old),

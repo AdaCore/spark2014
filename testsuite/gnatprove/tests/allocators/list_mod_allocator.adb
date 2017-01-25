@@ -57,13 +57,13 @@ is
                      (if Get (M.Available, J) = Get (M.Available, K) then J = K)))
          and then (if First_Available /= No_Resource
                    and then Data (Get (M.Available, Integer (Length (M.Available)))).Next in Valid_Resource
-                   then Mem (M.Available, Data (Get (M.Available, Integer (Length (M.Available)))).Next))
+                   then Contains (M.Available, Data (Get (M.Available, Integer (Length (M.Available)))).Next))
          and then
            (for all E of M.Allocated => E in Valid_Resource)
          and then (for all R in Valid_Resource =>
                        (case Data (R).Stat is
-                           when Available => not Mem (M.Allocated, R),
-                           when Allocated => not Mem (M.Available, R) and Mem (M.Allocated, R))));
+                           when Available => not Contains (M.Allocated, R),
+                           when Allocated => not Contains (M.Available, R) and Contains (M.Allocated, R))));
       --  If the allocator is well-formed, then its model is well-formed
       --  following this definition. In particular, the list of available cells
       --  is allowed to be cyclic or incomplete, that is, not to contain every
@@ -85,11 +85,11 @@ is
               (for all E of Unseen => E in 1 .. R - 1);
             pragma Loop_Invariant
               (for all E in Valid_Resource =>
-                 (if Data (E).Stat = Available then not Mem (Alloc, E)));
+                 (if Data (E).Stat = Available then not Contains (Alloc, E)));
             pragma Loop_Invariant
               (for all E in 1 .. R - 1 =>
-                 (if Data (E).Stat = Allocated then Mem (Alloc, E)
-                  else Mem (Unseen, E)));
+                 (if Data (E).Stat = Allocated then Contains (Alloc, E)
+                  else Contains (Unseen, E)));
             pragma Loop_Invariant (Length (Alloc) <= Ada.Containers.Count_Type (R - 1));
             pragma Loop_Invariant (Length (Unseen) <= Ada.Containers.Count_Type (R - 1));
             if Data (R).Stat = Allocated then
@@ -102,7 +102,7 @@ is
          declare
             R : Resource := First_Available;
          begin
-            while R /= No_Resource and not Mem (Avail, R) loop
+            while R /= No_Resource and not Contains (Avail, R) loop
                Unseen := Remove (Unseen, R);
                Avail := Add (Avail, R);
                R := Data (R).Next;
@@ -112,8 +112,8 @@ is
                pragma Loop_Invariant (Length (Avail) <= Capacity - Length (Unseen));
                pragma Loop_Invariant
                  (for all E in Valid_Resource =>
-                    (if Data (E).Stat = Available and then not Mem (Avail, E)
-                    then Mem (Unseen, E)));
+                    (if Data (E).Stat = Available and then not Contains (Avail, E)
+                    then Contains (Unseen, E)));
                pragma Loop_Invariant
                  (Length (Avail) > 0 and then Get (Avail, 1) = First_Available);
                pragma Loop_Invariant
@@ -133,7 +133,7 @@ is
                          (if Get (Avail, J) = Get (Avail, K) then J = K)));
                pragma Loop_Invariant
                  (for all E in Valid_Resource =>
-                    (if Data (E).Stat = Allocated then not Mem (Avail, E)));
+                    (if Data (E).Stat = Allocated then not Contains (Avail, E)));
             end loop;
          end;
 
@@ -147,7 +147,7 @@ is
             Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource)
          and then
            (for all R in Valid_Resource =>
-                (if Data (R).Stat = Available then Mem (Model.Available, R))));
+                (if Data (R).Stat = Available then Contains (Model.Available, R))));
       --  Is_Valid completes Is_Well_Formed by adding properties relative to
       --  reachability of the free list which can only be expressed on the
       --  model of the allocator.

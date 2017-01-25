@@ -26,8 +26,8 @@ is
             and then
          (for all R in Valid_Resource =>
             (case Data (R) is
-               when Available => Mem (M.Available, R) and not Mem (M.Allocated, R),
-               when Allocated => not Mem (M.Available, R) and Mem (M.Allocated, R))));
+               when Available => Contains (M.Available, R) and not Contains (M.Allocated, R),
+               when Allocated => not Contains (M.Available, R) and Contains (M.Allocated, R))));
 
       function Model return T is
          Avail : Set;
@@ -47,8 +47,8 @@ is
                   and then
                (for all RR in 1 .. R =>
                  (case Data (RR) is
-                    when Available => Mem (Avail, RR) and not Mem (Alloc, RR),
-                    when Allocated => not Mem (Avail, RR) and Mem (Alloc, RR))));
+                    when Available => Contains (Avail, RR) and not Contains (Alloc, RR),
+                    when Allocated => not Contains (Avail, RR) and Contains (Alloc, RR))));
          end loop;
          return T'(Available => Avail, Allocated => Alloc);
       end Model;

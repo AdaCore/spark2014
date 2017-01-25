@@ -9,10 +9,10 @@ package body Search_Trees with SPARK_Mode is
        (if Size (T.Struct) = 0 then Is_Empty (Values'Result)
         else
           ((for all I in Index_Type =>
-             (if Model (T.Struct, T.Root) (I).K then Mem (Values'Result, T.Values (I))))
+             (if Model (T.Struct, T.Root) (I).K then Contains (Values'Result, T.Values (I))))
            and then
              (for all V in Natural =>
-                  (if Mem (Values'Result, V) then
+                  (if Contains (Values'Result, V) then
                      (for some I in Index_Type =>
                             Model (T.Struct, T.Root) (I).K and then T.Values (I) = V)))))
    is
@@ -24,17 +24,17 @@ package body Search_Trees with SPARK_Mode is
 
       for J in Index_Type loop
          if Model (T.Struct, T.Root) (J).K
-           and then not Mem (S, T.Values (J))
+           and then not Contains (S, T.Values (J))
          then
             S := Add (S, T.Values (J));
          end if;
          pragma Loop_Invariant (Length (S) <= J);
          pragma Loop_Invariant
            (for all I in 1 .. J =>
-              (if Model (T.Struct, T.Root) (I).K then Mem (S, T.Values (I))));
+              (if Model (T.Struct, T.Root) (I).K then Contains (S, T.Values (I))));
          pragma Loop_Invariant
            (for all V in Natural =>
-              (if Mem (S, V) then
+              (if Contains (S, V) then
                    (for some I in Index_Type =>
                         Model (T.Struct, T.Root) (I).K and then T.Values (I) = V)));
       end loop;
@@ -1155,10 +1155,10 @@ package body Search_Trees with SPARK_Mode is
    end Right_Rotate;
 
    ---------
-   -- Mem --
+   -- Contains --
    ---------
 
-   function Mem (T : Search_Tree; V : Natural) return Boolean is
+   function Contains (T : Search_Tree; V : Natural) return Boolean is
       Current  : Extended_Index_Type := T.Root;
       Previous : Extended_Index_Type := T.Root with Ghost;
       D        : Direction := Left with Ghost;
@@ -1198,7 +1198,7 @@ package body Search_Trees with SPARK_Mode is
       end if;
 
       return False;
-   end Mem;
+   end Contains;
 
    ------------
    -- Insert --
@@ -1396,7 +1396,7 @@ package body Search_Trees with SPARK_Mode is
                I := Empty;
                pragma Assert (for some I in Index_Type =>
                                 Model (T) (I).K and then T.Values (I) = V);
-               pragma Assert (Mem (T, V));
+               pragma Assert (Contains (T, V));
                return;
             elsif V < T.Values (Previous) then
                D := Left;

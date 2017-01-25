@@ -10,8 +10,8 @@ is
 
    -- Package instantiation with nonreturning subprogram
    package New_Set_01 is new Ada.Containers.Functional_Sets
-     (Element_Type => Integer,
-      "="          => My_Equal_01);
+     (Element_Type       => Integer,
+      Equivalent_Elements => My_Equal_01);
    use New_Set_01;
 
    -- Test procedure for nonreturning instantiation
@@ -24,8 +24,8 @@ is
 
    -- Package instantiation with returning subprogram
    package New_Set_02 is new Ada.Containers.Functional_Sets
-     (Element_Type => Integer,
-      "="          => My_Equal_02);
+     (Element_Type        => Integer,
+      Equivalent_Elements => My_Equal_02);
    use New_Set_02;
 
    -- Test procedure for returning instantiation

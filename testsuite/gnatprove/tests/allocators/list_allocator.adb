@@ -45,8 +45,8 @@ is
             and then
          (for all R in Valid_Resource =>
             (case Data (R).Stat is
-               when Available => Mem (Model.Available, R) and not Mem (Model.Allocated, R),
-               when Allocated => not Mem (Model.Available, R) and Mem (Model.Allocated, R))));
+               when Available => Contains (Model.Available, R) and not Contains (Model.Allocated, R),
+               when Allocated => not Contains (Model.Available, R) and Contains (Model.Allocated, R))));
 
    begin
       pragma Assert (Length (Model.Available) = 0);
@@ -59,7 +59,7 @@ is
          pragma Loop_Invariant
            (for all RR in 1 .. R => Get (Model.Available, Natural (RR)) = RR);
          pragma Loop_Invariant
-           (for all RR in 1 .. R => Mem (Model.Available, RR));
+           (for all RR in 1 .. R => Contains (Model.Available, RR));
       end loop;
       pragma Assert (Length (Model.Available) = Capacity);
    end M;

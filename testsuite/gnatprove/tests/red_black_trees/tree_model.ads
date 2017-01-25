@@ -75,7 +75,13 @@ package Tree_Model with SPARK_Mode is
        and then Is_Add (S2, D, S4),
      Post => Is_Concat (T, S3, S4);
 
-   package V_Set is new Ada.Containers.Functional_Sets (Natural);
+   package V_Set is new Ada.Containers.Functional_Sets (Natural, "=");
    subtype Value_Set is V_Set.Set;
+   use V_Set;
+
+   function Is_Add (S1 : Value_Set; E : Natural; S2 : Value_Set) return Boolean
+   is
+     (not Contains (S1, E) and Contains (S2, E)
+      and S1 <= S2 and Included_Except (S2, S1, E));
 
 end Tree_Model;

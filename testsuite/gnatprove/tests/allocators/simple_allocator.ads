@@ -1,5 +1,7 @@
 pragma Unevaluated_Use_Of_Old (Allow);
 with Ada.Containers.Functional_Sets;
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 
 package Simple_Allocator with
   SPARK_Mode,
@@ -21,7 +23,8 @@ is
 
    package M with Ghost is
 
-      package S is new Ada.Containers.Functional_Sets (Element_Type => Resource);
+      package S is new Ada.Containers.Functional_Sets
+        (Element_Type => Resource, Equivalent_Elements => "=");
       use S;
 
       type T is record
@@ -33,6 +36,16 @@ is
         (X.Available = Y.Available
            and then
          X.Allocated = Y.Allocated);
+
+      function Is_Add
+        (S : Set; E : Resource; Result : Set) return Boolean
+      --  Returns True if Result is S plus E.
+
+      is
+        (not Contains (S, E)
+         and then Contains (Result, E)
+         and then Included_Except (Result, S, E)
+         and then S <= Result);
 
       function Is_Valid (M : T) return Boolean;
 
@@ -65,7 +78,7 @@ is
 
        --  When the resource is allocated, make it available
 
-       (Mem (Model.Allocated, Res) =>
+       (Contains (Model.Allocated, Res) =>
           Is_Add (Model.Available'Old, Res, Result => Model.Available)
             and then
           Is_Add (Model.Allocated, Res, Result => Model.Allocated'Old),

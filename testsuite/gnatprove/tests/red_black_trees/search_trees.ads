@@ -39,8 +39,8 @@ package Search_Trees with SPARK_Mode is
      Ghost,
      Post => (if Size (T) = 0 then Is_Empty (Values'Result));
 
-   function Mem (T : Search_Tree; V : Natural) return Boolean with
-     Post => Mem'Result = Mem (Values (T), V);
+   function Contains (T : Search_Tree; V : Natural) return Boolean with
+     Post => Contains'Result = Contains (Values (T), V);
 
    procedure Insert
      (T : in out Search_Tree; V : Natural; I : out Extended_Index_Type)
@@ -56,7 +56,7 @@ package Search_Trees with SPARK_Mode is
        --  would be the component-wise equality of SPARK, not the logical
        --  equality of T and T'Old. Instead, state explicitly which properties
        --  are preserved.
-       (Mem (Values (T), V) =>
+       (Contains (Values (T), V) =>
           I = Empty
           and then Values (T) = Values (T'Old)
           and then (for all J in Index_Type => Parent (T, J) = Parent (T'Old, J))
