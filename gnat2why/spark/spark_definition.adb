@@ -1637,6 +1637,13 @@ package body SPARK_Definition is
                   end loop;
                end;
 
+            elsif Has_Floating_Point_Type (Etype (N))
+                    and then
+                  Has_Fixed_Point_Type (Etype (Expression (N)))
+            then
+               Mark_Unsupported
+                 ("conversion from fixed-point to floating-point", N);
+
             elsif Has_Fixed_Point_Type (Etype (N))
                     and then
                   Has_Fixed_Point_Type (Etype (Expression (N)))

@@ -29,6 +29,7 @@ Tool Limitations
      type as its fixed-point argument(s) are rejected, except for the special
      case of dividing a fixed-point value by the small of its type
      (T'Small) to yield an integer result which is always exact.
+   * conversions from fixed-point types to floating-point types are rejected
 
    These restrictions ensure that the result of fixed-point operations always
    belongs to the *perfect result set* as defined in Ada RM G.2.3.

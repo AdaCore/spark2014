@@ -96,14 +96,18 @@ binary_fixed.adb:98:17: info: initialization of "Y2" proved
 binary_fixed.adb:98:17: info: range check proved (CVC4: 1 VC)
 binary_fixed.adb:99:17: info: initialization of "Y3" proved
 binary_fixed.adb:99:17: info: range check proved (CVC4: 1 VC)
-binary_fixed.adb:102:16: medium: range check might fail
-binary_fixed.adb:103:16: medium: range check might fail
-binary_fixed.adb:103:25: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:104:23: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:104:27: info: overflow check proved (CVC4: 1 VC)
-binary_fixed.adb:104:27: medium: range check might fail
+binary_fixed.adb:101:17: info: initialization of "Z1" proved
+binary_fixed.adb:101:17: medium: range check might fail
+binary_fixed.adb:102:17: info: initialization of "Z2" proved
+binary_fixed.adb:103:17: info: initialization of "Z3" proved
+binary_fixed.adb:103:20: info: float overflow check proved (Interval)
+binary_fixed.adb:103:20: medium: range check might fail
+binary_fixed.adb:104:17: info: initialization of "Z3" proved
+binary_fixed.adb:104:20: info: float overflow check proved (Interval)
+binary_fixed.adb:104:25: info: float overflow check proved (Interval)
+binary_fixed.adb:104:25: medium: range check might fail
 binary_fixed.adb:106:17: info: initialization of "Z1" proved
-binary_fixed.adb:106:17: medium: range check might fail
+binary_fixed.adb:106:17: info: range check proved (CVC4: 1 VC)
 binary_fixed.adb:107:17: info: initialization of "Z2" proved
 binary_fixed.adb:108:17: info: initialization of "Z3" proved
 binary_fixed.adb:115:25: info: assertion proved (CVC4: 1 VC)
@@ -221,14 +225,18 @@ decimal_fixed.adb:98:17: info: initialization of "Y2" proved
 decimal_fixed.adb:98:17: info: range check proved (CVC4: 1 VC)
 decimal_fixed.adb:99:17: info: initialization of "Y3" proved
 decimal_fixed.adb:99:17: info: range check proved (CVC4: 1 VC)
-decimal_fixed.adb:102:16: medium: range check might fail
-decimal_fixed.adb:103:16: medium: range check might fail
-decimal_fixed.adb:103:25: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:104:23: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:104:27: info: overflow check proved (CVC4: 1 VC)
-decimal_fixed.adb:104:27: medium: range check might fail
+decimal_fixed.adb:101:17: info: initialization of "Z1" proved
+decimal_fixed.adb:101:17: medium: range check might fail
+decimal_fixed.adb:102:17: info: initialization of "Z2" proved
+decimal_fixed.adb:103:17: info: initialization of "Z3" proved
+decimal_fixed.adb:103:20: info: float overflow check proved (Interval)
+decimal_fixed.adb:103:20: medium: range check might fail
+decimal_fixed.adb:104:17: info: initialization of "Z3" proved
+decimal_fixed.adb:104:20: info: float overflow check proved (Interval)
+decimal_fixed.adb:104:25: info: float overflow check proved (Interval)
+decimal_fixed.adb:104:25: medium: range check might fail
 decimal_fixed.adb:106:17: info: initialization of "Z1" proved
-decimal_fixed.adb:106:17: medium: range check might fail
+decimal_fixed.adb:106:17: info: range check proved (CVC4: 1 VC)
 decimal_fixed.adb:107:17: info: initialization of "Z2" proved
 decimal_fixed.adb:108:17: info: initialization of "Z3" proved
 decimal_fixed.adb:115:25: info: assertion proved (CVC4: 1 VC)
