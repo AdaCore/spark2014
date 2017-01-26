@@ -157,9 +157,6 @@ free from side-effects only retrieves or computes a value.
     * the default_expression of a discriminant_specification
       (see :ref:`discriminants`);
 
-    * a Default_Initial_Condition aspect specification
-      (see :ref:`default_initial_condition_aspect`);
-
     * a Dynamic_Predicate aspect specification
       (see :ref:`subtype_predicates`);
 
