@@ -7,27 +7,27 @@ deceleration_curve.adb:40:35: info: initialization of "speed" proved
 deceleration_curve.adb:40:45: medium: loop invariant might fail after first iteration, cannot prove speed <= Initial_Speed
 deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1.0/speed
 deceleration_curve.adb:41:34: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:41:34: info: overflow check proved (CVC4: 1 VC)
+deceleration_curve.adb:41:34: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:41:35: info: initialization of "speed" proved
 deceleration_curve.adb:41:48: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:41:48: medium: overflow check might fail
+deceleration_curve.adb:41:48: medium: float overflow check might fail
 deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:44:38: medium: overflow check might fail
+deceleration_curve.adb:44:38: medium: float overflow check might fail
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
 deceleration_curve.adb:46:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:48:39: medium: overflow check might fail
+deceleration_curve.adb:48:39: medium: float overflow check might fail
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
-deceleration_curve.adb:48:48: medium: overflow check might fail
+deceleration_curve.adb:48:48: medium: float overflow check might fail
 deceleration_curve.adb:50:48: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:50:48: medium: overflow check might fail
+deceleration_curve.adb:50:48: medium: float overflow check might fail
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
-deceleration_curve.adb:51:12: medium: overflow check might fail
+deceleration_curve.adb:51:12: medium: float overflow check might fail
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
 deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0
 deceleration_curve.adb:59:19: info: initialization of "speed" proved
-deceleration_curve.adb:59:25: info: overflow check proved (CVC4: 1 VC)
+deceleration_curve.adb:59:25: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:59:27: info: initialization of "delta_speed" proved
 deceleration_curve.adb:61:22: info: initialization of "distance" proved
 deceleration_curve.adb:61:31: medium: overflow check might fail
@@ -40,14 +40,14 @@ deceleration_curve.adb:83:50: info: initialization of "location" proved
 deceleration_curve.adb:84:44: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:84:47: info: initialization of "speed" proved
 deceleration_curve.adb:88:13: info: initialization of "speed" proved
-deceleration_curve.adb:88:19: medium: overflow check might fail
-deceleration_curve.adb:88:32: medium: overflow check might fail
-deceleration_curve.adb:89:13: medium: overflow check might fail
-deceleration_curve.adb:89:29: medium: overflow check might fail
+deceleration_curve.adb:88:19: medium: float overflow check might fail
+deceleration_curve.adb:88:32: medium: float overflow check might fail
+deceleration_curve.adb:89:13: medium: float overflow check might fail
+deceleration_curve.adb:89:29: medium: float overflow check might fail
 deceleration_curve.adb:89:53: info: initialization of "location" proved
-deceleration_curve.adb:90:13: medium: overflow check might fail
+deceleration_curve.adb:90:13: medium: float overflow check might fail
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:90:46: info: overflow check proved (Interval)
+deceleration_curve.adb:90:46: info: float overflow check proved (Interval)
 deceleration_curve.adb:91:13: info: initialization of "speed" proved
 deceleration_curve.adb:95:36: info: overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:95:36: info: range check proved (CVC4: 1 VC)
@@ -108,16 +108,16 @@ sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:45:23: medium: precondition might fail
-sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: medium: precondition might fail
-sec_3_13_6_deceleration.ads:46:38: medium: overflow check might fail
-sec_3_13_6_deceleration.ads:46:50: info: overflow check proved (Interval)
-sec_3_13_6_deceleration.ads:46:57: info: overflow check proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:46:38: medium: float overflow check might fail
+sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
+sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: medium: precondition might fail
-sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
-sec_3_13_6_deceleration.ads:52:26: info: overflow check proved (CVC4: 1 VC)
+sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved
@@ -418,10 +418,10 @@ step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
-units.adb:24:38: medium: overflow check might fail
+units.adb:24:38: medium: float overflow check might fail
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
-units.adb:24:48: info: overflow check proved (Interval)
-units.ads:37:22: medium: overflow check might fail
+units.adb:24:48: info: float overflow check proved (Interval)
+units.ads:37:22: medium: float overflow check might fail
 units.ads:37:32: info: division check proved (CVC4: 1 VC)
-units.ads:37:32: info: overflow check proved (Interval)
+units.ads:37:32: info: float overflow check proved (Interval)
 units.ads:43:20: info: precondition proved (CVC4: 1 VC)

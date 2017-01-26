@@ -6,19 +6,19 @@ a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiati
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:9
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:8
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:9
-aggregates.adb:11:46: info: overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
-aggregates.adb:13:19: info: overflow check proved (Interval), in call inlined at aggregates.adb:29
-aggregates.adb:14:20: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:13:19: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:14:20: medium: float overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:14:22: info: initialization of "Approx" proved
 aggregates.adb:14:22: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
-aggregates.adb:14:29: medium: overflow check might fail, in call inlined at aggregates.adb:29
-aggregates.adb:15:24: info: overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:24: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:15:27: info: initialization of "Approx" proved
 aggregates.adb:15:27: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
-aggregates.adb:15:34: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:34: medium: float overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
-aggregates.adb:15:38: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:38: medium: float overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:17:14: info: initialization of "Approx" proved
 aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:25:13: info: length check proved (CVC4: 1 VC)
@@ -27,7 +27,7 @@ aggregates.adb:27:13: info: length check proved (CVC4: 1 VC)
 aggregates.adb:28:13: info: length check proved (CVC4: 1 VC)
 aggregates.adb:29:13: info: length check proved (CVC4: 1 VC)
 aggregates.adb:29:24: info: initialization of "A" proved
-aggregates.adb:29:26: medium: overflow check might fail
+aggregates.adb:29:26: medium: float overflow check might fail
 aggregates.adb:29:28: info: initialization of "B" proved
 aggregates.adb:29:28: info: initialization of "C14b" proved
 aggregates.adb:32:13: info: length check proved (CVC4: 2 VC)
@@ -48,7 +48,7 @@ average.adb:15:18: info: range check proved (Interval)
 average.adb:15:18: medium: overflow check might fail
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
-average.adb:15:23: info: overflow check proved (Interval)
+average.adb:15:23: info: float overflow check proved (Interval)
 average.adb:17:15: warning: assuming "Put" has no effect on global items
 average.adb:17:15: warning: no Global contract available for "Put"
 average.adb:18:21: warning: assuming "Put" has no effect on global items
@@ -70,7 +70,7 @@ average_with_use.adb:15:18: info: range check proved (Interval)
 average_with_use.adb:15:18: medium: overflow check might fail
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
-average_with_use.adb:15:23: info: overflow check proved (Interval)
+average_with_use.adb:15:23: info: float overflow check proved (Interval)
 average_with_use.adb:17:04: warning: assuming "Put" has no effect on global items
 average_with_use.adb:17:04: warning: no Global contract available for "Put"
 average_with_use.adb:18:04: warning: assuming "Put" has no effect on global items
@@ -83,8 +83,8 @@ bad_types.adb:7:21: warning: no Global contract available for "Get"
 bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
 bad_types.adb:8:21: warning: no Global contract available for "Get"
 bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: overflow check might fail
-bad_types.adb:9:31: medium: overflow check might fail
+bad_types.adb:9:25: medium: float overflow check might fail
+bad_types.adb:9:31: medium: float overflow check might fail
 bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
@@ -409,9 +409,9 @@ control_structures.adb:111:58: info: initialization of "F" proved
 control_structures.adb:111:60: info: division check proved (CVC4: 1 VC)
 control_structures.adb:113:07: info: initialization of "X" proved
 control_structures.adb:114:18: info: initialization of "X" proved
-control_structures.adb:116:23: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:116:23: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:116:25: info: initialization of "X" proved
-control_structures.adb:119:44: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:119:44: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:119:46: info: initialization of "X" proved
 control_structures.adb:123:11: info: initialization of "C" proved
 control_structures.adb:123:13: info: overflow check proved (CVC4: 1 VC)
@@ -432,17 +432,17 @@ control_structures.adb:154:18: medium: overflow check might fail
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
-control_structures.adb:158:16: info: overflow check proved (Interval)
+control_structures.adb:158:16: info: float overflow check proved (Interval)
 control_structures.adb:159:15: info: initialization of "X" proved
-control_structures.adb:159:17: medium: overflow check might fail
+control_structures.adb:159:17: medium: float overflow check might fail
 control_structures.adb:159:19: info: initialization of "Approx" proved
-control_structures.adb:159:26: medium: overflow check might fail
-control_structures.adb:160:21: info: overflow check proved (Interval)
+control_structures.adb:159:26: medium: float overflow check might fail
+control_structures.adb:160:21: info: float overflow check proved (Interval)
 control_structures.adb:160:24: info: initialization of "Approx" proved
-control_structures.adb:160:31: medium: overflow check might fail
+control_structures.adb:160:31: medium: float overflow check might fail
 control_structures.adb:160:33: info: initialization of "X" proved
 control_structures.adb:160:35: medium: divide by zero might fail
-control_structures.adb:160:35: medium: overflow check might fail
+control_structures.adb:160:35: medium: float overflow check might fail
 control_structures.adb:164:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:164:26: warning: no Global contract available for "Put"
 control_structures.adb:168:26: warning: assuming "Put" has no effect on global items
@@ -601,9 +601,9 @@ density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude.adb:24:29: info: initialization of "Temperature" proved
 density_altitude.adb:24:29: info: range check proved (Interval)
-density_altitude.adb:24:42: medium: overflow check might fail
+density_altitude.adb:24:42: medium: float overflow check might fail
 density_altitude.adb:25:29: info: initialization of "Pressure" proved
-density_altitude.adb:25:39: medium: overflow check might fail
+density_altitude.adb:25:39: medium: float overflow check might fail
 density_altitude.adb:25:39: medium: range check might fail
 density_altitude.adb:26:29: info: initialization of "Humidity" proved
 density_altitude.adb:26:29: info: range check proved (Interval)
@@ -652,9 +652,9 @@ elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of Line has no effect
 elaboration_demo.adb:4:34: info: length check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
-elaboration_demo.adb:5:26: medium: overflow check might fail
+elaboration_demo.adb:5:26: medium: float overflow check might fail
 elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
-elaboration_demo.adb:5:74: info: overflow check proved (Interval)
+elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
 enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"
 enum_example.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Enum_Example"
 enum_example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Enum_Example"
@@ -834,15 +834,15 @@ generic_searchers.ads:17:41: info: initialization of "Result" proved, in instant
 good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
 good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
-good_types.adb:13:26: info: overflow check proved (Interval), in call inlined at good_types.adb:22
+good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:20:11: warning: assuming "Get" has no effect on global items
 good_types.adb:20:11: warning: no Global contract available for "Get"
 good_types.adb:21:11: warning: assuming "Get" has no effect on global items
 good_types.adb:21:11: warning: no Global contract available for "Get"
 good_types.adb:22:13: info: initialization of "Room_Length" proved
-good_types.adb:22:25: info: overflow check proved (Interval)
+good_types.adb:22:25: info: float overflow check proved (Interval)
 good_types.adb:22:25: medium: range check might fail
-good_types.adb:22:31: info: overflow check proved (Interval)
+good_types.adb:22:31: info: float overflow check proved (Interval)
 good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
 good_types.adb:23:11: info: initialization of "Default_Aft" proved
 good_types.adb:23:11: info: initialization of "Default_Exp" proved
@@ -932,18 +932,18 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
-operator_overload.adb:16:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:16:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:38: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:43: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:17:43: medium: overflow check might fail, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:59: info: overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:16:38: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:16:43: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:16:59: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:38: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:43: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:59: medium: float overflow check might fail, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
@@ -1372,15 +1372,15 @@ sorters.ads:19:33: info: index check proved (CVC4: 2 VC)
 sorters.ads:19:49: info: index check proved (CVC4: 2 VC)
 sorters.ads:19:49: info: overflow check proved (CVC4: 1 VC)
 sqrt.adb:4:16: info: division check proved (CVC4: 1 VC)
-sqrt.adb:4:16: info: overflow check proved (Interval)
-sqrt.adb:5:17: medium: overflow check might fail
+sqrt.adb:4:16: info: float overflow check proved (Interval)
+sqrt.adb:5:17: medium: float overflow check might fail
 sqrt.adb:5:19: info: initialization of "Approx" proved
-sqrt.adb:5:26: medium: overflow check might fail
-sqrt.adb:6:21: info: overflow check proved (Interval)
+sqrt.adb:5:26: medium: float overflow check might fail
+sqrt.adb:6:21: info: float overflow check proved (Interval)
 sqrt.adb:6:24: info: initialization of "Approx" proved
-sqrt.adb:6:31: medium: overflow check might fail
+sqrt.adb:6:31: medium: float overflow check might fail
 sqrt.adb:6:35: medium: divide by zero might fail
-sqrt.adb:6:35: medium: overflow check might fail
+sqrt.adb:6:35: medium: float overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
 stacks-more.adb:2:13: info: range check proved (CVC4: 1 VC)
 stacks-more.adb:4:32: medium: array index check might fail
