@@ -1,24 +1,24 @@
-a-cfdlli.ads:87:55: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:405:51: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:523:51: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:604:57: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:664:57: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:741:28: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:741:39: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:904:45: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1052:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1169:18: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1181:18: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1193:18: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1206:18: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1225:14: info: precondition proved (CVC4: 2 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1267:14: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1271:32: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cofuve.ads:227:61: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at foo.adb:10
-a-cofuve.ads:229:19: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at foo.adb:10
-a-cofuve.ads:229:36: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at foo.adb:10
-a-cofuve.ads:229:48: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at foo.adb:10
-a-cofuve.ads:288:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:67, in instantiation at foo.adb:10
+a-cfdlli.ads:96:55: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:452:49: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:584:49: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:674:57: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:740:57: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:825:28: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:825:39: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1000:43: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1162:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1298:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1313:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1328:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1343:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1365:14: info: precondition proved (CVC4: 2 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1419:14: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1426:23: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
 foo.adb:15:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:15:23: info: initialization of "X" proved
 foo.adb:17:07: info: initialization of private part of "L" proved
