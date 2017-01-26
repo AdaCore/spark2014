@@ -1,0 +1,2 @@
+art.ads:6:22: conversion from fixed-point to floating-point is not yet supported
+gnatprove: error during flow analysis and proof
