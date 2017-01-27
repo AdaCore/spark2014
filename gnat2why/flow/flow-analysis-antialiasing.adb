@@ -694,8 +694,8 @@ package body Flow.Analysis.Antialiasing is
                       then Explicit_Actual_Parameter (P)
                       else P);
             Find_Actual (Other, Other_Formal, Other_Call);
-            Other_Is_Out := Ekind (Other_Formal) in
-              E_Out_Parameter | E_In_Out_Parameter;
+            Other_Is_Out := Ekind (Other_Formal) in E_Out_Parameter
+                                                  | E_In_Out_Parameter;
             pragma Assert (Call = Other_Call);
 
             if Actual = Other then
@@ -719,7 +719,7 @@ package body Flow.Analysis.Antialiasing is
                   B_Formal => Other_Formal);
             end if;
 
-            P := Next (P);
+            Next (P);
          end loop;
       end;
 
@@ -816,7 +816,7 @@ package body Flow.Analysis.Antialiasing is
 
             Check_Parameter_Against_Parameters_And_Globals (FA, Actual);
 
-            P := Next (P);
+            Next (P);
          end loop;
       end;
 

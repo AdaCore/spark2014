@@ -28,8 +28,8 @@ package Flow.Analysis.Antialiasing is
    procedure Check_Procedure_Call
      (FA : in out Flow_Analysis_Graphs;
       N  : Node_Id)
-   with Pre => Nkind (N) in N_Entry_Call_Statement     |
-                            N_Procedure_Call_Statement;
+   with Pre => Nkind (N) in N_Entry_Call_Statement
+                          | N_Procedure_Call_Statement;
    --  This procedure looks at an entry/procedure call statement and
    --  determines if it introduces aliasing that matters: for example
    --  aliasing between in parameters is OK, but aliasing between two
