@@ -5768,18 +5768,20 @@ package body Flow.Control_Flow_Graph is
 
             if Is_Generic_Instance (FA.Spec_Entity) then
                declare
-                  procedure Create_In_And_Fin_Vert (Formal    : Node_Id;
-                                                    Parameter : Node_Id);
+                  procedure Create_Parameter_Vertices (Formal    : Node_Id;
+                                                       Parameter : Node_Id);
+                  --  Create initial and final vertices for parameters of the
+                  --  generic instance.
 
                   procedure Create_Vertices is new
-                    Iterate_Generic_Parameters (Create_In_And_Fin_Vert);
+                    Iterate_Generic_Parameters (Create_Parameter_Vertices);
 
-                  ----------------------------
-                  -- Create_In_And_Fin_Vert --
-                  ----------------------------
+                  -------------------------------
+                  -- Create_Parameter_Vertices --
+                  -------------------------------
 
-                  procedure Create_In_And_Fin_Vert (Formal    : Node_Id;
-                                                    Parameter : Node_Id)
+                  procedure Create_Parameter_Vertices (Formal    : Node_Id;
+                                                       Parameter : Node_Id)
                   is
                      pragma Unreferenced (Formal);
                      Parent_N : constant Node_Id := Parent (Parameter);
@@ -5800,7 +5802,7 @@ package body Flow.Control_Flow_Graph is
                            False,
                            FA);
                      end if;
-                  end Create_In_And_Fin_Vert;
+                  end Create_Parameter_Vertices;
 
                begin
                   Create_Vertices (FA.Spec_Entity);
