@@ -205,14 +205,8 @@ with open('gfdl.tex', 'r') as fd:
    gfdl = fd.read()
 
 latex_elements = {
-# The paper size ('letter' or 'a4').
-#latex_paper_size = 'letter'
-
-# The font size ('10pt', '11pt' or '12pt').
-#latex_font_size = '10pt'
-
-# Additional stuff for the LaTeX preamble.
-'tableofcontents': gfdl + '\n\n\\tableofcontents\n',
+    'preamble': '\setcounter{tocdepth}{3}',
+    'tableofcontents': gfdl + '\n\n\\tableofcontents\n',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -235,9 +229,6 @@ latex_documents = [
 
 # If true, show URL addresses after external links.
 #latex_show_urls = False
-
-# Additional stuff for the LaTeX preamble.
-latex_preamble = '\setcounter{tocdepth}{3}'
 
 # Documents to append as an appendix to all manuals.
 #latex_appendices = []
