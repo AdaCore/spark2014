@@ -54,12 +54,9 @@ is
 
 private
 
-   function Eq (A, B : Character) return Boolean is (A = B);
-
    package Char_Vectors is new Ada.Containers.Formal_Vectors
      (Index_Type   => Positive,
       Element_Type => Character,
-      "="          => Eq,
       Bounded      => False);
    use Char_Vectors;
 

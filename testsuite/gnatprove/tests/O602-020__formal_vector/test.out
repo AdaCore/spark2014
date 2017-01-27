@@ -1,36 +1,4 @@
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("First_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Is_Empty" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Is_Empty" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Last_Index" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
-fvectors.ads:4:04: info: function contract not available for proof ("Length" may not return)
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:113
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:120
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:127
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:127
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:135
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:135
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:143
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:151
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:163
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:163
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:164
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:164
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:171
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:178
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:224
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:224
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:232
-fvectors.ads:4:04: info: in instantiation at a-cofove.ads:232
+a-cofuve.ads:50:09: medium: default initial condition might fail, in instantiation at a-cofove.ads:83, in instantiation at fvectors.ads:4
+fvectors.ads:4:04: warning: "Constraint_Error" will be raised at run time
+fvectors.ads:4:04: warning: in instantiation at a-cofove.adb:970
+fvectors.ads:4:04: warning: value not in range of type "Index" defined at line 3

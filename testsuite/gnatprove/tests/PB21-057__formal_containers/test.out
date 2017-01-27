@@ -1,23 +1,31 @@
-a-cfdlli.ads:96:55: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:452:49: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:584:49: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:674:57: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:740:57: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:825:28: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:825:39: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1000:43: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1162:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1298:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1313:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1328:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1343:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1365:14: info: precondition proved (CVC4: 2 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1419:14: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
-a-cfdlli.ads:1426:23: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:467:49: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:608:49: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:698:57: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:764:57: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:850:28: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:850:39: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1024:43: info: overflow check proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1203:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1339:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1354:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1369:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1384:20: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1406:14: info: precondition proved (CVC4: 2 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1460:14: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cfdlli.ads:1467:23: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:13
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at instances.ads:14
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:14
+a-cofove.ads:725:36: info: range check proved (CVC4: 1 VC), in instantiation at instances.ads:14
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at instances.ads:14
+a-cofove.ads:762:35: info: range check proved (CVC4: 1 VC), in instantiation at instances.ads:14
 a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at instances.ads:13
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at instances.ads:14
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at instances.ads:13
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at instances.ads:14
 a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at instances.ads:13
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at instances.ads:14
 a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at instances.ads:13
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at instances.ads:14
 a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at instances.ads:13
-instances.ads:19:18: info: precondition proved (CVC4: 1 VC)
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at instances.ads:14
 instances.ads:29:14: medium: the task might terminate, which is not allowed in SPARK

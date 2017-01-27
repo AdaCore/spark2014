@@ -111,7 +111,6 @@ is
       pragma Assert (Sort.Is_Sorted (V));
 
       Replace_Element (V, 1, Element (V, 2));
-      pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));
 
       pragma Assert (Capacity (V) = 5);
 

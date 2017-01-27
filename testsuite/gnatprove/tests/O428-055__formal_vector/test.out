@@ -1,24 +1,33 @@
-a-cfdlli.ads:96:55: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:452:49: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:584:49: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:674:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:740:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:825:28: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:825:39: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1000:43: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1162:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1298:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1313:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1328:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1343:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1365:14: info: precondition proved (CVC4: 2 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1419:14: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
-a-cfdlli.ads:1426:23: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:467:49: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:608:49: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:698:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:764:57: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:850:28: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:850:39: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1024:43: info: overflow check proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1203:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1339:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1354:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1369:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1384:20: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1406:14: info: precondition proved (CVC4: 2 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1460:14: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cfdlli.ads:1467:23: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:15
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at loop_types.ads:12
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:12
+a-cofove.ads:725:36: info: range check proved (CVC4: 1 VC), in instantiation at loop_types.ads:12
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at loop_types.ads:12
+a-cofove.ads:762:35: info: range check proved (CVC4: 1 VC), in instantiation at loop_types.ads:12
 a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:15
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at loop_types.ads:12
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:15
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at loop_types.ads:12
 a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:15
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at loop_types.ads:12
 a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:15
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at loop_types.ads:12
 a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at loop_types.ads:15
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at loop_types.ads:12
 init_list_zero.adb:7:11: info: postcondition proved (CVC4: 1 VC)
 init_list_zero.adb:7:12: info: precondition proved (CVC4: 1 VC)
 init_list_zero.adb:7:12: info: precondition proved (CVC4: 2 VC)
@@ -34,27 +43,20 @@ init_list_zero.adb:15:07: info: precondition proved (CVC4: 1 VC)
 init_list_zero.adb:15:16: info: initialization of "Cu.Node" proved
 init_vec_zero.adb:3:26: low: input value of private part of "V" might be used in "Init_Vec_Zero"
 init_vec_zero.adb:5:11: info: postcondition proved (CVC4: 1 VC)
-init_vec_zero.adb:5:25: info: precondition proved (CVC4: 1 VC)
-init_vec_zero.adb:5:44: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:5:56: low: input value of private part of "V" might be used
 init_vec_zero.adb:5:62: info: precondition proved (CVC4: 2 VC)
 init_vec_zero.adb:5:74: info: range check proved (CVC4: 1 VC)
-init_vec_zero.adb:8:13: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:8:26: medium: input value of private part of "V" will be used
-init_vec_zero.adb:8:32: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:8:44: medium: input value of private part of "V" will be used
 init_vec_zero.adb:9:07: info: precondition proved (CVC4: 4 VC)
 init_vec_zero.adb:9:24: low: input value of private part of "V" might be used
 init_vec_zero.adb:9:27: info: range check proved (CVC4: 2 VC)
 init_vec_zero.adb:10:30: info: loop invariant initialization proved (CVC4: 1 VC)
 init_vec_zero.adb:10:30: info: loop invariant preservation proved (CVC4: 1 VC)
-init_vec_zero.adb:10:30: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:10:42: info: initialization of private part of "V" proved
-init_vec_zero.adb:10:47: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:10:61: medium: input value of private part of "V" will be used
 init_vec_zero.adb:11:30: info: loop invariant initialization proved (CVC4: 1 VC)
 init_vec_zero.adb:11:30: info: loop invariant preservation proved (CVC4: 1 VC)
-init_vec_zero.adb:11:43: info: precondition proved (CVC4: 1 VC)
 init_vec_zero.adb:11:56: info: initialization of private part of "V" proved
 init_vec_zero.adb:11:67: info: precondition proved (CVC4: 2 VC)
 init_vec_zero.adb:11:79: info: range check proved (CVC4: 1 VC)

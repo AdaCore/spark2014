@@ -1,1 +1,17 @@
-p.ads:11:14: warning: subprogram "Dummy" has no effect
+a-cofove.ads:290:51: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:331:73: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:364:51: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:401:59: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:450:59: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:477:51: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:521:59: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:589:28: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:4
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at p.ads:4
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at p.ads:4
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at p.ads:4
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at p.ads:4
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at p.ads:4
+p.ads:10:14: warning: subprogram "Dummy" has no effect

@@ -14,9 +14,7 @@ package body Sorted_Vectors is pragma SPARK_Mode (On);
          Position := Position + 1;
       end loop;
 
-      --  Formal vectors do not provide an Insert operation anymore. Just use
-      --  Append here, which obviously does not preserve the sorting property.
-      Append (Container, New_Item);
+      Insert (Container, Position, New_Item);
 
    end My_Insert;
 

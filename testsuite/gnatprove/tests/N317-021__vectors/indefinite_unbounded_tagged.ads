@@ -15,7 +15,6 @@ is
      (Index_Type   => Positive,
       Element_Type => T_Class,
       Max_Size_In_Storage_Elements => T'Size,
-      "="          => "=",
       Bounded      => not (if B then False else True));
    use Vect;
 

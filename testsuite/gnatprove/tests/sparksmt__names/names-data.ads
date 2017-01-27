@@ -54,7 +54,6 @@ is
    package Char_Tables is new Ada.Containers.Formal_Vectors
      (Index_Type   => Char_Table_Index,
       Element_Type => Character,
-      "="          => Eq,
       Bounded      => False);
 
    ------------------
@@ -73,7 +72,6 @@ is
    package Entry_Tables is new Ada.Containers.Formal_Vectors
      (Index_Type   => Valid_Name_Id,
       Element_Type => Name_Entry,
-      "="          => Eq,
       Bounded      => False);
 
 end Names.Data;

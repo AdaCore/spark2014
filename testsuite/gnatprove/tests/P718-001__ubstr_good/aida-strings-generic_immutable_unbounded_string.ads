@@ -24,7 +24,6 @@ private
 
    package Char_Vectors is new Ada.Containers.Formal_Vectors (Index_Type   => Positive,
                                                               Element_Type => Character,
-                                                              "="          => "=",
                                                               Bounded      => False);
 
    type T is limited

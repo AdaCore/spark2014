@@ -1,0 +1,80 @@
+a-cofove.ads:290:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:290:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:331:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:331:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:364:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:364:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:401:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:401:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:450:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:450:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:477:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:477:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:521:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:521:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:589:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:589:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:589:57: info: overflow check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:725:36: info: range check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at names.adb:43
+a-cofove.ads:762:35: info: range check proved (CVC4: 1 VC), in instantiation at names.adb:27
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:27
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:43
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:43
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:27
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:43
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:27
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:43
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:27
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at names.adb:43
+names.adb:21:34: info: length check proved (CVC4: 1 VC)
+names.adb:33:04: info: initialization of private part of "Char_Table" proved
+names.adb:33:38: info: range check proved (CVC4: 1 VC)
+names.adb:49:04: info: initialization of private part of "Entry_Table" proved
+names.adb:49:39: info: range check proved (CVC4: 1 VC)
+names.adb:61:30: info: division check proved (CVC4: 1 VC)
+names.adb:61:30: info: range check proved (CVC4: 1 VC)
+names.adb:69:10: info: initialization of "N" proved
+names.adb:70:17: info: initialization of "N" proved
+names.adb:72:16: info: precondition proved (CVC4: 1 VC)
+names.adb:72:27: info: initialization of "Ptr" proved
+names.adb:73:21: info: initialization of "Ptr" proved
+names.adb:77:23: medium: precondition might fail
+names.adb:77:45: info: initialization of "Ptr" proved
+names.adb:77:45: medium: range check might fail (e.g. when Ptr = 0)
+names.adb:78:20: medium: precondition might fail
+names.adb:78:42: info: initialization of "Ptr" proved
+names.adb:78:42: info: range check proved (CVC4: 1 VC)
+names.adb:83:10: medium: precondition might fail
+names.adb:86:22: info: assertion proved (CVC4: 1 VC)
+names.adb:87:22: info: assertion proved (CVC4: 1 VC)
+names.adb:88:22: info: assertion proved (CVC4: 1 VC)
+names.adb:90:07: medium: precondition might fail
+names.adb:91:55: info: overflow check proved (CVC4: 1 VC)
+names.adb:91:55: medium: range check might fail
+names.adb:91:59: info: range check proved (CVC4: 1 VC)
+names.adb:92:32: info: range check proved (CVC4: 1 VC)
+names.adb:96:10: info: initialization of "Ptr" proved
+names.adb:97:10: medium: precondition might fail
+names.adb:98:27: info: initialization of "Ptr" proved
+names.adb:98:27: info: range check proved (CVC4: 1 VC)
+names.adb:99:27: medium: precondition might fail
+names.adb:99:49: info: initialization of "Ptr" proved
+names.adb:99:49: info: range check proved (CVC4: 1 VC)
+names.adb:99:75: info: initialization of "N" proved
+names.adb:101:28: info: initialization of "N" proved
+names.adb:118:37: medium: precondition might fail
+names.adb:118:59: info: range check proved (CVC4: 1 VC)
+names.adb:121:10: medium: "S" might not be initialized
+names.adb:121:17: info: range check proved (CVC4: 2 VC)
+names.adb:122:17: info: range check proved (CVC4: 2 VC)
+names.adb:123:25: medium: precondition might fail
+names.adb:124:48: medium: overflow check might fail (e.g. when E = (Table_Index => 2147483646, Length => 3, Next_Hash => 0) and I = 3)
+names.adb:124:48: medium: range check might fail
+names.ads:10:22: info: initialization of "N" proved
+names.ads:13:19: info: postcondition proved (CVC4: 1 VC)

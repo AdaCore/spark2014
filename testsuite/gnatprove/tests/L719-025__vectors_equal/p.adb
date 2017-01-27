@@ -14,10 +14,10 @@ package body P is pragma SPARK_Mode (On);
    end Nearly_Identity_2;
 
    procedure Identity_Swap (L : in out Vector; I1, I2 : Index_Type) is
---      L_In : constant Vector := Copy (L);
+      L_In : constant Vector := Copy (L);
    begin
       Swap (L, I1, I2);
---      pragma Assert (Element (L, I1) = Element (L_In, I2));
+      pragma Assert (Element (L, I1) = Element (L_In, I2));
       Swap (L, I1, I2);
    end Identity_Swap;
 

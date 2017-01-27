@@ -6,7 +6,6 @@ is
    package Vect is new Ada.Containers.Formal_Vectors
      (Index_Type   => Positive,
       Element_Type => Integer,
-      "="          => "=",
       Bounded      => True);
    use Vect;
 

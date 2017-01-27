@@ -1,2 +1,11 @@
-fail.ads:15:12: medium: range check might fail
-fail.ads:16:37: info: range check proved (CVC4: 1 VC)
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at fail.ads:14
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at fail.ads:14
+a-cofove.ads:725:36: info: range check proved (CVC4: 1 VC), in instantiation at fail.ads:14
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at fail.ads:14
+a-cofove.ads:762:35: info: range check proved (CVC4: 1 VC), in instantiation at fail.ads:14
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at fail.ads:14
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at fail.ads:14
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at fail.ads:14
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at fail.ads:14
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at fail.ads:14
+fail.ads:15:37: info: range check proved (CVC4: 1 VC)

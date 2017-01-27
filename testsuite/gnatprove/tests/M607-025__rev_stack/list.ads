@@ -5,8 +5,7 @@ package List is
 
    Max : constant := 100;
    subtype T is Integer range 1 .. Max;
-   function Eq (E1 : Integer; E2 : Integer) return Boolean is (E1 = E2);
-   package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer, Eq, True);
+   package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer, True);
    type List is new My_Lists.Vector (Max);
 
    function Reverse_List (L : List) return List with

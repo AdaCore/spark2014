@@ -76,7 +76,6 @@ package State_Machine_With_Oop with SPARK_Mode is
      (Index_Type   => Positive,
       Element_Type => State_Class,
       Max_Size_In_Storage_Elements => Root_State'Size,
-      "="          => "=",
       Bounded      => False);
 
    procedure Do_Something (States : in out State_Vectors.Vector);

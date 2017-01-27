@@ -12,15 +12,12 @@ is
       Clear (V);
       pragma Assert (Is_Empty (V));
       pragma Assert (V = Empty_Vector);
-      --  Clear on unbounded vector does not always preserve capacity
-      pragma Assert (Capacity (V) = 2);  --  @ASSERT:FAIL
 
       Append (V, 1);
       Append (V, 2);
       Append (V, 3);
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 3);
-      pragma Assert (Capacity (V) >= 3);
       pragma Assert (Element (V, 1) = 1);
       pragma Assert (Element (V, 2) = 2);
       pragma Assert (Element (V, 3) = 3);
@@ -36,7 +33,6 @@ is
       begin
          pragma Assert (not Is_Empty (W));
          pragma Assert (Length (W) = 3);
-         pragma Assert (Capacity (W) = 3);
          pragma Assert (Element (W, 1) = 1);
          pragma Assert (Element (W, 2) = 2);
          pragma Assert (Element (W, 3) = 3);
@@ -44,7 +40,6 @@ is
          Append (W, V);
          pragma Assert (not Is_Empty (W));
          pragma Assert (Length (W) = 6);
-         pragma Assert (Capacity (W) >= 6);
          pragma Assert (Element (W, 1) = 1);
          pragma Assert (Element (W, 2) = 2);
          pragma Assert (Element (W, 3) = 3);
@@ -70,14 +65,12 @@ is
       Delete_Last (V);
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 2);
-      pragma Assert (Capacity (V) >= 3);
       pragma Assert (Element (V, 1) = 3);
       pragma Assert (Element (V, 2) = 4);
 
       Reverse_Elements (V);
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 2);
-      pragma Assert (Capacity (V) >= 3);
       pragma Assert (Element (V, 1) = 4);
       pragma Assert (Element (V, 2) = 3);
 
@@ -104,17 +97,11 @@ is
       Sort.Sort (V);
       pragma Assert (not Is_Empty (V));
       pragma Assert (Length (V) = 2);
-      pragma Assert (Capacity (V) >= 3);
       pragma Assert (Element (V, 1) = 3);
       pragma Assert (Element (V, 2) = 4);
       pragma Assert (Sort.Is_Sorted (V));
 
       Replace_Element (V, 1, Element (V, 2));
-      pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));
-
-      --  Capacity of unbounded vector should not be known for sure here
-      pragma Assert (Capacity (V) = 10);  --  @ASSERT:FAIL
-
       pragma Check (Only_For_Proof, False);  --  @ASSERT:FAIL check absence of inconsistency
    end Test;
 

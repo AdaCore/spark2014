@@ -3,8 +3,7 @@ with Ada.Containers.Formal_Vectors;
 package P is
    package My_Vectors is new
      Ada.Containers.Formal_Vectors (Index_Type   => Positive,
-                                    Element_Type => Integer,
-                                    "="          => "=");
+                                    Element_Type => Integer);
 
    use type Ada.Containers.Count_Type;
 

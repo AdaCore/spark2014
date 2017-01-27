@@ -177,7 +177,6 @@ private
 
    package Vector_Type_Owner is new Ada.Containers.Formal_Vectors (Index_Type   => Index_Type,
                                                                    Element_Type => Element_Type,
-                                                                   "="          => "=",
                                                                    Bounded      => Bounded);
 
    type Vector_Type (Capacity : Capacity_Range) is tagged limited

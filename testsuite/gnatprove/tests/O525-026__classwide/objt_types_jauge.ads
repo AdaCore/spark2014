@@ -21,9 +21,7 @@ package Objt_Types_Jauge is
 
                                                                             Element_Type                 => tInterface_Jauge'Class,
 
-                                                                            Max_Size_In_Storage_Elements => Nb_Maximum_Jauge,
-
-                                                                            "=" => "="
+                                                                            Max_Size_In_Storage_Elements => Nb_Maximum_Jauge
 
                                                                            );
 

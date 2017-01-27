@@ -8,7 +8,6 @@ is
    package Vect is new Ada.Containers.Formal_Vectors
      (Index_Type   => Positive,
       Element_Type => Integer,
-      "="          => "=",
       Bounded      => not (if B then False else True));
    use Vect;
 

@@ -1,16 +1,22 @@
-sum_elem.adb:6:22: info: assertion proved (Z3: 1 VC)
+a-cofove.ads:589:57: info: range check proved (CVC4: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:722:22: info: precondition proved (CVC4: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:725:36: info: range check proved (CVC4: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:758:14: info: precondition proved (CVC4: 1 VC), in instantiation at sum_elem.ads:17
+a-cofove.ads:762:35: info: range check proved (CVC4: 1 VC), in instantiation at sum_elem.ads:17
+a-cofuve.ads:229:58: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at sum_elem.ads:17
+a-cofuve.ads:230:71: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at sum_elem.ads:17
+a-cofuve.ads:231:25: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at sum_elem.ads:17
+a-cofuve.ads:292:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:83, in instantiation at sum_elem.ads:17
+sum_elem.adb:6:22: info: assertion proved (CVC4: 1 VC)
 sum_elem.adb:6:22: info: precondition proved (CVC4: 2 VC)
 sum_elem.adb:6:45: info: precondition proved (CVC4: 2 VC)
 sum_elem.adb:11:07: medium: precondition might fail
 sum_elem.adb:12:07: medium: precondition might fail
-sum_elem.ads:26:14: warning: subprogram "Local" has no effect
-sum_elem.ads:27:40: info: precondition proved (CVC4: 1 VC)
-sum_elem.ads:27:40: medium: range check might fail
-sum_elem.ads:28:27: info: precondition proved (CVC4: 1 VC)
-sum_elem.ads:28:46: info: precondition proved (CVC4: 1 VC)
-sum_elem.ads:28:64: info: precondition proved (CVC4: 2 VC)
-sum_elem.ads:28:76: info: range check proved (CVC4: 1 VC)
-sum_elem.ads:28:87: info: precondition proved (CVC4: 2 VC)
-sum_elem.ads:28:99: info: range check proved (CVC4: 1 VC)
-sum_elem.ads:30:04: info: initialization of private part of "P" proved
-sum_elem.ads:30:19: info: range check proved (CVC4: 1 VC)
+sum_elem.ads:24:14: warning: subprogram "Local" has no effect
+sum_elem.ads:25:40: medium: range check might fail
+sum_elem.ads:26:64: info: precondition proved (CVC4: 2 VC)
+sum_elem.ads:26:76: info: range check proved (CVC4: 1 VC)
+sum_elem.ads:26:87: info: precondition proved (CVC4: 2 VC)
+sum_elem.ads:26:99: info: range check proved (CVC4: 1 VC)
+sum_elem.ads:28:04: info: initialization of private part of "P" proved
+sum_elem.ads:28:19: info: range check proved (CVC4: 1 VC)

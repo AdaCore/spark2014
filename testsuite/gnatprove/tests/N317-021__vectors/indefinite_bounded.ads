@@ -7,7 +7,6 @@ is
      (Index_Type   => Positive,
       Element_Type => Integer,
       Max_Size_In_Storage_Elements => Integer'Size,
-      "="          => "=",
       Bounded      => True);
    use Vect;
 

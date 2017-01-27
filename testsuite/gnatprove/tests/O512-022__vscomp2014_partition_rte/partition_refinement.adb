@@ -190,7 +190,7 @@ is
 
          pragma Loop_Variant (Increases =>
                                 (if C = Partitioning_Sets.No_Element then Length (X)
-                                 else Formal_Model.P.Get (Positions (X), C) - 1));
+                                 else Partitioning_Sets.Formal_Model.P.Get (Positions (X), C) - 1));
       end loop;
 
       Make_New_Partitions (P, F);

@@ -17,11 +17,9 @@ is
       Count : Index_Count;
    end record;
    type Partition_Index is range 0 .. 10_000;
-   function Eq_Interval (Left, Right : Interval) return Boolean is (Left = Right);
    package Partitions is new
      Formal_Vectors (Index_Type   => Partition_Index,
                      Element_Type => Interval,
-                     "="          => Eq_Interval,
                      Bounded      => True);
    subtype Partition is Partitions.Vector;
    use Partitions;
