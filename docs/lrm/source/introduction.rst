@@ -59,7 +59,7 @@ expressions which facilitates the mix of proof and testing.
 The run-time checking of assertion expressions may be suppressed by
 using the Ada pragma Assertion_Policy but the static analysis and
 proof tools always use the assertion expressions whatever the
-assertion policy..
+assertion policy.
 
 A special feature of |SPARK| is that numbers in assertion expressions
 may have extended or "infinite" arithmetic to make it simpler to write
