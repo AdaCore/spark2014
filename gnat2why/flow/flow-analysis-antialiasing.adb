@@ -43,6 +43,7 @@ package body Flow.Analysis.Antialiasing is
                                   No_Aliasing,
                                   Possible_Aliasing,
                                   Definite_Aliasing);
+   pragma Ordered (Aliasing_Check_Result);
 
    subtype Non_Obvious_Aliasing_Check_Result is Aliasing_Check_Result
      range No_Aliasing .. Definite_Aliasing;
