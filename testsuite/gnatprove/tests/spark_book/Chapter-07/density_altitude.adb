@@ -12,7 +12,8 @@ package body Density_Altitude
                                           Humidity_Unit.Humid_State)),
            Refined_Depends => (Value  => (Temperature_Unit.Temp_State,
                                           Pressure_Unit.Press_State,
-                                          Humidity_Unit.Humid_State))
+                                          Humidity_Unit.Humid_State)),
+           SPARK_Mode => Off  --  use conversion from fixed to float
    is
       Temperature : Temperature_Unit.Degrees;
       Pressure    : Pressure_Unit.PSI;

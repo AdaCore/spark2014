@@ -599,15 +599,6 @@ dates.ads:78:14: info: postcondition proved (CVC4: 3 VC)
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
-density_altitude.adb:24:29: info: initialization of "Temperature" proved
-density_altitude.adb:24:29: info: range check proved (Interval)
-density_altitude.adb:24:42: medium: float overflow check might fail
-density_altitude.adb:25:29: info: initialization of "Pressure" proved
-density_altitude.adb:25:39: medium: float overflow check might fail
-density_altitude.adb:25:39: medium: range check might fail
-density_altitude.adb:26:29: info: initialization of "Humidity" proved
-density_altitude.adb:26:29: info: range check proved (Interval)
-density_altitude.ads:7:20: info: initialization of "Value" proved
 display_control.adb:16:18: warning: assuming "Put" has no effect on global items
 display_control.adb:16:18: warning: no Global contract available for "Put"
 display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
@@ -1983,3 +1974,22 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
