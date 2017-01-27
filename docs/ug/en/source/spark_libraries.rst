@@ -289,6 +289,12 @@ Currenly, the SPARK lemma library provides the following lemmas:
   ``spark-mod32_arithmetic_lemmas.ads`` and for 64 bits modular integers
   (``Interfaces.Unsigned_64``) in file ``spark-mod64_arithmetic_lemmas.ads``.
 
+* Lemmas on floating point arithmetic in file
+  ``spark-floating_point_arithmetic_lemmas.ads``, that are instantiated for
+  single-precision floats (``Float``) in file
+  ``spark-float_arithmetic_lemmas.ads`` and for double-precision floats
+  (``Long_Float``) in file ``spark-long_float_arithmetic_lemmas.ads``.
+
 * Lemmas on unconstrained arrays in file
   ``spark-unconstrained_array_lemmas.ads``, that need to be instantiated by the
   user for her specific type of index and element, and specific ordering
