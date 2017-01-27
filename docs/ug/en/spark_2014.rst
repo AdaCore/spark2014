@@ -40,7 +40,7 @@ found in the ``share/examples/spark`` directory below the directory where the
 toolset is installed, and can be accessed from the IDE (either GPS or
 GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
-.. only:: core
+.. only: : core
 
    .. toctree::
       :maxdepth: 2
