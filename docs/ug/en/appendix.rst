@@ -6,7 +6,6 @@ Appendix
 
 .. toctree::
    :maxdepth: 3
-   :numbered: 3
 
    appendix/command_line_invocation
    appendix/alternative_provers

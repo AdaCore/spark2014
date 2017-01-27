@@ -25,7 +25,6 @@
 
 .. toctree::
    :maxdepth: 2
-   :numbered: 3
 
    source/language_restrictions_ja
    source/subprogram_contracts_ja

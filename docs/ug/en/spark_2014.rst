@@ -44,7 +44,6 @@ GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
    .. toctree::
       :maxdepth: 2
-      :numbered: 3
 
       source/language_restrictions
       source/subprogram_contracts
@@ -53,7 +52,6 @@ GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
    .. toctree::
       :maxdepth: 2
-      :numbered: 3
 
       source/language_restrictions
       source/subprogram_contracts

@@ -19,7 +19,6 @@ the code.
 
    .. toctree::
       :maxdepth: 2
-      :numbered: 3
 
       source/how_to_run_gnatprove
       source/how_to_view_gnatprove_output
@@ -30,7 +29,6 @@ the code.
 
    .. toctree::
       :maxdepth: 2
-      :numbered: 3
 
       source/how_to_run_gnatprove
       source/how_to_view_gnatprove_output

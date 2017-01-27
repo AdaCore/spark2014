@@ -10,7 +10,6 @@
 
 .. toctree::
    :maxdepth: 2
-   :numbered: 3
 
    source/how_to_run_gnatprove_ja
    source/how_to_view_gnatprove_output_ja

@@ -26,36 +26,18 @@ SPARK 2014 User's Guide
 
       Translation to Japanese by Mr. Masao Ito (NIL)
 
-.. only : : core
 
-   .. toctree::
-      :maxdepth: 3
-      :numbered: 4
+.. toctree::
+  :maxdepth: 3
+  :numbered: 4
 
-      en/getting_started
-      en/introduction
-      en/install
-      en/spark_mode
-      en/spark_2014
-      en/gnatprove
-      gfdl
-
-.. only:: full
-
-   .. toctree::
-      :maxdepth: 3
-      :numbered: 4
-
-      en/getting_started
-      en/introduction
-      en/install
-      en/spark_mode
-      en/spark_2014
-      en/tutorial
-      en/gnatprove
-      en/usage_scenarios
-      en/appendix
-      gfdl
+  ja/getting_started_ja
+  ja/introduction_ja
+  ja/install_ja
+  ja/spark_mode_ja
+  ja/spark_2014_ja
+  ja/gnatprove_ja
+  gfdl
 
 .. Indices and tables
 .. ==================
