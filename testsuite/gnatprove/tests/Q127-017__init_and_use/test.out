@@ -1,0 +1,4 @@
+runtest.adb:3:11: info: initialization of "A" proved
+runtest.adb:3:11: medium: "B" might not be initialized after elaboration of main program "runtest"
+test.ads:7:15: info: initialization of "A" proved
+test.ads:8:15: info: initialization of "B" proved
