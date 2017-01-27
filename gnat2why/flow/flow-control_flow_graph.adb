@@ -3519,8 +3519,7 @@ package body Flow.Control_Flow_Graph is
                or else Has_Inherited_DIC (Typ))
            and then Present (DIC_Procedure (Typ))
          then
-            Expr := Get_Expr_From_Check_Only_Proc
-              (DIC_Procedure (Typ));
+            Expr := Get_Expr_From_Check_Only_Proc (DIC_Procedure (Typ));
 
             if Present (Expr) then
                --  Note that default initial conditions can make use of
@@ -3545,8 +3544,7 @@ package body Flow.Control_Flow_Graph is
 
                --  Calculate components of Type and Object
                Components_Of_Type   :=
-                 Flatten_Variable (First_Entity
-                                     (DIC_Procedure (Typ)),
+                 Flatten_Variable (First_Entity (DIC_Procedure (Typ)),
                                    FA.B_Scope);
                Components_Of_Object :=
                  Flatten_Variable (E, FA.B_Scope);
