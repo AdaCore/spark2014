@@ -4,7 +4,7 @@ package Perm with SPARK_Mode is
    type Nat_Array is array (Index range <>) of Natural;
 
    function Invariant (A : Nat_Array) return Boolean is
-      (A'First = 1 and A'Last > 0);
+      (A'First = 1 and A'Last >= 0);
 
    function Remove (A : Nat_Array; I : Index) return Nat_Array with
      Pre  => Invariant (A) and then I in A'Range,

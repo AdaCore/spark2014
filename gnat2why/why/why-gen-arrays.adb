@@ -29,6 +29,7 @@ with Common_Containers;     use Common_Containers;
 with GNAT.Source_Info;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with Sem_Aux;               use Sem_Aux;
 with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
@@ -45,6 +46,7 @@ with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
+with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Inter;             use Why.Inter;
 
 package body Why.Gen.Arrays is
@@ -92,7 +94,7 @@ package body Why.Gen.Arrays is
    --         length attribute.
    --  @return the translated array attribute into Why3
 
-   function Prepare_Indices_Substitutions
+   function Prepare_Indexes_Substitutions
      (Section     : W_Section_Id;
       Typ         : Entity_Id;
       Prefix      : String;
@@ -121,11 +123,21 @@ package body Why.Gen.Arrays is
    --  @return An array of substitutions for cloning the module
    --          Subtype_Array_Logical_Ax.
 
-   procedure Declare_Additional_Symbols (E       : Entity_Id;
-                                         Section : W_Section_Id);
+   procedure Declare_Equality_Function
+     (E       : Entity_Id;
+      Section : W_Section_Id;
+      Symbols : M_Array_Type);
+   --  @param E Entity of an array type.
+   --  @param Symbols the symbols for the array theory.
+   --  Declare the predefined equality for E
+
+   procedure Declare_Additional_Symbols
+     (E       : Entity_Id;
+      Section : W_Section_Id;
+      Symbols : M_Array_Type);
    --  @param E Entity of the one dimensional array type.
-   --  @return Declares logical operators and comparison function when
-   --          necessary.
+   --  @param Symbols the symbols for the array theory.
+   --  Declare logical operators and comparison function when necessary.
 
    -----------------
    -- Add_Map_Arg --
@@ -389,7 +401,8 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Additional_Symbols
      (E       : Entity_Id;
-      Section : W_Section_Id) is
+      Section : W_Section_Id;
+      Symbols : M_Array_Type) is
    begin
       if Has_Discrete_Type (Component_Type (E)) then
 
@@ -425,21 +438,21 @@ package body Why.Gen.Arrays is
                  New_Clone_Substitution
                    (Kind      => EW_Type_Subst,
                     Orig_Name => New_Name (Symbol => NID ("map")),
-                    Image     => New_Name (Symbol => NID ("map"))))
+                    Image     => To_Local (Get_Name (Symbols.Ty))))
               &
-              Prepare_Indices_Substitutions
+              Prepare_Indexes_Substitutions
               (Section, Base_Type (Etype (Fst_Idx)), "Index")
               &
               (1 =>
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name (Symbol => NID ("get")),
-                    Image     => New_Name (Symbol => NID ("get"))),
+                    Image     => To_Local (Symbols.Get)),
                2 =>
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name (Symbol => NID ("bool_eq")),
-                    Image     => New_Name (Symbol => NID ("bool_eq"))));
+                    Image     => To_Local (Symbols.Bool_Eq)));
 
          begin
             if Has_Modular_Integer_Type (Component_Type (E)) then
@@ -507,11 +520,288 @@ package body Why.Gen.Arrays is
       end if;
    end Declare_Additional_Symbols;
 
+   -------------------------------
+   -- Declare_Equality_Function --
+   -------------------------------
+
+   procedure Declare_Equality_Function
+     (E       : Entity_Id;
+      Section : W_Section_Id;
+      Symbols : M_Array_Type)
+   is
+      Map_Ty     : constant W_Type_Id :=
+        New_Named_Type (Name => To_Local (Get_Name (Symbols.Ty)));
+      A_Ident    : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Map_Ty);
+      B_Ident    : constant W_Identifier_Id :=
+        New_Identifier (Name => "b", Typ => Map_Ty);
+      Dim        : constant Positive := Positive (Number_Dimensions (E));
+      Idx_Vars   : Binder_Array (1 .. Dim);
+      --  Binders for quantified index variables.
+      --  idx1 idx2 ...
+
+      Args_Lgth  : constant Natural := Dim * 2 + 1;
+      Args       : Binder_Array (1 .. 2 * Args_Lgth);
+      --  Binders for the parameters of the equality function.
+      --  a a__first a__last a__first_2 ... b  b__first ...
+
+      A_Indexes  : W_Expr_Array (1 .. Dim + 1);
+      --  Expressions used to access an element in A.
+      --  a idx1 idx2 ...
+
+      B_Indexes  : W_Expr_Array (1 .. Dim + 1);
+      --  Expressions used to access an element in B.
+      --  b (b__first - a__first + idx1) ...
+
+      Range_Cond : W_Pred_Id := True_Pred;
+      --  The index variables are in range.
+      --  a__first <= idx1 <= a__last /\ ...
+
+      Length_Eq  : W_Pred_Id := True_Pred;
+      --  The arrays have the same length.
+      --  (if a__first <= a__last then a__last - a__first = b__last - b__first
+      --   else b__first > b__last) /\ ...
+
+      Index      : Node_Id := First_Index (E);
+      I          : Positive := 1;
+
+   begin
+      --  Store a and b in Args
+
+      Args (1) := Binder_Type'(Ada_Node => Empty,
+                               B_Name   => A_Ident,
+                               B_Ent    => Null_Entity_Name,
+                               Mutable  => False);
+      Args (Args_Lgth + 1) := Binder_Type'(Ada_Node => Empty,
+                                           B_Name   => B_Ident,
+                                           B_Ent    => Null_Entity_Name,
+                                           Mutable  => False);
+
+      --  Store a and b in their expression array
+
+      A_Indexes (1) := +A_Ident;
+      B_Indexes (1) := +B_Ident;
+
+      while Present (Index) loop
+         declare
+            Typ   : constant W_Type_Id := Base_Why_Type_No_Bool (Index);
+            Idx   : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "idx", Typ => Typ);
+            A_Fst : constant W_Identifier_Id :=
+              Attr_Append ("a", Attribute_First, I, Typ);
+            A_Lst : constant W_Identifier_Id :=
+              Attr_Append ("a", Attribute_Last, I, Typ);
+            B_Fst : constant W_Identifier_Id :=
+              Attr_Append ("b", Attribute_First, I, Typ);
+            B_Lst : constant W_Identifier_Id :=
+              Attr_Append ("b", Attribute_Last, I, Typ);
+
+         begin
+            --  Store the new index in the quantified variables
+
+            Idx_Vars (I) :=
+              Binder_Type'(Ada_Node => Empty,
+                           B_Name   => Idx,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => False);
+
+            --  Store the first and last bounds of a and b in Args
+
+            Args (2 * I) :=
+              Binder_Type'(Ada_Node => Empty,
+                           B_Name   => A_Fst,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => False);
+            Args (2 * I + 1) :=
+              Binder_Type'(Ada_Node => Empty,
+                           B_Name   => A_Lst,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => False);
+            Args (Args_Lgth + 2 * I) :=
+              Binder_Type'(Ada_Node => Empty,
+                           B_Name   => B_Fst,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => False);
+            Args (Args_Lgth + 2 * I + 1) :=
+              Binder_Type'(Ada_Node => Empty,
+                           B_Name   => B_Lst,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => False);
+
+            --  Compute the expressions of the index accesses
+
+            A_Indexes (I + 1) := +Idx;
+            B_Indexes (I + 1) :=
+              New_Discrete_Add
+                (EW_Term,
+                 New_Discrete_Substract (EW_Term, +B_Fst, +A_Fst),
+                 +Idx);
+
+            --  Compute the range condition
+
+            Range_Cond := +New_And_Expr
+              (Left   => +Range_Cond,
+               Right  => New_Range_Expr (Domain => EW_Pred,
+                                         Low    => +A_Fst,
+                                         High   => +A_Lst,
+                                         Expr   => +Idx),
+               Domain => EW_Pred);
+
+            --  Compute the equality of lengths
+
+            Length_Eq := +New_And_Expr
+              (Left   => +Length_Eq,
+               Right  =>
+                 New_Conditional
+                   (Domain      => EW_Pred,
+                    Condition   => New_Comparison
+                      (Symbol => (if Typ = EW_Int_Type
+                                  then Int_Infix_Le
+                                  elsif Why_Type_Is_BitVector (Typ)
+                                  then MF_BVs (Typ).Ule
+                                  else raise Program_Error),
+                       Left   => +A_Fst,
+                       Right  => +A_Lst,
+                       Domain => EW_Pred),
+                    Then_Part   => New_And_Expr
+                      (Left   => New_Comparison
+                      (Symbol => (if Typ = EW_Int_Type
+                                  then Int_Infix_Le
+                                  elsif Why_Type_Is_BitVector (Typ)
+                                  then MF_BVs (Typ).Ule
+                                  else raise Program_Error),
+                       Left   => +B_Fst,
+                       Right  => +B_Lst,
+                       Domain => EW_Pred),
+                       Right  => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   =>
+                            New_Discrete_Substract (EW_Pred, +A_Lst, +A_Fst),
+                          Right  =>
+                            New_Discrete_Substract (EW_Pred, +B_Lst, +B_Fst),
+                          Domain => EW_Pred),
+                       Domain => EW_Pred),
+                    Else_Part   => New_Comparison
+                      (Symbol => (if Typ = EW_Int_Type
+                                  then Int_Infix_Gt
+                                  elsif Why_Type_Is_BitVector (Typ)
+                                  then MF_BVs (Typ).Ugt
+                                  else raise Program_Error),
+                       Left   => +B_Fst,
+                       Right  => +B_Lst,
+                       Domain => EW_Pred),
+                    Typ         => EW_Bool_Type),
+               Domain => EW_Pred);
+
+            Next_Index (Index);
+            I := I + 1;
+         end;
+      end loop;
+
+      --  If the type is limited, still declare an abstract placeholder for
+      --  the equality function which will be used to clone the array theory.
+
+      if Is_Limited_View (E) then
+
+         Emit
+           (Section,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (Symbols.Bool_Eq),
+               Binders     => Args,
+               Return_Type => +EW_Bool_Type,
+               Labels      => Name_Id_Sets.Empty_Set));
+
+      --  Emit:
+      --  function bool_eq (a : map) (a__first : t1) ... (b : map) ... : bool =
+      --    if ((if a__first <= a__last
+      --         then a__last - a__first = b__last - b__first
+      --         else b__first > b__last) /\ ...) /\
+      --        (forall idx1 : t1, idx2 : t2 ...
+      --           (a__first <= idx1 <= a__last /\ ...) ->
+      --            <ada_eq> (get a idx1 ...)
+      --                     (get b (b__first - a__first + idx1) ...))
+      --    then True else False
+      --  where <ada_eq> is user_eq in the component type is a record type and
+      --  bool_eq otherwise.
+
+      else
+
+         declare
+            C_Type   : constant Entity_Id := Retysp (Component_Type (E));
+            W_Ty     : constant W_Type_Id := EW_Abstract (C_Type);
+            Get_Name : constant W_Identifier_Id := To_Local (Symbols.Get);
+            Eq_Name  : constant W_Identifier_Id := To_Local (Symbols.Bool_Eq);
+            Def      : W_Pred_Id :=
+                         +New_Ada_Equality
+                           (Typ              => C_Type,
+                            Domain           => EW_Pred,
+                            Left             =>
+                              New_Call
+                                (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
+                            Right            =>
+                              New_Call
+                                (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
+                            Force_Predefined => not Is_Record_Type
+                              (Get_Full_Type_Without_Checking (C_Type)));
+         begin
+
+            Def := New_Conditional
+              (Condition => +Range_Cond,
+               Then_Part => +Def,
+               Typ       => EW_Bool_Type);
+
+            Def := New_Universal_Quantif
+              (Binders => Idx_Vars,
+               Pred    => +Def);
+
+            Def := +New_And_Expr
+              (Left   => +Length_Eq,
+               Right  => +Def,
+               Domain => EW_Pred);
+
+            Emit
+              (Section,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Eq_Name,
+                  Binders     => Args,
+                  Return_Type => +EW_Bool_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +Def));
+
+            --  This axiom is provable from the definition of bool_eq. We
+            --  supply it to help E-matching when a_first is different from
+            --  b_first.
+
+            declare
+               Rev_Args : constant Binder_Array :=
+                 Args (Args_Lgth + 1 .. 2 * Args_Lgth)
+                 & Args (1 .. Args_Lgth);
+               Rev_Call : constant W_Expr_Id :=
+                 New_Call (Empty, EW_Term, Eq_Name, Rev_Args, EW_Bool_Type);
+            begin
+               Emit
+                 (Section,
+                  New_Guarded_Axiom
+                    (Name     => NID ("bool_eq_rev"),
+                     Binders  => Args,
+                     Pre      => +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Rev_Call,
+                        Right  => +True_Term,
+                        Domain => EW_Pred),
+                     Def      => Def));
+            end;
+         end;
+      end if;
+   end Declare_Equality_Function;
+
    -----------------------------------
-   -- Prepare_Indices_Substitutions --
+   -- Prepare_Indexes_Substitutions --
    -----------------------------------
 
-   function Prepare_Indices_Substitutions
+   function Prepare_Indexes_Substitutions
      (Section     : W_Section_Id;
       Typ         : Entity_Id;
       Prefix      : String;
@@ -593,7 +883,7 @@ package body Why.Gen.Arrays is
                       MF_BVs (WTyp).One
                     else
                       One_Id)));
-   end Prepare_Indices_Substitutions;
+   end Prepare_Indexes_Substitutions;
 
    --------------------------------------------------
    -- Prepare_Standard_Array_Logical_Substitutions --
@@ -614,7 +904,7 @@ package body Why.Gen.Arrays is
          (Kind      => EW_Function,
           Orig_Name => New_Name (Symbol => NID ("get")),
           Image     => New_Name (Symbol => NID ("get"))))
-      & Prepare_Indices_Substitutions
+      & Prepare_Indexes_Substitutions
         (Section, Etype (First_Index (Und_Ent)), "Index",
          False));
 
@@ -1480,6 +1770,10 @@ package body Why.Gen.Arrays is
       Dim       : constant Positive :=
         Positive (Number_Dimensions (Ty));
    begin
+      if Ekind (Ty) = E_String_Literal_Subtype then
+         return Get_Array_Theory_Name (Etype (Ty));
+      end if;
+
       for I in 1 .. Dim loop
          if Has_Modular_Integer_Type (Etype (Index)) then
             Type_Name := To_Unbounded_String
@@ -1513,7 +1807,7 @@ package body Why.Gen.Arrays is
       Dim        : constant Positive :=
         Positive (Number_Dimensions (Ty_Ext));
       Vars       : Binder_Array (1 .. Dim);
-      Indices    : W_Expr_Array (1 .. Dim);
+      Indexes    : W_Expr_Array (1 .. Dim);
       Range_Expr : W_Pred_Id := True_Pred;
       Index      : Node_Id := First_Index (Ty_Ext);
       I          : Positive := 1;
@@ -1529,7 +1823,7 @@ package body Why.Gen.Arrays is
                                   B_Name   => Tmp,
                                   B_Ent    => Null_Entity_Name,
                                   Mutable  => False);
-         Indices (I) := +Tmp;
+         Indexes (I) := +Tmp;
          Range_Expr := +New_And_Expr
            (Left   => +Range_Expr,
             Right  => New_Array_Range_Expr (+Tmp, +Expr, EW_Pred, I),
@@ -1538,13 +1832,13 @@ package body Why.Gen.Arrays is
          I := I + 1;
       end loop;
 
-      pragma Assert (I = Indices'Last + 1);
+      pragma Assert (I = Indexes'Last + 1);
 
       --  Call Build_Predicate_For_Comp on the array components.
 
       T_Comp :=
         +Build_Predicate_For_Comp
-        (C_Expr => +New_Array_Access (Empty, +Expr, Indices, EW_Term),
+        (C_Expr => +New_Array_Access (Empty, +Expr, Indexes, EW_Term),
          C_Ty   => Component_Type (Ty_Ext));
 
       if T_Comp /= +True_Pred then
@@ -1574,21 +1868,21 @@ package body Why.Gen.Arrays is
    -----------------------------
 
    procedure Create_Rep_Array_Theory
-     (File   : W_Section_Id;
-      E      : Entity_Id;
-      Name   : Name_Id;
-      Module : out W_Module_Id);
+     (File    : W_Section_Id;
+      E       : Entity_Id;
+      Module  : W_Module_Id;
+      Symbols : M_Array_Type);
    --  Create an Array theory
    --  @param File the current why file
    --  @param E the entity of type array
-   --  @param Nam the name of the theory to be created, must be the one
-   --         given by "Get_Array_Theory_Name"
+   --  @param Module the module in which the theory should be created
+   --  @param Symbols the symbols to declared in this theory
 
    procedure Create_Rep_Array_Theory
-     (File   : W_Section_Id;
-      E      : Entity_Id;
-      Name   : Name_Id;
-      Module : out W_Module_Id)
+     (File    : W_Section_Id;
+      E       : Entity_Id;
+      Module  : W_Module_Id;
+      Symbols : M_Array_Type)
    is
       Typ : constant Entity_Id := Retysp (Etype (E));
 
@@ -1598,9 +1892,6 @@ package body Why.Gen.Arrays is
       --  ??? why 7
 
    begin
-      Module := New_Module (File => No_Name,
-                            Name => Name);
-
       Open_Theory
         (File, Module,
          Comment =>
@@ -1619,7 +1910,7 @@ package body Why.Gen.Arrays is
       begin
          for I in 0 .. Dim - 1 loop
 
-            Subst (I * 7 + 1 .. I * 7 + 7) := Prepare_Indices_Substitutions
+            Subst (I * 7 + 1 .. I * 7 + 7) := Prepare_Indexes_Substitutions
               (File,
                Retysp (Etype (Index)),
                "I" & Image (I + 1, 1));
@@ -1651,13 +1942,15 @@ package body Why.Gen.Arrays is
                As_Name       => No_Name,
                Substitutions => Subst));
 
+      Declare_Equality_Function (Typ, File, Symbols);
+
       --  For arrays of dimension 1, we may need to clone additional modules
       --  containing definition for the comparison function (if the component
       --  type is discrete) or of boolean operators (if the component type is
       --  boolean).
 
       if Dim = 1 then
-         Declare_Additional_Symbols (Typ, File);
+         Declare_Additional_Symbols (Typ, File, Symbols);
       end if;
 
       Close_Theory (File, Kind => Definition_Theory);
@@ -1672,8 +1965,10 @@ package body Why.Gen.Arrays is
       E             : Entity_Id;
       Register_Only : Boolean := False)
    is
-      Name   : constant Name_Id := Get_Array_Theory_Name (E);
-      Module : W_Module_Id;
+      Name    : constant Name_Id := Get_Array_Theory_Name (E);
+      Module  : constant W_Module_Id := New_Module (File => No_Name,
+                                                    Name => Name);
+      Symbols : constant M_Array_Type := Init_Array_Module (Module);
 
    begin
       if M_Arrays.Contains (Key => Name) then
@@ -1684,17 +1979,14 @@ package body Why.Gen.Arrays is
       --  let's create it.
 
       if not Register_Only then
-         Create_Rep_Array_Theory (File, E, Name, Module);
-      else
-         Module := New_Module (File => No_Name,
-                               Name => Name);
+         Create_Rep_Array_Theory (File, E, Module, Symbols);
       end if;
 
       --  Include the different parts of the declared module in the appropriate
       --  maps.
 
       M_Arrays.Include (Key      => Name,
-                        New_Item => Init_Array_Module (Module));
+                        New_Item => Symbols);
 
       if Number_Dimensions (Retysp (Etype (E))) = 1 then
          M_Arrays_1.Include (Key      => Name,

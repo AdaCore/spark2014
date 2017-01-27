@@ -35,7 +35,7 @@ do_loops.adb:64:25: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:64:25: info: initialization of "D.F3" proved
 do_loops.adb:64:43: info: initialization of "D.F3" proved
 do_loops.adb:65:25: info: initialization of "D.F3" proved
-do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => -32, F2 => 33))) and I = 100)
+do_loops.adb:65:25: medium: assertion might fail, cannot prove D.F3 (I).F2 = D.F3'Loop_Entry (I).F2 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 0, F2 => 1)), F4 => (100 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => -30, F2 => 31))) and I = 100)
 do_loops.adb:65:43: info: initialization of "D.F3" proved
 do_loops.adb:72:25: info: initialization of "D.F3" proved
 do_loops.adb:75:22: info: assertion proved (CVC4: 1 VC)

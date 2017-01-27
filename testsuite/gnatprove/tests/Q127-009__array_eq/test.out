@@ -1,0 +1,10 @@
+test_array_eq.adb:11:20: info: length check proved (CVC4: 1 VC)
+test_array_eq.adb:12:20: info: length check proved (CVC4: 1 VC)
+test_array_eq.adb:14:19: info: assertion proved (CVC4: 1 VC)
+test_array_eq.adb:14:19: info: initialization of "A" proved
+test_array_eq.adb:14:23: info: initialization of "B" proved
+test_array_eq_bad.adb:11:20: info: length check proved (CVC4: 1 VC)
+test_array_eq_bad.adb:12:20: info: length check proved (CVC4: 1 VC)
+test_array_eq_bad.adb:14:19: info: initialization of "A" proved
+test_array_eq_bad.adb:14:19: medium: assertion might fail, cannot prove A /= B (e.g. when A = (others => (F1 => 0, F2 => 0)) and B = (others => (F1 => 0, F2 => 0)))
+test_array_eq_bad.adb:14:24: info: initialization of "B" proved

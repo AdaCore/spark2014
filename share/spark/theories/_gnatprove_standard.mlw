@@ -561,20 +561,6 @@ module Array__1
   function get "inline" (a : map) (i : I1.t) : component_type = Map.get a i
   function set "inline" (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
 
-  function bool_eq map I1.t I1.t map I1.t I1.t : bool
-  meta "encoding : lskept" function bool_eq
-
-  axiom T__ada_array___equal_def:
-    forall a:map.
-    forall af : I1.t. forall al : I1.t.
-    forall b:map.
-    forall bf : I1.t. forall bl : I1.t [bool_eq a af al b bf bl].
-        ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl)
-         /\ (forall i:I1.t[get a i].
-               (I1.le af i /\ I1.le i al) ->
-               (get a i = get b (I1.add (I1.sub bf af) i))))
-        <-> bool_eq a af al b bf bl = True
-
   function slide map I1.t I1.t : map
   meta "encoding : lskept" function slide
 
@@ -655,24 +641,6 @@ module Array__2
     forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-  function bool_eq map I1.t I1.t I2.t I2.t map I1.t I1.t I2.t I2.t : bool
-  meta "encoding : lskept" function bool_eq
-
-   axiom T__ada_array___equal_def:
-     forall a:map.
-     forall af al : I1.t.
-     forall af2 al2 : I2.t.
-     forall b:map.
-     forall bf bl : I1.t.
-     forall bf2 bl2 : I2.t [bool_eq a af al af2 al2 b bf bl bf2 bl2].
-         ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl) /\
-          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
-          (forall i : I1.t. forall j : I2.t[get a i j].
-                (I1.le af i /\ I1.le i al) ->
-                (I2.le af2 j /\ I2.le j al2) ->
-                (get a i j = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j))))
-         <-> bool_eq a af al af2 al2 b bf bl bf2 bl2 = True
-
   function slide map I1.t I1.t I2.t I2.t : map
   meta "encoding : lskept" function slide
 
@@ -721,30 +689,6 @@ module Array__3
     forall a : component_type [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
-
-  function bool_eq map
-    I1.t I1.t I2.t I2.t I3.t I3.t map I1.t I1.t I2.t I2.t I3.t I3.t : bool
-  meta "encoding : lskept" function bool_eq
-
-   axiom T__ada_array___equal_def:
-     forall a:map.
-     forall af al   : I1.t.
-     forall af2 al2 : I2.t.
-     forall af3 al3 : I3.t.
-     forall b:map.
-     forall bf bl   : I1.t.
-     forall bf2 bl2 : I2.t.
-     forall bf3 bl3 : I3.t
-      [bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3].
-         ((if I1.le af  al  then I1.add (I1.sub al  af)  I1.one = I1.add (I1.sub bl  bf)  I1.one else I1.gt bf  bl) /\
-          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
-          (if I3.le af3 al3 then I3.add (I3.sub al3 af3) I3.one = I3.add (I3.sub bl3 bf3) I3.one else I3.gt bf3 bl3) /\
-          (forall i : I1.t. forall j : I2.t. forall k : I3.t[get a i j k].
-                (I1.le af i  /\ I1.le i al ) ->
-                (I2.le af2 j /\ I2.le j al2) ->
-                (I3.le af3 k /\ I3.le k al3) ->
-                (get a i j k = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k))))
-         <-> bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3 = True
 
   function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
   meta "encoding : lskept" function slide
@@ -805,34 +749,6 @@ module Array__4
        set m i j k l a, get m i2 j2 k2 l2].
     not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
-
-  function bool_eq map
-    I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : bool
-  meta "encoding : lskept" function bool_eq
-
-   axiom T__ada_array___equal_def:
-     forall a:map.
-     forall af al   : I1.t.
-     forall af2 al2 : I2.t.
-     forall af3 al3 : I3.t.
-     forall af4 al4 : I4.t.
-     forall b:map.
-     forall bf bl   : I1.t.
-     forall bf2 bl2 : I2.t.
-     forall bf3 bl3 : I3.t.
-     forall bf4 bl4 : I4.t
-      [bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4].
-         ((if I1.le af  al  then I1.add (I1.sub al  af)  I1.one = I1.add (I1.sub bl  bf)  I1.one else I1.gt bf  bl) /\
-          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
-          (if I3.le af3 al3 then I3.add (I3.sub al3 af3) I3.one = I3.add (I3.sub bl3 bf3) I3.one else I3.gt bf3 bl3) /\
-          (if I4.le af4 al4 then I4.add (I4.sub al4 af4) I4.one = I4.add (I4.sub bl4 bf4) I4.one else I4.gt bf4 bl4) /\
-          (forall i : I1.t. forall j : I2.t. forall k : I3.t. forall l : I4.t[get a i j k l].
-                (I1.le af i  /\ I1.le i al ) ->
-                (I2.le af2 j /\ I2.le j al2) ->
-                (I3.le af3 k /\ I3.le k al3) ->
-                (I4.le af4 l /\ I4.le l al4) ->
-                (get a i j k l = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k) (I4.add (I4.sub bf4 af4) l))))
-         <-> bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4 = True
 
   function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
   meta "encoding : lskept" function slide

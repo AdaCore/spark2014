@@ -876,6 +876,13 @@ package body Why.Gen.Names is
            Typ      => Get_Typ (Name));
    end To_Local;
 
+   function To_Local (Name : W_Name_Id) return W_Name_Id is
+   begin
+      return New_Name (Ada_Node => Get_Ada_Node (+Name),
+                       Symbol   => Get_Symbol (Name),
+                       Module   => Why_Empty);
+   end To_Local;
+
    -------------
    -- To_Name --
    -------------

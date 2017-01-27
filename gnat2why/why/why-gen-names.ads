@@ -339,6 +339,7 @@ package Why.Gen.Names is
 
    function To_Local (Name : W_Identifier_Id) return W_Identifier_Id;
    function To_Local (Name : W_Identifier_Id) return W_Name_Id;
+   function To_Local (Name : W_Name_Id) return W_Name_Id;
    --  @param Name a possibly fully qualified identifier
    --  @return the identifier or name where the module component has been
    --    removed

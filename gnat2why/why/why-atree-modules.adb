@@ -1699,6 +1699,11 @@ package body Why.Atree.Modules is
                   Name       =>
                     New_Name (Symbol => NID ("__private"), Module => M),
                   Is_Mutable => False);
+      M_Main.Private_Bool_Eq :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symbol => NID ("private__bool_eq"),
+                        Typ    => EW_Bool_Type);
 
       M_Main.Return_Exc :=
         New_Name (Symbol => NID ("Return__exc"));

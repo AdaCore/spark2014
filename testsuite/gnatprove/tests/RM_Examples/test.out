@@ -2,7 +2,7 @@ update_examples.ads:23:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:30:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:38:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:54:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:69:08: medium: postcondition might fail, cannot prove NA = NA'Old'update (e.g. when NA'Old = (1 => (A => 1), others => (A => 0)))
+update_examples.ads:69:08: info: postcondition proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:7:10: info: initialization of "I" proved
 loop_var_loop_invar.adb:8:30: info: initialization of "R" proved
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)

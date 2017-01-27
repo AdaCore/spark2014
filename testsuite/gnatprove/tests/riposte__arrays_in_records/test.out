@@ -17,21 +17,21 @@ arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.F
 arrays_in_records.adb:163:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 100, First_Array => (1 => 23, 0 => 42, others => 0), Second_Array => (others => 0)) and I = 1)
 arrays_in_records.adb:178:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:185:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (5 => 0, 17 => 0, others => 2), Second_Array => (5 => 0, 17 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (5 => 0, 17 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:185:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (5 => 0, 17 => 0, others => 1), Second_Array => (others => 0)))
 arrays_in_records.adb:191:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:198:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (1 => 0, 0 => 0, others => 2), Second_Array => (1 => 0, 0 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (1 => 0, 0 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:198:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (1 => 0, 0 => 0, others => -1), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
 arrays_in_records.adb:204:27: info: initialization of "Tmp" proved
-arrays_in_records.adb:212:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 17, First_Array => (5 => 0, 17 => 0, 23 => 0, others => -1), Second_Array => (5 => 0, 17 => 0, 23 => 0, others => 2)) and A'Old = (Counter => 17, First_Array => (5 => 0, 17 => 0, 23 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:212:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 17, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 17, First_Array => (5 => 0, 17 => 0, others => -1), Second_Array => (others => 0)))
 arrays_in_records.adb:219:29: info: initialization of "Tmp" proved
 arrays_in_records.adb:220:29: info: initialization of "Tmp" proved
-arrays_in_records.adb:228:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 1, First_Array => (1 => 0, 0 => 0, others => -1), Second_Array => (1 => 0, 0 => 0, others => 2)) and A'Old = (Counter => 1, First_Array => (1 => 0, 0 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:228:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 1, First_Array => (1 => 0, 0 => 0, others => 2), Second_Array => (others => 0)) and A'Old = (Counter => 1, First_Array => (others => 0), Second_Array => (others => 0)))
 arrays_in_records.adb:235:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:236:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:243:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (17 => 0, others => 2), Second_Array => (17 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (17 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:243:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (17 => 0, others => -1), Second_Array => (others => 0)))
 arrays_in_records.adb:249:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:255:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (0 => 0, others => 2), Second_Array => (0 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:255:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => -1), Second_Array => (others => 0)))
 arrays_in_records.adb:261:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:267:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (5 => 0, 17 => 0, others => 2), Second_Array => (5 => 0, 17 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (5 => 0, 17 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:267:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (17 => 0, others => 2), Second_Array => (5 => 0, others => -2)))
 arrays_in_records.adb:273:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:280:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (0 => 0, others => 2), Second_Array => (0 => 0, others => -1)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => 1), Second_Array => (others => 0)))
+arrays_in_records.adb:280:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => 2), Second_Array => (0 => 0, others => -2)))
 arrays_in_records.adb:286:28: info: initialization of "Tmp" proved

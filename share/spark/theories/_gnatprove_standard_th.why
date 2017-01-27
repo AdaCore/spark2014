@@ -1,8 +1,12 @@
 theory Main_Main
+  use import bool.Bool
 
   (* special private type for private types not in SPARK and hidden extension
   components *)
   type __private
+
+  (* equality over private types *)
+  function private__bool_eq __private __private : bool
 
   (* dummy value for the null extension when the dynamic type matches the
   static type *)

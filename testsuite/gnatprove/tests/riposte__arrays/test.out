@@ -48,7 +48,7 @@ arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:245:22: info: initialization of "A" proved
 arrays.adb:253:22: info: length check proved (CVC4: 1 VC)
 arrays.adb:254:22: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (1 => 0, 0 => 0, others => 1))
+arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (others => 0))
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> Contains_B'Result = False and S = (97 => true, others => false)
   trace at arrays.adb:58 --> C = NUL
@@ -96,5 +96,5 @@ counterexample expected for check at arrays.adb:236
   trace at arrays.adb:235 --> A = (others => false)
   trace at arrays.adb:236 --> A = (others => false)
 counterexample expected for check at arrays.adb:254
-  trace at arrays.adb:253 --> A = (others => 0)
-  trace at arrays.adb:254 --> A = (1 => 0, 0 => 0, others => 1)
+  trace at arrays.adb:253 --> A = (1 => 0, 0 => 0, others => 1)
+  trace at arrays.adb:254 --> A = (others => 0)

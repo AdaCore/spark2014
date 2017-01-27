@@ -5,7 +5,7 @@ stable_marriage.adb:10:16: info: initialization of "Seen" proved
 stable_marriage.adb:11:26: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:12:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
-stable_marriage.adb:15:22: medium: assertion might fail (e.g. when G1 = 1 and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:15:22: medium: assertion might fail (e.g. when G1 = 1 and R1 = (64 => 2, others => 0) and Seen = (others => true))
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
 stable_marriage.adb:15:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
@@ -17,7 +17,7 @@ stable_marriage.adb:31:16: info: initialization of "Seen" proved
 stable_marriage.adb:32:26: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:33:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
-stable_marriage.adb:36:22: medium: assertion might fail (e.g. when G2 = 1 and Seen = (1 => false, 0 => false, others => true))
+stable_marriage.adb:36:22: medium: assertion might fail (e.g. when G2 = 1 and R2 = (64 => 2, others => 0) and Seen = (others => true))
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
 stable_marriage.adb:36:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
@@ -151,13 +151,13 @@ stable_marriage.adb:344:13: info: assertion proved (CVC4: 1 VC)
 stable_marriage.adb:346:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:348:51: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:352:24: info: range check proved (CVC4: 2 VC)
-stable_marriage.adb:354:19: medium: assertion might fail, cannot prove not Unmatched_G2_Set (Ranking_1 (G1_Id) (Rank)
 stable_marriage.adb:354:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:355:54: info: index check proved (CVC4: 2 VC)
+stable_marriage.adb:356:28: medium: assertion might fail, cannot prove not (Is_Preferred_1 (G1_Id, Result (Ranking_1 (G1_Id) (Rank)), Ranking_2 (Ranking_1 (G1_Id) (Rank)
 stable_marriage.adb:356:33: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:357:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:358:59: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:360:25: medium: assertion might fail
+stable_marriage.adb:360:25: medium: assertion might fail (e.g. when G1_Id = 2 and Proposals_Made = (3 => 4, others => 0) and Unmatched_G1_Set = (Elements => (others => 0), Cardinality => 3))
 stable_marriage.adb:362:40: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:364:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:368:28: info: range check proved (CVC4: 2 VC)
@@ -199,9 +199,9 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved (CVC4: 4 VC)
 stable_marriage.adb:399:14: info: initialization of "Result" proved
-stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when G1 = 63 and Is_Permutation_1'Result = True and R1 = (64 => 64, others => 0))
+stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when G1 = 1 and Is_Permutation_1'Result = True and R1 = (64 => 2, others => 0))
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) (e.g. when R1 = (2 => 1, 1 => 1, others => 0) and Rank1 = 1 and Rank2 = 2)
-stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when G2 = 63 and Is_Permutation_2'Result = True and R2 = (64 => 64, others => 0))
+stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when G2 = 1 and Is_Permutation_2'Result = True and R2 = (64 => 2, others => 0))
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) (e.g. when R2 = (2 => 1, 1 => 1, others => 0) and Rank1 = 1 and Rank2 = 2)
 stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1 (e.g. when G1 = 1 and Invert_1'Result = (2 => 64, 1 => 64, others => 0) and R1 = (64 => 2, others => 1))
 stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2 (e.g. when G2 = 1 and Invert_2'Result = (2 => 64, 1 => 64, others => 0) and R2 = (64 => 2, others => 1))

@@ -1,4 +1,4 @@
-communications.adb:5:38: info: predicate check proved (CVC4: 1 VC)
+communications.adb:5:38: medium: predicate check might fail
 communications.adb:5:47: info: length check proved (CVC4: 1 VC)
 communications.adb:5:73: info: length check proved (CVC4: 1 VC)
 communications.adb:7:16: info: length check proved (CVC4: 1 VC)

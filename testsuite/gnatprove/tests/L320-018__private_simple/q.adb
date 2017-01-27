@@ -7,5 +7,5 @@ begin
    Y := Init;
    Z := Get (Y);
    pragma Warnings (On, "*unused assignment");
-   pragma Assert (Y = Z);
+   pragma Assert (Z = Y);
 end Q;

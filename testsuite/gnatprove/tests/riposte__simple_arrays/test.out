@@ -15,7 +15,7 @@ simple_arrays.adb:53:23: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:53:27: info: initialization of "B" proved
 simple_arrays.adb:58:12: info: initialization of "B" proved
 simple_arrays.adb:63:53: info: initialization of "B" proved
-simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B (e.g. when A = (0 => 0, others => 1) and B = (others => 0))
+simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B (e.g. when A = (others => 0) and B = (others => 0))
 simple_arrays.adb:68:27: info: initialization of "B" proved
 simple_arrays.adb:73:13: info: initialization of "B" proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC4: 3 VC)
@@ -51,13 +51,13 @@ simple_arrays.adb:437:22: medium: postcondition might fail, cannot prove A(Elem_
 simple_arrays.adb:447:22: medium: postcondition might fail, cannot prove A(I) = Elem_1 (e.g. when A = (others => 0) and I = Elem_0)
 simple_arrays.adb:457:22: medium: postcondition might fail, cannot prove A(Elem_0) /= Elem_0 (e.g. when A = (others => 0))
 simple_arrays.adb:469:22: medium: postcondition might fail, cannot prove A(I) /= Elem_0 (e.g. when A = (0 => 1, others => 0) and I = Elem_1)
-simple_arrays.adb:479:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:479:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (1 => 0, 0 => 0, others => 1))
 simple_arrays.adb:485:20: info: initialization of "Tmp" proved
-simple_arrays.adb:493:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:493:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => -1) and A'Old = (others => 0))
 simple_arrays.adb:499:15: info: initialization of "Tmp" proved
-simple_arrays.adb:505:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:505:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:511:20: info: initialization of "Tmp" proved
-simple_arrays.adb:518:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:518:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:524:15: info: initialization of "Tmp" proved
 simple_arrays.adb:535:22: medium: assertion might fail, cannot prove A(42) = Elem_0 (e.g. when A = (42 => 1, others => 0))
 simple_arrays.adb:543:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (0 => 1, others => 0) and I = 0)
@@ -67,13 +67,13 @@ simple_arrays.adb:568:22: medium: postcondition might fail, cannot prove A(42) =
 simple_arrays.adb:578:22: medium: postcondition might fail, cannot prove A(I) = Elem_1 (e.g. when A = (others => 0) and I = 0)
 simple_arrays.adb:588:22: medium: postcondition might fail, cannot prove A(42) /= Elem_0 (e.g. when A = (others => 0))
 simple_arrays.adb:600:22: medium: postcondition might fail, cannot prove A(I) /= Elem_0 (e.g. when A = (0 => 1, others => 0) and I = 1)
-simple_arrays.adb:610:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (23 => 0, 42 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:610:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (23 => 0, 42 => 0, others => 1))
 simple_arrays.adb:616:16: info: initialization of "Tmp" proved
-simple_arrays.adb:624:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (-1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:624:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (-1 => 0, 0 => 0, others => -1) and A'Old = (others => 0))
 simple_arrays.adb:630:15: info: initialization of "Tmp" proved
-simple_arrays.adb:636:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (42 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:636:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (42 => 0, others => -1))
 simple_arrays.adb:642:16: info: initialization of "Tmp" proved
-simple_arrays.adb:649:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:649:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:655:15: info: initialization of "Tmp" proved
 simple_arrays.adb:666:22: medium: assertion might fail, cannot prove A(Elem_0) = 69 (e.g. when A = (0 => 0, others => 1))
 simple_arrays.adb:674:22: medium: assertion might fail, cannot prove A(I) = 69 (e.g. when A = (0 => 0, others => 1) and I = Elem_0)
@@ -83,13 +83,13 @@ simple_arrays.adb:698:22: medium: postcondition might fail, cannot prove A(Elem_
 simple_arrays.adb:708:22: medium: postcondition might fail, cannot prove A(I) = 1337 (e.g. when A = (others => 0) and I = Elem_0)
 simple_arrays.adb:718:22: medium: postcondition might fail, cannot prove A(Elem_0) /= 69 (e.g. when A = (others => 0))
 simple_arrays.adb:730:22: medium: postcondition might fail, cannot prove A(I) /= 69 (e.g. when A = (1 => 69, 0 => 1337, others => 0) and I = Elem_1)
-simple_arrays.adb:740:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:740:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (1 => 0, 0 => 0, others => 1))
 simple_arrays.adb:746:20: info: initialization of "Tmp" proved
-simple_arrays.adb:754:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:754:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => 0, 0 => 0, others => -1) and A'Old = (others => 0))
 simple_arrays.adb:760:15: info: initialization of "Tmp" proved
-simple_arrays.adb:766:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:766:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:772:20: info: initialization of "Tmp" proved
-simple_arrays.adb:779:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:779:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:785:15: info: initialization of "Tmp" proved
 simple_arrays.adb:796:22: medium: assertion might fail, cannot prove A(42) = 69 (e.g. when A = (42 => 0, others => 1))
 simple_arrays.adb:804:22: medium: assertion might fail, cannot prove A(I) = 69 (e.g. when A = (0 => 0, others => 1) and I = 0)
@@ -99,11 +99,11 @@ simple_arrays.adb:829:22: medium: postcondition might fail, cannot prove A(42) =
 simple_arrays.adb:839:22: medium: postcondition might fail, cannot prove A(I) = 1337 (e.g. when A = (others => 0) and I = 0)
 simple_arrays.adb:849:22: medium: postcondition might fail, cannot prove A(42) /= 69 (e.g. when A = (others => 0))
 simple_arrays.adb:861:22: medium: postcondition might fail, cannot prove A(I) /= 69 (e.g. when A = (1 => 69, 0 => 1337, others => 0) and I = 1)
-simple_arrays.adb:871:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (23 => 0, 42 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:871:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (23 => 0, 42 => 0, others => 1))
 simple_arrays.adb:877:16: info: initialization of "Tmp" proved
-simple_arrays.adb:885:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (-1 => 0, 0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:885:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (-1 => 0, 0 => 0, others => -1) and A'Old = (others => 0))
 simple_arrays.adb:891:15: info: initialization of "Tmp" proved
-simple_arrays.adb:897:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (42 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:897:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (42 => 0, others => -1))
 simple_arrays.adb:903:16: info: initialization of "Tmp" proved
-simple_arrays.adb:910:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => 0, others => 1) and A'Old = (others => 0))
+simple_arrays.adb:910:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => 0) and A'Old = (0 => 0, others => -1))
 simple_arrays.adb:916:15: info: initialization of "Tmp" proved

@@ -147,6 +147,13 @@ module Array__Int__Sums__vector_element
    :int =
   1
 
+  function bool_eq (a:map) (af:int) (al:int) (b:map) (bf:int) (bl:int) : bool =
+   (if af <= al
+        then al - af = bl - bf
+        else bf > bl) /\
+         (forall idx : int. af <= idx <= al ->
+             (get a idx) = (get b (bf - af + idx)))
+
  clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
  type component_type = component_type,
  function to_rep = Sums__vector_element__rep.to_rep,

@@ -1033,17 +1033,25 @@ module Array_Comparison_Axiom
   function compare map Index.t Index.t map Index.t Index.t : int
   meta "encoding : lskept" function compare
 
-  axiom compare_def :
+  axiom compare_def_eq :
     forall a b : map.
     forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last = 0 <->
-          bool_eq a a_first a_last b b_first b_last = True) /\
+          bool_eq a a_first a_last b b_first b_last = True)
+
+  axiom compare_def_lt :
+    forall a b : map.
+    forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last < 0 <->
          exists i j : Index.t. Index.le i a_last /\ Index.lt j b_last /\
              (bool_eq a a_first i b b_first j = True /\
              (i = a_last \/
                    Index.lt i a_last /\
-                       rep_lt (to_rep (get a (Index.add i Index.one))) (to_rep (get b (Index.add j Index.one)))))) /\
+                       rep_lt (to_rep (get a (Index.add i Index.one))) (to_rep (get b (Index.add j Index.one))))))
+
+  axiom compare_def_gt :
+    forall a b : map.
+    forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last > 0 <->
          exists i j : Index.t. Index.le i b_last /\ Index.lt j a_last /\
              (bool_eq a a_first j b b_first i = True /\

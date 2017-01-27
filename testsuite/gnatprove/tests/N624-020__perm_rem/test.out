@@ -208,7 +208,7 @@ perm.adb:224:28: info: precondition proved (CVC4: 12 VC)
 perm.adb:224:44: info: initialization of "Ib" proved
 perm.adb:225:37: info: assertion proved (CVC4: 2 VC)
 perm.adb:225:37: info: initialization of "IH" proved
-perm.adb:226:28: info: precondition proved (CVC4: 10 VC)
+perm.adb:226:28: medium: precondition might fail
 perm.adb:227:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:227:33: info: precondition proved (CVC4: 6 VC)
 perm.adb:227:44: info: range check proved (CVC4: 2 VC)
@@ -439,7 +439,7 @@ perm.adb:355:15: info: precondition proved (CVC4: 6 VC)
 perm.adb:356:25: info: assertion proved (CVC4: 1 VC)
 perm.adb:356:25: info: initialization of "H" proved
 perm.adb:357:12: warning: unused assignment
-perm.adb:357:15: info: precondition proved (CVC4: 5 VC)
+perm.adb:357:15: medium: precondition might fail
 perm.adb:357:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:357:45: info: range check proved (CVC4: 1 VC)
 perm.adb:357:51: info: precondition proved (CVC4: 3 VC)
@@ -449,7 +449,7 @@ perm.adb:359:25: info: assertion proved (CVC4: 1 VC)
 perm.adb:359:25: info: initialization of "H" proved
 perm.adb:361:12: medium: precondition might fail
 perm.adb:362:14: info: initialization of "H" proved
-perm.ads:11:14: medium: postcondition might fail, cannot prove Invariant (Remove'result)
+perm.ads:11:14: info: postcondition proved (CVC4: 5 VC)
 perm.ads:12:34: info: overflow check proved (CVC4: 1 VC)
 perm.ads:13:37: info: index check proved (CVC4: 2 VC)
 perm.ads:13:57: info: index check proved (CVC4: 2 VC)
@@ -460,14 +460,14 @@ perm.ads:15:32: info: overflow check proved (CVC4: 1 VC)
 perm.ads:15:44: info: index check proved (CVC4: 2 VC)
 perm.ads:15:44: info: overflow check proved (CVC4: 1 VC)
 perm.ads:15:66: info: index check proved (CVC4: 2 VC)
-perm.ads:20:14: info: postcondition proved (CVC4: 2 VC)
 perm.ads:21:17: info: precondition proved (CVC4: 3 VC)
+perm.ads:21:17: medium: postcondition might fail, cannot prove Remove (Remove (A, I1), I2 - 1) = Remove (Remove (A, I2), I1)
 perm.ads:21:25: info: precondition proved (CVC4: 3 VC)
 perm.ads:21:44: info: range check proved (CVC4: 1 VC)
 perm.ads:22:19: info: precondition proved (CVC4: 3 VC)
 perm.ads:22:27: info: precondition proved (CVC4: 3 VC)
-perm.ads:27:14: info: postcondition proved (CVC4: 2 VC)
 perm.ads:27:40: info: precondition proved (CVC4: 3 VC)
+perm.ads:27:40: medium: postcondition might fail, cannot prove Remove (A, I) = Remove (B, I)
 perm.ads:27:56: info: precondition proved (CVC4: 3 VC)
 perm.ads:29:13: medium: subprogram "Is_Perm" might not terminate, terminating annotation could be incorrect
 perm.ads:35:50: info: index check proved (CVC4: 2 VC)
@@ -518,8 +518,8 @@ perm.ads:62:17: info: precondition proved (CVC4: 2 VC)
 perm.ads:62:26: info: precondition proved (CVC4: 3 VC)
 perm.ads:62:42: info: precondition proved (CVC4: 3 VC)
 sort.adb:14:15: info: function contract not available for proof ("Is_Perm" is recursive)
-sort.adb:14:15: info: postcondition proved (CVC4: 1 VC)
 sort.adb:14:15: info: precondition proved (CVC4: 2 VC)
+sort.adb:14:15: medium: postcondition might fail, cannot prove Is_Perm (Values'Old, Values)
 sort.adb:23:29: info: index check proved (CVC4: 2 VC)
 sort.adb:24:15: info: index check proved (CVC4: 2 VC)
 sort.adb:24:29: info: index check proved (CVC4: 2 VC)
@@ -539,7 +539,7 @@ sort.adb:31:38: info: range check proved (CVC4: 1 VC)
 sort.adb:31:43: info: precondition proved (CVC4: 3 VC)
 sort.adb:31:59: info: range check proved (CVC4: 1 VC)
 sort.adb:34:07: warning: statement has no effect
-sort.adb:38:19: info: precondition proved (CVC4: 5 VC)
+sort.adb:38:19: medium: precondition might fail
 sort.adb:38:30: info: precondition proved (CVC4: 3 VC)
 sort.adb:38:38: info: initialization of "Interm" proved
 sort.adb:38:46: info: range check proved (CVC4: 1 VC)

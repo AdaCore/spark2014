@@ -925,19 +925,22 @@ package body Why.Gen.Records is
                                  Field => Enclosing_Id);
          begin
             if Is_Private then
-               return +New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   =>
-                    New_Record_Access
-                      (Name  => A_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Private_Type),
-                  Right  =>
-                    New_Record_Access
-                      (Name  => B_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Private_Type),
-                  Domain => EW_Pred);
+
+               --  For equality over private components, use an abstract logic
+               --  function.
+
+               return
+                 New_Call
+                   (Name => M_Main.Private_Bool_Eq,
+                    Typ  => EW_Bool_Type,
+                    Args => (1 => New_Record_Access
+                               (Name  => A_Access,
+                                Field => Field_Id,
+                                Typ   => EW_Private_Type),
+                             2 => New_Record_Access
+                               (Name  => B_Access,
+                                Field => Field_Id,
+                                Typ   => EW_Private_Type)));
             else
                pragma Assert (Present (Field_Type));
                return +New_Ada_Equality
@@ -954,7 +957,8 @@ package body Why.Gen.Records is
                        Field => Field_Id,
                        Typ   => EW_Abstract (Field_Type)),
                   Force_Predefined =>
-                     not Is_Record_Type (Field_Type));
+                     not Is_Record_Type
+                    (Get_Full_Type_Without_Checking (Field_Type)));
             end if;
          end New_Field_Equality;
 

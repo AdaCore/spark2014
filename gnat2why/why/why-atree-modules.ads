@@ -118,6 +118,7 @@ package Why.Atree.Modules is
    type M_Main_Type is record
       Module            : W_Module_Id;
       Private_Type      : W_Type_Id;
+      Private_Bool_Eq   : W_Identifier_Id;
       Null_Extension    : W_Identifier_Id;
       Fixed_Type        : W_Type_Id;
       Bool_Not          : W_Identifier_Id;
