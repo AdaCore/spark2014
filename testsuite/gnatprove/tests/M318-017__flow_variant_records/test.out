@@ -6,7 +6,7 @@ definite.adb:26:31: info: initialization of "G.A" proved
 definite.adb:26:31: info: initialization of "G.B" proved
 definite.adb:26:31: info: initialization of "G.X" proved
 definite.adb:33:09: medium: discriminant check might fail
-definite.adb:34:09: medium: discriminant check might fail
+definite.adb:34:09: info: discriminant check proved (CVC4: 2 VC)
 definite.adb:37:28: info: initialization of "X.A" proved
 definite.adb:37:28: info: initialization of "X.B" proved
 definite.adb:37:28: info: initialization of "X.X" proved
@@ -18,7 +18,7 @@ definite.adb:48:25: info: initialization of "Y" proved
 definite.adb:49:31: info: initialization of "G.A" proved
 definite.adb:49:31: info: initialization of "G.B" proved
 definite.adb:49:31: info: initialization of "G.X" proved
-definite.adb:55:09: medium: discriminant check might fail
+definite.adb:55:09: info: discriminant check proved (CVC4: 2 VC)
 definite.adb:58:25: info: initialization of "X.A" proved
 definite.adb:58:25: info: initialization of "X.B" proved
 definite.adb:58:25: info: initialization of "X.X" proved
@@ -39,7 +39,7 @@ definite.adb:91:30: info: initialization of "G.A" proved
 definite.adb:91:30: info: initialization of "G.B" proved
 definite.adb:91:30: info: initialization of "G.X" proved
 definite.adb:95:09: medium: discriminant check might fail
-definite.adb:96:09: medium: discriminant check might fail
+definite.adb:96:09: info: discriminant check proved (CVC4: 2 VC)
 definite.adb:99:30: info: initialization of "X.A" proved
 definite.adb:99:30: info: initialization of "X.B" proved
 definite.adb:99:30: info: initialization of "X.X" proved

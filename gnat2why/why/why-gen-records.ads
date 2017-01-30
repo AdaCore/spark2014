@@ -170,6 +170,7 @@ package Why.Gen.Records is
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
       From_Expr : W_Expr_Id := Why_Empty;
+      Is_Cst    : Boolean := False;
       Ty        : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update to the
@@ -183,6 +184,8 @@ package Why.Gen.Records is
    --  of their type, that is, 'Constrained is false for unconstrained types
    --  with default discriminants and 'Tag is the type's tag for specific
    --  tagged types.
+   --  @param Is_Cst True if Name is a constant (its 'Constrained attribute
+   --   should be True.
    --  @result Name updated with values of From_Expr attributes if present and
    --  default ones otherwise.
 
