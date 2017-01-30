@@ -14,10 +14,12 @@
 
 import sys
 import time
+import os
 
 # AdaCore specific Ada/SPARK highlighter, that does not crash
 
-sys.path.append('.')
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             '..', 'sphinx_support'))
 import ada_pygments
 
 

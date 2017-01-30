@@ -16,16 +16,18 @@ import sys, os, time
 # AdaCore specific Ada/SPARK highlighter, that does not crash
 
 try:
-    import gnatpython.ada_pygments
+    sphinx_support_dir = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), '..', '..', 'sphinx_support')
+    sys.path.append(sphinx_support_dir)
+    import ada_pygments
     use_adacore_parser = True
-
 except ImportError:
     use_adacore_parser = False
 
 def setup(app):
     app.add_config_value('Display_Trace_Units',False,True)
     if use_adacore_parser:
-    	app.add_lexer('ada', gnatpython.ada_pygments.AdaLexer())
+        app.add_lexer('ada', ada_pygments.AdaLexer())
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
