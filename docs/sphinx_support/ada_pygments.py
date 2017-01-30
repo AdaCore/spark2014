@@ -1,4 +1,4 @@
-"""Alternate Ada and Project Files parsers for Sphinx/Rest"""
+"""Alternate Ada and Project Files parsers for Sphinx/Rest."""
 
 import re
 from pygments.lexer import RegexLexer, bygroups
@@ -7,7 +7,7 @@ from pygments.token import Text, Comment, Operator, Keyword, Name, String, \
 
 
 def get_lexer_tokens(tag_highlighting=False, project_support=False):
-    """Return the tokens needed for RegexLexer
+    """Return the tokens needed for RegexLexer.
 
     :param tag_highlighting: if True we support tag highlighting. See
         AdaLexerWithTags documentation
@@ -62,7 +62,7 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
              r'Version|Value_Size|Value|Valid_Scalars|VADS_Size|Valid|Val|'
              r'Update|Unrestricted_Access|Universal_Literal_String|'
              r'Unconstrained_Array|Unchecked_Access|Unbiased_Rounding|'
-             r'Truncation|Type_Class|To_Address|Tick|Terminated|'
+             r'UET_Address|Truncation|Type_Class|To_Address|Tick|Terminated|'
              r'Target_Name|Tag|System_Allocator_Alignment|Succ|Stub_Type|'
              r'Stream_Size|Storage_Unit|Storage_Size|Storage_Pool|Small|Size|'
              r'Simple_Storage_Pool|Signed_Zeros|Scaling|Scale|'
@@ -122,7 +122,7 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
 
 
 class AdaLexer(RegexLexer):
-    """Alternate Pygments lexer for Ada source code and project files
+    """Alternate Pygments lexer for Ada source code and project files.
 
     The default pygments lexer always fails causing disabling of syntax
     highlighting in Sphinx. This lexer is simpler but safer.
@@ -149,7 +149,7 @@ class AdaLexer(RegexLexer):
 
 
 class TaggedAdaLexer(AdaLexer):
-    """Alternate Pygments lexer for Ada source code with tags
+    """Alternate Pygments lexer for Ada source code with tags.
 
     A tag is a string of the form::
 
@@ -165,7 +165,7 @@ class TaggedAdaLexer(AdaLexer):
 
 
 class GNATProjectLexer(RegexLexer):
-    """Pygment lexer for project files
+    """Pygment lexer for project files.
 
     This is the same as the AdaLexer but with support of ``project``
     keyword.
