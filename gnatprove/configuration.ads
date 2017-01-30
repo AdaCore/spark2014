@@ -85,6 +85,7 @@ package Configuration is
       M                 : aliased Boolean;
       Mode              : aliased GNAT.Strings.String_Access;
       No_Counterexample : aliased Boolean;
+      No_Inlining       : aliased Boolean;
       Output_Msg_Only   : aliased Boolean;
       P                 : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
@@ -158,6 +159,7 @@ package Configuration is
    CodePeer          : Boolean;
    RTS_Dir           : GNAT.Strings.String_Access;
    Counterexample    : Boolean;
+   No_Inlining       : Boolean;
    Mode              : GP_Mode;
    Warning_Mode      : Gnat2Why_Args.SPARK_Warning_Mode_Type;
    Memcached_Server  : GNAT.Strings.String_Access;

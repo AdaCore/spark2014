@@ -700,6 +700,7 @@ package body Configuration is
          Limit_Subp := CL_Switches.Limit_Subp;
          Memcached_Server := CL_Switches.Memcached_Server;
          Why3_Config_File := CL_Switches.Why3_Conf;
+         No_Inlining := CL_Switches.No_Inlining;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
@@ -1439,6 +1440,11 @@ package body Configuration is
         (Config,
          CL_Switches.No_Counterexample'Access,
          Long_Switch => "--no-counterexample");
+
+      Define_Switch
+        (Config,
+         CL_Switches.No_Inlining'Access,
+         Long_Switch => "--no-inlining");
 
       Define_Switch
         (Config,

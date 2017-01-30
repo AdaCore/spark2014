@@ -207,6 +207,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Prepend ("-f");
       end if;
 
+      if No_Inlining then
+         Args.Prepend ("-gnatdm");
+      end if;
+
       if All_Projects then
          Args.Prepend ("-U");
       end if;

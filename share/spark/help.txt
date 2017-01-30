@@ -51,7 +51,6 @@ gnatprove basic switches:
    . error         - Treat warnings as errors
 
 gnatprove advanced switches:
- --no-counterexample  Do not generate a counterexample for unproved formulas
  -d, --debug          Debug mode
  --dbg-proof-only     Disable flow analysis (possibly unsound results)
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
@@ -62,6 +61,8 @@ gnatprove advanced switches:
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
+ --no-counterexample  Do not generate a counterexample for unproved formulas
+ --no-inlining        Do not inline calls to local subprograms for proof
  --pedantic           Use a strict interpretation of the Ada standard
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)

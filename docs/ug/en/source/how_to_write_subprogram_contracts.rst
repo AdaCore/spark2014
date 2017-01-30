@@ -696,14 +696,17 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
 
 If any of the above conditions is violated, |GNATprove| issues a warning to
 explain why the subprogram could not be analyzed in the context of its calls,
-and then proceeds to analyze it normally, using the default contract.
+and then proceeds to analyze it normally, using the default
+contract. Otherwise, both flow analysis and proof are done for the subprogram
+in the context of its calls.
 
 Note that it is very simple to prevent contextual analysis of a local
 subprogram, by adding a contract to it, for example a simple ``Pre => True`` or
-``Global => null``.
-
-Otherwise, both flow analysis and proof are done for the subprogram in the
-context of its calls.
+``Global => null``. To prevent contextual analysis of all subprograms, pass the
+switch ``--no-inlining`` to |GNATprove|. This may be convenient during
+development if the ultimate goal is to add contracts to subprograms to analyze
+them separately, as contextual analysis may cause the analysis to take much
+more time and memory.
 
 .. _Subprogram Termination:
 

@@ -27,6 +27,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
+with Debug;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
@@ -947,24 +948,30 @@ package body SPARK_Util.Subprograms is
    --  Start of processing for Is_Local_Subprogram_Always_Inlined
 
    begin
+      --  Frontend inlining in GNATprove mode is disabled by switch -gnatdm
+
+      if Debug.Debug_Flag_M then
+         return False;
+
       --  A subprogram always inlined should have Body_To_Inline set and
       --  flag Is_Inlined_Always set to True. However, subprograms with
       --  renaming-as-body satisfy these conditions and are not always inlined.
 
       --  Also, subprograms of protected objects are never inlined
 
-      if not Is_Subprogram (E)
+      elsif not Is_Subprogram (E)
         or else not Is_Inlined_Always (E)
         or else Convention (E) = Convention_Protected
       then
          return False;
+
+      else
+         Spec := Subprogram_Spec (E);
+
+         return Present (Spec)
+           and then Present (Body_To_Inline (Spec))
+           and then not Has_Renaming_As_Body (E);
       end if;
-
-      Spec := Subprogram_Spec (E);
-
-      return Present (Spec)
-        and then Present (Body_To_Inline (Spec))
-        and then not Has_Renaming_As_Body (E);
    end Is_Local_Subprogram_Always_Inlined;
 
    -----------------------------
