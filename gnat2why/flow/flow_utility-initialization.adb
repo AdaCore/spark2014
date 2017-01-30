@@ -171,25 +171,26 @@ package body Flow_Utility.Initialization is
       return Boolean
    is
 
-      function Has_Full_Default_Initialization return Boolean;
+      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
       --  Returns True iff F has full default initialization
 
       ---------------------------------
       -- Has_Full_Default_Initialization --
       ---------------------------------
 
-      function Has_Full_Default_Initialization return Boolean is
-         Typ : Node_Id := Get_Direct_Mapping_Id (F);
+      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean
+      is
+         Typ : Entity_Id;
       begin
-         case Ekind (Typ) is
+         case Ekind (E) is
             when E_Abstract_State =>
                return False;
 
             when Type_Kind =>
-               null;
+               Typ := E;
 
             when others =>
-               Typ := Etype (Typ);
+               Typ := Etype (E);
          end case;
 
          return Default_Initialization (Typ, Explicit_Only) =
@@ -201,9 +202,13 @@ package body Flow_Utility.Initialization is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Is_Imported (Get_Direct_Mapping_Id (F))
-              or else In_Generic_Actual (Get_Direct_Mapping_Id (F))
-              or else Has_Full_Default_Initialization;
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Is_Imported (E)
+                 or else In_Generic_Actual (E)
+                 or else Has_Full_Default_Initialization (E);
+            end;
 
          when Record_Field =>
             if In_Generic_Actual (Get_Direct_Mapping_Id (F)) then
@@ -220,8 +225,8 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Has_Full_Default_Initialization;
-
+               return Has_Full_Default_Initialization
+                        (Get_Direct_Mapping_Id (F));
             end if;
 
          when Magic_String | Synthetic_Null_Export =>
