@@ -1,3 +1,1 @@
-p.ads:9:26: called subprogram "Foo" requires GLOBAL aspect to make state "remote2.inner" visible
 remote1.adb:3:04: info: initialization of "Inner" constituent of "State" proved
-gnatprove: error during flow analysis and proof

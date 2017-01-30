@@ -5965,17 +5965,31 @@ package body Flow.Control_Flow_Graph is
                end loop;
 
                for G of Global_Ins loop
-                  --  We have already introduced initial and final vertices for
-                  --  formals of generics so skip them.
-                  if G.Kind in Direct_Mapping | Record_Field
-                    and then not In_Generic_Actual (Get_Direct_Mapping_Id (G))
-                  then
-                     Create_Initial_And_Final_Vertices
-                       (F             => G,
-                        Mode          => Mode_In,
-                        Uninitialized => False,
-                        FA            => FA);
-                  end if;
+                  case G.Kind is
+                     when Direct_Mapping =>
+                        --  We have already introduced initial and final
+                        --  vertices for formals of generics so skip them.
+                        --  ??? handling of formals of generics is broken
+                        if not In_Generic_Actual (Get_Direct_Mapping_Id (G))
+                        then
+                           Create_Initial_And_Final_Vertices
+                             (F             => G,
+                              Mode          => Mode_In,
+                              Uninitialized => False,
+                              FA            => FA);
+                        end if;
+
+                     when Magic_String =>
+                        --  ??? this is the same code as above; refactor later
+                        Create_Initial_And_Final_Vertices
+                          (F             => G,
+                           Mode          => Mode_In,
+                           Uninitialized => False,
+                           FA            => FA);
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
                end loop;
             end;
 
