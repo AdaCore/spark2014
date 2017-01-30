@@ -1109,9 +1109,10 @@ package body Gnat2Why.Expr is
                             (Etype (E))
                           then
                              New_Record_Attributes_Update
-                            (Domain   => EW_Prog,
-                             Name     => +Tmp_Var,
-                             Ty       => Etype (E))
+                            (Domain => EW_Prog,
+                             Name   => +Tmp_Var,
+                             Is_Cst => True,
+                             Ty     => Etype (E))
                           else +Tmp_Var),
                           +L_Id));
                begin
@@ -1126,6 +1127,35 @@ package body Gnat2Why.Expr is
                              +New_Assume_Statement (Pred => Eq)));
                   end if;
                end;
+            end if;
+         end;
+
+      --  Assume the value of 'Constrained attribute for variables with
+      --  Defaulted discriminants.
+
+      elsif Is_Object (E) and then Ekind (E) = E_Variable then
+         declare
+            B  : constant Item_Type :=
+                  Ada_Ent_To_Why.Element (Symbol_Table, E);
+            Ty : constant Entity_Id :=
+                   Get_Ada_Node (+Get_Why_Type_From_Item (B));
+         begin
+
+            if Has_Defaulted_Discriminants (Ty)
+              and then not Is_Constrained (Ty)
+            then
+               Context := Sequence
+                 (Context,
+                  New_Assume_Statement
+                    (Pred     =>
+                       New_Call
+                         (Name => Why_Eq,
+                          Typ  => EW_Bool_Type,
+                          Args => (1 => New_Is_Constrained_Access
+                                   (Domain => EW_Term,
+                                    Name   => +L_Id,
+                                    Ty     => Ty),
+                                   2 => +False_Term))));
             end if;
          end;
       end if;

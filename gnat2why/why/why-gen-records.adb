@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2746,6 +2746,7 @@ package body Why.Gen.Records is
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
       From_Expr : W_Expr_Id := Why_Empty;
+      Is_Cst    : Boolean := False;
       Ty        : Entity_Id)
       return W_Expr_Id
    is
@@ -2777,7 +2778,7 @@ package body Why.Gen.Records is
          declare
             Value : constant W_Expr_Id :=
               (if From_Expr = Why_Empty then
-                 (if Is_Constrained (Ty) then +True_Term
+                 (if Is_Cst or else Is_Constrained (Ty) then +True_Term
                   else +False_Term)
                else New_Is_Constrained_Access
                  (Domain => Domain,
