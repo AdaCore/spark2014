@@ -22,10 +22,7 @@ SPARK 2014 User's Guide
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
 
-   .. only:: core_ja
-
-      Translation to Japanese by Mr. Masao Ito (NIL)
-
+   Translation to Japanese by Mr. Masao Ito (NIL)
 
 .. toctree::
   :maxdepth: 3
@@ -37,11 +34,12 @@ SPARK 2014 User's Guide
   ja/spark_mode_ja
   ja/spark_2014_ja
   ja/gnatprove_ja
-  gfdl
 
-.. Indices and tables
-.. ==================
+.. raw:: latex
 
-.. * :ref:`genindex`
-.. * :ref:`modindex`
-.. * :ref:`search`
+   \appendix
+
+.. toctree::
+   :maxdepth: 3
+
+   A. GNU Free Documentation License <gfdl>
