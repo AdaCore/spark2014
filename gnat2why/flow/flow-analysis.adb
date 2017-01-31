@@ -1212,7 +1212,7 @@ package body Flow.Analysis is
             Atr : V_Attributes renames FA.Atr (V);
 
          begin
-            if F.Kind in Direct_Mapping | Record_Field
+            if F.Kind = Direct_Mapping
               and then Has_Pragma_Un (Get_Direct_Mapping_Id (F))
             then
                --  This variable is marked with a pragma Unreferenced, pragma
