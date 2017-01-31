@@ -1159,7 +1159,8 @@ package body Gnat2Why.Expr is
                    Get_Ada_Node (+Get_Why_Type_From_Item (B));
          begin
 
-            if Has_Defaulted_Discriminants (Ty)
+            if Present (Ty)
+              and then Has_Defaulted_Discriminants (Ty)
               and then not Is_Constrained (Ty)
             then
                Context := Sequence
