@@ -121,7 +121,7 @@ package VC_Kinds is
       Dead_Code,
       --  Statement is never reached
 
-      Default_Initialization_Missmatch,
+      Default_Initialization_Mismatch,
       --  A type marked as Fully_Default_Initialized is not fully initialized
 
       Depends_Null,

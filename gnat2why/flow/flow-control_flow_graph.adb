@@ -4548,7 +4548,7 @@ package body Flow.Control_Flow_Graph is
                Msg      => "type & is not fully initialized",
                N        => N,
                F1       => Direct_Mapping_Id (Typ),
-               Tag      => Default_Initialization_Missmatch,
+               Tag      => Default_Initialization_Mismatch,
                Severity => Medium_Check_Kind);
          end if;
       end if;

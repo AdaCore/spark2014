@@ -368,10 +368,10 @@ procedure SPARK_Report is
          =>
             return Data_Dep;
 
-         when  Impossible_To_Initialize_State
+         when Impossible_To_Initialize_State
             | Initializes_Wrong
             | Uninitialized
-            | Default_Initialization_Missmatch
+            | Default_Initialization_Mismatch
          =>
             return Init;
 
