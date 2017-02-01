@@ -1125,11 +1125,11 @@ Definition dynamic_invariant (temp___expr_137:t) (temp___is_init_134:bool)
 
 Parameter l2: t.
 
-Axiom l_real2 : ((to_real l2) = 18446742974197923840%R).
+Axiom l_real2 : ((to_real l2) = 9223372036854775808%R).
 
 Axiom l_representable2 : ((to_real l2) = (round RNE (to_real l2))).
 
-Axiom l_bin2 : (l2 = (from_binary 1602224127%Z)).
+Axiom l_bin2 : (l2 = (from_binary 1593835520%Z)).
 
 Axiom l_is_finite2 : (is_finite l2).
 
@@ -1157,11 +1157,11 @@ Axiom l_is_finite3 : (is_finite l3).
 
 Parameter l4: t.
 
-Axiom l_real4 : ((to_real l4) = (-18446742974197923840%R)%R).
+Axiom l_real4 : ((to_real l4) = (-9223372036854775808%R)%R).
 
 Axiom l_representable4 : ((to_real l4) = (round RNE (to_real l4))).
 
-Axiom l_bin4 : (l4 = (from_binary 3749707775%Z)).
+Axiom l_bin4 : (l4 = (from_binary 3741319168%Z)).
 
 Axiom l_is_finite4 : (is_finite l4).
 

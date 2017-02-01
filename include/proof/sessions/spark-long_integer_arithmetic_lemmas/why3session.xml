@@ -2,8 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
-<prover id="1" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
 <prover id="2" name="Z3" version="4.4.1" timelimit="5" steplimit="0" memlimit="0"/>
 <prover id="3" name="altergo" version="0.99.1" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-long_integer_arithmetic_lemmas.mlw" expanded="true">
@@ -293,14 +293,13 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.03" steps="202"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.35"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.33"/></proof>
   </goal>
  </transf>
  </goal>
@@ -309,13 +308,13 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="18"/></proof>
   </goal>
  </transf>
  </goal>
@@ -324,14 +323,13 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="31"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.34"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.32"/></proof>
   </goal>
  </transf>
  </goal>
@@ -340,8 +338,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="unknown" time="0.00" steps="14"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.34"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.30"/></proof>
   </goal>
  </transf>
  </goal>
@@ -350,8 +347,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="unknown" time="0.01" steps="14"/></proof>
-  <proof prover="1" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.34"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="valid" time="0.32"/></proof>
   </goal>
  </transf>
  </goal>
@@ -360,10 +356,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="58"/></proof>
+  <proof prover="1"><result status="unknown" time="0.02" steps="58"/></proof>
   <proof prover="2"><result status="valid" time="0.02" steps="3800"/></proof>
   </goal>
  </transf>
@@ -373,40 +369,40 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.03" steps="167"/></proof>
-  <proof prover="2"><result status="valid" time="1.59" steps="2358164"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="167"/></proof>
+  <proof prover="2"><result status="valid" time="1.80" steps="2358164"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="0"><result status="unknown" time="0.02" steps="144"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="144"/></proof>
   <proof prover="2"><result status="valid" time="0.02" steps="7534"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="129"/></proof>
+  <proof prover="1"><result status="unknown" time="0.02" steps="129"/></proof>
   <proof prover="2"><result status="valid" time="0.02" steps="4548"/></proof>
   <transf name="split_disj" expanded="true">
    <goal name="WP_parameter def.5.1" expl="1. postcondition">
-   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
    </goal>
    <goal name="WP_parameter def.5.2" expl="2. postcondition">
-   <proof prover="0"><result status="unknown" time="0.02" steps="129"/></proof>
+   <proof prover="1"><result status="unknown" time="0.03" steps="129"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="151"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="151"/></proof>
   <proof prover="2"><result status="valid" time="0.02" steps="4325"/></proof>
   <transf name="split_disj" expanded="true">
    <goal name="WP_parameter def.6.1" expl="1. postcondition">
-   <proof prover="0"><result status="unknown" time="0.02" steps="151"/></proof>
+   <proof prover="1"><result status="unknown" time="0.02" steps="151"/></proof>
    </goal>
    <goal name="WP_parameter def.6.2" expl="2. postcondition">
-   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
    </goal>
   </transf>
   </goal>
@@ -417,12 +413,12 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="unknown" time="0.02" steps="26"/></proof>
+  <proof prover="1"><result status="unknown" time="0.02" steps="26"/></proof>
   <proof prover="2"><result status="timeout" time="5.00"/></proof>
-  <proof prover="3"><result status="valid" time="0.08" steps="302"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="378"/></proof>
   </goal>
  </transf>
  </goal>
