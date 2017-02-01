@@ -38,5 +38,5 @@ prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counte
 print "======================================="
 edit_file()
 sleep_on_windows(4)
-prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False)
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False, filter_output=".*Grammar extension|Welcome")
 prove_all(counterexample=False)

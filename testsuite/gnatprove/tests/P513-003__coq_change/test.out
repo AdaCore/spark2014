@@ -18,16 +18,10 @@ lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < 
 lemmas.ads:15:19: info: division check proved (CVC4: 1 VC)
 lemmas.ads:15:34: info: division check proved (CVC4: 1 VC)
  "(val1 ÷ denom ?= val2 ÷ denom) = Lt".
-<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
-<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
-<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
-<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
-<W> Grammar extension: in [tactic:simple_tactic] some rule has been masked
 Error:
 File "gnatprove/../proof/Coq/lemmas/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v", line 255, characters 6-20:
 In environment
 Unable to unify "(?M2188 ÷ ?M2190 ?= ?M2189 ÷ ?M2190) = Gt -> False" with
-Welcome to Coq 8.5pl2 (November 2016)
 h1 : in_range val1
 h2 : in_range val2
 h3 : 1 <= denom <= 2147483647
