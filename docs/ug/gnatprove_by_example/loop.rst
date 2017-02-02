@@ -134,7 +134,11 @@ Similarly, consider a variant of the same initialization loop over a list:
 
 Contrary to arrays and vectors, lists are not indexed. Instead, a cursor can be
 defined to iterate over the list. The loop invariant expresses that all
-elements up to the current cursor ``Cu`` have the value zero. Contrary to the
+elements up to the current cursor ``Cu`` have the value zero. To access the
+element stored at a given position in a list, we use the function ``Model``
+which computes the mathematical sequence of the elements stored in the list.
+The position of a cursor in this sequence is retrieved using the ``Positions``
+function. Contrary to the
 case of vectors, no loop invariant is needed to express that the length of the
 list does not change in the loop, because the postcondition remains provable
 here even if the length of the list changes. With this loop invariant,
@@ -209,28 +213,41 @@ this combined loop invariant, |GNATprove| is able to prove the postcondition of
 
 .. literalinclude:: results/map_arr_incr.prove
    :language: none
+	      
+Consider now a variant of the same initialization loop over a vector:
 
-Consider now a variant of the same initialization loop over a list:
+.. literalinclude:: examples/map_vec_incr.adb
+   :language: ada
+   :linenos:
+
+Like before, we need an additionnal loop invariant to state that the length of
+the vector is not modified by the loop. The other two invariants are direct
+translations of those used for the loop over arrays: the first one expresses
+that all elements up to the current loop index ``J`` have been incremented, and
+the second one expresses that other elements have not been modified.
+Note that, as formal vectors are limited, we need to use the ``Model`` function
+of vectors to express the set of elements contained in the vector before the
+loop (using attributes ``Loop_Entry`` and ``Old``).
+With this loop invariant, |GNATprove| is able to prove the postcondition of
+``Map_Vec_Incr``, namely that all elements of the vector have been incremented:
+
+.. literalinclude:: results/map_vec_incr.prove
+   :language: none
+      
+Similarly, consider a variant of the same initialization loop over a list:
 
 .. literalinclude:: examples/map_list_incr.adb
    :language: ada
    :linenos:
 
-Like before, the first loop invariant expresses that all elements up to the
-current loop index ``J`` have been incremented (using function
-``First_To_Previous`` to retrieve the part of the list up to the current
-cursor), and the second loop invariant expresses that other elements have not
-been modified (using function ``Current_To_Last`` to retrieve the part of the
-list following the current cursor). Note that it is necessary to state here
-that the rest of the list at the current iteration is the same as at loop
-entry, using function ``Strict_Equal``, which is stronger that using operator
-``=`` on lists, as the latter only compares element values, while the former
-compares also positions of elements in the internal data structure (that is,
-the value of cursors to these elements). This is needed because we are using
-the same cursor ``Cu`` to denote an element in the current list and the same
-element in the list at loop entry. With this loop invariant, |GNATprove| is
-able to prove the postcondition of ``Map_List_Incr``, namely that all elements
-of the list have been incremented:
+Like before, we need to use a cursor to iterate over the list. The loop
+invariants express that all elements up to the current loop index ``J`` have
+been incremented and that other elements have not been modified. Note that it is
+necessary to state here that the length of the list is not modified during the
+loop. It is because the length is used to bound the quantification over the
+elements of the list both in the invariant and in the postcondition. With this
+loop invariant, |GNATprove| is able to prove the postcondition of
+``Map_List_Incr``, namely that all elements of the list have been incremented:
 
 .. literalinclude:: results/map_list_incr.prove
    :language: none
@@ -480,8 +497,8 @@ have a value less than ``Max``, and that ``Max`` is the value of one of these
 elements, most precisely the value of ``Element (L, Pos)`` if the cursor
 ``Pos`` for the optimum is recorded.  Like for vectors, an additional loop
 invariant is needed here compared to the case of arrays to state that cursor
-``Pos`` is a valid cursor of the list. A minor difference is that two loop
-invariants now start with ``Max = 0 or else ..`` because the loop invariant is
+``Pos`` is a valid cursor of the list. A minor difference is that a loop
+invariant now starts with ``Max = 0 or else ..`` because the loop invariant is
 stated at the start of the loop (for convenience with the use of
 ``First_To_Previous``) which requires this modification. With this loop
 invariant, |GNATprove| is able to prove the postcondition of
@@ -537,14 +554,13 @@ Consider now a variant of the same update loop over a vector:
    :language: ada
    :linenos:
 
-Expressing the same postcondition as on ``Update_Arr_Zero`` would require using
-``V'Old`` which is not possible because the vector type is limited. Hence, we
-state a weaker postcondition here, namely that all elements of the vector are
-either zero or greater than ``Threshold`` on return. The loop invariant
-expresses that all elements up to the current loop index ``J`` are either zero
-or greater than ``Threshold``, and that the length of ``V`` is not modified
-(like in ``Init_Vec_Zero``). With this loop invariant, |GNATprove| is able to
-prove the postcondition of ``Update_Vec_Zero``:
+Like for ``Map_Vec_Incr``, we need to use the ``Model`` function over arrays to
+access elements of the vector before the loop as the vector type is limited. The
+loop invariant expresses that all elements up to the current loop index ``J``
+have been zeroed out if initially smaller than ``Threshold``, that elements that
+follow the current loop index have not been modified, and that the length of
+``V`` is not modified (like in ``Init_Vec_Zero``). With this loop invariant,
+|GNATprove| is able to prove the postcondition of ``Update_Vec_Zero``:
 
 .. literalinclude:: results/update_vec_zero.prove
    :language: none
@@ -557,17 +573,13 @@ Similarly, consider a variant of the same update loop over a list:
 
 The loop invariant expresses that all elements up to the current cursor ``Cu``
 have been zeroed out if initially smaller than ``Threshold`` (using function
-``First_To_Previous`` to retrieve the part of the list up to the current
-cursor), and that elements that follow the current loop index have not been
-modified (using function ``Current_To_Last`` to retrieve the part of the list
-following the current cursor). Note that it is necessary to state here that
-the rest of the list at the current iteration is the same as at loop entry,
-using function ``Strict_Equal``, which is stronger that using operator ``=``
-on lists, as the latter only compares element values, while the former compares
-also positions of elements in the internal data structure (that is, the value
-of cursors to these elements). This is needed because we are using the same
-cursor ``Cu`` to denote an element in the current list and the same element
-in the list at loop entry.
+``Model`` to access the element stored at a given position in the list and
+function ``Positions`` to query the position of the current cursor), and that
+elements that follow the current loop index have not been
+modified. Note that it is
+necessary to state here that the length of the list is not modified during the
+loop. It is because the length is used to bound the quantification over the
+elements of the list both in the invariant and in the postcondition.
 
 With this loop invariant, |GNATprove| is able to prove the postcondition of
 ``Update_List_Zero``, namely that all elements initially smaller than
@@ -604,8 +616,7 @@ been modified (using a combination of :ref:`Attribute Loop_Entry` and
 :ref:`Attribute Update` to express this concisely). With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Update_Range_Arr_Zero``,
 namely that all elements between ``First`` and ``Last`` have been zeroed out,
-and that other elements have not been modified (using a combination of
-:ref:`Attribute Old` and :ref:`Attribute Update`):
+and that other elements have not been modified:
 
 .. literalinclude:: results/update_range_arr_zero.prove
    :language: none
@@ -616,18 +627,31 @@ Consider now a variant of the same update loop over a vector:
    :language: ada
    :linenos:
 
-For the same reason of vector type being limited that we explained on
-``Update_Vec_Zero``, we state a weaker postcondition for
-``Update_Range_Vec_Zero`` than for ``Update_Range_Arr_Zero``, namely that all
-elements of the vector between ``First`` and ``Last`` have been zeroed out. The
-loop invariant expresses all elements between ``First`` and ``J`` have been
-zeroed out, and that the length of ``V`` is not modified (like in
-``Init_Vec_Zero``). With this loop invariant, |GNATprove| is able to prove the
+Like for ``Map_Vec_Incr``, we need to use the ``Model`` function over arrays to
+access elements of the vector before the loop as the vector type is limited. The
+loop invariant expresses that all elements between ``First`` and current loop
+index ``J`` have been zeroed, and that other elements have not been modified.
+With this loop invariant, |GNATprove| is able to prove the
 postcondition of ``Update_Range_Vec_Zero``:
 
 .. literalinclude:: results/update_range_vec_zero.prove
    :language: none
 
-We don't show here a variant of the same update loop over a list, which
-requires more involved postconditions and loop invariants, and is proved
-completely with the provers Alt-Ergo, CVC4 and Z3.
+Similarly, consider a variant of the same update loop over a list:
+
+.. literalinclude:: examples/update_range_list_zero.adb
+   :language: ada
+   :linenos:
+
+Compared to the vector example, it requires three additional invariants. As the
+loop is done via a cursor, the first two loop invariants are necessary to know
+that the current cursor ``Cu`` stays between ``First`` and ``Last`` in the list.
+The fourth loop invariant states that the position of cursors in ``L`` is not
+modified during the loop. It is necessary to know that the two cursors ``First`` and
+``Last`` keep designating the same range after the loop. With this loop invariant,
+|GNATprove| is able to prove the postcondition of ``Update_Range_List_Zero``,
+namely that all elements between ``First`` and ``Last`` have been zeroed out,
+and that other elements have not been modified:
+
+.. literalinclude:: results/update_range_list_zero.prove
+   :language: none
