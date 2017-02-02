@@ -37,13 +37,13 @@ log_pack.adb:330:04: info: no contextual analysis of "Log_Start_Block" (multiple
 log_pack.adb:359:04: info: no contextual analysis of "Log_Stop_Block" (multiple returns)
 log_pack.adb:422:07: info: no contextual analysis of "Append_Raw_Data_Variable_Name_To_Packet" (nested function instantiation)
 log_pack.adb:455:07: info: no contextual analysis of "Get_Log_Time_Stamp" (nested function instantiation)
-log_pack.adb:525:22: warning: variable "Value" is read but never assigned
-log_pack.adb:535:22: warning: variable "Value" is read but never assigned
-log_pack.adb:545:22: warning: variable "Value" is read but never assigned
-log_pack.adb:555:22: warning: variable "Value" is read but never assigned
-log_pack.adb:565:22: warning: variable "Value" is read but never assigned
-log_pack.adb:575:22: warning: variable "Value" is read but never assigned
-log_pack.adb:585:22: warning: variable "Value" is read but never assigned
+log_pack.adb:530:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:540:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:550:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:560:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:570:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:580:63: warning: "Value" may be referenced before it has a value
+log_pack.adb:590:61: warning: "Value" may be referenced before it has a value
 log_pack.ads:134:04: access type is not allowed in SPARK
 log_pack.ads:134:04: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:146:04: "Log_Variable" is not allowed in SPARK
