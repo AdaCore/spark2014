@@ -162,7 +162,7 @@ stable_marriage.adb:362:40: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:364:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:368:28: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:370:46: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:372:20: medium: assertion might fail, cannot prove Result (Ranking_1 (G1_Id) (Ranking (Proposals_Made (G1_Id)))) = G1_Id
+stable_marriage.adb:372:20: medium: assertion might fail, cannot prove Result (Ranking_1 (G1_Id) (Ranking (Proposals_Made (G1_Id)))) = G1_Id (e.g. when G1_Id = 2 and Proposals_Made = (3 => 2, 2 => 2, others => 0) and Ranking_1 = (3 => (2 => 2, 1 => 3, others => -1), 2 => (2 => 3, others => 1), others => (others => 0)) and Result = (3 => 4, 2 => 3, others => 2) and Unmatched_G1_Set = (Elements => (others => 0), Cardinality => 1))
 stable_marriage.adb:373:31: info: range check proved (CodePeer)
 stable_marriage.adb:377:29: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:380:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
