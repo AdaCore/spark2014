@@ -1,0 +1,9 @@
+project Test is
+
+   for Main use ("caller.adb");
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnato3");
+   end Compiler;
+
+end Test;
