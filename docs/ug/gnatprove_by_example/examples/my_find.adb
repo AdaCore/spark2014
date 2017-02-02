@@ -5,7 +5,8 @@ is
 
 begin
    while Has_Element (L, Cu) loop
-      pragma Loop_Invariant (not Contains (First_To_Previous (L, Cu), E));
+      pragma Loop_Invariant (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
+                                Element (Model (L), I) /= E);
 
       if Element (L, Cu) = E then
          return Cu;

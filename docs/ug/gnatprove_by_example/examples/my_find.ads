@@ -1,4 +1,5 @@
 with Element_Lists; use Element_Lists; use Element_Lists.Lists;
+with Ada.Containers; use Ada.Containers; use Element_Lists.Lists.Formal_Model;
 
 function My_Find (L : List; E : Element_Type) return Cursor with
   SPARK_Mode,

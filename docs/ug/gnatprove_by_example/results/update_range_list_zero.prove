@@ -1,54 +1,34 @@
-update_range_list_zero.adb:5:11: info: precondition proved
-update_range_list_zero.adb:5:43: info: precondition proved
-update_range_list_zero.adb:5:56: info: precondition proved
-update_range_list_zero.adb:6:11: info: postcondition proved
-update_range_list_zero.adb:6:12: info: precondition proved
-update_range_list_zero.adb:6:26: info: precondition proved
-update_range_list_zero.adb:6:43: info: precondition proved
-update_range_list_zero.adb:6:65: info: precondition proved
-update_range_list_zero.adb:6:92: info: precondition proved
-update_range_list_zero.adb:7:10: info: precondition proved
-update_range_list_zero.adb:7:25: info: precondition proved
-update_range_list_zero.adb:7:57: info: precondition proved
-update_range_list_zero.adb:7:91: info: precondition proved
-update_range_list_zero.adb:7:110: info: precondition proved
-update_range_list_zero.adb:8:10: info: precondition proved
-update_range_list_zero.adb:8:25: info: precondition proved
-update_range_list_zero.adb:8:45: info: precondition proved
-update_range_list_zero.adb:8:64: info: precondition proved
-update_range_list_zero.adb:8:98: info: precondition proved
-update_range_list_zero.adb:8:117: info: precondition proved
-update_range_list_zero.adb:13:30: info: loop invariant initialization proved
-update_range_list_zero.adb:13:30: info: loop invariant preservation proved
-update_range_list_zero.adb:13:51: info: precondition proved
-update_range_list_zero.adb:13:64: info: precondition proved
-update_range_list_zero.adb:13:86: info: initialization of "Cu" proved
-update_range_list_zero.adb:13:103: info: precondition proved
-update_range_list_zero.adb:13:127: info: precondition proved
-update_range_list_zero.adb:13:162: info: precondition proved
-update_range_list_zero.adb:13:175: info: precondition proved
-update_range_list_zero.adb:14:30: info: loop invariant initialization proved
-update_range_list_zero.adb:14:30: info: loop invariant preservation proved
-update_range_list_zero.adb:14:51: info: precondition proved
-update_range_list_zero.adb:14:66: info: precondition proved
-update_range_list_zero.adb:14:83: info: precondition proved
-update_range_list_zero.adb:14:105: info: initialization of "Cu" proved
-update_range_list_zero.adb:14:120: info: precondition proved
-update_range_list_zero.adb:15:30: info: loop invariant initialization proved
-update_range_list_zero.adb:15:30: info: loop invariant preservation proved
-update_range_list_zero.adb:15:30: info: precondition proved
-update_range_list_zero.adb:15:45: info: precondition proved
-update_range_list_zero.adb:15:77: info: precondition proved
-update_range_list_zero.adb:15:118: info: precondition proved
-update_range_list_zero.adb:15:137: info: precondition proved
-update_range_list_zero.adb:16:30: info: loop invariant initialization proved
-update_range_list_zero.adb:16:30: info: loop invariant preservation proved
-update_range_list_zero.adb:16:30: info: precondition proved
-update_range_list_zero.adb:16:44: info: precondition proved
-update_range_list_zero.adb:16:69: info: precondition proved
-update_range_list_zero.adb:16:100: info: initialization of "Cu" proved
-update_range_list_zero.adb:17:07: info: precondition proved
-update_range_list_zero.adb:17:27: info: initialization of "Cu" proved
-update_range_list_zero.adb:18:17: info: initialization of "Cu" proved
-update_range_list_zero.adb:19:07: info: precondition proved
-update_range_list_zero.adb:19:16: info: initialization of "Cu" proved
+update_range_list_zero.adb:7:13: info: precondition proved
+update_range_list_zero.adb:7:45: info: precondition proved
+update_range_list_zero.adb:8:11: info: postcondition proved
+update_range_list_zero.adb:11:23: info: precondition proved
+update_range_list_zero.adb:11:55: info: precondition proved
+update_range_list_zero.adb:12:16: info: precondition proved
+update_range_list_zero.adb:13:19: info: precondition proved
+update_range_list_zero.adb:13:44: info: precondition proved
+update_range_list_zero.adb:18:30: info: loop invariant initialization proved
+update_range_list_zero.adb:18:30: info: loop invariant preservation proved
+update_range_list_zero.adb:18:46: info: initialization of "Cu.Node" proved
+update_range_list_zero.adb:19:30: info: loop invariant initialization proved
+update_range_list_zero.adb:19:30: info: loop invariant preservation proved
+update_range_list_zero.adb:19:31: info: precondition proved
+update_range_list_zero.adb:19:52: info: initialization of "Cu.Node" proved
+update_range_list_zero.adb:19:60: info: precondition proved
+update_range_list_zero.adb:19:92: info: precondition proved
+update_range_list_zero.adb:20:30: info: loop invariant initialization proved
+update_range_list_zero.adb:20:30: info: loop invariant preservation proved
+update_range_list_zero.adb:21:30: info: loop invariant initialization proved
+update_range_list_zero.adb:21:30: info: loop invariant preservation proved
+update_range_list_zero.adb:22:30: info: loop invariant initialization proved
+update_range_list_zero.adb:22:30: info: loop invariant preservation proved
+update_range_list_zero.adb:23:42: info: precondition proved
+update_range_list_zero.adb:23:74: info: precondition proved
+update_range_list_zero.adb:23:95: info: initialization of "Cu.Node" proved
+update_range_list_zero.adb:24:36: info: precondition proved
+update_range_list_zero.adb:25:38: info: precondition proved
+update_range_list_zero.adb:25:63: info: precondition proved
+update_range_list_zero.adb:26:07: info: precondition proved
+update_range_list_zero.adb:26:27: info: initialization of "Cu.Node" proved
+update_range_list_zero.adb:27:17: info: initialization of "Cu.Node" proved
+update_range_list_zero.adb:28:07: info: precondition proved
+update_range_list_zero.adb:28:16: info: initialization of "Cu.Node" proved

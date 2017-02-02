@@ -1,4 +1,5 @@
 with Loop_Types; use Loop_Types; use Loop_Types.Lists;
+with Ada.Containers; use Ada.Containers; use Loop_Types.Lists.Formal_Model;
 
 procedure Search_List_Max (L : List_T; Pos : out Cursor; Max : out Component_T) with
   SPARK_Mode,
@@ -14,8 +15,8 @@ begin
    Pos := Cu;
 
    while Has_Element (L, Cu) loop
-      pragma Loop_Invariant (for all Cu2 in First_To_Previous (L, Cu) => Element (L, Cu2) <= Max);
-      pragma Loop_Invariant (Max = 0 or else (for some Cu2 in First_To_Previous (L, Cu) => Element (L, Cu2) = Max));
+      pragma Loop_Invariant (for all I in 1 .. P.Get (Positions (L), Cu) - 1 =>
+                               Element (Model (L), I) <= Max);
       pragma Loop_Invariant (Has_Element (L, Pos));
       pragma Loop_Invariant (Max = 0 or else Element (L, Pos) = Max);
 

@@ -1,48 +1,30 @@
-map_list_incr.adb:5:12: info: precondition proved
-map_list_incr.adb:6:11: info: postcondition proved
 map_list_incr.adb:6:12: info: precondition proved
-map_list_incr.adb:7:14: info: precondition proved
-map_list_incr.adb:8:14: info: precondition proved
-map_list_incr.adb:8:32: info: precondition proved
-map_list_incr.adb:8:52: info: overflow check proved
-map_list_incr.adb:10:19: info: precondition proved
-map_list_incr.adb:12:10: info: precondition proved
-map_list_incr.adb:12:26: info: initialization of "Cu" proved
-map_list_incr.adb:13:30: info: loop invariant initialization proved
-map_list_incr.adb:13:30: info: loop invariant preservation proved
-map_list_incr.adb:13:30: info: precondition proved
-map_list_incr.adb:13:45: info: precondition proved
-map_list_incr.adb:13:67: info: initialization of "Cu" proved
-map_list_incr.adb:13:74: info: precondition proved
+map_list_incr.adb:7:11: info: postcondition proved
+map_list_incr.adb:9:18: info: precondition proved
+map_list_incr.adb:9:43: info: precondition proved
+map_list_incr.adb:9:70: info: overflow check proved
+map_list_incr.adb:13:26: info: initialization of "Cu.Node" proved
 map_list_incr.adb:14:30: info: loop invariant initialization proved
 map_list_incr.adb:14:30: info: loop invariant preservation proved
-map_list_incr.adb:14:30: info: precondition proved
-map_list_incr.adb:14:45: info: precondition proved
-map_list_incr.adb:14:67: info: initialization of "Cu" proved
-map_list_incr.adb:14:74: info: precondition proved
-map_list_incr.adb:14:93: info: precondition proved
-map_list_incr.adb:14:121: info: overflow check proved
-map_list_incr.adb:15:30: info: loop invariant initialization proved
-map_list_incr.adb:15:30: info: loop invariant preservation proved
-map_list_incr.adb:15:30: info: precondition proved
-map_list_incr.adb:15:45: info: precondition proved
-map_list_incr.adb:15:65: info: initialization of "Cu" proved
-map_list_incr.adb:15:72: info: precondition proved
-map_list_incr.adb:15:91: info: precondition proved
-map_list_incr.adb:16:30: info: loop invariant initialization proved
-map_list_incr.adb:16:30: info: loop invariant preservation proved
-map_list_incr.adb:16:30: info: precondition proved
-map_list_incr.adb:16:44: info: precondition proved
-map_list_incr.adb:16:80: info: precondition proved
-map_list_incr.adb:16:100: info: initialization of "Cu" proved
-map_list_incr.adb:17:30: info: loop invariant initialization proved
-map_list_incr.adb:17:30: info: loop invariant preservation proved
-map_list_incr.adb:17:30: info: precondition proved
-map_list_incr.adb:17:57: info: initialization of "Cu" proved
-map_list_incr.adb:18:07: info: precondition proved
-map_list_incr.adb:18:27: info: initialization of "Cu" proved
-map_list_incr.adb:18:31: info: precondition proved
-map_list_incr.adb:18:43: info: initialization of "Cu" proved
-map_list_incr.adb:18:47: info: overflow check proved
-map_list_incr.adb:19:07: info: precondition proved
-map_list_incr.adb:19:16: info: initialization of "Cu" proved
+map_list_incr.adb:16:10: info: loop invariant initialization proved
+map_list_incr.adb:16:10: info: loop invariant preservation proved
+map_list_incr.adb:16:29: info: precondition proved
+map_list_incr.adb:16:50: info: initialization of "Cu.Node" proved
+map_list_incr.adb:17:12: info: precondition proved
+map_list_incr.adb:17:37: info: precondition proved
+map_list_incr.adb:17:71: info: overflow check proved
+map_list_incr.adb:19:10: info: loop invariant initialization proved
+map_list_incr.adb:19:10: info: loop invariant preservation proved
+map_list_incr.adb:19:24: info: precondition proved
+map_list_incr.adb:19:45: info: initialization of "Cu.Node" proved
+map_list_incr.adb:20:12: info: precondition proved
+map_list_incr.adb:20:32: info: range check proved
+map_list_incr.adb:20:37: info: precondition proved
+map_list_incr.adb:20:68: info: range check proved
+map_list_incr.adb:21:07: info: precondition proved
+map_list_incr.adb:21:27: info: initialization of "Cu.Node" proved
+map_list_incr.adb:21:31: info: precondition proved
+map_list_incr.adb:21:43: info: initialization of "Cu.Node" proved
+map_list_incr.adb:21:47: info: overflow check proved
+map_list_incr.adb:22:07: info: precondition proved
+map_list_incr.adb:22:16: info: initialization of "Cu.Node" proved

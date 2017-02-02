@@ -1,9 +1,6 @@
-map_list_incr.adb:12:26: info: initialization of "Cu" proved
-map_list_incr.adb:13:67: info: initialization of "Cu" proved
-map_list_incr.adb:14:67: info: initialization of "Cu" proved
-map_list_incr.adb:15:65: info: initialization of "Cu" proved
-map_list_incr.adb:16:100: info: initialization of "Cu" proved
-map_list_incr.adb:17:57: info: initialization of "Cu" proved
-map_list_incr.adb:18:27: info: initialization of "Cu" proved
-map_list_incr.adb:18:43: info: initialization of "Cu" proved
-map_list_incr.adb:19:16: info: initialization of "Cu" proved
+map_list_incr.adb:13:26: info: initialization of "Cu.Node" proved
+map_list_incr.adb:16:50: info: initialization of "Cu.Node" proved
+map_list_incr.adb:19:45: info: initialization of "Cu.Node" proved
+map_list_incr.adb:21:27: info: initialization of "Cu.Node" proved
+map_list_incr.adb:21:43: info: initialization of "Cu.Node" proved
+map_list_incr.adb:22:16: info: initialization of "Cu.Node" proved
