@@ -269,11 +269,6 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a tedious to find
 
-            No_Effects : Boolean;
-            --  True if this is a subprogram with no effects. Certain analysis
-            --  are disabled in this case as we would spam the user with error
-            --  messages for almost every statement.
-
             Function_Side_Effects_Present : Boolean;
             --  Set to True if we are dealing with a function that has side
             --  effects.
