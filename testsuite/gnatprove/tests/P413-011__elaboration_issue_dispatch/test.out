@@ -1,4 +1,8 @@
-extension_pkg.adb:8:19: high: modification of "Body_Elaborated" in elaboration requires Elaborate_Body on package "Extension_Pkg"
-extension_pkg.ads:4:03: warning: initialization of Body_Elaborated has no effect
-extension_pkg.ads:6:23: class-wide proof_in "Body_Elaborated" must also be a class-wide (proof) input of overridden subprogram "Op" at root_pkg.ads:3 (SPARK RM 6.1.6)
-gnatprove: error during flow analysis and proof
+extension_pkg.adb:3:21: info: assertion proved (CVC4: 1 VC)
+extension_pkg.ads:4:08: info: initial condition proved (CVC4: 1 VC)
+extension_pkg.ads:4:29: info: initialization of "Body_Elaborated" proved
+extension_pkg.ads:9:28: warning: unused variable "X"
+extension_pkg.ads:12:13: info: initialization of "Body_Elaborated" proved
+extension_pkg.ads:12:13: medium: precondition might fail (e.g. when Body_Elaborated = False)
+root_pkg.adb:10:14: info: precondition proved (CVC4: 1 VC)
+root_pkg.ads:4:13: low: unused global "Body_Elaborated"
