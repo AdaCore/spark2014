@@ -356,6 +356,11 @@ package body Flow.Control_Flow_Graph is
    --  Local declarations
    ------------------------------------------------------------
 
+   procedure Add_Dummy_Vertex (N  : Node_Id;
+                               FA : in out Flow_Analysis_Graphs;
+                               CM : in out Connection_Maps.Map);
+   --  Adds a null CFG vertex for node N with trivial connections
+
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          F  : Flow_Id;
                          A  : V_Attributes);
@@ -926,6 +931,23 @@ package body Flow.Control_Flow_Graph is
    begin
       CM.Insert (Dst, CM.Element (Src));
    end Copy_Connections;
+
+   ----------------------
+   -- Add_Dummy_Vertex --
+   ----------------------
+
+   procedure Add_Dummy_Vertex (N  : Node_Id;
+                               FA : in out Flow_Analysis_Graphs;
+                               CM : in out Connection_Maps.Map)
+   is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      Add_Vertex (FA,
+                  Direct_Mapping_Id (N),
+                  Null_Node_Attributes,
+                  V);
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
+   end Add_Dummy_Vertex;
 
    ----------------
    -- Add_Vertex --
@@ -3302,34 +3324,25 @@ package body Flow.Control_Flow_Graph is
       pragma Assert (if FA.Generating_Globals and then Has_Task (Etype (E))
                      then Is_Library_Level_Entity (E));
 
+      --  Ignore generic actuals and Part_Ofs single concurrent objects
+      if In_Generic_Actual (E)
+        or else Is_Part_Of_Concurrent_Object (E)
+      then
+         Add_Dummy_Vertex (N, FA, CM);
+         return;
+      end if;
+
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
       if Constant_Present (N) then
-         if not In_Generic_Actual (E)
-           and then (Present (Expr) or else Is_Imported (E))
-         then
+         if Present (Expr) or else Is_Imported (E) then
             FA.Local_Constants.Insert (E);
 
          else
-            --  This is a deferred constant or a generic actual. We ignore it.
-            Add_Vertex (FA,
-                        Direct_Mapping_Id (N),
-                        Null_Node_Attributes,
-                        V);
-            CM.Insert (Union_Id (N), Trivial_Connection (V));
+            --  This is a deferred constant, ignore it
+            Add_Dummy_Vertex (N, FA, CM);
             return;
          end if;
-      end if;
-
-      --  We ignore declarations of objects that are Part_Of a single
-      --  concurrent object.
-      if Is_Part_Of_Concurrent_Object (E) then
-         Add_Vertex (FA,
-                     Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
-                     V);
-         CM.Insert (Union_Id (N), Trivial_Connection (V));
-         return;
       end if;
 
       --  First, we need a 'initial and 'final vertex for this object
@@ -3806,8 +3819,7 @@ package body Flow.Control_Flow_Graph is
       --  a null vertex.
 
       if DM.Is_Empty and then not Elaboration_Has_Effect then
-         Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-         CM.Insert (Union_Id (N), Trivial_Connection (V));
+         Add_Dummy_Vertex (N, FA, CM);
 
       else
          if Elaboration_Has_Effect then
@@ -4509,15 +4521,9 @@ package body Flow.Control_Flow_Graph is
                                   Ctx : in out Context)
    is
       pragma Unreferenced (Ctx);
-      V   : Flow_Graphs.Vertex_Id;
       Typ : constant Entity_Id := Defining_Identifier (N);
    begin
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (N),
-         Null_Attributes,
-         V);
-      CM.Insert (Union_Id (N), Trivial_Connection (V));
+      Add_Dummy_Vertex (N, FA, CM);
 
       --  If the type has a Default_Initial_Condition then we:
       --    * check if the full type is as the aspect suggested
@@ -4852,13 +4858,7 @@ package body Flow.Control_Flow_Graph is
             --  Skip generic package bodies
             case Ekind (Unique_Defining_Entity (N)) is
                when E_Generic_Package =>
-                  declare
-                     V : Flow_Graphs.Vertex_Id;
-                  begin
-                     Add_Vertex (FA, Direct_Mapping_Id (N),
-                                 Null_Node_Attributes, V);
-                     CM.Insert (Union_Id (N), Trivial_Connection (V));
-                  end;
+                  Add_Dummy_Vertex (N, FA, CM);
 
                when E_Package =>
                   Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
