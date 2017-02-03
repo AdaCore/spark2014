@@ -559,31 +559,14 @@ package body Flow.Analysis is
    ------------------
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-      Proof_Reads : Flow_Id_Sets.Set;
-      Reads       : Flow_Id_Sets.Set;
-      Unused      : Flow_Id_Sets.Set;
    begin
       if not FA.Is_Main then
          --  Nothing to see here, move along.
          return;
       end if;
 
-      --  We need to make sure all global inputs are initialized. This
-      --  means the following needs to hold:
-      --     Input   ->   State must be initialized
-      --     In_Out  ->   State must be initialized
-      --     Output  ->   Always OK
-      Get_Globals (Subprogram => FA.Analyzed_Entity,
-                   Scope      => FA.B_Scope,
-                   Classwide  => False,
-                   Proof_Ins  => Proof_Reads,
-                   Reads      => Reads,
-                   Writes     => Unused);
-      Reads := To_Entire_Variables (Reads or Proof_Reads);
-      --  Note we never actually need writes in this analysis.
-
       declare
-         Init_Msg : constant String :=
+         Msg : constant String :=
            "& might not be initialized " &
            (case FA.Kind is
                when Kind_Subprogram =>
@@ -593,18 +576,55 @@ package body Flow.Analysis is
                when others =>
                   raise Program_Error);
 
-      begin
-         for R of Reads loop
+         procedure Check_If_Initialized (R : Flow_Id);
+         --  Emit error message if R is not initialized at elaboration
+
+         --------------------------
+         -- Check_If_Initialized --
+         --------------------------
+
+         procedure Check_If_Initialized (R : Flow_Id) is
+         begin
             if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => Init_Msg,
+                  Msg      => Msg,
                   N        => Find_Global (FA.Analyzed_Entity, R),
                   F1       => R,
                   F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag      => Uninitialized,
                   Severity => Medium_Check_Kind);
             end if;
+         end Check_If_Initialized;
+
+         --  Local variables
+
+         Proof_Reads : Flow_Id_Sets.Set;
+         Reads       : Flow_Id_Sets.Set;
+         Unused      : Flow_Id_Sets.Set;
+
+      begin
+         --  Check if all global reads are initialized, i.e. that the following
+         --  holds:
+         --     Proof_In -> initialized
+         --     Input    -> initialized
+         --     Output   -> always OK
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => Proof_Reads,
+                      Reads      => Reads,
+                      Writes     => Unused);
+
+         --  Proof_Reads and Reads are disjoint, iterate over their contents
+         --  separately.
+
+         for R of Proof_Reads loop
+            Check_If_Initialized (R);
+         end loop;
+
+         for R of Reads loop
+            Check_If_Initialized (R);
          end loop;
       end;
    end Analyse_Main;
