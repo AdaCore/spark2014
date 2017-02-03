@@ -1,4 +1,4 @@
-a-reatim.ads:7:07: medium: assertion might fail, cannot prove System.OS_Interface.Ticks_Per_Second >= 50000
+a-reatim.ads:7:07: medium: assertion might fail, cannot prove false
 s-bbbosu.adb:2:47: warning: "Constraint_Error" will be raised at run time
 s-bbbosu.adb:2:47: warning: value not in range of type "System.Interrupt_Priority"
 s-osinte.adb:14:22: warning: "Constraint_Error" will be raised at run time
