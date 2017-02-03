@@ -61,7 +61,7 @@ x86.adb:633:14: info: initialization of "Retval" proved
 x86.adb:660:17: medium: postcondition might fail, cannot prove HasMem64(Memory, RDI_Start+(I*8), RAX) (e.g. when I = 1149786524533129216 and Memory = (18280084038131646543 => 0, 18280084038131646545 => 0, 18280084038131646546 => 0, 18280084038131646547 => 0, 18280084038131646548 => 0, 18280084038131646549 => 0, 18280084038131646550 => 0, 18280084038131646544 => 0, others => 2) and RAX = 72057594037993216 and RDI_Start = 9081791841866612815)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX (e.g. when I = 1 and Memory = (10 => 211, 9 => 155, 18446744073709551611 => 160, 8 => 9, 3 => 85, 4 => 59, 5 => 58, 6 => 171, 7 => 229, others => 0) and RAX = 160 and RCX = 1297036692489764864 and RCX_Start = 1297036692623982592 and RDI_Start = 18446744073709551611)
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
-x86.adb:691:16: medium: precondition might fail
+x86.adb:691:16: info: precondition proved (CVC4: 6 VC; altergo: 2 VC)
 x86.adb:693:36: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:695:41: medium: loop invariant might fail after first iteration, cannot prove HasMem64(Memory, RDI_Start+(J*8), RAX) (e.g. when I = 50458625 and J = 36115174 and Memory = (2 => 1, others => 0) and RAX = 72057594037927936 and RCX = 718885392782196736 and RCX_Start = 718885392832655361 and RDI_Start = 18446744073709551611)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
