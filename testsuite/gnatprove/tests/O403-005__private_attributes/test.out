@@ -17,11 +17,11 @@ use_private_attributes.adb:18:22: info: assertion proved (CVC4: 1 VC)
 use_private_attributes.adb:19:22: info: assertion proved (CVC4: 1 VC)
 use_private_attributes.adb:27:41: info: initialization of "R" proved
 use_private_attributes.adb:28:41: info: initialization of "F" proved
-use_private_attributes.adb:32:22: medium: assertion might fail, cannot prove not (C1 = C2) (e.g. when C1 = (F => 0, F1 => ?) and C2 = (F => 0, F1 => ?))
+use_private_attributes.adb:32:22: medium: assertion might fail, cannot prove C1 /= C2 (e.g. when C1 = (F => 0, F1 => ?) and C2 = (F => 0, F1 => ?))
 use_private_attributes.adb:33:22: medium: assertion might fail, cannot prove C1.F = C2.F (e.g. when C1 = (F => 0, F1 => ?) and C2 = (F => 1, F1 => ?))
 use_private_attributes.adb:34:22: info: initialization of "RC" proved
 use_private_attributes.adb:34:22: info: initialization of extension of "RC" proved
-use_private_attributes.adb:34:22: medium: assertion might fail, cannot prove not (RC = FC)
+use_private_attributes.adb:34:22: medium: assertion might fail, cannot prove RC /= FC
 use_private_attributes.adb:34:28: info: initialization of "FC" proved
 use_private_attributes.adb:34:28: info: initialization of extension of "FC" proved
 use_private_attributes.adb:35:22: info: assertion proved (CVC4: 1 VC)

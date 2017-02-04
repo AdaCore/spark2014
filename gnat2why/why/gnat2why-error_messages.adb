@@ -676,7 +676,7 @@ package body Gnat2Why.Error_Messages is
          VC  : constant VC_Info := VC_Table.Element (Rec.Id);
          Extra_Text : constant String :=
            (if not Rec.Result and then Present (Rec.Extra_Info)
-            then String_Of_Node (Rec.Extra_Info)
+            then String_Of_Node (Original_Node (Rec.Extra_Info))
             else "");
          Extra_Msg  : constant String :=
            (if Extra_Text /= "" then ", cannot prove ~" else "");

@@ -34,7 +34,7 @@ record_equality.adb:17:22: info: initialization of "C_Pu1.F1" proved
 record_equality.adb:17:22: info: initialization of "C_Pu1.F2" proved
 record_equality.adb:17:30: info: initialization of "C_Pu2.F1" proved
 record_equality.adb:17:30: info: initialization of "C_Pu2.F2" proved
-record_equality.adb:18:22: medium: assertion might fail, cannot prove not (R_Pu1 = C_Pu1) (e.g. when C_Pu1 = (C => ?, F1 => 0, F2 => 0) and R_Pu1 = (C => ?, F1 => 0))
+record_equality.adb:18:22: medium: assertion might fail, cannot prove Root'Class (R_Pu1) /= RootC_Pu1 (e.g. when C_Pu1 = (C => ?, F1 => 0, F2 => 0) and R_Pu1 = (C => ?, F1 => 0))
 record_equality.adb:18:34: info: initialization of "R_Pu1.F1" proved
 record_equality.adb:18:56: info: initialization of "C_Pu1.F1" proved
 record_equality.adb:18:56: info: initialization of "C_Pu1.F2" proved
