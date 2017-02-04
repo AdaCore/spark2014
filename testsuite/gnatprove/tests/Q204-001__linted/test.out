@@ -1,0 +1,332 @@
+linted-controls.adb:33:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:33:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:34:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:34:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:34:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:34:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:35:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:35:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:35:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:35:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:36:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:36:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:36:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
+linted-controls.adb:36:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
+linted-controls.adb:44:10: info: initialization of "X" proved
+linted-controls.adb:44:10: info: initialization of "X" proved, in call inlined at linted-controls.adb:54
+linted-controls.adb:44:10: info: initialization of "X" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:45:20: info: initialization of "X" proved
+linted-controls.adb:45:20: info: initialization of "X" proved, in call inlined at linted-controls.adb:54
+linted-controls.adb:45:20: info: initialization of "X" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:45:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
+linted-controls.adb:45:20: info: range check proved (Z3: 1 VC), in call inlined at linted-controls.adb:55
+linted-controls.adb:47:21: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
+linted-controls.adb:47:21: info: range check proved (Z3: 1 VC), in call inlined at linted-controls.adb:55
+linted-controls.adb:47:25: info: initialization of "X" proved
+linted-controls.adb:47:25: info: initialization of "X" proved, in call inlined at linted-controls.adb:54
+linted-controls.adb:47:25: info: initialization of "X" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:47:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
+linted-controls.adb:47:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:55
+linted-controls.adb:49:14: info: initialization of "Y" proved
+linted-controls.adb:49:14: info: initialization of "Y" proved, in call inlined at linted-controls.adb:54
+linted-controls.adb:49:14: info: initialization of "Y" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:54:27: info: length check proved (CVC4: 1 VC)
+linted-controls.adb:54:27: info: range check proved (CVC4: 4 VC)
+linted-controls.adb:55:27: info: length check proved (CVC4: 1 VC)
+linted-controls.adb:55:27: info: range check proved (CVC4: 4 VC)
+linted-controls.ads:37:41: info: initialization of "C.Back" proved
+linted-controls.ads:37:41: info: initialization of "C.Forward" proved
+linted-controls.ads:37:41: info: initialization of "C.Jumping" proved
+linted-controls.ads:37:41: info: initialization of "C.Left" proved
+linted-controls.ads:37:41: info: initialization of "C.Right" proved
+linted-controls.ads:37:41: info: initialization of "C.X_Tilt" proved
+linted-controls.ads:37:41: info: initialization of "C.Z_Tilt" proved
+linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:77:04: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:77:04: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:77:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:77:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:78:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:78:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:78:04: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:78:04: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:78:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:78:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:79:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:79:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:79:04: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:79:04: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:79:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:79:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:80:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:80:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:80:04: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:80:04: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:80:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:80:04: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:31
+linted-io_pool.adb:98:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:98:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:98:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:98:04: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:98:04: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:98:04: instantiation error at linted-channels.adb:31
+linted-io_pool.adb:99:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:99:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:99:04: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:99:04: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:99:04: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:99:04: instantiation error at linted-channels.adb:31
+linted-poller.ads:18:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
+linted-poller.ads:18:16: high: with task "linted.io_pool.worker_tasks"
+linted-reader.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
+linted-reader.ads:21:16: high: with task "linted.io_pool.worker_tasks"
+linted-stdio.adb:22:21: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
+linted-stdio.adb:22:21: high: with task "linted.io_pool.worker_tasks"
+linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: instantiation error at linted-channels.adb:17
+linted-timer.adb:23:04: instantiation error at linted-channels.adb:22
+linted-timer.adb:23:04: instantiation error at linted-channels.adb:31
+linted-triggers.ads:40:18: info: function contract not available for proof ("Is_Null_Waiter" may not return)
+linted-triggers.ads:40:18: info: function contract not available for proof ("Is_Null_Waiter" may not return)
+linted-triggers.ads:40:18: info: function contract not available for proof ("Is_Null_Waiter" may not return)
+linted-triggers.ads:40:18: info: function contract not available for proof ("Is_Null_Waiter" may not return)
+linted-triggers.ads:40:18: info: function contract not available for proof ("Is_Null_Waiter" may not return)
+linted-triggers.ads:43:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:43:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:43:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:43:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:43:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:46:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:46:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:46:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:46:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-triggers.ads:46:18: info: function contract not available for proof ("Is_Null_Signaller" may not return)
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:100
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:101
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:95
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:96
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:97
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:98
+linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:37:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:40:73: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:95
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:96
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:97
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:98
+linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:99
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
+linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
+linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
+linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
+linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
+linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
+linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
+linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
+linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
+linted-update.adb:59:10: info: initialization of "X" proved
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:80
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:81
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:82
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:83
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:84
+linted-update.adb:59:10: info: initialization of "X" proved, in call inlined at linted-update.adb:85
+linted-update.adb:60:20: info: initialization of "X" proved
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:80
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:81
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:82
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:83
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:84
+linted-update.adb:60:20: info: initialization of "X" proved, in call inlined at linted-update.adb:85
+linted-update.adb:60:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:80
+linted-update.adb:60:20: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:81
+linted-update.adb:60:20: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:82
+linted-update.adb:60:20: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:83
+linted-update.adb:60:20: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:84
+linted-update.adb:60:20: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:85
+linted-update.adb:62:21: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:80
+linted-update.adb:62:21: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:81
+linted-update.adb:62:21: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:82
+linted-update.adb:62:21: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:83
+linted-update.adb:62:21: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:84
+linted-update.adb:62:21: info: range check proved (Z3: 1 VC), in call inlined at linted-update.adb:85
+linted-update.adb:62:25: info: initialization of "X" proved
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:80
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:81
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:82
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:83
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:84
+linted-update.adb:62:25: info: initialization of "X" proved, in call inlined at linted-update.adb:85
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:80
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:81
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:82
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:83
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:84
+linted-update.adb:62:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:85
+linted-update.adb:64:14: info: initialization of "Y" proved
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:80
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:81
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:82
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:83
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:84
+linted-update.adb:64:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:85
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:95
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:96
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:97
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:98
+linted-update.adb:71:27: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:95
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:96
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:97
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:98
+linted-update.adb:71:27: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:95
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:96
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:97
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:98
+linted-update.adb:73:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:99
+linted-update.adb:75:14: info: initialization of "Y" proved
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:94
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:95
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:96
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:97
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:98
+linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:99
+linted-update.adb:80:31: info: length check proved (CVC4: 1 VC)
+linted-update.adb:80:31: info: range check proved (CVC4: 4 VC)
+linted-update.adb:81:31: info: length check proved (CVC4: 1 VC)
+linted-update.adb:81:31: info: range check proved (CVC4: 4 VC)
+linted-update.adb:82:31: info: length check proved (CVC4: 1 VC)
+linted-update.adb:82:31: info: range check proved (CVC4: 4 VC)
+linted-update.adb:83:32: info: length check proved (CVC4: 1 VC)
+linted-update.adb:83:32: info: range check proved (CVC4: 4 VC)
+linted-update.adb:84:32: info: length check proved (CVC4: 1 VC)
+linted-update.adb:84:32: info: range check proved (CVC4: 4 VC)
+linted-update.adb:85:32: info: length check proved (CVC4: 1 VC)
+linted-update.adb:85:32: info: range check proved (CVC4: 4 VC)
+linted-update.adb:86:35: info: length check proved (CVC4: 1 VC)
+linted-update.adb:86:35: info: range check proved (CVC4: 4 VC)
+linted-update.adb:87:35: info: length check proved (CVC4: 1 VC)
+linted-update.adb:87:35: info: range check proved (CVC4: 4 VC)
+linted-update.adb:94:09: info: initialization of "C183b" proved
+linted-update.adb:94:42: info: range check proved (CVC4: 1 VC)
+linted-update.adb:95:09: info: initialization of "C193b" proved
+linted-update.adb:95:42: info: range check proved (CVC4: 1 VC)
+linted-update.adb:96:09: info: initialization of "C203b" proved
+linted-update.adb:96:42: info: range check proved (CVC4: 1 VC)
+linted-update.adb:97:09: info: initialization of "C213b" proved
+linted-update.adb:97:43: info: range check proved (Z3: 1 VC)
+linted-update.adb:98:09: info: initialization of "C223b" proved
+linted-update.adb:98:43: info: range check proved (Z3: 1 VC)
+linted-update.adb:99:09: info: initialization of "C233b" proved
+linted-update.adb:99:43: info: range check proved (Z3: 1 VC)
+linted-update.adb:100:33: info: length check proved (Z3: 1 VC)
+linted-update.adb:100:33: info: range check proved (Z3: 1 VC)
+linted-update.ads:40:38: info: initialization of "S" proved
+linted-update.ads:41:41: info: initialization of "U.MX_Position" proved
+linted-update.ads:41:41: info: initialization of "U.MY_Position" proved
+linted-update.ads:41:41: info: initialization of "U.MZ_Position" proved
+linted-update.ads:41:41: info: initialization of "U.X_Position" proved
+linted-update.ads:41:41: info: initialization of "U.X_Rotation" proved
+linted-update.ads:41:41: info: initialization of "U.Y_Position" proved
+linted-update.ads:41:41: info: initialization of "U.Z_Position" proved
+linted-update.ads:41:41: info: initialization of "U.Z_Rotation" proved
+linted-windows.ads:26:41: info: initialization of "W" proved
+linted-writer.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
+linted-writer.ads:21:16: high: with task "linted.io_pool.worker_tasks"
+gnatprove: error during flow analysis and proof
