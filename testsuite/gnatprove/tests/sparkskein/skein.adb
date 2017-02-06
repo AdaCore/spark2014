@@ -252,9 +252,6 @@ is
          declare
             Src_Index : constant U64 := Src_Offset + Dst_Index * 8;
          begin
-            pragma Annotate
-              (GNATprove, False_Positive, """Dst"" might not be initialized",
-               "array Dst is initialized from Dst'First = 0 to Dst'Last");
             Dst (Dst_Index) :=
               U64 (Src (Src_Index)) +
               Shift_Left (U64 (Src (Src_Index + 1)), 8) +

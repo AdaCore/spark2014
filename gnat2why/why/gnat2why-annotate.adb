@@ -672,21 +672,6 @@ package body Gnat2Why.Annotate is
          return;
       end if;
 
-      declare
-         Decl : constant Node_Id := Enclosing_Declaration (Preceding);
-         Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
-
-      begin
-         --  Also, if the requested subprogram is always inlined, and also
-         --  referenced, the pragma should be ignored.
-
-         if Is_Local_Subprogram_Always_Inlined (Ent)
-           and then Referenced (Ent)
-         then
-            return;
-         end if;
-      end;
-
       if Consider_Next then
          Insert_With_Next (N, Kind, Pattern, Reason, Preceding);
       else
