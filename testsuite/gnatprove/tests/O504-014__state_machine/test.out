@@ -1,14 +1,14 @@
-a-cfinve.ads:306:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:348:73: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:381:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:419:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:468:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:539:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:607:28: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:607:57: info: range check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:740:22: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cfinve.ads:776:14: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:313:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:355:73: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:388:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:423:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:469:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:493:51: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:534:59: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:599:28: info: overflow check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:599:57: info: range check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:727:23: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
+a-cfinve.ads:763:14: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:99, in instantiation at state_machine_with_oop.ads:75
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:99, in instantiation at state_machine_with_oop.ads:75
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:99, in instantiation at state_machine_with_oop.ads:75

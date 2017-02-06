@@ -1,8 +1,8 @@
-a-cofove.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:734:22: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:737:36: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:770:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:774:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:593:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:721:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:724:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:757:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:761:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:20
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:20
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:20
