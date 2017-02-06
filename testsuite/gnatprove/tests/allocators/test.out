@@ -4,16 +4,16 @@ a-cofuse.ads:193:22: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuse.ads:194:26: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:43
 a-cofuse.ads:194:26: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:32
 a-cofuse.ads:194:26: info: overflow check proved (Z3: 1 VC), in instantiation at simple_allocator.ads:26
-a-cofuve.ads:229:58: info: range check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:229:58: info: range check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:230:71: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:230:71: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:292:52: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:292:52: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:14:04: info: initialization of "Data" constituent of "State" proved
 list_allocator.adb:14:16: info: length check proved (Z3: 1 VC)
 list_allocator.adb:15:04: info: initialization of "First_Available" constituent of "State" proved
