@@ -779,4 +779,7 @@ annotation and consider them as terminating when verifying ``F_Term``.
    capabilities. Indeed, to avoid soundness issues due to nontermination in
    logical formulas, GNATprove will not be able to see the contract of
    nonterminating functions if they are called from definitions of constants,
-   from contracts, or from assertions.
+   from contracts, or from assertions. In such a case, an information message
+   will be emitted, stating that (implicit) contracts of the function are not
+   available for proof. This message won't appear if a ``Terminating``
+   annotation is supplied for the function as explained above.
