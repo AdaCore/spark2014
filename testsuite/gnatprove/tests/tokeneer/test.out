@@ -144,20 +144,20 @@ admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent o
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
-alarm-interfac.ads:51:22: info: function contract not available for proof ("IsAlarming" may not return)
-alarm-interfac.ads:51:22: info: function contract not available for proof ("IsAlarming" may not return)
-alarm-interfac.ads:63:26: info: function contract not available for proof ("IsAlarming" may not return)
-alarm-interfac.ads:63:26: info: function contract not available for proof ("IsAlarming" may not return)
-alarm.adb:30:57: info: function contract not available for proof ("IsAlarming" may not return)
+alarm-interfac.ads:51:22: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm-interfac.ads:51:22: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm-interfac.ads:63:26: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm-interfac.ads:63:26: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm.adb:30:57: info: implicit function contract not available for proof ("IsAlarming" may not return)
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:46:30: info: refined post proved (CVC4: 1 VC)
-alarm.adb:47:40: info: function contract not available for proof ("IsAlarming" may not return)
+alarm.adb:47:40: info: implicit function contract not available for proof ("IsAlarming" may not return)
 alarm.ads:70:22: info: postcondition proved (CVC4: 1 VC)
-alarm.ads:70:67: info: function contract not available for proof ("IsAlarming" may not return)
-alarm.ads:70:67: info: function contract not available for proof ("IsAlarming" may not return)
-alarm.ads:70:67: info: function contract not available for proof ("IsAlarming" may not return)
-alarm.ads:70:67: info: function contract not available for proof ("IsAlarming" may not return)
-alarm.ads:70:67: info: function contract not available for proof ("IsAlarming" may not return)
+alarm.ads:70:67: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm.ads:70:67: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm.ads:70:67: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm.ads:70:67: info: implicit function contract not available for proof ("IsAlarming" may not return)
+alarm.ads:70:67: info: implicit function contract not available for proof ("IsAlarming" may not return)
 alarmapi.adb:38:29: medium: length check might fail
 alarmapi.adb:38:29: warning: assuming "Overwrite" has no effect on global items
 alarmapi.adb:38:29: warning: no Global contract available for "Overwrite"
@@ -339,7 +339,7 @@ auditlog.adb:1150:18: info: initialization of "OK" proved
 auditlog.adb:1152:36: info: initialization of "FileH" proved
 auditlog.adb:1157:47: info: initialization of "FileH" proved
 auditlog.adb:1160:24: info: initialization of "TimeCount" proved
-auditlog.adb:1165:35: info: function contract not available for proof ("EndOfFile" may not return)
+auditlog.adb:1165:35: info: implicit function contract not available for proof ("EndOfFile" may not return)
 auditlog.adb:1165:46: info: initialization of "FileH" proved
 auditlog.adb:1166:39: info: initialization of "NumberEntries" proved
 auditlog.adb:1167:38: info: initialization of "FileH" proved
@@ -1164,7 +1164,7 @@ clock.adb:378:24: info: initialization of "LocalText" proved
 clock.adb:379:50: info: division check proved (CVC4: 1 VC)
 clock.adb:380:32: info: division check proved (CVC4: 1 VC)
 clock.adb:384:14: info: initialization of "LocalText" proved
-clock.adb:396:15: info: function contract not available for proof ("AddDuration" may not return)
+clock.adb:396:15: info: implicit function contract not available for proof ("AddDuration" may not return)
 clock.ads:186:07: info: initialization of "TheTime.Day" proved
 clock.ads:186:07: info: initialization of "TheTime.MilliSec" proved
 clock.ads:186:07: info: initialization of "TheTime.Month" proved
@@ -1975,7 +1975,7 @@ enrolment.adb:94:35: info: initialization of "Description" proved
 enrolment.adb:123:25: info: postcondition proved (CVC4: 2 VC)
 enrolment.adb:123:42: info: initialization of "KeyAdded" proved
 enrolment.adb:145:16: info: initialization of "Stop" proved
-enrolment.adb:145:37: info: function contract not available for proof ("EndOfFile" may not return)
+enrolment.adb:145:37: info: implicit function contract not available for proof ("EndOfFile" may not return)
 enrolment.adb:151:25: info: initialization of "TheCert" proved
 enrolment.adb:155:45: info: initialization of "TheContents" proved
 enrolment.adb:156:65: info: initialization of "TheContents" proved
@@ -2022,7 +2022,7 @@ enrolment.adb:226:10: info: initialization of "DataOK" proved
 enrolment.adb:228:20: info: initialization of "CertNo" proved
 enrolment.adb:228:27: info: overflow check proved (CVC4: 1 VC)
 enrolment.adb:229:10: info: initialization of "CertNo" proved
-enrolment.adb:236:21: info: function contract not available for proof ("EndOfFile" may not return)
+enrolment.adb:236:21: info: implicit function contract not available for proof ("EndOfFile" may not return)
 enrolment.adb:236:45: info: initialization of "DataOK" proved
 enrolment.adb:238:23: info: initialization of "CertNo" proved
 enrolment.adb:238:30: medium: overflow check might fail
@@ -2306,12 +2306,12 @@ keystore.ads:245:26: info: initialization of "ThisTISInfo.IsPresent" constituent
 keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
 keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
 keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
-latch-interfac.ads:47:22: info: function contract not available for proof ("isLocked" may not return)
-latch-interfac.ads:47:22: info: function contract not available for proof ("isLocked" may not return)
-latch-interfac.ads:60:26: info: function contract not available for proof ("isLocked" may not return)
-latch-interfac.ads:60:26: info: function contract not available for proof ("isLocked" may not return)
-latch.adb:38:60: info: function contract not available for proof ("isLocked" may not return)
-latch.adb:41:64: info: function contract not available for proof ("isLocked" may not return)
+latch-interfac.ads:47:22: info: implicit function contract not available for proof ("isLocked" may not return)
+latch-interfac.ads:47:22: info: implicit function contract not available for proof ("isLocked" may not return)
+latch-interfac.ads:60:26: info: implicit function contract not available for proof ("isLocked" may not return)
+latch-interfac.ads:60:26: info: implicit function contract not available for proof ("isLocked" may not return)
+latch.adb:38:60: info: implicit function contract not available for proof ("isLocked" may not return)
+latch.adb:41:64: info: implicit function contract not available for proof ("isLocked" may not return)
 latch.adb:51:42: info: initialization of "CurrentLatch" constituent of "State" proved
 latch.adb:52:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
 latch.adb:52:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
@@ -2324,7 +2324,7 @@ latch.adb:114:32: info: initialization of "ID" proved
 latch.adb:121:23: info: initialization of "LocalLatch" proved
 latch.adb:136:49: info: initialization of "Interfac.Output" constituent of "Latch.Output" proved
 latch.adb:147:30: info: refined post proved (CVC4: 1 VC)
-latch.adb:147:49: info: function contract not available for proof ("isLocked" may not return)
+latch.adb:147:49: info: implicit function contract not available for proof ("isLocked" may not return)
 latch.adb:147:62: info: initialization of "SystemFault" proved
 latch.adb:156:10: info: initialization of "SystemFault" proved
 latch.adb:158:18: medium: precondition might fail
@@ -2345,20 +2345,20 @@ latch.adb:193:42: info: initialization of "LatchTimeout.Year" constituent of "St
 latch.ads:106:22: info: postcondition proved (CVC4: 3 VC)
 latch.ads:120:28: info: initialization of "SystemFault" proved
 latch.ads:135:22: info: postcondition proved (CVC4: 1 VC)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
-latch.ads:135:33: info: function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+latch.ads:135:33: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
 latch.ads:135:50: info: initialization of "SystemFault" proved
 latch.ads:150:22: info: initialization of "LatchTimeout.Day" constituent of "State" proved
 latch.ads:150:22: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
@@ -2763,33 +2763,33 @@ screen.adb:1102:14: info: initialization of "ScreenOK" proved
 screen.adb:1104:18: medium: precondition might fail
 spark_io.adb:128:42: warning: cannot copy object of a limited type in Ada 2005 (RM-2005 6.5(5.5/2))
 spark_io.adb:128:42: warning: consider switching to return of access type
-spark_io.ads:165:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:165:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:165:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:173:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:173:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:173:21: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:174:23: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:174:23: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:174:23: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:178:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:178:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:178:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:182:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:182:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:182:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:183:22: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:183:22: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:183:22: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:187:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:187:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:187:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:191:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:191:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:191:20: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:192:22: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:192:22: info: function contract not available for proof ("Mode" may not return)
-spark_io.ads:192:22: info: function contract not available for proof ("Mode" may not return)
+spark_io.ads:165:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:165:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:165:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:173:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:173:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:173:21: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:174:23: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:174:23: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:174:23: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:178:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:178:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:178:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:182:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:182:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:182:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:183:22: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:183:22: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:183:22: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:187:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:187:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:187:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:191:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:191:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:191:20: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:192:22: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:192:22: info: implicit function contract not available for proof ("Mode" may not return)
+spark_io.ads:192:22: info: implicit function contract not available for proof ("Mode" may not return)
 stats.adb:49:57: info: overflow check proved (CVC4: 1 VC)
 stats.adb:64:51: info: overflow check proved (CVC4: 1 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 1 VC)
@@ -2888,24 +2888,24 @@ tismain.adb:746:39: medium: "Latch.Output" might not be written
 tismain.adb:747:40: medium: "Screen.Output" might not be written
 tismain.adb:748:34: info: initialization of "SystemFault" proved
 tismain.adb:749:43: medium: "UserToken.Output" might not be written
-tismain.adb:1070:36: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1070:36: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1070:36: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1070:36: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
 tismain.adb:1118:13: medium: postcondition might fail
-tismain.adb:1121:36: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1121:36: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1121:36: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1121:36: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1137:23: info: function contract not available for proof ("IsAlarming" may not return)
-tismain.adb:1137:23: info: function contract not available for proof ("IsAlarming" may not return)
-tismain.adb:1139:24: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1139:24: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1140:30: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1140:30: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1142:47: info: function contract not available for proof ("Interfac_IsLocked" may not return)
-tismain.adb:1142:47: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1137:23: info: implicit function contract not available for proof ("IsAlarming" may not return)
+tismain.adb:1137:23: info: implicit function contract not available for proof ("IsAlarming" may not return)
+tismain.adb:1139:24: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1139:24: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1140:30: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1140:30: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1142:47: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1142:47: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1156:25: medium: precondition might fail
 tismain.adb:1162:26: medium: precondition might fail
 tismain.adb:1169:25: medium: precondition might fail
@@ -2934,7 +2934,7 @@ tismain.adb:1347:10: medium: loop invariant might fail in first iteration
 tismain.adb:1347:23: info: initialization of "Enclave.State" proved
 tismain.adb:1347:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1351:15: info: initialization of "Latch.State" proved
-tismain.adb:1351:32: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1351:32: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1353:33: info: initialization of "TheAdmin" proved
 tismain.adb:1354:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1359:22: medium: precondition might fail
@@ -2965,9 +2965,9 @@ tismain.adb:1405:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1416:20: info: initialization of "Latch.State" proved
 tismain.adb:1417:21: info: initialization of "Door.State" proved
 tismain.adb:1418:48: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1421:20: info: function contract not available for proof ("IsAlarming" may not return)
+tismain.adb:1421:20: info: implicit function contract not available for proof ("IsAlarming" may not return)
 tismain.adb:1421:35: info: initialization of "SystemFault" proved
-tismain.adb:1435:33: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1435:33: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1437:33: info: initialization of "TheAdmin" proved
 tismain.adb:1438:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1443:22: medium: precondition might fail
@@ -2996,8 +2996,8 @@ tismain.adb:1499:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1510:20: info: initialization of "Latch.State" proved
 tismain.adb:1511:21: info: initialization of "Door.State" proved
 tismain.adb:1512:48: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1515:20: info: function contract not available for proof ("IsAlarming" may not return)
-tismain.adb:1528:33: info: function contract not available for proof ("Interfac_IsLocked" may not return)
+tismain.adb:1515:20: info: implicit function contract not available for proof ("IsAlarming" may not return)
+tismain.adb:1528:33: info: implicit function contract not available for proof ("Interfac_IsLocked" may not return)
 tismain.adb:1530:33: info: initialization of "TheAdmin" proved
 tismain.adb:1531:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1536:22: medium: precondition might fail
@@ -3083,12 +3083,12 @@ updates.ads:46:29: info: initialization of "SystemFault" proved
 updates.ads:51:39: info: initialization of "Alarm.Output" proved
 updates.ads:52:39: info: initialization of "Latch.Output" proved
 updates.ads:79:22: info: postcondition proved (CVC4: 2 VC)
-updates.ads:80:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:80:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:80:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:81:46: info: function contract not available for proof ("LatchIsLocked" may not return)
-updates.ads:81:46: info: function contract not available for proof ("LatchIsLocked" may not return)
-updates.ads:81:46: info: function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:80:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:80:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:80:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:81:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:81:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:81:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
 updates.ads:82:25: info: initialization of "SystemFault" proved
 updates.ads:95:24: info: initialization of "SystemFault" proved
 updates.ads:100:39: info: initialization of "Alarm.Output" proved
@@ -3096,12 +3096,12 @@ updates.ads:101:41: info: initialization of "Display.Output" proved
 updates.ads:102:39: info: initialization of "Latch.Output" proved
 updates.ads:103:40: info: initialization of "Screen.Output" proved
 updates.ads:143:22: info: postcondition proved (CVC4: 2 VC)
-updates.ads:144:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:144:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:144:31: info: function contract not available for proof ("IsAlarming" may not return)
-updates.ads:145:46: info: function contract not available for proof ("LatchIsLocked" may not return)
-updates.ads:145:46: info: function contract not available for proof ("LatchIsLocked" may not return)
-updates.ads:145:46: info: function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:144:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:144:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:144:31: info: implicit function contract not available for proof ("IsAlarming" may not return)
+updates.ads:145:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:145:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
+updates.ads:145:46: info: implicit function contract not available for proof ("LatchIsLocked" may not return)
 updates.ads:146:25: info: initialization of "SystemFault" proved
 userentry.adb:56:04: info: initialization of "Status" constituent of "State" proved
 userentry.adb:58:04: info: initialization of "FingerTimeout.Day" constituent of "State" proved

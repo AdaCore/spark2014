@@ -1,1 +1,1 @@
-spark_io.ads:27:21: info: function contract not available for proof ("Mode" may not return)
+spark_io.ads:27:21: info: implicit function contract not available for proof ("Mode" may not return)

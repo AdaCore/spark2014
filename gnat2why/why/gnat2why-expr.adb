@@ -12196,17 +12196,26 @@ package body Gnat2Why.Expr is
         and then not No_Return (Subp)
         and then not Entity_In_Ext_Axioms (Subp)
       then
-         if Is_Recursive (Subp) then
-            Error_Msg_NE
-              ("info: function contract not available for proof (& is "
-               & "recursive)", Expr, Subp);
-         elsif Is_Potentially_Nonreturning (Subp)
-           and then not Has_Terminate_Annotation (Subp)
-         then
-            Error_Msg_NE
-              ("info: function contract not available for proof (& may not "
-               & "return)", Expr, Subp);
-         end if;
+         declare
+            Implicit : constant String :=
+              (if Has_Contracts (Subp, Pragma_Postcondition)
+                    or else
+                  Has_Contracts (Subp, Pragma_Contract_Cases)
+               then ""
+               else "implicit ");
+         begin
+            if Is_Recursive (Subp) then
+               Error_Msg_NE
+                 ("info: " & Implicit & "function contract not available for "
+                  & "proof (& is recursive)", Expr, Subp);
+            elsif Is_Potentially_Nonreturning (Subp)
+              and then not Has_Terminate_Annotation (Subp)
+            then
+               Error_Msg_NE
+                 ("info: " & Implicit & "function contract not available for "
+                  & "proof (& may not return)", Expr, Subp);
+            end if;
+         end;
       end if;
 
       --  SPARK function cannot have side-effects

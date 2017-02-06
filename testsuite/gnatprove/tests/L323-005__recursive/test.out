@@ -1,18 +1,18 @@
 p.adb:6:23: info: assertion proved (CVC4: 1 VC)
-p.adb:6:23: info: function contract not available for proof ("Bad" is recursive)
+p.adb:6:23: info: implicit function contract not available for proof ("Bad" is recursive)
 p.ads:3:15: info: postcondition proved (CVC4: 1 VC)
 p.ads:3:49: info: function contract not available for proof ("Id" is recursive)
 p.ads:3:53: info: range check proved (CVC4: 1 VC)
 p.ads:3:56: info: overflow check proved (CVC4: 1 VC)
-p.ads:5:54: info: function contract not available for proof ("Bad" is recursive)
+p.ads:5:54: info: implicit function contract not available for proof ("Bad" is recursive)
 p.ads:7:15: warning: subprogram "Use_Bad" has no effect
 p.ads:7:36: info: postcondition proved (CVC4: 1 VC)
-p.ads:10:30: info: function contract not available for proof ("Down" is recursive)
+p.ads:10:30: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:10:38: info: range check proved (CVC4: 1 VC)
 p.ads:10:43: medium: overflow check might fail
 p.ads:12:15: warning: subprogram "Use_Down" has no effect
-p.ads:14:15: info: function contract not available for proof ("Down" is recursive)
+p.ads:14:15: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:14:15: info: postcondition proved (CVC4: 1 VC)
-p.ads:14:26: info: function contract not available for proof ("Down" is recursive)
+p.ads:14:26: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:14:34: info: range check proved (CVC4: 1 VC)
 p.ads:14:39: medium: overflow check might fail
