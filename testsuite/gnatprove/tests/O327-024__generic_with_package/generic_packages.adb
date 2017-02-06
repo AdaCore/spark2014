@@ -1,4 +1,4 @@
-package body Generic_Packages with SPARK_Mode => Off is
+package body Generic_Packages is
    package body Gen_Sum with SPARK_Mode => Off is
       function Sum (A : Element_Array) return Element is
          Res : Element := 0;

@@ -1,4 +1,4 @@
-package Generic_Packages with SPARK_Mode => Off is
+package Generic_Packages is
    type Bad is access Positive;
 
    generic
