@@ -52,7 +52,7 @@ is
    subtype I64  is U64 range 0 .. 63;
    subtype I128 is U64 range 0 .. 127;
 
-   type Byte_Seq is array (U64 range <>) of Byte;
+   type Byte_Seq is array (U64 range <>) of Byte with Predicate => Byte_Seq'Last < U64'Last;
    for Byte_Seq'Alignment use 8;
 
    subtype Byte_Seq_4   is Byte_Seq (I4);
@@ -197,6 +197,7 @@ is
           Pre => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
                  Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
                  Hash'First = 0 and
+                 Hash'Last < U64'Last and
                  (Hash_Bit_Len_Of (Ctx) + 7) / 8 - 1 <= Hash'Last;
 
    --  Returns a 512-bit hash of Data using 512-bit block size.
