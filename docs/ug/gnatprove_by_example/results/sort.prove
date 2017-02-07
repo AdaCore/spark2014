@@ -1,4 +1,4 @@
-sort.adb:16:16: info: function contract not available for proof ("Is_Perm" may not return)
+sort.adb:16:16: info: implicit function contract not available for proof ("Is_Perm" may not return)
 sort.adb:16:16: info: postcondition proved
 sort.adb:17:18: info: index check proved
 sort.adb:17:35: info: index check proved
@@ -13,7 +13,7 @@ sort.adb:31:32: info: index check proved
 sort.adb:32:18: info: precondition proved
 sort.adb:32:34: info: range check proved
 sort.adb:32:43: info: index check proved
-sort.adb:33:17: info: function contract not available for proof ("Is_Perm" may not return)
+sort.adb:33:17: info: implicit function contract not available for proof ("Is_Perm" may not return)
 sort.adb:33:17: info: postcondition proved
 sort.adb:37:13: info: precondition proved
 sort.adb:37:28: info: range check proved
@@ -69,10 +69,10 @@ sort.adb:101:13: info: loop invariant preservation proved
 sort.adb:102:31: info: overflow check proved
 sort.adb:103:28: info: index check proved
 sort.adb:103:42: info: index check proved
-sort.adb:104:33: info: function contract not available for proof ("Is_Perm" may not return)
+sort.adb:104:33: info: implicit function contract not available for proof ("Is_Perm" may not return)
 sort.adb:104:33: info: loop invariant initialization proved
 sort.adb:104:33: info: loop invariant preservation proved
-sort.ads:9:16: info: function contract not available for proof ("Is_Perm" may not return)
+sort.ads:9:16: info: implicit function contract not available for proof ("Is_Perm" may not return)
 sort.ads:9:16: info: postcondition proved
 sort.ads:11:51: info: overflow check proved
 sort.ads:12:22: info: index check proved

@@ -2,15 +2,15 @@ predicates.ads:17:31: info: division check proved
 predicates.ads:20:32: info: division check proved
 predicates.ads:23:58: info: division check proved
 predicates.ads:23:71: info: division check proved
-predicates.ads:32:10: info: function contract not available for proof ("Get_GCD" is recursive)
+predicates.ads:32:10: info: implicit function contract not available for proof ("Get_GCD" is recursive)
 predicates.ads:32:19: medium: overflow check might fail (e.g. when X = -2147483648)
 predicates.ads:32:28: medium: overflow check might fail (e.g. when Y = -2147483648)
 predicates.ads:34:17: info: range check proved
-predicates.ads:36:10: info: function contract not available for proof ("Get_GCD" is recursive)
+predicates.ads:36:10: info: implicit function contract not available for proof ("Get_GCD" is recursive)
 predicates.ads:36:24: info: overflow check proved
-predicates.ads:38:10: info: function contract not available for proof ("Get_GCD" is recursive)
+predicates.ads:38:10: info: implicit function contract not available for proof ("Get_GCD" is recursive)
 predicates.ads:38:24: info: overflow check proved
-predicates.ads:44:52: info: function contract not available for proof ("Get_GCD" is recursive)
+predicates.ads:44:52: info: implicit function contract not available for proof ("Get_GCD" is recursive)
 predicates.ads:48:09: info: range check proved
 predicates.ads:50:07: info: range check proved
 predicates.ads:58:89: info: index check proved
