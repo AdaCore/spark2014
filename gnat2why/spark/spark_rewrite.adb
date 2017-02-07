@@ -32,6 +32,7 @@ with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
+with SPARK_Util.Subprograms;
 with Tbuild;                 use Tbuild;
 
 package body SPARK_Rewrite is
@@ -319,6 +320,26 @@ package body SPARK_Rewrite is
                then
                   Rewrite_Nodes (Original_Node (N));
                end if;
+
+            --  Traverse expressions for DIC procedures
+
+            when N_Full_Type_Declaration =>
+               declare
+                  Ty       : constant Entity_Id := Defining_Entity (N);
+                  DIC_Subp : Entity_Id;
+                  DIC_Expr : Node_Id;
+
+               begin
+                  if Has_DIC (Ty) then
+                     DIC_Subp := DIC_Procedure (Ty);
+
+                     if Present (DIC_Subp) then
+                        DIC_Expr := SPARK_Util.Subprograms.
+                          Get_Expr_From_Check_Only_Proc (DIC_Subp);
+                        Rewrite_Nodes (DIC_Expr);
+                     end if;
+                  end if;
+               end;
 
             when others =>
                null;

@@ -26,6 +26,7 @@
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Eval_Fat;
+with Exp_Util;               use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
@@ -1184,16 +1185,33 @@ package body Gnat2Why.Util is
       Section.Cur_Theory := Why.Types.Why_Empty;
    end Make_Empty_Why_Section;
 
+   ---------------------------
+   -- May_Need_DIC_Checking --
+   ---------------------------
+
+   function May_Need_DIC_Checking (E : Entity_Id) return Boolean is
+      DIC_Needs_To_Be_Checked : constant Boolean :=
+        Has_Own_DIC (E)
+        and then Present (DIC_Procedure (E));
+
+      DIC_Needs_To_Be_Rechecked : constant Boolean :=
+        Is_Tagged_Type (E)
+        and then Is_Full_View (E)
+        and then Present (DIC_Procedure (E))
+        and then Expression_Contains_Primitives_Calls_Of
+          (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E);
+   begin
+      return DIC_Needs_To_Be_Checked or DIC_Needs_To_Be_Rechecked;
+   end May_Need_DIC_Checking;
+
    -----------------------------
    -- Needs_DIC_Check_At_Decl --
    -----------------------------
 
    function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean is
       E : constant Entity_Id := Retysp (Ty);
-
    begin
-      return Has_Own_DIC (Ty)
-        and then Present (DIC_Procedure (Ty))
+      return May_Need_DIC_Checking (E)
         and then not Is_Private_Type (E)
         and then Present (Get_Initial_DIC_Procedure (E))
         and then Check_DIC_At_Declaration (E);

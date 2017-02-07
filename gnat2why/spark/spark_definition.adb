@@ -35,6 +35,7 @@ with Exp_Util;                        use Exp_Util;
 with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
+with Gnat2Why.Util;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Nmake;                           use Nmake;
@@ -3769,30 +3770,7 @@ package body SPARK_Definition is
          --  If the type has a Default_Initial_Condition aspect, store the
          --  corresponding procedure in the Delayed_Type_Aspects map.
 
-         if Has_Own_DIC (E) and then Present (DIC_Procedure (E)) then
-
-            --  Non dispatching calls to tagged primitives of the current type
-            --  are not supported yet, as they should be verified in the
-            --  context of all descendant.
-            --  Only mark the full view of the type as out of SPARK. We cannot
-            --  verify the type's default initilization, but its partial view
-            --  can still be used in SPARK code.
-
-            if Is_Tagged_Type (E)
-              and then Is_Full_View (E)
-              and then Expression_Contains_Primitives_Calls_Of
-                (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E)
-            then
-               declare
-                  DIC_Pragma : constant Node_Id :=
-                    Get_Pragma (E, Pragma_Default_Initial_Condition);
-               begin
-                  Mark_Unsupported
-                    ("call to a tagged primitive in default initial condition",
-                     (if Present (DIC_Pragma) then DIC_Pragma else E));
-               end;
-            end if;
-
+         if Gnat2Why.Util.May_Need_DIC_Checking (E) then
             declare
                Delayed_Mapping : constant Node_Id :=
                  (if Present (Current_SPARK_Pragma)

@@ -384,6 +384,13 @@ package Gnat2Why.Util is
    --  Given an identifier, decide if it denotes a variable that is mutable in
    --  the Why translation.
 
+   function May_Need_DIC_Checking (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  @param E type entity
+   --  @return True iff E is the entity for a declaration that may require
+   --     checking the DIC, either because it has its own DIC, or because it
+   --     is a tagged type which inherits a DIC which requires rechecking.
+
    function Needs_DIC_Check_At_Decl (Ty : Entity_Id) return Boolean with
      Pre => Has_DIC (Ty);
    --  @param Ty type entity with a DIC

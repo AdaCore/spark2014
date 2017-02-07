@@ -895,7 +895,6 @@ package body SPARK_Util.Types is
       if No (DIC_Procedure (E))
         or else Present (Get_Body (DIC_Procedure (E)))
       then
-         pragma Assert (if Present (DIC_Procedure (E)) then Has_Own_DIC (E));
          return DIC_Procedure (E);
       end if;
 
