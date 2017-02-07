@@ -1,5 +1,9 @@
-com_map.ads:46:22: info: precondition proved (CVC4: 1 VC)
-com_map.ads:47:22: info: precondition proved (CVC4: 1 VC)
+a-cfhama.ads:632:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:647:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at com_map.ads:30
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at com_map.ads:30
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at com_map.ads:30
+com_map.ads:39:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:36:13: info: initialization of "speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -127,7 +131,6 @@ section_3_5_3.adb:41:35: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
 section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC4: 1 VC)
-section_3_5_3.ads:51:53: info: precondition proved (CVC4: 1 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
