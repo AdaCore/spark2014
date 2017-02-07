@@ -47,7 +47,9 @@ def change_all_spark_mode(b):
 
 def kill_and_regenerate_all():
     change_all_spark_mode(False)
+#   cleaning and regeneration of *.v
     os.system("make clean")
+    os.system("make generate")
 #   Force regeneration of coq files where necessary.
 #   This step is used to generate the fake coq files and put the names of
 #   coq files inside the session. This cannot be done in one step because
@@ -55,12 +57,6 @@ def kill_and_regenerate_all():
 #   check the present coq files).
     with open("manual_proof.in") as f:
         for i in f:
-            exec_gnatprove(i)
-#   cleaning and regeneration of *.v
-    os.system("make clean")
-    os.system("make generate")
-    with open("manual_proof.in") as v:
-        for i in v:
             exec_gnatprove(i)
     os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 \
 --level=4 --no-counterexample -j0")
