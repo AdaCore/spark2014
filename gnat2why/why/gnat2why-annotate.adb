@@ -36,6 +36,7 @@ with GNAT.Regpat;                  use GNAT.Regpat;
 with Lib.Xref;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
+with Sem_Aux;                      use Sem_Aux;
 with Sem_Util;                     use Sem_Util;
 with Sinfo;                        use Sinfo;
 with Sinput;                       use Sinput;
@@ -318,10 +319,13 @@ package body Gnat2Why.Annotate is
       ------------------------
 
       procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
+         Params  : constant List_Id :=
+                    Parameter_Specifications (Subprogram_Specification (E));
+         C_Param : constant Node_Id := First (Params);
       begin
-         if No (First_Entity (E))
-           or else No (Next_Entity (First_Entity (E)))
-           or else Present (Next_Entity (Next_Entity (First_Entity (E))))
+         if No (C_Param)
+           or else No (Next (C_Param))
+           or else Present (Next (Next (C_Param)))
          then
             Error_Msg_N
               ("Contains function must have exactly two parameter", E);
@@ -330,11 +334,13 @@ package body Gnat2Why.Annotate is
               ("Contains function must return Booleans", E);
          else
             declare
-               Container_Type : constant Entity_Id := Etype (First_Entity (E));
+               E_Param        : constant Node_Id := Next (C_Param);
+               Container_Type : constant Entity_Id :=
+                 Entity (Parameter_Type (C_Param));
                --  Type of the first Argument of the Contains function
 
                Element_Type   : constant Entity_Id :=
-                 Etype (Next_Entity (First_Entity (E)));
+                 Entity (Parameter_Type (E_Param));
                --  Type of the second argument of the Contains function
 
                Cont_Element   : constant Entity_Id :=
@@ -345,11 +351,11 @@ package body Gnat2Why.Annotate is
                if No (Cont_Element) then
                   Error_Msg_N
                     ("first parameter of Contains function must allow for of "
-                     & "iteration", First_Entity (E));
+                     & "iteration", C_Param);
                elsif Etype (Cont_Element) /= Element_Type then
                   Error_Msg_N
                     ("second parameter of Contains must have the type of "
-                     & "elements", Next_Entity (First_Entity (E)));
+                     & "elements", E_Param);
                else
                   Ok := True;
                end if;
@@ -362,15 +368,17 @@ package body Gnat2Why.Annotate is
       ------------------------
 
       procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean) is
+         Params : constant List_Id :=
+           Parameter_Specifications (Subprogram_Specification (E));
+         Param  : constant Node_Id := First (Params);
       begin
-         if No (First_Entity (E))
-           or else Present (Next_Entity (First_Entity (E)))
-         then
+         if No (Param) or else Present (Next (Param)) then
             Error_Msg_N
               ("Model function must have exactly one parameter", E);
          else
             declare
-               Container_Type : constant Entity_Id := Etype (First_Entity (E));
+               Container_Type : constant Entity_Id :=
+                 Entity (Parameter_Type (Param));
                --  Type of the first Argument of the model function
 
                Model_Type     : constant Entity_Id := Etype (E);
@@ -389,7 +397,7 @@ package body Gnat2Why.Annotate is
                if No (Cont_Element) then
                   Error_Msg_N
                     ("parameter of Model function must allow for of iteration",
-                     First_Entity (E));
+                     Param);
                elsif No (Model_Element) then
                   Error_Msg_N
                     ("return type of Model function must allow for of " &
@@ -431,6 +439,13 @@ package body Gnat2Why.Annotate is
 
       pragma Assert (Present (Arg4_Exp) and then Present (Entity (Arg4_Exp)));
       New_Prim := Entity (Arg4_Exp);
+
+      if Ekind (New_Prim) /= E_Function then
+         Error_Msg_N
+           ("the entity of a Gnatprove Annotate Iterable_For_Proof "
+            & "pragma must be a function",
+            New_Prim);
+      end if;
 
       String_To_Name_Buffer (Args_Str);
       if Name_Len = 5 and then Name_Buffer (1 .. 5) = "Model" then
