@@ -46,7 +46,7 @@ algorithm.adb:195:89: medium: float overflow check might fail
 algorithm.adb:195:95: medium: float overflow check might fail
 algorithm.adb:195:108: medium: float overflow check might fail
 algorithm.adb:195:121: medium: float overflow check might fail
-algorithm.adb:195:129: info: function contract not available for proof ("ccwDiff" may not return)
+algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" may not return)
 algorithm.adb:195:138: info: initialization of "rayR.second" proved
 algorithm.adb:195:151: info: initialization of "rayL.second" proved
 algorithm.adb:198:13: info: precondition proved (CVC4: 1 VC)
@@ -77,7 +77,7 @@ algorithm.adb:231:89: medium: float overflow check might fail
 algorithm.adb:231:95: medium: float overflow check might fail
 algorithm.adb:231:108: medium: float overflow check might fail
 algorithm.adb:231:121: medium: float overflow check might fail
-algorithm.adb:231:129: info: function contract not available for proof ("ccwDiff" may not return)
+algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" may not return)
 algorithm.adb:231:138: info: initialization of "rayR.second" proved
 algorithm.adb:231:151: info: initialization of "rayL.second" proved
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
@@ -155,7 +155,7 @@ algorithm.adb:345:36: info: initialization of "riterR.Node" proved
 algorithm.adb:348:13: info: initialization of "riterL.Node" proved
 algorithm.adb:351:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:351:47: info: initialization of "riterR.Node" proved
-algorithm.adb:351:64: medium: precondition might fail
+algorithm.adb:351:64: info: precondition proved (Z3: 1 VC)
 algorithm.adb:351:86: info: initialization of "riterL.Node" proved
 algorithm.adb:351:109: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:352:15: medium: precondition might fail
@@ -347,7 +347,7 @@ algorithm.adb:730:53: info: initialization of "distToGoal" proved
 algorithm.adb:737:52: info: division check proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: float overflow check proved (Interval)
 algorithm.adb:738:37: info: initialization of "driveTurnRate" proved
-algorithm.adb:744:50: info: function contract not available for proof ("Create" may not return)
+algorithm.adb:744:50: info: implicit function contract not available for proof ("Create" may not return)
 algorithm.adb:744:58: medium: precondition might fail
 algorithm.adb:745:88: medium: float overflow check might fail
 algorithm.adb:746:93: info: initialization of "pBestValley.value.risingGap.distance" proved
