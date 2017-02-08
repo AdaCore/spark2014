@@ -215,6 +215,20 @@ package body SPARK_Register is
             end if;
          end if;
 
+         --  Register dispatching operations, because they might be called only
+         --  implicitly and we miss such calls in the above code.
+
+         if Nkind (N) = N_Subprogram_Declaration then
+            declare
+               E : constant Entity_Id := Defining_Entity (N);
+
+            begin
+               if Is_Dispatching_Operation (E) then
+                  Register_Entity (E);
+               end if;
+            end;
+         end if;
+
          --  In many places we manipulate objects represented by names which is
          --  the only way to represent what comes from other compilation units.
          --  However, we often need to know what the name really represents,

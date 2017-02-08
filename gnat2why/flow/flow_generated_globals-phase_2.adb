@@ -476,14 +476,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Generated_Calls (E : Entity_Id) return Node_Lists.List is
       Direct_Calls : Node_Lists.List := Node_Lists.Empty_List;
-      F            : Entity_Id;
    begin
       for Callee of Generated_Calls (To_Entity_Name (E)) loop
-         F := Find_Entity (Callee);
-         --  pragma Assert (Present (F));
-         if Present (F) then  --  ??? F should never be Empty
-            Direct_Calls.Append (F);
-         end if;
+         Direct_Calls.Append (Find_Entity (Callee));
       end loop;
       return Direct_Calls;
    end Generated_Calls;
