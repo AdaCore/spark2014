@@ -1,5 +1,5 @@
-a-cfhama.ads:670:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:13
-a-cfhama.ads:685:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:13
+a-cfhama.ads:675:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:13
+a-cfhama.ads:690:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:13
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at p.ads:13
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at p.ads:13
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at p.ads:13

@@ -1,39 +1,39 @@
-a-cofove.ads:307:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:307:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:349:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:349:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:382:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:382:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:417:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:417:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:463:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:463:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:487:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:487:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:528:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:528:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:593:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:593:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:593:57: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:593:57: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:593:57: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:721:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:721:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:724:38: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:757:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofove.ads:757:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:72
-a-cofove.ads:761:35: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:54
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:54
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:54
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:54
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:54
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at names-data.ads:72
+a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:420:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:420:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:466:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:466:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:490:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:490:51: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:531:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:531:59: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:596:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:596:28: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:596:57: info: overflow check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:72
+a-cofove.ads:764:35: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:54
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:54
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:54
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:54
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:54
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names-data.ads:72
 names.adb:39:04: info: initialization of "Hash_Table" constituent of "Name_Table" proved
 names.adb:39:34: info: length check proved (CVC4: 1 VC)
 names.adb:40:04: info: initialization of private part of "Char_Table" proved

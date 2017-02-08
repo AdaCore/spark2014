@@ -40,7 +40,7 @@ is
                 --     Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
                 (for all J in Index => Contains (D, A(J))) and then
                 (for all C in D => A (Element (D, C)) = Key (D, C)) and then
-                (for all C in D'Old => Has_Element (D, C) and then Key (D'Old, C) = Key (D, C));
+                Keys (D)'Old = Keys (D);
 
    procedure Make_New_Partitions
      (P : in out Partition;

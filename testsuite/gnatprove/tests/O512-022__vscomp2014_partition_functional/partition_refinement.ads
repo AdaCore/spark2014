@@ -19,13 +19,9 @@ is
    subtype Partitioning_Set is Partitioning_Sets.List;
    use Partitioning_Sets;
 
-   function Lt_Positive (Left, Right : Positive) return Boolean is (Left < Right);
-   function Eq_Index (Left, Right : Index) return Boolean is (Left = Right);
    package Inverse_Sets is new
      Formal_Ordered_Maps (Key_Type     => Positive,
-                          ELement_Type => Index,
-                          "<"          => Lt_Positive,
-                          "="          => Eq_Index);
+                          ELement_Type => Index);
    subtype Inverse_Set is Inverse_Sets.Map;
    use Inverse_Sets;
 

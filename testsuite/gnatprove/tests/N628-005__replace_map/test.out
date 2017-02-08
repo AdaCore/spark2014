@@ -1,3 +1,15 @@
+a-cforma.ads:904:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:919:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:934:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:949:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:995:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1009:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
 replacement.adb:7:22: info: assertion proved (CVC4: 1 VC)
 replacement.adb:7:22: info: precondition proved (CVC4: 1 VC)
 replacement.adb:7:44: info: precondition proved (CVC4: 1 VC)
@@ -5,15 +17,13 @@ replacement.adb:7:68: info: precondition proved (CVC4: 1 VC)
 replacement.adb:7:68: medium: array index check might fail
 replacement.adb:7:86: info: precondition proved (CVC4: 1 VC)
 replacement.adb:8:07: info: precondition proved (CVC4: 1 VC)
-replacement.adb:8:27: info: precondition proved (CVC4: 1 VC)
-replacement.adb:10:22: info: assertion proved (Z3: 1 VC)
+replacement.adb:10:22: info: assertion proved (CVC4: 1 VC)
 replacement.adb:10:22: info: precondition proved (CVC4: 1 VC)
 replacement.adb:10:44: info: precondition proved (CVC4: 1 VC)
 replacement.adb:10:68: info: precondition proved (CVC4: 1 VC)
 replacement.adb:10:68: medium: array index check might fail
 replacement.adb:10:86: info: precondition proved (CVC4: 1 VC)
-replacement.ads:20:13: info: precondition proved (CVC4: 1 VC)
-replacement.ads:21:14: info: precondition proved (CVC4: 1 VC)
-replacement.ads:21:35: info: precondition proved (CVC4: 1 VC)
-replacement.ads:21:35: medium: array index check might fail
-replacement.ads:21:53: info: precondition proved (CVC4: 1 VC)
+replacement.ads:17:14: info: precondition proved (CVC4: 1 VC)
+replacement.ads:17:35: info: precondition proved (CVC4: 1 VC)
+replacement.ads:17:35: medium: array index check might fail
+replacement.ads:17:53: info: precondition proved (CVC4: 1 VC)

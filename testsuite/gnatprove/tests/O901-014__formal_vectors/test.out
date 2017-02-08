@@ -1,20 +1,20 @@
-a-cofove.ads:307:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:349:73: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:382:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:417:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:463:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:487:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:528:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:593:28: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:593:57: info: range check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:721:23: info: precondition proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofove.ads:757:14: info: precondition proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:420:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:466:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:490:51: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:531:59: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:596:28: info: overflow check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at aida-containers-formal_vectors.ads:178, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:6:07: info: initialization of private part of "V.Hidden_Vector" proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:6:14: info: initialization of private part of "V.Hidden_Vector" proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:7:68: info: discriminant check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8

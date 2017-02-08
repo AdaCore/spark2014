@@ -1,42 +1,52 @@
-a-cfdlli.ads:467:49: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:608:49: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:698:57: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:764:57: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:850:28: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:850:39: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1026:43: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1207:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1346:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1361:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1376:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1391:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1413:14: info: precondition proved (CVC4: 2 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1468:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cfdlli.ads:1475:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:16
-a-cofove.ads:593:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:38
-a-cofove.ads:721:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:38
-a-cofove.ads:724:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:38
-a-cofove.ads:757:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:38
-a-cofove.ads:761:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:38
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:38
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:38
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:38
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:38
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:16
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:93, in instantiation at partition_refinement.ads:38
+a-cfdlli.ads:468:49: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:609:49: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:699:57: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:765:57: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:851:28: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:851:39: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1027:43: info: overflow check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1208:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
+a-cforma.ads:904:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:919:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:934:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:949:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:995:46: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:1009:40: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
+a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
+a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
+a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
+a-cofove.ads:764:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:34
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:34
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:34
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:34
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at partition_refinement.ads:15
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at partition_refinement.ads:21
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:34
 partition_refinement.adb:14:14: info: postcondition proved (CVC4: 1 VC)
-partition_refinement.adb:24:15: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:25:17: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:26:38: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:27:16: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:27:37: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:27:55: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:28:15: info: postcondition proved (CVC4: 6 VC; Z3: 1 VC)
+partition_refinement.adb:28:15: info: postcondition proved (CVC4: 6 VC)
 partition_refinement.adb:29:26: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:30:27: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:30:41: info: precondition proved (CVC4: 1 VC)
@@ -49,14 +59,9 @@ partition_refinement.adb:31:78: medium: range check might fail
 partition_refinement.adb:31:80: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:31:94: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:32:23: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:41:40: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:42:18: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:42:39: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:42:57: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:43:18: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:43:40: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:43:68: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:43:85: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:49:17: info: overflow check proved (CVC4: 1 VC)
 partition_refinement.adb:77:29: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:78:28: info: precondition proved (CVC4: 2 VC)
@@ -73,10 +78,9 @@ partition_refinement.adb:93:67: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:93:94: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:93:112: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:96:22: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:96:44: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:97:07: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:98:22: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:100:22: info: assertion proved (Z3: 1 VC)
+partition_refinement.adb:100:22: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:100:22: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:100:44: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:100:67: info: precondition proved (CVC4: 1 VC)
@@ -89,13 +93,13 @@ partition_refinement.adb:101:70: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:101:88: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:102:07: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:103:22: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:105:22: info: assertion proved (Z3: 1 VC)
+partition_refinement.adb:105:22: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:105:22: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:105:44: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:105:67: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:105:94: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:105:112: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:106:22: info: assertion proved (Z3: 1 VC)
+partition_refinement.adb:106:22: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:106:22: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:106:44: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:106:70: info: precondition proved (CVC4: 1 VC)
@@ -144,7 +148,6 @@ partition_refinement.adb:149:22: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:149:39: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:150:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:174:29: info: initialization of "C.Node" proved
-partition_refinement.adb:179:25: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:179:38: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:179:50: info: initialization of "C.Node" proved
 partition_refinement.adb:180:10: info: precondition proved (CVC4: 12 VC)
@@ -164,25 +167,21 @@ partition_refinement.adb:185:72: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:188:33: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:188:33: info: loop invariant preservation proved (CVC4: 1 VC)
 partition_refinement.adb:188:33: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:188:51: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:188:64: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:189:33: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:189:33: info: loop invariant preservation proved (CVC4: 1 VC)
-partition_refinement.adb:189:55: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:191:10: info: loop variant proved (CVC4: 1 VC)
 partition_refinement.adb:193:71: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:193:92: info: initialization of "C.Node" proved
 partition_refinement.adb:196:07: info: precondition proved (CVC4: 2 VC)
-partition_refinement.ads:55:17: info: overflow check proved (CVC4: 1 VC)
-partition_refinement.ads:58:38: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:59:16: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:59:37: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:59:55: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:61:16: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:61:34: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:61:47: info: precondition proved (CVC4: 1 VC)
-partition_refinement.ads:64:43: info: precondition proved (CVC4: 2 VC)
-partition_refinement.ads:64:70: info: precondition proved (CVC4: 2 VC)
-partition_refinement.ads:66:50: info: range check proved (CVC4: 1 VC)
-partition_refinement.ads:66:69: info: precondition proved (CVC4: 2 VC)
-partition_refinement.ads:66:81: info: range check proved (CVC4: 1 VC)
+partition_refinement.ads:51:17: info: overflow check proved (CVC4: 1 VC)
+partition_refinement.ads:55:16: info: precondition proved (CVC4: 1 VC)
+partition_refinement.ads:55:37: info: precondition proved (CVC4: 1 VC)
+partition_refinement.ads:55:55: info: precondition proved (CVC4: 1 VC)
+partition_refinement.ads:57:16: info: precondition proved (CVC4: 1 VC)
+partition_refinement.ads:57:47: info: precondition proved (CVC4: 1 VC)
+partition_refinement.ads:60:43: info: precondition proved (CVC4: 2 VC)
+partition_refinement.ads:60:70: info: precondition proved (CVC4: 2 VC)
+partition_refinement.ads:62:50: info: range check proved (CVC4: 1 VC)
+partition_refinement.ads:62:69: info: precondition proved (CVC4: 2 VC)
+partition_refinement.ads:62:81: info: range check proved (CVC4: 1 VC)

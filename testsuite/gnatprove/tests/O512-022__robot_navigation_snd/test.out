@@ -1,18 +1,18 @@
-a-cfdlli.ads:467:49: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:608:49: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:698:57: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:764:57: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:850:28: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:850:39: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1026:43: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1207:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1346:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1361:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1376:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1391:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1413:14: info: precondition proved (CVC4: 2 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1468:14: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1475:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:468:49: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:609:49: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:699:57: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:765:57: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:851:28: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:851:39: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1027:43: info: overflow check proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1208:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
@@ -158,7 +158,7 @@ algorithm.adb:351:47: info: initialization of "riterR.Node" proved
 algorithm.adb:351:64: info: precondition proved (Z3: 1 VC)
 algorithm.adb:351:86: info: initialization of "riterL.Node" proved
 algorithm.adb:351:109: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:352:15: medium: precondition might fail
+algorithm.adb:352:15: info: precondition proved (Z3: 1 VC)
 algorithm.adb:352:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
