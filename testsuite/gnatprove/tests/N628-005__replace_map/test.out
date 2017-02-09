@@ -1,9 +1,9 @@
-a-cforma.ads:904:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:919:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:934:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:949:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:995:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1009:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:905:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:920:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:935:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:950:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:996:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1010:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at replacement.ads:9

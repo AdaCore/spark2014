@@ -15,12 +15,12 @@ a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:11
 a-cfhama.ads:675:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:13
 a-cfhama.ads:690:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:13
-a-cforma.ads:904:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforma.ads:919:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforma.ads:934:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforma.ads:949:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforma.ads:995:46: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
-a-cforma.ads:1009:40: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:905:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:920:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:935:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:950:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:996:46: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
+a-cforma.ads:1010:40: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:27
 a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:27

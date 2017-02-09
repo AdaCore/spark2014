@@ -13,12 +13,12 @@ a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at partition_refinement.ads:15
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:15
-a-cforma.ads:904:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
-a-cforma.ads:919:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
-a-cforma.ads:934:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
-a-cforma.ads:949:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
-a-cforma.ads:995:46: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
-a-cforma.ads:1009:40: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:905:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:920:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:935:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:950:20: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:996:46: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
+a-cforma.ads:1010:40: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:21
 a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
 a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
 a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:34
