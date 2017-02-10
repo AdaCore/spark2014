@@ -1410,8 +1410,10 @@ package body Flow.Control_Flow_Graph is
           not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
    begin
+      --  Collect function calls appearing in the assignment statement: both
+      --  its LHS and RHS.
       Collect_Functions_And_Read_Locked_POs
-        (Expression (N),
+        (N,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Include_Predicates => FA.Generating_Globals);
