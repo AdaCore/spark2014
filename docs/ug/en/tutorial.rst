@@ -16,8 +16,9 @@ As a running example, we consider a naive searching algorithm for an unordered
 collection of elements. The algorithm returns whether the collection contains
 the desired value, and if so, at which index. The collection is implemented
 here as an array. We deliberately start with an incorrect program for package
-``Search``, in order to explain how the |SPARK| toolset can help correct
-these errors.
+``Search``, in order to explain how the |SPARK| toolset can help correct these
+errors. The final version of the ``linear_search`` example is part of the
+:ref:`Examples in the Toolset Distribution`.
 
 We start with creating a GNAT project file in ``search.gpr``:
 
@@ -76,15 +77,16 @@ their ``out`` parameters), which means that various calls in the same
 expression may be conflicting, yielding different results depending on the
 order of evaluation of the expression.
 
-We correct this problem by defining a record type ``Search_Result`` holding
-both the Boolean result and the index for cases when the value is found, and
-making ``Search`` return this type:
+We correct this problem by defining a record type ``Search_Result`` in
+``linear_search.ads`` holding both the Boolean result and the index for cases
+when the value is found, and making ``Search`` return this type:
 
 .. literalinclude:: /examples/linear_search_spark/linear_search.ads
    :language: ada
    :linenos:
 
-The implementation of ``Search`` is modified to use this type:
+The implementation of ``Search`` in ``linear_search.adb`` is modified to use
+this type:
 
 .. literalinclude:: /examples/linear_search_spark/linear_search.adb
    :language: ada
@@ -116,17 +118,17 @@ value returned is indeed not initialized. Although that is allowed in Ada,
 |SPARK| requires that all inputs and outputs of subprograms are completely
 initialized (and the value returned by a function is such an output). As a
 solution, we could give a dummy value to component ``At_Index`` when the search
-fails, but we choose here to turn the type ``Search_Result`` into a
-discriminant record, so that the component ``At_Index`` is only usable when the
-search succeeds:
+fails, but we choose here to turn the type ``Search_Result`` in
+``linear_search.ads`` into a discriminant record, so that the component
+``At_Index`` is only usable when the search succeeds:
 
 .. literalinclude:: /examples/linear_search_prove/linear_search.ads
    :language: ada
    :linenos:
    :lines: 10-17
 
-Then, in the implementation of ``Search``, we change the value of the
-discriminant depending on the success of the search:
+Then, in the implementation of ``Search`` in ``linear_search.adb``, we change
+the value of the discriminant depending on the success of the search:
 
 .. literalinclude:: /examples/linear_search_prove/linear_search.adb
    :language: ada
@@ -145,10 +147,10 @@ apply formal verification modularly on each subprogram, independently of the
 implementation of other subprograms. The precondition constrains the value of
 input parameters, while the postcondition states desired properties of the
 result of the function. See :ref:`Preconditions` and :ref:`Postconditions` for
-more details. Here, we can require in the precondition that callers of
-``Search`` always pass a non-negative value for parameter ``Val``, and we can
-state that, when the search succeeds, the index returned points to the desired
-value in the array:
+more details. Here, we can require in the precondition of ``Search`` in
+``linear_search.ads`` that callers of ``Search`` always pass a non-negative
+value for parameter ``Val``, and we can state that, when the search succeeds,
+the index returned points to the desired value in the array:
 
 .. literalinclude:: /examples/linear_search_contract/linear_search.ads
    :language: ada
@@ -174,8 +176,8 @@ postcondition. We want to consider here three cases:
 In the first case, we want to state that the index returned is 1. In the second
 case, we want to state that the search succeeds. In the third case, we want to
 state that the search fails. We use a helper function ``Value_Found_In_Range``
-to express that a value ``Val`` is found in an array ``A`` within given bounds
-``Low`` and ``Up``:
+in ``linear_search.ads`` to express that a value ``Val`` is found in an array
+``A`` within given bounds ``Low`` and ``Up``:
 
 .. literalinclude:: /examples/linear_search_contract/linear_search.ads
    :language: ada
@@ -207,8 +209,8 @@ Testing |SPARK| Programs
 ========================
 
 We can compile the above program, and test it on a set of selected inputs. The
-following test program exercises the case where the searched value is present in
-the array and the case where it is not:
+following test program in file ``test_search.adb`` exercises the case where the
+searched value is present in the array and the case where it is not:
 
 .. literalinclude:: /examples/linear_search_contract/test_search.adb
    :language: ada
@@ -223,6 +225,17 @@ compiling and running the test program:
    $ test_search
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
+
+.. note::
+
+   We use above the command-line interface to compile and run the test program
+   ``test_search.adb``. You can do the same inside GPS by selecting the menu
+   :menuselection:`Project --> Properties` and inside the panel
+   :guilabel:`Main` of folder :guilabel:`Sources`, add ``test_search.adb`` as a
+   main file. Then, click :guilabel:`OK`. To generate the ``test_search``
+   executable, you can now select the menu :menuselection:`Build --> Project
+   --> test_search.adb` and to run the ``test_search`` executable, you can
+   select the menu :menuselection:`Build --> Run --> test_search`.
 
 But only part of the program was really tested, as the contract was not checked
 during execution. To check the contract at run time, we recompile with the
@@ -248,9 +261,22 @@ run-time checks, an error is reported when running the test program:
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
 
-It appears that two contract cases for ``Search`` are activated at the
-same time! More information can be generated at run time if the code is
-compiler with the switch ``-gnateE``:
+.. note::
+
+   We use above the command-line interface to add compilation switch ``-gnata``
+   and force recompilation with switch ``-f``. You can do the same inside GPS
+   by selecting the menu :menuselection:`Project --> Properties` and inside the
+   panel :guilabel:`Ada` of the subfolder :guilabel:`Switches` of folder
+   :guilabel:`Build`, select the checkbox :guilabel:`Enable assertions`. Then,
+   click :guilabel:`OK`. To force recompilation with the new switch, you can
+   now select the menu :menuselection:`Build --> Clean --> Clean All` followed
+   by recompilation with :menuselection:`Build --> Project -->
+   test_search.adb`. Then run the ``test_search`` executable with
+   :menuselection:`Build --> Run --> test_search`.
+
+It appears that two contract cases for ``Search`` are activated at the same
+time! More information can be generated at run time if the code is compiler
+with the switch ``-gnateE``:
 
 .. code-block:: bash
 
@@ -269,10 +295,10 @@ occurs on the first call to ``Search`` in the test program:
 .. image:: /static/search_gdb.png
 
 Indeed, the value 1 is present twice in the array, at indexes 1 and 8, which
-makes the two guards ``A(1) = Val`` and ``Value_Found_In_Range (A, Val, 2, 10)``
-evaluate to ``True``. We correct the contract of ``Search`` by
-strengthening the guard of the second contract case, so that it only applies
-when the value is not found at index 1:
+makes the two guards ``A(1) = Val`` and ``Value_Found_In_Range (A, Val, 2,
+10)`` evaluate to ``True``. We correct the contract of ``Search`` in
+``linear_search.ads`` by strengthening the guard of the second contract case,
+so that it only applies when the value is not found at index 1:
 
 .. literalinclude:: /examples/linear_search_flow/linear_search.ads
    :language: ada
@@ -314,13 +340,13 @@ default ``all`` mode.
 
 The difference between these two steps should be emphasized. Flow analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
-as compilation to complete. Proof in step 2 is based on the
-generation of logical formulas for each check to prove, which are then passed
-on to automatic provers to decide whether the logical formula holds or
-not. The generation of logical formulas is a translation phase, which typically
-takes 10 times as long as compilation to complete. The automatic proof of logical
-formulas may take a very long time, or never terminate, hence the use of a timeout
-(default=1s) for each call to the automatic provers. It is this last step which
+as compilation to complete. Proof in step 2 is based on the generation of
+logical formulas for each check to prove, which are then passed on to automatic
+provers to decide whether the logical formula holds or not. The generation of
+logical formulas is a translation phase, which typically takes 10 times as long
+as compilation to complete. The automatic proof of logical formulas may take a
+very long time, or never terminate, hence the use of a timeout (1s at proof
+level 0) for each call to the automatic provers. It is this last step which
 takes the most time when calling |GNATprove| on a program, but it is also a
 step which can be completely parallelized (using switch ``-j`` to specify the
 number of parallel processes): each logical formula can be proved
@@ -344,7 +370,10 @@ Prove File` menu.
 
    The proof panels presented in this tutorial correspond to an advanced user
    profile. A simpler proof panel is displayed when the basic user profile is
-   selected (the default). See :ref:`Running GNATprove from GPS` for details.
+   selected (the default). You can switch to the advanced user profile in menu
+   :menuselection:`Edit --> Preferences --> SPARK`, by changing the value of
+   :guilabel:`User profile` from ``Basic`` to ``Advanced``. See :ref:`Running
+   GNATprove from GPS` for details.
 
 We use the default settings and click on :menuselection:`Execute`. It completes
 in a few seconds, with a message stating that some checks could not be proved:
@@ -356,16 +385,16 @@ which means that it was proved. Likewise, there are no such messages on the
 body of ``Search``, which means that no run-time errors can be raised
 when executing the function.
 
-These messages correspond to checks done when exiting from ``Search``. It
-is expected that not much can be proved at this point, given that the body of
-``Search`` has a loop but no loop invariant, so the formulas generated
-for these checks assume the worst about locations modified in the loop. A loop
+These messages correspond to checks done when exiting from ``Search``. It is
+expected that not much can be proved at this point, given that the body of
+``Search`` has a loop but no loop invariant, so the formulas generated for
+these checks assume the worst about locations modified in the loop. A loop
 invariant is a special pragma ``Loop_Invariant`` stating an assertion in a
 loop, which can be both executed at run-time like a regular pragma ``Assert``,
 and used by |GNATprove| to summarize the effect of successive iterations of the
-loop. We need to add a loop invariant stating enough properties about the
-cumulative effect of loop iterations, so that the contract cases of
-``Search`` become provable. Here, it should state that the value
+loop. We need to add a loop invariant in ``linear_search.adb`` stating enough
+properties about the cumulative effect of loop iterations, so that the contract
+cases of ``Search`` become provable. Here, it should state that the value
 searched was not previously found:
 
 .. literalinclude:: /examples/linear_search_loopinv/linear_search.adb
@@ -373,10 +402,10 @@ searched was not previously found:
    :lines: 19-20
 
 As stated above, this invariant holds exactly between the two statements in the
-loop (after the if-statement, before the increment of the index). Thus, it
-should be inserted at this place. With this loop invariant, two checks
-previously not proved are now proved, and a check previously proved becomes
-unproved:
+loop in ``linear_search.adb`` (after the if-statement, before the increment of
+the index). Thus, it should be inserted at this place. With this loop
+invariant, two checks previously not proved are now proved, and a check
+previously proved becomes unproved:
 
 .. image:: /static/search_loopinv.png
 
@@ -399,15 +428,17 @@ loop invariant, |GNATprove| proves iterations around the source loop, and
 then we get the information that, since the loop did not exit, its test
 ``Pos < A'Last`` is false, so the range check can be proved.
 
-We solve this issue by setting the type of ``Pos`` to the base type of
-``Index``, which ranges past the last value of ``Index``. (This may not be the
-simplest solution, but we use it here for the dynamics of this tutorial.)
+We solve this issue by setting the type of ``Pos`` in ``linear_search.adb`` to
+the base type of ``Index``, which ranges past the last value of
+``Index``. (This may not be the simplest solution, but we use it here for the
+dynamics of this tutorial.)
 
 .. literalinclude:: /examples/linear_search_loopinv_ok/linear_search.adb
    :language: ada
    :lines: 9
 
-And we add the range information for ``Pos`` to the loop invariant:
+And we add the range information for ``Pos`` to the loop invariant in
+``linear_search.adb``:
 
 .. literalinclude:: /examples/linear_search_loopinv_ok/linear_search.adb
    :language: ada
@@ -469,12 +500,12 @@ on which the contract case is not proved:
 
 .. image:: /static/search_path_info.png
 
-This corresponds to a case where the implementation of ``Search`` does not
-find the searched value, but the guard of the second contract case holds,
-meaning that the value is present in the range 2 to 10. Looking more closely at
-the path highlighted, we can see that the loop exits when ``Pos = A'Last``, so
-the value 10 is never considered! We correct this bug by changing the loop test
-from a strict to a non-strict comparison operation:
+This corresponds to a case where the implementation of ``Search`` does not find
+the searched value, but the guard of the second contract case holds, meaning
+that the value is present in the range 2 to 10. Looking more closely at the
+path highlighted, we can see that the loop exits when ``Pos = A'Last``, so the
+value 10 is never considered! We correct this bug by changing the loop test in
+``linear_search.adb`` from a strict to a non-strict comparison operation:
 
 .. literalinclude:: /examples/linear_search_no_variant/linear_search.adb
    :language: ada
@@ -508,10 +539,10 @@ the index ``Pos``, which increases at each loop iteration:
    :language: ada
    :lines: 23
 
-With this last modification, the test program still runs without errors (it
-checks dynamically that the loop variant is respected), and the program is
-still fully proved. Here is the final version of ``Linear_Search``, with the complete
-annotations:
+With this line inserted after the loop invariant in ``linear_search.adb``, the
+test program still runs without errors (it checks dynamically that the loop
+variant is respected), and the program is still fully proved. Here is the final
+version of ``Linear_Search``, with the complete annotations:
 
 .. literalinclude:: /examples/linear_search_final_cases/linear_search.ads
    :language: ada
@@ -521,4 +552,6 @@ annotations:
    :language: ada
    :linenos:
 
-This concludes our tutorial on the |SPARK| toolset.
+The final version of the ``linear_search`` example is part of the
+:ref:`Examples in the Toolset Distribution`. This concludes our tutorial on the
+|SPARK| toolset.
