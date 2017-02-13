@@ -1185,12 +1185,9 @@ package body Flow.Control_Flow_Graph is
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
 
          PM : constant Param_Mode :=
-           (if F.Kind in Direct_Mapping | Record_Field
-              and then Ekind (Get_Direct_Mapping_Id (F)) = E_Discriminant
-            then
-               Mode_In
-            else
-               M);
+           (if Ekind (Get_Direct_Mapping_Id (F)) = E_Discriminant
+            then Mode_In
+            else M);
 
          F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
          F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
