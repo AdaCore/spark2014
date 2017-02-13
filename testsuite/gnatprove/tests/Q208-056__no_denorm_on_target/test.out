@@ -2,5 +2,5 @@ compute.adb:4:20: info: initialization of "X" proved
 compute.adb:4:20: info: overflow check proved (CVC4: 1 VC)
 warning: (SPARK analysis requires support for float subnormals)
 warning: (SPARK analysis requires support for float subnormals)
-warning: Run-time library may be configured incorrectly
-warning: Run-time library may be configured incorrectly
+warning: run-time library may be configured incorrectly
+warning: run-time library may be configured incorrectly
