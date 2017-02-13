@@ -11,8 +11,7 @@ package Term is
    package TSet is new Ada.Containers.Formal_Hashed_Sets
      (Element_Type        => T,
       Hash                => Hash,
-      Equivalent_Elements => Eq,
-      "="                 => "=");
+      Equivalent_Elements => Eq);
 
    S : Tset.Set := TSet.Empty_Set;
 

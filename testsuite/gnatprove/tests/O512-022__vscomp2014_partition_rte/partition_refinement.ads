@@ -16,14 +16,12 @@ is
      Formal_Doubly_Linked_Lists (Element_Type => Positive);
    subtype Partitioning_Set is Partitioning_Sets.List;
    use Partitioning_Sets;
-   use Partitioning_Sets.Formal_Model;
 
    package Inverse_Sets is new
      Formal_Ordered_Maps (Key_Type     => Positive,
                           ELement_Type => Index);
    subtype Inverse_Set is Inverse_Sets.Map;
-   use Inverse_Sets;
-   use Inverse_Sets.Formal_Model;
+   use Inverse_Sets; use type Inverse_Sets.Formal_Model.K.Sequence;
 
    type Interval is record
       First : Index;

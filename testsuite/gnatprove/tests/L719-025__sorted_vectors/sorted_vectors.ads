@@ -29,7 +29,7 @@ package Sorted_Vectors is pragma SPARK_Mode (On);
             Element (Container, I) = Element (Model (Container)'Old, I)) and
          (for all I in Position + 1 .. Integer (Length (Container)) =>
                Element (Container, I) = Element (Model (Container)'Old, I - 1)) and
-           (if My_Sort.M_Elements_Sorted (Model (Container)'Old)
+           (if My_Sort.Formal_Model.M_Elements_Sorted (Model (Container)'Old)
                 then My_Sort.Is_Sorted (Container)));
 
 end Sorted_Vectors;

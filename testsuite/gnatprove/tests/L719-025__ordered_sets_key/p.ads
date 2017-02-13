@@ -11,8 +11,8 @@ package P is pragma SPARK_Mode (On);
      (I1 < I2);
 
    package My_Sets is new Ada.Containers.Formal_Ordered_Sets
-     (Element_Type => Element_Type, "=" => My_Eq, "<" => My_Inf);
-   use My_Sets;
+     (Element_Type => Element_Type, "<" => My_Inf);
+   use My_Sets; use My_Sets.Formal_Model;
 
    subtype Key_Type is Element_Type;
 
@@ -24,6 +24,6 @@ package P is pragma SPARK_Mode (On);
 
    procedure Identity (L : in out Set; K : Key_Type) with
      Pre => My_Keys.Contains (L, K),
-     Post => Strict_Equal (L, L'Old);
+     Post => L = L'Old and Positions (L) = Positions (L'Old);
 
 end P;

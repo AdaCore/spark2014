@@ -40,7 +40,7 @@ is
                 --     Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
                 (for all J in Index => Contains (D, A(J))) and then
                 (for all C in D => A (Element (D, C)) = Key (D, C)) and then
-                Keys (D)'Old = Keys (D);
+                Inverse_Sets.Formal_Model.Keys (D)'Old = Inverse_Sets.Formal_Model.Keys (D);
 
    procedure Make_New_Partitions
      (P : in out Partition;
@@ -190,7 +190,8 @@ is
 
          pragma Loop_Variant (Increases =>
                                 (if C = Partitioning_Sets.No_Element then Length (X)
-                                 else Partitioning_Sets.Formal_Model.P.Get (Positions (X), C) - 1));
+                                 else Partitioning_Sets.Formal_Model.P.Get
+                                   (Partitioning_Sets.Formal_Model.Positions (X), C) - 1));
       end loop;
 
       Make_New_Partitions (P, F);

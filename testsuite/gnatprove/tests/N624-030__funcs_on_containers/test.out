@@ -1,11 +1,11 @@
-a-cfhama.ads:675:20: info: precondition proved (CVC4: 1 VC), in instantiation at find_map.ads:15
-a-cfhama.ads:690:20: info: precondition proved (CVC4: 1 VC), in instantiation at find_map.ads:15
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:104, in instantiation at find_map.ads:15
+a-cfhama.ads:716:20: info: precondition proved (CVC4: 1 VC), in instantiation at find_map.ads:15
+a-cfhama.ads:731:20: info: precondition proved (CVC4: 1 VC), in instantiation at find_map.ads:15
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at find_map.ads:15
 find_map.adb:4:07: info: initialization of private part of "Result" proved
 find_map.adb:6:14: info: initialization of private part of "Result" proved
 find_map.adb:9:27: info: initialization of private part of "Result" proved

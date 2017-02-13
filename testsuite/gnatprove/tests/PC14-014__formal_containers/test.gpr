@@ -1,0 +1,14 @@
+project Test is
+
+   package Compiler is
+      for Switches ("ada") use ("-g", "-gnata");
+   end Compiler;
+
+   package Builder is
+      for Global_Configuration_Pragmas use "pragmas.adc";
+   end Builder;
+
+   for Main use ("run_tests.adb");
+
+end Test;
+

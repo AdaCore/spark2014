@@ -10,8 +10,8 @@ package P is pragma SPARK_Mode (On);
    function Hash (Id : Element_Type) return Hash_Type is (Hash_Type (Id));
 
    package My_Sets is new Ada.Containers.Formal_Hashed_Sets
-     (Element_Type, Hash, My_Eq, My_Eq);
-   use My_Sets;
+     (Element_Type, Hash, My_Eq);
+   use My_Sets; use My_Sets.Formal_Model;
 
    procedure My_Include (L : in out Set; E : Element_Type) with
      Pre => Contains (L, E) or Length (L) < L.Capacity,
@@ -19,11 +19,15 @@ package P is pragma SPARK_Mode (On);
 
    procedure Identity (L : in out Set; E : Element_Type) with
      Pre => Length (L) < L.Capacity and not Contains (L, E),
-     Post => Strict_Equal (L, L'Old);
+     Post => L = L'Old and
+     (for all C in L => Has_Element (L'Old, C)
+       and Element (L, C) = Element (L'Old, C));
 
    procedure Nearly_Identity (L : in out Set; Cu : in out Cursor) with
      Pre => Has_Element (L, Cu),
      Post => L = L'Old and
-     (if Cu = Cu'Old then Strict_Equal (L, L'Old));
+     (if Cu = Cu'Old then
+         (for all C in L => Has_Element (L'Old, C)
+           and Element (L, C) = Element (L'Old, C)));
 
 end P;

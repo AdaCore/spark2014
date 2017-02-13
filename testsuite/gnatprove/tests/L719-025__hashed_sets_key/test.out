@@ -1,6 +1,22 @@
+a-cfhase.ads:755:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:756:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:804:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:974:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:975:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:975:44: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1014:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1085:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1100:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1303:13: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:20
+a-cofuse.ads:237:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:88, in instantiation at p.ads:12
+a-cofuse.ads:238:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:88, in instantiation at p.ads:12
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
 p.adb:4:27: info: precondition proved (CVC4: 1 VC)
 p.adb:6:07: info: precondition proved (CVC4: 1 VC)
 p.adb:6:22: info: initialization of "E" proved
-p.ads:25:20: info: precondition proved (CVC4: 1 VC)
 p.ads:26:14: info: postcondition proved (CVC4: 1 VC)
-p.ads:26:16: info: precondition proved (CVC4: 1 VC)

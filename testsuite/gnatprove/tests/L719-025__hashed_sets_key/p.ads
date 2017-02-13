@@ -10,7 +10,7 @@ package P is pragma SPARK_Mode (On);
    function Hash (Id : Element_Type) return Hash_Type is (Hash_Type (Id));
 
    package My_Sets is new Ada.Containers.Formal_Hashed_Sets
-     (Element_Type, Hash, My_Eq, My_Eq);
+     (Element_Type, Hash, My_Eq);
    use My_Sets;
 
    subtype Key_Type is Element_Type;
