@@ -386,7 +386,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Tmps    : Why_Node_Lists.List;
 
       Loop_Param_Ent  : Entity_Id := Empty;
-      Loop_Index      : W_Identifier_Id;
+      Loop_Index      : W_Identifier_Id := Why_Empty;
       Loop_Index_Type : W_Type_Id := EW_Int_Type;
       --  These three variables hold the loop parameter in Ada and Why, if any
 
@@ -528,7 +528,7 @@ package body Gnat2Why.Expr.Loops is
 
          --  Case of a simple loop
 
-         if Nkind (Scheme) = N_Empty then
+         if No (Scheme) then
             return Wrap_Loop (Loop_Id            => Loop_Id,
                               Loop_Start         => Initial_Prog,
                               Loop_End           => Final_Prog,
@@ -544,9 +544,8 @@ package body Gnat2Why.Expr.Loops is
 
          --  Case of a WHILE loop
 
-         elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
-           and then
-             Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
+         elsif No (Iterator_Specification (Scheme))
+           and then No (Loop_Parameter_Specification (Scheme))
          then
             While_Loop : declare
                Cond_Prog : constant W_Prog_Id :=
@@ -600,7 +599,9 @@ package body Gnat2Why.Expr.Loops is
          --  once at the beginning of the loop, to get potential checks
          --  in that expression only once.
 
-         elsif Nkind (Condition (Scheme)) = N_Empty then
+         elsif No (Condition (Scheme)) then
+            pragma Assert (Present (Loop_Index));
+
             For_Loop : declare
                Over_Range   : constant Boolean :=
                  Present (Loop_Parameter_Specification (Scheme));

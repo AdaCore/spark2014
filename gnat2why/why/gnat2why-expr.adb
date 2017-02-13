@@ -3770,11 +3770,13 @@ package body Gnat2Why.Expr is
         (if Nkind (Call) = N_Entry_Call_Statement
          then Empty
          else Controlling_Argument (Call));
-      Control_Tag     : W_Expr_Id;
+      Control_Tag     : W_Expr_Id := Why_Empty;
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
 
-      procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
+      procedure One_Param (Formal : Entity_Id; Actual : Node_Id) with
+        Pre  => Needs_Check = Present (Control_Tag),
+        Post => Needs_Check = Present (Control_Tag);
          --  Compute a Why expression for each parameter
 
       ---------------
@@ -5757,7 +5759,7 @@ package body Gnat2Why.Expr is
                R_Why : W_Expr_Id := Right;
                L_Type, R_Type : W_Type_Id;
                Base : W_Type_Id;
-               Oper : Why_Name_Enum;
+               Oper : Why_Name_Enum := WNE_Empty;
             begin
                if Has_Fixed_Point_Type (Left_Type)
                  and then Has_Fixed_Point_Type (Right_Type)
@@ -5788,6 +5790,7 @@ package body Gnat2Why.Expr is
                   Base := Base_Why_Type (Left_Type, Right_Type);
                   L_Type := Base;
                   R_Type := Base;
+                  pragma Assert (not Is_Fixed_Point_Type (Return_Type));
                end if;
 
                L_Why := Insert_Simple_Conversion
@@ -5802,6 +5805,7 @@ package body Gnat2Why.Expr is
                   To       => R_Type);
 
                if Is_Fixed_Point_Type (Return_Type) then
+                  pragma Assert (Oper /= WNE_Empty);
                   T := New_Call (Ada_Node => Ada_Node,
                                  Domain   => Domain,
                                  Name     => E_Symb (Return_Type, Oper),
@@ -5846,7 +5850,7 @@ package body Gnat2Why.Expr is
          when N_Op_Divide =>
             declare
                Base  : W_Type_Id;
-               Oper : Why_Name_Enum;
+               Oper : Why_Name_Enum := WNE_Empty;
                Name : W_Identifier_Id;
                L_Type, R_Type : W_Type_Id;
                L_Why, R_Why : W_Expr_Id;
@@ -5881,7 +5885,13 @@ package body Gnat2Why.Expr is
                   Base := Base_Why_Type (Left_Type, Right_Type);
                   L_Type := Base;
                   R_Type := Base;
+                  pragma Assert (not Is_Fixed_Point_Type (Return_Type));
                end if;
+
+               pragma Assert
+                 (if Is_Fixed_Point_Type (Return_Type)
+                    or else Has_Fixed_Point_Type (Left_Type)
+                  then Oper /= WNE_Empty);
 
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then

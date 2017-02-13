@@ -3693,7 +3693,7 @@ package body SPARK_Definition is
             if Ekind (E) = E_Class_Wide_Subtype then
                declare
                   Subty : constant Node_Id := Subtype_Indication (Parent (E));
-                  Ty    : Entity_Id;
+                  Ty    : Entity_Id := Empty;
                begin
                   case Nkind (Subty) is
                      when N_Attribute_Reference =>
@@ -3713,6 +3713,7 @@ package body SPARK_Definition is
                   end case;
 
                   if Nkind (Subty) /= N_Subtype_Indication then
+                     pragma Assert (Present (Ty));
                      Set_Specific_Tagged (E, Unique_Entity (Ty));
                   end if;
                end;

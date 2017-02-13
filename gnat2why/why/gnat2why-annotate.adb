@@ -634,10 +634,11 @@ package body Gnat2Why.Annotate is
    is
       First_Sloc, Last_Sloc, Tmp : Source_Ptr;
    begin
-      if Present (List) then
-         Sloc_Range (First (List), First_Sloc, Tmp);
-         Sloc_Range (Last (List), Tmp, Last_Sloc);
+      if No (List) then
+         return;
       end if;
+      Sloc_Range (First (List), First_Sloc, Tmp);
+      Sloc_Range (Last (List), Tmp, Last_Sloc);
       Insert_Annotate_Range
         (Prgma, Kind, Pattern, Reason, First_Sloc, Last_Sloc);
    end Insert_Annotate_Range;

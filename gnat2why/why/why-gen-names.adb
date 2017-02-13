@@ -821,6 +821,7 @@ package body Why.Gen.Names is
             | WNE_To_Int_4
             | WNE_To_Rep
             | WNE_Type_Invariant
+            | WNE_Empty
          =>
             raise Program_Error);
 

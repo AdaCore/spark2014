@@ -649,7 +649,7 @@ package body Gnat2Why.Error_Messages is
       --  parse the JSON produced for Why3 for a single Why3 result record.
 
       procedure Handle_Result (V : JSON_Value);
-      procedure Handle_Error (Msg : String; Internal : Boolean);
+      procedure Handle_Error (Msg : String; Internal : Boolean) with No_Return;
       procedure Handle_Timings (V : JSON_Value);
 
       ------------------

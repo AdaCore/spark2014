@@ -3778,9 +3778,9 @@ package body Gnat2Why.Subprograms is
       Params             : Transformation_Params;
       Pre                : W_Pred_Id;
       Post               : W_Pred_Id;
-      Dispatch_Pre       : W_Pred_Id;
-      Dispatch_Post      : W_Pred_Id;
-      Refined_Post       : W_Pred_Id;
+      Dispatch_Pre       : W_Pred_Id := Why_Empty;
+      Dispatch_Post      : W_Pred_Id := Why_Empty;
+      Refined_Post       : W_Pred_Id := Why_Empty;
       Why_Type           : W_Type_Id := Why_Empty;
 
    begin
@@ -3962,6 +3962,8 @@ package body Gnat2Why.Subprograms is
          --  ??? clean up this code duplication for dispatch and refine
 
          if Is_Dispatching_Operation (E) then
+            pragma Assert (Present (Dispatch_Pre)
+                            and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
                              Dispatch_Logic_Id,
                              Dispatch_Pre,
@@ -3969,6 +3971,7 @@ package body Gnat2Why.Subprograms is
          end if;
 
          if Has_Contracts (E, Pragma_Refined_Post) then
+            pragma Assert (Present (Refined_Post));
             Emit_Post_Axiom (Post_Refine_Axiom,
                              Refine_Logic_Id,
                              Pre,

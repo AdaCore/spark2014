@@ -299,7 +299,9 @@ package Why.Gen.Names is
       WNE_To_Fixed,
       WNE_To_Float32,             --  for fixed-point
       WNE_To_Float64,             --  for fixed-point
-      WNE_To_BitVector
+      WNE_To_BitVector,
+
+      WNE_Empty                   --  dummy value for Why_Name_Enum
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

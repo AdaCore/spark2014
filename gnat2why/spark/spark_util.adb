@@ -831,7 +831,7 @@ package body SPARK_Util is
    ---------------------------------
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
-      Formal : Entity_Id;
+      Formal : Entity_Id := Empty;
 
       procedure Check_Call_Param
         (Some_Formal : Entity_Id;
@@ -871,6 +871,7 @@ package body SPARK_Util is
          then Parent (Real_Act_Par)
          else Real_Act_Par);
 
+      pragma Assert (Present (Formal));
       return Formal;
    end Get_Formal_From_Actual;
 
