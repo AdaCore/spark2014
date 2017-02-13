@@ -1187,9 +1187,6 @@ package body Gnat2Why.Expr.Loops.Inv is
               and then not (Nkind (Call_Prefix) in N_Has_Entity
                               and then Is_Type (Entity (Call_Prefix)))
             then
-               pragma Assert
-                 (Has_Async_Writers
-                    (Direct_Mapping_Id (Entity (Call_Prefix))));
                Update_Status (Call_Prefix, Loop_Writes, Inv_Seen);
 
             --  Internal call, we currently do not handle the implicit self
