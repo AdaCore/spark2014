@@ -520,9 +520,9 @@ package body SPARK_Util.Subprograms is
            (First (Pragma_Argument_Associations (Pragma_Priority_Node)));
 
       --  Then look for pragma Interrupt_Priority, which can only apply to
-      --  protected types
+      --  concurrent types.
 
-      elsif Is_Protected_Type (E) then
+      elsif Is_Concurrent_Type (E) then
          declare
             Interrupt_Priority_Pragma_Node : constant Node_Id :=
               Find_Contract (E, Pragma_Interrupt_Priority);
