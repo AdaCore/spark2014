@@ -1,6 +1,96 @@
 |SPARK| Libraries
 =================
 
+.. _Functional Containers Library:
+
+Functional Containers Library
+-----------------------------
+
+To model complex data structures, one often needs simpler, mathematical like
+containers. The mathematical containers provided in the |SPARK| library are
+unbounded and may contain indefinite elements. Furthermore, to be usable in
+every context, they are neither controlled nor limited. So that these containers
+can be used safely, we have made them functional, that is, no primitives are
+provided which would allow to modify an existing container. Instead, their API
+features functions creating new containers from existing ones. As an example,
+functional containers provide no ``Insert`` procedure but rather a function
+``Add`` which creates a new container with one more element than its parameter:
+
+.. code-block:: ada
+
+    function Add (C : Container; E : Element_Type) return Container;
+
+As a consequence, these containers are highly inefficient. They are also memory
+consuming as the allocated memory is not reclaimed when the container is no
+longer referenced. Thus, they should in general be used in ghost code and
+annotations so that they can be removed from the final executable.
+
+There are 3 functional containers, which are part of the |GNAT Pro| standard
+library:
+
+* ``Ada.Containers.Functional_Maps``
+* ``Ada.Containers.Functional_Sets``
+* ``Ada.Containers.Functional_Vectors``
+ 
+Sequences defined in ``Functional_Vectors`` are no more than ordered collections
+of elements. In an Ada like manner, the user can choose the range used to index
+the elements:
+
+
+.. code-block:: ada
+
+    function Length (S : Sequence) return Count_Type;
+    function Get (S : Sequence; N : Index_Type) return Element_Type;
+
+Functional sets offer standard mathematical set functionalities such as
+inclusion, union, and intersection. They are neither ordered nor hashed:
+
+
+.. code-block:: ada
+
+    function Contains (S : Set; E : Element_Type) return Boolean;
+    function "<=" (Left : Set; Right : Set) return Boolean;
+
+Functional maps offer a dictionary between any two types of elements:
+
+
+.. code-block:: ada
+
+    function Has_Key (M : Map; K : Key_Type) return Boolean;
+    function Get (M : Map; K : Key_Type) return Element_Type;
+
+Each functional container type supports iteration as appropriate, so that its
+elements can easily be quantified over.
+
+These containers can easily be used to model user defined data structures. They
+were used to this end to annotate and verify a package of allocators (see
+`allocators` example in the :ref:`Examples in the Toolset Distribution`). In
+this example, an allocator featuring a free list implemented in an array is
+modeled by a record containing a set of allocated resources and a sequence of
+available resources:
+
+.. code-block:: ada
+
+    type Status is (Available, Allocated);
+    type Cell is record
+       Stat : Status;
+       Next : Resource;
+    end record;
+    type Allocator is array (Valid_Resource) of Cell;
+    type Model is record
+       Available : Sequence;
+       Allocated : Set;
+    end record;
+
+.. note::
+
+    Functional sets and maps represent elements modulo equivalence. For proof,
+    the range of quantification over their content includes all elements that
+    are equivalent to elements included in the container. On the other hand, for
+    execution, the iteration is only done on elements which have actually been
+    included in the container. This difference may make interaction between test
+    and proof tricky when the equivalence relation is not the equality.
+
 .. _Formal Containers Library:
 
 Formal Containers Library
@@ -19,7 +109,7 @@ The Ada Standard Library defines two kinds of containers:
 * The controlled containers using dynamic allocation, for example
   ``Ada.Containers.Vectors``. They define containers as controlled tagged
   types, so that memory for the container is automatic reallocated during
-  assignement and automatically freed when the container object's scope ends.
+  assignment and automatically freed when the container object's scope ends.
 * The bounded containers not using dynamic allocation, for example
   ``Ada.Containers.Bounded_Vectors``. They define containers as discriminated
   tagged types, so that the memory for the container can be reserved at
@@ -57,7 +147,7 @@ Modified API of Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The visible specification of formal containers is in |SPARK|, with suitable
-preconditions on subprograms to ensure correct usage, while their private part
+contracts on subprograms to ensure correct usage, while their private part
 and implementation is not in |SPARK|. Hence, |GNATprove| can be used to prove
 correct usage of formal containers in client code, but not to prove that formal
 containers implement their specification.
@@ -89,65 +179,87 @@ variables, which is not supported in |SPARK|. See :ref:`Absence of
 Interferences`. As a result, the same cursor can be applied to multiple
 container objects.
 
-Three :ref:`Ghost Functions` are defined on formal containers:
+For each container type, the library provides model functions that are used to
+annotate subprograms from the API. The different models supply different levels
+of abstraction of the container’s functionalities. These model functions are
+grouped in :ref:`Ghost Packages` named ``Formal_Model``.
 
-* ``Current_To_Last`` returns a copy of a container from a given position (included)
-* ``First_To_Previous`` returns a copy of a container up to a given position (excluded)
-* ``Strict_Equal`` returns whether two containers are equal in their content and cursors
+The higher level view of a container is usually the mathematical structure of
+element it represents. We use a sequence for ordered containers such as lists and
+vectors and a mathematical map for imperative maps. This allows us to specify
+the effects of a subprogram in a very high level way, not having to consider
+cursors nor order of elements in a map:
 
-The purpose of these ghost functions is to facilitate specifying properties of
-programs that manipulate formal containers. The linear order of positions is
-given by the underlying structure allowing iteration over a container, which
-corresponds to the natural order for vectors, lists, ordered sets and ordered
-maps.
+.. code-block:: ada
 
+   procedure Increment_All (L : in out List) with
+     Post =>
+       (for all N in 1 .. Length (L) =>
+          Element (Model (L), N) = Element (Model (L)'Old, N) + 1);
+          
+   procedure Increment_All (S : in out Map) with
+     Post =>
+       (for all K of Model (S)'Old => Has_Key (Model (S), K))
+          and 
+       (for all K of Model (S) => 
+          Has_Key (Model (S)'Old, K)
+            and Get (Model (S), K) = Get (Model (S)'Old, K) + 1);
+
+For sets and maps, there is a lower level model representing the underlying
+order used for iteration in the container, as well as the actual values of
+elements/keys. It is a sequence of elements/keys. We can use it if we want to
+specify in ``Increment_All`` on maps that the order and actual values of keys
+are preserved:
+
+.. code-block:: ada
+
+   procedure Increment_All (S : in out Map) with
+     Post =>
+       Keys (S) = Keys (S)'Old
+         and  
+       (for all K of Model (S) =>
+          Get (Model (S), K) = Get (Model (S)'Old, K) + 1);
+		     
+Finally, cursors are modeled using a functional map linking them to their
+position in the container. For example, we can state that the positions of
+cursors in a list are not modified by a call to ``Increment_All``:
+
+
+.. code-block:: ada
+
+   procedure Increment_All (L : in out List) with
+     Post =>
+       Positions (L) = Positions (L)'Old
+         and 
+       (for all N in 1 .. Length (L) =>
+          Element (Model (L), N) = Element (Model (L)'Old, N) + 1);
+
+
+Switching between the different levels of model functions allows to express
+precise considerations when needed without polluting upper level specifications.
 For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
 there is one, and the special cursor ``No_Element`` otherwise:
-
+ 
 .. literalinclude:: /gnatprove_by_example/examples/my_find.ads
    :language: ada
    :linenos:
 
 The ghost functions mentioned above are specially useful in :ref:`Loop
-Invariants` to refer to parts of containers. For example, here, ghost function
-``First_To_Previous`` is used in the loop invariant to specify that the value
-searched is not contained in the part of the container already traversed
-(otherwise the loop would have exited):
-
+Invariants` to refer to cursors, and positions of elements in the containers.
+For example, here, ghost function ``Positions`` is used in the loop invariant to
+query the position of the current cursor in the list, and ``Model`` is used to
+specify that the value searched is not contained in the part of the container
+already traversed (otherwise the loop would have exited):
+ 
 .. literalinclude:: /gnatprove_by_example/examples/my_find.adb
    :language: ada
    :linenos:
-
+ 
 |GNATprove| proves that function ``My_Find`` implements its specification:
-
+ 
 .. literalinclude:: /gnatprove_by_example/results/my_find.prove
    :language: none
-
-Function ``Strict_Equal`` is mostly useful to state which parts of a container
-have not changed in a loop invariant or a postcondition. For example, it is
-used in the postcondition of function ``My_Prepend`` below to state that
-``My_Prepend`` does not modify the tail of the list:
-
-.. code-block:: ada
-   :linenos:
-
-   procedure My_Prepend (L : in out List; E : Element_Type) with
-     Pre  => L.Capacity > Length (L),
-     Post => Length (L) = 1 + Length (L'Old) and then
-             First_Element (L) = E and then
-             Strict_Equal (Current_To_Last(L, First (L'Old)), L'Old);
-
-.. note::
-
-   The behavior of formal containers is defined through :ref:`External
-   Axiomatizations`, to facilitate automation of proofs. In this model, the
-   behavior of ``Strict_Equal`` is specified based on the logical equality of
-   elements instead of the formal parameter ``=`` of the generic in |SPARK|, a
-   stronger interpretation made to facilitate automation of proofs. But the
-   implementation of ``Strict_Equal`` uses the operation ``=`` on elements
-   passes as formal parameter to the generic unit. Thus, an assertion involving
-   ``Strict_Equal`` may always hold at run time but not be provable.
 
 Quantification over Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
