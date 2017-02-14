@@ -346,7 +346,12 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure Register_Volatile (E : Entity_Id) is
    begin
-      if Has_Volatile (E) then
+      --  Only register truly volatile objects, i.e. not constants of a
+      --  volatile type (that may only come from code with SPARK_Mode => Off),
+      --  because they only act as snapshots of some truly volatile objects.
+      if Has_Volatile (E)
+        and then Ekind (E) /= E_Constant
+      then
          declare
             Name : constant Entity_Name := To_Entity_Name (E);
          begin
