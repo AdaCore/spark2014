@@ -14,8 +14,8 @@ a-cforse.ads:1430:40: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cforse.ads:1697:13: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:21
 a-cforse.ads:1718:46: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:21
 a-cforse.ads:1736:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:21
-a-cofuse.ads:237:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:13
-a-cofuse.ads:238:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:13
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:13
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:13
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:13
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:13
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:13

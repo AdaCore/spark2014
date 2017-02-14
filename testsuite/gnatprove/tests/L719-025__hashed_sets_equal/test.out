@@ -1,20 +1,20 @@
-a-cfhase.ads:755:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:756:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:804:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:974:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:975:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:975:44: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1014:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1085:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1100:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cofuse.ads:237:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:88, in instantiation at p.ads:12
-a-cofuse.ads:238:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:88, in instantiation at p.ads:12
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:100, in instantiation at p.ads:12
+a-cfhase.ads:754:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:755:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:801:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:964:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:965:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:965:44: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1001:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1074:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1089:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at p.ads:12
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at p.ads:12
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
 p.adb:7:07: info: precondition proved (CVC4: 1 VC)
 p.adb:7:25: warning: unused assignment to "I"
 p.adb:8:22: info: assertion proved (CVC4: 1 VC)

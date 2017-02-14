@@ -1,5 +1,5 @@
-a-cfhama.ads:716:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:731:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:718:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:733:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
