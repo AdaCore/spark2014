@@ -1,9 +1,0 @@
-project Test is
-  package Compiler is
-    for Default_Switches ("Ada") use ("-gnatws");
-  end Compiler;
-
-  package Prove is
-    for Proof_Dir use "proof";
-  end Prove;
-end Test;

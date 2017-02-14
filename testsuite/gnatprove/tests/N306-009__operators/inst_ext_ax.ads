@@ -13,23 +13,21 @@ package Inst_Ext_Ax with SPARK_Mode is
    generic
       with function Add (I1, I2 : Int100) return Int100;
    package My_Add is
-      pragma Annotate (GNATprove, External_Axiomatization);
       function Add_Wrap (I1, I2 : Int100) return Int100 is
-         (Add (I1, I2));
+         (Add (I1, I2)); --@RANGE_CHECK:FAIL
    end;
 
    generic
       with function Add (I1, I2 : Int100) return Int100;
       with function Add2 (I1, I2, I3 : Int200) return Int200;
    package My_Add2 is
-      pragma Annotate (GNATprove, External_Axiomatization);
       function Add_Wrap (I1, I2 : Int100) return Int200 is
-         (Add (I1, I2) + Add2(I1, I2, I1));
+         (Add (I1, I2) + Add2(I1, I2, I1)); --@RANGE_CHECK:FAIL
    end;
 
-   function AddThree(A, B, C : Integer) return Integer is
+   function AddThree(A, B, C : Int200) return Integer is
       (A + B + C);
 
-   package Bad_Add is new My_Add ("+"); --@RANGE_CHECK:FAIL
-   package Bad_Add2 is new My_Add2 ("+", AddThree); --@RANGE_CHECK:FAIL
+   package Bad_Add is new My_Add ("+");
+   package Bad_Add2 is new My_Add2 ("+", AddThree);
 end;

@@ -2870,12 +2870,6 @@ package body SPARK_Definition is
          --  Mark types, subprograms and objects from a package with external
          --  axioms.
 
-         procedure Mark_Actual (Formal : Node_Id; Actual : Node_Id);
-
-         procedure Mark_Generic_Parameters_External_Axioms is new
-           Iterate_Generic_Parameters (Mark_Actual);
-         --  Mark actual parameters of a package with external axioms
-
          ---------------------------------------------
          -- Declare_In_Package_With_External_Axioms --
          ---------------------------------------------
@@ -2886,41 +2880,13 @@ package body SPARK_Definition is
          begin
             Decl := First (Decls);
 
-            --  Declare entities for type and subprogram formal parameters
+            --  Declare entities for types
 
             while Present (Decl) and then not Comes_From_Source (Decl) loop
-               if Nkind (Decl) in
-                 N_Subtype_Declaration | N_Subprogram_Declaration
-               then
+               if Nkind (Decl) in N_Subtype_Declaration then
                   Id := Defining_Entity (Decl);
 
-                  if Is_Subprogram (Id)
-                    and then Is_Generic_Actual_Subprogram (Id)
-                  then
-
-                     --  Translate specification and body of subprogram
-                     --  formals to check for runtime errors.
-
-                     Mark_Subprogram_Declaration (Decl);
-                     Mark_Subprogram_Body (Subprogram_Body (Id));
-
-                     --  Add the subprogram entity and its parameters to the
-                     --  list of entities to be translated.
-
-                     declare
-                        Param_Spec : Node_Id :=
-                          First (Parameter_Specifications
-                                   (Subprogram_Specification (Id)));
-                     begin
-                        while Present (Param_Spec) loop
-                           Entity_List.Append
-                             (Defining_Identifier (Param_Spec));
-                           Next (Param_Spec);
-                        end loop;
-                     end;
-
-                     Entity_List.Append (Id);
-                  elsif Is_Type (Id) then
+                  if Is_Type (Id) then
                      Mark_Entity (Id);
                   end if;
                end if;
@@ -2960,45 +2926,6 @@ package body SPARK_Definition is
             end loop;
          end Declare_In_Package_With_External_Axioms;
 
-         -----------------
-         -- Mark_Actual --
-         -----------------
-
-         procedure Mark_Actual (Formal : Node_Id; Actual : Node_Id) is
-            pragma Unreferenced (Formal);
-         begin
-            if Nkind (Actual) in N_Identifier | N_Expanded_Name then
-               declare
-                  E_Actual : constant Entity_Id :=
-                    (if Ekind (Entity (Actual)) = E_Function then
-                        Get_Renamed_Entity (Entity (Actual))
-                     else Entity (Actual));
-               begin
-                  if Ekind (E_Actual) /= E_Operator then
-
-                     --  Mark the entity of the actual
-                     Mark_Entity (E_Actual);
-                  end if;
-               end;
-
-            --  For anonymous classwide types T'Class passed as actual,
-            --  mark the corresponding type entity.
-
-            elsif Nkind (Actual) in N_Attribute_Reference
-              and then Get_Attribute_Id (Attribute_Name (Actual)) =
-                Attribute_Class
-            then
-               Mark_Entity (Etype (Actual));
-
-            --  For constant parameters, the actual may be an expression
-            --  instead of a name. In that case, mark the expression of
-            --  the actual.
-
-            else
-               Mark (Actual);
-            end if;
-         end Mark_Actual;
-
          Vis_Decls : constant List_Id :=
            Visible_Declarations (Package_Specification (E));
 
@@ -3034,7 +2961,9 @@ package body SPARK_Definition is
 
                begin
                   if Present (G_Parent) then
-                     Mark_Generic_Parameters_External_Axioms (E);
+                     Mark_Violation
+                       ("generic package with External_Axiomatization",
+                        G_Parent);
                   end if;
                end;
 

@@ -40,8 +40,6 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:7
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:5
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:7
-inst_ext_ax.ads:31:10: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
-inst_ext_ax.ads:31:14: medium: overflow check might fail
-inst_ext_ax.ads:33:12: medium: range check might fail
-inst_ext_ax.ads:34:12: info: range check proved (Z3: 1 VC)
-inst_ext_ax.ads:34:12: medium: range check might fail
+inst_ext_ax.ads:17:11: medium: range check might fail, in instantiation at inst_ext_ax.ads:31 (e.g. when I1 = 100 and I2 = 1)
+inst_ext_ax.ads:25:24: info: overflow check proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:32
+inst_ext_ax.ads:25:24: medium: range check might fail, in instantiation at inst_ext_ax.ads:32
