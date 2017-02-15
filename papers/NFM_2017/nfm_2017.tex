@@ -280,8 +280,10 @@ number of black nodes.
 %  ex: provide a model of reachability
 % primitives needed by upper levels provided at lower level were they abide by the invariant
 
-Implementing red-black trees correctly from the algorithm is straightforward,
-but this implementation is hard to verify formally, as it forces one to
+Implementing red-black trees correctly from the pseudo-code algorithm in a
+textbook is straightforward, but understanding why the algorithm is correct is
+tricky, and thus the implementation is hard to verify formally.
+The main point of complexity is that it forces one to
 reason about different levels of properties all at once. Instead, we have
 divided the implementation into three distinct parts, each one concerned with
 one property level: binary trees, search trees and red-black trees. Binary
@@ -359,7 +361,8 @@ A higher level view of the same binary tree.}
 %% \end{figure}
 % Do we want to write Position (F, I) instead of Position (I)?
 
-To reason about the tree structure at a higher level, we provide a model of binary trees
+To reason about the tree structure at a higher level, we provide a model
+(an abstract representation) of binary trees
 which makes explicit the
 \emph{access paths} from the root to every node in the tree.
 % Contrary to the invariant,
@@ -650,10 +653,12 @@ trees, but using two new functions, \texttt{Extract} and
 %% \caption{\label{fig-binary-body} Implementation of \texttt{Plug}.}
 %% \end{figure}
 
-At the next layer, search trees are defined as binary trees along with an
-additional array of values. As we only need to consider complete search trees,
-the underlying forest needs to only hold one tree, which is identified through
-its root. The module defining search trees provides basic set functions, namely
+At the next layer, search trees are defined as records with two components:
+a binary tree along with an additional array of values.
+For search trees, we only need to consider forests
+that hold one tree identified through its root. Only intermediate values
+will hold true forests with multiple roots, while the tree is being rotated.
+The module defining search trees provides basic set functions, namely
 inserting a value into the tree and testing a value for membership in the
 tree. It also provides balancing functions for the upper layer of red-black
 trees. They allow rotating nodes of a search tree to the left or to the right
@@ -871,6 +876,7 @@ trees.
 %% the implementation of search trees to only concentrate on order related issues.
 
 \subsection{Proof Principles}
+\label{subsec:proof-principles}
 % principle of inductive proofs on size of path
 % principles of dealing with the frame condition: unmodified trees in forest
 
@@ -888,8 +894,10 @@ are several reasons for this:
  to reason about disjointness of different trees/subtrees in the forest.
  \item Reasoning about reachability in the tree structure involves inductive proofs, which
  automatic provers are notoriously bad at.
- \item Reasoning about value ordering involves using transitivity relations, that is, coming
- up with an intermediate value to consider, which usually eludes automatic provers.
+ \item Reasoning about value ordering involves using transitivity relations, 
+to deduce that ordering for two pairs of values $(X,Y)$ and $(Y,Z)$ can be extended to
+the pair $(X,Z)$. This requires in general to find a suitable intermediate value $Y$, 
+which usually eludes automatic provers.
  \item The size of the formulas to verify, number of verification conditions, and number of
  paths in the program are large enough to defy provers scalability.
 \end{itemize}
@@ -970,14 +978,16 @@ end Prove_Model_Distinct;
 \paragraph{Providing witnesses:}
 When reasoning about value ordering, it is common to use transitivity. For example, when searching for
 a value in a search tree, we only compare the requested value with values stored along a single path in
-the tree, that is, the path where it was expected to be stored. All other values are ruled out by
-transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
+the tree, that is, the path where it was expected to be stored.
+All other values are ruled out by transitivity of the order relation:
+if value $X$ is not found on this path, it cannot be equal to another value $Z$ in the tree,
+as $X$ and $Z$ are on two opposite sides of the value $Y$ at the root of the subtree 
+containing both $X$ and $Z$.
+Unfortunately, due to how they handle universal quantification,
 automatic provers used in \gnatprove are usually unable to come up with the appropriate
 intermediate value to use in the transitivity relation. To achieve the proofs, we provided
 provers with the appropriate term whenever necessary. For example, function \texttt{Find\_Root} in
-Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree. Indeed, as
-the order invariant stated in Figure~\ref{fig-search} compares values on a single path, this
-is the node to consider to be able to order values stored in arbitrary nodes.
+Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree.
 
 \begin{figure}
 % \begin{minipage}[c]{\linewidth}
@@ -1139,7 +1149,7 @@ proof wherever we call the ghost procedure.
 % feedback from development and verification cycles
 
 All the execution times and verification times reported in this section were
-obtained on a Core i7 with 2,8 GHz and 16 GB RAM.
+obtained on a Core i7 processor with 2,8 GHz and 16 GB RAM.
 
 The code implementing the core algorithm for red-black trees, even when split
 in three modules for binary trees, search trees and red-black trees, is quite
@@ -1147,6 +1157,8 @@ small, only 286 lines overall. But this code only accounts for 14\% of the
 total lines of code, when taking into account contracts (22\%) and more
 importantly ghost code (64\%). Table~\ref{tab-sloc} summarizes the logical
 lines of code as counted by the tool GNATmetric.
+It took roughly two weeks to develop all the code, contracts and ghost code to
+reach 100\% automatic proof.
 % The imbalance would be even
 % more pronounced if we looked at the effort required to produce the operational
 % code, contracts and ghost code. The ratio for efforts would be closer to 9 to 1
@@ -1155,7 +1167,7 @@ lines of code as counted by the tool GNATmetric.
 % suitable division of proof objectives that was amenable to automatic proof.
 
 \vspace{-0.5cm}
-\begin{table}[h]
+\begin{table}[ht]
 \begin{center}
 \begin{tabular}{l|rrr|r}
                 & code       & contracts  &      ghost  & total \\ \hline
@@ -1190,8 +1202,8 @@ provers and facilitate work of individual provers. The effort required to
 achieve automatic proof is much greater where intermediate assertions are
 needed, as more interaction with automatic provers is required in that case.
 
+\begin{table}[ht]
 \vspace{-0.5cm}
-\begin{table}[h]
 \begin{center}
 \begin{tabular}{l|rrrr|r}
                 & on types & on subprograms & on loops & assertions & total \\ \hline
@@ -1215,7 +1227,12 @@ conjuncts). Verification of red-black trees on the contrary was relatively
 straighforward, with less ghost code than operational code (35\% compared to
 52\%) and few intermediate assertions needed (10 conjuncts). This matches well
 the cognitive effort required to understand the correction of search trees
-compared to red-black trees.
+compared to red-black trees. Note that the verification of red-black trees
+would probably have needed roughtly the same effort as binary trees if the
+second propery of red-black trees had been considered.
+Overall, ghost code accounts for a majority (64\%) of the code, which can be
+explained by the various uses of ghost code to support automatic proof as
+described in Section~\ref{subsec:proof-principles}.
 
 The automatic verification that the code (including ghost code) is free of
 run-time errors and that it respects its contracts takes less than 30 minutes,
@@ -1237,7 +1254,8 @@ integers in a red-black tree from 1 to 1 million leads to a violation of the
 balancing in 999,998 cases, which requires 999,963 left rotations and no
 right rotations. The running time for
 performing these 1 million insertions is 0.65 seconds without run-time checks,
-and 0.70 seconds with run-time checks, or 0.65 microseconds (respectively 0.70
+and 0.70 seconds with run-time checks (which are few due to the use of Ada 
+range types for array indexes), or 0.65 microseconds (respectively 0.70
 microseconds) per insertion.
 
 Enabling all contracts and assertions at run-time is also possible during
