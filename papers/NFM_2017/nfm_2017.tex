@@ -72,7 +72,10 @@
 
 \urlstyle{sf}
 
-\title{Auto-Active Proof of Red-Black Trees in \spark}
+\title{Auto-Active Proof of Red-Black Trees in \spark\thanks{Work partly
+supported by the Joint Laboratory ProofInUse (ANR-13-LAB3-0007, 
+\url{http://www.spark-2014.org/proofinuse}) and project VECOLIB 
+(ANR-14-CE28-0018) of the French national research organization.}}
 
 \author{Claire Dross \and Yannick Moy}
 \institute{AdaCore, F-75009 Paris}
@@ -253,7 +256,9 @@ been formally verified in Dafny, Eiffel or Why3. See
 Section~\ref{related-work} for a list of the closest works, including some
 using auto-active verification. We are following the algorithm from Cormen et
 al.~\cite{Cormen2009} for insertion in a red-black tree. We did not implement
-the deletion algorithm, which would be very similar to insertion.
+the deletion algorithm, which would be very similar to insertion. In the same
+way, we did not verify that every branch in a red-black tree contains the same
+number of black nodes.
 
 \section{Red-Black Trees in \spark}
 \subsection{Invariants and Models}
@@ -298,6 +303,7 @@ leads to verification conditions in SPARK).
 %% invariant supports the proof of postconditions for functions that operate on
 %% the type.
 
+\paragraph{Binary trees:}
 As explained in Section~\ref{sec-implementation}, binary trees are
 implemented as arrays, using the representation described in Figure~\ref{fig-binary}.
 Each node contains a reference to its left and right children, if any, as well
@@ -457,9 +463,11 @@ reconstruct easily the high level view of the tree.
 For each index \texttt{I} in the underlying
 array, if \texttt{Model (T) (I).Reachable} is true then \texttt{I} is reachable
 in \texttt{T} and \texttt{Model (T) (I).Path} is the sequence
-of directions corresponding to the path from the root of \texttt{T} to \texttt{I}.}
+of directions corresponding to the path from the root of \texttt{T} to \texttt{I}.
+$<$ stands for prefix order on pathes.}
 \end{figure}
 
+\paragraph{Search trees:}
 The invariant of search trees states that the value stored in each node of the
 tree is larger than all the values stored in the subtree rooted at its left
 child and smaller than all the values stored in the subtree rooted at its right
@@ -471,6 +479,7 @@ rooted at node \texttt{I} (where path inclusion from the root is used to determi
 value stored at node \texttt{I} if \texttt{J} belongs to the subtree rooted at the left
 (resp. right) child of \texttt{I}.
 
+\paragraph{Red-black trees:}
 The invariant of red-black trees states that a red node can only have black
 children. It is given in Figure~\ref{fig-rbt}. An example of colors that would
 fit the tree from Figure~\ref{fig-search} is also given in
@@ -515,7 +524,8 @@ here, and would essentially double the effort, we did not attempt it.
 % rotate_left and rotate_right preserve the order
 
 Our implementation of red-black trees differs on two accounts from the
-straighforward implementation of the algorithm. First, we used an array as the
+straighforward implementation of the algorithm. First, as stated above,
+we used an array as the
 underlying memory for trees, instead of dynamically allocating nodes. This is
 to comply with a restriction of SPARK which does not allow pointers, but only
 references and addresses. The rationale for this restriction is that pointers
@@ -701,7 +711,9 @@ tree after an insertion.
 Functional specifications of the insertion and membership functions that operate on
 red-black trees consist in simple contracts (preconditions and postconditions)
 presented in Figure~\ref{fig-rbt-spec}. These contracts use a model function
-\texttt{Values} that returns the set of values in the tree.
+\texttt{Values} that returns the set of values in the tree. \texttt{Mem} returns
+true if and only if the element is in the tree and \texttt{Insert} adds a new element
+in the tree.
 
 %% In this example, we concentrate on functional requirements of two kinds. The most important one is the
 %% preservation of the data structure invariants. As a proof of concept, we have also considered
@@ -958,7 +970,7 @@ end Prove_Model_Distinct;
 \paragraph{Providing witnesses:}
 When reasoning about value ordering, it is common to use transitivity. For example, when searching for
 a value in a search tree, we only compare the requested value with values stored along a single path in
-the tree, that is, the path were it was expected to be stored. All other values are ruled out by
+the tree, that is, the path where it was expected to be stored. All other values are ruled out by
 transitivity of the order relation. Unfortunately, due to how they handle universal quantification,
 automatic provers used in \gnatprove are usually unable to come up with the appropriate
 intermediate value to use in the transitivity relation. To achieve the proofs, we provided
@@ -1169,7 +1181,8 @@ total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 %% As contracts can be arbitrarily complex, we prefer to count
 %% the number of conjuncts than the number of preconditions and
 %% postconditions.
-There are few simple top-level contracts for red-black trees.  Many more
+There are few simple top-level contracts for red-black trees
+(see Table~\ref{tab-sloc2}).  Many more
 contracts and assertions are needed for auto-active verification, in the form
 of subprogram contracts, type invariants, type default initial conditions, loop
 invariants and intermediate assertions which split the work between automatic
@@ -1280,6 +1293,7 @@ in GNATprove. This would allow applying the same techniques in a simpler, more s
 polluting the program space with ghost code which is never meant to be executed.
 
 \paragraph*{Acknowledgements.}
+We would like to thank the anonymous reviewers for their useful comments.
 
 
 \bibliographystyle{splncs03}
