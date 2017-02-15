@@ -866,8 +866,7 @@ package body Flow_Refinement is
    is
    begin
       if Is_Globally_Visible (Subprogram) then
-         --  If the subprogram is visible, then it could be boundary
-         --  subprogram.
+         --  If the subprogram is visible, then it could be boundary subprogram
          declare
             S : constant Flow_Scope := Get_Flow_Scope (Subprogram);
          begin

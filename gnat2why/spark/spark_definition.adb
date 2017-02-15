@@ -3940,14 +3940,14 @@ package body SPARK_Definition is
                Mark_Violation
                  ("classwide invariant", E, "SPARK RM 7.3.2(2)");
 
-            --  Partial invariants are not allowed in SPARK.
+            --  Partial invariants are not allowed in SPARK
 
             elsif Present (Partial_Invariant_Procedure (E)) then
                Mark_Violation
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-            --  Only mark the invariant as part of the type's fullview.
+            --  Only mark the invariant as part of the type's fullview
 
             elsif not Is_Partial_View (E)
               and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
@@ -3980,8 +3980,8 @@ package body SPARK_Definition is
                   Mark_Unsupported ("type invariant in child unit", E);
 
                --  We currently do not support invariants on protected types.
-               --  To support them, we would probably need some new RM
-               --  RM wording in SPARK or new syntax in Ada (see P826-030).
+               --  To support them, we would probably need some new RM wording
+               --  in SPARK or new syntax in Ada (see P826-030).
 
                elsif Is_Protected_Type (E) then
                   Mark_Unsupported ("type invariant on protected types", E);
