@@ -115,8 +115,7 @@ package Flow_Refinement is
    ---------------------------
 
    function Is_Globally_Visible (N : Node_Id) return Boolean;
-   --  Returns True iff the node N is visible from outside its compilation
-   --  unit.
+   --  Returns True iff the node N is visible from outside its compilation unit
 
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
