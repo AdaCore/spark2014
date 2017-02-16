@@ -894,9 +894,9 @@ are several reasons for this:
  to reason about disjointness of different trees/subtrees in the forest.
  \item Reasoning about reachability in the tree structure involves inductive proofs, which
  automatic provers are notoriously bad at.
- \item Reasoning about value ordering involves using transitivity relations, 
+ \item Reasoning about value ordering involves using transitivity relations,
 to deduce that ordering for two pairs of values $(X,Y)$ and $(Y,Z)$ can be extended to
-the pair $(X,Z)$. This requires in general to find a suitable intermediate value $Y$, 
+the pair $(X,Z)$. This requires in general to find a suitable intermediate value $Y$,
 which usually eludes automatic provers.
  \item The size of the formulas to verify, number of verification conditions, and number of
  paths in the program are large enough to defy provers scalability.
@@ -981,7 +981,7 @@ a value in a search tree, we only compare the requested value with values stored
 the tree, that is, the path where it was expected to be stored.
 All other values are ruled out by transitivity of the order relation:
 if value $X$ is not found on this path, it cannot be equal to another value $Z$ in the tree,
-as $X$ and $Z$ are on two opposite sides of the value $Y$ at the root of the subtree 
+as $X$ and $Z$ are on two opposite sides of the value $Y$ at the root of the subtree
 containing both $X$ and $Z$.
 Unfortunately, due to how they handle universal quantification,
 automatic provers used in \gnatprove are usually unable to come up with the appropriate
@@ -1117,16 +1117,22 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % factored out in ghost procedures to keep efficiency
 % with or without contracts (inlining)
 
-In this experiment, we made an extensive use of ghost code, that is, code meant only for verification,
-that has no effect on the program behavior. We used it for two different purposes. First, the model
-functions introduced to enhance the expressiveness of our specification are ghost functions. Indeed, we
-never need to refer to reachability in the tree structure or to the set of elements contained in a
-search tree inside the program implementation. It is only used to express complex
-properties about our algorithms in the specification.
-
-In SPARK, ghost code can be executable, that is, the compiler can be instructed to generate code for ghost
-entities so that the contracts using them can be checked at runtime. In this spirit, ghost model functions
+In this experiment, we made an extensive use of ghost code, that is, code meant
+only for verification, that has no effect on the program behavior. We used it
+for two different purposes. The first use of ghost code is for specifying
+complex properties about our algorithms, in particular through model
+functions. And because ghost code can be executed in SPARK, these ghost model functions
 can be used to produce complex test oracles that can be exercised in the test campaign.
+
+%% First, the model
+%% functions introduced to enhance the expressiveness of our specification are ghost functions. Indeed, we
+%% never need to refer to reachability in the tree structure or to the set of elements contained in a
+%% search tree inside the program implementation. It is only used to express complex
+%% properties about our algorithms in the specification.
+
+%% In SPARK, ghost code can be executable, that is, the compiler can be instructed to generate code for ghost
+%% entities so that the contracts using them can be checked at runtime. In this spirit, ghost model functions
+%% can be used to produce complex test oracles that can be exercised in the test campaign.
 
 The second use of ghost code in our experiment is for auto-active verification. In particular, the procedures
 used to encode intermediate lemmas are ghost, as they have no effect. What is more, we strived to
@@ -1169,7 +1175,7 @@ reach 100\% automatic proof.
 \vspace{-0.5cm}
 \begin{table}[ht]
 \begin{center}
-\begin{tabular}{l|rrr|r}
+\begin{tabular}{l||r|r|r|r}
                 & code       & contracts  &      ghost  & total \\ \hline
 binary trees    & 92  (10\%) & 250 (28\%) & 548  (62\%) & 890 \\
 search trees    & 127 (12\%) & 188 (17\%) & 780  (71\%) & 1095 \\
@@ -1198,14 +1204,15 @@ There are few simple top-level contracts for red-black trees
 contracts and assertions are needed for auto-active verification, in the form
 of subprogram contracts, type invariants, type default initial conditions, loop
 invariants and intermediate assertions which split the work between automatic
-provers and facilitate work of individual provers. The effort required to
-achieve automatic proof is much greater where intermediate assertions are
-needed, as more interaction with automatic provers is required in that case.
+provers and facilitate work of individual provers.
+%% The effort required to
+%% achieve automatic proof is much greater where intermediate assertions are
+%% needed, as more interaction with automatic provers is required in that case.
 
 \begin{table}[ht]
 \vspace{-0.5cm}
 \begin{center}
-\begin{tabular}{l|rrrr|r}
+\begin{tabular}{l||r|r|r|r|r}
                 & on types & on subprograms & on loops & assertions & total \\ \hline
 binary trees    & 10       & 155 (73)       & 42       & 12         & 219 \\
 search trees    & 2        & 138 (60)       & 20       & 68         & 228 \\
@@ -1215,7 +1222,7 @@ total           & 14       & 297 (177)      & 70       & 90         & 471
 \vspace*{5mm}
 \caption{\label{tab-sloc2} Number of conjuncts (and-ed subexpressions) in contracts on types, on
   subprograms, in loop invariants and in assertions. Numbers in parentheses
-  correspond to conjuncts for contracts on external subprograms.}
+  correspond to conjuncts for contracts on externally visible subprograms.}
 \vspace*{-10mm}
 \end{center}
 \end{table}
@@ -1254,19 +1261,19 @@ integers in a red-black tree from 1 to 1 million leads to a violation of the
 balancing in 999,998 cases, which requires 999,963 left rotations and no
 right rotations. The running time for
 performing these 1 million insertions is 0.65 seconds without run-time checks,
-and 0.70 seconds with run-time checks (which are few due to the use of Ada 
+and 0.70 seconds with run-time checks (which are few due to the use of Ada
 range types for array indexes), or 0.65 microseconds (respectively 0.70
 microseconds) per insertion.
 
-Enabling all contracts and assertions at run-time is also possible during
-tests. Here, ghost code is particularly expensive to run, as constructing the
-model for a binary tree is at worst quadratic in the size of the tree, and
-contracts contain quantifications on the maximal size of the tree that call
-functions which themselves quantify over the same size in their own contracts
-or code. In addition, the expensive operation of constructing the model is
-performed repeatedly in contracts, as SPARK does not yet provide a
-let-expression form.  As a result, inserting one element in a tree of size one
-takes 2 minutes.
+%% Enabling all contracts and assertions at run-time is also possible during
+%% tests. Here, ghost code is particularly expensive to run, as constructing the
+%% model for a binary tree is at worst quadratic in the size of the tree, and
+%% contracts contain quantifications on the maximal size of the tree that call
+%% functions which themselves quantify over the same size in their own contracts
+%% or code. In addition, the expensive operation of constructing the model is
+%% performed repeatedly in contracts, as SPARK does not yet provide a
+%% let-expression form.  As a result, inserting one element in a tree of size one
+%% takes 2 minutes.
 
 \section{Related Work}
 \label{related-work}
