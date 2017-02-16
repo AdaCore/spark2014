@@ -316,6 +316,7 @@ consistent across the tree. For example, the left child of a node has position
 Left and the node as parent.
 
 \begin{figure}[ht]
+\vspace{-0.5cm}
 \begin{center}
 %\hrulefill
 \includegraphics[width=4cm]{tree_structure.pdf}\hfill
@@ -328,6 +329,7 @@ A higher level view of the same binary tree.}
 %\vspace*{-10mm}
 \label{fig-binary}
 \end{center}
+\vspace{-0.5cm}
 \end{figure}
 
 %% \begin{figure}[ht]
@@ -423,10 +425,12 @@ reconstruct easily the high level view of the tree.
 
 
 \begin{figure}[ht]
+\vspace{-0.5cm}
 \begin{center}
 \includegraphics[width=5cm]{model.pdf}
 \caption{\label{fig-binary-mod-ex} Example of model of a binary tree.}
 \end{center}
+\vspace{-0.5cm}
 \end{figure}
 
 %% Only valid binary trees are associated a model, that is, the model function
@@ -468,6 +472,7 @@ array, if \texttt{Model (T) (I).Reachable} is true then \texttt{I} is reachable
 in \texttt{T} and \texttt{Model (T) (I).Path} is the sequence
 of directions corresponding to the path from the root of \texttt{T} to \texttt{I}.
 $<$ stands for prefix order on paths.}
+\vspace{-0.5cm}
 \end{figure}
 
 \paragraph{Search trees:}
@@ -499,6 +504,7 @@ here, and would essentially double the effort, we did not attempt it.
 %% the tree from Figure~\ref{fig-search}.
 
 \begin{figure}[ht]
+%\vspace{-0.5cm}
 \begin{minipage}[c]{.77\linewidth}
 \begin{small}
 \begin{lstlisting}
@@ -515,6 +521,7 @@ here, and would essentially double the effort, we did not attempt it.
 \end{center}
 \end{minipage}
 \caption{\label{fig-rbt} Type invariant of red-black trees.}
+\vspace{-0.5cm}
 \end{figure}
 
 \subsection{Implementation}
@@ -696,10 +703,12 @@ functions over binary trees.
 %% \end{figure}
 
 \begin{figure}[ht]
+\vspace{-0.5cm}
 \begin{center}
 \includegraphics[width=5cm]{rotate_right.pdf}
 \caption{\label{fig-search-rot} Example of application of Right\_Rotate.}
 \end{center}
+\vspace{-0.5cm}
 \end{figure}
 
 Red-black trees are implemented in the same way as search trees by adding an
@@ -729,6 +738,7 @@ in the tree.
 %% These contracts are presented in Figure~\ref{fig-rbt-spec}.
 
 \begin{figure}[ht]
+\vspace{-0.5cm}
 \begin{small}
 \begin{lstlisting}
 function Values (T : Rbt) return Value_Set with
@@ -744,6 +754,7 @@ procedure Insert (T : in out Rbt; V : Natural) with
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-rbt-spec} Specification of red-black trees.}
+\vspace{-0.5cm}
 \end{figure}
 
 The most complex specifications have to do with the four properties to maintain
@@ -780,6 +791,7 @@ node. It uses the function \texttt{Model} described in
 Section~\ref{sec-rbt-inv} to reason about node reachability.
 
 \begin{figure}[ht]
+\vspace{-0.5cm}
 \begin{small}
 \begin{lstlisting}
 procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
@@ -793,6 +805,7 @@ procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-spec-no-leak} Postcondition of \texttt{Right\_Rotate} dealing with absence of memory leaks.}
+\vspace{-0.5cm}
 \end{figure}
 
 The third and fourth properties are expressed in the type invariant of
@@ -919,6 +932,7 @@ Naturally, the lemma is not assumed, its actual proof is performed when verifyin
 \texttt{Prove\_Model\_Distinct}.
 
 \begin{figure}
+\vspace{-0.5cm}
 \begin{small}
 \begin{lstlisting}
 procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
@@ -932,6 +946,7 @@ procedure Prove_Model_Distinct (F : Forest; T1, T2 : Index_Type) with
 \end{lstlisting}
 \end{small}
 \caption{\label{fig-proof-lem} Intermediate lemma stating disjointness of trees in a forest.}
+\vspace{-0.5cm}
 \end{figure}
 
 \paragraph{Reasoning by induction:}
@@ -950,6 +965,7 @@ be reached from \texttt{T2}. Then, it will proceed by induction to show that thi
 from \texttt{T1} in \texttt{F}.
 
 \begin{figure}
+\vspace{-0.5cm}
 \begin{minipage}[c]{.75\linewidth}
 \begin{small}
 \begin{lstlisting}
@@ -972,7 +988,8 @@ end Prove_Model_Distinct;
 \includegraphics[width=25mm]{induction.pdf}
 \end{center}
 \end{minipage}
-\caption{\label{fig-proof-ind} Proof by induction over the length of the path from the root to a node in the tree.}
+\caption{\label{fig-proof-ind} Proof by induction over the path length from the root to a node in the tree.}
+\vspace{-0.5cm}
 \end{figure}
 
 \paragraph{Providing witnesses:}
@@ -990,6 +1007,7 @@ provers with the appropriate term whenever necessary. For example, function \tex
 Figure~\ref{fig-proof-wit} computes the first common ancestor of two nodes in a search tree.
 
 \begin{figure}
+\vspace{-0.5cm}
 % \begin{minipage}[c]{\linewidth}
 \begin{small}
 \begin{lstlisting}
@@ -1021,6 +1039,7 @@ function Find_Root (F : Forest; R, I, J : Index_Type) return Index_Type with
 % \end{center}
 % \end{minipage}
 \caption{\label{fig-proof-wit} Function that computes a witness for transitivity applications.}
+\vspace{-0.5cm}
 \end{figure}
 
 % \paragraph{Case analysis:}
@@ -1121,7 +1140,7 @@ In this experiment, we made an extensive use of ghost code, that is, code meant
 only for verification, that has no effect on the program behavior. We used it
 for two different purposes. The first use of ghost code is for specifying
 complex properties about our algorithms, in particular through model
-functions. And because ghost code can be executed in SPARK, these ghost model functions
+functions. As ghost code can be executed in SPARK, these ghost model functions
 can be used to produce complex test oracles that can be exercised in the test campaign.
 
 %% First, the model
@@ -1176,14 +1195,14 @@ reach 100\% automatic proof.
 \begin{table}[ht]
 \begin{center}
 \begin{tabular}{l||r|r|r|r}
-                & code       & contracts  &      ghost  & total \\ \hline
+                & ~code~       & ~contracts~  &      ~ghost~  & ~total \\ \hline
 binary trees    & 92  (10\%) & 250 (28\%) & 548  (62\%) & 890 \\
 search trees    & 127 (12\%) & 188 (17\%) & 780  (71\%) & 1095 \\
 red-black trees & 67  (52\%) & 18  (14\%) & 45   (35\%) & 130 \\ \hline
 total           & 286 (14\%) & 456 (22\%) & 1373 (64\%) & 2115 \\
 \end{tabular}
 \vspace*{5mm}
-\caption{\label{tab-sloc} Categorization of lines of code between operational code, contracts and ghost code.}
+\caption{\label{tab-sloc} Number of lines of code for operational code, contracts and ghost code.}
 \vspace*{-10mm}
 \end{center}
 \end{table}
@@ -1213,7 +1232,7 @@ provers and facilitate work of individual provers.
 \vspace{-0.5cm}
 \begin{center}
 \begin{tabular}{l||r|r|r|r|r}
-                & on types & on subprograms & on loops & assertions & total \\ \hline
+                & ~on types~ & ~on subprograms~ & ~on loops~ & ~assertions~ & ~total \\ \hline
 binary trees    & 10       & 155 (73)       & 42       & 12         & 219 \\
 search trees    & 2        & 138 (60)       & 20       & 68         & 228 \\
 red-black trees & 2        & 4 (4)          & 8        & 10         & 24 \\ \hline
@@ -1265,15 +1284,15 @@ and 0.70 seconds with run-time checks (which are few due to the use of Ada
 range types for array indexes), or 0.65 microseconds (respectively 0.70
 microseconds) per insertion.
 
-%% Enabling all contracts and assertions at run-time is also possible during
-%% tests. Here, ghost code is particularly expensive to run, as constructing the
-%% model for a binary tree is at worst quadratic in the size of the tree, and
-%% contracts contain quantifications on the maximal size of the tree that call
-%% functions which themselves quantify over the same size in their own contracts
-%% or code. In addition, the expensive operation of constructing the model is
-%% performed repeatedly in contracts, as SPARK does not yet provide a
-%% let-expression form.  As a result, inserting one element in a tree of size one
-%% takes 2 minutes.
+Enabling all contracts and assertions at run-time is also possible during
+tests. Here, ghost code is particularly expensive to run, as constructing the
+model for a binary tree is at worst quadratic in the size of the tree, and
+contracts contain quantifications on the maximal size of the tree that call
+functions which themselves quantify over the same size in their own contracts
+or code. In addition, the expensive operation of constructing the model is
+performed repeatedly in contracts, as SPARK does not yet provide a
+let-expression form.  As a result, inserting one element in a tree of size one
+takes 2 minutes.
 
 \section{Related Work}
 \label{related-work}
