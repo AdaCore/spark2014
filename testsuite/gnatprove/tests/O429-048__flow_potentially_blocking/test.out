@@ -22,29 +22,13 @@ internal_protected_call.ads:3:13: high: potentially blocking operation in protec
 internal_protected_call.ads:4:17: high: potentially blocking operation in protected operation "P"
 internal_protected_call.ads:13:17: high: potentially blocking operation in protected operation "P1"
 internal_protected_call.ads:14:17: high: potentially blocking operation in protected operation "P2"
-library_level_function.adb:5:32: warning: unused initial value of "Real_Time.Clock_Time"
-library_level_function.adb:8:04: warning: statement has no effect
 nested_pb_call.adb:6:13: high: potentially blocking operation in protected operation "Dummy"
 nested_pb_call.adb:7:33: warning: unused initial value of "Real_Time.Clock_Time"
 nested_pb_call.adb:11:24: warning: statement has no effect
-nested_pb_call.adb:19:13: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
-p-po_stub_2.adb:3:44: warning: statement has no effect
-p-po_stub_2.adb:5:07: warning: statement has no effect
-p-po_stub_2.adb:10:07: warning: statement has no effect
 p.adb:10:04: use of remote abstract state "Real_Time.Clock_Time" during elaboration of "P" - Elaborate_All pragma required for "Real_Time" (SPARK RM 7.7.1(4))
-p.adb:35:07: warning: statement has no effect
-p.adb:36:10: warning: statement has no effect
-p.adb:43:07: warning: statement has no effect
 p.adb:55:41: warning: statement has no effect
-p.adb:67:47: warning: statement has no effect
-p.adb:69:10: warning: statement has no effect
-p.adb:74:10: warning: statement has no effect
 p.adb:97:43: warning: statement has no effect
-p.adb:109:49: warning: statement has no effect
-p.adb:111:10: warning: statement has no effect
-p.adb:116:10: warning: statement has no effect
-p.adb:142:07: warning: statement has no effect
 p.adb:174:12: warning: unused assignment
 p.adb:211:21: warning: assuming "Open" has no effect on global items
 p.adb:211:21: warning: no Global contract available for "Open"

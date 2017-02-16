@@ -1726,6 +1726,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
            (FA,
+            Var_Def    => Flow_Id_Sets.To_Set (Null_Export_Flow_Id),
             Var_Ex_Use => Vars_Used,
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,

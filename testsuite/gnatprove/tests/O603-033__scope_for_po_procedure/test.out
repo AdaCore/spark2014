@@ -1,2 +1,1 @@
-pack.adb:11:10: warning: statement has no effect
 pack.ads:5:17: high: potentially blocking operation in protected operation "Dummy"

@@ -2,5 +2,4 @@ client.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 client.adb:7:06: warning: unused assignment
 client.adb:8:19: info: assertion proved (CVC4: 1 VC)
 client.adb:8:19: info: initialization of "X" proved
-p.adb:7:07: warning: statement has no effect
 p.adb:12:52: warning: statement has no effect
