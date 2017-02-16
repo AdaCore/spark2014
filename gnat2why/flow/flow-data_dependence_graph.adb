@@ -42,10 +42,10 @@ package body Flow.Data_Dependence_Graph is
          begin
             if not Atr_Def.Is_Exceptional_Path then
                Combined_Defined :=
-                 (if not FA.Generating_Globals
-                  then Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read
-                  else Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
-                       To_Flow_Id_Set (Atr_Def.Subprograms_Called));
+                 Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
+                 (if FA.Generating_Globals
+                  then To_Flow_Id_Set (Atr_Def.Subprograms_Called)
+                  else Flow_Id_Sets.Empty_Set);
 
                for Var of Combined_Defined loop
                   declare
