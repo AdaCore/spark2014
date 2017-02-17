@@ -1,4 +1,4 @@
-package Multi is 
+package Multi is
 
    type A2 is array (1 .. 2) of Integer;
    type A4 is array (1 .. 2, 1 .. 2) of Integer;

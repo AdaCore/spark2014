@@ -1,6 +1,6 @@
 with Basic;
 
-package Special is 
+package Special is
 
    -- specialize using a subtype
    subtype Sp is Basic.R (Basic.A);

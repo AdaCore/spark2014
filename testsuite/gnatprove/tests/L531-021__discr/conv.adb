@@ -1,6 +1,6 @@
 with Basic;   use Basic;
 with Special; use Special;
-package body Conv is 
+package body Conv is
 
    function Id (X : R) return R
       with Post => Id'Result = X;

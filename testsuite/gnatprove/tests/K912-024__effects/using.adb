@@ -1,4 +1,4 @@
-package body Using is 
+package body Using is
    procedure P is
    begin
       null;

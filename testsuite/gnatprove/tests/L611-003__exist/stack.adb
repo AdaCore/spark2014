@@ -1,4 +1,4 @@
-package body Stack is 
+package body Stack is
 
    procedure Push (T : in out Stack_T; S : in out Size_T; Value : Natural) is
       N : constant Size_T := Size (T);

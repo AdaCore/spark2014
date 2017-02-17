@@ -1,3 +1,3 @@
-package A is 
+package A is
    procedure A;
 end A;

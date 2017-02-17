@@ -1,4 +1,4 @@
-package body Add is  
+package body Add is
    function AddTwo (X, Y : Integer) return Integer
    is
    begin

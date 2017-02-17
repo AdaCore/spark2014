@@ -1,4 +1,4 @@
-package Old is 
+package Old is
 
    function Id (X : Integer) return Integer is (X);
 

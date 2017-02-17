@@ -1,4 +1,4 @@
-package body Strlit is 
+package body Strlit is
 
    function DoSome return Integer is
       X : String(1..10) := "1234567890";

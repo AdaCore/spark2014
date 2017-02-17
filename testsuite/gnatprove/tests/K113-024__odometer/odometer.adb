@@ -1,4 +1,4 @@
-package body Odometer is  
+package body Odometer is
 
    procedure Zero_Trip is
    begin

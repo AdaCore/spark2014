@@ -1,4 +1,4 @@
-package Infoflow is pragma SPARK_Mode (On);  
+package Infoflow is pragma SPARK_Mode (On);
    In_0_Rdy_V1, In_1_Rdy_V1, Out_0_Rdy_V1, Out_1_Rdy_V1 : Boolean;
    In_0_Dat_V1, In_1_Dat_V1, Out_0_Dat_V1, Out_1_Dat_V1 : Character;
 

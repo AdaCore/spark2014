@@ -1,4 +1,4 @@
-package LocalCst is 
+package LocalCst is
 
    function Cst return Integer
       with Post => (Cst'Result < 10000);

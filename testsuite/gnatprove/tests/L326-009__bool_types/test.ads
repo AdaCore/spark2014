@@ -1,6 +1,6 @@
 with Pack; use Pack;
 
-package Test is 
+package Test is
 
    procedure Test_For_Loop
      with Pre => B2;

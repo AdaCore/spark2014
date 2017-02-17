@@ -1,4 +1,4 @@
-package body Used is  
+package body Used is
    function Absolu (x : Integer) return Integer is
       Res : Integer;
    begin

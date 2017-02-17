@@ -1,4 +1,4 @@
-package body Gen is 
+package body Gen is
 
    function Ident (T : List) return List is
    begin

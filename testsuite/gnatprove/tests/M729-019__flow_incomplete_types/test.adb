@@ -1,6 +1,6 @@
 package body Test
 is
-   
+
 
    procedure Test_01 (X : out Boolean)
    is

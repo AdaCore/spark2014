@@ -1,4 +1,4 @@
-procedure A is 
+procedure A is
 begin
 
    Local_Constant:

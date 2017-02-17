@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
    procedure if_1 (Par1 : in out Integer) is
    begin
       if Par1 > 1000 then

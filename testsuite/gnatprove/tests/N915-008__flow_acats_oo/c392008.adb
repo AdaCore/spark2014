@@ -37,7 +37,7 @@ procedure C392008 is
       Service_Charge (Acct);  -- Dispatch according to tag of class-wide parm.
    end Apply_Service_Charge;
 
-   -- This procedure will perform a dispatching call on the 
+   -- This procedure will perform a dispatching call on the
    -- inherited/overridden primitive operation Add_Interest.
 
    procedure Annual_Interest (Acct: in out Bank.Account'Class) is
@@ -52,15 +52,15 @@ begin
                             "of objects to the appropriate implementation " &
                             "of a primitive operation");
 
-   -- Check the dispatch to primitive operations overridden for each 
+   -- Check the dispatch to primitive operations overridden for each
    -- extended type.
    New_Account (B_Acct);
    New_Account (C_Acct);
    New_Account (IC_Acct);
-   
+
    if (B_Acct.Current_Balance  /= 10_00) or
       (C_Acct.Current_Balance  /= 20_00) or
-      (IC_Acct.Current_Balance /= 30_00) 
+      (IC_Acct.Current_Balance /= 30_00)
    then
       Report.Failed ("Failed dispatch to multiply overridden prim. oper.");
    end if;
@@ -68,9 +68,9 @@ begin
 
    Annual_Interest (B_Acct);
    Annual_Interest (C_Acct);
-   Annual_Interest (IC_Acct); -- Check the dispatch to primitive operation 
+   Annual_Interest (IC_Acct); -- Check the dispatch to primitive operation
                               -- overridden from a parent type which inherited
-                              -- the operation from the root type.  
+                              -- the operation from the root type.
    if (B_Acct.Current_Balance  /= 10_00) or
       (C_Acct.Current_Balance  /= 20_00) or
       (IC_Acct.Current_Balance /= 90_00)
@@ -81,13 +81,13 @@ begin
 
    Apply_Service_Charge (Acct => B_Acct);
    Apply_Service_Charge (Acct => C_Acct);
-   Apply_Service_Charge (Acct => IC_Acct); -- Check the dispatch to a  
-                                           -- primitive operation twice 
+   Apply_Service_Charge (Acct => IC_Acct); -- Check the dispatch to a
+                                           -- primitive operation twice
                                            -- inherited from the root
                                            -- tagged type.
    if (B_Acct.Current_Balance  /=  5_00) or
       (C_Acct.Current_Balance  /= 15_00) or
-      (IC_Acct.Current_Balance /= 85_00) 
+      (IC_Acct.Current_Balance /= 85_00)
    then
       Report.Failed ("Failed dispatch to Apply_Service_Charge");
    end if;

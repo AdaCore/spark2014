@@ -1,4 +1,4 @@
-package body Report is 
+package body Report is
 
      No_Name : constant String (1..7) := "NO_NAME";
 

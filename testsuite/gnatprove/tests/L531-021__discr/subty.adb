@@ -1,4 +1,4 @@
-package body Subty is 
+package body Subty is
 
    procedure P (V : S) is
       Z : S := (A, 1, 1);

@@ -1,4 +1,4 @@
-package Max is 
+package Max is
    type Index is range 1 .. 10;
    type Arr is array (Index) of Integer;
 

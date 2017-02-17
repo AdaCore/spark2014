@@ -1,6 +1,6 @@
 
 with Gen;
-procedure P is 
+procedure P is
    package Q is new Gen(Integer);
 
    X : Integer;

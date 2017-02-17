@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    procedure Incr (X : in out Integer) is
    begin
       X := X + 1;

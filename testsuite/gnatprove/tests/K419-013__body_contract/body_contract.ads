@@ -1,4 +1,4 @@
-package Body_Contract is 
+package Body_Contract is
 
    procedure P1 (X : in out Integer);
 

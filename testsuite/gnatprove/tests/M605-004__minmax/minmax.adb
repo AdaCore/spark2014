@@ -1,4 +1,4 @@
-package body Minmax is 
+package body Minmax is
 
    procedure P (A, B : Float;
                 C    : out Float;

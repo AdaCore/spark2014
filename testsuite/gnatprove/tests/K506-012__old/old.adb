@@ -1,4 +1,4 @@
-package body Old is 
+package body Old is
 
    procedure Nothing is
    begin

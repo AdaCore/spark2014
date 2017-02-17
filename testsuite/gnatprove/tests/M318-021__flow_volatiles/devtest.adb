@@ -1,6 +1,6 @@
 package body DevTest
 is
-   
+
    Vol_AW : Integer with Volatile, Async_Writers;
 
    Vol_AW_ER : Integer with Volatile, Async_Writers, Effective_Reads;

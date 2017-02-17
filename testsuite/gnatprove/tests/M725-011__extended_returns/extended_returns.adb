@@ -1,4 +1,4 @@
-package body Extended_Returns is 
+package body Extended_Returns is
 
    function Init
      (Discr    : Integer;

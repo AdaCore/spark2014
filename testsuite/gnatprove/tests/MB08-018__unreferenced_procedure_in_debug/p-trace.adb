@@ -6,9 +6,9 @@ is
 
    procedure Print_Log (S : in String)
    is
-   begin 
+   begin
       Put_Line (S);
    end Print_Log;
-   
+
 end Trace;
 

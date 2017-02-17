@@ -1,4 +1,4 @@
-package body Length is 
+package body Length is
 
    function F return Boolean is
       X : Constr_Ar;

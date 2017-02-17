@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
    type Table_T is array (Positive range 1 .. 9) of Integer;
 
    procedure QE_1 (Table : in out Table_T) is

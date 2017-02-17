@@ -2,7 +2,7 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO;    use Ada.Text_IO;
 with Utils;          use Utils;
 
-procedure Optional is pragma SPARK_Mode (On); 
+procedure Optional is pragma SPARK_Mode (On);
    type Test_Array is array (Natural range <>) of Natural;
    type Test_2D_Array is array (Natural range <>, Natural range <>) of Natural;
 

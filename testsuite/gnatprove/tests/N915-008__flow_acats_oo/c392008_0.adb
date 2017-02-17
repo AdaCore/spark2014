@@ -5,13 +5,13 @@ package body C392008_0 is
 
    -- Primitive operations for type Account.
 
-   procedure Deposit (A : in out Account; 
+   procedure Deposit (A : in out Account;
                       X : in     Dollar_Amount) is
    begin
       A.Current_Balance := A.Current_Balance + X;
    end Deposit;
 
-   procedure Withdrawal(A : in out Account; 
+   procedure Withdrawal(A : in out Account;
                         X : in     Dollar_Amount) is
    begin
       A.Current_Balance := A.Current_Balance - X;

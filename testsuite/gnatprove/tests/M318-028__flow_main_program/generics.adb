@@ -1,4 +1,4 @@
-package body Generics is 
+package body Generics is
    procedure Does_Nothing
    is
    begin

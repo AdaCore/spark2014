@@ -1,4 +1,4 @@
-package Nested is 
+package Nested is
 
    function Search return Integer
       with Post => (Search'Result >= 44);

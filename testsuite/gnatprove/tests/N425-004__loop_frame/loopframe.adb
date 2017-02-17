@@ -1,7 +1,7 @@
 package body Loopframe with
   SPARK_Mode
 is
-   
+
    function Get return Idx is
       V : Idx := 0;
    begin
@@ -14,5 +14,5 @@ is
       end loop;
       return V;
    end Get;
-   
+
 end Loopframe;

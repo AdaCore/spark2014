@@ -1,4 +1,4 @@
-package Exprfun is 
+package Exprfun is
 
    function Div (X, Y : Integer) return Integer is (X / Y);
 

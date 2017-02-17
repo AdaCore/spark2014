@@ -1,4 +1,4 @@
-package Sat is  
+package Sat is
 
    type My_Int_Base is range 0 .. 20_000;
    subtype My_Int is My_Int_Base range 0 .. 10_000;

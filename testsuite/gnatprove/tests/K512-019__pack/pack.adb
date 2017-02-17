@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    procedure Do_Nothing is
    begin

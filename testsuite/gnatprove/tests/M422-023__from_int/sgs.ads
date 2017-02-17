@@ -1,4 +1,4 @@
-package Sgs is 
+package Sgs is
 
    type Float is digits 6;
 

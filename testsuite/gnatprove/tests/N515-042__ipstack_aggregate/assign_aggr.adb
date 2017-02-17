@@ -1,5 +1,5 @@
 package body Assign_Aggr is
-   
+
    procedure Consume (U : T; Err : out Boolean) is
    begin
       if U.X > U.Y then
@@ -8,7 +8,7 @@ package body Assign_Aggr is
          Err := False;
       end if;
    end Consume;
-   
+
    procedure Compute (V : out Integer) is
       Err : Boolean;
       W : T;
@@ -17,5 +17,5 @@ package body Assign_Aggr is
       Consume (W, Err);
       V := 10;
    end Compute;
-   
+
 end Assign_Aggr;

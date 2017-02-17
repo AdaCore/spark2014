@@ -1,4 +1,4 @@
-package body P is  
+package body P is
    function F1 (X, Y : Integer) return Integer is
    begin
      return X + Y;

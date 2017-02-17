@@ -1,4 +1,4 @@
-package body B is pragma SPARK_Mode (On); 
+package body B is pragma SPARK_Mode (On);
 
    procedure Simple_Call is
    begin

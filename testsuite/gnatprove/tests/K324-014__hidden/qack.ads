@@ -1,4 +1,4 @@
-package Qack is 
+package Qack is
 
    procedure Flip;
 

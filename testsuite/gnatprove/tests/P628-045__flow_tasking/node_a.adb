@@ -13,7 +13,7 @@ with System;
 with PolyORB_HI.Suspenders;
 
 ------------
--- node_a -- 
+-- node_a --
 ------------
 
 procedure node_a is
@@ -22,7 +22,7 @@ procedure node_a is
 begin
   --  Unblock all user tasks
   PolyORB_HI.Suspenders.Unblock_All_Tasks;
-  --  Suspend forever instead of putting an endless loop. This saves the CPU 
+  --  Suspend forever instead of putting an endless loop. This saves the CPU
   --  resources.
   PolyORB_HI.Suspenders.Suspend_Forever;
 end node_a;

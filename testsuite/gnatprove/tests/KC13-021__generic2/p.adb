@@ -1,4 +1,4 @@
-package body P is 
+package body P is
 
    function Pack (A : T1; B : T2; C : T3) return R is
       Result : R;

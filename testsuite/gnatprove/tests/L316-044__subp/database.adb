@@ -1,7 +1,7 @@
 with Identity;
 use type Identity.Id;
 
-package body Database is 
+package body Database is
    pragma Unevaluated_Use_Of_Old (Allow);
    --------------------
    -- Local Packages --

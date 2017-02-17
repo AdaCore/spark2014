@@ -1,4 +1,4 @@
-package body Ar is  
+package body Ar is
 
    function Get (X : A) return Integer
    is

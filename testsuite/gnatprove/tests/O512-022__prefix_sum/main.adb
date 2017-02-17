@@ -1,7 +1,7 @@
 with Types; use Types;
 with PrefixSum; use PrefixSum;
 with Ada.Text_IO; use Ada.Text_IO;
-procedure Main is pragma SPARK_Mode (On); 
+procedure Main is pragma SPARK_Mode (On);
 
    procedure Print_Array (A : Input) is
    begin

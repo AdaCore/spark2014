@@ -1,4 +1,4 @@
-package body Search is 
+package body Search is
    pragma Annotate (Formal_Proof, On);
    function Search (T : A; V : Integer) return Integer is
       Pos : Integer := 0;

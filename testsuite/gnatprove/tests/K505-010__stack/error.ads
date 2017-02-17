@@ -1,4 +1,4 @@
-package Error is 
+package Error is
 
    type State is (Erroneous, Normal);
 

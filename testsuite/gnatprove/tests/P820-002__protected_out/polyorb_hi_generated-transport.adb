@@ -24,7 +24,7 @@ package body PolyORB_HI_Generated.Transport is
     Msg : in out PolyORB_HI.Messages.Message_Type);
 
   -------------
-  -- Deliver -- 
+  -- Deliver --
   -------------
 
   procedure Deliver
@@ -65,7 +65,7 @@ package body PolyORB_HI_Generated.Transport is
    return PolyORB_HI.Errors.Error_Kind;
 
   ----------
-  -- Send -- 
+  -- Send --
   ----------
 
   function Send
@@ -94,7 +94,7 @@ package body PolyORB_HI_Generated.Transport is
   end Send;
 
   -------------------------------------
-  -- Producer_Consumer_Producer_Send -- 
+  -- Producer_Consumer_Producer_Send --
   -------------------------------------
 
   function Producer_Consumer_Producer_Send
@@ -125,7 +125,7 @@ package body PolyORB_HI_Generated.Transport is
   end Producer_Consumer_Producer_Send;
 
   -----------------------------------------------
-  -- Producer_Consumer_Result_Consumer_Deliver -- 
+  -- Producer_Consumer_Result_Consumer_Deliver --
   -----------------------------------------------
 
   procedure Producer_Consumer_Result_Consumer_Deliver

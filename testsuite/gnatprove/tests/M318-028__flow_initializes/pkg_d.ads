@@ -1,7 +1,7 @@
 package Pkg_D
   with Initializes => State
 is
-   
+
 
    State : Integer;
 

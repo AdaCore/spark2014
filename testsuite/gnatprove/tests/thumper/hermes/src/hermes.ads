@@ -11,8 +11,8 @@ pragma SPARK_Mode(On);
 
 package Hermes is
    pragma Pure;
-   
+
    type Octet is mod 2**8;
    type Octet_Array is array(Natural range <>) of Octet;
-   
+
 end Hermes;

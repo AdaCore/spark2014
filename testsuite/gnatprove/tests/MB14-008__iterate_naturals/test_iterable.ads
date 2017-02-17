@@ -2,7 +2,7 @@ with Ada.Iterator_Interfaces;
 
 package Test_Iterable is pragma SPARK_Mode (On);
 
-   type T is new Natural; 
+   type T is new Natural;
    type T_Array is array (Integer range <>) of T;
    type T_List (C : Natural) is record
       Content : T_Array (1 .. C);

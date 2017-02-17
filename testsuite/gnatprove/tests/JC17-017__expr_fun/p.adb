@@ -1,4 +1,4 @@
-package body P is  
+package body P is
    Y : Boolean;
    function G_True return Boolean is (True);
    function G_X return Boolean is (Y);
@@ -12,7 +12,7 @@ package body P is
      with Post => G_Y'Result = Y;
 
    function G_Y return Boolean is (Y);
-   
+
    procedure Sub is
       Z : Boolean;
       function H_True return Boolean is (True);

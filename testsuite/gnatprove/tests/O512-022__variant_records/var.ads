@@ -1,4 +1,4 @@
-package Var is 
+package Var is
 
    type Decision_Kind is
      (Condition_Kind,

@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    function Ident_Str (X : String) return String is
    begin

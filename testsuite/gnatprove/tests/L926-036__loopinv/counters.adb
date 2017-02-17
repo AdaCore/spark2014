@@ -1,4 +1,4 @@
-package body Counters is 
+package body Counters is
 
    ----------
    -- Tick --

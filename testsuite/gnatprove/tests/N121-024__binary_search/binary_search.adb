@@ -19,7 +19,7 @@ package body Binary_Search is
       elsif A (Left) > I or A (Right) < I then
          return No_Index;
       end if;
-      
+
       while Left < Right loop
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
          pragma Loop_Variant (Decreases => Right - Left);
@@ -34,7 +34,7 @@ package body Binary_Search is
             return Med;
          end if;
       end loop;
-      
+
       return No_Index;
    end Search;
 

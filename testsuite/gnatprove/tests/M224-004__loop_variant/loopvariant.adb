@@ -1,6 +1,6 @@
 pragma Ada_2012;
 pragma Assertion_Policy (Loop_Variant => Check);
-procedure LoopVariant is 
+procedure LoopVariant is
    I, J : Integer;
 begin
    I := 1;

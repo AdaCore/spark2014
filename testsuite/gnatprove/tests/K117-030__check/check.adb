@@ -1,4 +1,4 @@
-package body Check is  
+package body Check is
    function Div (X, Y : Integer) return Integer
    is
    begin

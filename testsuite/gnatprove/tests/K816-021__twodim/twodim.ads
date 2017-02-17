@@ -1,4 +1,4 @@
-package Twodim is 
+package Twodim is
 
    type One_Ten is range 1 .. 10;
    type One_Twenty is range 1 .. 20;

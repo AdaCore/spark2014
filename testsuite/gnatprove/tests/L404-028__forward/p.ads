@@ -1,4 +1,4 @@
-package P is 
+package P is
    procedure Incr (X : in out Integer) with
      Post => X = Add_One (X'Old);
 

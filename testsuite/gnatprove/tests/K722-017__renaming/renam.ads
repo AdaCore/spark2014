@@ -1,4 +1,4 @@
-package Renam is 
+package Renam is
 
    procedure P (M : Integer);
 

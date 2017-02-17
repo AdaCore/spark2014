@@ -1,4 +1,4 @@
-package BasicTypes is  
+package BasicTypes is
 
    type Unsigned32T is range 0 .. 2**32 - 1;
    for Unsigned32T'Size use 32;

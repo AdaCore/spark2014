@@ -1,4 +1,4 @@
-procedure R is 
+procedure R is
 
    subtype Int5 is Integer range 1 .. 5;
    subtype Int6 is Integer range 1 .. 6;

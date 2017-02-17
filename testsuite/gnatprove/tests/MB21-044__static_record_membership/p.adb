@@ -5,7 +5,7 @@ is
                   Z : out Boolean)
    is
    begin
-      Z := S in R;       
+      Z := S in R;
    end Op1;
 
    procedure Op2 (S : in AofR;
@@ -18,4 +18,4 @@ is
 
 end P;
 
-   
+

@@ -1,4 +1,4 @@
-package F is 
+package F is
   type Floating_Type is digits 4;
   type Fixed_Type is delta 0.125 range -10.0 .. 10.0;
   type Integer_Type is range 0..1023;

@@ -1,4 +1,4 @@
-package body P is 
+package body P is
 
    function Id_Not_A (X : T) return T
    is

@@ -4,14 +4,14 @@ is
    generic
       V : Integer;
    procedure Gen;
-   
+
    procedure Gen is
    begin
       pragma Assert (V > 0);
    end Gen;
-   
+
    procedure Inst is new Gen (X);
-   
+
    procedure Local is
    begin
       Inst;

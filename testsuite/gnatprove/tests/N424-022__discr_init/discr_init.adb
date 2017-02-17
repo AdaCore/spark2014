@@ -1,5 +1,5 @@
 procedure Discr_Init with
-  SPARK_Mode 
+  SPARK_Mode
 is
    type A1 is array (Natural range <>) of Boolean;
    type R1 (J : Integer) is record

@@ -13,7 +13,7 @@ package body PolyORB_HI_Generated.Activity is
   --  Periodic task : Task1
 
   -----------------------
-  -- RMAAadl_Task1_Job -- 
+  -- RMAAadl_Task1_Job --
   -----------------------
 
   function RMAAadl_Task1_Job return PolyORB_HI.Errors.Error_Kind is
@@ -30,7 +30,7 @@ package body PolyORB_HI_Generated.Activity is
   --  Periodic task : Task2
 
   -----------------------
-  -- RMAAadl_Task2_Job -- 
+  -- RMAAadl_Task2_Job --
   -----------------------
 
   function RMAAadl_Task2_Job return PolyORB_HI.Errors.Error_Kind is

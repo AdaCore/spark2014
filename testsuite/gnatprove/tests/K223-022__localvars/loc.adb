@@ -1,4 +1,4 @@
-package body Loc is 
+package body Loc is
    function Local (Z : Integer) return Integer
    is
       X : Integer := 1 / Z;

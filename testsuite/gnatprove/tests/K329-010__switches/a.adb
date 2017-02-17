@@ -1,4 +1,4 @@
-package body A is 
+package body A is
    function F return Integer
    is
    begin

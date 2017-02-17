@@ -1,4 +1,4 @@
-package body Prepost is 
+package body Prepost is
 
    function F (Z : Integer) return Boolean is
    begin

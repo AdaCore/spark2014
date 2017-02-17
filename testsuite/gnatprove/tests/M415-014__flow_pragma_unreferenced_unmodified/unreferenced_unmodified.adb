@@ -1,4 +1,4 @@
-package body Unreferenced_Unmodified is 
+package body Unreferenced_Unmodified is
    type Record_T is record
       X, Y : Integer;
    end record;

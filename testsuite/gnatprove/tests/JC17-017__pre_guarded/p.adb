@@ -1,4 +1,4 @@
-package body P is  
+package body P is
 
    procedure Not_Guarded (X, Y : Integer) is begin null; end;
 

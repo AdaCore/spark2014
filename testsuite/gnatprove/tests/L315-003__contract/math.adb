@@ -1,4 +1,4 @@
-package body Math is 
+package body Math is
 
    function Sqrt (X : Integer) return Integer is
       Res : Integer := 0;

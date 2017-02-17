@@ -1,5 +1,5 @@
 with Pack; use Pack;
-procedure User (B : Boolean) is 
+procedure User (B : Boolean) is
 begin
    if B then
       pragma Assert (X1.X = True);  -- must remain unprovable

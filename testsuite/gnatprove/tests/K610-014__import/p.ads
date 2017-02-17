@@ -1,4 +1,4 @@
-package P is 
+package P is
    type T is new Integer;
    function "<"  (Left, Right : T) return Boolean;
    pragma Import (Ada, "<");

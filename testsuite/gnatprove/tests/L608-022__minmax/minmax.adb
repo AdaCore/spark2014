@@ -1,4 +1,4 @@
-procedure MinMax is 
+procedure MinMax is
    X : Integer := 1;
    Y : Integer := 127;
    Min : Integer;

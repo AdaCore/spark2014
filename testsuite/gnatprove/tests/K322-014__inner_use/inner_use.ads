@@ -1,5 +1,5 @@
 with Pack;
-package Inner_Use is 
+package Inner_Use is
    use Pack;
    X : T;
    procedure P (B : Boolean) with

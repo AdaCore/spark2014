@@ -17,7 +17,7 @@ package body Record_Discr with SPARK_Mode is
    function Search_Upto (R : Interm_Result; E : Natural) return Result_Ty is
       type My_Res is new Result_Ty (R.Upto /= 0);
       type Res_False is new Result_Ty (False);
-      
+
       function Bad (R : Result_Ty) return Res_False;
       function Bad (R : Result_Ty) return Res_False is
       begin

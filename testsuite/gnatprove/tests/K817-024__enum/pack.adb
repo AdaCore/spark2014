@@ -1,4 +1,4 @@
-procedure Pack is 
+procedure Pack is
 
    package P1 is
       type Priv is private;

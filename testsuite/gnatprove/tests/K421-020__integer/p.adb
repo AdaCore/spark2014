@@ -1,4 +1,4 @@
-procedure P (X, Y : Integer) is 
+procedure P (X, Y : Integer) is
    -- pragma Annotate (gnatprove, Force);
 
    subtype S1 is Integer range 1 .. 10;

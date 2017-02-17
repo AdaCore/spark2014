@@ -1,4 +1,4 @@
-package Typeinv with SPARK_Mode is 
+package Typeinv with SPARK_Mode is
    type T is private;
 
    function New_T (X : Integer) return T;

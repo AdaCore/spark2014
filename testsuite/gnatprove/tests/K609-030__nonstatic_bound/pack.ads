@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type Numerals is range -256 .. 255;
 

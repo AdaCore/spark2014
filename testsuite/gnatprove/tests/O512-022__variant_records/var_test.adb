@@ -1,7 +1,7 @@
 with Tristates; use Tristates;
 with Var; use Var;
 
-package body Var_Test is 
+package body Var_Test is
 
    function Decision_Eval
      (Root_Id : Node_Id)

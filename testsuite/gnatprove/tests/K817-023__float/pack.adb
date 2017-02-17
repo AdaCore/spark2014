@@ -1,4 +1,4 @@
-procedure pack is 
+procedure pack is
 
    generic
       type T is digits <>;

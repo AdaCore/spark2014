@@ -1,4 +1,4 @@
-package body Across_Compilation_Units.Child is 
+package body Across_Compilation_Units.Child is
    procedure Round_Swap_1 is
    begin
       Swap (X, Y);

@@ -1,4 +1,4 @@
-package body Data is 
+package body Data is
    procedure Make_Available (X : in out T) is
    begin
       null;

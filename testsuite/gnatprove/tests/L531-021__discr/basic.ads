@@ -1,4 +1,4 @@
-package Basic is 
+package Basic is
    type Enum is (A, B, C);
 
    type R (X : Enum) is record

@@ -1,4 +1,4 @@
-package body Func_Return is 
+package body Func_Return is
 
    G : Integer := 0;
 

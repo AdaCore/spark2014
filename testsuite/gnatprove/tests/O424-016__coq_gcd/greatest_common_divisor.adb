@@ -8,10 +8,10 @@ is
       C := M; D := N;
       loop
          pragma Loop_Invariant (Gcd (C, D) = Gcd (M, N));
-         
+
          -- FIXME workaround for [N410-033]
          exit when D = 0;
-         
+
          R := C mod D;
          C := D; D := R;
       end loop;

@@ -1,6 +1,6 @@
 with Used; use Used;
 
-package body User is 
+package body User is
    procedure AbsoluP (x : Integer; res : out Integer) is
    begin
       res := Absolu (x);

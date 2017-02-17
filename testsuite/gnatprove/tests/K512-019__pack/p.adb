@@ -1,6 +1,6 @@
 with Pack; use Pack;
 
-procedure P is 
+procedure P is
 begin
       Do_Nothing;
 end P;

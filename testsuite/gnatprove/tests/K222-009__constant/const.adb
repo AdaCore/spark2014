@@ -1,4 +1,4 @@
-package body Const is  
+package body Const is
    function Incr (X : T) return T
    is
    begin

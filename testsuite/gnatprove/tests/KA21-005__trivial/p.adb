@@ -1,4 +1,4 @@
-procedure P (X : Integer) is 
+procedure P (X : Integer) is
    function F5 (X : Integer) return Boolean is
    begin
       return X > 0;

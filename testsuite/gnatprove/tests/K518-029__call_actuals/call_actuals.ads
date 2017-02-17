@@ -1,4 +1,4 @@
-package Call_Actuals is 
+package Call_Actuals is
 
    type T is range -20 .. 20;
    type NT is new T range 0 .. 20;

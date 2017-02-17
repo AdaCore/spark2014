@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
    type T1 is record
       X : Boolean;
    end record;

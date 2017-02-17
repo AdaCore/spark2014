@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    function F1 (X : T) return Integer
    is

@@ -1,4 +1,4 @@
-package Base_Type is 
+package Base_Type is
    type T is range 1 .. 10;
 
    function Add1 (X, Y : T) return T

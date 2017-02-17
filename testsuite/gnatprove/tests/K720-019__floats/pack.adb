@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    function Add (R1, R2 : Float) return Float is
    begin
@@ -9,5 +9,5 @@ package body Pack is
    begin
       return Add (Add (0.1, 0.2), 0.3) = Add (0.1, Add (0.2, 0.3));
    end Associativity_Test;
-   
+
 end Pack;

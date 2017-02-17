@@ -1,6 +1,6 @@
 pragma Ada_12;
 
-package P is 
+package P is
   type Index is new Integer range 0 .. 100;
 
   subtype Element is Integer range 1 .. 10;

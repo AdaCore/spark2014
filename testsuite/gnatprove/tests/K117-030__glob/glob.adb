@@ -1,9 +1,9 @@
-package body Glob is  
+package body Glob is
    procedure Sub is
    begin
       G := True;
    end;
-   
+
    procedure P is
    begin
       Sub;

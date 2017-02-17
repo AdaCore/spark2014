@@ -1,4 +1,4 @@
-package Max is 
+package Max is
 
    function Max (Left, Right : Float) return Float
      with Post => (if Right > Left then

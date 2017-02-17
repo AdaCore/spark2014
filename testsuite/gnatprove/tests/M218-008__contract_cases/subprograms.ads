@@ -1,4 +1,4 @@
-package Subprograms is 
+package Subprograms is
    function F1 (Val : Integer) return Integer
      with Contract_Cases => ((Val = 0 => F1'Result = 0));
    --  returns 0

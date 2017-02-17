@@ -1,4 +1,4 @@
-package Across_Compilation_Units.Child is 
+package Across_Compilation_Units.Child is
    --  Procedures Round_Swap_1, Round_Swap_2,
    --  Round_Swap_With_Depends_1 and
    --  Round_Swap_With_Depends_2 use procedures

@@ -1,4 +1,4 @@
-package body Subprograms is 
+package body Subprograms is
    function F1 (Val : Integer) return Integer is
    begin
       return Val * 0;

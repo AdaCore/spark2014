@@ -1,4 +1,4 @@
-package body Find is  
+package body Find is
    function Find (T : A; R : Integer) return Integer is
       Res : Integer := 0;
    begin

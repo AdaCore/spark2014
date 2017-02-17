@@ -1,12 +1,12 @@
 with Types; use Types;
 
-package PrefixSum_General is pragma SPARK_Mode (On); 
+package PrefixSum_General is pragma SPARK_Mode (On);
 
    Tree_Depth : constant := 3;
    Maximum    : constant := Integer'Last / (Index'Last + 1);
 
    function Is_Even (K : Integer) return Boolean is (K mod 2 = 0);
-   
+
    function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer
    with
      Pre  => Start_Pos <= End_Pos,

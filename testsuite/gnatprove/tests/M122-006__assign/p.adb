@@ -1,6 +1,6 @@
 with Types; use Types;
 
-package body P is 
+package body P is
 
    procedure Bad is
       X : R := R'(I => A, X => 1);

@@ -1,4 +1,4 @@
-package Length is 
+package Length is
 
    type Constr_Ar is array (1..20) of Integer;
 

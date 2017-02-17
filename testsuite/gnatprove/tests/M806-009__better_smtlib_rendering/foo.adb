@@ -1,6 +1,6 @@
 package body Foo
 is
-   
+
 
    procedure Test_01 (X, Y : in out Boolean)
    with Post => (X = Y'Old and Y = X'Old)

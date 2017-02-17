@@ -1,6 +1,6 @@
 with C;
 
-package body B is 
+package body B is
 
    procedure P (X : Integer) is
    begin

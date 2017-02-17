@@ -3,7 +3,7 @@ with Proxy;
 package body P is
 
    procedure Init is
-   begin 
+   begin
       X := True;
    end;
 

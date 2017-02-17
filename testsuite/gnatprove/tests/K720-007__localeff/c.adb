@@ -1,4 +1,4 @@
-package body C is 
+package body C is
    X : Integer;
 
    procedure C is

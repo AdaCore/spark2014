@@ -1,4 +1,4 @@
-package Expr is  
+package Expr is
    function Echo (A : Integer) return Integer
    with Post => (Echo'Result = A);
 

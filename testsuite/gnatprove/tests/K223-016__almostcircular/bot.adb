@@ -1,4 +1,4 @@
-package body Bot is  
+package body Bot is
    type T is new Integer;
 
    procedure B (X : MySmall)

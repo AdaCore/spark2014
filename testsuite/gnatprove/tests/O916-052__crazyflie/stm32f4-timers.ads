@@ -1258,8 +1258,8 @@ private
    --  discriminant is the CCxS "Selection" indicator.
 
    --  Note that the discriminant default value "Output" matches the default
-   --  value of the hardware register bits when the device is powered up. 
-   --  Therefore we don't strictly speaking need pragma Import on the 
+   --  value of the hardware register bits when the device is powered up.
+   --  Therefore we don't strictly speaking need pragma Import on the
    --  declarations of Timer objects, but it won't hurt.
 
    type IO_Descriptor (CCxSelection : Timer_Capture_Compare_Modes := Output) is

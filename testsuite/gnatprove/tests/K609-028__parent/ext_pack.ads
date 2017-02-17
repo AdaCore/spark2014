@@ -1,7 +1,7 @@
 package Ext_Pack
-  with Abstract_State => S, 
+  with Abstract_State => S,
        Initializes => (C, S)
-is 
+is
 
    C : Integer := 0;
 

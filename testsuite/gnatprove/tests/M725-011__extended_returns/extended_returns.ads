@@ -1,4 +1,4 @@
-package Extended_Returns is 
+package Extended_Returns is
    type Record_T (Discr : Natural := 0) is
       record
          A : Integer;

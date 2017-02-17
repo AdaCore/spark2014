@@ -1,4 +1,4 @@
-package body PrefixSum_General is pragma SPARK_Mode (On); 
+package body PrefixSum_General is pragma SPARK_Mode (On);
 
    procedure Upsweep (A : in out Input; Output_Space : out Positive) is
       Space : Positive := 1;
@@ -99,29 +99,29 @@ package body PrefixSum_General is pragma SPARK_Mode (On);
          Space := Space / 2;
       end loop;
    end Downsweep;
-   
+
    function Summation (A : Input; Start_Pos, End_Pos : Index) return Integer is
-      
+
       --  We use an intermediate recursive function so that an axiom is
       --  generated for Summation's postcondition.
 
-      function Rec_Summation (A : Input; 
-                              Start_Pos, 
-                              End_Pos : Index) 
+      function Rec_Summation (A : Input;
+                              Start_Pos,
+                              End_Pos : Index)
                               return Integer
       with
         Pre  => Start_Pos <= End_Pos,
         Post => (if Start_Pos = End_Pos then
                    Rec_Summation'Result = A (Start_Pos));
       pragma Annotate (GNATprove, Terminating, Rec_Summation);
-      function Rec_Summation (A : Input; 
+      function Rec_Summation (A : Input;
                               Start_Pos,
-                              End_Pos : Index) 
+                              End_Pos : Index)
                               return Integer
       is
         (if Start_Pos = End_Pos then A (Start_Pos)
          else A (End_Pos) + Rec_Summation (A, Start_Pos, End_Pos - 1));
-      
+
    begin
       return Rec_Summation (A, Start_Pos, End_Pos);
    end Summation;

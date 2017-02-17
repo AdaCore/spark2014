@@ -1,8 +1,8 @@
-package body Pack is  
-   
+package body Pack is
+
 
    function F return Boolean is
-      
+
       B : Boolean;
    begin
       B := True;
@@ -10,7 +10,7 @@ package body Pack is
    end F;
 
    procedure P is
-      
+
       B : Boolean;
    begin
       B := False;

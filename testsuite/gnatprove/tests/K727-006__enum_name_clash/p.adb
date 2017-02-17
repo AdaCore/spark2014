@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    type Enum is (A, BC, ABC, A_B_C, ABCD);
    subtype Sub_Enum is Enum range A .. BC;
 

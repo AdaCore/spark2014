@@ -1,4 +1,4 @@
-package P is  
+package P is
    function F1 (X, Y : Integer) return Integer;
    pragma Precondition (X + Y < 0);
 

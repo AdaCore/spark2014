@@ -1,4 +1,4 @@
-package body Funcs is 
+package body Funcs is
 
    -- F simple functions
 

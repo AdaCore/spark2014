@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
 
   type A is array (Integer range <>) of Integer;
 

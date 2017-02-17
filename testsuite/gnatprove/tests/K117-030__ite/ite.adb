@@ -1,4 +1,4 @@
-package body Ite is  
+package body Ite is
    procedure Not_Null (X : in out Integer)
    is
    begin

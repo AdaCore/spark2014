@@ -2,7 +2,7 @@ package body Stack_ASM
   with Refined_State => (State => (The_Stack, The_Ptr))
 is
 
-  
+
 
   type Length_T is range 0 .. 100;
   subtype Index_T is Length_T range 1 .. Length_T'Last;

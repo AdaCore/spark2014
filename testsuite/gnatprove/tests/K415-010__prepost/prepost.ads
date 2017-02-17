@@ -1,4 +1,4 @@
-package Prepost is 
+package Prepost is
 
    function Is_Zero (X : Integer) return Boolean
    is (X = 0);

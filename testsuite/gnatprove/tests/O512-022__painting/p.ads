@@ -1,4 +1,4 @@
-package P is 
+package P is
    type Dot is record
       X, Y : Integer;
    end record;

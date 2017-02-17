@@ -1,6 +1,6 @@
 with Q;
 with F;
-procedure P is 
+procedure P is
 begin
    Q;
    pragma Assert (F);  -- unprovable assertion

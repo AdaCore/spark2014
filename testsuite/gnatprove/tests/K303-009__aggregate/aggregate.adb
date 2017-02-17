@@ -1,4 +1,4 @@
-package body aggregate is 
+package body aggregate is
    procedure A ( X : Integer; K : out TemplatePadT) is
       Agg : TemplatePadT;
    begin

@@ -1,6 +1,6 @@
 with Tab;
 with Other;
-package body Count is 
+package body Count is
    package Key_Value_Table is new Tab (Integer);
 
    function Key (Position : Positive) return Integer is

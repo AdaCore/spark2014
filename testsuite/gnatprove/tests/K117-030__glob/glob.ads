@@ -1,4 +1,4 @@
-package Glob is  
+package Glob is
    G : Boolean;
    procedure Sub;
    procedure P with

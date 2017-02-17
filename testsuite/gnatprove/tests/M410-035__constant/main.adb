@@ -1,5 +1,5 @@
 with P; use P;
-procedure Main is 
+procedure Main is
    procedure Sub is
    begin
       pragma Assert (E);

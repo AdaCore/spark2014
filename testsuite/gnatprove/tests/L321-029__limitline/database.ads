@@ -1,7 +1,7 @@
 with Identity;
 with Money; use Money;
 
-package Database is 
+package Database is
 
    --  Accounts are numbered from 0 (invalid account) to Max_Account_Num.
    --  Valid accounts start at 1. Not all account numbers correspond to valid

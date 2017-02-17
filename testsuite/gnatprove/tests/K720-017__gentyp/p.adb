@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    procedure P is
       Z : T;
    begin

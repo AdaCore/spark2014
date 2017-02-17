@@ -1,4 +1,4 @@
-package body Q is 
+package body Q is
    function Change (X : T) return T is
       Res : T := X;
    begin

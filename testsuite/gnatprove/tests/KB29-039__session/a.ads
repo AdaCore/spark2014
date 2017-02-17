@@ -1,4 +1,4 @@
-package A is 
+package A is
 
    procedure P (X, Y : Integer);
 

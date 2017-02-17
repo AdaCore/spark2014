@@ -15,7 +15,7 @@ package body PolyORB_HI_Generated.Marshallers is
   --  Marshallers for interface type of thread p.impl
 
   --------------
-  -- Marshall -- 
+  -- Marshall --
   --------------
 
   procedure Marshall
@@ -34,7 +34,7 @@ package body PolyORB_HI_Generated.Marshallers is
   end Marshall;
 
   ----------------
-  -- Unmarshall -- 
+  -- Unmarshall --
   ----------------
 
   procedure Unmarshall
@@ -71,7 +71,7 @@ package body PolyORB_HI_Generated.Marshallers is
   --  Marshallers for interface type of thread q.impl
 
   --------------
-  -- Marshall -- 
+  -- Marshall --
   --------------
 
   procedure Marshall
@@ -87,7 +87,7 @@ package body PolyORB_HI_Generated.Marshallers is
   end Marshall;
 
   ----------------
-  -- Unmarshall -- 
+  -- Unmarshall --
   ----------------
 
   procedure Unmarshall

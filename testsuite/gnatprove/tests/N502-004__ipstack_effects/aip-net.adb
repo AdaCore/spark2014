@@ -9,7 +9,7 @@ is
 
    TRANSPORT_BUF_HLEN : constant Integer := 20;
    --  TCP header
-   
+
    function HLEN_To (L : Integer) return Integer is
       Room : Integer := 0;
    begin

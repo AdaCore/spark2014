@@ -1,4 +1,4 @@
-package body Sgs is 
+package body Sgs is
 
    function A (X: T) return Float is (C (X));
 

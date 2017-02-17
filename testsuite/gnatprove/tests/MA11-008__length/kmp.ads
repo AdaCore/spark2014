@@ -6,6 +6,6 @@ is
 
    function Init_Next (P : A) return A
    with Pre  => P'Length >= 1,
-        Post => Init_Next'Result'Length = P'Length;            
+        Post => Init_Next'Result'Length = P'Length;
 
 end Kmp;

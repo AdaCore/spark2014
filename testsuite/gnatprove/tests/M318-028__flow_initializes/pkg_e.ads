@@ -4,7 +4,7 @@ package Pkg_E
   with Initializes => (State => Pkg_A.State)  --  Pkg_A.State not initialized
   --  this will be detected once we analyse packages
 is
-   
+
 
    State : Integer;
 

@@ -1,4 +1,4 @@
-package body Uninitialized is 
+package body Uninitialized is
    procedure Compare is
       B : Integer;
    begin

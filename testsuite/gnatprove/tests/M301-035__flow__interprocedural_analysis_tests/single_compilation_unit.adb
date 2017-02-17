@@ -1,4 +1,4 @@
-package body Single_Compilation_Unit is 
+package body Single_Compilation_Unit is
    --  This package checks that the IFA produces correct
    --  CFGs and PDGs for subroutines that call other
    --  subroutines of the same compilation unit.
@@ -22,7 +22,7 @@ package body Single_Compilation_Unit is
 
    --  Procedures Mutual_Recursion_A and Mutual_Recursion_B
    --  call each other. Their respective PDGs contain each
-   --  others's contracts. 
+   --  others's contracts.
 
    procedure Mutual_Recursion_A
       with Global  => (In_Out => (X, Y, Condition)),
@@ -65,7 +65,7 @@ package body Single_Compilation_Unit is
    begin
       if N < 3 then
          return 1;
-      else 
+      else
          return Fibonacci (N - 1) + Fibonacci (N - 2);
       end if;
    end Fibonacci;

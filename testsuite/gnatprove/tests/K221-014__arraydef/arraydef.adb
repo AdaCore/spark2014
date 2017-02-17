@@ -1,4 +1,4 @@
-package body Arraydef is  
+package body Arraydef is
    procedure Incr_Ar (X : in out One_Ten_Vect)
    is
    begin

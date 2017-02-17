@@ -1,7 +1,7 @@
 with P; use P;
 with Q; use Q;
 with Unknown;
-procedure Main is 
+procedure Main is
 begin
    case Unknown.Value is
       when 0 =>

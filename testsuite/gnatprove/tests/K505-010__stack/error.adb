@@ -1,4 +1,4 @@
-package body Error is 
+package body Error is
 
    function Get_Current return State is
    begin

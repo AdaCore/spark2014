@@ -1,4 +1,4 @@
-package Minmax is 
+package Minmax is
 
    pragma Elaborate_Body (Minmax);
 

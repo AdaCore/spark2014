@@ -1,7 +1,7 @@
 with Test; use Test;
 with Pack; use Pack;
 
-procedure P is 
+procedure P is
 begin
    Test_If;
    B2 := True;

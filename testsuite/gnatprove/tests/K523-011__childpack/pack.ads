@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type Int is new Integer;
 

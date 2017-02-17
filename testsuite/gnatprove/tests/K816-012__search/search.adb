@@ -1,4 +1,4 @@
-package body Search is 
+package body Search is
 
   procedure Linear_Search
     (Table  : in IntArray;

@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Power_and_Sum is pragma SPARK_Mode (On); 
+package body Power_and_Sum is pragma SPARK_Mode (On);
    procedure Power(X : in Integer; N : in Positive; Result: out Integer) is
       I : Integer := 1;
    begin

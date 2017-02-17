@@ -1,4 +1,4 @@
-package body R is 
+package body R is
     procedure Half (A : in out Arr) is
        H : Integer;
        A_Old : constant Arr := A;

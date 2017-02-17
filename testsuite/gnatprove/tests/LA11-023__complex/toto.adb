@@ -1,6 +1,6 @@
 with Foo; use Foo;
 
-procedure Toto is 
+procedure Toto is
 
    function Exp (X : Imaginary) return Integer is
       ImX : constant Float'Base := Im (X);

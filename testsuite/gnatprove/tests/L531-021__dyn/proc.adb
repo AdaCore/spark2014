@@ -1,4 +1,4 @@
-procedure Proc is 
+procedure Proc is
    type T is range 1 .. 10;
 
    type A is array (T range <>) of Integer;

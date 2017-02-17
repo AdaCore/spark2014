@@ -1,4 +1,4 @@
-package body Rec is 
+package body Rec is
 
    function Next (X : Counter) return Positive is
    begin

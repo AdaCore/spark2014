@@ -1,7 +1,7 @@
 package Pkg_A
   with Initializes => X
 is
-   
+
 
    X : Integer := 0;
    Y : Integer;

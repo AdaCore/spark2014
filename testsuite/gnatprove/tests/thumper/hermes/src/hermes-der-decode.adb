@@ -10,7 +10,7 @@
 pragma SPARK_Mode(On);
 
 package body Hermes.DER.Decode is
-   
+
    procedure Split_Leading_Identifier
      (Value           : in  Octet;
       Tag_Class       : out Tag_Class_Type;
@@ -133,7 +133,7 @@ package body Hermes.DER.Decode is
               (if Octet_Count < 4 then (Result < 256**(I - 1)));
             pragma Loop_Invariant
               (if Octet_Count = 4 then ((if I = 1 then Result < 1) and (if I > 1 then Result < 128*256**(I - 2))));
-            
+
             Result := (Result * 256) + Natural(Message(Starting + (I - 1)));
          end loop;
          return Result;
@@ -215,19 +215,19 @@ package body Hermes.DER.Decode is
           Depends => (Stop   => (Length_Stop, Length),
                       Status => (Message, Length_Stop),
                       Value  => (Length_Stop, Message) ),
-          Pre => Length = 1 and Message'First < Length_Stop and Length_Stop < Message'Last        
+          Pre => Length = 1 and Message'First < Length_Stop and Length_Stop < Message'Last
       is
       begin
-         Stop   := Length_Stop + Length; 
+         Stop   := Length_Stop + Length;
          Status := Success;
 
-         if Message(Length_Stop + 1) = 2#1111_1111# then 
+         if Message(Length_Stop + 1) = 2#1111_1111# then
             Value := True;
          elsif Message(Length_Stop + 1) = 2#0000_0000# then
             Value := False;
          else
             Value := False;
-            Status := Bad_Value; 
+            Status := Bad_Value;
          end if;
       end Identifier_And_Length_Ok;
 
@@ -287,8 +287,8 @@ package body Hermes.DER.Decode is
             Identifier_Ok(Start);
          end if;
       end if;
-   end Get_Boolean_Value;  
-   
+   end Get_Boolean_Value;
+
 
    procedure Get_Integer_Value
      (Message : in  Octet_Array;

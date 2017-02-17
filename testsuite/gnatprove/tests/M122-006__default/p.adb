@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
   type T (X : Integer := 5) is record
     null;
   end record;

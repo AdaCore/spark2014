@@ -1,6 +1,6 @@
 with Base.Annex;
 
-package body Base is pragma SPARK_Mode (On);  
+package body Base is pragma SPARK_Mode (On);
    function Double (x : Integer) return Integer is
    begin
       return Annex.Mul (2, x);

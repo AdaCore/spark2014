@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
   procedure Set_Zero (X : in out Integer) is
   begin

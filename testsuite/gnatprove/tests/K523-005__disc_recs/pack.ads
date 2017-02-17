@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type Disc_Rec (Disc : Boolean) is
       record

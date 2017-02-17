@@ -1,4 +1,4 @@
-package body P is 
+package body P is
     procedure Half (A : Arr) is
        H : Integer;
     begin

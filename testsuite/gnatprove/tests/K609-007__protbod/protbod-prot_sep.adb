@@ -1,5 +1,5 @@
 separate (Protbod)
-protected body Prot_Sep is 
+protected body Prot_Sep is
    procedure Set is
    begin
       null;

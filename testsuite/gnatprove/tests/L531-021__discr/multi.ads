@@ -1,4 +1,4 @@
-package Multi is 
+package Multi is
 
    type Count is new Integer range 0 .. 20;
 

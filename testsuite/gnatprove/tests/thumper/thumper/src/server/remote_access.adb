@@ -41,23 +41,23 @@ package body Remote_Access is
          return Base_URI & URI;
       end if;
    end To_File_Name;
-   
-   
+
+
    function Service(Request : AWS.Status.Data) return AWS.Response.Data is
       URI : constant String := AWS.Status.URI(Request);
       File_Name : constant String := To_File_Name(URI);
-      
+
       HTML_File_Head: constant String := "<html><head>";
       HTML_Body: constant String := "<body>";
       HTML_File_End: constant String := "</body></html>";
-      
+
       Count_File_Begin: constant String :=
         "<title>Count of time stamps</title></head><body>The count is ";
       Count_File_End: constant String := "!</body></html>";
       Result_File_Begin: constant String := "<title>Timestamp:</title>";
       Stamp_File_Begin: constant String :=
         "<html><head><title>Timestamp</title></head><body>The timestamp is ";
-      
+
       Hash : Hermes.Octet_Array(1 .. Hash_Size);
       Generalized_Time : Hermes.Octet_Array(1 .. 14) := (others => 0);
 
@@ -83,14 +83,14 @@ package body Remote_Access is
       end;
 
    begin  -- Service
-      
+
       -- TODO: Log requests and other information somehwere. Remove dependency on Ada.Text_IO.
       Ada.Text_IO.Put_Line("Requested URI: " & URI);
-      
+
       if URI = "/count.html" then
          return AWS.Response.Build
            (Text_HTML, Count_File_Begin & Count_Type'Image(Timestamp_Count) & Count_File_End);
-         
+
       elsif URI = "/submit.html" then
          Ada.Text_IO.Put_Line(Parameter(Request, "SerialNumber"));
          -- TODO: It would probably be better to use AWS's templating mechanism.
@@ -102,7 +102,7 @@ package body Remote_Access is
               "Serial number is: " &
               Parameter(Request, "SerialNumber") &
               HTML_File_End);
-         
+
       elsif URI = "/serialtest.html" then
          declare
             Timestamps : Timestamp_Array :=
@@ -119,23 +119,23 @@ package body Remote_Access is
               "Hash is: " &
               Hash_Conversion(Hash) &
               HTML_File_End);
-         
+
       elsif AWS.Utils.Is_Regular_File(File_Name) then
          return AWS.Response.File
            (Content_Type => Content_Type(File_Name), Filename => File_Name);
-         
+
       else
          return AWS.Response.Acknowledge(AWS.Messages.S404, "<p>Not found: " & URI & "</p>");
       end if;
    end Service;
-   
-   
+
+
    procedure Initialize is
    begin
       -- Basic logger
       -- TODO: Use a real logger.
       Ada.Text_IO.Put_Line("**** AWS Started! ****");
-      
+
       -- Start the server
       AWS.Server.Start(Web_Server, "Web_Server", Service'Access, Port => 8000);
       return;
@@ -147,7 +147,7 @@ package body Remote_Access is
       -- Log Shutdown
       -- TODO: Use a real logger.
       Ada.Text_IO.Put_Line("**** AWS Going Down!! ****");
-      
+
       -- Shutdown the server
       AWS.Server.Shutdown(Web_Server);
       return;

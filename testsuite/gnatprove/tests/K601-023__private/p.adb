@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    package P0 is
       type F0 is private;
    private

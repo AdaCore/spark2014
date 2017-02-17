@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    function My_Capacity (L : My_T1) return Integer
    is
    begin

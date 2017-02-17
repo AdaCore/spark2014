@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type PT is private;
 

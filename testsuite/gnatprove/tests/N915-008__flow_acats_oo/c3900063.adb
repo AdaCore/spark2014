@@ -3,22 +3,22 @@
 --                             Grant of Unlimited Rights
 --
 --     Under contracts F33600-87-D-0337, F33600-84-D-0280, MDA903-79-C-0687,
---     F08630-91-C-0015, and DCA100-97-D-0025, the U.S. Government obtained 
+--     F08630-91-C-0015, and DCA100-97-D-0025, the U.S. Government obtained
 --     unlimited rights in the software and documentation contained herein.
---     Unlimited rights are defined in DFAR 252.227-7013(a)(19).  By making 
---     this public release, the Government intends to confer upon all 
---     recipients unlimited rights  equal to those held by the Government.  
---     These rights include rights to use, duplicate, release or disclose the 
---     released technical data and computer software in whole or in part, in 
---     any manner and for any purpose whatsoever, and to have or permit others 
+--     Unlimited rights are defined in DFAR 252.227-7013(a)(19).  By making
+--     this public release, the Government intends to confer upon all
+--     recipients unlimited rights  equal to those held by the Government.
+--     These rights include rights to use, duplicate, release or disclose the
+--     released technical data and computer software in whole or in part, in
+--     any manner and for any purpose whatsoever, and to have or permit others
 --     to do so.
 --
 --                                    DISCLAIMER
 --
 --     ALL MATERIALS OR INFORMATION HEREIN RELEASED, MADE AVAILABLE OR
---     DISCLOSED ARE AS IS.  THE GOVERNMENT MAKES NO EXPRESS OR IMPLIED 
+--     DISCLOSED ARE AS IS.  THE GOVERNMENT MAKES NO EXPRESS OR IMPLIED
 --     WARRANTY AS TO ANY MATTER WHATSOEVER, INCLUDING THE CONDITIONS OF THE
---     SOFTWARE, DOCUMENTATION OR OTHER INFORMATION RELEASED, MADE AVAILABLE 
+--     SOFTWARE, DOCUMENTATION OR OTHER INFORMATION RELEASED, MADE AVAILABLE
 --     OR DISCLOSED, OR THE OWNERSHIP, MERCHANTABILITY, OR FITNESS FOR A
 --     PARTICULAR PURPOSE OF SAID MATERIAL.
 --*
@@ -43,7 +43,7 @@
 --      the correctness of the components. Declare operations which return
 --      values of the type's private components, and which will be inherited
 --      by later derivatives.
--- 
+--
 --      Extend the root type with a private extension in a second package
 --      specification. Declare a new primitive subprogram for the extension,
 --      and override one of the two inherited subprograms. Within the
@@ -54,7 +54,7 @@
 --      override the verification operations of its parent. Declare
 --      operations which return values of the extension's private components,
 --      and which will be inherited by later derivatives.
---      
+--
 --      Extend the extension with a record extension in a third package
 --      specification. Declare a new primitive subprogram for this record
 --      extension, and override one of the three inherited subprograms.
@@ -63,7 +63,7 @@
 --      overriding subprogram, call the new primitive subprogram and each
 --      inherited subprogram. Declare operations of the record extension
 --      which override the verification operations of its parent.
--- 
+--
 --      In the main program, declare objects of the root tagged type and
 --      the two type extensions. For each object, call the overriding
 --      subprogram, and verify the correctness of the components by calling

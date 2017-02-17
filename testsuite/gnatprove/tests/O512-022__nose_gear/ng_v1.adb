@@ -1,4 +1,4 @@
-package body NG_V1 is 
+package body NG_V1 is
 
    --  Interface to sensors
 

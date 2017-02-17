@@ -1,6 +1,6 @@
 with Counter;
 
-package body Vectors is 
+package body Vectors is
 
    procedure Set_Id (Container : in out Vector)
    --# derives Container from Container;

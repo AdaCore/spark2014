@@ -1,4 +1,4 @@
-package Const is 
+package Const is
 
   type D is new Integer range 1 .. 10;
 

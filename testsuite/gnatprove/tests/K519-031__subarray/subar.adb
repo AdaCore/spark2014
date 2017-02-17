@@ -55,7 +55,7 @@ package body Subar is
          null;
       end loop;
       X := X + 1;
-      
+
       for I in K range 19 .. X loop -- @RANGE_CHECK:FAIL
          null;
       end loop;

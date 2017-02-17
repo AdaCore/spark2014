@@ -5,5 +5,5 @@ is
      with Depends => (X => X),
           Pre     => X < Integer'Last,
           Post    => X = X'Old + 1;
-   
+
 end P;

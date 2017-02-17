@@ -1,6 +1,6 @@
 with Unknown;
 with Private_P; use Private_P;
-package body Private_Q is 
+package body Private_Q is
    procedure Q1 is
    begin
       case Unknown.Value is

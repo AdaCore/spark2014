@@ -1,4 +1,4 @@
-package Count is 
+package Count is
 
    function Key (Position : Positive) return Integer;
 

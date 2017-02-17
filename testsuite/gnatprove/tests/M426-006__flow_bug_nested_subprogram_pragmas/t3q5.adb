@@ -1,4 +1,4 @@
-package body T3Q5 is 
+package body T3Q5 is
 
    procedure Sort(Table : in out Array_Type) is
       Key        : Index_Type;

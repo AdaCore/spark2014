@@ -1,4 +1,4 @@
-package body A is 
+package body A is
 
    function Pgcd (A, B : in Integer) return Integer is
       Ao : Integer;

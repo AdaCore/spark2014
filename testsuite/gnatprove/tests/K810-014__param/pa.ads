@@ -1,4 +1,4 @@
-package Pa is 
+package Pa is
 
    type T (<>) is private;
 

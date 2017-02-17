@@ -12,7 +12,7 @@ is
    --  but using +null on the right
    procedure P1b (X : in Integer)
      with Depends => (X => +null);
-   
+
 
 
    --  Global Mode and Depends inconsistent
@@ -25,8 +25,8 @@ is
    procedure P2b
      with Global => (Input => A),
           Depends => (A => +null);
-   
-   
+
+
    --  Formal Mode and Depends inconsistent.
    procedure P3a (X : out Integer)
      with Depends => (X => X);
@@ -35,7 +35,7 @@ is
    --  but using +null on the right
    procedure P3b (X : out Integer)
      with Depends => (X => +null);
-   
+
 
 
    --  Global mode and Depends inconsistent.
@@ -48,13 +48,13 @@ is
    procedure P4b
      with Global => (Output => A),
           Depends => (A => +null);
-   
-   
+
+
 
    --  Formal mode and Depends inconsistent
    procedure P5 (X : in out Integer)
      with Depends => (X => null);
-   
+
    --  Global mode and Depends inconsistent
    procedure P6
      with Global => (In_Out => A),

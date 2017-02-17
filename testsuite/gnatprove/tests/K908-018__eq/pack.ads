@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type Ar is array (1 .. 10) of Integer;
 

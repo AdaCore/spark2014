@@ -1,4 +1,4 @@
-package body Alias is 
+package body Alias is
    function Get_Content (R : My_Rec) return Element is
    begin
       return R.Content mod R.Modulus;

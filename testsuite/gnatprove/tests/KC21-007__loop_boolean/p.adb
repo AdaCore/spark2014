@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    type Bool_Int is mod 2;
 
    type To_Int_Map is array (Boolean) of Bool_Int;

@@ -1,4 +1,4 @@
-package body Time is pragma SPARK_Mode (On); 
+package body Time is pragma SPARK_Mode (On);
 
    function T_Increment (X : T) return T is
       Result : T := X;

@@ -1,4 +1,4 @@
-package Q is 
+package Q is
    type T (B : Boolean) is record
       case B is
          when True =>

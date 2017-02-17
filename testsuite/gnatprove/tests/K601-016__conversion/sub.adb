@@ -1,4 +1,4 @@
-package body Sub is 
+package body Sub is
    procedure P (X : Dir) is
       Y : Ext_Dir := X;
       Z : Dir := Y;

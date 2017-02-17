@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    procedure Test_For_Loop is
    begin
@@ -10,20 +10,20 @@ package body Test is
 	 Do_Nothing;
       end loop;
    end Test_For_Loop;
-   
+
    procedure Test_While_Loop is
    begin
       while B1 loop
 	 Do_Nothing;
 	 exit when B2;
       end loop;
-   
+
       while B2 loop
 	 Do_Nothing;
 	 exit when B1;
       end loop;
    end Test_While_Loop;
-   
+
    procedure Test_Case_Stmt is
    begin
       case B1 is
@@ -39,7 +39,7 @@ package body Test is
 	    null;
       end case;
    end Test_Case_Stmt;
-   
+
    procedure Test_If is
    begin
       if B1 then

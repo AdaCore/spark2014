@@ -1,4 +1,4 @@
-package body Div_One is 
+package body Div_One is
 
    function F (A : Positive) return Positive is
    begin

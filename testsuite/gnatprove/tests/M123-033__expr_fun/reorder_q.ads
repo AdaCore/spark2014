@@ -1,4 +1,4 @@
-package Reorder_Q is 
+package Reorder_Q is
    function G1 return Integer;
    function G2 return Integer;
    function G3 return Integer;

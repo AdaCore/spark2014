@@ -1,4 +1,4 @@
-package body Pkg is 
+package body Pkg is
 
    function Equal (X, Y : Parent) return Boolean is
    begin

@@ -1,6 +1,6 @@
 with Types; use Types;
 
-package PrefixSum_Expanded is pragma SPARK_Mode (On); 
+package PrefixSum_Expanded is pragma SPARK_Mode (On);
 
    Maximum : constant := 1_000_000;
 

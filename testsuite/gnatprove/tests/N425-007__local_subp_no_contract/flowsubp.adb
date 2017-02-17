@@ -1,7 +1,7 @@
 package body Flowsubp with
   SPARK_Mode
 is
-   
+
    procedure P (X : out Integer; B : Boolean) is
 
       procedure Local (X : out Integer; B : Boolean) is
@@ -13,5 +13,5 @@ is
    begin
       Local (X, B);
    end P;
-   
+
 end Flowsubp;

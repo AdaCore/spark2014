@@ -12,7 +12,7 @@
 
 -- with Ada;
 
-package body Anon_Type is  
+package body Anon_Type is
    function Increment(Var_In :  in Integer) return Integer
    is
       --  Examples of constant declarations:

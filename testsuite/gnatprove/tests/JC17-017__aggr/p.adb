@@ -1,4 +1,4 @@
-package body P is  
+package body P is
    type T is array (1 .. 5) of Integer;
    procedure Proc is
       X : T;

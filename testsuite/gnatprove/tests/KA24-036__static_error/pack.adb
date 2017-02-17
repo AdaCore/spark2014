@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    procedure Ident (A, B, C : in out T) is
    begin

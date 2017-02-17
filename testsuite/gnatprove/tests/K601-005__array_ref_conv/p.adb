@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    type Vec is array (Integer range <>) of Integer;
    subtype Vec_10_Sub is Vec (0 .. 10);
 

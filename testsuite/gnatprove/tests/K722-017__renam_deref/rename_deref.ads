@@ -1,4 +1,4 @@
-package Rename_Deref is 
+package Rename_Deref is
 
    procedure Check;
 

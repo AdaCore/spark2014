@@ -1,4 +1,4 @@
-package body Basic is 
+package body Basic is
 
    procedure P (V : R) is
       Z : Integer;

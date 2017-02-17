@@ -6,5 +6,5 @@ package AIP.UDP with
 is
    procedure UDP_Input (Buf : Integer; Netif : Integer) with
      Global => (Input => State);
-   
+
 end AIP.UDP;

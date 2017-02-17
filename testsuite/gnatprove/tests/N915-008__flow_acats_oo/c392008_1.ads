@@ -7,7 +7,7 @@ package C392008_1 is      -- package Checking
 
    package Bank renames C392008_0;
 
-   type Account is new Bank.Account with 
+   type Account is new Bank.Account with
       record
          Overdraft_Fee : Bank.Dollar_Amount;
       end record;

@@ -1,7 +1,7 @@
 package body P
   with SPARK_Mode => On
 is
-   
+
    procedure Op1 (A : in out U.U32)
    is
    begin

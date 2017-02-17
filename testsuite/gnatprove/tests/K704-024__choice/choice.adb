@@ -1,4 +1,4 @@
-procedure Choice (X : Boolean) is 
+procedure Choice (X : Boolean) is
 begin
    if X in True | False then
       null;

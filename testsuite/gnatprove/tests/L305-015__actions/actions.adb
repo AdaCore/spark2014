@@ -1,4 +1,4 @@
-procedure Actions (X, Y : in out Integer; B1, B2, B3, B4, B5, B6 : Boolean) is 
+procedure Actions (X, Y : in out Integer; B1, B2, B3, B4, B5, B6 : Boolean) is
    type T is array (1 .. 10) of Integer;
    A : T := (others => 0);
 

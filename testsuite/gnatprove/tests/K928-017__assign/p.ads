@@ -1,4 +1,4 @@
-package P is 
+package P is
 
    type A is array (Integer range 1 .. 10, Integer range 2 .. 11) of Integer;
 

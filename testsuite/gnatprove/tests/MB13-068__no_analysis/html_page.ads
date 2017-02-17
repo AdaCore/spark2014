@@ -4,10 +4,10 @@ package HTML_Page with
   Abstract_State => (Content, Style_Sheet)
 is
    type Item is new Integer;
-   
+
    procedure Initialize_Content with
      Global => (Output => Content);
-   
+
    procedure Update_Content (New_Item : Item) with
      Global => (In_Out => Content);
 

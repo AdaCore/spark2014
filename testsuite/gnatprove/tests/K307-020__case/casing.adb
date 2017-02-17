@@ -1,4 +1,4 @@
-package body Casing is 
+package body Casing is
 
    function G (X : Two) return Integer is
       Res : Integer;

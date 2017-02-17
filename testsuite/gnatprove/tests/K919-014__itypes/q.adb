@@ -1,4 +1,4 @@
-package body Q is 
+package body Q is
    procedure Q1 (X : in out R) is
    begin
       for J in X.C'Range loop

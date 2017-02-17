@@ -1,4 +1,4 @@
-package body Q is 
+package body Q is
 
    G : Integer;
 

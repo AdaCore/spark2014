@@ -1,4 +1,4 @@
-package Report is 
+package Report is
 
      procedure Result;
 

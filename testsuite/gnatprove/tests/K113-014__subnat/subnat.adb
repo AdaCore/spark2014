@@ -1,4 +1,4 @@
-package body Subnat is  
+package body Subnat is
    function F (X : Natural) return Integer
    is
    begin

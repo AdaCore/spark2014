@@ -1,4 +1,4 @@
-package Const is  
+package Const is
    C : constant Integer := 10_000;
    subtype T is Integer range -C .. C;
 

@@ -1,4 +1,4 @@
-package body P is pragma SPARK_Mode (On); 
+package body P is pragma SPARK_Mode (On);
 
    procedure P (X : in out A) is
    begin

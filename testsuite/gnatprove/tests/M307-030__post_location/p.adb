@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    procedure Q (X, Y : out Integer) with
      Post => X >= 0
                and then

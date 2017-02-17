@@ -1,4 +1,4 @@
-package Substract is 
+package Substract is
    function Sub (First : Integer; Second : Integer) return Integer
       with Post => (Sub'Result = First - Second);
 

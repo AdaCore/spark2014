@@ -1,4 +1,4 @@
-package body Body_Contract is 
+package body Body_Contract is
 
    procedure P1 (X : in out Integer) is
       pragma Precondition (X > 0);

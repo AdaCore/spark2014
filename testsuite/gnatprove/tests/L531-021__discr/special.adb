@@ -1,6 +1,6 @@
 with Basic; use Basic;
 
-package body Special is 
+package body Special is
 
    procedure P (V : in out Sp) is
    begin

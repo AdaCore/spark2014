@@ -1,5 +1,5 @@
 with Private_Q; use Private_Q;
-package Private_P is 
+package Private_P is
    function F1 return Integer;
    function F2 return Integer;
    function F3 return Integer;

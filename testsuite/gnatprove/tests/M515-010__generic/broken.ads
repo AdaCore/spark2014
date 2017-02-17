@@ -1,4 +1,4 @@
-package Broken is 
+package Broken is
    generic
       with function Is_Empty return Boolean;
    package External_Generic is

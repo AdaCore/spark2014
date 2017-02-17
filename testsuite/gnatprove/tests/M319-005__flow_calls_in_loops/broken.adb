@@ -1,4 +1,4 @@
-package body Broken is 
+package body Broken is
    I : Integer := 0;
 
    procedure Do_Stuff (N : Integer)

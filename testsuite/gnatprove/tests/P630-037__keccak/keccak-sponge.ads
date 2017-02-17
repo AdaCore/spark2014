@@ -74,7 +74,7 @@ generic
    -- * The 'F' procedure permutes the state.
    -- * The 'Extract_Data' procedure converts all or part of the state into a byte
    --   array.
-   -- 
+   --
    -- Additionally, the 'Pad' procedure provides the padding rule, which adds
    -- padding bits into a block of data (the padding may spill over into another
    -- block if there is not enough free bits in the first provided block).
@@ -84,7 +84,7 @@ is
    type States is (Absorbing, Squeezing);
 
    type Context is private;
-   
+
    ----------------------------------------------------------------------------
    -- Sponge procedures
    ----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ is
    --   * Must be positive
    --   * Must be strictly smaller than the State_Size
    --   * Must be a multiple of 8 (this is a requirement for this implementation)
-              
+
 
    function State_Of(Ctx : in Context) return States;
    -- Gets the current state of the sponge.
@@ -129,10 +129,10 @@ is
    -- state. However, the same sponge context can be re-used for a different
    -- computation by re-initializing the sponge.
    --
-   -- @return The current state of the sponge. 
-   
-   
-   
+   -- @return The current state of the sponge.
+
+
+
    function Rate_Of(Ctx : in Context) return Positive
      with Post => Rate_Of'Result < State_Size;
    -- Gets the currently configured rate of the sponge.
@@ -140,8 +140,8 @@ is
    -- The rate is derived from the sponge's capacity and the State_Size.
    --
    -- @return The sponge's rate, in bits.
-     
-     
+
+
 
    procedure Absorb(Ctx        : in out Context;
                     Data       : in     Keccak.Types.Byte_Array;
@@ -169,9 +169,9 @@ is
    --   into the sponge. The length of the 'Data' array must contain at least
    --   this many bits. E.g. if Bit_Length is 20 then Data'Length must be at
    --   least 3 bytes.
-   
-   
-   
+
+
+
    procedure Absorb_With_Suffix(Ctx        : in out Context;
                                 Message    : in     Keccak.Types.Byte_Array;
                                 Bit_Length : in     Natural;
@@ -193,7 +193,7 @@ is
    -- Typically this procedure is called before the first call to Squeeze in
    -- cases where there are additional bits to be appended before the padding.
    -- One example is SHA3, which appends the bits 11 to each message before
-   -- the padding bits are appended. An example of using this procedure to 
+   -- the padding bits are appended. An example of using this procedure to
    -- absorb the final data into the sponge is shown below:
    --     Absorb_With_Suffix(Ctx,
    --                        Message,
@@ -205,7 +205,7 @@ is
    --     Absorb(Ctx, Message || 11);
    --
    -- @param Ctx The sponge context into which the bits will be absorbed.
-   -- 
+   --
    -- @param Message Byte array containing the data to absorb.
    --
    -- @param Bit_Length The number of bits in 'Message' to absorb into the sponge.
@@ -216,8 +216,8 @@ is
    -- @param Suffix_Len The number of bits from the 'Suffix' byte to append.
    --   Up to 8 additional bits can be absorbed, and Suffix_Len can be set to 0
    --   if no additional bits should be absorbed.
-                
-                
+
+
 
    procedure Squeeze(Ctx    : in out Context;
                      Digest :    out Keccak.Types.Byte_Array)
@@ -236,9 +236,9 @@ is
    --
    -- @param Digest This array is filled with bytes squeezed from the sponge.
    --   This array can be of any length.
-   
-   
-   
+
+
+
    function In_Queue_Bit_Length(Ctx : in Context) return Natural
      with Post => In_Queue_Bit_Length'Result < State_Size;
    -- Get the number of bits which are waiting in the input queue, and have
@@ -246,7 +246,7 @@ is
    --
    -- The purpose of this function is to aid in the definition of the
    -- preconditions and postconditions
-   
+
 private
 
    -- The rate number here represents bytes, not bits.
@@ -255,11 +255,11 @@ private
    subtype Rate_Number is Positive range 1 .. ((State_Size + 7)/8) - 1;
 
    subtype Byte_Absorption_Number is Natural range 0 .. ((State_Size + 7)/8) - 1;
-   
+
    subtype Bit_Absorption_Number  is Natural range 0 .. State_Size - 1;
-   
+
    subtype Block_Type is Keccak.Types.Byte_Array(Byte_Absorption_Number);
-   
+
    subtype Suffix_Bits_Number is Natural range 0 .. 8;
 
    type Context is record
@@ -286,7 +286,7 @@ private
       -- The rate parameter. This value is represented in bytes, not bits
       -- so that it is easier to manage in proof.
       Rate            : Rate_Number;
-      
+
       -- The current state of the sponge (Absorbing or Squeezing).
       Curr_State      : States;
    end record;
@@ -297,10 +297,10 @@ private
 
    function State_Of(Ctx : in Context) return States
    is (Ctx.Curr_State);
-   
+
    function Rate_Of(Ctx : in Context) return Positive
    is (Positive(Ctx.Rate) * 8);
-   
+
    function In_Queue_Bit_Length(Ctx : in Context) return Natural
    is (Ctx.Bits_Absorbed);
 

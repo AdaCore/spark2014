@@ -1,7 +1,7 @@
 with Tristates; use Tristates;
 with Var; use Var;
 
-package Var_Test is 
+package Var_Test is
 
    Decision_Table   : array (Node_Id) of Decision;
    Condition_Values : array (Node_Id) of Tristate;

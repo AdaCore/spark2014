@@ -1,4 +1,4 @@
-package Data is 
+package Data is
 
    subtype T_Boolean is Boolean;
    type T_Nat32 is range 0 .. (2 ** 32 - 1);

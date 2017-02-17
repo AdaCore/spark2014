@@ -1,4 +1,4 @@
-package body Divide is  
+package body Divide is
    procedure Divide (M, N : in Integer; Q, R: out Integer)
    is
    begin

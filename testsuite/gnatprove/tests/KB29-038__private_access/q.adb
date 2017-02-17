@@ -1,4 +1,4 @@
-package body Q is 
+package body Q is
    procedure Proc (X : T1; Y, Z : in out Integer) is
      Tmp : Integer range 1 .. 10;
    begin

@@ -1,4 +1,4 @@
-package Time is pragma SPARK_Mode (On); 
+package Time is pragma SPARK_Mode (On);
 
   type Minutes_T is range 0 .. 59;
   type Seconds_T is range 0 .. 59;

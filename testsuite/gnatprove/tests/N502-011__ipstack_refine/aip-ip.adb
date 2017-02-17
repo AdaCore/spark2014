@@ -8,7 +8,7 @@ package body AIP.IP with
 is
    Default_Router : Integer := 0;
    IP_Serial : Integer := 0;
-   
+
    procedure IP_Input (Netif : Integer; Buf : Integer) with
      Refined_Global => (Input  => (Default_Router, UDP.State),
                         In_Out => (IP_Serial, TCP.State))

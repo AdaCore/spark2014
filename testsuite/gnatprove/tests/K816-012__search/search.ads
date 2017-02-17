@@ -1,4 +1,4 @@
-package Search is 
+package Search is
 
   type IntArray is array (Integer range <>) of Integer;
 

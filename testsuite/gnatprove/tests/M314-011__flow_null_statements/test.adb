@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
    procedure Null_Statement is
    begin
       null;

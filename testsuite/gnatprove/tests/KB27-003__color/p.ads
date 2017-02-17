@@ -1,4 +1,4 @@
-package P is 
+package P is
    type Color is (Red, Blue, Green);
    type Dots is array (Color) of Integer;
 

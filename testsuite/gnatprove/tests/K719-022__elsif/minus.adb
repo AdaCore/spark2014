@@ -1,4 +1,4 @@
-package body Minus is 
+package body Minus is
 
    function Minus (X : Natural) return Natural is
    begin

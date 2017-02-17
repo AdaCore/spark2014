@@ -4,38 +4,38 @@ with Ada.Text_IO;
 package body Hello
    with Spark_Mode => On
 is
-   
+
    G_Lang_Level : Language_Level;
 
-   function To_Caml_Char 
+   function To_Caml_Char
      (Str : String; Res : String; J : Integer) return Boolean
    is
-     (if J = Str'First then  
+     (if J = Str'First then
         Res (J) = To_Upper (Str (J))
       elsif Str (J - 1) not in 'a' .. 'z'
         and then Str (J - 1) not in 'A' .. 'Z'
       then
          Res (J) = To_Upper (Str (J))
-      else 
+      else
          Res (J) = To_Lower (Str (J)))
-   with Pre => 
+   with Pre =>
       J in Str'Range and J in Res'Range;
 
-   function To_Caml_Char2 
+   function To_Caml_Char2
      (Str : String; Res : String; Last : Integer) return Boolean
    is
      (for all J in Str'First .. Last =>
-        (if J = Str'First then  
+        (if J = Str'First then
               Res (J) = To_Upper (Str (J))
          elsif Str (J - 1) not in 'a' .. 'z'
          and then Str (J - 1) not in 'A' .. 'Z'
          then
             Res (J) = To_Upper (Str (J))
-         else 
+         else
             Res (J) = To_Lower (Str (J))))
-   with Pre => 
+   with Pre =>
       Last <= Str'Last and Str'Last = Res'Last and Str'First = Res'First;
-   
+
    function To_Camel_Case (Str : String) return String
      with Post =>
        To_Camel_Case'Result'First = Str'First
@@ -60,15 +60,15 @@ is
          else
             Ret (Idx) := To_Lower (Ret (Idx));
          end if;
-         
+
          pragma Assert (Str'First = Ret'First and then Str'Last = Ret'Last);
          pragma Assert (Idx in Str'Range);
          pragma Assert (Idx in Ret'Range);
          pragma Loop_Invariant (To_Caml_Char2 (Str, Ret, Idx));
-         pragma Loop_Invariant 
-           (for all J in Idx .. Str'Last => 
+         pragma Loop_Invariant
+           (for all J in Idx .. Str'Last =>
               (if J > Idx then Ret (J) = Str (J)));
-         
+
          if Str (Idx) not in 'A'..'Z'
            and then Str (Idx) not in 'a'..'z'
          then
@@ -92,7 +92,7 @@ is
    begin
       G_Lang_Level := Level;
    end Set_Language_Level;
-   
+
    ---------------
    -- Say_Hello --
    ---------------
@@ -110,7 +110,7 @@ is
                   else " ");
 
    begin
-      Ada.Text_IO.Put_Line (Hello & Prefix & To_Camel_Case (Who) & "!"); 
+      Ada.Text_IO.Put_Line (Hello & Prefix & To_Camel_Case (Who) & "!");
    end Say_Hello;
 
 end Hello;

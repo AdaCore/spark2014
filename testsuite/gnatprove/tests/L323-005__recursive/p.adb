@@ -1,4 +1,4 @@
-package body P is 
+package body P is
     function Id (N : Natural) return Natural is (N);
 
     procedure Use_Bad is

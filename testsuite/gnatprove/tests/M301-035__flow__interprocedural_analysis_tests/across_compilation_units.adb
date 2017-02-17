@@ -1,4 +1,4 @@
-package body Across_Compilation_Units is 
+package body Across_Compilation_Units is
    function Prime (X: Natural) return Boolean is
    begin
       for I in 2 .. X / 2 loop

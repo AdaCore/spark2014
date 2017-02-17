@@ -1,4 +1,4 @@
-package Conv is 
+package Conv is
 
    procedure P;
 end Conv;

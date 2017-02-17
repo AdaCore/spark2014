@@ -98,7 +98,7 @@ package body Step_Function is pragma SPARK_Mode (On);
          Pragma Loop_Invariant ((i1 = 0 and i2 = 0 and im = 0) or else
                                   ((i1 > 0 or not scan_sfun1) and
                                        (i2 > 0 or not scan_sfun2) and im > 0));
-         Pragma Loop_Invariant 
+         Pragma Loop_Invariant
            (if im > 0 and scan_sfun1 and scan_sfun2 then im < i1 + i2
             else im <= i1 + i2);
 
@@ -183,7 +183,7 @@ package body Step_Function is pragma SPARK_Mode (On);
                      Get_Value(SFun2, Merge.Step(im).Delimiter));
             Index_Increment(SFun2, i2, scan_sfun2);
          end if;
-         
+
          if scan_sfun1 or scan_sfun2 then
             im := im + 1;
          else

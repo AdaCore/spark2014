@@ -1,4 +1,4 @@
-package Rec is 
+package Rec is
    type T is private;
 
 private

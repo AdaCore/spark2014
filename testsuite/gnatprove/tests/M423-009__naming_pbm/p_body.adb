@@ -1,4 +1,4 @@
-package body P is pragma SPARK_Mode (On); 
+package body P is pragma SPARK_Mode (On);
 
   subtype T is Integer range 1 .. 10;
 

@@ -1,7 +1,7 @@
 with Interfaces; use Interfaces;
 with System;
 
-package Types is pragma SPARK_Mode (On);  
+package Types is pragma SPARK_Mode (On);
    type Return_Code_T is (OK, Invalid_Query);
 
    type Octet is record

@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    type Account_Types  is (Bank, Savings, Preferred, Total);
    type Account_Counter is array (Account_Types) of Integer;

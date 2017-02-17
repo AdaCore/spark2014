@@ -1,4 +1,4 @@
-package body Bar is 
+package body Bar is
 
    subtype R is Real'Base;
 

@@ -1,4 +1,4 @@
-package body Over is 
+package body Over is
 
    function F (X, Y : T) return T is
       Res : T;

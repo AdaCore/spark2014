@@ -1,4 +1,4 @@
-package body A is 
+package body A is
 
    procedure P (X, Y : Integer) is
    begin

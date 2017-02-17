@@ -6,5 +6,5 @@ is
 
    procedure Op2 (X, Y : in Integer; Z : out Integer)
      with Depends => (Z => (X, Y));
-   
+
 end P;

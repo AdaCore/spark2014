@@ -1,5 +1,5 @@
 procedure Nonlinear (X, Y, Z : Float)
-  with SPARK_Mode 
+  with SPARK_Mode
 is
    Result : Float;
 begin

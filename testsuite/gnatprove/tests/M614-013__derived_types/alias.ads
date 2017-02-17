@@ -1,4 +1,4 @@
-package Alias is 
+package Alias is
    subtype Element is Integer range 0 .. 100;
    type My_Rec is record
       Content : Element := 0;

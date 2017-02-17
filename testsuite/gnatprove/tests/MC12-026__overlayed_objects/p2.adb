@@ -19,10 +19,10 @@ is
       --  so no action required here.  SPARK_Mode is Off so
       --  I expect the mis-match between contract and body
       --  to be ignored.
-      null;      
+      null;
    end Sync_Raw_S_With_Full_S;
 
-                     
+
 
    procedure Initialize
    is
@@ -30,11 +30,11 @@ is
       Full_S := Null_R;
       Sync_Raw_S_With_Full_S;
    end Initialize;
-   
+
 
    procedure Update_R (X : in Integer;
                        Y : in Float)
-   is   
+   is
    begin
       Full_S.A := Full_S.A + X;
       Full_S.B := Full_S.B + Y;

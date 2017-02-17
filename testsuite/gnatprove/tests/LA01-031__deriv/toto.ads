@@ -1,6 +1,6 @@
 with Super;
 
-package Toto is 
+package Toto is
    type Bounded_String is private;
 
    function Length (Source : Bounded_String) return Natural;

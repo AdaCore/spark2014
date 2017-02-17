@@ -1,6 +1,6 @@
 with Qack; use Qack;
 
-package body Pack is 
+package body Pack is
 
    procedure Indirect is
    begin

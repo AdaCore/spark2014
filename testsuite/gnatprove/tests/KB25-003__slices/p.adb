@@ -1,6 +1,6 @@
 with Pack;
 
-procedure P is 
+procedure P is
 begin
    null;
 end P;

@@ -1,4 +1,4 @@
-package body InRange is 
+package body InRange is
    function Add1 (i : int20; j : int10) return Integer is
    begin
       return i + j;

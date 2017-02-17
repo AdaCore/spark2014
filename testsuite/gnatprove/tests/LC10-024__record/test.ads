@@ -1,4 +1,4 @@
-package Test is 
+package Test is
 
    type T is private;
    N : constant Integer;

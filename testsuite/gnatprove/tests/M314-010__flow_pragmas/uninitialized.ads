@@ -1,4 +1,4 @@
-package Uninitialized is 
+package Uninitialized is
    A : Integer;
 
    procedure Compare

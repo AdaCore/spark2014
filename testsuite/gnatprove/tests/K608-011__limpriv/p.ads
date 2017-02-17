@@ -1,4 +1,4 @@
-package P is 
+package P is
     type T is (A, B);
 
     package P1 is

@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    procedure Shadow_Effect (D : in out Dots) is
    begin
       for C in Color loop

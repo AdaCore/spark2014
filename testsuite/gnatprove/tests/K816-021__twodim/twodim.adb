@@ -1,4 +1,4 @@
-package body Twodim is 
+package body Twodim is
 
    function F (M : Matrix; I : One_Ten; K : One_Twenty) return Integer
    is

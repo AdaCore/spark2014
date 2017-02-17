@@ -1,4 +1,4 @@
-package body Exprfun is 
+package body Exprfun is
 
    procedure P (X, Y : Integer) is
    begin

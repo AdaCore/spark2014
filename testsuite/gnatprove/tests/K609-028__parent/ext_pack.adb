@@ -1,9 +1,9 @@
 package body Ext_Pack with
   Refined_State => (S => Step)
-is 
-   
+is
+
    Step : Integer := 0;
-   
+
    procedure Result is
    begin
       C := C + Step;

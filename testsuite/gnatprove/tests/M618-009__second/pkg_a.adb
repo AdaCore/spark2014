@@ -1,6 +1,6 @@
 package body Pkg_A
 is
-   
+
 
    function Do_Something (X : Integer) return Integer is (X * 2);
 

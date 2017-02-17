@@ -1,4 +1,4 @@
-package body Chars is  
+package body Chars is
 
    function DoIt return Boolean is
       X : Character := 'A';

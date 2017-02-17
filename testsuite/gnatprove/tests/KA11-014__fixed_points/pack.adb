@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    procedure Get_Paid (S : Salary := Default_Salary) is
    begin

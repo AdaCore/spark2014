@@ -1,4 +1,4 @@
-package body Nested is 
+package body Nested is
 
    function Search return Integer is
       X : Integer := 0;

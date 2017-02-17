@@ -1,4 +1,4 @@
-package Rec is 
+package Rec is
 
    type Counter is record
       Count : Positive;

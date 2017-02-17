@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    type Color is (Red, Blue, Green);
 
    type Volt is delta 0.125 range 0.0 .. 255.0;

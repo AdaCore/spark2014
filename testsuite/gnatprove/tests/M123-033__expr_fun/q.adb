@@ -1,6 +1,6 @@
 with Unknown;
 with P; use P;
-package body Q is 
+package body Q is
    procedure Q1 is
    begin
       case Unknown.Value is

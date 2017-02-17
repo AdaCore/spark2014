@@ -1,4 +1,4 @@
-package Caller_Of_Across_Compilation_Units is 
+package Caller_Of_Across_Compilation_Units is
    --  Function Min is a local function that returns
    --  the minimum of two natural numbers.
 

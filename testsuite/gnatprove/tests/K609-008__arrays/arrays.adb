@@ -1,4 +1,4 @@
-procedure Arrays is 
+procedure Arrays is
    type Idx is range 0 .. 10;
    type A is array (Idx) of Idx;
    type B is array (Idx) of A;

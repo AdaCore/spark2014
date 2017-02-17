@@ -1,4 +1,4 @@
-package body Stacks is 
+package body Stacks is
 
    procedure Push (Top : in out IntMax; Data : in out Elements; E : Integer) is
    begin

@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    Glob   : String := "qwertyuiopasdfghjklzxcvbnm";
    G      : String (1 .. 4) := Glob (1 .. 4);

@@ -1,4 +1,4 @@
-package body Locfunc is 
+package body Locfunc is
    procedure P (X : in out Integer) is
       Y : Integer;
 

@@ -1,4 +1,4 @@
-package Pkg is 
+package Pkg is
 
    type Parent (N : Integer := 0) is limited private;
 

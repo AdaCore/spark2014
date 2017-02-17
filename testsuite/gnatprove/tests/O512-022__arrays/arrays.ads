@@ -1,4 +1,4 @@
-package Arrays is  
+package Arrays is
    type T is array (Positive range <>) of Positive;
 
    function Sum (X : T) return Natural with

@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    function Random_Number return Integer is
       N : Integer := 4; --  Chosen by fair dice roll

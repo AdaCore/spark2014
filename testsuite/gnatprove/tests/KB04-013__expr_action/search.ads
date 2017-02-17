@@ -1,4 +1,4 @@
-package Search is 
+package Search is
    subtype Position is Integer range 1 .. 10;
    type A is array (Position) of Integer;
    function No_V_In_Range (T : A; V : Integer; Low,Up : Position)

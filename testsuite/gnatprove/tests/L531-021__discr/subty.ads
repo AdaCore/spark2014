@@ -1,6 +1,6 @@
 with Basic; use Basic;
 
-package Subty is 
+package Subty is
 
    subtype S is R (A);
 

@@ -1,4 +1,4 @@
-package body Sub is 
+package body Sub is
    function Remove_Absent (X : Ext_Dir) return Dir is
    begin
       case X is

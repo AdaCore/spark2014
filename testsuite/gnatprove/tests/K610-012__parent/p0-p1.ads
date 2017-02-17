@@ -1,2 +1,2 @@
-package P0.P1 is 
+package P0.P1 is
 end P0.P1;

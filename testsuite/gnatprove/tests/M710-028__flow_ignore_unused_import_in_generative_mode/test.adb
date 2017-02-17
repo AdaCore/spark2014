@@ -1,6 +1,6 @@
 package body Test
 is
-   
+
 
    G : Integer;
 

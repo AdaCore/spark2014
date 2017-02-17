@@ -24,7 +24,7 @@ package body C3900051 is  -- Extended alert system abstraction.
       Set_Level (LA, 1);          -- Call newly declared operation.
       Set_Display (Alert_Type(LA),
                    Teletype);     -- Call parent's operation (type conversion).
-      Display (LA);              
+      Display (LA);
    end Handle;
 
 

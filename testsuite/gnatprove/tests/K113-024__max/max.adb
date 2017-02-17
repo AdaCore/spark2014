@@ -1,4 +1,4 @@
-package body Max is  
+package body Max is
    function Max (T : A) return Integer is
       Imax : Integer := T (1);
    begin

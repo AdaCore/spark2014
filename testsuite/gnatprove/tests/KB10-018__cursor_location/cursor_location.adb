@@ -1,4 +1,4 @@
-package body Cursor_Location is 
+package body Cursor_Location is
 
    function Fulfill_Condition
      (Side         : Location;

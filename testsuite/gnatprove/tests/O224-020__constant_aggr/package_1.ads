@@ -15,5 +15,5 @@ is
    procedure Procedure_1 (Res_1 :    out Float;
                           Res_2 :    out Float;
                           Res_3 :    out Float);
-   
+
 end Package_1;

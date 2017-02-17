@@ -1,6 +1,6 @@
 generic
    type T is private;
-package P is 
+package P is
    type A is private;
    type B is array (1..11) of T;
 private

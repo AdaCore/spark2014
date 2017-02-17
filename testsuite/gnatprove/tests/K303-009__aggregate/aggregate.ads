@@ -1,4 +1,4 @@
-package aggregate is 
+package aggregate is
    type TemplatePadI is range 1..452;
    type TemplatePadT is array(TemplatePadI) of Integer;
 

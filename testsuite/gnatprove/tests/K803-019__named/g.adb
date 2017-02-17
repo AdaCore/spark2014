@@ -1,4 +1,4 @@
-package body G is 
+package body G is
    procedure P is
    begin
       null;

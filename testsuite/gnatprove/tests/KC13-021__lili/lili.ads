@@ -1,7 +1,7 @@
 generic
    type Element_Type is private;
 
-package Lili is 
+package Lili is
    type Cursor is private;
    function Next (Position : Cursor) return Cursor;
 private

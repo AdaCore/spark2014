@@ -1,4 +1,4 @@
-package Buf_Read is 
+package Buf_Read is
 
    function Valid (C : Character) return Boolean;
 

@@ -1,4 +1,4 @@
-package Flight_Manager is 
+package Flight_Manager is
 
    type Engine_Values is record
       X_Speed, Y_Speed : Float;

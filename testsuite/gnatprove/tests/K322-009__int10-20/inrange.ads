@@ -1,4 +1,4 @@
-package InRange is 
+package InRange is
    subtype int20 is Integer range 1..20;
    subtype int10 is Integer range 1..10;
 

@@ -1,4 +1,4 @@
-procedure c43209a is 
+procedure c43209a is
 
    type Array_T is array (1 .. 3) of Integer;
    type Record_T is record

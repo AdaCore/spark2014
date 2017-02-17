@@ -1,4 +1,4 @@
-package body P is 
+package body P is
 
    function Bar_05 (A : in Integer;
                     B : in Type_Range)

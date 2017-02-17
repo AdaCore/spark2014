@@ -1,5 +1,5 @@
 with P; use P;
-procedure Main is 
+procedure Main is
    Var : T;
 begin
    Bad (Var);

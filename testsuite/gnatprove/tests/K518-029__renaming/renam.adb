@@ -1,4 +1,4 @@
-package body Renam is 
+package body Renam is
    procedure Set_X_Through_Y is
    begin
       Y := 1;

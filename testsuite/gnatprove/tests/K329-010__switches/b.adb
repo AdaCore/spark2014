@@ -1,5 +1,5 @@
 with A;
-package body B is 
+package body B is
    function F return Integer is
    begin
       return A.F;

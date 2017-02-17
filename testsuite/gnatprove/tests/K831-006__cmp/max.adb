@@ -1,4 +1,4 @@
-package body Max is 
+package body Max is
 
    function Max (Left, Right : Float) return Float is
    begin

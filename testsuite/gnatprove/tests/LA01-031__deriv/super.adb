@@ -1,4 +1,4 @@
-package body Super is 
+package body Super is
 
    function Super_Length (Source : Super_String) return Natural is
    begin

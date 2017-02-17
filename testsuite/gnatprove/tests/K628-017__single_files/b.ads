@@ -1,2 +1,2 @@
-package B is 
+package B is
 end B;

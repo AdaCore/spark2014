@@ -1,4 +1,4 @@
-package body Base_Type is 
+package body Base_Type is
 
    function Add1 (X, Y : T) return T is
    begin

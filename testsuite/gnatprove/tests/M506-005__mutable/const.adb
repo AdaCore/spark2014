@@ -1,4 +1,4 @@
-package body Const is 
+package body Const is
   procedure Simple (X : T) is
     Z : Integer;
   begin

@@ -1,4 +1,4 @@
-procedure P (X, Y : Integer) is 
+procedure P (X, Y : Integer) is
    type M is mod 16;
    type N is range 0 .. 32;
    subtype S is M;

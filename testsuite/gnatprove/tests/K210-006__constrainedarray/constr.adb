@@ -1,4 +1,4 @@
-package body Constr is  
+package body Constr is
    procedure Incr_Ar (X : in out One_Ten_Vect)
    is
    begin

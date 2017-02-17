@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    procedure Swap (S : in out T; I1, I2 : Entry_Id)
       with Post => Get_Remaining (S) = Get_Remaining (S'Old);

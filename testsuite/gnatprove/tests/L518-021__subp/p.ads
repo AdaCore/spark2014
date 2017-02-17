@@ -1,4 +1,4 @@
-package P is 
+package P is
     X : Integer;
     function F return Integer is (X);
     function G return Integer;

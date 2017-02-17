@@ -1,4 +1,4 @@
-package Test is 
+package Test is
 
    type Ar is array (1..10) of Integer;
 

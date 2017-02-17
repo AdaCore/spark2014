@@ -1,4 +1,4 @@
-procedure Bool is pragma SPARK_Mode (On);  
+procedure Bool is pragma SPARK_Mode (On);
    --  in place swapping of Boolean values
    procedure Swap (X, Y : in out Boolean) with
      Post => X = Y'Old and Y = X'Old

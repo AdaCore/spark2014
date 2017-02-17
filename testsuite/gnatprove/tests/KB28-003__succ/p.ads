@@ -1,4 +1,4 @@
-package P is 
+package P is
    type T is (A, B, C, D);
 
    function Id_Not_A (X : T) return T

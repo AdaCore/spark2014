@@ -1,4 +1,4 @@
-package body P is  
+package body P is
    type T is record
       Y, Z, T, U, V : Integer;
    end record;

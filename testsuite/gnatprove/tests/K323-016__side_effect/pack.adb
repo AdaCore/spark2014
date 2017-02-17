@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    function F1 return Boolean is
    begin

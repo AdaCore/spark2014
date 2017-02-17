@@ -1,7 +1,7 @@
 with Reorder_P; use Reorder_P;
 with Reorder_Q; use Reorder_Q;
 with Unknown;
-procedure Reorder_Main is 
+procedure Reorder_Main is
 begin
    case Unknown.Value is
       when 0 =>

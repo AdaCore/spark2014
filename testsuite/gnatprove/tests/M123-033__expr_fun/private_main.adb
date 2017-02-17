@@ -1,7 +1,7 @@
 with Private_P; use Private_P;
 with Private_Q; use Private_Q;
 with Unknown;
-procedure Private_Main is 
+procedure Private_Main is
 begin
    case Unknown.Value is
       when 0 =>

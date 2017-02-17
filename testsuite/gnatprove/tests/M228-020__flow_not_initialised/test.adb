@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
    procedure Test_01 (A : Integer;
                       B : out Integer)

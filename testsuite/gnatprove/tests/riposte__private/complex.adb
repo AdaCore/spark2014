@@ -6,7 +6,7 @@ is
                    return T
    is
    begin
-      return T'(R => Real_Part, 
+      return T'(R => Real_Part,
                 I => Imag_Part);
    end Create;
 

@@ -1,7 +1,7 @@
 pragma SPARK_Mode;
 with Pack; use Pack;
 
-procedure P is 
+procedure P is
    A : T := 1;
    B : T := 11;
    C : T := -1;

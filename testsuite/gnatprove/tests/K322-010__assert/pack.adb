@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    function F return Boolean is
       pragma Assert (X > 0);

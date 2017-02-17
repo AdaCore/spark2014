@@ -1,7 +1,7 @@
 generic
    type Index is (<>);
    type Item is private;
-package Gen is 
+package Gen is
 
    type List is array (Index range <>) of Item;
 

@@ -1,4 +1,4 @@
-package body Mutable is 
+package body Mutable is
   procedure Simple (X : T) is
     Z : Integer;
   begin

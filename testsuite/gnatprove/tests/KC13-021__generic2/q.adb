@@ -1,4 +1,4 @@
-package body Q is 
+package body Q is
 
    function QF1 (J : Integer) return Integer is
    begin

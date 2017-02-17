@@ -1,6 +1,6 @@
 with Q;
 
-package body P is 
+package body P is
 
    procedure Proc is
    begin
@@ -10,6 +10,6 @@ package body P is
 	 X := X + 1;
       end if;
    end;
-   
+
 end;
 

@@ -3,7 +3,7 @@ package Pkg_A
        Initializes    => (State_A, X, Z, Q)
 is
    pragma Elaborate_Body (Pkg_A);
-   
+
 
    X : Integer;           --  error: not initialized
    Y : Integer;

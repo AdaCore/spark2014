@@ -1,8 +1,8 @@
 Package body memcpy
-with SPARK_Mode 
+with SPARK_Mode
 is
-   
-   
+
+
    procedure memcpy2
    is
       RDX_400586 : Unsigned64 := X86.RDX;
@@ -40,7 +40,7 @@ is
       X86.OverflowFlag := false;
 
       -- 4005a0  jnz     short loc_400615
-      if not ( ( X86.RAX /=  0 ) or else  ( ( X86.ReadMem64(( X86.RBP -64 ))  and  16#7# )  /=  0 ) or else  ( ( X86.ReadMem64(( X86.RBP -72 ))  and  16#7# )  /=  0 ) ) then 
+      if not ( ( X86.RAX /=  0 ) or else  ( ( X86.ReadMem64(( X86.RBP -64 ))  and  16#7# )  /=  0 ) or else  ( ( X86.ReadMem64(( X86.RBP -72 ))  and  16#7# )  /=  0 ) ) then
 
          -- 4005ba  mov     rax, [rbp+var_38]
          X86.RAX :=  X86.ReadMem64(( X86.RBP -56 )) ;
@@ -92,6 +92,6 @@ is
       return;
 
    end memcpy2;
-   
- 
+
+
 end memcpy;

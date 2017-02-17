@@ -1,4 +1,4 @@
-package R is 
+package R is
     type Arr is array (Integer range <>) of Integer;
 
     procedure Half (A : in out Arr) with

@@ -1,4 +1,4 @@
-package User is 
+package User is
 
    procedure P;
 end User;

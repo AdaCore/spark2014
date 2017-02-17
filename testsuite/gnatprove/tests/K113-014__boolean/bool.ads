@@ -1,4 +1,4 @@
-package Bool is  
+package Bool is
    type OpAndNullT is (
                        NullOp,
                        ArchiveLog,

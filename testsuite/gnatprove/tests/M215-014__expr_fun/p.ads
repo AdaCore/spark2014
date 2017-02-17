@@ -1,4 +1,4 @@
-package P is 
+package P is
    Current_Mode : Integer;
    function No_Change return Boolean
    is (True)

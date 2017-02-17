@@ -1,5 +1,5 @@
 
-package Pack is 
+package Pack is
    subtype Fixed_String is String (1 .. 15);
 
    type Rec is record

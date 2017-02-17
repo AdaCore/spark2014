@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
   L : constant Natural := 21;
 
   generic

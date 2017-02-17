@@ -1,4 +1,4 @@
-package body Arrays is  
+package body Arrays is
    function Sum (X : T) return Natural is
       S : Natural := 0;
    begin

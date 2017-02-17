@@ -1,4 +1,4 @@
-package body Test is 
+package body Test is
 
   X : Integer := 0;
 

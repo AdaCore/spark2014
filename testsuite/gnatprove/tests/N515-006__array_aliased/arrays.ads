@@ -1,5 +1,5 @@
 package Arrays with
   SPARK_Mode
-is 
+is
    type Ar is array (1..10) of aliased Integer;
 end Arrays;

@@ -1,4 +1,4 @@
-package body Named is 
+package body Named is
    function L (X : Ar) return A is
    begin
       return X'Last;

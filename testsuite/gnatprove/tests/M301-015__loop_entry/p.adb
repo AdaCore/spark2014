@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
    Last : constant := 3;
    subtype Index is Integer range 1 .. Last;
    type T1 is array (Index) of Integer;

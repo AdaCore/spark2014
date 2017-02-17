@@ -1,4 +1,4 @@
-package A is 
+package A is
    type T is
       record
          A : Integer;

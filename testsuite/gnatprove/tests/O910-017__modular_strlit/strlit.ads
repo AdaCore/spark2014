@@ -1,4 +1,4 @@
-package Strlit with SPARK_Mode is 
+package Strlit with SPARK_Mode is
 
    type Mod_8 is mod 2 ** 8;
    type Mod_String is array (Mod_8 range <>) of Character;

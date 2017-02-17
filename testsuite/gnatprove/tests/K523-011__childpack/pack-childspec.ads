@@ -1,4 +1,4 @@
-package Pack.ChildSpec is 
+package Pack.ChildSpec is
 
    type A is array (Int) of Int;
 

@@ -2,7 +2,7 @@ package body Pkg_A
   with Refined_State => (State_A => A,
                          State_B => (B, C))
 is
-   
+
 
    A : Integer;        --  error: not initialized
    B : Integer;

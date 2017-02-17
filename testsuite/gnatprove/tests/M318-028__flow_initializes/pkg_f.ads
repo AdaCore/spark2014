@@ -3,7 +3,7 @@ with Pkg_B;
 package Pkg_F
   with Initializes => (State => Pkg_B.State)  --  OK
 is
-   
+
 
    State : Integer;
 

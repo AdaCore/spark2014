@@ -1,7 +1,7 @@
 generic
    type Real is digits <>;
 
-package Bar is 
+package Bar is
    type Complex is record
       Re, Im : Real'Base;
    end record;

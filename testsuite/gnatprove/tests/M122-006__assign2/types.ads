@@ -1,4 +1,4 @@
-package Types is 
+package Types is
 
    type Enum is (A, B);
 

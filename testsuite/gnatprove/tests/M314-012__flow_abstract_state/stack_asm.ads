@@ -2,7 +2,7 @@ package Stack_ASM
   with Abstract_State => State
 is
 
-  
+
 
   function Is_Empty return Boolean
     with Global => State;

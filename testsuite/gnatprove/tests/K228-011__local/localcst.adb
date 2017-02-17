@@ -1,4 +1,4 @@
-package body LocalCst is 
+package body LocalCst is
 
    X : constant Integer := 1000;
 

@@ -1,24 +1,24 @@
-package Stack is 
+package Stack is
    pragma Spark_Mode (On);
 
    Max : constant := 100;
-   
+
    type Stack  is private;
 
    package Model is
       type M is array (Positive range <>) of Integer;
-      
+
       function To (S : Stack) return M with
         Post => To'Result'First = 1 and then To'Result'Last >= 0;
    end Model;
-   
+
    use Model;
 
    function Is_Full  (S : Stack) return Boolean is
      (To (S)'Last >= Max);
    function Is_Empty (S : Stack) return Boolean is
      (To (S)'Last < 1);
-   
+
    function Empty_Stack return Stack with
      Post => Is_Empty (Empty_Stack'Result);
 

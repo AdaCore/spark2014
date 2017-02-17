@@ -11,7 +11,7 @@ generic
    with function F1 (J : Integer) return Integer;
    with procedure P1 (J : in out Integer);
 
-package P is 
+package P is
 
    type R is record
       A : T1;

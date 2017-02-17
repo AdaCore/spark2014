@@ -1,4 +1,4 @@
-package C is 
+package C is
 
    procedure P (X : Integer) with
       Pre => (X > 0);

@@ -1,7 +1,7 @@
-package body Test is 
+package body Test is
    procedure Compare_And_Swap (X, Y : in out Integer) is
    begin
-      if Y > X then 
+      if Y > X then
          Swap:
             declare
                Temp : Integer;

@@ -1,6 +1,6 @@
 with Rec;
 
-package User is 
+package User is
    type T is private;
 
 private

@@ -1,4 +1,4 @@
-package P is 
+package P is
    subtype Index is Integer;
    type Arr is array (Index range 1 .. 10) of Integer;
    procedure Swap (A : in out Arr; J, K : Index) with

@@ -1,4 +1,4 @@
-package Casing is 
+package Casing is
 
    function F (X : Integer) return Integer
       with Pre => (X < Integer'Last),

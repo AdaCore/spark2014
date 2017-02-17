@@ -1,7 +1,7 @@
 
      --=================================================================--
 
-package body FB20A00 is 
+package body FB20A00 is
 
    function Find ( Str : in String ;
                    Sub : in String ) return Boolean is

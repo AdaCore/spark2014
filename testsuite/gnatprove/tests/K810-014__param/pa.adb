@@ -1,4 +1,4 @@
-package body Pa is 
+package body Pa is
 
    function F return T is
       V : T := (D => 2, X => 123);

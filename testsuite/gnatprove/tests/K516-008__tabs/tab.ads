@@ -1,4 +1,4 @@
-package Tab is 
+package Tab is
    subtype Index is Integer range 1 .. 10;
    type Arr is array (Index) of Integer;
    procedure Tab_Filter (B : in Arr; Threshold : in Integer; A : in out Arr)

@@ -1,6 +1,6 @@
 package Pkg_C
 is
-   
+
 
    State : Integer;
 

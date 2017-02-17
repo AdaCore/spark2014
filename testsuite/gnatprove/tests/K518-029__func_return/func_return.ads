@@ -1,4 +1,4 @@
-package Func_Return is 
+package Func_Return is
 
    type T is range -20 .. 20;
    type NT is new T range 0 .. 20;

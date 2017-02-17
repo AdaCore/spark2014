@@ -1,7 +1,7 @@
 with Text_IO, Calendar;
 use Text_IO, Calendar;
 
-package body Report is 
+package body Report is
 
      procedure Result is
      begin

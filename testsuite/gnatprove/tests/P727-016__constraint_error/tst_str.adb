@@ -1,4 +1,4 @@
-procedure Tst_str is 
+procedure Tst_str is
 
   -- Create a badly defined string.
   --  A valid String requires an index in range of Positive (1..)

@@ -1,4 +1,4 @@
-package Math is 
+package Math is
 
    function Sqrt (X : Integer) return Integer with
      Pre  => X >= 0,

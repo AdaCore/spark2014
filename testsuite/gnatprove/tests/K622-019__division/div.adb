@@ -1,4 +1,4 @@
-procedure Div (X, Y : Integer; Z : out Integer) is 
+procedure Div (X, Y : Integer; Z : out Integer) is
 begin
    if Y /= 0 and then
      (X /= Integer'First or else Y /= -1)

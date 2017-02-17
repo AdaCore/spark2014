@@ -1,6 +1,6 @@
 with P;
 pragma Elaborate_All(P);
-package Q is 
+package Q is
 
    function QF1 (J : Integer) return Integer;
    procedure QP1 (J : in out Integer) with

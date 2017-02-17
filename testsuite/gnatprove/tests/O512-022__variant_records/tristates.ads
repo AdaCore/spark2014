@@ -1,4 +1,4 @@
-package Tristates is 
+package Tristates is
 
    type Tristate is (T_True, T_False, T_Unknown);
 

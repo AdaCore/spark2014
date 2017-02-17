@@ -1,4 +1,4 @@
-package Pack.Child is 
+package Pack.Child is
 
    procedure Do_Nothing (I : in out Int);
 

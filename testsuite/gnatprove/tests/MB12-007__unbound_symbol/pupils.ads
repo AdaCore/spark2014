@@ -30,13 +30,13 @@ is
                    Music,
                    HomeEconomics,
                    DesignAndTechnology,
-                   NoSubject             
+                   NoSubject
 		     -- used for pupils taking less than 10 subjects
                   );
 
   type ResultsType is array (Subject) of Participation;
 
-  Null_Results: constant ResultsType := 
+  Null_Results: constant ResultsType :=
     ResultsType'(others => Null_Participation);
 
   subtype NameIndex is Natural range 1..25;

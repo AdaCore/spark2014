@@ -1,4 +1,4 @@
-package body Max is 
+package body Max is
 
    procedure Step (A: in Arr; I : Index; Max: in out Integer) is
    begin

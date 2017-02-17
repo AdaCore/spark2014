@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
    type Volt is delta 0.125 range -128.0 .. 127.0;
 
    Default_V : Volt := -0.125;

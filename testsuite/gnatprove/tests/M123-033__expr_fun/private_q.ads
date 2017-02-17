@@ -1,4 +1,4 @@
-package Private_Q is 
+package Private_Q is
    function G1 return Integer;
    function G2 return Integer;
    function G3 return Integer;

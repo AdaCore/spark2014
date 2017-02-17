@@ -1,4 +1,4 @@
-package body Broken is 
+package body Broken is
    package body External_Generic
    is
       procedure Fill_Empty_Slots is

@@ -81,20 +81,20 @@ package body Hermes.DER.Encode is
             Value := Length;
             Result(Result'First) := Hermes.Octet(Value);
             return Result(Result'First .. Result'First);
-            
+
          when 128 .. 2**8 - 1 =>
             Value := Length;
             Result(Result'First) := 2#1000_0001#;
             Result(Result'First + 1) := Hermes.Octet(Value);
             return Result(Result'First .. Result'First + 1);
-            
+
          when 2**8 .. 2**16 - 1 =>
             Value := Length;
             Result(Result'First) := 2#1000_0010#;
             Result(Result'First + 2) := Hermes.Octet(Value rem 2**8); Value := Value / 2**8;
             Result(Result'FIrst + 1) := Hermes.Octet(Value);
             return Result(Result'First .. Result'First + 2);
-            
+
          when 2**16 .. 2**24 - 1 =>
             Value := Length;
             Result(Result'First) := 2#1000_0011#;
@@ -102,7 +102,7 @@ package body Hermes.DER.Encode is
             Result(Result'First + 2) := Hermes.Octet(Value rem 2**8); Value := Value / 2**8;
             Result(Result'First + 1) := Hermes.Octet(Value);
             return Result(Result'First .. Result'First + 3);
-            
+
          when others =>
             Value := Length;
             Result(Result'First) := 2#1000_0100#;
@@ -113,9 +113,9 @@ package body Hermes.DER.Encode is
             return Result(Result'First .. Result'First + 4);
       end case;
    end Put_Length_Value;
-   
-   
-   function Put_Boolean_Value(Value : Boolean) return Hermes.Octet_Array is      
+
+
+   function Put_Boolean_Value(Value : Boolean) return Hermes.Octet_Array is
       Boolean_Value_Octet : constant Hermes.Octet := (if Value then 2#1111_1111# else 2#0000_0000#);
       Boolean_Octet_Array : constant Hermes.Octet_Array :=
         (Make_Leading_Identifier
@@ -126,34 +126,34 @@ package body Hermes.DER.Encode is
       return Boolean_Octet_Array;
    end Put_Boolean_Value;
 
-   
+
    function Put_Integer_Value(Value : Integer) return Hermes.Octet_Array is
       Integer_Octet_Array : Hermes.Octet_Array(1 .. 0);
-   begin   
+   begin
       raise Program_Error with "Hermes.DER.Encode.Put_Integer_Value not implemented";
       return Integer_Octet_Array;
    end Put_Integer_Value;
-   
-   
+
+
    function Put_Octet_String_Value(Value : Hermes.Octet_Array) return Hermes.Octet_Array is
      (Make_Leading_Identifier
         (Tag_Class       => Class_Universal,
          Structured_Flag => Primitive,
          Tag             => Tag_Octet_String) & Put_Length_Value(Value'Length) & Value);
-     
-   
-   function Put_Null_Value return Hermes.Octet_Array is 
+
+
+   function Put_Null_Value return Hermes.Octet_Array is
      (Make_Leading_Identifier
         (Tag_Class       => Class_Universal,
          Structured_Flag => Primitive,
          Tag             => Tag_Null) & 2#0000_0000#);
-   
-   
+
+
    function Put_OID_Value(Value : Hermes.OID.Object_Identifier) return Hermes.Octet_Array is
       OID_Octet_Array : Hermes.Octet_Array(1 .. 0);
    begin
       raise Program_Error with "Hermes.DER.Encode.Put_OID_Value not implemented";
       return OID_Octet_Array;
    end Put_OID_Value;
-     
+
 end Hermes.DER.Encode;

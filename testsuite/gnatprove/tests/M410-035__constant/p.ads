@@ -1,4 +1,4 @@
-package P is 
+package P is
    C : constant Boolean;
    D : constant Boolean := True;
    E : constant Boolean;

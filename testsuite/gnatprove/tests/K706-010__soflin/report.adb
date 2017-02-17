@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Report is 
+package body Report is
 
    procedure Put_Msg is
    begin

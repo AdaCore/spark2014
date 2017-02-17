@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    function F (X, Y : T; Z : Boolean := Default) return T is
       T : Boolean := Z;
    begin

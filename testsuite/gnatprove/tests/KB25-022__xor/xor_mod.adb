@@ -1,4 +1,4 @@
-procedure Xor_Mod is 
+procedure Xor_Mod is
    type T is mod 256;
 
    function My_Xor (A, B : T) return T is

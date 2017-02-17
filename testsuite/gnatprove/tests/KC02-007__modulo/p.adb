@@ -1,4 +1,4 @@
-package body P is 
+package body P is
 
    function F (X : T) return Integer is
       Y : T := X + 2;

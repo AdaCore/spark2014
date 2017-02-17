@@ -1,4 +1,4 @@
-package P is  
+package P is
 
    procedure Not_Guarded (X, Y : Integer) with
      Pre => X / Y > 0;

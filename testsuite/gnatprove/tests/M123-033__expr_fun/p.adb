@@ -1,5 +1,5 @@
 with Unknown;
-package body P is 
+package body P is
    procedure P1 is
    begin
       case Unknown.Value is

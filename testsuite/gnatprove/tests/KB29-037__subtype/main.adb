@@ -1,6 +1,6 @@
 with Sub; use Sub;
 
-procedure Main is pragma SPARK_Mode (On); 
+procedure Main is pragma SPARK_Mode (On);
    X : constant S := 22;
    K : My_Int;
    Z : S := 22;

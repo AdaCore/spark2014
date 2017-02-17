@@ -1,4 +1,4 @@
-package body Substract is 
+package body Substract is
    function Sub (First : Integer; Second : Integer) return Integer is
    begin
       return First - Second;

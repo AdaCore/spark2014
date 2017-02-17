@@ -1,4 +1,4 @@
-package P is pragma SPARK_Mode (On); 
+package P is pragma SPARK_Mode (On);
 
    type A is array (Integer range 1 .. 10, Integer range 2 .. 11) of Integer;
 

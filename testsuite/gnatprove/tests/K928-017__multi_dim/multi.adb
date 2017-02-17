@@ -1,4 +1,4 @@
-package body Multi is 
+package body Multi is
 
    procedure P4 (A : in out A4; B : Integer) is
    begin

@@ -1,4 +1,4 @@
-package Identity is 
+package Identity is
 
    --  A name is a non-null string of up to 255 characters
 

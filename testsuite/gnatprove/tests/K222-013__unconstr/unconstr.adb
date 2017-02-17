@@ -1,4 +1,4 @@
-package body Unconstr is  
+package body Unconstr is
 
    procedure P (X : out Vec) is
    begin

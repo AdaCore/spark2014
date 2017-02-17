@@ -1,4 +1,4 @@
-package body Typeinv is 
+package body Typeinv is
 
    function New_T ( X : Integer) return T is
    begin

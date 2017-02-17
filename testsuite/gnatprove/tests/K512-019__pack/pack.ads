@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    procedure Do_Nothing;
 

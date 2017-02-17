@@ -1,4 +1,4 @@
-package body Utils is pragma SPARK_Mode (On); 
+package body Utils is pragma SPARK_Mode (On);
 
    ------------
    -- Sum_Of --

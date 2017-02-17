@@ -1,4 +1,4 @@
-package Money is 
+package Money is
 
    --  An amount of mone is always qualified by the currency in which it is
    --  expressed. None corresponds to the invalid currency.

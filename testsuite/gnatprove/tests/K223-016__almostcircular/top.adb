@@ -1,5 +1,5 @@
 with Bot;
-package body Top is  
+package body Top is
    Loc : Bot.MySmall;
 
    procedure A (X : MyInt)

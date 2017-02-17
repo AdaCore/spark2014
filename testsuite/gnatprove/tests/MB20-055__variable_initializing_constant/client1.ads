@@ -5,5 +5,5 @@ with Trouble;
 package Client1
   with SPARK_Mode => On
 is
-   C : constant Integer := (Trouble.V + 1);   
+   C : constant Integer := (Trouble.V + 1);
 end Client1;

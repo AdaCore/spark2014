@@ -2,7 +2,7 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO;    use Ada.Text_IO;
 with Utils;          use Utils;
 
-procedure For_Loops is pragma SPARK_Mode (On); 
+procedure For_Loops is pragma SPARK_Mode (On);
    Counter : Natural := 1;
 
 begin

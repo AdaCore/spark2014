@@ -1,4 +1,4 @@
-package body P is  
+package body P is
    -- pragma Annotate (gnatprove, Force);
 
    procedure Proc (X, Y : Integer)

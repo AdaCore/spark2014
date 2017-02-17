@@ -1,4 +1,4 @@
-package Top is  
+package Top is
    type MyInt is range 1..100;
 
    procedure A (X : MyInt);

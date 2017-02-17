@@ -1,4 +1,4 @@
-package Power_and_Sum is pragma SPARK_Mode (On); 
+package Power_and_Sum is pragma SPARK_Mode (On);
    procedure Power(X : in Integer; N : in Positive; Result: out Integer) with
      Post => X ** N = Result;
 

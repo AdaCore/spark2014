@@ -1,4 +1,4 @@
-package body Tab is 
+package body Tab is
    procedure Tab_Filter (B : in Arr; Threshold : in Integer; A : in out Arr)
    is
       Cur : Integer := 0;

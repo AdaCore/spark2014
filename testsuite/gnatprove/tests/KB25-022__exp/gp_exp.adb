@@ -1,4 +1,4 @@
-procedure Gp_Exp (X : Integer; Y : Float) is 
+procedure Gp_Exp (X : Integer; Y : Float) is
    A : Integer;
    B : Float;
 begin

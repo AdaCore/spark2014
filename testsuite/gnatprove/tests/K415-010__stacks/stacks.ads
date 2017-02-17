@@ -1,4 +1,4 @@
-package Stacks is 
+package Stacks is
 
    Max : constant Positive := 10;
 

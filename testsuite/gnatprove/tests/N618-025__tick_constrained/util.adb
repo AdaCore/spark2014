@@ -1,4 +1,4 @@
-package body Util is  
+package body Util is
    function Extract_Unsigned_16(Query : Network_DNS_Query;
                                 Offset : Network_DNS_Query_Range)
                                 return Unsigned_16 is

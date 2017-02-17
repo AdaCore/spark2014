@@ -1,4 +1,4 @@
-procedure Q is 
+procedure Q is
 begin
    null;
 end Q;

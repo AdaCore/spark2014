@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
 
    function Next (M : Modular) return Modular is
    begin

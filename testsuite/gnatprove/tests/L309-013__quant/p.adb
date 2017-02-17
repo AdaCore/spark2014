@@ -1,4 +1,4 @@
-procedure P is 
+procedure P is
     function F (X : Integer) return Boolean is (X > 5);
     type Barr is array (1 .. 10) of Boolean;
     B : Barr;

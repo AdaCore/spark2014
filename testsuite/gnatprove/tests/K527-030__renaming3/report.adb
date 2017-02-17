@@ -1,6 +1,6 @@
 with Renamed;
 
-package body Report is 
+package body Report is
 
    procedure Result is
       X : Boolean;

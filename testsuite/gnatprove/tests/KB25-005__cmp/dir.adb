@@ -1,4 +1,4 @@
-package body Dir is 
+package body Dir is
 
    function Normalize_Pathname
      (Name           : String;

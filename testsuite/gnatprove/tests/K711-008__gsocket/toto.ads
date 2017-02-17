@@ -1,4 +1,4 @@
-package Toto is 
+package Toto is
 
    type Family_Type is (Family_Inet);
    type Inet_Addr_Type (Family : Family_Type := Family_Inet) is private;

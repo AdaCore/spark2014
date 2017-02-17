@@ -1,7 +1,7 @@
 with Util; use Util;
 
 -- FIXME: GNATprove cannot prove this function?
-package body Parse is  
+package body Parse is
    procedure Parse_Header(Query : Network_DNS_Query;
                           Result : out Parse_Result_T) is
       Opcode : Unsigned_8;

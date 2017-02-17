@@ -1,5 +1,5 @@
 with X;
-package body Y is 
+package body Y is
    procedure Q is
       A : X.T;
    begin

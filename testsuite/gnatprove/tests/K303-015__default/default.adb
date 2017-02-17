@@ -1,4 +1,4 @@
-package body Default is 
+package body Default is
    function Sub (X : Integer := 0; Y : Integer) return Integer
    is
    begin

@@ -1,7 +1,7 @@
 with Types; use Types;
 with Interfaces; use Interfaces;
 
-package Parse is pragma SPARK_Mode (On);  
+package Parse is pragma SPARK_Mode (On);
 
    type Parse_Result_T (Return_Code : Return_Code_T := Invalid_Query) is record
       case Return_Code is

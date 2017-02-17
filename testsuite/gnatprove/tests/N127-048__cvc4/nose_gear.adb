@@ -2,7 +2,7 @@
 --
 --  @generated with GNAT Model Compiler 1.0w
 --  Command line arguments:
---   
+--
 --    --clean nose_gear.mdl
 --    --typing nose_gear_types.txt
 --    --matlab nose_gear_def.m
@@ -44,7 +44,7 @@ package body nose_gear is
        estimatedGroundVelocityIsAvailable : out Boolean)
    is
       pragma Warnings (Off, "unused assignment");
-      
+
       use type Boolean;
       use type Integer_32;
       use type Long_Float;

@@ -6,7 +6,7 @@ is
    begin
       X := not X;
    end Op;
-   
+
 begin
    V := 1;
 end Trouble;

@@ -8,5 +8,5 @@ package body Q is
          P.Flip (P.PO1);
       end loop;
    end;
-      
+
 end;

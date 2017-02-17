@@ -1,4 +1,4 @@
-package Across_Compilation_Units is 
+package Across_Compilation_Units is
    function Prime (X: Natural) return Boolean;
 
    procedure Swap (X, Y: in out Integer);

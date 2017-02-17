@@ -6,7 +6,7 @@ package body Debug_Pack is
    pragma Import (C, C_ConsolePuts, "consolePuts");
    --  Binding for the 'consolePuts' function
    --  declared in 'utils/interface/debug.h'
-   
+
    procedure Debug_Print (Str : String) is
       Ignore : Integer;
       Buffer : aliased String (1 .. Str'Length + 1);

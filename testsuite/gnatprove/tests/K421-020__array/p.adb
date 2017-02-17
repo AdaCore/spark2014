@@ -1,4 +1,4 @@
-procedure P (X, Y : Integer) is 
+procedure P (X, Y : Integer) is
 
 
    subtype S1 is Integer range 1 .. 10;

@@ -1,4 +1,4 @@
-package Simple_Unc_Arrays is pragma SPARK_Mode (On); 
+package Simple_Unc_Arrays is pragma SPARK_Mode (On);
 
   -- This should be a generic parameter
    type Value is new Integer; -- should be range <>;

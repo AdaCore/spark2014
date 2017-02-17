@@ -1,5 +1,5 @@
 with Pack;
-package body Qack is 
+package body Qack is
 
    X : Boolean;
 

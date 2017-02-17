@@ -1,4 +1,4 @@
-package body TCTouch is 
+package body TCTouch is
 
   Collection : String (1 .. 10);
   Finger     : Natural := 0;

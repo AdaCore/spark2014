@@ -1,4 +1,4 @@
-package Casing is 
+package Casing is
    type En is (A, B, C, D, E);
 
    function F (X : En) return Integer

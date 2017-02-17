@@ -1,6 +1,6 @@
 with Unknown;
 with Reorder_P; use Reorder_P;
-package body Reorder_Q is 
+package body Reorder_Q is
    procedure Q1 is
    begin
       case Unknown.Value is

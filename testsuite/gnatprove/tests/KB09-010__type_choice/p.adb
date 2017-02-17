@@ -1,4 +1,4 @@
-package body P is 
+package body P is
    function F (X : Any_Priority) return Integer is
    begin
       case X is

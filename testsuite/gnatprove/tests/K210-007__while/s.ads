@@ -1,4 +1,4 @@
-package S is  
+package S is
 
    type Array_Range is range 1 .. 10;
 

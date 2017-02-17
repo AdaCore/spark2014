@@ -1,4 +1,4 @@
-package body Pack is 
+package body Pack is
    function Query_X2 return T2 is (X2);
 
    function Query_X1_Bis return Boolean with

@@ -1,4 +1,4 @@
-package Mutable is 
+package Mutable is
 
   type D is new Integer range 1 .. 10;
 

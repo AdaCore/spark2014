@@ -1,4 +1,4 @@
-package Pack is 
+package Pack is
 
    subtype Same_String is String;
 

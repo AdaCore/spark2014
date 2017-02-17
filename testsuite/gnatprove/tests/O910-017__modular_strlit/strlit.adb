@@ -1,4 +1,4 @@
-package body Strlit with SPARK_Mode is 
+package body Strlit with SPARK_Mode is
 
    function DoSome return Integer is
       X : Mod_String (1..10) := "1234567890";

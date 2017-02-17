@@ -1,4 +1,4 @@
-package body Enum is  
+package body Enum is
 
    function Sunday return Day is
    begin

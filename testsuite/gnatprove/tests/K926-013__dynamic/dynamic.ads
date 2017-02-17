@@ -1,4 +1,4 @@
-package Dynamic is 
+package Dynamic is
 
    type T is array(Integer range <>) of Boolean;
 

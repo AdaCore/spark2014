@@ -1,4 +1,4 @@
-package Stack is 
+package Stack is
 
    Max_Size : constant Positive := 100;
 

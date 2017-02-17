@@ -7,4 +7,4 @@ begin
    Verify (Z);
    H := X and Y and Z;
 end Client;
-   
+

@@ -16,7 +16,7 @@ is
   function To_Modular_Type( Array_of_Bits : in Bit_Array )
                            return Modular_Type
   is
-    
+
     First_Index : constant Index_Type := Array_of_Bits'First;
     Last_Index  : constant Index_Type := Array_of_Bits'Last;
     Bits : Modular_Type := 0;

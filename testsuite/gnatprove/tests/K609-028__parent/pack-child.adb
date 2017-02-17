@@ -1,4 +1,4 @@
-package body Pack.Child is 
+package body Pack.Child is
 
    procedure Do_Something is
    begin
