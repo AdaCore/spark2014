@@ -3082,8 +3082,7 @@ package body Flow.Analysis is
             while Present (Hidden_State) loop
                F := Direct_Mapping_Id (Hidden_State);
 
-               if Ekind (Hidden_State) in Object_Kind
-                 and then Is_Constant_Object (Hidden_State)
+               if Is_Constant_Object (Hidden_State)
                  and then Has_Variable_Input (Hidden_State)
                  and then not All_Constituents.Contains (F)
                then
