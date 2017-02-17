@@ -31,8 +31,4 @@ package Gnat2Why.External_Axioms is
      (Package_Entity : Entity_Id);
    --  Translate a package with a Why3 axiomatization
 
-   procedure Complete_External_Entities (E : Entity_Id);
-   --  @param E A package with external axioms
-   --  It completes the declarations of all declared type entities.
-
 end Gnat2Why.External_Axioms;

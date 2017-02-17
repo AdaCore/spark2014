@@ -28,7 +28,6 @@ with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
 with Einfo;                              use Einfo;
 with Exp_Util;                           use Exp_Util;
-with Gnat2Why.Types;                     use Gnat2Why.Types;
 with Gnat2Why.Util;                      use Gnat2Why.Util;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
@@ -36,8 +35,6 @@ with Sem_Aux;                            use Sem_Aux;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with SPARK_Util;                         use SPARK_Util;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
-with Stand;                              use Stand;
 with Why.Atree.Builders;                 use Why.Atree.Builders;
 with Why.Atree.Modules;                  use Why.Atree.Modules;
 with Why.Gen.Arrays;                     use Why.Gen.Arrays;
@@ -56,80 +53,6 @@ package body Gnat2Why.External_Axioms is
    procedure Register_External_Entities (E : Entity_Id);
    --  This function is called on a package with external axioms.
    --  It registers all entities in the global symbol table.
-
-   --------------------------------
-   -- Complete_External_Entities --
-   --------------------------------
-
-   procedure Complete_External_Entities (E : Entity_Id) is
-
-      procedure Complete_Decls (Decls : List_Id);
-      --  Complete declarations of type entities from the declaration list
-
-      --------------------
-      -- Complete_Decls --
-      --------------------
-
-      procedure Complete_Decls (Decls : List_Id) is
-         N : Node_Id := First (Decls);
-      begin
-         while Present (N) loop
-
-            --  For type declarations, generate a completion module
-
-            if Comes_From_Source (N)
-              and then Nkind (N) in
-              N_Full_Type_Declaration
-                | N_Private_Extension_Declaration
-                  | N_Private_Type_Declaration
-                    | N_Subtype_Declaration
-            then
-               declare
-                  E  : constant Entity_Id := Defining_Entity (N);
-               begin
-                  if not Is_Standard_Boolean_Type (E)
-                    and then E /= Universal_Fixed
-                  then
-                     declare
-                        Compl_File : constant W_Section_Id :=
-                          Dispatch_Entity_Completion (E);
-                     begin
-                        Generate_Type_Completion (Compl_File, E);
-                     end;
-                  end if;
-               end;
-            end if;
-
-            --  Call Complete_Decls recursively on Package_Declaration and
-            --  Package_Instantiation.
-
-            if Comes_From_Source (N) and then
-              Nkind (N) = N_Package_Instantiation
-            then
-               Complete_Decls
-                 (Decls  => Visible_Declarations
-                    (Specification (Instance_Spec (N))));
-            end if;
-
-            if Comes_From_Source (N) and then
-              Nkind (N) in N_Package_Declaration
-            then
-               Complete_Decls
-                 (Decls  => Visible_Declarations (Package_Specification (N)));
-            end if;
-
-            Next (N);
-         end loop;
-      end Complete_Decls;
-
-   --  Start of processing for Complete_External_Entities
-
-   begin
-      --  Complete type declarations
-
-      Complete_Decls
-        (Decls  => Visible_Declarations (Package_Specification (E)));
-   end Complete_External_Entities;
 
    --------------------------------
    -- Register_External_Entities --

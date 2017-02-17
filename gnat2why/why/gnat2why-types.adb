@@ -185,11 +185,13 @@ package body Gnat2Why.Types is
             Items    : Item_Array :=
               Get_Binders_From_Variables (To_Name_Set (Variables));
             Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Type_Of_Node (E));
+              New_Temp_Identifier (Typ       => Type_Of_Node (E),
+                                   Base_Name => "expr");
             --  Expression on which we want to assume the property
 
             Slst_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
+              New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                   Base_Name => "skip_top_level");
             --  Only assume initial condition for the components
 
             Def      : W_Pred_Id;
@@ -253,7 +255,7 @@ package body Gnat2Why.Types is
 
             Ovar_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "do_constant");
+                                   Base_Name => "skip_constant");
             --  Do we need to assume the properties on constant parts
 
             Top_Arg : constant W_Identifier_Id :=

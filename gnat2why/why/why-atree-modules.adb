@@ -23,23 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;      use Ada.Containers;
-with Atree;               use Atree;
-with Common_Containers;   use Common_Containers;
-with Einfo;               use Einfo;
-with GNATCOLL.Utils;      use GNATCOLL.Utils;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with SPARK_Util;          use SPARK_Util;
-with SPARK_Util.Types;    use SPARK_Util.Types;
-with Stand;               use Stand;
-with VC_Kinds;            use VC_Kinds;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Inter;           use Why.Inter;
+with Ada.Containers;             use Ada.Containers;
+with Atree;                      use Atree;
+with Common_Containers;          use Common_Containers;
+with Einfo;                      use Einfo;
+with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with Gnat2Why.Util;              use Gnat2Why.Util;
+with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
+with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with SPARK_Util.Types;           use SPARK_Util.Types;
+with Stand;                      use Stand;
+with VC_Kinds;                   use VC_Kinds;
+with Why.Atree.Accessors;        use Why.Atree.Accessors;
+with Why.Atree.Builders;         use Why.Atree.Builders;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Arrays;             use Why.Gen.Arrays;
+with Why.Inter;                  use Why.Inter;
 
 package body Why.Atree.Modules is
 
@@ -152,12 +153,15 @@ package body Why.Atree.Modules is
          return W_Module_Id (Element (C));
       elsif Nkind (E) in N_Entity then
          declare
+            Name : constant Name_Id :=
+              NID (Full_Name (E) &
+                   (if Entity_In_Ext_Axioms (E) then ""
+                    else To_String (WNE_Axiom_Suffix)));
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,
                  File     => No_Name,
-                 Name     =>
-                   NID (Full_Name (E) & To_String (WNE_Axiom_Suffix)));
+                 Name     => Name);
          begin
             Axiom_Modules.Insert (E, Why_Node_Id (M));
             return M;

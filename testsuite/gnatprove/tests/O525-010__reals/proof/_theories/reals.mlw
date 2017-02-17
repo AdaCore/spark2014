@@ -18,6 +18,10 @@ module Reals__real
  axiom object__size_axiom :
   forall a  : real__. (object__size a >= 0)
 
+ predicate dynamic_invariant real__ bool bool bool = true
+ 
+ predicate default_initial_assumption real__ bool = true
+
 end
 
 module Reals__zero

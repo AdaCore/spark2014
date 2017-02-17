@@ -182,11 +182,6 @@ package body Gnat2Why.Driver is
                end;
             end if;
 
-         when E_Package =>
-            if Entity_In_Ext_Axioms (E) then
-               Complete_External_Entities (E);
-            end if;
-
          when others =>
             null;
       end case;
