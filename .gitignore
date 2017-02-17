@@ -17,6 +17,8 @@
 *.rep
 *.pyc
 *.swp
+*.stdout
+*.stderr
 auto.cgpr
 GNAT-*
 gnat_src
