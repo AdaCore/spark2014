@@ -4753,7 +4753,7 @@ package body Flow.Analysis is
 
       Visible_Vars : Flow_Id_Sets.Set;
 
-      procedure Visitor (V  : Vertex_Id;
+      procedure Visitor (V  :     Vertex_Id;
                          TV : out Simple_Traversal_Instruction);
       --  Emit a high check for all publically visible variables modified
       --  at this vertex.
@@ -4762,38 +4762,34 @@ package body Flow.Analysis is
       -- Visitor --
       -------------
 
-      procedure Visitor (V  : Vertex_Id;
+      procedure Visitor (V  :     Vertex_Id;
                          TV : out Simple_Traversal_Instruction)
       is
-         K : constant Flow_Id := FA.PDG.Get_Key (V);
+         K : Flow_Id renames FA.PDG.Get_Key (V);
+
       begin
          TV := Continue;
 
-         if not Present (K) then
-            return;
-         end if;
-
          --  Only check nodes in the body
-         if K.Kind in Direct_Mapping | Record_Field and then
-           Get_Flow_Scope (K.Node).Part in Visible_Part | Private_Part
+         if Present (K)
+           and then K.Kind in Direct_Mapping | Record_Field
+           and then Get_Flow_Scope (K.Node).Part = Body_Part
          then
-            return;
+            for Var of Visible_Vars loop
+               if FA.Atr (V).Variables_Defined.Contains (Var) then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "modification of & in elaboration " &
+                                 "requires Elaborate_Body on package &",
+                     Severity => High_Check_Kind,
+                     N        => Error_Location (FA.PDG, FA.Atr, V),
+                     F1       => Var,
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                     Tag      => Pragma_Elaborate_Body_Needed,
+                     Vertex   => V);
+               end if;
+            end loop;
          end if;
-
-         for Var of Visible_Vars loop
-            if FA.Atr (V).Variables_Defined.Contains (Var) then
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "modification of & in elaboration requires " &
-                    "Elaborate_Body on package &",
-                  Severity => High_Check_Kind,
-                  N        => Error_Location (FA.PDG, FA.Atr, V),
-                  F1       => Var,
-                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                  Tag      => Pragma_Elaborate_Body_Needed,
-                  Vertex   => V);
-            end if;
-         end loop;
       end Visitor;
 
    --  Start of processing for Check_Elaborate_Body
