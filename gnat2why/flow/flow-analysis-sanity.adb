@@ -1028,28 +1028,26 @@ package body Flow.Analysis.Sanity is
 
       procedure Check (L : List_Id)
       is
-         E : Entity_Id := First (L);
+         N : Node_Id := First (L);
       begin
-         while Present (E) loop
-            case Nkind (E) is
+         while Present (N) loop
+            case Nkind (N) is
                when N_Object_Declaration =>
-                  --  E is an object declared immediately within the private
+                  --  N is an object declared immediately within the private
                   --  part and we detect if is a constant with variable input.
 
-                  Detect_Constant_With_Variable_Input
-                    (Defining_Identifier (E));
+                  Detect_Constant_With_Variable_Input (Defining_Entity (N));
 
                when N_Package_Declaration =>
-                  --  E is a package declared immediately within the private
+                  --  N is a package declared immediately within the private
                   --  part. If it is in SPARK, we recursively check its visible
                   --  declarations.
 
                   declare
-                     Nested_Spec : constant Entity_Id := Specification (E);
+                     Nested_Spec : constant Node_Id := Specification (N);
 
                   begin
-                     if Entity_Spec_In_SPARK (Defining_Unit_Name (Nested_Spec))
-                     then
+                     if Entity_Spec_In_SPARK (Defining_Entity (N)) then
                         Check (Visible_Declarations (Nested_Spec));
                      end if;
                   end;
@@ -1058,7 +1056,7 @@ package body Flow.Analysis.Sanity is
                   null;
             end case;
 
-            Next (E);
+            Next (N);
          end loop;
       end Check;
 
@@ -1081,7 +1079,7 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "indicator Part_Of is required in this context: " &
-                 "& is declared in the private part of package &",
+                           "& is declared in the private part of package &",
                SRM_Ref  => "7.2.6(2)",
                N        => E,
                Severity => Error_Kind,
@@ -1127,7 +1125,7 @@ package body Flow.Analysis.Sanity is
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "protected function with effective reads & is " &
-                    "not allowed in SPARK",
+                              "not allowed in SPARK",
                   N        => FA.Spec_Entity,
                   F1       => F,
                   Severity => Error_Kind,
