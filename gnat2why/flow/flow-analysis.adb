@@ -4851,11 +4851,12 @@ package body Flow.Analysis is
          while Flow_Id_Sets.Has_Element (C) loop
             declare
                Var : Flow_Id renames FA.Spec_Vars (C);
+               Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
             begin
                --  Ignore loop variables, in parameters and constants that are
                --  part of our local context.
-               if not Is_Constant (Var)
-                 and then Is_Initialized_At_Elaboration (Var, FA.S_Scope)
+               if not Is_Constant_Object (Obj)
+                 and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
                then
                   Visible_Vars.Insert (Var);
                end if;
