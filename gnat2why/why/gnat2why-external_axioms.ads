@@ -23,12 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types; use Types;
+with Atree;                      use Atree;
+with Einfo;                      use Einfo;
+with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with Types;                      use Types;
 
 package Gnat2Why.External_Axioms is
 
    procedure Translate_Package_With_External_Axioms
-     (Package_Entity : Entity_Id);
+     (Package_Entity : Entity_Id)
+   with Pre => Ekind (Package_Entity) = E_Package
+     and then Entity_In_Ext_Axioms (Package_Entity);
    --  Translate a package with a Why3 axiomatization
+
+   procedure Process_External_Entities
+     (Package_Entity : Entity_Id;
+      Process        : not null access procedure (E : Entity_Id))
+   with Pre => Ekind (Package_Entity) = E_Package
+     and then Entity_In_Ext_Axioms (Package_Entity);
+   --  @param Package_Entity A package with external axioms
+   --  Applies Process on all entities declared in Package_Entity.
 
 end Gnat2Why.External_Axioms;

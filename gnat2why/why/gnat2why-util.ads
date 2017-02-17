@@ -355,6 +355,31 @@ package Gnat2Why.Util is
    -- Queries --
    -------------
 
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural;
+   --  @param E record type or private type whose most underlying type is
+   --     a record type. E should be a "Representative Type in SPARK".
+   --  @return the number of regular fields in the record representing E into
+   --     Why3, which contains:
+   --     - One field per component of E visible in SPARK
+   --       (use Component_Is_Visible_In_SPARK)
+   --     - One field for the private part of E if E is a private type
+   --     - One field for the extensions of E if E is tagged
+   --     - One field for the private components of E's private ancestors if E
+   --       is tagged and has private ancestors (use
+   --       Has_Private_Ancestor_Or_Root)
+   --     - One field for each part_of variable, if E is a protected type
+
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
+   --  @param E record type or private type whose most underlying type is
+   --     a record type. E should be a "Representative Type in SPARK".
+   --  @return the number of top-level fields in the record representing E into
+   --     Why3, which contains:
+   --     - A field __split_discrs for discriminants if E has at list one
+   --     - A field __split_fields for regular fields if E has at list one
+   --       (use Count_Why_Regular_Fields)
+   --     - A field attr__constrained if E's discriminants have default values
+   --     - A field __tag if E is tagged
+
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,
    --  or through the read effects of a function call. This is used to

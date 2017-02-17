@@ -4129,15 +4129,6 @@ package body SPARK_Definition is
                end loop;
             end;
 
-            --  Store information about E's components, only for record
-            --  representative types.
-
-            if not Violation_Detected
-              and then Retysp (E) = E
-            then
-               Init_Component_Info (E);
-            end if;
-
             --  A derived type cannot have explicit discriminants
 
             if Nkind (Parent (E)) = N_Private_Extension_Declaration
@@ -4242,13 +4233,6 @@ package body SPARK_Definition is
                Full_Views_Not_In_SPARK.Insert (E, Etype (E));
             end if;
 
-            --  Store information about E's components, only for representative
-            --  types.
-
-            if not Violation_Detected and then Retysp (E) = E then
-               Init_Component_Info (E);
-            end if;
-
          elsif Is_Access_Type (E) then
             Mark_Violation ("access type", E);
 
@@ -4345,12 +4329,6 @@ package body SPARK_Definition is
                   if Full_View_Not_In_SPARK (Etype (E)) then
                      Full_Views_Not_In_SPARK.Include (E, Etype (E));
                   end if;
-               end if;
-
-               --  Store information about E's components
-
-               if not Violation_Detected then
-                  Init_Component_Info_For_Protected_Types (E);
                end if;
 
             else

@@ -28,6 +28,7 @@ with Ada.Unchecked_Deallocation;
 with Common_Containers;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
+with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;

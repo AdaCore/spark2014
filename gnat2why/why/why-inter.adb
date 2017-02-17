@@ -27,6 +27,7 @@ with Atree;                      use Atree;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Namet;                      use Namet;
+with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;

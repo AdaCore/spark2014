@@ -28,6 +28,7 @@ with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Gnat2Why.Util;              use Gnat2Why.Util;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;

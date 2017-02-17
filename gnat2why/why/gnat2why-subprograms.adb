@@ -36,6 +36,7 @@ with GNAT.Source_Info;
 with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Rtsfind;                        use Rtsfind;

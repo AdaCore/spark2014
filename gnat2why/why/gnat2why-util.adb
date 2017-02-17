@@ -30,6 +30,7 @@ with Exp_Util;               use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
@@ -481,6 +482,65 @@ package body Gnat2Why.Util is
    begin
       return Compute_Spec (Params, Nodes, Domain);
    end Compute_Spec;
+
+   ------------------------------
+   -- Count_Why_Regular_Fields --
+   ------------------------------
+
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
+      Count : Natural := Natural (Get_Component_Set (E).Length);
+
+   begin
+      --  Add one field for tagged types to represent the unknown extension
+      --  components. The field for the tag itself is stored directly in the
+      --  Why3 record.
+
+      if Is_Tagged_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      return Count;
+   end Count_Why_Regular_Fields;
+
+   --------------------------------
+   -- Count_Why_Top_Level_Fields --
+   --------------------------------
+
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural is
+      Count : Natural := 0;
+
+   begin
+      --  Store discriminants in a separate sub-record field, so that
+      --  subprograms that cannot modify discriminants are passed this
+      --  sub-record by copy instead of by reference (with the split version
+      --  of the record).
+
+      if Has_Discriminants (E) then
+         Count := Count + 1;
+      end if;
+
+      --  Store components in a separate sub-record field. This includes:
+      --    . visible components of the type
+      --    . invisible components and discriminants of a private ancestor
+      --    . invisible components of a derived type
+
+      if Count_Why_Regular_Fields (E) > 0 then
+         Count := Count + 1;
+      end if;
+
+      --  Directly store the attr__constrained and __tag fields in the record,
+      --  as these fields cannot be modified after object creation.
+
+      if Has_Defaulted_Discriminants (E) then
+         Count := Count + 1;
+      end if;
+
+      if Is_Tagged_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      return Count;
+   end Count_Why_Top_Level_Fields;
 
    -------------------------
    -- Create_Zero_Binding --

@@ -38,6 +38,7 @@ with GNAT.Source_Info;
 with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Lib.Xref;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
