@@ -32,8 +32,20 @@ particular, CVC4 will then become the default prover instead of
 Alt-Ergo. Sources and binaries for provers CVC4 and Z3 can be found on their
 respective websites:
 
- * CVC4: http://cvc4.cs.nyu.edu
- * Z3: https://github.com/Z3Prover/z3
+ * CVC4: http://cvc4.cs.stanford.edu
+ * Z3: https://github.com/Z3Prover/z3 (search for "releases")
+
+Installing CVC4 and Z3 for |SPARK| Discovery
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ * Download the latest version of CVC4 or Z3 from the websites specified
+   above.
+ * Rename the executable file of the download to ``cvc4`` or ``z3`` (with
+   ``.exe`` suffix on Windows). In the case of CVC4, you can simply rename the
+   file you downloaded to ``cvc4`` (or ``cvc4.exe`` on Windows). In the case
+   of Z3, you need to unzip the downloaded file. The executable file is in
+   ``bin/z3``.
+ * Add the location of the executable file to your ``PATH`` variable.
 
 Other Automatic or Manual Provers
 ---------------------------------
