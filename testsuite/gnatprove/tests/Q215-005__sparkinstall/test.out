@@ -1,6 +1,6 @@
 main bin/ dir
 gnatprove
-libexec/spark bin/ dir
+libexec/spark/bin/ dir
 alt-ergo
 codepeer-gcc
 codepeer-gnatls
@@ -29,3 +29,13 @@ why3config
 why3realize
 why3server
 z3
+libexec/spark/share dir
+codepeer
+doc
+gcc-6.3.1
+gnatcoll
+gprconfig
+info
+javascript
+jenkins
+man
