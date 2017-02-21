@@ -229,12 +229,10 @@ package body Flow.Analysis.Sanity is
                begin
                   if Has_Predicates (Typ) then
                      declare
-                        P          : constant Entity_Id :=
-                          Predicate_Function (Typ);
                         GP, GI, GO : Flow_Id_Sets.Set;
                         Deps       : Ordered_Flow_Id_Sets.Set;
                      begin
-                        Get_Globals (Subprogram => P,
+                        Get_Globals (Subprogram => Predicate_Function (Typ),
                                      Scope      => FA.B_Scope,
                                      Classwide  => False,
                                      Proof_Ins  => GP,
