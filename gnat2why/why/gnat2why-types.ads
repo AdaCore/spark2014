@@ -93,7 +93,11 @@ package Gnat2Why.Types is
      (File : W_Section_Id;
       E    : Entity_Id);
    --  Generate the Why3 completion module for the type entity in argument.
-   --  Today, this is useful only for user-defined equalities
+   --  This is useful for user-defined equalities, type predicates, type
+   --  invariants, as well as to define the type dynamic invariant representing
+   --  the constraints respected by the type, and the default initial
+   --  assumption representing the constraints respected by the
+   --  default-initialized values of the type.
 
    procedure Generate_VCs_For_Type
      (File : W_Section_Id;
