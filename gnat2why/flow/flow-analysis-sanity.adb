@@ -261,16 +261,18 @@ package body Flow.Analysis.Sanity is
                         IP   : constant Entity_Id := Invariant_Procedure (Typ);
                         Expr : constant Node_Id :=
                           Get_Expr_From_Check_Only_Proc (IP);
-                        Vars : constant Flow_Id_Sets.Set := Get_Variables
-                          (Expr,
-                           Scope                => FA.B_Scope,
-                           Local_Constants      => Node_Sets.Empty_Set,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => True,
-                           Reduced              => True);
-                        Funs : constant Node_Sets.Set := Get_Functions
-                          (Expr,
-                           Include_Predicates => False);
+                        Vars : constant Flow_Id_Sets.Set :=
+                          Get_Variables
+                            (Expr,
+                             Scope                => FA.B_Scope,
+                             Local_Constants      => Node_Sets.Empty_Set,
+                             Fold_Functions       => False,
+                             Use_Computed_Globals => True,
+                             Reduced              => True);
+                        Funs : constant Node_Sets.Set :=
+                          Get_Functions
+                            (Expr,
+                             Include_Predicates => False);
                      begin
                         --  Check 4.4(2) (no variable inputs)
                         Check_Flow_Id_Set (Flow_Ids => To_Ordered_Flow_Id_Set
