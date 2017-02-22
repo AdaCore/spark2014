@@ -1,0 +1,4 @@
+arr.adb:12:33: info: initialization of "Buffer_Len" proved
+arr.adb:12:45: info: initialization of "Buffer" proved
+arr.adb:18:11: info: range check proved (CVC4: 2 VC)
+arr.adb:19:21: info: initialization of "Buffer" proved
