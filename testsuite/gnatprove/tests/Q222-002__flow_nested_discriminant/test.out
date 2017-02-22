@@ -1,0 +1,5 @@
+p.ads:17:23: default initialization cannot depend on "Obj.D" (SPARK RM 4.4(2))
+p.ads:18:23: default initialization cannot depend on "Nested.Component.D" (SPARK RM 4.4(2))
+q.ads:14:26: default initialization cannot depend on "Obj.D" (SPARK RM 4.4(2))
+q.ads:15:39: default initialization cannot depend on "Nested.Component.D" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof

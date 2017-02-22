@@ -124,7 +124,8 @@ package body Flow.Analysis.Sanity is
             Err_Desc : String;
             Err_Node : Node_Id);
          --  Issues an error for any member of the Flow_Ids which does NOT
-         --  denote a constant, a bound or a discriminant.
+         --  denote a constant, a bound or a discriminant (of an enclosing
+         --  concurrent type).
 
          function Check_Name (N : Node_Id) return Traverse_Result;
          --  Checks indexed components and slices which are part of a Name
