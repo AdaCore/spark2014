@@ -1,1 +1,4 @@
+q.ads:6:28: default initialization cannot depend on "remote.hidden" (SPARK RM 4.4(2))
+q.ads:7:28: default initialization cannot depend on "remote.const" (SPARK RM 4.4(2))
 remote.adb:7:32: info: initialization of "Hidden" proved
+gnatprove: error during flow analysis and proof

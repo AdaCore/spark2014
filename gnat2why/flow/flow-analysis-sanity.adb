@@ -141,12 +141,14 @@ package body Flow.Analysis.Sanity is
          is
          begin
             for F of Flow_Ids loop
-               if F.Kind in Direct_Mapping | Record_Field
+               if (F.Kind in Direct_Mapping | Record_Field
                  and then Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                  and then not (Is_Constant_Object (Get_Direct_Mapping_Id (F))
                                  or else Is_Bound (F)
                                  or else Ekind (Get_Direct_Mapping_Id (F)) =
-                                           E_Discriminant)
+                                           E_Discriminant))
+                 or else
+                   F.Kind = Magic_String
                then
                   Error_Msg_Flow
                     (FA       => FA,
