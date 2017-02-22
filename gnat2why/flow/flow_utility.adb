@@ -3142,7 +3142,7 @@ package body Flow_Utility is
       end if;
 
       --  If we reach this point then the constant does not have variable
-      --  input.
+      --  input
       return False;
    end Has_Variable_Input;
 

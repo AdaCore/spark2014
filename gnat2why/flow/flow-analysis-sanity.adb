@@ -123,8 +123,8 @@ package body Flow.Analysis.Sanity is
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
             Err_Desc : String;
             Err_Node : Node_Id);
-         --  Iterates over Flow_Ids. An error is issued for any member of that
-         --  set which does NOT denote a constant, a bound or a discriminant.
+         --  Issues an error for any member of the Flow_Ids which does NOT
+         --  denote a constant, a bound or a discriminant.
 
          function Check_Name (N : Node_Id) return Traverse_Result;
          --  Checks indexed components and slices which are part of a Name
@@ -278,7 +278,7 @@ package body Flow.Analysis.Sanity is
                                            Err_Desc => "invariant",
                                            Err_Node => Typ);
 
-                        --  Check 7.3.2(4) (no calls to boundary subp)
+                        --  Check 7.3.2(4) (no calls to boundary subprograms)
                         for F of Funs loop
                            if Is_Boundary_Subprogram_For_Type (F, Typ) then
                               Error_Msg_Flow
