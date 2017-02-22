@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -682,8 +682,10 @@ ASCII.LF;
       --  <path-to-project-file>/<value-of-proof-dir>.
 
       procedure Limit_Provers;
-      --  if not on the PATH, remove cvc4/z3 from provers list. If the provers
-      --  list becomes empty, add alt-ergo
+      --  This subprogram is here for SPARK Discovery. It removes cvc4/z3 from
+      --  the provers list, if not found on the PATH. If that makes the list of
+      --  provers become empty, alt-ergo is added as prover, so that we have at
+      --  least one prover.
 
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
@@ -765,6 +767,8 @@ ASCII.LF;
             end if;
          end Remove_Prover;
 
+         Is_Empty_At_Start : constant Boolean := Provers.Is_Empty;
+
       --  Start of processing for Limit_Prover
 
       begin
@@ -774,6 +778,11 @@ ASCII.LF;
          if not File_System.Install.Z3_Present then
             Remove_Prover ("z3");
          end if;
+
+         if not Is_Empty_At_Start and Provers.Is_Empty then
+            Provers.Append ("altergo");
+         end if;
+
       end Limit_Provers;
 
       -----------------
