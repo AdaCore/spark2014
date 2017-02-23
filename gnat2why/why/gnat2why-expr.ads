@@ -34,6 +34,7 @@ with Sinfo;                      use Sinfo;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
+with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Terms;              use Why.Gen.Terms;
 with Why.Ids;                    use Why.Ids;
 with Why.Inter;                  use Why.Inter;
@@ -206,7 +207,10 @@ package Gnat2Why.Expr is
       Only_Var      : W_Term_Id := True_Term;
       Top_Predicate : W_Term_Id := True_Term;
       Params        : Transformation_Params := Body_Params;
-      Use_Pred      : Boolean := True) return W_Pred_Id;
+      Use_Pred      : Boolean := True) return W_Pred_Id
+   with Post => (if not Use_Pred
+                   and Compute_Dynamic_Invariant'Result /= True_Pred then
+                   Type_Needs_Dynamic_Invariant (Ty));
    --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
    --  @param Initialized true term iff Expr is known to be initialized

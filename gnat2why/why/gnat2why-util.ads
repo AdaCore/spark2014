@@ -429,6 +429,11 @@ package Gnat2Why.Util is
    --  @return True if Ty has a non empty DIC which does not mention the
    --     current type instance.
 
+   function Type_Needs_Dynamic_Invariant (T : Entity_Id) return Boolean with
+     Pre => Is_Type (T);
+   --  @param T type entity
+   --  @return True if T has a non-trivially True dynamic invariant
+
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean with
      Pre => Is_Type (T);
    --  Returns True if T is a scalar type that should be translated into Why

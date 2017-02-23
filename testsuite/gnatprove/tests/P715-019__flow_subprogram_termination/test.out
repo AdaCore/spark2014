@@ -83,8 +83,6 @@ container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram "Next" will terminate
 container.ads:23:13: info: subprogram "Element" will terminate
 container.ads:27:14: warning: subprogram "Test4" might not terminate
-decl_only.ads:8:18: info: implicit function contract not available for proof ("Nonreturning_Precondition" may not return)
-decl_only.ads:8:18: info: implicit function contract not available for proof ("Nonreturning_Precondition" may not return)
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" may not return)
@@ -139,8 +137,6 @@ formal_cont.ads:12:04: info: function contract not available for proof ("Is_Empt
 formal_cont.ads:12:04: info: function contract not available for proof ("No_Overlap" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("Num_Overlaps" may not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Iter_Has_Element" may not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("Iter_Has_Element" may not return)
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
@@ -154,16 +150,11 @@ formal_cont.ads:12:04: info: implicit function contract not available for proof 
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
 formal_cont.ads:12:04: info: implicit function contract not available for proof ("Length" may not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("My_Equal_01" may not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("My_Equal_01" may not return)
-formal_cont.ads:12:04: info: implicit function contract not available for proof ("My_Equal_01" may not return)
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:100
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:109
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:124
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:124
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:138
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:151
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:162
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:176
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:184
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:191
@@ -198,10 +189,7 @@ formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:247
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:248
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:249
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:250
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:272
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:279
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:50
-formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:79
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:94
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
 formal_cont.ads:18:14: warning: subprogram "Test_01" might not terminate
@@ -228,7 +216,6 @@ imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.ads:9:14: info: subprogram "Q_01" will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
-imported.ads:14:13: info: implicit function contract not available for proof ("Nonreturning_Precondition" may not return)
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
 imported.ads:16:14: warning: subprogram "Q_02" might not terminate
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"

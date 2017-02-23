@@ -1,3 +1,2 @@
-private_type.ads:7:19: info: implicit function contract not available for proof ("Is_Valid" may not return)
 private_type.ads:8:45: info: implicit function contract not available for proof ("F" may not return)
 private_type.ads:8:45: medium: precondition might fail

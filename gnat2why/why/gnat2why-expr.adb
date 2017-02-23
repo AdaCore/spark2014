@@ -71,7 +71,6 @@ with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;                  use Why.Gen.Names;
-with Why.Gen.Preds;                  use Why.Gen.Preds;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Records;                use Why.Gen.Records;
 with Why.Unchecked_Ids;              use Why.Unchecked_Ids;
@@ -12206,6 +12205,9 @@ package body Gnat2Why.Expr is
       elsif Domain in EW_Pred | EW_Term
         and then not No_Return (Subp)
         and then not Entity_In_Ext_Axioms (Subp)
+        and then (Has_Contracts (Subp, Pragma_Postcondition)
+                   or else Has_Contracts (Subp, Pragma_Contract_Cases)
+                   or else Type_Needs_Dynamic_Invariant (Etype (Subp)))
       then
          declare
             Implicit : constant String :=

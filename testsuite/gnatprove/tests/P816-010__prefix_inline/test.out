@@ -2,29 +2,9 @@ generic_queue.ads:46:32: info: range check proved (CVC4: 1 VC), in instantiation
 generic_queue.ads:65:32: info: range check proved (CVC4: 1 VC), in instantiation at some_package.adb:8
 generic_queue.ads:73:32: info: range check proved (CVC4: 1 VC), in instantiation at some_package.adb:8
 some_package.adb:7:72: info: range check proved (Interval)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Empty" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Full" may not return)
-some_package.adb:8:04: info: implicit function contract not available for proof ("Full" may not return)
 some_package.adb:8:04: info: implicit function contract not available for proof ("Length" may not return)
 some_package.adb:8:04: info: implicit function contract not available for proof ("Length" may not return)
 some_package.adb:8:04: info: implicit function contract not available for proof ("Length" may not return)
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:27
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:33
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:37
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:41
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:42
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:46
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:52
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:53
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:57
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:61
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:65
-some_package.adb:8:04: info: in instantiation at generic_queue.ads:69
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:73

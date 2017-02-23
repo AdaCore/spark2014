@@ -97,21 +97,6 @@ linted-timer.adb:23:04: call to operation of a formal protected parameter is not
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:17
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:22
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:31
-linted-triggers.ads:40:18: info: implicit function contract not available for proof ("Is_Null_Waiter" may not return)
-linted-triggers.ads:40:18: info: implicit function contract not available for proof ("Is_Null_Waiter" may not return)
-linted-triggers.ads:40:18: info: implicit function contract not available for proof ("Is_Null_Waiter" may not return)
-linted-triggers.ads:40:18: info: implicit function contract not available for proof ("Is_Null_Waiter" may not return)
-linted-triggers.ads:40:18: info: implicit function contract not available for proof ("Is_Null_Waiter" may not return)
-linted-triggers.ads:43:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:43:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:43:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:43:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:43:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:46:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:46:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:46:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:46:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
-linted-triggers.ads:46:18: info: implicit function contract not available for proof ("Is_Null_Signaller" may not return)
 linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:100
 linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:101
 linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
