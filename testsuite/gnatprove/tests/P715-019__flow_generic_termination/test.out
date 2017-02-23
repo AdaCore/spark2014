@@ -1,8 +1,989 @@
-term.ads:7:13: info: subprogram will terminate
-term.ads:9:13: info: subprogram will terminate
+a-cfhase.ads:754:24: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:755:26: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:801:49: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:964:24: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:965:26: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:965:44: medium: overflow check might fail, in instantiation at term.ads:11
+a-cfhase.ads:1001:49: info: overflow check proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:1074:20: info: precondition proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cfhase.ads:1089:20: info: precondition proved (CVC4: 1 VC), in instantiation at term.ads:11
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at term.ads:11
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at term.ads:11
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at term.ads:11
+term.ads:7:13: warning: subprogram "Eq" might not terminate
+term.ads:9:13: info: subprogram "Hash" will terminate
 term.ads:9:19: warning: unused variable "X"
-term.ads:11:12: info: subprogram will terminate
-term.ads:11:12: non-pure actual "Eq" in instance with external axioms not yet supported
-term.ads:17:04: info: initialization of private part of "S" proved
-compilation abandoned due to previous error
-gnatprove: error during flow analysis and proof
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Included_In_Union" may not return)
+term.ads:11:04: info: function contract not available for proof ("Includes_Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Includes_Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Includes_Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Is_Singleton" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
+term.ads:11:04: info: function contract not available for proof ("No_Overlap" may not return)
+term.ads:11:04: info: function contract not available for proof ("No_Overlap" may not return)
+term.ads:11:04: info: function contract not available for proof ("No_Overlap" may not return)
+term.ads:11:04: info: function contract not available for proof ("No_Overlap" may not return)
+term.ads:11:04: info: function contract not available for proof ("Not_In_Both" may not return)
+term.ads:11:04: info: function contract not available for proof ("Not_In_Both" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Num_Overlaps" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1001
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1003
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1004
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1004
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1005
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1009
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1010
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1011
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1012
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1016
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1017
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1018
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1019
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1023
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1024
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1025
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1026
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1030
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1031
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1032
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1033
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1034
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1036
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1037
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1038
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1039
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1041
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1042
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1043
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1044
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1052
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1052
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1056
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1056
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1061
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1065
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1066
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1071
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1074
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1074
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1079
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1080
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1081
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1086
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1089
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1089
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1094
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1095
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1096
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1107
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1107
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1113
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1114
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1119
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1120
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1131
+term.ads:11:04: info: in instantiation at a-cfhase.ads:128
+term.ads:11:04: info: in instantiation at a-cfhase.ads:141
+term.ads:11:04: info: in instantiation at a-cfhase.ads:142
+term.ads:11:04: info: in instantiation at a-cfhase.ads:157
+term.ads:11:04: info: in instantiation at a-cfhase.ads:158
+term.ads:11:04: info: in instantiation at a-cfhase.ads:159
+term.ads:11:04: info: in instantiation at a-cfhase.ads:176
+term.ads:11:04: info: in instantiation at a-cfhase.ads:177
+term.ads:11:04: info: in instantiation at a-cfhase.ads:178
+term.ads:11:04: info: in instantiation at a-cfhase.ads:181
+term.ads:11:04: info: in instantiation at a-cfhase.ads:183
+term.ads:11:04: info: in instantiation at a-cfhase.ads:218
+term.ads:11:04: info: in instantiation at a-cfhase.ads:258
+term.ads:11:04: info: in instantiation at a-cfhase.ads:268
+term.ads:11:04: info: in instantiation at a-cfhase.ads:273
+term.ads:11:04: info: in instantiation at a-cfhase.ads:273
+term.ads:11:04: info: in instantiation at a-cfhase.ads:277
+term.ads:11:04: info: in instantiation at a-cfhase.ads:278
+term.ads:11:04: info: in instantiation at a-cfhase.ads:279
+term.ads:11:04: info: in instantiation at a-cfhase.ads:281
+term.ads:11:04: info: in instantiation at a-cfhase.ads:286
+term.ads:11:04: info: in instantiation at a-cfhase.ads:287
+term.ads:11:04: info: in instantiation at a-cfhase.ads:289
+term.ads:11:04: info: in instantiation at a-cfhase.ads:290
+term.ads:11:04: info: in instantiation at a-cfhase.ads:291
+term.ads:11:04: info: in instantiation at a-cfhase.ads:310
+term.ads:11:04: info: in instantiation at a-cfhase.ads:332
+term.ads:11:04: info: in instantiation at a-cfhase.ads:333
+term.ads:11:04: info: in instantiation at a-cfhase.ads:334
+term.ads:11:04: info: in instantiation at a-cfhase.ads:334
+term.ads:11:04: info: in instantiation at a-cfhase.ads:352
+term.ads:11:04: info: in instantiation at a-cfhase.ads:353
+term.ads:11:04: info: in instantiation at a-cfhase.ads:353
+term.ads:11:04: info: in instantiation at a-cfhase.ads:356
+term.ads:11:04: info: in instantiation at a-cfhase.ads:356
+term.ads:11:04: info: in instantiation at a-cfhase.ads:357
+term.ads:11:04: info: in instantiation at a-cfhase.ads:357
+term.ads:11:04: info: in instantiation at a-cfhase.ads:361
+term.ads:11:04: info: in instantiation at a-cfhase.ads:361
+term.ads:11:04: info: in instantiation at a-cfhase.ads:366
+term.ads:11:04: info: in instantiation at a-cfhase.ads:366
+term.ads:11:04: info: in instantiation at a-cfhase.ads:367
+term.ads:11:04: info: in instantiation at a-cfhase.ads:368
+term.ads:11:04: info: in instantiation at a-cfhase.ads:381
+term.ads:11:04: info: in instantiation at a-cfhase.ads:381
+term.ads:11:04: info: in instantiation at a-cfhase.ads:382
+term.ads:11:04: info: in instantiation at a-cfhase.ads:386
+term.ads:11:04: info: in instantiation at a-cfhase.ads:387
+term.ads:11:04: info: in instantiation at a-cfhase.ads:388
+term.ads:11:04: info: in instantiation at a-cfhase.ads:389
+term.ads:11:04: info: in instantiation at a-cfhase.ads:393
+term.ads:11:04: info: in instantiation at a-cfhase.ads:397
+term.ads:11:04: info: in instantiation at a-cfhase.ads:397
+term.ads:11:04: info: in instantiation at a-cfhase.ads:401
+term.ads:11:04: info: in instantiation at a-cfhase.ads:403
+term.ads:11:04: info: in instantiation at a-cfhase.ads:403
+term.ads:11:04: info: in instantiation at a-cfhase.ads:404
+term.ads:11:04: info: in instantiation at a-cfhase.ads:408
+term.ads:11:04: info: in instantiation at a-cfhase.ads:408
+term.ads:11:04: info: in instantiation at a-cfhase.ads:409
+term.ads:11:04: info: in instantiation at a-cfhase.ads:409
+term.ads:11:04: info: in instantiation at a-cfhase.ads:418
+term.ads:11:04: info: in instantiation at a-cfhase.ads:418
+term.ads:11:04: info: in instantiation at a-cfhase.ads:419
+term.ads:11:04: info: in instantiation at a-cfhase.ads:420
+term.ads:11:04: info: in instantiation at a-cfhase.ads:431
+term.ads:11:04: info: in instantiation at a-cfhase.ads:434
+term.ads:11:04: info: in instantiation at a-cfhase.ads:434
+term.ads:11:04: info: in instantiation at a-cfhase.ads:443
+term.ads:11:04: info: in instantiation at a-cfhase.ads:445
+term.ads:11:04: info: in instantiation at a-cfhase.ads:449
+term.ads:11:04: info: in instantiation at a-cfhase.ads:453
+term.ads:11:04: info: in instantiation at a-cfhase.ads:453
+term.ads:11:04: info: in instantiation at a-cfhase.ads:457
+term.ads:11:04: info: in instantiation at a-cfhase.ads:458
+term.ads:11:04: info: in instantiation at a-cfhase.ads:459
+term.ads:11:04: info: in instantiation at a-cfhase.ads:460
+term.ads:11:04: info: in instantiation at a-cfhase.ads:461
+term.ads:11:04: info: in instantiation at a-cfhase.ads:462
+term.ads:11:04: info: in instantiation at a-cfhase.ads:463
+term.ads:11:04: info: in instantiation at a-cfhase.ads:469
+term.ads:11:04: info: in instantiation at a-cfhase.ads:470
+term.ads:11:04: info: in instantiation at a-cfhase.ads:471
+term.ads:11:04: info: in instantiation at a-cfhase.ads:472
+term.ads:11:04: info: in instantiation at a-cfhase.ads:474
+term.ads:11:04: info: in instantiation at a-cfhase.ads:478
+term.ads:11:04: info: in instantiation at a-cfhase.ads:480
+term.ads:11:04: info: in instantiation at a-cfhase.ads:481
+term.ads:11:04: info: in instantiation at a-cfhase.ads:481
+term.ads:11:04: info: in instantiation at a-cfhase.ads:482
+term.ads:11:04: info: in instantiation at a-cfhase.ads:486
+term.ads:11:04: info: in instantiation at a-cfhase.ads:486
+term.ads:11:04: info: in instantiation at a-cfhase.ads:487
+term.ads:11:04: info: in instantiation at a-cfhase.ads:487
+term.ads:11:04: info: in instantiation at a-cfhase.ads:497
+term.ads:11:04: info: in instantiation at a-cfhase.ads:498
+term.ads:11:04: info: in instantiation at a-cfhase.ads:500
+term.ads:11:04: info: in instantiation at a-cfhase.ads:501
+term.ads:11:04: info: in instantiation at a-cfhase.ads:502
+term.ads:11:04: info: in instantiation at a-cfhase.ads:502
+term.ads:11:04: info: in instantiation at a-cfhase.ads:508
+term.ads:11:04: info: in instantiation at a-cfhase.ads:510
+term.ads:11:04: info: in instantiation at a-cfhase.ads:510
+term.ads:11:04: info: in instantiation at a-cfhase.ads:511
+term.ads:11:04: info: in instantiation at a-cfhase.ads:512
+term.ads:11:04: info: in instantiation at a-cfhase.ads:519
+term.ads:11:04: info: in instantiation at a-cfhase.ads:523
+term.ads:11:04: info: in instantiation at a-cfhase.ads:527
+term.ads:11:04: info: in instantiation at a-cfhase.ads:527
+term.ads:11:04: info: in instantiation at a-cfhase.ads:528
+term.ads:11:04: info: in instantiation at a-cfhase.ads:529
+term.ads:11:04: info: in instantiation at a-cfhase.ads:530
+term.ads:11:04: info: in instantiation at a-cfhase.ads:535
+term.ads:11:04: info: in instantiation at a-cfhase.ads:536
+term.ads:11:04: info: in instantiation at a-cfhase.ads:537
+term.ads:11:04: info: in instantiation at a-cfhase.ads:538
+term.ads:11:04: info: in instantiation at a-cfhase.ads:539
+term.ads:11:04: info: in instantiation at a-cfhase.ads:541
+term.ads:11:04: info: in instantiation at a-cfhase.ads:542
+term.ads:11:04: info: in instantiation at a-cfhase.ads:547
+term.ads:11:04: info: in instantiation at a-cfhase.ads:548
+term.ads:11:04: info: in instantiation at a-cfhase.ads:550
+term.ads:11:04: info: in instantiation at a-cfhase.ads:551
+term.ads:11:04: info: in instantiation at a-cfhase.ads:552
+term.ads:11:04: info: in instantiation at a-cfhase.ads:552
+term.ads:11:04: info: in instantiation at a-cfhase.ads:556
+term.ads:11:04: info: in instantiation at a-cfhase.ads:556
+term.ads:11:04: info: in instantiation at a-cfhase.ads:557
+term.ads:11:04: info: in instantiation at a-cfhase.ads:558
+term.ads:11:04: info: in instantiation at a-cfhase.ads:559
+term.ads:11:04: info: in instantiation at a-cfhase.ads:564
+term.ads:11:04: info: in instantiation at a-cfhase.ads:565
+term.ads:11:04: info: in instantiation at a-cfhase.ads:566
+term.ads:11:04: info: in instantiation at a-cfhase.ads:567
+term.ads:11:04: info: in instantiation at a-cfhase.ads:568
+term.ads:11:04: info: in instantiation at a-cfhase.ads:570
+term.ads:11:04: info: in instantiation at a-cfhase.ads:571
+term.ads:11:04: info: in instantiation at a-cfhase.ads:572
+term.ads:11:04: info: in instantiation at a-cfhase.ads:577
+term.ads:11:04: info: in instantiation at a-cfhase.ads:578
+term.ads:11:04: info: in instantiation at a-cfhase.ads:580
+term.ads:11:04: info: in instantiation at a-cfhase.ads:581
+term.ads:11:04: info: in instantiation at a-cfhase.ads:581
+term.ads:11:04: info: in instantiation at a-cfhase.ads:587
+term.ads:11:04: info: in instantiation at a-cfhase.ads:591
+term.ads:11:04: info: in instantiation at a-cfhase.ads:591
+term.ads:11:04: info: in instantiation at a-cfhase.ads:595
+term.ads:11:04: info: in instantiation at a-cfhase.ads:600
+term.ads:11:04: info: in instantiation at a-cfhase.ads:601
+term.ads:11:04: info: in instantiation at a-cfhase.ads:602
+term.ads:11:04: info: in instantiation at a-cfhase.ads:602
+term.ads:11:04: info: in instantiation at a-cfhase.ads:607
+term.ads:11:04: info: in instantiation at a-cfhase.ads:611
+term.ads:11:04: info: in instantiation at a-cfhase.ads:611
+term.ads:11:04: info: in instantiation at a-cfhase.ads:612
+term.ads:11:04: info: in instantiation at a-cfhase.ads:613
+term.ads:11:04: info: in instantiation at a-cfhase.ads:614
+term.ads:11:04: info: in instantiation at a-cfhase.ads:619
+term.ads:11:04: info: in instantiation at a-cfhase.ads:620
+term.ads:11:04: info: in instantiation at a-cfhase.ads:621
+term.ads:11:04: info: in instantiation at a-cfhase.ads:622
+term.ads:11:04: info: in instantiation at a-cfhase.ads:623
+term.ads:11:04: info: in instantiation at a-cfhase.ads:625
+term.ads:11:04: info: in instantiation at a-cfhase.ads:626
+term.ads:11:04: info: in instantiation at a-cfhase.ads:627
+term.ads:11:04: info: in instantiation at a-cfhase.ads:631
+term.ads:11:04: info: in instantiation at a-cfhase.ads:636
+term.ads:11:04: info: in instantiation at a-cfhase.ads:636
+term.ads:11:04: info: in instantiation at a-cfhase.ads:637
+term.ads:11:04: info: in instantiation at a-cfhase.ads:641
+term.ads:11:04: info: in instantiation at a-cfhase.ads:646
+term.ads:11:04: info: in instantiation at a-cfhase.ads:646
+term.ads:11:04: info: in instantiation at a-cfhase.ads:648
+term.ads:11:04: info: in instantiation at a-cfhase.ads:649
+term.ads:11:04: info: in instantiation at a-cfhase.ads:650
+term.ads:11:04: info: in instantiation at a-cfhase.ads:650
+term.ads:11:04: info: in instantiation at a-cfhase.ads:654
+term.ads:11:04: info: in instantiation at a-cfhase.ads:659
+term.ads:11:04: info: in instantiation at a-cfhase.ads:660
+term.ads:11:04: info: in instantiation at a-cfhase.ads:660
+term.ads:11:04: info: in instantiation at a-cfhase.ads:661
+term.ads:11:04: info: in instantiation at a-cfhase.ads:662
+term.ads:11:04: info: in instantiation at a-cfhase.ads:667
+term.ads:11:04: info: in instantiation at a-cfhase.ads:671
+term.ads:11:04: info: in instantiation at a-cfhase.ads:671
+term.ads:11:04: info: in instantiation at a-cfhase.ads:672
+term.ads:11:04: info: in instantiation at a-cfhase.ads:673
+term.ads:11:04: info: in instantiation at a-cfhase.ads:674
+term.ads:11:04: info: in instantiation at a-cfhase.ads:679
+term.ads:11:04: info: in instantiation at a-cfhase.ads:680
+term.ads:11:04: info: in instantiation at a-cfhase.ads:681
+term.ads:11:04: info: in instantiation at a-cfhase.ads:682
+term.ads:11:04: info: in instantiation at a-cfhase.ads:683
+term.ads:11:04: info: in instantiation at a-cfhase.ads:685
+term.ads:11:04: info: in instantiation at a-cfhase.ads:686
+term.ads:11:04: info: in instantiation at a-cfhase.ads:687
+term.ads:11:04: info: in instantiation at a-cfhase.ads:691
+term.ads:11:04: info: in instantiation at a-cfhase.ads:693
+term.ads:11:04: info: in instantiation at a-cfhase.ads:697
+term.ads:11:04: info: in instantiation at a-cfhase.ads:701
+term.ads:11:04: info: in instantiation at a-cfhase.ads:701
+term.ads:11:04: info: in instantiation at a-cfhase.ads:702
+term.ads:11:04: info: in instantiation at a-cfhase.ads:703
+term.ads:11:04: info: in instantiation at a-cfhase.ads:704
+term.ads:11:04: info: in instantiation at a-cfhase.ads:709
+term.ads:11:04: info: in instantiation at a-cfhase.ads:710
+term.ads:11:04: info: in instantiation at a-cfhase.ads:711
+term.ads:11:04: info: in instantiation at a-cfhase.ads:712
+term.ads:11:04: info: in instantiation at a-cfhase.ads:713
+term.ads:11:04: info: in instantiation at a-cfhase.ads:715
+term.ads:11:04: info: in instantiation at a-cfhase.ads:716
+term.ads:11:04: info: in instantiation at a-cfhase.ads:717
+term.ads:11:04: info: in instantiation at a-cfhase.ads:721
+term.ads:11:04: info: in instantiation at a-cfhase.ads:724
+term.ads:11:04: info: in instantiation at a-cfhase.ads:728
+term.ads:11:04: info: in instantiation at a-cfhase.ads:728
+term.ads:11:04: info: in instantiation at a-cfhase.ads:729
+term.ads:11:04: info: in instantiation at a-cfhase.ads:733
+term.ads:11:04: info: in instantiation at a-cfhase.ads:733
+term.ads:11:04: info: in instantiation at a-cfhase.ads:734
+term.ads:11:04: info: in instantiation at a-cfhase.ads:735
+term.ads:11:04: info: in instantiation at a-cfhase.ads:736
+term.ads:11:04: info: in instantiation at a-cfhase.ads:737
+term.ads:11:04: info: in instantiation at a-cfhase.ads:741
+term.ads:11:04: info: in instantiation at a-cfhase.ads:742
+term.ads:11:04: info: in instantiation at a-cfhase.ads:743
+term.ads:11:04: info: in instantiation at a-cfhase.ads:744
+term.ads:11:04: info: in instantiation at a-cfhase.ads:745
+term.ads:11:04: info: in instantiation at a-cfhase.ads:747
+term.ads:11:04: info: in instantiation at a-cfhase.ads:748
+term.ads:11:04: info: in instantiation at a-cfhase.ads:754
+term.ads:11:04: info: in instantiation at a-cfhase.ads:754
+term.ads:11:04: info: in instantiation at a-cfhase.ads:755
+term.ads:11:04: info: in instantiation at a-cfhase.ads:757
+term.ads:11:04: info: in instantiation at a-cfhase.ads:758
+term.ads:11:04: info: in instantiation at a-cfhase.ads:758
+term.ads:11:04: info: in instantiation at a-cfhase.ads:759
+term.ads:11:04: info: in instantiation at a-cfhase.ads:763
+term.ads:11:04: info: in instantiation at a-cfhase.ads:763
+term.ads:11:04: info: in instantiation at a-cfhase.ads:767
+term.ads:11:04: info: in instantiation at a-cfhase.ads:767
+term.ads:11:04: info: in instantiation at a-cfhase.ads:771
+term.ads:11:04: info: in instantiation at a-cfhase.ads:772
+term.ads:11:04: info: in instantiation at a-cfhase.ads:776
+term.ads:11:04: info: in instantiation at a-cfhase.ads:777
+term.ads:11:04: info: in instantiation at a-cfhase.ads:778
+term.ads:11:04: info: in instantiation at a-cfhase.ads:779
+term.ads:11:04: info: in instantiation at a-cfhase.ads:780
+term.ads:11:04: info: in instantiation at a-cfhase.ads:782
+term.ads:11:04: info: in instantiation at a-cfhase.ads:783
+term.ads:11:04: info: in instantiation at a-cfhase.ads:783
+term.ads:11:04: info: in instantiation at a-cfhase.ads:785
+term.ads:11:04: info: in instantiation at a-cfhase.ads:786
+term.ads:11:04: info: in instantiation at a-cfhase.ads:787
+term.ads:11:04: info: in instantiation at a-cfhase.ads:788
+term.ads:11:04: info: in instantiation at a-cfhase.ads:789
+term.ads:11:04: info: in instantiation at a-cfhase.ads:793
+term.ads:11:04: info: in instantiation at a-cfhase.ads:794
+term.ads:11:04: info: in instantiation at a-cfhase.ads:795
+term.ads:11:04: info: in instantiation at a-cfhase.ads:796
+term.ads:11:04: info: in instantiation at a-cfhase.ads:797
+term.ads:11:04: info: in instantiation at a-cfhase.ads:801
+term.ads:11:04: info: in instantiation at a-cfhase.ads:803
+term.ads:11:04: info: in instantiation at a-cfhase.ads:804
+term.ads:11:04: info: in instantiation at a-cfhase.ads:804
+term.ads:11:04: info: in instantiation at a-cfhase.ads:805
+term.ads:11:04: info: in instantiation at a-cfhase.ads:809
+term.ads:11:04: info: in instantiation at a-cfhase.ads:809
+term.ads:11:04: info: in instantiation at a-cfhase.ads:810
+term.ads:11:04: info: in instantiation at a-cfhase.ads:810
+term.ads:11:04: info: in instantiation at a-cfhase.ads:815
+term.ads:11:04: info: in instantiation at a-cfhase.ads:816
+term.ads:11:04: info: in instantiation at a-cfhase.ads:820
+term.ads:11:04: info: in instantiation at a-cfhase.ads:821
+term.ads:11:04: info: in instantiation at a-cfhase.ads:822
+term.ads:11:04: info: in instantiation at a-cfhase.ads:823
+term.ads:11:04: info: in instantiation at a-cfhase.ads:824
+term.ads:11:04: info: in instantiation at a-cfhase.ads:826
+term.ads:11:04: info: in instantiation at a-cfhase.ads:827
+term.ads:11:04: info: in instantiation at a-cfhase.ads:827
+term.ads:11:04: info: in instantiation at a-cfhase.ads:829
+term.ads:11:04: info: in instantiation at a-cfhase.ads:830
+term.ads:11:04: info: in instantiation at a-cfhase.ads:831
+term.ads:11:04: info: in instantiation at a-cfhase.ads:832
+term.ads:11:04: info: in instantiation at a-cfhase.ads:833
+term.ads:11:04: info: in instantiation at a-cfhase.ads:840
+term.ads:11:04: info: in instantiation at a-cfhase.ads:841
+term.ads:11:04: info: in instantiation at a-cfhase.ads:841
+term.ads:11:04: info: in instantiation at a-cfhase.ads:845
+term.ads:11:04: info: in instantiation at a-cfhase.ads:845
+term.ads:11:04: info: in instantiation at a-cfhase.ads:849
+term.ads:11:04: info: in instantiation at a-cfhase.ads:849
+term.ads:11:04: info: in instantiation at a-cfhase.ads:853
+term.ads:11:04: info: in instantiation at a-cfhase.ads:854
+term.ads:11:04: info: in instantiation at a-cfhase.ads:858
+term.ads:11:04: info: in instantiation at a-cfhase.ads:858
+term.ads:11:04: info: in instantiation at a-cfhase.ads:859
+term.ads:11:04: info: in instantiation at a-cfhase.ads:860
+term.ads:11:04: info: in instantiation at a-cfhase.ads:860
+term.ads:11:04: info: in instantiation at a-cfhase.ads:864
+term.ads:11:04: info: in instantiation at a-cfhase.ads:865
+term.ads:11:04: info: in instantiation at a-cfhase.ads:866
+term.ads:11:04: info: in instantiation at a-cfhase.ads:867
+term.ads:11:04: info: in instantiation at a-cfhase.ads:868
+term.ads:11:04: info: in instantiation at a-cfhase.ads:873
+term.ads:11:04: info: in instantiation at a-cfhase.ads:874
+term.ads:11:04: info: in instantiation at a-cfhase.ads:874
+term.ads:11:04: info: in instantiation at a-cfhase.ads:878
+term.ads:11:04: info: in instantiation at a-cfhase.ads:878
+term.ads:11:04: info: in instantiation at a-cfhase.ads:879
+term.ads:11:04: info: in instantiation at a-cfhase.ads:879
+term.ads:11:04: info: in instantiation at a-cfhase.ads:883
+term.ads:11:04: info: in instantiation at a-cfhase.ads:884
+term.ads:11:04: info: in instantiation at a-cfhase.ads:888
+term.ads:11:04: info: in instantiation at a-cfhase.ads:889
+term.ads:11:04: info: in instantiation at a-cfhase.ads:891
+term.ads:11:04: info: in instantiation at a-cfhase.ads:892
+term.ads:11:04: info: in instantiation at a-cfhase.ads:892
+term.ads:11:04: info: in instantiation at a-cfhase.ads:893
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:900
+term.ads:11:04: info: in instantiation at a-cfhase.ads:901
+term.ads:11:04: info: in instantiation at a-cfhase.ads:901
+term.ads:11:04: info: in instantiation at a-cfhase.ads:905
+term.ads:11:04: info: in instantiation at a-cfhase.ads:905
+term.ads:11:04: info: in instantiation at a-cfhase.ads:909
+term.ads:11:04: info: in instantiation at a-cfhase.ads:909
+term.ads:11:04: info: in instantiation at a-cfhase.ads:913
+term.ads:11:04: info: in instantiation at a-cfhase.ads:914
+term.ads:11:04: info: in instantiation at a-cfhase.ads:918
+term.ads:11:04: info: in instantiation at a-cfhase.ads:918
+term.ads:11:04: info: in instantiation at a-cfhase.ads:919
+term.ads:11:04: info: in instantiation at a-cfhase.ads:920
+term.ads:11:04: info: in instantiation at a-cfhase.ads:920
+term.ads:11:04: info: in instantiation at a-cfhase.ads:924
+term.ads:11:04: info: in instantiation at a-cfhase.ads:925
+term.ads:11:04: info: in instantiation at a-cfhase.ads:926
+term.ads:11:04: info: in instantiation at a-cfhase.ads:927
+term.ads:11:04: info: in instantiation at a-cfhase.ads:928
+term.ads:11:04: info: in instantiation at a-cfhase.ads:933
+term.ads:11:04: info: in instantiation at a-cfhase.ads:934
+term.ads:11:04: info: in instantiation at a-cfhase.ads:934
+term.ads:11:04: info: in instantiation at a-cfhase.ads:938
+term.ads:11:04: info: in instantiation at a-cfhase.ads:938
+term.ads:11:04: info: in instantiation at a-cfhase.ads:942
+term.ads:11:04: info: in instantiation at a-cfhase.ads:942
+term.ads:11:04: info: in instantiation at a-cfhase.ads:946
+term.ads:11:04: info: in instantiation at a-cfhase.ads:947
+term.ads:11:04: info: in instantiation at a-cfhase.ads:951
+term.ads:11:04: info: in instantiation at a-cfhase.ads:952
+term.ads:11:04: info: in instantiation at a-cfhase.ads:954
+term.ads:11:04: info: in instantiation at a-cfhase.ads:955
+term.ads:11:04: info: in instantiation at a-cfhase.ads:956
+term.ads:11:04: info: in instantiation at a-cfhase.ads:957
+term.ads:11:04: info: in instantiation at a-cfhase.ads:964
+term.ads:11:04: info: in instantiation at a-cfhase.ads:964
+term.ads:11:04: info: in instantiation at a-cfhase.ads:965
+term.ads:11:04: info: in instantiation at a-cfhase.ads:965
+term.ads:11:04: info: in instantiation at a-cfhase.ads:967
+term.ads:11:04: info: in instantiation at a-cfhase.ads:968
+term.ads:11:04: info: in instantiation at a-cfhase.ads:968
+term.ads:11:04: info: in instantiation at a-cfhase.ads:969
+term.ads:11:04: info: in instantiation at a-cfhase.ads:973
+term.ads:11:04: info: in instantiation at a-cfhase.ads:973
+term.ads:11:04: info: in instantiation at a-cfhase.ads:977
+term.ads:11:04: info: in instantiation at a-cfhase.ads:978
+term.ads:11:04: info: in instantiation at a-cfhase.ads:982
+term.ads:11:04: info: in instantiation at a-cfhase.ads:983
+term.ads:11:04: info: in instantiation at a-cfhase.ads:987
+term.ads:11:04: info: in instantiation at a-cfhase.ads:988
+term.ads:11:04: info: in instantiation at a-cfhase.ads:989
+term.ads:11:04: info: in instantiation at a-cfhase.ads:990
+term.ads:11:04: info: in instantiation at a-cfhase.ads:991
+term.ads:11:04: info: in instantiation at a-cfhase.ads:993
+term.ads:11:04: info: in instantiation at a-cfhase.ads:994
+term.ads:11:04: info: in instantiation at a-cfhase.ads:994
+term.ads:11:04: info: in instantiation at a-cfhase.ads:996
+term.ads:11:04: info: in instantiation at a-cfhase.ads:997
+term.ads:11:04: info: in instantiation at a-cfhase.ads:997
+term.ads:11:04: info: in instantiation at a-cofuse.ads:100
+term.ads:11:04: info: in instantiation at a-cofuse.ads:124
+term.ads:11:04: info: in instantiation at a-cofuse.ads:124
+term.ads:11:04: info: in instantiation at a-cofuse.ads:138
+term.ads:11:04: info: in instantiation at a-cofuse.ads:151
+term.ads:11:04: info: in instantiation at a-cofuse.ads:162
+term.ads:11:04: info: in instantiation at a-cofuse.ads:176
+term.ads:11:04: info: in instantiation at a-cofuse.ads:184
+term.ads:11:04: info: in instantiation at a-cofuse.ads:191
+term.ads:11:04: info: in instantiation at a-cofuse.ads:192
+term.ads:11:04: info: in instantiation at a-cofuse.ads:194
+term.ads:11:04: info: in instantiation at a-cofuse.ads:196
+term.ads:11:04: info: in instantiation at a-cofuse.ads:210
+term.ads:11:04: info: in instantiation at a-cofuse.ads:214
+term.ads:11:04: info: in instantiation at a-cofuse.ads:215
+term.ads:11:04: info: in instantiation at a-cofuse.ads:216
+term.ads:11:04: info: in instantiation at a-cofuse.ads:222
+term.ads:11:04: info: in instantiation at a-cofuse.ads:225
+term.ads:11:04: info: in instantiation at a-cofuse.ads:226
+term.ads:11:04: info: in instantiation at a-cofuse.ads:227
+term.ads:11:04: info: in instantiation at a-cofuse.ads:234
+term.ads:11:04: info: in instantiation at a-cofuse.ads:235
+term.ads:11:04: info: in instantiation at a-cofuse.ads:236
+term.ads:11:04: info: in instantiation at a-cofuse.ads:243
+term.ads:11:04: info: in instantiation at a-cofuse.ads:247
+term.ads:11:04: info: in instantiation at a-cofuse.ads:248
+term.ads:11:04: info: in instantiation at a-cofuse.ads:249
+term.ads:11:04: info: in instantiation at a-cofuse.ads:250
+term.ads:11:04: info: in instantiation at a-cofuse.ads:79
+term.ads:11:04: info: in instantiation at a-cofuse.ads:94
+term.ads:11:04: warning: in instantiation at a-cfhase.ads:1122
+term.ads:11:04: warning: recursive function cannot be inlined for proof
+term.ads:16:04: info: initialization of private part of "S" proved
