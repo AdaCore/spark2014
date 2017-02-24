@@ -1,0 +1,39 @@
+assume_call.adb:4:15: medium: overflow check might fail (e.g. when X = 2147483647 and f1'Result = 0)
+assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
+assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
+assume_call.adb:14:14: warning: subprogram "Caller" has no effect
+assume_call.adb:17:07: info: precondition proved (CVC4: 1 VC)
+assume_call.adb:17:18: info: initialization of "Z" proved
+assume_call.ads:4:19: info: postcondition proved (CVC4: 1 VC)
+assume_call.ads:4:33: info: overflow check proved (CVC4: 1 VC)
+
+
+
+ Assume_Call at assume_call.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+ Assume_Call.Caller at assume_call.adb:14 flow analyzed (0 errors and 1 warnings) and proved (1 checks)
+ Assume_Call.Wrong_Pre at assume_call.adb:7 flow analyzed (0 errors and 1 warnings) and proved (0 checks)
+ Assume_Call.f1 at assume_call.ads:3 flow analyzed (0 errors and 0 warnings) and not proved, 2 checks out of 3 proved
+ absence of run-time errors of Assume_Call.f1
+ effects on parameters and Global variables of Assume_Call.Wrong_Pre
+ the postcondition of Assume_Call.f1
+-
+-
+-
+=========================
+Analyzed 1 unit
+Assertions . . . . . . .
+Data Dependencies . . . . . . .
+Flow Dependencies . . . . . . .
+Functional Contracts 2 . . . 2 . .
+Initialization 1 1 . . . . .
+LSP Verification . . . . . . .
+Non-Aliasing . . . . . . .
+Run-time Checks 2 . . . 1 . 1
+SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
+Summary of SPARK analysis
+Total 5 1 (20%) . . 3 (60%) . 1 (20%)
+absence of run-time errors of Assume_Call fully established
+absence of run-time errors of Assume_Call.Caller depends on
+absence of run-time errors of Assume_Call.Wrong_Pre fully established
+effects on parameters and Global variables of Assume_Call.f1 fully established
+in unit assume_call, 4 subprograms and packages out of 4 analyzed
