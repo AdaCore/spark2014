@@ -4,8 +4,6 @@
 # exclude patterns (uncomment them if you want to use them):
 # *.[oa]
 # *~
-*.o
-*.ali
 *.bexch
 *~
 *.sli
@@ -17,13 +15,12 @@
 *.rep
 *.pyc
 *.swp
-*.stdout
-*.stderr
 auto.cgpr
 GNAT-*
 gnat_src
 install
 gnat2why/obj
+gnat2why/why/xgen/obj
 gnat2why/obj-tools
 gnatprove/obj
 benchmark_script/data

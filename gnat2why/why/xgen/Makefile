@@ -22,7 +22,7 @@ GENERATED_FILES= \
  why-unchecked_ids.ads
 
 all:
-	gprbuild -j0 -Phelpers xtree
+	gprbuild -j0 -p -Phelpers xtree
 	./xtree
 	cp $(GENERATED_FILES) ../
 

@@ -4,7 +4,7 @@ project Helpers is
 
    for Main use ("xtree");
 
-   for Object_Dir use ".";
+   for Object_Dir use "obj";
 
    for Exec_Dir use ".";
 
