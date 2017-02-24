@@ -1,2 +1,2 @@
-prot.adb:7:25: medium: assertion might fail, cannot prove Data.V >= 0
+prot.adb:7:25: info: assertion proved (CVC4: 1 VC)
 prot.ads:12:21: info: predicate check proved (CVC4: 1 VC)

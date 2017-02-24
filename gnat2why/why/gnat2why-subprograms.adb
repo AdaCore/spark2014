@@ -755,21 +755,21 @@ package body Gnat2Why.Subprograms is
             | E_Procedure
             | E_Task_Type
          =>
-         declare
-            Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-            Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+            declare
+               Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+               Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
 
-            procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
-            --  Include entities represented in S (as Flow_Ids) in Includes
+               procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
+               --  Include entities represented in S (as Flow_Ids) in Includes
 
-            -------------
-            -- Include --
-            -------------
+               -------------
+               -- Include --
+               -------------
 
-            procedure Include (S : Flow_Types.Flow_Id_Sets.Set) is
-            begin
-               for F of S loop
-                  case F.Kind is
+               procedure Include (S : Flow_Types.Flow_Id_Sets.Set) is
+               begin
+                  for F of S loop
+                     case F.Kind is
                      when Direct_Mapping =>
                         Includes.Include (Get_Direct_Mapping_Id (F));
 
@@ -784,44 +784,53 @@ package body Gnat2Why.Subprograms is
 
                      when others =>
                         raise Program_Error;
-                  end case;
-               end loop;
-            end Include;
+                     end case;
+                  end loop;
+               end Include;
 
-         begin
-
-            --  Also get references to global constants with variable inputs
-            --  even if they are constants in Why.
-
-            Flow_Utility.Get_Proof_Globals (Subprogram     => E,
-                                            Classwide      => True,
-                                            Reads          => Read_Ids,
-                                            Writes         => Write_Ids,
-                                            Keep_Constants => True);
-
-            Include (Read_Ids);
-            Include (Write_Ids);
-         end;
-
-         --  Collect parameters of E if any
-         --  ??? We may want to collect discriminants of task types and self
-         --      references from protected subprograms.
-
-         if Ekind (E) in E_Function | E_Procedure | E_Entry then
-            declare
-               Params : constant List_Id :=
-                 Parameter_Specifications (if Is_Entry (E)
-                                           then Parent (E)
-                                           else Subprogram_Specification (E));
-               Param  : Node_Id;
             begin
-               Param := First (Params);
-               while Present (Param) loop
-                  Includes.Include (Defining_Identifier (Param));
-                  Next (Param);
-               end loop;
+
+               --  Also get references to global constants with variable inputs
+               --  even if they are constants in Why.
+
+               Flow_Utility.Get_Proof_Globals (Subprogram     => E,
+                                               Classwide      => True,
+                                               Reads          => Read_Ids,
+                                               Writes         => Write_Ids,
+                                               Keep_Constants => True);
+
+               Include (Read_Ids);
+               Include (Write_Ids);
             end;
-         end if;
+
+            --  Collect parameters of E if any
+            --  ??? We may want to collect discriminants of task types
+
+            if Ekind (E) in E_Function | E_Procedure | E_Entry then
+               declare
+                  Params : constant List_Id :=
+                    Parameter_Specifications
+                      (if Is_Entry (E) then Parent (E)
+                       else Subprogram_Specification (E));
+                  Param  : Node_Id;
+               begin
+                  Param := First (Params);
+                  while Present (Param) loop
+                     Includes.Include (Defining_Identifier (Param));
+                     Next (Param);
+                  end loop;
+               end;
+
+               --  If E is a protected subprogram, add the type itself to stand
+               --  for the self reference.
+
+               if Is_Protected_Subprogram (E)
+                 and then Present (Get_Body (E))
+                 and then Entity_Body_In_SPARK (E)
+               then
+                  Includes.Include (Containing_Protected_Type (E));
+               end if;
+            end if;
 
          when E_Package =>
             if not Is_Wrapper_Package (E) then

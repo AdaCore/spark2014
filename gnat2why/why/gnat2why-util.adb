@@ -1424,7 +1424,10 @@ package body Gnat2Why.Util is
             return
               Type_Needs_Dynamic_Invariant (Component_Type (Ty_Ext), False);
 
-         elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+         elsif Is_Record_Type (Ty_Ext)
+           or else Is_Private_Type (Ty_Ext)
+           or else Is_Concurrent_Type (Ty_Ext)
+         then
             if Has_Discriminants (Ty_Ext) then
                declare
                   Discr : Entity_Id := First_Discriminant (Ty_Ext);

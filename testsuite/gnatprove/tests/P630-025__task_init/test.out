@@ -24,8 +24,8 @@ decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:34: info: initialization of "Next_Idx" proved
+decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:131:43: medium: predicate check might fail
 decadriver.adb:131:56: info: initialization of "Frame_Length" proved
 decadriver.adb:133:38: medium: predicate check might fail
 decadriver.adb:133:47: info: initialization of "Next_Idx" proved
@@ -185,8 +185,8 @@ decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPRS" proved
 decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPUTE" proved
 decadriver.ads:81:19: info: initialization of "Size" proved
 decadriver.ads:82:19: info: initialization of "Error" proved
+decadriver.ads:88:17: info: postcondition proved (CVC4: 3 VC)
 decadriver.ads:88:21: info: initialization of "Error" proved
-decadriver.ads:89:23: medium: postcondition might fail, cannot prove Size in 1 .. DW1000.Constants.rx_buffer_length (e.g. when Error = No_Error and Size = 0)
 decadriver.ads:90:23: info: initialization of "Size" proved
 decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Frames_Count'Result <= 2 (e.g. when Pending_Frames_Count'Result = 3)
 decadriver.ads:115:28: info: initialization of "Result" proved

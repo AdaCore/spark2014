@@ -236,7 +236,10 @@ package body Why.Gen.Records is
       end loop;
 
       for Field of Get_Component_Set (Ty_Ext) loop
-         if Ekind (Field) = E_Component then
+
+         --  Only consider components and part of variables
+
+         if Ekind (Field) not in E_Discriminant | Type_Kind then
 
             R_Acc := New_Ada_Record_Access
               (Empty, EW_Term, R_Expr, Field, Ty_Ext);

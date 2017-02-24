@@ -1068,10 +1068,12 @@ package body Gnat2Why.Expr is
       --  inlined.
 
       L_Id : constant W_Expr_Id :=
-        Transform_Identifier (Params   => Params,
-                              Expr     => E,
-                              Ent      => E,
-                              Domain   => EW_Term);
+        (if Is_Protected_Type (E) then
+            New_Deref (Right => Self_Name, Typ => Get_Typ (Self_Name))
+         else Transform_Identifier (Params   => Params,
+                                    Expr     => E,
+                                    Ent      => E,
+                                    Domain   => EW_Term));
 
    begin
       --  Assume dynamic property of E
@@ -1230,6 +1232,7 @@ package body Gnat2Why.Expr is
       Already_Included    : Node_Sets.Set := Node_Sets.Empty_Set;
       Prop_For_Include    : W_Prog_Id;
       Top_Predicate       : Boolean;
+      First_Iter          : Boolean := True;
       Variables           : Flow_Id_Sets.Set;
       --  Set of variable inputs used in the assumed dynamic invariants.
       --  We will also need to assume their dynamic invariant.
@@ -1240,10 +1243,24 @@ package body Gnat2Why.Expr is
          Flow_Id_Sets.Clear (Variables);
          for Obj of Includes loop
 
+            --  The self reference of a protected subprogram is always
+            --  initialized. We only consider protected types in first
+            --  iteration. Indeed, later, they will have been added by
+            --  Compute_Ada_Node_Set and won't be relevant.
+
+            if First_Iter and then Is_Protected_Type (Obj) then
+
+               Assume_Declaration_Of_Entity
+                 (E             => Obj,
+                  Params        => Params,
+                  Initialized   => True,
+                  Top_Predicate => True,
+                  Context       => Prop_For_Include);
+
             --  No need to assume anything if Obj is not an object, if it is
             --  not in SPARK or if it is a local object of the unit.
 
-            if not (Nkind (Obj) in N_Entity)
+            elsif not (Nkind (Obj) in N_Entity)
               or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
               or else not Entity_In_SPARK (Obj)
               or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
@@ -1290,6 +1307,7 @@ package body Gnat2Why.Expr is
          end loop;
 
          Node_Sets.Difference (Includes, Already_Included);
+         First_Iter := False;
       end loop;
       return Dynamic_Prop_Inputs;
    end Assume_Dynamic_Invariant_For_Variables;
@@ -3375,7 +3393,6 @@ package body Gnat2Why.Expr is
         (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id
       is
-         pragma Unreferenced (E);
          T_Comp : W_Pred_Id;
       begin
 
@@ -3385,12 +3402,18 @@ package body Gnat2Why.Expr is
          --  toplevel object needs to be considered as variable too) and
          --  Top_Predicate set to true (as the decision to include or not
          --  the top predicate does not apply to subcomponents).
+         --  Also discriminants and components of protected types are always
+         --  initialized.
 
          T_Comp :=
            +Compute_Dynamic_Invariant
            (Expr          => C_Expr,
             Ty            => C_Ty,
-            Initialized   => Initialized,
+            Initialized   =>
+              (if (Present (E) and then Ekind (E) = E_Discriminant)
+                 or else Is_Protected_Type (Retysp (Ty))
+               then True_Term
+               else Initialized),
             Only_Var      => False_Term,
             Top_Predicate => True_Term,
             Params        => Params,
@@ -3693,7 +3716,10 @@ package body Gnat2Why.Expr is
             Right  => +Invariant_For_Array (Expr, Ty_Ext),
             Domain => EW_Pred);
 
-      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+      elsif Is_Record_Type (Ty_Ext)
+        or else Is_Private_Type (Ty_Ext)
+        or else Is_Concurrent_Type (Ty_Ext)
+      then
 
          --  Generates:
          --  (check_for_f1 <Expr> -> Dynamic_Invariant <Expr>.rec__f1)
