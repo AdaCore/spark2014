@@ -1,5 +1,5 @@
 prime_and_coprime_numbers.adb:19:46: info: range check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:36:38: info: contract case proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:36:38: medium: contract case might fail, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:37:38: info: contract case proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:52:15: info: range check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:53:15: info: range check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -194,6 +194,6 @@ test_prime_and_coprime_numbers.adb:12:15: info: initialization of "P.Prime_Data"
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: medium: precondition might fail
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC4: 1 VC)
-test_prime_and_coprime_numbers.adb:14:15: info: precondition proved (CVC4: 3 VC; Z3: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC4: 1 VC)
+test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail
 test_prime_and_coprime_numbers.adb:14:32: info: initialization of "Coprimes" proved
