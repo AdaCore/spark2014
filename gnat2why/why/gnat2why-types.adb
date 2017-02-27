@@ -679,7 +679,6 @@ package body Gnat2Why.Types is
 
             when Private_Kind =>
                pragma Assert (Full_View_Not_In_SPARK (E));
-               pragma Assert (not Entity_In_SPARK (Underlying_Type (E)));
                Declare_Ada_Record (File, E);
 
             when others =>
