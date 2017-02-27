@@ -478,14 +478,6 @@ term.ads:11:04: info: function contract not available for proof ("Positions" may
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
-term.ads:11:04: info: implicit function contract not available for proof ("Eq" is recursive)
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1001
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1003
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1004
@@ -541,12 +533,10 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:1113
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1114
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
-term.ads:11:04: info: in instantiation at a-cfhase.ads:1119
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1120
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1131
-term.ads:11:04: info: in instantiation at a-cfhase.ads:128
 term.ads:11:04: info: in instantiation at a-cfhase.ads:141
 term.ads:11:04: info: in instantiation at a-cfhase.ads:142
 term.ads:11:04: info: in instantiation at a-cfhase.ads:157
@@ -564,13 +554,11 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:273
 term.ads:11:04: info: in instantiation at a-cfhase.ads:273
 term.ads:11:04: info: in instantiation at a-cfhase.ads:277
 term.ads:11:04: info: in instantiation at a-cfhase.ads:278
-term.ads:11:04: info: in instantiation at a-cfhase.ads:279
 term.ads:11:04: info: in instantiation at a-cfhase.ads:281
 term.ads:11:04: info: in instantiation at a-cfhase.ads:286
 term.ads:11:04: info: in instantiation at a-cfhase.ads:287
 term.ads:11:04: info: in instantiation at a-cfhase.ads:289
 term.ads:11:04: info: in instantiation at a-cfhase.ads:290
-term.ads:11:04: info: in instantiation at a-cfhase.ads:291
 term.ads:11:04: info: in instantiation at a-cfhase.ads:310
 term.ads:11:04: info: in instantiation at a-cfhase.ads:332
 term.ads:11:04: info: in instantiation at a-cfhase.ads:333
@@ -644,7 +632,6 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:497
 term.ads:11:04: info: in instantiation at a-cfhase.ads:498
 term.ads:11:04: info: in instantiation at a-cfhase.ads:500
 term.ads:11:04: info: in instantiation at a-cfhase.ads:501
-term.ads:11:04: info: in instantiation at a-cfhase.ads:502
 term.ads:11:04: info: in instantiation at a-cfhase.ads:502
 term.ads:11:04: info: in instantiation at a-cfhase.ads:508
 term.ads:11:04: info: in instantiation at a-cfhase.ads:510
@@ -892,9 +879,6 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
-term.ads:11:04: info: in instantiation at a-cfhase.ads:90
-term.ads:11:04: info: in instantiation at a-cfhase.ads:90
-term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:900
 term.ads:11:04: info: in instantiation at a-cfhase.ads:901
 term.ads:11:04: info: in instantiation at a-cfhase.ads:901
@@ -956,10 +940,8 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:997
 term.ads:11:04: info: in instantiation at a-cfhase.ads:997
 term.ads:11:04: info: in instantiation at a-cofuse.ads:100
 term.ads:11:04: info: in instantiation at a-cofuse.ads:124
-term.ads:11:04: info: in instantiation at a-cofuse.ads:124
 term.ads:11:04: info: in instantiation at a-cofuse.ads:138
 term.ads:11:04: info: in instantiation at a-cofuse.ads:151
-term.ads:11:04: info: in instantiation at a-cofuse.ads:162
 term.ads:11:04: info: in instantiation at a-cofuse.ads:176
 term.ads:11:04: info: in instantiation at a-cofuse.ads:184
 term.ads:11:04: info: in instantiation at a-cofuse.ads:191
@@ -982,7 +964,6 @@ term.ads:11:04: info: in instantiation at a-cofuse.ads:247
 term.ads:11:04: info: in instantiation at a-cofuse.ads:248
 term.ads:11:04: info: in instantiation at a-cofuse.ads:249
 term.ads:11:04: info: in instantiation at a-cofuse.ads:250
-term.ads:11:04: info: in instantiation at a-cofuse.ads:79
 term.ads:11:04: info: in instantiation at a-cofuse.ads:94
 term.ads:11:04: warning: in instantiation at a-cfhase.ads:1122
 term.ads:11:04: warning: recursive function cannot be inlined for proof
