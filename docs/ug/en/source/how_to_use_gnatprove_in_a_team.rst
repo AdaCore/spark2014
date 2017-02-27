@@ -329,12 +329,12 @@ Managing Assumptions
 --------------------
 
 Because |GNATprove| analyzes separately subprograms and packages, its results
-depend on assumptions about unanalyzed subprograms and packages. For example,
+depend on assumptions about other subprograms and packages. For example,
 the verification that a subprogram is free from run-time errors depends on the
 property that all the subprograms it calls implement their specified
-contract. If a program is completely analyzed with |GNATprove|, cross-checking
-of assumptions is mostly done automatically (with a few exceptions like
-checking absence of infinite call chains). But in general, a program is partly
+contract. If a program is completely analyzed with |GNATprove|, |GNATprove|
+will report messages on those other subprograms, if they might not implement
+their contract correctly. But in general, a program is partly
 in |SPARK| and partly in other languages, mostly Ada, C and assembly
 languages. Thus, assumptions on parts of the program that cannot be analyzed
 with |GNATprove| need to be recorded for verification by other means, like
