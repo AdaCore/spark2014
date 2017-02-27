@@ -2,7 +2,7 @@ arr.adb:15:33: info: initialization of "Buffer_Len" proved
 arr.adb:15:45: info: initialization of "Buffer" proved
 arr.adb:21:11: info: range check proved (CVC4: 2 VC)
 arr.adb:22:21: info: initialization of "Buffer" proved
-arr.adb:31:33: info: initialization of "Buffer_Len" proved
-arr.adb:31:45: info: initialization of "Buffer" proved
-arr.adb:37:11: info: range check proved (CVC4: 2 VC)
-arr.adb:38:21: info: initialization of "Buffer" proved
+arr.adb:30:33: info: initialization of "Buffer_Len" proved
+arr.adb:30:45: info: initialization of "Buffer" proved
+arr.adb:36:11: info: range check proved (CVC4: 2 VC)
+arr.adb:37:21: info: initialization of "Buffer" proved
