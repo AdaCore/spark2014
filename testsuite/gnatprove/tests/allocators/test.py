@@ -2,7 +2,7 @@ from test_support import *
 
 prove_all(level=4,
           steps=None,
-          prover=["z3", "cvc4"],
+          prover=["cvc4", "z3"],
           no_fail=True,
           opt=["-u",
                "simple_allocator.adb",
