@@ -4,10 +4,8 @@ libexec/spark/bin/ dir
 alt-ergo
 codepeer-gcc
 codepeer-gnatls
-codepeer-gnatmake
 codepeer-gprbuild
 codepeer_be
-codepeer_ws
 cvc4
 gcc
 gnat2why
