@@ -527,6 +527,14 @@ package body Flow.Control_Flow_Graph is
    --  The standard exits of all parts feed into the standard
    --  exits of the entire case statement.
 
+   procedure Do_Contract_Expression
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) in N_Subexpr;
+   --  Deals with the given pre- or postcondition expression
+
    procedure Do_Delay_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -769,22 +777,6 @@ package body Flow.Control_Flow_Graph is
    --
    --  Please also see Pragma_Relevant_To_Flow which decides which
    --  pragmas are important.
-
-   procedure Do_Postcondition
-     (Post : Node_Id;
-      FA   : in out Flow_Analysis_Graphs;
-      CM   : in out Connection_Maps.Map;
-      Ctx  : in out Context);
-   --  Deals with the given postcondition expression
-   --  ??? can be merged with Do_Precondition
-
-   procedure Do_Precondition
-     (Pre : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
-   --  Deals with the given precondition expression
-   --  ??? can be merged with Do_Postcondition
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
@@ -4097,47 +4089,6 @@ package body Flow.Control_Flow_Graph is
 
    end Do_Pragma;
 
-   ---------------------
-   -- Do_Precondition --
-   ---------------------
-
-   procedure Do_Precondition
-     (Pre : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   is
-      pragma Unreferenced (Ctx);
-      V : Flow_Graphs.Vertex_Id;
-      Funcs : Node_Sets.Set;
-   begin
-      --  We just need to check for uninitialized variables
-      Collect_Functions_And_Read_Locked_POs
-        (Pre,
-         Functions_Called   => Funcs,
-         Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
-
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (Pre),
-         Make_Sink_Vertex_Attributes
-           (FA              => FA,
-            Var_Use         => Get_Variables
-              (Pre,
-               Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
-               Fold_Functions       => False,
-               Use_Computed_Globals => not FA.Generating_Globals),
-            Sub_Called      => Funcs,
-            Is_Proof        => True,
-            Is_Precondition => True,
-            E_Loc           => Pre),
-         V);
-
-      CM.Insert (Union_Id (Pre), Trivial_Connection (V));
-   end Do_Precondition;
-
    -----------------------
    -- Do_Call_Statement --
    -----------------------
@@ -4330,46 +4281,46 @@ package body Flow.Control_Flow_Graph is
       end;
    end Do_Call_Statement;
 
-   ----------------------
-   -- Do_Postcondition --
-   ----------------------
+   ----------------------------
+   -- Do_Contract_Expression --
+   ----------------------------
 
-   procedure Do_Postcondition
-     (Post : Node_Id;
-      FA   : in out Flow_Analysis_Graphs;
-      CM   : in out Connection_Maps.Map;
-      Ctx  : in out Context)
+   procedure Do_Contract_Expression
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
    is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
-      --  We only need to check for uninitialized variables
+      --  We just need to check for uninitialized variables
       Collect_Functions_And_Read_Locked_POs
-        (Post,
+        (N,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Include_Predicates => FA.Generating_Globals);
 
       Add_Vertex
         (FA,
-         Direct_Mapping_Id (Post),
+         Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (FA               => FA,
-            Var_Use          => Get_Variables
-              (Post,
+           (FA              => FA,
+            Var_Use         => Get_Variables
+              (N,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not FA.Generating_Globals),
-            Sub_Called       => Funcs,
-            Is_Proof         => True,
-            Is_Postcondition => True,
-            E_Loc            => Post),
+            Sub_Called      => Funcs,
+            Is_Proof        => True,
+            Is_Precondition => True,
+            E_Loc           => N),
          V);
 
-      CM.Insert (Union_Id (Post), Trivial_Connection (V));
-   end Do_Postcondition;
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
+   end Do_Contract_Expression;
 
    --------------------------------
    -- Do_Simple_Return_Statement --
@@ -6049,10 +6000,10 @@ package body Flow.Control_Flow_Graph is
                NL : Union_Lists.List := Union_Lists.Empty_List;
             begin
                for Precondition of Preconditions loop
-                  Do_Precondition (Precondition,
-                                   FA,
-                                   Connection_Map,
-                                   The_Context);
+                  Do_Contract_Expression (Precondition,
+                                          FA,
+                                          Connection_Map,
+                                          The_Context);
                   NL.Append (Union_Id (Precondition));
                end loop;
                Join (FA    => FA,
@@ -6073,10 +6024,10 @@ package body Flow.Control_Flow_Graph is
                      Refined);
 
                   for Postcondition of Postconditions loop
-                     Do_Postcondition (Postcondition,
-                                       FA,
-                                       Connection_Map,
-                                       The_Context);
+                     Do_Contract_Expression (Postcondition,
+                                             FA,
+                                             Connection_Map,
+                                             The_Context);
                      NL.Append (Union_Id (Postcondition));
                   end loop;
                end loop;
@@ -6099,10 +6050,10 @@ package body Flow.Control_Flow_Graph is
                                                 Refined => False);
             begin
                for Postcondition of Postconditions loop
-                  Do_Postcondition (Postcondition,
-                                    FA,
-                                    Connection_Map,
-                                    The_Context);
+                  Do_Contract_Expression (Postcondition,
+                                          FA,
+                                          Connection_Map,
+                                          The_Context);
                   NL.Append (Union_Id (Postcondition));
                end loop;
                Join (FA    => FA,
