@@ -1,0 +1,3 @@
+project Sub1 is
+   for Source_Dirs use ("sub1");
+end Sub1;

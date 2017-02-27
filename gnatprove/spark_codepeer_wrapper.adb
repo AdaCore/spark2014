@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              C O D E P E E R                             --
 --                                                                          --
---                     Copyright (C) 2008-2016, AdaCore                     --
+--                     Copyright (C) 2008-2017, AdaCore                     --
 --                                                                          --
 -- This is free software;  you can redistribute it  and/or modify it  under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -17,21 +17,22 @@
 -- The CodePeer technology was originally developed by SofCheck, Inc.       --
 ------------------------------------------------------------------------------
 
-with Ada.Characters;          use Ada.Characters;
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Command_Line;        use Ada.Command_Line;
-with Ada.Directories;         use Ada.Directories;
+with Ada.Characters;             use Ada.Characters;
+with Ada.Characters.Handling;    use Ada.Characters.Handling;
+with Ada.Command_Line;           use Ada.Command_Line;
+with Ada.Containers.Hashed_Sets;
+with Ada.Directories;            use Ada.Directories;
 with Ada.Strings.Fixed;
-with Ada.Text_IO;             use Ada.Text_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
 
-with GNAT.OS_Lib;             use GNAT.OS_Lib;
+with GNAT.OS_Lib;                use GNAT.OS_Lib;
 with GNAT.Strings;
 
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with GNATCOLL.VFS;            use GNATCOLL.VFS;
-with GNATCOLL.Projects;       use GNATCOLL.Projects;
+with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with GNATCOLL.VFS;               use GNATCOLL.VFS;
+with GNATCOLL.Projects;          use GNATCOLL.Projects;
 
-with String_Utils;            use String_Utils;
+with String_Utils;               use String_Utils;
 
 --  Wrapper around the codepeer_be executable for SPARK integration.
 
@@ -368,15 +369,31 @@ procedure SPARK_CodePeer_Wrapper is
          & (+Database_Directory (Project).Full_Name) & """;");
       Ada.Text_IO.New_Line (F);
 
+      --  Only generate one Source directive for a given object directory, to
+      --  correctly deal with the case where multiple sub-projects share the
+      --  same object directory.
+
       declare
          Object_Dirs : constant File_Array :=
            Tree.Root_Project.Object_Path
              (Recursive           => True,
               Including_Libraries => False);
 
+         package Virtual_File_Sets is new Ada.Containers.Hashed_Sets
+           (Element_Type        => Virtual_File,
+            Hash                => Full_Name_Hash,
+            Equivalent_Elements => "=",
+            "="                 => "=");
+         use Virtual_File_Sets;
+
+         Seen : Virtual_File_Sets.Set;
+
       begin
          for Dir of Object_Dirs loop
-            Generate_Source_Directive (F, Dir);
+            if not Seen.Contains (Dir) then
+               Generate_Source_Directive (F, Dir);
+               Seen.Include (Dir);
+            end if;
          end loop;
       end;
 
