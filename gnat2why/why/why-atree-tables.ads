@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Vectors;
+with Ada.Containers.Indefinite_Vectors;
 with Why.Classes;                        use Why.Classes;
 
 package Why.Atree.Tables is
@@ -105,6 +105,10 @@ package Why.Atree.Tables is
      Post => (Is_Empty (New_List'Result));
    --  Allocate a new empty list in table and return its Id
 
+   procedure Free;
+   --  Free memory allocated for the Why3 AST tables; should only be called
+   --  after printing to .mlw file.
+
 private
    --  These tables are used as storage pools for nodes and lists.
    --  They could ultimately be implemented using the containers
@@ -113,8 +117,8 @@ private
    --  containers will be similar enough.
 
    package Node_Tables is
-     new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
-                                 Element_Type => Why_Node);
+     new Ada.Containers.Indefinite_Vectors (Index_Type   => Why_Node_Id,
+                                            Element_Type => Why_Node);
 
    Node_Table : Node_Tables.Vector;
 
@@ -125,8 +129,8 @@ private
    end record;
 
    package Node_List_Tables is
-     new Ada.Containers.Vectors (Index_Type => Why_Node_List,
-                                 Element_Type => List_Info);
+     new Ada.Containers.Indefinite_Vectors (Index_Type   => Why_Node_List,
+                                            Element_Type => List_Info);
 
    List_Table : Node_List_Tables.Vector;
 

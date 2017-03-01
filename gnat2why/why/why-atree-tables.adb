@@ -58,6 +58,27 @@ package body Why.Atree.Tables is
       LI.Checked := True;
    end Prepend;
 
+   ----------
+   -- Free --
+   ----------
+
+   procedure Free is
+   begin
+      --  Remove the (controlled) objects of the Why3 nodes with Clear and
+      --  free the memory used by the vector itself with Reserve_Capacity.
+      --
+      --  Note: while Ada RM says "If the capacity of Container is already
+      --  greater than or equal to [Reserve_Capacity parameter], then
+      --  Reserve_Capacity has no effect" the GNAT's implementation of
+      --  Reserve_Capcity frees the underlying memory.
+
+      Node_Table.Clear;
+      Node_Table.Reserve_Capacity (0);
+
+      List_Table.Clear;
+      List_Table.Reserve_Capacity (0);
+   end Free;
+
    ----------------
    -- Initialize --
    ----------------
