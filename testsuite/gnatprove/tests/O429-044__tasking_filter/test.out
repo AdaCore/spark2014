@@ -1,10 +1,10 @@
 tasks.adb:89:25: attribute "Identity" is not allowed in SPARK
 tasks.adb:89:25: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:3:46: access type is not allowed in SPARK
+tasks.ads:3:46: access to "Natural" is not allowed in SPARK (due to access type)
 tasks.ads:3:46: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:17:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 tasks.ads:17:19: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:25:07: access type is not allowed in SPARK
+tasks.ads:25:07: access to "Integer" is not allowed in SPARK (due to access type)
 tasks.ads:25:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:25:27: access type is not allowed in SPARK
 tasks.ads:25:27: violation of pragma SPARK_Mode at test.adc:1

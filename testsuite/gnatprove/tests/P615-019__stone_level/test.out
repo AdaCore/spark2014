@@ -1,4 +1,4 @@
-violations.adb:12:04: access type is not allowed in SPARK
+violations.adb:12:04: access to "Integer" is not allowed in SPARK (due to access type)
 violations.adb:12:04: violation of pragma SPARK_Mode at test.adc:1
 violations.adb:18:07: explicit dereference is not allowed in SPARK
 violations.adb:18:07: violation of pragma SPARK_Mode at test.adc:1
