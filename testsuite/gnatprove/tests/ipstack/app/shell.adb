@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2017, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 pragma Ada_2005;
@@ -139,7 +139,7 @@ package body Shell is
 
       if State = Waiting and then AIP.IO.Line_Available then
          declare
-            Line : constant String := AIP.IO.Get;
+            Line : String renames AIP.IO.Line (1 .. AIP.IO.Get_Last);
          begin
             if Line = "if list" then
                declare

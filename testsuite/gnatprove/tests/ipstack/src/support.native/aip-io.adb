@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2012-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2012-2017, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
@@ -9,7 +9,6 @@ package body AIP.IO with
   SPARK_Mode => Off
 is
 
-   Line : String (1 .. 1024);
    Last : Integer := 0;
 
    procedure Put (S : String) renames Ada.Text_IO.Put;
@@ -26,11 +25,11 @@ is
       return Line (Last) = ASCII.LF;
    end Line_Available;
 
-   function Get return String is
+   function Get_Last return Integer is
       R_Last : constant Integer := Last;
    begin
       Last := 0;
-      return Line (1 .. R_Last - 1);
-   end Get;
+      return R_Last - 1;
+   end Get_Last;
 
 end AIP.IO;

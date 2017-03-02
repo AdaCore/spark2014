@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---             Copyright (C) 2012, Free Software Foundation, Inc.           --
+--          Copyright (C) 2012-2017, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  Low-level console IO for testing/debugging purposes
@@ -14,7 +14,11 @@ package AIP.IO is
    function Line_Available return Boolean;
    --  Poll input, return True if a complete input line is available
 
-   function Get return String;
-   --  Return the current input line
+   Line : String (1 .. 1024);
+   --  Current input line
+
+   function Get_Last return Integer;
+   --  Return the index in Line_Buffer of the last character in the current
+   --  input line. Caller is responsible for copying data from the Line buffer.
 
 end AIP.IO;
