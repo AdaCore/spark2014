@@ -1818,32 +1818,6 @@ package body SPARK_Definition is
                   Set_Partial_View (Full_View (E), E);
                end if;
 
-               --  Fill in the map between classwide types and their
-               --  corresponding specific type, in the case of the implicitly
-               --  declared classwide type T'Class. Also fill in the map
-               --  between primitive operations and their corresponding
-               --  tagged type.
-
-               if Ekind (E) in E_Record_Type | E_Record_Subtype
-                 and then Is_Tagged_Type (E)
-                 and then (if Ekind (E) = E_Record_Subtype then
-                               not (Present (Cloned_Subtype (E))))
-                 and then not Is_Class_Wide_Type (E)
-                 and then not Is_Itype (E)
-               then
-                  Set_Specific_Tagged (Class_Wide_Type (E), E);
-
-                  --  Only mark the classwide type associated to a record type
-                  --  if the record type isn't constrained. Otherwise, the
-                  --  classwide type is not in SPARK and should not be used.
-
-                  if not Has_Discriminants (E)
-                    or else not Is_Constrained (E)
-                  then
-                     Mark_Entity (Class_Wide_Type (E));
-                  end if;
-               end if;
-
                Mark_Entity (E);
 
                if Is_Itype (BT) then
@@ -3716,6 +3690,20 @@ package body SPARK_Definition is
             end if;
          end if;
 
+         --  For private tagged types it is necessary to mark the full view as
+         --  well for proper processing in proof. We use Mark_Entity because
+         --  the full view might contain SPARK violations, but the partial view
+         --  shouldn't be affected by that.
+
+         if Ekind (E) in
+           E_Record_Type_With_Private | E_Record_Subtype_With_Private
+           and then Is_Tagged_Type (E)
+           and then not Is_Class_Wide_Type (E)
+           and then not Is_Itype (E)
+         then
+            Mark_Entity (Full_View (E));
+         end if;
+
          declare
             Anc_Subt : constant Entity_Id := Ancestor_Subtype (E);
          begin
@@ -4512,6 +4500,21 @@ package body SPARK_Definition is
         or else Ekind (E) = E_Package
       then
          Current_SPARK_Pragma := SPARK_Pragma (E);
+      end if;
+
+      --  Fill in the map between classwide types and their corresponding
+      --  specific type, in the case of the implicitly declared classwide type
+      --  T'Class. Also fill in the map between primitive operations and their
+      --  corresponding tagged type.
+
+      if Ekind (E) in E_Record_Type | E_Record_Subtype
+        and then Is_Tagged_Type (E)
+        and then (if Ekind (E) = E_Record_Subtype then
+                      not (Present (Cloned_Subtype (E))))
+        and then not Is_Class_Wide_Type (E)
+        and then not Is_Itype (E)
+      then
+         Set_Specific_Tagged (Class_Wide_Type (E), E);
       end if;
 
       --  Include entity E in the set of marked entities

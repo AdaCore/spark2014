@@ -1,7 +1,5 @@
 discr.adb:3:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
 discr.adb:3:04: violation of aspect SPARK_Mode at line 1
-discr.adb:3:09: "U" is not allowed in SPARK
-discr.adb:3:09: violation of aspect SPARK_Mode at line 1
 discr.adb:12:20: "U" is not allowed in SPARK
 discr.adb:12:20: violation of aspect SPARK_Mode at line 1
 discr.adb:12:46: "U" is not allowed in SPARK
