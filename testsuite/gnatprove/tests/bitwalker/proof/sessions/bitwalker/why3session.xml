@@ -1462,12 +1462,12 @@
   <goal name="WP_parameter def.37" expl="37. assertion">
   <proof prover="0"><result status="unknown" time="0.44" steps="12513"/></proof>
   <proof prover="2"><result status="unknown" time="1.38" steps="12517"/></proof>
-  <proof prover="4"><result status="valid" time="0.31" steps="202483"/></proof>
+  <proof prover="4"><result status="valid" time="0.31" steps="500000"/></proof>
   </goal>
   <goal name="WP_parameter def.38" expl="38. assertion">
   <proof prover="0"><result status="unknown" time="0.52" steps="12513"/></proof>
   <proof prover="2"><result status="unknown" time="1.36" steps="12516"/></proof>
-  <proof prover="4"><result status="valid" time="0.41" steps="171482"/></proof>
+  <proof prover="4"><result status="valid" time="0.41" steps="500000"/></proof>
   </goal>
   <goal name="WP_parameter def.39" expl="39. precondition">
   <proof prover="0"><result status="valid" time="0.05" steps="96"/></proof>
