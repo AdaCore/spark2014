@@ -1,0 +1,3 @@
+vol.adb:14:07: medium: array index check might fail (e.g. when idx = 0)
+vol.adb:21:14: medium: array index check might fail (e.g. when idx = 0)
+vol.ads:8:20: info: initialization of "val" proved
