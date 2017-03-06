@@ -103,17 +103,20 @@ package body Gnat2Why.Driver is
    procedure Complete_Declaration (E : Entity_Id);
    --  Generate completion for every subprogram or type entity in List_Entities
 
-   function Is_Translated_Subprogram (E : Entity_Id) return Boolean;
-   --  @param E Subprogram entity.
-   --  @return True iff subprogram E needs to be translated into Why3.
+   function Is_Translated_Subprogram (E : Entity_Id) return Boolean
+   with Pre => Entity_In_SPARK (E);
+   --  @param E Subprogram entity
+   --  @return True iff subprogram E needs to be translated into Why3
 
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
 
    procedure Translate_Standard_Package;
 
-   procedure Translate_Entity (E : Entity_Id);
-   --  Translates entity E into Why
+   procedure Translate_Entity (E : Entity_Id)
+   with Pre => Entity_In_SPARK (E) or else Ekind (E) = E_Package;
+   --  Translates entity E into Why; it is called on either entities in SPARK
+   --  or on packages (even if thy are not in SPARK ???).
 
    procedure Do_Generate_VCs (E : Entity_Id);
    --  Generates VCs for entity E. This is currently a noop for E other than
@@ -171,8 +174,9 @@ package body Gnat2Why.Driver is
             end if;
 
          when Type_Kind =>
-            if Entity_In_SPARK (E)
-              and then Retysp (E) = E
+            pragma Assert (Entity_In_SPARK (E));
+
+            if Retysp (E) = E
               and then not Is_Standard_Boolean_Type (E)
               and then E /= Universal_Fixed
             then
@@ -349,9 +353,10 @@ package body Gnat2Why.Driver is
             end if;
 
          when Type_Kind =>
-            if Entity_In_SPARK (E) and then
-              Needs_Default_Checks_At_Decl (E) and then
-              Analysis_Requested (E, With_Inlined => False)
+            pragma Assert (Entity_In_SPARK (E));
+
+            if Needs_Default_Checks_At_Decl (E)
+              and then Analysis_Requested (E, With_Inlined => False)
             then
                Generate_VCs_For_Type (WF_Main, E);
             end if;
@@ -613,15 +618,14 @@ package body Gnat2Why.Driver is
    ------------------------------
 
    function Is_Translated_Subprogram (E : Entity_Id) return Boolean is
-     (Entity_In_SPARK (E)
-
+     (
        --  Ignore inlined subprograms. Either these are not analyzed
        --  (when referenced and analysis was not specifically requested
        --  for them), in which case it's safer to skip a declaration
        --  which could be called. Or they are analyzed, but there is
        --  no call to them anyway, so skipping the declaration is safe.
 
-       and then not Is_Local_Subprogram_Always_Inlined (E)
+       not Is_Local_Subprogram_Always_Inlined (E)
 
        --  Ignore invariant procedures and default initialization conditions
 
@@ -830,9 +834,7 @@ package body Gnat2Why.Driver is
             --  encountered here, but only one should be translated. We pick
             --  the one with the most information that's still in SPARK.
 
-            if Entity_In_SPARK (E)
-              and then Retysp (E) = E
-            then
+            if Retysp (E) = E then
                --  Partial views of private types should not be
                --  translated if the underlying type is not in SPARK,
                --  otherwise we end up with two definitions for the same
@@ -863,23 +865,21 @@ package body Gnat2Why.Driver is
             --  Constants and variables are translated differently
 
             if not Is_Mutable_In_Why (E) then
-               if Entity_In_SPARK (E) then
-                  if Ekind (E) = E_Constant then
-                     if Is_Partial_View (E) then
-                        Translate_Constant (File, E);
-                        if not Entity_In_SPARK (Full_View (E)) then
-                           Generate_Empty_Axiom_Theory (File, E);
-                        end if;
-                     elsif Is_Full_View (E) then
-                        Translate_Constant_Value (Compl_File, E);
-                     else
-                        Translate_Constant (File, E);
-                        Translate_Constant_Value (Compl_File, E);
+               if Ekind (E) = E_Constant then
+                  if Is_Partial_View (E) then
+                     Translate_Constant (File, E);
+                     if not Entity_In_SPARK (Full_View (E)) then
+                        Generate_Empty_Axiom_Theory (File, E);
                      end if;
+                  elsif Is_Full_View (E) then
+                     Translate_Constant_Value (Compl_File, E);
                   else
                      Translate_Constant (File, E);
-                     Generate_Empty_Axiom_Theory (File, E);
+                     Translate_Constant_Value (Compl_File, E);
                   end if;
+               else
+                  Translate_Constant (File, E);
+                  Generate_Empty_Axiom_Theory (File, E);
                end if;
 
             --  Variables that are part of a protected object are not
@@ -910,17 +910,15 @@ package body Gnat2Why.Driver is
          when E_Subprogram_Body =>
             null;
 
-         --  Given to the handler for packages with an associated theory
+         --  Given to the handler for packages with an associated theory ???
+
+         --  Ordinary packages are never referenced by other entities, so they
+         --  don't need to be introduced like subprograms or objects. Only
+         --  packages with external axiomatization needs some special work.
 
          when E_Package =>
             if Entity_In_Ext_Axioms (E) then
                Translate_Package_With_External_Axioms (E);
-
-            else
-               --  ??? We should deal with elaboration at this point
-               --  See M618-009
-
-               null;
             end if;
 
          when E_Loop =>
@@ -964,7 +962,13 @@ package body Gnat2Why.Driver is
                | N_Subtype_Declaration
                | N_Object_Declaration
             =>
-               Translate_Standard_Entity (Defining_Entity (Decl));
+               declare
+                  E : constant Entity_Id := Defining_Entity (Decl);
+               begin
+                  if Entity_In_SPARK (E) then
+                     Translate_Standard_Entity (E);
+                  end if;
+               end;
 
             when others =>
                null;

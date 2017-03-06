@@ -4508,28 +4508,32 @@ package body SPARK_Definition is
 
       if Violation_Detected then
          Entities_In_SPARK.Delete (E);
-      end if;
 
-      --  Add entity to appropriate list. Entities from packages with external
-      --  axioms are handled by a specific mechanism and thus should not be
-      --  translated.
-      if not Entity_In_Ext_Axioms (E) then
-         --  Concurrent types need to go before their visible declarations
-         --  (because declarations reference them as implicit inputs).
-         if Ekind (E) in E_Protected_Type | E_Task_Type then
+      --  Otherwise, add entity to appropriate list
 
-            pragma Assert
-              (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+      else
+         --  Entities from packages with external axioms are handled by a
+         --  specific mechanism and thus should not be translated.
+         if not Entity_In_Ext_Axioms (E) then
 
-            Node_Lists.Next (Current_Concurrent_Insert_Pos);
+            --  Concurrent types go before their visible declarations (because
+            --  declarations reference them as implicit inputs).
+            if Ekind (E) in E_Protected_Type | E_Task_Type then
 
-            --  If there were no entities defined within concurrent types then
-            --  Next will advance the cursor to No_Element and Insert will be
-            --  equivalent to Append. This is precisely what we need.
-            Entity_List.Insert (Before   => Current_Concurrent_Insert_Pos,
-                                New_Item => E);
-         else
-            Entity_List.Append (E);
+               pragma Assert
+                 (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+
+               Node_Lists.Next (Current_Concurrent_Insert_Pos);
+
+               --  If there were no entities defined within concurrent types
+               --  then Next will advance the cursor to No_Element and Insert
+               --  will be equivalent to Append. This is precisely what we
+               --  need.
+               Entity_List.Insert (Before   => Current_Concurrent_Insert_Pos,
+                                   New_Item => E);
+            else
+               Entity_List.Append (E);
+            end if;
          end if;
       end if;
 

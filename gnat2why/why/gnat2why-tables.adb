@@ -488,7 +488,6 @@ package body Gnat2Why.Tables is
       --  Init component information table for E
 
       if Is_Type (E)
-        and then Entity_In_SPARK (E)
         and then Retysp (E) = E
         and then Ekind (E) in Private_Kind | Record_Kind | Concurrent_Kind
         and then not Is_Class_Wide_Type (E)
