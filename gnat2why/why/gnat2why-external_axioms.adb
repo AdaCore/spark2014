@@ -218,11 +218,8 @@ package body Gnat2Why.External_Axioms is
    procedure Translate_Package_With_External_Axioms
      (Package_Entity : Entity_Id)
    is
-
       TFile : Why_Section renames
               Why_Sections (Dispatch_Entity (Package_Entity));
-
-   --  Start of processing for Translate_Package_With_External_Axioms
 
    begin
       Register_External_Entities (Package_Entity);
