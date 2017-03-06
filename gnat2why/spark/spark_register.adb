@@ -210,9 +210,14 @@ package body SPARK_Register is
             --  i.e. when they are declared and not when they are (implicitly)
             --  referenced.
 
-            if Has_Predicates (N) then
-               Register_Entity (Predicate_Function (N));
-            end if;
+            declare
+               Pred : constant Entity_Id := Predicate_Function (N);
+
+            begin
+               if Present (Pred) then
+                  Register_Entity (Pred);
+               end if;
+            end;
          end if;
 
          --  Register dispatching operations, because they might be called only
