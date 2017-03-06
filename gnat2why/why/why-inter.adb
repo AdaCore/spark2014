@@ -346,14 +346,15 @@ package body Why.Inter is
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module) is
-      Use_Kind2 : EW_Clone_Type := Use_Kind;
+                              Th_Type  : EW_Theory_Type := EW_Module)
+   is
+      Use_Kind2 : constant EW_Clone_Type :=
+        (if Module in Int_Module | RealInfix
+         then EW_Import
+         else Use_Kind);
+      --  ??? override the Use_Kind given by the caller
+
    begin
-      if Module = Int_Module
-        or else Module = RealInfix
-      then
-         Use_Kind2 := EW_Import;
-      end if;
       Theory_Declaration_Append_To_Includes
         (T,
          New_Include_Declaration
