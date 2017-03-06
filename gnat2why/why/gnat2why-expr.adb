@@ -2439,11 +2439,6 @@ package body Gnat2Why.Expr is
             Arg_Cnt := Arg_Cnt + 1;
          end loop;
 
-         --  We also need to add inclusions to allow the usage of those read
-         --  variables.
-
-         Add_Dependencies_For_Effects (Params.File, Subp);
-
          return Why_Args;
       end;
    end Compute_Call_Args;
