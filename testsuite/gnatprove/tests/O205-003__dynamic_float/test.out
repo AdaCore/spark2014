@@ -7,7 +7,7 @@ test_dynamic_property.adb:11:07: info: initialization of "X" proved
 test_dynamic_property.adb:11:07: info: initialization of "Y" proved
 test_dynamic_property.adb:11:28: info: initialization of "X" proved
 test_dynamic_property.adb:11:28: info: range check proved (CVC4: 1 VC)
-test_dynamic_property.adb:15:17: info: postcondition proved (CVC4: 1 VC)
+test_dynamic_property.adb:15:17: info: postcondition proved (Z3: 1 VC)
 test_dynamic_property.adb:21:15: info: float overflow check proved (CVC4: 1 VC)
 test_dynamic_property.adb:22:20: info: float overflow check proved (CVC4: 1 VC)
 test_dynamic_property.adb:22:20: info: range check proved (CVC4: 1 VC)

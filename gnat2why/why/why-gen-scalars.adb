@@ -25,7 +25,6 @@
 
 with Atree;               use Atree;
 with Common_Containers;   use Common_Containers;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sinfo;               use Sinfo;
@@ -783,7 +782,8 @@ package body Why.Gen.Scalars is
                Expr           => New_Fixed_Constant (Value => Expr_Value (N)),
                To             => Base_Why_Type (Ty));
          else
-            return +Transform_Float_Literal (N, Base_Why_Type (Ty));
+            return New_Float_Constant (Value => Expr_Value_R (N),
+                                       Typ   => Base_Why_Type (Ty));
          end if;
       else
          return New_Real_Constant (Value => Expr_Value_R (N));

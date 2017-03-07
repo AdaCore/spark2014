@@ -63,7 +63,7 @@ list_allocator.adb:73:30: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:74:16: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:74:21: info: initialization of "Res" proved
 list_allocator.adb:75:29: info: initialization of "Next_Avail" proved
-list_allocator.adb:77:29: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:77:29: info: precondition proved (CVC4: 4 VC)
 list_allocator.adb:78:29: info: precondition proved (CVC4: 2 VC)
 list_allocator.adb:78:51: info: initialization of "Res" proved
 list_allocator.adb:86:44: info: index check proved (CVC4: 2 VC)
@@ -293,7 +293,7 @@ list_mod_allocator.adb:226:13: info: precondition proved (CVC4: 2 VC)
 list_mod_allocator.adb:226:18: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:226:52: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.adb:226:52: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.ads:11:03: info: initial condition proved (CVC4: 1 VC; Z3: 1 VC)
+list_mod_allocator.ads:11:03: info: initial condition proved (CVC4: 9 VC; Z3: 1 VC)
 list_mod_allocator.ads:11:24: info: initialization of "Data" constituent of "State" proved
 list_mod_allocator.ads:11:42: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.ads:42:53: info: precondition proved (CVC4: 2 VC)

@@ -307,13 +307,13 @@ algorithm.adb:658:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:658:22: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:661:33: info: initialization of "distToGoal" proved
 algorithm.adb:661:33: info: loop invariant initialization proved (CVC4: 2 VC)
-algorithm.adb:661:33: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
+algorithm.adb:661:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:661:70: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:673:72: medium: float overflow check might fail
 algorithm.adb:674:43: info: range check proved (Z3: 1 VC)
 algorithm.adb:674:49: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:679:31: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
+algorithm.adb:679:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:679:31: info: initialization of "distToGoal" proved
 algorithm.adb:679:68: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
@@ -412,19 +412,19 @@ algorithm.adb:860:47: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:860:59: info: initialization of "distToGoal" proved
 algorithm.adb:861:22: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:861:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius > 0.0
-algorithm.adb:861:44: medium: float overflow check might fail
+algorithm.adb:861:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:862:22: medium: assertion might fail, cannot prove This.robot.obstacle_avoid_dist > 0.0
 algorithm.adb:862:76: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:862:77: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:862:99: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:862:99: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius) / This.robot.obstacle_avoid_dist > 0.0
 algorithm.adb:863:23: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:863:45: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:863:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:72: info: division check proved (CVC4: 1 VC)
 algorithm.adb:863:72: medium: float overflow check might fail
 algorithm.adb:864:22: info: assertion proved (Z3: 1 VC)
 algorithm.adb:864:23: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:864:45: medium: float overflow check might fail
+algorithm.adb:864:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:864:72: info: division check proved (CVC4: 1 VC)
 algorithm.adb:864:72: medium: float overflow check might fail
 algorithm.adb:865:24: info: initialization of "driveTurnRate" proved
@@ -432,7 +432,7 @@ algorithm.adb:865:38: medium: float overflow check might fail
 algorithm.adb:865:40: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:865:47: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:865:54: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:865:76: medium: float overflow check might fail
+algorithm.adb:865:76: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:865:103: info: division check proved (CVC4: 1 VC)
 algorithm.adb:865:103: medium: float overflow check might fail
 algorithm.adb:867:16: info: precondition proved (CVC4: 1 VC)

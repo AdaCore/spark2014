@@ -32,6 +32,13 @@ with Why.Sinfo; use Why.Sinfo;
 with Why.Types; use Why.Types;
 
 package Why.Images is
+
+   function Can_Be_Printed_In_Decimal_Notation (N : Nat) return Boolean;
+   --  Returns whether number N is a multiple of 2 and 5 only. If this is
+   --  the case, that means that a fraction whose denominator is a power of
+   --  N can be written exactly in decimal notation. Otherwise, the fraction
+   --  may not always be written exactly in decimal notation (e.g. 1/3).
+
    --  Image functions for the basic entities used in Why's AST.
    --  These output the string image into O.
 

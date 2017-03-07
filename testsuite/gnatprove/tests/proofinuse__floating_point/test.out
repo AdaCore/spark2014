@@ -47,14 +47,14 @@ floating_point.adb:85:27: info: division check proved (Z3_noquant: 1 VC)
 floating_point.adb:85:27: info: float overflow check proved (Interval)
 floating_point.adb:86:10: info: initialization of "Res" proved
 floating_point.adb:87:17: info: initialization of "Res" proved
-floating_point.adb:87:21: medium: float overflow check might fail
+floating_point.adb:87:21: info: float overflow check proved (altergo: 1 VC)
 floating_point.adb:89:14: info: initialization of "Res" proved
 floating_point.adb:89:18: info: division check proved (Z3_noquant: 1 VC)
 floating_point.adb:89:18: medium: float overflow check might fail
 floating_point.adb:97:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:97:32: info: range check proved (Interval)
 floating_point.adb:98:16: info: division check proved (Z3_noquant: 1 VC)
-floating_point.adb:98:16: info: float overflow check proved (Z3_noquant: 1 VC)
+floating_point.adb:98:16: info: float overflow check proved (altergo: 1 VC)
 floating_point.adb:98:28: info: range check proved (Interval)
 floating_point.adb:108:13: info: assertion proved (Z3_noquant: 2 VC)
 floating_point.adb:108:13: info: initialization of "Tmp" proved
@@ -181,11 +181,11 @@ floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial
 floating_point.adb:349:14: warning: subprogram "Polynomial" has no effect
 floating_point.adb:353:22: medium: assertion might fail, cannot prove X + 2.0) * X + 3.0) + 4.0) * X + 5.0 in Float'range
 floating_point.adb:353:27: info: float overflow check proved (Z3_noquant: 2 VC)
-floating_point.adb:353:34: medium: float overflow check might fail
-floating_point.adb:353:38: info: float overflow check proved (Z3_noquant: 2 VC)
-floating_point.adb:353:45: info: float overflow check proved (Z3_noquant: 2 VC)
+floating_point.adb:353:34: info: float overflow check proved (Z3_noquant: 1 VC; altergo: 1 VC)
+floating_point.adb:353:38: info: float overflow check proved (Z3_noquant: 1 VC; altergo: 1 VC)
+floating_point.adb:353:45: info: float overflow check proved (Z3_noquant: 1 VC; altergo: 1 VC)
 floating_point.adb:353:52: medium: float overflow check might fail
-floating_point.adb:353:56: medium: float overflow check might fail
+floating_point.adb:353:56: info: float overflow check proved (Z3_noquant: 1 VC; altergo: 1 VC)
 floating_point.adb:359:16: medium: float overflow check might fail
 floating_point.adb:360:22: info: assertion proved (Z3_noquant: 1 VC)
 floating_point.adb:360:22: info: initialization of "Res" proved

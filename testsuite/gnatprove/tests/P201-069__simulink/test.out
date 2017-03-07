@@ -36,7 +36,7 @@ biaseddivide.adb:24:23: info: float overflow check proved (CodePeer)
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: initialization of "r" proved
 biaseddivide.ads:19:14: medium: postcondition might fail, cannot prove R = Y / (Z - 4.0
-biaseddivide.ads:19:20: medium: divide by zero might fail
+biaseddivide.ads:19:20: info: division check proved (CVC4: 1 VC)
 biaseddivide.ads:19:20: medium: float overflow check might fail
 biaseddivide.ads:19:25: info: float overflow check proved (CodePeer)
 dynamicsaturateassert.adb:49:26: info: initialization of "Saturation_Dynamic_out1" proved

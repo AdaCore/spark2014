@@ -339,14 +339,6 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Floating_Point"));
-      Finite_Float32_Literal :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Finite_Float32_Literal"));
-      Finite_Float64_Literal :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Finite_Float64_Literal"));
       Rep_Proj_Float32 :=
         New_Module
           (File     => Ada_Model_File,
@@ -1137,7 +1129,7 @@ package body Why.Atree.Modules is
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).To_Int :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("to_uint"),
+                           Symbol => NID ("t'int"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Int_Type);
          M_BVs (BV).Two_Power_Size :=
@@ -1294,7 +1286,7 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Is_Finite :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("is_finite"),
+                           Symbol => NID ("t'isFinite"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Power :=
            New_Identifier (Module => M_Floats (Fl).Power_Module,

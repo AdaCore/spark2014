@@ -356,6 +356,14 @@ package Why.Sinfo is
    --
    --  The node for real literals.
    --
+   --  ----------------------
+   --  -- W_Float_Constant --
+   --  ----------------------
+   --  Value       Ureal
+   --  Typ         W_Type_Id
+   --
+   --  The node for float literals.
+   --
    --  -------------
    --  -- W_Deref --
    --  -------------
@@ -704,6 +712,7 @@ package Why.Sinfo is
       W_Modular_Constant,
       W_Fixed_Constant,
       W_Real_Constant,
+      W_Float_Constant,
       W_Comment,
       W_Deref,
       W_Record_Access,

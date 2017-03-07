@@ -290,7 +290,7 @@ module Float32_power
     function div = div_rne,
     function of_int = of_int_rna,
     predicate eq = eq,
-    predicate is_finite = is_finite,
+    predicate is_finite = t'isFinite,
     predicate is_zero = is_zero
 end
 
@@ -303,7 +303,7 @@ module Float64_power
     function div = div_rne,
     function of_int = of_int_rna,
     predicate eq = eq,
-    predicate is_finite = is_finite,
+    predicate is_finite = t'isFinite,
     predicate is_zero = is_zero
 end
 
@@ -311,14 +311,14 @@ module Float32_next_prev
   use export Float32RNE
 
   constant max_value : t
-  axiom max_value : max_real = to_real max_value
+  axiom max_value : max_real = t'real max_value
 
   clone export Floating_next_prev with
     type t = t,
     function max_value = max_value,
     function neg = neg,
     predicate eq = eq,
-    predicate is_finite = is_finite,
+    predicate is_finite = t'isFinite,
     predicate lt = lt,
     predicate gt = gt,
     predicate le = le,
@@ -329,14 +329,14 @@ module Float64_next_prev
   use export Float64RNE
 
   constant max_value : t
-  axiom max_value : max_real = to_real max_value
+  axiom max_value : max_real = t'real max_value
 
   clone export Floating_next_prev with
     type t = t,
     function max_value = max_value,
     function neg = neg,
     predicate eq = eq,
-    predicate is_finite = is_finite,
+    predicate is_finite = t'isFinite,
     predicate lt = lt,
     predicate gt = gt,
     predicate le = le,
@@ -354,13 +354,10 @@ module Float32
     predicate ge = ge,
     predicate eq = eq,
     function div_rne = div_rne,
-    function rem = rem,
     constant zeroF = zeroF
 
-  constant one : t
-  axiom one_is_finite: is_finite one
+  constant one : t = (1.0:t)
   axiom one_is_int: is_int one
-  axiom one_to_real: to_real one = 1.0
   axiom one_of_int: one = of_int RNA 1
 
   type t__ref = { mutable t__content "model_trace:" : t }
@@ -377,13 +374,10 @@ module Float64
     predicate ge = ge,
     predicate eq = eq,
     function div_rne = div_rne,
-    function rem = rem,
     constant zeroF = zeroF
 
-  constant one : t
-  axiom one_is_finite: is_finite one
+  constant one : t = (1.0:t)
   axiom one_is_int: is_int one
-  axiom one_to_real: to_real one = 1.0
   axiom one_of_int: one = of_int RNA 1
 
   type t__ref = { mutable t__content "model_trace:" : t }
@@ -837,15 +831,13 @@ module BV8
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
-
   clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
-    function to_uint = to_uint,
+    function to_uint = t'int,
     function ( * ) = mul,
     function one = one
 
@@ -869,15 +861,13 @@ module BV16
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
-
   clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
-    function to_uint = to_uint,
+    function to_uint = t'int,
     function ( * ) = mul,
     function one = one
 
@@ -901,15 +891,13 @@ module BV32
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
-
   clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
-    function to_uint = to_uint,
+    function to_uint = t'int,
     function ( * ) = mul,
     function one = one
 
@@ -933,15 +921,13 @@ module BV64
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
-
   clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
-    function to_uint = to_uint,
+    function to_uint = t'int,
     function ( * ) = mul,
     function one = one
 

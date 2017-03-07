@@ -1292,7 +1292,7 @@ my_ordered_sets.adb:182:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
 my_ordered_sets.adb:183:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:184:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:185:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_ordered_sets.adb:185:30: info: initialization of private part of "L" proved
 my_ordered_sets.adb:186:33: medium: assertion might fail, cannot prove false
 my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)

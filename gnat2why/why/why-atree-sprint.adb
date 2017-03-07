@@ -29,12 +29,14 @@ with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Errout;                use Errout;
+with Eval_Fat;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
 with Gnat2Why_Args;
 with Namet;                 use Namet;
 with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
+with Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
@@ -116,6 +118,7 @@ package body Why.Atree.Sprint is
    procedure Print_Exn_Condition (Node : W_Exn_Condition_Id);
    procedure Print_Field_Association (Node : W_Field_Association_Id);
    procedure Print_Fixed_Constant (Node : W_Fixed_Constant_Id);
+   procedure Print_Float_Constant (Node : W_Float_Constant_Id);
    procedure Print_Function_Decl (Node : W_Function_Decl_Id);
    procedure Print_Global_Ref_Declaration (Node : W_Global_Ref_Declaration_Id);
    procedure Print_Goal (Node : W_Goal_Id);
@@ -901,6 +904,66 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Fixed_Constant;
 
+   ---------------------------
+   -- Print_Float_Constant --
+   ---------------------------
+
+   procedure Print_Float_Constant (Node : W_Float_Constant_Id) is
+
+      procedure Print_Cast (V : Ureal; Ty : String);
+      --  Print the cast of the value V into the type printed as Ty
+
+      ----------------
+      -- Print_Cast --
+      ----------------
+
+      procedure Print_Cast (V : Ureal; Ty : String) is
+      begin
+         P (O, "(");
+         P (O, V);
+         P (O, ":" & Ty & ")");
+      end Print_Cast;
+
+      Value : Ureal := Get_Value (Node);
+      Base : constant Int := Rbase (Value);
+
+      Typ : constant W_Type_Id := Get_Typ (Node);
+      Prefix : constant String :=
+        (if Typ = EW_Float_32_Type then
+            "Float32."
+         elsif Typ = EW_Float_64_Type then
+            "Float64."
+         else
+            raise Program_Error);
+
+   begin
+
+      --  in case the format of value would get it printed as a fraction we
+      --  call Machine to change its base : Why3 is not happy with a fraction
+      --  for a float litteral.
+      if Base = 0
+        or else not (Base = 10
+                     or else Denominator (Value) <= Uint_0
+                     or else Can_Be_Printed_In_Decimal_Notation (Base))
+      then
+         Value := Eval_Fat.Machine (RT    =>
+                                      (if Get_Typ (Node) = EW_Float_32_Type
+                                       then Stand.Standard_Float
+                                       else Stand.Standard_Long_Float),
+                                    X     => Value,
+                                    Mode  => Eval_Fat.Round_Even,
+                                    Enode => Get_Ada_Node (+Node));
+      end if;
+
+      if UR_Is_Negative (Value) then
+         P (O, "(" & Prefix & "neg ");
+         Print_Cast (UR_Negate (Value), Prefix & "t");
+         P (O, ")");
+      else
+         Print_Cast (Value, Prefix & "t");
+      end if;
+   end Print_Float_Constant;
+
    --------------------------
    -- Print_Function_Decl --
    --------------------------
@@ -1501,6 +1564,9 @@ package body Why.Atree.Sprint is
 
          when W_Real_Constant =>
             Print_Real_Constant (+N);
+
+         when W_Float_Constant =>
+            Print_Float_Constant (+N);
 
          when W_Comment =>
             Print_Comment (+N);

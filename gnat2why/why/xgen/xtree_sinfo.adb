@@ -378,6 +378,13 @@ package body Xtree_Sinfo is
 
       New_Field (W_Real_Constant, "Value", "Ureal");
 
+      ----------------------
+      -- W_Float_Constant --
+      ----------------------
+
+      New_Field (W_Float_Constant, "Value", "Ureal");
+      New_Field (W_Float_Constant, "Typ", "W_Type", Id_One);
+
       ---------------
       -- W_Comment --
       ---------------

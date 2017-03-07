@@ -169,7 +169,7 @@ module Static_Modular_lt64
   use _gnatprove_standard.BV64
   type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV64.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -182,7 +182,7 @@ module Rep_Proj_ltBV64
   use import _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -196,7 +196,7 @@ module Static_Modular_64
   use _gnatprove_standard.BV64
   type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV64.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -207,7 +207,7 @@ module Rep_Proj_BV64
   use import _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -220,7 +220,7 @@ module Static_Modular_lt32
   use _gnatprove_standard.BV32
   type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV32.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -233,7 +233,7 @@ module Rep_Proj_ltBV32
   use import _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -247,7 +247,7 @@ module Static_Modular_32
   use _gnatprove_standard.BV32
   type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV32.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -258,7 +258,7 @@ module Rep_Proj_BV32
   use import _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -271,7 +271,7 @@ module Static_Modular_lt16
   use _gnatprove_standard.BV16
   type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV16.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -284,7 +284,7 @@ module Rep_Proj_ltBV16
   use import _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -298,7 +298,7 @@ module Static_Modular_16
   use _gnatprove_standard.BV16
   type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV16.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -309,7 +309,7 @@ module Rep_Proj_BV16
   use import _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -322,7 +322,7 @@ module Static_Modular_lt8
   use _gnatprove_standard.BV8
   type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV8.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -335,7 +335,7 @@ module Rep_Proj_ltBV8
   use import _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -349,7 +349,7 @@ module Static_Modular_8
   use _gnatprove_standard.BV8
   type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV8.to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -360,7 +360,7 @@ module Rep_Proj_BV8
   use import _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = to_uint x
+  function rep_to_int "inline" (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -848,7 +848,7 @@ module Static_Float32
   clone export Static_Floating_Point with
     type rep_type = t,
     predicate eq = eq,
-    predicate is_finite = is_finite
+    predicate is_finite = t'isFinite
 end
 
 module Rep_Proj_Float32
@@ -869,7 +869,7 @@ module Static_Float64
   clone export Static_Floating_Point with
     type rep_type = t,
     predicate eq = eq,
-    predicate is_finite = is_finite
+    predicate is_finite = t'isFinite
 end
 
 module Rep_Proj_Float64
@@ -912,57 +912,6 @@ module Dynamic_Floating_Point
   val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
-end
-
-theory Finite_Float_Literal
-  use ieee_float.RoundingMode
-
-  type t                        (* either Float32 or Float64 *)
-  (* don't use BV32/64 but just map it in the driver to not have the
-     whole theory systematically ? *)
-
-  function from_binary int : t
-  function to_real t  : real
-  function round RoundingMode.mode real : real
-
-  predicate is_finite t
-
-  constant l : t                (* the constant representing the literal *)
-
-  constant binary_rep  : int        (* it's binary representation *)
-
-  constant decimal_rep : real      (* it's decimal representation *)
-
-  axiom l_real : to_real l = decimal_rep
-
-  (* for cvc4 *)
-  axiom l_representable : to_real l = round RoundingMode.RNE (to_real l)
-
-  axiom l_bin : l = from_binary binary_rep
-
-  axiom l_is_finite : is_finite l
-end
-
-theory Finite_Float32_Literal
-  use "_gnatprove_standard".Float32
-
-  clone export Finite_Float_Literal with
-    type t = Float32.t,
-    predicate is_finite = Float32.is_finite,
-    function to_real = Float32.to_real,
-    function from_binary = Float32.from_binary,
-    function round = Float32.round
-end
-
-theory Finite_Float64_Literal
-  use "_gnatprove_standard".Float64
-
-  clone export Finite_Float_Literal with
-    type t = Float64.t,
-    predicate is_finite = Float64.is_finite,
-    function to_real = Float64.to_real,
-    function from_binary = Float64.from_binary,
-    function round = Float64.round
 end
 
 (* The following modules are templates for unconstrained and constrained array

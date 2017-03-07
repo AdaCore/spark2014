@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(no_fail=True, steps=700)
+prove_all(no_fail=True, steps=1100)

@@ -154,15 +154,15 @@ pid_pack.adb:54:52: info: float overflow check proved (Interval), in instantiati
 pid_pack.adb:58:31: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:58:31: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:58:31: info: float overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
+pid_pack.adb:58:49: info: division check proved (CVC4: 1 VC), in instantiation at controller_pack.ads:16
+pid_pack.adb:58:49: info: division check proved (CVC4: 1 VC), in instantiation at controller_pack.ads:24
+pid_pack.adb:58:49: info: division check proved (CVC4: 1 VC), in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:49: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:58:49: info: float overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:49: info: range check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: range check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:58:49: info: range check proved (Interval), in instantiation at stabilizer_pack.ads:45
-pid_pack.adb:58:49: medium: divide by zero might fail, in instantiation at controller_pack.ads:16
-pid_pack.adb:58:49: medium: divide by zero might fail, in instantiation at controller_pack.ads:24
-pid_pack.adb:58:49: medium: divide by zero might fail, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:60:27: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:60:27: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:24
 pid_pack.adb:60:27: info: float overflow check proved (Interval), in instantiation at stabilizer_pack.ads:45
@@ -511,9 +511,9 @@ sensfusion6_pack.adb:219:46: info: float overflow check proved (Interval), in ca
 sensfusion6_pack.adb:224:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:224:34: info: initialization of "Square_Sum" proved
 sensfusion6_pack.adb:224:34: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:226:25: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:226:25: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:226:25: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:226:25: medium: assertion might fail, cannot prove Recip_Norm in 0.0 .. 2.7E22, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:227:25: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:228:25: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:229:25: info: assertion proved (CVC4: 2 VC), in call inlined at sensfusion6_pack.adb:320
@@ -553,19 +553,19 @@ sensfusion6_pack.adb:238:40: info: range check proved (Interval), in call inline
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved
 sensfusion6_pack.adb:238:42: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:238:50: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:242:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:242:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:52: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:61: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:242:63: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:242:71: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:245:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:245:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:52: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:61: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved
 sensfusion6_pack.adb:245:63: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:245:71: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:248:29: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:248:29: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:52: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:61: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:248:63: info: initialization of "Half_Ez" proved

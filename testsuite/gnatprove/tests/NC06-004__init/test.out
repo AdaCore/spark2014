@@ -16,7 +16,7 @@ shapes5.adb:20:36: info: range check proved (Z3: 1 VC)
 shapes5.adb:22:10: info: initialization of "R" proved
 shapes5.adb:22:17: info: float overflow check proved (Interval)
 shapes5.adb:23:17: info: float overflow check proved (Interval)
-shapes5.adb:23:17: info: range check proved (Z3: 1 VC)
+shapes5.adb:23:17: medium: range check might fail
 shapes5.adb:25:10: info: initialization of "R" proved
 shapes5.adb:25:36: info: float overflow check proved (Interval)
 shapes5.adb:26:36: info: float overflow check proved (Interval)

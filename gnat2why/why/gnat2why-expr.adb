@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;                 use Ada.Containers;
-with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
@@ -11144,17 +11143,18 @@ package body Gnat2Why.Expr is
                                        Value    => Realval (Expr));
 
             else
-               T := +Transform_Float_Literal
-                 (Expr,
-                  (if Has_Single_Precision_Floating_Point_Type
-                       (Etype (Expr))
-                   then
-                      EW_Float_32_Type
-                   elsif Has_Double_Precision_Floating_Point_Type
-                     (Etype (Expr))
-                   then
-                      EW_Float_64_Type
-                   else raise Program_Error));
+               T := New_Float_Constant
+                 (Ada_Node => Expr,
+                  Value    => Realval (Expr),
+                  Typ      => (if Has_Single_Precision_Floating_Point_Type
+                               (Etype (Expr))
+                               then
+                                  EW_Float_32_Type
+                               elsif Has_Double_Precision_Floating_Point_Type
+                                 (Etype (Expr))
+                               then
+                                  EW_Float_64_Type
+                               else raise Program_Error));
             end if;
 
          when N_Character_Literal =>
@@ -15417,132 +15417,6 @@ package body Gnat2Why.Expr is
          Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
    end Transform_String_Literal;
-
-   -----------------------------
-   -- Transform_Float_Literal --
-   -----------------------------
-
-   package Finite_Float_Literal_Map is new Ada.Containers.Ordered_Maps
-     (Key_Type     => Ureal,
-      Element_Type => W_Identifier_Id,
-      "<"          => UR_Lt);
-
-   Float32_Literals : aliased Finite_Float_Literal_Map.Map;
-   Float64_Literals : aliased Finite_Float_Literal_Map.Map;
-
-   function Transform_Float_Literal
-     (E  : Entity_Id;
-      Ty : W_Type_Id)
-      return W_Identifier_Id
-   is
-      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id);
-      --  Clone the theory "finite_float(32/64)_literal" with the appropriate
-      --  substitution corresponding to the current literal.
-
-      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id)
-      is
-         Decl_File : W_Section_Id renames WF_Float_Literals;
-
-         Module : constant W_Module_Id :=
-           New_Module (File => No_Name,
-                       Name => NID (New_Temp_Identifier
-                         (Base_Name => "finite_float_literal")));
-
-         Bin_Rep_Id : constant W_Identifier_Id :=
-           New_Identifier (Name => "binary_rep");
-
-         Dec_Rep_Id : constant W_Identifier_Id :=
-           New_Identifier (Name => "decimal_rep");
-
-         Subst : W_Clone_Substitution_Array (1 .. 2);
-
-      begin
-         --  The W_Identifier_Id that will correspond to the literal
-         Literal_Id := New_Identifier (Domain => EW_Term,
-                                       Symbol => NID ("l"),
-                                       Typ    => Ty,
-                                       Module => Module);
-
-         Open_Theory (Decl_File, Module,
-                      Comment =>
-                        "Module for defining the literal "
-                      & """" & Real_Image (Realval (E), 20)
-                      & """"
-                      & (if Sloc (E) > 0 then
-                           " defined at " & Build_Location_String (Sloc (E))
-                        else "")
-                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-         Emit (Decl_File,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => Bin_Rep_Id,
-                  Binders     => (1 .. 0 => <>),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type,
-                  Def         => W_Expr_Id (Cast_Real_Literal (E  => E,
-                                                           Ty => Ty))));
-
-         Subst (1) := New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => Get_Name (Bin_Rep_Id),
-            Image     => Get_Name (Bin_Rep_Id));
-
-         Emit (Decl_File,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => Dec_Rep_Id,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Binders     => (1 .. 0 => <>),
-                  Def         => New_Real_Constant (Ada_Node => E,
-                                                Value    => Realval (E)),
-                  Return_Type => EW_Real_Type));
-
-         Subst (2) := New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => Get_Name (Dec_Rep_Id),
-            Image     => Get_Name (Dec_Rep_Id));
-
-         Emit (Decl_File,
-               New_Clone_Declaration (Theory_Kind   => EW_Theory,
-                                      Clone_Kind    => EW_Export,
-                                      As_Name       => No_Name,
-                                      Origin        =>
-                                        (if Ty = EW_Float_32_Type
-                                         then Finite_Float32_Literal
-                                         else Finite_Float64_Literal),
-                                      Substitutions => Subst));
-
-         Close_Theory (Decl_File,
-                       Kind => Definition_Theory,
-                       Defined_Entity => E);
-      end Declare_Literal_Theory;
-
-      Literal_Id : W_Identifier_Id;
-
-      Float_Literals : constant access Finite_Float_Literal_Map.Map :=
-        (if Ty = EW_Float_32_Type then
-            Float32_Literals'Access
-         elsif Ty = EW_Float_64_Type then
-            Float64_Literals'Access
-         else raise Program_Error);
-
-      C : constant Finite_Float_Literal_Map.Cursor :=
-        Float_Literals.Find (Key => Realval (E));
-
-   begin
-
-      if Finite_Float_Literal_Map.Has_Element (C) then
-         Literal_Id := Finite_Float_Literal_Map.Element (C);
-      else
-         Declare_Literal_Theory (Literal_Id);
-
-         Float_Literals.Insert (Key      => Realval (E),
-                                New_Item => Literal_Id);
-      end if;
-
-      return Literal_Id;
-   end Transform_Float_Literal;
 
    -------------------------------
    -- Type_Invariant_Expression --

@@ -89,8 +89,6 @@ package Why.Atree.Modules is
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
-   Finite_Float32_Literal : W_Module_Id;
-   Finite_Float64_Literal : W_Module_Id;
    Rep_Proj_Float32       : W_Module_Id;
    Rep_Proj_Float64       : W_Module_Id;
    Rep_Proj_Int           : W_Module_Id;

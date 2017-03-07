@@ -25,6 +25,24 @@
 
 package body Why.Images is
 
+   ----------------------------------------
+   -- Can_Be_Printed_In_Decimal_Notation --
+   ----------------------------------------
+
+   function Can_Be_Printed_In_Decimal_Notation (N : Nat) return Boolean is
+      M : Nat := N;
+   begin
+      while M mod 2 = 0 loop
+         M := M / 2;
+      end loop;
+
+      while M mod 5 = 0 loop
+         M := M / 5;
+      end loop;
+
+      return M = 1;
+   end Can_Be_Printed_In_Decimal_Notation;
+
    function Img (Node : Node_Id) return String;
 
    ---------
@@ -174,12 +192,6 @@ package body Why.Images is
 
    procedure P (O : Output_Id; Value : Ureal) is
 
-      function Only_Prime_Factors_Are_Two_And_Five (N : Nat) return Boolean;
-      --  Returns whether number N is a multiple of 2 and 5 only. If this is
-      --  the case, that means that a fraction whose denominator is a power of
-      --  N can be written exactly in decimal notation. Otherwise, the fraction
-      --  may not always be written exactly in decimal notation (e.g. 1/3).
-
       function Max_Number_Of_Decimals (Den : Uint) return Nat;
       --  Returns the maximal number of decimals when dividing a natural number
       --  by Den. Den is a multiple of factors 2 and 5 only. Every factor of
@@ -217,24 +229,6 @@ package body Why.Images is
 
          return Max;
       end Max_Number_Of_Decimals;
-
-      -----------------------------------------
-      -- Only_Prime_Factors_Are_Two_And_Five --
-      -----------------------------------------
-
-      function Only_Prime_Factors_Are_Two_And_Five (N : Nat) return Boolean is
-         M : Nat := N;
-      begin
-         while M mod 2 = 0 loop
-            M := M / 2;
-         end loop;
-
-         while M mod 5 = 0 loop
-            M := M / 5;
-         end loop;
-
-         return M = 1;
-      end Only_Prime_Factors_Are_Two_And_Five;
 
       ----------------------------
       -- Print_Decimal_Notation --
@@ -349,7 +343,7 @@ package body Why.Images is
       --  The base has only 2 and 5 as prime factors, hence the real number can
       --  be written exactly in decimal notation.
 
-      elsif Only_Prime_Factors_Are_Two_And_Five (Base) then
+      elsif Can_Be_Printed_In_Decimal_Notation (Base) then
          Print_Decimal_Notation (Num, UI_Expon (Base, Den));
 
       --  Otherwise, print a fraction
