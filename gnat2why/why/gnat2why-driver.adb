@@ -355,30 +355,26 @@ package body Gnat2Why.Driver is
          when Type_Kind =>
             pragma Assert (Entity_In_SPARK (E));
 
-            if Needs_Default_Checks_At_Decl (E)
-              and then Analysis_Requested (E, With_Inlined => False)
-            then
-               Generate_VCs_For_Type (WF_Main, E);
+            if Analysis_Requested (E, With_Inlined => False) then
+               if Needs_Default_Checks_At_Decl (E) then
+                  Generate_VCs_For_Type (WF_Main, E);
+               end if;
+
+               if Ekind (E) in E_Protected_Type | E_Task_Type
+                 and then Entity_Spec_In_SPARK (E)
+               then
+                  case Ekind (E) is
+                     when E_Protected_Type =>
+                        Generate_VCs_For_Protected_Type (WF_Main, E);
+
+                     when E_Task_Type =>
+                        Generate_VCs_For_Task_Type (WF_Main, E);
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end if;
             end if;
-
-            case Ekind (E) is
-               when E_Task_Type =>
-                  if Entity_Spec_In_SPARK (E) and then
-                    Analysis_Requested (E, With_Inlined => False)
-                  then
-                     Generate_VCs_For_Task (WF_Main, E);
-                  end if;
-
-               when E_Protected_Type =>
-                  if Entity_Spec_In_SPARK (E) and then
-                    Analysis_Requested (E, With_Inlined => False)
-                  then
-                     Generate_VCs_For_Protected_Type (WF_Main, E);
-                  end if;
-
-               when others =>
-                  null;
-            end case;
 
          when others =>
             null;

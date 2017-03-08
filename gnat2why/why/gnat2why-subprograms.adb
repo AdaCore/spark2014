@@ -3622,7 +3622,7 @@ package body Gnat2Why.Subprograms is
    -- Generate_VCs_For_Task --
    ---------------------------
 
-   procedure Generate_VCs_For_Task
+   procedure Generate_VCs_For_Task_Type
      (File : W_Section_Id;
       E    : Entity_Id)
    is
@@ -3739,7 +3739,7 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
 
-   end Generate_VCs_For_Task;
+   end Generate_VCs_For_Task_Type;
 
    -----------------------------
    -- Get_Location_For_Aspect --
