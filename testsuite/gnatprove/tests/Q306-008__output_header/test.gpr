@@ -1,0 +1,5 @@
+project Test is
+   package Prove is
+      for Switches use ("--output-header");
+   end Prove;
+end Test;

@@ -86,18 +86,33 @@ def build_prover_switch(proverlist):
         return ["--prover=" + ','.join(proverlist)]
 
 
-def cat(filename, sort=False):
+def cat(filename, sort=False, start=1, end=0):
     """Dump the content of a file on stdout
 
     PARAMETERS
       filename: name of the file to print on stdout
+      start: first line to output, starting from line 1
+      end: last line to output if not 0
     """
     if os.path.exists(filename):
         with open(filename, 'r') as f:
-            if sort:
-                print_sorted(f.readlines())
+            # Dump all the file
+            if end == 0:
+                if sort:
+                    print_sorted(f.readlines())
+                else:
+                    print f.read()
+            # Dump only the part of the file between lines start and end
             else:
-                print f.read()
+                lines = []
+                for i, line in enumerate(f):
+                    if i+1 >= start and i+1 <= end:
+                        lines.append(line)
+                if sort:
+                    print_sorted(lines)
+                else:
+                    for line in lines:
+                        print line,
 
 
 def ls(directory=None, filter_output=None):

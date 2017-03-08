@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -56,14 +56,27 @@ package Call is
      (Command   : String;
       Arguments : Argument_List;
       Status    : out Integer;
+      Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False;
       Free_Args : Boolean := True);
+
+   function Call_With_Status
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Status    : out Integer;
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True)
+      return String;
+   --  Call Command on Arguments, returning both the Status of the system call,
+   --  and the output on standard output as result.
 
    procedure Call_With_Status
      (Command   : String;
       Arguments : String_Lists.List;
       Status    : out Integer;
-      Verbose   : Boolean := False);
+      Output_FD : File_Descriptor := Standout;
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True);
 
    function Get_Process_Id return Integer;
    --  Return the process ID of the current process

@@ -65,6 +65,7 @@
 --      on the same units, even when sources have not changed so analysis is
 --      not done on these units.
 
+with Ada.Command_Line;
 with Ada.Containers;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
@@ -649,6 +650,10 @@ procedure Gnatprove with SPARK_Mode is
          end if;
       end if;
 
+      if CL_Switches.Output_Header then
+         Args.Append ("--output-header");
+      end if;
+
       Call_Exit_On_Failure
         (Command   => "spark_report",
          Arguments => Args,
@@ -908,7 +913,7 @@ procedure Gnatprove with SPARK_Mode is
    ---------------------
 
    procedure Set_Environment is
-      use Ada.Environment_Variables, GNAT.OS_Lib;
+      use Ada.Environment_Variables, GNAT.OS_Lib, Ada.Strings.Unbounded;
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
@@ -917,8 +922,14 @@ procedure Gnatprove with SPARK_Mode is
       Sharegpr : constant String :=
         Compose (File_System.Install.Share, "gpr");
 
+      Cmd_Line : Unbounded_String :=
+        To_Unbounded_String
+          (Ada.Directories.Simple_Name (Ada.Command_Line.Command_Name));
+      --  The full command line
+
    begin
       --  Add <prefix>/libexec/spark2014/bin in front of the PATH
+
       Set ("PATH",
            File_System.Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
@@ -928,6 +939,16 @@ procedure Gnatprove with SPARK_Mode is
 
       Set ("GPR_PROJECT_PATH",
            Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
+
+      --  Add full command line in environment for printing in header of
+      --  generated file "gnatprove.out"
+
+      for J in 1 .. Ada.Command_Line.Argument_Count loop
+         Append (Cmd_Line, " ");
+         Append (Cmd_Line, Ada.Command_Line.Argument (J));
+      end loop;
+      Set ("GNATPROVE_CMD_LINE", To_String (Cmd_Line));
+
    end Set_Environment;
 
    ---------------------

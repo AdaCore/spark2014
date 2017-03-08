@@ -6,6 +6,15 @@ output or displayed in your IDE (GPS or GNATbench), and the one which is
 produced in a file ``gnatprove.out``, which lies in the ``gnatprove``
 subdirectory of the object directory of your project.
 
+When switch ``--output-header`` is used, this file starts with a header
+containing extra information about the run including:
+
+* The date and time of GNATprove run
+* The GNATprove version that has generated this report
+* The host for which GNATprove is configured (e.g. Windows 32 bits)
+* The full command-line of the GNATprove invocation, including project file
+* The GNATprove switches specified in the project file
+
 .. _The Analysis Results Summary Table:
 
 The Analysis Results Summary Table

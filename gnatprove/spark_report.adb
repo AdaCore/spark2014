@@ -33,6 +33,7 @@
 --  file is in JSON format. The format of these files is documented in the
 --  user's guide.
 
+with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
@@ -43,20 +44,24 @@ with Assumptions.Search;                  use Assumptions.Search;
 with Assumption_Types;                    use Assumption_Types;
 with Call;                                use Call;
 with Configuration;                       use Configuration;
+with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;                         use GNAT.OS_Lib;
 with GNATCOLL.JSON;                       use GNATCOLL.JSON;
 with GNATCOLL.Utils;                      use GNATCOLL.Utils;
 with Print_Table;                         use Print_Table;
 with Report_Database;                     use Report_Database;
+with SPARK2014VSN;                        use SPARK2014VSN;
 with String_Utils;                        use String_Utils;
+with System;
+with System.Storage_Elements;
 with VC_Kinds;                            use VC_Kinds;
 
 procedure SPARK_Report is
 
    No_Analysis_Done : Boolean := True;
-
    Assumptions      : Boolean := False;
+   Output_Header    : Boolean := False;
 
    function Parse_Command_Line return String;
    --  Parse the command line and set the variables Assumptions and Limit_Subp.
@@ -115,6 +120,9 @@ procedure SPARK_Report is
    --  process the stats record for the VC and update the proof information
    --  @param C the category of the VC
    --  @param Stats the stats record
+
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type);
+   --  Print header at start of generated file "gnatprove.out"
 
    -------------------------
    -- Compute_Assumptions --
@@ -644,6 +652,8 @@ procedure SPARK_Report is
          begin
             if S = "--assumptions" then
                Assumptions := True;
+            elsif S = "--output-header" then
+               Output_Header := True;
             elsif GNATCOLL.Utils.Starts_With (S, "--limit-subp=") then
 
                --  ??? FIXME --limit-subp currently ignored
@@ -793,6 +803,100 @@ procedure SPARK_Report is
       Merge_Stat_Maps (Summary (C).Provers.Provers, Map);
    end Process_Stats;
 
+   -----------------
+   -- Show_Header --
+   -----------------
+
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type) is
+      use Ada, Ada.Text_IO;
+
+      type Host_Operating_System_Flavor is (Windows, Solaris, Linux, Darwin);
+
+      function Get_Env_Variable (Name : String) return String;
+      --  Return the value of environment variable Name
+
+      function Get_OS_Flavor return Host_Operating_System_Flavor;
+      --  Return the flavor of host operating system, based on the result of
+      --  calling "gcc -dumpmachine" with version of GCC distributed as part
+      --  of GNSA in SPARK product.
+
+      ----------------------
+      -- Get_Env_Variable --
+      ----------------------
+
+      function Get_Env_Variable (Name : String) return String is
+         --  Return the value of the "Name" environment variable.
+         Result : GNAT.OS_Lib.String_Access := GNAT.OS_Lib.Getenv (Name);
+         Str    : constant String := Result.all;
+      begin
+         GNAT.OS_Lib.Free (Result);
+         return Str;
+      end Get_Env_Variable;
+
+      -------------------
+      -- Get_OS_Flavor --
+      -------------------
+
+      function Get_OS_Flavor return Host_Operating_System_Flavor is
+         Args   : String_Lists.List;
+         Status : Integer;
+      begin
+         Args.Append ("-dumpmachine");
+
+         declare
+            GCC_Dumpmachine : constant String :=
+              Call_With_Status (Command   => "gcc",
+                                Arguments => Args,
+                                Status    => Status);
+         begin
+            if Contains (GCC_Dumpmachine, "linux") then
+               return Linux;
+            elsif Contains (GCC_Dumpmachine, "solaris") then
+               return Solaris;
+            elsif Contains (GCC_Dumpmachine, "darwin") then
+               return Darwin;
+            else
+               return Windows;
+            end if;
+         end;
+      end Get_OS_Flavor;
+
+      Pointer_Size : constant :=
+        System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
+
+   --  Start of processing for Show_Header
+
+   begin
+      Put_Line
+        (Handle,
+         "date               : " &
+         GNAT.Calendar.Time_IO.Image (Date    => Ada.Calendar.Clock,
+                                      Picture => "%Y-%m-%d %H:%M:%S"));
+      Put_Line
+        (Handle,
+         "gnatprove version  : " & SPARK2014_Version_String);
+      Put_Line
+        (Handle,
+         "host               : " &
+           Capitalize
+           (Host_Operating_System_Flavor'Image (Get_OS_Flavor)) &
+           Integer'Image (Pointer_Size * 8) & " bits");
+
+      declare
+         Cmd : constant String :=
+           Get_Env_Variable ("GNATPROVE_CMD_LINE");
+         GNATprove_Switches : constant String :=
+           Get_Env_Variable ("GNATPROVE_SWITCHES");
+      begin
+         if Cmd /= "" then
+            Put_Line
+              (Handle, "command line       : " & Cmd);
+            Put_Line
+              (Handle, "gnatprove switches : " & GNATprove_Switches);
+         end if;
+      end;
+   end Show_Header;
+
    -----------------------------
    -- String_To_Summary_Entry --
    -----------------------------
@@ -912,6 +1016,13 @@ begin
    if Assumptions then
       Compute_Assumptions;
    end if;
+
+   if Output_Header then
+      Show_Header (Handle);
+      Ada.Text_IO.New_Line (Handle);
+      Ada.Text_IO.New_Line (Handle);
+   end if;
+
    if not No_Analysis_Done then
       Dump_Summary_Table (Handle);
       Ada.Text_IO.New_Line (Handle);

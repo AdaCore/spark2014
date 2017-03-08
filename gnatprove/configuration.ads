@@ -86,6 +86,7 @@ package Configuration is
       Mode              : aliased GNAT.Strings.String_Access;
       No_Counterexample : aliased Boolean;
       No_Inlining       : aliased Boolean;
+      Output_Header     : aliased Boolean;
       Output_Msg_Only   : aliased Boolean;
       P                 : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P

@@ -1,0 +1,2 @@
+command line       : gnatprove -k --warnings=continue --report=provers --assumptions -P test.gpr --quiet --timeout=120 --steps=200 --mode=all -j1 --prover=cvc4,altergo,z3
+gnatprove switches : --output-header

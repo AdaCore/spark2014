@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -74,6 +74,7 @@ package body Call is
      (Command   : String;
       Arguments : Argument_List;
       Status    : out Integer;
+      Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False;
       Free_Args : Boolean := True)
    is
@@ -83,30 +84,77 @@ package body Call is
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
          GNAT.OS_Lib.OS_Exit (1);
       end if;
+
       if Verbose then
          Print_Command_Line (Command, Arguments);
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arguments, Standout, Status, Err_To_Out => True);
+      Spawn (Executable.all, Arguments, Output_FD, Status, Err_To_Out => True);
       if Free_Args then
          Free_Argument_List (Arguments);
       end if;
       Free (Executable);
    end Call_With_Status;
 
+   function Call_With_Status
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Status    : out Integer;
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True)
+      return String
+   is
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
+
+      Temp_FD   : File_Descriptor;
+      Temp_Name : Temp_File_Name;
+      Temp_File : File_Type;
+      Content   : Unbounded_String;
+
+   begin
+      --  Call command and get output in temporary file
+
+      Create_Temp_File (Temp_FD, Temp_Name);
+      Call_With_Status (Command   => Command,
+                        Arguments => Arguments,
+                        Status    => Status,
+                        Output_FD => Temp_FD,
+                        Verbose   => Verbose,
+                        Free_Args => Free_Args);
+
+      --  Read temporary file into string Content
+
+      Open (File => Temp_File,
+            Mode => In_File,
+            Name => Temp_Name);
+      while not End_Of_File (Temp_File) loop
+         Append (Content, Get_Line (Temp_File));
+      end loop;
+      Close (Temp_File);
+
+      --  Return output from string Content
+
+      return To_String (Content);
+   end Call_With_Status;
+
    procedure Call_With_Status
      (Command   : String;
       Arguments : String_Lists.List;
       Status    : out Integer;
-      Verbose   : Boolean := False)
+      Output_FD : File_Descriptor := Standout;
+      Verbose   : Boolean := False;
+      Free_Args : Boolean := True)
    is
    begin
       Call_With_Status
         (Command,
          Argument_List_Of_String_List (Arguments),
          Status,
-         Verbose);
+         Output_FD,
+         Verbose,
+         Free_Args);
    end Call_With_Status;
 
    --------------------------
@@ -123,7 +171,7 @@ package body Call is
       Call_With_Status (Command,
                         Arguments,
                         Status,
-                        Verbose,
+                        Verbose => Verbose,
                         Free_Args => False);
       if Status /= 0 then
          Print_Command_Line (Command, Arguments);

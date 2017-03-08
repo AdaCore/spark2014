@@ -27,6 +27,7 @@ with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
 with Ada.Direct_IO;
+with Ada.Environment_Variables;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
@@ -1457,6 +1458,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Output_Header'Access,
+         Long_Switch => "--output-header");
+
+      Define_Switch
+        (Config,
          CL_Switches.Output_Msg_Only'Access,
          Long_Switch => "--output-msg-only");
 
@@ -1488,23 +1494,45 @@ package body Configuration is
       end if;
 
       declare
+         use Ada.Strings.Unbounded;
+
          Proj_Type      : constant Project_Type := Root_Project (Tree);
          Extra_Switches : constant String_List_Access :=
            Attribute_Value (Proj_Type, Build ("Prove", "Switches"));
+
       begin
          if Extra_Switches /= null then
             declare
-               All_Switches : constant String_List :=
+               All_Switches        : constant String_List :=
                  Extra_Switches.all & Com_Lin;
-               All_Access   : constant String_List_Access :=
+               All_Access          : constant String_List_Access :=
                  new String_List'(All_Switches);
-               Parser       : Opt_Parser;
+               Parser              : Opt_Parser;
+               Extra_Switches_Line : Unbounded_String;
+
             begin
                Initialize_Option_Scan (Parser, All_Access);
                Getopt (Config,
                        Callback => Handle_Switch'Access,
                        Parser   => Parser,
                        Concatenate => False);
+
+               --  Add GNATprove switches in environment for printing in header
+               --  of generated file "gnatprove.out"
+               for J in Extra_Switches'Range loop
+                  if J /= Extra_Switches'First then
+                     Append (Extra_Switches_Line, " ");
+                  end if;
+                  Append (Extra_Switches_Line, Extra_Switches (J).all);
+               end loop;
+
+               if CL_Switches.V then
+                  Put_Line ("export GNATPROVE_SWITCHES="
+                            & To_String (Extra_Switches_Line));
+               end if;
+
+               Ada.Environment_Variables.Set
+                 ("GNATPROVE_SWITCHES", To_String (Extra_Switches_Line));
             end;
          else
             Getopt (Config,

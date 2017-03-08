@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;
 with Ada.Containers;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Sets;
@@ -73,5 +74,10 @@ package String_Utils is
    function Case_Insensitive_Contains (SL : String_Lists.List; Item : String)
                                        return Boolean is
      (Case_Insensitive_Find (SL, Item) /= String_Lists.No_Element);
+
+   function Contains (S, Sub : String) return Boolean is
+     (Ada.Strings.Fixed.Index (Source => S, Pattern => Sub) /= 0)
+   with Pre => Sub /= "";
+   --  Returns True iff string S contains substring Sub
 
 end String_Utils;
