@@ -1655,7 +1655,9 @@ package body Flow is
                      Analysis.Check_Terminating_Annotation (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
-                  Analysis.Analyse_Main (FA);
+                  if FA.Is_Main then
+                     Analysis.Analyse_Main (FA);
+                  end if;
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Constant_After_Elaboration (FA);
 

@@ -559,74 +559,68 @@ package body Flow.Analysis is
    ------------------
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-   begin
-      if not FA.Is_Main then
-         --  Nothing to see here, move along.
-         return;
-      end if;
+      Msg : constant String :=
+        "& might not be initialized " &
+        (case FA.Kind is
+            when Kind_Subprogram =>
+               "after elaboration of main program &",
+            when Kind_Task =>
+               "before start of tasks of type &",
+            when others =>
+               raise Program_Error);
 
-      declare
-         Msg : constant String :=
-           "& might not be initialized " &
-           (case FA.Kind is
-               when Kind_Subprogram =>
-                  "after elaboration of main program &",
-               when Kind_Task =>
-                  "before start of tasks of type &",
-               when others =>
-                  raise Program_Error);
+      procedure Check_If_Initialized (R : Flow_Id);
+      --  Emit error message if R is not initialized at elaboration
 
-         procedure Check_If_Initialized (R : Flow_Id);
-         --  Emit error message if R is not initialized at elaboration
+      --------------------------
+      -- Check_If_Initialized --
+      --------------------------
 
-         --------------------------
-         -- Check_If_Initialized --
-         --------------------------
-
-         procedure Check_If_Initialized (R : Flow_Id) is
-         begin
-            if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => Msg,
-                  N        => Find_Global (FA.Analyzed_Entity, R),
-                  F1       => R,
-                  F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag      => Uninitialized,
-                  Severity => Medium_Check_Kind);
-            end if;
-         end Check_If_Initialized;
-
-         --  Local variables
-
-         Proof_Reads : Flow_Id_Sets.Set;
-         Reads       : Flow_Id_Sets.Set;
-         Unused      : Flow_Id_Sets.Set;
-
+      procedure Check_If_Initialized (R : Flow_Id) is
       begin
-         --  Check if all global reads are initialized, i.e. that the following
-         --  holds:
-         --     Proof_In -> initialized
-         --     Input    -> initialized
-         --     Output   -> always OK
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
-                      Scope      => FA.B_Scope,
-                      Classwide  => False,
-                      Proof_Ins  => Proof_Reads,
-                      Reads      => Reads,
-                      Writes     => Unused);
+         if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => Msg,
+               N        => Find_Global (FA.Analyzed_Entity, R),
+               F1       => R,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Uninitialized,
+               Severity => Medium_Check_Kind);
+         end if;
+      end Check_If_Initialized;
 
-         --  Proof_Reads and Reads are disjoint, iterate over their contents
-         --  separately.
+      --  Local variables
 
-         for R of Proof_Reads loop
-            Check_If_Initialized (R);
-         end loop;
+      Proof_Reads : Flow_Id_Sets.Set;
+      Reads       : Flow_Id_Sets.Set;
+      Unused      : Flow_Id_Sets.Set;
 
-         for R of Reads loop
-            Check_If_Initialized (R);
-         end loop;
-      end;
+   --  Start of processing for Analyse_Main
+
+   begin
+      --  Check if all global reads are initialized, i.e. that the following
+      --  holds:
+      --     Proof_In -> initialized
+      --     Input    -> initialized
+      --     Output   -> always OK
+      Get_Globals (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.B_Scope,
+                   Classwide  => False,
+                   Proof_Ins  => Proof_Reads,
+                   Reads      => Reads,
+                   Writes     => Unused);
+
+      --  Proof_Reads and Reads are disjoint, iterate over their contents
+      --  separately.
+
+      for R of Proof_Reads loop
+         Check_If_Initialized (R);
+      end loop;
+
+      for R of Reads loop
+         Check_If_Initialized (R);
+      end loop;
    end Analyse_Main;
 
    ------------------
