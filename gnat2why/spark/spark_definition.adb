@@ -169,9 +169,9 @@ package body SPARK_Definition is
 
    Entity_List : Node_Lists.List;
    --  List of entities that should be translated to Why3. This list contains
-   --  both entities in SPARK and entities not in SPARK. VCs should be
-   --  generated only for entities in the current unit. Each entity may
-   --  be attached to a declaration or not (for Itypes).
+   --  non-package entities in SPARK and packages with explicit SPARK_Mode =>
+   --  On. VCs should be generated only for entities in the current unit. Each
+   --  entity may be attached to a declaration or not (for Itypes).
 
    Entity_Set : Node_Sets.Set;
    --  Set of all entities marked so far. It contains entities from both the
@@ -4864,10 +4864,10 @@ package body SPARK_Definition is
 
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-            --  Record the package as an entity to translate, unless it is
-            --  explicitly marked with SPARK_Mode => Off.
+            --  Record the package as an entity to translate iff it is
+            --  explicitly marked with SPARK_Mode => On.
 
-            if not SPARK_Pragma_Is (Opt.Off) then
+            if SPARK_Pragma_Is (Opt.On) then
                Entity_List.Append (Id);
             end if;
 

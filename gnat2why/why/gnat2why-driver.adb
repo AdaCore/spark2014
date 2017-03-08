@@ -114,9 +114,10 @@ package body Gnat2Why.Driver is
    procedure Translate_Standard_Package;
 
    procedure Translate_Entity (E : Entity_Id)
-   with Pre => Entity_In_SPARK (E) or else Ekind (E) = E_Package;
-   --  Translates entity E into Why; it is called on either entities in SPARK
-   --  or on packages (even if thy are not in SPARK ???).
+   with Pre => (if Ekind (E) = E_Package
+                then Entity_Spec_In_SPARK (E)
+                else Entity_In_SPARK (E));
+   --  Translates entity E into Why
 
    procedure Do_Generate_VCs (E : Entity_Id);
    --  Generates VCs for entity E. This is currently a noop for E other than
