@@ -5,7 +5,6 @@ foo.adb:10:07: warning: initialization of V has no effect
 foo.adb:11:07: info: initialization of "W" proved
 foo.adb:11:07: warning: initialization of W has no effect
 foo.adb:14:36: info: initialization of "V" proved
-foo.adb:18:09: high: modification of "V" in elaboration requires Elaborate_Body on package "Nested"
 foo.ads:2:16: info: initialization of "Y" proved
 foo.ads:4:06: medium: incorrect dependency "null => Secret"
 foo.ads:4:18: medium: missing dependency "Y => Secret"

@@ -188,10 +188,11 @@ package Flow.Analysis is
    --  variables that have Constant_After_Elaboration set.
 
    procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Package_Body;
-   --  Checks that the package has Elaborate_Body applied if at least one
-   --  variable declared in the specification is modified in the package
-   --  elaboration.
+   with Pre => FA.Kind = Kind_Package_Body
+               and then Is_Compilation_Unit (FA.Analyzed_Entity);
+   --  Checks that the compilation unit package has Elaborate_Body applied if
+   --  at least one variable declared in the specification is modified in the
+   --  package elaboration.
    --
    --  We do this only if we're in the gnat static elaboration model
    --  (otherwise the front-end has some draconian checks that take care of

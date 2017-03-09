@@ -26,7 +26,6 @@ nested-priv.adb:7:06: high: modification of "Y" constituent of "Nested.State" in
 nested-priv.adb:7:09: info: initialization of "Y" constituent of "Nested.State" proved
 nested-priv.adb:7:11: info: overflow check proved (CVC4: 1 VC)
 nested-priv.ads:5:14: warning: subprogram "Blah" has no effect
-nested.adb:11:09: high: modification of "X" in elaboration requires Elaborate_Body on package "P"
 nested.adb:11:12: info: initialization of "X" proved
 nested.adb:11:14: info: overflow check proved (CVC4: 1 VC)
 nested.ads:2:22: warning: no procedure exists that can initialize abstract state "Nested.State"

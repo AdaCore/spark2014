@@ -4,7 +4,6 @@ generate_initializes.adb:7:04: info: initialization of "X" constituent of "State
 generate_initializes.adb:7:07: info: initialization of "Y" constituent of "State" proved
 generate_initializes.ads:8:14: info: initialization of "X" constituent of "State" proved
 generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
-other.adb:11:41: high: modification of "Nested_Visible_Var" in elaboration requires Elaborate_Body on package "Nested_Package"
 other.ads:5:14: info: initialization of "G2" proved
 other.ads:8:07: info: initialization of "Nested_Visible_Var" proved
 outer.adb:8:07: info: initialization of "Visible" proved

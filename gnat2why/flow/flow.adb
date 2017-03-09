@@ -1704,7 +1704,9 @@ package body Flow is
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);
                      end if;
-                     if FA.Kind = Kind_Package_Body then
+                     if FA.Kind = Kind_Package_Body
+                       and then Is_Compilation_Unit (FA.Analyzed_Entity)
+                     then
                         Analysis.Check_Elaborate_Body (FA);
                      end if;
                      Analysis.Check_State_Volatility_Escalation (FA);
