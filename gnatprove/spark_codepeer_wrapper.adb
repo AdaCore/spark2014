@@ -333,7 +333,9 @@ procedure SPARK_CodePeer_Wrapper is
       procedure Generate_Source_Directive
         (Lib_File : Ada.Text_IO.File_Type;
          Scil_Dir : GNATCOLL.VFS.Virtual_File);
-      --  Generates Source directive for the specific SCIL directory.
+      --  Generates Source directive for the specific SCIL directory in the
+      --  library file, unless it contains no SCIL files, in which case it
+      --  does nothing.
 
       -------------------------------
       -- Generate_Source_Directive --
@@ -341,13 +343,37 @@ procedure SPARK_CodePeer_Wrapper is
 
       procedure Generate_Source_Directive
         (Lib_File : Ada.Text_IO.File_Type;
-         Scil_Dir : GNATCOLL.VFS.Virtual_File) is
+         Scil_Dir : GNATCOLL.VFS.Virtual_File)
+      is
+         function Has_Scil_Files (Dir : String) return Boolean;
+         --  Return True iff directory Dir contains SCIL files
+
+         function Has_Scil_Files (Dir : String) return Boolean is
+            Scil_Search : Search_Type;
+         begin
+            Start_Search (Scil_Search, Dir, "*.scil");
+            return More_Entries (Scil_Search);
+         end Has_Scil_Files;
+
+         Scil_Dir_Name : constant String := Scil_Dir.Display_Dir_Name & "SCIL";
+
+      --  Start of processing for Generate_Source_Directive
+
       begin
-         Ada.Text_IO.Put_Line
-           (Lib_File,
-            "Source (Directory => """ & Scil_Dir.Display_Dir_Name & "SCIL"",");
-         Ada.Text_IO.Put_Line (Lib_File, "        Files     => (""*.scil""),");
-         Ada.Text_IO.Put_Line (Lib_File, "        Language  => SCIL);");
+         --  Do not generate a Source directive if the SCIL directory does
+         --  not exist or does not contain SCIL files, to avoid a warning
+         --  from CodePeer.
+
+         if Exists (Scil_Dir_Name)
+           and then Has_Scil_Files (Scil_Dir_Name)
+         then
+            Ada.Text_IO.Put_Line
+              (Lib_File, "Source (Directory => """ & Scil_Dir_Name & """,");
+            Ada.Text_IO.Put_Line
+              (Lib_File, "        Files     => (""*.scil""),");
+            Ada.Text_IO.Put_Line
+              (Lib_File, "        Language  => SCIL);");
+         end if;
       end Generate_Source_Directive;
 
       F       : Ada.Text_IO.File_Type;
@@ -545,6 +571,12 @@ begin
       Display_Help;
    end if;
 
+   --  Generate SCIL files via codepeer-gprbuild. Do that first, so that we
+   --  can detect object directories with no SCIL files, for which we do not
+   --  generate an entry in the library file.
+
+   Generate_SCIL (Project_File);
+
    --  Support for .gpr files:
    --  - set environment (so that e.g. codepeer-gnatls can be found)
    --  - parse project file
@@ -560,10 +592,6 @@ begin
    Append_Arg ("-lib");
    Append_Arg (Library.all);
    Set_Directory (Object_Directory (Tree.Root_Project).Display_Full_Name);
-
-   --  Generate SCIL files via codepeer-gprbuild
-
-   Generate_SCIL (Project_File);
 
    --  Common switches
 
