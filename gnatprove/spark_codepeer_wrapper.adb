@@ -401,7 +401,7 @@ procedure SPARK_CodePeer_Wrapper is
          for Dir of Object_Dirs loop
             if not Seen.Contains (Dir) then
                Generate_Source_Directive (F, Dir);
-               Seen.Include (Dir);
+               Seen.Insert (Dir);
             end if;
          end loop;
       end;
