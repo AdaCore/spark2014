@@ -1,0 +1,5 @@
+project General is
+
+   for Source_Files use ();
+
+end General;
