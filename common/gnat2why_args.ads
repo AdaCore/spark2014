@@ -6,7 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
+--                       Copyright (C) 2017, Altran UK Limited              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -102,6 +103,14 @@ package Gnat2Why_Args is
    --  each dumped graph.
 
    Flow_Advanced_Debug : Boolean := False;
+
+   --  The SPARK RM does not make global contracts optional, rather this is a
+   --  liberty we have taken in this implementation of SPARK. This flag is
+   --  controlled by the --no-global-generation switch and will make sure the
+   --  absence of a global contract means the same thing as Global => null. By
+   --  default, in gnat2why we synthesize global contracts.
+
+   Flow_Generate_Contracts : Boolean := True;
 
    --  This will show termination status (as far as flow is concerned) for each
    --  subprogram with a warning or info message.

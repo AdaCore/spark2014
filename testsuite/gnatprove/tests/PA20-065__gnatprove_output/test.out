@@ -63,6 +63,10 @@ gnatprove advanced switches:
                       Specify a memcached instance that will be used for
                       caching of proof results.
  --no-counterexample  Do not generate a counterexample for unproved formulas
+ --no-global-generation
+                      Do not generate Global and Initializes contracts from
+                      code, instead assume "null". Note that this option also
+                      implies --no-inlining.
  --no-inlining        Do not inline calls to local subprograms for proof
  --output-header      Add a header with extra information in the generated
                       output file

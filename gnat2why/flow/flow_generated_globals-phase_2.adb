@@ -1033,102 +1033,107 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Start of processing for Add_Edges
 
       begin
-         --  Create the Local_Graph
-         Create_Local_Graph;
+         if Gnat2Why_Args.Flow_Generate_Contracts then
+            --  Create the Local_Graph
+            Create_Local_Graph;
 
-         Note_Time ("gg_read - local graph done");
+            Note_Time ("gg_read - local graph done");
 
-         --  Process subprograms with a GG info
-         for Info of Subprogram_Info_List loop
-            --  Connect the subprogram's variables: proof inputs, inputs and
-            --  outputs, to corresponding vertices.
-            Connect (Info.Name, Info.Inputs_Proof,
-                     (1 => (Proof_Ins, Variable)));
-            Connect (Info.Name, Info.Inputs,
-                     (1 => (Inputs,    Variable)));
-            Connect (Info.Name, Info.Outputs,
-                     (1 => (Outputs,   Variable)));
+            --  Process subprograms with a GG info
+            for Info of Subprogram_Info_List loop
+               --  Connect the subprogram's variables: proof inputs, inputs and
+               --  outputs, to corresponding vertices.
+               Connect (Info.Name, Info.Inputs_Proof,
+                        (1 => (Proof_Ins, Variable)));
+               Connect (Info.Name, Info.Inputs,
+                        (1 => (Inputs,    Variable)));
+               Connect (Info.Name, Info.Outputs,
+                        (1 => (Outputs,   Variable)));
 
-            --  For proof calls connect the caller's to callee's vertices;
-            --  note that callee's Inputs become caller's Proof_Ins.
-            Connect (Info.Name, Info.Proof_Calls,
-                     (1 => (Proof_Ins, Proof_Ins),
-                      2 => (Proof_Ins, Inputs),
-                      3 => (Outputs,   Outputs)));
+               --  For proof calls connect the caller's to callee's vertices;
+               --  note that callee's Inputs become caller's Proof_Ins.
+               Connect (Info.Name, Info.Proof_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Proof_Ins, Inputs),
+                         3 => (Outputs,   Outputs)));
 
-            --  For definite calls connect the subprogram's Proof_Ins, Ins and
-            --  Outs vertices respectively to the callee's Proof_Ins, Ins and
-            --  Outs vertices.
-            Connect (Info.Name, Info.Definite_Calls,
-                     (1 => (Proof_Ins, Proof_Ins),
-                      2 => (Inputs,    Inputs),
-                      3 => (Outputs,   Outputs)));
+               --  For definite calls connect the subprogram's Proof_Ins, Ins
+               --  and Outs vertices respectively to the callee's Proof_Ins,
+               --  Ins and Outs vertices.
+               Connect (Info.Name, Info.Definite_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Inputs,    Inputs),
+                         3 => (Outputs,   Outputs)));
 
-            --  For conditional calls do as above, but also add an edge from
-            --  the subprogram's Inputs vertex to the callee's Outputs vertex.
-            --  See graph building in phase 1 for explanation.
-            Connect (Info.Name, Info.Conditional_Calls,
-                     (1 => (Proof_Ins, Proof_Ins),
-                      2 => (Inputs,    Inputs),
-                      3 => (Inputs,    Outputs),
-                      4 => (Outputs,   Outputs)));
-         end loop;
+               --  For conditional calls do as above, but also add an edge from
+               --  the subprogram's Inputs vertex to the callee's Outputs
+               --  vertex. See graph building in phase 1 for explanation.
+               Connect (Info.Name, Info.Conditional_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Inputs,    Inputs),
+                         3 => (Inputs,    Outputs),
+                         4 => (Outputs,   Outputs)));
+            end loop;
 
-         --  Process subprograms without a GG info
-         for N of Subprograms_Without_GG loop
-            declare
-               Subprogram : constant Entity_Id := Find_Entity (N);
-            begin
-               if Present (Subprogram) then
-                  declare
-                     FS_Proof_Ins, FS_Inputs, FS_Outputs : Flow_Id_Sets.Set;
-                     NS_Proof_Ins, NS_Inputs, NS_Outputs : Name_Sets.Set;
-                     --  Globals as Flow_Ids and Entity_Names
+            --  Process subprograms without a GG info
+            for N of Subprograms_Without_GG loop
+               declare
+                  Subprogram : constant Entity_Id := Find_Entity (N);
+               begin
+                  if Present (Subprogram) then
+                     declare
+                        FS_Proof_Ins, FS_Inputs, FS_Outputs : Flow_Id_Sets.Set;
+                        NS_Proof_Ins, NS_Inputs, NS_Outputs : Name_Sets.Set;
+                        --  Globals as Flow_Ids and Entity_Names
 
-                     procedure Include_Global_Var (C : Name_Sets.Cursor);
-                     --  Include vertex for global variable pointed to by C in
-                     --  the global graph.
+                        procedure Include_Global_Var (C : Name_Sets.Cursor);
+                        --  Include vertex for global variable pointed to by C
+                        --  in the global graph.
 
-                     ------------------------
-                     -- Include_Global_Var --
-                     ------------------------
+                        ------------------------
+                        -- Include_Global_Var --
+                        ------------------------
 
-                     procedure Include_Global_Var (C : Name_Sets.Cursor) is
+                        procedure Include_Global_Var (C : Name_Sets.Cursor) is
 
-                        Target : constant Global_Id (Variable) :=
-                          (Kind => Variable,
-                           Name => Name_Sets.Element (C));
+                           Target : constant Global_Id (Variable) :=
+                             (Kind => Variable,
+                              Name => Name_Sets.Element (C));
+
+                        begin
+                           Global_Graph.Include_Vertex (Target);
+                        end Include_Global_Var;
 
                      begin
-                        Global_Graph.Include_Vertex (Target);
-                     end Include_Global_Var;
+                        Get_Globals (Subprogram => Subprogram,
+                                     Scope      => Get_Flow_Scope (Subprogram),
+                                     Classwide  => False,
+                                     Proof_Ins  => FS_Proof_Ins,
+                                     Reads      => FS_Inputs,
+                                     Writes     => FS_Outputs);
 
-                  begin
-                     Get_Globals (Subprogram => Subprogram,
-                                  Scope      => Get_Flow_Scope (Subprogram),
-                                  Classwide  => False,
-                                  Proof_Ins  => FS_Proof_Ins,
-                                  Reads      => FS_Inputs,
-                                  Writes     => FS_Outputs);
+                        NS_Proof_Ins := To_Name_Set (FS_Proof_Ins);
+                        NS_Inputs    := To_Name_Set (FS_Inputs);
+                        NS_Outputs   := To_Name_Set (FS_Outputs);
 
-                     NS_Proof_Ins := To_Name_Set (FS_Proof_Ins);
-                     NS_Inputs    := To_Name_Set (FS_Inputs);
-                     NS_Outputs   := To_Name_Set (FS_Outputs);
+                        NS_Proof_Ins.Iterate (Include_Global_Var'Access);
+                        NS_Inputs.Iterate    (Include_Global_Var'Access);
+                        NS_Outputs.Iterate   (Include_Global_Var'Access);
 
-                     NS_Proof_Ins.Iterate (Include_Global_Var'Access);
-                     NS_Inputs.Iterate    (Include_Global_Var'Access);
-                     NS_Outputs.Iterate   (Include_Global_Var'Access);
+                        Connect (N, NS_Proof_Ins, (1 => (Proof_Ins,
+                                                         Variable)));
+                        Connect (N, NS_Inputs,    (1 => (Inputs,
+                                                         Variable)));
+                        Connect (N, NS_Outputs,   (1 => (Outputs,
+                                                         Variable)));
+                     end;
+                  end if;
+               end;
+            end loop;
 
-                     Connect (N, NS_Proof_Ins, (1 => (Proof_Ins, Variable)));
-                     Connect (N, NS_Inputs,    (1 => (Inputs,    Variable)));
-                     Connect (N, NS_Outputs,   (1 => (Outputs,   Variable)));
-                  end;
-               end if;
-            end;
-         end loop;
-
-         --  Close graph, but only add edges that are not in the local graph
-         Global_Graph.Conditional_Close (Edge_Selector'Access);
+            --  Close graph, but only add edges that are not in the local graph
+            Global_Graph.Conditional_Close (Edge_Selector'Access);
+         end if; --  Gnat2Why_Args.Flow_Generate_Contracts
 
          ----------------------------------------
          -- Create tasking-related call graphs --
@@ -2218,14 +2223,18 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Build the Global_Graph
       Global_Graph := Global_Graphs.Create;
 
-      Create_Vertices;
-      Note_Time ("gg_read - vertices added");
+      if Gnat2Why_Args.Flow_Generate_Contracts then
+         Create_Vertices;
+         Note_Time ("gg_read - vertices added");
+      end if;
 
       Add_Edges;
       Note_Time ("gg_read - edges added");
 
-      Edit_Proof_Ins;
-      Note_Time ("gg_read - proof ins");
+      if Gnat2Why_Args.Flow_Generate_Contracts then
+         Edit_Proof_Ins;
+         Note_Time ("gg_read - proof ins");
+      end if;
 
       --  Now that the Globals Graph has been generated we set GG_Generated to
       --  True. Notice that we set GG_Generated to True before we remove edges
@@ -2235,17 +2244,19 @@ package body Flow_Generated_Globals.Phase_2 is
       GG_Generated := True;
 
       --  Remove edges leading to constants which do not have variable input
-      Remove_Constants_Without_Variable_Input;
-      Note_Time ("gg_read - removed nonvariable constants");
+      if Gnat2Why_Args.Flow_Generate_Contracts then
+         Remove_Constants_Without_Variable_Input;
+         Note_Time ("gg_read - removed nonvariable constants");
 
-      if Debug_Print_Global_Graph then
-         Print_Global_Graph (Prefix => Graph_File_Prefix,
-                             G      => Global_Graph);
+         if Debug_Print_Global_Graph then
+            Print_Global_Graph (Prefix => Graph_File_Prefix,
+                                G      => Global_Graph);
+         end if;
+
+         --  Now that the globals are generated, we use them to also generate
+         --  the initializes aspects.
+         Generate_Initializes_Aspects;
       end if;
-
-      --  Now that the globals are generated, we use them to also generate the
-      --  initializes aspects.
-      Generate_Initializes_Aspects;
 
       --  Put tasking-related information back to the bag
       Process_Tasking_Graph;

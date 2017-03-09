@@ -38,6 +38,7 @@ with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
 
 with Common_Iterators;                use Common_Iterators;
+with Gnat2Why_Args;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
@@ -1592,7 +1593,9 @@ package body Flow_Utility is
             Debug ("writes", Writes);
          end;
 
-      elsif Use_Deduced_Globals then
+      elsif Gnat2Why_Args.Flow_Generate_Contracts
+        and then Use_Deduced_Globals
+      then
 
          if GG_Exist (Subprogram) then
             --  We don't have a global or a depends aspect so we look at the

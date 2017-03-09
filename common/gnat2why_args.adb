@@ -6,7 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
+--                       Copyright (C) 2017, Altran UK Limited              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -41,24 +42,26 @@ package body Gnat2Why_Args is
    --  means "false". For other variables, the value is given after the "="
    --  sign. No "=value" part is allowed for boolean variables.
 
-   Warning_Mode_Name        : constant String := "warning_mode";
-   Global_Gen_Mode_Name     : constant String := "global_gen_mode";
-   Check_Mode_Name          : constant String := "check_mode";
-   Check_All_Mode_Name      : constant String := "check_all_mode";
-   Flow_Analysis_Mode_Name  : constant String := "flow_analysis_mode";
-   Prove_Mode_Name          : constant String := "prove_mode";
-   Debug_Mode_Name          : constant String := "debug";
-   Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
-   Flow_Termination_Name    : constant String := "flow_termination_proof";
-   Limit_Subp_Name          : constant String := "limit_subp";
-   Limit_Line_Name          : constant String := "limit_line";
-   Pedantic_Name            : constant String := "pedantic";
-   Ide_Mode_Name            : constant String := "ide_mode";
-   Report_Mode_Name         : constant String := "report_mode";
-   Why3_Args_Name           : constant String := "why3_args";
-   Why3_Dir_Name            : constant String := "why3_dir";
-   CP_Dir_Name              : constant String := "codepeer_dir";
-   Prove_Only_Name          : constant String := "debug_prove_only";
+   Warning_Mode_Name            : constant String := "warning_mode";
+   Global_Gen_Mode_Name         : constant String := "global_gen_mode";
+   Check_Mode_Name              : constant String := "check_mode";
+   Check_All_Mode_Name          : constant String := "check_all_mode";
+   Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";
+   Prove_Mode_Name              : constant String := "prove_mode";
+   Debug_Mode_Name              : constant String := "debug";
+   Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
+   Flow_Generate_Contracts_Name : constant String :=
+     "flow_generate_contracts";
+   Flow_Termination_Name        : constant String := "flow_termination_proof";
+   Limit_Subp_Name              : constant String := "limit_subp";
+   Limit_Line_Name              : constant String := "limit_line";
+   Pedantic_Name                : constant String := "pedantic";
+   Ide_Mode_Name                : constant String := "ide_mode";
+   Report_Mode_Name             : constant String := "report_mode";
+   Why3_Args_Name               : constant String := "why3_args";
+   Why3_Dir_Name                : constant String := "why3_dir";
+   CP_Dir_Name                  : constant String := "codepeer_dir";
+   Prove_Only_Name              : constant String := "debug_prove_only";
 
    ----------
    -- Init --
@@ -95,17 +98,19 @@ package body Gnat2Why_Args is
          Append (File_Text, Get_Line (File));
       end loop;
       V := Read (File_Text);
-      Global_Gen_Mode        := Get_Opt_Bool (V, Global_Gen_Mode_Name);
-      Check_Mode             := Get_Opt_Bool (V, Check_Mode_Name);
-      Check_All_Mode         := Get_Opt_Bool (V, Check_All_Mode_Name);
-      Flow_Analysis_Mode     := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
-      Prove_Mode             := Get_Opt_Bool (V, Prove_Mode_Name);
-      Debug_Mode             := Get_Opt_Bool (V, Debug_Mode_Name);
-      Debug_Proof_Only       := Get_Opt_Bool (V, Prove_Only_Name);
-      Flow_Advanced_Debug    := Get_Opt_Bool (V, Flow_Advanced_Debug_Name);
-      Flow_Termination_Proof := Get_Opt_Bool (V, Flow_Termination_Name);
-      Pedantic               := Get_Opt_Bool (V, Pedantic_Name);
-      Ide_Mode               := Get_Opt_Bool (V, Ide_Mode_Name);
+      Global_Gen_Mode         := Get_Opt_Bool (V, Global_Gen_Mode_Name);
+      Check_Mode              := Get_Opt_Bool (V, Check_Mode_Name);
+      Check_All_Mode          := Get_Opt_Bool (V, Check_All_Mode_Name);
+      Flow_Analysis_Mode      := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
+      Prove_Mode              := Get_Opt_Bool (V, Prove_Mode_Name);
+      Debug_Mode              := Get_Opt_Bool (V, Debug_Mode_Name);
+      Debug_Proof_Only        := Get_Opt_Bool (V, Prove_Only_Name);
+      Flow_Advanced_Debug     := Get_Opt_Bool (V, Flow_Advanced_Debug_Name);
+      Flow_Generate_Contracts := Get_Opt_Bool (V,
+                                               Flow_Generate_Contracts_Name);
+      Flow_Termination_Proof  := Get_Opt_Bool (V, Flow_Termination_Name);
+      Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
+      Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
@@ -192,6 +197,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Prove_Only_Name, Debug_Proof_Only);
       Set_Field (Obj, Debug_Mode_Name, Debug_Mode);
       Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Advanced_Debug);
+      Set_Field (Obj, Flow_Generate_Contracts_Name, Flow_Generate_Contracts);
       Set_Field (Obj, Flow_Termination_Name, Flow_Termination_Proof);
       Set_Field (Obj, Pedantic_Name, Pedantic);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);

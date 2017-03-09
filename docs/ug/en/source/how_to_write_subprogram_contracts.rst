@@ -7,16 +7,17 @@ How to Write Subprogram Contracts
 subprogram contracts are assumed to analyze a subprogram's callers, and
 verified when the body of the subprogram is analyzed.
 
-But no contracts are compulsory. In the absence of user-provided contracts,
-|GNATprove| internally generates default contracts, which may or not be
-suitable depending on the verification objective:
+By default, no contracts are compulsory in |GNATprove|. In the absence of
+user-provided contracts, |GNATprove| internally generates default
+contracts, which may or not be suitable depending on the verification
+objective:
 
 * data dependencies (``Global``)
 
-  See :ref:`Generation of Dependency Contracts`. The generated contract may be
-  exact when completed from user-specified flow dependencies (Depends), or
-  precise when generated from a body in SPARK, or coarse when generated from a
-  body in full Ada.
+  See :ref:`Generation of Dependency Contracts`. The generated contract may
+  be exact when completed from user-specified flow dependencies (Depends),
+  or precise when generated from a body in SPARK, or coarse when generated
+  from a body in full Ada.
 
 * flow dependencies (``Depends``)
 
@@ -49,6 +50,11 @@ By default, |GNATprove| does not require the user to write data dependencies
 with aspect ``Depends``), as it can automatically generate them from the
 program.
 
+This behavior can be disabled using the ``--no-global-generation`` switch,
+which means a missing data dependency is the same as ``Global => null``.
+Note that this option also forces ``--no-inlining`` (see :ref:`Contextual
+Analysis of Subprograms Without Contracts`).
+
 .. note::
 
    |GNATprove| does not generate warning or check messages when the body of a
@@ -62,7 +68,14 @@ program.
 
    Intrinsic subprograms such as arithmetic operations, and shift/rotate
    functions without user-provided functional contracts (precondition,
-   postcondition or contract cases) are handled specially by |GNATProve|.
+   postcondition or contract cases) are handled specially by |GNATprove|.
+
+.. note::
+
+   The ``--no-global-generation`` switch makes |GNATprove| behave more like
+   the previous SPARK 2005 tools, which makes this switch attractive
+   for project trying to migrate to the new |GNATprove| tools, or for
+   projects that maintain dual annotations.
 
 .. _Auto Completion for Incomplete Contracts:
 

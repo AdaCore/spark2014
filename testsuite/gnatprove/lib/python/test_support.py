@@ -691,12 +691,18 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               filter_output=filter_output)
 
 
-def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all"):
+def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
+            gg=True):
     """
     Call gnatprove with standard options for flow. We do generate
     verification conditions, but we don't actually try very hard to
     prove anything.
     """
+
+    if not gg:
+        if opt is None:
+            opt = []
+        opt.append("--no-global-generation")
 
     prove_all(opt, procs=procs, steps=1, counterexample=False,
               prover=["cvc4"], no_fail=no_fail, mode=mode)

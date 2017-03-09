@@ -497,12 +497,14 @@ package body Gnat2Why.Driver is
       else
 
          --  Compute basic globals
-         Compute_Global_Effects;
-         Timing_Phase_Completed (Timing, "globals (basic)");
+         if Gnat2Why_Args.Flow_Generate_Contracts then
+            Compute_Global_Effects;
+            Timing_Phase_Completed (Timing, "globals (basic)");
+         end if;
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
-         Timing_Phase_Completed (Timing, "globals (advanced)");
+         Timing_Phase_Completed (Timing, "globals/properties (advanced)");
 
          --  Do some flow analysis
 

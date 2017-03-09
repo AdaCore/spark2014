@@ -1,0 +1,7 @@
+bar.adb:5:14: warning: subprogram "Test_01" has no effect
+baz.ads:4:28: high: Public_G must be initialized at elaboration
+baz.ads:7:04: high: "S" is not initialized in "Baz"
+foo.adb:9:12: "G" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
+foo.adb:15:27: "G" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(13))
+foo.adb:18:61: "G" must be listed in the Global aspect of "E" (SPARK RM 6.1.4(13))
+gnatprove: error during flow analysis and proof

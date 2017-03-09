@@ -62,50 +62,51 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      Assumptions       : aliased Boolean;
-      Benchmark         : aliased Boolean;
-      Memcached_Server  : aliased GNAT.Strings.String_Access;
-      Cargs_List        : String_Lists.List;
-      CodePeer          : aliased GNAT.Strings.String_Access;
-      D                 : aliased Boolean;
-      Dbg_Proof_Only    : aliased Boolean;
-      F                 : aliased Boolean;
-      File_List         : String_Lists.List;
+      Assumptions          : aliased Boolean;
+      Benchmark            : aliased Boolean;
+      Memcached_Server     : aliased GNAT.Strings.String_Access;
+      Cargs_List           : String_Lists.List;
+      CodePeer             : aliased GNAT.Strings.String_Access;
+      D                    : aliased Boolean;
+      Dbg_Proof_Only       : aliased Boolean;
+      F                    : aliased Boolean;
+      File_List            : String_Lists.List;
       --  The list of files to be compiled
-      Flow_Debug        : aliased Boolean;
-      Flow_Termination  : aliased Boolean;
-      GPR_Project_Path  : String_Lists.List;
+      Flow_Debug           : aliased Boolean;
+      Flow_Termination     : aliased Boolean;
+      GPR_Project_Path     : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
-      IDE_Progress_Bar  : aliased Boolean;
-      J                 : aliased Integer;
-      K                 : aliased Boolean;
-      Level             : aliased Integer;
-      Limit_Line        : aliased GNAT.Strings.String_Access;
-      Limit_Subp        : aliased GNAT.Strings.String_Access;
-      M                 : aliased Boolean;
-      Mode              : aliased GNAT.Strings.String_Access;
-      No_Counterexample : aliased Boolean;
-      No_Inlining       : aliased Boolean;
-      Output_Header     : aliased Boolean;
-      Output_Msg_Only   : aliased Boolean;
-      P                 : aliased GNAT.Strings.String_Access;
+      IDE_Progress_Bar     : aliased Boolean;
+      J                    : aliased Integer;
+      K                    : aliased Boolean;
+      Level                : aliased Integer;
+      Limit_Line           : aliased GNAT.Strings.String_Access;
+      Limit_Subp           : aliased GNAT.Strings.String_Access;
+      M                    : aliased Boolean;
+      Mode                 : aliased GNAT.Strings.String_Access;
+      No_Counterexample    : aliased Boolean;
+      No_Inlining          : aliased Boolean;
+      No_Global_Generation : aliased Boolean;
+      Output_Header        : aliased Boolean;
+      Output_Msg_Only      : aliased Boolean;
+      P                    : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
-      Pedantic          : aliased Boolean;
-      Proof             : aliased GNAT.Strings.String_Access;
-      Prover            : aliased GNAT.Strings.String_Access;
-      Q                 : aliased Boolean;
-      Replay            : aliased Boolean;
-      Report            : aliased GNAT.Strings.String_Access;
-      RTS               : aliased GNAT.Strings.String_Access;
-      Steps             : aliased Integer;
-      Timeout           : aliased GNAT.Strings.String_Access;
-      U                 : aliased Boolean;
-      UU                : aliased Boolean;
-      V                 : aliased Boolean;
-      Version           : aliased Boolean;
-      Warnings          : aliased GNAT.Strings.String_Access;
-      Why3_Conf         : aliased GNAT.Strings.String_Access;
-      X                 : String_Lists.List;
+      Pedantic             : aliased Boolean;
+      Proof                : aliased GNAT.Strings.String_Access;
+      Prover               : aliased GNAT.Strings.String_Access;
+      Q                    : aliased Boolean;
+      Replay               : aliased Boolean;
+      Report               : aliased GNAT.Strings.String_Access;
+      RTS                  : aliased GNAT.Strings.String_Access;
+      Steps                : aliased Integer;
+      Timeout              : aliased GNAT.Strings.String_Access;
+      U                    : aliased Boolean;
+      UU                   : aliased Boolean;
+      V                    : aliased Boolean;
+      Version              : aliased Boolean;
+      Warnings             : aliased GNAT.Strings.String_Access;
+      Why3_Conf            : aliased GNAT.Strings.String_Access;
+      X                    : String_Lists.List;
       --  Scenario variables to be passed to gprbuild
    end CL_Switches;
 
@@ -143,37 +144,38 @@ package Configuration is
    --  correspond to a command line switch, but not all. See the Postprocess
    --  function which links variables and switches.
 
-   Verbose           : Boolean;
-   Quiet             : Boolean;
-   Debug             : Boolean;
-   Force             : Boolean;
-   Minimal_Compile   : Boolean;
-   Flow_Extra_Debug  : Boolean;
-   Flow_Termination  : Boolean;
-   Debug_Proof_Only  : Boolean;
-   Continue_On_Error : Boolean;
-   All_Projects      : Boolean;
-   IDE_Mode          : Boolean;
-   Limit_Line        : GNAT.Strings.String_Access;
-   Limit_Subp        : GNAT.Strings.String_Access;
-   Only_Given        : Boolean;
-   CodePeer          : Boolean;
-   RTS_Dir           : GNAT.Strings.String_Access;
-   Counterexample    : Boolean;
-   No_Inlining       : Boolean;
-   Mode              : GP_Mode;
-   Warning_Mode      : Gnat2Why_Args.SPARK_Warning_Mode_Type;
-   Memcached_Server  : GNAT.Strings.String_Access;
+   Verbose              : Boolean;
+   Quiet                : Boolean;
+   Debug                : Boolean;
+   Force                : Boolean;
+   Minimal_Compile      : Boolean;
+   Flow_Extra_Debug     : Boolean;
+   Flow_Termination     : Boolean;
+   Debug_Proof_Only     : Boolean;
+   Continue_On_Error    : Boolean;
+   All_Projects         : Boolean;
+   IDE_Mode             : Boolean;
+   Limit_Line           : GNAT.Strings.String_Access;
+   Limit_Subp           : GNAT.Strings.String_Access;
+   Only_Given           : Boolean;
+   CodePeer             : Boolean;
+   RTS_Dir              : GNAT.Strings.String_Access;
+   Counterexample       : Boolean;
+   No_Inlining          : Boolean;
+   No_Global_Generation : Boolean;
+   Mode                 : GP_Mode;
+   Warning_Mode         : Gnat2Why_Args.SPARK_Warning_Mode_Type;
+   Memcached_Server     : GNAT.Strings.String_Access;
    --  enable caching through memcached
-   Report            : Report_Mode_Type;
-   Proof             : Proof_Mode;
-   Lazy              : Boolean;
-   Parallel          : Integer;
-   Provers           : String_Lists.List;
-   Timeout           : Integer;
-   Steps             : Integer;
-   Why3_Config_File  : GNAT.Strings.String_Access;
-   CE_Timeout        : Integer;
+   Report               : Report_Mode_Type;
+   Proof                : Proof_Mode;
+   Lazy                 : Boolean;
+   Parallel             : Integer;
+   Provers              : String_Lists.List;
+   Timeout              : Integer;
+   Steps                : Integer;
+   Why3_Config_File     : GNAT.Strings.String_Access;
+   CE_Timeout           : Integer;
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output

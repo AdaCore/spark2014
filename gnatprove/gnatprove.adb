@@ -737,6 +737,8 @@ procedure Gnatprove with SPARK_Mode is
       Gnat2Why_Args.Debug_Mode := Debug;
       Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       Gnat2Why_Args.Debug_Proof_Only := Configuration.Debug_Proof_Only;
+      Gnat2Why_Args.Flow_Generate_Contracts :=
+        not Configuration.No_Global_Generation;
 
       --  In the translation phase, set a number of values
 
@@ -988,7 +990,11 @@ procedure Gnatprove with SPARK_Mode is
       --  "error during ". See the body of procedure Execute_Step.
       case Step is
          when GS_ALI =>
-            return "generation of Global contracts";
+            if Configuration.No_Global_Generation then
+               return "generation of program properties";
+            else
+               return "generation of Global contracts";
+            end if;
 
          when GS_CodePeer =>
             return "CodePeer analysis";

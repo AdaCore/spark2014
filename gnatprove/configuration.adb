@@ -715,22 +715,44 @@ package body Configuration is
          File_System.Install.Z3_Present   := On_Path ("z3");
          File_System.Install.CVC4_Present := On_Path ("cvc4");
 
-         Verbose := CL_Switches.V;
-         Force   := CL_Switches.F;
-         Debug   := CL_Switches.D or else CL_Switches.Flow_Debug;
-         Quiet   := CL_Switches.Q;
-         Minimal_Compile := CL_Switches.M;
-         Flow_Extra_Debug := CL_Switches.Flow_Debug;
-         Flow_Termination := CL_Switches.Flow_Termination;
-         Debug_Proof_Only := CL_Switches.Dbg_Proof_Only;
+         Verbose           := CL_Switches.V;
+         Force             := CL_Switches.F;
+         Debug             := CL_Switches.D or CL_Switches.Flow_Debug;
+         Quiet             := CL_Switches.Q;
+         Minimal_Compile   := CL_Switches.M;
+         Flow_Extra_Debug  := CL_Switches.Flow_Debug;
+         Flow_Termination  := CL_Switches.Flow_Termination;
+         Debug_Proof_Only  := CL_Switches.Dbg_Proof_Only;
          Continue_On_Error := CL_Switches.K;
-         All_Projects := CL_Switches.UU;
-         IDE_Mode := CL_Switches.IDE_Progress_Bar;
-         Limit_Line := CL_Switches.Limit_Line;
-         Limit_Subp := CL_Switches.Limit_Subp;
-         Memcached_Server := CL_Switches.Memcached_Server;
-         Why3_Config_File := CL_Switches.Why3_Conf;
-         No_Inlining := CL_Switches.No_Inlining;
+         All_Projects      := CL_Switches.UU;
+         IDE_Mode          := CL_Switches.IDE_Progress_Bar;
+         Limit_Line        := CL_Switches.Limit_Line;
+         Limit_Subp        := CL_Switches.Limit_Subp;
+         Memcached_Server  := CL_Switches.Memcached_Server;
+         Why3_Config_File  := CL_Switches.Why3_Conf;
+
+         --  Subprograms with no contracts (and a few other criteria) may be
+         --  inlined, as this can help provability. In particular it helps as
+         --  the user does not need to write a pre- or post-condition. As a
+         --  side-effect it also effectively produces a global and depends
+         --  contract.
+         --
+         --  The --no-global-generation switch implies not inlining from two
+         --  points of view:
+         --
+         --     * (logical) By its name, it implies that globals should not be
+         --       generated, and inlining has the effect of generating globals.
+         --
+         --     * (practical) As inlined subprograms are analyzed separately
+         --       anyway in order to check for flow issues, flow would reject
+         --       all but the most trivial subprograms, since a missing global
+         --       generates an error, not a check. Fixing this would require a
+         --       global contract, which in turn would eliminate inlining
+         --       anyway.
+
+         No_Inlining          := CL_Switches.No_Inlining or
+           CL_Switches.No_Global_Generation;
+         No_Global_Generation := CL_Switches.No_Global_Generation;
 
          --  Adjust the number of parallel processes. If -j0 was used, the
          --  number of processes should be set to the actual number of
@@ -1477,6 +1499,11 @@ package body Configuration is
         (Config,
          CL_Switches.No_Inlining'Access,
          Long_Switch => "--no-inlining");
+
+      Define_Switch
+        (Config,
+         CL_Switches.No_Global_Generation'Access,
+         Long_Switch => "--no-global-generation");
 
       Define_Switch
         (Config,
