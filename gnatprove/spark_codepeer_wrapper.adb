@@ -61,7 +61,7 @@ procedure SPARK_CodePeer_Wrapper is
 
    Ext_Vars     : String_Lists.List;
 
-   procedure Error (Message : String);
+   procedure Error (Message : String) with No_Return;
    --  Display error message and exit the application
 
    function Locate_Exec (Exec : String) return String_Access;
@@ -112,7 +112,8 @@ procedure SPARK_CodePeer_Wrapper is
    --  Return the name of a CodePeer library file, for the given Project and
    --  additional optional suffix.
 
-   procedure Display_Help;
+   procedure Display_Help with No_Return;
+   --  Display help message and exit
 
    -----------
    -- Error --
