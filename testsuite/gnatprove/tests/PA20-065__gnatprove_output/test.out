@@ -64,6 +64,8 @@ gnatprove advanced switches:
                       caching of proof results.
  --no-counterexample  Do not generate a counterexample for unproved formulas
  --no-inlining        Do not inline calls to local subprograms for proof
+ --output-header      Add a header with extra information in the generated
+                      output file
  --pedantic           Use a strict interpretation of the Ada standard
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
