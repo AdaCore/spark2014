@@ -228,7 +228,7 @@ procedure SPARK_CodePeer_Wrapper is
       Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
       for Ext of Ext_Vars loop
          declare
-            Equal : constant Integer := Ada.Strings.Fixed.Index (Ext, "=");
+            Equal : constant Natural := Ada.Strings.Fixed.Index (Ext, "=");
          begin
             Proj_Env.Change_Environment
               (Ext (Ext'First + 2 .. Equal - 1),
@@ -418,7 +418,7 @@ procedure SPARK_CodePeer_Wrapper is
    ------------------------
 
    procedure Parse_Command_Line is
-      Index : Natural := 1;
+      Index : Positive := 1;
    begin
       while Index <= Count loop
          declare
