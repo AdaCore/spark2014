@@ -784,14 +784,14 @@ package body Why.Gen.Arrays is
                Emit
                  (Section,
                   New_Guarded_Axiom
-                    (Name     => NID ("bool_eq_rev"),
-                     Binders  => Args,
-                     Pre      => +New_Comparison
+                    (Name    => NID ("bool_eq_rev"),
+                     Binders => Args,
+                     Pre     => +New_Comparison
                        (Symbol => Why_Eq,
                         Left   => Rev_Call,
                         Right  => +True_Term,
                         Domain => EW_Pred),
-                     Def      => Def));
+                     Def     => Def));
             end;
          end;
       end if;
@@ -1116,7 +1116,7 @@ package body Why.Gen.Arrays is
 
    begin
       Emit (Section,
-            New_Type_Decl (Name => To_Name (WNE_Array_Component_Type),
+            New_Type_Decl (Name  => To_Name (WNE_Array_Component_Type),
                            Alias => EW_Abstract (Component_Type (Und_Ent))));
 
       Subst (Cursor) :=

@@ -69,7 +69,7 @@ package body Why.Gen.Progs is
            Post     => Post,
            Return_Type =>
              (if Return_Type = Why_Empty then EW_Unit_Type
-               else Return_Type));
+              else Return_Type));
    end New_Any_Statement;
 
    --------------------------
@@ -203,9 +203,6 @@ package body Why.Gen.Progs is
    --------------
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
-
-   --  Start of processing for Sequence
-
    begin
       --  We only optimize the case where at least one of (Left, Right) is not
       --  a sequence; in this case we append the not-sequence statement to the

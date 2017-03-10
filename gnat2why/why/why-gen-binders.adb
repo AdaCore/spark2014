@@ -108,7 +108,8 @@ package body Why.Gen.Binders is
 
    function Get_Args_From_Expression (E           : Node_Id;
                                       Ref_Allowed : Boolean)
-                                      return W_Expr_Array is
+                                      return W_Expr_Array
+   is
       Scope     : constant Flow_Scope := Get_Flow_Scope (E);
       Variables : constant Flow_Id_Sets.Set :=
         Get_Variables
@@ -129,7 +130,8 @@ package body Why.Gen.Binders is
 
    function Get_Args_From_Variables (Variables : Name_Sets.Set;
                                      Ref_Allowed : Boolean)
-                                     return W_Expr_Array is
+                                     return W_Expr_Array
+   is
       Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
       Binders : constant Binder_Array := Get_Parameters_From_Binders (Items);
       Args    : W_Expr_Array (1 .. Binders'Length);
@@ -695,7 +697,8 @@ package body Why.Gen.Binders is
    function New_Constant_Record_Binders
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-      return W_Record_Binder_Array is
+      return W_Record_Binder_Array
+   is
 
       function New_Arg_Type
         (Binder : Binder_Type)
@@ -718,7 +721,7 @@ package body Why.Gen.Binders is
 
       Result : W_Record_Binder_Array (Binders'Range);
 
-      --  Start of processing for New_Constant_Record_Binders
+   --  Start of processing for New_Constant_Record_Binders
 
    begin
       for B in Binders'Range loop
@@ -768,11 +771,11 @@ package body Why.Gen.Binders is
    ------------------------
 
    function New_Defining_Axiom
-     (Ada_Node    : Node_Id := Empty;
-      Name        : W_Identifier_Id;
-      Binders     : Binder_Array;
-      Pre         : W_Pred_OId := Why_Empty;
-      Def         : W_Term_Id)
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : W_Pred_OId := Why_Empty;
+      Def      : W_Term_Id)
       return W_Declaration_Id
    is
       Left       : constant W_Term_Id := +New_Call (Domain  => EW_Term,
@@ -842,7 +845,8 @@ package body Why.Gen.Binders is
    function New_Binders
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-      return W_Binder_Array is
+      return W_Binder_Array
+   is
 
       function New_Arg_Type
         (Binder : Binder_Type)
@@ -1033,9 +1037,9 @@ package body Why.Gen.Binders is
          Name     => Name,
          Def      =>
            New_Universal_Quantif
-             (Binders => Binders,
+             (Binders  => Binders,
               Triggers => Triggers,
-              Pred    => Ax_Body));
+              Pred     => Ax_Body));
    end New_Guarded_Axiom;
 
    ---------------------------
@@ -1145,10 +1149,10 @@ package body Why.Gen.Binders is
                   Var_Type  => Typ,
                   Labels    => Name_Id_Sets.Empty_Set,
                   Pred      =>
-                    New_Universal_Quantif (Ada_Node  => Empty,
-                                           Binders   => Other_Binders,
-                                           Triggers  => Triggers,
-                                           Pred      => Pred));
+                    New_Universal_Quantif (Ada_Node => Empty,
+                                           Binders  => Other_Binders,
+                                           Triggers => Triggers,
+                                           Pred     => Pred));
             end if;
          end;
       end if;
