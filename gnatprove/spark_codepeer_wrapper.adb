@@ -355,6 +355,10 @@ procedure SPARK_CodePeer_Wrapper is
          function Has_Scil_Files (Dir : String) return Boolean;
          --  Return True iff directory Dir contains SCIL files
 
+         --------------------
+         -- Has_Scil_Files --
+         --------------------
+
          function Has_Scil_Files (Dir : String) return Boolean is
             Scil_Search : Search_Type;
          begin
