@@ -225,6 +225,7 @@ procedure SPARK_CodePeer_Wrapper is
    begin
       Initialize (Proj_Env);
       Set_Path_From_Gnatls (Proj_Env.all, "codepeer-gnatls", GNAT_Version);
+      Free (GNAT_Version);
       Set_Object_Subdir (Proj_Env.all, +Subdir);
       Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
       for Ext of Ext_Vars loop

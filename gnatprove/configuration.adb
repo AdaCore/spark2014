@@ -598,6 +598,7 @@ package body Configuration is
 
       begin
          Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
+         Free (GNAT_Version);
          Set_Object_Subdir (Proj_Env.all, Subdir_Name);
          Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
          declare
