@@ -530,8 +530,8 @@ procedure SPARK_CodePeer_Wrapper is
       if Verbose then
          Put (Exe);
 
-         for J in Args'Range loop
-            Put (" " & Args (J).all);
+         for Arg of Args loop
+            Put (" " & Arg.all);
          end loop;
 
          New_Line;
@@ -557,8 +557,8 @@ procedure SPARK_CodePeer_Wrapper is
 
    procedure Free (Args : in out Argument_List) is
    begin
-      for J in Args'Range loop
-         Free (Args (J));
+      for Arg of Args loop
+         Free (Arg);
       end loop;
    end Free;
 
