@@ -247,12 +247,12 @@ procedure SPARK_CodePeer_Wrapper is
    -------------------
 
    procedure Generate_SCIL (Project : Virtual_File) is
-      Args       : Argument_List (1 .. 128);
+      Args      : Argument_List (1 .. 128);
       --  There should be as many elements in Args as there are calls to
       --  Append_Arg below. Add enough padding for future calls.
 
-      Arg_Count  : Natural := 0;
-      Status     : Integer;
+      Arg_Count : Natural := 0;
+      Status    : Integer;
 
       procedure Append_Arg is new Generic_Append_Arg (Args, Arg_Count);
    begin
