@@ -453,7 +453,7 @@ procedure SPARK_CodePeer_Wrapper is
    begin
       while Index <= Count loop
          declare
-            S : constant String := Argument (Index);
+            S : String renames Argument (Index);
          begin
             if S = "-verbose" then
                Verbose := True;
@@ -502,6 +502,7 @@ procedure SPARK_CodePeer_Wrapper is
 
             elsif S = "-U" then
                Compile_All_Sources := True;
+
             elsif Starts_With (S, "-X") then
                Ext_Vars.Append (S);
 
