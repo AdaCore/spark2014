@@ -695,9 +695,9 @@ procedure Gnatprove with SPARK_Mode is
    function Non_Blocking_Spawn
      (Command   : String;
       Arguments : String_Lists.List) return Process_Descriptor is
-      Executable : constant String_Access :=
+      Executable : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Command);
-      Args       : constant GNAT.OS_Lib.Argument_List :=
+      Args       : GNAT.OS_Lib.Argument_List :=
         Argument_List_Of_String_List (Arguments);
       Proc       : Process_Descriptor;
    begin
@@ -717,6 +717,8 @@ procedure Gnatprove with SPARK_Mode is
          Executable.all,
          Args,
          Err_To_Out => True);
+      Free (Args);
+      Free (Executable);
       return Proc;
    end Non_Blocking_Spawn;
 
