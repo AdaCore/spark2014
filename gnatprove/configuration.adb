@@ -1541,6 +1541,10 @@ package body Configuration is
                     Concatenate => False);
          end if;
 
+         --  Release copies of command line arguments; they were already parsed
+         --  twice and are no longer needed.
+         Free (Com_Lin);
+
          --  After the call to Init, the object directory includes the
          --  sub-directory "gnatprove" set through Set_Object_Subdir.
          Main_Subdir := new String'(Proj_Type.Artifacts_Dir.Display_Full_Name);
