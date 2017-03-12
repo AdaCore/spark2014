@@ -1220,13 +1220,13 @@ package body Configuration is
 
       Set_Usage
         (First_Config,
-         Usage     => Usage_Message,
-         Help_Msg  => Help_Message);
+         Usage    => Usage_Message,
+         Help_Msg => Help_Message);
 
       Set_Usage
         (Config,
-         Usage     => Usage_Message,
-         Help_Msg  => Help_Message);
+         Usage    => Usage_Message,
+         Help_Msg => Help_Message);
 
       --  If no arguments have been given, print help message and exit
 
