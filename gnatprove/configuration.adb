@@ -689,12 +689,31 @@ package body Configuration is
       -----------------
 
       procedure Postprocess is
+         function On_Path (Exec : String) return Boolean;
+         --  Return True iff Exec is present on PATH
+
+         -------------
+         -- On_Path --
+         -------------
+
+         function On_Path (Exec : String) return Boolean is
+            Location : String_Access :=
+              GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+
+            Present : constant Boolean := Location /= null;
+
+         begin
+            Free (Location);
+            return Present;
+         end On_Path;
+
+      --  Start of processing for Postprocess
+
       begin
          Sanity_Checking;
-         File_System.Install.Z3_Present :=
-           GNAT.OS_Lib.Locate_Exec_On_Path ("z3") /= null;
-         File_System.Install.CVC4_Present :=
-           GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4") /= null;
+
+         File_System.Install.Z3_Present   := On_Path ("z3");
+         File_System.Install.CVC4_Present := On_Path ("cvc4");
 
          Verbose := CL_Switches.V;
          Force   := CL_Switches.F;
