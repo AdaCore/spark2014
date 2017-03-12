@@ -1307,6 +1307,8 @@ package body Configuration is
               Callback    => Handle_Project_Loading_Switches'Access,
               Concatenate => False);
 
+      Free (First_Config);
+
       if Version then
          Ada.Text_IO.Put_Line (SPARK2014_Version_String);
          GNAT.OS_Lib.OS_Exit (0);
@@ -1600,6 +1602,8 @@ package body Configuration is
          Prepare_Prover_Lib (Config);
       end if;
       Sanitize_File_List (Tree);
+
+      Free (Config);
 
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
