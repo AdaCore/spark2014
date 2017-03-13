@@ -25,43 +25,42 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
-with Aspects;                 use Aspects;
-with Atree;                   use Atree;
-with Checks;                  use Checks;
-with Common_Containers;       use Common_Containers;
-with Einfo;                   use Einfo;
-with Errout;                  use Errout;
+with Aspects;                    use Aspects;
+with Atree;                      use Atree;
+with Checks;                     use Checks;
+with Common_Containers;          use Common_Containers;
+with Einfo;                      use Einfo;
+with Errout;                     use Errout;
 with Eval_Fat;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Gnat2Why.Error_Messages;    use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with Nlists;                  use Nlists;
-with Sem_Aux;                 use Sem_Aux;
-with Sem_Eval;                use Sem_Eval;
-with Sem_Util;                use Sem_Util;
-with Sinfo;                   use Sinfo;
-with Sinput;                  use Sinput;
-with SPARK_Util;              use SPARK_Util;
-with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
-with SPARK_Util.Types;        use SPARK_Util.Types;
-with Stand;                   use Stand;
-with Urealp;                  use Urealp;
-with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Tables;        use Why.Atree.Tables;
-with Why.Conversions;         use Why.Conversions;
-with Why.Gen.Arrays;          use Why.Gen.Arrays;
-with Why.Gen.Binders;         use Why.Gen.Binders;
-with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Preds;           use Why.Gen.Preds;
-with Why.Gen.Progs;           use Why.Gen.Progs;
-with Why.Gen.Records;         use Why.Gen.Records;
-with Why.Inter;               use Why.Inter;
+with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with Nlists;                     use Nlists;
+with Sem_Aux;                    use Sem_Aux;
+with Sem_Eval;                   use Sem_Eval;
+with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
+with Sinput;                     use Sinput;
+with SPARK_Util;                 use SPARK_Util;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
+with SPARK_Util.Types;           use SPARK_Util.Types;
+with Stand;                      use Stand;
+with Urealp;                     use Urealp;
+with Why.Atree.Accessors;        use Why.Atree.Accessors;
+with Why.Atree.Modules;          use Why.Atree.Modules;
+with Why.Atree.Tables;           use Why.Atree.Tables;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Arrays;             use Why.Gen.Arrays;
+with Why.Gen.Binders;            use Why.Gen.Binders;
+with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Preds;              use Why.Gen.Preds;
+with Why.Gen.Progs;              use Why.Gen.Progs;
+with Why.Gen.Records;            use Why.Gen.Records;
 
 package body Why.Gen.Expr is
 
@@ -316,6 +315,9 @@ package body Why.Gen.Expr is
 
          when W_Label =>
             return Get_Typ (W_Label_Id (E));
+
+         when W_Epsilon =>
+            return Get_Typ (W_Epsilon_Id (E));
 
          --  ??? The following nodes should get their own Type field at some
          --  point, right now we use recursion.
@@ -3374,6 +3376,68 @@ package body Why.Gen.Expr is
         New_Binding
           (Ada_Node, Domain, Name, Def, Context, Get_Type (Context));
    end New_Typed_Binding;
+
+   -----------------------
+   -- New_Function_Call --
+   -----------------------
+
+   function New_Function_Call
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Subp     : Node_Id;
+      Selector : Selection_Kind := Why.Inter.Standard;
+      Name     : W_Identifier_Id;
+      Args     : W_Expr_Array;
+      Typ      : W_Type_Id) return W_Expr_Id
+   is
+      Call : constant W_Expr_Id :=
+        New_Call
+           (Name     => Name,
+            Args     => Args,
+            Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Typ      => Typ);
+   begin
+      if not Use_Guard_For_Function (Subp) then
+         return Call;
+      else
+
+         --  Here we do not call directly the logic function introduced for
+         --  Subp as its postcondition is not axiomatized. We rather use the
+         --  post predicate associated to Subp to assume the necessary
+         --  constraints on its result. We generate:
+         --   (epsilon result : t. result = f args /\ post_pred result args)
+
+         declare
+            Result_Id : constant W_Identifier_Id :=
+                          New_Temp_Identifier
+                            (Base_Name => "result", Typ => Typ);
+            Pred_Enum : constant Why_Name_Enum :=
+                          (case Selector is
+                              when Dispatch => WNE_Dispatch_Post_Pred,
+                              when Refine   => WNE_Refined_Post_Pred,
+                              when others   => WNE_Post_Pred);
+         begin
+            return New_Epsilon
+              (Name   => Result_Id,
+               Typ    => Typ,
+               Domain => EW_Term,
+               Pred   =>
+                 +New_And_Expr
+                 (New_Comparison (Symbol => Why_Eq,
+                                  Domain => EW_Pred,
+                                  Left   => +Result_Id,
+                                  Right  => Call),
+                  New_Call
+                    (Name     => E_Symb (Subp, Pred_Enum),
+                     Args     => +Result_Id & Args,
+                     Ada_Node => Ada_Node,
+                     Domain   => EW_Pred,
+                     Typ      => EW_Bool_Type),
+                  Domain => EW_Pred));
+         end;
+      end if;
+   end New_Function_Call;
 
    -----------------
    -- New_VC_Call --

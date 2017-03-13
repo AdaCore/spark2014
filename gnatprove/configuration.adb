@@ -730,6 +730,7 @@ package body Configuration is
          Limit_Subp        := CL_Switches.Limit_Subp;
          Memcached_Server  := CL_Switches.Memcached_Server;
          Why3_Config_File  := CL_Switches.Why3_Conf;
+         No_Axiom_Guard    := CL_Switches.No_Axiom_Guard;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as
@@ -1489,6 +1490,11 @@ package body Configuration is
         (Config,
          CL_Switches.Prover'Access,
          Long_Switch => "--prover=");
+
+      Define_Switch
+        (Config,
+         CL_Switches.No_Axiom_Guard'Access,
+         Long_Switch => "--no-axiom-guard");
 
       Define_Switch
         (Config,

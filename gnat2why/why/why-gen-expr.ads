@@ -31,6 +31,7 @@ with Uintp;               use Uintp;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Ids;             use Why.Ids;
+with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 
 pragma Warnings (Off);
@@ -144,6 +145,18 @@ package Why.Gen.Expr is
 
    function New_Sub_VC_Marker (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
+
+   function New_Function_Call
+     (Ada_Node : Node_Id := Empty;
+      Domain   : EW_Domain;
+      Subp     : Node_Id;
+      Selector : Selection_Kind := Why.Inter.Standard;
+      Name     : W_Identifier_Id;
+      Args     : W_Expr_Array;
+      Typ      : W_Type_Id) return W_Expr_Id
+   with Pre => Domain in EW_Term | EW_Pred;
+   --  Create a function call in the term or pred domain. Uses an epsilon or a
+   --  direct call as appropriate.
 
    function New_VC_Call
       (Ada_Node : Node_Id;

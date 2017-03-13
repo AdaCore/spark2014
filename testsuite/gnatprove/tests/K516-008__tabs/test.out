@@ -1,15 +1,17 @@
-tab.adb:6:49: medium: range check might fail (e.g. when X = 1)
-tab.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
-tab.adb:10:13: info: loop invariant preservation proved (CVC4: 1 VC)
-tab.adb:10:21: info: range check proved (CVC4: 2 VC)
-tab.adb:11:22: info: index check proved (CVC4: 2 VC)
-tab.adb:12:28: info: range check proved (Z3: 2 VC)
-tab.adb:12:50: info: initialization of "Cur" proved
-tab.adb:12:53: info: overflow check proved (CodePeer)
-tab.adb:12:62: info: index check proved (Z3: 2 VC)
-tab.adb:12:67: info: index check proved (CVC4: 2 VC)
-tab.adb:14:15: info: index check proved (Z3: 2 VC)
-tab.adb:14:20: info: initialization of "Cur" proved
+tab.adb:9:33: info: initialization of "Cur" proved
+tab.adb:9:33: info: loop invariant initialization proved (CVC4: 2 VC)
+tab.adb:9:33: info: loop invariant preservation proved (CVC4: 2 VC)
+tab.adb:9:43: info: initialization of "Cur" proved
+tab.adb:11:13: info: loop invariant initialization proved (CVC4: 1 VC)
+tab.adb:11:13: info: loop invariant preservation proved (CVC4: 1 VC)
+tab.adb:11:21: info: range check proved (CVC4: 2 VC)
+tab.adb:12:22: info: index check proved (CVC4: 2 VC)
+tab.adb:13:28: info: range check proved (CVC4: 2 VC)
+tab.adb:13:50: info: initialization of "Cur" proved
+tab.adb:13:60: info: index check proved (CVC4: 2 VC)
+tab.adb:13:65: info: index check proved (CVC4: 2 VC)
 tab.adb:15:20: info: initialization of "Cur" proved
 tab.adb:15:24: info: overflow check proved (CodePeer)
-tab.ads:6:17: info: postcondition proved (Z3: 1 VC)
+tab.adb:16:16: info: index check proved (CVC4: 2 VC)
+tab.adb:16:21: info: initialization of "Cur" proved
+tab.ads:6:17: info: postcondition proved (CVC4: 1 VC)

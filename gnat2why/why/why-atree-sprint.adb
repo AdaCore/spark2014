@@ -110,6 +110,7 @@ package body Why.Atree.Sprint is
    procedure Print_Deref (Node : W_Deref_Id);
    procedure Print_Effects (Node : W_Effects_Id);
    procedure Print_Elsif (Node : W_Elsif_Id);
+   procedure Print_Epsilon (Node : W_Epsilon_Id);
    procedure Print_Exception_Declaration (Node : W_Exception_Declaration_Id);
    procedure Print_Existential_Quantif (Node : W_Existential_Quantif_Id);
    procedure Print_Exn_Condition (Node : W_Exn_Condition_Id);
@@ -789,6 +790,28 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Elsif;
 
+   -------------------
+   -- Print_Epsilon --
+   -------------------
+
+   procedure Print_Epsilon (Node : W_Epsilon_Id) is
+      Name : constant W_Identifier_Id := Get_Name (Node);
+      Typ  : constant W_Type_Id := Get_Typ (Node);
+      Pred : constant W_Pred_Id := Get_Pred (Node);
+   begin
+      P (O, "(epsilon ");
+      Print_Node (+Name);
+      P (O, " : ");
+      Print_Node (+Typ);
+      PL (O, ".");
+
+      Relative_Indent (O, 1);
+      Print_Node (+Pred);
+      Relative_Indent (O, -1);
+
+      P (O, ")");
+   end Print_Epsilon;
+
    ----------------------------------
    -- Print_Exception_Declaration --
    ----------------------------------
@@ -1430,6 +1453,9 @@ package body Why.Atree.Sprint is
 
          when W_Existential_Quantif =>
             Print_Existential_Quantif (+N);
+
+         when W_Epsilon =>
+            Print_Epsilon (+N);
 
          when W_Not =>
             Print_Not (+N);

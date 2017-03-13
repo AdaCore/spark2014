@@ -459,6 +459,11 @@ package Gnat2Why.Util is
    --  used instead of the Ada type.
    --  This function should be used on entities denoting a type
 
+   function Use_Guard_For_Function (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) = E_Function;
+   --  Decide wether we need a guard for the axiom specifying the contract of
+   --  a function E.
+
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean with
      Pre => Is_Type (E);
    --  Decide whether we should use a split form for expressions of a given

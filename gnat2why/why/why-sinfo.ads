@@ -213,6 +213,16 @@ package Why.Sinfo is
    --
    --  Quantifiers. The type of such expressions is always "bool".
    --
+   --  ---------------
+   --  -- W_Epsilon --
+   --  ---------------
+   --  Name       W_Identifier_Id
+   --  Pred       W_Pred_Id
+   --  Typ        W_Type_Id
+   --
+   --  Node for the Why3 epsilon quantification: "(eps x. p x)". It assumes the
+   --  existence of an element of type Typ verifying Pred and returns it.
+   --
    --  -----------
    --  -- W_Not --
    --  -----------
@@ -683,6 +693,7 @@ package Why.Sinfo is
       W_Literal,
       W_Binding,
       W_Elsif,
+      W_Epsilon,
       W_Conditional,
 
       -------------------------

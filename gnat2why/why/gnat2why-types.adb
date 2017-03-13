@@ -480,12 +480,13 @@ package body Gnat2Why.Types is
                         To     => Base_Why_Type (Ty))
                   else +Var_B);
                Def   : constant W_Expr_Id :=
-                 New_Call
+                 New_Function_Call
                    (Ada_Node => Eq,
                     Domain   => EW_Pred,
                     Name     => To_Why_Id (E => Eq,
                                            Domain => EW_Pred,
                                            Typ => EW_Bool_Type),
+                    Subp     => Eq,
                     Args     => (1 => Arg_A, 2 => Arg_B),
                     Typ      => EW_Bool_Type);
             begin

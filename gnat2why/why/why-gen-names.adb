@@ -48,11 +48,12 @@ package body Why.Gen.Names is
      (others => Why_Empty);
    --  This array is used to precompute all fixed idents
 
-   function Append_Num (S        : String;
-                        Count    : Positive;
-                        Module   : W_Module_Id := Why.Types.Why_Empty;
-                        Typ      : W_Type_Id := Why.Types.Why_Empty;
-                        Ada_Node : Node_Id := Empty)
+   function Append_Num (S         : String;
+                        Count     : Positive;
+                        Namespace : Name_Id := No_Name;
+                        Module    : W_Module_Id := Why.Types.Why_Empty;
+                        Typ       : W_Type_Id := Why.Types.Why_Empty;
+                        Ada_Node  : Node_Id := Empty)
                         return W_Identifier_Id;
 
    function Append_Num (S : String; Count : Positive) return String;
@@ -68,19 +69,22 @@ package body Why.Gen.Names is
       return (if Count = 1 then S else S & "_" & Image (Count, 1));
    end Append_Num;
 
-   function Append_Num (S        : String;
-                        Count    : Positive;
-                        Module   : W_Module_Id := Why_Empty;
-                        Typ      : W_Type_Id := Why.Types.Why_Empty;
-                        Ada_Node : Node_Id := Empty)
-                        return W_Identifier_Id is
+   function Append_Num
+     (S         : String;
+      Count     : Positive;
+      Namespace : Name_Id := No_Name;
+      Module    : W_Module_Id := Why.Types.Why_Empty;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Ada_Node  : Node_Id := Empty) return W_Identifier_Id
+   is
    begin
       return New_Identifier
-        (Domain => EW_Term,
-         Name     => Append_Num (S, Count),
-         Module  =>  Module,
-         Ada_Node => Ada_Node,
-         Typ      => Typ);
+        (Domain    => EW_Term,
+         Name      => Append_Num (S, Count),
+         Module    => Module,
+         Namespace => Namespace,
+         Ada_Node  => Ada_Node,
+         Typ       => Typ);
    end Append_Num;
 
    -----------------
@@ -775,6 +779,7 @@ package body Why.Gen.Names is
             | WNE_Check_Not_Last
             | WNE_Default_Init
             | WNE_Dispatch_Eq
+            | WNE_Dispatch_Post_Pred
             | WNE_Dummy
             | WNE_Dynamic_Invariant
             | WNE_Dynamic_Predicate
@@ -798,6 +803,8 @@ package body Why.Gen.Names is
             | WNE_Of_Int
             | WNE_Of_Real
             | WNE_Of_Rep
+            | WNE_Post_Pred
+            | WNE_Refined_Post_Pred
             | WNE_Range_Check_Fun
             | WNE_Range_Check_Fun_BV_Int
             | WNE_Range_Pred

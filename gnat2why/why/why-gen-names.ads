@@ -139,6 +139,9 @@ package Why.Gen.Names is
    Post_Refine_Axiom   : constant String := "post_refine_axiom";
    --  suffix for a postcondition axiom
 
+   Post_Predicate      : constant String := "post_predicate";
+   --  suffix for a postcondition predicate
+
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
    --      function below. In practice, many of these strings are used to build
@@ -268,6 +271,11 @@ package Why.Gen.Names is
       --  Name of module containing the function which corresponds to the
       --  refined version (refined_post) of a subprogram.
       WNE_Refine_Module,  --  Refine
+
+      --  Names of predicates for functions postconditions
+      WNE_Post_Pred,
+      WNE_Refined_Post_Pred,
+      WNE_Dispatch_Post_Pred,
 
       --  Suffixes for handling of references
       WNE_Ref,

@@ -721,19 +721,20 @@ package body Gnat2Why.Expr.Loops is
                        To             => Typ_For_Iter,
                        Force_No_Slide => True);
                begin
-                  if Domain = EW_Prog then
+                  if Domain in EW_Prog | EW_Pterm then
                      return +New_VC_Call
                        (Ada_Node => LParam_Spec,
                         Name     => W_H_Elmt,
                         Progs    => (1 => W_Container,
                                      2 => Cur_Expr),
                         Reason   => VC_Precondition,
-                        Domain   => EW_Prog,
+                        Domain   => Domain,
                         Typ      => EW_Bool_Type);
                   else
-                     return New_Call
+                     return New_Function_Call
                        (Ada_Node => LParam_Spec,
                         Domain   => Domain,
+                        Subp     => H_Elmt,
                         Name     => W_H_Elmt,
                         Args     => (1 => W_Container,
                                      2 => Cur_Expr),
@@ -841,7 +842,7 @@ package body Gnat2Why.Expr.Loops is
                        Ent    => Elmt,
                        Domain => Domain);
                begin
-                  if Domain = EW_Prog then
+                  if Domain in EW_Prog | EW_Pterm then
                      return New_VC_Call
                        (Ada_Node => LParam_Spec,
                         Name     => W_Elmt,
@@ -852,9 +853,10 @@ package body Gnat2Why.Expr.Loops is
                         Domain   => EW_Prog,
                         Typ      => Type_Of_Node (Etype (Elmt)));
                   else
-                     return New_Call
+                     return New_Function_Call
                        (Ada_Node => LParam_Spec,
                         Domain   => Domain,
+                        Subp     => Elmt,
                         Name     => W_Elmt,
                         Args     =>
                           (1 => W_Container,
@@ -1441,7 +1443,7 @@ package body Gnat2Why.Expr.Loops is
               New_Ignore (Prog => +Variant_Expr (Expr, EW_Prog));
             Assign : constant W_Assignment_Id :=
               New_Assignment (Name  => Name,
-                              Value => +Variant_Expr (Expr, EW_Term),
+                              Value => +Variant_Expr (Expr, EW_Pterm),
                               Typ   => Base_Why_Type_No_Bool (Expr));
 
          begin

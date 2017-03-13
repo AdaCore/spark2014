@@ -47,7 +47,7 @@ concurrency_example_fixed.adb:26:22: info: initialization of "Deadline" proved
 concurrency_example_fixed.adb:27:22: info: initialization of "Deadline" proved
 concurrency_example_fixed.adb:39:38: info: initialization of "Value" proved
 concurrency_example_fixed.adb:41:25: info: initialization of "Value" proved
-concurrency_example_fixed.adb:41:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when All_Ones = (0 => -2147483648, 1 => -2147483648, others => 10) and All_Zeroes = (0 => 0, 1 => 0, others => 8) and Value = (others => 1))
+concurrency_example_fixed.adb:41:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when All_Ones = (0 => -2147483648, 1 => -2147483648, others => 8) and All_Zeroes = (0 => 0, 1 => 0, others => 8) and Value = (0 => 8, others => 1))
 concurrency_example_fixed.adb:42:22: info: initialization of "Deadline" proved
 concurrency_example_fixed.adb:43:22: info: initialization of "Deadline" proved
 concurrency_example_fixed.ads:4:36: info: length check proved (CVC4: 1 VC)

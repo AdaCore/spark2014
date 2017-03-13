@@ -32,8 +32,10 @@ with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Gnat2Why.Util;              use Gnat2Why.Util;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
+with Snames;                     use Snames;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
 with VC_Kinds;                   use VC_Kinds;
@@ -1824,16 +1826,47 @@ package body Why.Atree.Modules is
       -------------------------------
 
       procedure Insert_Subprogram_Symbols (E : Entity_Id) is
-         M : constant W_Module_Id := E_Axiom_Module (E);
+         M    : constant W_Module_Id := E_Module (E);
+         M_Ax : constant W_Module_Id := E_Axiom_Module (E);
+         Name : constant String := Short_Name (E);
 
       begin
          Insert_Symbol
            (E, WNE_Check_Invariants_On_Call,
             New_Identifier
-              (Symbol => NID ("check_invariants_on_call"),
-               Module => M,
+              (Symbol => NID (Name & "__check_invariants_on_call"),
+               Module => M_Ax,
                Domain => EW_Prog,
                Typ    => EW_Unit_Type));
+         Insert_Symbol
+           (E, WNE_Post_Pred,
+            New_Identifier
+              (Symbol => NID (Name & "__" & Post_Predicate),
+               Module => M,
+               Domain => EW_Pred,
+               Typ    => EW_Unit_Type));
+
+         if Has_Contracts (E, Pragma_Refined_Post) then
+            Insert_Symbol
+              (E, WNE_Refined_Post_Pred,
+               New_Identifier
+                 (Symbol    => NID (Name & "__" & Post_Predicate),
+                  Module    => M,
+                  Namespace => NID (To_String (WNE_Refine_Module)),
+                  Domain    => EW_Pred,
+                  Typ       => EW_Unit_Type));
+         end if;
+
+         if Is_Dispatching_Operation (E) then
+            Insert_Symbol
+              (E, WNE_Dispatch_Post_Pred,
+               New_Identifier
+                 (Symbol    => NID (Name & "__" & Post_Predicate),
+                  Module    => M,
+                  Namespace => NID (To_String (WNE_Dispatch_Module)),
+                  Domain    => EW_Pred,
+                  Typ       => EW_Unit_Type));
+         end if;
       end Insert_Subprogram_Symbols;
 
       -------------------------

@@ -84,6 +84,7 @@ package Configuration is
       Limit_Subp           : aliased GNAT.Strings.String_Access;
       M                    : aliased Boolean;
       Mode                 : aliased GNAT.Strings.String_Access;
+      No_Axiom_Guard       : aliased Boolean;
       No_Counterexample    : aliased Boolean;
       No_Inlining          : aliased Boolean;
       No_Global_Generation : aliased Boolean;
@@ -161,6 +162,7 @@ package Configuration is
    CodePeer             : Boolean;
    RTS_Dir              : GNAT.Strings.String_Access;
    Counterexample       : Boolean;
+   No_Axiom_Guard       : Boolean;
    No_Inlining          : Boolean;
    No_Global_Generation : Boolean;
    Mode                 : GP_Mode;

@@ -112,7 +112,7 @@ very_longs-divide.adb:204:34: info: initialization of "Sum" proved
 very_longs-divide.adb:206:26: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:206:26: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:206:50: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (2 => 0, others => 64)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
+very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (2 => 0, others => 117)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
 very_longs-divide.adb:206:72: info: initialization of "Carry" proved
 very_longs-divide.adb:211:26: info: length check proved (CVC4: 1 VC)
 very_longs-divide.adb:211:29: info: length check proved (CVC4: 1 VC)

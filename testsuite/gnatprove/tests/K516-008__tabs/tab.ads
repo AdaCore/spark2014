@@ -8,4 +8,3 @@ package Tab is
                       (for some K in Index => A(K) = B(J))));
 
 end Tab;
-

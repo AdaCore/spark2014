@@ -133,7 +133,7 @@ intra_unit_elaboration_order_examples.adb:42:07: info: initialization of "X" pro
 intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
-intra_unit_elaboration_order_examples.ads:27:50: info: overflow check proved (Z3: 1 VC)
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826)
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved

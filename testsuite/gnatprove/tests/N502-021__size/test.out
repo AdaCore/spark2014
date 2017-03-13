@@ -1,5 +1,5 @@
 get_size.adb:9:35: medium: range check might fail
-get_size.adb:11:20: info: range check proved (altergo: 1 VC)
+get_size.adb:11:20: medium: range check might fail (e.g. when X = 0)
 get_size.adb:13:19: info: assertion proved (CVC4: 1 VC)
 get_size.adb:13:19: info: initialization of "X" proved
 get_size.adb:14:19: medium: assertion might fail, cannot prove A'Size = 10 * T'size

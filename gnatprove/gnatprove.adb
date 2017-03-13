@@ -750,6 +750,8 @@ procedure Gnatprove with SPARK_Mode is
          Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
          Gnat2Why_Args.Flow_Termination_Proof := Flow_Termination;
+         Gnat2Why_Args.Proof_Generate_Guards :=
+           not Configuration.No_Axiom_Guard;
          Gnat2Why_Args.Ide_Mode := IDE_Mode;
          Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
          Gnat2Why_Args.Limit_Subp :=

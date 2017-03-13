@@ -53,6 +53,8 @@ package body Gnat2Why_Args is
    Flow_Generate_Contracts_Name : constant String :=
      "flow_generate_contracts";
    Flow_Termination_Name        : constant String := "flow_termination_proof";
+   Proof_Generate_Guards_Name   : constant String :=
+     "proof_generate_axiom_guards";
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Line_Name              : constant String := "limit_line";
    Pedantic_Name                : constant String := "pedantic";
@@ -109,6 +111,7 @@ package body Gnat2Why_Args is
       Flow_Generate_Contracts := Get_Opt_Bool (V,
                                                Flow_Generate_Contracts_Name);
       Flow_Termination_Proof  := Get_Opt_Bool (V, Flow_Termination_Name);
+      Proof_Generate_Guards   := Get_Opt_Bool (V, Proof_Generate_Guards_Name);
       Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       if Has_Field (V, Report_Mode_Name) then
@@ -199,6 +202,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Advanced_Debug);
       Set_Field (Obj, Flow_Generate_Contracts_Name, Flow_Generate_Contracts);
       Set_Field (Obj, Flow_Termination_Name, Flow_Termination_Proof);
+      Set_Field (Obj, Proof_Generate_Guards_Name, Proof_Generate_Guards);
       Set_Field (Obj, Pedantic_Name, Pedantic);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);
       Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));

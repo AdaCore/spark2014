@@ -61,6 +61,8 @@ gnatprove advanced switches:
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
+ --no-axiom-guard     Do not generate guards for axioms defining contracts of
+                      functions
  --no-counterexample  Do not generate a counterexample for unproved formulas
  --no-global-generation
                       Do not generate Global and Initializes contracts from

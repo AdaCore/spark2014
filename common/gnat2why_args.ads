@@ -117,6 +117,11 @@ package Gnat2Why_Args is
 
    Flow_Termination_Proof : Boolean := False;
 
+   --  Generate guards for axioms of functions to avoid having an unsound axiom
+   --  when a function has an inconsistent contract.
+
+   Proof_Generate_Guards : Boolean := True;
+
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
    --  a warning when the Ada RM allows reassociation of operators in an

@@ -7,7 +7,7 @@ dispatch_in_contract.ads:23:19: info: class-wide precondition is weaker than ove
 main.adb:2:11: warning: subprogram "Main" has no effect
 main.adb:7:07: info: initialization of "C1.F1" proved
 main.adb:7:07: info: initialization of "C1.F2" proved
-main.adb:7:09: medium: precondition might fail (e.g. when C1 = (F1 => 1, F2 => 2147483647))
+main.adb:7:09: medium: precondition might fail (e.g. when C1 = (F1 => 2147483647, F2 => 1))
 main.adb:9:07: info: initialization of "C2.F1" proved
 main.adb:9:07: info: initialization of "C2.F2" proved
-main.adb:9:09: medium: precondition might fail (e.g. when C2 = (F1 => 1, F2 => 2147483647))
+main.adb:9:09: medium: precondition might fail (e.g. when C2 = (F1 => 2147483647, F2 => 1))

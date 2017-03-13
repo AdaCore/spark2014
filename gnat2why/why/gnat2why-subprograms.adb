@@ -3908,24 +3908,43 @@ package body Gnat2Why.Subprograms is
          --  Dynamic invariant / type invariants of the result
 
          procedure Emit_Post_Axiom
-           (Suffix : String;
-            Id     : W_Identifier_Id;
+           (Suffix    : String;
+            Id        : W_Identifier_Id;
+            Pred_Name : Why_Name_Enum;
             Pre, Post : W_Pred_Id);
-         --  Emit the post_axiom with the given axiom_suffix, id, pre and post
+         --  Emit the post_axiom with the given axiom_suffix, name, pre and
+         --  post.
 
          ---------------------
          -- Emit_Post_Axiom --
          ---------------------
 
          procedure Emit_Post_Axiom
-           (Suffix : String;
-            Id     : W_Identifier_Id;
-            Pre, Post : W_Pred_Id) is
+           (Suffix    : String;
+            Id        : W_Identifier_Id;
+            Pred_Name : Why_Name_Enum;
+            Pre, Post : W_Pred_Id)
+         is
+            Result_Id     : constant W_Identifier_Id :=
+              New_Result_Ident (Why_Type);
+            Pred_Binders  : constant Binder_Array :=
+              Binder_Type'(Ada_Node  => Empty,
+                           B_Name    => +Result_Id,
+                           B_Ent     => Null_Entity_Name,
+                           Mutable   => False)
+                & Logic_Why_Binders;
             Complete_Post : constant W_Pred_Id :=
-              +New_And_Expr
-              (Left   => +Post,
-               Right  => +Dynamic_Prop_Result,
-               Domain => EW_Pred);
+              +New_And_Expr (Left   => +Post,
+                             Right  => +Dynamic_Prop_Result,
+                             Domain => EW_Pred);
+            Guarded_Post  : constant W_Pred_Id :=
+              (if not Use_Guard_For_Function (E) then Complete_Post
+               else New_Conditional
+                 (Condition   => New_Call
+                    (Domain  => EW_Pred,
+                     Name    => E_Symb (E, Pred_Name),
+                     Binders => Pred_Binders),
+                  Then_Part   => +Complete_Post));
          begin
             if not Is_True_Boolean (+Complete_Post) then
                Emit
@@ -3956,7 +3975,7 @@ package body Gnat2Why.Subprograms is
                           (Domain  => EW_Term,
                            Name    => Id,
                            Binders => Logic_Why_Binders),
-                        Context  => +Complete_Post)));
+                        Context  => +Guarded_Post)));
             end if;
          end Emit_Post_Axiom;
 
@@ -3966,7 +3985,7 @@ package body Gnat2Why.Subprograms is
          --  Do not emit an axiom for E if it is inlined for proof
 
          if No (Retrieve_Inline_Annotation (E)) then
-            Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+            Emit_Post_Axiom (Post_Axiom, Logic_Id, WNE_Post_Pred, Pre, Post);
          end if;
 
          --  ??? clean up this code duplication for dispatch and refine
@@ -3976,6 +3995,7 @@ package body Gnat2Why.Subprograms is
                             and then Present (Dispatch_Post));
             Emit_Post_Axiom (Post_Dispatch_Axiom,
                              Dispatch_Logic_Id,
+                             WNE_Dispatch_Post_Pred,
                              Dispatch_Pre,
                              Dispatch_Post);
          end if;
@@ -3984,6 +4004,7 @@ package body Gnat2Why.Subprograms is
             pragma Assert (Present (Refined_Post));
             Emit_Post_Axiom (Post_Refine_Axiom,
                              Refine_Logic_Id,
+                             WNE_Refined_Post_Pred,
                              Pre,
                              Refined_Post);
          end if;
@@ -4166,10 +4187,11 @@ package body Gnat2Why.Subprograms is
                  Name   => "volatile__effect");
 
             function Create_Function_Decl
-              (Logic_Id : W_Identifier_Id;
-               Prog_Id  : W_Identifier_Id;
-               Pre      : W_Pred_Id;
-               Post     : W_Pred_Id) return W_Declaration_Id;
+              (Logic_Id  : W_Identifier_Id;
+               Prog_Id   : W_Identifier_Id;
+               Pred_Name : Why_Name_Enum;
+               Pre       : W_Pred_Id;
+               Post      : W_Pred_Id) return W_Declaration_Id;
             --  create the function declaration with the given Logic_Id,
             --  Prog_Id, Pre and Post.
 
@@ -4178,10 +4200,11 @@ package body Gnat2Why.Subprograms is
             --------------------------
 
             function Create_Function_Decl
-              (Logic_Id : W_Identifier_Id;
-               Prog_Id  : W_Identifier_Id;
-               Pre      : W_Pred_Id;
-               Post     : W_Pred_Id) return W_Declaration_Id
+              (Logic_Id  : W_Identifier_Id;
+               Prog_Id   : W_Identifier_Id;
+               Pred_Name : Why_Name_Enum;
+               Pre       : W_Pred_Id;
+               Post      : W_Pred_Id) return W_Declaration_Id
             is
                --  Each function has in its postcondition that its result is
                --  equal to the application of the corresponding logic function
@@ -4192,6 +4215,10 @@ package body Gnat2Why.Subprograms is
                  (Left   => +Dynamic_Prop_Result,
                   Right  => +Post,
                   Domain => EW_Pred);
+               Result_Id  : constant W_Identifier_Id :=
+                 New_Result_Ident (Why_Type);
+               Pred_Args  : constant W_Expr_Array :=
+                 +Result_Id & Logic_Func_Args;
 
                Effects : constant W_Effects_Id := New_Effects;
 
@@ -4212,18 +4239,24 @@ package body Gnat2Why.Subprograms is
                else
                   Param_Post :=
                     +New_And_Expr
-                    (Domain => EW_Pred,
-                     Left   =>
-                       New_Call
+                    (Domain    => EW_Pred,
+                     Conjuncts =>
+                       (1 => New_Call
                          (Name   => Why_Eq,
                           Domain => EW_Pred,
                           Typ    => EW_Bool_Type,
-                          Args   => (+New_Result_Ident (Why_Type),
+                          Args   => (+Result_Id,
                                      New_Call
                                        (Domain => EW_Term,
                                         Name   => Logic_Id,
                                         Args   => Logic_Func_Args))),
-                     Right  => +Param_Post);
+                        2 => (if Use_Guard_For_Function (E) then
+                                 New_Call
+                                   (Domain => EW_Term,
+                                    Name   => E_Symb (E, Pred_Name),
+                                    Args   => Pred_Args)
+                              else +True_Pred),
+                        3 => +Param_Post));
                end if;
                return New_Function_Decl
                  (Domain      => EW_Prog,
@@ -4299,10 +4332,11 @@ package body Gnat2Why.Subprograms is
 
             Emit
               (File,
-               Create_Function_Decl (Logic_Id => Logic_Id,
-                                     Prog_Id  => Prog_Id,
-                                     Pre      => Pre,
-                                     Post     => Post));
+               Create_Function_Decl (Logic_Id  => Logic_Id,
+                                     Prog_Id   => Prog_Id,
+                                     Pred_Name => WNE_Post_Pred,
+                                     Pre       => Pre,
+                                     Post      => Post));
 
             if Is_Dispatching_Operation (E) then
                Emit
@@ -4311,10 +4345,11 @@ package body Gnat2Why.Subprograms is
                     (Name    => NID (To_String (WNE_Dispatch_Module)),
                      Declarations =>
                        (1 => Create_Function_Decl
-                            (Logic_Id => Dispatch_Logic_Id,
-                             Prog_Id  => Prog_Id,
-                             Pre      => Dispatch_Pre,
-                             Post     => Dispatch_Post))));
+                            (Logic_Id  => Dispatch_Logic_Id,
+                             Prog_Id   => Prog_Id,
+                             Pred_Name => WNE_Dispatch_Post_Pred,
+                             Pre       => Dispatch_Pre,
+                             Post      => Dispatch_Post))));
             end if;
 
             if Has_Contracts (E, Pragma_Refined_Post) then
@@ -4324,10 +4359,11 @@ package body Gnat2Why.Subprograms is
                     (Name    => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
                        (1 => Create_Function_Decl
-                            (Logic_Id => Refine_Logic_Id,
-                             Prog_Id  => Prog_Id,
-                             Pre      => Pre,
-                             Post     => Refined_Post))));
+                            (Logic_Id  => Refine_Logic_Id,
+                             Prog_Id   => Prog_Id,
+                             Pred_Name => WNE_Refined_Post_Pred,
+                             Pre       => Pre,
+                             Post      => Refined_Post))));
             end if;
          end;
 
@@ -4516,6 +4552,31 @@ package body Gnat2Why.Subprograms is
                    Selector => (if Has_Contracts (E, Pragma_Refined_Post)
                                 then Refine
                                 else Why.Inter.Standard));
+      Pred_Name          : constant Why_Name_Enum :=
+        (if Has_Contracts (E, Pragma_Refined_Post)
+         then WNE_Refined_Post_Pred
+         else WNE_Post_Pred);
+      Result_Id          : constant W_Identifier_Id :=
+         New_Result_Ident (Type_Of_Node (Etype (E)));
+      Pred_Binders       : constant Binder_Array :=
+         Binder_Type'(Ada_Node  => Empty,
+                      B_Name    => +Result_Id,
+                      B_Ent     => Null_Entity_Name,
+                      Mutable   => False)
+           & Flat_Binders;
+      Func_Guard         : constant W_Pred_Id :=
+        (if not Use_Guard_For_Function (E) then True_Pred
+         else +New_Typed_Binding
+           (Domain   => EW_Pred,
+            Name     => Result_Id,
+            Def      => New_Call (Domain  => EW_Pred,
+                                  Name    => Logic_Id,
+                                  Binders => Flat_Binders,
+                                  Typ     => EW_Bool_Type),
+            Context  => +New_Call (Domain  => EW_Pred,
+                                   Name    => E_Symb (E, Pred_Name),
+                                   Binders => Pred_Binders,
+                                   Typ     => EW_Bool_Type)));
 
       Params : Transformation_Params;
    begin
@@ -4541,9 +4602,11 @@ package body Gnat2Why.Subprograms is
       Generate_Axiom_For_Post (File, E);
 
       --  If the entity's body is not in SPARK,
+      --  if it is inlined for proof
       --  or if the function does not return, do not generate axiom.
 
       if not Entity_Body_Compatible_With_SPARK (E)
+        or else Present (Retrieve_Inline_Annotation (E))
         or else No_Return (E)
         or else
           (Is_Volatile_Function (E) and then not Is_Protected_Subprogram (E))
@@ -4601,6 +4664,7 @@ package body Gnat2Why.Subprograms is
               (Ada_Node => E,
                Name     => Logic_Id,
                Binders  => Flat_Binders,
+               Pre      => Func_Guard,
                Def      => +Transform_Expr (Expression (Expr_Fun_N),
                                             EW_Pred,
                                             Params)));
@@ -4635,7 +4699,10 @@ package body Gnat2Why.Subprograms is
                Ty_Ent  : constant Entity_Id := Etype (E);
                Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
                Guard   : constant W_Pred_Id :=
-                 Compute_Guard_Formula (Logic_Func_Binders);
+                 +New_And_Then_Expr
+                   (Left   => +Compute_Guard_Formula (Logic_Func_Binders),
+                    Right  => +Func_Guard,
+                    Domain => EW_Pred);
             begin
                Emit
                  (File,
@@ -4659,7 +4726,7 @@ package body Gnat2Why.Subprograms is
                Ty_Ent  : constant Entity_Id := Etype (E);
                Equ_Ty  : constant W_Type_Id := Base_Why_Type (Ty_Ent);
                Guard   : constant W_Pred_Id :=
-                 Compute_Guard_Formula (Logic_Func_Binders);
+                 +Compute_Guard_Formula (Logic_Func_Binders);
                Pre     : constant W_Pred_Id :=
                  +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
             begin
@@ -4683,22 +4750,27 @@ package body Gnat2Why.Subprograms is
                                       Right  => +Pre,
                                       Domain => EW_Pred),
                      Def      =>
-                       New_Call
-                         (Name => Why_Eq,
-                          Args => (Insert_Simple_Conversion
-                                     (Domain         => EW_Term,
-                                      Expr           => +New_Call
-                                        (Name    => Logic_Id,
-                                         Domain  => EW_Term,
-                                         Binders => Flat_Binders,
-                                         Typ     => Type_Of_Node (Ty_Ent)),
-                                      To             => Equ_Ty),
-                                   +Transform_Expr
-                                     (Expression (Expr_Fun_N),
-                                      Expected_Type => Equ_Ty,
-                                      Domain        => EW_Term,
-                                      Params        => Params)),
-                          Typ  => EW_Bool_Type)));
+                       New_Conditional
+                         (Condition => +Func_Guard,
+                          Then_Part =>
+                            New_Call
+                              (Name   => Why_Eq,
+                               Args   =>
+                                 (Insert_Simple_Conversion
+                                    (Domain         => EW_Term,
+                                     Expr           => +New_Call
+                                       (Name    => Logic_Id,
+                                        Domain  => EW_Term,
+                                        Binders => Flat_Binders,
+                                        Typ     => Type_Of_Node (Ty_Ent)),
+                                     To             => Equ_Ty),
+                                  +Transform_Expr
+                                    (Expression (Expr_Fun_N),
+                                     Expected_Type => Equ_Ty,
+                                     Domain        => EW_Term,
+                                     Params        => Params)),
+                               Domain => EW_Pred,
+                               Typ    => EW_Bool_Type))));
             end;
          end if;
       end if;
@@ -4752,6 +4824,19 @@ package body Gnat2Why.Subprograms is
               To_Binder_Array (Logic_Func_Binders);
             Logic_Id          : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => True);
+            Result_Id         : constant W_Identifier_Id :=
+              New_Result_Ident (Why_Type);
+            Pred_Binders      : constant Binder_Array :=
+              Binder_Type'(Ada_Node  => Empty,
+                           B_Name    => +Result_Id,
+                           B_Ent     => Null_Entity_Name,
+                           Mutable   => False)
+                & Logic_Why_Binders;
+            Pred_Id           : constant W_Identifier_Id :=
+              New_Identifier
+                (Domain => EW_Pred,
+                 Symbol => NID (Short_Name (E) & "__" & Post_Predicate),
+                 Typ    => EW_Bool_Type);
             Def               : constant W_Expr_Id :=
               Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, File);
          begin
@@ -4771,6 +4856,15 @@ package body Gnat2Why.Subprograms is
                   Def         => Def,
                   Return_Type => Why_Type));
 
+            Emit
+              (File,
+               New_Function_Decl
+                 (Domain      => EW_Pred,
+                  Name        => Pred_Id,
+                  Binders     => Pred_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Bool_Type));
+
             if Is_Dispatching_Operation (E) then
                Emit
                  (File,
@@ -4782,7 +4876,13 @@ package body Gnat2Why.Subprograms is
                              Name        => Logic_Id,
                              Binders     => Logic_Why_Binders,
                              Labels      => Name_Id_Sets.Empty_Set,
-                             Return_Type => Why_Type))));
+                             Return_Type => Why_Type),
+                        2 => New_Function_Decl
+                            (Domain      => EW_Pred,
+                             Name        => Pred_Id,
+                             Binders     => Pred_Binders,
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Bool_Type))));
             end if;
 
             if Has_Contracts (E, Pragma_Refined_Post) then
@@ -4796,7 +4896,13 @@ package body Gnat2Why.Subprograms is
                              Name        => Logic_Id,
                              Binders     => Logic_Why_Binders,
                              Labels      => Name_Id_Sets.Empty_Set,
-                             Return_Type => Why_Type))));
+                             Return_Type => Why_Type),
+                        2 => New_Function_Decl
+                            (Domain      => EW_Pred,
+                             Name        => Pred_Id,
+                             Binders     => Pred_Binders,
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Bool_Type))));
             end if;
          end;
 

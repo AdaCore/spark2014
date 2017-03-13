@@ -23,30 +23,34 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;            use Ada.Strings;
-with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
+with Ada.Strings;                use Ada.Strings;
+with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Eval_Fat;
-with Exp_Util;               use Exp_Util;
+with Exp_Util;                   use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with Stand;                  use Stand;
-with String_Utils;           use String_Utils;
-with Urealp;                 use Urealp;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Inter;              use Why.Inter;
-with Why.Types;              use Why.Types;
+with Gnat2Why.Annotate;
+with Gnat2Why_Args;
+with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with Lib;
+with Namet;                      use Namet;
+with Nlists;                     use Nlists;
+with Sem_Aux;                    use Sem_Aux;
+with Sem_Util;                   use Sem_Util;
+with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
+with Stand;                      use Stand;
+with String_Utils;               use String_Utils;
+with Urealp;                     use Urealp;
+with Why.Atree.Builders;         use Why.Atree.Builders;
+with Why.Atree.Modules;          use Why.Atree.Modules;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Expr;               use Why.Gen.Expr;
+with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Inter;                  use Why.Inter;
+with Why.Types;                  use Why.Types;
 
 package body Gnat2Why.Util is
 
@@ -1507,6 +1511,36 @@ package body Gnat2Why.Util is
       return Is_Scalar_Type (E)
         and then not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
+
+   ----------------------------
+   -- Use_Guard_For_Function --
+   ----------------------------
+
+   function Use_Guard_For_Function (E : Entity_Id) return Boolean is
+   begin
+      return Gnat2Why_Args.Proof_Generate_Guards
+
+        --  No axioms are generated for functions with No_Return
+
+        and then not No_Return (E)
+
+        --  No axioms are generated for volatile functions
+
+        and then not
+          (Is_Volatile_Function (E) and not Is_Protected_Subprogram (E))
+
+        --  No axioms are generated for inlined functions
+
+        and then not Present (Gnat2Why.Annotate.Retrieve_Inline_Annotation (E))
+
+        --  Functions from predefined units should be safe
+
+        and then not Lib.In_Predefined_Unit (E)
+
+        --  No axioms are generated for functions with external axiomatizations
+
+        and then not Entity_In_Ext_Axioms (E);
+   end Use_Guard_For_Function;
 
    -----------------------------
    -- Use_Split_From_For_Type --

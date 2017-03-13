@@ -39,6 +39,7 @@ with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Lib;                            use Lib;
 with Lib.Xref;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
@@ -12179,7 +12180,16 @@ package body Gnat2Why.Expr is
                                  Selector => Selector));
 
    begin
-      if Why_Subp_Has_Precondition (Subp, Selector) then
+      if Domain in EW_Term | EW_Pred then
+         T := New_Function_Call
+           (Ada_Node => Expr,
+            Domain   => Domain,
+            Subp     => Subp,
+            Selector => Selector,
+            Name     => Why_Name,
+            Args     => Args,
+            Typ      => Get_Typ (Why_Name));
+      elsif Why_Subp_Has_Precondition (Subp, Selector) then
          T := +New_VC_Call
            (Ada_Node => Expr,
             Name     => Why_Name,
@@ -13759,19 +13769,35 @@ package body Gnat2Why.Expr is
                  then Base_Why_Type (Curs_Type)
                  else Type_Of_Node (Curs_Type)));
       begin
-         return New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     =>
+         if Domain in EW_Prog | EW_Pterm then
+            return New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     =>
                  W_Identifier_Id
                    (Transform_Identifier (Params       => Params,
                                           Expr         => Element_E,
                                           Ent          => Element_E,
                                           Domain       => Domain)),
-            Progs    => (1 => Cont_Expr,
-                         2 => Curs_Expr),
-            Reason   => VC_Precondition,
-            Domain   => Domain,
-            Typ      => Element_T);
+               Progs    => (1 => Cont_Expr,
+                            2 => Curs_Expr),
+               Reason   => VC_Precondition,
+               Domain   => Domain,
+               Typ      => Element_T);
+         else
+            return New_Function_Call
+              (Ada_Node => Ada_Node,
+               Name     =>
+                 W_Identifier_Id
+                   (Transform_Identifier (Params       => Params,
+                                          Expr         => Element_E,
+                                          Ent          => Element_E,
+                                          Domain       => Domain)),
+               Subp     => Element_E,
+               Args     => (1 => Cont_Expr,
+                            2 => Curs_Expr),
+               Domain   => Domain,
+               Typ      => Element_T);
+         end if;
       end Make_Binding_For_Iterable;
 
       ----------------------------------
@@ -13842,27 +13868,34 @@ package body Gnat2Why.Expr is
             T           : W_Expr_Id;
 
          begin
-            T := New_VC_Call
-              (Ada_Node => Ada_Node,
-               Name     =>
-                 W_Identifier_Id
-                   (Transform_Identifier (Params => Params,
-                                          Expr   => Has_Element,
-                                          Ent    => Has_Element,
-                                          Domain => Subdomain)),
-               Progs    => (1 => Cont_Expr,
-                            2 => Curs_Expr),
-               Reason   => VC_Precondition,
-               Domain   => Subdomain,
-               Typ      => Type_Of_Node (Etype (Has_Element)));
-
-            if Domain = EW_Pred then
-               T :=
-                 New_Call
-                   (Domain => Domain,
-                    Typ    => EW_Bool_Type,
-                    Name   => Why_Eq,
-                    Args   => (T, +True_Term));
+            if Domain in EW_Prog | EW_Pterm then
+               T := New_VC_Call
+                 (Ada_Node => Ada_Node,
+                  Name     =>
+                    W_Identifier_Id
+                      (Transform_Identifier (Params => Params,
+                                             Expr   => Has_Element,
+                                             Ent    => Has_Element,
+                                             Domain => Subdomain)),
+                  Progs    => (1 => Cont_Expr,
+                               2 => Curs_Expr),
+                  Reason   => VC_Precondition,
+                  Domain   => Subdomain,
+                  Typ      => Type_Of_Node (Etype (Has_Element)));
+            else
+               T := New_Function_Call
+                 (Ada_Node => Ada_Node,
+                  Name     =>
+                    W_Identifier_Id
+                      (Transform_Identifier (Params => Params,
+                                             Expr   => Has_Element,
+                                             Ent    => Has_Element,
+                                             Domain => Subdomain)),
+                  Subp     => Has_Element,
+                  Args     => (1 => Cont_Expr,
+                               2 => Curs_Expr),
+                  Domain   => Subdomain,
+                  Typ      => Type_Of_Node (Etype (Has_Element)));
             end if;
 
             return T;
@@ -13923,18 +13956,33 @@ package body Gnat2Why.Expr is
                                     else Type_Of_Node (Cont_Type)));
                begin
                   Over_Type := Etype (Model);
-                  W_Over_E := New_VC_Call
-                    (Ada_Node => Ada_Node,
-                     Name     =>
-                       W_Identifier_Id
-                         (Transform_Identifier (Params => Params,
-                                                Expr   => Model,
-                                                Ent    => Model,
-                                                Domain => Subdomain)),
-                     Progs    => (1 => Cont_Expr),
-                     Reason   => VC_Precondition,
-                     Domain   => Subdomain,
-                     Typ      => Type_Of_Node (Over_Type));
+                  if Subdomain = EW_Term then
+                     W_Over_E := New_Function_Call
+                       (Ada_Node => Ada_Node,
+                        Name     =>
+                          W_Identifier_Id
+                            (Transform_Identifier (Params => Params,
+                                                   Expr   => Model,
+                                                   Ent    => Model,
+                                                   Domain => Subdomain)),
+                        Subp     => Model,
+                        Args     => (1 => Cont_Expr),
+                        Domain   => Subdomain,
+                        Typ      => Type_Of_Node (Over_Type));
+                  else
+                     W_Over_E := New_VC_Call
+                       (Ada_Node => Ada_Node,
+                        Name     =>
+                          W_Identifier_Id
+                            (Transform_Identifier (Params => Params,
+                                                   Expr   => Model,
+                                                   Ent    => Model,
+                                                   Domain => Subdomain)),
+                        Progs    => (1 => Cont_Expr),
+                        Reason   => VC_Precondition,
+                        Domain   => Subdomain,
+                        Typ      => Type_Of_Node (Over_Type));
+                  end if;
                end;
 
                Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
@@ -14106,8 +14154,8 @@ package body Gnat2Why.Expr is
 
       if Need_Temp_Var then
          W_Index_Type := (if Use_Split_Form_For_Type (Index_Type)
-                       then Base_Why_Type (Index_Type)
-                       else Type_Of_Node (Index_Type));
+                          then Base_Why_Type (Index_Type)
+                          else Type_Of_Node (Index_Type));
          W_Index_Var := New_Temp_Identifier (Typ => W_Index_Type);
       else
          W_Index_Type := W_Quant_Type;
@@ -14196,7 +14244,7 @@ package body Gnat2Why.Expr is
                W_Binding_Expr :=
                  Make_Binding_For_Iterable
                    (Expr, W_Over_Expr, Over_Type, +W_Index_Var,
-                    Prog_Or_Term_Domain (Domain), W_Index_Type, Params);
+                    Prog_Or_Term_Domain (Domain), W_Quant_Type, Params);
             end if;
 
             Result := New_Typed_Binding (Domain  => Domain,

@@ -54,6 +54,6 @@ ring_buf.ads:63:31: medium: precondition might fail
 ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X)
 ring_buf.ads:69:43: info: initialization of "Element" proved
 ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old)
-ring_buf.ads:71:34: medium: precondition might fail
+ring_buf.ads:71:34: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:72:14: info: initialization of "Element" proved
-ring_buf.ads:72:24: medium: precondition might fail
+ring_buf.ads:72:24: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))

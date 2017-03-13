@@ -2,5 +2,5 @@ package P is
    procedure Incr (X : in out Integer) with
      Post => X = Add_One (X'Old);
 
-   function Add_One (X : Integer) return Integer is (X + 1);
+   function Add_One (X : Integer) return Integer is (X + 1); --@OVERFLOW_CHECK:FAIL
 end P;

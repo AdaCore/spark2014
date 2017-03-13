@@ -166,7 +166,7 @@ simple_unc_arrays.ads:54:68: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:64:14: info: precondition proved (CVC4: 1 VC)
 simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'result
 simple_unc_arrays.ads:65:15: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.ads:74:17: medium: postcondition might fail, cannot prove Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1) (e.g. when A = (Last => 1, V => (3 => 1, others => -1)) and A.V'First = 1 and A.V'Last = 1 and Search'Result = 3 and V = 0)
+simple_unc_arrays.ads:74:17: medium: postcondition might fail, cannot prove Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1) (e.g. when A = (Last => 1, V => (0 => 0, 2 => 1, others => -1)) and A.V'First = 1 and A.V'Last = 1 and Search'Result = 2 and V = 0)
 simple_unc_arrays.ads:75:26: medium: array index check might fail (e.g. when A = (Last => 1, V => (others => 1)) and A.V'First = 1 and A.V'Last = 1 and Search'Result = 2)
 simple_unc_arrays.ads:76:54: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.ads:85:16: medium: postcondition might fail, cannot prove Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1) (e.g. when A = (Last => 3, V => (1 => 1, 2 => 0, 3 => 0, others => 0)) and A.V'First = 1 and A.V'Last = 3 and Bubble_Sort.V'First = 1 and Bubble_Sort.V'Last = 3 and Bubble_Sort'Result = (Last => 3, V => (1 => 1, 2 => 0, 3 => 0, others => 0)) and J = 1)

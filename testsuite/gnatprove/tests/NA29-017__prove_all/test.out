@@ -44,7 +44,7 @@ sorting.adb:68:40: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:68:50: medium: overflow check might fail
 sorting.adb:68:70: medium: overflow check might fail (e.g. when A'Last = 2147483647)
 sorting.adb:69:17: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:69:31: medium: range check might fail
+sorting.adb:69:31: medium: range check might fail (e.g. when B'First = 0 and B'Last = 2147483647)
 sorting.adb:69:51: medium: overflow check might fail (e.g. when Length1 = 1 and Length2 = 2147483647)
 sorting.adb:70:61: medium: overflow check might fail (e.g. when A_First = 2147483647 and Length1 = 1)
 sorting.adb:73:37: info: overflow check proved (CVC4: 1 VC)

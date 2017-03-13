@@ -235,6 +235,17 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Pred", "W_Pred", Id_One);
 
+      ---------------
+      -- W_Epsilon --
+      ---------------
+
+      New_Field (W_Epsilon,
+                 "Name", "W_Identifier", Id_One);
+      New_Field (W_Epsilon,
+                 "Typ", "W_Type", Id_One);
+      New_Field (W_Epsilon,
+                 "Pred", "W_Pred", Id_One);
+
       -----------
       -- W_Not --
       -----------
