@@ -79,16 +79,15 @@ package Why.Gen.Expr is
       Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Ada_Equality
-     (Typ              : Entity_Id;
-      Domain           : EW_Domain;
-      Left, Right      : W_Expr_Id;
-      Force_Predefined : Boolean := False)
+     (Typ         : Entity_Id;
+      Domain      : EW_Domain;
+      Left, Right : W_Expr_Id)
       return W_Expr_Id;
    --  generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
-   --  If the type has a user-provided primitive equality, use that. If
-   --  Force_Predefined is True, pretend that the type does not have a
-   --  user-provided primitive equality.
+   --  If the type has a user-provided primitive equality and if its most
+   --  underlying type is a record type, use the user-provided equality. Else,
+   --  use the predefined equality.
 
    function New_Or_Expr
      (Left, Right : W_Expr_Id;

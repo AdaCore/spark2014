@@ -733,17 +733,15 @@ package body Why.Gen.Arrays is
             Get_Name : constant W_Identifier_Id := To_Local (Symbols.Get);
             Eq_Name  : constant W_Identifier_Id := To_Local (Symbols.Bool_Eq);
             Def      : W_Pred_Id :=
-                         +New_Ada_Equality
-                           (Typ              => C_Type,
-                            Domain           => EW_Pred,
-                            Left             =>
-                              New_Call
-                                (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
-                            Right            =>
-                              New_Call
-                                (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
-                            Force_Predefined => not Is_Record_Type
-                              (Get_Full_Type_Without_Checking (C_Type)));
+              +New_Ada_Equality
+                 (Typ              => C_Type,
+                  Domain           => EW_Pred,
+                  Left             =>
+                    New_Call
+                      (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
+                  Right            =>
+                    New_Call
+                      (Empty, EW_Term, Get_Name, B_Indexes, W_Ty));
          begin
 
             Def := New_Conditional

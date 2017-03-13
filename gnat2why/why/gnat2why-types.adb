@@ -441,10 +441,11 @@ package body Gnat2Why.Types is
       begin
 
          --  This module only contains an axiom when there is a user-provided
-         --  equality
+         --  equality. The user equality is only declared for record types.
 
          if Present (Eq)
            and then Entity_In_SPARK (Eq)
+           and then Is_Record_Type (Get_Full_Type_Without_Checking (E))
          then
 
             --  We may need to adjust for renamed subprograms

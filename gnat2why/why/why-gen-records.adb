@@ -961,10 +961,7 @@ package body Why.Gen.Records is
                     New_Record_Access
                       (Name  => B_Access,
                        Field => Field_Id,
-                       Typ   => EW_Abstract (Field_Type)),
-                  Force_Predefined =>
-                     not Is_Record_Type
-                    (Get_Full_Type_Without_Checking (Field_Type)));
+                       Typ   => EW_Abstract (Field_Type)));
             end if;
          end New_Field_Equality;
 

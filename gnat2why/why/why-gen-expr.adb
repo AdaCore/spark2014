@@ -2114,14 +2114,14 @@ package body Why.Gen.Expr is
    ----------------------
 
    function New_Ada_Equality
-     (Typ              : Entity_Id;
-      Domain           : EW_Domain;
-      Left, Right      : W_Expr_Id;
-      Force_Predefined : Boolean := False) return W_Expr_Id
+     (Typ         : Entity_Id;
+      Domain      : EW_Domain;
+      Left, Right : W_Expr_Id) return W_Expr_Id
    is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        Force_Predefined or else No (Get_User_Defined_Eq (Typ));
+        not Is_Record_Type (Get_Full_Type_Without_Checking (Typ))
+        or else No (Get_User_Defined_Eq (Typ));
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
       Module   : constant W_Module_Id :=
