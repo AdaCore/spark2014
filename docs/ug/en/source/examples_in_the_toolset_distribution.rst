@@ -247,6 +247,10 @@ ghost procedures are used to introduce intermediate lemmas, loop invariants are
 written to achieve inductive proofs, and assertions are introduced to provide
 new values to be used for transitivity relations.
 
+This program and the verification activities associated to it are described in
+`"Auto-Active Proof of Red-Black Trees in SPARK"`, presented at NFM 2017 (at
+http://www.spark-2014.org/uploads/dross_moy_nfm_2017.pdf).
+
 .. rubric:: ``railway_signaling``
 
 This program implements a simple signaling algorithm to avoid collision of
