@@ -27,7 +27,6 @@ with Elists;                      use Elists;
 with Errout;                      use Errout;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
-with Opt;                         use Opt;
 with Output;                      use Output;
 with Restrict;                    use Restrict;
 with Rident;                      use Rident;
@@ -4788,48 +4787,6 @@ package body Flow.Analysis is
    --  Start of processing for Check_Elaborate_Body
 
    begin
-      --  We only do this check when we use the gnat static elaboration
-      --  model, since otherwise the front-end has a much more brutal
-      --  method of enforcing this.
-      if Dynamic_Elaboration_Checks then
-         return;
-      end if;
-
-      --  We only apply this check to a package without Elaborate_Body. We
-      --  do need to go up the tree as only the top-level package has this
-      --  pragma applied.
-      declare
-         Ptr : Entity_Id := FA.Spec_Entity;
-      begin
-         while Present (Ptr) and then not Has_Pragma_Elaborate_Body (Ptr) loop
-            Ptr := Scope (Ptr);
-            pragma Assert (if Present (Ptr) then Nkind (Ptr) in N_Entity);
-         end loop;
-         if Present (Ptr) and then Has_Pragma_Elaborate_Body (Ptr) then
-            return;
-         end if;
-      end;
-
-      --  We only check packages that are in spec files. This tests if the
-      --  package in question is nested in a body or not.
-      declare
-         Ptr : Node_Id   := FA.Spec_Entity;
-         K   : Node_Kind := Node_Kind'First;
-      begin
-         --  We go up the chain, finding either specs or bodies. If the
-         --  last thing we find was a spec, then we must be in a spec
-         --  file.
-         while Present (Ptr) loop
-            if Nkind (Ptr) in N_Package_Specification | N_Package_Body then
-               K := Nkind (Ptr);
-            end if;
-            Ptr := Parent (Ptr);
-         end loop;
-         if K /= N_Package_Specification then
-            return;
-         end if;
-      end;
-
       --  We only check variables that we claim to initialize (either
       --  because we said so or because flow thinks so), since otherwise
       --  their use will be flagged as a potentially uninitialized read.

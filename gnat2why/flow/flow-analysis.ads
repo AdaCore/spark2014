@@ -193,10 +193,6 @@ package Flow.Analysis is
    --  Checks that the compilation unit package has Elaborate_Body applied if
    --  at least one variable declared in the specification is modified in the
    --  package elaboration.
-   --
-   --  We do this only if we're in the gnat static elaboration model
-   --  (otherwise the front-end has some draconian checks that take care of
-   --  it).
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Subprogram;

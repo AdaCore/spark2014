@@ -47,6 +47,7 @@ with Gnat2Why_Args;
 with Lib;                            use Lib;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
+with Opt;                            use Opt;
 with Osint;                          use Osint;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
@@ -1704,8 +1705,15 @@ package body Flow is
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);
                      end if;
+                     --  We check if pragma Elaborate_Body is needed only for
+                     --  libray unit packages without the pragma. We also only
+                     --  check this when we use the gnat static elaboration
+                     --  model, since otherwise the front-end has a much more
+                     --  brutal method of enforcing this.
                      if FA.Kind = Kind_Package_Body
                        and then Is_Compilation_Unit (FA.Analyzed_Entity)
+                       and then not Has_Pragma_Elaborate_Body (FA.Spec_Entity)
+                       and then not Dynamic_Elaboration_Checks
                      then
                         Analysis.Check_Elaborate_Body (FA);
                      end if;
