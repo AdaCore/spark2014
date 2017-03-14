@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,10 +31,14 @@ package body VC_Kinds is
    function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
    function To_JSON (K : CEE_Kind) return JSON_Value;
 
-   function From_JSON (V : JSON_Value) return  Cntexample_Lines;
+   function From_JSON (V : JSON_Value) return Cntexample_Lines;
    function From_JSON (V : JSON_Value) return Cntexample_Elt;
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List;
    function From_JSON (V : JSON_Value) return CEE_Kind;
+   function From_JSON (V : JSON_Value) return Cntexmp_Type;
+
+   procedure Get_Typed_Cntexmp_Value (V      : JSON_Value;
+                                      Result : out Cntexmp_Value_Ptr);
 
    ---------------
    -- From_JSON --
@@ -152,20 +156,184 @@ package body VC_Kinds is
       return Res;
    end From_JSON;
 
-   function From_JSON (V : JSON_Value) return Cntexample_Elt is
+   function From_JSON (V : JSON_Value) return Cntexmp_Type is
+      pragma Assert (Has_Field (V, "type"));
+      T : constant String := Get (V, "type");
+      E : constant Unbounded_String := To_Unbounded_String (T);
    begin
+
+      if E = "Integer" then
+         return Cnt_Integer;
+      end if;
+
+      if E = "Float" then
+         return Cnt_Float;
+      end if;
+
+      if E = "Boolean" then
+         return Cnt_Boolean;
+      end if;
+
+      if E = "Bv" then
+         return Cnt_Bitvector;
+      end if;
+
+      if E = "Unparsed" then
+         return Cnt_Unparsed;
+      end if;
+
+      if E = "Array" then
+         return Cnt_Array;
+      end if;
+
+      if E = "Record" then
+         return Cnt_Record;
+      end if;
+
+      return Cnt_Invalid;
+   end From_JSON;
+
+   -----------------------------
+   -- Get_Typed_Cntexmp_Value --
+   -----------------------------
+
+   procedure Get_Typed_Cntexmp_Value (V      : JSON_Value;
+                                      Result : out Cntexmp_Value_Ptr) is
+      T : constant Cntexmp_Type := From_JSON (V);
+   begin
+      case T is
+         when Cnt_Integer   =>
+            Result := new Cntexmp_Value'(T => Cnt_Integer,
+                                         I => Get (V, "val"));
+
+         when Cnt_Float     =>
+            Result := new Cntexmp_Value'(T => Cnt_Float,
+                                         F => Get (V, "val"));
+
+         when Cnt_Boolean   =>
+            Result := new Cntexmp_Value'(T  => Cnt_Boolean,
+                                         Bo => Get (V, "val"));
+
+         when Cnt_Bitvector =>
+            Result := new Cntexmp_Value'(T => Cnt_Bitvector,
+                                         B => Get (V, "val"));
+
+         when Cnt_Unparsed  =>
+            Result := new Cntexmp_Value'(T => Cnt_Unparsed,
+                                         U => Get (V, "val"));
+
+         when Cnt_Record    =>
+            declare
+               Record_Val : constant JSON_Value := Get (V, "val");
+               Field_Value_List : Cntexmp_Value_Array.Map :=
+                                    Cntexmp_Value_Array.Empty_Map;
+               Discr_Value_List : Cntexmp_Value_Array.Map :=
+                                    Cntexmp_Value_Array.Empty_Map;
+               JS_Array_Discr   : constant JSON_Array :=
+                                    Get (Record_Val, "Discr");
+               JS_Array_Field   : constant JSON_Array :=
+                                    Get (Record_Val, "Field");
+
+            begin
+
+               for Index in 1 .. Length (JS_Array_Discr) loop
+                  declare
+                     Json_Element : constant JSON_Value :=
+                                      Get (JS_Array_Discr, Index);
+                     Elem_Ptr     : Cntexmp_Value_Ptr;
+                  begin
+                     Get_Typed_Cntexmp_Value
+                             (Json_Element, Elem_Ptr);
+                     Cntexmp_Value_Array.Insert
+                       (Discr_Value_List, Index'Image, Elem_Ptr);
+                  end;
+               end loop;
+
+               for Index in 1 .. Length (JS_Array_Field) loop
+                  declare
+                     Json_Element : constant JSON_Value :=
+                                      Get (JS_Array_Field, Index);
+                     Elem_Ptr     : Cntexmp_Value_Ptr;
+                  begin
+                     Get_Typed_Cntexmp_Value
+                             (Json_Element, Elem_Ptr);
+                     Cntexmp_Value_Array.Insert
+                       (Field_Value_List, Index'Image, Elem_Ptr);
+                  end;
+               end loop;
+               Result := new Cntexmp_Value'(T  => Cnt_Record,
+                                            Fi => Field_Value_List,
+                                            Di => Discr_Value_List);
+            end;
+
+         when Cnt_Array     =>
+            declare
+               JS_Array     : constant JSON_Array := Get (V, "val");
+               Indice_Array : Cntexmp_Value_Array.Map :=
+                                Cntexmp_Value_Array.Empty_Map;
+               Other_Ptr    : Cntexmp_Value_Ptr :=
+                                new Cntexmp_Value;
+            begin
+               for Index in 1 .. Length (JS_Array) loop
+                  declare
+                     Json_Element : constant JSON_Value :=
+                                      Get (JS_Array, Index);
+                  begin
+
+                     if Has_Field (Json_Element, "others") then
+                        declare
+                           V         : constant JSON_Value :=
+                                         Get (Json_Element, "others");
+                        begin
+                           Get_Typed_Cntexmp_Value (V, Other_Ptr);
+                        end;
+                     else
+                        declare
+                           Indice   : constant String :=
+                                        Get (Json_Element, "indice");
+                           Elem_Ptr : Cntexmp_Value_Ptr :=
+                                        new Cntexmp_Value;
+                        begin
+                           Get_Typed_Cntexmp_Value
+                             (Get (Json_Element, "value"), Elem_Ptr);
+                           Cntexmp_Value_Array.Insert
+                             (Indice_Array, Indice, Elem_Ptr);
+                        end;
+                     end if;
+
+                  end;
+               end loop;
+               Result := new Cntexmp_Value'(T             => Cnt_Array,
+                                            Array_Indices => Indice_Array,
+                                            Array_Others  => Other_Ptr);
+            end;
+
+         when Cnt_Invalid => Result.all := (T => Cnt_Invalid,
+                             S => To_Unbounded_String (""));
+      end case;
+   end Get_Typed_Cntexmp_Value;
+
+   function From_JSON (V : JSON_Value) return Cntexample_Elt is
+      Cnt_Value : Cntexmp_Value_Ptr;
+   begin
+      Get_Typed_Cntexmp_Value (Get (V, "value"), Cnt_Value);
       return
-        Cntexample_Elt'(Kind  => From_JSON (Get (V, "kind")),
-                        Name  => Get (Get (V, "name")),
-                        Value => Get (Get (V, "value")));
+        Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
+                        Name        => Get (Get (V, "name")),
+                        Value       => Cnt_Value,
+                        Val_Str     => To_Unbounded_String (""));
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
       Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
-      Ar  : constant JSON_Array       := Get (V);
+      Ar  : constant JSON_Array     := Get (V);
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
-         Res.Append (From_JSON (Get (Ar, Var_Index)));
+         declare
+            Elt : constant JSON_Value := Get (Ar, Var_Index);
+         begin
+            Res.Append (From_JSON (Elt));
+         end;
       end loop;
       return Res;
    end From_JSON;
@@ -257,7 +425,7 @@ package body VC_Kinds is
       Obj : constant JSON_Value := Create_Object;
    begin
       Set_Field (Obj, "name", C.Name);
-      Set_Field (Obj, "value", C.Value);
+      Set_Field (Obj, "value", C.Val_Str);
       Set_Field (Obj, "kind", To_JSON (C.Kind));
       return Obj;
    end To_JSON;

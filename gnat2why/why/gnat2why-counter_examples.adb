@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Sets;
@@ -33,8 +32,8 @@ with Atree;                     use Atree;
 with Einfo;                     use Einfo;
 with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
-with String_Utils;              use String_Utils;
 with Namet;                     use Namet;
+with Sem_Aux;                   use Sem_Aux;
 with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
@@ -111,12 +110,13 @@ package body Gnat2Why.Counter_Examples is
    --    and Attributes may contain info on its attributes.
    type CNT_Element
    is record
-      Entity : Entity_Id;
+      Entity     : Entity_Id;
       --  The corresponding element of SPARK AST
 
       Attributes : CNT_Element_Map_Ptr;
       Fields     : CNT_Element_Map_Ptr;
-      Value      : Unbounded_String;
+      Value      : Cntexmp_Value_Ptr;
+      Val_Str    : Unbounded_String;
    end record;
 
    procedure Build_Pretty_Line
@@ -146,6 +146,373 @@ package body Gnat2Why.Counter_Examples is
    function Print_CNT_Element_Debug (El : CNT_Element) return String;
    --  Debug function, print a CNT_Element without any processing
 
+   function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
+                          return Unbounded_String;
+
+   function Refine_Attribute (Cnt_Value : Cntexmp_Value_Ptr)
+                              return Unbounded_String;
+   --  Refine CNT_Value assuming it is an integer
+
+   ------------------
+   -- Refine_Value --
+   ------------------
+
+   function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
+                          return Unbounded_String is
+
+      function Contains (T : Entity_Id; F : String) return Boolean;
+
+      function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
+                       return Unbounded_String;
+      --  This function takes a value from Why3 Cnt_Value and converts it
+      --  as a function of the type of its corresponding entity in GNAT.
+      --  AST: AST_Type. Example: (97, Character_type) -> "'a'"
+
+      function Refine_Array (Arr_Indices  : Cntexmp_Value_Array.Map;
+                             Arr_Others   : Cntexmp_Value_Ptr;
+                             Indice_Type  : Entity_Id;
+                             Element_Type : Entity_Id)
+                             return Unbounded_String;
+
+      --------------
+      -- Contains --
+      --------------
+
+      function Contains (T : Entity_Id; F : String) return Boolean is
+         B : Boolean   := False;
+         C : Entity_Id := First_Component_Or_Discriminant (T);
+      begin
+         while C /= Empty loop
+            if F = Source_Name (C)
+            then
+               B := True;
+            end if;
+            C := Next_Component_Or_Discriminant (C);
+         end loop;
+         return B;
+      end Contains;
+
+      ------------------
+      -- Refine_Array --
+      ------------------
+
+      function Refine_Array (Arr_Indices  : Cntexmp_Value_Array.Map;
+                             Arr_Others   : Cntexmp_Value_Ptr;
+                             Indice_Type  : Entity_Id;
+                             Element_Type : Entity_Id)
+                                return Unbounded_String is
+         S : Unbounded_String := To_Unbounded_String ("");
+      begin
+         S := S & "(";
+         for C in Arr_Indices.Iterate loop
+            declare
+               Elem         : constant Cntexmp_Value_Ptr :=
+                                Cntexmp_Value_Array.Element (C);
+               Indice       : constant String :=
+                                Cntexmp_Value_Array.Key (C);
+               Ind_Val      : constant Cntexmp_Value_Ptr :=
+                                new Cntexmp_Value'(T => Cnt_Integer,
+                                                   I => To_Unbounded_String
+                                                     (Indice));
+               Ind_Printed  : constant Unbounded_String :=
+                                Refine_Value (Ind_Val, Indice_Type);
+               Elem_Printed : constant Unbounded_String :=
+                                Refine_Value (Elem, Element_Type);
+            begin
+               S := S & Ind_Printed
+                 & " => " & Elem_Printed & ", ";
+            end;
+         end loop;
+         S := S & "others => " & Refine_Value (Arr_Others, Element_Type) & ")";
+         return S;
+      end Refine_Array;
+
+      ------------
+      -- Refine --
+      ------------
+
+      function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
+                       return Unbounded_String
+      is
+         Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
+      begin
+         case Why3_Type is
+         when Cnt_Integer =>
+
+            --  Necessary for some types that makes boolean be translated to
+            --  integers like: "subype only_true := True .. True".
+
+            if Is_Boolean_Type (AST_Type) then
+               if Cnt_Value.I = "0" then
+                  return (To_Unbounded_String ("False"));
+               else
+                  return (To_Unbounded_String ("True"));
+               end if;
+            end if;
+
+            if Is_Enumeration_Type (AST_Type) then
+               declare
+                  Value : constant Uint := UI_From_Int
+                    (Int'Value (To_String (Cnt_Value.I)));
+
+                  --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                  --  enumeration entity.
+                  Enum  : Entity_Id;
+               begin
+                  Enum := Sem_Util.Get_Enum_Lit_From_Pos
+                              (AST_Type, Value, No_Location);
+
+                  --  Special case for characters, which are defined in the
+                  --  standard unit Standard.ASCII, and as such do not have
+                  --  a source code representation.
+
+                  if Is_Character_Type (AST_Type) then
+                     --  Call Get_Unqualified_Decoded_Name_String to get a
+                     --  correctly printed character in Name_Buffer.
+
+                     Get_Unqualified_Decoded_Name_String (Chars (Enum));
+
+                     --  The call to Get_Unqualified_Decoded_Name_String set
+                     --  Name_Buffer to '<char>' where <char> is the character
+                     --  we are interested in. Just retrieve it directly at
+                     --  Name_Buffer(2).
+
+                     return "'" & To_Unbounded_String
+                       (Char_To_String_Representation (Name_Buffer (2))) & "'";
+
+                     --  For all enumeration types that are not character,
+                     --  call Get_Enum_Lit_From_Pos to get a corresponding
+                     --  enumeratio n entity, then Source_Name to get a
+                     --  correctly capitalized enumeration value.
+
+                  else
+                     return To_Unbounded_String (Source_Name (Enum));
+                  end if;
+
+               --  An exception is raised by Get_Enum_Lit_From_Pos if the
+               --  position Value is outside the bounds of the enumeration. In
+               --  such a case, return the raw integer returned by the prover.
+
+               exception
+                  when Constraint_Error =>
+                     return Cnt_Value.I;
+               end;
+            else
+               if Is_Integer_Type (AST_Type) then
+                  return Cnt_Value.I;
+               else
+                  return Cnt_Value.I;
+
+                  --  ??? This case should not happen
+
+               end if;
+            end if;
+
+         when Cnt_Float =>
+            return Cnt_Value.F;
+
+         when Cnt_Boolean =>
+            if Cnt_Value.Bo then
+               return To_Unbounded_String ("True");
+            else
+               return To_Unbounded_String ("False");
+            end if;
+
+         when Cnt_Bitvector =>
+
+            --  Boolean are translated into bitvector of size 1 for CVC4
+            --  because it fails to produce a model when booleans are used
+            --  inside translated arrays_of_records.
+
+            if Is_Boolean_Type (AST_Type) then
+               if Cnt_Value.B = "0" then
+                  return (To_Unbounded_String ("False"));
+               else
+                  return (To_Unbounded_String ("True"));
+               end if;
+            end if;
+
+            return Cnt_Value.B;
+
+         when Cnt_Unparsed =>
+            return Cnt_Value.U;
+
+         when Cnt_Record =>
+            declare
+               Mdiscrs       : constant Cntexmp_Value_Array.Map :=
+                                 Cnt_Value.Di;
+               Mfields       : Cntexmp_Value_Array.Map := Cnt_Value.Fi;
+               S             : Unbounded_String :=
+                                 To_Unbounded_String ("(");
+               Current_Field : Entity_Id;
+
+               --  We have to use the base_type of the entity because the
+               --  counterexample returned is of base type. In particular, on
+               --  subtypes that fix the discriminant in their definition, we
+               --  get all the fields of the base type not only those of the
+               --  subtype
+
+               AST_Basetype  : constant Entity_Id :=
+                                 Retysp (Base_Type (AST_Type));
+               Count_Discrs  : constant Integer :=
+                               Integer (Cntexmp_Value_Array.Length (Mdiscrs));
+               Count_Fields  : Integer :=
+                               Integer (Cntexmp_Value_Array.Length (Mfields));
+               Check_Count   : Integer := 0;
+               Discriminants : constant Int :=
+                                 (if Has_Discriminants (AST_Basetype) then
+                                     Number_Discriminants (AST_Basetype)
+                                  else 0);
+               Fields        : constant Int :=
+                         Number_Components (AST_Basetype) - Discriminants;
+            begin
+               --  When the type is tagged, a useless field (for cntexmp) is
+               --  generated.
+
+               if Is_Tagged_Type (AST_Type) then
+                  Mfields.Delete_Last;
+                  Count_Fields := Count_Fields - 1;
+               end if;
+
+               if Has_Discriminants (AST_Basetype)
+                 and then Count_Discrs = Integer (Discriminants)
+               then
+                  Current_Field := First_Discriminant (AST_Basetype);
+                  Discr_Loop :
+                  for C in Mdiscrs.Iterate loop
+                     declare
+                        Field_Type : constant Entity_Id :=
+                                       Retysp (Etype (Current_Field));
+                        Field_Name : constant String :=
+                                       Source_Name (Current_Field);
+                     begin
+                        if Contains (AST_Type, Field_Name) then
+                           if Check_Count > 0 then
+                              S := S & ", ";
+                           end if;
+                           Check_Count := Check_Count + 1;
+                           S := S & Field_Name & " => " &
+                             Refine (Cntexmp_Value_Array.Element (C),
+                                     Field_Type);
+                           Current_Field := Next_Discriminant (Current_Field);
+                           if Current_Field = Empty then
+                              exit Discr_Loop;
+                           end if;
+                        else
+                           Current_Field := Next_Discriminant (Current_Field);
+                           if Current_Field = Empty
+                           then
+
+                              --  Exit when no more discrs are present
+
+                              exit Discr_Loop;
+                           end if;
+                        end if;
+                     end;
+                  end loop Discr_Loop;
+               end if;
+               if Count_Fields = Integer (Fields) then
+                  Current_Field := First_Component (AST_Basetype);
+                  Fields_Loop :
+                  for C in Mfields.Iterate loop
+                     declare
+                        Field_Type : constant Entity_Id :=
+                          Retysp (Etype (Current_Field));
+                        Field_Name : constant String :=
+                          Source_Name (Current_Field);
+                     begin
+                        if Contains (AST_Type, Field_Name) then
+                           if Check_Count > 0 then
+                              S := S & ", ";
+                           end if;
+                           Check_Count := Check_Count + 1;
+                           S := S & Field_Name & " => " &
+                             Refine (Cntexmp_Value_Array.Element (C),
+                                     Field_Type);
+                           Current_Field :=
+                             Next_Component (Current_Field);
+                           if Current_Field = Empty then
+                              exit Fields_Loop;
+                           end if;
+                        else
+                           Current_Field := Next_Component (Current_Field);
+                           if Current_Field = Empty then
+
+                              --  Exit when no more fields are present
+
+                              exit Fields_Loop;
+                           end if;
+                        end if;
+                     end;
+                  end loop Fields_Loop;
+               end if;
+               if Check_Count /= Integer (Fields + Discriminants)
+                 and then Check_Count > 0
+               then
+                  S := S & ", others => ?)";
+               else
+                  S := S & ")";
+               end if;
+               return S;
+            end;
+
+         --  This case only happens when the why3 counterexamples are
+         --  incorrect. Ideally, this case should be removed but it
+         --  still happens in practice.
+
+         when Cnt_Invalid => return (Cnt_Value.S);
+
+         when Cnt_Array =>
+            if Is_Array_Type (AST_Type) then
+               declare
+                  Indice_Type  : constant Entity_Id :=
+                                   Retysp (Etype (First_Index (AST_Type)));
+                  Element_Type : constant Entity_Id :=
+                                   Retysp (Component_Type (AST_Type));
+               begin
+                  return (Refine_Array (Cnt_Value.Array_Indices,
+                          Cnt_Value.Array_Others,
+                          Indice_Type,
+                          Element_Type));
+               end;
+            else
+               --  This case should not happen
+
+               return To_Unbounded_String ("");
+            end if;
+         end case;
+      end Refine;
+
+      Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
+   begin
+      return (Trim (Res, Both));
+   end Refine_Value;
+
+   ----------------------
+   -- Refine_Attribute --
+   ----------------------
+
+   function Refine_Attribute (Cnt_Value : Cntexmp_Value_Ptr)
+                              return Unbounded_String
+   is
+      Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
+   begin
+      case Why3_Type is
+         when Cnt_Integer =>
+            return Cnt_Value.I;
+
+         when Cnt_Bitvector =>
+            return Cnt_Value.B;
+
+         when Cnt_Unparsed =>
+            return Cnt_Value.U;
+
+         when others =>
+            return To_Unbounded_String ("");
+      end case;
+
+   end Refine_Attribute;
+
    -----------------------
    -- Build_Pretty_Line --
    -----------------------
@@ -156,283 +523,27 @@ package body Gnat2Why.Counter_Examples is
    is
       use CNT_Elements;
 
+      --  This record contain the name of the entity and the value of the
+      --  corresponding counterexample generated by Why3 (used for attributes).
       type Name_And_Value is record
-         Name : Unbounded_String;
+         Name  : Unbounded_String;
          Value : Unbounded_String;
       end record;
-      --  type of a pairs of unbounded strings, used to represent
-      --  the name and value of attributes.
 
       package Names_And_Values is
         new Ada.Containers.Doubly_Linked_Lists
           (Element_Type => Name_And_Value);
 
-      ----------------------------
-      -- Array of records utils --
-      ----------------------------
+      function Get_CNT_Element_Value
+        (CNT_Element : CNT_Element_Ptr;
+         Prefix      : Unbounded_String)
+         return Unbounded_String;
 
-      --  Container used to keep counterex values of an array of records.
-      package Array_Record_Value is
-        new Ada.Containers.Indefinite_Ordered_Maps (
-              Key_Type => String, --  Integers or "others"
-              Element_Type => String, --  Record value
-              "<"          => "<");
-
-      procedure Add_V (Acc    : in out Array_Record_Value.Map;
-                       Indice : String;
-                       Value  : String);
-      --  Adds (Indice, Value) to Acc without checking it it is already there.
-
-      function Pretty_Print_Element (Element1 : String;
-                                     Element2 : String)
-                                     return String;
-      --  Separate elements with ','.
-
-      procedure Non_Empty_Split (S          : in out String_Split.Slice_Set;
-                                 From       : String;
-                                 Separators : String;
-                                 Mode       : String_Split.Separator_Mode);
-      --  Split that adds separators at the end of 'From' to ensure
-      --  that 'S' has at least one slice even when there is no separator in
-      --  the 'From' variable.
-
-      procedure Merge (Acc     : in out Array_Record_Value.Map;
-                       New_Acc : in out Array_Record_Value.Map);
-      --  Merge Acc and New_Acc into Acc. This is not as simple as it could
-      --  be as counterex for array of record are obtained by projecting on
-      --  particular records. So we have to combine several arrays that do not
-      --  have counterexamples for the same indices. So we need to fill the
-      --  gaps with the 'others' values.
-
-      procedure Get_List (Acc : in out Array_Record_Value.Map;
-                          V    : String;
-                          Name : String);
-      --  Merge the values of the array for field Name into already discovered
-      --  values Acc.
-
-      procedure Print_Array_Into_Value
-        (Acc   : Array_Record_Value.Map;
-         Value : in out Unbounded_String);
-      --  Pretty print the counterex for an array of record
-
-      -----------
-      -- Add_V --
-      -----------
-
-      procedure Add_V (Acc    : in out Array_Record_Value.Map;
-                       Indice : String;
-                       Value  : String) is
-      begin
-         if Indice /= "" then
-            Array_Record_Value.Insert (Acc, Indice, Value);
-         end if;
-      end Add_V;
-
-      --------------------------
-      -- Pretty_Print_Element --
-      --------------------------
-
-      function Pretty_Print_Element (Element1 : String;
-                                     Element2 : String)
-                                     return String is
-      begin
-         if Element1 = "" then
-            return (Element2);
-         else
-            return (Element1 & ", " & Element2);
-         end if;
-      end Pretty_Print_Element;
-
-      ---------------------
-      -- Non_Empty_Split --
-      ---------------------
-
-      procedure Non_Empty_Split (S          : in out String_Split.Slice_Set;
-                                 From       : String;
-                                 Separators : String;
-                                 Mode       : String_Split.Separator_Mode)
-      is
-         From_Sep : constant String := From & Separators;
-      begin
-         String_Split.Create (S          => S,
-                              From       => From_Sep,
-                              Separators => Separators,
-                              Mode       => Mode);
-      end Non_Empty_Split;
-
-      -----------
-      -- Merge --
-      -----------
-
-      procedure Merge (Acc     : in out Array_Record_Value.Map;
-                       New_Acc : in out Array_Record_Value.Map) is
-         C_Others     : constant Array_Record_Value.Cursor :=
-                          Array_Record_Value.Find (Acc, "others");
-         C_New_Others : constant Array_Record_Value.Cursor :=
-                          Array_Record_Value.Find (New_Acc, "others");
-      begin
-         --  If nothing in 'others' then Acc is empty
-         if not Array_Record_Value.Has_Element (C_Others) then
-            return;
-         end if;
-         --  If nothing in 'others' then New_Acc is empty
-         if not Array_Record_Value.Has_Element (C_New_Others) then
-            return;
-         end if;
-
-         declare
-            Former_Others : constant String :=
-                              Array_Record_Value.Element (C_Others);
-            New_Others    : constant String :=
-                              Array_Record_Value.Element (C_New_Others);
-         begin
-            --  The idea is to have one loop iterating over keys in
-            --  Acc and looking for corresponding values in New_Acc
-            --  and then removing them in New_Acc (or if no value is
-            --  found, fill it with 'others' value). The second loop
-            --  iterate over keys in New_Acc and use Acc 'others'
-            --  value as we know all these indices are indices not
-            --  present in Acc.
-            for C in Acc.Iterate loop
-               declare
-                  Indice  : constant String :=
-                              Array_Record_Value.Key (C);
-                  Element : constant String :=
-                              Array_Record_Value.Element (C);
-               begin
-                  if Indice /= "others" then
-                     declare
-                        NC : constant Array_Record_Value.Cursor :=
-                               Array_Record_Value.Find (New_Acc, Indice);
-                     begin
-                        if Array_Record_Value.Has_Element (NC) then
-                           declare
-                              New_Element : constant String :=
-                                              Array_Record_Value.Element (NC);
-                           begin
-                              Array_Record_Value.Replace_Element
-                                (Acc, C,
-                                 Pretty_Print_Element (Element,
-                                   New_Element)
-                                );
-                              Array_Record_Value.Delete
-                                (New_Acc, Indice);
-                           end;
-                        else
-                           Array_Record_Value.Replace_Element
-                             (Acc, C,
-                              Pretty_Print_Element (Element, New_Others));
-                        end if;
-                     end;
-                  end if;
-               end;
-            end loop;
-            for NC in New_Acc.Iterate loop
-               declare
-                  New_Indice  : constant String :=
-                                  Array_Record_Value.Key (NC);
-                  New_Element : constant String :=
-                                  Array_Record_Value.Element (NC);
-               begin
-                  if New_Indice /= "others" then
-                     Array_Record_Value.Insert
-                       (Acc, New_Indice,
-                        Pretty_Print_Element (Former_Others, New_Element));
-                  else
-                     Array_Record_Value.Replace
-                       (Acc, New_Indice,
-                        Pretty_Print_Element (Former_Others, New_Others));
-                  end if;
-               end;
-            end loop;
-         end;
-      end Merge;
-
-      --------------
-      -- Get_List --
-      --------------
-
-      procedure Get_List (Acc  : in out Array_Record_Value.Map;
-                          V    : String;
-                          Name : String) is
-         NV : String_Split.Slice_Set;
-         --  Remove parenthesis around counterex and spaces inside it
-         Rv : constant String := Trimi (V (V'First + 1 .. V'Last - 1), ' ');
-
-         New_Values : Array_Record_Value.Map := Array_Record_Value.Empty_Map;
-
-      begin
-         --  V is the value of an array of projected record which looks like
-         --  "i1 => v1, i2 => v2, ..., in => vn". We split on "," to have
-         --  single assignment pairs.
-         Non_Empty_Split (S          => NV,
-                          From       => Rv,
-                          Separators => ",",
-                          Mode       => String_Split.Single);
-         for I in 1 .. String_Split.Slice_Count (NV) loop
-            declare
-               I_Part : constant String :=
-                          String_Split.Slice (NV, I);
-               D      : String_Split.Slice_Set;
-            begin
-               if I_Part /= "" then
-                  String_Split.Create (S          => D,
-                                       From       => I_Part,
-                                       Separators => "=>",
-                                       Mode       => String_Split.Single);
-
-                  --  Indice is a string and it can be "others"
-                  declare
-                     Indice : constant String :=
-                                (String_Split.Slice (D, 1));
-                     Value  : constant String :=
-                                (String_Split.Slice (D, 3));
-                  begin
-                     --  Add new (indice, value) to the container
-                     Add_V (New_Values, Indice, Name & " => " & Value);
-                  end;
-               end if;
-            end;
-         end loop;
-         --  Merge value for field Name to the current array of record
-         Merge (Acc, New_Values);
-      end Get_List;
-
-      ----------------------------
-      -- Print_Array_Into_Value --
-      ----------------------------
-
-      procedure Print_Array_Into_Value
-        (Acc   : Array_Record_Value.Map;
-         Value : in out Unbounded_String) is
-         Is_Before : Boolean := False;
-      begin
-         Value := To_Unbounded_String ("(");
-         for Indice in Acc.Iterate loop
-            if Array_Record_Value.Has_Element (Indice) then
-               declare
-                  Cur_Value : constant String :=
-                                Array_Record_Value.Element (Indice);
-                  Key       : constant String :=
-                                Array_Record_Value.Key (Indice);
-               begin
-                  if Is_Before then
-                     Value := Value &  ", " & Key & " => "
-                       & "(" & Cur_Value & ")";
-                  else
-                     Value := Value & Key &
-                       " => " & "(" & Cur_Value & ")";
-                     Is_Before := True;
-                  end if;
-               end;
-            end if;
-         end loop;
-         Value := Value & ")";
-      end Print_Array_Into_Value;
-
-      -----------------------------------
-      -- End of Array of records utils --
-      -----------------------------------
+      procedure Get_CNT_Element_Attributes
+        (CNT_Element : CNT_Element_Ptr;
+         Prefix      : Unbounded_String;
+         Attributes  : in out Names_And_Values.List);
+      --  Gets the attribute of an element and the attributes of its subfields
 
       function Get_CNT_Element_Value_And_Attributes
         (CNT_Element : CNT_Element_Ptr;
@@ -445,17 +556,123 @@ package body Gnat2Why.Counter_Examples is
       --  a record aggregate.
       --  If the value should not be displayed in countereexample,
       --  value "@not_display" is returned.
-      --  In addition, populate the list of attributes "Attributes"
-      --  of CNT_Element if any is found.
+      --  In addition, recursively populate the list of attributes "Attributes"
+      --  of CNT_Element and its fields if any attribute is found.
+
+      --------------------------------
+      -- Get_CNT_Element_Attributes --
+      --------------------------------
+
+      procedure Get_CNT_Element_Attributes
+        (CNT_Element : CNT_Element_Ptr;
+         Prefix      : Unbounded_String;
+         Attributes  : in out Names_And_Values.List)
+      is
+         Element_Type : constant Entity_Id :=
+           (if Present (CNT_Element.Entity) then
+              Etype (CNT_Element.Entity)
+            else
+              Empty);
+
+      begin
+
+         if not CNT_Element.Attributes.Is_Empty then
+            for Att in CNT_Element.Attributes.Iterate loop
+               declare
+                  New_Prefix : constant Unbounded_String :=
+                    Prefix & "'" & CNT_Elements.Key (Att);
+
+                  Attribute_Element : constant CNT_Element_Ptr :=
+                                        CNT_Elements.Element (Att);
+                  Refined_Value     : Unbounded_String :=
+                                        To_Unbounded_String ("");
+
+               begin
+                  --  Currently attributes are always printed as integers
+
+                  if CNT_Elements.Key (Att) = "First" then
+                     Refined_Value :=
+                       Refine_Attribute (Attribute_Element.Value);
+                  elsif CNT_Elements.Key (Att) = "Last" then
+                     Refined_Value :=
+                       Refine_Attribute (Attribute_Element.Value);
+                  elsif CNT_Elements.Key (Att) = "Result" then
+                     Refined_Value :=
+                       Get_CNT_Element_Value_And_Attributes
+                         (Attribute_Element,
+                          Prefix,
+                          Attributes);
+                  elsif CNT_Elements.Key (Att) = "Old" then
+                     Refined_Value :=
+                       Get_CNT_Element_Value_And_Attributes
+                         (Attribute_Element,
+                          Prefix,
+                          Attributes);
+                  else
+                     Refined_Value :=
+                       Refine_Attribute (Attribute_Element.Value);
+                  end if;
+
+                  --  Detecting the absence of value
+                  if Refined_Value /= "" and Refined_Value /= "!"
+                    and Refined_Value /= "( )"
+                    and Refined_Value /= "()"
+                  then
+                     Attributes.Append
+                       (New_Item =>
+                          (Name          => New_Prefix,
+                           Value         => Refined_Value));
+                  end if;
+               end;
+            end loop;
+         end if;
+
+         --  Following types should be ignored when exploring fields of
+         --  CNT_Element.
+
+         if not Is_Concurrent_Type (Element_Type)
+           and then
+             not Is_Incomplete_Or_Private_Type (Element_Type)
+           and then not Is_Record_Type (Element_Type)
+           and then not Has_Discriminants (Element_Type)
+         then
+            return;
+         end if;
+
+         --  Check the attributes of the fields
+         declare
+            Decl_Field_Discr         : Entity_Id :=
+              First_Component_Or_Discriminant (Element_Type);
+         begin
+
+            while Present (Decl_Field_Discr) loop
+               declare
+                  Field_Descr_Name : constant String :=
+                                       Source_Name (Decl_Field_Discr);
+                  Field_Descr      : constant Cursor :=
+                                       Find (CNT_Element.Fields.all,
+                                             Field_Descr_Name);
+               begin
+                  if Has_Element (Field_Descr)
+                  then
+                     Get_CNT_Element_Attributes
+                       (Element (Field_Descr),
+                        Prefix & "." & Field_Descr_Name,
+                        Attributes);
+                  end if;
+                  Next_Component_Or_Discriminant (Decl_Field_Discr);
+               end;
+            end loop;
+         end;
+      end Get_CNT_Element_Attributes;
 
       ---------------------------
       -- Get_CNT_Element_Value --
       ---------------------------
 
-      function Get_CNT_Element_Value_And_Attributes
+      function Get_CNT_Element_Value
         (CNT_Element : CNT_Element_Ptr;
-         Prefix      : Unbounded_String;
-         Attributes  : in out Names_And_Values.List)
+         Prefix      : Unbounded_String)
          return Unbounded_String
       is
          Element_Type : constant Entity_Id :=
@@ -465,147 +682,46 @@ package body Gnat2Why.Counter_Examples is
               Empty);
 
       begin
-         --  Fill in first the values of attributes, before the first return
-         --  statement, so that we can ignore attributes in what follows.
 
-         if not CNT_Element.Attributes.Is_Empty then
-            for Att in CNT_Element.Attributes.Iterate loop
-               declare
-                  New_Prefix : constant Unbounded_String :=
-                    Prefix & "'" & CNT_Elements.Key (Att);
+         --  If Element_Type is not a "record" (anything with components or
+         --  discriminants), return the value of the node.
 
-                  Attr_Value : constant Unbounded_String :=
-                    Get_CNT_Element_Value_And_Attributes
-                      (CNT_Elements.Element (Att),
-                       New_Prefix,
-                       Attributes);
-               begin
-                  if Attr_Value /= Dont_Display then
-                     Attributes.Append ((New_Prefix, Attr_Value));
-                  end if;
-               end;
-            end loop;
-         end if;
-
-         --  If no field is set, return the value of the node.
-
-         if CNT_Element.Fields.Is_Empty then
+         if not Is_Record_Type (Element_Type)
+           and not Is_Private_Type (Element_Type)
+         then
             declare
-               CNT_Value : constant String  :=
-                 To_Lower (To_String (CNT_Element.Value));
-
+               Refined_Value : constant Unbounded_String :=
+                                 Refine_Value (CNT_Element.Value,
+                                         Retysp (Etype (CNT_Element.Entity)));
             begin
-               if CNT_Value = "true" then
-                  return To_Unbounded_String ("True");
-
-               elsif CNT_Value = "false" then
-                  return To_Unbounded_String ("False");
-
-               elsif CNT_Element.Value = Dont_Display then
-                  return CNT_Element.Value;
-
-               --  Special case for enumeration types, to return the value of
-               --  enumeration in Ada instead of the integer position used in
-               --  Why3 to represent that value of enumeration.
-
-               elsif Present (Element_Type)
-                 and then Is_Enumeration_Type (Element_Type)
-               then
-                  declare
-                     Value : constant Uint := UI_From_Int
-                       (Int'Value (To_String (CNT_Element.Value)));
-
-                     --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeration entity.
-                     Enum  : constant Entity_Id :=
-                               Sem_Util.Get_Enum_Lit_From_Pos
-                                 (Element_Type, Value, No_Location);
-
-                  begin
-                     --  Special case for characters, which are defined in the
-                     --  standard unit Standard.ASCII, and as such do not have
-                     --  a source code representation.
-
-                     if Is_Character_Type (Element_Type) then
-                        --  Call Get_Unqualified_Decoded_Name_String to get a
-                        --  correctly printed character in Name_Buffer.
-
-                        Get_Unqualified_Decoded_Name_String (Chars (Enum));
-
-                        --  The call to Get_Unqualified_Decoded_Name_String
-                        --  set Name_Buffer to '<char>' where <char> is the
-                        --  character we are interested in. Just retrieve it
-                        --  directly at Name_Buffer(2).
-
-                        return To_Unbounded_String
-                          (Char_To_String_Representation (Name_Buffer (2)));
-
-                     --  For all enumeration types that are not character,
-                     --  call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeratio n entity, then Source_Name to get a
-                     --  correctly capitalized enumeration value.
-
-                     else
-                        return To_Unbounded_String (Source_Name (Enum));
-                     end if;
-
-                  --  An exception is raised by Get_Enum_Lit_From_Pos if the
-                  --  position Value is outside the bounds of the enumeration.
-                  --  In such a case, return the raw integer returned by the
-                  --  prover.
-
-                  exception
-                     when Constraint_Error =>
-                        return CNT_Element.Value;
-                  end;
-
-               --  None of the special cases. Return the value of the element.
-
+               if Refined_Value = "" then
+                  return Dont_Display;
                else
-                  return CNT_Element.Value;
+                  CNT_Element.Val_Str := Refined_Value;
+                  return (CNT_Element.Val_Str);
                end if;
             end;
          end if;
 
-         --  Array of records case
-         if Is_Array_Type (Element_Type) and not CNT_Element.Fields.Is_Empty
-         then
+         --  If no field of the record is set and this is a record then we
+         --  should have a record value associated to this element.
+
+         if CNT_Element.Fields.Is_Empty then
             declare
-               Acc   : Array_Record_Value.Map :=
-                         Array_Record_Value.Empty_Map;
-               Value : Unbounded_String := To_Unbounded_String ("");
+               Refined_Value : constant Unbounded_String :=
+                            Refine_Value (CNT_Element.Value,
+                                          Retysp (Etype (CNT_Element.Entity)));
             begin
-               --  Initialization of the array value.
-               Array_Record_Value.Insert (Acc, "others", "");
-               for Field in CNT_Element.Fields.all.Iterate loop
-                  declare
-                     Field_Descr_Name : constant String :=
-                                          Key (Field);
-                     Field_Descr      : constant Cursor := Field;
-                  begin
-                     if Has_Element (Field_Descr) then
-                        declare
-                           Field_Descr_Val : constant String
-                             := To_String (Element (Field).Value);
-                        begin
-                           if Field_Descr_Val /= Dont_Display and
-                             Field_Descr_Val /= ""
-                           then
-                              Get_List (Acc,
-                                        Field_Descr_Val,
-                                        Field_Descr_Name);
-                           end if;
-                        end;
-                     end if;
-                  end;
-               end loop;
-               Print_Array_Into_Value (Acc, Value);
-               return Value;
+               if Refined_Value = "" then
+                  return Dont_Display;
+               else
+                  CNT_Element.Val_Str := Refined_Value;
+                  return (CNT_Element.Val_Str);
+               end if;
             end;
          end if;
 
-         --  Check whether the type can have fields or
-         --  discriminants
+         --  Check whether the type can have fields or discriminants
 
          if not Is_Concurrent_Type (Element_Type)
            and then
@@ -616,130 +732,143 @@ package body Gnat2Why.Counter_Examples is
             return Dont_Display;
          end if;
 
-         --  Create aggregate representing the value of
-         --  CNT_Element
-         --  Go through all fields of CNT_Element.
-         --  To give the fields in the order of their
-         --  declaration in the type of the CNT_Element
-         --  (CNT_Element_Type), iterate through components
-         --  of CNT_Element_Type
-
          declare
-            function Get_Fields_Descr_Declared
-              return Natural;
-            --  Return the number of declared fields and
-            --  descriminants of the (record) type of the
-            --  current CNT_Element.
-
-            -------------------------------
-            -- Get_Fields_Descr_Declared --
-            -------------------------------
-
-            function Get_Fields_Descr_Declared return Natural is
-               Res : Natural := 0;
-               Comp : Entity_Id :=
-                 First_Component_Or_Discriminant
-                   (Element_Type);
-            begin
-               while Present (Comp) loop
-                  Res := Res + 1;
-                  Next_Component_Or_Discriminant (Comp);
-               end loop;
-
-               return Res;
-            end Get_Fields_Descr_Declared;
-
-            Fields_Discrs_Collected : constant Natural :=
-              Natural ((CNT_Element.Fields.Length));
-            Fields_Discrs_Declared : constant Natural :=
-              Get_Fields_Descr_Declared;
-            Fields_Discrs_With_Value : Natural := 0;
-            Decl_Field_Discr : Entity_Id :=
-              First_Component_Or_Discriminant
-                (Element_Type);
-            Is_Before : Boolean := False;
-            Value : Unbounded_String :=
-              To_Unbounded_String ("(");
-
+            Refined_Value : constant Unbounded_String :=
+                    Refine_Value (CNT_Element.Value,
+                                  Retysp (Etype (CNT_Element.Entity)));
          begin
-            --  If the record type of the value has no fields
-            --  and discriminats or if there were no
-            --  counterexample values for fields and
-            --  discriminants of the processed value
-            --  collected, do not display the value
-            if Fields_Discrs_Collected = 0 or else
-              Fields_Discrs_Declared = 0
-            then
-               return Dont_Display;
-            end if;
+            --  Detecting the absence of value
 
-            while Present (Decl_Field_Discr) loop
+            if Refined_Value /= "" and Refined_Value /= "!"
+              and Refined_Value /= "( )"
+              and Refined_Value /= "()"
+            then
+               CNT_Element.Val_Str := Refined_Value;
+               return (CNT_Element.Val_Str);
+            else
+               --  No value were found for the variable so we need to recover
+               --  the record field by field. We will go through all fields of
+               --  CNT_Element and iterate on CNT_Element_Type components to
+               --  get them in the right order.
+
                declare
-                  Field_Descr_Name : constant String :=
-                    Source_Name (Decl_Field_Discr);
-                  Field_Descr      : constant Cursor :=
-                    Find (CNT_Element.Fields.all,
-                          Field_Descr_Name);
+                  Fields_Discrs_Collected  : constant Natural :=
+                             Natural ((CNT_Element.Fields.Length));
+                  Fields_Discrs_Declared   : constant Natural :=
+                                  Natural (Number_Components (Element_Type));
+                  Fields_Discrs_With_Value : Natural := 0;
+                  Decl_Field_Discr         : Entity_Id :=
+                    First_Component_Or_Discriminant (Element_Type);
+                  --  Not using the base_type here seems ok since
+                  --  counterexamples should be projected in this part of
+                  --  the code
+
+                  Is_Before                : Boolean := False;
+                  Value                    : Unbounded_String :=
+                                               To_Unbounded_String ("(");
+
                begin
-                  if Has_Element (Field_Descr) or else
-                    Fields_Discrs_Declared -
-                      Fields_Discrs_Collected <= 1
+                  --  If the record type of the value has no fields and
+                  --  discriminants or if there were no counterexample values
+                  --  for fields and discriminants of the processed value
+                  --  collected, do not display the value
+
+                  if Fields_Discrs_Collected = 0 or else
+                    Fields_Discrs_Declared = 0
                   then
-                     declare
-                        Field_Descr_Val : constant Unbounded_String
-                          :=
-                            (if Has_Element (Field_Descr)
-                             then
-                                Get_CNT_Element_Value_And_Attributes
-                               (Element (Field_Descr),
-                                Prefix & "." & Field_Descr_Name,
-                                Attributes)
-                             else To_Unbounded_String ("?"));
-                     begin
-                        if Field_Descr_Val /= Dont_Display
-                        then
-                           Append (Value,
-                                   (if Is_Before then ", "
-                                    else "") &
-                                     Field_Descr_Name &
-                                     " => " &
-                                     Field_Descr_Val);
-                           Is_Before := True;
-                           if Has_Element (Field_Descr) then
-                              Fields_Discrs_With_Value :=
-                                Fields_Discrs_With_Value + 1;
-                           end if;
-                        end if;
-                     end;
+                     return Dont_Display;
                   end if;
-                  Next_Component_Or_Discriminant (Decl_Field_Discr);
+
+                  while Present (Decl_Field_Discr) loop
+                     declare
+                        Field_Descr_Name : constant String :=
+                                             Source_Name (Decl_Field_Discr);
+                        Field_Descr      : constant Cursor :=
+                                             Find (CNT_Element.Fields.all,
+                                                   Field_Descr_Name);
+                     begin
+                        if Has_Element (Field_Descr) or else
+                          Fields_Discrs_Declared -
+                            Fields_Discrs_Collected <= 1
+                        then
+                           declare
+                              Field_Descr_Val : constant Unbounded_String
+                                :=
+                                  (if Has_Element (Field_Descr)
+                                   then
+                                      Get_CNT_Element_Value
+                                        (Element (Field_Descr),
+                                         Prefix & "." & Field_Descr_Name)
+                                   else To_Unbounded_String ("?"));
+                           begin
+                              if Field_Descr_Val /= Dont_Display
+                              then
+                                 Append (Value,
+                                         (if Is_Before then ", "
+                                          else "") &
+                                           Field_Descr_Name &
+                                           " => " &
+                                           Field_Descr_Val);
+                                 Is_Before := True;
+                                 if Has_Element (Field_Descr) then
+                                    Fields_Discrs_With_Value :=
+                                      Fields_Discrs_With_Value + 1;
+                                 end if;
+                              end if;
+                           end;
+                        end if;
+                        Next_Component_Or_Discriminant (Decl_Field_Discr);
+                     end;
+                  end loop;
+
+                  --  If there are no fields and discriminants of the processed
+                  --  value with values that can be displayed, do not display
+                  --  the value (this can happen if there were collected fields
+                  --  or discrinants, but their values should not be displayed)
+
+                  if Fields_Discrs_With_Value = 0 then
+                     return Dont_Display;
+                  end if;
+
+                  --  If there are more than one field that is not mentioned
+                  --  in the counterexample, summarize them using the field
+                  --  others.
+
+                  if Fields_Discrs_Declared -
+                    Fields_Discrs_Collected > 1
+                  then
+                     Append (Value,
+                             (if Is_Before then ", " else "") &
+                               "others => ?");
+                  end if;
+                  Append (Value, ")");
+
+                  return Value;
                end;
-            end loop;
-
-            --  If there are no fields and discriminants of
-            --  the processed value with values that can be
-            --  displayed do not display the value (this can
-            --  happen if there were collected fields or
-            --  discrinants, but there values should not be
-            --  displayed)
-            if Fields_Discrs_With_Value = 0 then
-               return Dont_Display;
             end if;
-
-            --  If there are more than one field that is not
-            --  mentioned in the counterexample, summarize
-            --  them using the field others
-            if Fields_Discrs_Declared -
-              Fields_Discrs_Collected > 1
-            then
-               Append (Value,
-                       (if Is_Before then ", " else "") &
-                         "others => ?");
-            end if;
-            Append (Value, ")");
-
-            return Value;
          end;
+      end Get_CNT_Element_Value;
+
+      ------------------------------------------
+      -- Get_CNT_Element_Value_And_Attributes --
+      ------------------------------------------
+
+      function Get_CNT_Element_Value_And_Attributes
+        (CNT_Element : CNT_Element_Ptr;
+         Prefix      : Unbounded_String;
+         Attributes  : in out Names_And_Values.List)
+         return Unbounded_String
+      is
+      begin
+         --  Fill in first the values of attributes so that we can ignore
+         --  attributes in what follows.
+         Get_CNT_Element_Attributes (CNT_Element,
+                                     Prefix,
+                                     Attributes);
+
+         --  Return the value
+         return (Get_CNT_Element_Value (CNT_Element,
+                                        Prefix));
       end Get_CNT_Element_Value_And_Attributes;
 
       Var_Name_Cursor : Vars_List.Cursor :=
@@ -765,18 +894,19 @@ package body Gnat2Why.Counter_Examples is
                  Attributes);
 
             procedure Add_CNT (Name, Value : Unbounded_String);
-            --  Append a variable cnt to Pretty_Line_Cntexmp_Arr
+            --  Append a cnt variable and its value to the list
 
             procedure Add_CNT (Name, Value : Unbounded_String) is
             begin
-               --  If the value of the variable should not be
-               --  displayed in the counterexample, do not display
-               --  the variable.
+               --  If the value of the variable should not be displayed in the
+               --  counterexample, do not display the variable.
+
                if Value /= Dont_Display then
                   Pretty_Line_Cntexmp_Arr.Append
-                    (Cntexample_Elt'(Kind  => CEE_Variable,
-                                     Name  => Name,
-                                     Value => Value));
+                    (Cntexample_Elt'(Kind    => CEE_Variable,
+                                     Name    => Name,
+                                     Value   => Element (Variable).Value,
+                                     Val_Str => Value));
                end if;
             end Add_CNT;
 
@@ -808,11 +938,9 @@ package body Gnat2Why.Counter_Examples is
          Entity  : Entity_Id;
          Map     : CNT_Element_Map_Ptr)
          return CNT_Element_Ptr;
-      --  Insert a CNT_Element with given name and entity to
-      --  the given map.
-      --  If it has already been inserted, return the existing.
-      --  If not, create new entry, store it in the map,
-      --  and return it.
+      --  Insert a CNT_Element with given name and entity to the given map. If
+      --  it has already been inserted, return the existing; if not, create new
+      --  entry, store it in the map, and return it.
 
       -------------------------
       -- Insert_CNT_Element --
@@ -836,7 +964,10 @@ package body Gnat2Why.Counter_Examples is
               (Entity     => Entity,
                Attributes => new CNT_Elements.Map,
                Fields     => new CNT_Elements.Map,
-               Value      => Dont_Display);
+               Value      => new Cntexmp_Value'
+                 (T => Cnt_Invalid,
+                  S => To_Unbounded_String ("")),
+               Val_Str    => To_Unbounded_String (""));
 
             Include (Container => Map.all,
                      Key       => Name,
@@ -850,6 +981,7 @@ package body Gnat2Why.Counter_Examples is
 
    begin
       for Elt of Line_Cntexmp_Arr loop
+
          declare
             Name_Parts : String_Split.Slice_Set;
             Current_Subfields_Map : CNT_Element_Map_Ptr :=
@@ -858,25 +990,11 @@ package body Gnat2Why.Counter_Examples is
               new CNT_Elements.Map;
          begin
 
-            --  There is either one model element with its name
-            --  corresponding to an error message. No variable map
-            --  is built in this case.
+            --  There is either one model element with its name corresponding
+            --  to an error message. No variable map is built in this case.
 
             if Elt.Kind = CEE_Error_Msg then
                return;
-            end if;
-
-            --  If the value of a model element contains "@",
-            --  it is an abstract value that should not be
-            --  displayed.
-            --  To display such value, projection to SPARK value
-            --  must be defined.
-            --  These internal values can appear because there are
-            --  not yet defined projections. These are mainly the
-            --  values of types defined in share/spark/theories
-
-            if Index (Elt.Value, "@") /= 0 then
-               goto Next_Model_Element;
             end if;
 
             --  model elements are of the form:
@@ -891,19 +1009,30 @@ package body Gnat2Why.Counter_Examples is
             --                 | Attribute
             --  Variable ::= ENTITY_ID
             --  Record_Field ::= ENTITY_ID
-            --  Attribute ::= STRING
+            --  Attribute ::= | Attr_type
+            --                | Attr_type " (" num ")"
+            --  Attr_type ::= | "First"
+            --                | "Last"
+            --                | "attr__constrained"
+            --                | "attr__tag"
+            --
+            --  num := [0-9]+
+            --
+            --  See Bound_Dimension_To_Str for more information on the "(5)"
+            --  notation.
+            --  See Attr_To_Why_Name for Attr_type cases and To_string on
+            --  Why_Name_Enum type
             --
             --  The ENTITY_ID in first Part corresponds to a
             --  variable, others to record fields.
 
             --  Split Name into sequence of Part
-            String_Split.Create (S => Name_Parts,
-                                 From => To_String (Elt.Name),
+            String_Split.Create (S          => Name_Parts,
+                                 From       => To_String (Elt.Name),
                                  Separators => ".'",
-                                 Mode => String_Split.Single);
+                                 Mode       => String_Split.Single);
 
-            --  For every Part, we create a CNT_Element.
-
+            --  For every Part, we create a CNT_Element
             for Var_Slice_Num in 1 .. String_Split.Slice_Count
               (Name_Parts) loop
                declare
@@ -912,6 +1041,7 @@ package body Gnat2Why.Counter_Examples is
                                                       return Entity_Id;
                   --  Try to cast Part into an Entity_Id,
                   --  return empty id if it doesn't work.
+
                   function Try_Get_Part_Entity (Part : String)
                                                       return Entity_Id is
                   begin
@@ -926,19 +1056,17 @@ package body Gnat2Why.Counter_Examples is
 
                   Part_Entity : constant Entity_Id :=
                     Try_Get_Part_Entity (Part);
-                  --  Note that if Var_Slice_Num = 1, Part_Entity
-                  --  is Entity_Id of either declaration of
-                  --  argument of a function or declaration of a
-                  --  variable (corresponding to the counterexample
-                  --  element being processed)
-                  --  If Var_Slice_Num > 1, Part_Entity is
-                  --  Entity_Id of declaration of record field or
-                  --  discriminant.
+                  --  Note that if Var_Slice_Num = 1, Part_Entity is Entity_Id
+                  --  of either declaration of argument of a function
+                  --  or declaration of a variable (corresponding to the
+                  --  counterexample element being processed) If Var_Slice_Num
+                  --  > 1, Part_Entity is Entity_Id of declaration of record
+                  --  field or discriminant.
 
                   Is_Attribute : Boolean :=
                     No (Part_Entity);
-                  --  If Part does not cast into an entity_id it is
-                  --  treated as an attribute.
+                  --  If Part does not cast into an entity_id it is treated as
+                  --  an attribute.
 
                   Part_Name : Unbounded_String :=
                     To_Unbounded_String
@@ -950,13 +1078,12 @@ package body Gnat2Why.Counter_Examples is
                begin
                   if Var_Slice_Num = 1 then
 
-                     --  Process the first Entity_Id, which
-                     --  corresponds to a variable.
+                     --  Process the first Entity_Id, which corresponds to a
+                     --  variable.
 
-                     --  Do not display uninitialized
-                     --  counterexample elements (elements
-                     --  corresponding to uninitialized variables
-                     --  or function arguments)
+                     --  Do not display uninitialized counterexample elements
+                     --  (elements corresponding to uninitialized variables or
+                     --  function arguments).
                      if Is_Uninitialized (Part_Entity, File, Line)
                      then
                         goto Next_Model_Element;
@@ -1002,40 +1129,39 @@ package body Gnat2Why.Counter_Examples is
                      end if;
                   end if;
 
-                  Current_CNT_Element := Insert_CNT_Element
-                    (Name   => To_String (Part_Name),
-                     Entity => Part_Entity,
-                     Map    => (if Is_Attribute
-                                then Current_Attributes_Map
-                                else Current_Subfields_Map));
+                     Current_CNT_Element := Insert_CNT_Element
+                       (Name   => To_String (Part_Name),
+                        Entity => Part_Entity,
+                        Map    => (if Is_Attribute
+                                   then Current_Attributes_Map
+                                   else Current_Subfields_Map));
 
-                  --  Note that Value is set even if it has already
-                  --  been set. Overriding of value happens if a loop
-                  --  is unrolled (see Gnat2Why.Expr.Loops.Wrap_Loop)
-                  --  and the VC for that the counterexample was
-                  --  generated is for a loop iteration. In this
-                  --  case, there are both counterexample elements
-                  --  for variables in an unrolling of the loop and a
-                  --  loop iteration and these counterexample elements
-                  --  have the same names and locations (but can
-                  --  have different values). Note that in this
-                  --  case only the counterexample elements for the
-                  --  loop iteration are relevant for the proof.
-                  --  Counterexample elements are reported in the
-                  --  order in that the corresponding variables are
-                  --  in generated why code and thus using the last
-                  --  counterexample element with given Name ensures
-                  --  the correct behavior.
+                     --  Note that Value is set even if it has already been
+                     --  set. Overriding of value happens if a loop is unrolled
+                     --  (see Gnat2Why.Expr.Loops.Wrap_Loop) and the VC for
+                     --  that the counterexample was generated is for a loop
+                     --  iteration. In this case, there are both counterexample
+                     --  elements for variables in an unrolling of the loop
+                     --  and a loop iteration and these counterexample elements
+                     --  have the same names and locations (but can have
+                     --  different values). Note that in this case only the
+                     --  counterexample elements for the loop iteration are
+                     --  relevant for the proof. Counterexample elements
+                     --  are reported in the order in that the corresponding
+                     --  variables are in generated why code and thus using the
+                     --  last counterexample element with given Name ensures
+                     --  the correct behavior.
 
-                  if Var_Slice_Num = Slice_Count (Name_Parts) then
-                     Current_CNT_Element.Value := Elt.Value;
-                  end if;
+                     if Var_Slice_Num = Slice_Count (Name_Parts) then
+                        Current_CNT_Element.Value := new
+                          Cntexmp_Value'(Elt.Value.all);
+                     end if;
 
-                  Current_Subfields_Map :=
-                    Current_CNT_Element.Fields;
+                     Current_Subfields_Map :=
+                       Current_CNT_Element.Fields;
 
-                  Current_Attributes_Map :=
-                    Current_CNT_Element.Attributes;
+                     Current_Attributes_Map :=
+                       Current_CNT_Element.Attributes;
                end;
             end loop;
          end;
@@ -1109,8 +1235,10 @@ package body Gnat2Why.Counter_Examples is
       for File_C in Remapped_Cntexmp.Iterate loop
          declare
             Pretty_File_Cntexmp : Cntexample_Lines :=
-              Cntexample_Lines'(VC_Line => Cntexample_Elt_Lists.Empty_List,
-                                Other_Lines => Cntexample_Line_Maps.Empty_Map);
+             Cntexample_Lines'(VC_Line     =>
+                                 Cntexample_Elt_Lists.Empty_List,
+                               Other_Lines =>
+                                 Cntexample_Line_Maps.Empty_Map);
             Filename            : constant String := Key (File_C);
             Lines_Map : Cntexample_Line_Maps.Map renames
               Element (File_C).Other_Lines;
@@ -1160,7 +1288,7 @@ package body Gnat2Why.Counter_Examples is
             Append (Cntexmp_Line_Str, Elt.Name);
             if Elt.Kind /= CEE_Error_Msg then
                Append (Cntexmp_Line_Str, " = ");
-               Append (Cntexmp_Line_Str, Elt.Value);
+               Append (Cntexmp_Line_Str, Elt.Val_Str);
             end if;
          end loop;
          return To_String (Cntexmp_Line_Str);
@@ -1212,13 +1340,11 @@ package body Gnat2Why.Counter_Examples is
       return Boolean
    is
    begin
-      --  Counterexample element can be
-      --  uninitialized only if its location is
-      --  the same as location of its declaration
-      --  (otherwise it has been assigned or it is
-      --  a part of construct that triggers VC - and
-      --  flow analysis would issue an error in this
-      --  case).
+      --  Counterexample element can be uninitialized only if its location
+      --  is the same as location of its declaration (otherwise it has been
+      --  assigned or it is a part of construct that triggers VC - and flow
+      --  analysis would issue an error in this case).
+
       if File_Name
         (Sloc (Element_Decl)) = Element_File
         and then
@@ -1266,7 +1392,7 @@ package body Gnat2Why.Counter_Examples is
    -----------------------------
 
    function Print_CNT_Element_Debug (El : CNT_Element) return String is
-      R : Unbounded_String := "[ " & El.Value & " | ";
+      R : Unbounded_String := "[ " & El.Val_Str & " | ";
    begin
       for F in El.Fields.Iterate loop
          R := R & "<F- " & CNT_Elements.Key (F) &
@@ -1303,10 +1429,10 @@ package body Gnat2Why.Counter_Examples is
    --  Start of processing for Remap_VC_Info
 
    begin
-      --  Remove information related to the construct triggering VC
-      --  Create a copy of Orig_File without information related to the
-      --  construct triggering VC and extend New_Cntexmp with a mapping
-      --  from File_Name to this copy.
+      --  Remove information related to the construct triggering VC Create
+      --  a copy of Orig_File without information related to the construct
+      --  triggering VC and extend New_Cntexmp with a mapping from File_Name
+      --  to this copy.
 
       for Elt of Remapped_Cntexmp loop
          Elt.VC_Line := Cntexample_Elt_Lists.Empty_List;

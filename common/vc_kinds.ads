@@ -36,11 +36,11 @@
 --    - GPS plug-in spark2014.py
 --    - 2 tables in the section of SPARK User's Guide on GNATprove
 
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with Ada.Containers.Doubly_Linked_Lists;
 
 package VC_Kinds is
 
@@ -281,11 +281,64 @@ package VC_Kinds is
                      CEE_Result,
                      CEE_Other);
 
-   type Cntexample_Elt is record
-      Kind : CEE_Kind;
-      Name : Unbounded_String;
-      Value : Unbounded_String;
+   --  Counterexamples are typed:
+   --  Matching on this types in the code should make debugging easier.
+   --  Without this we would only be manipulating Unbounded_String which
+   --  is not usable.
+   type Cntexmp_Type is
+     (Cnt_Integer,
+      Cnt_Float,
+      Cnt_Boolean,
+      Cnt_Bitvector,
+      Cnt_Unparsed,
+      Cnt_Array,
+      Cnt_Record,
+      Cnt_Invalid);
+
+   type Cntexmp_Value;
+   type Cntexmp_Value_Ptr is access Cntexmp_Value;
+
+   --  Map of counterexample values.
+   --  In the case of counterexample array, the Key_Type represents the index.
+   package Cntexmp_Value_Array is
+      new Ada.Containers.Indefinite_Ordered_Maps
+       (Key_Type => String, -- Indices can exceed MAX_INT
+        Element_Type => Cntexmp_Value_Ptr);
+
+   --  Counterexample values:
+
+   --  This record should be changed to take more precise type into account.
+   --  For example, floats are actually the concatenation of two numbers "d.n"
+   --  This is present in why3 and can be mimicked in SPARK.
+   type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
+      case T is
+         when Cnt_Integer   => I   : Unbounded_String;
+         when Cnt_Float     => F   : Unbounded_String;
+         when Cnt_Boolean   => Bo  : Boolean;
+         when Cnt_Bitvector => B   : Unbounded_String;
+         when Cnt_Unparsed  => U   : Unbounded_String;
+         when Cnt_Record    =>
+            Fi                     : Cntexmp_Value_Array.Map;
+            Di                     : Cntexmp_Value_Array.Map;
+         when Cnt_Array     =>
+            Array_Indices          : Cntexmp_Value_Array.Map;
+            Array_Others           : Cntexmp_Value_Ptr;
+         when Cnt_Invalid   => S   : Unbounded_String;
+      end case;
    end record;
+
+   type Cntexample_Elt is record
+      Kind    : CEE_Kind;
+      Name    : Unbounded_String;
+      Value   : Cntexmp_Value_Ptr;
+      Val_Str : Unbounded_String;
+   end record;
+
+   package Cntexample_Elt_Maps is new
+     Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
+                                             Element_Type => Cntexample_Elt,
+                                             "<"          => "<",
+                                             "="          => "=");
 
    package Cntexample_Elt_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Elt,

@@ -74,13 +74,15 @@ package body Why.Atree.Sprint is
      (Nodes     : Why_Node_Lists.List;
       Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
-      Newline   : Boolean := False);
+      Newline   : Boolean := False;
+      Loc       : Boolean := False);
 
    procedure Print_List
      (List_Id   : Why_Node_List;
       Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
-      Newline   : Boolean := False);
+      Newline   : Boolean := False;
+      Loc       : Boolean := False);
    --  Print a node list on current output, separating each element
    --  by a given separator, optionally followed by a new line.
 
@@ -183,11 +185,13 @@ package body Why.Atree.Sprint is
       NL (O);
       if Pre /= Why_Empty then
          P (O, "requires {");
+         Print_Sloc_Tag;
          Print_Node (+Pre);
          PL (O, "} ");
       end if;
       if Post /= Why_Empty then
          P (O, "ensures {");
+         Print_Sloc_Tag;
          Print_Node (+Post);
          PL (O, "} ");
       end if;
@@ -206,6 +210,7 @@ package body Why.Atree.Sprint is
    begin
       P (O, Get_Assert_Kind (Node));
       P (O, " { ");
+      Print_Sloc_Tag;
       Print_Node (+Get_Pred (Node));
       P (O, " }");
    end Print_Assert;
@@ -953,12 +958,14 @@ package body Why.Atree.Sprint is
                NL (O);
                if Pre /= Why_Empty then
                   P (O, "requires { ");
+                  Print_Sloc_Tag;
                   Print_Node (+Pre);
                   P (O, " }");
                   NL (O);
                end if;
                if Post /= Why_Empty then
                   P (O, "ensures { ");
+                  Print_Sloc_Tag;
                   Print_Node (+Post);
                   P (O, " }");
                   NL (O);
@@ -997,6 +1004,9 @@ package body Why.Atree.Sprint is
 
             if Def /= Why_Empty then
                PL (O, " =");
+               --  Predicate can actually be substituted somewhere without its
+               --  location. So, locations should also be printed here.
+               Print_Sloc_Tag;
                Print_Node (+Def);
             end if;
 
@@ -1187,18 +1197,20 @@ package body Why.Atree.Sprint is
      (List_Id   : Why_Node_List;
       Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
-      Newline   : Boolean := False)
+      Newline   : Boolean := False;
+      Loc       : Boolean := False)
    is
       Nodes : constant Why_Node_Lists.List := Get_List (List_Id);
    begin
-      Print_List (Nodes, Callback, Separator, Newline);
+      Print_List (Nodes, Callback, Separator, Newline, Loc);
    end Print_List;
 
    procedure Print_List
      (Nodes     : Why_Node_Lists.List;
       Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
-      Newline   : Boolean := False)
+      Newline   : Boolean := False;
+      Loc       : Boolean := False)
    is
       use Why_Node_Lists;
 
@@ -1209,6 +1221,10 @@ package body Why.Atree.Sprint is
             Node : constant Why_Node_Id := Element (Position);
          begin
             Callback (Node);
+            if Loc then
+               P (O, " ");
+               Print_Sloc_Tag;
+            end if;
          end;
 
          Position := Next (Position);
@@ -1336,7 +1352,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Node (N : Why_Node_Id) is
       N_Kind : constant Why_Node_Kind := Get_Kind (N);
-      Ada_N  : constant Node_Id := Original_Node (Get_Ada_Node (N));
+      Ada_N  : constant Node_Id := Get_Ada_Node (N);
       --  ??? the above call to Original_Node is a hack to prevent accessing
       --  junk data when calling First_Sloc; however, this happens only when
       --  Print_Node itself is called with junk data, which in turn happens
@@ -1354,6 +1370,7 @@ package body Why.Atree.Sprint is
             | W_Assert
             | W_Assignment
             | W_Binding_Ref
+            | W_Try_Block
          =>
             --  Nodes where the location tag has to be printed and when it can
             --  be printed before the nodes.
@@ -1922,8 +1939,13 @@ package body Why.Atree.Sprint is
         Get_Kind (+Pred) = W_Universal_Quantif;
       use Why_Node_Lists;
    begin
-      P (O, "(forall ");
-      Print_List (+Variables, Separator => " ");
+      P (O, "(");
+      P (O, "forall ");
+      Print_List (List_Id     => +Variables,
+                  Callback    => Print_Node'Access,
+                  Separator   => " ",
+                  Newline     => False,
+                  Loc         => True);
 
       --  Labels generated for foralls binding several variables are always
       --  faulty because the label is on the forall not on the variables. If we
