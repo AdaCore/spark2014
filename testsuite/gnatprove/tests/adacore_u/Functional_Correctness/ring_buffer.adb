@@ -1,41 +1,59 @@
 package body Ring_Buffer with SPARK_Mode is
-   subtype Index_Range is Integer range 1 .. Max_Size;
+   type Nat_Array is array (Positive range <>) of Natural;
    Content : Nat_Array (1 .. Max_Size);
-   First   : Index_Range;
+   First   : Index_Type;
    Length  : Length_Range;
 
    function Valid_Model return Boolean is
-     (not Model'Constrained and then
-      Length = Model.Length and then
+     (Length = Length_Range (My_Seq.Length (Model)) and then
         (for all I in Content'Range =>
              (if I in First .. Integer'Min (First + Length - 1, Max_Size)
-              then Content (I) = Model.Content (I - First + 1)
+              then Content (I) = Get (Model, I - First + 1)
               elsif I in 1 .. First + Length - 1 - Max_Size
-              then Content (I) = Model.Content (I + Max_Size - First + 1))));
+              then Content (I) = Get (Model, I + Max_Size - First + 1))));
 
-   function Valid_Model (M : Nat_Array) return Boolean is
-     (Length = M'Length and then
-      M'First = 1 and then
+   function Valid_Model (M : Model_Type) return Boolean is
+     (Length = Length_Range (My_Seq.Length (M)) and then
         (for all I in Content'Range =>
              (if I in First .. Integer'Min (First + Length - 1, Max_Size)
-              then Content (I) = M (I - First + 1)
+              then Content (I) = Get (M, I - First + 1)
               elsif I in 1 .. First + Length - 1 - Max_Size
-              then Content (I) = M (I + Max_Size - First + 1))));
+              then Content (I) = Get (M, I + Max_Size - First + 1))))
+   with Refined_Post =>
+     (if Valid_Model'Result then
+        (for all I in 1 .. Integer'Min (Length, Max_Size - First + 1) =>
+              Get (M, I) = Content (I - 1 + First))
+      and (for all I in Max_Size - First + 2 .. Length =>
+                Get (M, I) = Content (I - Max_Size + First - 1)));
 
-   function Get_Model return Nat_Array is
-      L : constant Length_Range := Length;
-      R : Nat_Array (1 .. L);
+   function Get_Model return Model_Type is
+      R : Model_Type;
       C : constant Length_Range :=
-        Integer'Min (Length, Max_Size + 1 - First);
+        Integer'Min (Length + First - 1, Max_Size);
    begin
-      R (1 .. C) :=
-        Content (First .. Integer'Min (First + Length - 1, Max_Size));
-      R (C + 1 .. Length) := Content (1 .. First + Length - 1 - Max_Size);
+      for J in First .. C loop
+         pragma Loop_Invariant (Length_Range (My_Seq.Length (R)) = J - First);
+         pragma Loop_Invariant
+           (for all I in Content'Range =>
+             (if I in First .. J - 1
+              then Content (I) = Get (R, I - First + 1)));
+         R := Add (R, Content (J));
+      end loop;
+
+      for J in 1 .. First + Length - 1 - Max_Size loop
+         pragma Loop_Invariant (Length_Range (My_Seq.Length (R)) = C - First + J);
+         pragma Loop_Invariant
+           (for all I in Content'Range =>
+              (if I in First .. Integer'Min (First + Length - 1, Max_Size)
+               then Content (I) = Get (R, I - First + 1)
+               elsif I in 1 .. J - 1
+               then Content (I) = Get (R, I + Max_Size - First + 1)));
+         R := Add (R, Content (J));
+      end loop;
       return R;
    end Get_Model;
 
    procedure Push_Last1 (E : Natural) is
-      M : constant Nat_Array := Get_Model with Ghost;
    begin
       if First <= Max_Size - Length then
          Content (First + Length) := E;
@@ -43,17 +61,11 @@ package body Ring_Buffer with SPARK_Mode is
          Content (Length - Max_Size + First) := E;
       end if;
       Length := Length + 1;
-      pragma Assert (for all I in 1 .. Integer'Min (Length - 1, Max_Size + 1 - First) =>
-                       Get_Model (I) = Content (I + First - 1));
-      pragma Assert (for all I in Max_Size - First + 2 .. Length - 1 =>
-                       Get_Model (I) = Content (I - Max_Size + First - 1));
-      pragma Assert (for all I in 1 .. Length - 1 => Get_Model (I) = M (I));
-      pragma Assert (Get_Model (Length) = E);
    end Push_Last1;
 
    procedure Push_Last (E : Natural) is
    begin
-      Model := (Model.Length + 1, Model.Content & E);
+      Model := Add (Model, E);
       if First <= Max_Size - Length then
          Content (First + Length) := E;
       else
@@ -64,7 +76,7 @@ package body Ring_Buffer with SPARK_Mode is
 
    procedure Pop_First (E : out Natural) is
    begin
-      Model := (Model.Length - 1, Model.Content (2 .. Model.Length));
+      Model := Remove (Model, 1);
       E := Content (First);
       Length := Length - 1;
       if First < Max_Size then
@@ -77,8 +89,8 @@ package body Ring_Buffer with SPARK_Mode is
    procedure Pop_When_Available (E : in out Natural) is
       procedure Update_Model with Ghost is
       begin
-         if Model.Length > 0 then
-            Model := (Model.Length - 1, Model.Content (2 .. Model.Length));
+         if My_Seq.Length (Model) > 0 then
+            Model := Remove (Model, 1);
          end if;
       end Update_Model;
    begin
