@@ -5,7 +5,7 @@ project GNATprove is
    for Object_Dir use "obj";
    for Exec_Dir use "../install/bin";
 
-   type Build_Type is ("Debug", "Production");
+   type Build_Type is ("Debug", "Production", "Coverage");
 
    Build : Build_Type := External ("Build", "Debug");
 
@@ -29,6 +29,9 @@ project GNATprove is
          when "Debug" =>
             for Global_Configuration_Pragmas use "gnatprove.adc";
          when "Production" =>
+            null;
+         when "Coverage" =>
+            --  We don't do coverage of gnatprove yet, only gnat2why
             null;
       end case;
    end Builder;

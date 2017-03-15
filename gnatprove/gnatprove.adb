@@ -297,11 +297,19 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--RTS=" & RTS_Dir.all);
       end if;
 
-      Call_Gprbuild (Project_File,
-                     File_System.Install.Gpr_Frames_Cnf_File,
-                     Compose (Obj_Dir, File_System.Install.Frames_Cgpr),
-                     Args,
-                     Status);
+      declare
+         Cnf_File : constant String :=
+           (if CL_Switches.Coverage then
+               File_System.Install.Gpr_Frames_Cov_Cnf_File
+            else
+               File_System.Install.Gpr_Frames_Cnf_File);
+      begin
+         Call_Gprbuild (Project_File,
+                        Cnf_File,
+                        Compose (Obj_Dir, File_System.Install.Frames_Cgpr),
+                        Args,
+                        Status);
+      end;
       if Status = 0 and then not Debug then
          GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
       end if;
@@ -596,11 +604,20 @@ procedure Gnatprove with SPARK_Mode is
 
          Id := Spawn_VC_Server (Proj.Root_Project);
 
-         Call_Gprbuild (Project_File,
-                        File_System.Install.Gpr_Translation_Cnf_File,
-                        Compose (Obj_Dir, File_System.Install.Gnat2why_Cgpr),
-                        Args,
-                        Status);
+         declare
+            Cnf_File : constant String :=
+              (if CL_Switches.Coverage then
+                  File_System.Install.Gpr_Gnat2why_Cov_Cnf_File
+               else
+                  File_System.Install.Gpr_Translation_Cnf_File);
+         begin
+            Call_Gprbuild (Project_File,
+                           Cnf_File,
+                           Compose (Obj_Dir,
+                             File_System.Install.Gnat2why_Cgpr),
+                           Args,
+                           Status);
+         end;
          if Status = 0 and then not Debug then
             GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
          end if;

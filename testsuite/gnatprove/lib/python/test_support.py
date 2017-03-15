@@ -58,6 +58,10 @@ def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
 
+def coverage_mode():
+    return "coverage" in os.environ and os.environ["coverage"] == "true"
+
+
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
@@ -604,6 +608,8 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
         cmd += ["--verbose"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
+    if coverage_mode():
+        cmd += ["--coverage"]
     cmd += to_list(opt)
     if verbose_mode():
         print ' '.join(cmd)

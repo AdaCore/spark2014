@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+# The purpose of this script is to run gnat2why using gnatcov. So this wrapper
+# reads all command line arguments, and then runs
+
+# gnatcov run <path to gnat2why> -o <tracefile for this run>
+#         -eargs <rest of the command line>
+
+# The tracefile name is computed as follows:
+# <adb/abs file on which gnat2why is run> + <phase number> + .trace
+#
+# The phase number is "1" or "2". It is determined by looking at the
+# "gnat2why_args" file passed to gnatw2hy using "-gnates=", which contains the
+# phase information in the "global_gen_mode" variable.
+
+from gnatpython import fileutils
+import json
+import os.path
+import subprocess
+import sys
+
+
+def exit_with_msg(msg):
+    print "gnat2why_cov_wrapper: " + msg + ", exiting"
+    # random non-zero constant as exit code
+    exit(2)
+
+
+def find_extra_args_file():
+    for arg in sys.argv:
+        if arg.startswith("-gnates="):
+            return arg[8:]
+    exit_with_msg(
+            "no extra args file provided with -gnates found on commandline")
+
+
+def find_source_file():
+    for arg in sys.argv[1:]:
+        if arg.startswith("/"):
+            return arg
+    exit_with_msg("no source file found on commandline")
+
+fn = find_extra_args_file()
+with open(fn) as f:
+    extra_args = json.load(f)
+
+if extra_args["global_gen_mode"]:
+    phase = 1
+else:
+    phase = 2
+
+outfile = os.path.basename(find_source_file()) + str(phase) + ".trace"
+gnat2why = fileutils.which("gnat2why")
+
+call_cmd = ["gnatcov", "run", gnat2why, "-o", outfile, "-eargs"] + sys.argv[1:]
+
+exit_code = subprocess.call(call_cmd)
+
+exit(exit_code)

@@ -68,8 +68,7 @@ build: setup force
 # Compilation and linking settings for coverage and profiling; for details see
 # "Code Coverage and Profiling" in GNAT User's Guide.
 
-coverage: CFLAGS = -fprofile-arcs -ftest-coverage
-coverage: LDFLAGS += -fprofile-arcs
+coverage: GPRARGS=-XBuild=Coverage
 coverage: build
 
 profile: CFLAGS = -pg

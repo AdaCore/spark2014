@@ -143,7 +143,6 @@ gnat2why:
 
 coverage:
 	$(MAKE) -C gnat2why coverage
-	cd gnat2why/testsuite; ./run-tests -j 5
 
 gnatprove:
 	$(MAKE) -C gnatprove build

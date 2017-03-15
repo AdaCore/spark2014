@@ -67,6 +67,7 @@ package Configuration is
       Memcached_Server     : aliased GNAT.Strings.String_Access;
       Cargs_List           : String_Lists.List;
       CodePeer             : aliased GNAT.Strings.String_Access;
+      Coverage             : aliased Boolean;
       D                    : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
       F                    : aliased Boolean;
@@ -225,10 +226,17 @@ package Configuration is
            Compose (Share_Spark, "help.txt");
          Frames_Cgpr              : constant String := "frames.cgpr";
          Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
+         Frames_Cov_Cgpr          : constant String := "frames_coverage.cgpr";
+         Gnat2why_Cov_Cgpr        : constant String :=
+           "gnat2why_coverage.cgpr";
          Gpr_Frames_Cnf_File      : constant String :=
            Compose (Share_Spark_Config, Frames_Cgpr);
          Gpr_Translation_Cnf_File : constant String :=
            Compose (Share_Spark_Config, Gnat2why_Cgpr);
+         Gpr_Frames_Cov_Cnf_File  : constant String :=
+           Compose (Share_Spark_Config, Frames_Cov_Cgpr);
+         Gpr_Gnat2why_Cov_Cnf_File  : constant String :=
+           Compose (Share_Spark_Config, Gnat2why_Cov_Cgpr);
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
       end Install;

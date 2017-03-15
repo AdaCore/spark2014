@@ -1416,6 +1416,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Coverage'Access,
+         Long_Switch => "--coverage");
+
+      Define_Switch
+        (Config,
          CL_Switches.Pedantic'Access,
          Long_Switch => "--pedantic");
 

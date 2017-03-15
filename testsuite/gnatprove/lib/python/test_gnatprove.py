@@ -41,6 +41,8 @@ def run_testsuite(test_driver):
         os.environ["benchmarks"] = "true"
     if options.cache:
         os.environ["cache"] = "true"
+    if options.coverage:
+        os.environ["coverage"] = "true"
     if options.z3_counterexample:
         os.environ["z3_counterexample"] = "true"
 
@@ -157,6 +159,8 @@ def __parse_options():
                  type="int", help="set timeout for prover")
     m.add_option("--cache", dest="cache", action="store_true",
                  default=False, help="use memcached to speed up testsuite")
+    m.add_option("--coverage", dest="coverage", action="store_true",
+                 default=False, help="run gnat2why through gnatcov")
     m.add_option("--z3-counterexample", dest="z3_counterexample",
                  action="store_true", default=False,
                  help="use z3 as prover for counterexamples")

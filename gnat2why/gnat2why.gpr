@@ -12,7 +12,7 @@ project GNAT2Why is
    for Main use ("gnat1drv.adb");
 
 
-   type Build_Type is ("Debug", "Devel", "Production");
+   type Build_Type is ("Debug", "Devel", "Production", "Coverage");
    --  Debug: all checks enabled
    --  Devel: inexpensive checks enabled, expensive checks disabled
    --  Production: all checks disabled
@@ -28,6 +28,10 @@ project GNAT2Why is
          when "Debug" | "Devel" =>
             for Switches ("Ada") use
                Common_Switches & ("-O0", "-gnata", "-gnatVa");
+         when "Coverage" =>
+            for Switches ("Ada") use
+               Common_Switches & ("-O0", "-g", "-fpreserve-control-flow",
+                                  "-fdump-scos");
          when "Production" =>
             for Switches ("Ada") use
                Common_Switches & ("-O2", "-gnatpn");
