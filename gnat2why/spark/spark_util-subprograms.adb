@@ -34,7 +34,6 @@ with Flow_Utility;                       use Flow_Utility;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
-with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;

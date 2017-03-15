@@ -27,7 +27,6 @@ with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Fname;                              use Fname;
-with Nlists;                             use Nlists;
 with Output;
 with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
@@ -1188,6 +1187,19 @@ package body SPARK_Util is
       Scope : Entity_Id) return Boolean
    is
      (Enclosing_Unit (E) = Scope and then not Is_Formal (E));
+
+   ---------------------
+   -- Is_Empty_Others --
+   ---------------------
+
+   function Is_Empty_Others (N : Node_Id) return Boolean
+   is
+      First_Choice : constant Node_Id := First (Discrete_Choices (N));
+   begin
+      return
+        Nkind (First_Choice) = N_Others_Choice
+        and then Is_Empty_List (Others_Discrete_Choices (First_Choice));
+   end Is_Empty_Others;
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --

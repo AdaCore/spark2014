@@ -1643,7 +1643,11 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex
            (FA,
             Direct_Mapping_Id (Alternative),
-            Make_Aux_Vertex_Attributes (E_Loc => Alternative),
+            Make_Aux_Vertex_Attributes
+              (E_Loc     => Alternative,
+               Execution => (if Is_Empty_Others (Alternative)
+                             then Abnormal_Termination
+                             else Normal_Execution)),
             V_Alter);
          Linkup (FA, V, V_Alter);
 

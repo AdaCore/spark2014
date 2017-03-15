@@ -30,6 +30,7 @@ with Einfo;             use Einfo;
 with Impunit;           use Impunit;
 with Lib;               use Lib;
 with Namet;             use Namet;
+with Nlists;            use Nlists;
 with Sinfo;             use Sinfo;
 with Sinput;            use Sinput;
 with Snames;            use Snames;
@@ -470,6 +471,16 @@ package SPARK_Util is
    --     for the predicate function of a derived type, so the argument
    --     should take the form of a type conversion. Node N should be the
    --     expression being converted rather than the type conversion itself.
+
+   function Is_Empty_Others (N : Node_Id) return Boolean
+     with Pre  => Nkind (N) = N_Case_Statement_Alternative,
+          Post => (if Is_Empty_Others'Result
+                   then No (Next (N)) and then
+                        List_Length (Discrete_Choices (N)) = 1);
+   --  Returns True iff N is an "others" case alternative with empty set
+   --  of discrite choices (this set is statically determined by the front
+   --  end). Such an alternative must not be followed by other alternatives
+   --  and "others" must be its only choice.
 
    function Is_External_Call (N : Node_Id) return Boolean
    with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call;
