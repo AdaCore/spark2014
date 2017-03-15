@@ -25,8 +25,7 @@ module Reals__real
 end
 
 module Reals__zero
- function zero__logic (x : unit) : real = 0.0
- function zero (x : unit) : real = 0.0
+ constant zero : real = 0.0
 end
 
 module Reals__Oadd

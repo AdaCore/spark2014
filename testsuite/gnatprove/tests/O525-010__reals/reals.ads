@@ -7,11 +7,7 @@ is
 
    type Real is private;
 
-   --  Initially I used a deferred constant for Zero, but this crashes
-   --  GNATprove. Use a function for the time being.
-   --  Zero : constant Real;
-   function Zero return Real
-     with Import;
+   Zero : constant Real;
 
    function "+" (X, Y : Real) return Real
      with Import;
@@ -51,6 +47,6 @@ private
    --  Real as an abstract type.
    type Real is null record;
 
-   -- Zero : constant Real := (null record);
+   Zero : constant Real := (null record);
 
 end Reals;
