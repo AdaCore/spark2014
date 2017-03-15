@@ -3,7 +3,7 @@ very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:19:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:29:48: medium: range check might fail (e.g. when Dividend = (Length => ?, Long_Digits => (others => 0)) and Dividend.Long_Digits'First = 1 and Dividend.Long_Digits'Last = 65536)
+very_longs-divide.adb:29:48: medium: range check might fail (e.g. when Dividend = (Length => 65536, Long_Digits => (0 => 1, others => 1)) and Dividend.Long_Digits'First = 1 and Dividend.Long_Digits'Last = 65536)
 very_longs-divide.adb:30:39: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:07: info: range check proved (CVC4: 1 VC)
@@ -73,7 +73,7 @@ very_longs-divide.adb:158:74: info: initialization of "Carry" proved
 very_longs-divide.adb:159:31: info: initialization of "Product" proved
 very_longs-divide.adb:161:29: info: initialization of "Product" proved
 very_longs-divide.adb:162:43: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
+very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when U = (Long_Digits => (others => 20), others => ?) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
 very_longs-divide.adb:163:16: info: initialization of "Temporary_Digit" proved
 very_longs-divide.adb:163:34: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:169:26: info: overflow check proved (CVC4: 1 VC)
@@ -85,7 +85,7 @@ very_longs-divide.adb:170:92: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:170:108: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:171:28: info: initialization of "Future_Borrow" proved
 very_longs-divide.adb:175:39: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
+very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (2 => 0, others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
 very_longs-divide.adb:175:48: info: initialization of "Carry" proved
 very_longs-divide.adb:175:56: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:180:23: info: index check proved (CVC4: 2 VC)
@@ -96,13 +96,13 @@ very_longs-divide.adb:181:54: info: initialization of "Carry" proved
 very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:181:79: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
-very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Quotient = (Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1)
+very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Quotient = (Long_Digits => (others => 0), others => ?) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1)
 very_longs-divide.adb:194:40: medium: range check might fail
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:201:49: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:201:65: medium: array index check might fail (e.g. when Sum = 0 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
+very_longs-divide.adb:201:65: medium: array index check might fail (e.g. when Sum = 0 and U = (Long_Digits => (others => 128), others => ?) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
 very_longs-divide.adb:202:47: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:202:65: info: initialization of "Carry" proved
 very_longs-divide.adb:203:29: info: overflow check proved (CVC4: 1 VC)
@@ -112,7 +112,7 @@ very_longs-divide.adb:204:34: info: initialization of "Sum" proved
 very_longs-divide.adb:206:26: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:206:26: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:206:50: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
+very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when U = (Length => ?, Long_Digits => (2 => 0, others => 64)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2)
 very_longs-divide.adb:206:72: info: initialization of "Carry" proved
 very_longs-divide.adb:211:26: info: length check proved (CVC4: 1 VC)
 very_longs-divide.adb:211:29: info: length check proved (CVC4: 1 VC)
@@ -259,8 +259,8 @@ very_longs.adb:211:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:215:13: info: range check proved (CVC4: 1 VC)
 very_longs.adb:217:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:221:10: info: range check proved (CVC4: 1 VC)
-very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Digit_Count = 2 and Index = 1 and Number = (Length => ?, Long_Digits => (1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
-very_longs.adb:225:45: medium: array index check might fail (e.g. when Number = (Length => ?, Long_Digits => (2 => 1, 1 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
+very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Number = (Length => 1, Long_Digits => (2 => 0, others => 1)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
+very_longs.adb:225:45: medium: array index check might fail (e.g. when Number = (Length => 1, Long_Digits => (others => 1)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1 and Number_Of_Digits'Result = 2)
 very_longs.adb:227:36: info: index check proved (CVC4: 2 VC)
 very_longs.adb:233:33: info: index check proved (CVC4: 4 VC)
 very_longs.adb:234:28: info: range check proved (CVC4: 2 VC)
@@ -318,7 +318,7 @@ very_longs.adb:319:64: info: initialization of "Temp" proved
 very_longs.adb:320:39: info: initialization of "Temp" proved
 very_longs.adb:324:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:328:13: info: range check proved (CVC4: 1 VC)
-very_longs.adb:329:36: medium: range check might fail (e.g. when L = (Length => ?, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 65536 and R = (Length => ?, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
+very_longs.adb:329:36: medium: range check might fail (e.g. when L = (Length => 65536, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 65536 and R = (Length => 1, Long_Digits => (0 => 0, others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 1)
 very_longs.adb:337:26: info: length check proved (CVC4: 1 VC)
 very_longs.adb:337:29: info: length check proved (CVC4: 1 VC)
 very_longs.adb:343:52: info: index check proved (CVC4: 2 VC)

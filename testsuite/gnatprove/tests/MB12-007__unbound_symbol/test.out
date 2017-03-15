@@ -14,7 +14,7 @@ pupils.ads:46:46: info: length check proved (CVC4: 1 VC)
 pupils.ads:76:32: info: length check proved (CVC4: 1 VC)
 pupils.ads:99:44: info: initialization of "Success" proved
 pupils.ads:102:25: info: range check proved (CVC4: 2 VC)
-pupils.ads:103:19: medium: postcondition might fail, cannot prove P.PupilEntries (I) = P'Old.PupilEntries (I)
+pupils.ads:103:19: medium: postcondition might fail, cannot prove P.PupilEntries (I) = P'Old.PupilEntries (I) (e.g. when I = 249 and P = (NumberOfPupils => 250, PupilEntries => (others => (Surname => (others => 'NUL'), Forename => (others => 'NUL'), Form => B1, Scores => (others => (Studying => False, Score => 1))))) and P'Old = (NumberOfPupils => 249, PupilEntries => (249 => (Surname => (others => 'NUL'), Forename => (others => 'NUL'), Form => B1, Scores => (others => (Studying => False, Score => 0))), 250 => (Surname => (others => 'NUL'), Forename => (others => 'NUL'), Form => B1, Scores => (others => (Studying => False, Score => 0))), others => (Surname => (others => 'NUL'), Forename => (others => 'NUL'), Form => B1, Scores => (EnglishLanguage => (Studying => False, Score => 0), others => (Studying => False, Score => 1))))))
 pupils.ads:103:35: info: index check proved (CVC4: 2 VC)
 pupils.ads:103:60: info: index check proved (CVC4: 2 VC)
 pupils.ads:104:20: info: initialization of "Success" proved

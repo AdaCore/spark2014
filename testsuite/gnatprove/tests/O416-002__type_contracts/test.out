@@ -4,7 +4,7 @@ communications.adb:5:73: info: length check proved (CVC4: 1 VC)
 communications.adb:7:16: info: length check proved (CVC4: 1 VC)
 communications.adb:7:19: info: length check proved (CVC4: 1 VC)
 communications.adb:11:30: medium: range check might fail
-communications.adb:11:30: medium: range check might fail (e.g. when A'First = -2147483647 and A'Last = 0)
+communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = -2147483647 and A'Last = 0)
 communications.adb:13:17: info: length check proved (CVC4: 1 VC)
 communications.adb:13:20: info: length check proved (CVC4: 1 VC)
 communications.adb:14:14: info: initialization of "Coms.Msgs" proved

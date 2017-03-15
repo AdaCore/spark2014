@@ -5,7 +5,7 @@ p.adb:5:18: warning: no Global contract available for "Get_Line"
 p.adb:7:04: warning: assuming "Put_Line" has no effect on global items
 p.adb:7:04: warning: no Global contract available for "Put_Line"
 p.adb:7:23: info: initialization of "X" proved
-p.adb:8:10: medium: precondition might fail (e.g. when S = (others => 0) and S'First = 2 and S'Last = 1)
+p.adb:8:10: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
 p.adb:8:10: medium: range check might fail
 p.adb:8:18: info: initialization of "S" proved
 p.adb:9:04: warning: assuming "Put_Line" has no effect on global items

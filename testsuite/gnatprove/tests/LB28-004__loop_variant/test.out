@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:9:10: info: initialization of "J" proved
-p.adb:10:12: medium: array index check might fail (e.g. when J = 0 and Tab = (others => 0) and Tab'First = 1)
+p.adb:10:12: medium: array index check might fail (e.g. when J = 0 and Tab = (others => 1) and Tab'First = 1)
 p.adb:10:15: medium: "Tab" might not be initialized
 p.adb:10:18: info: initialization of "J" proved
 p.adb:11:12: info: initialization of "J" proved

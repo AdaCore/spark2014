@@ -42,7 +42,7 @@ stack_external_prover.ads:5:08: medium: initial condition might fail (e.g. when 
 stack_external_prover.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack_external_prover.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
 stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove Count = Count'Old + 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
-stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (1 => -1, others => 0), Pointer => 0))
+stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => -1), Pointer => 0))
 stack_external_prover.ads:45:19: info: initialization of "X" proved
 stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 1))
 stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2))

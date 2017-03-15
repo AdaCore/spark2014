@@ -4,10 +4,10 @@ aggs.adb:19:16: info: length check proved (CVC4: 1 VC)
 aggs.adb:25:15: info: length check proved (CVC4: 1 VC)
 aggs.ads:23:21: info: initialization of "X" proved
 aggs.ads:25:22: info: initialization of "X" proved
-aggs.ads:25:22: medium: postcondition might fail, cannot prove X (2) = 5 (e.g. when X = (2 => 6, 1 => 6, others => 2))
+aggs.ads:25:22: medium: postcondition might fail, cannot prove X (2) = 5 (e.g. when X = (others => 6))
 aggs.ads:27:21: info: initialization of "X" proved
 aggs.ads:29:22: info: initialization of "X" proved
-aggs.ads:29:22: medium: postcondition might fail, cannot prove X (2) = 20 (e.g. when X = (2 => 11, others => 2))
+aggs.ads:29:22: medium: postcondition might fail, cannot prove X (2) = 20 (e.g. when X = (others => 11))
 aggs.ads:31:21: info: initialization of "X" proved
 aggs.ads:34:21: info: initialization of "X" proved
 aggs.ads:36:22: info: initialization of "X" proved

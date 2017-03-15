@@ -25,13 +25,13 @@ split_records.adb:37:22: info: assertion proved (CVC4: 1 VC)
 split_records.adb:38:18: info: discriminant check proved (CVC4: 2 VC)
 split_records.adb:39:22: info: assertion proved (CVC4: 1 VC)
 split_records.adb:40:33: info: initialization of "H2.Content.Field" proved
-split_records.adb:41:22: medium: assertion might fail, cannot prove not H2.Content.Present (e.g. when H2 = (Content => (Present => ?, Field => 0)))
+split_records.adb:41:22: medium: assertion might fail, cannot prove not H2.Content.Present (e.g. when H2 = (Content => (Present => True, Field => 0)))
 split_records.adb:42:22: info: assertion proved (CVC4: 1 VC)
 split_records.adb:43:13: info: discriminant check proved (CVC4: 2 VC)
 split_records.adb:43:13: info: initialization of "A" proved
 split_records.adb:44:22: info: assertion proved (CVC4: 1 VC)
 split_records.adb:45:33: info: initialization of "A" proved
-split_records.adb:46:22: medium: assertion might fail, cannot prove not A (1).Present (e.g. when A = (others => (Field => 0)))
+split_records.adb:46:22: medium: assertion might fail, cannot prove not A (1).Present (e.g. when A = (1 => (Present => True, Field => 0), others => (Present => False, Field => 0)))
 split_records.adb:46:26: info: initialization of "A" proved
 split_records.ads:16:45: info: range check proved (CVC4: 1 VC)
 split_records.ads:24:14: info: postcondition proved (CVC4: 2 VC)

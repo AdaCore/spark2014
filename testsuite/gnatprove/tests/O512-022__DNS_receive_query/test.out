@@ -1,22 +1,22 @@
 parse.adb:12:20: info: precondition proved (CVC4: 1 VC)
-parse.adb:17:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0)))
+parse.adb:17:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0), others => ?))
 parse.adb:25:12: info: initialization of "Opcode" proved
-parse.adb:33:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0)))
-parse.adb:42:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0)))
+parse.adb:33:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0), others => ?))
+parse.adb:42:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0), others => ?))
 parse.adb:47:18: info: precondition proved (CVC4: 1 VC)
 parse.adb:48:10: info: initialization of "Qdcount" proved
 parse.adb:50:42: info: initialization of "Qdcount" proved
 parse.adb:50:42: info: range check proved (CVC4: 1 VC)
-parse.adb:52:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0)))
+parse.adb:52:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 0), others => ?))
 parse.adb:57:16: info: precondition proved (CVC4: 1 VC)
 parse.adb:58:10: info: initialization of "Count" proved
-parse.adb:59:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15)))
+parse.adb:59:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15), others => ?))
 parse.adb:63:16: info: precondition proved (CVC4: 1 VC)
 parse.adb:64:10: info: initialization of "Count" proved
-parse.adb:65:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15)))
+parse.adb:65:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15), others => ?))
 parse.adb:69:16: info: precondition proved (CVC4: 1 VC)
 parse.adb:70:10: info: initialization of "Count" proved
-parse.adb:71:17: medium: discriminant check might fail (e.g. when Result = (Return_Code => ?, Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15)))
+parse.adb:71:17: medium: discriminant check might fail (e.g. when Result = (Header => (ID => 0, OPCODE => Standard_Query, QDCOUNT => 15), others => ?))
 parse.adb:75:14: medium: discriminant check might fail
 parse.adb:75:47: info: initialization of "Header.ID" proved
 parse.adb:75:47: info: initialization of "Header.OPCODE" proved

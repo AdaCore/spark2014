@@ -1,7 +1,7 @@
 adt_stack-child.adb:11:31: info: length check proved (CVC4: 1 VC)
 adt_stack-child.adb:18:30: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (others => 0), Next_Value => 0))
 adt_stack-child.adb:19:36: medium: overflow check might fail (e.g. when S = (Next_Value => 2147483647, others => ?))
-adt_stack-child.adb:29:52: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (others => 0), Next_Value => 0))
+adt_stack-child.adb:29:52: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (0 => 0, others => 0), Next_Value => 0))
 adt_stack-child.adb:31:14: info: initialization of "Result" proved
 adt_stack-child.ads:7:20: info: initialization of "S.Child_Stack_Vector" proved
 adt_stack-child.ads:7:20: info: initialization of "S.Next_Value" proved

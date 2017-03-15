@@ -1,4 +1,4 @@
-array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040 (e.g. when A = (7 => 13, 11 => 89, 14 => 377, 9 => 34, 15 => 610, 12 => 144, 17 => 1597, 19 => 4181, 18 => 2584, 10 => 55, 13 => 233, 16 => 987, 21 => 10946, 20 => 6765, 23 => 28657, 22 => 17711, 8 => 21, 4 => 3, 5 => 5, 6 => 8, 3 => 2, 25 => 75025, 24 => 46368, 27 => 196418, 26 => 121393, 29 => 514229, 28 => 317811, 2 => 1, 30 => 832040, 1 => 1, 0 => 0, others => -4))
+array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040 (e.g. when A = (0 => 0, 10 => 55, 11 => 89, 12 => 144, 13 => 233, 14 => 377, 15 => 610, 16 => 987, 17 => 1597, 18 => 2584, 19 => 4181, 20 => 6765, 21 => 10946, 22 => 17711, 23 => 28657, 24 => 46368, 25 => 75025, 26 => 121393, 27 => 196418, 28 => 317811, 29 => 514229, 3 => 2, 30 => 832040, 4 => 3, 5 => 5, 6 => 8, 7 => 13, 8 => 21, 9 => 34, others => 1))
 array_applications.adb:23:27: medium: overflow check might fail
 array_applications.adb:26:13: info: loop invariant initialization proved (CVC4: 3 VC)
 array_applications.adb:26:22: info: range check proved (CVC4: 2 VC)

@@ -8,4 +8,4 @@ foo.adb:16:27: info: initialization of "Item" proved
 foo.adb:18:12: info: initialization of "Total" proved
 foo.ads:19:35: info: initialization of "S" proved
 foo.ads:21:21: info: initialization of "S" proved
-foo.ads:21:21: medium: postcondition might fail, cannot prove S <= 100 (e.g. when S = 101)
+foo.ads:21:21: medium: postcondition might fail, cannot prove S <= 100

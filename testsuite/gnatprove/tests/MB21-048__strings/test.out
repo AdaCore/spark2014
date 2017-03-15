@@ -1,2 +1,2 @@
-lines.adb:9:14: medium: range check might fail (e.g. when S = (others => 0) and S'First = 2 and S'Last = 0)
+lines.adb:9:14: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 0)
 lines.adb:9:22: info: initialization of "Pos" proved

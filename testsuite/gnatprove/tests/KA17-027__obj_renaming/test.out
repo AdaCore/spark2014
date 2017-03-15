@@ -19,8 +19,8 @@ main.adb:74:19: info: initialization of "Rec_Obj.Comp" proved
 main.adb:75:19: info: assertion proved (CVC4: 1 VC)
 main.adb:76:19: info: assertion proved (CVC4: 1 VC)
 main.adb:87:25: info: initialization of "Arr_Obj" proved
-main.adb:87:25: medium: assertion might fail, cannot prove Obj_1.Comp = 9012 (e.g. when Arr_Obj = (others => (Comp => 0)))
+main.adb:87:25: medium: assertion might fail, cannot prove Obj_1.Comp = 9012 (e.g. when Arr_Obj = (1 => (Comp => 0), 3 => (Comp => 9013), others => (Comp => 5678)))
 main.adb:89:25: info: initialization of "Arr_Obj" proved
-main.adb:89:25: medium: assertion might fail, cannot prove Obj_2.Comp = 9012 (e.g. when Arr_Obj = (others => (Comp => 0)) and The_Index = 3)
+main.adb:89:25: medium: assertion might fail, cannot prove Obj_2.Comp = 9012 (e.g. when Arr_Obj = (1 => (Comp => 0), 3 => (Comp => 9013), others => (Comp => 5678)) and The_Index = 3)
 main.adb:91:25: info: initialization of "Rec_Obj.Comp" proved
 main.adb:91:25: medium: assertion might fail, cannot prove Obj_4 = 5678 (e.g. when Rec_Obj = (Comp => 0))

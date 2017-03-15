@@ -22,14 +22,14 @@ concat.adb:14:22: info: initialization of "D" proved
 concat.adb:14:22: info: initialization of "D" proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
 concat.adb:20:14: medium: overflow check might fail
-concat.adb:20:24: medium: overflow check might fail (e.g. when B = (others => 0) and B'First = -2147483648 and B'Last = 0)
+concat.adb:20:24: medium: overflow check might fail (e.g. when B = (0 => -2147483648, others => 0) and B'First = -2147483648 and B'Last = 0)
 concat.adb:23:19: info: range check proved (CVC4: 1 VC)
 concat.adb:25:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:26:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:38: info: overflow check proved (CVC4: 1 VC)
 concat.adb:27:42: info: overflow check proved (CVC4: 1 VC)
-concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => 0) and B'First = -2147483648 and B'Last = 0)
+concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => -2) and B'First = -2147483648 and B'Last = 0)
 concat.adb:30:13: info: length check proved (CVC4: 1 VC)
 concat.adb:31:14: info: length check proved (CVC4: 1 VC)
 concat.adb:36:07: info: precondition proved (CVC4: 3 VC)

@@ -34,5 +34,5 @@ test_main.adb:19:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:19:36: info: initialization of "S" proved
 test_main.adb:20:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:20:36: info: initialization of "S" proved
-test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (-1 => false, 9 => false, 7 => false, 6 => false, 5 => false, 4 => false, 2 => false, 10 => false, 1 => false, 0 => false, others => true))
+test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (-1 => False, 0 => False, 1 => False, 10 => False, 2 => False, 4 => False, 5 => False, 6 => False, 7 => False, 9 => False, others => True))
 test_main.adb:22:36: info: initialization of "S" proved

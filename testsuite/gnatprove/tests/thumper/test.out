@@ -116,14 +116,14 @@ hermes-der-decode.adb:328:29: medium: overflow check might fail (e.g. when Resul
 hermes-der-decode.adb:328:30: info: initialization of "Result" proved
 hermes-der-decode.adb:328:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:328:67: medium: array index check might fail (e.g. when Message = (2 => 0, others => 1) and Message'First = 0 and Message'Last = 2)
+hermes-der-decode.adb:328:67: medium: array index check might fail (e.g. when Message = (others => 0) and Message'First = 0 and Message'Last = 2)
 hermes-der-decode.adb:330:22: info: initialization of "Result" proved
 hermes-der-decode.adb:333:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:334:29: medium: overflow check might fail (e.g. when Result = -8388609)
 hermes-der-decode.adb:334:30: info: initialization of "Result" proved
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:334:67: medium: array index check might fail (e.g. when Message = (2 => 128, others => 1) and Message'First = 0 and Message'Last = 2 and Result = 0)
+hermes-der-decode.adb:334:67: medium: array index check might fail (e.g. when Message = (others => 128) and Message'First = 0 and Message'Last = 2 and Result = 0)
 hermes-der-decode.adb:338:16: info: initialization of "Result" proved
 hermes-der-decode.adb:341:25: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:341:27: info: initialization of "Result" proved

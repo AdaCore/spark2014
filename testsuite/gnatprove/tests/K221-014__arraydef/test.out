@@ -1,1 +1,1 @@
-arraydef.adb:6:24: medium: overflow check might fail (e.g. when I = 1 and X = (1 => 2147483647, others => 0))
+arraydef.adb:6:24: medium: overflow check might fail (e.g. when I = 1 and X = (others => 2147483647))

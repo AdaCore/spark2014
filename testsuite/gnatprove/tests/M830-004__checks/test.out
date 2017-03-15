@@ -1,31 +1,31 @@
 do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
 do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
-do_checks.adb:17:24: medium: range check might fail
+do_checks.adb:17:24: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:23:24: info: range check proved (CVC4: 2 VC)
 do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:31:16: medium: range check might fail
+do_checks.adb:31:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:38:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:47:21: medium: range check might fail
+do_checks.adb:47:21: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:53:21: info: range check proved (CVC4: 2 VC)
-do_checks.adb:61:16: medium: range check might fail
+do_checks.adb:61:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:67:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:74:17: medium: range check might fail
+do_checks.adb:74:17: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:78:17: info: range check proved (CVC4: 2 VC)
 do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:86:19: medium: range check might fail
+do_checks.adb:86:19: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:94:19: info: range check proved (CVC4: 2 VC)
 do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:103:16: medium: range check might fail
+do_checks.adb:103:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:109:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = -2147483648)
-do_checks.adb:137:25: medium: range check might fail
+do_checks.adb:137:25: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:150:25: info: range check proved (CVC4: 2 VC)
 do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:162:39: medium: length check might fail
-do_checks.adb:162:40: medium: range check might fail
+do_checks.adb:162:40: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:168:38: info: length check proved (CVC4: 1 VC)
 do_checks.adb:168:39: info: range check proved (CVC4: 2 VC)
 do_checks.adb:168:67: medium: overflow check might fail (e.g. when Zero = -2147483648)
@@ -46,7 +46,7 @@ do_checks.adb:229:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:229:19: info: initialization of "X" proved
 do_checks.adb:229:22: info: initialization of "Y" proved
 do_checks.adb:235:37: info: initialization of "Y" proved
-do_checks.adb:237:24: medium: length check might fail (e.g. when X = (others => false) and X'First = 1 and X'Last = 0)
+do_checks.adb:237:24: medium: length check might fail (e.g. when X = (others => False) and X'First = 1 and X'Last = 0)
 do_checks.adb:239:35: info: length check proved (CVC4: 1 VC)
 do_checks.adb:242:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:242:19: info: initialization of "X" proved
@@ -73,9 +73,9 @@ do_checks.adb:301:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:306:24: info: range check proved (CVC4: 1 VC)
 do_checks.adb:307:25: info: range check proved (CVC4: 1 VC)
 do_checks.adb:313:32: warning: "Y" is not modified, could be IN
-do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => false)))
+do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => False)))
 do_checks.adb:315:25: medium: array index check might fail
-do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => ?, Arr => (others => false)))
+do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => ?, Arr => (others => False)))
 do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:317:30: info: discriminant check proved (CVC4: 1 VC)
@@ -96,7 +96,7 @@ do_checks.adb:333:19: info: initialization of "X.Arr" proved
 do_checks.adb:333:22: info: initialization of "Y.Arr" proved
 do_checks.adb:344:29: info: range check proved (CVC4: 1 VC)
 do_checks.adb:344:40: info: initialization of "Y.Arr" proved
-do_checks.adb:346:27: medium: discriminant check might fail
+do_checks.adb:346:27: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 1 and X.Arr'Last = 0)
 do_checks.adb:348:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:349:29: info: discriminant check proved (CVC4: 1 VC)
@@ -114,7 +114,7 @@ do_checks.adb:364:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:364:19: info: initialization of "X.Arr" proved
 do_checks.adb:370:29: info: range check proved (CVC4: 1 VC)
 do_checks.adb:370:40: info: initialization of "Y.Arr" proved
-do_checks.adb:372:24: medium: discriminant check might fail
+do_checks.adb:372:24: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 1 and X.Arr'Last = 0)
 do_checks.adb:374:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:375:29: info: discriminant check proved (CVC4: 1 VC)

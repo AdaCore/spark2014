@@ -12,7 +12,7 @@ alignment_attribute.adb:57:33: info: initialization of "A1" proved
 alignment_attribute.adb:59:22: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:59:22: info: initialization of "A2" proved
 alignment_attribute.adb:60:22: info: initialization of "A2" proved
-alignment_attribute.adb:60:22: medium: assertion might fail, cannot prove A2'Alignment < 0 (e.g. when A2'First = (others => 0) and A2'Last = (others => 0))
+alignment_attribute.adb:60:22: medium: assertion might fail, cannot prove A2'Alignment < 0 (e.g. when A2 = (others => (others => 1)))
 alignment_attribute.adb:66:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:67:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:68:19: info: assertion proved (CVC4: 1 VC)
@@ -54,7 +54,7 @@ component_size_attribute.adb:18:33: info: initialization of "A1" proved
 component_size_attribute.adb:20:22: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:20:22: info: initialization of "A2" proved
 component_size_attribute.adb:21:22: info: initialization of "A2" proved
-component_size_attribute.adb:21:22: medium: assertion might fail, cannot prove A2'Component_size = 32 (e.g. when A2'First = (others => 0) and A2'Last = (others => 0))
+component_size_attribute.adb:21:22: medium: assertion might fail, cannot prove A2'Component_size = 32 (e.g. when A2 = (others => (others => 1)))
 component_size_attribute.adb:28:04: warning: analyzing unreferenced procedure "Test1"
 component_size_attribute.adb:28:14: warning: subprogram "Test1" has no effect
 component_size_attribute.adb:30:22: info: assertion proved (CVC4: 1 VC)

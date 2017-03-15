@@ -1,13 +1,13 @@
-fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >= 1.0
+fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >= 1.0 (e.g. when MD = ! and MS = !)
 fxp_false_check_1a.adb:7:29: info: initialization of "MD" proved
 fxp_false_check_1a.adb:7:53: info: initialization of "MS" proved
-fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) < 0.0
+fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) < 0.0 (e.g. when MD = ! and MS = !)
 fxp_false_check_1b.adb:7:29: info: initialization of "MD" proved
 fxp_false_check_1b.adb:7:52: info: initialization of "MS" proved
 fxp_false_check_2.adb:8:25: info: initialization of "MD" proved
-fxp_false_check_2.adb:8:25: medium: range check might fail
-fxp_false_check_3.adb:6:19: medium: assertion might fail, cannot prove My_Subduration (My_Duration (M)) >= 0.0
-fxp_false_check_3.adb:6:35: medium: range check might fail
+fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = !)
+fxp_false_check_3.adb:6:19: medium: assertion might fail, cannot prove My_Subduration (My_Duration (M)) >= 0.0 (e.g. when M = !)
+fxp_false_check_3.adb:6:35: medium: range check might fail (e.g. when M = !)
 fxp_false_check_3.adb:6:48: info: initialization of "M" proved
 fxp_true_check_1.adb:7:19: info: assertion proved (CVC4: 1 VC)
 fxp_true_check_1.adb:7:29: info: initialization of "MD" proved

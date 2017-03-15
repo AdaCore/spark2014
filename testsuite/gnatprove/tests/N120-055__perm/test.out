@@ -1,5 +1,5 @@
 sort.adb:12:15: info: precondition proved (CVC4: 1 VC)
-sort.adb:12:15: medium: postcondition might fail, cannot prove Is_Perm (Values'Old, Values) (e.g. when Values = (2 => 1, others => 0) and Values'Old'First = 1 and Values'Old'Last = 2 and Values'Old = (2 => 0, others => 1))
+sort.adb:12:15: medium: postcondition might fail, cannot prove Is_Perm (Values'Old, Values) (e.g. when Values = (2 => 1, others => 0) and Values'First = 1 and Values'Last = 2 and Values'Old = (1 => 1, others => 0))
 sort.adb:16:29: info: index check proved (CVC4: 2 VC)
 sort.adb:17:15: info: index check proved (CVC4: 2 VC)
 sort.adb:17:29: info: index check proved (CVC4: 2 VC)

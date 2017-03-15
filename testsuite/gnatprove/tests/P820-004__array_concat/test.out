@@ -1,18 +1,18 @@
 main.adb:4:19: info: assertion proved (CVC4: 1 VC)
 main.adb:7:35: info: length check proved (CVC4: 1 VC)
-main.adb:10:45: low: range check might fail
-main.adb:10:55: low: range check might fail
+main.adb:10:45: low: range check might fail (e.g. when catstring = (others => 'NUL') and catstring'First = 2147483627 and catstring'Last = 2147483637 and vstring = (others => 'NUL') and vstring'First = 2147483627 and vstring'Last = 2147483637)
+main.adb:10:55: low: range check might fail (e.g. when catstring = (others => 'NUL') and catstring'First = 2147483646 and catstring'Last = 2147483647 and vstring = (others => 'NUL') and vstring'First = 2147483646 and vstring'Last = 2147483646)
 main.adb:11:46: info: range check proved (CVC4: 1 VC)
 main.adb:11:57: info: range check proved (CVC4: 1 VC)
 main.adb:12:45: info: range check proved (CVC4: 1 VC)
 main.adb:12:56: info: range check proved (CVC4: 1 VC)
 main.adb:15:45: info: range check proved (CVC4: 1 VC)
-main.adb:15:50: low: range check might fail
+main.adb:15:50: low: range check might fail (e.g. when catstring8 = (others => 'NUL') and catstring8'First = 2147483645 and catstring8'Last = 2147483646 and vstring = (others => 'NUL') and vstring'First = 2147483645 and vstring'Last = 2147483645)
 main.adb:16:46: info: range check proved (CVC4: 1 VC)
 main.adb:16:52: info: range check proved (CVC4: 1 VC)
 main.adb:17:45: info: range check proved (CVC4: 1 VC)
 main.adb:17:51: info: range check proved (CVC4: 1 VC)
-main.adb:20:44: low: range check might fail
+main.adb:20:44: low: range check might fail (e.g. when catstring3 = (others => 'NUL') and catstring3'First = 1 and catstring3'Last = 4 and vstring = (others => 'NUL') and vstring'First = 2147483642 and vstring'Last = 2147483643)
 main.adb:20:55: low: range check might fail
 main.adb:21:45: info: range check proved (CVC4: 1 VC)
 main.adb:21:57: info: range check proved (CVC4: 1 VC)

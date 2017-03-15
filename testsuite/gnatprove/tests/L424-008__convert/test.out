@@ -13,7 +13,7 @@ p.adb:14:31: info: initialization of "My_S1" proved, in call inlined at p.adb:38
 p.adb:14:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:38
 p.adb:17:22: info: initialization of "My_S2" proved
 p.adb:17:22: info: initialization of "My_S2" proved, in call inlined at p.adb:38
-p.adb:17:22: medium: assertion might fail, cannot prove My_S2 (2) /= 1, in call inlined at p.adb:38 (e.g. when My_S2 = (2 => 1, 3 => 2, 1 => -1, others => 0))
+p.adb:17:22: medium: assertion might fail, cannot prove My_S2 (2) /= 1, in call inlined at p.adb:38 (e.g. when My_S2 = (0 => 2, 1 => 2, 3 => 2, others => 1))
 p.adb:20:14: warning: subprogram "Third" has no effect
 p.adb:21:31: info: length check proved (CVC4: 1 VC), in call inlined at p.adb:39
 p.adb:22:31: info: initialization of "My_S1" proved

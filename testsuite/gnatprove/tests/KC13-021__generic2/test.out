@@ -20,7 +20,7 @@ p.adb:11:14: info: initialization of "Result.D" proved, in instantiation at q.ad
 p.adb:11:14: info: initialization of "Result.D" proved, in instantiation at q.ads:9
 q.adb:10:14: info: overflow check proved (CVC4: 1 VC)
 q.adb:21:13: info: initialization of "R1.D" proved
-q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (D => -2147483648, others => ?) and R2 = (D => -1, others => ?))
+q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (D => -1, others => ?) and R2 = (D => -2147483648, others => ?))
 q.adb:21:20: info: initialization of "R2.D" proved
 q.ads:5:18: warning: unused variable "J"
 q.ads:11:60: info: initialization of "X4" proved

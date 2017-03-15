@@ -26,7 +26,7 @@ evoting.adb:66:49: info: initialization of "current_candidate" proved
 evoting.adb:66:49: info: length check proved (CVC4: 1 VC)
 evoting.adb:66:52: info: initialization of "item" proved
 evoting.adb:66:52: info: length check proved (CVC4: 1 VC)
-evoting.adb:66:52: medium: range check might fail (e.g. when candidates = (others => (others => 0)))
+evoting.adb:66:52: medium: range check might fail (e.g. when candidates = (others => (others => 'NUL')))
 evoting.adb:66:60: info: initialization of "last" proved
 evoting.adb:69:07: warning: assuming "Close" has no effect on global items
 evoting.adb:69:07: warning: no Global contract available for "Close"
