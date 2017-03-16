@@ -982,22 +982,6 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Flavor;
 
-   ------------------
-   -- In_Main_Unit --
-   ------------------
-
-   function In_Main_Unit (E : Entity_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (E)
-         then Associated_Node_For_Itype (E)
-         else E);
-
-      CU : constant Node_Id := Enclosing_Lib_Unit_Node (Real_Node);
-
-   begin
-      return Unique_Defining_Entity (Unit (CU)) = Main_Unit_Entity;
-   end In_Main_Unit;
-
    ---------------
    -- Is_Action --
    ---------------

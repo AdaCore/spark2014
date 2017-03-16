@@ -366,10 +366,6 @@ package SPARK_Util is
    --  @return Same as [Spec_File_Name], but always return the file name of the
    --    body, if there is one.
 
-   function In_Main_Unit (E : Entity_Id) return Boolean;
-   --  @param E any entity
-   --  @return True iff E is in the body or spec of the currently analyzed unit
-
    function In_Internal_Unit (N : Node_Or_Entity_Id) return Boolean;
    --  Returns True if the given node or entity appears within the source text
    --  of an internal unit (i.e. within Ada, GNAT, Interfaces, System or within
