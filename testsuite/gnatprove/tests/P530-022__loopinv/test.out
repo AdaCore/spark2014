@@ -61,7 +61,7 @@ x86.adb:633:14: info: initialization of "Retval" proved
 x86.adb:660:17: medium: postcondition might fail, cannot prove HasMem64(Memory, RDI_Start+(I*8), RAX) (e.g. when I = 688627466721558528 and RAX = 18446744073709551360 and RDI_Start = 3714338647856644164)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX (e.g. when I = 73893572289579106 and RAX = 5837579525843670179 and RCX = 675302126959724425 and RCX_Start = 749195699249303532 and RDI_Start = 18446744073709551611)
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
-x86.adb:691:16: medium: precondition might fail
+x86.adb:691:16: info: precondition proved (CVC4: 6 VC; altergo: 2 VC)
 x86.adb:693:36: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:693:36: info: loop invariant preservation proved (altergo: 1 VC)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
