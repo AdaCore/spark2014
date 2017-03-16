@@ -972,73 +972,85 @@ package body Why.Gen.Records is
             declare
                Condition : W_Pred_Id := True_Pred;
                Discr     : Entity_Id;
+
             begin
+               --  Use private equality directly on simple private types
 
-               --  Compare discriminants
+               if Is_Simple_Private_Type (E) then
+                  Condition :=
+                    New_Call
+                      (Name => M_Main.Private_Bool_Eq,
+                       Typ  => EW_Bool_Type,
+                       Args => (1 => +A_Ident,
+                                2 => +B_Ident));
+               else
 
-               if Has_Discriminants (E) then
-                  Discr := First_Discriminant (E);
-                  while Present (Discr) loop
-                     if Is_Not_Hidden_Discriminant (Discr) then
-                        declare
-                           Discrs_Id  : constant W_Identifier_Id :=
-                             To_Ident (WNE_Rec_Split_Discrs);
-                           Discr_Id   : constant W_Identifier_Id :=
-                             (if Is_Root
-                              then To_Why_Id (Discr, Local => True, Rec => E)
-                              else To_Why_Id (Discr, Rec => Root));
-                           Comparison : constant W_Pred_Id :=
-                             New_Field_Equality
-                               (Field_Id     => Discr_Id,
-                                Enclosing_Id => Discrs_Id,
-                                Is_Private   => False,
-                                Field_Type   => Retysp (Etype (Discr)));
-                        begin
-                           Condition :=
-                             +New_And_Then_Expr
-                             (Domain => EW_Pred,
-                              Left   => +Condition,
-                              Right  => +Comparison);
-                        end;
-                     end if;
-                     Next_Discriminant (Discr);
+                  --  Compare discriminants
+
+                  if Has_Discriminants (E) then
+                     Discr := First_Discriminant (E);
+                     while Present (Discr) loop
+                        if Is_Not_Hidden_Discriminant (Discr) then
+                           declare
+                              Discrs_Id  : constant W_Identifier_Id :=
+                                To_Ident (WNE_Rec_Split_Discrs);
+                              Discr_Id   : constant W_Identifier_Id :=
+                                (if Is_Root then
+                                    To_Why_Id (Discr, Local => True, Rec => E)
+                                 else To_Why_Id (Discr, Rec => Root));
+                              Comparison : constant W_Pred_Id :=
+                                New_Field_Equality
+                                  (Field_Id     => Discr_Id,
+                                   Enclosing_Id => Discrs_Id,
+                                   Is_Private   => False,
+                                   Field_Type   => Retysp (Etype (Discr)));
+                           begin
+                              Condition :=
+                                +New_And_Then_Expr
+                                (Domain => EW_Pred,
+                                 Left   => +Condition,
+                                 Right  => +Comparison);
+                           end;
+                        end if;
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end if;
+
+                  --  Compare Fields
+
+                  for Comp of Get_Component_Set (E) loop
+                     declare
+                        Fields_Id      : constant W_Identifier_Id :=
+                          To_Ident (WNE_Rec_Split_Fields);
+                        Field_Id       : constant W_Identifier_Id :=
+                          To_Why_Id (Comp, Local => True, Rec => E);
+                        Comparison     : constant W_Pred_Id :=
+                          New_Field_Equality
+                            (Field_Id     => Field_Id,
+                             Enclosing_Id => Fields_Id,
+                             Is_Private   => Ekind (Comp) in Type_Kind,
+                             Field_Type   => Retysp (Etype (Comp)));
+                        Always_Present : constant Boolean :=
+                          not (Has_Discriminants (E))
+                          or else Ekind (Comp) /= E_Component;
+                     begin
+                        Condition :=
+                          +New_And_Then_Expr
+                          (Domain => EW_Pred,
+                           Left   => +Condition,
+                           Right  =>
+                             (if Always_Present then +Comparison
+                              else
+                                 New_Connection
+                                (Domain => EW_Pred,
+                                 Op     => EW_Imply,
+                                 Left   =>
+                                   +Discriminant_Check_Pred_Call
+                                   (Comp, A_Ident),
+                                 Right  => +Comparison)));
+                     end;
                   end loop;
                end if;
-
-               --  Compare Fields
-
-               for Comp of Get_Component_Set (E) loop
-                  declare
-                     Fields_Id  : constant W_Identifier_Id :=
-                       To_Ident (WNE_Rec_Split_Fields);
-                     Field_Id   : constant W_Identifier_Id :=
-                       To_Why_Id (Comp, Local => True, Rec => E);
-                     Comparison : constant W_Pred_Id :=
-                       New_Field_Equality
-                         (Field_Id     => Field_Id,
-                          Enclosing_Id => Fields_Id,
-                          Is_Private   => Ekind (Comp) in Type_Kind,
-                          Field_Type   => Retysp (Etype (Comp)));
-                     Always_Present : constant Boolean :=
-                       not (Has_Discriminants (E))
-                       or else Ekind (Comp) /= E_Component;
-                  begin
-                     Condition :=
-                       +New_And_Then_Expr
-                       (Domain => EW_Pred,
-                        Left   => +Condition,
-                        Right  =>
-                          (if Always_Present then +Comparison
-                           else
-                              New_Connection
-                             (Domain => EW_Pred,
-                              Op     => EW_Imply,
-                              Left   =>
-                                +Discriminant_Check_Pred_Call
-                                (Comp, A_Ident),
-                              Right  => +Comparison)));
-                  end;
-               end loop;
 
                Emit
                  (P,
@@ -1354,153 +1366,165 @@ package body Why.Gen.Records is
          Index_All  : Positive := 1;
 
       begin
-         --  Generate a record type for E's discriminants if E is a root type
-         --  and use Root's record type for discriminants otherwise.
+         --  Simple private types are translated directly as EW_Private_Type
 
-         if Num_Discrs > 0 then
-            declare
-               Discr_Name : constant W_Name_Id :=
-                 To_Name (WNE_Rec_Split_Discrs);
-               Discr      : Entity_Id := First_Discriminant (E);
-            begin
-               if Is_Root then
-                  while Present (Discr) loop
-                     if Is_Not_Hidden_Discriminant (Discr) then
-                        Binders_D (Index) :=
-                          (B_Name   =>
-                             To_Why_Id
-                               (Discr,
-                                Local => True,
-                                Rec   => Root,
-                                Typ   => EW_Abstract (Etype (Discr))),
-                           Ada_Node => Discr,
-                           others   => <>);
-                        Index := Index + 1;
-                     end if;
-                     Next_Discriminant (Discr);
-                  end loop;
+         if Is_Simple_Private_Type (E) then
+            Emit (P,
+                  New_Type_Decl
+                    (Name  => Ty_Name,
+                     Alias => EW_Private_Type));
+         else
 
-                  Emit_Record_Declaration (Section => P,
-                                           Name    => Discr_Name,
-                                           Binders => Binders_D);
+            --  Generate a record type for E's discriminants if E is a root
+            --  type and use Root's record type for discriminants otherwise.
 
-                  --  Generate a mutable record to hold elements of type
-                  --  __split_discrs, as well as an havoc function for it.
+            if Num_Discrs > 0 then
+               declare
+                  Discr_Name : constant W_Name_Id :=
+                    To_Name (WNE_Rec_Split_Discrs);
+                  Discr      : Entity_Id := First_Discriminant (E);
+               begin
+                  if Is_Root then
+                     while Present (Discr) loop
+                        if Is_Not_Hidden_Discriminant (Discr) then
+                           Binders_D (Index) :=
+                             (B_Name   =>
+                                To_Why_Id
+                                  (Discr,
+                                   Local => True,
+                                   Rec   => Root,
+                                   Typ   => EW_Abstract (Etype (Discr))),
+                              Ada_Node => Discr,
+                              others   => <>);
+                           Index := Index + 1;
+                        end if;
+                        Next_Discriminant (Discr);
+                     end loop;
 
-                  Emit_Ref_Type_Definition (File => P,
-                                            Name => Discr_Name);
-                  Emit
-                    (P,
-                     New_Havoc_Declaration (Name => Discr_Name));
+                     Emit_Record_Declaration (Section => P,
+                                              Name    => Discr_Name,
+                                              Binders => Binders_D);
+
+                     --  Generate a mutable record to hold elements of type
+                     --  __split_discrs, as well as an havoc function for it.
+
+                     Emit_Ref_Type_Definition (File => P,
+                                               Name => Discr_Name);
+                     Emit
+                       (P,
+                        New_Havoc_Declaration (Name => Discr_Name));
+                  end if;
+
+                  Binders_A (Index_All) :=
+                    (B_Name =>
+                       New_Identifier
+                         (Ada_Node => Empty,
+                          Name     => To_String (WNE_Rec_Split_Discrs),
+                          Typ      =>
+                            New_Type
+                              (Type_Kind  => EW_Abstract,
+                               Name       =>
+                                 (if not Is_Root then Get_Name
+                                    (E_Symb (Root, WNE_Rec_Split_Discrs))
+                                  else Discr_Name),
+                               Is_Mutable => False)),
+                     others => <>);
+                  Index_All := Index_All + 1;
+               end;
+            end if;
+
+            --  Generate a record type for E's normal components. This
+            --  includes:
+            --    . visible components of the type
+            --    . invisible components of parents in a derived type
+
+            if Num_Fields > 0
+              or else Is_Tagged_Type (E)
+            then
+               Index := 1;
+
+               for Field of Get_Component_Set (E) loop
+                  Binders_F (Index) :=
+                    (B_Name   =>
+                       To_Why_Id
+                         (Field,
+                          Rec   => E,
+                          Local => True,
+                          Typ   => W_Type_Of_Component (Field)),
+                     Ada_Node => Field,
+                     others   => <>);
+                  Index := Index + 1;
+               end loop;
+
+               --  For tagged types, add a field of type __private representing
+               --  the unknown extension components.
+
+               if Is_Tagged_Type (E) then
+                  Binders_F (Index) :=
+                    (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
+                     others => <>);
+                  Index := Index + 1;
                end if;
+
+               pragma Assert (Index = Binders_F'Last + 1);
+
+               Emit_Record_Declaration (Section      => P,
+                                        Name         =>
+                                          To_Name (WNE_Rec_Split_Fields),
+                                        Binders      => Binders_F,
+                                        SPARK_Record => True);
+
+               --  Generate a mutable record to hold elements of type
+               --  __split_fields, as well as an havoc function for it.
+
+               Emit_Ref_Type_Definition
+                 (File => P,
+                  Name => To_Name (WNE_Rec_Split_Fields));
+               Emit
+                 (P,
+                  New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
 
                Binders_A (Index_All) :=
                  (B_Name =>
-                    New_Identifier
-                      (Ada_Node => Empty,
-                       Name     => To_String (WNE_Rec_Split_Discrs),
-                       Typ      =>
-                         New_Type
-                           (Type_Kind  => EW_Abstract,
-                            Name       =>
-                              (if not Is_Root then Get_Name
-                                 (E_Symb (Root, WNE_Rec_Split_Discrs))
-                               else Discr_Name),
-                            Is_Mutable => False)),
+                    New_Identifier (Ada_Node => Empty,
+                                    Name     =>
+                                      To_String (WNE_Rec_Split_Fields),
+                                    Typ      =>
+                                      New_Type
+                                        (Type_Kind  => EW_Abstract,
+                                         Name       =>
+                                           To_Name (WNE_Rec_Split_Fields),
+                                         Is_Mutable => False)),
                   others => <>);
                Index_All := Index_All + 1;
-            end;
-         end if;
-
-         --  Generate a record type for E's normal components. This includes:
-         --    . visible components of the type
-         --    . invisible components of parents in a derived type
-
-         if Num_Fields > 0
-           or else Is_Tagged_Type (E)
-         then
-            Index := 1;
-
-            for Field of Get_Component_Set (E) loop
-               Binders_F (Index) :=
-                 (B_Name   =>
-                    To_Why_Id
-                      (Field,
-                       Rec   => E,
-                       Local => True,
-                       Typ   => W_Type_Of_Component (Field)),
-                  Ada_Node => Field,
-                  others   => <>);
-               Index := Index + 1;
-            end loop;
-
-            --  For tagged types, add a field of type __private representing
-            --  the unknown extension components.
-
-            if Is_Tagged_Type (E) then
-               Binders_F (Index) :=
-                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
-                  others => <>);
-               Index := Index + 1;
             end if;
 
-            pragma Assert (Index = Binders_F'Last + 1);
+            --  Additional record field for records with mutable discriminants
 
-            Emit_Record_Declaration (Section      => P,
-                                     Name         =>
-                                       To_Name (WNE_Rec_Split_Fields),
-                                     Binders      => Binders_F,
-                                     SPARK_Record => True);
+            if Is_Mutable then
+               Binders_A (Index_All) :=
+                 (B_Name =>
+                    New_Identifier (Name => To_String (WNE_Attr_Constrained),
+                                    Typ  => EW_Bool_Type),
+                  others => <>);
+               Index_All := Index_All + 1;
+            end if;
 
-            --  Generate a mutable record to hold elements of type
-            --  __split_fields, as well as an havoc function for it.
+            --  For tagged types, add a tag field of type int
 
-            Emit_Ref_Type_Definition
-              (File => P,
-               Name => To_Name (WNE_Rec_Split_Fields));
-            Emit
-              (P,
-               New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
+            if Is_Tagged_Type (E) then
+               Binders_A (Index_All) :=
+                 (B_Name => To_Local (E_Symb (E, WNE_Attr_Tag)),
+                  others => <>);
+               Index_All := Index_All + 1;
+            end if;
 
-            Binders_A (Index_All) :=
-              (B_Name =>
-                 New_Identifier (Ada_Node => Empty,
-                                 Name     => To_String (WNE_Rec_Split_Fields),
-                                 Typ      =>
-                                   New_Type
-                                     (Type_Kind  => EW_Abstract,
-                                      Name       =>
-                                        To_Name (WNE_Rec_Split_Fields),
-                                      Is_Mutable => False)),
-               others => <>);
-            Index_All := Index_All + 1;
+            pragma Assert (Index_All = Num_All + 1);
+
+            Emit_Record_Declaration (Section => P,
+                                     Name    => Ty_Name,
+                                     Binders => Binders_A);
          end if;
-
-         --  Additional record field for records with mutable discriminants
-
-         if Is_Mutable then
-            Binders_A (Index_All) :=
-              (B_Name =>
-                 New_Identifier (Name => To_String (WNE_Attr_Constrained),
-                                 Typ  => EW_Bool_Type),
-               others => <>);
-            Index_All := Index_All + 1;
-         end if;
-
-         --  For tagged types, add a tag field of type int
-
-         if Is_Tagged_Type (E) then
-            Binders_A (Index_All) :=
-              (B_Name => To_Local (E_Symb (E, WNE_Attr_Tag)),
-               others => <>);
-            Index_All := Index_All + 1;
-         end if;
-
-         pragma Assert (Index_All = Num_All + 1);
-
-         Emit_Record_Declaration (Section => P,
-                                  Name    => Ty_Name,
-                                  Binders => Binders_A);
       end Declare_Record_Type;
 
       ----------------------------------
@@ -1585,6 +1609,8 @@ package body Why.Gen.Records is
       --  functions, because the former may be used in the latter
 
       if not Is_Root then
+         pragma Assert (not Is_Simple_Private_Type (E));
+
          if Is_Tagged_Type (E) then
             Declare_Extraction_Functions_For_Extension;
          end if;
@@ -1614,9 +1640,14 @@ package body Why.Gen.Records is
                Def         => +A_Ident));
       end if;
 
-      Declare_Protected_Access_Functions;
-      Declare_Equality_Function;
+      --  No need to declare protected access functions for simple private
+      --  types.
 
+      if not Is_Simple_Private_Type (E) then
+         Declare_Protected_Access_Functions;
+      end if;
+
+      Declare_Equality_Function;
    end Declare_Rep_Record_Type;
 
    ------------------------
@@ -2690,10 +2721,10 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
      (New_Call
-        (Ada_Node => Ada_Node,
-         Name     => E_Symb (Ty, WNE_Rec_Split_Fields),
-         Args     => (1 => Name),
-         Domain   => Domain));
+         (Ada_Node => Ada_Node,
+          Name     => E_Symb (Ty, WNE_Rec_Split_Fields),
+          Args     => (1 => Name),
+          Domain   => Domain));
 
    -----------------------
    -- New_Fields_Update --
@@ -2707,6 +2738,7 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
+
      (New_Record_Update
         (Ada_Node => Ada_Node,
          Name     => Name,
@@ -3046,10 +3078,6 @@ package body Why.Gen.Records is
          Associations => Associations,
          Typ          => EW_Abstract (Ty));
    end Record_From_Split_Form;
-
-   ----------------------------
-   -- Record_From_Split_Form --
-   ----------------------------
 
    function Record_From_Split_Form
      (I           : Item_Type;

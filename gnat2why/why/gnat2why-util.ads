@@ -29,6 +29,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
+with Gnat2Why.Tables;       use Gnat2Why.Tables;
 with Sinfo;                 use Sinfo;
 with Snames;                use Snames;
 with SPARK_Util;            use SPARK_Util;
@@ -379,6 +380,16 @@ package Gnat2Why.Util is
    --       (use Count_Why_Regular_Fields)
    --     - A field attr__constrained if E's discriminants have default values
    --     - A field __tag if E is tagged
+
+   function Is_Simple_Private_Type (E : Entity_Id) return Boolean with
+     Pre  => Is_Type (E),
+     Post => Is_Simple_Private_Type'Result =
+       (Has_Private_Type (E)
+        and then Count_Why_Top_Level_Fields (Retysp (E)) = 1
+        and then Count_Why_Regular_Fields (Retysp (E)) = 1
+        and then Is_Type (Get_Component_Set (E).First_Element));
+   --  @param E type.
+   --  @return True if E is a private type with only a single private field.
 
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,

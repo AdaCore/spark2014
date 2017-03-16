@@ -30,7 +30,6 @@ with Exp_Util;               use Exp_Util;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
@@ -1232,6 +1231,18 @@ package body Gnat2Why.Util is
          return True;
       end if;
    end Is_Mutable_In_Why;
+
+   ----------------------------
+   -- Is_Simple_Private_Type --
+   ----------------------------
+
+   function Is_Simple_Private_Type (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Retysp (E);
+   begin
+      return Is_Private_Type (Ty)
+        and then not Has_Discriminants (Ty)
+        and then not Is_Tagged_Type (Ty);
+   end Is_Simple_Private_Type;
 
    -------------------------
    -- Make_Empty_Why_File --
