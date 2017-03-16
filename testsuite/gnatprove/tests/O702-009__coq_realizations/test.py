@@ -10,7 +10,8 @@ why3_share = os.path.join(spark_install_path(), 'share', 'why3')
 coq_libs_dir = os.path.join(why3_share, 'libs', 'coq')
 driver_dir = os.path.join(why3_share, 'drivers')
 why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3realize')
-realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1']
+gp_realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1']
+am_realized = ['Rep_Proj_Base', 'Rep_Proj_BVGen', 'Rep_Proj_Int', 'Rep_Proj_ltBVGen']
 realize_subdir = 'realize'
 
 def copy_spark_why_files():
@@ -94,14 +95,18 @@ def compile_coq_files():
 
 
 def realize_theories():
-    for real in realized:
+    for real in gp_realized:
         process = Run([why3_bin, '-L', '.', '-T', '_gnatprove_standard.' + real, '-o',
+            realize_subdir, '-D', os.path.join(driver_dir, 'coq-realize.drv')])
+        print process.out
+    for real in am_realized:
+        process = Run([why3_bin, '-L', '.', '-T', 'ada__model.' + real, '-o',
             realize_subdir, '-D', os.path.join(driver_dir, 'coq-realize.drv')])
         print process.out
 
 def check_realizations():
     os.chdir(realize_subdir)
-    for real in realized:
+    for real in gp_realized+am_realized:
         process = Run(['coqc', '-R', os.path.join('..', 'coq'), 'Why3', real + '.v'])
         lines = process.out.splitlines()
         lines = grep(".*Grammar extension", lines, invert=True)
