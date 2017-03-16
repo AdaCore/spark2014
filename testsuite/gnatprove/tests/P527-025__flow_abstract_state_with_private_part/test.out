@@ -1,3 +1,0 @@
-p-child.adb:15:09: missing refinement
-p-child.adb:28:09: missing refinement
-gnatprove: error during generation of Global contracts
