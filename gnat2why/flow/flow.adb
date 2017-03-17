@@ -1566,12 +1566,10 @@ package body Flow is
       --  Check that classwide contracts conform to the legality rules laid
       --  out in SRM 6.1.6.
       Success := True;
-      for E of Marked_Entities loop
-         --  ??? why Marked_Entities and not Entities_To_Translate?
+      for E of Entities_To_Translate loop
          if Is_Subprogram (E)
            and then SPARK_Util.Subprograms.Analysis_Requested
              (E, With_Inlined => True)
-           and then Entity_In_SPARK (E)
          then
             Check_Classwide_Contracts (E, Success);
          end if;

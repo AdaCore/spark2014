@@ -564,7 +564,7 @@ package body Gnat2Why.Driver is
 
    procedure Generate_Assumptions is
    begin
-      for E of Marked_Entities loop
+      for E of Entities_To_Translate loop
          case Ekind (E) is
             when Entry_Kind
                | E_Function

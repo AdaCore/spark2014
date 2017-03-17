@@ -1282,7 +1282,7 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             --  First collect SPARK-compliant protected operations in the
             --  current compilation unit.
-            for E of Marked_Entities loop
+            for E of Entities_To_Translate loop
                if (Ekind (E) = E_Entry
                    or else (Ekind (E) in E_Function | E_Procedure
                             and then Convention (E) = Convention_Protected))
@@ -1350,11 +1350,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  A short alias for a long name
 
          begin
-            for E of Marked_Entities loop
-               if Ekind (E) in E_Function | E_Procedure | E_Entry
-                 and then Entity_In_SPARK (E)
-                 --  ??? perhaps also check Entity_Spec_In_SPARK (E)
-               then
+            for E of Entities_To_Translate loop
+               if Ekind (E) in E_Function | E_Procedure | E_Entry then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
                   begin
@@ -1412,10 +1409,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  A short alias for a long name
 
          begin
-            for E of Marked_Entities loop
-               if Ekind (E) in E_Function | E_Procedure | E_Entry
-                 and then Entity_In_SPARK (E)
-               then
+            for E of Entities_To_Translate loop
+               if Ekind (E) in E_Function | E_Procedure | E_Entry then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
                   begin
@@ -1489,7 +1484,7 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             --  First collect SPARK-compliant protected operations, task types
             --  and main-like subprograms in the current compilation unit.
-            for E of Marked_Entities loop
+            for E of Entities_To_Translate loop
                if (case Ekind (E) is
                       when E_Entry | E_Task_Type =>
                          True,
