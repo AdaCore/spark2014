@@ -3223,6 +3223,9 @@ package body Flow_Utility is
 
       S := Node_Sets.Empty_Set;
       for E of Marked_Entities loop
+         --  ??? we should iterate over Entities_To_Translate, which only
+         --  contains entities in SPARK; currently we iterate over
+         --  Marked_Entities, which includes types not in SPARK.
          if Is_Record_Type (E)
            or else Ekind (E) in E_Protected_Type | E_Task_Type
          then
