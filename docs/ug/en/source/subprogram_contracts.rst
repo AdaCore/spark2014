@@ -429,7 +429,7 @@ global variable that is partially written by a subprogram depends on its input
 value (see :ref:`Data Initialization Policy`).
 
 When the output value of a parameter or global variable depends on its input
-value, the corresponding flow dependency can use the shorthand symbol ``*`` to
+value, the corresponding flow dependency can use the shorthand symbol ``+`` to
 denote that a variable's output value depends on the variable's input value
 plus any other input listed. For example, the flow dependencies of
 ``Add_To_Total`` above can be specified equivalently:
