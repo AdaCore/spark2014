@@ -126,7 +126,9 @@ procedure SPARK_Memcached_Wrapper is
    begin
       File := Open_Read (Fn);
 
+      pragma Warnings (Off, "call to obsolescent procedure");
       Read (File);
+      pragma Warnings (On, "call to obsolescent procedure");
 
       declare
          S : String (1 .. Integer (Length (File)));
