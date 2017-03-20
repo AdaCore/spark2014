@@ -259,10 +259,6 @@ package Flow is
             --  subprogram without formal parameters (global parameters are
             --  allowed).
 
-            Last_Statement_Is_Raise : Boolean;
-            --  True if the last statement of the subprogram is an
-            --  N_Raise_Statement.
-
             Global_N          : Node_Id;
             Refined_Global_N  : Node_Id;
             Depends_N         : Node_Id;
