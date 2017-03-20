@@ -121,25 +121,26 @@ procedure SPARK_Memcached_Wrapper is
 
    procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String) is
       use GNATCOLL.Mmap;
-      File : Mapped_File;
+      File   : Mapped_File;
+      Region : Mapped_Region;
 
    begin
       File := Open_Read (Fn);
 
-      pragma Warnings (Off, "call to obsolescent procedure");
-      Read (File);
-      pragma Warnings (On, "call to obsolescent procedure");
+      Read (File, Region);
 
       declare
          S : String (1 .. Integer (Length (File)));
-         for S'Address use Data (File).all'Address;
+         for S'Address use Data (Region).all'Address;
          --  A fake string directly mapped onto the file contents
 
       begin
          GNAT.SHA1.Update (C, S);
       end;
 
-      GNATCOLL.Mmap.Close (File);
+      Free (Region);
+
+      Close (File);
    end Hash_File;
 
    -----------------
