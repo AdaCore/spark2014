@@ -44,6 +44,17 @@ term.ads:11:04: info: function contract not available for proof ("<=" may not re
 term.ads:11:04: info: function contract not available for proof ("<=" may not return)
 term.ads:11:04: info: function contract not available for proof ("<=" may not return)
 term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("<=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
+term.ads:11:04: info: function contract not available for proof ("=" may not return)
 term.ads:11:04: info: function contract not available for proof ("=" may not return)
 term.ads:11:04: info: function contract not available for proof ("=" may not return)
 term.ads:11:04: info: function contract not available for proof ("=" may not return)
@@ -201,6 +212,10 @@ term.ads:11:04: info: function contract not available for proof ("Elements" may 
 term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
 term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
 term.ads:11:04: info: function contract not available for proof ("Elements" may not return)
+term.ads:11:04: info: function contract not available for proof ("Elements_Equal_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Equal_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Equal_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Equal_Except" may not return)
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
@@ -222,6 +237,30 @@ term.ads:11:04: info: function contract not available for proof ("Find" may not 
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
 term.ads:11:04: info: function contract not available for proof ("Find" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: function contract not available for proof ("Get" may not return)
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
@@ -231,6 +270,23 @@ term.ads:11:04: info: function contract not available for proof ("Has_Element" m
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
 term.ads:11:04: info: function contract not available for proof ("Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
+term.ads:11:04: info: function contract not available for proof ("Has_Key" may not return)
 term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
 term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
 term.ads:11:04: info: function contract not available for proof ("Included_Except" may not return)
@@ -257,7 +313,43 @@ term.ads:11:04: info: function contract not available for proof ("Intersection" 
 term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
 term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
 term.ads:11:04: info: function contract not available for proof ("Intersection" may not return)
+term.ads:11:04: info: function contract not available for proof ("Is_Empty" may not return)
+term.ads:11:04: info: function contract not available for proof ("Is_Empty" may not return)
+term.ads:11:04: info: function contract not available for proof ("Is_Empty" may not return)
 term.ads:11:04: info: function contract not available for proof ("Is_Singleton" may not return)
+term.ads:11:04: info: function contract not available for proof ("Iter_Has_Element" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Keys_Included_Except" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
+term.ads:11:04: info: function contract not available for proof ("Last" may not return)
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
@@ -305,6 +397,24 @@ term.ads:11:04: info: function contract not available for proof ("Length" is rec
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: function contract not available for proof ("Length" may not return)
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
@@ -314,6 +424,7 @@ term.ads:11:04: info: function contract not available for proof ("Mapping_Preser
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
 term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved" may not return)
+term.ads:11:04: info: function contract not available for proof ("Mapping_Preserved_Except" may not return)
 term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Model" is recursive)
@@ -478,6 +589,74 @@ term.ads:11:04: info: function contract not available for proof ("Positions" may
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
 term.ads:11:04: info: function contract not available for proof ("Positions" may not return)
+term.ads:11:04: info: function contract not available for proof ("Range_Equal" may not return)
+term.ads:11:04: info: function contract not available for proof ("Range_Equal" may not return)
+term.ads:11:04: info: function contract not available for proof ("Range_Shifted" may not return)
+term.ads:11:04: info: function contract not available for proof ("Range_Shifted" may not return)
+term.ads:11:04: info: function contract not available for proof ("Same_Keys" may not return)
+term.ads:11:04: info: function contract not available for proof ("Witness" may not return)
+term.ads:11:04: info: function contract not available for proof ("Witness" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Get" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" is recursive)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("Length" may not return)
+term.ads:11:04: info: implicit function contract not available for proof ("W_Get" may not return)
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1001
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1003
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1004
@@ -491,6 +670,62 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:1016
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1017
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1018
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1019
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
+term.ads:11:04: info: in instantiation at a-cfhase.ads:102
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1023
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1024
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1025
@@ -515,21 +750,30 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:1056
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1061
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1065
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1066
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1066
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1071
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1074
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1074
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1074
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1079
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1080
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1080
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1081
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1081
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1086
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1089
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1089
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1089
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1094
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1095
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1095
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1096
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1096
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1107
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1107
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1113
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1113
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1114
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1114
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1115
@@ -537,31 +781,106 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:1120
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1124
 term.ads:11:04: info: in instantiation at a-cfhase.ads:1131
+term.ads:11:04: info: in instantiation at a-cfhase.ads:1131
+term.ads:11:04: info: in instantiation at a-cfhase.ads:127
+term.ads:11:04: info: in instantiation at a-cfhase.ads:129
+term.ads:11:04: info: in instantiation at a-cfhase.ads:140
+term.ads:11:04: info: in instantiation at a-cfhase.ads:141
 term.ads:11:04: info: in instantiation at a-cfhase.ads:141
 term.ads:11:04: info: in instantiation at a-cfhase.ads:142
+term.ads:11:04: info: in instantiation at a-cfhase.ads:142
+term.ads:11:04: info: in instantiation at a-cfhase.ads:143
+term.ads:11:04: info: in instantiation at a-cfhase.ads:156
+term.ads:11:04: info: in instantiation at a-cfhase.ads:157
 term.ads:11:04: info: in instantiation at a-cfhase.ads:157
 term.ads:11:04: info: in instantiation at a-cfhase.ads:158
+term.ads:11:04: info: in instantiation at a-cfhase.ads:158
 term.ads:11:04: info: in instantiation at a-cfhase.ads:159
+term.ads:11:04: info: in instantiation at a-cfhase.ads:159
+term.ads:11:04: info: in instantiation at a-cfhase.ads:160
+term.ads:11:04: info: in instantiation at a-cfhase.ads:175
+term.ads:11:04: info: in instantiation at a-cfhase.ads:176
 term.ads:11:04: info: in instantiation at a-cfhase.ads:176
 term.ads:11:04: info: in instantiation at a-cfhase.ads:177
+term.ads:11:04: info: in instantiation at a-cfhase.ads:177
 term.ads:11:04: info: in instantiation at a-cfhase.ads:178
+term.ads:11:04: info: in instantiation at a-cfhase.ads:178
+term.ads:11:04: info: in instantiation at a-cfhase.ads:179
 term.ads:11:04: info: in instantiation at a-cfhase.ads:181
+term.ads:11:04: info: in instantiation at a-cfhase.ads:181
+term.ads:11:04: info: in instantiation at a-cfhase.ads:182
 term.ads:11:04: info: in instantiation at a-cfhase.ads:183
+term.ads:11:04: info: in instantiation at a-cfhase.ads:183
+term.ads:11:04: info: in instantiation at a-cfhase.ads:184
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:187
+term.ads:11:04: info: in instantiation at a-cfhase.ads:214
 term.ads:11:04: info: in instantiation at a-cfhase.ads:218
+term.ads:11:04: info: in instantiation at a-cfhase.ads:224
+term.ads:11:04: info: in instantiation at a-cfhase.ads:224
+term.ads:11:04: info: in instantiation at a-cfhase.ads:225
+term.ads:11:04: info: in instantiation at a-cfhase.ads:225
+term.ads:11:04: info: in instantiation at a-cfhase.ads:241
+term.ads:11:04: info: in instantiation at a-cfhase.ads:248
+term.ads:11:04: info: in instantiation at a-cfhase.ads:248
+term.ads:11:04: info: in instantiation at a-cfhase.ads:249
+term.ads:11:04: info: in instantiation at a-cfhase.ads:249
 term.ads:11:04: info: in instantiation at a-cfhase.ads:258
+term.ads:11:04: info: in instantiation at a-cfhase.ads:258
+term.ads:11:04: info: in instantiation at a-cfhase.ads:268
 term.ads:11:04: info: in instantiation at a-cfhase.ads:268
 term.ads:11:04: info: in instantiation at a-cfhase.ads:273
 term.ads:11:04: info: in instantiation at a-cfhase.ads:273
 term.ads:11:04: info: in instantiation at a-cfhase.ads:277
 term.ads:11:04: info: in instantiation at a-cfhase.ads:278
+term.ads:11:04: info: in instantiation at a-cfhase.ads:280
 term.ads:11:04: info: in instantiation at a-cfhase.ads:281
 term.ads:11:04: info: in instantiation at a-cfhase.ads:286
 term.ads:11:04: info: in instantiation at a-cfhase.ads:287
+term.ads:11:04: info: in instantiation at a-cfhase.ads:287
 term.ads:11:04: info: in instantiation at a-cfhase.ads:289
 term.ads:11:04: info: in instantiation at a-cfhase.ads:290
+term.ads:11:04: info: in instantiation at a-cfhase.ads:292
+term.ads:11:04: info: in instantiation at a-cfhase.ads:293
+term.ads:11:04: info: in instantiation at a-cfhase.ads:304
 term.ads:11:04: info: in instantiation at a-cfhase.ads:310
+term.ads:11:04: info: in instantiation at a-cfhase.ads:310
+term.ads:11:04: info: in instantiation at a-cfhase.ads:318
 term.ads:11:04: info: in instantiation at a-cfhase.ads:332
 term.ads:11:04: info: in instantiation at a-cfhase.ads:333
+term.ads:11:04: info: in instantiation at a-cfhase.ads:334
+term.ads:11:04: info: in instantiation at a-cfhase.ads:334
 term.ads:11:04: info: in instantiation at a-cfhase.ads:334
 term.ads:11:04: info: in instantiation at a-cfhase.ads:334
 term.ads:11:04: info: in instantiation at a-cfhase.ads:352
@@ -577,6 +896,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:366
 term.ads:11:04: info: in instantiation at a-cfhase.ads:366
 term.ads:11:04: info: in instantiation at a-cfhase.ads:367
 term.ads:11:04: info: in instantiation at a-cfhase.ads:368
+term.ads:11:04: info: in instantiation at a-cfhase.ads:368
 term.ads:11:04: info: in instantiation at a-cfhase.ads:381
 term.ads:11:04: info: in instantiation at a-cfhase.ads:381
 term.ads:11:04: info: in instantiation at a-cfhase.ads:382
@@ -585,6 +905,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:387
 term.ads:11:04: info: in instantiation at a-cfhase.ads:388
 term.ads:11:04: info: in instantiation at a-cfhase.ads:389
 term.ads:11:04: info: in instantiation at a-cfhase.ads:393
+term.ads:11:04: info: in instantiation at a-cfhase.ads:397
 term.ads:11:04: info: in instantiation at a-cfhase.ads:397
 term.ads:11:04: info: in instantiation at a-cfhase.ads:397
 term.ads:11:04: info: in instantiation at a-cfhase.ads:401
@@ -598,8 +919,12 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:409
 term.ads:11:04: info: in instantiation at a-cfhase.ads:418
 term.ads:11:04: info: in instantiation at a-cfhase.ads:418
 term.ads:11:04: info: in instantiation at a-cfhase.ads:419
+term.ads:11:04: info: in instantiation at a-cfhase.ads:419
+term.ads:11:04: info: in instantiation at a-cfhase.ads:420
 term.ads:11:04: info: in instantiation at a-cfhase.ads:420
 term.ads:11:04: info: in instantiation at a-cfhase.ads:431
+term.ads:11:04: info: in instantiation at a-cfhase.ads:434
+term.ads:11:04: info: in instantiation at a-cfhase.ads:434
 term.ads:11:04: info: in instantiation at a-cfhase.ads:434
 term.ads:11:04: info: in instantiation at a-cfhase.ads:434
 term.ads:11:04: info: in instantiation at a-cfhase.ads:443
@@ -614,10 +939,12 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:460
 term.ads:11:04: info: in instantiation at a-cfhase.ads:461
 term.ads:11:04: info: in instantiation at a-cfhase.ads:462
 term.ads:11:04: info: in instantiation at a-cfhase.ads:463
+term.ads:11:04: info: in instantiation at a-cfhase.ads:468
 term.ads:11:04: info: in instantiation at a-cfhase.ads:469
 term.ads:11:04: info: in instantiation at a-cfhase.ads:470
 term.ads:11:04: info: in instantiation at a-cfhase.ads:471
 term.ads:11:04: info: in instantiation at a-cfhase.ads:472
+term.ads:11:04: info: in instantiation at a-cfhase.ads:474
 term.ads:11:04: info: in instantiation at a-cfhase.ads:474
 term.ads:11:04: info: in instantiation at a-cfhase.ads:478
 term.ads:11:04: info: in instantiation at a-cfhase.ads:480
@@ -637,6 +964,8 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:508
 term.ads:11:04: info: in instantiation at a-cfhase.ads:510
 term.ads:11:04: info: in instantiation at a-cfhase.ads:510
 term.ads:11:04: info: in instantiation at a-cfhase.ads:511
+term.ads:11:04: info: in instantiation at a-cfhase.ads:511
+term.ads:11:04: info: in instantiation at a-cfhase.ads:512
 term.ads:11:04: info: in instantiation at a-cfhase.ads:512
 term.ads:11:04: info: in instantiation at a-cfhase.ads:519
 term.ads:11:04: info: in instantiation at a-cfhase.ads:523
@@ -650,6 +979,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:536
 term.ads:11:04: info: in instantiation at a-cfhase.ads:537
 term.ads:11:04: info: in instantiation at a-cfhase.ads:538
 term.ads:11:04: info: in instantiation at a-cfhase.ads:539
+term.ads:11:04: info: in instantiation at a-cfhase.ads:540
 term.ads:11:04: info: in instantiation at a-cfhase.ads:541
 term.ads:11:04: info: in instantiation at a-cfhase.ads:542
 term.ads:11:04: info: in instantiation at a-cfhase.ads:547
@@ -668,6 +998,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:565
 term.ads:11:04: info: in instantiation at a-cfhase.ads:566
 term.ads:11:04: info: in instantiation at a-cfhase.ads:567
 term.ads:11:04: info: in instantiation at a-cfhase.ads:568
+term.ads:11:04: info: in instantiation at a-cfhase.ads:569
 term.ads:11:04: info: in instantiation at a-cfhase.ads:570
 term.ads:11:04: info: in instantiation at a-cfhase.ads:571
 term.ads:11:04: info: in instantiation at a-cfhase.ads:572
@@ -680,8 +1011,11 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:587
 term.ads:11:04: info: in instantiation at a-cfhase.ads:591
 term.ads:11:04: info: in instantiation at a-cfhase.ads:591
 term.ads:11:04: info: in instantiation at a-cfhase.ads:595
+term.ads:11:04: info: in instantiation at a-cfhase.ads:595
+term.ads:11:04: info: in instantiation at a-cfhase.ads:599
 term.ads:11:04: info: in instantiation at a-cfhase.ads:600
 term.ads:11:04: info: in instantiation at a-cfhase.ads:601
+term.ads:11:04: info: in instantiation at a-cfhase.ads:602
 term.ads:11:04: info: in instantiation at a-cfhase.ads:602
 term.ads:11:04: info: in instantiation at a-cfhase.ads:602
 term.ads:11:04: info: in instantiation at a-cfhase.ads:607
@@ -695,6 +1029,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:620
 term.ads:11:04: info: in instantiation at a-cfhase.ads:621
 term.ads:11:04: info: in instantiation at a-cfhase.ads:622
 term.ads:11:04: info: in instantiation at a-cfhase.ads:623
+term.ads:11:04: info: in instantiation at a-cfhase.ads:624
 term.ads:11:04: info: in instantiation at a-cfhase.ads:625
 term.ads:11:04: info: in instantiation at a-cfhase.ads:626
 term.ads:11:04: info: in instantiation at a-cfhase.ads:627
@@ -703,10 +1038,13 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:636
 term.ads:11:04: info: in instantiation at a-cfhase.ads:636
 term.ads:11:04: info: in instantiation at a-cfhase.ads:637
 term.ads:11:04: info: in instantiation at a-cfhase.ads:641
+term.ads:11:04: info: in instantiation at a-cfhase.ads:641
 term.ads:11:04: info: in instantiation at a-cfhase.ads:646
 term.ads:11:04: info: in instantiation at a-cfhase.ads:646
+term.ads:11:04: info: in instantiation at a-cfhase.ads:647
 term.ads:11:04: info: in instantiation at a-cfhase.ads:648
 term.ads:11:04: info: in instantiation at a-cfhase.ads:649
+term.ads:11:04: info: in instantiation at a-cfhase.ads:650
 term.ads:11:04: info: in instantiation at a-cfhase.ads:650
 term.ads:11:04: info: in instantiation at a-cfhase.ads:650
 term.ads:11:04: info: in instantiation at a-cfhase.ads:654
@@ -714,6 +1052,8 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:659
 term.ads:11:04: info: in instantiation at a-cfhase.ads:660
 term.ads:11:04: info: in instantiation at a-cfhase.ads:660
 term.ads:11:04: info: in instantiation at a-cfhase.ads:661
+term.ads:11:04: info: in instantiation at a-cfhase.ads:661
+term.ads:11:04: info: in instantiation at a-cfhase.ads:662
 term.ads:11:04: info: in instantiation at a-cfhase.ads:662
 term.ads:11:04: info: in instantiation at a-cfhase.ads:667
 term.ads:11:04: info: in instantiation at a-cfhase.ads:671
@@ -726,6 +1066,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:680
 term.ads:11:04: info: in instantiation at a-cfhase.ads:681
 term.ads:11:04: info: in instantiation at a-cfhase.ads:682
 term.ads:11:04: info: in instantiation at a-cfhase.ads:683
+term.ads:11:04: info: in instantiation at a-cfhase.ads:684
 term.ads:11:04: info: in instantiation at a-cfhase.ads:685
 term.ads:11:04: info: in instantiation at a-cfhase.ads:686
 term.ads:11:04: info: in instantiation at a-cfhase.ads:687
@@ -742,6 +1083,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:710
 term.ads:11:04: info: in instantiation at a-cfhase.ads:711
 term.ads:11:04: info: in instantiation at a-cfhase.ads:712
 term.ads:11:04: info: in instantiation at a-cfhase.ads:713
+term.ads:11:04: info: in instantiation at a-cfhase.ads:714
 term.ads:11:04: info: in instantiation at a-cfhase.ads:715
 term.ads:11:04: info: in instantiation at a-cfhase.ads:716
 term.ads:11:04: info: in instantiation at a-cfhase.ads:717
@@ -749,6 +1091,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:721
 term.ads:11:04: info: in instantiation at a-cfhase.ads:724
 term.ads:11:04: info: in instantiation at a-cfhase.ads:728
 term.ads:11:04: info: in instantiation at a-cfhase.ads:728
+term.ads:11:04: info: in instantiation at a-cfhase.ads:729
 term.ads:11:04: info: in instantiation at a-cfhase.ads:729
 term.ads:11:04: info: in instantiation at a-cfhase.ads:733
 term.ads:11:04: info: in instantiation at a-cfhase.ads:733
@@ -761,6 +1104,7 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:742
 term.ads:11:04: info: in instantiation at a-cfhase.ads:743
 term.ads:11:04: info: in instantiation at a-cfhase.ads:744
 term.ads:11:04: info: in instantiation at a-cfhase.ads:745
+term.ads:11:04: info: in instantiation at a-cfhase.ads:746
 term.ads:11:04: info: in instantiation at a-cfhase.ads:747
 term.ads:11:04: info: in instantiation at a-cfhase.ads:748
 term.ads:11:04: info: in instantiation at a-cfhase.ads:754
@@ -879,6 +1223,20 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
+term.ads:11:04: info: in instantiation at a-cfhase.ads:90
 term.ads:11:04: info: in instantiation at a-cfhase.ads:900
 term.ads:11:04: info: in instantiation at a-cfhase.ads:901
 term.ads:11:04: info: in instantiation at a-cfhase.ads:901
@@ -938,21 +1296,63 @@ term.ads:11:04: info: in instantiation at a-cfhase.ads:994
 term.ads:11:04: info: in instantiation at a-cfhase.ads:996
 term.ads:11:04: info: in instantiation at a-cfhase.ads:997
 term.ads:11:04: info: in instantiation at a-cfhase.ads:997
+term.ads:11:04: info: in instantiation at a-cofuma.ads:114
+term.ads:11:04: info: in instantiation at a-cofuma.ads:114
+term.ads:11:04: info: in instantiation at a-cofuma.ads:123
+term.ads:11:04: info: in instantiation at a-cofuma.ads:124
+term.ads:11:04: info: in instantiation at a-cofuma.ads:125
+term.ads:11:04: info: in instantiation at a-cofuma.ads:141
+term.ads:11:04: info: in instantiation at a-cofuma.ads:150
+term.ads:11:04: info: in instantiation at a-cofuma.ads:151
+term.ads:11:04: info: in instantiation at a-cofuma.ads:166
+term.ads:11:04: info: in instantiation at a-cofuma.ads:183
+term.ads:11:04: info: in instantiation at a-cofuma.ads:198
+term.ads:11:04: info: in instantiation at a-cofuma.ads:199
+term.ads:11:04: info: in instantiation at a-cofuma.ads:217
+term.ads:11:04: info: in instantiation at a-cofuma.ads:218
+term.ads:11:04: info: in instantiation at a-cofuma.ads:236
+term.ads:11:04: info: in instantiation at a-cofuma.ads:237
+term.ads:11:04: info: in instantiation at a-cofuma.ads:239
+term.ads:11:04: info: in instantiation at a-cofuma.ads:240
+term.ads:11:04: info: in instantiation at a-cofuma.ads:241
+term.ads:11:04: info: in instantiation at a-cofuma.ads:242
+term.ads:11:04: info: in instantiation at a-cofuma.ads:243
+term.ads:11:04: info: in instantiation at a-cofuma.ads:254
+term.ads:11:04: info: in instantiation at a-cofuma.ads:256
+term.ads:11:04: info: in instantiation at a-cofuma.ads:257
+term.ads:11:04: info: in instantiation at a-cofuma.ads:258
+term.ads:11:04: info: in instantiation at a-cofuma.ads:259
+term.ads:11:04: info: in instantiation at a-cofuma.ads:279
+term.ads:11:04: info: in instantiation at a-cofuma.ads:51
+term.ads:11:04: info: in instantiation at a-cofuma.ads:51
+term.ads:11:04: info: in instantiation at a-cofuma.ads:88
+term.ads:11:04: info: in instantiation at a-cofuma.ads:94
+term.ads:11:04: info: in instantiation at a-cofuma.ads:94
+term.ads:11:04: info: in instantiation at a-cofuma.ads:97
 term.ads:11:04: info: in instantiation at a-cofuse.ads:100
+term.ads:11:04: info: in instantiation at a-cofuse.ads:109
 term.ads:11:04: info: in instantiation at a-cofuse.ads:124
 term.ads:11:04: info: in instantiation at a-cofuse.ads:138
 term.ads:11:04: info: in instantiation at a-cofuse.ads:151
 term.ads:11:04: info: in instantiation at a-cofuse.ads:176
 term.ads:11:04: info: in instantiation at a-cofuse.ads:184
 term.ads:11:04: info: in instantiation at a-cofuse.ads:191
+term.ads:11:04: info: in instantiation at a-cofuse.ads:191
 term.ads:11:04: info: in instantiation at a-cofuse.ads:192
+term.ads:11:04: info: in instantiation at a-cofuse.ads:192
+term.ads:11:04: info: in instantiation at a-cofuse.ads:193
 term.ads:11:04: info: in instantiation at a-cofuse.ads:194
+term.ads:11:04: info: in instantiation at a-cofuse.ads:194
+term.ads:11:04: info: in instantiation at a-cofuse.ads:195
 term.ads:11:04: info: in instantiation at a-cofuse.ads:196
 term.ads:11:04: info: in instantiation at a-cofuse.ads:210
+term.ads:11:04: info: in instantiation at a-cofuse.ads:211
+term.ads:11:04: info: in instantiation at a-cofuse.ads:213
 term.ads:11:04: info: in instantiation at a-cofuse.ads:214
 term.ads:11:04: info: in instantiation at a-cofuse.ads:215
 term.ads:11:04: info: in instantiation at a-cofuse.ads:216
 term.ads:11:04: info: in instantiation at a-cofuse.ads:222
+term.ads:11:04: info: in instantiation at a-cofuse.ads:224
 term.ads:11:04: info: in instantiation at a-cofuse.ads:225
 term.ads:11:04: info: in instantiation at a-cofuse.ads:226
 term.ads:11:04: info: in instantiation at a-cofuse.ads:227
@@ -960,11 +1360,72 @@ term.ads:11:04: info: in instantiation at a-cofuse.ads:234
 term.ads:11:04: info: in instantiation at a-cofuse.ads:235
 term.ads:11:04: info: in instantiation at a-cofuse.ads:236
 term.ads:11:04: info: in instantiation at a-cofuse.ads:243
+term.ads:11:04: info: in instantiation at a-cofuse.ads:243
+term.ads:11:04: info: in instantiation at a-cofuse.ads:244
+term.ads:11:04: info: in instantiation at a-cofuse.ads:246
+term.ads:11:04: info: in instantiation at a-cofuse.ads:247
 term.ads:11:04: info: in instantiation at a-cofuse.ads:247
 term.ads:11:04: info: in instantiation at a-cofuse.ads:248
 term.ads:11:04: info: in instantiation at a-cofuse.ads:249
 term.ads:11:04: info: in instantiation at a-cofuse.ads:250
+term.ads:11:04: info: in instantiation at a-cofuse.ads:50
 term.ads:11:04: info: in instantiation at a-cofuse.ads:94
+term.ads:11:04: info: in instantiation at a-cofuve.ads:107
+term.ads:11:04: info: in instantiation at a-cofuve.ads:108
+term.ads:11:04: info: in instantiation at a-cofuve.ads:109
+term.ads:11:04: info: in instantiation at a-cofuve.ads:118
+term.ads:11:04: info: in instantiation at a-cofuve.ads:119
+term.ads:11:04: info: in instantiation at a-cofuve.ads:120
+term.ads:11:04: info: in instantiation at a-cofuve.ads:129
+term.ads:11:04: info: in instantiation at a-cofuve.ads:130
+term.ads:11:04: info: in instantiation at a-cofuve.ads:131
+term.ads:11:04: info: in instantiation at a-cofuve.ads:143
+term.ads:11:04: info: in instantiation at a-cofuve.ads:146
+term.ads:11:04: info: in instantiation at a-cofuve.ads:159
+term.ads:11:04: info: in instantiation at a-cofuve.ads:162
+term.ads:11:04: info: in instantiation at a-cofuve.ads:173
+term.ads:11:04: info: in instantiation at a-cofuve.ads:176
+term.ads:11:04: info: in instantiation at a-cofuve.ads:177
+term.ads:11:04: info: in instantiation at a-cofuve.ads:178
+term.ads:11:04: info: in instantiation at a-cofuve.ads:190
+term.ads:11:04: info: in instantiation at a-cofuve.ads:193
+term.ads:11:04: info: in instantiation at a-cofuve.ads:194
+term.ads:11:04: info: in instantiation at a-cofuve.ads:196
+term.ads:11:04: info: in instantiation at a-cofuve.ads:209
+term.ads:11:04: info: in instantiation at a-cofuve.ads:212
+term.ads:11:04: info: in instantiation at a-cofuve.ads:227
+term.ads:11:04: info: in instantiation at a-cofuve.ads:236
+term.ads:11:04: info: in instantiation at a-cofuve.ads:241
+term.ads:11:04: info: in instantiation at a-cofuve.ads:242
+term.ads:11:04: info: in instantiation at a-cofuve.ads:247
+term.ads:11:04: info: in instantiation at a-cofuve.ads:248
+term.ads:11:04: info: in instantiation at a-cofuve.ads:267
+term.ads:11:04: info: in instantiation at a-cofuve.ads:269
+term.ads:11:04: info: in instantiation at a-cofuve.ads:270
+term.ads:11:04: info: in instantiation at a-cofuve.ads:279
+term.ads:11:04: info: in instantiation at a-cofuve.ads:280
+term.ads:11:04: info: in instantiation at a-cofuve.ads:282
+term.ads:11:04: info: in instantiation at a-cofuve.ads:283
+term.ads:11:04: info: in instantiation at a-cofuve.ads:283
+term.ads:11:04: info: in instantiation at a-cofuve.ads:284
+term.ads:11:04: info: in instantiation at a-cofuve.ads:296
+term.ads:11:04: info: in instantiation at a-cofuve.ads:297
+term.ads:11:04: info: in instantiation at a-cofuve.ads:298
+term.ads:11:04: info: in instantiation at a-cofuve.ads:300
+term.ads:11:04: info: in instantiation at a-cofuve.ads:301
+term.ads:11:04: info: in instantiation at a-cofuve.ads:302
+term.ads:11:04: info: in instantiation at a-cofuve.ads:307
+term.ads:11:04: info: in instantiation at a-cofuve.ads:311
+term.ads:11:04: info: in instantiation at a-cofuve.ads:322
+term.ads:11:04: info: in instantiation at a-cofuve.ads:324
+term.ads:11:04: info: in instantiation at a-cofuve.ads:325
+term.ads:11:04: info: in instantiation at a-cofuve.ads:330
+term.ads:11:04: info: in instantiation at a-cofuve.ads:334
+term.ads:11:04: info: in instantiation at a-cofuve.ads:351
+term.ads:11:04: info: in instantiation at a-cofuve.ads:359
+term.ads:11:04: info: in instantiation at a-cofuve.ads:51
+term.ads:11:04: info: in instantiation at a-cofuve.ads:82
+term.ads:11:04: info: in instantiation at a-cofuve.ads:91
 term.ads:11:04: warning: in instantiation at a-cfhase.ads:1122
 term.ads:11:04: warning: recursive function cannot be inlined for proof
 term.ads:16:04: info: initialization of private part of "S" proved

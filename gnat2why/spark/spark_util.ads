@@ -158,6 +158,12 @@ package SPARK_Util is
    -- General queries related to entities --
    -----------------------------------------
 
+   function Enclosing_Generic_Instance (E : Entity_Id) return Entity_Id
+   with Post => (if Present (Enclosing_Generic_Instance'Result)
+                 then Ekind (Enclosing_Generic_Instance'Result) = E_Package);
+   --  @param E any entity
+   --  @return entity of the enclosing generic instance package, if any
+
    function Enclosing_Unit (E : Entity_Id) return Entity_Id with
      Post => (if Present (Enclosing_Unit'Result)
               then Ekind (Enclosing_Unit'Result) in E_Function
@@ -408,6 +414,13 @@ package SPARK_Util is
                             | N_Identifier;
    --  @param N is a component of the whole prefix for an entry call
    --  @return the full name for an entry call
+
+   function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
+   with Pre  => Is_Generic_Instance (E),
+        Post => (for all S of Generic_Actual_Subprograms'Result =>
+                    Is_Subprogram (S));
+   --  @param E instance of a generic unit
+   --  @return actual subprogram parameters of E
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id
      with Pre  => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call,

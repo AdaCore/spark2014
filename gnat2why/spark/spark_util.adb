@@ -586,6 +586,24 @@ package body SPARK_Util is
       then Etype (Encapsulating_State (E))
       else Scope (E));
 
+   --------------------------------
+   -- Enclosing_Generic_Instance --
+   --------------------------------
+
+   function Enclosing_Generic_Instance (E : Entity_Id) return Entity_Id is
+      S : Entity_Id := Scope (E);
+   begin
+      loop
+         if No (S) then
+            return Empty;
+         elsif Is_Generic_Instance (S) then
+            return S;
+         else
+            S := Scope (S);
+         end if;
+      end loop;
+   end Enclosing_Generic_Instance;
+
    --------------------
    -- Enclosing_Unit --
    --------------------
@@ -777,6 +795,61 @@ package body SPARK_Util is
          return Get_Scoped_Name (Unique_Entity (E));
       end if;
    end Full_Source_Name;
+
+   --------------------------------
+   -- Generic_Actual_Subprograms --
+   --------------------------------
+
+   function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set is
+      Results : Node_Sets.Set;
+
+      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
+      --  If Actual denotes a subprogram then include it in Results
+
+      procedure Find_Actual_Subprograms is new
+        Iterate_Generic_Parameters (Handle_Parameters => Handle_Parameters);
+
+      -----------------------
+      -- Handle_Parameters --
+      -----------------------
+
+      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id) is
+         pragma Unreferenced (Formal);
+      begin
+         if Nkind (Actual) in N_Has_Entity then
+            declare
+               E_Actual : constant Entity_Id := Entity (Actual);
+            begin
+               if Present (E_Actual)
+                 and then Ekind (E_Actual) in E_Function
+                                            | E_Procedure
+               then
+                  --  Generic actual subprograms are typically renamings and
+                  --  then we want the renamed subprogram, but for generics
+                  --  nested in other generics they seem to directly point to
+                  --  what we need.
+
+                  declare
+                     Renamed : constant Entity_Id := Renamed_Entity (E_Actual);
+                     --  For subprograms Renamed_Entity is set transitively, so
+                     --  we just need to call it once.
+
+                  begin
+                     Results.Include (if Present (Renamed)
+                                      then Renamed
+                                      else E_Actual);
+                  end;
+               end if;
+            end;
+         end if;
+      end Handle_Parameters;
+
+   --  Start of processing for Generic_Actual_Subprograms
+
+   begin
+      Find_Actual_Subprograms (E);
+      return Results;
+   end Generic_Actual_Subprograms;
 
    -----------------------
    -- Get_Called_Entity --

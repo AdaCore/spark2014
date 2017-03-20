@@ -1418,50 +1418,44 @@ package body Flow is
                            end;
                         end if;
 
-                        --  In case of a subprogram in a generic predefined
-                        --  unit with its body not in SPARK, we also register
-                        --  any subprograms that are generic actual parameters
-                        --  in its instantiation.
-                        --  ??? we are not dealing with subprograms declared in
-                        --  packages nested in generics.
+                        --  For subprograms in a generic predefined unit with
+                        --  its body not in SPARK, we also register actual
+                        --  subprogram parameters of its instantiation, except
+                        --  for predefined arithmetic operators, because they
+                        --  are irrelevant.
                         if Ekind (E) in E_Function
                                       | E_Procedure
                           and then In_Predefined_Unit (E)
-                          and then Is_Generic_Instance (Scope (E))
                         then
                            declare
-                              procedure Actual_Sub (Formal : Node_Id;
-                                                    Actual : Node_Id);
-                              --  Given an Actual, include it in the
-                              --  Contract_Calls if it is a function or a
-                              --  procedure.
-
-                              procedure Register_Actual_Subprograms is new
-                                Iterate_Generic_Parameters (Actual_Sub);
-
-                              ----------------
-                              -- Actual_Sub --
-                              ----------------
-
-                              procedure Actual_Sub (Formal : Node_Id;
-                                                    Actual : Node_Id) is
-                                 E_Actual : Entity_Id;
-                                 pragma Unreferenced (Formal);
-                              begin
-                                 if Nkind (Actual) in N_Has_Entity then
-                                    E_Actual := Entity (Actual);
-
-                                    if Present (E_Actual)
-                                      and then Ekind (E_Actual) in E_Function
-                                                                 | E_Procedure
-                                    then
-                                       Contract_Calls.Include (E_Actual);
-                                    end if;
-                                 end if;
-                              end Actual_Sub;
+                              Enclosing_Instance : Entity_Id := E;
 
                            begin
-                              Register_Actual_Subprograms (Scope (E));
+                              loop
+                                 Enclosing_Instance :=
+                                   Enclosing_Generic_Instance
+                                     (Enclosing_Instance);
+
+                                 if Present (Enclosing_Instance) then
+                                    for S of Generic_Actual_Subprograms
+                                      (Enclosing_Instance)
+                                    loop
+                                       case Ekind (S) is
+                                          when E_Function | E_Procedure =>
+                                             Contract_Calls.Include (S);
+
+                                          when E_Operator =>
+                                             pragma Assert
+                                               (In_Predefined_Unit (S));
+
+                                          when others =>
+                                             raise Program_Error;
+                                       end case;
+                                    end loop;
+                                 else
+                                    exit;
+                                 end if;
+                              end loop;
                            end;
                         end if;
 

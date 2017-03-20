@@ -38,10 +38,10 @@ package Flow_Generated_Globals.Phase_1 is
                              E_Package   |
                              E_Procedure |
                              E_Task_Type and then
-                (for all C of Calls => Ekind (C) in Entry_Kind |
-                                                    E_Function |
-                                                    E_Package  |
-                                                    E_Procedure),
+                (for all C of Calls => Ekind (C) in Entry_Kind
+                                                  | E_Function
+                                                  | E_Package
+                                                  | E_Procedure),
         Post => GG_Mode = GG_Write_Mode;
    --  Register direct calls without caring if they are proof-only, definite or
    --  conditional.

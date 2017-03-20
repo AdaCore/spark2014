@@ -26,6 +26,7 @@ with Ada.Strings.Unbounded;
 with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
+with Sem_Aux;                 use Sem_Aux;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
 
@@ -166,6 +167,13 @@ package body Flow_Generated_Globals.Phase_1 is
 
       begin
          for Call of Calls loop
+            --  Generic actual subprograms should not appear in direct calls,
+            --  except for a default null subprogram for which a body is
+            --  created by the front end.
+            pragma Assert
+              (if Is_Subprogram (Call)
+                 and then Is_Generic_Actual_Subprogram (Call)
+               then Null_Present (Subprogram_Specification (Call)));
             Callees.Append (To_Entity_Name (Call));
          end loop;
       end;
