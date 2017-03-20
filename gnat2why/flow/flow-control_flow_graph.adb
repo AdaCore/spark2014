@@ -1637,7 +1637,7 @@ package body Flow.Control_Flow_Graph is
 
       Alternative := First (Alternatives (N));
 
-      while Present (Alternative) loop
+      loop
          --  We introduce a vertex V_Alter for each
          --  Case_Statement_Alternative and we link that to V.
          Add_Vertex
@@ -1660,6 +1660,8 @@ package body Flow.Control_Flow_Graph is
            (CM (Union_Id (Statements (Alternative))).Standard_Exits);
 
          Next (Alternative);
+
+         exit when No (Alternative);
       end loop;
    end Do_Case_Statement;
 
