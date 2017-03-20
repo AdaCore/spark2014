@@ -13,11 +13,11 @@ main.adb:16:52: info: range check proved (CVC4: 1 VC)
 main.adb:17:45: info: range check proved (CVC4: 1 VC)
 main.adb:17:51: info: range check proved (CVC4: 1 VC)
 main.adb:20:44: low: range check might fail (e.g. when catstring3 = (others => 'NUL') and catstring3'First = 1 and catstring3'Last = 4 and vstring = (others => 'NUL') and vstring'First = 2147483642 and vstring'Last = 2147483643)
-main.adb:20:55: low: range check might fail
+main.adb:20:55: low: range check might fail (e.g. when catstring3 = (others => 'NUL') and catstring3'First = 0 and catstring3'Last = 0 and vstring = (others => 'NUL') and vstring'First = 0 and vstring'Last = 0)
 main.adb:21:45: info: range check proved (CVC4: 1 VC)
 main.adb:21:57: info: range check proved (CVC4: 1 VC)
 main.adb:22:44: info: range check proved (CVC4: 1 VC)
 main.adb:22:56: info: range check proved (CVC4: 1 VC)
 main.adb:23:44: info: range check proved (CVC4: 1 VC)
 main.adb:23:54: info: range check proved (CVC4: 1 VC)
-main.adb:25:19: medium: assertion might fail, cannot prove vstring'First <= 1
+main.adb:25:19: medium: assertion might fail, cannot prove vstring'First <= 1 (e.g. when vstring = (others => 'NUL') and vstring'First = 0 and vstring'Last = 0)

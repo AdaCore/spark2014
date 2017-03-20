@@ -45,7 +45,7 @@ skein.adb:110:07: warning: statement has no effect
 skein.adb:110:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:115:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail
+skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0)
 skein.adb:118:19: warning: unused assignment
 skein.adb:118:44: info: length check proved (CVC4: 1 VC)
 skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
@@ -60,7 +60,7 @@ skein.adb:140:44: info: initialization of "Blocks_Done" proved
 skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
 skein.adb:144:25: info: initialization of "X" proved
 skein.adb:146:25: info: initialization of "Blocks_Done" proved
-skein.adb:146:37: medium: range check might fail
+skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = 0)
 skein.adb:147:20: info: initialization of "Blocks_Done" proved
 skein.adb:147:35: info: initialization of "Blocks_Required" proved
 skein.ads:110:21: info: length check proved (CVC4: 1 VC)

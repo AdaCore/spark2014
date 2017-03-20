@@ -1,5 +1,5 @@
 pack.adb:27:07: warning: initialization of A has no effect
 pack.adb:31:09: warning: unused assignment
 pack.adb:32:22: info: initialization of "A" proved
-pack.adb:32:22: medium: assertion might fail, cannot prove A = B
+pack.adb:32:22: medium: assertion might fail, cannot prove A = B (e.g. when A = True and B = False)
 pack.adb:32:26: info: initialization of "B" proved

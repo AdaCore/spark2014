@@ -28,4 +28,4 @@ fail.adb:48:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:49:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:51:04: info: precondition proved (CVC4: 2 VC)
-mod_array.ads:6:52: medium: range check might fail
+mod_array.ads:6:52: medium: range check might fail (e.g. when X = (others => False) and X'First = 0 and X'Last = 0)

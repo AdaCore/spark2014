@@ -465,7 +465,7 @@ my_lists.adb:62:18: info: initialization of "D.Node" proved
 my_lists.adb:63:12: info: precondition proved (Z3: 1 VC)
 my_lists.adb:63:18: info: initialization of private part of "L" proved
 my_lists.adb:63:21: info: initialization of "C.Node" proved
-my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L)
+my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L) (e.g. when D = (Node => 0))
 my_lists.adb:65:26: info: precondition proved (Z3: 1 VC)
 my_lists.adb:65:58: info: initialization of private part of "L" proved
 my_lists.adb:65:62: info: initialization of "D.Node" proved
@@ -1148,7 +1148,7 @@ my_ordered_sets.adb:78:35: info: initialization of private part of "L" proved
 my_ordered_sets.adb:81:21: info: initialization of private part of "L" proved
 my_ordered_sets.adb:82:20: info: initialization of private part of "L" proved
 my_ordered_sets.adb:84:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:07: medium: precondition might fail
+my_ordered_sets.adb:85:07: medium: precondition might fail (e.g. when C = (Node => 0))
 my_ordered_sets.adb:85:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:85:18: info: initialization of "C.Node" proved
 my_ordered_sets.adb:86:22: info: assertion proved (Z3: 1 VC)

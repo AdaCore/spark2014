@@ -1,10 +1,10 @@
 x86.adb:21:17: warning: subprogram "Prove_Post" has no effect
 x86.adb:36:40: info: initialization of "N2" proved
 x86.adb:36:40: info: initialization of "N2" proved, in call inlined at x86.adb:99
-x86.adb:36:40: medium: assertion might fail, cannot prove N2 <= var2_range_size, in call inlined at x86.adb:99
+x86.adb:36:40: medium: assertion might fail, cannot prove N2 <= var2_range_size, in call inlined at x86.adb:99 (e.g. when N2 = 1 and var2_range_size = 0)
 x86.adb:45:37: info: initialization of "N1" proved
 x86.adb:45:37: info: initialization of "N1" proved, in call inlined at x86.adb:99
-x86.adb:45:37: medium: assertion might fail, cannot prove N1 in 0 .. var1_range_size, in call inlined at x86.adb:99
+x86.adb:45:37: medium: assertion might fail, cannot prove N1 in 0 .. var1_range_size, in call inlined at x86.adb:99 (e.g. when N1 = 0 and var1_range_size = 0)
 x86.adb:46:41: info: initialization of "N2" proved
 x86.adb:46:41: info: initialization of "N2" proved, in call inlined at x86.adb:99
 x86.adb:50:22: medium: assertion might fail, in call inlined at x86.adb:99 (e.g. when var1 = 2 and var1_range_size = 18446744073709551614 and var2 = 0 and var2_range_size = 1)
@@ -14,13 +14,13 @@ x86.adb:60:28: medium: assertion might fail, in call inlined at x86.adb:99 (e.g.
 x86.adb:66:19: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at x86.adb:99
 x86.adb:69:32: medium: loop invariant might fail after first iteration, cannot prove var1 + i /= var2 + J, in call inlined at x86.adb:99 (e.g. when I = 0 and J = 9223372036854775808 and N1 = 1 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
 x86.adb:72:52: info: range check proved (CVC4: 2 VC), in call inlined at x86.adb:99
-x86.adb:74:37: medium: assertion might fail, cannot prove N in 0 .. var1_range_size+var2_range_size, in call inlined at x86.adb:99
+x86.adb:74:37: medium: assertion might fail, cannot prove N in 0 .. var1_range_size+var2_range_size, in call inlined at x86.adb:99 (e.g. when N = 0 and var1_range_size = 0 and var2_range_size = 0)
 x86.adb:75:37: info: assertion proved (altergo: 2 VC), in call inlined at x86.adb:99
-x86.adb:77:34: medium: assertion might fail, cannot prove var1 + N1 /= var2 + N2, in call inlined at x86.adb:99
+x86.adb:77:34: medium: assertion might fail, cannot prove var1 + N1 /= var2 + N2, in call inlined at x86.adb:99 (e.g. when N1 = 0 and N2 = 1 and var1 = 0 and var2 = 0)
 x86.adb:79:22: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at x86.adb:99
 x86.adb:79:47: medium: loop invariant might fail after first iteration, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and N2 = 18446744073709551615 and var1 = 0 and var2 = 9223372036854775808)
 x86.adb:82:57: medium: assertion might fail, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
-x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99
+x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 0 and i = 0 and j = 0 and var1 = 0 and var2 = 0 and var2_range_size = 0)
 x86.adb:89:37: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 0 and i = 0 and j = 9223372036854775808 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
 x86.adb:94:34: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when i = 0 and j = 9223372036854775808 and var1 = 0 and var1_range_size = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551615)
 x86.ads:16:14: medium: postcondition might fail (e.g. when InRange64'Result = True and bottom = 1211702862243255639 and range_size = 15052859542020816896 and var = 5563646117071028224)

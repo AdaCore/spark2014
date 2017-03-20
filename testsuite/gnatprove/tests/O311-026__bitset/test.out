@@ -1,6 +1,6 @@
-foo.adb:12:21: medium: array index check might fail
+foo.adb:12:21: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 0)
 foo.adb:12:21: medium: overflow check might fail
 foo.adb:12:34: info: division check proved (CVC4: 1 VC)
-foo.adb:12:34: medium: range check might fail
+foo.adb:12:34: medium: range check might fail (e.g. when I = 0)
 foo.adb:13:27: info: division check proved (CVC4: 1 VC)
 foo.adb:13:27: info: range check proved (CVC4: 1 VC)
