@@ -591,24 +591,25 @@ package body SPARK_Util is
    --------------------
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id is
-      S : Entity_Id;
+      S : Entity_Id := Unique_Entity (Scope (E));
+      --  Start with unique entity to avoid bodies
 
    begin
-      --  Go to unique entity to avoid bodies
-
-      S := Unique_Entity (Scope (E));
-
       while Present (S) loop
-         if Ekind (S) in E_Function | E_Entry | E_Procedure | E_Package
-           | E_Protected_Type | E_Task_Type
+         if Ekind (S) in Entry_Kind
+                       | E_Function
+                       | E_Procedure
+                       | E_Package
+                       | E_Protected_Type
+                       | E_Task_Type
          then
             --  We have found the enclosing unit, return it
 
             return S;
          else
-            --  Go to the next scope
+            --  Go to the enclosing scope
 
-            S := Unique_Entity (Scope (S));
+            S := Scope (S);
          end if;
       end loop;
 
@@ -1107,7 +1108,7 @@ package body SPARK_Util is
    -- Is_Declared_In_Unit --
    -------------------------
 
-   --  Parameters of subprograms cannot be local to a unit.
+   --  Parameters of subprograms cannot be local to a unit
 
    function Is_Declared_In_Unit
      (E     : Entity_Id;
