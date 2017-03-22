@@ -4857,11 +4857,6 @@ package body SPARK_Definition is
             Save_Violation_Detected : constant Boolean := Violation_Detected;
 
          begin
-            --  Record the package as a marked entity (which does not imply
-            --  anything about its SPARK status).
-
-            Entity_Set.Insert (Id);
-
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 
             --  Record the package as an entity to translate iff it is
