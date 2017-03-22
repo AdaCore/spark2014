@@ -592,7 +592,7 @@ may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
 
 For example, unit ``Gen_Imported_Global`` is a modified version of the
 ``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency
-Contracts`, where procedure ``Get_Global`` is imported from C:
+Contracts`, where procedure ``Set_Global`` is imported from C:
 
 .. literalinclude:: /gnatprove_by_example/examples/gen_imported_global.ads
    :language: ada
