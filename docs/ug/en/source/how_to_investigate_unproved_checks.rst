@@ -70,8 +70,7 @@ may yield VCs that should be true, but cannot be proved:
 
 * Floating point arithmetic (although using |CodePeer| integration may help
   here)
-* The content of string literals (again, using |CodePeer| integration may help
-  here)
+* The specific value of dispatching calls when the tag is known
 
 To use |CodePeer| integration, pass the switch ``--codepeer=on`` to
 |GNATprove|. In those cases where no prover, including |CodePeer|, can prove
