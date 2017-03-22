@@ -105,7 +105,8 @@ package Common_Containers is
    with Pre => Ekind (E) not in E_Package_Body
                               | E_Protected_Body
                               | E_Subprogram_Body
-                              | E_Task_Body;
+                              | E_Task_Body
+                              | Generic_Unit_Kind;
    --  Converts Entity_Id to Entity_Name; it should be only called for unique
    --  entities, i.e. not for body entities.
 
