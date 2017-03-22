@@ -4877,8 +4877,8 @@ package body SPARK_Definition is
             Violation_Detected := False;
 
             --  Mark abstract state entities, since they may be referenced from
-            --  the outside. If if SPARK_Mode is On | None they they will be
-            --  in SPARK; if SPARK_Mode is Off then they will be not. Same for
+            --  the outside. Iff SPARK_Mode is On | None they they will be in
+            --  SPARK; if SPARK_Mode is Off then they will be not. Same for
             --  visible declarations.
 
             for State of Iter (Abstract_States (Id)) loop
