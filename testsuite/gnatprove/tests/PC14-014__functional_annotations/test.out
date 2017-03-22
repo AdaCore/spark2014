@@ -1089,31 +1089,40 @@ use_ordered_sets.adb:160:38: info: range check proved (Z3: 1 VC)
 use_ordered_sets.adb:161:16: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:161:49: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:161:49: info: range check proved (Z3: 1 VC)
-use_ordered_sets.adb:162:33: info: loop invariant initialization proved (Z3: 1 VC)
-use_ordered_sets.adb:162:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:162:34: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:162:55: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:162:63: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:162:65: info: initialization of "N" proved
-use_ordered_sets.adb:162:67: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:163:25: info: assertion proved (Z3: 1 VC)
-use_ordered_sets.adb:163:42: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:163:54: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:163:58: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:164:10: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:164:22: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:164:34: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:164:38: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:165:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:165:25: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:165:34: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:166:15: info: initialization of "N" proved
-use_ordered_sets.adb:166:17: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.adb:172:07: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:173:07: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:174:07: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:175:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:163:13: info: loop invariant initialization proved (Z3: 1 VC)
+use_ordered_sets.adb:163:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_sets.adb:163:26: info: initialization of "N" proved
+use_ordered_sets.adb:163:28: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:164:18: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:164:40: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:164:40: info: range check proved (Z3: 1 VC)
+use_ordered_sets.adb:165:16: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:165:47: info: range check proved (Z3: 1 VC)
+use_ordered_sets.adb:166:33: info: loop invariant initialization proved (Z3: 1 VC)
+use_ordered_sets.adb:166:33: info: loop invariant preservation proved (Z3: 1 VC)
+use_ordered_sets.adb:166:34: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:166:55: info: initialization of "Cu.Node" proved
+use_ordered_sets.adb:166:63: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:166:65: info: initialization of "N" proved
+use_ordered_sets.adb:166:67: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:167:25: info: assertion proved (Z3: 1 VC)
+use_ordered_sets.adb:167:42: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:167:54: info: initialization of "Cu.Node" proved
+use_ordered_sets.adb:167:58: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:168:10: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:168:22: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:168:34: info: initialization of "Cu.Node" proved
+use_ordered_sets.adb:168:38: info: overflow check proved (Z3: 1 VC)
+use_ordered_sets.adb:169:16: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:169:25: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:169:34: info: initialization of "Cu.Node" proved
+use_ordered_sets.adb:170:15: info: initialization of "N" proved
+use_ordered_sets.adb:170:17: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:176:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:177:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:178:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.adb:180:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:18:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:22:35: info: overflow check proved (Z3: 1 VC)

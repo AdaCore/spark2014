@@ -159,6 +159,10 @@ package body Use_Ordered_Sets with SPARK_Mode is
            (for all I in 2 * N + 1 .. Length (S) =>
                 E.Get (Elements (S), I) =
               E.Get (Elements (S)'Loop_Entry, I - N));
+         pragma Loop_Invariant
+           (for all I in N + 1 .. Length (S)'Loop_Entry =>
+                E.Get (Elements (S), I + N) =
+              E.Get (Elements (S)'Loop_Entry, I));
          pragma Loop_Invariant (P.Get (Positions (S), Cu) = 2 * N + 1);
          pragma Assert (not Contains (S, Element (S, Cu) + 1));
          Include (S, Element (S, Cu) + 1);

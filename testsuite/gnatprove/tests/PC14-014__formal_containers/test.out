@@ -465,7 +465,7 @@ my_lists.adb:62:18: info: initialization of "D.Node" proved
 my_lists.adb:63:12: info: precondition proved (Z3: 1 VC)
 my_lists.adb:63:18: info: initialization of private part of "L" proved
 my_lists.adb:63:21: info: initialization of "C.Node" proved
-my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L) (e.g. when D = (Node => 0))
+my_lists.adb:65:10: info: assertion proved (Z3: 1 VC)
 my_lists.adb:65:26: info: precondition proved (Z3: 1 VC)
 my_lists.adb:65:58: info: initialization of private part of "L" proved
 my_lists.adb:65:62: info: initialization of "D.Node" proved
@@ -765,24 +765,24 @@ my_maps.adb:110:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:110:32: info: initialization of private part of "L" proved
 my_maps.adb:111:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:111:16: info: initialization of private part of "L" proved
-my_maps.adb:112:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:112:22: medium: assertion might fail, cannot prove not Contains (L, (f => 3), (g => 4))
 my_maps.adb:112:36: info: initialization of private part of "L" proved
 my_maps.adb:113:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:113:16: info: initialization of private part of "L" proved
 my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:115:15: info: initialization of private part of "L" proved
 my_maps.adb:116:18: info: initialization of private part of "L" proved
-my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:117:07: medium: precondition might fail (e.g. when C = (Node => 0))
 my_maps.adb:117:15: info: initialization of private part of "L" proved
 my_maps.adb:117:18: info: initialization of "C.Node" proved
 my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:118:36: info: initialization of private part of "L" proved
 my_maps.adb:119:18: info: initialization of private part of "L" proved
 my_maps.adb:120:16: info: initialization of private part of "L" proved
-my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:121:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
 my_maps.adb:121:32: info: initialization of private part of "L" proved
 my_maps.adb:122:16: info: initialization of private part of "L" proved
-my_maps.adb:123:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_maps.adb:123:30: info: initialization of private part of "L" proved
 my_maps.adb:124:33: medium: assertion might fail, cannot prove false
 my_maps.adb:129:07: info: precondition proved (Z3: 1 VC)
@@ -921,8 +921,8 @@ my_ordered_maps.adb:87:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:89:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:89:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:90:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:91:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:91:22: info: initialization of "C.Node" proved
+my_ordered_maps.adb:91:22: medium: assertion might fail, cannot prove C /= No_Element (e.g. when C = (Node => 0) and No_Element = (Node => 0))
 my_ordered_maps.adb:92:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:92:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:92:18: info: initialization of "C.Node" proved
@@ -955,7 +955,7 @@ my_ordered_maps.adb:114:22: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:114:31: info: initialization of private part of "L" proved
 my_ordered_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:115:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:116:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:116:22: medium: assertion might fail, cannot prove not Contains (L, (f => 3), (g => 4))
 my_ordered_maps.adb:116:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:117:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:117:26: info: initialization of "B" proved
@@ -979,15 +979,15 @@ my_ordered_maps.adb:127:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:127:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:128:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:128:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:129:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:129:22: medium: assertion might fail, cannot prove not Contains (L, (f => 3), (g => 4))
 my_ordered_maps.adb:129:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:130:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:132:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:132:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:133:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:134:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:134:22: info: initialization of "C.Node" proved
+my_ordered_maps.adb:134:22: medium: assertion might fail, cannot prove C /= No_Element (e.g. when C = (Node => 0) and No_Element = (Node => 0))
 my_ordered_maps.adb:135:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:135:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:135:18: info: initialization of "C.Node" proved
@@ -995,10 +995,10 @@ my_ordered_maps.adb:136:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:136:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:137:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:138:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:139:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:139:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
 my_ordered_maps.adb:139:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:140:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:141:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:141:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_ordered_maps.adb:141:30: info: initialization of private part of "L" proved
 my_ordered_maps.adb:142:33: medium: assertion might fail, cannot prove false
 my_ordered_maps.adb:147:07: info: precondition proved (Z3: 1 VC)
@@ -1197,7 +1197,7 @@ my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:118:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:119:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:120:22: medium: assertion might fail, cannot prove not Contains (L, (f => 4), (g => 4))
 my_ordered_sets.adb:120:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:121:16: info: initialization of private part of "L" proved
@@ -1229,7 +1229,7 @@ my_ordered_sets.adb:138:32: info: initialization of private part of "K" proved
 my_ordered_sets.adb:139:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:139:15: info: initialization of private part of "K" proved
 my_ordered_sets.adb:139:18: info: initialization of "C.Node" proved
-my_ordered_sets.adb:140:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:140:22: medium: assertion might fail, cannot prove not Contains (K, 2)
 my_ordered_sets.adb:140:36: info: initialization of private part of "K" proved
 my_ordered_sets.adb:141:18: info: initialization of private part of "K" proved
 my_ordered_sets.adb:142:16: info: initialization of private part of "K" proved
@@ -1289,7 +1289,7 @@ my_ordered_sets.adb:180:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:180:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:181:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:182:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:183:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
 my_ordered_sets.adb:183:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:184:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
