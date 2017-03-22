@@ -102,7 +102,12 @@ package Common_Containers is
    function To_Entity_Name (S : String) return Entity_Name;
 
    function To_Entity_Name (E : Entity_Id) return Entity_Name
-     with Pre => Ekind (E) not in E_Package_Body | E_Subprogram_Body;
+   with Pre => Ekind (E) not in E_Package_Body
+                              | E_Protected_Body
+                              | E_Subprogram_Body
+                              | E_Task_Body;
+   --  Converts Entity_Id to Entity_Name; it should be only called for unique
+   --  entities, i.e. not for body entities.
 
    function To_String (E : Entity_Name) return String;
 
