@@ -2767,7 +2767,13 @@ package body SPARK_Definition is
 
       procedure Mark_Number_Entity     (E : Entity_Id);
       procedure Mark_Object_Entity     (E : Entity_Id);
-      procedure Mark_Package_Entity    (E : Entity_Id);
+      procedure Mark_Package_Entity    (E : Entity_Id) with
+        Pre =>
+          Entity_In_Ext_Axioms (E)
+            and then Present (Current_SPARK_Pragma)
+            and then Current_SPARK_Pragma = SPARK_Pragma (E)
+            and then
+              Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
 
@@ -2926,8 +2932,10 @@ package body SPARK_Definition is
             end loop;
          end Declare_In_Package_With_External_Axioms;
 
-         Vis_Decls : constant List_Id :=
-           Visible_Declarations (Package_Specification (E));
+         --  Local variables
+
+         Spec     : constant Node_Id := Package_Specification (E);
+         G_Parent : constant Node_Id := Generic_Parent (Spec);
 
       --  Start of processing for Mark_Package_Entity
 
@@ -2936,65 +2944,46 @@ package body SPARK_Definition is
          --  Only mark types in SPARK or not, and mark all subprograms in
          --  SPARK, but none should be scheduled for translation into Why3.
 
-         if Entity_In_Ext_Axioms (E) then
+         --  Packages with external axioms should have SPARK_Mode On;
+         --  this is enforced by Entity_In_Ext_Axioms (E).
 
-            --  Packages with external axioms should have SPARK_Mode On;
-            --  this is enforced by Entity_In_Ext_Axioms (E).
+         --  External_Axiomatization can be given only for non-generic packages
 
-            pragma Assert
-              (Present (SPARK_Pragma (E))
-               and then
-               Get_SPARK_Mode_From_Annotation (SPARK_Pragma (E)) = On);
+         if Present (G_Parent) then
+            Mark_Violation
+              ("generic package with External_Axiomatization", G_Parent);
+         end if;
 
-            --  For other verifications, use the SPARK pragma of the package
+         --  Mark types and subprograms from packages with external
+         --  axioms as in SPARK or not.
 
+         Declare_In_Package_With_External_Axioms (Visible_Declarations (Spec));
+
+         --  Check that the private part (if any) of a package with
+         --  External_Axiomatization has SPARK_Mode => Off.
+
+         if Present (Private_Declarations (Spec)) then
             declare
-               Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+               Private_Pragma : constant Node_Id := SPARK_Aux_Pragma (E);
+
             begin
-               Current_SPARK_Pragma := SPARK_Pragma (E);
-
-               --  If E is a package instance, mark its actual parameters
-
-               declare
-                  G_Parent : constant Node_Id :=
-                    Generic_Parent (Package_Specification (E));
-
-               begin
-                  if Present (G_Parent) then
-                     Mark_Violation
-                       ("generic package with External_Axiomatization",
-                        G_Parent);
-                  end if;
-               end;
-
-               --  Mark types and subprograms from packages with external
-               --  axioms as in SPARK or not.
-
-               Declare_In_Package_With_External_Axioms (Vis_Decls);
-
-               --  Check that the private part (if any) of a package with
-               --  External_Axiomatization has SPARK_Mode => Off.
-
-               if Present (Private_Declarations (Package_Specification (E)))
-                 and then Present (SPARK_Aux_Pragma (E))
+               if Present (Private_Pragma)
                  and then
-                   Get_SPARK_Mode_From_Annotation (SPARK_Aux_Pragma (E)) /= Off
+                   Get_SPARK_Mode_From_Annotation (Private_Pragma) /= Off
                then
                   Mark_Violation
                     ("private part of package with External_Axiomatization",
                      E);
                end if;
-
-               if not Violation_Detected then
-
-                  --  Explicitly add the package declaration to the entities to
-                  --  translate into Why3.
-
-                  Entity_List.Append (E);
-               end if;
-
-               Current_SPARK_Pragma := Save_SPARK_Pragma;
             end;
+         end if;
+
+         if not Violation_Detected then
+
+            --  Explicitly add the package declaration to the entities to
+            --  translate into Why3.
+
+            Entity_List.Append (E);
          end if;
       end Mark_Package_Entity;
 
@@ -4423,9 +4412,13 @@ package body SPARK_Definition is
             end if;
          end;
 
-      --  Get appropriate SPARK_Mode for subprograms
+      --  Get appropriate SPARK_Mode for subprograms and packages (only happens
+      --  for packages with external axioms).
 
-      elsif Is_Subprogram (E) or else Is_Entry (E) then
+      elsif Is_Subprogram (E)
+        or else Is_Entry (E)
+        or else Ekind (E) = E_Package
+      then
          Current_SPARK_Pragma := SPARK_Pragma (E);
       end if;
 
