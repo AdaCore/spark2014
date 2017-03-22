@@ -31,8 +31,14 @@ package SPARK_Util.Subprograms is
 
    function Analysis_Requested
      (E            : Entity_Id;
-      With_Inlined : Boolean) return Boolean;
-   --  @param E subprogram, task or package
+      With_Inlined : Boolean) return Boolean
+   with Pre => Ekind (E) in Entry_Kind
+                          | E_Function
+                          | E_Package
+                          | E_Procedure
+                          | Type_Kind;
+   --  @param E entity for which requesting an analysis is meaningful, e.g.
+   --     using the GPS contextual menu.
    --  @param With_Inlined True if inlined subprograms should be analyzed
    --  @return True iff subprogram, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
@@ -359,6 +365,7 @@ package SPARK_Util.Subprograms is
    --    (directly or in a nested way) a protected type.
    --
    --  Note: this is different than Ada RM concept of a "protected subprogram"
+
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a subprogram/task whose analysis was specifically

@@ -119,7 +119,10 @@ package body Gnat2Why.Driver is
                 else Entity_In_SPARK (E));
    --  Translates entity E into Why
 
-   procedure Do_Generate_VCs (E : Entity_Id);
+   procedure Do_Generate_VCs (E : Entity_Id)
+   with Pre => (if Ekind (E) = E_Package
+                then Entity_Spec_In_SPARK (E)
+                else Entity_In_SPARK (E));
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
@@ -307,15 +310,12 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      --  ??? early return if
-      --      Analysis_Requested (E, With_Inlined => False) and then
-      --      Entity_Spec_In_SPARK (E)
       case Ekind (E) is
-         when Subprogram_Kind
-            | Entry_Kind
+         when Entry_Kind
+            | E_Function
+            | E_Procedure
          =>
-            if Analysis_Requested (E, With_Inlined => False)
-              and then Entity_Spec_In_SPARK (E)
+            if Entity_Spec_In_SPARK (E)
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
@@ -346,39 +346,32 @@ package body Gnat2Why.Driver is
             end if;
 
          when E_Package =>
-            if Entity_Spec_In_SPARK (E) and then
-              not Entity_In_Ext_Axioms (E) and then
-              Analysis_Requested (E, With_Inlined => False)
-            then
+            if not Entity_In_Ext_Axioms (E) then
                Generate_VCs_For_Package_Elaboration (WF_Main, E);
             end if;
 
          when Type_Kind =>
-            pragma Assert (Entity_In_SPARK (E));
+            if Needs_Default_Checks_At_Decl (E) then
+               Generate_VCs_For_Type (WF_Main, E);
+            end if;
 
-            if Analysis_Requested (E, With_Inlined => False) then
-               if Needs_Default_Checks_At_Decl (E) then
-                  Generate_VCs_For_Type (WF_Main, E);
-               end if;
+            if Ekind (E) in E_Protected_Type | E_Task_Type
+              and then Entity_Spec_In_SPARK (E)
+            then
+               case Ekind (E) is
+                  when E_Protected_Type =>
+                     Generate_VCs_For_Protected_Type (WF_Main, E);
 
-               if Ekind (E) in E_Protected_Type | E_Task_Type
-                 and then Entity_Spec_In_SPARK (E)
-               then
-                  case Ekind (E) is
-                     when E_Protected_Type =>
-                        Generate_VCs_For_Protected_Type (WF_Main, E);
+                  when E_Task_Type =>
+                     Generate_VCs_For_Task_Type (WF_Main, E);
 
-                     when E_Task_Type =>
-                        Generate_VCs_For_Task_Type (WF_Main, E);
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-               end if;
+                  when others =>
+                     raise Program_Error;
+               end case;
             end if;
 
          when others =>
-            null;
+            raise Program_Error;
       end case;
    end Do_Generate_VCs;
 
@@ -414,9 +407,7 @@ package body Gnat2Why.Driver is
    begin
       Timing_Start (Timing);
 
-      if Is_Generic_Unit (E)
-        and then Analysis_Requested (E, With_Inlined => False)
-      then
+      if Is_Generic_Unit (E) then
 
          --  We do nothing for generic units currently. If this get revised
          --  at some point to provide proof of generics, then the special
@@ -742,7 +733,13 @@ package body Gnat2Why.Driver is
 
       procedure Generate_VCs (E : Entity_Id) is
       begin
-         if Is_In_Analyzed_Files (E) then
+         if Ekind (E) in Entry_Kind
+                       | E_Function
+                       | E_Package
+                       | E_Procedure
+                       | Type_Kind
+             and then Analysis_Requested (E, With_Inlined => False)
+         then
             Do_Generate_VCs (E);
          end if;
       end Generate_VCs;
