@@ -1498,17 +1498,19 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end if;
 
-            declare
-               C : Flow_Graphs.Cluster_Id;
-            begin
-               FA.CFG.New_Cluster (C);
-               for V of All_Vertices loop
-                  FA.Other_Fields.Insert
-                    (V,
-                     All_Vertices - Vertex_Sets.To_Set (V));
-                  FA.CFG.Set_Cluster (V, C);
-               end loop;
-            end;
+            if not FA.Generating_Globals then
+               declare
+                  C : Flow_Graphs.Cluster_Id;
+               begin
+                  FA.CFG.New_Cluster (C);
+                  for V of All_Vertices loop
+                     FA.Other_Fields.Insert
+                       (V,
+                        All_Vertices - Vertex_Sets.To_Set (V));
+                     FA.CFG.Set_Cluster (V, C);
+                  end loop;
+               end;
+            end if;
          end;
       else
          declare
@@ -3462,17 +3464,19 @@ package body Flow.Control_Flow_Graph is
                      All_Vertices.Insert (V);
                   end loop;
 
-                  declare
-                     C : Flow_Graphs.Cluster_Id;
-                  begin
-                     FA.CFG.New_Cluster (C);
-                     for V of All_Vertices loop
-                        FA.Other_Fields.Insert
-                          (V,
-                           All_Vertices - Vertex_Sets.To_Set (V));
-                        FA.CFG.Set_Cluster (V, C);
-                     end loop;
-                  end;
+                  if not FA.Generating_Globals then
+                     declare
+                        C : Flow_Graphs.Cluster_Id;
+                     begin
+                        FA.CFG.New_Cluster (C);
+                        for V of All_Vertices loop
+                           FA.Other_Fields.Insert
+                             (V,
+                              All_Vertices - Vertex_Sets.To_Set (V));
+                           FA.CFG.Set_Cluster (V, C);
+                        end loop;
+                     end;
+                  end if;
                end;
 
             else

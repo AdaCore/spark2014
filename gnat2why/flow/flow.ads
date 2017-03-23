@@ -195,7 +195,7 @@ package Flow is
 
       Other_Fields : Vertex_To_Vertex_Set_Maps.Map;
       --  For a vertex corresponding to a record field this map will hold a
-      --  vertex set of the other record fields.
+      --  vertex set of the other record fields; only used in phase 2.
 
       Local_Constants : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
