@@ -173,20 +173,20 @@ package body SPARK_Definition is
    --  On. VCs should be generated only for entities in the current unit. Each
    --  entity may be attached to a declaration or not (for Itypes).
 
-   Entity_Set : Node_Sets.Set;
+   Entity_Set : Hashed_Node_Sets.Set;
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
 
-   Entities_In_SPARK : Node_Sets.Set;
+   Entities_In_SPARK : Hashed_Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Bodies_In_SPARK : Node_Sets.Set;
+   Bodies_In_SPARK : Hashed_Node_Sets.Set;
    --  Unique defining entities whose body is marked in SPARK; for kinds of
    --  entities in this set see the contract of Entity_Body_In_SPARK.
 
-   Bodies_Compatible_With_SPARK : Node_Sets.Set;
+   Bodies_Compatible_With_SPARK : Hashed_Node_Sets.Set;
    --  Unique defining entities for expression functions whose body does not
    --  contain SPARK violations. Entities that are in this set and not in
    --  Bodies_In_SPARK are expression functions that are compatible with
@@ -208,11 +208,11 @@ package body SPARK_Definition is
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
 
-   Loop_Entity_Set : Node_Sets.Set;
+   Loop_Entity_Set : Hashed_Node_Sets.Set;
    --  Set of entities defined in loops before the invariant, which may require
    --  a special translation. See gnat2why.ads for details.
 
-   Actions_Entity_Set : Node_Sets.Set;
+   Actions_Entity_Set : Hashed_Node_Sets.Set;
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
@@ -6128,7 +6128,7 @@ package body SPARK_Definition is
           when Marked_Entities =>
              Cursor'(Kind => Marked_Entities,
                      Marked_Entities_Cursor     =>
-                       Node_Sets.Next (C.Marked_Entities_Cursor)));
+                       Hashed_Node_Sets.Next (C.Marked_Entities_Cursor)));
 
    -----------------
    -- Has_Element --
@@ -6142,7 +6142,7 @@ package body SPARK_Definition is
             Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
 
          when Marked_Entities =>
-            Node_Sets.Has_Element (C.Marked_Entities_Cursor));
+            Hashed_Node_Sets.Has_Element (C.Marked_Entities_Cursor));
 
    -----------------
    -- Get_Element --
@@ -6156,6 +6156,6 @@ package body SPARK_Definition is
             Node_Lists.Element (C.Entity_To_Translate_Cursor),
 
          when Marked_Entities =>
-            Node_Sets.Element (C.Marked_Entities_Cursor));
+            Hashed_Node_Sets.Element (C.Marked_Entities_Cursor));
 
 end SPARK_Definition;

@@ -67,6 +67,12 @@ package Common_Containers is
    --  we intend to be as predictable as possible on all machines, to get the
    --  same proof results on all machines when possible.
 
+   package Hashed_Node_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Node_Id,
+      Hash                => Node_Hash,
+      Equivalent_Elements => "=");
+   --  Set of nodes for use where ordering doesn't matter but performance does
+
    package Entity_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Checked_Entity_Id);
 

@@ -209,7 +209,7 @@ private
          when Entities_To_Translate =>
             Entity_To_Translate_Cursor : Node_Lists.Cursor;
          when Marked_Entities =>
-            Marked_Entities_Cursor     : Node_Sets.Cursor;
+            Marked_Entities_Cursor     : Hashed_Node_Sets.Cursor;
       end case;
    end record;
 
