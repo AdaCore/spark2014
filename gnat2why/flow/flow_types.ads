@@ -485,6 +485,7 @@ package Flow_Types is
       Is_Null_Node                 : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
       --  returns or null statements.
+      pragma Warnings (Off, Is_Null_Node); --  no reordering warning
 
       Is_Program_Node              : Boolean;
       --  Set for all vertices which both
@@ -601,6 +602,7 @@ package Flow_Types is
       --  For default initializations (Is_Default_init) this pair
       --  records which variable has a default value (Var) and what it
       --  is (Val).
+      pragma Warnings (Off, Default_Init_Val); --  no reordering warning
 
       Variables_Defined            : Flow_Id_Sets.Set;
       Variables_Used               : Flow_Id_Sets.Set;
