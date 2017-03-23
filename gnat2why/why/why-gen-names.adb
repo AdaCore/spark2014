@@ -628,12 +628,7 @@ package body Why.Gen.Names is
    -- NID --
    ---------
 
-   function NID (Name : String) return Name_Id is
-   begin
-      Name_Len := 0;
-      Add_Str_To_Name_Buffer (Name);
-      return Name_Find;
-   end NID;
+   function NID (Name : String) return Name_Id renames Name_Find;
 
    -------------------------
    -- New_Temp_Identifier --
