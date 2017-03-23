@@ -28,7 +28,8 @@ with Ada.Containers;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Strings.Hash;
-with GNAT.Strings; use GNAT.Strings;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.Strings;          use GNAT.Strings;
 
 package String_Utils is
 
@@ -57,9 +58,15 @@ package String_Utils is
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
    --  Generate a string from a hash, without the leading space
 
-   function Null_Or_Empty_String (S : String_Access) return Boolean is
+   function Null_Or_Empty_String (S : GNAT.Strings.String_Access)
+                                  return Boolean
+   is
      (S = null or else S.all = "");
    --  Return True iff S is null or the empty string
+
+   function To_Unbounded_String (X : Boolean) return Unbounded_String is
+     (To_Unbounded_String (if X then "True" else "False"));
+   --  Function to print booleans
 
    function Trimi (S : String; C : Character) return String;
    --  Return a copy of S with all occurences of C removed

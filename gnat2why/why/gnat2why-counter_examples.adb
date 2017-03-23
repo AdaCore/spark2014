@@ -39,6 +39,7 @@ with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Types;          use SPARK_Util.Types;
+with String_Utils;              use String_Utils;
 with Uintp;                     use Uintp;
 
 package body Gnat2Why.Counter_Examples is
@@ -243,11 +244,7 @@ package body Gnat2Why.Counter_Examples is
             --  integers like: "subype only_true := True .. True".
 
             if Is_Boolean_Type (AST_Type) then
-               if Cnt_Value.I = "0" then
-                  return (To_Unbounded_String ("False"));
-               else
-                  return (To_Unbounded_String ("True"));
-               end if;
+               return (To_Unbounded_String (Cnt_Value.I /= "0"));
             end if;
 
             if Is_Enumeration_Type (AST_Type) then
@@ -312,11 +309,7 @@ package body Gnat2Why.Counter_Examples is
             return Cnt_Value.F;
 
          when Cnt_Boolean =>
-            if Cnt_Value.Bo then
-               return To_Unbounded_String ("True");
-            else
-               return To_Unbounded_String ("False");
-            end if;
+            return To_Unbounded_String (Cnt_Value.Bo);
 
          when Cnt_Bitvector =>
 
@@ -325,11 +318,7 @@ package body Gnat2Why.Counter_Examples is
             --  inside translated arrays_of_records.
 
             if Is_Boolean_Type (AST_Type) then
-               if Cnt_Value.B = "0" then
-                  return (To_Unbounded_String ("False"));
-               else
-                  return (To_Unbounded_String ("True"));
-               end if;
+               return (To_Unbounded_String (Cnt_Value.B /= "0"));
             end if;
 
             return Cnt_Value.B;
