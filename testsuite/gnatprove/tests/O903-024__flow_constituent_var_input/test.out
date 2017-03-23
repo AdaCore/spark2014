@@ -1,0 +1,2 @@
+abstraction.ads:4:03: medium: constant without variable input "C" cannot appear in Initializes
+abstraction.ads:6:14: warning: subprogram "P" has no effect
