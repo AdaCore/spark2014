@@ -708,10 +708,17 @@ package body Gnat2Why.Error_Messages is
       procedure Handle_Timings (V : JSON_Value) is
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value);
 
+         ------------------
+         -- Timing_Entry --
+         ------------------
+
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value) is
+            Time : constant Float := Get (Value);
          begin
-            External_Timing (Timing, Name, Get (Value));
+            External_Timing (Timing, Name, Duration (Time));
          end Timing_Entry;
+
+      --  Start of processing for Handle_Timings
 
       begin
          Map_JSON_Object (V, Timing_Entry'Access);

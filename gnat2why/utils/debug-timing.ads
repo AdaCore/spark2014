@@ -21,57 +21,54 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Package to help print where we spend time.
+--  Package to help print where we spend time
 
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 
 private with Ada.Execution_Time;
-private with Ada.Containers.Vectors;
+private with Ada.Containers.Doubly_Linked_Lists;
 private with Ada.Strings.Unbounded;
 
 package Debug.Timing is
 
    type Time_Token is limited private;
 
-   procedure Timing_Start (T : out Time_Token);
+   subtype Elapsed_Time is Duration range 0.0 .. Duration'Last;
+
+   procedure Timing_Start (Timer : out Time_Token);
    --  The beginning of time. Or at least in our way of counting ;)
 
-   procedure Timing_Phase_Completed (T : in out Time_Token;
-                                     S : String);
+   procedure Timing_Phase_Completed (Timer : in out Time_Token;
+                                     Msg   : String);
    --  Note how much time has elapsed since the last call of this procedure
    --  (or the call to Timing_Start if it is called for the first time).
    --  Make sure S is unique if you want to call Timing_History.
 
-   function Timing_History (T : Time_Token) return JSON_Value;
+   function Timing_History (Timer : Time_Token) return JSON_Value;
    --  Return the history so far as a mapping {string -> float} with
    --  elapsed phases (the string) and how long they took (the float).
 
-   procedure External_Timing (T : in out Time_Token;
-                              S : String;
-                              Time : Float);
-   --  inject a timing that comes from another source than this package. This
-   --  allows to integrate timings from spawned processes into the output
+   procedure External_Timing (Timer : in out Time_Token;
+                              Msg   : String;
+                              Time  : Elapsed_Time);
+   --  Inject a timing that comes from another source than this package. This
+   --  allows to integrate timings from spawned processes into the output.
 
 private
 
-   use Ada.Execution_Time;
    use Ada.Strings.Unbounded;
-
-   type Deci_Seconds is new Integer;
 
    type Phase is record
       Name   : Unbounded_String;
-      Length : Deci_Seconds;
+      Length : Elapsed_Time;
    end record;
 
-   package Histories is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Phase);
-   use Histories;
+   package Histories is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Phase);
 
    type Time_Token is record
-      Time_Stamp : CPU_Time;
-      History    : Vector;
+      Start   : Ada.Execution_Time.CPU_Time;
+      History : Histories.List;
    end record;
 
 end Debug.Timing;

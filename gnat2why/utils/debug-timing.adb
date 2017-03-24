@@ -21,112 +21,76 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Real_Time;       use Ada.Real_Time;
-
-with Gnat2Why_Args;       use Gnat2Why_Args;
+with Ada.Text_IO;          use Ada.Text_IO;
+with Ada.Real_Time;        use Ada.Real_Time;
+with Gnat2Why_Args;        use Gnat2Why_Args;
 
 package body Debug.Timing is
-
-   function To_Deci_Seconds (T : Time_Span) return Deci_Seconds;
-   --  Convert the T to deci-seconds, truncating (instead of rounding).
-
-   function To_Unbounded_String (DS : Deci_Seconds) return Unbounded_String;
-   --  Convert deci-seconds to a string (e.g. "12.3")
-
-   function To_Float (DS : Deci_Seconds) return Float;
-   --  Convert deci-seconds to a float.
 
    ---------------------
    -- External_Timing --
    ---------------------
 
-   procedure External_Timing (T : in out Time_Token;
-                              S : String;
-                              Time : Float) is
+   procedure External_Timing (Timer : in out Time_Token;
+                              Msg   : String;
+                              Time  : Elapsed_Time) is
    begin
-      T.History.Append ((Name   => To_Unbounded_String (S),
-                         Length => Deci_Seconds (Time * 10.0)));
+      Timer.History.Append ((Name   => To_Unbounded_String (Msg),
+                             Length => Time));
    end External_Timing;
-
-   ---------------------
-   -- To_Deci_Seconds --
-   ---------------------
-
-   function To_Deci_Seconds (T : Time_Span) return Deci_Seconds
-   is (Deci_Seconds (T / Milliseconds (100)));
-
-   -------------------------
-   -- To_Unbounded_String --
-   -------------------------
-
-   function To_Unbounded_String (DS : Deci_Seconds) return Unbounded_String
-   is
-      Seconds  : Integer          := Integer (DS) / 10;
-      Fraction : constant Integer := Integer (DS) mod 10;
-   begin
-      return S : Unbounded_String := Null_Unbounded_String do
-         while Seconds > 0 or Length (S) = 0 loop
-            S := S & Character'Val (Character'Pos ('0') + Seconds mod 10);
-            Seconds := Seconds / 10;
-         end loop;
-         Append (S, ".");
-         Append (S, Character'Val (Character'Pos ('0') + Fraction));
-      end return;
-   end To_Unbounded_String;
-
-   --------------
-   -- To_Float --
-   --------------
-
-   function To_Float (DS : Deci_Seconds) return Float
-   is (Float (DS) / 10.0);
 
    ------------------
    -- Timing_Start --
    ------------------
 
-   procedure Timing_Start (T : out Time_Token)
+   procedure Timing_Start (Timer : out Time_Token)
    is
    begin
-      T := (Time_Stamp => Clock,
-            History    => Empty_Vector);
+      Timer := (Start   => Ada.Execution_Time.Clock,
+                History => Histories.Empty_List);
    end Timing_Start;
 
    ----------------------------
    -- Timing_Phase_Completed --
    ----------------------------
 
-   procedure Timing_Phase_Completed (T : in out Time_Token;
-                                     S : String)
+   procedure Timing_Phase_Completed (Timer : in out Time_Token;
+                                     Msg   : String)
    is
-      Now     : constant CPU_Time     := Clock;
-      Elapsed : constant Deci_Seconds := To_Deci_Seconds (Now - T.Time_Stamp);
+      use Ada.Execution_Time;
+
+      Now     : constant CPU_Time := Clock;
+      Elapsed : constant Elapsed_Time := To_Duration (Now - Timer.Start);
+
+      package Duration_IO is new Ada.Text_IO.Fixed_IO (Elapsed_Time);
+
    begin
       if Debug_Mode then
-         Put (S);
-         for I in S'Length + 1 .. 35 loop
+         Put (Msg);
+         for I in Msg'Length + 1 .. 35 loop
             Put (' ');
          end loop;
-         Put (" (");
-         Put (To_String (To_Unbounded_String (Elapsed)));
-         Put_Line ("s)");
+         --  Print elapsed time in 1234.5 notation; this is enough for around
+         --  2.5 hours and if we hit this limit then we have other problems to
+         --  worry about.
+         Duration_IO.Put (Elapsed, Fore => 4, Aft => 1);
+         Put_Line ("s");
       end if;
-      T.History.Append ((Name   => To_Unbounded_String (S),
-                         Length => Elapsed));
-      T.Time_Stamp := Now;
+      Timer.History.Append ((Name   => To_Unbounded_String (Msg),
+                             Length => Elapsed));
+      Timer.Start := Now;
    end Timing_Phase_Completed;
 
    --------------------
    -- Timing_History --
    --------------------
 
-   function Timing_History (T : Time_Token) return JSON_Value
+   function Timing_History (Timer : Time_Token) return JSON_Value
    is
    begin
       return V : constant JSON_Value := Create_Object do
-         for P of T.History loop
-            Set_Field (V, To_String (P.Name), To_Float (P.Length));
+         for P of Timer.History loop
+            Set_Field (V, To_String (P.Name), Float (P.Length));
          end loop;
       end return;
    end Timing_History;
