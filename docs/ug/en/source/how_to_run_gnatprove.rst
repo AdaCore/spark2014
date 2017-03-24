@@ -285,15 +285,17 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
     powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib
 
-  To find where the :file:`rts-kernel` directory is located and then copy
-  this directory to the |SPARK| installation, under
-  :file:`<spark-install>/share/spark/runtimes`, for example
-  using `bash` syntax:
+  This command gives the path to :file:`rts-kernel` directory.
+
+  You then need to copy (or make a symbolic link under Unix with `ln -s` or
+  under Windows with `mklink /D`) this directory to the |SPARK| installation, under
+  :file:`<spark-install>/share/spark/runtimes`, removing the trailing `rts-` in
+  the name. For example using `bash` syntax:
 
   .. code-block:: sh
 
     cp -pr $(dirname $(powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib)) \
-      <spark-install>/share/spark/runtimes
+      <spark-install>/share/spark/runtimes/kernel
 
   Then if not already present in your project file, you can then add
   the following:
@@ -344,10 +346,10 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
   This command gives the path to :file:`<ravenscar-sfp-stm32f4 runtime>/adalib`.
 
-  You then need to copy (or make a symbolic link under Unix) the
-  <ravenscar-sfp-stm32f4 runtime> directory to the |SPARK| installation, under
-  :file:`<spark-prefix>/share/spark/runtimes`, for example using `bash`
-  syntax:
+  You then need to copy (or make a symbolic link under Unix with `ln -s` or
+  under Windows with `mklink /D`) the <ravenscar-sfp-stm32f4 runtime> directory
+  to the |SPARK| installation, under
+  :file:`<spark-prefix>/share/spark/runtimes`, for example using `bash` syntax:
 
   .. code-block:: sh
 
