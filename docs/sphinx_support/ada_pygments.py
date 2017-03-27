@@ -112,7 +112,8 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
             # Builtin values
             (r'False|True', Keyword.Constant),
             # Identifiers
-            (r'[\w\.]+', Name)], }
+            (r'[\w\.]+', Name),
+            (r'.', Text)]}
 
     # Insert tag highlighting before identifiers
     if tag_highlighting:
