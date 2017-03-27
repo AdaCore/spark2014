@@ -289,22 +289,26 @@ package body SPARK_Definition is
    ----------------------
 
    procedure Mark_Unsupported
-     (Msg  : String;
-      N    : Node_Id;
+     (Msg        : String;
+      N          : Node_Id;
       Extra_Name : Name_Id := No_Name;
       Extra_Num  : Uint    := No_Uint;
-      Extra_Node : Node_Id := Empty) with
+      Extra_Node : Node_Id := Empty;
+      Cont_Msg   : String  := "")
+   with
      Pre => (Extra_Name /= No_Name) = (for some C of Msg => C = '%') and then
             (Extra_Num  /= No_Uint) = (for some C of Msg => C = '^') and then
             (Extra_Node /= Empty)   = (for some C of Msg => C = '}'),
-        Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma);
+     Global => (Output => Violation_Detected,
+                Input  => Current_SPARK_Pragma);
    --  Mark node N as an unsupported SPARK construct. An error message is
    --  issued if current SPARK_Mode is On.
    --
    --  Extra parameters correspond to special characters in the Msg string and
    --  precondition (which is slightly less restrictive than it should) checks
    --  that they are set correctly.
+   --
+   --  Cont_Msg is a continuous message when specified.
 
    procedure Mark_Violation
      (Msg           : String;
@@ -4323,6 +4327,13 @@ package body SPARK_Definition is
             else
                Mark_Violation_In_Tasking (E);
             end if;
+
+         elsif Is_Incomplete_Type (E) then
+            Mark_Unsupported
+              ("incomplete type &", E,
+               Cont_Msg =>
+                 "consider restructuring code to avoid `LIMITED WITH`");
+
          else
             raise Program_Error;
          end if;
@@ -5861,11 +5872,12 @@ package body SPARK_Definition is
    ----------------------
 
    procedure Mark_Unsupported
-     (Msg  : String;
-      N    : Node_Id;
+     (Msg        : String;
+      N          : Node_Id;
       Extra_Name : Name_Id := No_Name;
       Extra_Num  : Uint    := No_Uint;
-      Extra_Node : Node_Id := Empty)
+      Extra_Node : Node_Id := Empty;
+      Cont_Msg   : String  := "")
    is
    begin
       --  Flag the violation, so that the current entity is marked accordingly
@@ -5879,6 +5891,10 @@ package body SPARK_Definition is
          Error_Msg_Uint_1 := Extra_Num;
          Error_Msg_Node_1 := Extra_Node;
          Error_Msg_N (Msg & " is not yet supported", N);
+
+         if Cont_Msg /= "" then
+            Error_Msg_N ('\' & Cont_Msg, N);
+         end if;
       end if;
    end Mark_Unsupported;
 
