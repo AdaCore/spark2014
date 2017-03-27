@@ -1,5 +1,5 @@
 
 
 Error while loading project file: test.gpr: could not determine working directory
-gnatprove: test.gpr:3:22: undefined external reference
-gnatprove: test.gpr:3:22: undefined external reference
+gnatprove: test.gpr:3:22: undefined external reference "NONEXISTING_ENVIRONMENTAL_VARIABLE"
+gnatprove: test.gpr:3:22: undefined external reference "NONEXISTING_ENVIRONMENTAL_VARIABLE"
