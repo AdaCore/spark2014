@@ -734,6 +734,8 @@ failing condition reported by |GNATprove|:
    "range check might fail",                               "VC_RANGE_CHECK"
    "predicate check might fail",                           "VC_PREDICATE_CHECK"
    "predicate check might fail on default value",          "VC_PREDICATE_CHECK_ON_DEFAULT_VALUE"
+   "invariant check might fail",                           "VC_INVARIANT_CHECK"
+   "invariant check might fail on default value",          "VC_INVARIANT_CHECK_ON_DEFAULT_VALUE"
    "length check might fail",                              "VC_LENGTH_CHECK"
    "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                                 "VC_TAG_CHECK"
