@@ -11,8 +11,6 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
 formal_list.ads:15:30: info: range check proved (CVC4: 1 VC)
 formal_list.ads:19:30: info: range check proved (CVC4: 1 VC)
-informal_list.ads:3:09: cannot read theory file informal_list.mlw
-informal_list.ads:3:09: cannot read theory file informal_list.mlw
 test.adb:4:17: info: initialization of "A" proved
 test.adb:5:17: info: initialization of "B" proved
 test.adb:6:17: medium: input value of "C" will be used in "Test"
@@ -21,4 +19,3 @@ test.adb:7:17: medium: input value of private part of "D" will be used in "Test"
 test.adb:7:17: warning: unused variable "D"
 test.adb:14:09: high: "Tmp_A" is not initialized
 test.adb:15:09: high: "Tmp_B" is not initialized
-gnatprove: error during flow analysis and proof
