@@ -25,15 +25,13 @@
 
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 
-private with Ada.Execution_Time;
+private with Ada.Calendar;
 private with Ada.Containers.Doubly_Linked_Lists;
 private with Ada.Strings.Unbounded;
 
 package Debug.Timing is
 
    type Time_Token is limited private;
-
-   subtype Elapsed_Time is Duration range 0.0 .. Duration'Last;
 
    procedure Timing_Start (Timer : out Time_Token);
    --  The beginning of time. Or at least in our way of counting ;)
@@ -50,24 +48,35 @@ package Debug.Timing is
 
    procedure External_Timing (Timer : in out Time_Token;
                               Msg   : String;
-                              Time  : Elapsed_Time);
+                              Time  : Duration)
+   with Pre => Time >= 0.0;
    --  Inject a timing that comes from another source than this package. This
    --  allows to integrate timings from spawned processes into the output.
+   --  Unlike timing coming from this package, the external times should be
+   --  non-negative.
 
 private
+
+   --  Timing relies on Ada.Calendar and not Ada.Execution_Time, because the
+   --  latter would force the use of Ada.Real_Time and in turn the GNAT tasking
+   --  runtime, which incurs performance penalty at each allocation and
+   --  deallocation (and we have plenty of those). Here we only care about
+   --  estimate timing, so the less-precise and potentially non-monotonic clock
+   --  from Ada.Calendar is acceptable.
 
    use Ada.Strings.Unbounded;
 
    type Phase is record
       Name   : Unbounded_String;
-      Length : Elapsed_Time;
+      Length : Duration;
    end record;
+   --  Note: Length might be negative when clock skew happens
 
    package Histories is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Phase);
 
    type Time_Token is record
-      Start   : Ada.Execution_Time.CPU_Time;
+      Start   : Ada.Calendar.Time;
       History : Histories.List;
    end record;
 

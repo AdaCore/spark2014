@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;          use Ada.Text_IO;
-with Ada.Real_Time;        use Ada.Real_Time;
 with Gnat2Why_Args;        use Gnat2Why_Args;
 
 package body Debug.Timing is
@@ -33,7 +32,7 @@ package body Debug.Timing is
 
    procedure External_Timing (Timer : in out Time_Token;
                               Msg   : String;
-                              Time  : Elapsed_Time) is
+                              Time  : Duration) is
    begin
       Timer.History.Append ((Name   => To_Unbounded_String (Msg),
                              Length => Time));
@@ -46,8 +45,8 @@ package body Debug.Timing is
    procedure Timing_Start (Timer : out Time_Token)
    is
    begin
-      Timer := (Start   => Ada.Execution_Time.Clock,
-                History => Histories.Empty_List);
+      Timer := (History => Histories.Empty_List,
+                Start   => Ada.Calendar.Clock);
    end Timing_Start;
 
    ----------------------------
@@ -57,12 +56,12 @@ package body Debug.Timing is
    procedure Timing_Phase_Completed (Timer : in out Time_Token;
                                      Msg   : String)
    is
-      use Ada.Execution_Time;
+      use Ada.Calendar;
 
-      Now     : constant CPU_Time := Clock;
-      Elapsed : constant Elapsed_Time := To_Duration (Now - Timer.Start);
+      Now     : constant Time := Clock;
+      Elapsed : constant Duration := Now - Timer.Start;
 
-      package Duration_IO is new Ada.Text_IO.Fixed_IO (Elapsed_Time);
+      package Duration_IO is new Ada.Text_IO.Fixed_IO (Duration);
 
    begin
       if Debug_Mode then
