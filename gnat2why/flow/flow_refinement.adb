@@ -766,11 +766,9 @@ package body Flow_Refinement is
       Scope : Flow_Scope)
       return Boolean
    is
-      Found : Boolean := False;
-
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure that sets Found to True if we find a state
-      --  abstraction whose refinement is visible from Scope.
+      --  Traversal procedure; returns Abandon when we find an abstract state
+      --  whose refinement is visible from Scope.
 
       ----------
       -- Proc --
@@ -786,7 +784,6 @@ package body Flow_Refinement is
                  and then Ekind (E) = E_Abstract_State
                  and then State_Refinement_Is_Visible (E, Scope)
                then
-                  Found := True;
                   return Abandon;
                end if;
             end;
@@ -796,14 +793,12 @@ package body Flow_Refinement is
          return OK;
       end Proc;
 
-      procedure Find_Abstract_State is new Traverse_Proc (Process => Proc);
+      function Find_Abstract_State is new Traverse_Func (Process => Proc);
 
    --  Start of processing for Mentions_State_With_Visible_Refinement
 
    begin
-      Find_Abstract_State (N);
-
-      return Found;
+      return Find_Abstract_State (N) = Abandon;
    end Mentions_State_With_Visible_Refinement;
 
    -----------------------
