@@ -46,10 +46,10 @@ package Gnat2Why.Error_Messages is
    --    have any VC associated with them. This is useful for assumptions.
 
    function Has_Registered_VCs return Boolean;
-   --  returns true when the function Register_VC has been called
+   --  Returns True iff the function Register_VC has been called
 
    procedure Load_Codepeer_Results;
-   --  load the codepeer result file and store results. Can be queried with
+   --  Load the CodePeer result file and store results. Can be queried with
    --  "CodePeer_Has_Proved" function.
    --  Skips loading if Codepeer processing is disabled (CP_Res_Dir set to
    --  null) or when no result file is found. "CodePeer_Has_Proved" will always
@@ -81,7 +81,7 @@ package Gnat2Why.Error_Messages is
       VC_File    : String := "";
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd : String := "");
-   --  register the VC identified by node and kind as proved. This will emit
+   --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are
    --  "codepeer", "interval" and "", the empty string meaning "some prover
