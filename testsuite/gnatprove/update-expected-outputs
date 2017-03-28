@@ -8,12 +8,14 @@ import os
 import shutil
 from glob import glob
 
+
 def get_result(result_file):
     fd = open(result_file, "rU")
     tmp = fd.read().strip()
     fd.close()
 
     return tmp.split(":")[0]
+
 
 for result_file in glob("out/*.result"):
     # Result is "DIFF" when run locally, and "D" in mailservers/nightly runs
