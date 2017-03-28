@@ -527,13 +527,16 @@ package body Gnat2Why.Driver is
 
             if Has_Registered_VCs then
                Print_Why_File;
+
+               --  After printing the .mlw file the memory consumed by the Why3
+               --  AST is no longer needed; give it back to OS, so that provers
+               --  can use it. When not printing the .mlw file just do nothing;
+               --  there is almost nothing left to do and there is no point to
+               --  waste time on manually releasing memory.
+               Why.Atree.Tables.Free;
+
                Run_Gnatwhy3;
             end if;
-
-            --  After printing the .mlw file the memory consumed by the Why3
-            --  AST is no longer needed; give it back to OS, so that provers
-            --  can use it.
-            Why.Atree.Tables.Free;
 
             if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
                Generate_Useless_Pragma_Annotate_Warnings;
