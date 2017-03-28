@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="5" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
 <file name="../../../gnatprove/stats.mlw" expanded="true">
 <theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -224,55 +224,61 @@
 </theory>
 <theory name="Stats__displaystats___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Stats__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+<theory name="Stats__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Stats__init__subprogram_def" sum="619b0ae61c1ce5b2446c8ad11095d937" expanded="true">
+<theory name="Stats__t__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addsuccessfulentry__subprogram_def" sum="a5d29e1bea6f43da393a14111c1cf87f" expanded="true">
+<theory name="Stats__init__subprogram_def" sum="87567191089c82a177eacd99b1b9c5af" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Stats__addsuccessfulentry__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="32"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addfailedentry__subprogram_def" sum="a5d29e1bea6f43da393a14111c1cf87f" expanded="true">
+<theory name="Stats__addfailedentry__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="32"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addsuccessfulbio__subprogram_def" sum="a5d29e1bea6f43da393a14111c1cf87f" expanded="true">
+<theory name="Stats__addsuccessfulbio__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="32"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addfailedbio__subprogram_def" sum="a5d29e1bea6f43da393a14111c1cf87f" expanded="true">
+<theory name="Stats__addfailedbio__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="32"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Stats__displaystats__subprogram_def" sum="f5d2294cac2bfb765dcb1d99297fc162" expanded="true">
+<theory name="Stats__displaystats__subprogram_def" sum="a9e680f5b3ae9ba77eded5a1248f1af3" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

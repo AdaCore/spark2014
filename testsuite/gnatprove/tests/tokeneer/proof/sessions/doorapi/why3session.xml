@@ -1893,25 +1893,17 @@
 </theory>
 <theory name="Tcpip__readmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__sendmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__sendmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tcpip__sendmsg__B_2__dummychar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__sendmsg__B_2__dummychar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tcpip__sendmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__sendmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tcpip__commsisok__codestart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__commsisok__codestart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__checkstatus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__checkstatus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__selector" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__selector___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__portalport" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1940,6 +1932,14 @@
 <theory name="Tcpip__writeset" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__writeset___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__checkstatus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__checkstatus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__selector" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__selector___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__sendandreceive__address" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2119,7 +2119,7 @@
 </theory>
 <theory name="Ada__strings__maps__null_set__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_136" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_142" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__strings__fixed__move" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2145,7 +2145,7 @@
 </theory>
 <theory name="Ada__strings__fixed__tail__2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___137" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___143" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__connecttospre" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2159,7 +2159,7 @@
 </theory>
 <theory name="Tcpip__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_141" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_147" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__strings__alignment___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2251,7 +2251,7 @@
 </theory>
 <theory name="Tcpip__messaget__T4s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___569" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___575" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__messaget___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2283,9 +2283,9 @@
 </theory>
 <theory name="Doorapi__getdoorstateraw__B_1__T3b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_627" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_633" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_628" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_634" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__characters__latin_1__nul___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2943,41 +2943,41 @@
 </theory>
 <theory name="Doorapi__getdoorstateraw___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Doorapi__package_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+<theory name="Doorapi__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Doorapi__getdoorstate__subprogram_def" sum="51e3d3db5f1cbdd641d446f1694dee70" expanded="true">
+<theory name="Doorapi__getdoorstate__subprogram_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="30831c0d83fd085195d95e640f7164f1" expanded="true">
+<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="115ed8a6b5892da8b04faf30726f3469" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.05" steps="712"/></proof>
-  <proof prover="1"><result status="failure" time="0.04"/></proof>
-  <proof prover="2"><result status="unknown" time="0.08" steps="57756"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="437"/></proof>
+  <proof prover="0"><result status="unknown" time="0.13" steps="529"/></proof>
+  <proof prover="1"><result status="failure" time="0.08"/></proof>
+  <proof prover="2"><result status="unknown" time="0.10" steps="90926"/></proof>
+  <proof prover="3"><result status="unknown" time="0.08" steps="437"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.59" steps="15002"/></proof>
-  <proof prover="1"><result status="failure" time="0.04"/></proof>
-  <proof prover="2"><result status="unknown" time="0.10" steps="109481"/></proof>
-  <proof prover="3"><result status="unknown" time="0.43" steps="15002"/></proof>
+  <proof prover="0"><result status="unknown" time="1.27" steps="15002"/></proof>
+  <proof prover="1"><result status="failure" time="0.09"/></proof>
+  <proof prover="2"><result status="unknown" time="0.12" steps="167060"/></proof>
+  <proof prover="3"><result status="unknown" time="1.25" steps="15002"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="unknown" time="0.56" steps="15002"/></proof>
-  <proof prover="1"><result status="failure" time="0.08"/></proof>
-  <proof prover="2"><result status="unknown" time="0.08" steps="140787"/></proof>
-  <proof prover="3"><result status="unknown" time="0.48" steps="15002"/></proof>
+  <proof prover="0"><result status="unknown" time="1.16" steps="15002"/></proof>
+  <proof prover="1"><result status="failure" time="0.10"/></proof>
+  <proof prover="2"><result status="unknown" time="0.13" steps="217710"/></proof>
+  <proof prover="3"><result status="unknown" time="1.35" steps="15002"/></proof>
   </goal>
  </transf>
  </goal>
