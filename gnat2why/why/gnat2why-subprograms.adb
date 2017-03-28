@@ -807,19 +807,7 @@ package body Gnat2Why.Subprograms is
             --  ??? We may want to collect discriminants of task types
 
             if Ekind (E) in E_Function | E_Procedure | E_Entry then
-               declare
-                  Params : constant List_Id :=
-                    Parameter_Specifications
-                      (if Is_Entry (E) then Parent (E)
-                       else Subprogram_Specification (E));
-                  Param  : Node_Id;
-               begin
-                  Param := First (Params);
-                  while Present (Param) loop
-                     Includes.Include (Defining_Identifier (Param));
-                     Next (Param);
-                  end loop;
-               end;
+               Includes.Union (Get_Explicit_Formals (E));
 
                --  If E is a protected subprogram, add the type itself to stand
                --  for the self reference.
