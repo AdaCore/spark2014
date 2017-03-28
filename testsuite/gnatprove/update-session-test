@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import glob
+import os
+import os.path
+import sys
+import shutil
+import subprocess
+import lib.python.test_support
+
+"""
+This script will update the session information of a test, if the
+output does not change. It will run the test twice, so it takes some time.
+"""
+
+test_name = sys.argv[1]
+
+
+def main():
+    dir = os.path.join("tests", test_name)
+    curdir = os.getcwd()
+    print "switching to ", dir
+    os.chdir(dir)
+    print """deleting subdir "proof" """
+    shutil.rmtree("proof", ignore_errors=True)
+    print "running gnatprove again"
+    lib.python.test_support.prove_all(procs=10)
+    for shape_file in glob.glob("proof/session*/why3shapes"):
+        print "deleting shapes file ", shape_file
+    shutil.rmtree("gnatprove")
+    os.chdir(curdir)
+    out = subprocess.check_output(["./run-tests", "-d", "large", test_name])
+    print out
+
+
+main()
