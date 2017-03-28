@@ -26,6 +26,7 @@
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Containers;
+with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
@@ -51,8 +52,6 @@ with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Error_Messages is
 
-   VC_Id_Counter : VC_Id := 0;
-
    type VC_Info is record
       Node   : Node_Id;
       Entity : Entity_Id;
@@ -61,12 +60,10 @@ package body Gnat2Why.Error_Messages is
    function Hash (X : VC_Id) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (X));
 
-   package Id_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => VC_Id,
-      Element_Type    => VC_Info,
-      Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Id_Tables is new Ada.Containers.Vectors
+     (Index_Type   => VC_Id,
+      Element_Type => VC_Info,
+      "="          => "=");
 
    package Id_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => VC_Id,
@@ -109,7 +106,7 @@ package body Gnat2Why.Error_Messages is
       Kind : VC_Kind) return String;
    --  Return the message string for an unproved VC
 
-   VC_Table : Id_Maps.Map := Id_Maps.Empty_Map;
+   VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
 
    VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
@@ -409,9 +406,7 @@ package body Gnat2Why.Error_Messages is
    ------------------------
 
    function Has_Registered_VCs return Boolean is
-   begin
-      return not (VC_Table.Is_Empty);
-   end Has_Registered_VCs;
+     (not VC_Table.Is_Empty);
 
    ---------------------------
    -- Load_Codepeer_Results --
@@ -898,12 +893,12 @@ package body Gnat2Why.Error_Messages is
    --------------
 
    function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id is
-      Tmp : constant VC_Id := VC_Id_Counter;
+      Registered_Id : VC_Id;
    begin
-      VC_Table.Insert (Tmp, VC_Info'(N, E));
-      VC_Id_Counter := VC_Id_Counter + 1;
-      Add_Id_To_Entity (Tmp, E);
-      return Tmp;
+      VC_Table.Append (VC_Info'(N, E));
+      Registered_Id := VC_Table.Last_Index;
+      Add_Id_To_Entity (Registered_Id, E);
+      return Registered_Id;
    end Register_VC;
 
    ------------------------
