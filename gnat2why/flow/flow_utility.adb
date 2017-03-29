@@ -2508,21 +2508,16 @@ package body Flow_Utility is
                --  Otherwise, we'll expand out into all the state we can see.
                pragma Assert (not Ctx.Assume_In_Expression);
 
-               declare
-                  S : constant Node_Sets.Set :=
-                    Down_Project (Node_Sets.To_Set (E), Ctx.Scope);
-               begin
-                  return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
-                  do
-                     for Constituent of S loop
-                        if Ekind (Constituent) = E_Abstract_State then
-                           Variables.Include (Direct_Mapping_Id (E));
-                        else
-                           Variables.Union (Do_Entity (Constituent));
-                        end if;
-                     end loop;
-                  end return;
-               end;
+               return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
+               do
+                  for Constituent of Down_Project (E, Ctx.Scope) loop
+                     if Ekind (Constituent) = E_Abstract_State then
+                        Variables.Include (Direct_Mapping_Id (E));
+                     else
+                        Variables.Union (Do_Entity (Constituent));
+                     end if;
+                  end loop;
+               end return;
 
             when Composite_Kind =>
                --  Dealt with using membership tests, if applicable

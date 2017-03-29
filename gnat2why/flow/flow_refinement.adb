@@ -441,8 +441,8 @@ package body Flow_Refinement is
    -- Down_Project --
    ------------------
 
-   function Down_Project (Vars : Node_Sets.Set;
-                          S    : Flow_Scope)
+   function Down_Project (Var : Entity_Id;
+                          S   : Flow_Scope)
                           return Node_Sets.Set
    is
       P : Node_Sets.Set;
@@ -458,34 +458,37 @@ package body Flow_Refinement is
       ------------
 
       procedure Expand (E : Entity_Id) is
-         Possible_Hidden_Components : Boolean := False;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
-               if State_Refinement_Is_Visible (E, S) then
-                  for C of Iter (Refinement_Constituents (E)) loop
-                     if Nkind (C) /= N_Null then
-                        Expand (C);
-                     end if;
-                  end loop;
-               else
-                  Possible_Hidden_Components := True;
-               end if;
-
-               for C of Iter (Part_Of_Constituents (E)) loop
-                  if Is_Visible (C, S) then
-                     Expand (C);
+               declare
+                  Possible_Hidden_Components : Boolean := False;
+               begin
+                  if State_Refinement_Is_Visible (E, S) then
+                     for C of Iter (Refinement_Constituents (E)) loop
+                        if Nkind (C) /= N_Null then
+                           Expand (C);
+                        end if;
+                     end loop;
                   else
                      Possible_Hidden_Components := True;
                   end if;
-               end loop;
 
-               if Possible_Hidden_Components then
-                  --  We seem to have an abstract state which has no
-                  --  refinement, or where we have unexpanded state. Lets
-                  --  include the abstract state itself.
-                  P.Include (E);
-               end if;
+                  for C of Iter (Part_Of_Constituents (E)) loop
+                     if Is_Visible (C, S) then
+                        Expand (C);
+                     else
+                        Possible_Hidden_Components := True;
+                     end if;
+                  end loop;
+
+                  if Possible_Hidden_Components then
+                     --  We seem to have an abstract state which has no
+                     --  refinement, or where we have unexpanded state.
+                     --  Lets include the abstract state itself.
+                     P.Include (E);
+                  end if;
+               end;
 
             when others =>
                P.Include (E);
@@ -495,8 +498,19 @@ package body Flow_Refinement is
    --  Start of processing for Down_Project
 
    begin
+      Expand (Var);
+
+      return P;
+   end Down_Project;
+
+   function Down_Project (Vars : Node_Sets.Set;
+                          S    : Flow_Scope)
+                          return Node_Sets.Set
+   is
+      P : Node_Sets.Set;
+   begin
       for V of Vars loop
-         Expand (V);
+         P.Union (Down_Project (V, S));
       end loop;
 
       return P;

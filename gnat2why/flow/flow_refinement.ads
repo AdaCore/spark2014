@@ -158,13 +158,21 @@ package Flow_Refinement is
    --  the abstract version. If we can't find an abstract version, we return
    --  Empty.
 
+   function Down_Project (Var : Entity_Id;
+                          S   : Flow_Scope)
+                          return Node_Sets.Set
+   with Post => (for all V of Down_Project'Result =>
+                    V in Checked_Entity_Id_Or_Empty);
+   --  Given a variable Var and a scope S, recursively expand abstract states
+   --  whose refinement is visible in S.
+
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)
                           return Node_Sets.Set
-   with Pre  => (for all V of Vars => V in Checked_Entity_Id),
-        Post => (for all V of Down_Project'Result => V in Checked_Entity_Id);
-   --  Given a set of variables and a scope, recursively expand abstract states
-   --  whose refinement is visible in S.
+   with Pre  => (for all V of Vars => V in Checked_Entity_Id_Or_Empty),
+        Post => (for all V of Down_Project'Result =>
+                    V in Checked_Entity_Id_Or_Empty);
+   --  Same as above, but for many nodes
 
    function Find_In_Initializes (E : Checked_Entity_Id)
                                  return Entity_Id
