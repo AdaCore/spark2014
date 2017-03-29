@@ -1918,36 +1918,15 @@ package body Flow_Utility is
    --------------------------
 
    function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set is
-      Formal  : Entity_Id;
+      Formal  : Entity_Id := First_Formal (E);
       Formals : Node_Sets.Set;
 
    begin
-      case Ekind (E) is
-         when E_Entry | E_Function | E_Procedure =>
-            --  Collect explicit formal parameters
-            Formal := First_Formal (E);
-            while Present (Formal) loop
-               Formals.Insert (Formal);
-               Next_Formal (Formal);
-            end loop;
-            --  ??? what about discriminants of the enclosing protected type?
-
-         when E_Task_Type =>
-            --  Add discriminants of task as formal parameters
-            if Has_Discriminants (E)
-              or else Has_Unknown_Discriminants (E)
-            then
-               Formal := First_Discriminant (E);
-               while Present (Formal) loop
-                  Formals.Insert (Formal);
-                  Next_Discriminant (Formal);
-               end loop;
-            end if;
-
-         when others =>
-            raise Program_Error;
-
-      end case;
+      --  Collect explicit formal parameters
+      while Present (Formal) loop
+         Formals.Insert (Formal);
+         Next_Formal (Formal);
+      end loop;
 
       return Formals;
    end Get_Explicit_Formals;
@@ -1986,10 +1965,14 @@ package body Flow_Utility is
      (E : Entity_Id)
       return Node_Sets.Set
    is
-      Formals  : Node_Sets.Set := Get_Explicit_Formals (E);
+      Formals  : Node_Sets.Set;
       Implicit : constant Entity_Id := Get_Implicit_Formal (E);
 
    begin
+      if Ekind (E) in E_Entry | E_Function | E_Procedure then
+         Formals := Get_Explicit_Formals (E);
+      end if;
+
       if Present (Implicit) then
          Formals.Insert (Implicit);
       end if;

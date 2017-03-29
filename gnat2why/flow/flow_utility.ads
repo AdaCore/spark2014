@@ -617,9 +617,8 @@ is
    --    view.
 
    function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
-   --  Returns explicit formals of a subprogram or entry or task type
-   --  discriminants for a task type.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   --  Returns explicit formals of a subprogram or entry
 
    function Get_Implicit_Formal (E : Entity_Id) return Entity_Id
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
