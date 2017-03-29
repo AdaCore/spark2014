@@ -1204,7 +1204,7 @@ package body Why.Inter is
       then
          pragma Assert (Rec /= Empty);
          declare
-            Ada_N  : constant Node_Id := Retysp (Rec);
+            Ada_N  : constant Entity_Id := Retysp (Rec);
             Module : constant W_Module_Id := E_Module (Ada_N);
             Orig   : constant Entity_Id :=
               (if Ekind (E) in E_Component | E_Discriminant | Type_Kind
