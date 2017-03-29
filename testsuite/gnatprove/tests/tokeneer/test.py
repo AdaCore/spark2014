@@ -1,6 +1,6 @@
 import glob
 from test_support import *
-prove_all(opt=["--replay"], procs=4)
+prove_all(opt=["--replay", "--no-axiom-guard"], procs=4)
 
 # testing the proof information in .spark files. See <gnatprove/spark_report>
 # for the format of the .spark files
