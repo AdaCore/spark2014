@@ -985,7 +985,7 @@ package body Flow_Utility is
                      D_In.Intersection (if O = Null_Flow_Id
                                         then All_Proof_Ins
                                         else All_Reads);
-                     Depends.Include (O, D_In);
+                     Depends.Insert (O, D_In);
                   end if;
                end loop;
             end;
@@ -1010,7 +1010,7 @@ package body Flow_Utility is
 
             begin
                for O of D_Out loop
-                  Depends.Include (O, D_In);
+                  Depends.Insert (O, D_Ins);
                end loop;
             end;
          end loop;
