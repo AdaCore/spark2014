@@ -1010,7 +1010,7 @@ package body Flow_Utility is
 
             begin
                for O of D_Out loop
-                  Depends.Insert (O, D_Ins);
+                  Depends.Insert (O, D_In);
                end loop;
             end;
          end loop;
