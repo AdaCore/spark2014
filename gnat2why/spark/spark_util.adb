@@ -1276,9 +1276,10 @@ package body SPARK_Util is
    ----------------------
 
    function Is_Package_State (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Abstract_State
-        or else
-      (Ekind (E) = E_Variable and then Ekind (Scope (E)) = E_Package));
+     (case Ekind (E) is
+         when E_Abstract_State => True,
+         when E_Variable       => Ekind (Scope (E)) = E_Package,
+         when others           => False);
 
    ---------------
    -- Is_Pragma --
