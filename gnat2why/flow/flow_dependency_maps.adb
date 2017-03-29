@@ -58,6 +58,8 @@ package body Flow_Dependency_Maps is
 
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
+      Expr : constant Node_Id := Expression (PAA);
+
       M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
       Row : Node_Id;
@@ -67,7 +69,7 @@ package body Flow_Dependency_Maps is
       Inputs  : Flow_Id_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
    begin
-      case Nkind (Expression (PAA)) is
+      case Nkind (Expr) is
          when N_Aggregate =>
             --  Aspect => (...)
 
@@ -78,7 +80,7 @@ package body Flow_Dependency_Maps is
 
          when N_Identifier =>
             --  Aspect => Foobar
-            M.Insert (Direct_Mapping_Id (Expression (PAA)),
+            M.Insert (Direct_Mapping_Id (Expr),
                       Flow_Id_Sets.Empty_Set);
             return M;
 
@@ -90,12 +92,12 @@ package body Flow_Dependency_Maps is
             raise Why.Unexpected_Node;
       end case;
 
-      pragma Assert_And_Cut (Nkind (Expression (PAA)) = N_Aggregate);
+      pragma Assert_And_Cut (Nkind (Expr) = N_Aggregate);
       --  Aspect => (...)
 
       --  First, we look at the expressions of the aggregate, i.e. foo and bar
       --  in (foo, bar, baz => ..., bork => ...).
-      Row := First (Expressions (Expression (PAA)));
+      Row := First (Expressions (Expr));
       while Present (Row) loop
          declare
             E : constant Entity_Id := Entity (Original_Node (Row));
@@ -108,7 +110,7 @@ package body Flow_Dependency_Maps is
 
       --  Next, we look at the component associations, i.e. baz and bork in the
       --  above example.
-      Row := First (Component_Associations (Expression (PAA)));
+      Row := First (Component_Associations (Expr));
       while Present (Row) loop
          Inputs  := Flow_Id_Sets.Empty_Set;
          Outputs := Flow_Id_Sets.Empty_Set;
