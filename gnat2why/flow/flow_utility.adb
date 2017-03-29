@@ -919,6 +919,11 @@ package body Flow_Utility is
                       Writes              => All_Writes,
                       Use_Deduced_Globals => Use_Computed_Globals);
 
+         --  Change all variants to Normal_Use
+         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
+         All_Reads     := Change_Variant (All_Reads,     Normal_Use);
+         All_Writes    := Change_Variant (All_Writes,    Normal_Use);
+
          --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
             declare
@@ -953,11 +958,6 @@ package body Flow_Utility is
          if Ekind (Subprogram) = E_Function then
             All_Writes.Insert (Direct_Mapping_Id (Subprogram));
          end if;
-
-         --  Change all variants to Normal_Use
-         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
-         All_Reads     := Change_Variant (All_Reads, Normal_Use);
-         All_Writes    := Change_Variant (All_Writes, Normal_Use);
 
          --  Remove generic formals without variable input
          Remove_Constants (All_Proof_Ins, Only_Generic_Formals => True);
