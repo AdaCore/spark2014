@@ -30,7 +30,6 @@ with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -619,15 +618,9 @@ package body Gnat2Why.Expr.Loops.Inv is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
             declare
-               Discrs  : constant Natural :=
-                 (if Has_Discriminants (Expr_Ty)
-                  or else Has_Unknown_Discriminants (Expr_Ty)
-                  then Natural (Number_Discriminants (Expr_Ty))
-                  else 0);
+               Discrs  : constant Natural := Count_Discriminants (Expr_Ty);
                Discr   : Node_Id :=
-                 (if Has_Discriminants (Expr_Ty)
-                  or else Has_Unknown_Discriminants (Expr_Ty)
-                  then First_Discriminant (Expr_Ty)
+                 (if Discrs > 0 then First_Discriminant (Expr_Ty)
                   else Empty);
                Tmps    : W_Identifier_Array (1 .. Discrs);
                Binds   : W_Expr_Array (1 .. Discrs);
@@ -647,10 +640,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                      --  discriminants of types without default discriminants
                      --  or of constrained types.
 
-                     if Has_Discriminants (Expr_Ty)
-                       and then Has_Defaulted_Discriminants (Expr_Ty)
-                       and then not Is_Constrained (Expr_Ty)
-                     then
+                     if Discrs > 0 and then not Is_Constrained (Expr_Ty) then
                         Handle_Record_Component (Discr);
                      end if;
                   end if;
@@ -862,7 +852,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                     and then not Has_Async_Writers (F)
                     and then
                       (not Is_Task_Type (Etype (E))
-                       or else Has_Discriminants (Etype (E)))
+                       or else Count_Discriminants (Etype (E)) > 0)
                   then
                      Ada.Text_IO.Put_Line
                        ("error in computation of loop frame condition for "

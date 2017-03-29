@@ -1261,6 +1261,15 @@ package body SPARK_Util is
       return Is_Internal_File_Name (File);
    end In_Internal_Unit;
 
+   ---------------------------------
+   -- Is_Not_Hidden_Discriminant  --
+   ---------------------------------
+
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
+     (not (Ekind (E) = E_Discriminant and then
+              (Is_Completely_Hidden (E)
+                or else No (Root_Record_Component (E)))));
+
    ----------------------
    -- Is_Others_Choice --
    ----------------------

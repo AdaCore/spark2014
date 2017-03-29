@@ -630,7 +630,7 @@ package body Why.Gen.Binders is
                                  Mutable  => True));
             end if;
 
-            if Has_Discriminants (Ty) then
+            if Count_Discriminants (Ty) > 0 then
                Result.Discrs :=
                  (Present => True,
                   Binder  =>

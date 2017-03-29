@@ -1,4 +1,6 @@
 late_init.adb:6:12: default expression cannot mention type "T" defined at line 6
 late_init.adb:9:52: "T" is not allowed in SPARK
 late_init.adb:9:52: violation of pragma SPARK_Mode at test.adc:1
+late_init.adb:9:54: "T" is not allowed in SPARK
+late_init.adb:9:54: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

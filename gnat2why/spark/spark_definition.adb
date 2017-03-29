@@ -4591,6 +4591,22 @@ package body SPARK_Definition is
               and then not In_SPARK (E)
             then
                Mark_Violation (N, From => E);
+
+            --  Record components and discriminants are in SPARK if they are
+            --  visible in the representative type of their scope. Do not
+            --  report a violation if the type itself is not SPARK, as the
+            --  violation will already have been reported.
+
+            elsif Ekind (E) in E_Discriminant | E_Component then
+               declare
+                  Ty : constant Entity_Id := Retysp (Scope (E));
+               begin
+                  if In_SPARK (Ty)
+                    and then No (Search_Component_By_Name (Ty, E))
+                  then
+                     Mark_Violation (N, From => Ty);
+                  end if;
+               end;
             end if;
 
          --  Subprogram names appear for example in Sub'Result
@@ -5563,6 +5579,17 @@ package body SPARK_Definition is
          if In_Pred_Function_Body then
             Current_Delayed_Aspect_Type := Etype (First_Formal (E));
 
+            --  If the type is private and the predicate is on the full view,
+            --  we should use the full view to get the correct SPARK_Mode.
+
+            if not Has_Predicates (Current_Delayed_Aspect_Type) then
+               pragma Assert
+                 (Present (Full_View (Current_Delayed_Aspect_Type)));
+               Current_Delayed_Aspect_Type :=
+                 Full_View (Current_Delayed_Aspect_Type);
+            end if;
+            pragma Assert (Has_Predicates (Current_Delayed_Aspect_Type));
+
             Current_SPARK_Pragma :=
               SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
 
@@ -5765,6 +5792,18 @@ package body SPARK_Definition is
          begin
             if In_Pred_Function_Decl then
                Current_Delayed_Aspect_Type := Etype (First_Formal (E));
+
+               --  If the type is private and the predicate is on the full
+               --  view, we should use the full view to get the correct
+               --  SPARK_Mode.
+
+               if not Has_Predicates (Current_Delayed_Aspect_Type) then
+                  pragma Assert
+                    (Present (Full_View (Current_Delayed_Aspect_Type)));
+                  Current_Delayed_Aspect_Type :=
+                    Full_View (Current_Delayed_Aspect_Type);
+               end if;
+               pragma Assert (Has_Predicates (Current_Delayed_Aspect_Type));
 
                Current_SPARK_Pragma :=
                  SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);

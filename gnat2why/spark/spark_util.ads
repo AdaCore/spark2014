@@ -274,10 +274,10 @@ package SPARK_Util is
    --  @return True iff the entity is a component or discriminant of a
    --            concurrent type
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-     (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean;
    --  @param E any entity
-   --  @return The opposite of Einfo.Is_Completely_Hidden
+   --  @return Return True if E is not a Discriminant or if E is visible in
+   --  SPARK.
    --  Contrary to Einfo.Is_Completely_Hidden, this function can be called on
    --  any entity E, not only discriminants.
 

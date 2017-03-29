@@ -785,7 +785,8 @@ package body Why.Gen.Expr is
       Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
       Need_Discr_Check : constant Boolean :=
-        Need_Check and then Has_Discriminants (R) and then Is_Constrained (R);
+        Need_Check and then Count_Discriminants (R) > 0
+        and then Is_Constrained (R);
       Need_Tag_Check   : constant Boolean :=
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
 
@@ -2555,7 +2556,7 @@ package body Why.Gen.Expr is
 
             return New_Dynamic_Property (Domain, Ty, Args, Params);
          end;
-      elsif Has_Discriminants (Ty) and then Is_Constrained (Ty) then
+      elsif Count_Discriminants (Ty) > 0 and then Is_Constrained (Ty) then
          declare
             Base_Expr : constant W_Expr_Id :=
               Insert_Single_Conversion (Domain   => EW_Term,

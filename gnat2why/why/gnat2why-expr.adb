@@ -2686,19 +2686,16 @@ package body Gnat2Why.Expr is
             Post    : W_Pred_Id := True_Pred;
             --  Post used for the assignment of tmp_exp
 
-            Discrs  : constant Natural :=
-              (if Has_Discriminants (Ty_Ext) then
-                 Natural (Number_Discriminants (Ty_Ext))
-               else 0);
+            Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
             Tmps    : W_Identifier_Array (1 .. Discrs);
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
+            Discr   : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
                                   then First_Discriminant (Ty_Ext)
                                   else Empty);
             Elmt    : Elmt_Id :=
-              (if Has_Discriminants (Ty_Ext)
+              (if Count_Discriminants (Ty_Ext) > 0
                and then Is_Constrained (Ty_Ext) then
                     First_Elmt (Stored_Constraint (Ty_Ext))
                else No_Elmt);
@@ -3057,7 +3054,9 @@ package body Gnat2Why.Expr is
          --  If the type is constrained, get the value of discriminants from
          --  the stored constraints.
 
-         if Has_Discriminants (Ty_Ext) and then Is_Constrained (Ty_Ext) then
+         if Count_Discriminants (Ty_Ext) > 0
+           and then Is_Constrained (Ty_Ext)
+         then
             return +New_Comparison
               (Symbol => Why_Eq,
                Left   => +Insert_Simple_Conversion
@@ -3633,7 +3632,7 @@ package body Gnat2Why.Expr is
             Else_Part => +T,
             Typ       => EW_Bool_Type);
 
-      elsif Has_Discriminants (Ty_Ext)
+      elsif Count_Discriminants (Ty_Ext) > 0
         and then Is_Constrained (Ty_Ext)
       then
          T := New_Conditional
@@ -8659,7 +8658,7 @@ package body Gnat2Why.Expr is
 
       Disc_Check : constant Boolean :=
         Present (Get_Ada_Node (+L_Type)) and then
-        Has_Discriminants (Get_Ada_Node (+L_Type)) and then
+        Count_Discriminants (Get_Ada_Node (+L_Type)) > 0 and then
         not Is_Constrained (Get_Ada_Node (+L_Type));
       Tmp      : constant W_Expr_Id :=
         New_Temp_For_Expr (+T, Lgth_Check or else Disc_Check);
@@ -8721,8 +8720,7 @@ package body Gnat2Why.Expr is
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
-            Discr : Node_Id := (if Has_Discriminants (Ty)
-                                or else Has_Unknown_Discriminants (Ty)
+            Discr : Node_Id := (if Count_Discriminants (Ty) > 0
                                 then First_Discriminant (Ty)
                                 else Empty);
             D_Ty  : constant Entity_Id :=
@@ -10141,8 +10139,7 @@ package body Gnat2Why.Expr is
            and then Present (Stored_Constraint (Ent))
          then
             declare
-               Discr : Entity_Id := (if Has_Discriminants (Base)
-                                     or else Has_Unknown_Discriminants (Base)
+               Discr : Entity_Id := (if Count_Discriminants (Base) > 0
                                      then First_Discriminant (Base)
                                      else Empty);
                Elmt  : Elmt_Id := First_Elmt (Stored_Constraint (Ent));
@@ -10180,8 +10177,7 @@ package body Gnat2Why.Expr is
       function Check_Itypes_Of_Components (Ent : Entity_Id) return W_Prog_Id is
          N      : constant Natural :=
            (if not Is_Constrained (Ent)
-            and then (Has_Discriminants (Ent)
-              or else Has_Unknown_Discriminants (Ent))
+            and then (Count_Discriminants (Ent) > 0)
             then Natural (Number_Discriminants (Ent)) else 0);
          Vars   : W_Identifier_Array (1 .. N);
          Vals   : W_Expr_Array (1 .. N);
@@ -10271,7 +10267,7 @@ package body Gnat2Why.Expr is
 
                   --  And discriminants of record / private / concurrent types
 
-                  elsif Has_Discriminants (Typ)
+                  elsif Count_Discriminants (Typ) > 0
                     and then not Is_Constrained (Base)
                   then
                      Check :=  Check_Discr_Of_Subtype (Base, Typ);
@@ -12586,7 +12582,7 @@ package body Gnat2Why.Expr is
                      --  constrained, see RM 3.9 (14)
 
                      if Root_Type (Spec_Ty) /= Spec_Ty and then
-                       Has_Discriminants (Spec_Ty) and then
+                       Count_Discriminants (Spec_Ty) > 0 and then
                        Is_Constrained (Spec_Ty)
                      then
                         Discr_Cond := New_Call
@@ -14422,10 +14418,7 @@ package body Gnat2Why.Expr is
       Association : Node_Id;
       Field_Assoc :
         W_Field_Association_Array (1 .. Components_Count (Assocs));
-      Num_Discr   : constant Integer :=
-        (if Has_Discriminants (Typ) then
-           Natural (Number_Discriminants (Typ))
-         else 0);
+      Num_Discr   : constant Integer := Count_Discriminants (Typ);
       Discr_Assoc :
         W_Field_Association_Array (1 .. Num_Discr);
       Result      :
@@ -15548,12 +15541,11 @@ package body Gnat2Why.Expr is
          --  /\ ..
 
          declare
-            Discr  : Node_Id := (if Has_Discriminants (Ty_Ext)
-                                 or else Has_Unknown_Discriminants (Ty_Ext)
+            Discr  : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
                                  then First_Discriminant (Ty_Ext)
                                  else Empty);
             Elmt   : Elmt_Id :=
-              (if Has_Discriminants (Ty_Ext)
+              (if Count_Discriminants (Ty_Ext) > 0
                and then Is_Constrained (Ty_Ext)
                then First_Elmt (Stored_Constraint (Ty_Ext))
                else No_Elmt);
@@ -15742,7 +15734,7 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif Has_Discriminants (Ty_Ext) then
+      elsif Count_Discriminants (Ty_Ext) > 0 then
 
          --  Variables coming from the record's discriminants
 

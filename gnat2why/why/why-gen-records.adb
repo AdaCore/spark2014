@@ -163,14 +163,8 @@ package body Why.Gen.Records is
         Insert_Simple_Conversion (Domain   => EW_Term,
                                   Expr     => +Expr,
                                   To       => EW_Abstract (Ty_Ext));
-      Discrs  : constant Natural :=
-        (if Has_Discriminants (Ty_Ext)
-         or else Has_Unknown_Discriminants (Ty_Ext)
-         then
-            Natural (Number_Discriminants (Ty_Ext))
-         else 0);
-      Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
-                            or else Has_Unknown_Discriminants (Ty_Ext)
+      Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
+      Discr   : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
@@ -537,10 +531,7 @@ package body Why.Gen.Records is
       ----------------------------------
 
       procedure Declare_Conversion_Functions is
-         Num_Discrs      : constant Natural :=
-           (if Has_Discriminants (E) then
-              Natural (Number_Discriminants (E))
-            else 0);
+         Num_Discrs      : constant Natural := Count_Discriminants (E);
          Num_E_Fields    : constant Natural := Count_Why_Regular_Fields (E);
          Num_Root_Fields : constant Natural := Count_Why_Regular_Fields (Root);
          Is_Mutable_E    : constant Boolean := Has_Defaulted_Discriminants (E);
@@ -987,7 +978,7 @@ package body Why.Gen.Records is
 
                   --  Compare discriminants
 
-                  if Has_Discriminants (E) then
+                  if Count_Discriminants (E) > 0 then
                      Discr := First_Discriminant (E);
                      while Present (Discr) loop
                         if Is_Not_Hidden_Discriminant (Discr) then
@@ -1031,7 +1022,7 @@ package body Why.Gen.Records is
                              Is_Private   => Ekind (Comp) in Type_Kind,
                              Field_Type   => Retysp (Etype (Comp)));
                         Always_Present : constant Boolean :=
-                          not (Has_Discriminants (E))
+                          Count_Discriminants (E) = 0
                           or else Ekind (Comp) /= E_Component;
                      begin
                         Condition :=
@@ -1305,7 +1296,7 @@ package body Why.Gen.Records is
          --  ??? enrich the postcondition of access to discriminant, whenever
          --  we statically know its value (in case of E_Record_Subtype)
 
-         if Has_Discriminants (E) then
+         if Count_Discriminants (E) > 0 then
             declare
                Discr : Entity_Id := First_Discriminant (E);
             begin
@@ -1351,10 +1342,7 @@ package body Why.Gen.Records is
       -------------------------
 
       procedure Declare_Record_Type is
-         Num_Discrs : constant Natural :=
-           (if Has_Discriminants (E) then
-              Natural (Number_Discriminants (E))
-            else 0);
+         Num_Discrs : constant Natural := Count_Discriminants (E);
          Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
          Is_Mutable : constant Boolean := Has_Defaulted_Discriminants (E);
          Num_All    : constant Natural := Count_Why_Top_Level_Fields (E);
@@ -1795,7 +1783,7 @@ package body Why.Gen.Records is
       end if;
 
       if Root /= E
-        and then Has_Discriminants (E)
+        and then Count_Discriminants (E) > 0
         and then Is_Constrained (E)
       then
          Declare_Conversion_Check_Function (P, E, Root);
@@ -2052,7 +2040,7 @@ package body Why.Gen.Records is
    --  Start of processing for Declare_Component_Attributes
 
    begin
-      if Has_Discriminants (E) then
+      if Count_Discriminants (E) > 0 then
          declare
             Discr : Entity_Id := First_Discriminant (E);
          begin
@@ -2086,10 +2074,7 @@ package body Why.Gen.Records is
         +New_Named_Type (Name => Root_Name);
       A_Ident    : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Root_Abstr);
-      Num_Discr  : constant Natural :=
-        (if Has_Discriminants (E) then
-           Natural (Number_Discriminants (E))
-         else 0);
+      Num_Discr  : constant Natural := Count_Discriminants (E);
       R_Access   : constant W_Expr_Id :=
         New_Record_Access (Name  => +A_Ident,
                            Field => E_Symb (Root, WNE_Rec_Split_Discrs));
@@ -2239,7 +2224,7 @@ package body Why.Gen.Records is
       --  Ty's discriminants were already defined in Anc_Ty. Generate
       --  association for them.
 
-      if Has_Discriminants (Ty) then
+      if Count_Discriminants (Ty) > 0 then
          Discr_Expr := New_Discriminants_Access
            (Ada_Node => Ada_Node,
             Domain   => Term_Domain (Domain),
@@ -2304,7 +2289,7 @@ package body Why.Gen.Records is
       --  If the type does not have any discriminants, no check is needed
       --  obviously.
 
-      if not Has_Discriminants (Check_Ty) then
+      if Count_Discriminants (Check_Ty) = 0 then
          return Expr;
       end if;
 
@@ -2436,10 +2421,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
-      Num_Discr  : constant Natural :=
-        (if Has_Discriminants (Ty)
-         then Natural (Number_Discriminants (Ty))
-         else 0);
+      Num_Discr  : constant Natural := Count_Discriminants (Ty);
       Num_Fields : constant Natural := Count_Why_Regular_Fields (Ty);
       Assoc      : W_Field_Association_Id;
       Assocs     : W_Field_Association_Array (1 .. Num_All);
@@ -2554,10 +2536,7 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Discr_Expr : W_Expr_Id := Why_Empty;
-      Num_Discr  : constant Natural :=
-        (if Has_Discriminants (Ty)
-         then Natural (Number_Discriminants (Ty))
-         else 0);
+      Num_Discr  : constant Natural := Count_Discriminants (Ty);
 
    begin
       if Num_Discr > 0 then
@@ -2910,7 +2889,7 @@ package body Why.Gen.Records is
       --  search for components which do not have the same type as their
       --  first introduction.
 
-      if Has_Discriminants (Current) then
+      if Count_Discriminants (Current) > 0 then
          for Field of Get_Component_Set (Current) loop
             if Ekind (Field) = E_Component
               and then Retysp (Etype (Representative_Component (Field)))
@@ -2986,10 +2965,7 @@ package body Why.Gen.Records is
       Expr     : W_Expr_Id)
       return W_Expr_Array
    is
-      Num_Discr : constant Natural :=
-        (if Has_Discriminants (Check_Ty) then
-           Natural (Number_Discriminants (Check_Ty))
-         else 0);
+      Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
       Args      : W_Expr_Array (1 .. Num_Discr + 1);
       Count     : Natural := 1;
       Discr     : Entity_Id := First_Discriminant (Check_Ty);
@@ -3041,7 +3017,7 @@ package body Why.Gen.Records is
 
       --  Store association for the top-level field for discriminants
 
-      if Has_Discriminants (Ty) then
+      if Count_Discriminants (Ty) > 0 then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
             Field    => E_Symb (Ty, WNE_Rec_Split_Discrs),
@@ -3160,7 +3136,7 @@ package body Why.Gen.Records is
 
          elsif Ekind (Result) = E_Private_Subtype
            and then not Is_Tagged_Type (Result)
-           and then not Has_Discriminants (Result)
+           and then Count_Discriminants (Result) = 0
          then
             Result := Retysp (Etype (Result));
 
@@ -3201,7 +3177,7 @@ package body Why.Gen.Records is
 
       elsif Ekind (E) = E_Private_Subtype
         and then not Is_Tagged_Type (E)
-        and then not Has_Discriminants (E)
+        and then Count_Discriminants (E) = 0
       then
          return True;
 

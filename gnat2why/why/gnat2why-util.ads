@@ -375,6 +375,13 @@ package Gnat2Why.Util is
    --  @param E type.
    --  @return True if E is a private type with only a single private field.
 
+   function Count_Discriminants (E : Entity_Id) return Natural with
+     Pre  => Is_Type (E);
+   --  @param E type.
+   --  @return the number of discriminants visible in the Retysp of E
+   --  In the translation to Why, use Count_Discriminants instead of
+   --  Has_Discriminant to avoid counting hidden discriminants.
+
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,
    --  or through the read effects of a function call. This is used to

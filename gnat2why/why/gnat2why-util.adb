@@ -483,6 +483,32 @@ package body Gnat2Why.Util is
       return Compute_Spec (Params, Nodes, Domain);
    end Compute_Spec;
 
+   -------------------------
+   -- Count_Discriminants --
+   -------------------------
+
+   function Count_Discriminants (E : Entity_Id) return Natural is
+   begin
+      if not Has_Discriminants (E)
+        and then not Has_Unknown_Discriminants (E)
+      then
+         return 0;
+      end if;
+
+      declare
+         Discr : Entity_Id := First_Discriminant (E);
+         Count : Natural := 0;
+      begin
+         while Present (Discr) loop
+            if Is_Not_Hidden_Discriminant (Discr) then
+               Count := Count + 1;
+            end if;
+            Next_Discriminant (Discr);
+         end loop;
+         return Count;
+      end;
+   end Count_Discriminants;
+
    ------------------------------
    -- Count_Why_Regular_Fields --
    ------------------------------
@@ -515,7 +541,7 @@ package body Gnat2Why.Util is
       --  sub-record by copy instead of by reference (with the split version
       --  of the record).
 
-      if Has_Discriminants (E) then
+      if Count_Discriminants (E) > 0 then
          Count := Count + 1;
       end if;
 
@@ -531,7 +557,9 @@ package body Gnat2Why.Util is
       --  Directly store the attr__constrained and __tag fields in the record,
       --  as these fields cannot be modified after object creation.
 
-      if Has_Defaulted_Discriminants (E) then
+      if Count_Discriminants (E) > 0
+        and then Has_Defaulted_Discriminants (E)
+      then
          Count := Count + 1;
       end if;
 
@@ -963,7 +991,7 @@ package body Gnat2Why.Util is
       Ty : constant Entity_Id := Retysp (E);
    begin
       return Is_Private_Type (Ty)
-        and then not Has_Discriminants (Ty)
+        and then Count_Discriminants (Ty) = 0
         and then not Is_Tagged_Type (Ty);
    end Is_Simple_Private_Type;
 
@@ -1129,14 +1157,14 @@ package body Gnat2Why.Util is
            --  For constrained types with discriminants, we supply the value
            --  of the discriminants.
 
-           or else (Has_Discriminants (Ty_Ext)
+           or else (Count_Discriminants (Ty_Ext) > 0
                      and then Is_Constrained (Ty_Ext))
 
            --  For component types with defaulted discriminants, we know the
            --  discriminants have their default value.
 
            or else (not Top_Level
-                     and then Has_Discriminants (Ty_Ext)
+                     and then Count_Discriminants (Ty_Ext) > 0
                      and then Has_Defaulted_Discriminants (Ty_Ext))
 
            --  We need an invariant for type predicates
@@ -1162,7 +1190,7 @@ package body Gnat2Why.Util is
            or else Is_Private_Type (Ty_Ext)
            or else Is_Concurrent_Type (Ty_Ext)
          then
-            if Has_Discriminants (Ty_Ext) then
+            if Count_Discriminants (Ty_Ext) > 0 then
                declare
                   Discr : Entity_Id := First_Discriminant (Ty_Ext);
                begin

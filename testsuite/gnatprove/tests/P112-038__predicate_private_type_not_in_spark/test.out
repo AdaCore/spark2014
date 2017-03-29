@@ -1,13 +1,7 @@
-client.ads:6:18: "Non_Zero_Type" is not allowed in SPARK
-client.ads:6:18: violation of aspect SPARK_Mode at line 3
 client.ads:7:18: "Positive_Subtype" is not allowed in SPARK
 client.ads:7:18: violation of aspect SPARK_Mode at line 3
 dyn_pred2.ads:7:11: "Non_Zero_Type" is not allowed in SPARK
 dyn_pred2.ads:7:11: "Non_Zero_Type" is not allowed in SPARK
 dyn_pred2.ads:7:11: violation of aspect SPARK_Mode at line 1
 dyn_pred2.ads:7:11: violation of aspect SPARK_Mode at line 1
-dyn_pred2.ads:16:31: "Non_Zero_Type" is not allowed in SPARK
-dyn_pred2.ads:16:31: "Non_Zero_Type" is not allowed in SPARK
-dyn_pred2.ads:16:31: violation of aspect SPARK_Mode at line 1
-dyn_pred2.ads:16:31: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

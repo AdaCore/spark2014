@@ -2679,9 +2679,7 @@ package body Gnat2Why.Subprograms is
       begin
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-         if Has_Discriminants (E)
-           or else Has_Unknown_Discriminants (E)
-         then
+         if Count_Discriminants (E) > 0 then
             Discr_N := First_Discriminant (E);
          end if;
 
