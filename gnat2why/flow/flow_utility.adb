@@ -969,9 +969,8 @@ package body Flow_Utility is
                D_Out : constant Flow_Id_Sets.Set :=
                  (if Present (Dependency_Maps.Key (C)) then
                      To_Flow_Id_Set (Down_Project
-                                       (Node_Sets.To_Set
-                                          (Get_Direct_Mapping_Id
-                                             (Dependency_Maps.Key (C))),
+                                       (Get_Direct_Mapping_Id
+                                          (Dependency_Maps.Key (C)),
                                         Scope))
                   else
                      Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
@@ -998,11 +997,10 @@ package body Flow_Utility is
             declare
                D_Out : constant Flow_Id_Sets.Set :=
                  (if Present (Dependency_Maps.Key (C)) then
-                     To_Flow_Id_Set (Down_Project
-                                       (Node_Sets.To_Set
-                                          (Get_Direct_Mapping_Id
-                                             (Dependency_Maps.Key (C))),
-                                        Scope))
+                     To_Flow_Id_Set
+                        (Down_Project
+                           (Get_Direct_Mapping_Id (Dependency_Maps.Key (C)),
+                            Scope))
                   else
                      Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 

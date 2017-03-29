@@ -742,8 +742,7 @@ package body Flow.Analysis is
                               Vars_Known.Union
                                 (To_Flow_Id_Set
                                    (Down_Project
-                                      (Node_Sets.To_Set
-                                         (Get_Direct_Mapping_Id (F)),
+                                      (Get_Direct_Mapping_Id (F),
                                        FA.S_Scope)));
 
                            when Magic_String =>
@@ -3920,16 +3919,15 @@ package body Flow.Analysis is
             All_Contract_Outs :=
               Node_Id_Set_To_Flow_Id_Set
                 (Down_Project
-                   (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (The_Out)),
-                    S    => FA.B_Scope));
+                   (Var => Get_Direct_Mapping_Id (The_Out),
+                    S   => FA.B_Scope));
 
             --  Down project the RHS of an initialization_item
             for G of The_Ins loop
                All_Contract_Ins.Union
                  (Node_Id_Set_To_Flow_Id_Set
                     (Down_Project
-                       (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (G)),
-                        S    => FA.B_Scope)));
+                       (Get_Direct_Mapping_Id (G), FA.B_Scope)));
             end loop;
 
             --  Populate All_Actual_Outs and All_Actual_Ins
