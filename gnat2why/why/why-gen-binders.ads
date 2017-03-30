@@ -59,10 +59,9 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
-   --  see the comment of the Item_Type type below to see the meaning of this
-   --  enum
-
    type Item_Enum is (Regular, UCArray, DRecord, Func, Concurrent_Self);
+   --  See the comment of the Item_Type type below to see the meaning of this
+   --  enum.
 
    type Item_Bounds is record
       First : W_Identifier_Id;
