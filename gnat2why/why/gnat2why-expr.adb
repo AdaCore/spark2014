@@ -2336,8 +2336,11 @@ package body Gnat2Why.Expr is
                   end;
 
                when UCArray =>
-                  pragma Assert (Ekind (Formal) in
-                                   E_In_Out_Parameter | E_Out_Parameter);
+                  pragma Assert
+                    (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+                     or else (Has_Volatile (Formal)
+                       and then Has_Volatile_Flavor
+                         (Formal, Pragma_Async_Writers)));
 
                   --  If the actual is not in split form, we use a temporary
                   --  variable for it to avoid computing it multiple times.
