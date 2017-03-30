@@ -292,8 +292,6 @@ package body Gnat2Why.Decls is
            "Module declaring the external object """ & To_String (E) &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_With_Clause (File, Ref_Module, EW_Import, EW_Module);
-
       Emit
         (File,
          New_Global_Ref_Declaration
