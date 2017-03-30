@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="5" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="0" steplimit="10025" memlimit="0"/>
 <file name="../../../gnatprove/tree_model.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -1108,97 +1100,97 @@
 </theory>
 <theory name="Tree_model__is_add__2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tree_model__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__d_seq__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__sequence__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__d_seq__sequence__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__length__subprogram_def" sum="b2caae813ad49f96efe6a6d99a9c55ce" expanded="true">
+<theory name="Tree_model__d_seq__length__subprogram_def" sum="c109dfb5f3b0a8b26a9bc26dfdc985ff" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__last__subprogram_def" sum="816185c543b1b72578759d0da6c4a35f" expanded="true">
+<theory name="Tree_model__d_seq__last__subprogram_def" sum="40c245317e69f62d9695a2a375e70ff7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__get__subprogram_def" sum="597caa5c97b401a0b1fd716ed3bb6e7d" expanded="true">
+<theory name="Tree_model__d_seq__get__subprogram_def" sum="99f60348b7b1d2b184d4c986bbdcccb6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__first__subprogram_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__d_seq__first__subprogram_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Oeq__subprogram_def" sum="cc9b841e9bc2507dabd681f2d381de25" expanded="true">
+<theory name="Tree_model__d_seq__Oeq__subprogram_def" sum="570bc5700c4d0c109d46357cf24c44d4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Olt__subprogram_def" sum="cc9b841e9bc2507dabd681f2d381de25" expanded="true">
+<theory name="Tree_model__d_seq__Olt__subprogram_def" sum="570bc5700c4d0c109d46357cf24c44d4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Ole__subprogram_def" sum="cc9b841e9bc2507dabd681f2d381de25" expanded="true">
+<theory name="Tree_model__d_seq__Ole__subprogram_def" sum="570bc5700c4d0c109d46357cf24c44d4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__contains__subprogram_def" sum="80b50de9a8803dcbc2c1942a47851839" expanded="true">
+<theory name="Tree_model__d_seq__contains__subprogram_def" sum="c0bd537163a967abdca43928be0e254f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__constant_range__subprogram_def" sum="80b50de9a8803dcbc2c1942a47851839" expanded="true">
+<theory name="Tree_model__d_seq__constant_range__subprogram_def" sum="c0bd537163a967abdca43928be0e254f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__equal_except__subprogram_def" sum="2bc32739cec76631fbdb2c723b3ffbc5" expanded="true">
+<theory name="Tree_model__d_seq__equal_except__subprogram_def" sum="2f8056df9412cb93e3680889582ea757" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__equal_except__2__subprogram_def" sum="0403bbc352a41891b1ca86eddbee2726" expanded="true">
+<theory name="Tree_model__d_seq__equal_except__2__subprogram_def" sum="0636fb67fa25a17bd6a4d4d9154529ab" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_equal__subprogram_def" sum="6a7b2b31126fd5991afdcfc2391768bc" expanded="true">
+<theory name="Tree_model__d_seq__range_equal__subprogram_def" sum="77aff8e54c88e635b9aa9d0f2a45b502" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_shifted__subprogram_def" sum="ccb881a0f9517ca01763cace75f0eabf" expanded="true">
+<theory name="Tree_model__d_seq__range_shifted__subprogram_def" sum="894f9fdaafe1d722895ae211b2f17ef6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -1208,10 +1200,10 @@
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="19"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
@@ -1219,19 +1211,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__set__subprogram_def" sum="99a750bf8a7c0f40f304b4847923c6f5" expanded="true">
+<theory name="Tree_model__d_seq__set__subprogram_def" sum="514ca8ff8799d597e9e407de6dd68c6b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__add__subprogram_def" sum="bcefc8c269a55cf47c2004fb26b0333b" expanded="true">
+<theory name="Tree_model__d_seq__add__subprogram_def" sum="aee97945568ce554f1fca8894d393066" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__add__2__subprogram_def" sum="d5b2d9410effa22b6973683015494cc2" expanded="true">
+<theory name="Tree_model__d_seq__add__2__subprogram_def" sum="d9eb25f683823e06f33c4d666790e692" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -1240,53 +1232,53 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__remove__subprogram_def" sum="25cad24021e95f0e11d761e4bfea4ef9" expanded="true">
+<theory name="Tree_model__d_seq__remove__subprogram_def" sum="52cb3447a0b3b558dd08265c8f8a0877" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__iter_first__subprogram_def" sum="816185c543b1b72578759d0da6c4a35f" expanded="true">
+<theory name="Tree_model__d_seq__iter_first__subprogram_def" sum="40c245317e69f62d9695a2a375e70ff7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__iter_has_element__subprogram_def" sum="2eb83caa0f84d42583d4912e4f3d118b" expanded="true">
+<theory name="Tree_model__d_seq__iter_has_element__subprogram_def" sum="f201db43dd979d8aa07769bbf063808a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__iter_next__subprogram_def" sum="483321b9a1b3e3c17f44bfeb6f94b269" expanded="true">
+<theory name="Tree_model__d_seq__iter_next__subprogram_def" sum="33fd8ab587c6267c277700964c70365c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__path_typePredicate__subprogram_def" sum="d1f901742bb3a93abda9b4ae1d7fb35f" expanded="true">
+<theory name="Tree_model__path_typePredicate__subprogram_def" sum="d3ddfb41eb07189cf161abab51c943a4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_concat__subprogram_def" sum="c6317eb3a3b55260781e543fa4dcd010" expanded="true">
+<theory name="Tree_model__is_concat__subprogram_def" sum="25374df934c9255c478ea819a35a15ba" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="8"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
@@ -1295,7 +1287,7 @@
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="19"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
@@ -1304,16 +1296,16 @@
   <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="15. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
@@ -1330,181 +1322,181 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__Oeq__subprogram_def" sum="39eafbbf3a24e12e3d17a1d593371689" expanded="true">
+<theory name="Tree_model__Oeq__subprogram_def" sum="84c53b73acf81a421bc7aad65f0b5901" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_add__subprogram_def" sum="2a4f8c44530f2592f4878500affa67c5" expanded="true">
+<theory name="Tree_model__is_add__subprogram_def" sum="dcb797c666eb81c8b250f729832f29f5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_equal__subprogram_def" sum="813bde0ab47d5afbee5fcc01fe03cec2" expanded="true">
+<theory name="Tree_model__preserve_equal__subprogram_def" sum="0ca88cafa13b9039ac7840e4651fad49" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="296"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="296"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_concat__subprogram_def" sum="39a1d17396dad9923ab06d65e5a124bc" expanded="true">
+<theory name="Tree_model__preserve_concat__subprogram_def" sum="49e08ab342f19d5a25d256dd41b67a2a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="1413"/></proof>
+  <proof prover="0"><result status="valid" time="0.06" steps="1413"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__package_def" sum="79980455ed9a49b86dfd4684c6735841" expanded="true">
+<theory name="Tree_model__v_set__package_def" sum="ea6626e1baa40998403baca47ddbc0dc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__set__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__v_set__set__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__private_key__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Tree_model__v_set__private_key__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_first__subprogram_def" sum="362eafa67c32de5803baea3a014f7eea" expanded="true">
+<theory name="Tree_model__v_set__iter_first__subprogram_def" sum="fe3913a19e34a1536477bd4832949a4e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_has_element__subprogram_def" sum="0b8135bcf10de11b2d4f31ca9b349e6c" expanded="true">
+<theory name="Tree_model__v_set__iter_has_element__subprogram_def" sum="98e5a795c64d585cbe448ce4fb5579c5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_next__subprogram_def" sum="71d8cd1e7138772f632646a6d86c9718" expanded="true">
+<theory name="Tree_model__v_set__iter_next__subprogram_def" sum="cc8457b2bae5f66e1933ae3e377776fd" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_element__subprogram_def" sum="be8de7b61dbb25e18c548bb95f89afff" expanded="true">
+<theory name="Tree_model__v_set__iter_element__subprogram_def" sum="53f01686b03c68b1c8682726740ed8a7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__contains__subprogram_def" sum="37d0b75e4e0aa3583836edb56f47bdb8" expanded="true">
+<theory name="Tree_model__v_set__contains__subprogram_def" sum="58286a7ce8c8c8177100c736f69aca2b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__length__subprogram_def" sum="a16766e60eec4cc49614aa241b13f2b3" expanded="true">
+<theory name="Tree_model__v_set__length__subprogram_def" sum="5f396205ebce79ed8e22be8c409ba7a0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__Ole__subprogram_def" sum="421435f095d94490ed8c7084711460a0" expanded="true">
+<theory name="Tree_model__v_set__Ole__subprogram_def" sum="def95c033ccda6be3ee766a3f522fcae" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__Oeq__subprogram_def" sum="421435f095d94490ed8c7084711460a0" expanded="true">
+<theory name="Tree_model__v_set__Oeq__subprogram_def" sum="def95c033ccda6be3ee766a3f522fcae" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__is_empty__subprogram_def" sum="362eafa67c32de5803baea3a014f7eea" expanded="true">
+<theory name="Tree_model__v_set__is_empty__subprogram_def" sum="fe3913a19e34a1536477bd4832949a4e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__included_except__subprogram_def" sum="8c654328ec71cfc30641467d1863dd55" expanded="true">
+<theory name="Tree_model__v_set__included_except__subprogram_def" sum="2448be3d2f873904e72440c3e3f38095" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__includes_intersection__subprogram_def" sum="cd69d61d925d75035da67343680ebd2d" expanded="true">
+<theory name="Tree_model__v_set__includes_intersection__subprogram_def" sum="38cf5bca5f808941d9415cdf1968a397" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__included_in_union__subprogram_def" sum="cd69d61d925d75035da67343680ebd2d" expanded="true">
+<theory name="Tree_model__v_set__included_in_union__subprogram_def" sum="38cf5bca5f808941d9415cdf1968a397" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__is_singleton__subprogram_def" sum="046e0ec5cff0d72bfbdb716880660323" expanded="true">
+<theory name="Tree_model__v_set__is_singleton__subprogram_def" sum="88653ec4ad9f64db66732d1a69cf6970" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__not_in_both__subprogram_def" sum="cd69d61d925d75035da67343680ebd2d" expanded="true">
+<theory name="Tree_model__v_set__not_in_both__subprogram_def" sum="38cf5bca5f808941d9415cdf1968a397" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__no_overlap__subprogram_def" sum="e02cb02ba77e705f10de4317c9ddfd43" expanded="true">
+<theory name="Tree_model__v_set__no_overlap__subprogram_def" sum="733ceb2c646416d60cc08c82d037dc82" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__intersection__subprogram_def" sum="e02cb02ba77e705f10de4317c9ddfd43" expanded="true">
+<theory name="Tree_model__v_set__intersection__subprogram_def" sum="733ceb2c646416d60cc08c82d037dc82" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__num_overlaps__subprogram_def" sum="e02cb02ba77e705f10de4317c9ddfd43" expanded="true">
+<theory name="Tree_model__v_set__num_overlaps__subprogram_def" sum="733ceb2c646416d60cc08c82d037dc82" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__add__subprogram_def" sum="0f99a5cbd3e152570bcdf90b96277da4" expanded="true">
+<theory name="Tree_model__v_set__add__subprogram_def" sum="c4fd029987ad6037a414943696427ec0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__remove__subprogram_def" sum="e9ceb4244b7204bb5120eafcdb437f29" expanded="true">
+<theory name="Tree_model__v_set__remove__subprogram_def" sum="94e39d6439ce7b3f239397429bda55c0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__union__subprogram_def" sum="a99a35115d0e3be0689189c7e8cbee2a" expanded="true">
+<theory name="Tree_model__v_set__union__subprogram_def" sum="ee2895189474ec71829ec3ebc41d79dc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -1516,7 +1508,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_add__2__subprogram_def" sum="0289caabedb9d52c4228e15ddb6205ef" expanded="true">
+<theory name="Tree_model__is_add__2__subprogram_def" sum="b9670c641f81370727b67aac1a36f255" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

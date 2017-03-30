@@ -9,4 +9,4 @@ from test_support import *
 #  gnatprove -P test.gpr --level=2 -j0
 #  gnatprove -P test.gpr --level=3 -j0 --timeout=30
 
-prove_all(opt=["--replay"])
+prove_all(opt=["--replay","--no-axiom-guard"])
