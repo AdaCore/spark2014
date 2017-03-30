@@ -15,11 +15,6 @@ module Main
   (* the return type for the functions that correspond to 'Image *)
   type __image
 
-  (* A predicate symbol that ignores its argument.
-       It is used for instantiation of generic package with a user-defined
-       axiomatization. *)
-  predicate __ignore "inline" (x : 'a) = true
-
   (* Mutable records holding references over builtin types *)
   type int__ref  = { mutable int__content "model_trace:"  : int  }
   type bool__ref = { mutable bool__content "model_trace:" : bool }
