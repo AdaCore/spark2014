@@ -2117,8 +2117,11 @@ package body Gnat2Why.Expr is
                   Arg_Cnt := Arg_Cnt + 1;
 
                when DRecord =>
-                  pragma Assert (Ekind (Formal) in
-                                   E_In_Out_Parameter | E_Out_Parameter);
+                  pragma Assert
+                    (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+                     or else (Has_Volatile (Formal)
+                       and then Has_Volatile_Flavor
+                         (Formal, Pragma_Async_Writers)));
 
                   declare
                      Formal_Binder : constant Item_Type :=
