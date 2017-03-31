@@ -12149,9 +12149,6 @@ package body Gnat2Why.Expr is
       T          : W_Expr_Id;
       Subp       : constant Entity_Id := Get_Called_Entity (Expr);
 
-      Args       : constant W_Expr_Array :=
-        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
-
       Selector   : constant Selection_Kind :=
          --  When the call is dispatching, use the Dispatch variant of
          --  the program function, which has the appropriate contract.
@@ -12172,6 +12169,27 @@ package body Gnat2Why.Expr is
          --  the program function).
 
          else Why.Inter.Standard);
+
+      Tag_Expr   : constant W_Expr_Id :=
+        (if Selector = Dispatch then
+            Transform_Expr
+              (Expr   => Controlling_Argument (Expr),
+               Domain => Term_Domain (Domain),
+               Params => Params)
+         else Why_Empty);
+      Tag_Arg    : constant W_Expr_Array :=
+        (if Selector = Dispatch then
+           (1 => New_Tag_Access
+                (Domain => Term_Domain (Domain),
+                 Name   => Tag_Expr,
+                 Ty     => Get_Ada_Node (+Get_Type (Tag_Expr))))
+         else (1 .. 0 => <>));
+      --  Calls to dispatching function need the dispatching tag as an
+      --  additional argument.
+
+      Args       : constant W_Expr_Array :=
+        Tag_Arg &
+        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
 
       Why_Name   : constant W_Identifier_Id :=
         W_Identifier_Id

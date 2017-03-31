@@ -1,0 +1,6 @@
+test_dispatch.adb:5:23: high: "R.F" is not initialized
+test_dispatch.adb:6:23: high: "C.F" is not initialized
+test_dispatch.adb:6:23: high: "C.G" is not initialized
+test_dispatch.adb:10:19: info: initialization of "RC.F" proved
+test_dispatch.adb:10:19: medium: assertion might fail, cannot prove RC.F = CC.F
+test_dispatch.adb:10:26: info: initialization of "CC.F" proved
