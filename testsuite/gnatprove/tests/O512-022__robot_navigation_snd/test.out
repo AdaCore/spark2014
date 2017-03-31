@@ -181,8 +181,8 @@ algorithm.adb:410:40: info: discriminant check proved (CVC4: 2 VC)
 algorithm.adb:411:54: info: initialization of "iR.Node" proved
 algorithm.adb:415:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:415:56: info: initialization of "iR.Node" proved
-algorithm.adb:421:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:422:42: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:421:16: info: precondition proved (Z3: 1 VC)
+algorithm.adb:422:42: info: precondition proved (Z3: 1 VC)
 algorithm.adb:427:38: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:427:74: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:428:39: info: precondition proved (CVC4: 1 VC)
@@ -209,7 +209,7 @@ algorithm.adb:473:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:473:80: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:473:95: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:473:114: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:477:35: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:477:35: info: precondition proved (Z3: 1 VC)
 algorithm.adb:477:57: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:477:77: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:477:96: info: precondition proved (CVC4: 1 VC)
