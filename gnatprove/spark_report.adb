@@ -373,6 +373,7 @@ procedure SPARK_Report is
             | Non_Volatile_Function_With_Volatile_Effects
             | Volatile_Function_Without_Volatile_Effects
             | Side_Effects
+            | Refined_State_Wrong
          =>
             return Data_Dep;
 

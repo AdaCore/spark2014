@@ -29,6 +29,7 @@ info_flow_tests.adb:217:23: info: initialization of "F" proved
 info_flow_tests.adb:235:23: warning: unused initial value of "B"
 info_flow_tests.adb:236:23: info: initialization of "C" proved
 info_flow_tests.adb:241:12: medium: constant without variable input "C3" cannot appear in Initializes
+info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:35: medium: constant without variable input "C1" cannot appear in Initializes
 gnatprove: error during flow analysis and proof

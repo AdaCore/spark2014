@@ -4031,6 +4031,47 @@ package body Flow.Analysis is
       end loop;
    end Check_Initializes_Contract;
 
+   ----------------------------------
+   -- Check_Refined_State_Contract --
+   ----------------------------------
+
+   procedure Check_Refined_State_Contract (FA : in out Flow_Analysis_Graphs) is
+      Refined_State_N : constant Node_Id := Get_Pragma (FA.Analyzed_Entity,
+                                                        Pragma_Refined_State);
+
+   begin
+      if Present (Refined_State_N) then
+         declare
+            DM : constant Dependency_Maps.Map :=
+              Parse_Refined_State (Refined_State_N);
+
+         begin
+            for Constituents of DM loop
+               for Constituent of Constituents loop
+                  declare
+                     Constituent_E : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Constituent);
+
+                  begin
+                     if Is_Constant (Constituent)
+                       and then not Has_Variable_Input (Constituent_E)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& cannot appear in Refined_State",
+                           N        => Refined_State_N,
+                           F1       => Constituent,
+                           SRM_Ref  => "7.2.2(16)",
+                           Tag      => Refined_State_Wrong,
+                           Severity => Medium_Check_Kind);
+                     end if;
+                  end;
+               end loop;
+            end loop;
+         end;
+      end if;
+   end Check_Refined_State_Contract;
+
    -------------------------------------
    -- Check_Prefixes_Of_Attribute_Old --
    -------------------------------------

@@ -178,6 +178,9 @@ package VC_Kinds is
       --  State visible in a package spec is modified in the package
       --  elaboration.
 
+      Refined_State_Wrong,
+      --  User provided an incorrect Refined_State contract
+
       Side_Effects,
       --  A function with side-effects has been found
 

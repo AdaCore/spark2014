@@ -1689,6 +1689,9 @@ package body Flow is
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);
                      end if;
+                     if FA.Kind = Kind_Package_Body then
+                        Analysis.Check_Refined_State_Contract (FA);
+                     end if;
                      --  We check if pragma Elaborate_Body is needed only for
                      --  libray unit packages without the pragma. We also only
                      --  check this when we use the gnat static elaboration

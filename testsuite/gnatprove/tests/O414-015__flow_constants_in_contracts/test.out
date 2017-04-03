@@ -24,6 +24,7 @@ const3.adb:21:22: info: initialization of "L" proved
 const3.adb:22:22: info: initialization of "R" proved
 const3.adb:31:15: info: initialization of "R" proved
 const3.adb:31:17: medium: overflow check might fail
+const4.adb:2:08: medium: constant without variable input "C2" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 const4.adb:5:04: info: initialization of "H" constituent of "State" proved
 const4.ads:7:37: high: constant without variable input S must be initialized at elaboration
 const4.ads:10:04: info: initialization of "V" proved
