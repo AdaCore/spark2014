@@ -39,18 +39,14 @@ package body Common_Containers is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   package Entity_Name_To_Symbol_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Symbol,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
+   package Entity_Name_To_Symbol_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Entity_Name,
+      Element_Type => Symbol);
 
    Intern_Strings : constant Symbol_Table_Access := Allocate;
 
-   Num : Any_Entity_Name := 0;
-
    Symbol_Cache : Symbol_To_Entity_Name_Maps.Map;
-   String_Cache : Entity_Name_To_Symbol_Maps.Map;
+   String_Cache : Entity_Name_To_Symbol_Vectors.Vector;
    Name_Cache   : Entity_Id_To_Entity_Name_Maps.Map;
 
    --------------------
@@ -63,7 +59,7 @@ package body Common_Containers is
       Position : Symbol_To_Entity_Name_Maps.Cursor;
       Inserted : Boolean;
 
-      Next_Num : constant Entity_Name := Num + 1;
+      Next_Num : constant Entity_Name := String_Cache.Last_Index + 1;
 
    begin
       Symbol_Cache.Insert (Key       => Sym,
@@ -72,9 +68,7 @@ package body Common_Containers is
                            Inserted  => Inserted);
 
       if Inserted then
-         String_Cache.Insert (Next_Num, Sym);
-
-         Num := Next_Num;
+         String_Cache.Append (Sym);
 
          return Next_Num;
       else
