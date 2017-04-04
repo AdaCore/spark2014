@@ -170,6 +170,9 @@ free from side-effects only retrieves or computes a value.
     * a generic actual parameter corresponding to a generic formal object
       having mode **in** (see :ref:`generic_instantiation`).
 
+    * the declaration and body of a user-defined equality operation on a
+      record type (see :ref:`overloading_of_operators`).
+
 .. _etu-expressions:
 
 [An expression in one of these contexts may read a constant

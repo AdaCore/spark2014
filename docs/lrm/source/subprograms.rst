@@ -1409,11 +1409,20 @@ Nonreturning Procedures
 
 .. _etu-nonreturning_procedures-vr:
 
+.. _overloading_of_operators:
 
 Overloading of Operators
 ------------------------
 
-No extensions or restrictions.
+.. centered:: **Legality Rules**
+
+.. _tu-overloading_of_operators-01:
+
+1. [The declaration and body of a user-defined equality operation on a record
+    type shall not have any variable inputs; see :ref:`expressions` for the
+    statement of this rule.]
+
+.. _etu-overloading_of_operators-lr:
 
 Null Procedures
 ---------------
