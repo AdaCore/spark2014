@@ -189,6 +189,7 @@ around by adding the switch ``-d`` to |GNATprove|'s command line. You can also
 use the switch ``-v`` to get a detailed log of which proof files |GNATprove| is
 producing and attempting to prove.
 
+
 Looking at Machine-Parsable |GNATprove| Output
 ----------------------------------------------
 
@@ -280,3 +281,25 @@ Entries for proof are of the following form::
 Flow entries are of the same form as for proof. Differences are in the
 possible values for "rule", which can only be the ones for flow messages.
 Also "how_proved" field is never set.
+
+Understanding proof strategies
+------------------------------
+
+We now explain in more detail how the provers are run on VCs.
+
+* In ``per_check`` mode, a single VC is generated for each check at the source
+  level (e.g. an assertion, runtime check, or postcondition); in some cases 2
+  VCs can appear. Before attempting proof, this VC is then split into the
+  conjuncts, that is, the parts that are combined with ``and`` or ``and
+  then``. All provers are tried on the VCs obtained in this way until one of
+  them proves the VC or no more provers are left.
+* In "per_path" mode, a VC is generated not only for each check at the source
+  level, but for each path to the check. For example, an assertion that
+  appears after an ``if``-statement, at least two VCs will be generated - one
+  for each path trough the ``if``-statement. For each such VC, all provers are
+  attempted. Unproved VCs are then further split into their conjuncts,
+  and proof is again attempted.
+* In "progressive" mode, first the actions described for ``per_check`` are
+  tried. For all unproved VCs, the VC is then split into the paths that lead
+  to the check, like for ``per_path``. Each part is then
+  attempted to be proved independently.
