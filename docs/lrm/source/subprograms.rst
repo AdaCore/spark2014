@@ -101,8 +101,6 @@ Preconditions and Postconditions
    inherited subprogram S of a tagged type T shall not call a non-inherited
    primitive function of type T.
 
-.. _etu-preconditions_and_postconditions:
-
 [The notion of corresponding expression is defined in Ada RM 6.1.1(18/4) as
 follows: If a Pre'Class or Post'Class aspect is specified for a primitive
 subprogram S of a tagged type T, or such an aspect defaults to True, then a
@@ -113,6 +111,17 @@ S of each descendant of T.]
 an inherited subprogram changes due to called subprograms in its contract being
 overridden, then the inherited subprogram would have to be re-verified for the
 derived type. This rule forbids the cases that require re-verification.]
+
+.. _tu-sf-preconditions_and_postconditions-02:
+
+2. Pre is not allowed on dispatching operations. Pre'Class should be used
+   instead to express preconditions.
+
+[The rationale for this rule is that, otherwise, the combination of dynamic
+semantics and verification rules below would force an identical Pre'Class each
+time Pre is used on a dispatching operation.]
+
+.. _etu-preconditions_and_postconditions:
 
 .. centered:: **Verification Rules**
 
