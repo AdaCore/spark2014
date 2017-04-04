@@ -66,7 +66,7 @@ A property can also be conceptually provable, but the model used by
 |GNATProve| can currently not reason about it [MODEL]. (See
 :ref:`GNATProve_Limitations` for a list of the current limitations in
 |GNATProve|.) In particular using the following features of the language
-may yield VCs that should be true, but cannot be proved:
+may yield checks that should be true, but cannot be proved:
 
 * Floating point arithmetic (although using |CodePeer| integration may help
   here)
@@ -74,7 +74,7 @@ may yield VCs that should be true, but cannot be proved:
 
 To use |CodePeer| integration, pass the switch ``--codepeer=on`` to
 |GNATprove|. In those cases where no prover, including |CodePeer|, can prove
-the VC, the missing information can usually be added using ``pragma Assume``.
+the check, the missing information can usually be added using ``pragma Assume``.
 
 It may be difficult sometimes to distinguish between unprovable properties and
 prover shortcomings (the next section). The most generally useful action to
@@ -189,7 +189,6 @@ around by adding the switch ``-d`` to |GNATprove|'s command line. You can also
 use the switch ``-v`` to get a detailed log of which proof files |GNATprove| is
 producing and attempting to prove.
 
-
 Looking at Machine-Parsable |GNATprove| Output
 ----------------------------------------------
 
@@ -197,7 +196,7 @@ Looking at Machine-Parsable |GNATprove| Output
 machine-parsable form. These files are located in the ``gnatprove``
 subdirectory of the project object directory, and have the suffix ``.spark``.
 The structure of these files exposes internal details such as the exact way
-some VCs are proved, therefore the structure of these files may change. Still,
+some checks are proved, therefore the structure of these files may change. Still,
 we provide here the structure of these files for convenience.
 
 At various places in these files, we refer to entities. These are Ada
@@ -246,18 +245,18 @@ Entries for proof are of the following form::
       "entity"     : entity }
 
 * ("file", "line", "col") describe the source location of the message.
-* "rule" describes the kind of VC.
+* "rule" describes the kind of check.
 * "severity" describes the kind status of the message, possible values used
   by gnatwhy3 are "info", "low", "medium", "high" and "error".
 * "tracefile" contains the name of a trace file, if any.
-* "entity" contains the entity dictionary for the entity that this VC
+* "entity" contains the entity dictionary for the entity that this check
   belongs to.
 * "msg_id" - if present indicates that this entry corresponds to a message
   issued on the commandline, with the exact same msg_id in brackets:
   "[#12]"
 * "suppressed" - if present, the message is in fact suppressed by a pragma
   Annotate, and this field contains the justification message.
-* "how_proved" - if present, indicates how the VC has been proved (i.e.
+* "how_proved" - if present, indicates how the check has been proved (i.e.
   which prover). Special values are "interval" and "codepeer", which
   designate the special interval analysis, done in the frontend, and the
   CodePeer analysis, respectively. Both have their own column in the
@@ -282,24 +281,25 @@ Flow entries are of the same form as for proof. Differences are in the
 possible values for "rule", which can only be the ones for flow messages.
 Also "how_proved" field is never set.
 
-Understanding proof strategies
+Understanding Proof Strategies
 ------------------------------
 
-We now explain in more detail how the provers are run on VCs.
+We now explain in more detail how the provers are run on the logical formula(s)
+generated for a given check, a.k.a. Verification Conditions or VCs.
 
 * In ``per_check`` mode, a single VC is generated for each check at the source
-  level (e.g. an assertion, runtime check, or postcondition); in some cases 2
+  level (e.g. an assertion, run-time check, or postcondition); in some cases two
   VCs can appear. Before attempting proof, this VC is then split into the
   conjuncts, that is, the parts that are combined with ``and`` or ``and
   then``. All provers are tried on the VCs obtained in this way until one of
   them proves the VC or no more provers are left.
-* In "per_path" mode, a VC is generated not only for each check at the source
-  level, but for each path to the check. For example, an assertion that
-  appears after an ``if``-statement, at least two VCs will be generated - one
-  for each path trough the ``if``-statement. For each such VC, all provers are
+* In ``per_path`` mode, a VC is generated not only for each check at the source
+  level, but for each path to the check. For example, for an assertion that
+  appears after an if-statement, at least two VCs will be generated - one
+  for each path trough the if-statement. For each such VC, all provers are
   attempted. Unproved VCs are then further split into their conjuncts,
   and proof is again attempted.
-* In "progressive" mode, first the actions described for ``per_check`` are
+* In ``progressive`` mode, first the actions described for ``per_check`` are
   tried. For all unproved VCs, the VC is then split into the paths that lead
   to the check, like for ``per_path``. Each part is then
   attempted to be proved independently.
