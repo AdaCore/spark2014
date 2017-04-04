@@ -2338,8 +2338,8 @@ Type Invariants
 which imply that if a type invariant is specified for
 a type T, then any new verification conditions which this introduces outside
 of the package which defines T are trivially satisified.
-These restrictions ensure that any object or value of type T which can be
-named outside of that package
+These restrictions ensure that any object or value of type T (or a
+descendant thereof) which can be named outside of that package
 will satisfy the invariant and so, for example, could not fail the runtime
 check associated with passing that object or value as a parameter in call
 to a procedure for which Ada requires runtime checking of the invariant
@@ -2415,8 +2415,8 @@ is of type T can be assumed to satisfy T's invariant.
 
 5. Upon returning from a boundary subprogram for a type T, a
    verification condition is introduced for every part of every output
-   that is of type T, to ensure that this part satisfies T's
-   invariant.
+   that is of type T (or a descendant thereof), to ensure that this part
+   satisfies T's invariant.
 
 .. _tu-type_invariants-06:
 
@@ -2429,8 +2429,9 @@ is of type T can be assumed to satisfy T's invariant.
 
 7. When calling a boundary subprogram for a type T or a subprogram
    declared outside of the immediate scope of T, a verification
-   condition is introduced for every part of every input that is of
-   type T, to ensure that this part satisfies T's invariant. [This
+   condition is introduced for every part of every input that is of type T
+   (or a descendant thereof), to ensure that this part satisfies
+   T's invariant. [This
    verification condition is trivially satisfied if the caller is
    outside of the immediate scope of T, or if the input in question is
    subject to rule 5 and constant for the caller. The idea here is to
@@ -2441,7 +2442,7 @@ is of type T can be assumed to satisfy T's invariant.
 **Ramification:** It is a consequence of other rules that upon return
 from a boundary subprogram for a type T or a subprogram declared
 outside of the immediate scope of T, every part of every output that
-is of type T can be assumed to satisfy T's invariant.
+is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
 
 .. _tu-type_invariants-08:
 
