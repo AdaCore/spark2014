@@ -64,7 +64,7 @@ package Gnat2Why.Tables is
       Parent_Var_Part : Node_Id;
    end record;
 
-   package Info_Maps is new Ada.Containers.Hashed_Maps
+   package Component_Info_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Component_Info,
       Hash            => Node_Hash,
@@ -81,7 +81,8 @@ package Gnat2Why.Tables is
    --          by a pragma SPARK_Mode (Off), a private derivation, or a
    --          discriminant constraint.
 
-   function Get_Variant_Info (E : Entity_Id) return Info_Maps.Map with
+   function Get_Variant_Info (E : Entity_Id) return Component_Info_Maps.Map
+   with
      Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E's component info from map Comp_Info
@@ -94,6 +95,11 @@ package Gnat2Why.Tables is
    --  are not in SPARK are modeled by the type entity of the first ancestor of
    --  E in which they exist. It also includes Part_Of constituents of
    --  protected objects. Components have the most precise possible type.
+
+   function Get_Descendant_Set (E : Entity_Id) return Node_Sets.Set with
+     Pre => Is_Tagged_Type (Retysp (E));
+   --  @param E entity of a tagged type
+   --  @return the set of visible descendants of E.
 
    function Original_Declaration (Comp : Entity_Id) return Entity_Id
    with

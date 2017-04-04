@@ -25,6 +25,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;              use Common_Containers;
+with Elists;                         use Elists;
 with Errout;                         use Errout;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -287,6 +288,16 @@ package body Gnat2Why.Subprograms is
                     B_Ent    => Null_Entity_Name,
                     Mutable  => False));
    --  Binder to be used as additional tag argument for dispatching functions
+
+   procedure Generate_Dispatch_Compatibility_Axioms
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   with Pre => Ekind (E) = E_Function
+     and then Is_Dispatching_Operation (E)
+     and then Present (Find_Dispatching_Type (E));
+   --  @param E a dispatching function
+   --  Emit compatibility axioms between the dispatching version of E and each
+   --  visible overriding / inherited versions of E.
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --
@@ -4041,6 +4052,146 @@ package body Gnat2Why.Subprograms is
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Axiom_For_Post;
 
+   --------------------------------------------
+   -- Generate_Dispatch_Compatibility_Axioms --
+   --------------------------------------------
+
+   procedure Generate_Dispatch_Compatibility_Axioms
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   is
+
+      function Corresponding_Primitive (E, D : Entity_Id) return Entity_Id;
+      --  @params D a descendant of the dispatching type of E
+      --  @return the primitive of D that corresponds to E
+
+      -----------------------------
+      -- Corresponding_Primitive --
+      -----------------------------
+
+      function Corresponding_Primitive (E, D : Entity_Id) return Entity_Id is
+         Prim : Elmt_Id := First_Elmt (Direct_Primitive_Operations (D));
+      begin
+         while Present (Prim) loop
+            declare
+               D_E     : constant Entity_Id := Ultimate_Alias (Node (Prim));
+               Current : Entity_Id := D_E;
+            begin
+               loop
+                  if Current = E then
+                     return D_E;
+                  end if;
+                  Current := Overridden_Operation (Current);
+                  exit when No (Current);
+                  Current := Ultimate_Alias (Current);
+               end loop;
+            end;
+            Next_Elmt (Prim);
+         end loop;
+         raise Program_Error;
+      end Corresponding_Primitive;
+
+      Ty            : constant Entity_Id := Retysp (Find_Dispatching_Type (E));
+      Descendants   : Node_Sets.Set := Get_Descendant_Set (Ty);
+      Anc_Binders   : constant Binder_Array :=
+        To_Binder_Array (Compute_Binders (E, EW_Term));
+      Dispatch_Args : W_Expr_Array (1 .. Anc_Binders'Length + 1);
+      Anc_Id        : constant W_Identifier_Id :=
+        To_Why_Id (E, Domain => EW_Term, Selector => Dispatch);
+      Anc_Ty        : constant W_Type_Id := Type_Of_Node (Etype (E));
+
+   begin
+      --  The arguments of the dispatching call are the binders from
+      --  Anc_Binders with a hole at the beginning to store the (specific)
+      --  value of the tag.
+
+      for I in Anc_Binders'Range loop
+         Dispatch_Args (I + 1) := +Anc_Binders (I).B_Name;
+      end loop;
+
+      Descendants.Include (Ty);
+
+      --  For each descendant Descendant of Ty, emit:
+      --    for all x1 ... [<E>__dispatch Descendant.tag x1 ...].
+      --       <E>__dispatch Descendant.tag x1 ... = <Descendant.E> x1 ..
+
+      for Descendant of Descendants loop
+         Dispatch_Args (1) := +E_Symb (Descendant, WNE_Tag);
+
+         declare
+            Descendant_E : constant Entity_Id :=
+              Corresponding_Primitive (E, Descendant);
+            Desc_Binders : constant Binder_Array :=
+              To_Binder_Array (Compute_Binders (Descendant_E, EW_Term));
+            Desc_Args    : W_Expr_Array (1 .. Desc_Binders'Length);
+            Desc_Id      : constant W_Identifier_Id :=
+              To_Why_Id (Descendant_E, Domain => EW_Term);
+            Desc_Ty      : constant W_Type_Id :=
+              Type_Of_Node (Etype (Descendant_E));
+
+            Anc_Call     : constant W_Expr_Id :=
+              New_Call (Domain => EW_Term,
+                        Name   => Anc_Id,
+                        Args   => Dispatch_Args,
+                        Typ    => Anc_Ty);
+            Guard        : constant W_Pred_Id :=
+              (if not Use_Guard_For_Function (E) then True_Pred
+               else New_Call
+                 (Name   => E_Symb (E, WNE_Dispatch_Post_Pred),
+                  Args   => Anc_Call & Dispatch_Args,
+                  Typ    => EW_Bool_Type));
+            --  The axiom is protected by the dispatching post predicate of E
+
+         begin
+
+            pragma Assert (Anc_Binders'First = Desc_Binders'First
+                           and Anc_Binders'Last = Desc_Binders'Last);
+
+            --  Conversions are needed for controlling parameters
+
+            for I in Desc_Binders'Range loop
+               Desc_Args (I) :=
+                 Insert_Simple_Conversion
+                   (Domain         => EW_Term,
+                    Expr           => +Anc_Binders (I).B_Name,
+                    To             => Get_Typ (Desc_Binders (I).B_Name),
+                    Force_No_Slide => True);
+            end loop;
+
+            Emit
+              (File,
+               New_Guarded_Axiom
+                 (Ada_Node => Empty,
+                  Name     =>
+                    NID (Full_Name (Descendant) & "__" & Compat_Axiom),
+                  Binders  => Anc_Binders,
+                  Triggers =>
+                    New_Triggers
+                      (Triggers =>
+                           (1 => New_Trigger (Terms => (1 => Anc_Call)))),
+                  Pre      => Guard,
+                  Def      =>
+                    +New_Comparison
+                    (Symbol => Why_Eq,
+
+                     --  Conversion is needed for controlling result
+
+                     Left   => Insert_Simple_Conversion
+                       (Domain         => EW_Term,
+                        Expr           => New_Function_Call
+                          (Domain => EW_Term,
+                           Subp   => Descendant_E,
+                           Name   => Desc_Id,
+                           Args   => Desc_Args,
+                           Typ    => Desc_Ty),
+                        To             => Anc_Ty,
+                        Force_No_Slide => True),
+                     Right  => Anc_Call,
+                     Domain => EW_Term)));
+         end;
+      end loop;
+   end Generate_Dispatch_Compatibility_Axioms;
+
    ------------------------------------
    -- Generate_Subprogram_Completion --
    ------------------------------------
@@ -4072,6 +4223,13 @@ package body Gnat2Why.Subprograms is
          Generate_Subprogram_Program_Fun (File, E);
 
          Generate_Axiom_For_Post (File, E);
+
+         if Ekind (E) = E_Function
+           and then Is_Dispatching_Operation (E)
+           and then Present (Find_Dispatching_Type (E))
+         then
+            Generate_Dispatch_Compatibility_Axioms (File, E);
+         end if;
 
          if Use_Result_Name then
             Result_Name := Why_Empty;

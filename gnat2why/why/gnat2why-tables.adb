@@ -37,20 +37,32 @@ package body Gnat2Why.Tables is
 
    type Record_Info is record
       Components   : Node_Sets.Set;
-      Variant_Info : Info_Maps.Map;
+      Variant_Info : Component_Info_Maps.Map;
    end record;
 
-   package Info_Map_Maps is new Ada.Containers.Hashed_Maps
+   package Component_Info_Map_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Record_Info,
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
-   Comp_Info : Info_Map_Maps.Map := Info_Map_Maps.Empty_Map;
+   package Descendant_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Node_Sets.Set,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_Sets."=");
+
+   Comp_Info   : Component_Info_Map_Maps.Map :=
+     Component_Info_Map_Maps.Empty_Map;
    --  This map maps record types and protected types to a map mapping each
    --  component and each N_Variant node to a Component_Info record. This map
    --  is populated through calls to Init_Component_Info and
    --  Init_Component_Info_For_Protected_Types.
+
+   Descendants : Descendant_Maps.Map;
+   --  This map maps tagged types to all their descendants that are visible
+   --  from the analyzed unit.
 
    procedure Init_Component_Info (E : Entity_Id)
    with Pre => Ekind (E) in Record_Kind | Private_Kind;
@@ -83,6 +95,11 @@ package body Gnat2Why.Tables is
       return Entity_Id
    with Pre => Ekind (Comp) in E_Component | Type_Kind;
 
+   procedure Store_In_Ancestors (E : Entity_Id) with
+     Pre => Is_Tagged_Type (Root_Record_Type (E));
+   --  @param E a tagged record type
+   --  Store E in the descendant map of each of its ancestors
+
    ----------------------------------
    -- Component_Is_Visible_In_Type --
    ----------------------------------
@@ -107,11 +124,23 @@ package body Gnat2Why.Tables is
       return Comp_Info (Ty).Components;
    end Get_Component_Set;
 
+   ------------------------
+   -- Get_Descendant_Set --
+   ------------------------
+
+   function Get_Descendant_Set (E : Entity_Id) return Node_Sets.Set is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (E)
+                then Get_Specific_Type_From_Classwide (E) else E);
+   begin
+      return Descendants (Ty);
+   end Get_Descendant_Set;
+
    ----------------------
    -- Get_Variant_Info --
    ----------------------
 
-   function Get_Variant_Info (E : Entity_Id) return Info_Maps.Map is
+   function Get_Variant_Info (E : Entity_Id) return Component_Info_Maps.Map is
       Ty : constant Entity_Id := Retysp (E);
    begin
       case Ekind (Ty) is
@@ -146,7 +175,7 @@ package body Gnat2Why.Tables is
                     else Comp_Info (Retysp (Etype (Ty))).Variant_Info);
 
          when others =>
-            return Info_Maps.Empty_Map;
+            return Component_Info_Maps.Empty_Map;
       end case;
    end Get_Variant_Info;
 
@@ -294,7 +323,7 @@ package body Gnat2Why.Tables is
    end Init_Component_Info;
 
    procedure Init_Component_Info (E : Entity_Id) is
-      Position : Info_Map_Maps.Cursor;
+      Position : Component_Info_Map_Maps.Cursor;
       Inserted : Boolean;
    begin
       Comp_Info.Insert (Key      => E,
@@ -312,6 +341,11 @@ package body Gnat2Why.Tables is
       else
          Init_Component_Info (E, Comp_Info (Position));
       end if;
+
+      if Is_Tagged_Type (Root_Record_Type (E)) then
+         Descendants.Include (E, Node_Sets.Empty_Set);
+         Store_In_Ancestors (E);
+      end if;
    end Init_Component_Info;
 
    ---------------------------------------------
@@ -319,7 +353,7 @@ package body Gnat2Why.Tables is
    ---------------------------------------------
 
    procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
-      Position : Info_Map_Maps.Cursor;
+      Position : Component_Info_Map_Maps.Cursor;
       Inserted : Boolean;
    begin
       Comp_Info.Insert (Key      => E,
@@ -478,6 +512,24 @@ package body Gnat2Why.Tables is
          return Search_Component_In_Info (Get_Component_Set (Rec), Comp);
       end if;
    end Search_Component_In_Type;
+
+   -----------------------
+   -- Store_In_Ancestor --
+   -----------------------
+
+   procedure Store_In_Ancestors (E : Entity_Id) is
+      Current  : Entity_Id := E;
+      Ancestor : Entity_Id;
+   begin
+      loop
+         Ancestor := (if Full_View_Not_In_SPARK (Current) then
+                         Get_First_Ancestor_In_SPARK (Current)
+                      else Retysp (Etype (Current)));
+         exit when Current = Ancestor;
+         Descendants (Ancestor).Insert (E);
+         Current := Ancestor;
+      end loop;
+   end Store_In_Ancestors;
 
    ----------------------------------
    -- Store_Information_For_Entity --

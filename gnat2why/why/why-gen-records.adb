@@ -440,7 +440,7 @@ package body Why.Gen.Records is
       Is_Root   : constant Boolean       := Root = E;
       Ty_Name   : constant W_Name_Id     := To_Name (WNE_Rec_Rep);
       Abstr_Ty  : constant W_Type_Id     := New_Named_Type (Name => Ty_Name);
-      Comp_Info : constant Info_Maps.Map := Get_Variant_Info (E);
+      Comp_Info : constant Component_Info_Maps.Map := Get_Variant_Info (E);
 
       A_Ident   : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);

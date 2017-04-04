@@ -139,6 +139,9 @@ package Why.Gen.Names is
    Post_Refine_Axiom   : constant String := "post_refine_axiom";
    --  suffix for a postcondition axiom
 
+   Compat_Axiom        : constant String := "compat_axiom";
+   --  suffix for compatibility axiom suffix for dispatching calls
+
    Post_Predicate      : constant String := "post_predicate";
    --  suffix for a postcondition predicate
 
