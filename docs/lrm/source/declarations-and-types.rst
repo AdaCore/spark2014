@@ -204,7 +204,21 @@ No extensions or restrictions.
 Derived Types and Classes
 -------------------------
 
-No extensions or restrictions.
+The following rules apply to derived types in |SPARK|.
+
+.. centered:: **Legality Rules**
+
+.. _tu-derived_types-01:
+
+1. A private type that is not visibly tagged but whose full view is tagged
+   cannot be derived.
+
+[The rationale for this rule is that, otherwise, given that visible operations
+on this type cannot have class-wide preconditions and postconditions, it is
+impossible to check the verification rules associated to overridding operations
+on the derived type.]
+
+.. _etu-derived_types:
 
 Scalar Types
 ------------
