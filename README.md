@@ -16,8 +16,8 @@ SPARK is commercially supported by AdaCore and Altran, you can visit the
 # 3. GPL version
 
 There is a GPL version of the tools, readily packaged, and suitable for
-research and hobbyist use. You can download it from [libre.adacore.com]
-(http://libre.adacore.com/download/).
+research and hobbyist use. You can download it from
+[libre.adacore.com](http://libre.adacore.com/download/).
 
 # 4. Community
 
