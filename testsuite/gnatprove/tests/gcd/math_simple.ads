@@ -1,6 +1,6 @@
 package Math_Simple is
 
-   function Divides (A, B : in Positive) return Boolean is (B mod A = 0);
+   function Divides (A, B : in Positive) return Boolean is (B mod A = 0) with Ghost;
 
    function GCD (A, B : in Positive) return Positive with
      Post => Divides (GCD'Result, A)

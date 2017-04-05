@@ -11,22 +11,13 @@ package body Math_Simple_Half is
    end Lemma_Not_Divisor;
 
    function GCD (A, B : in Positive) return Positive is
-      C : Positive;
+      C : Positive := Integer'Min (A, B);
    begin
-      if A = B then
-         return A;
-
-      elsif A = 1 or B = 1 then
-         return 1;
-
-      elsif Divides (A, B) then
-         return A;
-
-      elsif Divides (B, A) then
-         return B;
+      if A mod C = 0 and B mod C = 0 then
+         return C;
 
       else
-         C := Integer'Min (A, B) / 2;
+         C := C / 2;
          for J in C + 1 .. Integer'Min (A, B) - 1 loop
             Lemma_Not_Divisor (J, Integer'Min (A, B));
             pragma Loop_Invariant (for all X in C + 1 .. J =>

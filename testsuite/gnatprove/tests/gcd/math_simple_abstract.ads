@@ -1,7 +1,8 @@
 package Math_Simple_Abstract is
 
    function Divides (A, B : in Positive) return Boolean is
-     (for some C in Positive => A * C = B);
+     (for some C in Positive => A * C = B)
+   with Ghost;
 
    function GCD (A, B : in Positive) return Positive with
      Post => Divides (GCD'Result, A)
