@@ -8563,6 +8563,7 @@ package body Gnat2Why.Expr is
                                     Domain      => Domain,
                                     Ada_Node    => Expr);
                end;
+
             else
                declare
                   Op     : constant W_Identifier_Id :=
@@ -8572,6 +8573,7 @@ package body Gnat2Why.Expr is
                   Offset : W_Expr_Id;
                   A_Type : constant Entity_Id := Etype (Var);
                   W_Type : W_Type_Id;
+
                begin
                   if Is_Discrete_Type (Etype (Var)) then
                      if Is_Standard_Boolean_Type (A_Type) then
@@ -9068,13 +9070,16 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
                Func : constant W_Identifier_Id :=
-                 (if Is_Discrete_Type (Ada_Ty) then
+                 (if Is_Discrete_Type (Ada_Ty)
+                    or else Is_Fixed_Point_Type (Ada_Ty)
+                  then
                       (if Is_Modular_Integer_Type (Ada_Ty) then
                          (if Attr_Id = Attribute_Min
                           then MF_BVs (Base).BV_Min
                           else MF_BVs (Base).BV_Max)
                        else
-                         (if Attr_Id = Attribute_Min then M_Int_Minmax.Min
+                         (if Attr_Id = Attribute_Min
+                          then M_Int_Minmax.Min
                           else M_Int_Minmax.Max))
                   else (if Attr_Id = Attribute_Min
                         then MF_Floats (Base).Min
