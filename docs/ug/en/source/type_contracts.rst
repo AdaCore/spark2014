@@ -153,10 +153,12 @@ predicate cannot mention a global variable in |SPARK|, although it can mention
 a global constant.
 
 |GNATprove| checks that all values assigned to a type with a predicate are
-allowed by its predicate. |GNATprove| generates a predicate check even in cases
-where there is no corresponding run-time check, for example when assigning to a
-component of a record with a predicate. |GNATprove| also uses the predicate
-information for proving properties about the program.
+allowed by its predicate (for all three forms of predicate: ``Predicate``,
+``Static_Predicate`` and ``Dynamic_Predicate``). |GNATprove| generates a
+predicate check even in cases where there is no corresponding run-time check,
+for example when assigning to a component of a record with a
+predicate. |GNATprove| also uses the predicate information for proving
+properties about the program.
 
 ..  examples in this section are expanded in the example code predicates.ads
     under gnatprove_by_example, and should be kept in synch with this code.
