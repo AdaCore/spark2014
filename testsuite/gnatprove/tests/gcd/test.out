@@ -39,7 +39,7 @@ math_euclid.adb:78:22: info: assertion proved (CVC4: 1 VC)
 math_euclid.adb:78:31: info: initialization of "An" proved
 math_euclid.adb:79:22: info: assertion proved (CVC4: 1 VC)
 math_euclid.adb:79:31: info: initialization of "An" proved
-math_euclid.adb:81:22: info: assertion proved (altergo: 1 VC)
+math_euclid.adb:81:22: info: assertion proved (Z3: 1 VC)
 math_euclid.adb:81:35: info: initialization of "An" proved
 math_euclid.adb:82:38: info: range check proved (CVC4: 1 VC)
 math_euclid.adb:82:57: info: range check proved (CVC4: 1 VC)
