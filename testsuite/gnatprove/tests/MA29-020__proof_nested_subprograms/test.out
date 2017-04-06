@@ -45,7 +45,7 @@ skein.adb:110:07: warning: statement has no effect
 skein.adb:110:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:115:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0)
+skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => False), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
 skein.adb:118:19: warning: unused assignment
 skein.adb:118:44: info: length check proved (CVC4: 1 VC)
 skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
