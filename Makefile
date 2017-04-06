@@ -68,7 +68,10 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 #   install-all  install of gnatprove, why3 and alt-ergo
 
 setup:
-	cd why3 && ./configure --prefix=$(INSTALLDIR) --enable-relocation --enable-coq-tactic=no
+	cd why3 && ./configure --prefix=$(INSTALLDIR) \
+		--enable-relocation \
+		--enable-coq-tactic=no \
+		--disable-menhirLib
 	cd alt-ergo && ./configure --prefix=$(INSTALLDIR)
 
 why3:
