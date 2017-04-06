@@ -98,7 +98,6 @@ sdc.adb:16:07: warning: no Global contract available for "Argument_Count"
 sdc.adb:17:07: warning: assuming "Open" has no effect on global items
 sdc.adb:17:07: warning: no Global contract available for "Open"
 sdc.adb:17:13: info: initialization of "File" proved
-sdc.adb:17:28: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument"
 sdc.adb:19:07: warning: assuming "Set_Input" has no effect on global items
