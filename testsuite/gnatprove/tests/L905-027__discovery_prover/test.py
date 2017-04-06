@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(prover=["altergo"])
+prove_all(prover=None)

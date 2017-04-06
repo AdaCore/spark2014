@@ -1,3 +1,0 @@
-package_1.adb:12:20: info: float overflow check proved (Interval)
-package_1.adb:15:30: info: float overflow check proved (Z3: 1 VC)
-package_1.ads:7:22: info: initialization of "OutputVar" proved
