@@ -351,7 +351,9 @@ package body Gnat2Why.Driver is
             end if;
 
          when Type_Kind =>
-            if Needs_Default_Checks_At_Decl (E) then
+            if Entity_Spec_In_SPARK (Enclosing_Unit (E))
+              and then Needs_Default_Checks_At_Decl (E)
+            then
                Generate_VCs_For_Type (WF_Main, E);
             end if;
 
