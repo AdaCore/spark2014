@@ -802,17 +802,17 @@ package body SPARK_Definition is
             --  If the entity is a record or private type with fields hidden
             --  from SPARK, then the default initialization was not verified.
 
+            pragma Assert (Entity_In_SPARK (E));
+
             declare
                V            : constant JSON_Value :=
                  To_JSON (Entity_To_Subp (E));
                SPARK_Status : constant String :=
-                 (if Entity_In_SPARK (E)
-                   and then
-                     (not (Has_Record_Type (E) or else Has_Private_Type (E))
-                       or else
-                      not Has_Private_Fields (E))
-                  then "all"
-                  else "no");
+                 (if (Has_Record_Type (E) or else Has_Private_Type (E))
+                       and then
+                     Has_Private_Fields (E)
+                  then "no"
+                  else "all");
             begin
                Set_Field (V, "spark", SPARK_Status);
                Append (SPARK_Status_JSON, V);
