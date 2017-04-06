@@ -866,7 +866,7 @@ my_ordered_maps.adb:49:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:49:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:50:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:51:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:52:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:52:22: medium: assertion might fail, cannot prove Contains (L, 4)
 my_ordered_maps.adb:52:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:53:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:54:22: info: assertion proved (Z3: 1 VC)
@@ -1378,7 +1378,7 @@ my_sets.adb:48:26: info: initialization of private part of "L" proved
 my_sets.adb:50:10: info: precondition proved (Z3: 1 VC)
 my_sets.adb:50:18: info: initialization of private part of "M" proved
 my_sets.adb:50:21: info: initialization of private part of "K" proved
-my_sets.adb:51:25: medium: assertion might fail, cannot prove M or L) = (K or L
+my_sets.adb:51:25: info: assertion proved (Z3: 1 VC)
 my_sets.adb:51:26: info: initialization of private part of "M" proved
 my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
 my_sets.adb:51:37: info: initialization of private part of "K" proved
