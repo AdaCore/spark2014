@@ -213,7 +213,7 @@ this combined loop invariant, |GNATprove| is able to prove the postcondition of
 
 .. literalinclude:: results/map_arr_incr.prove
    :language: none
-	      
+
 Consider now a variant of the same initialization loop over a vector:
 
 .. literalinclude:: examples/map_vec_incr.adb
@@ -233,7 +233,7 @@ With this loop invariant, |GNATprove| is able to prove the postcondition of
 
 .. literalinclude:: results/map_vec_incr.prove
    :language: none
-      
+
 Similarly, consider a variant of the same initialization loop over a list:
 
 .. literalinclude:: examples/map_list_incr.adb
@@ -359,6 +359,62 @@ postcondition of ``Validate_Arr_Zero``, namely that output parameter
 Similarly, variants of ``Validate_Vec_Zero`` and ``Validate_List_Zero`` that
 keep validating elements of the collection after a non-zero element has been
 encountered would be proved by |GNATprove|.
+
+.. _Counting Loops:
+
+Counting Loops
+^^^^^^^^^^^^^^
+
+This kind of loops iterates over a collection to count the number of elements
+of the collection that satisfy a given criterion:
+
+ ===============  ===================================================
+ Loop Pattern      Count Elements Satisfying Criterion
+ ===============  ===================================================
+ Proof Objective   Count elements that satisfy a given criterion.
+ Loop Behavior     Loops over the collection. Increments a counter each time
+                   the value of an element satisfies the criterion.
+ Loop Invariant    The value of the counter is either 0 when no element
+                   encountered so far satisfies the criterion, or a positive
+                   number bounded by the current iteration of the loop
+                   otherwise.
+ ===============  ===================================================
+
+Consider a procedure ``Count_Arr_Zero`` that counts elements with value zero
+in array ``A``:
+
+.. literalinclude:: examples/count_arr_zero.adb
+   :language: ada
+   :linenos:
+
+The loop invariant expresses that the value of ``Counter`` is a natural number
+bounded by the current loop index ``J``, and that ``Counter`` is equal to zero
+exactly when all elements up to the current loop index have a non-zero value.
+With this loop invariant, |GNATprove| is able to prove the postcondition of
+``Count_Arr_Zero``, namely that output parameter ``Counter`` is a natural
+number bounded by the length of the array ``A``, and that ``Counter`` is equal
+to zero exactly when all elements in ``A`` have a non-zero value:
+
+.. literalinclude:: results/count_arr_zero.prove
+   :language: none
+
+Consider now a variant of the same counting loop over a vector:
+
+.. literalinclude:: examples/count_vec_zero.adb
+   :language: ada
+   :linenos:
+
+Like before, the loop invariant expresses that the value of ``Counter`` is a
+natural number bounded by the current loop index ``J``, and that ``Counter`` is
+equal to zero exactly when all elements up to the current loop index have a
+non-zero value.  With this loop invariant, |GNATprove| is able to prove the
+postcondition of ``Count_Vec_Zero``, namely that output parameter ``Counter``
+is a natural number bounded by the length of the vector ``V``, and that
+``Counter`` is equal to zero exactly when all elements in ``V`` have a non-zero
+value:
+
+.. literalinclude:: results/count_vec_zero.prove
+   :language: none
 
 .. _Search Loops:
 
