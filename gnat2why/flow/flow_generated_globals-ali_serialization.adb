@@ -134,7 +134,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
    begin
       Serialize (A, V.Name);
       Serialize (A, V.Instances);
-      --  ??? Serialize (A, V.Node);
+      --  Node is a component of the Task_Object record only for convenience;
+      --  in phase 1 it is used for debug, in phase 2 it caches the result of
+      --  Find_Entity.
       if A.Kind = Serialisation.Input then
          V.Node := Find_Entity (V.Name);
       end if;

@@ -32,13 +32,13 @@ concurrency_example.adb:33:22: info: initialization of "Deadline" proved
 concurrency_example.adb:34:22: info: initialization of "Deadline" proved
 concurrency_example.ads:4:36: info: length check proved (CVC4: 1 VC)
 concurrency_example.ads:5:36: info: length check proved (CVC4: 1 VC)
+concurrency_example.ads:8:09: high: possible data race when accessing variable "concurrency_example.data"
+concurrency_example.ads:8:09: high: with task "concurrency_example.reader"
+concurrency_example.ads:8:09: high: with task "concurrency_example.writer"
 concurrency_example.ads:8:09: info: initialization of "Data" proved
 concurrency_example.ads:8:09: info: nontermination of task proved (CVC4: 1 VC)
 concurrency_example.ads:9:09: high: possible data race when accessing variable "concurrency_example.data"
-concurrency_example.ads:9:09: high: possible data race when accessing variable "concurrency_example.data"
 concurrency_example.ads:9:09: high: with task "concurrency_example.reader"
-concurrency_example.ads:9:09: high: with task "concurrency_example.reader"
-concurrency_example.ads:9:09: high: with task "concurrency_example.writer"
 concurrency_example.ads:9:09: high: with task "concurrency_example.writer"
 concurrency_example.ads:9:09: info: nontermination of task proved (CVC4: 1 VC)
 concurrency_example_fixed.adb:20:13: info: initialization of "Flip" proved

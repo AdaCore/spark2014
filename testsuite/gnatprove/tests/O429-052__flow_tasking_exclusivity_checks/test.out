@@ -1,7 +1,7 @@
 entry_call_from_elaboration.adb:5:14: info: nontermination of task proved (CVC4: 1 VC)
-entry_call_from_elaboration.adb:23:08: high: possible data race when accessing variable "entry_call_from_elaboration.x"
-entry_call_from_elaboration.adb:23:08: high: with task "entry_call_from_elaboration.t1"
-entry_call_from_elaboration.adb:23:08: high: with task "entry_call_from_elaboration.t2"
+entry_call_from_elaboration.adb:23:04: high: possible data race when accessing variable "entry_call_from_elaboration.x"
+entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t1"
+entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t2"
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.ads:21:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 nested_po.ads:21:14: medium: "Outer_Rec" might not be initialized before start of tasks of type "TT"
@@ -26,20 +26,20 @@ task_in_empty_arrays.ads:6:14: medium: the task might terminate, which is not al
 task_type_array_single_so.adb:11:04: high: multiple tasks might suspend on suspension object "task_type_array_single_so.so" (SPARK RM 9(11))
 task_type_array_single_so.adb:11:04: high: with task "task_type_array_single_so.task_array"
 task_type_array_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
-two_task_type_objects_single_so.adb:10:08: high: multiple tasks might suspend on suspension object "two_task_type_objects_single_so.so" (SPARK RM 9(11))
-two_task_type_objects_single_so.adb:10:08: high: with task "two_task_type_objects_single_so.t1"
-two_task_type_objects_single_so.adb:10:08: high: with task "two_task_type_objects_single_so.t2"
+two_task_type_objects_single_so.adb:10:04: high: multiple tasks might suspend on suspension object "two_task_type_objects_single_so.so" (SPARK RM 9(11))
+two_task_type_objects_single_so.adb:10:04: high: with task "two_task_type_objects_single_so.t1"
+two_task_type_objects_single_so.adb:10:04: high: with task "two_task_type_objects_single_so.t2"
 two_task_type_objects_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 two_tasks_single_po.adb:4:20: warning: statement has no effect
+two_tasks_single_po.adb:10:09: high: more tasks than allowed might queue on protected entry "two_tasks_single_po.po.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
+two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t1" is queueing
+two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t2" is queueing
 two_tasks_single_po.adb:10:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 two_tasks_single_po.adb:10:09: medium: the task might terminate, which is not allowed in SPARK
-two_tasks_single_po.adb:11:09: high: more tasks than allowed might queue on protected entry "two_tasks_single_po.po.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
-two_tasks_single_po.adb:11:09: high: task "two_tasks_single_po.t1" is queueing
-two_tasks_single_po.adb:11:09: high: task "two_tasks_single_po.t2" is queueing
 two_tasks_single_po.adb:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 two_tasks_single_po.adb:11:09: medium: the task might terminate, which is not allowed in SPARK
+two_tasks_single_so.ads:7:09: high: multiple tasks might suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
+two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t1"
+two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t2"
 two_tasks_single_so.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
-two_tasks_single_so.ads:9:09: high: multiple tasks might suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
-two_tasks_single_so.ads:9:09: high: with task "two_tasks_single_so.t1"
-two_tasks_single_so.ads:9:09: high: with task "two_tasks_single_so.t2"
 two_tasks_single_so.ads:9:09: medium: the task might terminate, which is not allowed in SPARK

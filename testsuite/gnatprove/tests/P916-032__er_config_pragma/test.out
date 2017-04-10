@@ -9,16 +9,16 @@ p.ads:18:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:18:14: info: nontermination of task proved (CVC4: 1 VC)
 p.ads:19:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:19:14: info: nontermination of task proved (CVC4: 1 VC)
-p.ads:21:19: high: more tasks than allowed might queue on protected entry "p.po.e1" (Max_Entry_Queue_Length = 3) (SPARK RM 9(11))
-p.ads:21:19: high: task "p.to1" is queueing
-p.ads:21:19: high: task "p.to2" is queueing
-p.ads:21:19: high: task "p.to3" is queueing
-p.ads:21:19: high: task "p.to4" is queueing
-p.ads:22:09: high: more tasks than allowed might queue on protected entry "p.po.e2" (Max_Queue_Length = 1) (SPARK RM 9(11))
-p.ads:22:09: high: task "p.to5" is queueing
-p.ads:22:09: high: task "p.to6" is queueing
-p.ads:23:19: high: more tasks than allowed might queue on protected entry "p.po.e3" (Max_Entry_Queue_Length = 3) (SPARK RM 9(11))
-p.ads:23:19: high: task "p.t07" is queueing
-p.ads:23:19: high: task "p.t09" is queueing
-p.ads:23:19: high: task "p.t10" is queueing
-p.ads:23:19: high: task "p.to8" is queueing
+p.ads:21:04: high: more tasks than allowed might queue on protected entry "p.po.e1" (Max_Entry_Queue_Length = 3) (SPARK RM 9(11))
+p.ads:21:04: high: task "p.to1" is queueing
+p.ads:21:04: high: task "p.to2" is queueing
+p.ads:21:04: high: task "p.to3" is queueing
+p.ads:21:04: high: task "p.to4" is queueing
+p.ads:22:04: high: more tasks than allowed might queue on protected entry "p.po.e2" (Max_Queue_Length = 1) (SPARK RM 9(11))
+p.ads:22:04: high: task "p.to5" is queueing
+p.ads:22:04: high: task "p.to6" is queueing
+p.ads:23:04: high: more tasks than allowed might queue on protected entry "p.po.e3" (Max_Entry_Queue_Length = 3) (SPARK RM 9(11))
+p.ads:23:04: high: task "p.t07" is queueing
+p.ads:23:04: high: task "p.t09" is queueing
+p.ads:23:04: high: task "p.t10" is queueing
+p.ads:23:04: high: task "p.to8" is queueing

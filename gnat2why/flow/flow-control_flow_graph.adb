@@ -3281,7 +3281,7 @@ package body Flow.Control_Flow_Graph is
                                   (if Size > 1 or else Size = -1
                                    then Size
                                    else 1),
-                                Node => N));
+                                Node      => N));
             end;
 
          elsif Is_Record_Type (T) then

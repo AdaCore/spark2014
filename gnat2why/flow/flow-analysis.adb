@@ -39,6 +39,7 @@ with Stand;                       use Stand;
 with Common_Iterators;            use Common_Iterators;
 with Gnat2Why.Annotate;           use Gnat2Why.Annotate;
 with SPARK_Definition;            use SPARK_Definition;
+with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -4337,69 +4338,91 @@ package body Flow.Analysis is
    -------------------------------
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id) is
-      use Flow_Generated_Globals;
+      subtype Simple_Owning_Kind is Tasking_Owning_Kind
+        with Static_Predicate =>
+          Simple_Owning_Kind in Suspends_On | Unsynch_Accesses;
+      --  Checks for suspending on suspension objects and accessing
+      --  unsynchronized variables is similar and simple; this type helps to
+      --  reuse it.
 
-      subtype Exclusive_Owning_Kind is Tasking_Owning_Kind
-      range Suspends_On .. Unsynch_Accesses;
-      --  Represents an exclusive ownership of an object by a single task
-      --  instance.
+      package Name_To_Name_Lists is new
+        Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
+                                    Element_Type    => Name_Lists.List,
+                                    Hash            => Name_Hash,
+                                    Equivalent_Keys => "=",
+                                    "="             => Name_Lists."=");
+      --  Maps from objects to lists of task types that access them
 
-      Concurrent_Object_Owner : array (Exclusive_Owning_Kind) of Name_Maps.Map;
-      --  Mapping from concurrent objects to a task instance that owns them,
-      --  i.e. suspends on a suspension object or accesses an unsynchronized
-      --  variable. It stores only the first owning task instance, if there are
-      --  more then it is SPARK violation.
+      Object_Owners : array (Tasking_Owning_Kind) of Name_To_Name_Lists.Map;
+      --  Mapping from objects to lists of task types that owns them, i.e.
+      --  suspend on a suspension object, access an unsynchronized variable or
+      --  call a protected entry.
 
-      Entry_Callers : Name_Graphs.Map;
-      --  Mapping from entry objects to task types that call them
+      function Msg_Attach_Node
+        (Task_Name   : Entity_Name;
+         Object_Name : Entity_Name)
+         return Node_Id;
+      --  Returns a node for attaching the error message. It is preferably the
+      --  entity designated by Task_Name. However, if it is declared in a body
+      --  of a with-ed package then we have no Node_Id for that; then we try
+      --  with the Object_Name; then the best we can get is the root node of
+      --  the current compilation unit.
 
-      function Msg_Attach_Node (Task_Instance : Task_Object) return Node_Id;
-      --  Returns the node for attaching the error message. It is preferably
-      --  the node of a task instance. However, if the task is instantiated in
-      --  the private part of a with-ed package and we have no the instance
-      --  node then the best we can get is root node of the current compilation
-      --  unit.
-
-      procedure Check_Ownership (Task_Instance : Task_Object;
-                                 Object        : Entity_Name;
-                                 Owning_Kind   : Exclusive_Owning_Kind);
+      procedure Check_Ownership (Owning_Kind : Simple_Owning_Kind);
       --  Check ownership of a kind Owning_Kind of the Object by a
       --  Task_Instance.
 
-      procedure Create_Mapping_From_Entry_To_Task_Types;
-      --  Creates a mapping from an entry to task types that call it
-
       procedure Check_Concurrent_Accesses_To_Entries
+        (Entry_Callers : Name_To_Name_Lists.Map)
       with Pre => not Entry_Callers.Is_Empty;
       --  Emits a message in case there are more concurrent accesses to an
       --  entry than allowed.
+
+      procedure Record_Ownership (Owning_Kind : Tasking_Owning_Kind;
+                                  Object      : Entity_Name;
+                                  Task_Type   : Entity_Name);
+      --  Records an ownership of an Object by a Task_Type
+
+      procedure Report_Violations (Object     : Entity_Name;
+                                   Owners     : Task_Multisets.Set;
+                                   Msg_Object : String;
+                                   Msg_Owner  : String;
+                                   SRM_Ref    : String);
+      --  Emit checks about ownership violations
 
       ---------------------
       -- Msg_Attach_Node --
       ---------------------
 
-      function Msg_Attach_Node (Task_Instance : Task_Object) return Node_Id is
-        (if Present (Task_Instance.Node)
-         then Task_Instance.Node
-         else Defining_Entity (Unit (GNAT_Root)));
+      function Msg_Attach_Node
+        (Task_Name   : Entity_Name;
+         Object_Name : Entity_Name)
+         return Node_Id
+      is
+         Task_Node : constant Node_Id := Find_Entity (Task_Name);
+
+      begin
+         if Present (Task_Node) then
+            return Task_Node;
+         else
+            declare
+               Object_Node : constant Node_Id := Find_Entity (Object_Name);
+            begin
+               if Present (Object_Node) then
+                  return Object_Node;
+               else
+                  return Defining_Entity (Unit (GNAT_Root));
+               end if;
+            end;
+         end if;
+      end Msg_Attach_Node;
 
       ---------------------
       -- Check_Ownership --
       ---------------------
 
-      procedure Check_Ownership (Task_Instance : Task_Object;
-                                 Object        : Entity_Name;
-                                 Owning_Kind   : Exclusive_Owning_Kind)
+      procedure Check_Ownership (Owning_Kind : Simple_Owning_Kind)
       is
-         use Name_Maps;
-
-         Other_Task : constant Name_Maps.Cursor :=
-           Concurrent_Object_Owner (Owning_Kind).Find (Object);
-         --  Pointer to other task possibly accessing the object
-
-         Dummy : Boolean;
-         --  Dummy variable required by the Error_Msg_Flow API
-
          Msg : constant String :=
            (case Owning_Kind is
                when Suspends_On =>
@@ -4408,126 +4431,76 @@ package body Flow.Analysis is
                   "possible data race when accessing variable &");
          --  Main error message
 
-         Severity : constant Check_Kind := High_Check_Kind;
-         --  Severity of the error message
-
          SRM_Ref : constant String :=
            (if Owning_Kind = Suspends_On
             then "9(11)"
             else "");
          --  Reference to SPARK RM for non-obvious verification rules
 
-      begin
-         --  There is a conflict if this object declares several tasks. The
-         --  possible cases are:
-         --  * Task_Instance.Instances = -1, we haven't been able to determine
-         --    the exact number of instances but we conservately assume it is
-         --    greater than 1 (see declaration of the type Task_Object in
-         --    Flow_Generated_Globals.ads) and therefore it is a SPARK
-         --    violation,
-         --  * Task_Instance.Instance > 1 is a SPARK violation.
-         --  * we have already found a task calling the same object and this is
-         --    SPARK violation.
-         if Task_Instance.Instances /= 1
-           or else Has_Element (Other_Task)
-         then
-            declare
-               Msg_Node : constant Entity_Id :=
-                 Msg_Attach_Node (Task_Instance);
+         Owned_Objects : Name_To_Name_Lists.Map renames
+           Object_Owners (Owning_Kind);
 
-            begin
-               Error_Msg_Flow
-                 (E            => Msg_Node,
-                  N            => Msg_Node,
-                  Suppressed   => Dummy,
-                  Severity     => Severity,
-                  Msg          => Msg,
-                  F1           => Magic_String_Id (Object),
-                  SRM_Ref      => SRM_Ref,
-                  Continuation => False);
-
-               Error_Msg_Flow
-                 (E            => Msg_Node,
-                  N            => Msg_Node,
-                  Suppressed   => Dummy,
-                  Severity     => Severity,
-                  Msg          => "with task &",
-                  F1           => Magic_String_Id (Task_Instance.Name),
-                  Continuation => True);
-
-               --  If an instance of another task type also accesses this
-               --  object then point also to that task instance.
-               if Has_Element (Other_Task) then
-                  Error_Msg_Flow
-                    (E            => Msg_Node,
-                     N            => Msg_Node,
-                     Suppressed   => Dummy,
-                     Severity     => Severity,
-                     Msg          => "with task &",
-                     F1           =>
-                       Magic_String_Id (Name_Maps.Element (Other_Task)),
-                     Continuation => True);
-               end if;
-            end;
-         end if;
-
-         if not Has_Element (Other_Task) then
-            --  Otherwise just record this ownership
-            Concurrent_Object_Owner
-              (Owning_Kind).Insert (Object, Task_Instance.Name);
-         end if;
-      end Check_Ownership;
-
-      ---------------------------------------------
-      -- Create_Mapping_From_Entry_To_Task_Types --
-      ---------------------------------------------
-
-      procedure Create_Mapping_From_Entry_To_Task_Types is
-         use Name_Nat;
+      --  Start of processing for Check_Ownership
 
       begin
-         for Task_Type in Task_Instances.Iterate loop
+         for C in Owned_Objects.Iterate loop
             declare
-               This_Task_Type : Entity_Name renames
-                 Task_Instances_Maps.Key (Task_Type);
+               Object : Entity_Name renames Name_To_Name_Lists.Key (C);
+
+               Owner_Types : Name_Lists.List renames Owned_Objects (C);
+
+               First_Task_Type_Objects : Task_Multisets.Set renames
+                 Task_Instances (Owner_Types.First_Element);
 
             begin
-               for Called_Entry of Tasking_Objects (Entry_Calls,
-                                                    This_Task_Type)
-               loop
+               --  Violation occurs when the resource is accessed by:
+               --  * instances of several task types
+               --  * several objects of the same task type
+               --  * a single object of a single task type, but with several
+               --    instances of that type (e.g. array or record whose
+               --    components are tasks).
+               if Owner_Types.Length > 1
+                    or else
+                  First_Task_Type_Objects.Length > 1
+                    or else
+                  First_Task_Type_Objects.First_Element.Instances /= 1
+               then
                   declare
-                     C : Name_Graphs.Cursor :=
-                       Entry_Callers.Find (Called_Entry);
-
-                     Dummy : Boolean;
+                     Owners : Task_Multisets.Set;
 
                   begin
-                     Entry_Callers.Insert (Key      => Called_Entry,
-                                           Position => C,
-                                           Inserted => Dummy);
-                     Entry_Callers (C).Include (This_Task_Type);
-                     --  We insert a mapping from Called_Entry to the task
-                     --  types that call it.
+                     for Task_Type of Owner_Types loop
+                        Owners.Union (Task_Instances (Task_Type));
+                     end loop;
+
+                     Report_Violations (Object     => Object,
+                                        Owners     => Owners,
+                                        Msg_Object => Msg,
+                                        Msg_Owner  => "with task &",
+                                        SRM_Ref    => SRM_Ref);
                   end;
-               end loop;
+               end if;
             end;
          end loop;
-      end Create_Mapping_From_Entry_To_Task_Types;
+      end Check_Ownership;
 
-      ------------------------------------------
-      -- Check_Concurrent_Accesses_To_Entries --
-      ------------------------------------------
+      ---------------------------------------
+      -- Check_Concurrent_Calls_To_Entries --
+      ---------------------------------------
 
-      procedure Check_Concurrent_Accesses_To_Entries is
+      procedure Check_Concurrent_Accesses_To_Entries
+        (Entry_Callers : Name_To_Name_Lists.Map)
+      is
          Has_Restriction_No_Entry_Queue : constant Boolean :=
            Restriction_Active (No_Entry_Queue);
          --  Set to True if the restriction No_Entry_Queue is active
 
          Has_Restriction_Max_Entry_Queue_Length : constant Boolean :=
            Restriction_Active (Max_Entry_Queue_Length)
-           or else Restriction_Active (Max_Entry_Queue_Depth);
-         --  Set to True if either the restrictions
-         --  Max_Entry_Queue_Length or Max_Entry_Queue_Depth are active.
+             or else
+           Restriction_Active (Max_Entry_Queue_Depth);
+         --  Set to True iff either the restrictions Max_Entry_Queue_Length or
+         --  Max_Entry_Queue_Depth are active.
 
          Max_Entry_Queue_Len : constant Nat :=
            Nat (Restrictions.Value (Max_Entry_Queue_Length));
@@ -4543,12 +4516,9 @@ package body Flow.Analysis is
                Number_Of_Accesses : Nat := 0;
                --  Counts the number of accesses to the current entry object
 
-               Current_Entry : Entity_Name renames Name_Graphs.Key (Obj);
+               Current_Entry : Entity_Name renames
+                 Name_To_Name_Lists.Key (Obj);
                --  Entry under analysis
-
-               Task_Types : Name_Sets.Set renames
-                 Entry_Callers (Current_Entry);
-               --  Task types that call Current_Entry
 
                Max_Queue_Length : constant Nat :=
                  Max_Queue_Length_Map (Current_Entry);
@@ -4565,19 +4535,11 @@ package body Flow.Analysis is
                --  positive we select the minimum, otherwise the maximum.
 
                Current_Max_Queue_Length : constant Nat :=
-                 (if not Has_Restriction_No_Entry_Queue
-                  then Strongest_Restriction
-                  else 1);
+                 (if Has_Restriction_No_Entry_Queue
+                  then 1
+                  else Strongest_Restriction);
                --  This enforces the number of tasks that can queue on an entry
                --  to be 1 in case the restriction No_Entry_Queue is active.
-
-               Queueing_Tasks : Name_Sets.Set;
-               --  Tasks that are queueing on the Current_Entry
-               --  ??? this should be either an ordered set or a list that is
-               --  sorted before printing.
-
-               Dummy : Boolean;
-               --  Dummy variable needed for Error_Msg_Flow
 
                function Msg return String;
                --  Returns the error message to print together with the
@@ -4592,7 +4554,7 @@ package body Flow.Analysis is
                     (if Has_Restriction_No_Entry_Queue
                      then "(restriction No_Entry_Queue active)"
                      elsif Has_Restriction_Max_Entry_Queue_Length
-                     and then Max_Entry_Queue_Len = Current_Max_Queue_Length
+                       and then Max_Entry_Queue_Len = Current_Max_Queue_Length
                      then "(Max_Entry_Queue_Length =" &
                        Current_Max_Queue_Length'Img & ")"
                      else "(Max_Queue_Length =" &
@@ -4604,87 +4566,150 @@ package body Flow.Analysis is
                        "entry & " & Violated_Restriction);
                end Msg;
 
+               --  Local variables
+
+               Queueing_Tasks : Task_Multisets.Set;
+               --  Tasks that are queueing on the Current_Entry
+
             begin
-               --  Iterate over task types calling Current_Entry
-               for Task_Type of Task_Types loop
-                  --  Iterate over objects of type Task_Type
-                  for Task_Object of Task_Instances (Task_Type) loop
-                     --  Update the number of accesses to Current_Entry
-                     if Task_Object.Instances >= 1 then
-                        Number_Of_Accesses := Number_Of_Accesses +
-                          Task_Object.Instances;
-                     else
-                        --  In case Task_Object.Instances = 0 then we do not
-                        --  know the exact number of instances and therefore
-                        --  we assume the worst case when this will cause a
-                        --  SPARK violation (see declaration of Task_Object
-                        --  type in Flow_Generated_Globals.ads).
-                        Number_Of_Accesses := Current_Max_Queue_Length + 1;
-                     end if;
+               if Current_Max_Queue_Length > 0 then
+                  --  Iterate over task types calling Current_Entry
+                  for Task_Type of Entry_Callers (Obj) loop
 
-                     Queueing_Tasks.Insert (Task_Object.Name);
-                     --  We add the current task object to the queueing tasks
+                     for Task_Object of Task_Instances (Task_Type) loop
+                        --  If the exact number of instances is not known
+                        --  then assume the worst case, i.e. a value that
+                        --  will trigger a SPARK violation (see declaration
+                        --  of Task_Object type in Flow_Generated_Globals.ads).
+                        if Task_Object.Instances = -1 then
+                           Number_Of_Accesses := Current_Max_Queue_Length + 1;
+                        else
+                           Number_Of_Accesses := Number_Of_Accesses +
+                             Task_Object.Instances;
+                        end if;
+                     end loop;
 
-                     if Number_Of_Accesses > Current_Max_Queue_Length
-                       and then Current_Max_Queue_Length > 0
-                     then
-                        --  We emit a check in case the number of concurrent
-                        --  accesses to Current_Entry is greater than the
-                        --  allowed (from pragmas) queue length.
-                        Error_Msg_Flow
-                          (E            => Msg_Attach_Node (Task_Object),
-                           N            => Msg_Attach_Node (Task_Object),
-                           Suppressed   => Dummy,
-                           Severity     => High_Check_Kind,
-                           Msg          => Msg,
-                           F1           => Magic_String_Id (Current_Entry),
-                           SRM_Ref      => "9(11)",
-                           Continuation => False);
+                     Queueing_Tasks.Union (Task_Instances (Task_Type));
 
-                        --  Print all the queueing tasks objects that we found
-                        for Task_Obj of Queueing_Tasks loop
-                           Error_Msg_Flow
-                             (E            => Msg_Attach_Node (Task_Object),
-                              N            => Msg_Attach_Node (Task_Object),
-                              Suppressed   => Dummy,
-                              Severity     => High_Check_Kind,
-                              Msg          => "task & is queueing",
-                              F1           => Magic_String_Id (Task_Obj),
-                              Continuation => True);
-                        end loop;
-                     end if;
                   end loop;
-               end loop;
+
+                  --  Emit a check if the number of concurrent accesses to
+                  --  Current_Entry is greater than the allowed (from pragmas)
+                  --  queue length.
+                  if Number_Of_Accesses > Current_Max_Queue_Length then
+                     Report_Violations (Object     => Current_Entry,
+                                        Owners     => Queueing_Tasks,
+                                        Msg_Object => Msg,
+                                        Msg_Owner  => "task & is queueing",
+                                        SRM_Ref    => "9(11)");
+                  end if;
+               end if;
             end;
          end loop;
       end Check_Concurrent_Accesses_To_Entries;
 
+      ----------------------
+      -- Record_Ownership --
+      ----------------------
+
+      procedure Record_Ownership (Owning_Kind : Tasking_Owning_Kind;
+                                  Object      : Entity_Name;
+                                  Task_Type   : Entity_Name)
+      is
+         Position : Name_To_Name_Lists.Cursor;
+         Inserted : Boolean;
+
+         Owners : Name_To_Name_Lists.Map renames Object_Owners (Owning_Kind);
+
+      begin
+         Owners.Insert (Key      => Object,
+                        Position => Position,
+                        Inserted => Inserted);
+
+         Owners (Position).Append (Task_Type);
+      end Record_Ownership;
+
+      -----------------------
+      -- Report_Violations --
+      -----------------------
+
+      procedure Report_Violations (Object     : Entity_Name;
+                                   Owners     : Task_Multisets.Set;
+                                   Msg_Object : String;
+                                   Msg_Owner  : String;
+                                   SRM_Ref    : String)
+      is
+         Msg_Node : constant Node_Id :=
+           Msg_Attach_Node (Task_Name   => Owners.First_Element.Name,
+                            Object_Name => Object);
+
+         Severity : constant Check_Kind := High_Check_Kind;
+         --  Severity of the error messages
+
+         Dummy : Boolean;
+         --  Dummy variable needed for Error_Msg_Flow
+
+      begin
+         Error_Msg_Flow
+           (E            => Msg_Node,
+            N            => Msg_Node,
+            Suppressed   => Dummy,
+            Severity     => Severity,
+            Msg          => Msg_Object,
+            F1           => Magic_String_Id (Object),
+            SRM_Ref      => SRM_Ref,
+            Continuation => False);
+
+         --  Print all the queueing tasks objects that we found
+         for Task_Obj of Owners loop
+            Error_Msg_Flow
+              (E            => Msg_Node,
+               N            => Msg_Node,
+               Suppressed   => Dummy,
+               Severity     => Severity,
+               Msg          => Msg_Owner,
+               F1           => Magic_String_Id (Task_Obj.Name),
+               Continuation => True);
+         end loop;
+      end Report_Violations;
+
    --  Start of processing for Check_Concurrent_Accesses
 
    begin
+      --  Invert mapping read from the ALI files:
+      --    from {task types -> objects}
+      --      to {objects -> task types}
       for C in Task_Instances.Iterate loop
          declare
             This_Task_Type : Entity_Name renames Task_Instances_Maps.Key (C);
-            This_Task_Objects : Task_Lists.List renames Task_Instances (C);
 
          begin
-            for This_Task_Object of This_Task_Objects loop
-               for Owning_Kind in Exclusive_Owning_Kind loop
-                  for Obj of Tasking_Objects (Owning_Kind, This_Task_Type) loop
-                     Check_Ownership (Task_Instance => This_Task_Object,
-                                      Object        => Obj,
-                                      Owning_Kind   => Owning_Kind);
-                  end loop;
+            for Owning_Kind in Tasking_Owning_Kind loop
+               for Obj of Tasking_Objects (Owning_Kind, This_Task_Type) loop
+                  Record_Ownership (Owning_Kind => Owning_Kind,
+                                    Object      => Obj,
+                                    Task_Type   => This_Task_Type);
                end loop;
             end loop;
          end;
       end loop;
 
-      Create_Mapping_From_Entry_To_Task_Types;
+      --  First check simple ownerships, then entry ownerships
 
-      if not Entry_Callers.Is_Empty then
-         Check_Concurrent_Accesses_To_Entries;
-      end if;
+      for Owning_Kind in Simple_Owning_Kind loop
+         Check_Ownership (Owning_Kind);
+      end loop;
+
+      declare
+         Entry_Callers : Name_To_Name_Lists.Map renames
+           Object_Owners (Entry_Calls);
+         --  Mapping from entry objects to task types that call them
+
+      begin
+         if not Entry_Callers.Is_Empty then
+            Check_Concurrent_Accesses_To_Entries (Entry_Callers);
+         end if;
+      end;
 
    end Check_Concurrent_Accesses;
 

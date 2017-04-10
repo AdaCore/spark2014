@@ -2672,7 +2672,7 @@ package body Flow_Generated_Globals.Phase_2 is
                              Position => C,
                              Inserted => Dummy);
 
-      Task_Instances (C).Append (Object);
+      Task_Instances (C).Insert (Object);
    end Register_Task_Object;
 
    ---------------------
@@ -3041,5 +3041,58 @@ package body Flow_Generated_Globals.Phase_2 is
          Outdent;
       end loop;
    end Print_Tasking_Info_Bag;
+
+   -------
+   -- < --
+   -------
+
+   function "<" (Left, Right : Task_Object) return Boolean is
+
+      function Compare_Names return Boolean;
+      --  Returns the result of comparing names of Left and Right; to be used
+      --  as a last resort.
+
+      -------------------
+      -- Compare_Names --
+      -------------------
+
+      function Compare_Names return Boolean is
+        (To_String (Left.Name) < To_String (Right.Name));
+
+      --  Local variables:
+      Has_Left_Node  : constant Boolean := Present (Left.Node);
+      Has_Right_Node : constant Boolean := Present (Right.Node);
+
+      --  Start of processing for "<"
+
+   begin
+      if Has_Left_Node
+        and then Has_Right_Node
+      then
+         declare
+            Left_In_Analyzed : constant Boolean :=
+              Is_In_Analyzed_Files (Left.Node);
+
+            Right_In_Analyzed : constant Boolean :=
+              Is_In_Analyzed_Files (Right.Node);
+
+         begin
+            return (if Left_In_Analyzed and Right_In_Analyzed then
+                      Left.Node < Right.Node
+                    elsif Left_In_Analyzed then
+                      True
+                    elsif Right_In_Analyzed then
+                      False
+                    else
+                      Compare_Names);
+         end;
+      elsif Has_Left_Node then
+         return True;
+      elsif Has_Right_Node then
+         return False;
+      else
+         return Compare_Names;
+      end if;
+   end "<";
 
 end Flow_Generated_Globals.Phase_2;

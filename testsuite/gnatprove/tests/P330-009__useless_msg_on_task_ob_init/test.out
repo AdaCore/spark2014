@@ -12,12 +12,8 @@ records_and_array.ads:12:04: info: initialization of "X" proved
 records_and_array.ads:13:04: info: initialization of "Z" proved
 records_and_array.ads:16:09: info: nontermination of task proved (CVC4: 1 VC)
 records_and_array.ads:24:14: info: nontermination of task proved (CVC4: 1 VC)
-records_and_array.ads:30:04: high: possible data race when accessing variable "records_and_array.z"
-records_and_array.ads:30:04: high: with task "records_and_array.tao"
-records_and_array.ads:30:04: high: with task "records_and_array.tt2o"
-records_and_array.ads:36:04: high: possible data race when accessing variable "records_and_array.z"
-records_and_array.ads:36:04: high: with task "records_and_array.tro"
-records_and_array.ads:36:04: high: with task "records_and_array.tt2o"
-records_and_array.ads:40:04: high: possible data race when accessing variable "records_and_array.z"
-records_and_array.ads:40:04: high: with task "records_and_array.trao"
-records_and_array.ads:40:04: high: with task "records_and_array.tt2o"
+records_and_array.ads:26:04: high: possible data race when accessing variable "records_and_array.z"
+records_and_array.ads:26:04: high: with task "records_and_array.tao"
+records_and_array.ads:26:04: high: with task "records_and_array.trao"
+records_and_array.ads:26:04: high: with task "records_and_array.tro"
+records_and_array.ads:26:04: high: with task "records_and_array.tt2o"

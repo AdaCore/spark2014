@@ -11,9 +11,9 @@ nest_in_proc.adb:22:07: info: precondition proved (CVC4: 1 VC)
 nest_in_task.adb:18:20: info: subprogram "P" will terminate
 nest_in_task.adb:18:20: warning: subprogram "P" has no effect
 nest_in_task.adb:24:11: cannot write "A" during elaboration of "Pkg" (SPARK RM 7.7.1(6))
-nest_in_task.adb:32:07: high: more tasks than allowed might queue on protected entry "nest_in_task.a.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
-nest_in_task.adb:32:07: high: task "nest_in_task.b" is queueing
-nest_in_task.adb:32:07: high: task "nest_in_task.c" is queueing
+nest_in_task.adb:32:04: high: more tasks than allowed might queue on protected entry "nest_in_task.a.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
+nest_in_task.adb:32:04: high: task "nest_in_task.b" is queueing
+nest_in_task.adb:32:04: high: task "nest_in_task.c" is queueing
 nest_in_task.ads:3:13: warning: subprogram "E" might not terminate
 nest_in_task.ads:4:17: info: subprogram "Proc" will terminate
 recursion.adb:1:11: warning: subprogram "Recursion" might not terminate

@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Multisets;
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
@@ -32,16 +33,28 @@ with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
 
 package Flow_Generated_Globals.Phase_2 is
 
-   package Task_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
-   --  Containers with instances of a task type
+   function "<" (Left, Right : Task_Object) return Boolean;
+   --  Compare task objects giving preference to the object from the current
+   --  compilation unit, or else, visible by Entity_Id, or else, resort to the
+   --  alphabetic order of object names.
+
+   package Task_Multisets is
+     new Ada.Containers.Ordered_Multisets (Element_Type => Task_Object,
+                                           "<"          => "<",
+                                           "="          => "=");
+   --  Containers with instances of a task type; mulisets (i.e. ordered bags)
+   --  are needed because a record object whose components have the same task
+   --  type is represented by multiple task instances. Perhaps this is not
+   --  elegant, but is a result of code evolution; changing it now would
+   --  complicate phase 1 and perhaps we want to use it for component-wise
+   --  error location in the future.
 
    package Task_Instances_Maps is
      new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                     Element_Type    => Task_Lists.List,
+                                     Element_Type    => Task_Multisets.Set,
                                      Hash            => Name_Hash,
                                      Equivalent_Keys => "=",
-                                     "="             => Task_Lists."=");
+                                     "="             => Task_Multisets."=");
    --  Containers that map task types to objects with task instances (e.g. task
    --  arrays may contain several instances of a task type and task record may
    --  contain instances of several tasks).
