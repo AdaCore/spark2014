@@ -14,7 +14,7 @@ package Private_Types with SPARK_Mode is
    end P1;
 
    package P2 is
-      type T (<>) is private;
+      type T (<>) is tagged private;
 
       type T2 is private;
    private
