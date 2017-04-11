@@ -39,7 +39,7 @@ original_sample.adb:17:44: info: float overflow check proved (Interval)
 original_sample.adb:27:19: info: float overflow check proved (CodePeer)
 original_sample.adb:27:25: info: float overflow check proved (Interval)
 original_sample.ads:15:128: medium: float overflow check might fail
-original_sample.ads:15:140: info: division check proved (CVC4: 1 VC)
+original_sample.ads:15:140: info: division check proved (Z3: 1 VC)
 original_sample.ads:15:140: medium: float overflow check might fail
 original_sample.ads:37:29: info: float overflow check proved (Interval)
 original_sample.ads:37:47: info: range check proved (Interval)
@@ -75,10 +75,10 @@ sample.adb:29:43: info: range check proved (Interval)
 sample.adb:32:19: info: float overflow check proved (CodePeer)
 sample.adb:32:21: info: initialization of "Tmp" proved
 sample.ads:13:128: medium: float overflow check might fail
-sample.ads:13:140: info: division check proved (CVC4: 1 VC)
+sample.ads:13:140: info: division check proved (Z3: 1 VC)
 sample.ads:13:140: medium: float overflow check might fail
 sample.ads:35:29: info: float overflow check proved (Interval)
 sample.ads:35:47: info: range check proved (Interval)
 sample.ads:35:59: info: float overflow check proved (Interval)
 sample.ads:37:39: medium: postcondition might fail, cannot prove Time >= Time'old
-sample.ads:57:17: medium: postcondition might fail, cannot prove Time >= Time'old
+sample.ads:57:17: info: postcondition proved (Z3: 1 VC)
