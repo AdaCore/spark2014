@@ -5,11 +5,9 @@ package body Wibble is
 
    C : constant := 10.0;
 
-   type T is range 0 .. 1_000_000;
+   type U is mod 2**32;
+   subtype T is U range 0 .. 1_000_000;
 
-   --  Each of these I have verified manually.
-
-   --  Original customer test, this goes through SPARK OK right now.
    procedure Test_01 (State : in out Float32;
                       X     : T)
    with Pre => X < T'Last and
@@ -20,8 +18,6 @@ package body Wibble is
       State := State + C;  -- ok
    end Test_01;
 
-   --  .. but not for doubles.
-   --  Takes 33s to check
    procedure Test_02 (State : in out Float64;
                       X     : T)
    with Pre => X < T'Last and
@@ -32,8 +28,6 @@ package body Wibble is
       State := State + C;  -- ok
    end Test_02;
 
-   --  They should not need the extra 1.0
-   --  Takes 7.7s to check
    procedure Test_03 (State : in out Float32;
                       X     : T)
    with Pre => X < T'Last and
@@ -44,8 +38,6 @@ package body Wibble is
       State := State + C;  -- ok
    end Test_03;
 
-   --  Its better to use a punctured interval
-   --  Takes 0.02s to check
    procedure Test_04 (State : in out Float32;
                       X     : T)
    with Pre => X < T'Last and
@@ -56,8 +48,6 @@ package body Wibble is
       State := State + C;  -- ok
    end Test_04;
 
-   --  And it should also work for doubles
-   --  Takes 0.034s to check
    procedure Test_05 (State : in out Float64;
                       X     : T)
    with Pre => X < T'Last and
