@@ -905,7 +905,7 @@ package body Why.Gen.Arrays is
           Image     => New_Name (Symbol => NID ("get"))))
       & Prepare_Indexes_Substitutions
         (Section, Etype (First_Index (Und_Ent)), "Index",
-         False));
+         Declare_One => False));
 
    -------------------------------------------------
    -- Prepare_Subtype_Array_Logical_Substitutions --
