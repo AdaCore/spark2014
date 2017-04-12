@@ -402,9 +402,11 @@ package body Why.Gen.Arrays is
    procedure Declare_Additional_Symbols
      (E       : Entity_Id;
       Section : W_Section_Id;
-      Symbols : M_Array_Type) is
+      Symbols : M_Array_Type)
+   is
+      Component_Typ : constant Entity_Id := Component_Type (E);
    begin
-      if Has_Discrete_Type (Component_Type (E)) then
+      if Has_Discrete_Type (Component_Typ) then
 
          --  For discrete arrays of dimension 1 we need the to_int function on
          --  component_type to define the comparison functions.
@@ -412,8 +414,7 @@ package body Why.Gen.Arrays is
          --  additional parameter to_rep.
 
          declare
-            Base : constant W_Type_Id :=
-              Base_Why_Type_No_Bool (Component_Type (E));
+            Base : constant W_Type_Id := Base_Why_Type_No_Bool (Component_Typ);
 
             Fst_Idx : constant Node_Id :=
               First_Index (if Ekind (E) = E_String_Literal_Subtype
@@ -432,7 +433,7 @@ package body Why.Gen.Arrays is
                     Image     =>
                       Get_Name
                         (Conversion_Name
-                           (From => EW_Abstract (Component_Type (E)),
+                           (From => EW_Abstract (Component_Typ),
                             To   => Base))),
                3 =>
                  New_Clone_Substitution
@@ -455,7 +456,7 @@ package body Why.Gen.Arrays is
                     Image     => To_Local (Symbols.Bool_Eq)));
 
          begin
-            if Has_Modular_Integer_Type (Component_Type (E)) then
+            if Has_Modular_Integer_Type (Component_Typ) then
                Emit (Section,
                      New_Clone_Declaration
                        (Theory_Kind   => EW_Module,
@@ -484,12 +485,12 @@ package body Why.Gen.Arrays is
          end;
       end if;
 
-      if Has_Boolean_Type (Component_Type (E)) then
+      if Has_Boolean_Type (Component_Typ) then
 
          --  For arrays of boolean types of dimension 1 we need to define the
          --  logical operators.
 
-         if Is_Standard_Boolean_Type (Component_Type (E)) then
+         if Is_Standard_Boolean_Type (Component_Typ) then
 
             --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
 
