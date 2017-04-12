@@ -137,8 +137,9 @@ package body Why.Gen.Terms is
          then
             State.Found   := True;
             State.Control := Terminate_Immediately;
+         else
+            State.Control := Abandon_Children;
          end if;
-         State.Control := Abandon_Children;
       end Identifier_Pre_Op;
 
       SS : Search_State := (Control => Continue, Found => False);
