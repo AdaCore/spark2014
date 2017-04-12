@@ -10,14 +10,14 @@ destruct val1_type as (val1_lb, val1_ub), val2_type as (val2_lb, val2_ub), facto
 unfold ule in factor_lb, factor_ub, pre_val2_ub.
 unfold ult in pre_val1_lt_val2.
 rewrite to_uint_of_int in factor_lb, factor_ub by auto with zarith.
-assert (0 < to_uint factor) as factor_pos by auto with zarith.
+assert (0 < t'int factor) as factor_pos by auto with zarith.
 
 (* rewrite goal *)
 unfold ult.
 rewrite to_uint_mul, to_uint_mul.
 
 (* shared lemma val2 * factor in bounds *)
-assert (to_uint val2 * to_uint factor <= SPARK_MAX_UINT) as shared_lemma.
+assert (t'int val2 * t'int factor <= SPARK_MAX_UINT) as shared_lemma.
 {
   rewrite to_uint_udiv, to_uint_of_int in pre_val2_ub by auto with zarith.
   unfold EuclideanDivision.div in pre_val2_ub.
@@ -27,7 +27,7 @@ assert (to_uint val2 * to_uint factor <= SPARK_MAX_UINT) as shared_lemma.
 }
 
 (* shared lemma val1 * factor < val2 * factor *)
-assert (to_uint val1 * to_uint factor < to_uint val2 * to_uint factor) as inter_ineq.
+assert (t'int val1 * t'int factor < t'int val2 * t'int factor) as inter_ineq.
 {
   apply (Zmult_lt_compat_r _ _ _ factor_pos pre_val1_lt_val2).
 }

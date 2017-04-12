@@ -3,31 +3,9 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.5" timelimit="1" steplimit="0" memlimit="0"/>
 <prover id="2" name="Z3" version="4.4.1" timelimit="5" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-float_arithmetic_lemmas.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_136" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_143" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_144" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_146" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_147" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_148" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -264,118 +242,122 @@
 </theory>
 <theory name="Spark__float_arithmetic_lemmas__lemma_div_is_antimonotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__package_def" sum="91a03739591bbaf2de673ea25aa46d47" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__package_def" sum="c3adf1ce28360ae7b2919472cc08ff8b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def" sum="746ff91ed9f23f60e6dcec960c651f7a" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def" sum="009c58507ca8103a9f656bb832a3102d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.24" steps="4218"/></proof>
+  <proof prover="1"><result status="valid" time="0.20" steps="2724"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.27" steps="4869"/></proof>
+  <proof prover="1"><result status="valid" time="0.22" steps="3166"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="1"><result status="valid" time="0.26" steps="4499"/></proof>
+  <proof prover="1"><result status="valid" time="0.20" steps="2897"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def" sum="739bff6140d6b9b5fe1a61f0e83698a0" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def" sum="0491d0cc926d5dd2a9a1169a62e42c3e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.25" steps="4207"/></proof>
+  <proof prover="1"><result status="valid" time="0.22" steps="2730"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.25" steps="4835"/></proof>
+  <proof prover="1"><result status="valid" time="0.22" steps="3170"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="1"><result status="valid" time="0.26" steps="4465"/></proof>
+  <proof prover="1"><result status="valid" time="0.22" steps="2810"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def" sum="5250be546d8ade7898ae02f11bfb7d1e" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def" sum="3590dbb2fef1c521eae8dfaeeb2dbfc2" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="0.42" steps="1923993"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="0.48" steps="2297525"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="0.80" steps="3879710"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="0.72" steps="3360539"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid" time="1.34"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid" time="1.85"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def" sum="2f23d864b2477cf2c497b38bfafd602a" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def" sum="03ea14bc72ef57744471d69068f4916e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="0.43" steps="1985420"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="0.42" steps="2099836"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="0.74" steps="3337825"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="0.67" steps="3315232"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="1.40"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="2.40"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="21b6d7443f67560fafa2ab538ba8fd3e" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="c4ff731b0ad5d29e48dcfb22a559ee86" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="529"/></proof>
+  <proof prover="1"><result status="valid" time="0.11" steps="306"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="2.10" steps="8593828"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="2.01" steps="8445496"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="585"/></proof>
+  <proof prover="1"><result status="valid" time="0.10" steps="349"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="3.43" steps="12535968"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="3.38" steps="12934887"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="1.82"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="2.82"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" sum="a6c1ce35fd08fcf010744509cc7da2ef" expanded="true">
+<theory name="Spark__float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" sum="dc23cf354a457240326a3a6b478a614e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="529"/></proof>
+  <proof prover="1"><result status="valid" time="0.11" steps="310"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="2.40" steps="8845897"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="1.71" steps="7817767"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="585"/></proof>
+  <proof prover="1"><result status="valid" time="0.11" steps="353"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="timeout" time="10.00"/></proof>
-  <proof prover="2"><result status="valid" time="3.38" steps="13607001"/></proof>
+  <proof prover="1" timelimit="10"><result status="timeout" time="10.00"/></proof>
+  <proof prover="2"><result status="valid" time="3.40" steps="12550078"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="2.06"/></proof>
+  <proof prover="0" edited="../../proof/Coq/spark-float_arithmetic_lemmas/Spark__float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid" time="3.59"/></proof>
+  <proof prover="1"><result status="timeout" time="1.00"/></proof>
   </goal>
  </transf>
  </goal>

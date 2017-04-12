@@ -14,20 +14,20 @@ unfold ule.
 rewrite to_uint_mul, to_uint_mul.
 
 (* split on whether factor is zero or not *)
-destruct (Z.eq_dec (to_uint factor) 0) as [factor_zero|factor_not_zero].
+destruct (Z.eq_dec (t'int factor) 0) as [factor_zero|factor_not_zero].
 
 (* case factor = 0 *)
 * rewrite factor_zero, Z.mul_0_r, Z.mul_0_r.
   auto with zarith.
 
 (* case factor > 0 *)
-* assert (0 < to_uint factor) as factor_pos by auto with zarith.
+* assert (0 < t'int factor) as factor_pos by auto with zarith.
   destruct pre_val2_ub as [pre_factor_zero|pre_val2_ub];
   [rewrite pre_factor_zero, to_uint_of_int in factor_pos by auto with zarith;
    contradict factor_pos; auto with zarith|].
 
   (* shared lemma val2 * factor in bounds *)
-  assert (to_uint val2 * to_uint factor <= SPARK_MAX_UINT) as shared_lemma.
+  assert (t'int val2 * t'int factor <= SPARK_MAX_UINT) as shared_lemma.
   {
     rewrite to_uint_udiv, to_uint_of_int in pre_val2_ub by auto with zarith.
     unfold EuclideanDivision.div in pre_val2_ub.
@@ -37,7 +37,7 @@ destruct (Z.eq_dec (to_uint factor) 0) as [factor_zero|factor_not_zero].
   }
 
   (* shared lemma val1 * factor <= val2 * factor *)
-  assert (to_uint val1 * to_uint factor <= to_uint val2 * to_uint factor) as inter_ineq.
+  assert (t'int val1 * t'int factor <= t'int val2 * t'int factor) as inter_ineq.
   {
     apply (Zmult_le_compat_r _ _ _ pre_val1_le_val2 factor_lb).
   }

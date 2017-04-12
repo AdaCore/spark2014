@@ -8,7 +8,7 @@ pose (to_uint_bounds scale_num) as scale_num_type; clearbody scale_num_type.
 destruct val_type as (val_lb, val_ub), scale_num_type as (scale_num_lb, scale_num_ub), scale_denom_type as (scale_denom_lb, scale_denom_up).
 unfold ule in scale_denom_lb, scale_denom_up, scale_ratio, mul_no_ovfl.
 rewrite to_uint_of_int in scale_denom_lb, scale_denom_up by auto with zarith.
-assert (0 < to_uint scale_denom) as scale_denom_pos by auto with zarith.
+assert (0 < t'int scale_denom) as scale_denom_pos by auto with zarith.
 
 (* rewrite goal *)
 unfold ule.
@@ -19,7 +19,7 @@ case Z_le_dec as [hyp|neg_hyp]; [|contradict neg_hyp; apply Z_mod_lt; auto with 
 rewrite to_uint_mul.
 
 (* split on cases of pre *)
-destruct (Z.eq_dec (to_uint scale_num) 0) as [scale_num_zero|scale_num_not_zero].
+destruct (Z.eq_dec (t'int scale_num) 0) as [scale_num_zero|scale_num_not_zero].
 
 (* case scale_num is zero *)
 * rewrite scale_num_zero, Z.mul_0_r.
@@ -41,7 +41,7 @@ destruct (Z.eq_dec (to_uint scale_num) 0) as [scale_num_zero|scale_num_not_zero]
     case Z_le_dec as [hyp2|neg_hyp2] in val_le_div; [|contradict neg_hyp2; apply Z_mod_lt; auto with zarith].
     replace (SPARK_MAX_UINT_PLUS1) with (Z.succ SPARK_MAX_UINT) by auto with zarith.
     apply Zle_lt_succ.
-    assert (0 < to_uint scale_num) as scale_num_pos by auto with zarith.
+    assert (0 < t'int scale_num) as scale_num_pos by auto with zarith.
     assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.
     apply (div_then_mult _ _ _ scale_num_pos uint_max_nat val_le_div).
 

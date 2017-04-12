@@ -20,6 +20,7 @@ assert (0 < b) as b_pos by (now apply (Z2R_lt 0)).
 
 (* We provide the Z value of l2 as well as the max of floats, again to
    be able to share the proof between 32/64 bits. *)
-assert (to_real l2 = Z2R 9223372036854775808) as l2_Z2R by (rewrite l_real2; auto).
+assert (t'real fliteral2 = Z2R 9223372036854775808) as l2_Z2R by
+  (destruct fliteral_axiom2 as [fliteral2_finite l_real2]; rewrite l_real2; auto).
 assert (33554430 * 10141204801825835211973625643008 = Z2R 340282346638528859811704183484516925440)
   as maxfloat_Z2R by (ring_simplify; auto).

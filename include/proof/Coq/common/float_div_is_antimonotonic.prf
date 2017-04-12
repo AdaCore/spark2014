@@ -1,79 +1,101 @@
-assert (to_real l4 = - (b / a)) as l4real by (rewrite l_real4; auto).
+assert (t'real fliteral3 = (b / a)) as l4real.
+{
+  destruct fliteral_axiom3 as [fliteral3_finite l_real3].
+  rewrite l_real3. reflexivity.
+}
+
 
 (* add the finitness of the concerned literals in the proof context *)
-pose proof l_is_finite as lfin.
-pose proof l_is_finite2 as l2fin.
-pose proof l_is_finite3 as l3fin.
-pose proof l_is_finite4 as l4fin.
+destruct fliteral_axiom1 as [fliteral1_finite l_real1].
+destruct fliteral_axiom2 as [fliteral2_finite l_real2].
+destruct fliteral_axiom3 as [fliteral3_finite l_real3].
+
 
 (* project the le predicate on float to inequalities on reals *)
 rewrite le_finite in h4, h5, h6, h7, h8, h9, h10; auto.
 
 (* assert that l4 is strictly positive *)
-assert (to_real l4 < 0 ) as l4_pos.
-{ rewrite l4real.
-  apply Ropp_lt_gt_0_contravar; auto.
-  apply Rlt_gt, Rdiv_lt_0_compat; auto. }
+assert (t'real fliteral3 > 0 ) as l4_pos.
+{
+ rewrite l_real3. apply Rlt_gt, Rdiv_lt_0_compat; auto.
+}
 
-assert (to_real val3 <> 0) as v3real_neq_zero by (intro i; rewrite i in h8; fourier).
+assert (t'real val3 <> 0) as v3real_neq_zero.
+{
+  intro i; rewrite i in h9. destruct (neg_finite fliteral3) as [finite neg_finite].
+  auto. rewrite neg_finite in h9. fourier.
+}
 
 (* the following three lemmas specify that the division is finite *)
-assert (~ eq val3 zeroF) as v3_not_zero by
-    (rewrite zero_to_real; intros (_, u); auto).
+assert (~ is_zero val3) as v3_not_zero.
+{
+  (rewrite zero_to_real; intros (_, u); auto).
+}
 
-assert (no_overflow RNE (to_real val1 / to_real val3)) as no_ov_v1v3.
+
+assert (no_overflow RNE (t'real val1 / t'real val3)) as no_ov_v1v3.
 { apply Bounded_real_no_overflow.
   apply Abs.Abs_le.
-  apply Rle_trans with (r2:=to_real l2 * (a / b) ); auto.
+  apply Rle_trans with (r2:=t'real fliteral2 * (a / b) ); auto.
   unfold Rdiv.
   rewrite Abs.Abs_prod.
   apply Rmult_le_compat; try (apply Abs.Abs_pos).
-  - rewrite Abs.Abs_le; rewrite l_real3, l_real2 in *; auto.
+  - rewrite Abs.Abs_le. destruct (neg_finite fliteral2) as [finite neg_finite]. auto.
+    rewrite neg_finite in *. auto.
   - rewrite Rbasic_fun.Rabs_left.
-    apply Rle_trans with (r2:=/-to_real l4).
+    apply Rle_trans with (r2:=/ t'real fliteral3).
     rewrite Ropp_inv_permute; auto.
-    apply Rinv_le_contravar; fourier.
+    apply Rinv_le_contravar. clear - l4_pos. fourier.
+    destruct (neg_finite fliteral3) as [finite neg_finite]. auto.
+    rewrite neg_finite in *.
+    fourier.
     right; rewrite l4real; field.
     split; intro i; [rewrite i in b_pos|rewrite i in a_pos]; fourier.
-    apply Rinv_lt_0_compat; fourier.
+    destruct (neg_finite fliteral3) as [finite neg_finite]. auto.
+    rewrite neg_finite in *. apply Rinv_lt_0_compat; fourier.
   - unfold Rdiv.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
-    field_simplify (to_real l2 * a * / b * b).
+    field_simplify (t'real fliteral2 * a * / b * b).
     rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
     unfold a, b.
     repeat rewrite <-Z2R_mult.
     apply Z2R_le.
     ring_simplify; omega.
 
-    intro i; rewrite i in b_pos; fourier. }
+    intro i; rewrite i in b_pos; clear - b_pos; fourier. }
 
-assert (no_overflow RNE (to_real val2 / to_real val3)) as no_ov_v2v3.
+assert (no_overflow RNE (t'real val2 / t'real val3)) as no_ov_v2v3.
 { apply Bounded_real_no_overflow.
   apply Abs.Abs_le.
-  apply Rle_trans with (r2:=to_real l2 * (a / b) ); auto.
+  apply Rle_trans with (r2:=t'real fliteral2 * (a / b) ); auto.
   unfold Rdiv.
   rewrite Abs.Abs_prod.
   apply Rmult_le_compat; try (apply Abs.Abs_pos).
-  - rewrite Abs.Abs_le; rewrite l_real3, l_real2 in *; auto.
+  - rewrite Abs.Abs_le. split; auto.
+    destruct (neg_finite fliteral2) as [finite neg_finite]. auto.
+    rewrite neg_finite in *. auto.
   - rewrite Rbasic_fun.Rabs_left.
-    apply Rle_trans with (r2:=/-to_real l4).
+    apply Rle_trans with (r2:=/ t'real fliteral3).
     rewrite Ropp_inv_permute; auto.
-    apply Rinv_le_contravar; fourier.
+    destruct (neg_finite fliteral3) as [finite neg_finite]. auto.
+    rewrite neg_finite in *. apply Rinv_le_contravar; auto.
+    clear -h9. fourier.
     right; rewrite l4real; field.
     split; intro i; [rewrite i in b_pos|rewrite i in a_pos]; fourier.
-    apply Rinv_lt_0_compat; fourier.
+    apply Rinv_lt_0_compat. destruct (neg_finite fliteral3) as [finite neg_finite]. auto.
+    rewrite neg_finite in *. fourier.
   - unfold Rdiv.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
-    field_simplify (to_real l2 * a * / b * b).
+    field_simplify (t'real fliteral2 * a * / b * b).
     rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
     unfold a, b.
     repeat rewrite <-Z2R_mult.
     apply Z2R_le.
     ring_simplify; omega.
 
-    intro i; rewrite i in b_pos; fourier. }
+    intro i; rewrite i in b_pos; clear - b_pos; fourier. }
 
 (* deduce the projections of val1 / val3 and val2 * val3 and that they
    are finite *)
@@ -85,7 +107,14 @@ destruct (div_finite RNE _ _ h2 h3 v3_not_zero no_ov_v2v3) as (v2v3_finite,to_re
 rewrite le_finite; auto.
 rewrite to_real_v1v3, to_real_v2v3.
 apply Round_monotonic.
-unfold Rdiv; rewrite Rmult_comm, (Rmult_comm (to_real val1)).
+unfold Rdiv; rewrite Rmult_comm, (Rmult_comm (t'real val1)).
 apply Rmult_le_compat_neg_l; auto.
-left; apply Rinv_lt_0_compat; fourier.
+left; apply Rinv_lt_0_compat.
+destruct (neg_finite fliteral3) as [finite neg_finite]. auto.
+    rewrite neg_finite in *.
+fourier.
+split; auto. apply neg_finite; auto.
+split; auto. apply neg_finite; auto.
+split; auto. apply neg_finite; auto.
+split; auto. apply neg_finite; auto.
 Qed.

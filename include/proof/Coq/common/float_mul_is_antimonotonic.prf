@@ -1,34 +1,38 @@
 (* add the finitness of the concerned literals in the proof context *)
-pose proof l_is_finite2 as l2_finite.
-pose proof l_is_finite3 as l3_finite.
-pose proof l_is_finite4 as l4_finite.
+destruct fliteral_axiom1 as [fliteral1_finite l_real1].
+destruct fliteral_axiom2 as [fliteral2_finite l_real2].
+destruct fliteral_axiom3 as [fliteral3_finite l_real3].
 
 (* project the le predicate on float to inequalities on reals *)
 rewrite le_finite in h4, h5, h6, h7, h8, h9, h10; auto.
 
 (* lemma to help prove that abs (to_real val3) <= to_real l2 below *)
-assert (to_real val3 <= to_real l2) as val3_le_l2.
+assert (t'real val3 <= t'real fliteral2) as val3_le_l2.
 { rewrite l_real2, l_real3 in *.
   apply Rle_trans with (r2:=0);[fourier|].
   left. prove_sup0. }
 
 (* proof that val1 * val3 does not overflow to be able to use mul_finite *)
-assert (no_overflow RNE (to_real val1 * to_real val3)) as no_ov_v1xv3.
+assert (no_overflow RNE (t'real val1 * t'real val3)) as no_ov_v1xv3.
 { apply Bounded_real_no_overflow.
   apply Abs.Abs_le.
-  apply Rle_trans with (r2:=to_real l2 * to_real l2); auto.
+  apply Rle_trans with (r2:=t'real fliteral2 * t'real fliteral2); auto.
   rewrite Abs.Abs_prod.
-  apply Rmult_le_compat; try (apply Abs.Abs_pos);
-      rewrite Abs.Abs_le, l_real2, l_real4 in *; auto. }
+  apply Rmult_le_compat; try (apply Abs.Abs_pos).
+  destruct (neg_finite fliteral2) as [finite neg_finite]. auto. rewrite neg_finite in *. auto.
+  rewrite Abs.Abs_le. auto.
+  destruct (neg_finite fliteral2) as [finite neg_finite]. auto. rewrite neg_finite in *. auto.
+  rewrite Abs.Abs_le. rewrite l_real3 in *; split; auto. }
 
 (* proof that val2 * val3 does not overflow to be able to use mul_finite *)
-assert (no_overflow RNE (to_real val2 * to_real val3)) as no_ov_v2xv3.
+assert (no_overflow RNE (t'real val2 * t'real val3)) as no_ov_v2xv3.
 { apply Bounded_real_no_overflow.
   apply Abs.Abs_le.
-  apply Rle_trans with (r2:=to_real l2 * to_real l2); auto.
+  apply Rle_trans with (r2:=t'real fliteral2 * t'real fliteral2); auto.
   rewrite Abs.Abs_prod.
+  generalize (neg_finite fliteral2); intros. destruct H; auto.
   apply Rmult_le_compat; try (apply Abs.Abs_pos);
-      rewrite Abs.Abs_le, l_real2, l_real4 in *; auto. }
+      rewrite Abs.Abs_le, l_real2, l_real3 in *; split; auto; fourier. }
 
 (* deduce the projections of val1 * val3 and val2 * val3 and that they
    are finite *)
@@ -39,8 +43,11 @@ destruct (mul_finite RNE _ _ h2 h3 no_ov_v2xv3) as (v2xv3_finite,to_real_v2xv3).
    round and monotonicity of the real multiplication *)
 rewrite le_finite, to_real_v1xv3, to_real_v2xv3; auto.
 apply Round_monotonic.
-rewrite Rmult_comm, (Rmult_comm (to_real val1)).
+rewrite Rmult_comm, (Rmult_comm (t'real val1)).
 apply Rmult_le_compat_neg_l.
 rewrite l_real3 in h9; fourier.
 fourier.
+split; auto. apply neg_finite. auto.
+split; auto. apply neg_finite. auto.
+split; auto. apply neg_finite. auto.
 Qed.

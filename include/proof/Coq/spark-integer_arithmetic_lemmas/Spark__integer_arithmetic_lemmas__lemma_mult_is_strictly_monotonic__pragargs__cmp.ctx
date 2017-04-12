@@ -12,6 +12,8 @@ Axiom us_private : Type.
 Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
+Parameter private__bool_eq: us_private -> us_private -> bool.
+
 Parameter us_null_ext__: us_private.
 
 (* Why3 assumption *)
@@ -171,10 +173,10 @@ Definition int____ref___projection (a:int____ref): int__ :=
   (int____content a).
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_136:Z) (temp___is_init_133:bool)
-  (temp___do_constant_134:bool) (temp___do_toplevel_135:bool): Prop :=
-  ((temp___is_init_133 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
-  (in_range temp___expr_136).
+Definition dynamic_invariant (temp___expr_135:Z) (temp___is_init_132:bool)
+  (temp___skip_constant_133:bool) (temp___do_toplevel_134:bool): Prop :=
+  ((temp___is_init_132 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
+  (in_range temp___expr_135).
 
 Axiom pos : Type.
 Parameter pos_WhyType : WhyType pos.
@@ -215,10 +217,10 @@ Definition pos__content (v:pos__ref): pos :=
 Definition pos__ref___projection (a:pos__ref): pos := (pos__content a).
 
 (* Why3 assumption *)
-Definition dynamic_invariant1 (temp___expr_148:Z) (temp___is_init_145:bool)
-  (temp___do_constant_146:bool) (temp___do_toplevel_147:bool): Prop :=
-  ((temp___is_init_145 = true) \/ (1%Z <= 2147483647%Z)%Z) -> (in_range1
-  temp___expr_148).
+Definition dynamic_invariant1 (temp___expr_147:Z) (temp___is_init_144:bool)
+  (temp___skip_constant_145:bool) (temp___do_toplevel_146:bool): Prop :=
+  ((temp___is_init_144 = true) \/ (1%Z <= 2147483647%Z)%Z) -> (in_range1
+  temp___expr_147).
 
 Parameter val1: Z.
 

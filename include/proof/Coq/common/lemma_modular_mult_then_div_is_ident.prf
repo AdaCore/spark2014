@@ -8,7 +8,7 @@ destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub).
 unfold ule in arg2_lb, arg2_ub, pre.
 rewrite to_uint_udiv in pre.
 rewrite to_uint_of_int in arg2_lb, arg2_ub, pre by auto with zarith.
-assert (0 < to_uint arg2) as arg2_pos by auto with zarith.
+assert (0 < t'int arg2) as arg2_pos by auto with zarith.
 unfold EuclideanDivision.div in pre.
 case Z_le_dec as [hyp|neg_hyp] in pre; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
 
@@ -21,7 +21,7 @@ rewrite to_uint_mul.
 rewrite BV_Gen.mod1_out.
 
 (* (arg1 * arg2) / arg2 = arg1 *)
-* assert (to_uint arg2 <> 0) as arg2_not_zero by auto with zarith.
+* assert (t'int arg2 <> 0) as arg2_not_zero by auto with zarith.
   apply (Z.div_mul _ _ arg2_not_zero).
 
 (* no overflow in arg1 * arg2 *)

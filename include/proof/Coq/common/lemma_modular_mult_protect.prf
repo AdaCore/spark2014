@@ -14,13 +14,13 @@ unfold ule.
 rewrite to_uint_mul.
 
 (* split on cases of pre *)
-destruct (Z.eq_dec (to_uint arg2) 0) as [arg2_zero|arg2_not_zero].
+destruct (Z.eq_dec (t'int arg2) 0) as [arg2_zero|arg2_not_zero].
 
 (* case arg2 is zero *)
-* assert (0 <= to_uint arg1 * to_uint arg2 < SPARK_MAX_UINT_PLUS1) as zero_bound.
+* assert (0 <= t'int arg1 * t'int arg2 < SPARK_MAX_UINT_PLUS1) as zero_bound.
   rewrite arg2_zero, Z.mul_0_r.
   auto with zarith.
-  pose (BV_Gen.mod1_out (to_uint arg1 * to_uint arg2) SPARK_MAX_UINT_PLUS1 zero_bound) as mul_in_bounds; clearbody mul_in_bounds.
+  pose (BV_Gen.mod1_out (t'int arg1 * t'int arg2) SPARK_MAX_UINT_PLUS1 zero_bound) as mul_in_bounds; clearbody mul_in_bounds.
   rewrite mul_in_bounds, arg2_zero, Z.mul_0_r.
   auto with zarith.
 
@@ -32,11 +32,11 @@ destruct (Z.eq_dec (to_uint arg2) 0) as [arg2_zero|arg2_not_zero].
   trivial.
 
   (* shared lemma for two subgoals (arg1 / arg2) * arg1 <= arg2 *)
-  assert (to_uint arg1 * to_uint arg2 <= to_uint upper_bound) as shared_lemma.
+  assert (t'int arg1 * t'int arg2 <= t'int upper_bound) as shared_lemma.
   rewrite to_uint_udiv in arg1_le_arg2.
   unfold EuclideanDivision.div in arg1_le_arg2.
   case Z_le_dec as [hyp|neg_hyp] in arg1_le_arg2; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
-  assert (0 < to_uint arg2) as arg2_pos by auto with zarith.
+  assert (0 < t'int arg2) as arg2_pos by auto with zarith.
   apply (div_then_mult _ _ _ arg2_pos upper_bound_lb arg1_le_arg2).
 
   rewrite BV_Gen.mod1_out.

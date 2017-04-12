@@ -5,8 +5,12 @@ ALL_COQ=$(sort $(patsubst %.ctx,%.v,$(ALL_CTX)))
 # preprocessing, as this also removes blank lines that are needed by
 # the Coq printer/parser in Why3 to recognize the VC. Use sed instead to
 # remove lines that start with # symbol.
+# Also cpp does not understand the sequence slash space end_of_line so we
+# added a comment with the first sed. Basically cpp should not be used
+# for this but we don't know what to use to replace it. This is a hack.
 %.v: %.ctx
-	cpp -w -I proof/Coq/common $< | sed -e 's/^#.*$$//g' > $@
+	sed -e 's/\\ $$/\\ (\* non escaped EOL for cpp parsing \*)/g' $< | \
+cpp -w -I proof/Coq/common | sed -e 's/^#.*$$//g' > $@
 
 clean:
 	rm proof/Coq/*/*.v
