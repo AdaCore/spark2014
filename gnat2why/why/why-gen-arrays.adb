@@ -161,7 +161,7 @@ package body Why.Gen.Arrays is
            New_Call
              (Domain => Domain,
               Name   => E_Symb (Ty, WNE_To_Array),
-              Args => (1 => Expr));
+              Args   => (1 => Expr));
       end if;
       Arg_Ind := Arg_Ind + 1;
    end Add_Map_Arg;
@@ -214,12 +214,12 @@ package body Why.Gen.Arrays is
    is
       W_Ty : constant W_Type_Id := Get_Type (Expr);
       Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
-      Dim  : constant Positive := Positive (Number_Dimensions (Ty));
+      Dim  : constant Positive  := Positive (Number_Dimensions (Ty));
    begin
       Add_Map_Arg (Domain, Args, Expr, Arg_Ind);
       for I in 1 .. Dim loop
          Add_Attr_Arg (Domain, Args, Expr, Attribute_First, I, Arg_Ind);
-         Add_Attr_Arg (Domain, Args, Expr, Attribute_Last, I, Arg_Ind);
+         Add_Attr_Arg (Domain, Args, Expr, Attribute_Last,  I, Arg_Ind);
       end loop;
    end Add_Array_Arg;
 
@@ -918,28 +918,28 @@ package body Why.Gen.Arrays is
    is
      (Prepare_Standard_Array_Logical_Substitutions (Section, Und_Ent)
       & (1 =>
-              New_Clone_Substitution
-           (Kind      => EW_Type_Subst,
-            Orig_Name => To_Name (WNE_Array_Component_Type),
-            Image     => To_Name (WNE_Array_Component_Type)),
+           New_Clone_Substitution
+             (Kind      => EW_Type_Subst,
+              Orig_Name => To_Name (WNE_Array_Component_Type),
+              Image     => To_Name (WNE_Array_Component_Type)),
          2 =>
-            New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => New_Name (Symbol => NID ("to_int")),
-            Image     =>
-               Get_Name (Conversion_Name
-                         (From =>
-                             +EW_Abstract (Component_Type (Und_Ent)),
-                          To   => +EW_Int_Type))),
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => New_Name (Symbol => NID ("to_int")),
+              Image     =>
+                Get_Name (Conversion_Name
+                            (From =>
+                               +EW_Abstract (Component_Type (Und_Ent)),
+                             To   => +EW_Int_Type))),
          3 =>
-            New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => New_Name (Symbol => NID ("of_int")),
-            Image     =>
-               Get_Name (Conversion_Name
-                         (From => +EW_Int_Type,
-                          To   =>
-                             +EW_Abstract (Component_Type (Und_Ent)))))));
+           New_Clone_Substitution
+             (Kind      => EW_Function,
+              Orig_Name => New_Name (Symbol => NID ("of_int")),
+              Image     =>
+                Get_Name (Conversion_Name
+                            (From => +EW_Int_Type,
+                             To   =>
+                               +EW_Abstract (Component_Type (Und_Ent)))))));
 
    ----------------
    -- Append_Num --
