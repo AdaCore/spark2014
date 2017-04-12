@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                        use Atree;
-with Einfo;                        use Einfo;
 with GNAT.Source_Info;
 with Gnat2Why.Expr;                use Gnat2Why.Expr;
 with Namet;                        use Namet;
@@ -152,9 +150,8 @@ package body Gnat2Why.Decls is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Typ  : constant W_Type_Id := Type_Of_Node (Etype (E));
-      Decl : constant Node_Id   := Parent (E);
-      Def  : W_Term_Id;
+      Decl : constant Node_Id := Parent (E);
+      Expr : constant Node_Id := Expression (Decl);
 
       --  Always use the Ada type for the equality between the constant result
       --  and the translation of its initialization expression. Using "int"
@@ -193,59 +190,56 @@ package body Gnat2Why.Decls is
       --  expression may not be expressible as a logical term (e.g., it may
       --  include X'Loop_Entry for a constant inserted in a block of actions).
 
-      if Ekind (E) /= E_In_Parameter
-        and then Present (Expression (Decl))
+      if Present (Expr)
         and then Comes_From_Source (E)
       then
-         Def := Get_Pure_Logic_Term_If_Possible
-           (File, Expression (Decl), Typ);
-      else
-         Def := Why_Empty;
-      end if;
+         declare
+            Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
+            Def : W_Term_Id;
 
-      if Def /= Why_Empty then
+         begin
+            Def := Get_Pure_Logic_Term_If_Possible (File, Expr, Typ);
 
-         --  The definition of constants is done in a separate theory. This
-         --  theory is added as a completion of the base theory defining the
-         --  constant.
+            if Def /= Why_Empty then
 
-         if Is_Full_View (E) then
+               --  The definition of constants is done in a separate theory.
+               --  This theory is added as a completion of the base theory
+               --  defining the constant.
 
-            --  It may be the case that the full view has a more precise type
-            --  than the partial view, for example when the type of the partial
-            --  view is an indefinite array. In that case, convert back to the
-            --  expected type for the constant.
+               if Is_Full_View (E)
+                 and then Etype (Partial_View (E)) /= Etype (E)
+               then
 
-            if Etype (Partial_View (E)) /= Etype (E) then
-               Def := W_Term_Id (Insert_Simple_Conversion
-                        (Domain   => EW_Term,
-                         Ada_Node => Expression (Decl),
-                         Expr     => W_Expr_Id (Def),
-                         To       => EW_Abstract (Etype (Partial_View (E)))));
+                  --  It may be the case that the full view has a more precise
+                  --  type than the partial view, for example when the type of
+                  --  the partial view is an indefinite array. In that case,
+                  --  convert back to the expected type for the constant.
+
+                  Def :=
+                    W_Term_Id
+                      (Insert_Simple_Conversion
+                         (Domain   => EW_Term,
+                          Ada_Node => Expr,
+                          Expr     => W_Expr_Id (Def),
+                          To       => EW_Abstract (Etype (Partial_View (E)))));
+
+                  --  In the general case, we generate a defining axiom if
+                  --  necessary and possible.
+
+               end if;
+
+               Emit
+                 (File,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Name     =>
+                       To_Why_Id (E, Domain => EW_Term, Local => False),
+                     Binders  => (1 .. 0 => <>),
+                     Def      => Def));
+
             end if;
+         end;
 
-            Emit
-              (File,
-               New_Defining_Axiom
-                 (Ada_Node => E,
-                  Name     =>
-                    To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Binders  => (1 .. 0 => <>),
-                  Def      => Def));
-
-         --  In the general case, we generate a defining axiom if necessary and
-         --  possible.
-
-         else
-            Emit
-              (File,
-               New_Defining_Axiom
-                 (Ada_Node => E,
-                  Name     =>
-                    To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Binders  => (1 .. 0 => <>),
-                  Def      => Def));
-         end if;
       end if;
 
       --  No filtering is necessary here, as the theory should on the
@@ -257,6 +251,7 @@ package body Gnat2Why.Decls is
                     Kind           => Axiom_Theory,
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
+
    end Translate_Constant_Value;
 
    -------------------------------

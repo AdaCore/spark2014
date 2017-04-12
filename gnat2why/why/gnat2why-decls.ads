@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
+with Einfo;             use Einfo;
 with Gnat2Why.Util;     use Gnat2Why.Util;
 with Types;             use Types;
 
@@ -48,10 +50,11 @@ package Gnat2Why.Decls is
 
    procedure Translate_Constant_Value
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Ekind (E) = E_Constant;
    --  Possibly generate an axiom to define the value of the function
-   --  previously declared by a call to Translate_Constant, for IN
-   --  parameters, named numbers and constant objects.
+   --  previously declared by a call to Translate_Constant for a constant
+   --  object.
 
    procedure Translate_External_Object (E : Entity_Name);
    --  For a "magic string" generate a dummy declaration module which contains
