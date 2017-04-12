@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Sem_Type;
-with Sem_Util;  use Sem_Util;
 with Stand;     use Stand;
 with Uintp;     use Uintp;
 

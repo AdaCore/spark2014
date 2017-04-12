@@ -32,7 +32,6 @@ with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
-with Sem_Util;                           use Sem_Util;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
@@ -1336,13 +1335,6 @@ package body SPARK_Util is
    ----------------------
 
    function Is_External_Call (N : Node_Id) return Boolean is
-      pragma Assert
-        (Is_Subp_Or_Entry_Inside_Protected (Get_Called_Entity (N)));
-      --  ??? this should be checked in precondition, but that would create
-      --  circular dependency with SPARK_Util.Subprograms; and this routine is
-      --  here because a similar Is_Predicate_Function_Call was already here.
-      --  Perhaps the organization of the SPARK_Util packages needs rethinking?
-
       Nam : constant Node_Id := Name (N);
    begin
       --  External calls are those with the selected_component syntax and whose

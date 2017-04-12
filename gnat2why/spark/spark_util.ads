@@ -31,6 +31,7 @@ with Impunit;           use Impunit;
 with Lib;               use Lib;
 with Namet;             use Namet;
 with Nlists;            use Nlists;
+with Sem_Util;          use Sem_Util;
 with Sinfo;             use Sinfo;
 with Sinput;            use Sinput;
 with Snames;            use Snames;
@@ -483,7 +484,9 @@ package SPARK_Util is
    --  and "others" must be its only choice.
 
    function Is_External_Call (N : Node_Id) return Boolean
-   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call;
+   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call
+                 and then
+               Is_Subp_Or_Entry_Inside_Protected (Get_Called_Entity (N));
    --  @param N call node
    --  @return True iff N is an external call to a protected subprogram or
    --     a protected entry.

@@ -26,7 +26,6 @@
 with Exp_Util;                           use Exp_Util;
 with Opt;                                use Opt;
 with Sem_Prag;                           use Sem_Prag;
-with Sem_Util;                           use Sem_Util;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 
 package body SPARK_Util.External_Axioms is
