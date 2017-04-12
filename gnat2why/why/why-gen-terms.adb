@@ -57,7 +57,8 @@ package body Why.Gen.Terms is
          Node  : W_Deref_Id) is
          pragma Unreferenced (Node);
       begin
-         State.Found := True;
+         State.Found   := True;
+         State.Control := Terminate_Immediately;
       end Deref_Pre_Op;
 
       SS : Collect_State :=
