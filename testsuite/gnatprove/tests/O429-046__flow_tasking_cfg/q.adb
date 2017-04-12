@@ -11,8 +11,9 @@ package body Q is
 
       procedure Swap_Content is
          Tmp : Integer := Content;
+         Cont : Integer := PO1.Get_Content;
       begin
-         Set_Content (PO1.Get_Content);
+         Set_Content (Cont);
          PO1.Set_Content (Tmp);
       end Swap_Content;
    end PO2;

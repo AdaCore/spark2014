@@ -30,8 +30,8 @@ with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Sem_Aux;                use Sem_Aux;
+with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -1160,7 +1160,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Is_Protected_Subprogram (Subp) then
+      if Is_Subp_Or_Entry_Inside_Protected (Subp) then
          declare
             Call_Name   : constant Node_Id := Sinfo.Name (Call);
             Call_Prefix : Node_Id := Empty;

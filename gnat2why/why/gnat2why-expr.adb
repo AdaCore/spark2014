@@ -2430,7 +2430,7 @@ package body Gnat2Why.Expr is
          --  parameter, the protected object itself. We call "Compute_Arg" with
          --  empty arguments to process this case.
 
-         if Is_Protected_Subprogram (Subp) then
+         if Is_Subp_Or_Entry_Inside_Protected (Subp) then
             Compute_Param (Empty, Empty);
          end if;
 
@@ -4970,7 +4970,7 @@ package body Gnat2Why.Expr is
       --  parameter, the protected object itself. We call "Compute_Arg" with
       --  empty arguments to process this case.
 
-      if Is_Protected_Subprogram (Subp) then
+      if Is_Subp_Or_Entry_Inside_Protected (Subp) then
          Process_Param (Empty, Empty);
       end if;
 

@@ -38,7 +38,6 @@ with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;
 with Sem_Prag;                           use Sem_Prag;
-with Sem_Util;                           use Sem_Util;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
@@ -972,36 +971,6 @@ package body SPARK_Util.Subprograms is
            and then not Has_Renaming_As_Body (E);
       end if;
    end Is_Local_Subprogram_Always_Inlined;
-
-   -----------------------------
-   -- Is_Protected_Subprogram --
-   -----------------------------
-
-   function Is_Protected_Subprogram (E : Entity_Id) return Boolean is
-      Scop : Node_Id;
-   begin
-      case Ekind (E) is
-
-         --  Entries are always protected subprograms
-         when Entry_Kind =>
-            return True;
-
-         --  Detect subprograms declared in scope of a protected type
-         when Subprogram_Kind =>
-            Scop := Scope (E);
-            while Present (Scop) loop
-               if Ekind (Scop) in E_Protected_Type then
-                  return True;
-               end if;
-               Scop := Scope (Scop);
-            end loop;
-
-            return False;
-
-         when others =>
-            return False;
-      end case;
-   end Is_Protected_Subprogram;
 
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --

@@ -1274,7 +1274,8 @@ package body Gnat2Why.Util is
         --  No axioms are generated for volatile functions
 
         and then not
-          (Is_Volatile_Function (E) and not Is_Protected_Subprogram (E))
+          (Is_Volatile_Function (E)
+            and then not Is_Subp_Or_Entry_Inside_Protected (E))
 
         --  No axioms are generated for inlined functions
 

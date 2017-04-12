@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Util; use Sem_Util;
+
 package SPARK_Util.Subprograms is
 
    --------------------------------------------
@@ -92,7 +94,7 @@ package SPARK_Util.Subprograms is
                      when E_Function  |
                           E_Procedure |
                           Entry_Kind  =>
-                        Is_Protected_Subprogram (E),
+                        Is_Subp_Or_Entry_Inside_Protected (E),
 
                    when others =>
                       False),
@@ -358,13 +360,6 @@ package SPARK_Util.Subprograms is
    with Pre => Ekind (E) in E_Function | E_Procedure;
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
-
-   function Is_Protected_Subprogram (E : Entity_Id) return Boolean;
-   --  @param E any entity
-   --  @return True iff the entity is an entry or a subprogram that is part of
-   --    (directly or in a nested way) a protected type.
-   --
-   --  Note: this is different than Ada RM concept of a "protected subprogram"
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity

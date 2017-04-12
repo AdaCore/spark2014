@@ -6,7 +6,8 @@ foo.adb:43:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 foo.adb:43:14: info: nontermination of task proved (CVC4: 1 VC)
 foo.adb:50:14: medium: precondition might fail
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
-p.adb:16:27: info: initialization of "Tmp" proved
+p.adb:16:23: info: initialization of "Cont" proved
+p.adb:17:27: info: initialization of "Tmp" proved
 p.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p2.adb:5:24: warning: statement has no effect
 p2.adb:6:10: warning: initialization of X has no effect
@@ -26,7 +27,8 @@ prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
 prot.ads:5:04: info: initialization of "Visible" proved
 prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
-q.adb:16:27: info: initialization of "Tmp" proved
+q.adb:16:23: info: initialization of "Cont" proved
+q.adb:17:27: info: initialization of "Tmp" proved
 q.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 support.adb:5:29: medium: overflow check might fail
 support.ads:11:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
