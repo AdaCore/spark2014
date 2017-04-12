@@ -47,6 +47,10 @@ package body Why.Gen.Terms is
         (State : in out Collect_State;
          Node  : W_Deref_Id);
 
+      ------------------
+      -- Deref_Pre_Op --
+      ------------------
+
       procedure Deref_Pre_Op
         (State : in out Collect_State;
          Node  : W_Deref_Id) is
@@ -56,7 +60,10 @@ package body Why.Gen.Terms is
       end Deref_Pre_Op;
 
       SS : Collect_State :=
-             (Control => Continue, Found => False);
+        (Control => Continue, Found => False);
+
+   --  Start of processing for Has_Dereference
+
    begin
       Traverse (SS, W);
       return SS.Found;
@@ -135,7 +142,7 @@ package body Why.Gen.Terms is
 
       SS : Search_State := (Control => Continue, Found => False);
 
-      --  Start of Processing for Has_Dereference_Or_Any
+   --  Start of Processing for Has_Dereference_Or_Any
 
    begin
       Traverse (SS, +T);
