@@ -1,3 +1,4 @@
+depends_illegal.ads:32:11: add "null => Par2" dependency to ignore this input
 depends_illegal.ads:32:11: global "Comp" is missing from output dependence list
 depends_illegal.ads:32:11: parameter "Par2" is missing from input dependence list
 depends_illegal.ads:32:33: item must denote parameter, variable, state or current instance of concurrent type
@@ -6,6 +7,8 @@ depends_illegal.ads:34:23: "X" is not part of the input or output set of subprog
 depends_illegal.ads:34:23: global "X" cannot appear in dependence relation
 depends_illegal.ads:34:33: "Y" is not part of the input or output set of subprogram "P1"
 depends_illegal.ads:34:33: global "Y" cannot appear in dependence relation
+depends_illegal.ads:60:11: add "null => Par1" dependency to ignore this input
+depends_illegal.ads:60:11: add "null => Par3" dependency to ignore this input
 depends_illegal.ads:60:11: parameter "Par1" is missing from input dependence list
 depends_illegal.ads:60:11: parameter "Par2" is missing from output dependence list
 depends_illegal.ads:60:11: parameter "Par3" is missing from input dependence list
@@ -23,6 +26,7 @@ depends_illegal.ads:111:31: input of a null output list cannot appear in multipl
 depends_illegal.ads:118:33: duplicate use of item "Par1"
 depends_illegal.ads:127:11: parameter "Par2" is missing from output dependence list
 depends_illegal.ads:128:23: duplicate use of item "Par1"
+depends_illegal.ads:139:11: add "null => Y" dependency to ignore this input
 depends_illegal.ads:139:11: global "Y" is missing from input dependence list
 depends_illegal.ads:160:23: useless dependence, null depends on itself
 depends_illegal.ads:165:39: cannot mix null and non-null dependency items

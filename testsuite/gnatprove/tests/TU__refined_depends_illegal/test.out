@@ -2,6 +2,7 @@ refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not d
 refined_depends_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Depends_Contract" lacks aspect or pragma Depends
 refined_depends_illegal.adb:35:14: aspect "Refined_Depends" must apply to the body of subprogram declared in a package specification
 refined_depends_illegal.adb:53:14: global "X" is missing from output dependence list
+refined_depends_illegal.adb:63:14: add "null => Var2" dependency to ignore this input
 refined_depends_illegal.adb:63:14: global "Var" is missing from output dependence list
 refined_depends_illegal.adb:63:14: global "Var2" is missing from input dependence list
 refined_depends_illegal.adb:71:14: constituent "Z" is missing in output list
