@@ -114,8 +114,9 @@ derived type. This rule forbids the cases that require re-verification.]
 
 .. _tu-sf-preconditions_and_postconditions-02:
 
-2. Pre is not allowed on dispatching operations. Pre'Class should be used
-   instead to express preconditions.
+2. The Pre aspect shall not be specified on an overridding primitive operation,
+   or a primitive operation of a type T at a point where T is tagged. Pre'Class
+   should be used instead to express preconditions.
 
 [The rationale for this rule is that, otherwise, the combination of dynamic
 semantics and verification rules below would force an identical Pre'Class each
