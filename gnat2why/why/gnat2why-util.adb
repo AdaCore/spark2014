@@ -1230,7 +1230,7 @@ package body Gnat2Why.Util is
       T : constant Entity_Id :=
         (case Nkind (N) is
             when N_Entity =>
-              (if Ekind (N) in Type_Kind then
+              (if Is_Type (N) then
                  N
                else
                  Etype (N)),

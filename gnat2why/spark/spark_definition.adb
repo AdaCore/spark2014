@@ -794,7 +794,7 @@ package body SPARK_Definition is
                Append (SPARK_Status_JSON, V);
             end;
 
-         elsif Ekind (E) in Type_Kind
+         elsif Is_Type (E)
            and then Needs_Default_Checks_At_Decl (E)
            and then Analysis_Requested (E, With_Inlined => True)
          then

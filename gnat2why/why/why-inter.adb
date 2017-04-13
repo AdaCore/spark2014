@@ -333,7 +333,7 @@ package body Why.Inter is
 
       if With_Completion
         and then Nkind (N) in N_Entity
-        and then (not Entity_In_Ext_Axioms (N) or else Ekind (N) in Type_Kind)
+        and then (not Entity_In_Ext_Axioms (N) or else Is_Type (N))
       then
          Add_With_Clause (P, E_Axiom_Module (N), Use_Kind);
       end if;
@@ -714,7 +714,7 @@ package body Why.Inter is
       --  generation modules, the completions of types will have all the
       --  required definitions and they will be available when necessary.
 
-      if Ekind (E) in Type_Kind then
+      if Is_Type (E) then
          return WF_Context;
       else
          return WF_Main;

@@ -1285,7 +1285,7 @@ package body Gnat2Why.Subprograms is
                         --  objects are translated to a private type in Why.
 
                         if Present (E)
-                          and then Ekind (E) in Object_Kind
+                          and then Is_Object (E)
                           and then Entity_In_SPARK (E)
                         then
                            declare
@@ -1375,7 +1375,7 @@ package body Gnat2Why.Subprograms is
                      --  states and private variables are not considered here,
                      --  as they cannot have visible type invariants.
 
-                     if Ekind (E) in Object_Kind and then Entity_In_SPARK (E)
+                     if Is_Object (E) and then Entity_In_SPARK (E)
                      then
                         Inv_Pred := +New_And_Then_Expr
                           (Left   => +Inv_Pred,
@@ -1384,7 +1384,7 @@ package body Gnat2Why.Subprograms is
 
                      --  Self reference of protected subprograms
 
-                     elsif Ekind (E) in Type_Kind then
+                     elsif Is_Type (E) then
                         pragma Assert (Is_Concurrent_Type (E));
                         Inv_Pred := +New_And_Then_Expr
                           (Left   => +Inv_Pred,

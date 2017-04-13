@@ -257,7 +257,7 @@ package SPARK_Util.Types is
    --    of Standard_Boolean which also ranges over False .. True
 
    function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in Type_Kind;
+     Pre => Is_Type (E);
    --  @param E type
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.

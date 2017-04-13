@@ -847,7 +847,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                begin
                   if not Loop_Writes.Contains (E)
-                    and then Ekind (E) in Object_Kind
+                    and then Is_Object (E)
                     and then Is_Mutable_In_Why (E)
                     and then not Has_Async_Writers (F)
                     and then
@@ -873,7 +873,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          if Element (C).Kind /= Discard then
 
             pragma Assert (Nkind (N) in N_Entity
-                           and then Ekind (N) in Object_Kind
+                           and then Is_Object (N)
                            and then Is_Mutable_In_Why (N));
 
             declare

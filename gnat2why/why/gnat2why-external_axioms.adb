@@ -178,7 +178,7 @@ package body Gnat2Why.External_Axioms is
                   To_Why_Id (E, Domain => EW_Term),
                   Mutable => False);
             else
-               pragma Assert (Ekind (E) in Object_Kind);
+               pragma Assert (Is_Object (E));
                Ada_Ent_To_Why.Insert
                  (Symbol_Table, E, Mk_Item_Of_Entity (E));
             end if;
