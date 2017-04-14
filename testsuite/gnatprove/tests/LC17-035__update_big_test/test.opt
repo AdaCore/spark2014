@@ -1,2 +1,1 @@
-32bits DEAD too slow on 32bits machines
-Darwin DEAD too slow on Darwin (OA05-034)
+!large SKIP part of large testsuite
