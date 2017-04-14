@@ -181,7 +181,7 @@ complex_trajectory.adb:30:63: info: range check proved (Interval)
 complex_trajectory.adb:30:66: info: float overflow check proved (Interval)
 complex_trajectory.adb:30:73: info: float overflow check proved (Interval)
 complex_trajectory.adb:34:22: info: assertion proved (CodePeer)
-complex_trajectory.adb:35:22: medium: assertion might fail, cannot prove Float64(N) + 1.0 = N + 1
+complex_trajectory.adb:35:22: info: assertion proved (CVC4: 1 VC)
 complex_trajectory.adb:35:30: info: range check proved (Interval)
 complex_trajectory.adb:35:33: info: float overflow check proved (Interval)
 complex_trajectory.adb:35:51: info: range check proved (Interval)
@@ -357,7 +357,7 @@ complex_trajectory_overflow.adb:30:63: info: range check proved (Interval)
 complex_trajectory_overflow.adb:30:66: info: float overflow check proved (Interval)
 complex_trajectory_overflow.adb:30:73: info: float overflow check proved (Interval)
 complex_trajectory_overflow.adb:34:22: info: assertion proved (CodePeer)
-complex_trajectory_overflow.adb:35:22: medium: assertion might fail, cannot prove Float64(N) + 1.0 = N + 1
+complex_trajectory_overflow.adb:35:22: info: assertion proved (CVC4: 1 VC)
 complex_trajectory_overflow.adb:35:30: info: range check proved (Interval)
 complex_trajectory_overflow.adb:35:33: info: float overflow check proved (Interval)
 complex_trajectory_overflow.adb:35:51: info: range check proved (Interval)
@@ -365,7 +365,7 @@ complex_trajectory_overflow.adb:37:22: medium: assertion might fail, cannot prov
 complex_trajectory_overflow.adb:37:40: info: range check proved (Interval)
 complex_trajectory_overflow.adb:37:43: info: float overflow check proved (Interval)
 complex_trajectory_overflow.adb:37:54: info: float overflow check proved (Interval)
-complex_trajectory_overflow.adb:38:22: medium: assertion might fail, cannot prove Speed >= Float64 (N + 1) * (-Bound
+complex_trajectory_overflow.adb:38:22: info: assertion proved (Z3: 1 VC)
 complex_trajectory_overflow.adb:38:42: info: range check proved (Interval)
 complex_trajectory_overflow.adb:38:47: info: float overflow check proved (Interval)
 complex_trajectory_overflow.adb:39:22: medium: assertion might fail, cannot prove Speed <= Float64 (N) * Bound + Bound
@@ -425,7 +425,7 @@ simple_trajectory.adb:29:63: info: range check proved (Interval)
 simple_trajectory.adb:29:66: info: float overflow check proved (Interval)
 simple_trajectory.adb:29:73: info: float overflow check proved (Interval)
 simple_trajectory.adb:33:22: info: assertion proved (CodePeer)
-simple_trajectory.adb:34:22: medium: assertion might fail, cannot prove Float64(N) + 1.0 = N + 1
+simple_trajectory.adb:34:22: info: assertion proved (CVC4: 1 VC)
 simple_trajectory.adb:34:30: info: range check proved (Interval)
 simple_trajectory.adb:34:33: info: float overflow check proved (Interval)
 simple_trajectory.adb:34:51: info: range check proved (Interval)
@@ -461,33 +461,3 @@ simple_trajectory_overflow.adb:10:55: info: float overflow check proved (Interva
 simple_trajectory_overflow.adb:10:59: info: float overflow check proved (Interval)
 simple_trajectory_overflow.adb:12:30: info: float overflow check proved (CodePeer)
 simple_trajectory_overflow.ads:18:29: info: initialization of "New_Speed" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
