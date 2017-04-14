@@ -27,7 +27,7 @@ is
    procedure Bump (X : in out T1) with
      Global => null,
      Pre'Class  => not X.Is_Max,
-     Pre        => X.C1 < Integer'Last,
+
      Post'Class => X = X'Old.Next,
      Post       => X.C1 = X.C1'Old + 1;
 

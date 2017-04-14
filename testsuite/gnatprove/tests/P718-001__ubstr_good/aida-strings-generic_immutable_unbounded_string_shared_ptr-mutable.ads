@@ -6,8 +6,8 @@ package Aida.Strings.Generic_Immutable_Unbounded_String_Shared_Ptr.Mutable with 
    procedure Initialize (This : in out Mutable_T;
                          Text : String) with
      Global => null,
-     Pre    => Text'Length <= Positive'Last,
-     Post   => (Text'Length = Length (This));
+     Pre'Class    => Text'Length <= Positive'Last,
+     Post'Class   => (Text'Length = Length (This));
 
    procedure Append (This : in out Mutable_T;
                      Text : String) with

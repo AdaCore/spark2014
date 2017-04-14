@@ -24,8 +24,8 @@ package Stacks is
    function Size (S : Stack) return Natural;
 
    procedure Push (S : in out Stack; E : Element) with
-     Pre  => not S.Is_Full,
-     Post => S.Size = S.Size'Old + 1,
+     Pre'Class  => not S.Is_Full,
+     Post'Class => S.Size = S.Size'Old + 1,
      Test_Case => (Name     => "full stack",
                    Mode     => Robustness,
                    Requires => S.Is_Full,
@@ -44,8 +44,8 @@ package Stacks is
                    Ensures  => S.Size = S.Size'Old + 1);
 
    procedure Pop (S : in out Stack) with
-     Pre  => not S.Is_Empty,
-     Post => S.Size = S.Size'Old - 1,
+     Pre'Class  => not S.Is_Empty,
+     Post'Class => S.Size = S.Size'Old - 1,
      Test_Case => (Name     => "empty stack",
                    Mode     => Robustness,
                    Requires => S.Is_Empty,
@@ -64,7 +64,7 @@ package Stacks is
                    Ensures  => S.Size = S.Size'Old - 1);
 
    function Peer (S : Stack) return Element with
-     Pre => not S.Is_Empty;
+     Pre'Class => not S.Is_Empty;
 
    procedure Print (S : Stack);
 

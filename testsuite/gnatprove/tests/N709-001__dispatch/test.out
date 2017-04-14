@@ -1,4 +1,3 @@
-object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Obj = (Area => -1, Max_Width => -1, Max_Height => -1))
 object.ads:11:20: info: initialization of "Result" proved, in inherited contract at rectangle.ads:6
 object.ads:14:20: info: postcondition proved (CVC4: 2 VC)
 object.ads:15:31: info: precondition proved (CVC4: 1 VC)
@@ -10,6 +9,7 @@ rectangle.ads:6:14: info: postcondition proved (CVC4: 2 VC)
 rectangle.ads:6:40: info: initialization of "Result" proved
 window.adb:5:32: info: overflow check proved (CVC4: 1 VC)
 window.adb:5:32: medium: range check might fail (e.g. when Total_Area = 0)
+window.adb:5:37: info: precondition proved (CVC4: 1 VC)
 window.adb:18:07: high: "Rec" is not initialized
 window.adb:19:07: info: initialization of "Rec" proved
 window.adb:20:24: info: initialization of "Rec" proved
@@ -17,5 +17,6 @@ window.adb:21:07: medium: precondition might fail (e.g. when Rec = (Width => 0, 
 window.adb:21:13: info: initialization of "Rec" proved
 window.ads:11:16: info: postcondition proved (CVC4: 1 VC)
 window.ads:11:44: info: overflow check proved (CVC4: 1 VC)
+window.ads:11:49: info: precondition proved (CVC4: 1 VC)
 window.ads:15:16: info: postcondition proved (CVC4: 1 VC)
 window.ads:19:14: medium: postcondition might fail, cannot prove Total_Area = Total_Area'Old - 100 (e.g. when Total_Area = 101)

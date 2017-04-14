@@ -212,7 +212,9 @@ package body SPARK_Util.Subprograms is
          Result : Node_Lists.List;
       begin
          for Prag of Pragmas loop
-            if Entity (Corresponding_Aspect (Prag)) = From then
+            if From_Aspect_Specification (Prag)
+              and then Entity (Corresponding_Aspect (Prag)) = From
+            then
                Result.Append (Prag);
             end if;
          end loop;

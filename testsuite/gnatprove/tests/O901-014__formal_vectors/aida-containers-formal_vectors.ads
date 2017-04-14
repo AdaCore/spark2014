@@ -46,14 +46,14 @@ package Aida.Containers.Formal_Vectors is
 
    function Capacity (Container : Vector_Type) return Capacity_Range with
      Global => null,
-     Post => Capacity'Result >= Container.Capacity;
+     Post'Class => Capacity'Result >= Container.Capacity;
 
    procedure Reserve_Capacity
      (Container : in out Vector_Type;
       Capacity  : Capacity_Range)
    with
      Global => null,
-     Pre    => (if Bounded then Capacity <= Container.Capacity);
+     Pre'Class => (if Bounded then Capacity <= Container.Capacity);
 
    function Length (Container : Vector_Type) return Capacity_Range with
      Global => null;
@@ -69,20 +69,20 @@ package Aida.Containers.Formal_Vectors is
 
    procedure Assign (Target : in out Vector_Type; Source : Vector_Type) with
      Global => null,
-     Pre    => (if Bounded then Length (Source) <= Target.Capacity);
+     Pre'Class => (if Bounded then Length (Source) <= Target.Capacity);
 
    function Copy
      (Source   : Vector_Type;
       Capacity : Capacity_Range := 0) return Vector_Type
    with
      Global => null,
-     Pre    => (if Bounded then (Capacity = 0 or Length (Source) <= Capacity));
+     Pre'Class    => (if Bounded then (Capacity = 0 or Length (Source) <= Capacity));
 
    function Element (Container : Vector_Type;
                      Index     : Index_Type) return Element_Type
      with
        Global => null,
-       Pre    => Index in First_Index (Container) .. Last_Index (Container);
+       Pre'Class    => Index in First_Index (Container) .. Last_Index (Container);
 
    procedure Replace_Element
      (Container : in out Vector_Type;
@@ -90,14 +90,14 @@ package Aida.Containers.Formal_Vectors is
       New_Item  : Element_Type)
    with
      Global => null,
-     Pre    => Index in First_Index (Container) .. Last_Index (Container);
+     Pre'Class    => Index in First_Index (Container) .. Last_Index (Container);
 
    procedure Append
      (Container : in out Vector_Type;
       New_Item  : Vector_Type)
    with
      Global => null,
-     Pre    => (if Bounded then
+     Pre'Class    => (if Bounded then
                  Length (Container) + Length (New_Item) <= Container.Capacity);
 
    procedure Append
@@ -105,7 +105,7 @@ package Aida.Containers.Formal_Vectors is
       New_Item  : Element_Type)
    with
      Global => null,
-     Pre    => (if Bounded then
+     Pre'Class    => (if Bounded then
                   Length (Container) < Container.Capacity);
 
    procedure Delete_Last
@@ -118,7 +118,7 @@ package Aida.Containers.Formal_Vectors is
 
    procedure Swap (Container : in out Vector_Type; I, J : Index_Type) with
      Global => null,
-     Pre    => I in First_Index (Container) .. Last_Index (Container)
+     Pre'Class    => I in First_Index (Container) .. Last_Index (Container)
      and then J in First_Index (Container) .. Last_Index (Container);
 
    function First_Index (Container : Vector_Type) return Index_Type with
@@ -126,14 +126,14 @@ package Aida.Containers.Formal_Vectors is
 
    function First_Element (Container : Vector_Type) return Element_Type with
      Global => null,
-     Pre    => not Is_Empty (Container);
+     Pre'Class    => not Is_Empty (Container);
 
    function Last_Index (Container : Vector_Type) return Extended_Index with
      Global => null;
 
    function Last_Element (Container : Vector_Type) return Element_Type with
      Global => null,
-     Pre    => not Is_Empty (Container);
+     Pre'Class    => not Is_Empty (Container);
 
    function Find_Index
      (Container : Vector_Type;

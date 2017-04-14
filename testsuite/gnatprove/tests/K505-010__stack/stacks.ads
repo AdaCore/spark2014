@@ -17,15 +17,15 @@ package Stacks is
    function Size (S : Stack) return Natural;
 
    procedure Push (S : in out Stack; E : Element) with
-     Pre  => not S.Is_Full,
-     Post => S.Size = S.Size'Old + 1;
+     Pre'Class  => not S.Is_Full,
+     Post'Class => S.Size = S.Size'Old + 1;
 
    procedure Pop (S : in out Stack);
-   pragma Precondition (not S.Is_Empty);
-   pragma Postcondition (S.Size = S.Size'Old - 1);
+   pragma Pre_Class (not S.Is_Empty);
+   pragma Post_Class (S.Size = S.Size'Old - 1);
 
    function Peer (S : Stack) return Element with
-     Pre => not S.Is_Empty;
+     Pre'Class => not S.Is_Empty;
 
 private
 

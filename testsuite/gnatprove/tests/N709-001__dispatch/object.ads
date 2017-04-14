@@ -4,7 +4,7 @@ package Object is
    function Has_Stored_Area (Obj : T) return Boolean;
 
    function Get_Stored_Area (Obj : T) return Natural with
-     Pre => Obj.Has_Stored_Area;
+     Pre'Class => Obj.Has_Stored_Area;
 
    procedure Get_Area (Obj : in out T; Result : out Natural) is abstract with
      Post'Class => Obj.Has_Stored_Area and then

@@ -59,17 +59,17 @@ is
      with Global => State;
 
    procedure Train (P : in out Professional)
-     with Pre    => Has_Training (P),
+     with Pre'Class => Has_Training (P),
           Global => State;
 
    function Is_Fully_Trained (P : Professional) return Boolean;
 
    procedure Another_One_Bites_The_Dust (Killer : in out Professional;
                                          Victim : in out Person'Class)
-     with Pre  => Is_Alive (Killer)
+     with Pre'Class => Is_Alive (Killer)
                   and then Is_Alive (Victim)
                   and then Has_Licence_To_Kill (Killer),
-          Post => Is_Alive (Killer)
+          Post'Class => Is_Alive (Killer)
                   and then not Victim.Is_Alive;
 
 private

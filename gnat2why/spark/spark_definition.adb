@@ -313,13 +313,14 @@ package body SPARK_Definition is
    procedure Mark_Violation
      (Msg           : String;
       N             : Node_Id;
-      SRM_Reference : String := "")
+      SRM_Reference : String := "";
+      Cont_Msg      : String := "")
    with Global => (Output => Violation_Detected,
                    Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If SRM_Reference is set, the reference to the SRM is appended to the
-   --  error message.
+   --  error message. If Cont_Msg is set, a continuation message is issued.
 
    procedure Mark_Violation
      (N    : Node_Id;
@@ -3357,6 +3358,41 @@ package body SPARK_Definition is
             end;
          end if;
 
+         --  Plain preconditions cannot be used in SPARK on dispatching
+         --  subprograms. The reason for that is that otherwise the dynamic
+         --  semantics of Ada combined with the verification of Liskov
+         --  Substitution Principle in SPARK force Pre and Pre'Class to be
+         --  equivalent. Hence it would be useless to have both. Note that
+         --  it is still possible to have Pre on a primitive operation of an
+         --  untagged private type, as there is no way to dispatch on such a
+         --  subprogram in SPARK (dispatching on this subprogram is forbidden,
+         --  and deriving such a type is also forbidden).
+
+         if Is_Dispatching_Operation (E) then
+            declare
+               Typ      : constant Entity_Id := Find_Dispatching_Type (E);
+               Pre_List : constant Node_Lists.List :=
+                 Find_Contracts (E, Pragma_Precondition);
+               Pre      : Node_Id;
+            begin
+               if not Pre_List.Is_Empty then
+                  Pre := Pre_List.First_Element;
+
+                  if Present (Typ)
+                    and then (Is_Tagged_Type (Typ)
+                               or else Is_Overriding_Subprogram (E))
+                  then
+                     Mark_Violation
+                       ("plain precondition on dispatching subprogram",
+                        Pre,
+                        SRM_Reference => "SPARK RM 6.1.1(2)",
+                        Cont_Msg => "use classwide precondition Pre''Class"
+                                    & " instead of Pre");
+                  end if;
+               end if;
+            end;
+         end if;
+
          --  Enforce the current limitation that a subprogram is only inherited
          --  from a single source, so that there is at most one inherited
          --  Pre'Class or Post'Class to consider for LSP.
@@ -5944,7 +5980,8 @@ package body SPARK_Definition is
    procedure Mark_Violation
      (Msg           : String;
       N             : Node_Id;
-      SRM_Reference : String := "") is
+      SRM_Reference : String := "";
+      Cont_Msg      : String := "") is
    begin
       --  Flag the violation, so that the current entity is marked accordingly
 
@@ -5959,6 +5996,10 @@ package body SPARK_Definition is
               (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
          else
             Error_Msg_F (Msg & " is not allowed in SPARK", N);
+         end if;
+
+         if Cont_Msg /= "" then
+            Error_Msg_N ('\' & Cont_Msg, N);
          end if;
 
          Mark_Violation_Of_SPARK_Mode (N);

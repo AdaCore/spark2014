@@ -16,10 +16,10 @@ package Aida.Strings.Generic_Immutable_Unbounded_String_Shared_Ptr with SPARK_Mo
    function Char_At (This  : T;
                      Index : Positive) return Character with
      Global => null,
-     Pre => Length (This) > 0 and then Index <= Positive (Length (This));
+     Pre'Class => Length (This) > 0 and then Index <= Positive (Length (This));
 
    function To_String (This : T) return String with
-     Pre    => Length (This) < MAX_LENGTH,
+     Pre'Class    => Length (This) < MAX_LENGTH,
      Global => null;
 
 private

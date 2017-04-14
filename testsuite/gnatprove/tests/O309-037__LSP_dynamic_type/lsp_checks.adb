@@ -36,7 +36,7 @@ procedure LSP_Checks (C : Natural) with SPARK_Mode is
          else G = G_Old);
 
       procedure Do_Something (R : Child) with
-        Pre => Child_Pre (R, Glob),
+
         Post => Child_Post (R, Glob, Glob'Old),
         Pre'Class => Child_Pre_Class (R, Glob),
         Post'Class => Child_Post_Class (R, Glob, Glob'Old);

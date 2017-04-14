@@ -57,9 +57,7 @@ professionals.adb:83:14: info: initialization of private part of "Tmp" proved
 professionals.adb:93:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
 professionals.adb:205:72: medium: overflow check might fail
 professionals.ads:33:14: warning: subprogram "Print" has no effect
-professionals.ads:62:21: medium: precondition is stronger than the default class-wide precondition of True
-professionals.ads:69:19: medium: precondition is stronger than the default class-wide precondition of True
-professionals.ads:72:19: medium: postcondition might fail, cannot prove Is_Alive (Killer)
+professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
 professionals.ads:79:57: info: length check proved (CVC4: 1 VC)
 simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2
 simple_oo_with_contracts.adb:5:16: medium: overflow check might fail

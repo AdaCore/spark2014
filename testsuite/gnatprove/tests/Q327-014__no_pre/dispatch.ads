@@ -8,13 +8,13 @@ package Dispatch with SPARK_Mode is
      Post      => Incr'Result.F = X.F + 1;
 
    function Incr2 (X : Root) return Root with
-     Pre'Class => X.F < Integer'Last,
-     Pre       => True,
+     Pre'Class => True,
+
      Post      => Incr2'Result.F = X.F + 1;
 
    function Incr3 (X : Root) return Root with
      Pre'Class  => X.F < Integer'Last,
-     Pre        => True,
+
      Post'Class => Incr3'Result.F = X.F + 1,
      Post       => (if X.F'Old < Integer'Last then Incr3'Result.F = X.F + 1);
 
@@ -29,7 +29,7 @@ package Dispatch with SPARK_Mode is
 
    function Incr6 (X : Root) return Root with
      Pre'Class  => X.F < Integer'Last,
-     Pre        => True,
+
      Post'Class => (if X.F'Old < Integer'Last then Incr6'Result.F = X.F + 1),
      Contract_Cases =>
          (X.F < Integer'Last => Incr6'Result.F = X.F + 1,

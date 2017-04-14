@@ -1,10 +1,8 @@
-aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:16: info: precondition is always True (CVC4: 1 VC), in instantiation at extension.ads:9
-aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:16: info: precondition is always True (CVC4: 1 VC), in instantiation at vk.ads:23
-aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at extension.ads:9
-aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:23
-aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:13: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at vk.ads:10 (e.g. when This = (SP => !))
-aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:59: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:10
-aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:22:16: medium: precondition is stronger than the default class-wide precondition of True, in instantiation at vk.ads:10 (e.g. when This = (SP => !))
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:26: info: range check proved (CVC4: 1 VC), in instantiation at extension.ads:9
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:26: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:23
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10:27: info: range check proved (CVC4: 1 VC), in instantiation at extension.ads:9
+aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10:27: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:23
+aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:65: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:10
 extension.ads:9:04: info: implicit function contract not available for proof ("Length" may not return)
 extension.ads:9:04: info: implicit function contract not available for proof ("Length" may not return)
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
