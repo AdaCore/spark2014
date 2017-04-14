@@ -2424,13 +2424,13 @@ package body Gnat2Why.Expr is
 
          procedure Iterate_Call is new
            Iterate_Call_Parameters (Compute_Param);
-      begin
 
+      begin
          --  In the case of protected subprograms, there is an invisible first
          --  parameter, the protected object itself. We call "Compute_Arg" with
          --  empty arguments to process this case.
 
-         if Is_Subp_Or_Entry_Inside_Protected (Subp) then
+         if Within_Protected_Type (Subp) then
             Compute_Param (Empty, Empty);
          end if;
 
@@ -4970,7 +4970,7 @@ package body Gnat2Why.Expr is
       --  parameter, the protected object itself. We call "Compute_Arg" with
       --  empty arguments to process this case.
 
-      if Is_Subp_Or_Entry_Inside_Protected (Subp) then
+      if Within_Protected_Type (Subp) then
          Process_Param (Empty, Empty);
       end if;
 

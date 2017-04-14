@@ -1275,7 +1275,7 @@ package body Gnat2Why.Util is
 
         and then not
           (Is_Volatile_Function (E)
-            and then not Is_Subp_Or_Entry_Inside_Protected (E))
+            and then not Within_Protected_Type (E))
 
         --  No axioms are generated for inlined functions
 

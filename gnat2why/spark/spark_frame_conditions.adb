@@ -470,7 +470,7 @@ package body SPARK_Frame_Conditions is
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
-      if Ekind (E) in E_Function | E_Procedure | E_Entry
+      if Is_Subprogram_Or_Entry (E)
         and then Is_Abstract_Subprogram (E_Alias)
       then
          return Name_Sets.Empty_Set;
@@ -514,7 +514,7 @@ package body SPARK_Frame_Conditions is
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
-      if Ekind (E) in E_Function | E_Procedure | E_Entry
+      if Is_Subprogram_Or_Entry (E)
         and then Is_Abstract_Subprogram (E_Alias)
       then
          return Name_Sets.Empty_Set;
@@ -1079,7 +1079,7 @@ package body SPARK_Frame_Conditions is
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
-      if Ekind (E) in E_Function | E_Procedure | E_Entry
+      if Is_Subprogram_Or_Entry (E)
         and then Is_Abstract_Subprogram (E_Alias)
       then
          --  Initialize to empty sets and return

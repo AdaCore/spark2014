@@ -160,7 +160,7 @@ package body Gnat2Why.Subprograms is
       For_Input : Boolean;
       Params    : Transformation_Params) return W_Pred_Id
    with
-     Pre  => Ekind (E) in E_Procedure | E_Function | E_Entry,
+     Pre  => Is_Subprogram_Or_Entry (E),
      Post => (if For_Input then
                 Is_True_Boolean
                   (+Compute_Type_Invariants_For_Subprogram'Result)
@@ -603,7 +603,7 @@ package body Gnat2Why.Subprograms is
 
    begin
 
-      if Is_Subp_Or_Entry_Inside_Protected (E) then
+      if Within_Protected_Type (E) then
          Arg_Length := Arg_Length + 1;
       end if;
 
@@ -828,13 +828,13 @@ package body Gnat2Why.Subprograms is
             --  Collect parameters of E if any
             --  ??? We may want to collect discriminants of task types
 
-            if Ekind (E) in E_Function | E_Procedure | E_Entry then
+            if Is_Subprogram_Or_Entry (E) then
                Includes.Union (Get_Explicit_Formals (E));
 
                --  If E is a protected subprogram, add the type itself to stand
                --  for the self reference.
 
-               if Is_Subp_Or_Entry_Inside_Protected (E)
+               if Within_Protected_Type (E)
                  and then Present (Get_Body (E))
                  and then Entity_Body_In_SPARK (E)
                then
@@ -1599,8 +1599,7 @@ package body Gnat2Why.Subprograms is
          else Parameter_Specifications (Subprogram_Specification (E)));
       Ada_Param_Len : constant Natural := Natural (List_Length (Params));
       Binder_Len    : constant Natural :=
-        Ada_Param_Len +
-          (if Is_Subp_Or_Entry_Inside_Protected (E) then 1 else 0);
+        Ada_Param_Len + (if Within_Protected_Type (E) then 1 else 0);
       Result        : Item_Array (1 .. Binder_Len);
       Param         : Node_Id;
       Count         : Positive;
@@ -1609,7 +1608,7 @@ package body Gnat2Why.Subprograms is
       Param := First (Params);
       Count := 1;
 
-      if Is_Subp_Or_Entry_Inside_Protected (E) then
+      if Within_Protected_Type (E) then
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
@@ -3475,7 +3474,7 @@ package body Gnat2Why.Subprograms is
          Result_Var := +Void;
       end if;
 
-      if Is_Subp_Or_Entry_Inside_Protected (E) then
+      if Within_Protected_Type (E) then
          declare
             CPT : constant Entity_Id := Containing_Protected_Type (E);
          begin
@@ -3535,7 +3534,7 @@ package body Gnat2Why.Subprograms is
 
          --  Declare global variable to hold the state of a protected object
 
-         if Is_Subp_Or_Entry_Inside_Protected (E) then
+         if Within_Protected_Type (E) then
             Emit
               (File,
                New_Global_Ref_Declaration
@@ -3824,7 +3823,7 @@ package body Gnat2Why.Subprograms is
         or else Is_Recursive (E)
         or else Is_Potentially_Nonreturning (E)
         or else (Is_Volatile_Function (E)
-                  and then not Is_Subp_Or_Entry_Inside_Protected (E))
+                  and then not Within_Protected_Type (E))
       then
          return;
       end if;
@@ -4435,7 +4434,7 @@ package body Gnat2Why.Subprograms is
                --  already have their own state (the protected object).
 
                if Is_Volatile_Function (E)
-                 and then not Is_Subp_Or_Entry_Inside_Protected (E)
+                 and then not Within_Protected_Type (E)
                then
                   Effects_Append_To_Writes (Effects, Volatile_State);
                else
@@ -4480,7 +4479,7 @@ package body Gnat2Why.Subprograms is
               and then not No_Return (E)
               and then
                 (not Is_Volatile_Function (E)
-                 or else Is_Subp_Or_Entry_Inside_Protected (E))
+                 or else Within_Protected_Type (E))
             then
                declare
                   Use_Base  : constant Boolean :=
@@ -4521,7 +4520,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             if Is_Volatile_Function (E)
-              and then not Is_Subp_Or_Entry_Inside_Protected (E)
+              and then not Within_Protected_Type (E)
             then
                Emit
                  (File,
@@ -4813,7 +4812,7 @@ package body Gnat2Why.Subprograms is
         or else No_Return (E)
         or else
           (Is_Volatile_Function (E)
-            and then not Is_Subp_Or_Entry_Inside_Protected (E))
+            and then not Within_Protected_Type (E))
       then
          Close_Theory (File,
                        Kind => Definition_Theory);
@@ -5020,7 +5019,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function
         and then (if Is_Volatile_Function (E)
-                  then Is_Subp_Or_Entry_Inside_Protected (E))
+                  then Within_Protected_Type (E))
       then
          Why_Type := Type_Of_Node (Etype (E));
 

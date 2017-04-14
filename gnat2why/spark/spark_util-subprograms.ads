@@ -89,10 +89,10 @@ package SPARK_Util.Subprograms is
                         E_Discriminant =>
                       Ekind (Scope (E)) in Protected_Kind,
 
-                     when E_Function  |
-                          E_Procedure |
-                          Entry_Kind  =>
-                        Is_Subp_Or_Entry_Inside_Protected (E),
+                   when E_Function  |
+                        E_Procedure |
+                        Entry_Kind  =>
+                      Within_Protected_Type (E),
 
                    when others =>
                       False),

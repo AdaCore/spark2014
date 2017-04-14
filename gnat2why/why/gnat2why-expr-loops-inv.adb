@@ -1160,7 +1160,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Record write to the protected object for protected procedure or entry
 
-      if Is_Subp_Or_Entry_Inside_Protected (Subp) then
+      if Within_Protected_Type (Subp) then
          declare
             Call_Name   : constant Node_Id := Sinfo.Name (Call);
             Call_Prefix : Node_Id := Empty;

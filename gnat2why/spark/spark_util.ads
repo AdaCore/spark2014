@@ -486,7 +486,7 @@ package SPARK_Util is
    function Is_External_Call (N : Node_Id) return Boolean
    with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call
                  and then
-               Is_Subp_Or_Entry_Inside_Protected (Get_Called_Entity (N));
+               Within_Protected_Type (Get_Called_Entity (N));
    --  @param N call node
    --  @return True iff N is an external call to a protected subprogram or
    --     a protected entry.

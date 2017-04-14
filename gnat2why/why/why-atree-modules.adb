@@ -1751,7 +1751,7 @@ package body Why.Atree.Modules is
       --  @param E an object entity
 
       procedure Insert_Subprogram_Symbols (E : Entity_Id)
-        with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry;
+        with Pre => Is_Subprogram_Or_Entry (E);
       --  Add the symbols for subprogram or entry entity E
       --  @param E an object entity
 
@@ -2519,7 +2519,7 @@ package body Why.Atree.Modules is
          Insert_Type_Symbols (E);
       elsif Is_Object (E) then
          Insert_Object_Symbols (E);
-      elsif Ekind (E) in E_Function | E_Procedure | E_Entry then
+      elsif Is_Subprogram_Or_Entry (E) then
          Insert_Subprogram_Symbols (E);
       end if;
    end Insert_Why_Symbols;

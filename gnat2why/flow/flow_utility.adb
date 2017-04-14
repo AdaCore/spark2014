@@ -1969,7 +1969,7 @@ package body Flow_Utility is
       Implicit : constant Entity_Id := Get_Implicit_Formal (E);
 
    begin
-      if Ekind (E) in E_Entry | E_Function | E_Procedure then
+      if Is_Subprogram_Or_Entry (E) then
          Formals := Get_Explicit_Formals (E);
       end if;
 
@@ -2752,10 +2752,8 @@ package body Flow_Utility is
                Variables.Union (Recurse (Aggregate_Bounds (N)));
 
             when N_Selected_Component =>
-               if Ekind (Entity (Selector_Name (N))) in E_Entry     |
-                                                        E_Procedure |
-                                                        E_Function
-               then
+               if Is_Subprogram_Or_Entry (Entity (Selector_Name (N))) then
+
                   --  Here we are dealing with a call of a protected
                   --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.

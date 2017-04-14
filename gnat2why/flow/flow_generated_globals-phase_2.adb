@@ -1351,7 +1351,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          begin
             for E of Entities_To_Translate loop
-               if Ekind (E) in E_Function | E_Procedure | E_Entry then
+               if Is_Subprogram_Or_Entry (E) then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
                   begin
@@ -1410,7 +1410,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          begin
             for E of Entities_To_Translate loop
-               if Ekind (E) in E_Function | E_Procedure | E_Entry then
+               if Is_Subprogram_Or_Entry (E) then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
                   begin
