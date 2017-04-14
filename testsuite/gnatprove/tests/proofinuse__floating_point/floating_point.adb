@@ -380,8 +380,8 @@ is
       pragma Assume (Y >= 0.0);
       pragma Assume (X <= Y);
       Res := X + (Y - X);
-      pragma Assert (Res >= X);
-      pragma Assert (Res <= Y);
+      pragma Assert (Res >= X);  --  @ASSERT:PASS
+      pragma Assert (Res <= Y);  --  @ASSERT:FAIL
    end Sub_Then_Add1;
 
    procedure Sub_Then_Add2 (X, Y : Float_32; Res : out Float_32) is
@@ -390,8 +390,8 @@ is
       pragma Assume (Y >= 0.0);
       pragma Assume (X >= Y);
       Res := X + (Y - X);
-      pragma Assert (Res <= X);
-      pragma Assert (Res >= Y);
+      pragma Assert (Res <= X);  --  @ASSERT:PASS
+      pragma Assert (Res >= Y);  --  @ASSERT:FAIL
    end Sub_Then_Add2;
 
    procedure Half_Bound (X : Float_32; Res : out Float_64) is
