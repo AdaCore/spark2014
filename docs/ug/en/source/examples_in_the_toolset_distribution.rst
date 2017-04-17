@@ -38,6 +38,26 @@ This program implements the Euclidian division of two integers ``Dividend`` and
 expresses the expected mathematical relation between inputs and
 outputs. |GNATprove| proves all checks on this program.
 
+.. rubric:: ``gcd``
+
+This program computes the greatest common divisor between two positive
+numbers. The postcondition of function ``GCD`` checks that the number returned
+is indeed the greatest common divisor of its arguments. Four versions of the
+function are provided:
+
+ * a simple version that searches linearly for the GCD.
+ * a modification of the simple version with a more mathematical expression
+   of divisibility in the contract of GCD.
+ * a modification of the simple version that optimizes the search to skip half
+   the candidates for GCD.
+ * Euclid's algorithm for computing the GCD.
+
+Each successive version makes use of more complex :ref:`Ghost Code` to prove
+that the implementation of ``GCD`` satisfies its contract. |GNATprove| proves
+all checks on this program, except for some elementary lemmas on modulo
+operator. This is detailed in the following post on SPARK 2014 Blog:
+http://www.spark-2014.org/entries/detail/gnatprove-tips-and-tricks-proving-the-ghost-common-denominator-gcd
+
 .. rubric:: ``intro``
 
 This program computes the price of a basket of items. The postcondition of the
