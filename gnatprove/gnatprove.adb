@@ -473,6 +473,11 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("off");
       end if;
 
+      if Z3_Counterexample then
+         Args.Append ("--ce_prover");
+         Args.Append ("z3_ce");
+      end if;
+
       Args.Append ("--ce-timeout");
       Args.Append (Image (CE_Timeout, 1));
 

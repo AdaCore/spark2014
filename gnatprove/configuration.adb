@@ -791,6 +791,7 @@ package body Configuration is
            and then File_System.Install.CVC4_Present
            and then not Is_Manual_Prover
            and then not CL_Switches.Output_Msg_Only;
+         Z3_Counterexample := CL_Switches.Z3_Counterexample;
          CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
       end Postprocess;
 
@@ -1500,6 +1501,11 @@ package body Configuration is
         (Config,
          CL_Switches.No_Counterexample'Access,
          Long_Switch => "--no-counterexample");
+
+      Define_Switch
+        (Config,
+         CL_Switches.Z3_Counterexample'Access,
+         Long_Switch => "--z3-counterexample");
 
       Define_Switch
         (Config,

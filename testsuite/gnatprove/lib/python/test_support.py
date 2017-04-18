@@ -45,6 +45,11 @@ def inverse_prover():
         os.environ["inverse_prover"] == "true"
 
 
+def z3_counterexample():
+    return "z3_counterexample" in os.environ and\
+        os.environ["z3_counterexample"] == "true"
+
+
 def benchmark_mode():
     return "benchmarks" in os.environ and os.environ["benchmarks"] == "true"
 
@@ -635,7 +640,9 @@ def gnatprove(opt=["-P", "test.gpr"], no_fail=False, no_output=False,
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout(), mode="all", counterexample=True,
-              prover=default_provers, cache_allowed=True, report="provers",
+              prover=default_provers,
+              cache_allowed=True,
+              report="provers",
               level=None,
               no_fail=False,
               no_output=False,
@@ -680,6 +687,8 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += ["--benchmark"]
     if not counterexample:
         fullopt += ["--no-counterexample"]
+    if z3_counterexample():
+        fullopt += ["--z3-counterexample"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

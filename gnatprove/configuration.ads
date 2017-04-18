@@ -86,6 +86,7 @@ package Configuration is
       Mode                 : aliased GNAT.Strings.String_Access;
       No_Axiom_Guard       : aliased Boolean;
       No_Counterexample    : aliased Boolean;
+      Z3_Counterexample    : aliased Boolean;
       No_Inlining          : aliased Boolean;
       No_Global_Generation : aliased Boolean;
       Output_Header        : aliased Boolean;
@@ -163,6 +164,7 @@ package Configuration is
    RTS_Dir              : GNAT.Strings.String_Access;
    Counterexample       : Boolean;
    No_Axiom_Guard       : Boolean;
+   Z3_Counterexample    : Boolean;
    No_Inlining          : Boolean;
    No_Global_Generation : Boolean;
    Mode                 : GP_Mode;
