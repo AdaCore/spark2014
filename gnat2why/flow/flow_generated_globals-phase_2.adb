@@ -32,7 +32,6 @@ with Namet;                      use Namet;
 with Osint;                      use Osint;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
-with Snames;                     use Snames;
 
 with Call;                       use Call;
 with Debug.Timing;               use Debug.Timing;
@@ -1285,7 +1284,7 @@ package body Flow_Generated_Globals.Phase_2 is
             for E of Entities_To_Translate loop
                if (Ekind (E) = E_Entry
                    or else (Ekind (E) in E_Function | E_Procedure
-                            and then Convention (E) = Convention_Protected))
+                            and then Ekind (Scope (E)) = E_Protected_Type))
                  and then Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
@@ -1489,7 +1488,7 @@ package body Flow_Generated_Globals.Phase_2 is
                       when E_Entry | E_Task_Type =>
                          True,
                       when E_Function | E_Procedure =>
-                         Convention (E) = Convention_Protected
+                         Ekind (Scope (E)) = E_Protected_Type
                          or else Might_Be_Main (E),
                       when others =>
                          False)
