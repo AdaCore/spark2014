@@ -2,6 +2,6 @@ main.adb:1:11: high: all paths in "Main" raise exceptions or do not terminate no
 main.adb:21:14: high: all paths in "Create_Empty_Branch" raise exceptions or do not terminate normally
 main.adb:22:07: warning: "Branch" is not modified, could be IN
 main.adb:25:17: info: postcondition proved (CVC4: 1 VC)
-main.adb:28:22: medium: assertion might fail, cannot prove false
+main.adb:28:07: medium: assertion might fail
 main.adb:38:04: info: precondition proved (CVC4: 1 VC)
-main.adb:41:19: info: assertion proved (CVC4: 2 VC)
+main.adb:41:04: info: assertion proved (CVC4: 1 VC)

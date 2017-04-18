@@ -26,8 +26,8 @@ generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or d
 generic_float_tests.adb:62:14: high: all paths in "Smooth" raise exceptions or do not terminate normally, in instantiation at foo.ads:15
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:66:22: info: assertion proved (Z3: 3 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:66:22: info: assertion proved (Z3: 3 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:66:07: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:66:07: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:75:18: info: float overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10

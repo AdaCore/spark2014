@@ -1,3 +1,3 @@
-c45253a.adb:49:22: info: assertion proved (CVC4: 2 VC)
-c45253a.adb:54:22: info: assertion proved (CVC4: 2 VC)
-c45253a.adb:58:22: medium: assertion might fail, cannot prove false
+c45253a.adb:49:07: info: assertion proved (CVC4: 1 VC)
+c45253a.adb:54:07: info: assertion proved (CVC4: 1 VC)
+c45253a.adb:58:07: medium: assertion might fail

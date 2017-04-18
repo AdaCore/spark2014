@@ -1,2 +1,2 @@
 floats.adb:2:11: high: all paths in "Floats" raise exceptions or do not terminate normally
-floats.adb:6:19: medium: assertion might fail, cannot prove false
+floats.adb:6:04: medium: assertion might fail

@@ -14,7 +14,7 @@ p2.adb:27:21: info: overflow check proved (altergo: 1 VC)
 p2.adb:28:22: info: initialization of "Halfway" proved
 p2.adb:30:22: info: initialization of "Halfway" proved
 p2.adb:34:14: info: initialization of "Lower" proved
-p2.ads:4:19: info: assertion proved (CVC4: 1 VC)
+p2.ads:4:19: info: assertion proved
 p2.ads:11:19: info: postcondition proved (altergo: 2 VC)
 p2.ads:11:32: info: overflow check proved (altergo: 1 VC)
 p2.ads:12:37: medium: overflow check might fail

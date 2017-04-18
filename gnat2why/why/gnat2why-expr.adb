@@ -35,6 +35,7 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
 with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
+with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -13479,16 +13480,37 @@ package body Gnat2Why.Expr is
 
       --  Get rid of simple cases True and False
 
-      if Is_False_Boolean (+Pred) then
-         return
-           +New_VC_Expr
-           (Ada_Node => Prag,
-            Expr     => +New_Identifier (Name => "absurd"),
-            Reason   => Reason,
-            Domain   => EW_Prog);
-      elsif Is_True_Boolean (+Pred) then
-         return +Void;
-      end if;
+      declare
+         Is_CT_Known : constant Boolean := Compile_Time_Known_Value (Expr);
+      begin
+         if Is_CT_Known
+           or else Is_False_Boolean (+Pred)
+           or else Is_True_Boolean (+Pred)
+         then
+            declare
+               Proved : constant Boolean :=
+                 (if Is_CT_Known then Expr_Value (Expr) = Uint_1
+                  else Is_True_Boolean (+Pred));
+            begin
+               if Proved then
+                  Emit_Proof_Result (Expr,
+                                     Register_VC (Expr, Current_Subp),
+                                     Kind => Reason,
+                                     E => Current_Subp,
+                                     Proved => Proved,
+                                     How_Proved => PC_Prover);
+                  return +Void;
+               else
+                  return
+                    +New_VC_Expr
+                    (Ada_Node => Prag,
+                     Expr     => +New_Identifier (Name => "absurd"),
+                     Reason   => Reason,
+                     Domain   => EW_Prog);
+               end if;
+            end;
+         end if;
+      end;
 
       --  Now handle remaining cases of "regular" pragma Check/Assert
       --  and pragma Assume. This is also how pragmas Preconditions and

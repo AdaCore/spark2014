@@ -1,2 +1,2 @@
 interval_reasoning.adb:3:14: high: all paths in "Propagation_Loop" raise exceptions or do not terminate normally
-interval_reasoning.adb:8:22: info: assertion proved (CVC4: 3 VC)
+interval_reasoning.adb:8:07: info: assertion proved (CVC4: 1 VC)
