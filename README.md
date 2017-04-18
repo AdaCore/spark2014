@@ -31,3 +31,15 @@ You can find the definition of the SPARK language in the
 [SPARK Reference Manual](http://docs.adacore.com/spark2014-docs/html/lrm/),
 and instructions on how to use the tool, together with a tutorial, in the
 [SPARK User's Guide](http://docs.adacore.com/spark2014-docs/html/ug/).
+
+# 6. Building SPARK with a GNAT GPL compiler
+
+To build SPARK with a GNAT GPL compiler, you need to use the corresponding
+branch of this repository. For example, to build with GNAT GPL 2016, use the
+branch gpl-2016, as follows:
+```
+git checkout gpl-2016
+git submodule update
+```
+
+Then follow the instructions in the Makefile.
