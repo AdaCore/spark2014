@@ -1482,9 +1482,13 @@ package body Gnat2Why.Expr is
                         (Name   => Why_Eq,
                          Typ    => EW_Bool_Type,
                          Args =>
-                           (1 => +New_Result_Ident (EW_Abstract (Etype (N))),
-                            2 => +Transform_Expr_Or_Identifier
-                              (N, EW_Term, Params)))),
+                           (1 => +New_Result_Ident (Get_Typ (Name)),
+                            2 => +Insert_Simple_Conversion
+                              (Domain         => EW_Term,
+                               Expr           => Transform_Expr_Or_Identifier
+                                 (N, EW_Term, Params),
+                               To             => Get_Typ (Name),
+                               Force_No_Slide => True)))),
                  Context => +Result);
          begin
             Result := Sequence (RE_Prog, Let_Prog);
@@ -2355,7 +2359,8 @@ package body Gnat2Why.Expr is
                           (Ada_Node => Empty,
                            Name     => Full_Name (Formal) & "__compl",
                            Typ      => Actual_Type)
-                        else Transform_Expr (Actual, Domain, Params));
+                        else Transform_Expr
+                          (Actual, Actual_Type, Domain, Params));
                      Need_Ref : constant Boolean :=
                        Get_Type_Kind (Actual_Type) = EW_Abstract
                        or else not Simple_Actual;
@@ -3850,10 +3855,10 @@ package body Gnat2Why.Expr is
                    (1 => Control_Tag,
                     2 =>
                       New_Tag_Access
-                        (Name => Tmp,
+                        (Name     => Tmp,
                          Ada_Node => Actual,
-                         Domain => EW_Term,
-                         Ty   => Get_Ada_Node (+Get_Type (Tmp)))));
+                         Domain   => EW_Term,
+                         Ty       => Get_Ada_Node (+Get_Type (Tmp)))));
          end;
 
          Check :=
@@ -4532,7 +4537,7 @@ package body Gnat2Why.Expr is
 
                      Formal_T : constant W_Type_Id :=
                        Get_Typ (Binders (Bind_Cnt).Content.B_Name);
-                     Actual_T      : constant W_Type_Id :=
+                     Actual_T : constant W_Type_Id :=
                        Type_Of_Node (Actual);
 
                      --  Variables:
@@ -4572,6 +4577,7 @@ package body Gnat2Why.Expr is
 
                      Prefetch_Actual : constant W_Prog_Id :=
                        +Transform_Expr (Actual,
+                                        Actual_T,
                                         EW_Prog,
                                         Params);
 
@@ -12093,10 +12099,34 @@ package body Gnat2Why.Expr is
    function Transform_Expr
      (Expr   : Node_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id is
+      Params : Transformation_Params) return W_Expr_Id
+   is
+      Expected_Type : W_Type_Id;
    begin
-      return Transform_Expr
-        (Expr, Type_Of_Node (Expr), Domain, Params);
+
+      --  For record fields, use the type of the field access (that is, the
+      --  type of the field in the Retyps of the record type) to avoid
+      --  conversions.
+      --  Note that this type may depend on discriminants, so it is in general
+      --  a bad idea to try to convert to such a type. Converting from it
+      --  should be OK though as it is never in split form.
+
+      if Nkind (Expr) = N_Selected_Component then
+         declare
+            Field   : constant Entity_Id := Entity (Selector_Name (Expr));
+            Ty      : constant Entity_Id := Retysp (Etype (Prefix (Expr)));
+         begin
+            Expected_Type :=
+              (if Is_Part_Of_Protected_Object (Field) then
+                  EW_Abstract (Etype (Field))
+               else
+                  EW_Abstract (Etype (Search_Component_In_Type (Ty, Field))));
+         end;
+      else
+         Expected_Type := Type_Of_Node (Expr);
+      end if;
+
+      return Transform_Expr (Expr, Expected_Type, Domain, Params);
    end Transform_Expr;
 
    ---------------------------------

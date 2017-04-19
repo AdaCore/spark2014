@@ -57,7 +57,6 @@ with_default.adb:200:28: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
-with_default.adb:202:26: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)
 with_default.adb:202:34: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:206:39: medium: range check might fail (e.g. when C = 0)

@@ -71,7 +71,6 @@ tests.adb:320:23: info: initialization of "X" proved
 tests.adb:331:48: info: range check proved (CVC4: 1 VC)
 tests.adb:334:20: info: range check proved (CVC4: 1 VC)
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
-tests.adb:336:19: info: discriminant check proved (CVC4: 1 VC)
 tests.adb:336:19: info: range check proved (CVC4: 1 VC)
 tests.adb:340:23: info: initialization of "R" proved
 tests.adb:352:14: info: range check proved (CVC4: 1 VC)
