@@ -56,8 +56,16 @@ procedure SPARK_CodePeer_Wrapper is
    --  Number of processors to use, null if unspecified
 
    Project_File : Virtual_File := No_File;
-   Library      : String_Access;
+   --  project file, provided with -P switch
+
    File         : Virtual_File := No_File;
+   --  variable for -file switch
+
+   RTS_Arg      : String_Access;
+   --  contains the argument --RTS=<path> (including the --RTS prefix), if
+   --  present
+
+   Library      : String_Access;
 
    Ext_Vars     : String_Lists.List;
 
@@ -285,6 +293,10 @@ procedure SPARK_CodePeer_Wrapper is
          Append_Arg (File.Display_Base_Name);
       end if;
 
+      if RTS_Arg /= null then
+         Append_Arg (RTS_Arg.all);
+      end if;
+
       --  Compilation switch -gnateF ensures that CodePeer interprets
       --  floating-point overflows as errors even for the predefined
       --  floating-point types.
@@ -483,6 +495,10 @@ procedure SPARK_CodePeer_Wrapper is
                end if;
 
                Append_Arg ("-all");
+
+            elsif Starts_With (S, "--RTS=") then
+
+               RTS_Arg := new String'(S);
 
             elsif Starts_With (S, "-j") then
                Num_Procs := new String'(S (3 .. S'Last));
