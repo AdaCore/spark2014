@@ -6023,49 +6023,66 @@ package body Gnat2Why.Expr is
                        To       => Typ));
                Expo : constant W_Expr_Id :=
                  Insert_Simple_Conversion
-                       (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Expr     => Right,
-                        To       => EW_Int_Type);
+                   (Ada_Node => Ada_Node,
+                    Domain   => Domain,
+                    Expr     => Right,
+                    To       => EW_Int_Type);
             begin
-               Name := New_Exp (Typ);
-
-               T := New_Call
-                 (Ada_Node => Ada_Node,
-                  Domain   => Domain,
-                  Name     => Name,
-                  Args     => (1 => Base, 2 => Expo),
-                  Typ      => Typ);
-
-               --  Exponentiation on floats can actually cause a division
-               --  check, when the base is 0 and the exponent is negative.
-
-               if Domain = EW_Prog
-                 and then Is_Floating_Point_Type (Left_Type)
+               if Has_Modular_Integer_Type (Return_Type)
+                 and then Non_Binary_Modulus (Return_Type)
                then
-                  declare
-                     Expo_Negative : constant W_Pred_Id :=
-                       +New_Comparison
-                       (Int_Infix_Lt, Expo,
-                        New_Integer_Constant (Value => Uint_0), EW_Term);
-                     Base_Zero     : constant W_Pred_Id :=
-                       +New_Comparison
-                       (Why_Neq, Base, +MF_Floats (Typ).Plus_Zero, EW_Term);
-                     Ass           : constant W_Prog_Id :=
-                       New_Located_Assert
-                         (Ada_Node => Ada_Node,
-                          Pred     =>
-                            +New_Simpl_Conditional
-                             (Domain    => EW_Pred,
-                              Condition => +Expo_Negative,
-                              Then_Part => +Base_Zero,
-                              Else_Part => +True_Pred
-                             ),
-                          Reason   => VC_Division_Check,
-                          Kind     => EW_Assert);
-                  begin
-                     T := +Sequence (Ass, +T);
-                  end;
+                  T := Transform_Non_Binary_Modular_Operation
+                    (Ada_Node   => Ada_Node,
+                     Ada_Type   => Return_Type,
+                     Domain     => Domain,
+                     Op         => Op,
+                     Left_Opnd  => Base,
+                     Right_Opnd => Expo,
+                     Rep_Type   => Typ,
+                     Modulus    => Modulus (Return_Type));
+
+               else
+                  Name := New_Exp (Typ);
+
+                  T := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Name,
+                     Args     => (1 => Base, 2 => Expo),
+                     Typ      => Typ);
+
+                  T := Apply_Modulus (Op, Return_Type, T, Domain);
+
+                  --  Exponentiation on floats can actually cause a division
+                  --  check, when the base is 0 and the exponent is negative.
+
+                  if Domain = EW_Prog
+                    and then Is_Floating_Point_Type (Left_Type)
+                  then
+                     declare
+                        Expo_Negative : constant W_Pred_Id :=
+                          +New_Comparison
+                          (Int_Infix_Lt, Expo,
+                           New_Integer_Constant (Value => Uint_0), EW_Term);
+                        Base_Zero     : constant W_Pred_Id :=
+                          +New_Comparison
+                          (Why_Neq, Base, +MF_Floats (Typ).Plus_Zero, EW_Term);
+                        Ass           : constant W_Prog_Id :=
+                          New_Located_Assert
+                            (Ada_Node => Ada_Node,
+                             Pred     =>
+                               +New_Simpl_Conditional
+                               (Domain    => EW_Pred,
+                                Condition => +Expo_Negative,
+                                Then_Part => +Base_Zero,
+                                Else_Part => +True_Pred
+                               ),
+                             Reason   => VC_Division_Check,
+                             Kind     => EW_Assert);
+                     begin
+                        T := +Sequence (Ass, +T);
+                     end;
+                  end if;
                end if;
 
                T := Binding_For_Temp (Ada_Node, Domain, Base, T);
@@ -13095,6 +13112,39 @@ package body Gnat2Why.Expr is
                            Args   => (1 => Mul_Expr,
                                       2 => Modulus_Expr),
                            Typ    => Next_Bv);
+            begin
+               T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                              Domain   => Domain,
+                                              Expr     => Modulo_Expr,
+                                              To       => Rep_Type);
+            end;
+
+         --  Translate exponentiation on mathematical integers to avoid
+         --  the wrap-around semantics on bitvector types. Indeed, it is not
+         --  possible to go to a bigger bitvector type here as there are no
+         --  such bitvector type even for 8 bit bitvectors.
+
+         when N_Op_Expon =>
+            declare
+               Modulus_Expr : constant W_Expr_Id :=
+                 New_Integer_Constant (Value => Modulus);
+               Int_Left     : constant W_Expr_Id :=
+                 Insert_Simple_Conversion (Domain => Domain,
+                                           Expr   => Left_Opnd,
+                                           To     => EW_Int_Type);
+               Exp_Expr     : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => M_Int_Power.Power,
+                           Args     => (1 => Int_Left,
+                                        2 => Right_Opnd),
+                           Typ      => EW_Int_Type);
+               Modulo_Expr  : constant W_Expr_Id :=
+                 New_Call (Name   => M_Int_Div.Rem_Id,
+                           Domain => Domain,
+                           Args   => (1 => Exp_Expr,
+                                      2 => Modulus_Expr),
+                           Typ    => EW_Int_Type);
             begin
                T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
                                               Domain   => Domain,
