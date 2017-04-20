@@ -23,10 +23,7 @@ is
    is
       Res : Word64 := Value;
    begin
-      pragma Assert (2 ** Natural (Pos) in Word64);
-      pragma Assert (2 ** Natural (Pos) > 0);
       Res := Res or 2 ** Natural (Pos);
-      pragma Assert ((Res or 2 ** Natural (Pos)) /= 0);
       return Res;
    end Bit_Set;
 

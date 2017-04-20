@@ -6046,8 +6046,8 @@ package body Gnat2Why.Expr is
                   declare
                      Expo_Negative : constant W_Pred_Id :=
                        +New_Comparison
-                         (Int_Infix_Lt, Expo,
-                          New_Integer_Constant (Value => Uint_0), EW_Term);
+                       (Int_Infix_Lt, Expo,
+                        New_Integer_Constant (Value => Uint_0), EW_Term);
                      Base_Zero     : constant W_Pred_Id :=
                        +New_Comparison
                        (Why_Neq, Base, +MF_Floats (Typ).Plus_Zero, EW_Term);
@@ -6056,11 +6056,11 @@ package body Gnat2Why.Expr is
                          (Ada_Node => Ada_Node,
                           Pred     =>
                             +New_Simpl_Conditional
-                              (Domain    => EW_Pred,
-                               Condition => +Expo_Negative,
-                               Then_Part => +Base_Zero,
-                               Else_Part => +True_Pred
-                              ),
+                             (Domain    => EW_Pred,
+                              Condition => +Expo_Negative,
+                              Then_Part => +Base_Zero,
+                              Else_Part => +True_Pred
+                             ),
                           Reason   => VC_Division_Check,
                           Kind     => EW_Assert);
                   begin
@@ -11525,8 +11525,66 @@ package body Gnat2Why.Expr is
                      return E;
                   end if;
                end Inv;
+
             begin
-               if Nkind (Right) = N_Integer_Literal then
+               --  Translate powers of 2 on modular types as shifts. If the
+               --  modulus is not a power of two, this cannot be done as the
+               --  power computation must not wrap-around on the rep bitvector
+               --  type.
+
+               if Has_Modular_Integer_Type (Left_Type)
+                 and then not Non_Binary_Modulus (Left_Type)
+                 and then Compile_Time_Known_Value (Left)
+                 and then Expr_Value (Left) = Uint_2
+               then
+                  declare
+                     Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
+                     Expo : constant W_Expr_Id := New_Temp_For_Expr (W_Right);
+                  begin
+                     T := New_Call
+                       (Ada_Node => Expr,
+                        Domain   => Domain,
+                        Name     => MF_BVs (Typ).Lsl,
+                        Args     =>
+                          (1 => New_Modular_Constant (Value => Uint_1,
+                                                      Typ   => Typ),
+                           2 => Insert_Simple_Conversion
+                             (Domain => Domain,
+                              Expr   => Expo,
+                              To     => Typ)),
+                        Typ      => Typ);
+
+                     --  If the exponent does not fit in the modular type,
+                     --  return 0.
+
+                     T := New_Conditional
+                       (Domain      => Domain,
+                        Condition   =>
+                          New_Comparison
+                            (Symbol => Int_Infix_Lt,
+                             Left   => Insert_Simple_Conversion
+                               (Domain   => EW_Term,
+                                Expr     => Expo,
+                                To       => EW_Int_Type),
+                             Right  => +MF_BVs (Typ).Two_Power_Size,
+                             Domain => EW_Pred),
+                        Then_Part   => T,
+                        Else_Part   => New_Modular_Constant (Value => Uint_0,
+                                                             Typ   => Typ),
+                        Typ         => Typ);
+
+                     --  Apply the modulus if it is smaller than the modulus
+                     --  of the rep bitvector type.
+
+                     T := Apply_Modulus (Nkind (Expr), Left_Type, T, Domain);
+                     T := Binding_For_Temp
+                       (Domain => Domain, Tmp => Expo, Context => T);
+                  end;
+
+               --  Static exponentiation up to 3 are expended into equivalent
+               --  multiplications.
+
+               elsif Nkind (Right) = N_Integer_Literal then
                   declare
                      Exp : constant Uint := Intval (Right);
                   begin
@@ -12836,9 +12894,9 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Membership_Expression;
 
-   ----------------------------------------------
-   -- Transform_Non_Standard_Modulus_Operation --
-   ----------------------------------------------
+   --------------------------------------------
+   -- Transform_Non_Binary_Modular_Operation --
+   --------------------------------------------
 
    function Transform_Non_Binary_Modular_Operation
      (Ada_Node   : Node_Id;
