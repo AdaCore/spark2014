@@ -3357,19 +3357,25 @@ package body Gnat2Why.Subprograms is
         (Prags   : Node_Lists.List;
          Comment : String) return W_Prog_Id
       is
-         Result : W_Prog_Id := +Void;
+         Result : W_Prog_Id;
       begin
-         for Prag of Prags loop
+         if Prags.Is_Empty then
+            Result := +Void;
+         else
             Result :=
-              Sequence (Result, Transform_Pragma (Prag, Force => True));
-         end loop;
-         return
-           Sequence (New_Comment
-                     (Comment => NID (Comment
-                      & (if Sloc (E) > 0 then
-                           " " & Build_Location_String (Sloc (E))
-                        else ""))),
-                     Result);
+              New_Comment
+                (Comment => NID (Comment &
+                                 (if Sloc (E) > 0 then
+                                  " " & Build_Location_String (Sloc (E))
+                                  else "")));
+
+            for Prag of Prags loop
+               Result :=
+                 Sequence (Result, Transform_Pragma (Prag, Force => True));
+            end loop;
+         end if;
+
+         return Result;
       end Transform_All_Pragmas;
 
       ---------------
