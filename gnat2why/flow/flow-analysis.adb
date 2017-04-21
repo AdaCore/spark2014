@@ -1042,8 +1042,8 @@ package body Flow.Analysis is
 
       pragma Assert_And_Cut (True);
 
-      --  We now detect imports that do not contribute to at least one export
-      --  and objects that are never used.
+      --  Detect imports that do not contribute to at least one export and
+      --  objects that are never used.
 
       pragma Assert (Considered_Imports.Is_Empty and then
                      Considered_Objects.Is_Empty and then
@@ -1056,55 +1056,52 @@ package body Flow.Analysis is
             Atr : V_Attributes renames FA.Atr (V);
 
          begin
-            if Var.Variant = Initial_Value and then
-              Var.Kind /= Synthetic_Null_Export
+            if Var.Variant = Initial_Value
+              and then Var.Kind /= Synthetic_Null_Export
             then
                declare
                   Entire_Var : constant Flow_Id :=
                     Change_Variant (Entire_Variable (Var), Normal_Use);
                   --  The entire variable
 
-                  Disuse_Allowed : constant Boolean :=
+                  Bound_Or_Discr : constant Boolean :=
                     Is_Bound (Var) or else Is_Discriminant (Var);
-                  --  If this is a bound variable or discriminant, we only
-                  --  consider it if it is actually used. Its not an error to
-                  --  not explicitly use it.
+                  --  If this is an array bound or a discriminant, we only
+                  --  consider it if it is actually used. It is OK to not
+                  --  explicitly use it.
 
                begin
-                  --  Using discriminants or bounds marks the entire variable
+                  --  Using bounds or discriminants marks the entire variable
                   --  as used; not using them has no effect. However, this
                   --  only applies to out parameters; for in out parameters the
                   --  value of the entire variable itself has to be used and
                   --  uses of bounds and discriminants are completely ignored.
 
-                  --  Determine ineffective imports
-
-                  if not Disuse_Allowed or else Atr.Mode /= Mode_In_Out then
+                  if Bound_Or_Discr
+                    and then Atr.Mode = Mode_In_Out
+                  then
+                     null;
+                  else
+                     --  Determine effective and considered imports
 
                      if Atr.Is_Initialized and Atr.Is_Import then
-                        if not Disuse_Allowed then
-                           Considered_Imports.Include (Entire_Var);
-                        end if;
 
-                        --  Check if we're ineffective or not. If not, we note
-                        --  that we at least partially have used the entire
-                        --  variable.
+                        --  Check if we're effective. If not, note that we at
+                        --  least partially have used the entire variable.
 
                         if FA.PDG.Non_Trivial_Path_Exists
                           (V, Is_Final_Use'Access)
                         then
-                           if Disuse_Allowed then
+                           Considered_Imports.Include (Entire_Var);
+                           Effective.Include (Entire_Var);
+                        else
+                           if not Bound_Or_Discr then
                               Considered_Imports.Include (Entire_Var);
                            end if;
-                           Effective.Include (Entire_Var);
                         end if;
                      end if;
 
-                     --  Determine unused objects
-
-                     if not Disuse_Allowed then
-                        Considered_Objects.Include (Entire_Var);
-                     end if;
+                     --  Determine used and considered objects
 
                      if FA.PDG.Out_Neighbour_Count (V) = 1 then
                         declare
@@ -1114,16 +1111,16 @@ package body Flow.Analysis is
                            if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
                              or else FA.PDG.In_Neighbour_Count (Final_V) > 1
                            then
-                              if Disuse_Allowed then
+                              Considered_Objects.Include (Entire_Var);
+                              Used.Include (Entire_Var);
+                           else
+                              if not Bound_Or_Discr then
                                  Considered_Objects.Include (Entire_Var);
                               end if;
-                              Used.Include (Entire_Var);
                            end if;
                         end;
                      else
-                        if Disuse_Allowed then
-                           Considered_Objects.Include (Entire_Var);
-                        end if;
+                        Considered_Objects.Include (Entire_Var);
                         Used.Include (Entire_Var);
                      end if;
                   end if;
@@ -1136,11 +1133,11 @@ package body Flow.Analysis is
         (Effective.Is_Subset (Of_Set => Considered_Imports) and then
          Used.Is_Subset      (Of_Set => Considered_Objects));
 
-      --  Now that we can issue error messages. We can't do it inline (i.e. on
-      --  detection above) because we need to pay special attention to records
-      --  and unconstrained arrays.
+      --  Issue error messages. We can't do this when detecting, because
+      --  detecting works on record components and we care about entire
+      --  variables.
 
-      --  First we issue warnings on unused objects
+      --  First we deal with unused objects
 
       Unused := Considered_Objects - Used;
 
@@ -1154,32 +1151,31 @@ package body Flow.Analysis is
                --  In generative mode we inhibit messages on globals
                if not FA.Is_Generative then
                   declare
-                     Error_Location : constant Entity_Id :=
-                       Find_Global (FA.Analyzed_Entity, F);
+                     Is_Var : constant Boolean := Is_Variable (F);
+                     --  Issue a different errors for variables and constants
+
+                     Msg : constant String :=
+                       (if Is_Var
+                        then "unused global &"
+                        else "& cannot appear in Globals");
+
+                     Severity : constant Msg_Severity :=
+                       (if Is_Var
+                        then Low_Check_Kind
+                        else Medium_Check_Kind);
+
+                  begin
                      --  We prefer the report the error on the subprogram, not
                      --  on the global.
 
-                  begin
-                     --  Issue a different errors for variables and constants
-                     if Is_Variable (F) then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "unused global &",
-                           N        => Error_Location,
-                           F1       => F,
-                           Tag      => VC_Kinds.Unused,
-                           Severity => Low_Check_Kind,
-                           Vertex   => V);
-                     else
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& cannot appear in Globals",
-                           N        => Error_Location,
-                           F1       => F,
-                           Tag      => VC_Kinds.Unused,
-                           Severity => Medium_Check_Kind,
-                           Vertex   => V);
-                     end if;
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => Msg,
+                        N        => Find_Global (FA.Analyzed_Entity, F),
+                        F1       => F,
+                        Tag      => VC_Kinds.Unused,
+                        Severity => Severity,
+                        Vertex   => V);
                   end;
                end if;
             else
@@ -1188,16 +1184,20 @@ package body Flow.Analysis is
                --  when the variable has been marked either as Unreferenced
                --  or Unmodified or Unused or if it is a formal parameter of a
                --  null subprogram of a generic unit.
-               if F.Kind /= Direct_Mapping
-                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
-                            not in Concurrent_Kind
-                          and then not Belongs_To_Concurrent_Type (F)
-                          and then not
-                            Has_Pragma_Un (Get_Direct_Mapping_Id (F))
-                          and then not
-                            Is_Param_Of_Null_Subp_Of_Generic
-                              (Get_Direct_Mapping_Id (F)))
+               if F.Kind = Direct_Mapping
+                   and then
+                  (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
+                     or else
+                   Belongs_To_Concurrent_Type (F)
+                     or else
+                   Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+                     or else
+                   Is_Param_Of_Null_Subp_Of_Generic
+                     (Get_Direct_Mapping_Id (F)))
                then
+                  null;
+
+               else
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "unused variable &",
@@ -1210,11 +1210,11 @@ package body Flow.Analysis is
          end;
       end loop;
 
-      --  Finally, we issue warnings on ineffective imports. We exclude items
-      --  which are suppressed by a null derives and which have previously
-      --  been flagged as unused. In the loop below we further exclude objects
-      --  that are marked by a pragma Unreferenced or a pragma Unmodified or a
-      --  pragma Unused.
+      --  Finally we deal with ineffective imports. We exclude items which are
+      --  suppressed by a null derives and which have previously been flagged
+      --  as unused. In the loop below we further exclude objects that are
+      --  marked by a pragma Unreferenced or a pragma Unmodified or a pragma
+      --  Unused.
 
       Ineffective := Considered_Imports - (Effective or Suppressed or Unused);
 
@@ -1246,8 +1246,8 @@ package body Flow.Analysis is
                           and then Is_Abstract_State (F)
                           and then FA.B_Scope.Part /= Body_Part
                           and then State_Refinement_Is_Visible
-                            (Get_Direct_Mapping_Id (F),
-                             Body_Scope (FA.B_Scope))
+                                     (Get_Direct_Mapping_Id (F),
+                                      Body_Scope (FA.B_Scope))
                         then "non-visible constituents of & are not used " &
                               "- consider moving the subprogram to the " &
                               "package body and adding a Refined_Global"
@@ -1260,13 +1260,18 @@ package body Flow.Analysis is
                      Vertex   => V);
                end if;
             else
-               --  We suppress this warning when we are dealing with a
-               --  concurrent type or a component of a concurrent type.
-               if F.Kind /= Direct_Mapping
-                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F))) not in
-                            Concurrent_Kind
-                          and then not Belongs_To_Concurrent_Type (F))
+               --  Suppress this warning when dealing with a concurrent type or
+               --  its component.
+
+               if F.Kind = Direct_Mapping
+                   and then
+                  (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
+                     or else
+                   Belongs_To_Concurrent_Type (F))
                then
+                  null;
+
+               else
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "unused initial value of &",
