@@ -237,7 +237,7 @@ package Flow_Refinement is
    function Nested_Within_Concurrent_Type (T : Type_Id;
                                            S : Flow_Scope)
                                            return Boolean
-   with Pre => Ekind (T) in Concurrent_Kind;
+   with Pre => Is_Concurrent_Type (T);
    --  Returns True iff S is nested inside a concurrent type T
 
    function Is_Boundary_Subprogram_For_Type (Subprogram : Subprogram_Id;

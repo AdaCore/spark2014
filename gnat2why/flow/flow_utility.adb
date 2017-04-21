@@ -697,7 +697,7 @@ package body Flow_Utility is
                            --  Here we union disjoint sets, so possibly we
                            --  could optimize this.
                            Results.Union (Flatten_Variable
-                                          ((if Ekind (T) in Concurrent_Kind
+                                          ((if Is_Concurrent_Type (T)
                                              then Direct_Mapping_Id (Ptr)
                                              else Add_Component (F, Ptr)),
                                              Scope));

@@ -855,10 +855,8 @@ package body Flow.Analysis is
         (F : Flow_Id)
          return Boolean
       is
-         EV : constant Flow_Id := Entire_Variable (F);
-      begin
-         return Ekind (Etype (Get_Direct_Mapping_Id (EV))) in Concurrent_Kind;
-      end Is_Or_Belongs_To_Concurrent_Object;
+        (Is_Concurrent_Type
+           (Etype (Get_Direct_Mapping_Id (Entire_Variable (F)))));
 
    --  Start of processing for Find_Unwritten_Exports
 

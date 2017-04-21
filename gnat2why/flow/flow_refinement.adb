@@ -697,7 +697,7 @@ package body Flow_Refinement is
                null;
 
             when E_Variable =>
-               if Ekind (Etype (Ent)) in Concurrent_Kind then
+               if Is_Concurrent_Type (Etype (Ent)) then
                   --  Instances of a protected type are always fully default
                   --  initialized.
                   --  ??? arrays and record with protected types too
