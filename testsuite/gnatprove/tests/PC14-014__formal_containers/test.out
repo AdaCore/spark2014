@@ -392,7 +392,7 @@ my_lists.adb:28:21: info: initialization of private part of "L" proved
 my_lists.adb:29:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:29:30: info: initialization of private part of "L" proved
 my_lists.adb:30:21: info: initialization of private part of "L" proved
-my_lists.adb:32:33: medium: assertion might fail, cannot prove false
+my_lists.adb:32:07: medium: assertion might fail
 my_lists.adb:33:30: info: assertion proved (Z3: 2 VC)
 my_lists.adb:33:30: info: initialization of "C.Node" proved
 my_lists.adb:33:57: info: initialization of private part of "L" proved
@@ -474,7 +474,7 @@ my_lists.adb:66:07: info: precondition proved (Z3: 1 VC)
 my_lists.adb:66:15: info: initialization of private part of "L" proved
 my_lists.adb:66:18: info: initialization of "D.Node" proved
 my_lists.adb:68:14: info: initialization of private part of "L" proved
-my_lists.adb:71:33: medium: assertion might fail, cannot prove false
+my_lists.adb:71:07: medium: assertion might fail
 my_lists.adb:72:30: info: assertion proved (Z3: 3 VC)
 my_lists.adb:72:30: info: initialization of "C.Node" proved
 my_lists.adb:72:57: info: initialization of private part of "L" proved
@@ -573,7 +573,7 @@ my_lists.adb:121:15: info: initialization of private part of "L" proved
 my_lists.adb:121:25: info: initialization of private part of "L" proved
 my_lists.adb:121:29: info: initialization of private part of "K" proved
 my_lists.adb:121:32: info: initialization of "C.Node" proved
-my_lists.adb:123:33: medium: assertion might fail, cannot prove false
+my_lists.adb:123:07: medium: assertion might fail
 my_lists.adb:124:30: info: assertion proved (Z3: 1 VC)
 my_lists.adb:124:38: info: initialization of private part of "L" proved
 my_lists.adb:126:37: info: initialization of private part of "L" proved
@@ -599,7 +599,7 @@ my_lists.adb:140:14: info: initialization of private part of "L" proved
 my_lists.adb:140:17: info: initialization of private part of "K" proved
 my_lists.adb:141:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:141:33: info: initialization of private part of "L" proved
-my_lists.adb:142:33: medium: assertion might fail, cannot prove false
+my_lists.adb:142:07: medium: assertion might fail
 my_lists.ads:8:14: warning: subprogram "Test_List" has no effect
 my_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
 my_maps.adb:6:07: info: initialization of private part of "L" proved
@@ -659,7 +659,7 @@ my_maps.adb:38:32: info: initialization of private part of "L" proved
 my_maps.adb:39:16: info: initialization of private part of "L" proved
 my_maps.adb:40:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:40:30: info: initialization of private part of "L" proved
-my_maps.adb:41:33: medium: assertion might fail, cannot prove false
+my_maps.adb:41:07: medium: assertion might fail
 my_maps.adb:44:14: warning: subprogram "Test_Map_Rec" has no effect
 my_maps.adb:46:07: info: initialization of private part of "L" proved
 my_maps.adb:46:10: info: initialization of private part of "K" proved
@@ -723,7 +723,7 @@ my_maps.adb:80:32: info: initialization of private part of "L" proved
 my_maps.adb:81:16: info: initialization of private part of "L" proved
 my_maps.adb:82:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:82:30: info: initialization of private part of "L" proved
-my_maps.adb:83:33: medium: assertion might fail, cannot prove false
+my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
 my_maps.adb:88:07: info: initialization of private part of "L" proved
 my_maps.adb:88:10: info: initialization of private part of "K" proved
@@ -784,7 +784,7 @@ my_maps.adb:121:32: info: initialization of private part of "L" proved
 my_maps.adb:122:16: info: initialization of private part of "L" proved
 my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_maps.adb:123:30: info: initialization of private part of "L" proved
-my_maps.adb:124:33: medium: assertion might fail, cannot prove false
+my_maps.adb:124:07: medium: assertion might fail
 my_maps.adb:129:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:131:07: info: precondition proved (Z3: 1 VC)
@@ -873,7 +873,7 @@ my_ordered_maps.adb:54:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:54:30: info: initialization of private part of "L" proved
 my_ordered_maps.adb:55:21: info: initialization of private part of "L" proved
 my_ordered_maps.adb:56:20: info: initialization of private part of "L" proved
-my_ordered_maps.adb:57:33: medium: assertion might fail, cannot prove false
+my_ordered_maps.adb:57:07: medium: assertion might fail
 my_ordered_maps.adb:60:14: warning: subprogram "Test_Map_Rec" has no effect
 my_ordered_maps.adb:62:07: info: initialization of private part of "L" proved
 my_ordered_maps.adb:62:10: info: initialization of private part of "K" proved
@@ -935,7 +935,7 @@ my_ordered_maps.adb:96:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:97:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:98:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:98:30: info: initialization of private part of "L" proved
-my_ordered_maps.adb:99:33: medium: assertion might fail, cannot prove false
+my_ordered_maps.adb:99:07: medium: assertion might fail
 my_ordered_maps.adb:102:14: warning: subprogram "Test_Map_Rec_2" has no effect
 my_ordered_maps.adb:104:07: info: initialization of private part of "L" proved
 my_ordered_maps.adb:104:10: info: initialization of private part of "K" proved
@@ -1000,7 +1000,7 @@ my_ordered_maps.adb:139:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:140:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:141:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_ordered_maps.adb:141:30: info: initialization of private part of "L" proved
-my_ordered_maps.adb:142:33: medium: assertion might fail, cannot prove false
+my_ordered_maps.adb:142:07: medium: assertion might fail
 my_ordered_maps.adb:147:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:148:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:149:07: info: precondition proved (Z3: 1 VC)
@@ -1160,7 +1160,7 @@ my_ordered_sets.adb:89:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:90:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:91:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:91:30: info: initialization of private part of "L" proved
-my_ordered_sets.adb:92:33: medium: assertion might fail, cannot prove false
+my_ordered_sets.adb:92:07: medium: assertion might fail
 my_ordered_sets.adb:95:14: warning: subprogram "Test_Set_Rec" has no effect
 my_ordered_sets.adb:98:07: info: initialization of private part of "L" proved
 my_ordered_sets.adb:98:10: info: initialization of private part of "K" proved
@@ -1238,7 +1238,7 @@ my_ordered_sets.adb:143:32: info: initialization of private part of "K" proved
 my_ordered_sets.adb:144:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:145:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:145:30: info: initialization of private part of "K" proved
-my_ordered_sets.adb:146:33: medium: assertion might fail, cannot prove false
+my_ordered_sets.adb:146:07: medium: assertion might fail
 my_ordered_sets.adb:149:14: warning: subprogram "Test_Set_Rec_2" has no effect
 my_ordered_sets.adb:151:07: info: initialization of private part of "L" proved
 my_ordered_sets.adb:151:10: info: initialization of private part of "K" proved
@@ -1294,7 +1294,7 @@ my_ordered_sets.adb:183:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:184:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:185:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_ordered_sets.adb:185:30: info: initialization of private part of "L" proved
-my_ordered_sets.adb:186:33: medium: assertion might fail, cannot prove false
+my_ordered_sets.adb:186:07: medium: assertion might fail
 my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:192:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:193:07: info: precondition proved (Z3: 1 VC)
@@ -1433,7 +1433,7 @@ my_sets.adb:76:32: info: initialization of private part of "L" proved
 my_sets.adb:77:16: info: initialization of private part of "L" proved
 my_sets.adb:78:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:78:30: info: initialization of private part of "L" proved
-my_sets.adb:79:33: medium: assertion might fail, cannot prove false
+my_sets.adb:79:07: medium: assertion might fail
 my_sets.adb:82:14: warning: subprogram "Test_Set_Rec" has no effect
 my_sets.adb:85:07: info: initialization of private part of "L" proved
 my_sets.adb:85:10: info: initialization of private part of "K" proved
@@ -1512,7 +1512,7 @@ my_sets.adb:131:32: info: initialization of private part of "K" proved
 my_sets.adb:132:16: info: initialization of private part of "K" proved
 my_sets.adb:133:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:133:30: info: initialization of private part of "K" proved
-my_sets.adb:134:33: medium: assertion might fail, cannot prove false
+my_sets.adb:134:07: medium: assertion might fail
 my_sets.adb:137:14: warning: subprogram "Test_Set_Rec_2" has no effect
 my_sets.adb:139:07: info: initialization of private part of "L" proved
 my_sets.adb:139:10: info: initialization of private part of "K" proved
@@ -1569,7 +1569,7 @@ my_sets.adb:171:32: info: initialization of private part of "L" proved
 my_sets.adb:172:16: info: initialization of private part of "L" proved
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:173:30: info: initialization of private part of "L" proved
-my_sets.adb:174:33: medium: assertion might fail, cannot prove false
+my_sets.adb:174:07: medium: assertion might fail
 my_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
 my_sets.adb:180:07: info: precondition proved (Z3: 1 VC)
 my_sets.adb:181:07: info: precondition proved (Z3: 1 VC)
@@ -1761,5 +1761,5 @@ my_vectors.adb:107:17: info: initialization of private part of "K" proved
 my_vectors.adb:108:22: info: assertion proved (Z3: 1 VC)
 my_vectors.adb:108:33: info: initialization of private part of "L" proved
 my_vectors.adb:110:14: info: initialization of private part of "L" proved
-my_vectors.adb:111:33: medium: assertion might fail, cannot prove false
+my_vectors.adb:111:07: medium: assertion might fail
 my_vectors.ads:10:14: warning: subprogram "Test_Vectors" has no effect
