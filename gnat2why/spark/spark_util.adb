@@ -1845,9 +1845,7 @@ package body SPARK_Util is
 
          begin
             return Present (Encapsulating)
-              and then Ekind (Encapsulating) = E_Variable
-              and then Ekind (Etype (Encapsulating)) in E_Protected_Type
-                                                      | E_Task_Type;
+              and then Is_Single_Concurrent_Object (Encapsulating);
          end;
 
       else
