@@ -300,7 +300,12 @@ package body Flow.Interprocedural is
                end;
             end if;
 
-            if not Outputs.Is_Empty then
+            if Outputs.Is_Empty then
+               --  All inputs flow into the null export vertex
+               for Input of Inputs loop
+                  Add_TD_Edge (Input, Null_Export_Flow_Id);
+               end loop;
+            else
                --  Each output depends on all inputs
                for Output of Outputs loop
                   declare
@@ -334,11 +339,6 @@ package body Flow.Interprocedural is
                         end;
                      end loop;
                   end;
-               end loop;
-            else
-               --  All inputs flow into the null export vertex
-               for Input of Inputs loop
-                  Add_TD_Edge (Input, Null_Export_Flow_Id);
                end loop;
             end if;
          end;
