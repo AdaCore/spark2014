@@ -61,7 +61,7 @@ git submodule update
 ```
 
 In order to build SPARK, you need to install first the following dependencies
-(and we recommend using the Opam package manager for these):
+(and we recommend using the OPAM package manager for these):
 
 * ocaml compiler
 * ocamlgraph library
