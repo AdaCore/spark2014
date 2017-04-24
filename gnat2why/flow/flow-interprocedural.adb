@@ -326,11 +326,16 @@ package body Flow.Interprocedural is
 
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Proof
-                             or else (not Ghost_Subprogram
-                                      and then not Input_Is_Proof);
+                               or else
+                             Is_Abstract_State (Output)
+                               or else
+                             (not Ghost_Subprogram
+                              and then not Input_Is_Proof);
                            --  Ghost outputs can always be modified; non-ghost
-                           --  outputs can only be modified by non-ghost
-                           --  subprograms using non-ghost inputs.
+                           --  abstract states too, because they might contain
+                           --  ghost constituents; non-ghost outputs can only
+                           --  be modified by non-ghost subprograms using
+                           --  non-ghost inputs.
 
                         begin
                            if Dependency_Allowed then
