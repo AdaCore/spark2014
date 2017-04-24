@@ -1,6 +1,5 @@
 package body imports with
   Spark_Mode,
-  Refined_State => (Imp_State => State)
+  Refined_State => (Imp_State => null)
 is
-   State : Integer := 0;
 end Imports;
