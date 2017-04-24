@@ -8,6 +8,15 @@ that ultra-low defect software can be deployed in application domains where
 high-reliability must be assured, for example where safety and security are
 key requirements.
 
+This repository provides visibility on the development process. The main line
+of development is in line with the development version of GNAT, which is not
+directly visible to the public (although patches are regularly transfered to
+the FSF repository at ``svn://gcc.gnu.org/svn/gcc/trunk/gcc/ada``), and it will
+probably be impossible to build the master branch of the software with any
+other compiler. However, buildable branches are provided corresponding to
+public compiler releases, see the section on *Building SPARK with a GNAT GPL
+compiler* below.
+
 # 2. Commercial support
 
 SPARK is commercially supported by AdaCore and Altran, you can visit the
@@ -39,7 +48,26 @@ branch of this repository. For example, to build with GNAT GPL 2016, use the
 branch gpl-2016, as follows:
 ```
 git checkout gpl-2016
+```
+
+SPARK repository uses submodules to keep in synch with corresponding versions
+of Why3, Alt-Ergo, CVC4 and Z3, which generally track the main repositories for
+these tools, with minor modifications for the integration with SPARK. To
+retrieve these submodules, do:
+```
+git checkout gpl-2016
+git submodule init
 git submodule update
 ```
+
+In order to build SPARK, you need to install first the following dependencies
+(and we recommend using the Opam package manager for these):
+
+* ocaml compiler
+* ocamlgraph library
+* menhir parser
+* zarith library
+* camlzip library
+* ocplib-simplex library
 
 Then follow the instructions in the Makefile.
