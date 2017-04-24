@@ -1,0 +1,5 @@
+project Test is
+
+  for Main use ("main");
+
+end Test;
