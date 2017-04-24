@@ -1873,7 +1873,8 @@ package body Gnat2Why.Expr is
       else
          pragma Assert (Present (Base));
          declare
-            Why_Base         : constant W_Type_Id := Base_Why_Type (Base);
+            Why_Base         : constant W_Type_Id :=
+              Base_Why_Type_No_Bool (Base);
             Le               : constant W_Identifier_Id :=
               (if Why_Type_Is_Float (Why_Base) then
                     MF_Floats (Why_Base).Le

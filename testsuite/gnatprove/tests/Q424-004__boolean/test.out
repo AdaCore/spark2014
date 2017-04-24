@@ -1,0 +1,2 @@
+bbool.ads:2:16: warning: unused variable "B"
+bbool.ads:3:12: info: range check proved (CVC4: 2 VC)
