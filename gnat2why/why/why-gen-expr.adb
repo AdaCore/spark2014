@@ -1540,6 +1540,12 @@ package body Why.Gen.Expr is
 
             Check_Type := Etype (Defining_Identifier (Par));
 
+         when N_If_Expression =>
+            Check_Type := Etype (Par);
+
+         when N_Case_Expression_Alternative =>
+            Check_Type := Etype (Parent (Par));
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
