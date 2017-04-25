@@ -685,9 +685,8 @@ package body Flow.Analysis.Sanity is
       --  written.
 
       function Up_Project_Flow_Set
-        (FS      : Flow_Id_Sets.Set;
-         Variant : Flow_Id_Variant)
-        return Flow_Id_Sets.Set;
+        (FS : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set;
       --  Up projects the elements of FS that can be up projected. Elements
       --  that cannot be up projected are simply copied across. The variant
       --  of all elements is also set to Variant.
@@ -782,11 +781,10 @@ package body Flow.Analysis.Sanity is
       -------------------------
 
       function Up_Project_Flow_Set
-        (FS      : Flow_Id_Sets.Set;
-         Variant : Flow_Id_Variant)
+        (FS : Flow_Id_Sets.Set)
          return Flow_Id_Sets.Set
       is
-         Up_Projected_Set : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Up_Projected : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
       begin
          for F of FS loop
@@ -796,11 +794,11 @@ package body Flow.Analysis.Sanity is
                   then Up_Project_Constituent (F, FA.S_Scope)
                   else F);
             begin
-               Up_Projected_Set.Include (Change_Variant (Elem, Variant));
+               Up_Projected.Include (Elem);
             end;
          end loop;
 
-         return Up_Projected_Set;
+         return Up_Projected;
       end Up_Project_Flow_Set;
 
    --  Start of processing for Check_Generated_Refined_Global
@@ -844,12 +842,9 @@ package body Flow.Analysis.Sanity is
                    Writes     => Actual_Writes);
 
       --  Up project actual globals
-      Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes,
-                                                         Out_View);
-      Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads,
-                                                         In_View);
-      Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
-                                                         In_View);
+      Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes);
+      Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads);
+      Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins);
 
       --  Remove Reads from Proof_Ins
       Projected_Actual_Proof_Ins.Difference (Projected_Actual_Reads);

@@ -702,7 +702,8 @@ is
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Flow_Id
-   with Pre => Is_Non_Visible_Constituent (F, Scope);
+   with Pre  => Is_Non_Visible_Constituent (F, Scope),
+        Post => Up_Project_Constituent'Result.Variant = F.Variant;
    --  Returns the Flow_Id of the closest encapsulating state of F that
    --  Is_Visible from Scope.
 
