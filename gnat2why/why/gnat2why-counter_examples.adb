@@ -68,50 +68,36 @@ package body Gnat2Why.Counter_Examples is
       Element_File : String;
       Element_Line : Natural)
       return Boolean;
-   --  Return True if the counterexample element
-   --  with given declaration at given position
-   --  is uninitialized.
+   --  Return True if the counterexample element with given declaration at
+   --  given position is uninitialized.
 
    type CNT_Element (<>);
    type CNT_Element_Ptr is access all CNT_Element;
 
    package CNT_Elements is
      new Ada.Containers.Indefinite_Ordered_Maps
-       (Key_Type => String,
+       (Key_Type     => String,
         Element_Type => CNT_Element_Ptr);
 
-   type CNT_Element_Map_Ptr is access all
-     CNT_Elements.Map;
+   type CNT_Element_Map_Ptr is access all CNT_Elements.Map;
 
    package Vars_List is
      new Ada.Containers.Ordered_Sets
        (Element_Type => Unbounded_String);
 
-   --  Represents variables at given source code location.
    type Variables_Info is record
       Variables_Order : Vars_List.Set;
-      --  Vector of variable names in the order in that variables
-      --  should be displayed
+      --  Vector of variable names in the order in that variables should be
+      --  displayed.
 
       Variables_Map : aliased CNT_Elements.Map;
-      --  Map from variable names to information about these
-      --  variables. This includes values of variables,
-      --  informations about possible record fields and
-      --  informations about possible attributes.
+      --  Map from variable names to information about these variables. This
+      --  includes values of variables, informations about possible record
+      --  fields and informations about possible attributes.
    end record;
+   --  Represents variables at given source code location
 
-   --  Represents information about the element of a counter
-   --  example. An element can be either:
-   --  - a variable/field/attribute of a record type, in which case
-   --    Value = "@not_display",
-   --    Fields contains the CNT_Element of some/all of its fields
-   --    and Attributes may contain info on its attributes.
-   --  - a "flat" variable/field/attribute, in which case
-   --    Value is set to the counter example value
-   --    Fields is empty
-   --    and Attributes may contain info on its attributes.
-   type CNT_Element
-   is record
+   type CNT_Element is record
       Entity     : Entity_Id;
       --  The corresponding element of SPARK AST
 
@@ -120,6 +106,16 @@ package body Gnat2Why.Counter_Examples is
       Value      : Cntexmp_Value_Ptr;
       Val_Str    : Unbounded_String;
    end record;
+   --  Represents information about the element of a counter
+   --  example. An element can be either:
+   --  * a variable/field/attribute of a record type, in which case
+   --    - Value = "@not_display",
+   --    - Fields contains the CNT_Element of some/all of its fields
+   --    - Attributes may contain info on its attributes.
+   --  * a "flat" variable/field/attribute, in which case
+   --    - Value is set to the counter example value
+   --    - Fields is empty
+   --    - and Attributes may contain info on its attributes.
 
    procedure Build_Pretty_Line
      (Variables               : Variables_Info;
@@ -133,12 +129,11 @@ package body Gnat2Why.Counter_Examples is
       Line             : Natural;
       Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
       Variables        : in out Variables_Info);
-   --  Build a structure holding the informations associated to
-   --  the counterexample at a single source code location.
+   --  Build a structure holding the informations associated to the
+   --  counterexample at a single source code location.
    --  This structure associates to each variable mentioned in the
-   --  counterexample a CNT_Element gathering the infos given in
-   --  the counter example (fields if any, attributes and
-   --  associated value(s)).
+   --  counterexample a CNT_Element gathering the infos given in the
+   --  counter example (fields if any, attributes and associated value(s)).
    --  @param Line_Cntexmp_Arr counterexample model elements at a
    --    single source code location (line)
    --  @param Variables stores information about values, fields
@@ -174,7 +169,8 @@ package body Gnat2Why.Counter_Examples is
       --  the keyword constant on its definition. Internally, it calls
       --  Compile_Time_Known_Value_Or_Aggr.
 
-      function Contains (T : Entity_Id; F : String) return Boolean;
+      function Contains (T : Entity_Id; F : String) return Boolean
+      with Pre => Is_Type (T);
       --  Returns True iff a component or discriminant of type T has name F
 
       function Refine
@@ -189,7 +185,10 @@ package body Gnat2Why.Counter_Examples is
          Arr_Others   : Cntexmp_Value_Ptr;
          Indice_Type  : Entity_Id;
          Element_Type : Entity_Id)
-         return Unbounded_String;
+         return Unbounded_String
+      with Pre => Is_Discrete_Type (Indice_Type)
+                    and then
+                  Is_Type (Element_Type);
 
       function Refine_Value
         (Cnt_Value : Cntexmp_Value_Ptr;
@@ -207,8 +206,8 @@ package body Gnat2Why.Counter_Examples is
       begin
          if Ekind (E) = E_Constant then
             declare
-               Par  : constant Node_Id := Parent (E);
-               Expr : constant Node_Id := Expression (Par);
+               Decl : constant Node_Id := Parent (E);
+               Expr : constant Node_Id := Expression (Decl);
             begin
                return Present (Expr)
                  and then Compile_Time_Known_Value_Or_Aggr (Expr);
@@ -225,7 +224,7 @@ package body Gnat2Why.Counter_Examples is
       function Contains (T : Entity_Id; F : String) return Boolean is
          C : Entity_Id := First_Component_Or_Discriminant (T);
       begin
-         while C /= Empty loop
+         while Present (C) loop
             if F = Source_Name (C) then
                return True;
             end if;
@@ -323,7 +322,7 @@ package body Gnat2Why.Counter_Examples is
                --  inside translated arrays_of_records.
 
                if Is_Boolean_Type (AST_Type) then
-                  return (To_Unbounded_String (Cnt_Value.B /= "0"));
+                  return To_Unbounded_String (Cnt_Value.B /= "0");
                end if;
 
                return Cnt_Value.B;
@@ -353,9 +352,9 @@ package body Gnat2Why.Counter_Examples is
                   Count_Fields  : Integer :=
                     Integer (Cntexmp_Value_Array.Length (Mfields));
                   Check_Count   : Integer := 0;
-                  Discriminants : constant Int :=
-                    (if Has_Discriminants (AST_Basetype) then
-                        Number_Discriminants (AST_Basetype)
+                  Discriminants : constant Nat :=
+                    (if Has_Discriminants (AST_Basetype)
+                     then Number_Discriminants (AST_Basetype)
                      else 0);
                   Fields        : constant Int :=
                     Number_Components (AST_Basetype) - Discriminants;
@@ -383,13 +382,14 @@ package body Gnat2Why.Counter_Examples is
                         begin
                            if Contains (AST_Type, Field_Name) then
                               if Check_Count > 0 then
-                                 S := S & ", ";
+                                 Append (S, ", ");
                               end if;
 
                               Check_Count := Check_Count + 1;
-                              S := S & Field_Name & " => " &
-                                Refine (Cntexmp_Value_Array.Element (C),
-                                        Field_Type);
+                              Append (S,
+                                      Field_Name & " => " &
+                                      Refine (Cntexmp_Value_Array.Element (C),
+                                              Field_Type));
                               Current_Field :=
                                 Next_Discriminant (Current_Field);
 
@@ -416,7 +416,7 @@ package body Gnat2Why.Counter_Examples is
                   if Count_Fields = Integer (Fields) then
                      Current_Field := First_Component (AST_Basetype);
                      Fields_Loop :
-                     for C in Mfields.Iterate loop
+                     for Mfield of Mfields loop
                         declare
                            Field_Type : constant Entity_Id :=
                                           Retysp (Etype (Current_Field));
@@ -425,23 +425,23 @@ package body Gnat2Why.Counter_Examples is
                         begin
                            if Contains (AST_Type, Field_Name) then
                               if Check_Count > 0 then
-                                 S := S & ", ";
+                                 Append (S, ", ");
                               end if;
 
                               Check_Count := Check_Count + 1;
-                              S := S & Field_Name & " => " &
-                                Refine (Cntexmp_Value_Array.Element (C),
-                                        Field_Type);
-                              Current_Field :=
-                                Next_Component (Current_Field);
 
-                              if Current_Field = Empty then
+                              Append (S, Field_Name & " => " &
+                                         Refine (Mfield, Field_Type));
+
+                              Current_Field := Next_Component (Current_Field);
+
+                              if No (Current_Field) then
                                  exit Fields_Loop;
                               end if;
 
                            else
                               Current_Field := Next_Component (Current_Field);
-                              if Current_Field = Empty then
+                              if No (Current_Field) then
 
                                  --  Exit when no more fields are present
 
@@ -452,13 +452,11 @@ package body Gnat2Why.Counter_Examples is
                      end loop Fields_Loop;
                   end if;
 
-                  if Check_Count /= Integer (Fields + Discriminants)
-                    and then Check_Count > 0
-                  then
-                     S := S & ", others => ?)";
-                  else
-                     S := S & ")";
-                  end if;
+                  Append (S,
+                          (if Check_Count /= Integer (Fields + Discriminants)
+                             and then Check_Count > 0
+                           then ", others => ?)"
+                           else ")"));
 
                   return S;
                end;
@@ -468,7 +466,7 @@ package body Gnat2Why.Counter_Examples is
             --  still happens in practice.
 
             when Cnt_Invalid =>
-               return (Cnt_Value.S);
+               return Cnt_Value.S;
 
             when Cnt_Array =>
                if Is_Array_Type (AST_Type) then
@@ -487,7 +485,7 @@ package body Gnat2Why.Counter_Examples is
                --  This case should not happen
 
                else
-                  return To_Unbounded_String ("");
+                  return Null_Unbounded_String;
                end if;
          end case;
       end Refine;
@@ -503,9 +501,9 @@ package body Gnat2Why.Counter_Examples is
          Element_Type : Entity_Id)
          return Unbounded_String
       is
-         S : Unbounded_String := To_Unbounded_String ("");
+         S : Unbounded_String;
       begin
-         S := S & "(";
+         Append (S, "(");
          for C in Arr_Indices.Iterate loop
             declare
                Elem         : constant Cntexmp_Value_Ptr :=
@@ -521,11 +519,13 @@ package body Gnat2Why.Counter_Examples is
                Elem_Printed : constant Unbounded_String :=
                                 Refine_Value (Elem, Element_Type);
             begin
-               S := S & Ind_Printed & " => " & Elem_Printed & ", ";
+               Append (S, Ind_Printed & " => " & Elem_Printed & ", ");
             end;
          end loop;
 
-         S := S & "others => " & Refine_Value (Arr_Others, Element_Type) & ")";
+         Append (S,
+                 "others => " & Refine_Value (Arr_Others, Element_Type) & ")");
+
          return S;
       end Refine_Array;
 
@@ -540,14 +540,14 @@ package body Gnat2Why.Counter_Examples is
       is
          Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
       begin
-         return (Trim (Res, Both));
+         return Trim (Res, Both);
       end Refine_Value;
 
    --  Start of processing for Refine
 
    begin
       if Compile_Time_Known_And_Constant (AST_Node) then
-         return To_Unbounded_String ("");
+         return Null_Unbounded_String;
       else
          return Refine_Value (Cnt_Value, Retysp (Etype (AST_Node)));
       end if;
@@ -573,7 +573,7 @@ package body Gnat2Why.Counter_Examples is
             return Cnt_Value.U;
 
          when others =>
-            return To_Unbounded_String ("");
+            return Null_Unbounded_String;
       end case;
 
    end Refine_Attribute;
@@ -615,12 +615,11 @@ package body Gnat2Why.Counter_Examples is
          Prefix      : Unbounded_String;
          Attributes  : in out Names_And_Values.List)
          return Unbounded_String;
-      --  Gets the string value of given variable, record field or
-      --  Attribute.
-      --  If the value is of record type, the returned value is
-      --  a record aggregate.
-      --  If the value should not be displayed in countereexample,
-      --  value "@not_display" is returned.
+      --  Gets the string value of given variable, record field or Attribute.
+      --  If the value is of record type, the returned value is a record
+      --  aggregate.
+      --  If the value should not be displayed in countereexample, value
+      --  "@not_display" is returned.
       --  In addition, recursively populate the list of attributes "Attributes"
       --  of CNT_Element and its fields if any attribute is found.
 
@@ -641,63 +640,60 @@ package body Gnat2Why.Counter_Examples is
 
       begin
 
-         if not CNT_Element.Attributes.Is_Empty then
-            for Att in CNT_Element.Attributes.Iterate loop
-               declare
-                  New_Prefix : constant Unbounded_String :=
-                    Prefix & "'" & CNT_Elements.Key (Att);
+         for Att in CNT_Element.Attributes.Iterate loop
+            declare
+               New_Prefix : constant Unbounded_String :=
+                 Prefix & "'" & CNT_Elements.Key (Att);
 
-                  Attribute_Element : constant CNT_Element_Ptr :=
-                                        CNT_Elements.Element (Att);
-                  Refined_Value     : Unbounded_String :=
-                                        To_Unbounded_String ("");
+               Attribute_Element : constant CNT_Element_Ptr :=
+                 CNT_Elements.Element (Att);
+               Refined_Value     : Unbounded_String;
 
-               begin
-                  --  Currently attributes are always printed as integers
+            begin
+               --  Currently attributes are always printed as integers
 
-                  if CNT_Elements.Key (Att) = "First" then
-                     Refined_Value :=
-                       Refine_Attribute (Attribute_Element.Value);
-                  elsif CNT_Elements.Key (Att) = "Last" then
-                     Refined_Value :=
-                       Refine_Attribute (Attribute_Element.Value);
-                  elsif CNT_Elements.Key (Att) = "Result" then
-                     Refined_Value :=
-                       Get_CNT_Element_Value_And_Attributes
-                         (Attribute_Element,
-                          Prefix,
-                          Attributes);
-                  elsif CNT_Elements.Key (Att) = "Old" then
-                     Refined_Value :=
-                       Get_CNT_Element_Value_And_Attributes
-                         (Attribute_Element,
-                          Prefix,
-                          Attributes);
-                  else
-                     Refined_Value :=
-                       Refine_Attribute (Attribute_Element.Value);
-                  end if;
+               if CNT_Elements.Key (Att) = "First" then
+                  Refined_Value :=
+                    Refine_Attribute (Attribute_Element.Value);
+               elsif CNT_Elements.Key (Att) = "Last" then
+                  Refined_Value :=
+                    Refine_Attribute (Attribute_Element.Value);
+               elsif CNT_Elements.Key (Att) = "Result" then
+                  Refined_Value :=
+                    Get_CNT_Element_Value_And_Attributes
+                      (Attribute_Element,
+                       Prefix,
+                       Attributes);
+               elsif CNT_Elements.Key (Att) = "Old" then
+                  Refined_Value :=
+                    Get_CNT_Element_Value_And_Attributes
+                      (Attribute_Element,
+                       Prefix,
+                       Attributes);
+               else
+                  Refined_Value :=
+                    Refine_Attribute (Attribute_Element.Value);
+               end if;
 
-                  --  Detecting the absence of value
-                  if Refined_Value /= "" and Refined_Value /= "!"
-                    and Refined_Value /= "( )"
-                    and Refined_Value /= "()"
-                  then
-                     Attributes.Append
-                       (New_Item =>
-                          (Name          => New_Prefix,
-                           Value         => Refined_Value));
-                  end if;
-               end;
-            end loop;
-         end if;
+               --  Detecting the absence of value
+               if Refined_Value /= ""
+                 and then Refined_Value /= "!"
+                 and then Refined_Value /= "( )"
+                 and then Refined_Value /= "()"
+               then
+                  Attributes.Append
+                    (New_Item =>
+                       (Name  => New_Prefix,
+                        Value => Refined_Value));
+               end if;
+            end;
+         end loop;
 
          --  Following types should be ignored when exploring fields of
          --  CNT_Element.
 
          if not Is_Concurrent_Type (Element_Type)
-           and then
-             not Is_Incomplete_Or_Private_Type (Element_Type)
+           and then not Is_Incomplete_Or_Private_Type (Element_Type)
            and then not Is_Record_Type (Element_Type)
            and then not Has_Discriminants (Element_Type)
          then
@@ -706,10 +702,10 @@ package body Gnat2Why.Counter_Examples is
 
          --  Check the attributes of the fields
          declare
-            Decl_Field_Discr         : Entity_Id :=
+            Decl_Field_Discr : Entity_Id :=
               First_Component_Or_Discriminant (Element_Type);
-         begin
 
+         begin
             while Present (Decl_Field_Discr) loop
                declare
                   Field_Descr_Name : constant String :=
@@ -718,8 +714,7 @@ package body Gnat2Why.Counter_Examples is
                                        Find (CNT_Element.Fields.all,
                                              Field_Descr_Name);
                begin
-                  if Has_Element (Field_Descr)
-                  then
+                  if Has_Element (Field_Descr) then
                      Get_CNT_Element_Attributes
                        (Element (Field_Descr),
                         Prefix & "." & Field_Descr_Name,
@@ -752,7 +747,7 @@ package body Gnat2Why.Counter_Examples is
          --  discriminants), return the value of the node.
 
          if not Is_Record_Type (Element_Type)
-           and not Is_Private_Type (Element_Type)
+           and then not Is_Private_Type (Element_Type)
          then
             declare
                Refined_Value : constant Unbounded_String :=
@@ -763,7 +758,7 @@ package body Gnat2Why.Counter_Examples is
                   return Dont_Display;
                else
                   CNT_Element.Val_Str := Refined_Value;
-                  return (CNT_Element.Val_Str);
+                  return CNT_Element.Val_Str;
                end if;
             end;
          end if;
@@ -789,8 +784,7 @@ package body Gnat2Why.Counter_Examples is
          --  Check whether the type can have fields or discriminants
 
          if not Is_Concurrent_Type (Element_Type)
-           and then
-             not Is_Incomplete_Or_Private_Type (Element_Type)
+           and then not Is_Incomplete_Or_Private_Type (Element_Type)
            and then not Is_Record_Type (Element_Type)
            and then not Has_Discriminants (Element_Type)
          then
@@ -804,12 +798,13 @@ package body Gnat2Why.Counter_Examples is
          begin
             --  Detecting the absence of value
 
-            if Refined_Value /= "" and Refined_Value /= "!"
-              and Refined_Value /= "( )"
-              and Refined_Value /= "()"
+            if Refined_Value /= ""
+              and then Refined_Value /= "!"
+              and then Refined_Value /= "( )"
+              and then Refined_Value /= "()"
             then
                CNT_Element.Val_Str := Refined_Value;
-               return (CNT_Element.Val_Str);
+               return CNT_Element.Val_Str;
             else
                --  No value were found for the variable so we need to recover
                --  the record field by field. We will go through all fields of
@@ -828,9 +823,8 @@ package body Gnat2Why.Counter_Examples is
                   --  counterexamples should be projected in this part of
                   --  the code
 
-                  Is_Before                : Boolean := False;
-                  Value                    : Unbounded_String :=
-                                               To_Unbounded_String ("(");
+                  Is_Before : Boolean := False;
+                  Value     : Unbounded_String := To_Unbounded_String ("(");
 
                begin
                   --  If the record type of the value has no fields and
@@ -838,8 +832,8 @@ package body Gnat2Why.Counter_Examples is
                   --  for fields and discriminants of the processed value
                   --  collected, do not display the value
 
-                  if Fields_Discrs_Collected = 0 or else
-                    Fields_Discrs_Declared = 0
+                  if Fields_Discrs_Collected = 0
+                    or else Fields_Discrs_Declared = 0
                   then
                      return Dont_Display;
                   end if;
@@ -852,13 +846,12 @@ package body Gnat2Why.Counter_Examples is
                                              Find (CNT_Element.Fields.all,
                                                    Field_Descr_Name);
                      begin
-                        if Has_Element (Field_Descr) or else
-                          Fields_Discrs_Declared -
-                            Fields_Discrs_Collected <= 1
+                        if Has_Element (Field_Descr)
+                            or else
+                          Fields_Discrs_Declared - Fields_Discrs_Collected <= 1
                         then
                            declare
-                              Field_Descr_Val : constant Unbounded_String
-                                :=
+                              Field_Descr_Val : constant Unbounded_String :=
                                   (if Has_Element (Field_Descr)
                                    then
                                       Get_CNT_Element_Value
@@ -866,14 +859,12 @@ package body Gnat2Why.Counter_Examples is
                                          Prefix & "." & Field_Descr_Name)
                                    else To_Unbounded_String ("?"));
                            begin
-                              if Field_Descr_Val /= Dont_Display
-                              then
+                              if Field_Descr_Val /= Dont_Display then
                                  Append (Value,
-                                         (if Is_Before then ", "
-                                          else "") &
-                                           Field_Descr_Name &
-                                           " => " &
-                                           Field_Descr_Val);
+                                         (if Is_Before then ", " else "") &
+                                         Field_Descr_Name &
+                                         " => " &
+                                         Field_Descr_Val);
                                  Is_Before := True;
                                  if Has_Element (Field_Descr) then
                                     Fields_Discrs_With_Value :=
@@ -888,8 +879,9 @@ package body Gnat2Why.Counter_Examples is
 
                   --  If there are no fields and discriminants of the processed
                   --  value with values that can be displayed, do not display
-                  --  the value (this can happen if there were collected fields
-                  --  or discrinants, but their values should not be displayed)
+                  --  the value (this can happen if there were collected
+                  --  fields or discrinants, but their values should not
+                  --  be displayed).
 
                   if Fields_Discrs_With_Value = 0 then
                      return Dont_Display;
@@ -899,9 +891,7 @@ package body Gnat2Why.Counter_Examples is
                   --  in the counterexample, summarize them using the field
                   --  others.
 
-                  if Fields_Discrs_Declared -
-                    Fields_Discrs_Collected > 1
-                  then
+                  if Fields_Discrs_Declared - Fields_Discrs_Collected > 1 then
                      Append (Value,
                              (if Is_Before then ", " else "") &
                                "others => ?");
@@ -932,8 +922,7 @@ package body Gnat2Why.Counter_Examples is
                                      Attributes);
 
          --  Return the value
-         return (Get_CNT_Element_Value (CNT_Element,
-                                        Prefix));
+         return Get_CNT_Element_Value (CNT_Element, Prefix);
       end Get_CNT_Element_Value_And_Attributes;
 
       Var_Name_Cursor : Vars_List.Cursor :=
@@ -947,11 +936,12 @@ package body Gnat2Why.Counter_Examples is
          declare
             Var_Name : constant Unbounded_String :=
               Vars_List.Element (Var_Name_Cursor);
+
             Variable : Cursor :=
-              Find (Variables.Variables_Map,
-                    To_String (Var_Name));
-            Attributes : Names_And_Values.List :=
-              Names_And_Values.Empty_List;
+              Variables.Variables_Map.Find (To_String (Var_Name));
+
+            Attributes : Names_And_Values.List;
+
             Var_Value : constant Unbounded_String :=
               Get_CNT_Element_Value_And_Attributes
                 (Element (Variable),
@@ -960,6 +950,10 @@ package body Gnat2Why.Counter_Examples is
 
             procedure Add_CNT (Name, Value : Unbounded_String);
             --  Append a cnt variable and its value to the list
+
+            -------------
+            -- Add_CNT --
+            -------------
 
             procedure Add_CNT (Name, Value : Unbounded_String) is
             begin
@@ -999,9 +993,9 @@ package body Gnat2Why.Counter_Examples is
       Variables        : in out Variables_Info)
    is
       function Insert_CNT_Element
-        (Name    : String;
-         Entity  : Entity_Id;
-         Map     : CNT_Element_Map_Ptr)
+        (Name   : String;
+         Entity : Entity_Id;
+         Map    : CNT_Element_Map_Ptr)
          return CNT_Element_Ptr;
       --  Insert a CNT_Element with given name and entity to the given map. If
       --  it has already been inserted, return the existing; if not, create new
@@ -1012,9 +1006,9 @@ package body Gnat2Why.Counter_Examples is
       -------------------------
 
       function Insert_CNT_Element
-        (Name    : String;
-         Entity  : Entity_Id;
-         Map     : CNT_Element_Map_Ptr)
+        (Name   : String;
+         Entity : Entity_Id;
+         Map    : CNT_Element_Map_Ptr)
          return CNT_Element_Ptr
       is
          use CNT_Elements;
@@ -1098,17 +1092,23 @@ package body Gnat2Why.Counter_Examples is
                                  Mode       => String_Split.Single);
 
             --  For every Part, we create a CNT_Element
-            for Var_Slice_Num in 1 .. String_Split.Slice_Count
-              (Name_Parts) loop
+            for Var_Slice_Num in
+              1 .. String_Split.Slice_Count (Name_Parts)
+            loop
                declare
 
                   function Try_Get_Part_Entity (Part : String)
-                                                      return Entity_Id;
-                  --  Try to cast Part into an Entity_Id,
-                  --  return empty id if it doesn't work.
+                                                return Entity_Id;
+                  --  Try to cast Part into an Entity_Id, return empty id if it
+                  --  doesn't work.
+
+                  -------------------------
+                  -- Try_Get_Part_Entity --
+                  -------------------------
 
                   function Try_Get_Part_Entity (Part : String)
-                                                      return Entity_Id is
+                                                return Entity_Id
+                  is
                   begin
                      return Entity_Id'Value (Part);
                   exception
@@ -1116,8 +1116,7 @@ package body Gnat2Why.Counter_Examples is
                         return Empty;
                   end Try_Get_Part_Entity;
 
-                  Part : constant String :=
-                    Slice (Name_Parts, Var_Slice_Num);
+                  Part : constant String := Slice (Name_Parts, Var_Slice_Num);
 
                   Part_Entity : constant Entity_Id :=
                     Try_Get_Part_Entity (Part);
@@ -1128,8 +1127,8 @@ package body Gnat2Why.Counter_Examples is
                   --  > 1, Part_Entity is Entity_Id of declaration of record
                   --  field or discriminant.
 
-                  Is_Attribute : Boolean :=
-                    No (Part_Entity);
+                  Is_Attribute : Boolean := No (Part_Entity);
+
                   --  If Part does not cast into an entity_id it is treated as
                   --  an attribute.
 
@@ -1155,10 +1154,7 @@ package body Gnat2Why.Counter_Examples is
                      end if;
 
                      --  Store variable name to Variable_List
-                     if not Vars_List.Contains
-                       (Variables.Variables_Order,
-                        Part_Name)
-                     then
+                     if not Variables.Variables_Order.Contains (Part_Name) then
                         Vars_List.Include
                           (Variables.Variables_Order,
                            Part_Name);
@@ -1167,11 +1163,11 @@ package body Gnat2Why.Counter_Examples is
                      --  Possibly Append attributes 'Old or
                      --  'Result after its name
                      if (Elt.Kind = CEE_Old
-                         and then
+                           and then
                          Nkind (Parent (Part_Entity)) in
                            N_Formal_Object_Declaration |
-                         N_Parameter_Specification
-                         and then
+                           N_Parameter_Specification
+                           and then
                          Out_Present (Parent (Part_Entity)))
                        or else Elt.Kind = CEE_Result
                      then
@@ -1264,8 +1260,7 @@ package body Gnat2Why.Counter_Examples is
          use CNT_Elements;
 
          Variables : Variables_Info;
-         Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List :=
-           Cntexample_Elt_Lists.Empty_List;
+         Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
 
       --  Start of processing for Create_Pretty_Line
 
@@ -1343,7 +1338,7 @@ package body Gnat2Why.Counter_Examples is
       function Get_Cntexmp_Line_Str
         (Cntexmp_Line : Cntexample_Elt_Lists.List) return String
       is
-         Cntexmp_Line_Str : Unbounded_String := Null_Unbounded_String;
+         Cntexmp_Line_Str : Unbounded_String;
 
       begin
          for Elt of Cntexmp_Line loop
@@ -1410,8 +1405,7 @@ package body Gnat2Why.Counter_Examples is
       --  assigned or it is a part of construct that triggers VC - and flow
       --  analysis would issue an error in this case).
 
-      if File_Name
-        (Sloc (Element_Decl)) = Element_File
+      if File_Name (Sloc (Element_Decl)) = Element_File
         and then
           Natural
             (Get_Logical_Line_Number (Sloc (Element_Decl))) = Element_Line
@@ -1420,15 +1414,14 @@ package body Gnat2Why.Counter_Examples is
             --  Uninitialized variable
             when N_Object_Declaration =>
                declare
-                  No_Init_Expr : constant Boolean :=
-                    No (Expression
-                        (Parent (Element_Decl)));
+                  Init_Expr : constant Node_Id :=
+                    Expression (Parent (Element_Decl));
                   No_Default_Init : constant Boolean :=
                     Default_Initialization
                       (Etype (Element_Decl)) =
                         No_Default_Initialization;
                begin
-                  return No_Init_Expr
+                  return No (Init_Expr)
                     and then No_Default_Init;
                end;
 
@@ -1438,10 +1431,8 @@ package body Gnat2Why.Counter_Examples is
             =>
                return
                  Out_Present (Parent (Element_Decl))
-                 and then
-                   not
-                     In_Present
-                       (Parent (Element_Decl));
+                 and then not In_Present (Parent (Element_Decl));
+               --  ??? Ekind (Element_Decl) = E_Out_Parameter ?
 
             when others =>
                return False;
