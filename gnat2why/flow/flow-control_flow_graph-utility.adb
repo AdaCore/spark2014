@@ -760,8 +760,19 @@ package body Flow.Control_Flow_Graph.Utility is
       Atr : V_Attributes)
       return Boolean
    is
-      All_Vars : constant Flow_Id_Sets.Set :=
-        Atr.Variables_Used or Atr.Variables_Defined;
+      function Is_Ghost_Variable (F : Flow_Id) return Boolean;
+      --  Returns True iff F represents a ghost variable
+
+      -----------------------
+      -- Is_Ghost_Variable --
+      -----------------------
+
+      function Is_Ghost_Variable (F : Flow_Id) return Boolean is
+        (F.Kind in Direct_Mapping | Record_Field
+         and then Is_Ghost_Entity (Get_Direct_Mapping_Id (F)));
+
+   --  Start of processing for Refers_To_Ghost
+
    begin
       return
         --  Check if the analyzed entity is a ghost
@@ -769,9 +780,10 @@ package body Flow.Control_Flow_Graph.Utility is
 
         --  Check if any of the variables used or defined is a ghost
         or else
-          (for some Var of All_Vars =>
-             Var.Kind in Direct_Mapping | Record_Field
-               and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var)))
+          (for some Var of Atr.Variables_Used => Is_Ghost_Variable (Var))
+
+        or else
+          (for some Var of Atr.Variables_Defined => Is_Ghost_Variable (Var))
 
         --  Check if any of the subprograms called is a ghost
         or else
