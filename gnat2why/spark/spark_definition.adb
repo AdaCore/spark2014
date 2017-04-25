@@ -246,6 +246,15 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
+   function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean is
+     (Comes_From_Source (N) or else
+      Nkind (Original_Node (N)) = N_Expression_Function);
+   --  When scanning a list of statements or declarations to decide the range
+   --  of application of a pragma Annotate, some statements starts a new range
+   --  for pragma to apply. If the declaration does not come from source, we
+   --  consider it to be part of the preceding one as far as pragma Annotate
+   --  is concerned. The exception to this rule are expression functions.
+
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
@@ -4658,6 +4667,44 @@ package body SPARK_Definition is
             raise Program_Error;
       end case;
 
+      --  Mark possible pragma nodes after the entity declaration. We skip this
+      --  step if the declaration should be disregarded for pragma Annotate.
+      --  This is to avoid entering a list of declarations "in the middle" of
+      --  the range of a pragma. This can happen if the predicate function of a
+      --  type is marked before the type itself. The pragma will still be
+      --  marked, when the type is marked.
+
+      if not Violation_Detected then
+         declare
+            --  See the documentation of Declaration_Node for the exception for
+            --  subprograms.
+            Decl_Node : constant Node_Id :=
+              (if Is_Subprogram (E) then
+                    Parent (Declaration_Node (E))
+               else Declaration_Node (E));
+            Cur       : Node_Id;
+         begin
+            if Is_List_Member (Decl_Node)
+              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+            then
+               Cur := Next (Decl_Node);
+               while Present (Cur) loop
+                  if Nkind (Cur) = N_Pragma then
+                     if Is_Pragma_Annotate_GNATprove (Cur) then
+                        Mark_Pragma_Annotate (Cur, Decl_Node,
+                                              Consider_Next => True);
+                     else
+                        Mark_Pragma (Cur);
+                     end if;
+                  elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                     exit;
+                  end if;
+                  Next (Cur);
+               end loop;
+            end if;
+         end;
+      end if;
+
       --  If a violation was detected, remove E from the set of SPARK entities
 
       if Violation_Detected then
@@ -5684,15 +5731,10 @@ package body SPARK_Definition is
          else
             Mark (Cur);
 
-            --  If the current declaration does not come from source, we
-            --  consider it to be part of the preceding one as far as pragma
-            --  Annotate is concerned, so we don't update the "preceding" node
-            --  in that case. The exception to this rule are expression
-            --  functions.
+            --  If the current declaration breaks the pragma range, we update
+            --  the "preceding" node.
 
-            if Comes_From_Source (Cur)
-              or else Nkind (Original_Node (Cur)) = N_Expression_Function
-            then
+            if Decl_Starts_Pragma_Annotate_Range (Cur) then
                Preceding := Cur;
                Is_Parent := False;
             end if;

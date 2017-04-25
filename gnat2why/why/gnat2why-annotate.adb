@@ -64,12 +64,18 @@ package body Gnat2Why.Annotate is
       Hash            => Common_Containers.Node_Hash,
       Equivalent_Keys => "=");
 
+   Pragma_Seen : Common_Containers.Hashed_Node_Sets.Set :=
+     Common_Containers.Hashed_Node_Sets.Empty_Set;
+   --  This set contains all pragma annotate nodes that have been processed.
+   --  It's purpose is to avoid processing a pragma twice. This set is not
+   --  used directly to produce output, so we can use a hashed set.
+
    Pragma_Set : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  After marking, this set contains all pragma Annotate nodes. They are
-   --  removed from the set one by one when messages which are covered by these
-   --  pragmas are encountered. At the end, only pragmas which don't cover a
-   --  message will be in this set.
+   --  After marking, this set contains all pragma Annotate nodes that suppress
+   --  check messages. They are removed from the set one by one when messages
+   --  which are covered by these pragmas are encountered. At the end, only
+   --  pragmas which don't cover a message will be in this set.
 
    Proved_Pragma : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -697,6 +703,11 @@ package body Gnat2Why.Annotate is
       Kind            : Annotate_Kind;
 
    begin
+      if Pragma_Seen.Contains (N) then
+         return;
+      else
+         Pragma_Seen.Insert (N);
+      end if;
       Syntax_Check_Pragma_Annotate_Gnatprove (N, Ok, Kind, Pattern, Reason);
 
       if not Ok then
