@@ -5587,12 +5587,6 @@ package body Gnat2Why.Subprograms is
                              Return_Type => EW_Bool_Type))));
             end if;
          end;
-
-         Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
-      elsif Ekind (E) = E_Function then
-         Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
-      else
-         Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
       end if;
 
       Close_Theory (File,

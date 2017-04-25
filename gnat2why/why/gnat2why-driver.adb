@@ -80,12 +80,14 @@ with SPARK_Util.Types;                use SPARK_Util.Types;
 with SPARK_Xrefs;
 with Stand;                           use Stand;
 with Switch;                          use Switch;
+with VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.Sprint;                use Why.Atree.Sprint;
 with Why.Atree.Tables;
+with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Inter;                       use Why.Inter;
-with VC_Kinds;
+with Why.Types;                       use Why.Types;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -722,6 +724,11 @@ package body Gnat2Why.Driver is
       procedure Generate_VCs (E : Entity_Id);
       --  Check if E is in main unit and then generate VCs
 
+      procedure Register_Symbol (E : Entity_Id);
+      --  Some entities are registered globally in the symbol table. We do this
+      --  upfront, so that we do not depend too much on the order of the list
+      --  of entities.
+
       ----------------------
       -- For_All_Entities --
       ----------------------
@@ -752,6 +759,23 @@ package body Gnat2Why.Driver is
          end if;
       end Generate_VCs;
 
+      ---------------------
+      -- Register_Symbol --
+      ---------------------
+
+      procedure Register_Symbol (E : Entity_Id) is
+      begin
+         if Ekind (E) in E_Entry | E_Function | E_Procedure
+           and then Is_Translated_Subprogram (E)
+         then
+            if Ekind (E) in E_Function | E_Procedure then
+               Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
+            else
+               Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
+            end if;
+         end if;
+      end Register_Symbol;
+
    --  Start of processing for Translate_CUnit
 
    begin
@@ -763,6 +787,8 @@ package body Gnat2Why.Driver is
       --  Store information for entities
 
       For_All_Entities (Store_Information_For_Entity'Access);
+
+      For_All_Entities (Register_Symbol'Access);
 
       --  Translate Ada entities into Why3
 
