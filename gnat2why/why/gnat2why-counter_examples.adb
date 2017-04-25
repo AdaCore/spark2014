@@ -148,8 +148,13 @@ package body Gnat2Why.Counter_Examples is
    function Print_CNT_Element_Debug (El : CNT_Element) return String;
    --  Debug function, print a CNT_Element without any processing
 
-   function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Node : Entity_Id)
-                    return Unbounded_String;
+   function Refine
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      AST_Node  : Entity_Id)
+      return Unbounded_String;
+   --  This function takes a value from Why3 Cnt_Value and converts it into a
+   --  suitable string for the corresponding entity in GNAT AST node AST_Node.
+   --  Example: (97, Character_entity) -> "'a'"
 
    function Refine_Attribute (Cnt_Value : Cntexmp_Value_Ptr)
                               return Unbounded_String;
@@ -159,51 +164,57 @@ package body Gnat2Why.Counter_Examples is
    -- Refine --
    ------------
 
-   function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Node : Entity_Id)
-                    return Unbounded_String is
-
-      function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
-                       return Unbounded_String;
-      --  This function takes a value from Why3 Cnt_Value and converts it as
-      --  a function of the type of its corresponding entity in GNAT. AST:
-      --  AST_Type. Example: (97, Character_type) -> "'a'"
-
-      function Refine_Array (Arr_Indices  : Cntexmp_Value_Array.Map;
-                             Arr_Others   : Cntexmp_Value_Ptr;
-                             Indice_Type  : Entity_Id;
-                             Element_Type : Entity_Id)
-                             return Unbounded_String;
-
-      function Compile_Time_Known_And_Constant (E : Entity_Id)
-                                                return Boolean;
+   function Refine
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      AST_Node  : Entity_Id)
+      return Unbounded_String
+   is
+      function Compile_Time_Known_And_Constant (E : Entity_Id) return Boolean;
       --  This is used to know if something is compile time known and has
       --  the keyword constant on its definition. Internally, it calls
       --  Compile_Time_Known_Value_Or_Aggr.
 
       function Contains (T : Entity_Id; F : String) return Boolean;
+      --  Returns True iff a component or discriminant of type T has name F
 
-      function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr;
-                             AST_Type  : Entity_Id)
-                             return Unbounded_String;
+      function Refine
+        (Cnt_Value : Cntexmp_Value_Ptr;
+         AST_Type  : Entity_Id)
+         return Unbounded_String;
+      --  Mutually recursive function with the local Refine_Value, which trims
+      --  space on both ends of the result.
+
+      function Refine_Array
+        (Arr_Indices  : Cntexmp_Value_Array.Map;
+         Arr_Others   : Cntexmp_Value_Ptr;
+         Indice_Type  : Entity_Id;
+         Element_Type : Entity_Id)
+         return Unbounded_String;
+
+      function Refine_Value
+        (Cnt_Value : Cntexmp_Value_Ptr;
+         AST_Type  : Entity_Id)
+         return Unbounded_String;
+      --  Mutually recursive function with the local Refine, which does the
+      --  actual conversion.
 
       -------------------------------------
       -- Compile_Time_Known_And_Constant --
       -------------------------------------
 
-      function Compile_Time_Known_And_Constant (E : Entity_Id)
-                                                return Boolean
+      function Compile_Time_Known_And_Constant (E : Entity_Id) return Boolean
       is
       begin
          if Ekind (E) = E_Constant then
             declare
-               E_Parent : constant Node_Id := Parent (E);
-               Expr     : constant Node_Id := Expression (E_Parent);
+               Par  : constant Node_Id := Parent (E);
+               Expr : constant Node_Id := Expression (Par);
             begin
-               if Present (Expr) then
-                  return Compile_Time_Known_Value_Or_Aggr (Expr);
-               end if;
+               return Present (Expr)
+                 and then Compile_Time_Known_Value_Or_Aggr (Expr);
             end;
          end if;
+
          return False;
       end Compile_Time_Known_And_Constant;
 
@@ -212,74 +223,25 @@ package body Gnat2Why.Counter_Examples is
       --------------
 
       function Contains (T : Entity_Id; F : String) return Boolean is
-         B : Boolean   := False;
          C : Entity_Id := First_Component_Or_Discriminant (T);
       begin
          while C /= Empty loop
-            if F = Source_Name (C)
-            then
-               B := True;
+            if F = Source_Name (C) then
+               return True;
             end if;
             C := Next_Component_Or_Discriminant (C);
          end loop;
-         return B;
+         return False;
       end Contains;
-
-      ------------------
-      -- Refine_Value --
-      ------------------
-
-      function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr;
-                             AST_Type  : Entity_Id)
-                             return Unbounded_String
-      is
-         Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
-      begin
-         return (Trim (Res, Both));
-      end Refine_Value;
-
-      ------------------
-      -- Refine_Array --
-      ------------------
-
-      function Refine_Array (Arr_Indices  : Cntexmp_Value_Array.Map;
-                             Arr_Others   : Cntexmp_Value_Ptr;
-                             Indice_Type  : Entity_Id;
-                             Element_Type : Entity_Id)
-                             return Unbounded_String is
-         S : Unbounded_String := To_Unbounded_String ("");
-      begin
-         S := S & "(";
-         for C in Arr_Indices.Iterate loop
-            declare
-               Elem         : constant Cntexmp_Value_Ptr :=
-                                Cntexmp_Value_Array.Element (C);
-               Indice       : constant String :=
-                                Cntexmp_Value_Array.Key (C);
-               Ind_Val      : constant Cntexmp_Value_Ptr :=
-                                new Cntexmp_Value'(T => Cnt_Integer,
-                                                   I => To_Unbounded_String
-                                                     (Indice));
-               Ind_Printed  : constant Unbounded_String :=
-                                Refine_Value (Ind_Val, Indice_Type);
-               Elem_Printed : constant Unbounded_String :=
-                                Refine_Value (Elem, Element_Type);
-            begin
-               S := S & Ind_Printed
-                 & " => " & Elem_Printed & ", ";
-            end;
-         end loop;
-         S := S & "others => " &
-           Refine_Value (Arr_Others, Element_Type) & ")";
-         return S;
-      end Refine_Array;
 
       ------------
       -- Refine --
       ------------
 
-      function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
-                       return Unbounded_String
+      function Refine
+        (Cnt_Value : Cntexmp_Value_Ptr;
+         AST_Type  : Entity_Id)
+         return Unbounded_String
       is
          Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
       begin
@@ -291,9 +253,8 @@ package body Gnat2Why.Counter_Examples is
 
                if Is_Boolean_Type (AST_Type) then
                   return (To_Unbounded_String (Cnt_Value.I /= "0"));
-               end if;
 
-               if Is_Enumeration_Type (AST_Type) then
+               elsif Is_Enumeration_Type (AST_Type) then
                   declare
                      Value : constant Uint := UI_From_Int
                        (Int'Value (To_String (Cnt_Value.I)));
@@ -342,15 +303,11 @@ package body Gnat2Why.Counter_Examples is
                      when Constraint_Error =>
                         return Cnt_Value.I;
                   end;
+
+               --  ??? only integer types are expected in that last case
+
                else
-                  if Is_Integer_Type (AST_Type) then
-                     return Cnt_Value.I;
-                  else
-                     return Cnt_Value.I;
-
-                     --  ??? This case should not happen
-
-                  end if;
+                  return Cnt_Value.I;
                end if;
 
             when Cnt_Float =>
@@ -402,6 +359,7 @@ package body Gnat2Why.Counter_Examples is
                      else 0);
                   Fields        : constant Int :=
                     Number_Components (AST_Basetype) - Discriminants;
+
                begin
                   --  When the type is tagged, a useless field (for cntexmp) is
                   --  generated.
@@ -427,18 +385,22 @@ package body Gnat2Why.Counter_Examples is
                               if Check_Count > 0 then
                                  S := S & ", ";
                               end if;
+
                               Check_Count := Check_Count + 1;
                               S := S & Field_Name & " => " &
                                 Refine (Cntexmp_Value_Array.Element (C),
                                         Field_Type);
                               Current_Field :=
                                 Next_Discriminant (Current_Field);
+
                               if Current_Field = Empty then
                                  exit Discr_Loop;
                               end if;
+
                            else
                               Current_Field :=
                                 Next_Discriminant (Current_Field);
+
                               if Current_Field = Empty
                               then
 
@@ -450,6 +412,7 @@ package body Gnat2Why.Counter_Examples is
                         end;
                      end loop Discr_Loop;
                   end if;
+
                   if Count_Fields = Integer (Fields) then
                      Current_Field := First_Component (AST_Basetype);
                      Fields_Loop :
@@ -464,15 +427,18 @@ package body Gnat2Why.Counter_Examples is
                               if Check_Count > 0 then
                                  S := S & ", ";
                               end if;
+
                               Check_Count := Check_Count + 1;
                               S := S & Field_Name & " => " &
                                 Refine (Cntexmp_Value_Array.Element (C),
                                         Field_Type);
                               Current_Field :=
                                 Next_Component (Current_Field);
+
                               if Current_Field = Empty then
                                  exit Fields_Loop;
                               end if;
+
                            else
                               Current_Field := Next_Component (Current_Field);
                               if Current_Field = Empty then
@@ -485,6 +451,7 @@ package body Gnat2Why.Counter_Examples is
                         end;
                      end loop Fields_Loop;
                   end if;
+
                   if Check_Count /= Integer (Fields + Discriminants)
                     and then Check_Count > 0
                   then
@@ -492,14 +459,16 @@ package body Gnat2Why.Counter_Examples is
                   else
                      S := S & ")";
                   end if;
+
                   return S;
                end;
 
-               --  This case only happens when the why3 counterexamples are
-               --  incorrect. Ideally, this case should be removed but it
-               --  still happens in practice.
+            --  This case only happens when the why3 counterexamples are
+            --  incorrect. Ideally, this case should be removed but it
+            --  still happens in practice.
 
-            when Cnt_Invalid => return (Cnt_Value.S);
+            when Cnt_Invalid =>
+               return (Cnt_Value.S);
 
             when Cnt_Array =>
                if Is_Array_Type (AST_Type) then
@@ -509,25 +478,78 @@ package body Gnat2Why.Counter_Examples is
                      Element_Type : constant Entity_Id :=
                                       Retysp (Component_Type (AST_Type));
                   begin
-                     return (Refine_Array (Cnt_Value.Array_Indices,
-                             Cnt_Value.Array_Others,
-                             Indice_Type,
-                             Element_Type));
+                     return Refine_Array (Cnt_Value.Array_Indices,
+                                          Cnt_Value.Array_Others,
+                                          Indice_Type,
+                                          Element_Type);
                   end;
-               else
-                  --  This case should not happen
 
+               --  This case should not happen
+
+               else
                   return To_Unbounded_String ("");
                end if;
          end case;
       end Refine;
 
-      AST_Type : constant Entity_Id := Retysp (Etype (AST_Node));
+      ------------------
+      -- Refine_Array --
+      ------------------
+
+      function Refine_Array
+        (Arr_Indices  : Cntexmp_Value_Array.Map;
+         Arr_Others   : Cntexmp_Value_Ptr;
+         Indice_Type  : Entity_Id;
+         Element_Type : Entity_Id)
+         return Unbounded_String
+      is
+         S : Unbounded_String := To_Unbounded_String ("");
+      begin
+         S := S & "(";
+         for C in Arr_Indices.Iterate loop
+            declare
+               Elem         : constant Cntexmp_Value_Ptr :=
+                                Cntexmp_Value_Array.Element (C);
+               Indice       : constant String :=
+                                Cntexmp_Value_Array.Key (C);
+               Ind_Val      : constant Cntexmp_Value_Ptr :=
+                                new Cntexmp_Value'(T => Cnt_Integer,
+                                                   I => To_Unbounded_String
+                                                     (Indice));
+               Ind_Printed  : constant Unbounded_String :=
+                                Refine_Value (Ind_Val, Indice_Type);
+               Elem_Printed : constant Unbounded_String :=
+                                Refine_Value (Elem, Element_Type);
+            begin
+               S := S & Ind_Printed & " => " & Elem_Printed & ", ";
+            end;
+         end loop;
+
+         S := S & "others => " & Refine_Value (Arr_Others, Element_Type) & ")";
+         return S;
+      end Refine_Array;
+
+      ------------------
+      -- Refine_Value --
+      ------------------
+
+      function Refine_Value
+        (Cnt_Value : Cntexmp_Value_Ptr;
+         AST_Type  : Entity_Id)
+         return Unbounded_String
+      is
+         Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
+      begin
+         return (Trim (Res, Both));
+      end Refine_Value;
+
+   --  Start of processing for Refine
+
    begin
       if Compile_Time_Known_And_Constant (AST_Node) then
-         return (To_Unbounded_String (""));
+         return To_Unbounded_String ("");
       else
-         return (Refine_Value (Cnt_Value, AST_Type));
+         return Refine_Value (Cnt_Value, Retysp (Etype (AST_Node)));
       end if;
    end Refine;
 
