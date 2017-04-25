@@ -142,13 +142,11 @@ counterexample expected for check at arithmetic.adb:76
 counterexample expected for check at arithmetic.adb:113
   trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
   trace at arithmetic.adb:113 --> Halve_B'Result = 0 and N = 2
-  trace at arithmetic.adb:116 --> Half_Range = 127
   trace at arithmetic.adb:120 --> I = 127 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:124
   trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
-  trace at arithmetic.adb:116 --> Half_Range = 127
   trace at arithmetic.adb:120 --> I = 0 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:124 --> N = 2 and R = 2

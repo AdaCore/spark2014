@@ -34,6 +34,7 @@ with GNAT;                      use GNAT;
 with GNAT.String_Split;         use GNAT.String_Split;
 with Namet;                     use Namet;
 with Sem_Aux;                   use Sem_Aux;
+with Sem_Eval;                  use Sem_Eval;
 with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
@@ -147,33 +148,64 @@ package body Gnat2Why.Counter_Examples is
    function Print_CNT_Element_Debug (El : CNT_Element) return String;
    --  Debug function, print a CNT_Element without any processing
 
-   function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
-                          return Unbounded_String;
+   function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Node : Entity_Id)
+                    return Unbounded_String;
 
    function Refine_Attribute (Cnt_Value : Cntexmp_Value_Ptr)
                               return Unbounded_String;
    --  Refine CNT_Value assuming it is an integer
 
-   ------------------
-   -- Refine_Value --
-   ------------------
+   ------------
+   -- Refine --
+   ------------
 
-   function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
-                          return Unbounded_String is
-
-      function Contains (T : Entity_Id; F : String) return Boolean;
+   function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Node : Entity_Id)
+                    return Unbounded_String is
 
       function Refine (Cnt_Value : Cntexmp_Value_Ptr; AST_Type : Entity_Id)
                        return Unbounded_String;
-      --  This function takes a value from Why3 Cnt_Value and converts it
-      --  as a function of the type of its corresponding entity in GNAT.
-      --  AST: AST_Type. Example: (97, Character_type) -> "'a'"
+      --  This function takes a value from Why3 Cnt_Value and converts it as
+      --  a function of the type of its corresponding entity in GNAT. AST:
+      --  AST_Type. Example: (97, Character_type) -> "'a'"
 
       function Refine_Array (Arr_Indices  : Cntexmp_Value_Array.Map;
                              Arr_Others   : Cntexmp_Value_Ptr;
                              Indice_Type  : Entity_Id;
                              Element_Type : Entity_Id)
                              return Unbounded_String;
+
+      function Compile_Time_Known_And_Constant (E : Entity_Id)
+                                                return Boolean;
+      --  This is used to know if something is compile time known and has
+      --  the keyword constant on its definition. Internally, it calls
+      --  Compile_Time_Known_Value_Or_Aggr.
+
+      function Contains (T : Entity_Id; F : String) return Boolean;
+
+      function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr;
+                             AST_Type  : Entity_Id)
+                             return Unbounded_String;
+
+      -------------------------------------
+      -- Compile_Time_Known_And_Constant --
+      -------------------------------------
+
+      function Compile_Time_Known_And_Constant (E : Entity_Id)
+                                                return Boolean
+      is
+      begin
+         if Ekind (E) = E_Constant then
+            declare
+               E_Parent : constant Node_Id := Parent (E);
+               Expr     : constant Node_Id := Expression (E_Parent);
+            begin
+               if Present (Expr) then
+                  return Compile_Time_Known_Value_Or_Aggr (Expr);
+               end if;
+            end;
+         end if;
+         return False;
+      end Compile_Time_Known_And_Constant;
 
       --------------
       -- Contains --
@@ -194,6 +226,19 @@ package body Gnat2Why.Counter_Examples is
       end Contains;
 
       ------------------
+      -- Refine_Value --
+      ------------------
+
+      function Refine_Value (Cnt_Value : Cntexmp_Value_Ptr;
+                             AST_Type  : Entity_Id)
+                             return Unbounded_String
+      is
+         Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
+      begin
+         return (Trim (Res, Both));
+      end Refine_Value;
+
+      ------------------
       -- Refine_Array --
       ------------------
 
@@ -201,7 +246,7 @@ package body Gnat2Why.Counter_Examples is
                              Arr_Others   : Cntexmp_Value_Ptr;
                              Indice_Type  : Entity_Id;
                              Element_Type : Entity_Id)
-                                return Unbounded_String is
+                             return Unbounded_String is
          S : Unbounded_String := To_Unbounded_String ("");
       begin
          S := S & "(";
@@ -224,7 +269,8 @@ package body Gnat2Why.Counter_Examples is
                  & " => " & Elem_Printed & ", ";
             end;
          end loop;
-         S := S & "others => " & Refine_Value (Arr_Others, Element_Type) & ")";
+         S := S & "others => " &
+           Refine_Value (Arr_Others, Element_Type) & ")";
          return S;
       end Refine_Array;
 
@@ -238,244 +284,252 @@ package body Gnat2Why.Counter_Examples is
          Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
       begin
          case Why3_Type is
-         when Cnt_Integer =>
+            when Cnt_Integer =>
 
-            --  Necessary for some types that makes boolean be translated to
-            --  integers like: "subype only_true := True .. True".
+               --  Necessary for some types that makes boolean be translated to
+               --  integers like: "subype only_true := True .. True".
 
-            if Is_Boolean_Type (AST_Type) then
-               return (To_Unbounded_String (Cnt_Value.I /= "0"));
-            end if;
+               if Is_Boolean_Type (AST_Type) then
+                  return (To_Unbounded_String (Cnt_Value.I /= "0"));
+               end if;
 
-            if Is_Enumeration_Type (AST_Type) then
-               declare
-                  Value : constant Uint := UI_From_Int
-                    (Int'Value (To_String (Cnt_Value.I)));
+               if Is_Enumeration_Type (AST_Type) then
+                  declare
+                     Value : constant Uint := UI_From_Int
+                       (Int'Value (To_String (Cnt_Value.I)));
 
-                  --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                  --  enumeration entity.
-                  Enum  : Entity_Id;
-               begin
-                  Enum := Sem_Util.Get_Enum_Lit_From_Pos
-                              (AST_Type, Value, No_Location);
+                     --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                     --  enumeration entity.
+                     Enum  : Entity_Id;
+                  begin
+                     Enum := Sem_Util.Get_Enum_Lit_From_Pos
+                       (AST_Type, Value, No_Location);
 
-                  --  Special case for characters, which are defined in the
-                  --  standard unit Standard.ASCII, and as such do not have
-                  --  a source code representation.
+                     --  Special case for characters, which are defined in the
+                     --  standard unit Standard.ASCII, and as such do not have
+                     --  a source code representation.
 
-                  if Is_Character_Type (AST_Type) then
-                     --  Call Get_Unqualified_Decoded_Name_String to get a
-                     --  correctly printed character in Name_Buffer.
+                     if Is_Character_Type (AST_Type) then
+                        --  Call Get_Unqualified_Decoded_Name_String to get a
+                        --  correctly printed character in Name_Buffer.
 
-                     Get_Unqualified_Decoded_Name_String (Chars (Enum));
+                        Get_Unqualified_Decoded_Name_String (Chars (Enum));
 
-                     --  The call to Get_Unqualified_Decoded_Name_String set
-                     --  Name_Buffer to '<char>' where <char> is the character
-                     --  we are interested in. Just retrieve it directly at
-                     --  Name_Buffer(2).
+                        --  The call to Get_Unqualified_Decoded_Name_String
+                        --  set Name_Buffer to '<char>' where <char> is the
+                        --  character we are interested in. Just retrieve it
+                        --  directly at Name_Buffer(2).
 
-                     return "'" & To_Unbounded_String
-                       (Char_To_String_Representation (Name_Buffer (2))) & "'";
+                        return "'" & To_Unbounded_String
+                          (Char_To_String_Representation
+                             (Name_Buffer (2))) & "'";
 
-                     --  For all enumeration types that are not character,
-                     --  call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeratio n entity, then Source_Name to get a
-                     --  correctly capitalized enumeration value.
+                        --  For all enumeration types that are not character,
+                        --  call Get_Enum_Lit_From_Pos to get a corresponding
+                        --  enumeratio n entity, then Source_Name to get a
+                        --  correctly capitalized enumeration value.
 
+                     else
+                        return To_Unbounded_String (Source_Name (Enum));
+                     end if;
+
+                     --  An exception is raised by Get_Enum_Lit_From_Pos
+                     --  if the position Value is outside the bounds of the
+                     --  enumeration. In such a case, return the raw integer
+                     --  returned by the prover.
+
+                  exception
+                     when Constraint_Error =>
+                        return Cnt_Value.I;
+                  end;
+               else
+                  if Is_Integer_Type (AST_Type) then
+                     return Cnt_Value.I;
                   else
-                     return To_Unbounded_String (Source_Name (Enum));
+                     return Cnt_Value.I;
+
+                     --  ??? This case should not happen
+
+                  end if;
+               end if;
+
+            when Cnt_Float =>
+               return Cnt_Value.F;
+
+            when Cnt_Boolean =>
+               return To_Unbounded_String (Cnt_Value.Bo);
+
+            when Cnt_Bitvector =>
+
+               --  Boolean are translated into bitvector of size 1 for CVC4
+               --  because it fails to produce a model when booleans are used
+               --  inside translated arrays_of_records.
+
+               if Is_Boolean_Type (AST_Type) then
+                  return (To_Unbounded_String (Cnt_Value.B /= "0"));
+               end if;
+
+               return Cnt_Value.B;
+
+            when Cnt_Unparsed =>
+               return Cnt_Value.U;
+
+            when Cnt_Record =>
+               declare
+                  Mdiscrs       : constant Cntexmp_Value_Array.Map :=
+                                    Cnt_Value.Di;
+                  Mfields       : Cntexmp_Value_Array.Map := Cnt_Value.Fi;
+                  S             : Unbounded_String :=
+                                    To_Unbounded_String ("(");
+                  Current_Field : Entity_Id;
+
+                  --  We have to use the base_type of the entity because the
+                  --  counterexample returned is of base type. In particular,
+                  --  on subtypes that fix the discriminant in their
+                  --  definition, we get all the fields of the base type
+                  --  not only those of the subtype.
+
+                  AST_Basetype  : constant Entity_Id :=
+                    Retysp (Base_Type (AST_Type));
+                  Count_Discrs  : constant Integer :=
+                    Integer (Cntexmp_Value_Array.Length (Mdiscrs));
+                  Count_Fields  : Integer :=
+                    Integer (Cntexmp_Value_Array.Length (Mfields));
+                  Check_Count   : Integer := 0;
+                  Discriminants : constant Int :=
+                    (if Has_Discriminants (AST_Basetype) then
+                        Number_Discriminants (AST_Basetype)
+                     else 0);
+                  Fields        : constant Int :=
+                    Number_Components (AST_Basetype) - Discriminants;
+               begin
+                  --  When the type is tagged, a useless field (for cntexmp) is
+                  --  generated.
+
+                  if Is_Tagged_Type (AST_Type) then
+                     Mfields.Delete_Last;
+                     Count_Fields := Count_Fields - 1;
                   end if;
 
-               --  An exception is raised by Get_Enum_Lit_From_Pos if the
-               --  position Value is outside the bounds of the enumeration. In
-               --  such a case, return the raw integer returned by the prover.
+                  if Has_Discriminants (AST_Basetype)
+                    and then Count_Discrs = Integer (Discriminants)
+                  then
+                     Current_Field := First_Discriminant (AST_Basetype);
+                     Discr_Loop :
+                     for C in Mdiscrs.Iterate loop
+                        declare
+                           Field_Type : constant Entity_Id :=
+                                          Retysp (Etype (Current_Field));
+                           Field_Name : constant String :=
+                                          Source_Name (Current_Field);
+                        begin
+                           if Contains (AST_Type, Field_Name) then
+                              if Check_Count > 0 then
+                                 S := S & ", ";
+                              end if;
+                              Check_Count := Check_Count + 1;
+                              S := S & Field_Name & " => " &
+                                Refine (Cntexmp_Value_Array.Element (C),
+                                        Field_Type);
+                              Current_Field :=
+                                Next_Discriminant (Current_Field);
+                              if Current_Field = Empty then
+                                 exit Discr_Loop;
+                              end if;
+                           else
+                              Current_Field :=
+                                Next_Discriminant (Current_Field);
+                              if Current_Field = Empty
+                              then
 
-               exception
-                  when Constraint_Error =>
-                     return Cnt_Value.I;
+                                 --  Exit when no more discrs are present
+
+                                 exit Discr_Loop;
+                              end if;
+                           end if;
+                        end;
+                     end loop Discr_Loop;
+                  end if;
+                  if Count_Fields = Integer (Fields) then
+                     Current_Field := First_Component (AST_Basetype);
+                     Fields_Loop :
+                     for C in Mfields.Iterate loop
+                        declare
+                           Field_Type : constant Entity_Id :=
+                                          Retysp (Etype (Current_Field));
+                           Field_Name : constant String :=
+                                          Source_Name (Current_Field);
+                        begin
+                           if Contains (AST_Type, Field_Name) then
+                              if Check_Count > 0 then
+                                 S := S & ", ";
+                              end if;
+                              Check_Count := Check_Count + 1;
+                              S := S & Field_Name & " => " &
+                                Refine (Cntexmp_Value_Array.Element (C),
+                                        Field_Type);
+                              Current_Field :=
+                                Next_Component (Current_Field);
+                              if Current_Field = Empty then
+                                 exit Fields_Loop;
+                              end if;
+                           else
+                              Current_Field := Next_Component (Current_Field);
+                              if Current_Field = Empty then
+
+                                 --  Exit when no more fields are present
+
+                                 exit Fields_Loop;
+                              end if;
+                           end if;
+                        end;
+                     end loop Fields_Loop;
+                  end if;
+                  if Check_Count /= Integer (Fields + Discriminants)
+                    and then Check_Count > 0
+                  then
+                     S := S & ", others => ?)";
+                  else
+                     S := S & ")";
+                  end if;
+                  return S;
                end;
-            else
-               if Is_Integer_Type (AST_Type) then
-                  return Cnt_Value.I;
+
+               --  This case only happens when the why3 counterexamples are
+               --  incorrect. Ideally, this case should be removed but it
+               --  still happens in practice.
+
+            when Cnt_Invalid => return (Cnt_Value.S);
+
+            when Cnt_Array =>
+               if Is_Array_Type (AST_Type) then
+                  declare
+                     Indice_Type  : constant Entity_Id :=
+                                      Retysp (Etype (First_Index (AST_Type)));
+                     Element_Type : constant Entity_Id :=
+                                      Retysp (Component_Type (AST_Type));
+                  begin
+                     return (Refine_Array (Cnt_Value.Array_Indices,
+                             Cnt_Value.Array_Others,
+                             Indice_Type,
+                             Element_Type));
+                  end;
                else
-                  return Cnt_Value.I;
+                  --  This case should not happen
 
-                  --  ??? This case should not happen
-
+                  return To_Unbounded_String ("");
                end if;
-            end if;
-
-         when Cnt_Float =>
-            return Cnt_Value.F;
-
-         when Cnt_Boolean =>
-            return To_Unbounded_String (Cnt_Value.Bo);
-
-         when Cnt_Bitvector =>
-
-            --  Boolean are translated into bitvector of size 1 for CVC4
-            --  because it fails to produce a model when booleans are used
-            --  inside translated arrays_of_records.
-
-            if Is_Boolean_Type (AST_Type) then
-               return (To_Unbounded_String (Cnt_Value.B /= "0"));
-            end if;
-
-            return Cnt_Value.B;
-
-         when Cnt_Unparsed =>
-            return Cnt_Value.U;
-
-         when Cnt_Record =>
-            declare
-               Mdiscrs       : constant Cntexmp_Value_Array.Map :=
-                                 Cnt_Value.Di;
-               Mfields       : Cntexmp_Value_Array.Map := Cnt_Value.Fi;
-               S             : Unbounded_String :=
-                                 To_Unbounded_String ("(");
-               Current_Field : Entity_Id;
-
-               --  We have to use the base_type of the entity because the
-               --  counterexample returned is of base type. In particular, on
-               --  subtypes that fix the discriminant in their definition, we
-               --  get all the fields of the base type not only those of the
-               --  subtype
-
-               AST_Basetype  : constant Entity_Id :=
-                                 Retysp (Base_Type (AST_Type));
-               Count_Discrs  : constant Integer :=
-                               Integer (Cntexmp_Value_Array.Length (Mdiscrs));
-               Count_Fields  : Integer :=
-                               Integer (Cntexmp_Value_Array.Length (Mfields));
-               Check_Count   : Integer := 0;
-               Discriminants : constant Int :=
-                                 (if Has_Discriminants (AST_Basetype) then
-                                     Number_Discriminants (AST_Basetype)
-                                  else 0);
-               Fields        : constant Int :=
-                         Number_Components (AST_Basetype) - Discriminants;
-            begin
-               --  When the type is tagged, a useless field (for cntexmp) is
-               --  generated.
-
-               if Is_Tagged_Type (AST_Type) then
-                  Mfields.Delete_Last;
-                  Count_Fields := Count_Fields - 1;
-               end if;
-
-               if Has_Discriminants (AST_Basetype)
-                 and then Count_Discrs = Integer (Discriminants)
-               then
-                  Current_Field := First_Discriminant (AST_Basetype);
-                  Discr_Loop :
-                  for C in Mdiscrs.Iterate loop
-                     declare
-                        Field_Type : constant Entity_Id :=
-                                       Retysp (Etype (Current_Field));
-                        Field_Name : constant String :=
-                                       Source_Name (Current_Field);
-                     begin
-                        if Contains (AST_Type, Field_Name) then
-                           if Check_Count > 0 then
-                              S := S & ", ";
-                           end if;
-                           Check_Count := Check_Count + 1;
-                           S := S & Field_Name & " => " &
-                             Refine (Cntexmp_Value_Array.Element (C),
-                                     Field_Type);
-                           Current_Field := Next_Discriminant (Current_Field);
-                           if Current_Field = Empty then
-                              exit Discr_Loop;
-                           end if;
-                        else
-                           Current_Field := Next_Discriminant (Current_Field);
-                           if Current_Field = Empty
-                           then
-
-                              --  Exit when no more discrs are present
-
-                              exit Discr_Loop;
-                           end if;
-                        end if;
-                     end;
-                  end loop Discr_Loop;
-               end if;
-               if Count_Fields = Integer (Fields) then
-                  Current_Field := First_Component (AST_Basetype);
-                  Fields_Loop :
-                  for C in Mfields.Iterate loop
-                     declare
-                        Field_Type : constant Entity_Id :=
-                          Retysp (Etype (Current_Field));
-                        Field_Name : constant String :=
-                          Source_Name (Current_Field);
-                     begin
-                        if Contains (AST_Type, Field_Name) then
-                           if Check_Count > 0 then
-                              S := S & ", ";
-                           end if;
-                           Check_Count := Check_Count + 1;
-                           S := S & Field_Name & " => " &
-                             Refine (Cntexmp_Value_Array.Element (C),
-                                     Field_Type);
-                           Current_Field :=
-                             Next_Component (Current_Field);
-                           if Current_Field = Empty then
-                              exit Fields_Loop;
-                           end if;
-                        else
-                           Current_Field := Next_Component (Current_Field);
-                           if Current_Field = Empty then
-
-                              --  Exit when no more fields are present
-
-                              exit Fields_Loop;
-                           end if;
-                        end if;
-                     end;
-                  end loop Fields_Loop;
-               end if;
-               if Check_Count /= Integer (Fields + Discriminants)
-                 and then Check_Count > 0
-               then
-                  S := S & ", others => ?)";
-               else
-                  S := S & ")";
-               end if;
-               return S;
-            end;
-
-         --  This case only happens when the why3 counterexamples are
-         --  incorrect. Ideally, this case should be removed but it
-         --  still happens in practice.
-
-         when Cnt_Invalid => return (Cnt_Value.S);
-
-         when Cnt_Array =>
-            if Is_Array_Type (AST_Type) then
-               declare
-                  Indice_Type  : constant Entity_Id :=
-                                   Retysp (Etype (First_Index (AST_Type)));
-                  Element_Type : constant Entity_Id :=
-                                   Retysp (Component_Type (AST_Type));
-               begin
-                  return (Refine_Array (Cnt_Value.Array_Indices,
-                          Cnt_Value.Array_Others,
-                          Indice_Type,
-                          Element_Type));
-               end;
-            else
-               --  This case should not happen
-
-               return To_Unbounded_String ("");
-            end if;
          end case;
       end Refine;
 
-      Res : constant Unbounded_String := Refine (Cnt_Value, AST_Type);
+      AST_Type : constant Entity_Id := Retysp (Etype (AST_Node));
    begin
-      return (Trim (Res, Both));
-   end Refine_Value;
+      if Compile_Time_Known_And_Constant (AST_Node) then
+         return (To_Unbounded_String (""));
+      else
+         return (Refine_Value (Cnt_Value, AST_Type));
+      end if;
+   end Refine;
 
    ----------------------
    -- Refine_Attribute --
@@ -680,8 +734,8 @@ package body Gnat2Why.Counter_Examples is
          then
             declare
                Refined_Value : constant Unbounded_String :=
-                                 Refine_Value (CNT_Element.Value,
-                                         Retysp (Etype (CNT_Element.Entity)));
+                                 Refine (CNT_Element.Value,
+                                         CNT_Element.Entity);
             begin
                if Refined_Value = "" then
                   return Dont_Display;
@@ -698,8 +752,8 @@ package body Gnat2Why.Counter_Examples is
          if CNT_Element.Fields.Is_Empty then
             declare
                Refined_Value : constant Unbounded_String :=
-                            Refine_Value (CNT_Element.Value,
-                                          Retysp (Etype (CNT_Element.Entity)));
+                            Refine (CNT_Element.Value,
+                                    CNT_Element.Entity);
             begin
                if Refined_Value = "" then
                   return Dont_Display;
@@ -723,8 +777,8 @@ package body Gnat2Why.Counter_Examples is
 
          declare
             Refined_Value : constant Unbounded_String :=
-                    Refine_Value (CNT_Element.Value,
-                                  Retysp (Etype (CNT_Element.Entity)));
+                    Refine (CNT_Element.Value,
+                            CNT_Element.Entity);
          begin
             --  Detecting the absence of value
 
