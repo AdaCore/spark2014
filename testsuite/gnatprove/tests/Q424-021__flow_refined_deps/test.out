@@ -1,0 +1,4 @@
+state.ads:13:06: "F" must be a global Proof_In of "Test" (SPARK RM 6.1.4)
+state.ads:13:06: low: global input "F" of "Test" not read
+state.ads:18:04: info: initialization of "S" constituent of "State" proved
+gnatprove: error during flow analysis and proof
