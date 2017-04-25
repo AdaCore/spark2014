@@ -716,22 +716,31 @@ package body Flow.Analysis.Sanity is
             declare
                State : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               for Constit of FS loop
-                  if Constit.Kind in Direct_Mapping | Record_Field then
-                     declare
-                        Encapsulator : constant Entity_Id :=
-                          Encapsulating_State
-                            (Get_Direct_Mapping_Id
-                               (Constit));
+               for Var of FS loop
+                  case Var.Kind is
+                     when Direct_Mapping =>
+                        declare
+                           Encapsulator : constant Entity_Id :=
+                             Encapsulating_State
+                               (Get_Direct_Mapping_Id (Var));
 
-                     begin
-                        if Present (Encapsulator)
-                          and then Encapsulator = State
-                        then
-                           return True;
-                        end if;
-                     end;
-                  end if;
+                        begin
+                           if Present (Encapsulator)
+                             and then Encapsulator = State
+                           then
+                              return True;
+                           end if;
+                        end;
+
+                     when Magic_String =>
+                        --  ??? can we get here?
+                        null;
+
+                     when others =>
+                        raise Program_Error;
+
+                  end case;
+
                end loop;
             end;
          end if;
