@@ -680,20 +680,17 @@ package body Flow.Analysis.Sanity is
       --  @param FS is the Flow_Set in which we look
       --  @return whether FS contains F or a contituent of F
 
-      function State_Partially_Written
-        (F : Flow_Id)
-        return Boolean;
-      --  Returns True if F represents a state abstraction
-      --  that is partially written.
+      function State_Partially_Written (F : Flow_Id) return Boolean;
+      --  Returns True if F represents a state abstraction that is partially
+      --  written.
 
       function Up_Project_Flow_Set
         (FS      : Flow_Id_Sets.Set;
          Variant : Flow_Id_Variant)
         return Flow_Id_Sets.Set;
-      --  Up projects the elements of FS that can be up
-      --  projected. Elements that cannot be up projected are simply
-      --  copied across. The variant of all elements is also set to
-      --  Variant.
+      --  Up projects the elements of FS that can be up projected. Elements
+      --  that cannot be up projected are simply copied across. The variant
+      --  of all elements is also set to Variant.
       --  @param FS is the Flow_Id_Set that will be up projected
       --  @param Variant is the Flow_Id_Variant that all Flow_Ids will have
       --  @return the up projected version of FS
@@ -747,46 +744,37 @@ package body Flow.Analysis.Sanity is
       -- State_Partially_Written --
       -----------------------------
 
-      function State_Partially_Written
-        (F : Flow_Id)
-        return Boolean
+      function State_Partially_Written (F : Flow_Id) return Boolean
       is
          E : constant Entity_Id := Get_Direct_Mapping_Id (F);
       begin
-         --  Trivially False when we are not dealing with a
-         --  state abstraction.
-         if Ekind (E) /= E_Abstract_State then
+         if Ekind (E) = E_Abstract_State then
+            declare
+               Constit             : Flow_Id;
+               Writes_At_Least_One : Boolean := False;
+               One_Is_Missing      : Boolean := False;
+            begin
+               for RC of Iter (Refinement_Constituents (E)) loop
+                  --  Check that at least one constituent is written
+                  if Nkind (RC) /= N_Null then
+                     Constit := Direct_Mapping_Id (RC, Out_View);
+
+                     if Actual_Writes.Contains (Constit) then
+                        Writes_At_Least_One := True;
+                     else
+                        One_Is_Missing := True;
+                     end if;
+                  end if;
+               end loop;
+
+               return Writes_At_Least_One and One_Is_Missing;
+            end;
+
+         --  Trivially False when we are not dealing with a state abstraction
+
+         else
             return False;
          end if;
-
-         declare
-            Constit             : Flow_Id;
-            Writes_At_Least_One : Boolean := False;
-            One_Is_Missing      : Boolean := False;
-         begin
-            for RC of Iter (Refinement_Constituents (E)) loop
-               --  Check that at least one constituent is written
-               if Nkind (RC) /= N_Null then
-                  Constit := Direct_Mapping_Id (RC, Out_View);
-
-                  if Actual_Writes.Contains (Constit) then
-                     Writes_At_Least_One := True;
-                  end if;
-
-                  if not Actual_Writes.Contains (Constit) then
-                     One_Is_Missing := True;
-                  end if;
-               end if;
-            end loop;
-
-            if Writes_At_Least_One
-              and then One_Is_Missing
-            then
-               return True;
-            end if;
-         end;
-
-         return False;
       end State_Partially_Written;
 
       -------------------------
