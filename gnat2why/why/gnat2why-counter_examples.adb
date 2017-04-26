@@ -373,7 +373,7 @@ package body Gnat2Why.Counter_Examples is
                   then
                      Current_Field := First_Discriminant (AST_Basetype);
                      Discr_Loop :
-                     for C in Mdiscrs.Iterate loop
+                     for Mdiscr of Mdiscrs loop
                         declare
                            Field_Type : constant Entity_Id :=
                                           Retysp (Etype (Current_Field));
@@ -388,28 +388,14 @@ package body Gnat2Why.Counter_Examples is
                               Check_Count := Check_Count + 1;
                               Append (S,
                                       Field_Name & " => " &
-                                      Refine (Cntexmp_Value_Array.Element (C),
-                                              Field_Type));
-                              Current_Field :=
-                                Next_Discriminant (Current_Field);
-
-                              if Current_Field = Empty then
-                                 exit Discr_Loop;
-                              end if;
-
-                           else
-                              Current_Field :=
-                                Next_Discriminant (Current_Field);
-
-                              if Current_Field = Empty
-                              then
-
-                                 --  Exit when no more discrs are present
-
-                                 exit Discr_Loop;
-                              end if;
+                                      Refine (Mdiscr, Field_Type));
                            end if;
                         end;
+
+                        Current_Field := Next_Discriminant (Current_Field);
+
+                        --  Exit when no more discriminants are present
+                        exit Discr_Loop when No (Current_Field);
                      end loop Discr_Loop;
                   end if;
 
@@ -432,23 +418,13 @@ package body Gnat2Why.Counter_Examples is
 
                               Append (S, Field_Name & " => " &
                                          Refine (Mfield, Field_Type));
-
-                              Current_Field := Next_Component (Current_Field);
-
-                              if No (Current_Field) then
-                                 exit Fields_Loop;
-                              end if;
-
-                           else
-                              Current_Field := Next_Component (Current_Field);
-                              if No (Current_Field) then
-
-                                 --  Exit when no more fields are present
-
-                                 exit Fields_Loop;
-                              end if;
                            end if;
                         end;
+
+                        Current_Field := Next_Component (Current_Field);
+
+                        --  Exit when no more fields are present
+                        exit Fields_Loop when No (Current_Field);
                      end loop Fields_Loop;
                   end if;
 
@@ -506,10 +482,10 @@ package body Gnat2Why.Counter_Examples is
          Append (S, "(");
          for C in Arr_Indices.Iterate loop
             declare
+               Indice       : String renames Cntexmp_Value_Array.Key (C);
                Elem         : constant Cntexmp_Value_Ptr :=
                                 Cntexmp_Value_Array.Element (C);
-               Indice       : constant String :=
-                                Cntexmp_Value_Array.Key (C);
+
                Ind_Val      : constant Cntexmp_Value_Ptr :=
                                 new Cntexmp_Value'(T => Cnt_Integer,
                                                    I => To_Unbounded_String
@@ -925,18 +901,13 @@ package body Gnat2Why.Counter_Examples is
          return Get_CNT_Element_Value (CNT_Element, Prefix);
       end Get_CNT_Element_Value_And_Attributes;
 
-      Var_Name_Cursor : Vars_List.Cursor :=
-        Vars_List.First (Variables.Variables_Order);
-
    --  Start of processing for Build_Pretty_Line
 
    begin
       Pretty_Line_Cntexmp_Arr := Cntexample_Elt_Lists.Empty_List;
-      while Vars_List.Has_Element (Var_Name_Cursor) loop
-         declare
-            Var_Name : constant Unbounded_String :=
-              Vars_List.Element (Var_Name_Cursor);
 
+      for Var_Name of Variables.Variables_Order loop
+         declare
             Variable : Cursor :=
               Variables.Variables_Map.Find (To_String (Var_Name));
 
@@ -978,7 +949,6 @@ package body Gnat2Why.Counter_Examples is
 
             Next (Variable);
          end;
-         Var_Name_Cursor := Vars_List.Next (Var_Name_Cursor);
       end loop;
    end Build_Pretty_Line;
 
@@ -1299,9 +1269,11 @@ package body Gnat2Why.Counter_Examples is
                                  Cntexample_Elt_Lists.Empty_List,
                                Other_Lines =>
                                  Cntexample_Line_Maps.Empty_Map);
-            Filename            : constant String := Key (File_C);
+
+            Filename  : String renames Key (File_C);
             Lines_Map : Cntexample_Line_Maps.Map renames
               Element (File_C).Other_Lines;
+
          begin
             for Line_C in Lines_Map.Iterate loop
                Create_Pretty_Line
@@ -1477,12 +1449,10 @@ package body Gnat2Why.Counter_Examples is
       VC_Line : Natural)
       return Cntexample_File_Maps.Map
    is
+      Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
 
-      Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp.Copy;
       C : constant Cntexample_File_Maps.Cursor :=
         Remapped_Cntexmp.Find (VC_File);
-
-   --  Start of processing for Remap_VC_Info
 
    begin
       --  Remove information related to the construct triggering VC Create
@@ -1491,13 +1461,14 @@ package body Gnat2Why.Counter_Examples is
       --  to this copy.
 
       for Elt of Remapped_Cntexmp loop
-         Elt.VC_Line := Cntexample_Elt_Lists.Empty_List;
+         Elt.VC_Line.Clear;
       end loop;
 
       if Cntexample_File_Maps.Has_Element (C) then
-         Remapped_Cntexmp (VC_File).Other_Lines.Include
+         Remapped_Cntexmp (C).Other_Lines.Include
            (VC_Line, Cntexmp (VC_File).VC_Line);
       end if;
+
       return Remapped_Cntexmp;
    end Remap_VC_Info;
 
