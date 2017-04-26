@@ -60,7 +60,7 @@ package body Flow_Dependency_Maps is
 
       Expr : constant Node_Id := Expression (PAA);
 
-      M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
+      M : Dependency_Maps.Map;
 
       Row : Node_Id;
       LHS : Node_Id;
@@ -69,31 +69,16 @@ package body Flow_Dependency_Maps is
       Inputs  : Flow_Id_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
    begin
-      case Nkind (Expr) is
-         when N_Aggregate =>
-            --  Aspect => (...)
+      --  Aspect is written either as:
+      --  * "Aspect => null"
+      --  * "Aspect => foo" (but this is translated into "Aspect => (foo)")
+      --  * "Aspect => (...)"
 
-            --  We will deal with this in the following, in detail,
-            --  extracting information from both the epxressions and
-            --  component_associations of the aggregate.
-            null;
-
-         when N_Identifier =>
-            --  Aspect => Foobar
-            M.Insert (Direct_Mapping_Id (Expr),
-                      Flow_Id_Sets.Empty_Set);
-            return M;
-
-         when N_Null =>
-            --  Aspect => null
-            return M;
-
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
+      if Nkind (Expr) = N_Null then
+         return Dependency_Maps.Empty_Map;
+      end if;
 
       pragma Assert_And_Cut (Nkind (Expr) = N_Aggregate);
-      --  Aspect => (...)
 
       --  First, we look at the expressions of the aggregate, i.e. foo and bar
       --  in (foo, bar, baz => ..., bork => ...).
