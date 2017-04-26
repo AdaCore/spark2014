@@ -217,6 +217,11 @@ package body SPARK_Definition is
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
+   Marking_Queue : Node_Lists.List;
+   --  This queue is used to store entities for marking, in the case where
+   --  calling Mark_Entity directly would not be appropriate, e.g. for
+   --  primitive operations of a tagged type.
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -240,6 +245,9 @@ package body SPARK_Definition is
 
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view
+
+   procedure Queue_For_Marking (E : Entity_Id);
+   --  Register E for marking at a later stage
 
    ------------------------------
    -- Body_Statements_In_SPARK --
@@ -2727,6 +2735,17 @@ package body SPARK_Definition is
 
       Mark (N);
 
+      --  Go through Marking_Queue to mark remaining entities
+
+      while not Marking_Queue.Is_Empty loop
+         declare
+            E : constant Entity_Id := Marking_Queue.First_Element;
+         begin
+            Marking_Queue.Delete_First;
+            Mark_Entity (E);
+         end;
+      end loop;
+
       --  Mark delayed type aspects
 
       --  If no SPARK_Mode is set for the type, we only mark delayed aspects
@@ -4640,6 +4659,31 @@ package body SPARK_Definition is
          end if;
       end if;
 
+      --  Mark predicate function, if any Predicate functions should be
+      --  marked after the subtype, that's why we need to do this here, after
+      --  inserting the subtype into the entity list.
+
+      if Is_Type (E) and then Has_Predicates (E) then
+         declare
+            PF : constant Entity_Id := Predicate_Function (E);
+         begin
+            if Present (PF) then
+               Queue_For_Marking (PF);
+            end if;
+         end;
+      end if;
+
+      --  Currently, proof looks at overriding operations for a given
+      --  subprogram operation on tagged types. To make this work, they should
+      --  be marked. Easiest is to mark all primitive operations of a tagged
+      --  type.
+
+      if Is_Tagged_Type (E) then
+         for Prim of Iter (Direct_Primitive_Operations (E)) loop
+            Queue_For_Marking (Ultimate_Alias (Prim));
+         end loop;
+      end if;
+
       --  Update the information that a violation was detected
 
       Violation_Detected := Save_Violation_Detected;
@@ -6151,6 +6195,15 @@ package body SPARK_Definition is
          Mark_Violation (N, From => Retysp (Id));
       end if;
    end Mark_Most_Underlying_Type_In_SPARK;
+
+   -----------------------
+   -- Queue_For_Marking --
+   -----------------------
+
+   procedure Queue_For_Marking (E : Entity_Id) is
+   begin
+      Marking_Queue.Append (E);
+   end Queue_For_Marking;
 
    ---------------------
    -- Retysp_In_SPARK --
