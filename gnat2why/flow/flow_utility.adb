@@ -1115,47 +1115,15 @@ package body Flow_Utility is
    -----------------
 
    function Get_Flow_Id
-     (Name  : Entity_Name;
-      View  : Flow_Id_Variant := Normal_Use;
-      Scope : Flow_Scope      := Null_Flow_Scope)
+     (Name : Entity_Name;
+      View : Flow_Id_Variant := Normal_Use)
       return Flow_Id
    is
-      E : Entity_Id := Find_Entity (Name);
+      E : constant Entity_Id := Find_Entity (Name);
    begin
       if Present (E) then
          --  We found an entity, now we make some effort to canonicalize
-
-         case Ekind (E) is
-            --  Use the full view (if present and visible)
-            when Type_Kind | E_Constant =>
-               declare
-                  Full : constant Entity_Id := Full_View (E);
-               begin
-                  if Present (Full)
-                    and then (No (Scope)
-                              or else Is_Visible (Full, Scope))
-                  then
-                     E := Full;
-                  end if;
-               end;
-
-            --  If E comes from a limited with then use the non-limited
-            --  version.
-            when E_Abstract_State =>
-               declare
-                  Non_Limited : constant Entity_Id := Non_Limited_View (E);
-               begin
-                  if Present (Non_Limited) then
-                     E := Non_Limited;
-                  end if;
-               end;
-
-            when others =>
-               null;
-
-         end case;
-
-         return Direct_Mapping_Id (E, View);
+         return Direct_Mapping_Id (Unique_Entity (E), View);
       else
          --  If Entity_Id is not known then fall back to the magic string
          return Magic_String_Id (Name, View);
@@ -1274,7 +1242,11 @@ package body Flow_Utility is
             G_Out    : Node_Sets.Set := Node_Sets.Empty_Set;
 
             procedure Process (The_Mode   : Name_Id;
-                               The_Global : Entity_Id);
+                               The_Global : Entity_Id)
+            with Pre => The_Mode in Name_Input
+                                  | Name_In_Out
+                                  | Name_Output
+                                  | Name_Proof_In;
             --  Add the given global to Reads, Writes or Proof_Ins, depending
             --  on the mode.
 
@@ -1285,35 +1257,29 @@ package body Flow_Utility is
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id)
             is
-               Non_Limited_Global : constant Entity_Id :=
-                 (if Ekind (The_Global) = E_Abstract_State
-                    and then Present (Non_Limited_View (The_Global))
-                  then Non_Limited_View (The_Global)
-                  else The_Global);
-               --  If a Non_Limited_View exists, then use that. In
-               --  doing so we avoid generating two Flow_Ids for a
-               --  single variable.
+               E : constant Entity_Id := Unique_Entity (The_Global);
+
             begin
                case The_Mode is
                   when Name_Input =>
-                     G_In.Insert (Non_Limited_Global);
+                     G_In.Insert (E);
 
                   when Name_In_Out =>
-                     G_In.Insert (Non_Limited_Global);
-                     G_Out.Insert (Non_Limited_Global);
+                     G_In.Insert (E);
+                     G_Out.Insert (E);
 
                   when Name_Output =>
                      if Consider_Discriminants and then
                        Contains_Discriminants
-                       (Direct_Mapping_Id (Non_Limited_Global, In_View),
-                        Scope)
+                         (Direct_Mapping_Id (E, In_View),
+                          Scope)
                      then
-                        G_In.Insert (Non_Limited_Global);
+                        G_In.Insert (E);
                      end if;
-                     G_Out.Insert (Non_Limited_Global);
+                     G_Out.Insert (E);
 
                   when Name_Proof_In =>
-                     G_Proof.Insert (Non_Limited_Global);
+                     G_Proof.Insert (E);
 
                   when others =>
                      raise Program_Error;
@@ -1350,12 +1316,7 @@ package body Flow_Utility is
                         Process (Name_Input, Entity (RHS));
 
                      when N_Numeric_Or_String_Literal =>
-                        --  We should only ever get here if we are
-                        --  dealing with a rewritten constant.
-                        pragma Assert (RHS /= Original_Node (RHS));
-
-                        --  We process the entity of the Original_Node instead
-                        Process (Name_Input, Entity (Original_Node (RHS)));
+                        Process (Name_Input, Original_Constant (RHS));
 
                      when others =>
                         raise Why.Unexpected_Node;
@@ -1387,12 +1348,8 @@ package body Flow_Utility is
                            while Present (RHS) loop
                               case Nkind (RHS) is
                                  when N_Numeric_Or_String_Literal =>
-                                    --  We should only ever get here if we are
-                                    --  dealing with a rewritten constant.
-                                    pragma Assert (RHS /= Original_Node (RHS));
-
                                     Process (The_Mode,
-                                             Entity (Original_Node (RHS)));
+                                             Original_Constant (RHS));
 
                                  when others =>
                                     Process (The_Mode, Entity (RHS));
@@ -1408,13 +1365,7 @@ package body Flow_Utility is
                            null;
 
                         when N_Numeric_Or_String_Literal =>
-                           --  We should only ever get here if we are
-                           --  dealing with a rewritten constant.
-                           pragma Assert (RHS /= Original_Node (RHS));
-
-                           --  We process the entity of the
-                           --  Original_Node instead.
-                           Process (The_Mode, Entity (Original_Node (RHS)));
+                           Process (The_Mode, Original_Constant (RHS));
 
                         when others =>
                            Print_Node_Subtree (RHS);
@@ -1628,7 +1579,7 @@ package body Flow_Utility is
                F : Flow_Id;
             begin
                for R of ALI_Reads loop
-                  F := Get_Flow_Id (R, In_View, Scope);
+                  F := Get_Flow_Id (R, In_View);
 
                   if Is_Variable (F) then
                      Reads.Include (F);
@@ -1644,7 +1595,7 @@ package body Flow_Utility is
                   --
                   --  This also takes care of discriminants as every out is
                   --  really an in out.
-                  F := Get_Flow_Id (W, Out_View, Scope);
+                  F := Get_Flow_Id (W, Out_View);
 
                   Reads.Include (Change_Variant (F, In_View));
                   Writes.Include (F);
@@ -3491,6 +3442,18 @@ package body Flow_Utility is
       return Loop_Info_Frozen and then Loop_Info.Contains (E);
    end Loop_Writes_Known;
 
+   -----------------------
+   -- Original_Constant --
+   -----------------------
+
+   function Original_Constant (N : Node_Id) return Entity_Id is
+      Orig_Node : constant Node_Id := Original_Node (N);
+      pragma Assert (N /= Orig_Node);
+
+   begin
+      return Entity (Orig_Node);
+   end Original_Constant;
+
    --------------------------
    -- Quantified_Variables --
    --------------------------
@@ -3810,15 +3773,14 @@ package body Flow_Utility is
    --------------------
 
    function To_Flow_Id_Set
-     (NS    : Name_Sets.Set;
-      View  : Flow_Id_Variant := Normal_Use;
-      Scope : Flow_Scope      := Null_Flow_Scope)
+     (NS   : Name_Sets.Set;
+      View : Flow_Id_Variant := Normal_Use)
       return Flow_Id_Sets.Set
    is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for N of NS loop
-         FS.Insert (Get_Flow_Id (N, View, Scope));
+         FS.Insert (Get_Flow_Id (N, View));
       end loop;
 
       return FS;

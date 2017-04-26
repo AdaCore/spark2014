@@ -93,31 +93,25 @@ is
    --  to check for this equivalence.
 
    function Get_Flow_Id
-     (Name  : Entity_Name;
-      View  : Flow_Id_Variant := Normal_Use;
-      Scope : Flow_Scope      := Null_Flow_Scope)
+     (Name : Entity_Name;
+      View : Flow_Id_Variant := Normal_Use)
       return Flow_Id;
-   --  Return a suitable Flow_Id for the unique_name of an entity. We try our
-   --  best to get a direct mapping, resorting to the magic string only as a
-   --  last resort. When an entity is found we use Scope to determine if we
-   --  should return its Full_View instead.
+   --  Return a suitable Flow_Id for the entity name. We try our best to get a
+   --  direct mapping, resorting to the magic string only if necessary.
    --  @param Name is the Entity_Name whose corresponding entity we
    --    are looking for
    --  @param View is the view that the returned Flow_Id will have
-   --  @param Scope is the scope from which Get_Flow_Id is called
    --  @return a Flow_Id with either an entity or a magic_string if
    --    an entity cannot be found.
 
    function To_Flow_Id_Set
-     (NS    : Name_Sets.Set;
-      View  : Flow_Id_Variant := Normal_Use;
-      Scope : Flow_Scope      := Null_Flow_Scope)
+     (NS   : Name_Sets.Set;
+      View : Flow_Id_Variant := Normal_Use)
       return Flow_Id_Sets.Set;
    --  Converts a name set into a flow id set. The flow ids have their views
    --  set to View.
    --  @param NS is the name set that will be converted
    --  @param View is the view that flow ids will be given
-   --  @param Scope is used to return full views if they are visible
    --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
@@ -411,6 +405,13 @@ is
    --  * Classwide: the assignment to map_root is classwide.
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
+
+   function Original_Constant (N : Node_Id) return Entity_Id
+   with Pre  => Nkind (N) in N_Numeric_Or_String_Literal,
+        Post => Ekind (Original_Constant'Result) = E_Constant;
+   --  For constants that are rewritten to numeric or integer literals return
+   --  the original entity. Such rewriting happens for proof, but it obscures
+   --  flow contracts, which needs to recover the original constants.
 
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;

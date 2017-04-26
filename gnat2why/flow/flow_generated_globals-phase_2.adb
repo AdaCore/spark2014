@@ -522,20 +522,20 @@ package body Flow_Generated_Globals.Phase_2 is
                   Final_View   => Final_View,
                   Scope        => S,
                   Reads        => Unused);
-      Proof_Reads := To_Flow_Id_Set (Final_View, In_View, S);
+      Proof_Reads := To_Flow_Id_Set (Final_View, In_View);
 
       Up_Project (Most_Refined => MR_Reads,
                   Final_View   => Final_View,
                   Scope        => S,
                   Reads        => Unused);
-      Reads := To_Flow_Id_Set (Final_View, In_View, S);
+      Reads := To_Flow_Id_Set (Final_View, In_View);
 
       Up_Project (Most_Refined      => MR_Writes,
                   Final_View        => Final_View,
                   Scope             => S,
                   Reads             => Reads,
                   Processing_Writes => True);
-      Writes := To_Flow_Id_Set (Final_View, Out_View, S);
+      Writes := To_Flow_Id_Set (Final_View, Out_View);
    end GG_Get_Globals;
 
    ------------------------
@@ -784,7 +784,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          begin
             if not Constituents.Is_Subset (Of_Set => Most_Refined) then
-               Reads.Include (Get_Flow_Id (AS, In_View, Scope));
+               Reads.Include (Get_Flow_Id (AS, In_View));
             end if;
          end;
       end loop;

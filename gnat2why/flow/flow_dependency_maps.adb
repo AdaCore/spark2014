@@ -128,7 +128,6 @@ package body Flow_Dependency_Maps is
                --  (Foo, Bar, Baz) => ...
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
-                  pragma Assert (Present (Entity (LHS)));
                   Outputs.Include
                     (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
                   LHS := Next (LHS);
@@ -136,13 +135,16 @@ package body Flow_Dependency_Maps is
 
             when N_Attribute_Reference =>
                --  foo'result => ...
-               pragma Assert (Present (Entity (Prefix (LHS))));
+               pragma Assert (Ekind (Entity (Prefix (LHS))) = E_Function);
+
+               pragma Assert (Get_Attribute_Id (Attribute_Name (LHS)) =
+                                Attribute_Result);
+
                Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
+                 (Direct_Mapping_Id (Entity (Prefix (LHS))));
 
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
-               pragma Assert (Present (Entity (LHS)));
                Outputs.Include
                  (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
 
@@ -151,14 +153,8 @@ package body Flow_Dependency_Maps is
                null;
 
             when N_Numeric_Or_String_Literal =>
-               --  We should only ever get here if we are dealing with
-               --  a rewritten constant.
-               pragma Assert (LHS /= Original_Node (LHS));
-
-               --  We process the entity of the Original_Node instead
                Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity
-                                       (Entity (Original_Node (LHS)))));
+                 (Direct_Mapping_Id (Unique_Entity (Original_Constant (LHS))));
 
             when others =>
                Print_Node_Subtree (LHS);
@@ -172,23 +168,17 @@ package body Flow_Dependency_Maps is
             when N_Aggregate =>
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
-                  if Nkind (RHS) in N_Numeric_Or_String_Literal then
-                     --  We should only ever get here if we are
-                     --  dealing with a rewritten constant.
-                     pragma Assert (RHS /= Original_Node (RHS));
-                     Inputs.Include
-                       (Direct_Mapping_Id
-                          (Unique_Entity (Entity (Original_Node (RHS)))));
-                  else
-                     pragma Assert (Present (Entity (RHS)));
-                     Inputs.Include
-                       (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
-                  end if;
+                  Inputs.Include
+                    (Direct_Mapping_Id
+                       (Unique_Entity
+                          (if Nkind (RHS) in N_Numeric_Or_String_Literal
+                           then Original_Constant (RHS)
+                           else Entity (RHS))));
+
                   RHS := Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
-               pragma Assert (Present (Entity (RHS)));
                Inputs.Include
                  (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
 
@@ -196,14 +186,8 @@ package body Flow_Dependency_Maps is
                null;
 
             when N_Numeric_Or_String_Literal =>
-               --  We should only ever get here if we are dealing with
-               --  a rewritten constant.
-               pragma Assert (RHS /= Original_Node (RHS));
-
-               --  We process the entity of the Original_Node instead
                Inputs.Include
-                 (Direct_Mapping_Id (Unique_Entity
-                                       (Entity (Original_Node (RHS)))));
+                 (Direct_Mapping_Id (Unique_Entity (Original_Constant (RHS))));
 
             when others =>
                Print_Node_Subtree (RHS);

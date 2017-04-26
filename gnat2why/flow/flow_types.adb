@@ -178,18 +178,20 @@ package body Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    is
-      N_Or_Limited_View : Node_Or_Entity_Id := N;
+      Canonical_Node : Node_Or_Entity_Id;
    begin
-      if Nkind (N) in N_Entity and then
-        Ekind (N) in E_Incomplete_Type | E_Incomplete_Subtype and then
-        Has_Non_Limited_View (N)
+      if Nkind (N) in N_Entity
+        and then Ekind (N) in E_Abstract_State | Incomplete_Kind
+        and then Has_Non_Limited_View (N)
       then
-         N_Or_Limited_View := Non_Limited_View (N);
+         Canonical_Node := Non_Limited_View (N);
+      else
+         Canonical_Node := N;
       end if;
 
       return (Kind    => Direct_Mapping,
               Variant => Variant,
-              Node    => N_Or_Limited_View,
+              Node    => Canonical_Node,
               Facet   => Facet);
    end Direct_Mapping_Id;
 

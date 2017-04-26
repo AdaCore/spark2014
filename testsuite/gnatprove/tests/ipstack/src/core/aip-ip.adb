@@ -81,9 +81,7 @@ is
    -- IP_Input --
    --------------
 
-   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) with
-     Refined_Global => (Input  => (Default_Router, UDP.State),
-                        In_Out => (IP_Serial, Buffers.State, TCP.State))
+   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id)
    is
       Err  : AIP.Err_T := AIP.NOERR;
 
@@ -103,8 +101,8 @@ is
       --  Dispatch packet in Buf received on Netif to upper protocol layer
       --  according to IP protocol identifier Proto.
       with
-        Global => (Input  => (Default_Router, UDP.State),
-                   In_Out => (IP_Serial, Buffers.State, TCP.State));
+        Global => (Input  => UDP.State,
+                   In_Out => (Buffers.State, TCP.State));
 
       --------------------
       -- Dispatch_Upper --
