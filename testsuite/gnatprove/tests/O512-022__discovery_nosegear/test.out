@@ -1,0 +1,62 @@
+ng.adb:29:07: info: initialization of "Success" proved
+ng.adb:30:07: info: initialization of "Result" proved
+ng.adb:33:18: info: initialization of "Success" proved
+ng.adb:34:17: info: initialization of "Result" proved
+ng.adb:34:17: medium: postcondition might fail, cannot prove Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
+ng.adb:36:27: info: overflow check proved (altergo: 1 VC)
+ng.adb:36:62: info: overflow check proved (altergo: 1 VC)
+ng.adb:37:29: info: overflow check proved (altergo: 1 VC)
+ng.adb:38:22: info: overflow check proved (altergo: 1 VC)
+ng.adb:39:22: medium: divide by zero might fail
+ng.adb:40:19: info: overflow check proved (altergo: 1 VC)
+ng.adb:41:19: medium: divide by zero might fail
+ng.adb:41:19: medium: range check might fail
+ng.adb:61:18: info: overflow check proved (altergo: 1 VC)
+ng.adb:61:18: info: range check proved (altergo: 1 VC)
+ng.adb:62:14: info: initialization of "D1" proved
+ng.adb:62:17: medium: overflow check might fail
+ng.adb:62:19: info: initialization of "T2" proved
+ng.adb:62:23: medium: divide by zero might fail
+ng.adb:62:23: medium: range check might fail
+ng.adb:62:25: info: initialization of "T1" proved
+ng.adb:65:20: info: initialization of "D1" proved
+ng.adb:65:23: medium: overflow check might fail
+ng.adb:65:25: info: initialization of "D2" proved
+ng.adb:65:29: medium: overflow check might fail
+ng.adb:65:37: medium: divide by zero might fail
+ng.adb:65:37: medium: range check might fail
+ng.adb:65:40: info: initialization of "T1" proved
+ng.adb:65:43: info: overflow check proved (altergo: 1 VC)
+ng.adb:65:45: info: initialization of "T2" proved
+ng.adb:73:10: info: initialization of "ThisTime" proved
+ng.adb:78:07: medium: precondition might fail
+ng.adb:78:26: info: initialization of "CurrTime" proved
+ng.adb:78:36: info: initialization of "ThisTime" proved
+ng.adb:78:46: info: initialization of "ThisCount" proved
+ng.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v1.adb:30:14: info: initialization of "D1" proved
+ng_v1.adb:30:19: info: initialization of "T2" proved
+ng_v1.adb:30:23: medium: divide by zero might fail
+ng_v1.adb:30:25: info: initialization of "T1" proved
+ng_v1.adb:33:36: info: initialization of "D1" proved
+ng_v1.adb:33:41: info: initialization of "D2" proved
+ng_v1.adb:33:53: medium: divide by zero might fail
+ng_v1.adb:33:56: info: initialization of "T1" proved
+ng_v1.adb:33:61: info: initialization of "T2" proved
+ng_v1.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v1.ads:27:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
+ng_v1.ads:31:23: medium: divide by zero might fail
+ng_v1.ads:32:28: medium: divide by zero might fail
+ng_v2.adb:49:09: medium: divide by zero might fail
+ng_v2.adb:52:44: medium: precondition might fail
+ng_v2.adb:65:13: info: precondition proved (altergo: 1 VC)
+ng_v2.adb:68:36: info: initialization of "D1" proved
+ng_v2.adb:68:41: info: initialization of "D2" proved
+ng_v2.adb:68:53: medium: divide by zero might fail
+ng_v2.adb:68:56: info: initialization of "T1" proved
+ng_v2.adb:68:61: info: initialization of "T2" proved
+ng_v2.ads:11:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v2.ads:12:14: info: postcondition proved (altergo: 2 VC)
+ng_v2.ads:12:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v2.ads:14:67: medium: divide by zero might fail
