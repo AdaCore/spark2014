@@ -305,18 +305,6 @@ package body Flow.Slice is
       --  Direct calls whose flow effects (given in the Global or Depends
       --  contracts) are not already "inlined" in the control flow graph.
 
-      procedure Get_Unresolved_Calls
-      with Global => (Output => Unresolved),
-           Pre    => Unresolved.Is_Empty,
-           Post   => Node_Sets.Is_Subset (Subset => Unresolved,
-                                          Of_Set => FA.Direct_Calls);
-      --  Removes subprograms whose flow effects (given in the Global or
-      --  Depends contracts) are already "inlined" in the control flow graph.
-
-      procedure Get_Proof_Calls (Calls : out Node_Sets.Set)
-      with Global => (Input => Unresolved);
-      --  Get subprograms are only ever called in proof-related contexts
-
       procedure Get_Definite_Calls (Calls : out Node_Sets.Set)
       with Global => (Input => Unresolved);
       --  Get subprograms that are definitely called
@@ -665,54 +653,13 @@ package body Flow.Slice is
          end loop;
       end Get_Local_Definite_Writes;
 
-      ---------------------
-      -- Get_Proof_Calls --
-      ---------------------
-
-      procedure Get_Proof_Calls (Calls : out Node_Sets.Set) is
-         All_Proof_Subprograms : Node_Sets.Set := Unresolved;
-      begin
-         --  Exclude subprograms called in graph vertices not nrelated to proof
-
-         for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            declare
-               A : V_Attributes renames FA.Atr (V);
-
-            begin
-               if not A.Is_Proof then
-                  All_Proof_Subprograms.Difference (A.Subprograms_Called);
-               end if;
-            end;
-         end loop;
-
-         Node_Sets.Move (Target => Calls, Source => All_Proof_Subprograms);
-      end Get_Proof_Calls;
-
-      --------------------------
-      -- Get_Unresolved_Calls --
-      --------------------------
-
-      procedure Get_Unresolved_Calls is
-      begin
-         for N of FA.Direct_Calls loop
-            --  Check if flow effects have been already "inlined" in CFG; see
-            --  the call to Process_Subprogram_Globals in Do_Call_Statement.
-            --  ??? refactor this test into a common routine
-            if Ekind (N) /= E_Package
-              and then (not Has_User_Supplied_Globals (N)
-                          or else Rely_On_Generated_Global (N, FA.B_Scope))
-            then
-               Unresolved.Insert (N);
-            end if;
-         end loop;
-      end Get_Unresolved_Calls;
-
       Ordinary_Ins : Node_Sets.Set;
 
    --  Start of processing for Compute_Globals
 
    begin
-      --  Detect ordinary inputs, i.e. non-proof ones
+      --  Detect ordinary inputs, i.e. non-proof ones, and classify calls into
+      --  proof and non-proof.
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          --  We iterate over vertices in the PDG and collect variables that are
          --  used on vertices unrelated to proof.
@@ -721,15 +668,40 @@ package body Flow.Slice is
             A : V_Attributes renames FA.Atr (V);
 
          begin
-            if FA.PDG.Get_Key (V).Variant = Final_Value or else A.Is_Proof
+            if FA.PDG.Get_Key (V).Variant = Final_Value or else A.Is_Assertion
             then
                null;
             else
                Ordinary_Ins.Union
                  (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
             end if;
+
+            for E of A.Subprograms_Called loop
+               --  Check if flow effects have been already "inlined" in CFG;
+               --  see the call to Process_Subprogram_Globals in
+               --  Do_Call_Statement.
+               --  ??? refactor those to using a common routine
+               if Ekind (E) /= E_Package
+                 and then (not Has_User_Supplied_Globals (E)
+                           or else Rely_On_Generated_Global (E, FA.B_Scope))
+               then
+                  if A.Is_Assertion then
+                     Proof_Calls.Include (E);
+                  else
+                     Unresolved.Include (E);
+                  end if;
+               end if;
+            end loop;
          end;
       end loop;
+
+      --  Calls called both in proof and non-proof contexts are non-proof calls
+      Proof_Calls.Difference (Unresolved);
+
+      Get_Definite_Calls (Definite_Calls);
+
+      Conditional_Calls := Unresolved;
+      Conditional_Calls.Difference (Definite_Calls);
 
       --  Classify globals into outs, ins and in_outs; also, insert "out" and
       --  "in_out" globals into Outputs, and "in" into Inputs.
@@ -802,18 +774,6 @@ package body Flow.Slice is
             end if;
          end;
       end loop;
-
-      --  Classify unresolved calls into proof, definite and conditional ones
-      Get_Unresolved_Calls;
-
-      Get_Proof_Calls (Proof_Calls);
-
-      Get_Definite_Calls (Definite_Calls);
-      Definite_Calls.Difference (Proof_Calls);
-
-      Conditional_Calls := Unresolved;
-      Conditional_Calls.Difference (Definite_Calls);
-      Conditional_Calls.Difference (Proof_Calls);
 
       Get_Local_Variables_And_Subprograms;
 

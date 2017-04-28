@@ -29,8 +29,7 @@ with SPARK_Util;                  use SPARK_Util;
 package Flow.Control_Flow_Graph.Utility is
 
    function Make_Basic_Attributes
-     (FA         : Flow_Analysis_Graphs;
-      Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
@@ -44,8 +43,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  variables.
 
    function Make_Extended_Return_Attributes
-     (FA              : Flow_Analysis_Graphs;
-      Var_Def         : Flow_Id_Sets.Set;
+     (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
       Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
@@ -61,22 +59,16 @@ package Flow.Control_Flow_Graph.Utility is
    --  statement.
 
    function Make_Sink_Vertex_Attributes
-     (FA               : Flow_Analysis_Graphs;
-      Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Is_Proof         : Boolean           := False;
-      Is_DIC           : Boolean           := False;
-      Is_Precondition  : Boolean           := False;
-      Is_Postcondition : Boolean           := False;
-      Is_Loop_Entry    : Boolean           := False;
-      Is_Fold_Check    : Boolean           := False;
-      E_Loc            : Node_Or_Entity_Id := Empty;
-      Execution        : Execution_Kind_T  := Normal_Execution)
+     (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Is_DIC        : Boolean           := False;
+      Is_Assertion  : Boolean           := False;
+      Is_Loop_Entry : Boolean           := False;
+      Is_Fold_Check : Boolean           := False;
+      E_Loc         : Node_Or_Entity_Id := Empty;
+      Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
-   with Pre  => (if Is_DIC
-                   or Is_Precondition
-                   or Is_Postcondition
-                 then Is_Proof),
+   with Pre  => (if Is_DIC then Is_Assertion),
         Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
                 not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices modelling the following
@@ -106,8 +98,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Returns a copy of Leaf, but with blank def/use sets.
 
    function Make_Call_Attributes
-     (FA         : Flow_Analysis_Graphs;
-      Callsite   : Node_Id           := Empty;
+     (Callsite   : Node_Id           := Empty;
       Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
@@ -153,11 +144,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  Note: variables defined and used are calculated automatically
 
    function Make_Global_Attributes
-     (FA                           : Flow_Analysis_Graphs;
-      Call_Vertex                  : Node_Id;
+     (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
+      Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => (if Discriminants_Or_Bounds_Only
@@ -170,8 +161,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  used are calculated automatically.
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
+     (Call_Vertex : Node_Id;
       Implicit    : Flow_Id;
       Loops       : Node_Sets.Set;
       E_Loc       : Node_Or_Entity_Id := Empty)
@@ -189,8 +179,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Creates the attributes for the synthetic null export.
 
    function Make_Variable_Attributes
-     (FA    : Flow_Analysis_Graphs;
-      F_Ent : Flow_Id;
+     (F_Ent : Flow_Id;
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -210,8 +199,7 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Variables_Defined or Variables_Used
 
    function Make_Global_Variable_Attributes
-     (FA     : Flow_Analysis_Graphs;
-      F      : Flow_Id;
+     (F      : Flow_Id;
       Mode   : Param_Mode;
       Uninit : Boolean           := False;
       E_Loc  : Node_Or_Entity_Id := Empty)
@@ -243,8 +231,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Create attributes for the default initialization vertices.
 
    function Make_Package_Initialization_Attributes
-     (FA        : Flow_Analysis_Graphs;
-      The_State : Flow_Id;
+     (The_State : Flow_Id;
       Inputs    : Flow_Id_Sets.Set;
       Scope     : Flow_Scope;
       Loops     : Node_Sets.Set;

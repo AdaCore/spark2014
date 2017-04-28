@@ -3287,6 +3287,26 @@ package body Flow_Utility is
       Init_Done := True;
    end Initialize;
 
+   ---------------------
+   -- Is_Ghost_Object --
+   ---------------------
+
+   function Is_Ghost_Object (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               return Is_Object (E)
+                 and then Is_Ghost_Entity (E);
+            end;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Ghost_Object;
+
    -----------------------------------
    -- Is_Initialized_At_Elaboration --
    -----------------------------------

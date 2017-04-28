@@ -198,8 +198,7 @@ package body Flow is
       Format_Item ("Is_Exceptional_Path",
                    Boolean'Image (A.Is_Exceptional_Path));
       Format_Item ("Is_Program_Node", Boolean'Image (A.Is_Program_Node));
-      Format_Item ("Is_Proof", Boolean'Image (A.Is_Proof));
-      Format_Item ("Is_Precondition", Boolean'Image (A.Is_Precondition));
+      Format_Item ("Is_Assertion", Boolean'Image (A.Is_Assertion));
       Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
       Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
       Format_Item ("Is_Initialized", Boolean'Image (A.Is_Initialized));
@@ -548,12 +547,9 @@ package body Flow is
             end;
 
          else
-            if A.Is_Precondition then
+            if A.Is_Assertion then
                Rv.Shape := Shape_None;
-               Write_Str ("precondition ");
-            elsif A.Is_Postcondition then
-               Rv.Shape := Shape_None;
-               Write_Str ("postcondition ");
+               Write_Str ("assertion ");
             elsif A.Is_Loop_Entry then
                Rv.Shape := Shape_None;
                Write_Str ("loop entry ");
@@ -773,8 +769,8 @@ package body Flow is
             Write_Str ("\nExceptional_Branch");
          end if;
 
-         if A.Is_Proof then
-            Write_Str ("\nPROOF");
+         if A.Is_Assertion then
+            Write_Str ("\nASSERT");
          end if;
 
          Write_Str ("\n<VId:" & Natural'Image (G.Vertex_To_Natural (V)) & ">");

@@ -726,6 +726,11 @@ is
    --  might not be accurate (this means that some constant that might not
    --  actually have variable input will be reported as having variable input).
 
+   function Is_Ghost_Object (F : Flow_Id) return Boolean;
+   --  Returns True iff F represents a ghost object
+   --  ??? returns False if F.Kind = Magic_String, which is wrong; should be
+   --  fixed by recording the ghost status in the ALI file.
+
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);
    --  Returns True if F is either not a constant or is a constant

@@ -42,7 +42,7 @@ is
      (Item : out String;
       Last : out Natural)
    with
-     Global => (Proof_In => The_File, Input => (EOF, EOF_Ch), In_Out => (Cur_Position, Current_Input_File)),
+     Global => (Input => (EOF, EOF_Ch, The_File), In_Out => (Cur_Position, Current_Input_File)),
 
      --  It is an error to call Get_Line on an empty file
 

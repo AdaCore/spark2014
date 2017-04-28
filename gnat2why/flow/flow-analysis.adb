@@ -471,8 +471,7 @@ package body Flow.Analysis is
          --  We want to deal only with program statements and procedure calls.
 
          if (Atr.Is_Program_Node
-               or Atr.Is_Precondition
-               or Atr.Is_Postcondition) and
+               or Atr.Is_Assertion) and
            not Atr.Is_Callsite
          then
             if Present (FA.CFG.Get_Key (V)) then
@@ -978,9 +977,7 @@ package body Flow.Analysis is
                 when Final_Value => Atr.Is_Export,
                 when Normal_Use  => Atr.Is_Exceptional_Branch,
                 when others      => False)
-              or else Atr.Is_Precondition
-              or else Atr.Is_Postcondition
-              or else Atr.Is_Proof;
+              or else Atr.Is_Assertion;
       end Is_Final_Use;
 
       Suppressed         : Flow_Id_Sets.Set;
@@ -1764,8 +1761,16 @@ package body Flow.Analysis is
                  --  that has Async_Readers set.
                  not Defines_Async_Reader_Var (V) and then
 
-                 --  Suppression for vertices that relate to proof
-                 not Atr.Is_Proof
+                 --  Suppression for vertices with assertion expressions
+                 not Atr.Is_Assertion and then
+
+                 --  Suppression for vertices that write to ghost variables
+                 --  ??? Probably we want remove this suppression
+                 not (for some Var of Atr.Variables_Defined =>
+                         Is_Ghost_Object (Var)) and then
+
+                 --  Suppression for ghost entities
+                 not Is_Ghost_Entity (FA.Spec_Entity)
                then
                   Mask := Find_Masking_Code (V);
                   N    := Error_Location (FA.PDG, FA.Atr, V);

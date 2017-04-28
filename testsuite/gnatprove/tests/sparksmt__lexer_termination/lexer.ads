@@ -59,7 +59,7 @@ is
 
    function Local_Invariant return Boolean
    with Ghost,
-        Global => (Proof_In => State);
+        Global => (Input => State);
    --  Internal invariant we maintain specific to the lexer.
 
    function Invariant return Boolean is

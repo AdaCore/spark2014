@@ -45,13 +45,6 @@ package body Flow.Control_Flow_Graph.Utility is
    --  This procedure should not be blindly called in all cases; in
    --  particular for 'inital and 'final vertices it should not be used.
 
-   function Refers_To_Ghost
-     (FA  : Flow_Analysis_Graphs;
-      Atr : V_Attributes)
-      return Boolean;
-   --  Checks if Atr refers to a Ghost. This function is mainly used
-   --  to set the Is_Proof field of V_Attributes.
-
    --------------------------
    -- Add_Volatile_Effects --
    --------------------------
@@ -87,8 +80,7 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (FA         : Flow_Analysis_Graphs;
-      Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
@@ -107,7 +99,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Pretty_Print_Kind         := Print_Hint;
-      A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -118,8 +109,7 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------------
 
    function Make_Extended_Return_Attributes
-     (FA              : Flow_Analysis_Graphs;
-      Var_Def         : Flow_Id_Sets.Set;
+     (Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
       Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
@@ -137,7 +127,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;
-      A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -148,17 +137,14 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------------
 
    function Make_Sink_Vertex_Attributes
-     (FA               : Flow_Analysis_Graphs;
-      Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Is_Proof         : Boolean           := False;
-      Is_DIC           : Boolean           := False;
-      Is_Precondition  : Boolean           := False;
-      Is_Postcondition : Boolean           := False;
-      Is_Loop_Entry    : Boolean           := False;
-      Is_Fold_Check    : Boolean           := False;
-      E_Loc            : Node_Or_Entity_Id := Empty;
-      Execution        : Execution_Kind_T  := Normal_Execution)
+     (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Is_DIC        : Boolean           := False;
+      Is_Assertion  : Boolean           := False;
+      Is_Loop_Entry : Boolean           := False;
+      Is_Fold_Check : Boolean           := False;
+      E_Loc         : Node_Or_Entity_Id := Empty;
+      Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -166,9 +152,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
       A.Subprograms_Called        := Sub_Called;
-      A.Is_Proof                  := Is_Proof or else Refers_To_Ghost (FA, A);
-      A.Is_Precondition           := Is_Precondition;
-      A.Is_Postcondition          := Is_Postcondition;
+      A.Is_Assertion              := Is_Assertion;
       A.Is_Loop_Entry             := Is_Loop_Entry;
       A.Error_Location            := E_Loc;
       A.Execution                 := Execution;
@@ -221,8 +205,7 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (FA         : Flow_Analysis_Graphs;
-      Callsite   : Node_Id           := Empty;
+     (Callsite   : Node_Id           := Empty;
       Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
@@ -236,7 +219,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops              := Loops;
       A.Is_Callsite        := True;
       A.Error_Location     := E_Loc;
-      A.Is_Proof           := Refers_To_Ghost (FA, A);
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
@@ -365,7 +347,6 @@ package body Flow.Control_Flow_Graph.Utility is
          end;
       end if;
 
-      A.Is_Proof := Refers_To_Ghost (FA, A);
       Add_Volatile_Effects (A);
       return A;
    end Make_Parameter_Attributes;
@@ -375,11 +356,11 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (FA                           : Flow_Analysis_Graphs;
-      Call_Vertex                  : Node_Id;
+     (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
+      Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
@@ -394,6 +375,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Parameter_Formal             := Global;
       A.Loops                        := Loops;
       A.Error_Location               := E_Loc;
+      A.Is_Assertion                 := Is_Assertion;
 
       case Global.Variant is
          when In_View =>
@@ -422,8 +404,7 @@ package body Flow.Control_Flow_Graph.Utility is
             --  ever update the entire global.
             Tmp := Flatten_Variable (G, Scope);
             if Extensions_Visible (G, Scope) then
-               --  We can't actually modify the tag, so this is not an
-               --  omission.
+               --  We can't actually modify the tag, so this is not an omission
                Tmp.Include (G'Update (Facet => Extension_Part));
             end if;
             A.Variables_Defined := Tmp;
@@ -432,7 +413,6 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      A.Is_Proof := Refers_To_Ghost (FA, A);
       Add_Volatile_Effects (A, Global);
       return A;
    end Make_Global_Attributes;
@@ -442,8 +422,7 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
+     (Call_Vertex : Node_Id;
       Implicit    : Flow_Id;
       Loops       : Node_Sets.Set;
       E_Loc       : Node_Or_Entity_Id := Empty)
@@ -479,7 +458,6 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      A.Is_Proof := Refers_To_Ghost (FA, A);
       Add_Volatile_Effects (A, I);
       return A;
    end Make_Implicit_Parameter_Attributes;
@@ -516,8 +494,7 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------
 
    function Make_Variable_Attributes
-     (FA    : Flow_Analysis_Graphs;
-      F_Ent : Flow_Id;
+     (F_Ent : Flow_Id;
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -606,8 +583,6 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      A.Is_Proof := Refers_To_Ghost (FA, A);
-
       return A;
    end Make_Variable_Attributes;
 
@@ -616,8 +591,7 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------------
 
    function Make_Global_Variable_Attributes
-     (FA     : Flow_Analysis_Graphs;
-      F      : Flow_Id;
+     (F      : Flow_Id;
       Mode   : Param_Mode;
       Uninit : Boolean           := False;
       E_Loc  : Node_Or_Entity_Id := Empty)
@@ -662,8 +636,6 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      A.Is_Proof := (Mode = Mode_Proof) or else Refers_To_Ghost (FA, A);
-
       return A;
    end Make_Global_Variable_Attributes;
 
@@ -702,7 +674,6 @@ package body Flow.Control_Flow_Graph.Utility is
             Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
-      A.Is_Proof          := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -713,8 +684,7 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Package_Initialization_Attributes
-     (FA        : Flow_Analysis_Graphs;
-      The_State : Flow_Id;
+     (The_State : Flow_Id;
       Inputs    : Flow_Id_Sets.Set;
       Scope     : Flow_Scope;
       Loops     : Node_Sets.Set;
@@ -736,8 +706,7 @@ package body Flow.Control_Flow_Graph.Utility is
       end loop;
 
       A := Make_Basic_Attributes
-        (FA         => FA,
-         Var_Def    => Split_State,
+        (Var_Def    => Split_State,
          Var_Ex_Use => Split_Inputs,
          Var_Im_Use =>
            (if Is_Initialized_At_Elaboration (The_State, Scope)
@@ -747,48 +716,7 @@ package body Flow.Control_Flow_Graph.Utility is
          Loops      => Loops,
          E_Loc      => E_Loc);
       A.Is_Package_Initialization := True;
-      A.Is_Proof := Refers_To_Ghost (FA, A);
       return A;
    end Make_Package_Initialization_Attributes;
-
-   ---------------------
-   -- Refers_To_Ghost --
-   ---------------------
-
-   function Refers_To_Ghost
-     (FA  : Flow_Analysis_Graphs;
-      Atr : V_Attributes)
-      return Boolean
-   is
-      function Is_Ghost_Variable (F : Flow_Id) return Boolean;
-      --  Returns True iff F represents a ghost variable
-
-      -----------------------
-      -- Is_Ghost_Variable --
-      -----------------------
-
-      function Is_Ghost_Variable (F : Flow_Id) return Boolean is
-        (F.Kind in Direct_Mapping | Record_Field
-         and then Is_Ghost_Entity (Get_Direct_Mapping_Id (F)));
-
-   --  Start of processing for Refers_To_Ghost
-
-   begin
-      return
-        --  Check if the analyzed entity is a ghost
-        Is_Ghost_Entity (FA.Analyzed_Entity)
-
-        --  Check if any of the variables used or defined is a ghost
-        or else
-          (for some Var of Atr.Variables_Used => Is_Ghost_Variable (Var))
-
-        or else
-          (for some Var of Atr.Variables_Defined => Is_Ghost_Variable (Var))
-
-        --  Check if any of the subprograms called is a ghost
-        or else
-          (for some Sub of Atr.Subprograms_Called =>
-             Is_Ghost_Entity (Sub));
-   end Refers_To_Ghost;
 
 end Flow.Control_Flow_Graph.Utility;

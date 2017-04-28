@@ -508,15 +508,8 @@ package Flow_Types is
       --  to subprograms with pragma No_Return. We tend to exclude these from
       --  analysis and sanity checking.
 
-      Is_Proof                     : Boolean;
-      --  True if this vertex represents something in a proof context
-      --  (ghost code, asserts, contracts, etc.)
-
-      Is_Precondition              : Boolean;
-      --  True if this vertex represents the precondition.
-
-      Is_Postcondition             : Boolean;
-      --  True if this vertex represents the postcondition.
+      Is_Assertion                 : Boolean;
+      --  True if this vertex represents an assertion expression
 
       Is_Package_Initialization    : Boolean;
       --  True if this vertex represents a package initialization.
@@ -643,9 +636,7 @@ package Flow_Types is
                    Is_Program_Node                 => False,
                    Is_Exceptional_Branch           => False,
                    Is_Exceptional_Path             => False,
-                   Is_Proof                        => False,
-                   Is_Precondition                 => False,
-                   Is_Postcondition                => False,
+                   Is_Assertion                    => False,
                    Is_Package_Initialization       => False,
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,

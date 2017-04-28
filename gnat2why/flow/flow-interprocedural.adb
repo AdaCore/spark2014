@@ -312,8 +312,8 @@ package body Flow.Interprocedural is
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex (FA, V, Output);
 
-                     Output_Is_Proof : constant Boolean :=
-                       FA.Atr (Output_V).Is_Proof;
+                     Output_Is_Ghost : constant Boolean :=
+                       Is_Ghost_Object (Output);
 
                   begin
                      for Input of Inputs loop
@@ -321,16 +321,13 @@ package body Flow.Interprocedural is
                            Input_V : constant Flow_Graphs.Vertex_Id :=
                              Find_Parameter_Vertex (FA, V, Input);
 
-                           Input_Is_Proof : constant Boolean :=
-                             FA.Atr (Input_V).Is_Proof;
-
                            Dependency_Allowed : constant Boolean :=
-                             Output_Is_Proof
+                             Output_Is_Ghost
                                or else
                              Is_Abstract_State (Output)
                                or else
                              (not Ghost_Subprogram
-                              and then not Input_Is_Proof);
+                              and then not Is_Ghost_Object (Input));
                            --  Ghost outputs can always be modified; non-ghost
                            --  abstract states too, because they might contain
                            --  ghost constituents; non-ghost outputs can only
