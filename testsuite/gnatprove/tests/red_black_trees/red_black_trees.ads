@@ -8,9 +8,10 @@ with Binary_Trees; use Binary_Trees;
 
 --  This package provides an implementation of balanced red-black trees above
 --  the search tree implementation. Apart from the regular search tree, a
---  red-black tree contains an array associating a color to each node. The
---  invariant states that there cannot be two red nodes in a row in any path of
---  the tree. We do not attempt to verify that the tree stays balanced.
+--  red-black tree contains an array associating a color to each node.
+--  Balancing is enforced by verifying that Red nodes are properly interleaved
+--  with black nodes and that the number of black nodes is the same in every
+--  branch of the tree.
 
 package Red_Black_Trees with SPARK_Mode is
    type Rbt is private with Default_Initial_Condition => True;
@@ -41,11 +42,14 @@ private
    function Color (T : Rbt; I : Extended_Index_Type) return Color_Type is
       (if I = Empty then Black else T.Color (I));
 
+   function Same_Nb_Blacks (T : Rbt) return Boolean with Ghost;
+
    function Invariant (T : Rbt) return Boolean is
-     (for all I in Index_Type =>
+     ((for all I in Index_Type =>
         (if Parent (T.Struct, I) = Empty
            or else T.Color (Parent (T.Struct, I)) = Red
          then T.Color (I) = Black))
+       and Same_Nb_Blacks (T))
    with Ghost;
 
    function Size (T : Rbt) return Extended_Index_Type is (Size (T.Struct));

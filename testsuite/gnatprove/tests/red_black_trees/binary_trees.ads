@@ -348,6 +348,12 @@ package Binary_Trees with SPARK_Mode is
                   (if J /= V and Parent (F'Old, J) /= Empty
                    then Position (F, J) = Position (F'Old, J)))
 
+       --  Except at I for child D, all other children are preserved
+       and then (for all J in Index_Type =>
+                  (for all E in Direction =>
+                    (if J /= I or else E /= D
+                     then Peek (F, J, E) = Peek (F'Old, J, E))))
+
        --  Nodes that are in the tree consist in nodes previously in the tree
        --  plus the new node V.
        and then (for all J in Index_Type =>

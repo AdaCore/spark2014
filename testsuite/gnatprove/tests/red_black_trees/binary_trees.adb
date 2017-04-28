@@ -1,7 +1,34 @@
+with Ada.Containers.Functional_Sets;
+
 package body Binary_Trees with SPARK_Mode is
 
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
+
+   package I_Set is new Ada.Containers.Functional_Sets (Index_Type, "=");
+
+   function All_Indexes return I_Set.Set with
+   --  To ensure termination of the Model function, we need to keep track of
+   --  all the indexes that have not been seen so far. This function is used to
+   --  initialize this set.
+
+     Ghost,
+     Post =>
+       (for all I in Index_Type => I_Set.Contains (All_Indexes'Result, I))
+          and I_Set.Length (All_Indexes'Result) = Max
+   is
+      use I_Set;
+      S : I_Set.Set;
+   begin
+      for I in Index_Type loop
+         pragma Loop_Invariant (Length (S) = I - 1);
+         pragma Loop_Invariant
+           (for all J in 1 .. I - 1 => Contains (S, J));
+         pragma Loop_Invariant (for all J of S => J < I);
+         S := Add (S, I);
+      end loop;
+      return S;
+   end All_Indexes;
 
    --------------------
    -- Tree_Structure --
@@ -73,6 +100,7 @@ package body Binary_Trees with SPARK_Mode is
    -----------
 
    function Model (F : Forest; Root : Index_Type) return Model_Type is
+      use I_Set;
       type Boolean_Array is array (Index_Type) of Boolean;
 
       function Next (ToDo : Boolean_Array) return Extended_Index_Type with
@@ -90,12 +118,15 @@ package body Binary_Trees with SPARK_Mode is
          return Empty;
       end Next;
 
-      ToDo : Boolean_Array := (others => False);
+      ToDo   : Boolean_Array := (others => False);
       --  The array containing the nodes that are still to analyze
 
-      R    : Model_Type;
-      I    : Extended_Index_Type := Root;
-      N    : Extended_Index_Type := Empty with Ghost;
+      Unseen : I_Set.Set := All_Indexes with Ghost;
+      --  A set containing all the nodes that have not been analyzed yet. It is
+      --  used to ensure termination.
+
+      R      : Model_Type;
+      I      : Extended_Index_Type := Root;
 
    begin
       --  Insert the root in R and store it in the ToDo list
@@ -170,16 +201,23 @@ package body Binary_Trees with SPARK_Mode is
          --  is empty.
          pragma Loop_Invariant (R (Root).K and Length (R (Root).A) = 0);
 
-         --  The longest path stored so far is of size N at most
-         pragma Loop_Invariant (for all J in Index_Type => Length (R (J).A) <= N);
+         --  The longest path stored so far is of size Max - Length (Unseen) at
+         --  most.
+         pragma Loop_Invariant
+           (for all J in Index_Type =>
+              Length (R (J).A) <= Max - Length (Unseen));
 
-         --  N is bounded by the number of nodes in the tree, which is at most
-         --  Max, and N is strictly less than Max when the ToDo list is not
-         --  empty.
-         pragma Loop_Invariant (N < Max);
+         --  Nodes that have not been handled yet are either not in the tree or
+         --  in the ToDo list.
+         pragma Loop_Invariant
+           (for all J in Index_Type =>
+              (Contains (Unseen, J) = (not R (J).K or ToDo (J))));
 
          --  At each iteration of the loop, we add a new node in the tree
-         pragma Loop_Variant (Increases => N);
+         pragma Loop_Variant (Decreases => Length (Unseen));
+
+         --  Remove I from the set of unseen nodes
+         Unseen := Remove (Unseen, I);
 
          declare
             J : Extended_Index_Type;
@@ -187,6 +225,7 @@ package body Binary_Trees with SPARK_Mode is
             --  Update model R for the left child. Add it to the ToDo list.
             J := F.C (I).Left;
             if J /= Empty then
+               pragma Assert (Length (Unseen) > 0);
                R (J).K  := True;
                R (J).A  := Add (R (F.C (J).Parent).A, Left);
                ToDo (J) := True;
@@ -195,6 +234,7 @@ package body Binary_Trees with SPARK_Mode is
             --  Update model R for the right child. Add it to the ToDo list.
             J := F.C (I).Right;
             if J /= Empty then
+               pragma Assert (Length (Unseen) > 0);
                R (J).K  := True;
                R (J).A  := Add (R (F.C (J).Parent).A, Right);
                ToDo (J) := True;
@@ -204,11 +244,6 @@ package body Binary_Trees with SPARK_Mode is
          --  Nothing more to do for node I
          ToDo (I) := False;
          I := Next (ToDo);
-         N := N + 1;
-
-         --  There can be at most Max nodes in the tree. This is assumed here.
-         --  It would be possible to prove it
-         pragma Assume (if I /= Empty then N < Max);
       end loop;
 
       --  Restate part of the loop invariant after the last iteration of the

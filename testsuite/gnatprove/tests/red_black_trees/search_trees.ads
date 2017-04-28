@@ -66,7 +66,11 @@ package Search_Trees with SPARK_Mode is
           and then (for all J in Index_Type =>
                      (if Model (T) (J).K then Model (T'Old) (J).K))
           and then (for all J in Index_Type =>
-                     (if Model (T'Old) (J).K then Model (T) (J).K)),
+                     (if Model (T'Old) (J).K then Model (T) (J).K))
+          and then (for all J in Index_Type =>
+                        (for all D in Direction =>
+                           (if Model (T) (J).K then
+                                Peek (T'Old, J, D) = Peek (T, J, D)))),
 
         --  Case 2: the tree is empty. Return a singleton tree in T, whose root
         --  is I. Value V is added to the previous (empty) set of values. The
@@ -101,7 +105,16 @@ package Search_Trees with SPARK_Mode is
                       then Model (T'Old) (J).K))
           and then (for all J in Index_Type =>
                      (if Model (T'Old) (J).K
-                      then Model (T) (J).K and I /= J)));
+                      then Model (T) (J).K and I /= J))
+          and then (for all D in Direction => Peek (T, I, D) = 0)
+          and then Peek (T'Old, Parent (T, I), Position (T, I)) = 0
+          and then (for all J in Index_Type =>
+                        (for all D in Direction =>
+                           (if Model (T) (J).K
+                            and I /= J
+                            and (J /= Parent (T, I) or D /= Position (T, I))
+                            then
+                                Peek (T'Old, J, D) = Peek (T, J, D)))));
 
    procedure Left_Rotate (T : in out Search_Tree; I : Index_Type) with
      Pre  =>
@@ -173,7 +186,29 @@ package Search_Trees with SPARK_Mode is
                   (if Model (T'Old) (J).K then Model (T) (J).K))
 
        --  Values are preserved
-       and then Values (T) = Values (T'Old);
+       and then Values (T) = Values (T'Old)
+
+       --  The right child of I now is the former left child of I's former right
+       --  child.
+       and then Peek (T, I, Right) = Peek (T'Old, Peek (T'Old, I, Right), Left)
+
+       --  I's former right child has taken its place in the tree
+       and then (if Parent (T'Old, I) /= 0 then
+                      Peek (T, Parent (T'Old, I), Position (T'Old, I)) =
+                      Peek (T'Old, I, Right))
+
+       --  I is now the left child of its former right child
+       and then Peek (T, Peek (T'Old, I, Right), Left) = I
+
+       --  Other children are preserved
+       and then
+       (for all J in Index_Type =>
+           (for all D in Direction =>
+               (if (J /= I or D = Left)
+                 and (J /= Parent (T'Old, I) or else D /= Position (T'Old, I))
+                 and (J /= Peek (T'Old, I, Right) or else D = Right)
+                 and Model (T) (J).K
+                then Peek (T, J, D) = Peek (T'Old, J, D))));
 
    procedure Right_Rotate (T : in out Search_Tree; I : Index_Type) with
      Pre  =>
@@ -245,7 +280,29 @@ package Search_Trees with SPARK_Mode is
                   (if Model (T'Old) (J).K then Model (T) (J).K))
 
        --  Values are preserved
-       and then Values (T) = Values (T'Old);
+       and then Values (T) = Values (T'Old)
+
+       --  The left child of I now is the former right child of I's former left
+       --  child.
+       and then Peek (T, I, Left) = Peek (T'Old, Peek (T'Old, I, Left), Right)
+
+       --  I's former left child has taken its place in the tree
+       and then (if Parent (T'Old, I) /= 0 then
+                      Peek (T, Parent (T'Old, I), Position (T'Old, I)) =
+                      Peek (T'Old, I, Left))
+
+       --  I is now the right child of its former left child
+       and then Peek (T, Peek (T'Old, I, Left), Right) = I
+
+       --  Other children are preserved
+       and then
+       (for all J in Index_Type =>
+           (for all D in Direction =>
+               (if (J /= I or D = Right)
+                 and (J /= Parent (T'Old, I) or else D /= Position (T'Old, I))
+                 and (J /= Peek (T'Old, I, Left) or else D = Left)
+                 and Model (T) (J).K
+                then Peek (T, J, D) = Peek (T'Old, J, D))));
 
 private
 

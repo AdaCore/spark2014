@@ -29,7 +29,7 @@ package Tree_Model with SPARK_Mode is
       A : Sequence;
       K : Boolean := False;
    end record
-   with Predicate => Length (A) <= Max;
+   with Predicate => Length (A) < Max;
    --  Type used to model the path from the root of a tree to a given node,
    --  which may or not be in the tree:
    --    - if a node is in the tree, the corresponding path will have K = True,
