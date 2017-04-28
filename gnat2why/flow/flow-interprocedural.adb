@@ -245,8 +245,8 @@ package body Flow.Interprocedural is
 
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop
-               The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
-               The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
+               The_In  := Direct_Mapping_Id (E, In_View);
+               The_Out := Direct_Mapping_Id (E, Out_View);
 
                case Ekind (E) is
                   when E_In_Parameter =>
