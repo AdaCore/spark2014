@@ -1,0 +1,7 @@
+project Sort is
+   for Main use ("test_sort.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnata");
+   end Compiler;
+end Sort;
