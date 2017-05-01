@@ -114,13 +114,42 @@ derived type. This rule forbids the cases that require re-verification.]
 
 .. _tu-sf-preconditions_and_postconditions-02:
 
-2. The Pre aspect shall not be specified on an overridding primitive operation,
-   or a primitive operation of a type T at a point where T is tagged. Pre'Class
-   should be used instead to express preconditions.
+2. The Pre aspect shall not be specified for a primitive operation of a
+   type T at a point where T is tagged. [Pre'Class
+   should be used instead to express preconditions.]
 
 [The rationale for this rule is that, otherwise, the combination of dynamic
-semantics and verification rules below would force an identical Pre'Class each
-time Pre is used on a dispatching operation.]
+semantics and verification rules below would force an identical Pre'Class
+each time Pre is used on a dispatching operation.]
+
+.. _tu-sf-preconditions_and_postconditions-03:
+
+3. A subprogram_renaming_declaration shall not declare a primitive
+   operation of a tagged type.
+
+[Consider
+
+.. code-block:: ada
+
+   package Outer is
+      type T is tagged null record;
+      package Nested is
+         procedure Op (X : T) with Pre => ..., Post => ... ;
+         -- not a primitive, so Pre/Post specs are ok
+      end Nested;
+      procedure Renamed_Op (X : T) renames Nested.Op; -- illegal
+   end Outer;
+
+Allowing this example in SPARK would introduce a case of a dispatching
+operation which is subject to a Pre (and Post) aspect specification.
+This rule is also intended to avoid problematic interactions between
+the Pre/Pre'Class/Post/Post'Class aspects of the renamed subprogram
+and the Pre'Class/Post'Class inheritance associated with the declaration
+of a primitive operation of a tagged type.
+
+Note that a dispatching subprogram can be renamed as long as the renaming
+does not itself declare a dispatching operation. Note also that this rule
+would never apply to a renaming-as-body.]
 
 .. _etu-preconditions_and_postconditions:
 
