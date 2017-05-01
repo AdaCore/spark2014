@@ -103,6 +103,20 @@ are in |SPARK|.
    is declared within the statement list of the body of the immediately
    enclosing package (this is possible via a block statement).]
 
+   Any name denoting such an object or state abstraction
+   shall occur within either
+
+   * the body of the "owning" task or protected unit; or
+
+   * the statement list of the object's immediately enclosing package; or
+
+   * an Initializes or Initial_Condition aspect specification for
+     the object's immediately enclosing package.
+
+   [Roughly speaking, such an object can only be referenced from
+   within the "owning" unit or during the execution of the statement
+   list of its enclosing package].
+
    The notional equivalences described above break down in the case of
    package elaboration.
    The presence or absence of such a Part_Of aspect specification
