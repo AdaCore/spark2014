@@ -19,3 +19,10 @@ to use SSE arithmetic.
 SPARK considers the floating point values which represent positive, negative
 infinity or NaN as invalid. Proof obligations are generated that such values
 cannot occur.
+
+SPARK considers rounding on floating point arithmetic operations to follow
+Round-Nearest-Even (RNE) mode, where a real result is rounded to the nearest
+floating point value, and ties are resolved to the floating-point with a zero
+in the last place. This mode of rounding should be forced if needed on the
+hardware to be able to rely on the results of GNATprove regarding floating
+point arithmetic.
