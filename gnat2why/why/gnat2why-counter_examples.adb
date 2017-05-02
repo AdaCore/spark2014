@@ -251,7 +251,7 @@ package body Gnat2Why.Counter_Examples is
                --  integers like: "subype only_true := True .. True".
 
                if Is_Boolean_Type (AST_Type) then
-                  return (To_Unbounded_String (Cnt_Value.I /= "0"));
+                  return To_Unbounded_String (Cnt_Value.I /= "0");
 
                elsif Is_Enumeration_Type (AST_Type) then
                   declare
@@ -718,7 +718,6 @@ package body Gnat2Why.Counter_Examples is
               Empty);
 
       begin
-
          --  If Element_Type is not a "record" (anything with components or
          --  discriminants), return the value of the node.
 
@@ -985,8 +984,7 @@ package body Gnat2Why.Counter_Examples is
          Var : CNT_Element_Ptr;
 
       begin
-         if Map.Contains (Name)
-         then
+         if Map.Contains (Name) then
             Var := Element (Map.all, Name);
          else
             Var := new CNT_Element'
@@ -1062,8 +1060,7 @@ package body Gnat2Why.Counter_Examples is
                                  Mode       => String_Split.Single);
 
             --  For every Part, we create a CNT_Element
-            for Var_Slice_Num in
-              1 .. String_Split.Slice_Count (Name_Parts)
+            for Var_Slice_Num in 1 .. String_Split.Slice_Count (Name_Parts)
             loop
                declare
 
@@ -1118,8 +1115,7 @@ package body Gnat2Why.Counter_Examples is
                      --  Do not display uninitialized counterexample elements
                      --  (elements corresponding to uninitialized variables or
                      --  function arguments).
-                     if Is_Uninitialized (Part_Entity, File, Line)
-                     then
+                     if Is_Uninitialized (Part_Entity, File, Line) then
                         goto Next_Model_Element;
                      end if;
 
@@ -1423,17 +1419,17 @@ package body Gnat2Why.Counter_Examples is
       R : Unbounded_String := "[ " & El.Val_Str & " | ";
    begin
       for F in El.Fields.Iterate loop
-         R := R & "<F- " & CNT_Elements.Key (F) &
-           " = " &
-           Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
-           & " -F>";
+         Append (R, "<F- " & CNT_Elements.Key (F) &
+                    " = " &
+                    Print_CNT_Element_Debug (CNT_Elements.Element (F).all) &
+                    " -F>");
       end loop;
 
       for F in El.Attributes.Iterate loop
-         R := R & "<A- " & CNT_Elements.Key (F) &
-           " = " &
-           Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
-           & " -A>";
+         Append (R, "<A- " & CNT_Elements.Key (F) &
+                    " = " &
+                    Print_CNT_Element_Debug (CNT_Elements.Element (F).all) &
+                    " -A>");
       end loop;
 
       return To_String (R & " ]");
