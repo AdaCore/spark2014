@@ -6,7 +6,6 @@ tagged_conv.adb:27:17: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
 tagged_conv.adb:35:17: warning: subprogram "Bad1" has no effect
 tagged_conv.adb:36:44: medium: tag check might fail
 tagged_conv.adb:41:17: warning: subprogram "Bad12" has no effect
-tagged_conv.adb:44:44: info: initialization of extension of "RC" proved
 tagged_conv.adb:44:44: medium: tag check might fail
 tagged_conv.adb:49:17: warning: subprogram "Bad2" has no effect
 tagged_conv.adb:50:32: medium: tag check might fail

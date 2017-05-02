@@ -338,8 +338,7 @@ is
    --  For magic strings and the null export, we simply return a singleton set
    --  with just that.
    --
-   --  For null records we return the empty set (but otherwise you should get
-   --  a result with at least one element).
+   --  For null records we return the variable itself.
    --
    --  For private types we just return F. For private types with discriminant
    --  C we return F.C and F'Private_Part.
@@ -735,8 +734,7 @@ is
    --     which Has_Variable_Input
 
    function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
-     Pre => No (T) or else Is_Type (T),
-     Ghost;
+     Pre => No (T) or else Is_Type (T);
    --  Similar to Is_Null_Record_Type, but also returns true if this is a null
    --  extension of a null record type (or extension).
 

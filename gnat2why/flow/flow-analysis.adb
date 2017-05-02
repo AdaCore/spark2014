@@ -1177,33 +1177,43 @@ package body Flow.Analysis is
                   end;
                end if;
             else
-               --  We suppress this warning when we are dealing with a
-               --  concurrent type or a component of a concurrent type. Also
-               --  when the variable has been marked either as Unreferenced
-               --  or Unmodified or Unused or if it is a formal parameter of a
-               --  null subprogram of a generic unit.
-               if F.Kind = Direct_Mapping
-                   and then
-                  (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
-                     or else
-                   Belongs_To_Concurrent_Type (F)
-                     or else
-                   Has_Pragma_Un (Get_Direct_Mapping_Id (F))
-                     or else
-                   Is_Param_Of_Null_Subp_Of_Generic
-                     (Get_Direct_Mapping_Id (F)))
-               then
-                  null;
+               --  We suppress this warning when:
+               --  * we are dealing with a concurrent type or a component of a
+               --    concurrent type
+               --  * we are dealing with a null record
+               --  * the variable has been marked either as Unreferenced or
+               --    Unmodified or Unused
+               --  * the variable is a formal parameter of a null subprogram of
+               --    a generic unit.
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
-               else
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "unused variable &",
-                     N        => Error_Location (FA.PDG, FA.Atr, V),
-                     F1       => F,
-                     Tag      => VC_Kinds.Unused,
-                     Severity => Warning_Kind);
-               end if;
+                  Msg : constant String :=
+                    (if Ekind (Scope (E)) = E_Function
+                     and then Is_Predicate_Function (Scope (E))
+                     then "& is not used in its predicate"
+                     else "unused variable &");
+
+               begin
+                  if Is_Concurrent_Type (Etype (E))
+                    or else Belongs_To_Concurrent_Type (F)
+                    or else (Is_Type (Etype (E))
+                             and then Is_Empty_Record_Type (Etype (E)))
+                    or else Has_Pragma_Un (E)
+                    or else Is_Param_Of_Null_Subp_Of_Generic (E)
+                  then
+                     null;
+
+                  else
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => Msg,
+                        N        => Error_Location (FA.PDG, FA.Atr, V),
+                        F1       => F,
+                        Tag      => VC_Kinds.Unused,
+                        Severity => Warning_Kind);
+                  end if;
+               end;
             end if;
          end;
       end loop;
@@ -1258,14 +1268,19 @@ package body Flow.Analysis is
                      Vertex   => V);
                end if;
             else
-               --  Suppress this warning when dealing with a concurrent type or
-               --  its component.
-
+               --  We suppress this warning when we are dealing with a
+               --  concurrent type or a component of a concurrent type or a
+               --  null record.
                if F.Kind = Direct_Mapping
                    and then
                   (Is_Concurrent_Type (Etype (Get_Direct_Mapping_Id (F)))
                      or else
-                   Belongs_To_Concurrent_Type (F))
+                   Belongs_To_Concurrent_Type (F)
+                     or else
+                   (Is_Type (Etype (Get_Direct_Mapping_Id (F)))
+                      and then
+                      Is_Empty_Record_Type
+                        (Etype (Get_Direct_Mapping_Id (F)))))
                then
                   null;
 
@@ -2630,7 +2645,23 @@ package body Flow.Analysis is
                     or else
                       (Var_Used.Kind in Direct_Mapping | Record_Field
                        and then
-                         Is_Constant_Object (Get_Direct_Mapping_Id (Var_Used)))
+                         (Is_Constant_Object (Get_Direct_Mapping_Id (Var_Used))
+                          or else
+                            (Is_Type (Etype (Get_Direct_Mapping_Id (Var_Used)))
+                             and then
+                               (Is_Empty_Record_Type
+                                  (Etype
+                                     (Get_Direct_Mapping_Id (Var_Used)))))
+                          or else
+                            (Var_Used.Kind = Record_Field
+                             and then Var_Used.Facet = Normal_Part
+                             and then
+                             Is_Empty_Record_Type
+                               (Get_Type
+                                  (Var_Used,
+                                   Get_Flow_Scope
+                                     (Get_Direct_Mapping_Id (Var_Used)))))))
+
                   then
                      --  ... we either do nothing because it is safe, or...
                      null;

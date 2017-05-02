@@ -1,2 +1,2 @@
-p.ads:3:12: warning: unused variable "T"
+p.ads:3:12: warning: "T" is not used in its predicate
 q.adb:6:14: info: initialization of "X" proved

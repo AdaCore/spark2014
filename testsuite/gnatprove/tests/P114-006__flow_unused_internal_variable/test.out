@@ -1,1 +1,1 @@
-p.ads:3:09: warning: unused variable "T"
+p.ads:3:09: warning: "T" is not used in its predicate

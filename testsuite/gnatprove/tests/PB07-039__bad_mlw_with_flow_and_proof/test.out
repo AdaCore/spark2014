@@ -1,0 +1,9 @@
+exprfun.adb:1:11: high: all paths in "Exprfun" raise exceptions or do not terminate normally
+exprfun.adb:11:04: medium: assertion might fail
+foo.adb:5:17: warning: subprogram "Prim_Proc" has no effect
+foo.adb:8:17: warning: subprogram "Cw_Operand" has no effect
+foo.adb:14:17: warning: subprogram "Cw_Operand" has no effect
+foo.adb:20:17: warning: subprogram "Cw_Operand" has no effect
+foo.adb:38:17: warning: subprogram "Proc" has no effect
+foo.adb:39:22: info: tag check proved (CVC4: 1 VC)
+foo.adb:39:34: medium: tag check might fail

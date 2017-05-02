@@ -691,20 +691,26 @@ package body Flow_Utility is
 
                      --  Include classwide types and privates with
                      --  discriminants.
-
-                     for Ptr of Components (T) loop
-                        if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                           --  Here we union disjoint sets, so possibly we
-                           --  could optimize this.
-                           Results.Union (Flatten_Variable
-                                          ((if Is_Concurrent_Type (T)
-                                             then Direct_Mapping_Id (Ptr)
-                                             else Add_Component (F, Ptr)),
-                                             Scope));
-                        else
-                           Contains_Non_Visible := True;
-                        end if;
-                     end loop;
+                     if Components (T).Is_Empty then
+                        --  If the record has an empty component list then we
+                        --  add the variable itself...
+                        Results.Insert (F);
+                     else
+                        --  ...else we add each visible component
+                        for Ptr of Components (T) loop
+                           if Is_Visible (Get_Root_Component (Ptr), Scope) then
+                              --  Here we union disjoint sets, so possibly we
+                              --  could optimize this.
+                              Results.Union (Flatten_Variable
+                                             ((if Is_Concurrent_Type (T)
+                                                then Direct_Mapping_Id (Ptr)
+                                                else Add_Component (F, Ptr)),
+                                                Scope));
+                           else
+                              Contains_Non_Visible := True;
+                           end if;
+                        end loop;
+                     end if;
 
                      if Ekind (T) in Private_Kind then
                         Contains_Non_Visible := True;

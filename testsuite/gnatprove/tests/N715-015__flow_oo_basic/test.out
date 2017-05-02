@@ -2,9 +2,9 @@ tests.adb:19:28: info: initialization of "B" proved
 tests.adb:22:28: info: initialization of "B" proved
 tests.adb:25:28: info: initialization of "B" proved
 tests.adb:100:23: info: initialization of "N" proved
-tests.adb:111:25: warning: unused variable "Obj"
+tests.adb:102:21: medium: missing dependency "N => Obj"
 tests.adb:112:25: info: initialization of "N" proved
-tests.adb:114:09: medium: missing dependency "null => Obj"
+tests.adb:114:21: medium: missing dependency "N => Obj"
 tests.adb:122:23: info: initialization of "N" proved
 tests.adb:131:23: info: initialization of "N" proved
 tests.adb:140:23: info: initialization of "N" proved
