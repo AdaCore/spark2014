@@ -208,15 +208,14 @@ package VC_Kinds is
       --  that does not have Constant_After_Elaboration set.
      );
 
-   --  Returns True if this kind of VC should be considered like an assertion
-   --  when positioning the message to the left-most subexpression of the
-   --  checked expression. For example, this is not true for VC_Precondition,
-   --  which should be positioned on the location of the call.
-
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
      (case V is when VC_RTE_Kind    => False,
                 when VC_Assert_Kind => V /= VC_Precondition,
                 when VC_LSP_Kind    => True);
+   --  Returns True if this kind of VC should be considered like an assertion
+   --  when positioning the message to the left-most subexpression of the
+   --  checked expression. For example, this is not true for VC_Precondition,
+   --  which should be positioned on the location of the call.
 
    SPARK_Suffix : constant String := "spark";
    Flow_Suffix  : constant String := "flow";
@@ -249,8 +248,8 @@ package VC_Kinds is
    Model_VC_Label      : constant String := "model_vc";
    Model_VC_Post_Label : constant String := "model_vc_post";
 
-   --  A meta that is used in Why3 to mark a function as projection.
    Model_Proj_Meta : constant String := "model_projection";
+   --  A meta that is used in Why3 to mark a function as projection.
 
    --------------------
    --  Data Exchange --
@@ -271,10 +270,10 @@ package VC_Kinds is
                                              Element_Type => Prover_Stat,
                                              "<"          => "<",
                                              "="          => "=");
-   --  the prover stats JSON format is defined in gnat_report.mli
+   --  The prover stats JSON format is defined in gnat_report.mli
 
    type Prover_Category is (PC_Interval, PC_Codepeer, PC_Prover, PC_Flow);
-   --  type that describes the possible ways a check is proved. PC_Prover
+   --  Type that describes the possible ways a check is proved. PC_Prover
    --  stands for automatic or manual proofs from Why3 and does not specify
    --  which prover proves it.
 
@@ -284,10 +283,6 @@ package VC_Kinds is
                      CEE_Result,
                      CEE_Other);
 
-   --  Counterexamples are typed:
-   --  Matching on this types in the code should make debugging easier.
-   --  Without this we would only be manipulating Unbounded_String which
-   --  is not usable.
    type Cntexmp_Type is
      (Cnt_Integer,
       Cnt_Float,
@@ -297,38 +292,42 @@ package VC_Kinds is
       Cnt_Array,
       Cnt_Record,
       Cnt_Invalid);
+   --  Counterexamples are typed.
+   --  Matching on this types in the code should make debugging easier.
+   --  Without this we would only be manipulating Unbounded_String which
+   --  is not usable.
 
    type Cntexmp_Value;
    type Cntexmp_Value_Ptr is access Cntexmp_Value;
 
-   --  Map of counterexample values.
-   --  In the case of counterexample array, the Key_Type represents the index.
    package Cntexmp_Value_Array is
       new Ada.Containers.Indefinite_Ordered_Maps
-       (Key_Type => String, -- Indices can exceed MAX_INT
+       (Key_Type     => String, -- Indices can exceed MAX_INT
         Element_Type => Cntexmp_Value_Ptr);
+   --  Map of counterexample values.
+   --  In the case of counterexample array, the Key_Type represents the index.
 
-   --  Counterexample values:
-
+   type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
+      case T is
+         when Cnt_Integer   => I  : Unbounded_String;
+         when Cnt_Float     => F  : Unbounded_String;
+         when Cnt_Boolean   => Bo : Boolean;
+         when Cnt_Bitvector => B  : Unbounded_String;
+         when Cnt_Unparsed  => U  : Unbounded_String;
+         when Cnt_Record    =>
+            Fi                    : Cntexmp_Value_Array.Map;
+            Di                    : Cntexmp_Value_Array.Map;
+         when Cnt_Array     =>
+            Array_Indices         : Cntexmp_Value_Array.Map;
+            Array_Others          : Cntexmp_Value_Ptr;
+         when Cnt_Invalid   => S  : Unbounded_String;
+      end case;
+   end record;
+   --  Counterexample values
+   --
    --  This record should be changed to take more precise type into account.
    --  For example, floats are actually the concatenation of two numbers "d.n"
    --  This is present in why3 and can be mimicked in SPARK.
-   type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
-      case T is
-         when Cnt_Integer   => I   : Unbounded_String;
-         when Cnt_Float     => F   : Unbounded_String;
-         when Cnt_Boolean   => Bo  : Boolean;
-         when Cnt_Bitvector => B   : Unbounded_String;
-         when Cnt_Unparsed  => U   : Unbounded_String;
-         when Cnt_Record    =>
-            Fi                     : Cntexmp_Value_Array.Map;
-            Di                     : Cntexmp_Value_Array.Map;
-         when Cnt_Array     =>
-            Array_Indices          : Cntexmp_Value_Array.Map;
-            Array_Others           : Cntexmp_Value_Ptr;
-         when Cnt_Invalid   => S   : Unbounded_String;
-      end case;
-   end record;
 
    type Cntexample_Elt is record
       Kind    : CEE_Kind;
@@ -365,7 +364,7 @@ package VC_Kinds is
                                              "="          => "=");
 
    function To_String (P : Prover_Category) return String;
-   --  return a user visible string to describe the category of prover
+   --  Return a user-visible string to describe the category of prover
 
    function From_JSON (V : JSON_Value) return Prover_Stat;
    function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
