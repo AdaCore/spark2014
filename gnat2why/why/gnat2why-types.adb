@@ -553,7 +553,7 @@ package body Gnat2Why.Types is
       Decl     : constant Node_Id := Parent (E);
       Name     : constant String := Full_Name (E);
       Params   : Transformation_Params;
-      Why_Body : W_Prog_Id := +Void;
+      Why_Body : W_Prog_Id;
 
    begin
       Open_Theory (File,
@@ -583,15 +583,14 @@ package body Gnat2Why.Types is
       --  For private and private extension declaration, check the default
       --  expression of newly declared fields.
 
-      Why_Body := Sequence
-        (Why_Body,
+      Why_Body :=
          Compute_Default_Check
            (Ty               => Retysp (E),
             Params           => Params,
             Skip_Last_Cond   => True,
             Include_Subtypes => True,
             New_Components   =>
-              Nkind (Decl) = N_Private_Extension_Declaration));
+              Nkind (Decl) = N_Private_Extension_Declaration);
 
       --  If the type has a DIC and this DIC should be checked at
       --  declaration, check that there can be no runtime error in the DIC
