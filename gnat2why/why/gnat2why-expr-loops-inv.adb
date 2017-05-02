@@ -897,6 +897,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                      2 => +Compute_Dynamic_Invariant
                        (Expr        => +Expr,
                         Ty          => Etype (N),
+                        Params      => Body_Params,
                         Initialized =>
                           (if not Is_Declared_In_Unit (N, Scope)
                              and then Is_Initialized (N, Scope)

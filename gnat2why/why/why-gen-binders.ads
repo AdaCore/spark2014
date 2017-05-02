@@ -87,6 +87,10 @@ package Why.Gen.Binders is
    end record;
 
    type Item_Type (Kind : Item_Enum := Regular) is record
+      Local : Boolean;
+      --  True if the names of constant parts of the binder are local objects
+      --  in Why3.
+
       case Kind is
          when Regular | Concurrent_Self =>
             Main      : Binder_Type;
@@ -121,11 +125,13 @@ package Why.Gen.Binders is
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
-   function Item_Array_Length (Arr : Item_Array) return Natural;
+   function Item_Array_Length (Arr        : Item_Array;
+      Keep_Local : Boolean := True) return Natural;
    --  Return the number of variables that is introduced by the given
    --  item_array (counting items plus e.g. array bounds).
 
-   function To_Binder_Array (A : Item_Array) return Binder_Array;
+   function To_Binder_Array (A          : Item_Array;
+      Keep_Local : Boolean := True) return Binder_Array;
    --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
    --  bounds to binders.
 
@@ -249,10 +255,10 @@ package Why.Gen.Binders is
       Id      : W_Identifier_Id;
       Mutable : Boolean) return Item_Type
    is
-     ((Regular, Main => (Ada_Node => E,
-                         B_Name   => Id,
-                         B_Ent    => Null_Entity_Name,
-                         Mutable  => Mutable)));
+     ((Regular, Local => True, Main => (Ada_Node => E,
+                                        B_Name   => Id,
+                                        B_Ent    => Null_Entity_Name,
+                                        Mutable  => Mutable)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable
@@ -261,7 +267,11 @@ package Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False) return Item_Type;
+      In_Fun_Decl : Boolean := False) return Item_Type
+     with Post => (if Mk_Item_Of_Entity'Result.Kind = Regular then
+                   Present (Mk_Item_Of_Entity'Result.Main.Ada_Node)
+                   or else
+                     Mk_Item_Of_Entity'Result.Main.B_Ent /= Null_Entity_Name);
    --  Create an Item from an Entity
    --  @param E Ada Entity to be translated into an item.
    --  @param Local do not prefix names.
@@ -310,7 +320,8 @@ package Why.Gen.Binders is
    --  the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variables in Why
 
-   procedure Localize_Variable_Parts (Binders : in out Item_Array);
+   procedure Localize_Variable_Parts (Binders : in out Item_Array;
+      Suffix  : String := "");
    --  Changes variables components of Binders to refer to local names.
    --  @param Binders an array of items.
 
@@ -318,12 +329,12 @@ package Why.Gen.Binders is
    --  Modifies Symbol_Table to store bindings from Binders.
    --  @param Binders an array of items.
 
-   function Get_Parameters_From_Binders (Binders : Item_Array)
-                                         return Binder_Array;
-   --  Return identifiers used to refer to variable parts of Binders.
-   --  @param Binders an array of items.
-   --  @result An array of items used to represent these variables in Why
-   --  @result An array of binders containing their variable parts
+   function Get_Args_From_Binders (Binders     : Binder_Array;
+                                   Ref_Allowed : Boolean)
+                                   return W_Expr_Array;
+   --  @param Binders a set of binders
+   --  @param Ref_Allowed whether variables should be dereferenced
+   --  @result An array of W_Expr_Ids for Binders
 
    function Get_Args_From_Variables (Variables : Name_Sets.Set;
                                      Ref_Allowed : Boolean)

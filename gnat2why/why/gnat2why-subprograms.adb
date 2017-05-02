@@ -80,11 +80,11 @@ package body Gnat2Why.Subprograms is
    function Compute_Args
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array;
-   --  Given a function entity, and an array of logical binders,
+   --  Given a function entity, and an array of program binders,
    --  compute a call of the logical Why function corresponding to E.
-   --  In general, the binder array has *more* arguments than the Ada entity,
-   --  because of effects. Note that these effect variables are not bound here,
-   --  they refer to the global variables
+   --  In general, the resulting expression array has *more* arguments than the
+   --  Ada entity, because of effects. Note that these effect variables are not
+   --  bound here, they refer to the global variables
 
    procedure Compute_Contract_Cases_Guard_Map
      (E                  : Entity_Id;
@@ -194,6 +194,19 @@ package body Gnat2Why.Subprograms is
    --  If Domain is EW_Term also generates binders for E's read effects.
    --  The array is a singleton of unit type if the array is empty.
 
+   function Compute_Binders_For_Effects
+     (E         : Entity_Id;
+      Num_Reads : out Natural;
+      Compute   : Boolean) return Item_Array
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry,
+        Post => Num_Reads <= Compute_Binders_For_Effects'Result'Last;
+   --  @param E an enity for a subprogram
+   --  @param Num_Reads the numbers of global variables read by E
+   --  @param Compute True if binders should be created when not in the
+   --    symbol table.
+   --  @result an array containing an Item per global variable read / written
+   --          by E.
+
    function Add_Logic_Binders (E           : Entity_Id;
                                Raw_Binders : Item_Array) return Item_Array;
    --  Return Why binders for the parameters and read effects of function E.
@@ -215,7 +228,9 @@ package body Gnat2Why.Subprograms is
    --  Return Why binders for the parameters of subprogram E. The array is
    --  empty if E has no parameters.
 
-   function Compute_Guard_Formula (Binders : Item_Array) return W_Pred_Id;
+   function Compute_Guard_Formula
+     (Binders : Item_Array;
+      Params  : Transformation_Params) return W_Pred_Id;
    --  For every object in the binder array, build a predicate for the dynamic
    --  invariant of the object and join everything together with a conjunction.
 
@@ -278,6 +293,13 @@ package body Gnat2Why.Subprograms is
    --  @return if Function_Entity is non recursive and has a pragma Annotate
    --          (GNATprove, Inline_For_Proof), return the Why3 expression for
    --          its value. Otherwise return Why_Empty.
+
+   function Number_Of_Func_Args (E : Entity_Id) return Natural is
+     (Natural
+        (List_Length
+              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
+               else Parameter_Specifications (Subprogram_Specification (E))))
+       + (if Within_Protected_Type (E) then 1 else 0));
 
    function Tag_Binder return Binder_Type is
       (Binder_Type'(Ada_Node => Empty,
@@ -595,35 +617,17 @@ package body Gnat2Why.Subprograms is
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array
    is
-      Cnt    : Natural := 1;
-      Result : W_Expr_Array (1 .. Binders'Last);
-      Ada_Binders : constant List_Id :=
-        Parameter_Specifications (Subprogram_Specification (E));
-      Arg_Length  : Nat := List_Length (Ada_Binders);
+      Logic_Args  : constant W_Expr_Array := Get_Logic_Args (E, True);
+      Params      : constant W_Expr_Array :=
+        (if Number_Of_Func_Args (E) = 0 then (1 .. 0 => <>)
+         else Get_Args_From_Binders (Binders, True));
 
    begin
-
-      if Within_Protected_Type (E) then
-         Arg_Length := Arg_Length + 1;
-      end if;
-
-      if Arg_Length = 0
-        and then not Flow_Utility.Has_Proof_Global_Reads (E, Classwide => True)
-      then
+      if Params'Length = 0 and then Logic_Args'Length = 0 then
          return W_Expr_Array'(1 => +Void);
       end if;
 
-      while Cnt <= Natural (Arg_Length) loop
-         Result (Cnt) := +Binders (Cnt).B_Name;
-         Cnt := Cnt + 1;
-      end loop;
-
-      while Cnt <= Binders'Last loop
-         Result (Cnt) := Get_Logic_Arg (Binders (Cnt), True);
-         Cnt := Cnt + 1;
-      end loop;
-
-      return Result;
+      return Params & Logic_Args;
    end Compute_Args;
 
    ----------------------------------
@@ -750,7 +754,7 @@ package body Gnat2Why.Subprograms is
       --  If E has no parameters, return a singleton of unit type.
 
       if Binders'Length = 0 then
-         return (1 => (Regular, Unit_Param));
+         return (1 => (Regular, Local => True, Main => Unit_Param));
       else
          return Binders;
       end if;
@@ -928,11 +932,12 @@ package body Gnat2Why.Subprograms is
                Binder   : constant Binder_Type := Func_Why_Binders (I);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Invariant
-                   (Expr => +Transform_Identifier (Params => Params,
-                                                   Expr   => Binder.Ada_Node,
-                                                   Ent    => Binder.Ada_Node,
-                                                   Domain => EW_Term),
-                    Ty   => Etype (Binder.Ada_Node));
+                   (Expr   => +Transform_Identifier (Params => Params,
+                                                     Expr   => Binder.Ada_Node,
+                                                     Ent    => Binder.Ada_Node,
+                                                     Domain => EW_Term),
+                    Ty     => Etype (Binder.Ada_Node),
+                    Params => Params);
             begin
                Dynamic_Prop_Effects := +New_And_Expr
                  (Left   => +Dynamic_Prop_Effects,
@@ -973,12 +978,13 @@ package body Gnat2Why.Subprograms is
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
-                            (Expr =>
+                            (Expr   =>
                                +Transform_Identifier (Params   => Params,
                                                       Expr     => Entity,
                                                       Ent      => Entity,
                                                       Domain   => EW_Term),
-                             Ty   => Etype (Entity));
+                             Ty     => Etype (Entity),
+                             Params => Params);
                      begin
                         Dynamic_Prop_Effects := +New_And_Expr
                           (Left   => +Dynamic_Prop_Effects,
@@ -1081,8 +1087,9 @@ package body Gnat2Why.Subprograms is
                   if Is_Type (Entity) then
                      pragma Assert (Ekind (Entity) in E_Protected_Type);
                      Binder :=
-                       Item_Type'(Kind => Concurrent_Self,
-                                  Main => Concurrent_Self_Binder (Entity));
+                       Item_Type'(Kind  => Concurrent_Self,
+                                  Local => True,
+                                  Main  => Concurrent_Self_Binder (Entity));
                   else
                      Binder := Ada_Ent_To_Why.Element (Symbol_Table, Entity);
                   end if;
@@ -1146,8 +1153,9 @@ package body Gnat2Why.Subprograms is
                      pragma Assert (Ekind (Entity) in E_Protected_Type |
                                                       E_Task_Type);
                      Binder :=
-                       Item_Type'(Kind => Concurrent_Self,
-                                  Main => Concurrent_Self_Binder (Entity));
+                       Item_Type'(Kind  => Concurrent_Self,
+                                  Local => True,
+                                  Main  => Concurrent_Self_Binder (Entity));
                   else
                      Binder :=
                        Ada_Ent_To_Why.Element (Symbol_Table, Entity);
@@ -1170,7 +1178,9 @@ package body Gnat2Why.Subprograms is
    -- Compute_Guard_Formula --
    ---------------------------
 
-   function Compute_Guard_Formula (Binders : Item_Array) return W_Pred_Id is
+   function Compute_Guard_Formula
+     (Binders : Item_Array;
+      Params  : Transformation_Params) return W_Pred_Id is
       Pred : W_Pred_Id := True_Pred;
 
    begin
@@ -1182,16 +1192,17 @@ package body Gnat2Why.Subprograms is
             Ada_Node : constant Node_Id :=
               Get_Ada_Node_From_Item (B);
             Expr     : constant W_Expr_Id :=
-              Reconstruct_Item (B, True);
+              Reconstruct_Item (B, Params.Ref_Allowed);
             Ty_Node  : constant Entity_Id :=
               (if Present (Ada_Node) then
                    (if Is_Type (Ada_Node) then Ada_Node
                     else Etype (Ada_Node))
                else Empty);
             Dyn_Prop : constant W_Pred_Id :=
-              (if Present (Ty_Node) then
-                    Compute_Dynamic_Invariant (Expr => +Expr,
-                                               Ty   => Ty_Node)
+              (if Present (Ty_Node)  then
+                    Compute_Dynamic_Invariant (Expr   => +Expr,
+                                               Ty     => Ty_Node,
+                                               Params => Params)
                else
                   True_Pred);
          begin
@@ -1519,75 +1530,41 @@ package body Gnat2Why.Subprograms is
    function Add_Logic_Binders (E           : Entity_Id;
                                Raw_Binders : Item_Array)
                                      return Item_Array is
-      Num_Binders : Integer;
-      Count       : Integer;
+      Read_Lgth      : Natural;
+      Effect_Binders : Item_Array :=
+        Compute_Binders_For_Effects (E, Read_Lgth, True);
+   begin
+      Localize_Variable_Parts (Effect_Binders);
+      return Raw_Binders & Effect_Binders (1 .. Read_Lgth);
+   end Add_Logic_Binders;
 
+   ---------------------------------
+   -- Compute_Binders_For_Effects --
+   ---------------------------------
+
+   function Compute_Binders_For_Effects
+     (E         : Entity_Id;
+      Num_Reads : out Natural;
+      Compute   : Boolean) return Item_Array
+   is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
       Read_Names  : Name_Sets.Set;
-
+      Write_Names : Name_Sets.Set;
    begin
-      --  Collect global variables potentially read
+      --  Collect global variables potentially read and written
 
       Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                       Classwide  => True,
                                       Reads      => Read_Ids,
                                       Writes     => Write_Ids);
-      Read_Names := Flow_Types.To_Name_Set (Read_Ids);
+      Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
+      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-      --  If E has no parameters and no read effects, return a singleton of
-      --  unit type.
-
-      Num_Binders := Raw_Binders'Length + Integer (Read_Names.Length);
-
-      declare
-         Result : Item_Array (1 .. Num_Binders);
-
-      begin
-         --  First, copy all binders for parameters of E
-
-         Result (1 .. Raw_Binders'Length) := Raw_Binders;
-
-         --  Next, add binders for read effects of E
-
-         Count := Raw_Binders'Length + 1;
-         for R of Read_Names loop
-            declare
-               Entity : constant Entity_Id := Find_Entity (R);
-            begin
-               --  For state abstractions pretend there is no Entity
-
-               if Present (Entity)
-                 and then Ekind (Entity) /= E_Abstract_State
-                 and then Entity_In_SPARK (Entity)
-               then
-                  Result (Count) :=
-                    (Regular,
-                     (Ada_Node => Entity,
-                      B_Name   =>
-                        New_Identifier
-                          (Name => Full_Name (Entity),
-                           Typ  => Type_Of_Node (Etype (Entity))),
-                      B_Ent    => Null_Entity_Name,
-                      Mutable  => False));
-               else
-                  Result (Count) :=
-                    (Regular,
-                     (Ada_Node => Empty,
-                      B_Name   =>
-                        New_Identifier
-                          (Name => To_String (R),
-                           Typ  => To_Why_Type (To_String (R))),
-                      B_Ent    => R,
-                      Mutable  => False));
-               end if;
-            end;
-            Count := Count + 1;
-         end loop;
-
-         return Result;
-      end;
-   end Add_Logic_Binders;
+      Num_Reads := Natural (Read_Names.Length);
+      return Get_Binders_From_Variables (Read_Names, Compute)
+        & Get_Binders_From_Variables (Write_Names, Compute);
+   end Compute_Binders_For_Effects;
 
    -------------------------
    -- Compute_Raw_Binders --
@@ -1612,7 +1589,9 @@ package body Gnat2Why.Subprograms is
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
-            Result (1) := (Concurrent_Self, Concurrent_Self_Binder (Prot));
+            Result (1) :=
+              (Concurrent_Self, Local => True,
+               Main => Concurrent_Self_Binder (Prot));
             Count := 2;
          end;
       end if;
@@ -2085,7 +2064,8 @@ package body Gnat2Why.Subprograms is
         (File        => File,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
-         Ref_Allowed => False);
+         Ref_Allowed => False,
+         Old_Allowed => False);
       W_Def  : W_Expr_Id;
 
    begin
@@ -2223,7 +2203,8 @@ package body Gnat2Why.Subprograms is
         (File        => File,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Old_Allowed => True);
 
       --  First retrieve contracts specified on the subprogram and the
       --  subprograms it overrides.
@@ -2531,7 +2512,8 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
-                 Ref_Allowed => True);
+                 Ref_Allowed => True,
+                 Old_Allowed => True);
 
       --  Translate initial condition of E
 
@@ -2591,7 +2573,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Package (E, Params);
       begin
@@ -3029,7 +3012,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
       begin
          return
            Sequence
@@ -3058,7 +3042,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
       begin
          if Is_Compilation_Unit (E) then
             return
@@ -3081,7 +3066,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
          Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
@@ -3107,7 +3093,8 @@ package body Gnat2Why.Subprograms is
                     (File        => File,
                      Phase       => Generate_Contract_For_Body,
                      Gen_Marker  => False,
-                     Ref_Allowed => True);
+                     Ref_Allowed => True,
+                     Old_Allowed => True);
                   Barrier : constant Node_Id :=
                     Condition (Entry_Body_Formal_Part (Body_N));
                begin
@@ -3141,7 +3128,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
       begin
          return
            Sequence
@@ -3164,7 +3152,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Subprogram (E, False, Params);
       begin
@@ -3189,7 +3178,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
 
          Prog : W_Prog_Id := Arg;
       begin
@@ -3281,7 +3271,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_Contract_For_Body,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
          Mark_Params : Transformation_Params := Params;
          Post_N    : Node_Id;
       begin
@@ -3333,7 +3324,8 @@ package body Gnat2Why.Subprograms is
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
-            Ref_Allowed => True);
+            Ref_Allowed => True,
+            Old_Allowed => True);
 
          Pre   : constant W_Prog_Id :=
            +Compute_Spec (Params, E, Pragma_Precondition, EW_Prog);
@@ -3452,13 +3444,15 @@ package body Gnat2Why.Subprograms is
         (File        => File,
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => False,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Old_Allowed => True);
 
       Contract_Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Old_Allowed => True);
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -3680,7 +3674,8 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
-                 Ref_Allowed => True);
+                 Ref_Allowed => True,
+                 Old_Allowed => True);
 
       Post :=
         +New_VC_Expr (Ada_Node   => E,
@@ -3846,7 +3841,8 @@ package body Gnat2Why.Subprograms is
         (File        => File,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
-         Ref_Allowed => False);
+         Ref_Allowed => False,
+         Old_Allowed => False);
 
       --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.
@@ -3855,11 +3851,7 @@ package body Gnat2Why.Subprograms is
 
       for Binder of Logic_Func_Binders loop
          declare
-            A : constant Node_Id :=
-              (case Binder.Kind is
-                  when Regular | Concurrent_Self => Binder.Main.Ada_Node,
-                  when others  => raise Program_Error);
-            --  in parameters should not be split
+            A : constant Node_Id := Get_Ada_Node_From_Item (Binder);
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);
 
@@ -3929,7 +3921,7 @@ package body Gnat2Why.Subprograms is
              (E, Domain => EW_Term, Local => False, Selector => Refine);
          Guard               : constant W_Pred_Id :=
            +New_And_Then_Expr
-           (Left   => +Compute_Guard_Formula (Logic_Func_Binders),
+           (Left   => +Compute_Guard_Formula (Logic_Func_Binders, Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, True, Params),
             Domain => EW_Pred);
@@ -3940,7 +3932,8 @@ package body Gnat2Why.Subprograms is
            (Left   => +Compute_Dynamic_Invariant
               (Expr     => +New_Result_Ident (Why_Type),
                Ty       => Etype (E),
-               Only_Var => False_Term),
+               Only_Var => False_Term,
+               Params   => Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, False, Params),
             Domain => EW_Pred);
@@ -4256,7 +4249,6 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Func_Binders       : constant Item_Array := Compute_Binders (E, EW_Prog);
       Func_Why_Binders   : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
@@ -4276,7 +4268,8 @@ package body Gnat2Why.Subprograms is
         (File        => File,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
-         Ref_Allowed => True);
+         Ref_Allowed => True,
+         Old_Allowed => True);
 
       --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.
@@ -4354,10 +4347,8 @@ package body Gnat2Why.Subprograms is
          Why_Type := Type_Of_Node (Etype (E));
 
          declare
-            Logic_Why_Binders   : constant Binder_Array :=
-              To_Binder_Array (Logic_Func_Binders);
             Logic_Func_Args     : constant W_Expr_Array :=
-              Compute_Args (E, Logic_Why_Binders);
+              Compute_Args (E, Func_Why_Binders);
             Logic_Id            : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => False);
             Dispatch_Logic_Id   : constant W_Identifier_Id :=
@@ -4371,7 +4362,8 @@ package body Gnat2Why.Subprograms is
               (Left   => +Compute_Dynamic_Invariant
                  (Expr     => +New_Result_Ident (Why_Type),
                   Ty       => Etype (E),
-                  Only_Var => False_Term),
+                  Only_Var => False_Term,
+                  Params   => Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, False, Params),
                Domain => EW_Pred);
@@ -4696,51 +4688,23 @@ package body Gnat2Why.Subprograms is
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Subprogram_Program_Fun;
 
-   -------------------
-   -- Get_Logic_Arg --
-   -------------------
+   --------------------
+   -- Get_Logic_Args --
+   --------------------
 
-   function Get_Logic_Arg
-     (Binder      : Binder_Type;
-      Ref_Allowed : Boolean) return W_Expr_Id
+   function Get_Logic_Args
+     (E           : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Array
    is
-      Id : W_Identifier_Id;
-      T  : W_Expr_Id;
-      C : constant Ada_Ent_To_Why.Cursor :=
-        (if Present (Binder.Ada_Node) then
-              Ada_Ent_To_Why.Find (Symbol_Table, Binder.Ada_Node)
-         else Ada_Ent_To_Why.Find (Symbol_Table, Binder.B_Ent));
-      E : Item_Type;
+      Read_Lgth      : Natural;
+      Effect_Binders : constant Item_Array :=
+        Compute_Binders_For_Effects (E, Read_Lgth, False);
+      Logic_Binders  : constant Binder_Array :=
+        To_Binder_Array (Effect_Binders (1 .. Read_Lgth));
+
    begin
-      pragma Assert (if Present (Binder.Ada_Node) then
-                        Ada_Ent_To_Why.Has_Element (C));
-
-      if Ada_Ent_To_Why.Has_Element (C) then
-
-         E := Ada_Ent_To_Why.Element (C);
-         T := Reconstruct_Item (E, Ref_Allowed);
-
-         --  If the global is associated to an entity and it is in
-         --  split form, then we need to reconstruct it.
-
-         T :=
-           Insert_Simple_Conversion
-             (Domain   => EW_Term,
-              Expr     => T,
-              To       => Get_Typ (Binder.B_Name));
-      else
-         Id := To_Why_Id (To_String (Binder.B_Ent), Local => False);
-
-         if Ref_Allowed then
-            T := New_Deref (Right => Id,
-                            Typ   => Get_Typ (Id));
-         else
-            T := +Id;
-         end if;
-      end if;
-
-      return T;
-   end Get_Logic_Arg;
+      return Get_Args_From_Binders (Logic_Binders, Ref_Allowed);
+   end Get_Logic_Args;
 
    ----------------------------------------
    -- Translate_Expression_Function_Body --
@@ -4829,17 +4793,15 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker   => False,
-         Ref_Allowed => False);
+         Gen_Marker  => False,
+         Ref_Allowed => False,
+         Old_Allowed => False);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       for Binder of Logic_Func_Binders loop
          declare
-            A : constant Node_Id :=
-              (case Binder.Kind is
-                  when Regular | Concurrent_Self => Binder.Main.Ada_Node,
-                  when others              => raise Program_Error);
+            A : constant Node_Id := Get_Ada_Node_From_Item (Binder);
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);
 
@@ -4909,7 +4871,8 @@ package body Gnat2Why.Subprograms is
                Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
                Guard   : constant W_Pred_Id :=
                  +New_And_Then_Expr
-                   (Left   => +Compute_Guard_Formula (Logic_Func_Binders),
+                   (Left   => +Compute_Guard_Formula
+                      (Logic_Func_Binders, Params),
                     Right  => +Func_Guard,
                     Domain => EW_Pred);
             begin
@@ -4935,7 +4898,7 @@ package body Gnat2Why.Subprograms is
                Ty_Ent  : constant Entity_Id := Etype (E);
                Equ_Ty  : constant W_Type_Id := Base_Why_Type (Ty_Ent);
                Guard   : constant W_Pred_Id :=
-                 +Compute_Guard_Formula (Logic_Func_Binders);
+                 +Compute_Guard_Formula (Logic_Func_Binders, Params);
                Pre     : constant W_Pred_Id :=
                  +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred);
             begin

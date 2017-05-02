@@ -1207,7 +1207,8 @@ package body Gnat2Why.Expr is
                                    Initialized   => Init,
                                    Only_Var      => O_Var,
                                    Top_Predicate => Top_Pred,
-                                   Use_Pred      => Use_Pred);
+                                   Use_Pred      => Use_Pred,
+                                   Params        => Body_Params);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
@@ -2443,13 +2444,11 @@ package body Gnat2Why.Expr is
 
          Iterate_Call (Call);
 
-         --  Loop over remaining logical binders
+         --  Get values for logical binders
 
          for B in Bind_Cnt .. Binders'Last loop
-            pragma Assert (Binders (B).Kind in Regular);
-            Why_Args (Arg_Cnt) :=
-              Get_Logic_Arg (Binders (B).Main, Params.Ref_Allowed);
-            Arg_Cnt := Arg_Cnt + 1;
+            Why_Args (Arg_Cnt .. Why_Args'Last) :=
+              Get_Logic_Args (Subp, Params.Ref_Allowed);
          end loop;
 
          return Why_Args;
@@ -3370,10 +3369,10 @@ package body Gnat2Why.Expr is
    function Compute_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;
+      Params        : Transformation_Params;
       Initialized   : W_Term_Id := True_Term;
       Only_Var      : W_Term_Id := True_Term;
       Top_Predicate : W_Term_Id := True_Term;
-      Params        : Transformation_Params := Body_Params;
       Use_Pred      : Boolean := True) return W_Pred_Id
    is
 
@@ -4138,6 +4137,7 @@ package body Gnat2Why.Expr is
          begin
             Insert_Item
               (I => Item_Type'(Kind    => UCArray,
+                               Local   => E.Local,
                                Content =>
                                  Binder_Type'(B_Name => Pred_Id,
                                               others => <>),
@@ -4241,8 +4241,9 @@ package body Gnat2Why.Expr is
       Params : constant Transformation_Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker   => False,
-         Ref_Allowed => True);
+         Gen_Marker  => False,
+         Ref_Allowed => True,
+         Old_Allowed => True);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -7124,8 +7125,9 @@ package body Gnat2Why.Expr is
          Params_No_Ref : constant Transformation_Params :=
                            (File        => Params.File,
                             Phase       => Params.Phase,
-                            Gen_Marker   => False,
-                            Ref_Allowed => False);
+                            Gen_Marker  => False,
+                            Ref_Allowed => False,
+                            Old_Allowed => False);
 
          --  Values used in calls to the aggregate function
 
@@ -7201,7 +7203,9 @@ package body Gnat2Why.Expr is
                --  Fill in mapping from Ada nodes to Why identifiers for the
                --  generation of the proposition in the defining axiom.
 
-               Ada_Ent_To_Why.Insert (Args_Map, Element (Value), (Regular, B));
+               Ada_Ent_To_Why.Insert
+                 (Args_Map, Element (Value),
+                  (Regular, Local => True, Main => B));
 
                Next (Typ);
                Next (Value);
@@ -8849,9 +8853,10 @@ package body Gnat2Why.Expr is
    is
    begin
 
-      --  Do not generate old when references are not allowed
+      --  Do not generate old when they are not allowed (eg in postconditions
+      --  of functions or inside prefixes of 'Old attributes).
 
-      if not Params.Ref_Allowed then
+      if not Params.Old_Allowed then
          return Transform_Expr (Expr, Domain, Params);
       end if;
 
@@ -8868,7 +8873,10 @@ package body Gnat2Why.Expr is
               Args     =>
                 (1 => +Transform_Attribute_Old (Expr, EW_Term, Params),
                  2 => +True_Term));
-      elsif Params.Phase in Generate_VCs then
+
+      --  Use the map for old when references are not allowed
+
+      elsif Params.Phase in Generate_VCs or else not Params.Ref_Allowed then
          return +Name_For_Old (Expr);
       else
          return New_Old (Expr   => Transform_Expr (Expr, Domain, Params),
@@ -15638,6 +15646,7 @@ package body Gnat2Why.Expr is
          begin
             Insert_Item
               (I => Item_Type'(Kind    => UCArray,
+                               Local   => E.Local,
                                Content =>
                                  Binder_Type'(B_Name => Inv_Id,
                                               others => <>),

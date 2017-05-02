@@ -104,11 +104,11 @@ package Gnat2Why.Subprograms is
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why logic declaration that corresponds to an Ada subprogram
 
-   function Get_Logic_Arg
-     (Binder      : Binder_Type;
-      Ref_Allowed : Boolean) return W_Expr_Id;
-   --  Get the expression to use in a function call for an additional logic
-   --  binder.
+   function Get_Logic_Args
+     (E           : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Array;
+   --  Get the expressions to use in a function call for an additional logic
+   --  binders.
 
    procedure Generate_Subprogram_Completion
      (File : W_Section_Id;

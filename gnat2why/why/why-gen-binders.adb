@@ -102,6 +102,29 @@ package body Why.Gen.Binders is
       end case;
    end Get_Ada_Node_From_Item;
 
+   ---------------------------
+   -- Get_Args_From_Binders --
+   ---------------------------
+
+   function Get_Args_From_Binders (Binders     : Binder_Array;
+                                   Ref_Allowed : Boolean)
+                                   return W_Expr_Array
+   is
+      Args    : W_Expr_Array (1 .. Binders'Length);
+      I       : Positive := 1;
+   begin
+      for B of Binders loop
+         if Ref_Allowed and then B.Mutable then
+            Args (I) := New_Deref (Right => B.B_Name,
+                                   Typ   => Get_Typ (B.B_Name));
+         else
+            Args (I) := +B.B_Name;
+         end if;
+         I := I + 1;
+      end loop;
+      return Args;
+   end Get_Args_From_Binders;
+
    ------------------------------
    -- Get_Args_From_Expression --
    ------------------------------
@@ -128,31 +151,14 @@ package body Why.Gen.Binders is
    -- Get_Args_From_Variables --
    -----------------------------
 
-   function Get_Args_From_Variables (Variables : Name_Sets.Set;
+   function Get_Args_From_Variables (Variables   : Name_Sets.Set;
                                      Ref_Allowed : Boolean)
                                      return W_Expr_Array
    is
       Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
-      Binders : constant Binder_Array := Get_Parameters_From_Binders (Items);
-      Args    : W_Expr_Array (1 .. Binders'Length);
-      I       : Positive := 1;
+      Binders : constant Binder_Array := To_Binder_Array (Items);
    begin
-      for B of Binders loop
-
-         --  Though here we are only dealing with variables, it can be the case
-         --  that we get a binder of a constant instead.
-         --  It happens in particular for global variables in axioms generated
-         --  for postconditions of functions.
-
-         if Ref_Allowed and then B.Mutable then
-            Args (I) := New_Deref (Right => B.B_Name,
-                                   Typ   => Get_Typ (B.B_Name));
-         else
-            Args (I) := +B.B_Name;
-         end if;
-         I := I + 1;
-      end loop;
-      return Args;
+      return Get_Args_From_Binders (Binders, Ref_Allowed);
    end Get_Args_From_Variables;
 
    ---------------------------------
@@ -194,12 +200,9 @@ package body Why.Gen.Binders is
             Use_Ent : constant Boolean := Present (Entity)
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity);
-            --  For state abstractions pretend there is no Entity
 
             C : constant Ada_Ent_To_Why.Cursor :=
-              (if Use_Ent
-               then Ada_Ent_To_Why.Find (Symbol_Table, Entity)
-               else Ada_Ent_To_Why.Find (Symbol_Table, V));
+              Ada_Ent_To_Why.Find (Symbol_Table, V);
 
          begin
             --  Do nothing if the entity is not mutable
@@ -215,10 +218,10 @@ package body Why.Gen.Binders is
 
             --  Otherwise, construct the binder
 
-            elsif Present (Entity) and then Use_Ent then
+            elsif Use_Ent then
 
-               --  If we are not allowed to construct binders, all the entities
-               --  should be in the Symbol_Table.
+               --  If we are not allowed to construct binders, all the
+               --  entities should be in the Symbol_Table.
 
                pragma Assert (Compute);
 
@@ -227,11 +230,12 @@ package body Why.Gen.Binders is
             else
                Binders (I) :=
                  (Regular,
-                  (Ada_Node => Empty,
-                   B_Name   =>
-                     To_Why_Id (To_String (V), Local => False),
-                   B_Ent    => V,
-                   Mutable  => True));
+                  Local => False,
+                  Main  => (Ada_Node => Empty,
+                            B_Name   =>
+                              To_Why_Id (To_String (V), Local => False),
+                            B_Ent    => V,
+                            Mutable  => True));
                I := I + 1;
             end if;
          end;
@@ -239,88 +243,6 @@ package body Why.Gen.Binders is
 
       return Binders (1 .. I - 1);
    end Get_Binders_From_Variables;
-
-   ---------------------------------
-   -- Get_Parameters_From_Binders --
-   ---------------------------------
-
-   function Get_Parameters_From_Binders (Binders : Item_Array)
-                                         return Binder_Array is
-
-      function Parameter_Length return Natural;
-      --  Computes the expected length of the result
-
-      ----------------------
-      -- Parameter_Length --
-      ----------------------
-
-      function Parameter_Length return Natural is
-         Length : Natural := 0;
-      begin
-         for B of Binders loop
-            case B.Kind is
-               when Regular
-                  | Concurrent_Self
-               =>
-                  Length := Length + 1;
-
-               when UCArray =>
-                  pragma Assert (B.Content.Mutable);
-                  Length := Length + 1;
-
-               when DRecord =>
-                  pragma Assert
-                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
-                       or else
-                     (B.Fields.Present
-                       and then B.Fields.Binder.Mutable));
-                  if B.Discrs.Present and then B.Discrs.Binder.Mutable then
-                     Length := Length + 1;
-                  end if;
-                  if B.Fields.Present and then B.Fields.Binder.Mutable then
-                     Length := Length + 1;
-                  end if;
-
-               when Func => raise Program_Error;
-            end case;
-         end loop;
-         return Length;
-      end Parameter_Length;
-
-      Params : Binder_Array (1 .. Parameter_Length);
-      I      : Positive := 1;
-
-   --  Start of processing for Get_Parameters_From_Binders
-
-   begin
-      for B of Binders loop
-         case B.Kind is
-            when Regular
-               | Concurrent_Self
-            =>
-               Params (I) := B.Main;
-               I := I + 1;
-
-            when UCArray =>
-               Params (I) := B.Content;
-               I := I + 1;
-
-            when DRecord =>
-               if B.Discrs.Present and then B.Discrs.Binder.Mutable then
-                  Params (I) := B.Discrs.Binder;
-                  I := I + 1;
-               end if;
-               if B.Fields.Present and then B.Fields.Binder.Mutable then
-                  Params (I) := B.Fields.Binder;
-                  I := I + 1;
-               end if;
-
-            when Func => raise Program_Error;
-         end case;
-      end loop;
-
-      return Params;
-   end Get_Parameters_From_Binders;
 
    ----------------------------
    -- Get_Why_Type_From_Item --
@@ -349,35 +271,64 @@ package body Why.Gen.Binders is
    -- Item_Array_Length --
    -----------------------
 
-   function Item_Array_Length (Arr : Item_Array) return Natural is
+   function Item_Array_Length
+     (Arr        : Item_Array;
+      Keep_Local : Boolean := True) return Natural
+   is
       Count : Natural := 0;
    begin
       for Index in Arr'Range loop
-         case Arr (Index).Kind is
-            when Regular
-               | Concurrent_Self
-            =>
-               Count := Count + 1;
+         declare
+            B : constant Item_Type := Arr (Index);
+         begin
+            case B.Kind is
+               when Regular
+                 | Concurrent_Self
+                  =>
+                  if (Keep_Local and then B.Local) or else B.Main.Mutable then
+                     Count := Count + 1;
+                  end if;
 
-            when UCArray =>
-               Count := Count + 1 + 2 * Arr (Index).Dim;
+               when UCArray =>
+                  pragma Assert (B.Content.Mutable);
+                  if Keep_Local and then B.Local then
+                     Count := Count + 1 + 2 * B.Dim;
+                  else
+                     Count := Count + 1;
+                  end if;
 
-            when DRecord =>
-               if Arr (Index).Fields.Present then
-                  Count := Count + 1;
-               end if;
-               if Arr (Index).Discrs.Present then
-                  Count := Count + 1;
-               end if;
-               if Arr (Index).Constr.Present then
-                  Count := Count + 1;
-               end if;
-               if Arr (Index).Tag.Present then
-                  Count := Count + 1;
-               end if;
+               when DRecord =>
+                  pragma Assert
+                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
+                     or else
+                       (B.Fields.Present
+                        and then B.Fields.Binder.Mutable));
 
-            when Func => raise Program_Error;
-         end case;
+                  if B.Discrs.Present
+                    and then ((Keep_Local and then B.Local)
+                               or else B.Discrs.Binder.Mutable)
+                  then
+                     Count := Count + 1;
+                  end if;
+
+                  if B.Fields.Present
+                    and then ((Keep_Local and then B.Local)
+                               or else B.Fields.Binder.Mutable)
+                  then
+                     Count := Count + 1;
+                  end if;
+
+                  if Keep_Local and then B.Local and then B.Constr.Present then
+                     Count := Count + 1;
+                  end if;
+
+                  if Keep_Local and then B.Local and then B.Tag.Present then
+                     Count := Count + 1;
+                  end if;
+
+               when Func => raise Program_Error;
+            end case;
+         end;
       end loop;
       return Count;
    end Item_Array_Length;
@@ -386,31 +337,36 @@ package body Why.Gen.Binders is
    -- Localize_Variable_Parts --
    ------------------------------
 
-   procedure Localize_Variable_Parts (Binders : in out Item_Array) is
+   procedure Localize_Variable_Parts
+     (Binders : in out Item_Array;
+      Suffix  : String := "")
+   is
    begin
       for B of Binders loop
          case B.Kind is
             when Regular
                | Concurrent_Self
             =>
-               declare
-                  Local_Name : constant String :=
-                    (if Present (B.Main.Ada_Node)
-                     then Full_Name (B.Main.Ada_Node)
-                     else To_String (B.Main.B_Ent));
-               begin
-                  pragma Assert (B.Main.Mutable);
-                  B.Main.B_Name :=
-                    New_Identifier
-                      (Ada_Node => B.Main.Ada_Node,
-                       Name     => Local_Name,
-                       Typ      => Get_Typ (B.Main.B_Name));
-               end;
+               if B.Main.Mutable then
+                  declare
+                     Local_Name : constant String :=
+                       (if Present (B.Main.Ada_Node)
+                        then Full_Name (B.Main.Ada_Node)
+                        else To_String (B.Main.B_Ent))
+                       & Suffix;
+                  begin
+                     B.Main.B_Name :=
+                       New_Identifier
+                         (Ada_Node => B.Main.Ada_Node,
+                          Name     => Local_Name,
+                          Typ      => Get_Typ (B.Main.B_Name));
+                  end;
+               end if;
 
             when UCArray =>
                declare
                   Local_Name : constant String :=
-                    Full_Name (B.Content.Ada_Node);
+                    Full_Name (B.Content.Ada_Node) & Suffix;
                begin
                   pragma Assert (B.Content.Mutable);
                   B.Content.B_Name :=
@@ -425,7 +381,8 @@ package body Why.Gen.Binders is
                   Local_Name : constant String :=
                     (if B.Fields.Present
                      then Full_Name (B.Fields.Binder.Ada_Node)
-                     else Full_Name (B.Discrs.Binder.Ada_Node));
+                     else Full_Name (B.Discrs.Binder.Ada_Node))
+                    & Suffix;
                begin
                   pragma Assert
                     ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
@@ -488,6 +445,7 @@ package body Why.Gen.Binders is
 
       if Ekind (E) = E_Procedure then
          return (Regular,
+                 False,
                  Binder_Type'
                    (B_Name   =>
                       To_Why_Id (E, Typ => Why_Empty),
@@ -503,6 +461,7 @@ package body Why.Gen.Binders is
             Typ : constant W_Type_Id := Type_Of_Node (Ty);
          begin
             return (Func,
+                    False,
                     For_Logic => Binder_Type'
                       (B_Name   =>
                          To_Why_Id (E, Typ => Typ, Domain => EW_Term),
@@ -531,7 +490,7 @@ package body Why.Gen.Binders is
                            B_Ent    => Null_Entity_Name,
                            Mutable  => True);
          begin
-            return (Regular, Binder);
+            return (Regular, Local, Binder);
          end;
 
       --  If E is in SPARK, decide whether it should be split into multiple
@@ -585,6 +544,7 @@ package body Why.Gen.Binders is
             end loop;
 
             return (Kind    => UCArray,
+                    Local   => Local,
                     Content => Binder,
                     Dim     => Dim,
                     Bounds  => Bounds);
@@ -610,6 +570,7 @@ package body Why.Gen.Binders is
 
             Result   : Item_Type :=
               (Kind   => DRecord,
+               Local  => Local,
                Typ    => Ty,
                others => <>);
             Unconstr : constant Boolean :=
@@ -669,6 +630,10 @@ package body Why.Gen.Binders is
 
       else
          declare
+            Use_Ent : constant Boolean :=
+              not (Ekind (E) = E_Abstract_State)
+              and then Entity_In_SPARK (E);
+            --  For state abstractions pretend there is no Entity
             Typ    : constant W_Type_Id :=
               (if Ekind (E) = E_Abstract_State then EW_Private_Type
                elsif Ekind (E) = E_Loop_Parameter then
@@ -681,12 +646,14 @@ package body Why.Gen.Binders is
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
             Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => E,
+              Binder_Type'(Ada_Node => (if Use_Ent then E else Empty),
                            B_Name   => Name,
-                           B_Ent    => Null_Entity_Name,
+                           B_Ent    =>
+                             (if Use_Ent then Null_Entity_Name
+                              else To_Entity_Name (E)),
                            Mutable  => Is_Mutable_In_Why (E));
          begin
-            return (Regular, Binder);
+            return (Regular, Local, Binder);
          end;
       end if;
    end Mk_Item_Of_Entity;
@@ -939,17 +906,12 @@ package body Why.Gen.Binders is
       Binders : Binder_Array)
       return W_Expr_Array
    is
-      Result : W_Expr_Array (Binders'Range);
    begin
       if Binders'Length = 0 and then Domain = EW_Prog then
          return (1 => +Void);
       else
-         for B in Binders'Range loop
-            Result (B) := +Binders (B).B_Name;
-         end loop;
+         return Get_Args_From_Binders (Binders, False);
       end if;
-
-      return Result;
    end New_Expr_Array;
 
    -----------------------
@@ -1003,7 +965,7 @@ package body Why.Gen.Binders is
          Domain      => Domain,
          Name        => Name,
          Labels      => Labels,
-         Binders     => Get_Parameters_From_Binders (Loc_Items),
+         Binders     => To_Binder_Array (Loc_Items),
          Return_Type => +Return_Type,
          Def         => Def,
          Effects     => Effects,
@@ -1231,7 +1193,10 @@ package body Why.Gen.Binders is
    -- To_Binder_Array --
    ---------------------
 
-   function To_Binder_Array (A : Item_Array) return Binder_Array is
+   function To_Binder_Array
+     (A          : Item_Array;
+      Keep_Local : Boolean := True) return Binder_Array
+   is
       Result : Binder_Array (1 .. Item_Array_Length (A));
       Count  : Natural := 1;
    begin
@@ -1243,38 +1208,57 @@ package body Why.Gen.Binders is
                when Regular
                   | Concurrent_Self
                =>
-                  Result (Count) := Cur.Main;
-                  Count := Count + 1;
+                  if (Keep_Local and then Cur.Local)
+                    or else Cur.Main.Mutable
+                  then
+                     Result (Count) := Cur.Main;
+                     Count := Count + 1;
+                  end if;
 
                when UCArray =>
                   Result (Count) := Cur.Content;
                   Count := Count + 1;
-                  for Dim_Index in 1 .. Cur.Dim loop
-                     Result (Count) :=
-                       (B_Name => Cur.Bounds (Dim_Index).First,
-                        others => <>);
-                     Result (Count + 1) :=
-                       (B_Name => Cur.Bounds (Dim_Index).Last,
-                        others => <>);
-                     Count := Count + 2;
-                  end loop;
+
+                  if Keep_Local and then Cur.Local then
+                     for Dim_Index in 1 .. Cur.Dim loop
+                        Result (Count) :=
+                          (B_Name => Cur.Bounds (Dim_Index).First,
+                           others => <>);
+                        Result (Count + 1) :=
+                          (B_Name => Cur.Bounds (Dim_Index).Last,
+                           others => <>);
+                        Count := Count + 2;
+                     end loop;
+                  end if;
 
                when DRecord =>
-                  if Cur.Fields.Present then
+                  if Cur.Fields.Present
+                    and then ((Keep_Local and then Cur.Local)
+                               or else Cur.Fields.Binder.Mutable)
+                  then
                      Result (Count) := Cur.Fields.Binder;
                      Count := Count + 1;
                   end if;
-                  if Cur.Discrs.Present then
+                  if Cur.Discrs.Present
+                    and then ((Keep_Local and then Cur.Local)
+                               or else Cur.Discrs.Binder.Mutable)
+                  then
                      Result (Count) := Cur.Discrs.Binder;
                      Count := Count + 1;
                   end if;
-                  if Cur.Constr.Present then
+                  if Keep_Local
+                    and then Cur.Local
+                    and then Cur.Constr.Present
+                  then
                      Result (Count) :=
                        (B_Name => Cur.Constr.Id,
                         others => <>);
                      Count := Count + 1;
                   end if;
-                  if Cur.Tag.Present then
+                  if Keep_Local
+                    and then Cur.Local
+                    and then Cur.Tag.Present
+                  then
                      Result (Count) :=
                        (B_Name => Cur.Tag.Id,
                         others => <>);
