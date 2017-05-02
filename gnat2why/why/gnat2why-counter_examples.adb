@@ -483,8 +483,7 @@ package body Gnat2Why.Counter_Examples is
          for C in Arr_Indices.Iterate loop
             declare
                Indice       : String renames Cntexmp_Value_Array.Key (C);
-               Elem         : constant Cntexmp_Value_Ptr :=
-                                Cntexmp_Value_Array.Element (C);
+               Elem         : Cntexmp_Value_Ptr renames Arr_Indices (C);
 
                Ind_Val      : constant Cntexmp_Value_Ptr :=
                                 new Cntexmp_Value'(T => Cnt_Integer,

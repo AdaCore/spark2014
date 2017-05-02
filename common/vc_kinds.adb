@@ -225,10 +225,8 @@ package body VC_Kinds is
          when Cnt_Record    =>
             declare
                Record_Val : constant JSON_Value := Get (V, "val");
-               Field_Value_List : Cntexmp_Value_Array.Map :=
-                                    Cntexmp_Value_Array.Empty_Map;
-               Discr_Value_List : Cntexmp_Value_Array.Map :=
-                                    Cntexmp_Value_Array.Empty_Map;
+               Field_Value_List : Cntexmp_Value_Array.Map;
+               Discr_Value_List : Cntexmp_Value_Array.Map;
                JS_Array_Discr   : constant JSON_Array :=
                                     Get (Record_Val, "Discr");
                JS_Array_Field   : constant JSON_Array :=
@@ -242,10 +240,8 @@ package body VC_Kinds is
                                       Get (JS_Array_Discr, Index);
                      Elem_Ptr     : Cntexmp_Value_Ptr;
                   begin
-                     Get_Typed_Cntexmp_Value
-                             (Json_Element, Elem_Ptr);
-                     Cntexmp_Value_Array.Insert
-                       (Discr_Value_List, Index'Image, Elem_Ptr);
+                     Get_Typed_Cntexmp_Value (Json_Element, Elem_Ptr);
+                     Discr_Value_List.Insert (Index'Image, Elem_Ptr);
                   end;
                end loop;
 
@@ -255,10 +251,8 @@ package body VC_Kinds is
                                       Get (JS_Array_Field, Index);
                      Elem_Ptr     : Cntexmp_Value_Ptr;
                   begin
-                     Get_Typed_Cntexmp_Value
-                             (Json_Element, Elem_Ptr);
-                     Cntexmp_Value_Array.Insert
-                       (Field_Value_List, Index'Image, Elem_Ptr);
+                     Get_Typed_Cntexmp_Value (Json_Element, Elem_Ptr);
+                     Field_Value_List.Insert (Index'Image, Elem_Ptr);
                   end;
                end loop;
                Result := new Cntexmp_Value'(T  => Cnt_Record,
@@ -269,21 +263,20 @@ package body VC_Kinds is
          when Cnt_Array     =>
             declare
                JS_Array     : constant JSON_Array := Get (V, "val");
-               Indice_Array : Cntexmp_Value_Array.Map :=
-                                Cntexmp_Value_Array.Empty_Map;
-               Other_Ptr    : Cntexmp_Value_Ptr :=
-                                new Cntexmp_Value;
+               Indice_Array : Cntexmp_Value_Array.Map;
+               Other_Ptr    : Cntexmp_Value_Ptr := new Cntexmp_Value;
+
             begin
                for Index in 1 .. Length (JS_Array) loop
                   declare
                      Json_Element : constant JSON_Value :=
-                                      Get (JS_Array, Index);
-                  begin
+                       Get (JS_Array, Index);
 
+                  begin
                      if Has_Field (Json_Element, "others") then
                         declare
-                           V         : constant JSON_Value :=
-                                         Get (Json_Element, "others");
+                           V : constant JSON_Value :=
+                             Get (Json_Element, "others");
                         begin
                            Get_Typed_Cntexmp_Value (V, Other_Ptr);
                         end;
@@ -309,7 +302,7 @@ package body VC_Kinds is
             end;
 
          when Cnt_Invalid => Result.all := (T => Cnt_Invalid,
-                             S => To_Unbounded_String (""));
+                                            S => Null_Unbounded_String);
       end case;
    end Get_Typed_Cntexmp_Value;
 
