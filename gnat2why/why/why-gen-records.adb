@@ -965,83 +965,77 @@ package body Why.Gen.Records is
                Discr     : Entity_Id;
 
             begin
-               --  Use private equality directly on simple private types
+               --  Compare discriminants
 
-               if Is_Simple_Private_Type (E) then
-                  Condition :=
-                    New_Call
-                      (Name => M_Main.Private_Bool_Eq,
-                       Typ  => EW_Bool_Type,
-                       Args => (1 => +A_Ident,
-                                2 => +B_Ident));
-               else
-
-                  --  Compare discriminants
-
-                  if Count_Discriminants (E) > 0 then
-                     Discr := First_Discriminant (E);
-                     while Present (Discr) loop
-                        if Is_Not_Hidden_Discriminant (Discr) then
-                           declare
-                              Discrs_Id  : constant W_Identifier_Id :=
-                                To_Ident (WNE_Rec_Split_Discrs);
-                              Discr_Id   : constant W_Identifier_Id :=
-                                (if Is_Root then
-                                    To_Why_Id (Discr, Local => True, Rec => E)
-                                 else To_Why_Id (Discr, Rec => Root));
-                              Comparison : constant W_Pred_Id :=
-                                New_Field_Equality
-                                  (Field_Id     => Discr_Id,
-                                   Enclosing_Id => Discrs_Id,
-                                   Is_Private   => False,
-                                   Field_Type   => Retysp (Etype (Discr)));
-                           begin
-                              Condition :=
-                                +New_And_Then_Expr
-                                (Domain => EW_Pred,
-                                 Left   => +Condition,
-                                 Right  => +Comparison);
-                           end;
-                        end if;
-                        Next_Discriminant (Discr);
-                     end loop;
-                  end if;
-
-                  --  Compare Fields
-
-                  for Comp of Get_Component_Set (E) loop
-                     declare
-                        Fields_Id      : constant W_Identifier_Id :=
-                          To_Ident (WNE_Rec_Split_Fields);
-                        Field_Id       : constant W_Identifier_Id :=
-                          To_Why_Id (Comp, Local => True, Rec => E);
-                        Comparison     : constant W_Pred_Id :=
-                          New_Field_Equality
-                            (Field_Id     => Field_Id,
-                             Enclosing_Id => Fields_Id,
-                             Is_Private   => Ekind (Comp) in Type_Kind,
-                             Field_Type   => Retysp (Etype (Comp)));
-                        Always_Present : constant Boolean :=
-                          Count_Discriminants (E) = 0
-                          or else Ekind (Comp) /= E_Component;
-                     begin
-                        Condition :=
-                          +New_And_Then_Expr
-                          (Domain => EW_Pred,
-                           Left   => +Condition,
-                           Right  =>
-                             (if Always_Present then +Comparison
-                              else
-                                 New_Connection
-                                (Domain => EW_Pred,
-                                 Op     => EW_Imply,
-                                 Left   =>
-                                   +Discriminant_Check_Pred_Call
-                                   (Comp, A_Ident),
-                                 Right  => +Comparison)));
-                     end;
+               if Count_Discriminants (E) > 0 then
+                  Discr := First_Discriminant (E);
+                  while Present (Discr) loop
+                     if Is_Not_Hidden_Discriminant (Discr) then
+                        declare
+                           Discrs_Id  : constant W_Identifier_Id :=
+                             To_Ident (WNE_Rec_Split_Discrs);
+                           Discr_Id   : constant W_Identifier_Id :=
+                             (if Is_Root then
+                                 To_Why_Id (Discr, Local => True, Rec => E)
+                              else To_Why_Id (Discr, Rec => Root));
+                           Comparison : constant W_Pred_Id :=
+                             New_Field_Equality
+                               (Field_Id     => Discr_Id,
+                                Enclosing_Id => Discrs_Id,
+                                Is_Private   => False,
+                                Field_Type   => Retysp (Etype (Discr)));
+                        begin
+                           Condition :=
+                             +New_And_Then_Expr
+                             (Domain => EW_Pred,
+                              Left   => +Condition,
+                              Right  => +Comparison);
+                        end;
+                     end if;
+                     Next_Discriminant (Discr);
                   end loop;
                end if;
+
+               --  Compare Fields
+
+               for Comp of Get_Component_Set (E) loop
+                  declare
+                     Fields_Id      : constant W_Identifier_Id :=
+                       To_Ident (WNE_Rec_Split_Fields);
+                     Field_Id       : constant W_Identifier_Id :=
+                       To_Why_Id (Comp, Local => True, Rec => E);
+                     Comparison     : constant W_Pred_Id :=
+                       New_Field_Equality
+                         (Field_Id     => Field_Id,
+                          Enclosing_Id => Fields_Id,
+                          Is_Private   => Ekind (Comp) in Type_Kind,
+                          Field_Type   => Retysp (Etype (Comp)));
+                     Always_Present : constant Boolean :=
+                       Count_Discriminants (E) = 0
+                       or else Ekind (Comp) /= E_Component;
+                  begin
+                     Condition :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Condition,
+                        Right  =>
+                          (if Always_Present then +Comparison
+                           else
+                              New_Connection
+                             (Domain => EW_Pred,
+                              Op     => EW_Imply,
+                              Left   =>
+                                +Discriminant_Check_Pred_Call
+                                (Comp, A_Ident),
+                              Right  => +Comparison)));
+                  end;
+               end loop;
+
+               --  For simple private types, equality i san uninterpreted
+               --  function. For now, it is as good as using equality on
+               --  EW_Private. If at some point, we choose to assume more about
+               --  equality on private types, we may want to replace this one
+               --  with a clone of an appropriate equality module.
 
                Emit
                  (P,
@@ -1056,11 +1050,12 @@ package body Why.Gen.Records is
                      Return_Type => +EW_Bool_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Def         =>
-                       New_Conditional
-                         (Domain    => EW_Term,
-                          Condition => +Condition,
-                          Then_Part => +True_Term,
-                          Else_Part => +False_Term)));
+                       (if Is_Simple_Private_Type (E) then Why_Empty
+                        else New_Conditional
+                          (Domain    => EW_Term,
+                           Condition => +Condition,
+                           Then_Part => +True_Term,
+                           Else_Part => +False_Term))));
             end;
          end if;
 
@@ -1359,8 +1354,7 @@ package body Why.Gen.Records is
          if Is_Simple_Private_Type (E) then
             Emit (P,
                   New_Type_Decl
-                    (Name  => Ty_Name,
-                     Alias => EW_Private_Type));
+                    (Name  => To_String (WNE_Rec_Rep)));
          else
 
             --  Generate a record type for E's discriminants if E is a root
