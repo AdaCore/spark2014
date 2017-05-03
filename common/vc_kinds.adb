@@ -314,7 +314,7 @@ package body VC_Kinds is
         Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
                         Name        => Get (Get (V, "name")),
                         Value       => Cnt_Value,
-                        Val_Str     => To_Unbounded_String (""));
+                        Val_Str     => Null_Unbounded_String);
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is

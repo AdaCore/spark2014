@@ -992,8 +992,8 @@ package body Gnat2Why.Counter_Examples is
                Fields     => new CNT_Elements.Map,
                Value      => new Cntexmp_Value'
                  (T => Cnt_Invalid,
-                  S => To_Unbounded_String ("")),
-               Val_Str    => To_Unbounded_String (""));
+                  S => Null_Unbounded_String),
+               Val_Str    => Null_Unbounded_String);
 
             Include (Container => Map.all,
                      Key       => Name,
