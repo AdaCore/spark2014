@@ -1,0 +1,1 @@
+eq_null_record.ads:14:35: medium: postcondition might fail, cannot prove X /= Y
