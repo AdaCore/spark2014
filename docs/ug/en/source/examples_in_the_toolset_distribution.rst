@@ -81,6 +81,18 @@ expresses this property. |GNATprove| proves all checks on this program. This
 program was proposed as a formal verification challenge during VerifyThis
 Verification Competition in 2012 (see http://fm2012.verifythis.org/).
 
+.. rubric:: ``pair_insertion_sort``
+
+This program performs a variant of insertion sort, that inserts in place two
+elements of an array at each loop iteration. This program was proposed as a
+formal verification challenge during VerifyThis Verification Competition in
+2017 (see http://www.pm.inf.ethz.ch/verifythis.html). The postcondition of the
+main function ``Sort`` expresses both that the array is sorted on exit, and
+that it is a permutation of its input value. |GNATprove| proves all checks on
+this program. The process to progress through all levels of software assurance
+with SPARK on this example is detailed in the following post on SPARK 2014
+Blog: http://www.spark-2014.org/entries/detail/verifythis-challenge-in-spark
+
 .. rubric:: ``search_linked_list``
 
 This program searches for a given value in an unordered linked list. The
