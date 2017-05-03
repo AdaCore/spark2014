@@ -101,6 +101,11 @@ package Gnat2Why.Tables is
    --  @param E entity of a tagged type
    --  @return the set of visible descendants of E.
 
+   function Has_Private_Part (E : Entity_Id) return Boolean with
+     Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  @param E entity of a type translated as a record in why
+   --  @return True if E contains a component for its own private part
+
    function Original_Declaration (Comp : Entity_Id) return Entity_Id
    with
      Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;

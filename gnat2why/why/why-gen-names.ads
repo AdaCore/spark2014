@@ -245,6 +245,11 @@ package Why.Gen.Names is
       --  a value of the special extension field rec__ext__ in the root type.
       WNE_Hide_Extension,  --  hide_ext__
 
+      --  Name of the type of the private parts of a record
+      WNE_Private_Type,
+      --  Name of equality on this type
+      WNE_Private_Eq,
+
       --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,
       WNE_Fixed_Point_Div_Int,

@@ -1,0 +1,5 @@
+bad.adb:3:11: high: all paths in "Bad" raise exceptions or do not terminate normally
+bad.adb:3:11: warning: subprogram "Bad" has no effect
+bad.adb:5:19: info: assertion proved (CVC4: 1 VC)
+bad.adb:6:19: info: assertion proved (CVC4: 1 VC)
+bad.adb:7:04: medium: assertion might fail

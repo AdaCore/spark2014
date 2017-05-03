@@ -179,6 +179,18 @@ package body Gnat2Why.Tables is
       end case;
    end Get_Variant_Info;
 
+   ----------------------
+   -- Has_Private_Part --
+   ----------------------
+
+   function Has_Private_Part (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (E)
+                then Get_Specific_Type_From_Classwide (E) else E);
+   begin
+      return Comp_Info (Ty).Components.Contains (E);
+   end Has_Private_Part;
+
    -------------------------
    -- Init_Component_Info --
    -------------------------

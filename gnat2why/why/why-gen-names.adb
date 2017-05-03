@@ -804,6 +804,8 @@ package body Why.Gen.Names is
             | WNE_Of_Real
             | WNE_Of_Rep
             | WNE_Post_Pred
+            | WNE_Private_Eq
+            | WNE_Private_Type
             | WNE_Refined_Post_Pred
             | WNE_Range_Check_Fun
             | WNE_Range_Check_Fun_BV_Int

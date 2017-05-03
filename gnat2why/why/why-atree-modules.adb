@@ -2308,6 +2308,22 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term));
 
+               if Has_Private_Part (E) then
+                  Insert_Symbol
+                    (E, WNE_Private_Type,
+                     New_Identifier
+                       (Symbol => NID ("__main_type"),
+                        Module => M,
+                        Domain => EW_Term));
+                  Insert_Symbol
+                    (E, WNE_Private_Eq,
+                     New_Identifier
+                       (Symbol => NID ("__main_eq"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end if;
+
                if Is_Tagged_Type (E) then
                   Insert_Symbol
                     (E, WNE_Dispatch_Eq,

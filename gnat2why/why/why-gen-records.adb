@@ -141,12 +141,22 @@ package body Why.Gen.Records is
    --  If the current record type is not a root type, return the name of the
    --  corresponding predicate in the root type module.
 
-   function W_Type_Of_Component (Field : Entity_Id) return W_Type_Id
-   is (if Ekind (Field) in Type_Kind then EW_Private_Type
+   function W_Type_Of_Component
+     (Field : Entity_Id;
+      Rec   : Entity_Id) return W_Type_Id
+   is (if Field = Rec then
+           New_Named_Type
+             (Name => Get_Name (To_Local (E_Symb (Rec, WNE_Private_Type))))
+       elsif Ekind (Field) in Type_Kind then
+           New_Named_Type
+             (Name => Get_Name (E_Symb (Field, WNE_Private_Type)))
        else EW_Abstract (Etype (Field)));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
-   --  as private. Otherwise, return the abstract type of the component.
+   --  as the appropriate private type. Otherwise, return the abstract type of
+   --  the component.
+   --  @param Field component whose type we are interested in
+   --  @param Rec record type we are currently defining if any
 
    --------------------------------
    -- Build_Predicate_For_Record --
@@ -1172,12 +1182,12 @@ package body Why.Gen.Records is
                              Value  =>
                                Insert_Simple_Conversion
                                  (Domain => EW_Term,
-                                  To     => W_Type_Of_Component (Field),
+                                  To     => W_Type_Of_Component (Field, E),
                                   Expr   =>
                                     New_Record_Access
                                       (Name  => R_Field_Access,
                                        Field => Orig_Id,
-                                       Typ   => W_Type_Of_Component (Orig)),
+                                       Typ   => W_Type_Of_Component (Orig, E)),
                                   Force_No_Slide => True));
 
                         Field_To_Index := Field_To_Index + 1;
@@ -1188,12 +1198,13 @@ package body Why.Gen.Records is
                              Value  =>
                                Insert_Simple_Conversion
                                  (Domain => EW_Term,
-                                  To     => W_Type_Of_Component (Orig),
+                                  To     => W_Type_Of_Component (Orig, E),
                                   Expr   =>
                                     New_Record_Access
                                       (Name  => E_Field_Access,
                                        Field => Field_Id,
-                                       Typ   => W_Type_Of_Component (Field)),
+                                       Typ   =>
+                                         W_Type_Of_Component (Field, E)),
                                   Force_No_Slide => True));
                      else
                         pragma Assert (Is_Tagged_Type (E));
@@ -1255,7 +1266,7 @@ package body Why.Gen.Records is
                              (Name  => E_Field_Access,
                               Field =>
                                 To_Why_Id (Field, Local => True, Rec => E),
-                              Typ   => W_Type_Of_Component (Field));
+                              Typ   => W_Type_Of_Component (Field, E));
                         end if;
                      end loop;
 
@@ -1411,15 +1422,15 @@ package body Why.Gen.Records is
          function New_Field_Equality
            (Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
-            Field_Type             : Entity_Id := Empty)
+            Field_Type             : Entity_Id)
             return W_Pred_Id;
          --  @param Field_Id why id for a component or discriminant
          --  @param Enclosing_Id why id for the appropriate top level why
          --         record field
          --  @param Is_Private True if the component should be translated as
          --         private in Why
-         --  @param Field_Type ada type of the component, it can be empty if
-         --         Is_Private is True
+         --  @param Field_Type ada type of the component, it is the enclosing
+         --         type if Is_Private is True
          --  @return Equality of field_id from A and B.
 
          ------------------------
@@ -1429,7 +1440,7 @@ package body Why.Gen.Records is
          function New_Field_Equality
            (Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
-            Field_Type             : Entity_Id := Empty)
+            Field_Type             : Entity_Id)
             return W_Pred_Id
          is
             A_Access : constant W_Expr_Id :=
@@ -1440,24 +1451,29 @@ package body Why.Gen.Records is
                                  Field => Enclosing_Id);
          begin
             if Is_Private then
+               declare
+                  Priv_Name : constant W_Identifier_Id :=
+                    E_Symb (Field_Type, WNE_Private_Eq);
+               begin
 
-               --  For equality over private components, use an abstract logic
-               --  function.
+                  --  For equality over private components, use an abstract
+                  --  logic function.
 
-               return
-                 New_Call
-                   (Name => M_Main.Private_Bool_Eq,
-                    Typ  => EW_Bool_Type,
-                    Args => (1 => New_Record_Access
-                               (Name  => A_Access,
-                                Field => Field_Id,
-                                Typ   => EW_Private_Type),
-                             2 => New_Record_Access
-                               (Name  => B_Access,
-                                Field => Field_Id,
-                                Typ   => EW_Private_Type)));
+                  return
+                    New_Call
+                      (Name => (if Field_Type = E then To_Local (Priv_Name)
+                                else Priv_Name),
+                       Typ  => EW_Bool_Type,
+                       Args => (1 => New_Record_Access
+                                (Name  => A_Access,
+                                 Field => Field_Id,
+                                 Typ   => EW_Private_Type),
+                                2 => New_Record_Access
+                                  (Name  => B_Access,
+                                   Field => Field_Id,
+                                   Typ   => EW_Private_Type)));
+               end;
             else
-               pragma Assert (Present (Field_Type));
                return +New_Ada_Equality
                  (Typ    => Field_Type,
                   Domain => EW_Pred,
@@ -1527,7 +1543,9 @@ package body Why.Gen.Records is
                          (Field_Id     => Field_Id,
                           Enclosing_Id => Fields_Id,
                           Is_Private   => Ekind (Comp) in Type_Kind,
-                          Field_Type   => Retysp (Etype (Comp)));
+                          Field_Type   => (if Ekind (Comp) in Type_Kind then
+                                              Comp
+                                           else Retysp (Etype (Comp))));
                      Always_Present : constant Boolean :=
                        Count_Discriminants (E) = 0
                        or else Ekind (Comp) /= E_Component;
@@ -1628,7 +1646,7 @@ package body Why.Gen.Records is
             Hide_Binders (Index) :=
               (B_Name =>
                  New_Identifier (Name => Short_Name (Field),
-                                 Typ  => W_Type_Of_Component (Field)),
+                                 Typ  => W_Type_Of_Component (Field, E)),
                others => <>);
          end loop;
 
@@ -1675,7 +1693,7 @@ package body Why.Gen.Records is
                          Rec   => Original_Declaration (Field),
                          Local => False),
                      Binders  => Binder,
-                     Typ      => W_Type_Of_Component (Field))
+                     Typ      => W_Type_Of_Component (Field, E))
                   else Why_Empty);
             begin
                Emit (P,
@@ -1684,7 +1702,7 @@ package body Why.Gen.Records is
                         Name        => Extract_Fun (Field, Rec => E),
                         Binders     => Binder,
                         Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => W_Type_Of_Component (Field),
+                        Return_Type => W_Type_Of_Component (Field, E),
                         Def         => Definition));
             end;
 
@@ -1709,10 +1727,10 @@ package body Why.Gen.Records is
                                    Name    => Hide_Name,
                                    Binders => Hide_Binders,
                                    Typ     => EW_Private_Type)),
-                           Typ     => W_Type_Of_Component (Field)),
+                           Typ     => W_Type_Of_Component (Field, E)),
                         Right  => +New_Identifier
                           (Name => Short_Name (Field),
-                           Typ  => W_Type_Of_Component (Field)),
+                           Typ  => W_Type_Of_Component (Field, E)),
                         Domain => EW_Term)));
 
          end loop;
@@ -1797,7 +1815,7 @@ package body Why.Gen.Records is
                      Name        => Prog_Name,
                      Binders     => R_Binder,
                      Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => W_Type_Of_Component (Field),
+                     Return_Type => W_Type_Of_Component (Field, E),
                      Pre         => Precond,
                      Post        => Post));
          end Declare_Protected_Access_Function;
@@ -1950,7 +1968,7 @@ package body Why.Gen.Records is
                          (Field,
                           Rec   => E,
                           Local => True,
-                          Typ   => W_Type_Of_Component (Field)),
+                          Typ   => W_Type_Of_Component (Field, E)),
                      Ada_Node => Field,
                      others   => <>);
                   Index := Index + 1;
@@ -2103,6 +2121,37 @@ package body Why.Gen.Records is
    --  Start of processing for Declare_Rep_Record_Type
 
    begin
+      --  For types which have a private part, declare a new uninterpreted type
+      --  for the private part as well as a new uninterpreted equality
+      --  function.
+
+      if Has_Private_Part (E) then
+         declare
+            Priv_Name : constant W_Name_Id    :=
+              To_Local (E_Symb (E, WNE_Private_Type));
+            Priv_Ty   : constant W_Type_Id    :=
+              New_Named_Type (Name => Priv_Name);
+            Binders   : constant Binder_Array :=
+              (1 => (B_Name => New_Identifier (Name => "a", Typ => Priv_Ty),
+                     others => <>),
+               2 => (B_Name => New_Identifier (Name => "b", Typ => Priv_Ty),
+                     others => <>));
+
+         begin
+            Emit (P,
+                  New_Type_Decl
+                    (Name  => Get_Name_String (Get_Symbol (Priv_Name))));
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Private_Eq)),
+                  Binders     => Binders,
+                  Return_Type => +EW_Bool_Type,
+                  Labels      => Name_Id_Sets.Empty_Set));
+         end;
+      end if;
+
       Declare_Record_Type;
 
       --  We need to delare conversion functions before the protected access
@@ -2371,7 +2420,7 @@ package body Why.Gen.Records is
         (if Is_Part_Of_Protected_Object (Field) then
             EW_Abstract (Etype (Field))
          else
-            W_Type_Of_Component (Search_Component_In_Type (Ty, Field)));
+            W_Type_Of_Component (Search_Component_In_Type (Ty, Field), Empty));
       Top_Field : constant W_Expr_Id :=
         (if Ekind (Field) = E_Discriminant
          then New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
