@@ -295,9 +295,9 @@ package body Why.Gen.Records is
       return Count;
    end Count_Fields_Not_In_Root;
 
-   -------------------------------
-   -- Declare_Rep_Record_Theory --
-   -------------------------------
+   ----------------------------------------
+   -- Create_Rep_Record_Theory_If_Needed --
+   ----------------------------------------
 
    procedure Create_Rep_Record_Theory_If_Needed
      (P : W_Section_Id;
@@ -334,6 +334,524 @@ package body Why.Gen.Records is
 
       Close_Theory (P, Kind => Definition_Theory);
    end Create_Rep_Record_Theory_If_Needed;
+
+   ------------------------
+   -- Declare_Ada_Record --
+   ------------------------
+
+   procedure Declare_Ada_Record
+     (P : W_Section_Id;
+      E : Entity_Id)
+   is
+      Root     : constant Entity_Id := Root_Record_Type (E);
+      Is_Root  : constant Boolean   := Root = E;
+      Ty_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      A_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Abstr_Ty);
+      R_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident,
+               others => <>));
+      Rep_Module : constant W_Module_Id := Get_Rep_Record_Module (E);
+
+   begin
+      --  Get the empty record case out of the way
+
+      if Count_Why_Top_Level_Fields (E) = 0 then
+
+         --  Declare type for the empty record. If the type is not a root,
+         --  then it is an alias of its root type.
+
+         if Is_Root then
+            Emit (P,
+                  New_Type_Decl
+                    (Name   => Ty_Name,
+                     Labels => Name_Id_Sets.Empty_Set));
+         else
+            Emit (P,
+                  New_Type_Decl
+                    (Name  => Ty_Name,
+                     Alias => EW_Abstract (Root)));
+         end if;
+
+         --  Conversion functions are identity
+
+         declare
+            R_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "r", Typ => (if Is_Root then Abstr_Ty
+                                                   else EW_Abstract (Root)));
+         begin
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_To_Base)),
+                  Binders     => R_Binder,
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Return_Type => (if Is_Root then Abstr_Ty
+                                  else EW_Abstract (Root)),
+                  Def         => +A_Ident));
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Of_Base)),
+                  Binders     => Binder_Array'(1 => (B_Name => R_Ident,
+                                                     others => <>)),
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Return_Type => Abstr_Ty,
+                  Def         => +R_Ident));
+         end;
+
+         --  Equality function returns always true
+
+         declare
+            B_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "b", Typ => Abstr_Ty);
+         begin
+
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
+                  Binders     =>
+                    R_Binder &
+                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
+                                                    others => <>)),
+                  Return_Type => +EW_Bool_Type,
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Def         => +True_Term));
+         end;
+
+         Declare_Attributes (P, E, Ty_Name);
+
+         return;
+      end if;
+
+      if Record_Type_Is_Clone (E) then
+
+         --  This type is simply a copy of an existing type, we re-export the
+         --  corresponding module and then return.
+
+         declare
+            Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
+         begin
+            Add_With_Clause (P, E_Module (Clone), EW_Export);
+
+            --  If the copy has the same name as the original, do not redefine
+            --  the type name.
+
+            if Short_Name (E) /= Short_Name (Clone) then
+               Emit (P,
+                     New_Type_Decl
+                       (Name  => Ty_Name,
+                        Alias =>
+                          +New_Named_Type
+                          (Name =>
+                               To_Why_Type (Clone, Local => True))));
+            end if;
+         end;
+
+         return;
+      end if;
+
+      --  Export the theory containing the record definition.
+
+      Add_With_Clause (P, Rep_Module, EW_Export);
+
+      --  Rename the representative record type as expected.
+
+      Emit (P,
+            New_Type_Decl
+              (Name  => To_Why_Type (E, Local => True),
+               Alias =>
+                 +New_Named_Type
+                   (Name => To_Name (WNE_Rec_Rep))));
+
+      --  The static tag for the type is defined as a logic constant
+      if Is_Tagged_Type (E) then
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Tag)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+      end if;
+
+      if Root /= E
+        and then Count_Discriminants (E) > 0
+        and then Is_Constrained (E)
+      then
+         Declare_Conversion_Check_Function (P, E, Root);
+      end if;
+
+      Declare_Attributes (P, E, Ty_Name);
+      Declare_Component_Attributes (P, E);
+
+   end Declare_Ada_Record;
+
+   ------------------------
+   -- Declare_Attributes --
+   ------------------------
+
+   procedure Declare_Attributes
+     (P       : W_Section_Id;
+      E       : Entity_Id;
+      Ty_Name : W_Name_Id)
+   is
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      A_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Abstr_Ty);
+      R_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident,
+               others => <>));
+   begin
+      --  The value size is defined as a logic constant
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  The object size is defined as a logic function
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  Both value size and object size are non-negative
+
+      --  The value alignement is defined as a logic constant
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb
+                 (E, WNE_Attr_Value_Alignment)),
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  The object alignment is defined as a logic function
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E,
+                 WNE_Attr_Object_Alignment)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  Both value alignment and object alignment are non-negative
+
+      declare
+         Zero : constant W_Expr_Id :=
+           New_Integer_Constant (Value => Uint_0);
+
+         Value_Size_Fun : constant W_Expr_Id :=
+           New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Value_Size_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Value_Size_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Size_Fun : constant W_Expr_Id :=
+           New_Call (Name   =>
+                       To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+                     Args   => (1 => +A_Ident),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Object_Size_Pred : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Object_Size_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Size_Axiom : constant W_Pred_Id :=
+           New_Universal_Quantif (Binders => R_Binder,
+                                  Pred    => Object_Size_Pred);
+
+         Value_Alignment_Fun : constant W_Expr_Id :=
+           New_Call (Name     => To_Local (E_Symb
+                     (E, WNE_Attr_Value_Alignment)),
+                     Domain   => EW_Term,
+                     Typ      => EW_Int_Type);
+
+         Value_Alignment_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Value_Alignment_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Alignment_Fun : constant W_Expr_Id :=
+           New_Call (Name     =>
+                       To_Local (E_Symb (E,
+                         WNE_Attr_Object_Alignment)),
+                     Args     => (1 => +A_Ident),
+                     Domain   => EW_Term,
+                     Typ      => EW_Int_Type);
+
+         Object_Alignment_Pred : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Object_Alignment_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Alignment_Axiom : constant W_Pred_Id :=
+           New_Universal_Quantif (Binders => R_Binder,
+                                  Pred    => Object_Alignment_Pred);
+
+      begin
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("value__size_axiom"),
+                          Def      => Value_Size_Axiom));
+
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("object__size_axiom"),
+                          Def      => Object_Size_Axiom));
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("value__alignment_axiom"),
+                          Def      => Value_Alignment_Axiom));
+
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("object__alignment_axiom"),
+                          Def      => Object_Alignment_Axiom));
+      end;
+   end Declare_Attributes;
+
+   ----------------------------------
+   -- Declare_Component_Attributes --
+   ----------------------------------
+
+   procedure Declare_Component_Attributes
+     (P : W_Section_Id;
+      E : Entity_Id)
+   is
+      procedure Declare_Attribute_For_Field (Field : Entity_Id);
+      --  Declare attributes for Field only.
+      --  @param Field component of discriminant of E
+
+      ---------------------------------
+      -- Declare_Attribute_For_Field --
+      ---------------------------------
+
+      procedure Declare_Attribute_For_Field (Field : Entity_Id) is
+         Axiom : constant String :=
+           Full_Name (Representative_Component (Field));
+
+         Zero : constant W_Expr_Id :=
+           New_Integer_Constant (Value => Uint_0);
+
+         First_Bit_Fun : constant W_Expr_Id :=
+           New_Call (Name   =>
+                       To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         First_Bit_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => First_Bit_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Last_Bit_Fun : constant W_Expr_Id :=
+           New_Call (Name   =>
+                       To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Last_Bit_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Gt,
+                            Left   => Last_Bit_Fun,
+                            Right  => First_Bit_Fun,
+                            Domain => EW_Term);
+
+         Position_Fun : constant W_Expr_Id :=
+           New_Call (Name   =>
+                       To_Local (E_Symb (Field, WNE_Attr_Position)),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Position_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Position_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+      begin
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_Position)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         Emit (P,
+               New_Axiom (Ada_Node => Field,
+                          Name     => NID (Axiom & "__first__bit_axiom"),
+                          Def      => First_Bit_Axiom));
+
+         Emit (P,
+               New_Axiom (Ada_Node => Field,
+                          Name     => NID (Axiom & "__last__bit_axiom"),
+                          Def      => Last_Bit_Axiom));
+         Emit (P,
+               New_Axiom (Ada_Node => Field,
+                          Name     => NID (Axiom & "__position_axiom"),
+                          Def      => Position_Axiom));
+
+      end Declare_Attribute_For_Field;
+
+   --  Start of processing for Declare_Component_Attributes
+
+   begin
+      if Count_Discriminants (E) > 0 then
+         declare
+            Discr : Entity_Id := First_Discriminant (E);
+         begin
+            while Present (Discr) loop
+               if Is_Not_Hidden_Discriminant (Discr) then
+                  Declare_Attribute_For_Field (Discr);
+               end if;
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      end if;
+
+      for Field of Get_Component_Set (E) loop
+         if Ekind (Field) = E_Component then
+            Declare_Attribute_For_Field (Field);
+         end if;
+      end loop;
+   end Declare_Component_Attributes;
+
+   ---------------------------------------
+   -- Declare_Conversion_Check_Function --
+   ---------------------------------------
+
+   procedure Declare_Conversion_Check_Function
+     (Section : W_Section_Id;
+      E       : Entity_Id;
+      Root    : Entity_Id)
+   is
+      Root_Name  : constant W_Name_Id := To_Why_Type (Root);
+      Root_Abstr : constant W_Type_Id :=
+        +New_Named_Type (Name => Root_Name);
+      A_Ident    : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Root_Abstr);
+      Num_Discr  : constant Natural := Count_Discriminants (E);
+      R_Access   : constant W_Expr_Id :=
+        New_Record_Access (Name  => +A_Ident,
+                           Field => E_Symb (Root, WNE_Rec_Split_Discrs));
+      Discr      : Node_Id := First_Discriminant (E);
+      Post       : constant W_Pred_Id :=
+        New_Call
+          (Name => Why_Eq,
+           Typ  => EW_Bool_Type,
+           Args => (+New_Result_Ident (Why_Empty), +A_Ident));
+      R_Binder   : Binder_Array (1 .. Num_Discr + 1);
+      Args       : W_Expr_Array (1 .. Num_Discr + 1);
+      Check_Pred : W_Pred_Id := True_Pred;
+      Count      : Natural := 1;
+      Pre_Cond   : W_Pred_Id;
+
+   begin
+      R_Binder (Num_Discr + 1) :=
+        Binder_Type'(B_Name => A_Ident,
+                     others => <>);
+      Args (Num_Discr + 1) := +A_Ident;
+      Count := 1;
+      Discr := First_Discriminant (E);
+
+      while Present (Discr) loop
+         if Is_Not_Hidden_Discriminant (Discr) then
+            Args (Count) := +To_Why_Id
+              (Discr, Local => True, Rec   => Root,
+               Typ => Base_Why_Type (Unique_Entity (Etype (Discr))));
+            R_Binder (Count) :=
+              Binder_Type'
+                (B_Name => +Args (Count),
+                 others => <>);
+            Check_Pred :=
+              +New_And_Expr
+              (Domain => EW_Pred,
+               Left   => +Check_Pred,
+               Right  =>
+                 New_Call
+                   (Domain => EW_Pred,
+                    Name   => Why_Eq,
+                    Typ    => EW_Bool_Type,
+                    Args =>
+                      (1 => +Args (Count),
+                       2 =>
+                         Insert_Simple_Conversion
+                           (Domain   => EW_Term,
+                            Expr     => New_Call
+                              (Ada_Node => Root,
+                               Name     => To_Why_Id (Discr, Rec => Root),
+                               Args     => (1 => R_Access),
+                               Domain   => EW_Term,
+                               Typ      => EW_Abstract (Etype (Discr))),
+                            To       =>
+                              Base_Why_Type
+                                (Unique_Entity (Etype (Discr)))))));
+            Count := Count + 1;
+         end if;
+         Next_Discriminant (Discr);
+      end loop;
+
+      Emit (Section,
+            New_Function_Decl
+              (Domain  => EW_Pred,
+               Name    => To_Local (E_Symb (E, WNE_Range_Pred)),
+               Labels  => Name_Id_Sets.Empty_Set,
+               Binders => R_Binder,
+               Def     => +Check_Pred));
+      Pre_Cond :=
+        New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
+                  Args => Args);
+      Emit (Section,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => Root_Abstr,
+               Pre         => Pre_Cond,
+               Post        => Post));
+   end Declare_Conversion_Check_Function;
 
    -----------------------------
    -- Declare_Rep_Record_Type --
@@ -1631,524 +2149,6 @@ package body Why.Gen.Records is
 
       Declare_Equality_Function;
    end Declare_Rep_Record_Type;
-
-   ------------------------
-   -- Declare_Ada_Record --
-   ------------------------
-
-   procedure Declare_Ada_Record
-     (P : W_Section_Id;
-      E : Entity_Id)
-   is
-      Root     : constant Entity_Id := Root_Record_Type (E);
-      Is_Root  : constant Boolean   := Root = E;
-      Ty_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
-      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      A_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
-      Rep_Module : constant W_Module_Id := Get_Rep_Record_Module (E);
-
-   begin
-      --  Get the empty record case out of the way
-
-      if Count_Why_Top_Level_Fields (E) = 0 then
-
-         --  Declare type for the empty record. If the type is not a root,
-         --  then it is an alias of its root type.
-
-         if Is_Root then
-            Emit (P,
-                  New_Type_Decl
-                    (Name   => Ty_Name,
-                     Labels => Name_Id_Sets.Empty_Set));
-         else
-            Emit (P,
-                  New_Type_Decl
-                    (Name  => Ty_Name,
-                     Alias => EW_Abstract (Root)));
-         end if;
-
-         --  Conversion functions are identity
-
-         declare
-            R_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "r", Typ => (if Is_Root then Abstr_Ty
-                                                   else EW_Abstract (Root)));
-         begin
-            Emit
-              (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_To_Base)),
-                  Binders     => R_Binder,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                  Return_Type => (if Is_Root then Abstr_Ty
-                                  else EW_Abstract (Root)),
-                  Def         => +A_Ident));
-            Emit
-              (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Of_Base)),
-                  Binders     => Binder_Array'(1 => (B_Name => R_Ident,
-                                                     others => <>)),
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                  Return_Type => Abstr_Ty,
-                  Def         => +R_Ident));
-         end;
-
-         --  Equality function returns always true
-
-         declare
-            B_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "b", Typ => Abstr_Ty);
-         begin
-
-            Emit
-              (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
-                  Binders     =>
-                    R_Binder &
-                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                    others => <>)),
-                  Return_Type => +EW_Bool_Type,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                  Def         => +True_Term));
-         end;
-
-         Declare_Attributes (P, E, Ty_Name);
-
-         return;
-      end if;
-
-      if Record_Type_Is_Clone (E) then
-
-         --  This type is simply a copy of an existing type, we re-export the
-         --  corresponding module and then return.
-
-         declare
-            Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
-         begin
-            Add_With_Clause (P, E_Module (Clone), EW_Export);
-
-            --  If the copy has the same name as the original, do not redefine
-            --  the type name.
-
-            if Short_Name (E) /= Short_Name (Clone) then
-               Emit (P,
-                     New_Type_Decl
-                       (Name  => Ty_Name,
-                        Alias =>
-                          +New_Named_Type
-                          (Name =>
-                               To_Why_Type (Clone, Local => True))));
-            end if;
-         end;
-
-         return;
-      end if;
-
-      --  Export the theory containing the record definition.
-
-      Add_With_Clause (P, Rep_Module, EW_Export);
-
-      --  Rename the representative record type as expected.
-
-      Emit (P,
-            New_Type_Decl
-              (Name  => To_Why_Type (E, Local => True),
-               Alias =>
-                 +New_Named_Type
-                   (Name => To_Name (WNE_Rec_Rep))));
-
-      --  The static tag for the type is defined as a logic constant
-      if Is_Tagged_Type (E) then
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Tag)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-      end if;
-
-      if Root /= E
-        and then Count_Discriminants (E) > 0
-        and then Is_Constrained (E)
-      then
-         Declare_Conversion_Check_Function (P, E, Root);
-      end if;
-
-      Declare_Attributes (P, E, Ty_Name);
-      Declare_Component_Attributes (P, E);
-
-   end Declare_Ada_Record;
-
-   ------------------------
-   -- Declare_Attributes --
-   ------------------------
-
-   procedure Declare_Attributes
-     (P       : W_Section_Id;
-      E       : Entity_Id;
-      Ty_Name : W_Name_Id)
-   is
-      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      A_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
-   begin
-      --  The value size is defined as a logic constant
-
-      Emit (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
-
-      --  The object size is defined as a logic function
-
-      Emit (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-               Binders     => R_Binder,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
-
-      --  Both value size and object size are non-negative
-
-      --  The value alignement is defined as a logic constant
-
-      Emit (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb
-                 (E, WNE_Attr_Value_Alignment)),
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
-
-      --  The object alignment is defined as a logic function
-
-      Emit (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb (E,
-                 WNE_Attr_Object_Alignment)),
-               Binders     => R_Binder,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
-
-      --  Both value alignment and object alignment are non-negative
-
-      declare
-         Zero : constant W_Expr_Id :=
-           New_Integer_Constant (Value => Uint_0);
-
-         Value_Size_Fun : constant W_Expr_Id :=
-           New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type);
-
-         Value_Size_Axiom : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Value_Size_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Object_Size_Fun : constant W_Expr_Id :=
-           New_Call (Name   =>
-                       To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-                     Args   => (1 => +A_Ident),
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type);
-
-         Object_Size_Pred : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Object_Size_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Object_Size_Axiom : constant W_Pred_Id :=
-           New_Universal_Quantif (Binders => R_Binder,
-                                  Pred    => Object_Size_Pred);
-
-         Value_Alignment_Fun : constant W_Expr_Id :=
-           New_Call (Name     => To_Local (E_Symb
-                     (E, WNE_Attr_Value_Alignment)),
-                     Domain   => EW_Term,
-                     Typ      => EW_Int_Type);
-
-         Value_Alignment_Axiom : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Value_Alignment_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Object_Alignment_Fun : constant W_Expr_Id :=
-           New_Call (Name     =>
-                       To_Local (E_Symb (E,
-                         WNE_Attr_Object_Alignment)),
-                     Args     => (1 => +A_Ident),
-                     Domain   => EW_Term,
-                     Typ      => EW_Int_Type);
-
-         Object_Alignment_Pred : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Object_Alignment_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Object_Alignment_Axiom : constant W_Pred_Id :=
-           New_Universal_Quantif (Binders => R_Binder,
-                                  Pred    => Object_Alignment_Pred);
-
-      begin
-         Emit (P,
-               New_Axiom (Ada_Node => E,
-                          Name     => NID ("value__size_axiom"),
-                          Def      => Value_Size_Axiom));
-
-         Emit (P,
-               New_Axiom (Ada_Node => E,
-                          Name     => NID ("object__size_axiom"),
-                          Def      => Object_Size_Axiom));
-         Emit (P,
-               New_Axiom (Ada_Node => E,
-                          Name     => NID ("value__alignment_axiom"),
-                          Def      => Value_Alignment_Axiom));
-
-         Emit (P,
-               New_Axiom (Ada_Node => E,
-                          Name     => NID ("object__alignment_axiom"),
-                          Def      => Object_Alignment_Axiom));
-      end;
-   end Declare_Attributes;
-
-   ----------------------------------
-   -- Declare_Component_Attributes --
-   ----------------------------------
-
-   procedure Declare_Component_Attributes
-     (P : W_Section_Id;
-      E : Entity_Id)
-   is
-      procedure Declare_Attribute_For_Field (Field : Entity_Id);
-      --  Declare attributes for Field only.
-      --  @param Field component of discriminant of E
-
-      ---------------------------------
-      -- Declare_Attribute_For_Field --
-      ---------------------------------
-
-      procedure Declare_Attribute_For_Field (Field : Entity_Id) is
-         Axiom : constant String :=
-           Full_Name (Representative_Component (Field));
-
-         Zero : constant W_Expr_Id :=
-           New_Integer_Constant (Value => Uint_0);
-
-         First_Bit_Fun : constant W_Expr_Id :=
-           New_Call (Name   =>
-                       To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type);
-
-         First_Bit_Axiom : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => First_Bit_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-
-         Last_Bit_Fun : constant W_Expr_Id :=
-           New_Call (Name   =>
-                       To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type);
-
-         Last_Bit_Axiom : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Gt,
-                            Left   => Last_Bit_Fun,
-                            Right  => First_Bit_Fun,
-                            Domain => EW_Term);
-
-         Position_Fun : constant W_Expr_Id :=
-           New_Call (Name   =>
-                       To_Local (E_Symb (Field, WNE_Attr_Position)),
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type);
-
-         Position_Axiom : constant W_Pred_Id :=
-           +New_Comparison (Symbol => Int_Infix_Ge,
-                            Left   => Position_Fun,
-                            Right  => Zero,
-                            Domain => EW_Term);
-      begin
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (Field, WNE_Attr_Position)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         Emit (P,
-               New_Axiom (Ada_Node => Field,
-                          Name     => NID (Axiom & "__first__bit_axiom"),
-                          Def      => First_Bit_Axiom));
-
-         Emit (P,
-               New_Axiom (Ada_Node => Field,
-                          Name     => NID (Axiom & "__last__bit_axiom"),
-                          Def      => Last_Bit_Axiom));
-         Emit (P,
-               New_Axiom (Ada_Node => Field,
-                          Name     => NID (Axiom & "__position_axiom"),
-                          Def      => Position_Axiom));
-
-      end Declare_Attribute_For_Field;
-
-   --  Start of processing for Declare_Component_Attributes
-
-   begin
-      if Count_Discriminants (E) > 0 then
-         declare
-            Discr : Entity_Id := First_Discriminant (E);
-         begin
-            while Present (Discr) loop
-               if Is_Not_Hidden_Discriminant (Discr) then
-                  Declare_Attribute_For_Field (Discr);
-               end if;
-               Next_Discriminant (Discr);
-            end loop;
-         end;
-      end if;
-
-      for Field of Get_Component_Set (E) loop
-         if Ekind (Field) = E_Component then
-            Declare_Attribute_For_Field (Field);
-         end if;
-      end loop;
-   end Declare_Component_Attributes;
-
-   ---------------------------------------
-   -- Declare_Conversion_Check_Function --
-   ---------------------------------------
-
-   procedure Declare_Conversion_Check_Function
-     (Section : W_Section_Id;
-      E       : Entity_Id;
-      Root    : Entity_Id)
-   is
-      Root_Name  : constant W_Name_Id := To_Why_Type (Root);
-      Root_Abstr : constant W_Type_Id :=
-        +New_Named_Type (Name => Root_Name);
-      A_Ident    : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ => Root_Abstr);
-      Num_Discr  : constant Natural := Count_Discriminants (E);
-      R_Access   : constant W_Expr_Id :=
-        New_Record_Access (Name  => +A_Ident,
-                           Field => E_Symb (Root, WNE_Rec_Split_Discrs));
-      Discr      : Node_Id := First_Discriminant (E);
-      Post       : constant W_Pred_Id :=
-        New_Call
-          (Name => Why_Eq,
-           Typ  => EW_Bool_Type,
-           Args => (+New_Result_Ident (Why_Empty), +A_Ident));
-      R_Binder   : Binder_Array (1 .. Num_Discr + 1);
-      Args       : W_Expr_Array (1 .. Num_Discr + 1);
-      Check_Pred : W_Pred_Id := True_Pred;
-      Count      : Natural := 1;
-      Pre_Cond   : W_Pred_Id;
-
-   begin
-      R_Binder (Num_Discr + 1) :=
-        Binder_Type'(B_Name => A_Ident,
-                     others => <>);
-      Args (Num_Discr + 1) := +A_Ident;
-      Count := 1;
-      Discr := First_Discriminant (E);
-
-      while Present (Discr) loop
-         if Is_Not_Hidden_Discriminant (Discr) then
-            Args (Count) := +To_Why_Id
-              (Discr, Local => True, Rec   => Root,
-               Typ => Base_Why_Type (Unique_Entity (Etype (Discr))));
-            R_Binder (Count) :=
-              Binder_Type'
-                (B_Name => +Args (Count),
-                 others => <>);
-            Check_Pred :=
-              +New_And_Expr
-              (Domain => EW_Pred,
-               Left   => +Check_Pred,
-               Right  =>
-                 New_Call
-                   (Domain => EW_Pred,
-                    Name   => Why_Eq,
-                    Typ    => EW_Bool_Type,
-                    Args =>
-                      (1 => +Args (Count),
-                       2 =>
-                         Insert_Simple_Conversion
-                           (Domain   => EW_Term,
-                            Expr     => New_Call
-                              (Ada_Node => Root,
-                               Name     => To_Why_Id (Discr, Rec => Root),
-                               Args     => (1 => R_Access),
-                               Domain   => EW_Term,
-                               Typ      => EW_Abstract (Etype (Discr))),
-                            To       =>
-                              Base_Why_Type
-                                (Unique_Entity (Etype (Discr)))))));
-            Count := Count + 1;
-         end if;
-         Next_Discriminant (Discr);
-      end loop;
-
-      Emit (Section,
-            New_Function_Decl
-              (Domain  => EW_Pred,
-               Name    => To_Local (E_Symb (E, WNE_Range_Pred)),
-               Labels  => Name_Id_Sets.Empty_Set,
-               Binders => R_Binder,
-               Def     => +Check_Pred));
-      Pre_Cond :=
-        New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
-                  Args => Args);
-      Emit (Section,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
-               Binders     => R_Binder,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => Root_Abstr,
-               Pre         => Pre_Cond,
-               Post        => Post));
-   end Declare_Conversion_Check_Function;
 
    ----------------------------------
    -- Discriminant_Check_Pred_Name --
