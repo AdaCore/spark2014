@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -667,9 +667,12 @@ package body Why.Gen.Binders is
             Typ    : constant W_Type_Id :=
               (if Ekind (E) = E_Abstract_State then EW_Private_Type
                elsif Ekind (E) = E_Loop_Parameter then
-                    Base_Why_Type_No_Bool (Ty)
+                 (if Is_Standard_Boolean_Type (Ty) then
+                    EW_Int_Type
+                  else
+                    EW_Split (Ty))
                elsif In_Fun_Decl and then Use_Why_Base_Type (E) then
-                    Base_Why_Type (Ty)
+                  EW_Split (Ty)
                else Type_Of_Node (Ty));
             --  For loop parameters, we use the Why3 representation type.
 

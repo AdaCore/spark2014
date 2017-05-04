@@ -1373,7 +1373,8 @@ package body SPARK_Util.Types is
       or else
         (Ekind (E) = E_Enumeration_Subtype
          and then Etype (E) = Standard_Boolean
-        and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)));
+         and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
+         and then not Has_Predicates (E)));
 
    --------------------------
    -- Is_Static_Array_Type --
