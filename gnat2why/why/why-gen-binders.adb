@@ -1212,7 +1212,7 @@ package body Why.Gen.Binders is
      (A          : Item_Array;
       Keep_Local : Boolean := True) return Binder_Array
    is
-      Result : Binder_Array (1 .. Item_Array_Length (A));
+      Result : Binder_Array (1 .. Item_Array_Length (A, Keep_Local));
       Count  : Natural := 1;
    begin
       for Index in A'Range loop
@@ -1285,6 +1285,7 @@ package body Why.Gen.Binders is
             end case;
          end;
       end loop;
+      pragma Assert (Count = Result'Last + 1);
       return Result;
    end To_Binder_Array;
 

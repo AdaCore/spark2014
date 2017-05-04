@@ -142,8 +142,10 @@ package Why.Gen.Names is
    Compat_Axiom        : constant String := "compat_axiom";
    --  suffix for compatibility axiom suffix for dispatching calls
 
-   Post_Predicate      : constant String := "post_predicate";
-   --  suffix for a postcondition predicate
+   Function_Guard      : constant String := "function_guard";
+   --  suffix for guards of functions defining axioms
+   Specific_Post       : constant String := "specific_post";
+   --  suffix for specific postcondition of dispatching procedures
 
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
@@ -280,10 +282,13 @@ package Why.Gen.Names is
       --  refined version (refined_post) of a subprogram.
       WNE_Refine_Module,  --  Refine
 
-      --  Names of predicates for functions postconditions
-      WNE_Post_Pred,
-      WNE_Refined_Post_Pred,
-      WNE_Dispatch_Post_Pred,
+      --  Names of predicates for functions guards
+      WNE_Func_Guard,
+      WNE_Refined_Func_Guard,
+      WNE_Dispatch_Func_Guard,
+
+      --  Name of predicate for specific post
+      WNE_Specific_Post,
 
       --  Suffixes for handling of references
       WNE_Ref,

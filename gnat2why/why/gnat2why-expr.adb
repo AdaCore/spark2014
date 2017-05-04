@@ -5145,7 +5145,8 @@ package body Gnat2Why.Expr is
             end if;
 
             Old_Map (Position) :=
-              New_Temp_Identifier (Typ => Typ, Ada_Node => Nd);
+              New_Temp_Identifier
+                (Base_Name => "old", Typ => Typ, Ada_Node => Nd);
          end;
       end if;
 

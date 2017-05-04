@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Disp; use Sem_Disp;
+
 package SPARK_Util.Subprograms is
 
    --------------------------------------------
@@ -428,6 +430,14 @@ package SPARK_Util.Subprograms is
    --  Return True iff E suspends on a suspension object, i.e. it is either
    --  Ada.Synchronous_Task_Control.Suspend_Until_True or
    --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline.
+
+   function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id with
+     Pre  => Ekind (E) = E_Procedure
+     and Is_Dispatching_Operation (E)
+     and Present (Find_Dispatching_Type (E)),
+     Post => Present (Find_Dispatching_Parameter'Result);
+   --  @param E a dispatching procedure
+   --  @return a parameter of E which has the dispatching type
 
    --------------------------------
    -- Queries related to entries --

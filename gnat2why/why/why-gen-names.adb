@@ -779,7 +779,7 @@ package body Why.Gen.Names is
             | WNE_Check_Not_Last
             | WNE_Default_Init
             | WNE_Dispatch_Eq
-            | WNE_Dispatch_Post_Pred
+            | WNE_Dispatch_Func_Guard
             | WNE_Dummy
             | WNE_Dynamic_Invariant
             | WNE_Dynamic_Predicate
@@ -790,6 +790,7 @@ package body Why.Gen.Names is
             | WNE_Fixed_Point_Div_Result_Int
             | WNE_Fixed_Point_Mult
             | WNE_Fixed_Point_Mult_Int
+            | WNE_Func_Guard
             | WNE_Index_Dynamic_Property
             | WNE_Index_Dynamic_Property_2
             | WNE_Index_Dynamic_Property_3
@@ -803,15 +804,15 @@ package body Why.Gen.Names is
             | WNE_Of_Int
             | WNE_Of_Real
             | WNE_Of_Rep
-            | WNE_Post_Pred
             | WNE_Private_Eq
             | WNE_Private_Type
-            | WNE_Refined_Post_Pred
+            | WNE_Refined_Func_Guard
             | WNE_Range_Check_Fun
             | WNE_Range_Check_Fun_BV_Int
             | WNE_Range_Pred
             | WNE_Range_Pred_BV_Int
             | WNE_Rec_Extension
+            | WNE_Specific_Post
             | WNE_Tag
             | WNE_To_Array
             | WNE_To_Base
@@ -874,11 +875,12 @@ package body Why.Gen.Names is
    begin
       return
         New_Identifier
-          (Ada_Node => Get_Ada_Node (+W_Name),
-           Symbol   => Get_Symbol (W_Name),
-           Domain   => Get_Domain (+Name),
-           Module   => Why_Empty,
-           Typ      => Get_Typ (Name));
+          (Ada_Node  => Get_Ada_Node (+W_Name),
+           Symbol    => Get_Symbol (W_Name),
+           Namespace => Get_Namespace (W_Name),
+           Domain    => Get_Domain (+Name),
+           Module    => Why_Empty,
+           Typ       => Get_Typ (Name));
    end To_Local;
 
    function To_Local (Name : W_Name_Id) return W_Name_Id is

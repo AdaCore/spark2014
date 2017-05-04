@@ -125,12 +125,14 @@ package Why.Gen.Binders is
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
-   function Item_Array_Length (Arr        : Item_Array;
+   function Item_Array_Length
+     (Arr        : Item_Array;
       Keep_Local : Boolean := True) return Natural;
    --  Return the number of variables that is introduced by the given
    --  item_array (counting items plus e.g. array bounds).
 
-   function To_Binder_Array (A          : Item_Array;
+   function To_Binder_Array
+     (A          : Item_Array;
       Keep_Local : Boolean := True) return Binder_Array;
    --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
    --  bounds to binders.

@@ -3424,9 +3424,9 @@ package body Why.Gen.Expr is
                             (Base_Name => "result", Typ => Typ);
             Pred_Enum : constant Why_Name_Enum :=
                           (case Selector is
-                              when Dispatch => WNE_Dispatch_Post_Pred,
-                              when Refine   => WNE_Refined_Post_Pred,
-                              when others   => WNE_Post_Pred);
+                              when Dispatch => WNE_Dispatch_Func_Guard,
+                              when Refine   => WNE_Refined_Func_Guard,
+                              when others   => WNE_Func_Guard);
          begin
             return New_Epsilon
               (Name   => Result_Id,

@@ -1830,30 +1830,41 @@ package body Why.Atree.Modules is
                Module => M_Ax,
                Domain => EW_Prog,
                Typ    => EW_Unit_Type));
-         Insert_Symbol
-           (E, WNE_Post_Pred,
-            New_Identifier
-              (Symbol => NID (Name & "__" & Post_Predicate),
-               Module => M,
-               Domain => EW_Pred,
-               Typ    => EW_Unit_Type));
-
-         if Has_Contracts (E, Pragma_Refined_Post) then
+         if Ekind (E) = E_Function then
             Insert_Symbol
-              (E, WNE_Refined_Post_Pred,
+              (E, WNE_Func_Guard,
                New_Identifier
-                 (Symbol    => NID (Name & "__" & Post_Predicate),
-                  Module    => M,
-                  Namespace => NID (To_String (WNE_Refine_Module)),
-                  Domain    => EW_Pred,
-                  Typ       => EW_Unit_Type));
-         end if;
+                 (Symbol => NID (Name & "__" & Function_Guard),
+                  Module => M,
+                  Domain => EW_Pred,
+                  Typ    => EW_Unit_Type));
 
-         if Is_Dispatching_Operation (E) then
+            if Has_Contracts (E, Pragma_Refined_Post) then
+               Insert_Symbol
+                 (E, WNE_Refined_Func_Guard,
+                  New_Identifier
+                    (Symbol    => NID (Name & "__" & Function_Guard),
+                     Module    => M,
+                     Namespace => NID (To_String (WNE_Refine_Module)),
+                     Domain    => EW_Pred,
+                     Typ       => EW_Unit_Type));
+            end if;
+
+            if Is_Dispatching_Operation (E) then
+               Insert_Symbol
+                 (E, WNE_Dispatch_Func_Guard,
+                  New_Identifier
+                    (Symbol    => NID (Name & "__" & Function_Guard),
+                     Module    => M,
+                     Namespace => NID (To_String (WNE_Dispatch_Module)),
+                     Domain    => EW_Pred,
+                     Typ       => EW_Unit_Type));
+            end if;
+         elsif Is_Dispatching_Operation (E) then
             Insert_Symbol
-              (E, WNE_Dispatch_Post_Pred,
+              (E, WNE_Specific_Post,
                New_Identifier
-                 (Symbol    => NID (Name & "__" & Post_Predicate),
+                 (Symbol    => NID (Name & "__" & Specific_Post),
                   Module    => M,
                   Namespace => NID (To_String (WNE_Dispatch_Module)),
                   Domain    => EW_Pred,

@@ -36,7 +36,6 @@ with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
-with Sem_Disp;                           use Sem_Disp;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
@@ -325,6 +324,30 @@ package body SPARK_Util.Subprograms is
          return Contracts;
       end;
    end Find_Contracts;
+
+   --------------------------------
+   -- Find_Dispatching_Parameter --
+   --------------------------------
+
+   function Find_Dispatching_Parameter (E : Entity_Id) return Entity_Id is
+      Typ    : constant Entity_Id := Find_Dispatching_Type (E);
+      Params : constant List_Id :=
+        Parameter_Specifications (Subprogram_Specification (E));
+      Param  : Node_Id;
+
+   begin
+      Param := First (Params);
+
+      while Present (Param) loop
+         if Etype (Defining_Identifier (Param)) = Typ then
+            return Defining_Identifier (Param);
+         end if;
+
+         Next (Param);
+      end loop;
+
+      raise Program_Error;
+   end Find_Dispatching_Parameter;
 
    ------------------------
    -- Get_Execution_Kind --
