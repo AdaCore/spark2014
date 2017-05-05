@@ -5172,6 +5172,12 @@ package body Gnat2Why.Subprograms is
 
       Generate_Axiom_For_Post (File, E);
 
+      if Is_Dispatching_Operation (E)
+        and then Present (Find_Dispatching_Type (E))
+      then
+         Generate_Dispatch_Compatibility_Axioms (File, E);
+      end if;
+
       --  If the entity's body is not in SPARK,
       --  if it is inlined for proof
       --  or if the function does not return, do not generate axiom.
