@@ -5,16 +5,16 @@ is
 
    type Log_Count is range 0 .. Max_Count;
 
-   type Log_Type is tagged private;
+   type Log_Type is private;
 
    function Log_Size (Log : Log_Type) return Log_Count;
 
    procedure Init_Log (Log : out Log_Type) with
-     Post => Log.Log_Size = 0;
+     Post => Log_Size (Log) = 0;
 
    procedure Append_To_Log (Log : in out Log_Type; Incr : in Integer) with
-     Pre  => Log.Log_Size < Max_Count,
-     Post => Log.Log_Size = Log.Log_Size'Old + 1;
+     Pre  => Log_Size (Log) < Max_Count,
+     Post => Log_Size (Log) = Log_Size (Log)'Old + 1;
 
 private
 

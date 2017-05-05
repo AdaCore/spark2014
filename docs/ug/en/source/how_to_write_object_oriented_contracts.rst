@@ -18,7 +18,8 @@ use the regular :ref:`Subprogram Contracts` instead of the special
 For example, consider a variant of the ``Logging`` and ``Range_Logging`` units
 presented in :ref:`Class-Wide Subprogram Contracts`, where no dispatching is
 allowed. Then, it is possible to use regular preconditions and postconditions
-as contracts:
+as contracts, provided ``Log_Type`` is publicly declared as an untagged private
+type in both units:
 
 .. literalinclude:: /gnatprove_by_example/examples/logging_no_dispatch.ads
    :language: ada
@@ -27,26 +28,6 @@ as contracts:
 .. literalinclude:: /gnatprove_by_example/examples/range_logging_no_dispatch.ads
    :language: ada
    :linenos:
-
-|GNATprove| correctly indicates in its output that the precondition given on
-``Append_To_Log`` in both units is stronger than the default class-wide
-precondition of ``True``:
-
-.. literalinclude:: /gnatprove_by_example/results/logging_no_dispatch.prove
-   :language: none
-
-.. literalinclude:: /gnatprove_by_example/results/range_logging_no_dispatch.prove
-   :language: none
-
-Indeed, should the program dispatch on any of these procedures, |GNATprove|
-would use the default class-wide precondition of ``True`` for the dispatching
-call, which would be violating the regular precondition. Thus, this is only
-safe when enforcing the absence of dispatching call, for example through GNAT
-restriction ``No_Dispatching_Calls``. In such a case, the check messages above
-can be ignored. There is no corresponding check message for postconditions, as
-the default class-wide postcondition of ``True`` is always weaker than the
-regular postcondition, so Liskov Substitution Principle is always respected for
-postconditions.
 
 Writing Contracts on Dispatching Subprograms
 --------------------------------------------
