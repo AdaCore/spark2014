@@ -1,1 +1,1 @@
-logging_no_dispatch.ads:16:14: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Log = (Log_Data => (others => 0), Log_Size => 10000))
+no output

@@ -1,1 +1,1 @@
-range_logging_no_dispatch.ads:22:14: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Log = (Min_Entry => 0, Max_Entry => 0))
+no output
