@@ -2004,6 +2004,11 @@ package body Flow.Analysis is
       --  a path that leads to V_Use. V_Error is the vertex where the message
       --  should be emitted.
 
+      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
+                                            return Boolean;
+      --  Returns True iff every path from V_Final going backwards in the CFG
+      --  contains an infinite loop.
+
       procedure Emit_Message (Var              : Flow_Id;
                               Vertex           : Flow_Graphs.Vertex_Id;
                               Is_Initialized   : Boolean;
@@ -2403,6 +2408,57 @@ package body Flow.Analysis is
          end if;
       end Might_Be_Defined_In_Other_Path;
 
+      ---------------------------------
+      -- Has_Only_Infinite_Execution --
+      ---------------------------------
+
+      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
+                                            return Boolean
+      is
+         Only_Inf_Exec : Boolean := True;
+
+         procedure Vertex_Has_Inf_Execution
+           (V  : Flow_Graphs.Vertex_Id;
+            TV :  out Flow_Graphs.Simple_Traversal_Instruction);
+
+         ------------------------------
+         -- Vertex_Has_Inf_Execution --
+         ------------------------------
+
+         procedure Vertex_Has_Inf_Execution
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if V = FA.Start_Vertex then
+               --  If we reach the start vertex (remember that we are going
+               --  backwards) it means that there is at least one path without
+               --  an infinite loop and we can set Only_Inf_Exec to false and
+               --  abort the traversal.
+               Only_Inf_Exec := False;
+               TV := Flow_Graphs.Abort_Traversal;
+
+            elsif FA.Atr (V).Execution = Infinite_Loop then
+               --  If we find a vertex with Infinite_Loop execution then we set
+               --  Only_Inf_Exec to true and jump to another path.
+               TV := Flow_Graphs.Skip_Children;
+
+            else
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Vertex_Has_Inf_Execution;
+
+      --  Start of processing for Has_Only_Infinite_Execution
+
+      begin
+         FA.CFG.DFS (Start         => V_Final,
+                     Include_Start => True,
+                     Visitor       => Vertex_Has_Inf_Execution'Access,
+                     Reversed      => True);
+
+         return Only_Inf_Exec;
+      end Has_Only_Infinite_Execution;
+
       ------------------
       -- Emit_Message --
       ------------------
@@ -2414,26 +2470,27 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
+         V_Key         : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
-         V_Initial    : constant Flow_Graphs.Vertex_Id :=
+         V_Initial     : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
 
-         Kind         : Msg_Kind :=
+         Kind          : Msg_Kind :=
            (if Is_Initialized and Is_Uninitialized then Unknown
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N            : Node_Or_Entity_Id := FA.Atr (Vertex).Error_Location;
-         Msg          : Unbounded_String;
+         N             : Node_Or_Entity_Id := FA.Atr (Vertex).Error_Location;
+         Msg           : Unbounded_String;
 
-         V_Error      : Flow_Graphs.Vertex_Id;
-         V_Goal       : Flow_Graphs.Vertex_Id;
-         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+         V_Error       : Flow_Graphs.Vertex_Id;
+         V_Goal        : Flow_Graphs.Vertex_Id;
+         V_Allowed     : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
 
-         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
-         Default_Init : constant Boolean := Is_Default_Initialized (Var);
+         Is_Final_Use  : constant Boolean := V_Key.Variant = Final_Value;
+         Is_Global     : constant Boolean := FA.Atr (V_Initial).Is_Global;
+         Default_Init  : constant Boolean := Is_Default_Initialized (Var);
+         Is_Function   : constant Boolean := Is_Function_Entity (Var);
 
       begin
          case Kind is
@@ -2459,27 +2516,32 @@ package body Flow.Analysis is
          Msg :=
            To_Unbounded_String
              ((case Kind is
-                  when Init =>
-                     "initialization of & proved",
-                  when Unknown =>
-                     (if Default_Init
-                      then "input value of & might be used"
-                      else "& might not be "),
-                  when Err =>
-                     (if Default_Init
-                      then "input value of & will be used"
-                      else "& is not ")));
+                 when Init =>
+                    "initialization of & proved",
+                 when Unknown =>
+                   (if Default_Init
+                    then "input value of & might be used"
+                    elsif Is_Function
+                    then
+                      (if Has_Only_Infinite_Execution (Vertex)
+                       then "function & does not return on any path"
+                       else "function & does not return on some paths")
+                    else "& might not be "),
+                 when Err =>
+                   (if Default_Init
+                    then "input value of & will be used"
+                    else "& is not ")));
 
          case Kind is
             when Unknown | Err =>
-               if not Default_Init then
+               if not (Default_Init or Is_Function) then
                   if Has_Async_Readers (Var) then
                      Append (Msg, "written");
                   else
                      Append (Msg, "initialized");
                   end if;
                end if;
-               if Is_Final_Use and not Is_Global then
+               if Is_Final_Use and not (Is_Global or Is_Function) then
                   Append (Msg, " in &");
                end if;
 

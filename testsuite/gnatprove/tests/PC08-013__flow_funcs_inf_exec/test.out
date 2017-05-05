@@ -1,0 +1,2 @@
+p.ads:3:13: medium: function "F1" does not return on some paths
+p.ads:4:13: medium: function "F2" does not return on any path
