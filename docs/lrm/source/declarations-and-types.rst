@@ -55,9 +55,9 @@ Type Declarations
 
 .. _tu-sf-type_declarations-01:
 
-1. Access type declarations are not permitted in |SPARK|.
-   [This follows from the rule forbidding use of the Ada reserved
-   word **access**, which also disallows all forms of anonymous access types.]
+1. Named access-to-constant types are permitted in |SPARK|.  All other access
+   type declarations are not permitted in |SPARK|, as well as all forms of
+   anonymous access types.
 
 .. _etu-type_declarations:
 
@@ -162,12 +162,14 @@ thereof, is said to be *constant after elaboration*.
 be modified after execution of the main subprogram begins
 (see section :ref:`tasks-and-synchronization`).]
 
-A constant is a *constant with variable inputs* if its initialization
-expression depends on:
+A stand-alone constant is a *constant with variable inputs* if its
+initialization expression depends on:
 
   * A variable or parameter; or
 
   * Another *constant with variable inputs*
+
+Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
 .. centered:: **Verification Rules**
 

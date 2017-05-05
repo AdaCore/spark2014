@@ -29,14 +29,14 @@ Default_Component_Value	      Yes
 Default_Iterator	      No
 Default_Storage_Pool	      No
 Default_Value		      Yes
-Default_Storage_Pool   	      No		     No access types
+Default_Storage_Pool   	      No		     Restricted access types
 Dispatching_Domain 	      No		     Ravenscar
 Dynamic_Predicate             Yes
 Elaborate_Body     	      Yes
 Export             	      Yes
 External_Name		      Yes
 External_Tag		      No		     No tags
-Implicit_Dereference	      No		     No access types
+Implicit_Dereference	      No		     Restricted access types
 Import             	      Yes
 Independent        	      Yes
 Independent_Components 	      Yes
@@ -65,8 +65,8 @@ Size (object)		      Yes
 Size (subtype)		      Yes
 Small			      Yes
 Static_Predicate	      Yes
-Storage_Pool		      No		     No access types
-Storage_Size (access)         No		     No access types
+Storage_Pool		      No		     Restricted access types
+Storage_Size (access)         No		     Restricted access types
 Storage_Size (task)	      Yes
 Stream_Size  		      No		     No streams
 Synchronization		      Yes
@@ -127,8 +127,8 @@ Language-Defined Attributes
 ===================================== ====================== ====================================================
 Attribute                              Allowed in SPARK 2014 Comment
 ===================================== ====================== ====================================================
-P'Access			      No		     No access types
-X'Access	    		      No
+P'Access			      No		     Restricted access types
+X'Access	    		      Yes
 X'Address	    		      No                     Only allowed in representation clauses
 S'Adjacent	    		      Yes
 S'Aft				      Yes
@@ -184,8 +184,8 @@ S'Machine_Radix			      Yes
 S'Machine_Rounding  		      Yes
 S'Machine_Rounds    		      Yes
 S'Max				      Yes
-S'Max_Alignment_For_Allocation 	      No	             No access types
-S'Max_Size_In_Storage_Elements 	      No		     No access types
+S'Max_Alignment_For_Allocation 	      No	             Restricted access types
+S'Max_Size_In_Storage_Elements 	      No		     Restricted access types
 S'Min				      Yes
 S'Mod				      Yes
 S'Model				      Yes
@@ -219,8 +219,8 @@ S'Scaling	   		      Yes
 S'Size				      Warn                   Warning in pedantic
 X'Size				      Warn     		     Warning in pedantic
 S'Small				      Yes
-S'Storage_Pool			      No		     No access types
-S'Storage_Size			      No		     No access types
+S'Storage_Pool			      No		     Restricted access types
+S'Storage_Size			      No		     Restricted access types
 T'Storage_Size			      Yes
 S'Stream_Size			      No		     No streams
 S'Succ				      Yes
@@ -230,7 +230,7 @@ T'Terminated			      Yes
 System'To_Address 		      Yes
 S'Truncation			      Yes
 S'Truncation			      Yes
-X'Unchecked_Access  		      No		     No access types or aliases
+X'Unchecked_Access  		      No
 X'Update            		      Yes
 S'Val				      Yes
 X'Valid				      Yes	             Assumed to be True at present

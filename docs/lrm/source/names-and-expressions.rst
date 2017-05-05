@@ -49,14 +49,23 @@ Attributes
 ~~~~~~~~~~
 
 Many of the Ada language defined attributes are in |SPARK| but there
-are exclusions for instance X'Access, as access types are not
-supported.  For a full list of attributes supported by |SPARK| see
+are exclusions.  For a full list of attributes supported by |SPARK| see
 :ref:`language_defined_attributes`.
 
 A |SPARK| implementation is permitted to support other attributes
 which are not Ada or |SPARK| language defined attributes and these
 should be documented in the User Guide for the tool.
 
+.. centered:: **Legality Rules**
+
+.. _tu-attributed-01:
+
+1. The prefix of a '*Access* ``attribute_reference`` shall be a constant
+   without variable input. [This ensures that information flows through such
+   access values only depend on assignments to the access objects, not
+   assignments to the accessed objects. See :ref:`object-declarations`.]
+
+.. _etu-attributes:
 
 User-Defined References
 ~~~~~~~~~~~~~~~~~~~~~~~

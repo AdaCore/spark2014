@@ -48,11 +48,4 @@ These are described in the relevant sections of this document.
 Reserved Words
 --------------
 
-.. centered:: **Legality Rules**
-
-.. _tu-reserved_words-01:
-
-1. The reserved word **access** shall not appear in |SPARK| program text
-   other than in comments.
-
-.. _etu-reserved_words:
+No extensions or restrictions.
