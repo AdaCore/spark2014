@@ -1,0 +1,7 @@
+nested.adb:6:04: info: initialization of "A_1" constituent of "State_A" proved
+nested.adb:7:04: info: initialization of "A_2" constituent of "State_A" proved
+nested.adb:15:28: "Helper_1.H_1" must be a global output of "State_A_In" (SPARK RM 6.1.4(16))
+nested.adb:36:07: info: initialization of "B_2" constituent of "State_B" proved
+nested.adb:37:14: info: initialization of "A_2" constituent of "State_A" proved
+nested.ads:3:23: warning: no procedure exists that can initialize abstract state "Nested.State_B"
+gnatprove: error during flow analysis and proof
