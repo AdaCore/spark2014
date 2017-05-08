@@ -1,0 +1,3 @@
+test.ads:4:17: low: unused global "Single_Protected_Type"
+test.ads:6:09: medium: expected to see "Single_Protected_Typet" on the left-hand-side of a dependency relation
+test.ads:6:09: medium: missing dependency "Single_Protected_Typet => Single_Protected_Typet"

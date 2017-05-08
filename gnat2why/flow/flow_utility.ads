@@ -676,6 +676,7 @@ is
                                          | E_Abstract_State
                                          | E_Constant
                                          | E_Function
+                                         | E_Protected_Type
                                          | E_Task_Type
                 and then (if Present (Input)
                           then Ekind (Input) in E_Abstract_State
