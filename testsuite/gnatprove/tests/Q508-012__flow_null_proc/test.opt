@@ -1,0 +1,1 @@
+ALL XFAIL null procedure nested in protected (Q508-012)
