@@ -2,19 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="15000" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="120" steplimit="200" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="120" steplimit="610000" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="altergo" version="0.99.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.4.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/door.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3605,7 +3597,7 @@
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_135" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3621,7 +3613,7 @@
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_141" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_137" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3715,7 +3707,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4099,7 +4091,7 @@
 </theory>
 <theory name="Door__poll__T3b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_846" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_842" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4561,92 +4553,92 @@
 </theory>
 <theory name="Door__updatedooralarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Door__package_def" sum="ce1681a54b3a7ea3b0be6c1d58402d42" expanded="true">
+<theory name="Door__package_def" sum="93165e5c295105d79ca1dcdf5215fb26" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__alarm_timeout__subprogram_def" sum="8d64f9b9136048304f91563db6e970d3" expanded="true">
+<theory name="Door__alarm_timeout__subprogram_def" sum="9963b3c0aa4db0bafbde33d8435352d4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__thecurrentdoor__subprogram_def" sum="924dd360247fd372740e1248764ca654" expanded="true">
+<theory name="Door__thecurrentdoor__subprogram_def" sum="93c2635dde72914ad805fd6817488966" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__thedooralarm__subprogram_def" sum="924dd360247fd372740e1248764ca654" expanded="true">
+<theory name="Door__thedooralarm__subprogram_def" sum="93c2635dde72914ad805fd6817488966" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__poll__subprogram_def" sum="2a96bc4cffcbd572480619f1cbad21a4" expanded="true">
+<theory name="Door__poll__subprogram_def" sum="8fc28d6bc7dbee748116ed1b8ab3ab56" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.09" steps="15"/></proof>
-  <proof prover="1"><result status="failure" time="0.08"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="68681"/></proof>
-  <proof prover="3"><result status="unknown" time="0.06" steps="15"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="15"/></proof>
+  <proof prover="1"><result status="unknown" time="0.32"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="67755"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="15"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="28"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.07" steps="30"/></proof>
-  <proof prover="1"><result status="failure" time="0.11"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="69406"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="30"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="30"/></proof>
+  <proof prover="1"><result status="unknown" time="0.41"/></proof>
+  <proof prover="2"><result status="unknown" time="0.05" steps="68372"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="30"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="43"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="43"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. postcondition">
   <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. postcondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. postcondition">
-  <proof prover="0"><result status="unknown" time="0.10" steps="217"/></proof>
-  <proof prover="1"><result status="failure" time="0.08"/></proof>
-  <proof prover="2"><result status="unknown" time="0.08" steps="77179"/></proof>
+  <proof prover="0"><result status="unknown" time="0.10" steps="235"/></proof>
+  <proof prover="1"><result status="unknown" time="1.08"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="75355"/></proof>
   <proof prover="3"><result status="unknown" time="0.08" steps="220"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. postcondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. postcondition">
-  <proof prover="3"><result status="valid" time="0.08" steps="150"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="168"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="14. postcondition">
-  <proof prover="3"><result status="valid" time="0.05" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="15. postcondition">
-  <proof prover="3"><result status="valid" time="0.08" steps="155"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="155"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="16. postcondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="138"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="147"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="17. postcondition">
-  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="18. postcondition">
   <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
@@ -4660,38 +4652,38 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__unlockdoor__subprogram_def" sum="2793fce4187fe9fbc8129396464bff45" expanded="true">
+<theory name="Door__unlockdoor__subprogram_def" sum="4d8c4c5debbd175bd52637aa43fea85e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
   <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
   <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="107"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="120"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="87"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="87"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. postcondition">
   <proof prover="3"><result status="valid" time="0.03" steps="112"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="95"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="103"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. postcondition">
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
@@ -4702,7 +4694,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__lockdoor__subprogram_def" sum="e58f65ae1d1d792218a22d1620d8c328" expanded="true">
+<theory name="Door__lockdoor__subprogram_def" sum="027382833a0186c6dd8cd2552bd0f688" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
@@ -4712,19 +4704,19 @@
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. postcondition">
   <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
+  <goal name="WP_parameter def.4" expl="4. postcondition">
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0"><result status="unknown" time="0.06" steps="184"/></proof>
-  <proof prover="1"><result status="failure" time="0.13"/></proof>
-  <proof prover="2"><result status="unknown" time="0.21" steps="610254"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05" steps="194"/></proof>
+  <proof prover="1"><result status="unknown" time="1.03"/></proof>
+  <proof prover="2"><result status="highfailure" time="2.42"/></proof>
   <proof prover="3"><result status="unknown" time="0.04" steps="175"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="3"><result status="valid" time="0.01" steps="85"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="97"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. postcondition">
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
@@ -4733,7 +4725,7 @@
   <proof prover="3"><result status="valid" time="0.03" steps="53"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. postcondition">
-  <proof prover="3"><result status="valid" time="0.02" steps="58"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="72"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. postcondition">
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
@@ -4741,41 +4733,41 @@
  </transf>
  </goal>
 </theory>
-<theory name="Door__init__subprogram_def" sum="98eefe2a690ee9d6a3d0389d652dd885" expanded="true">
+<theory name="Door__init__subprogram_def" sum="7ebaa08b349cd92b3f9d450ee34d7a66" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__failure__subprogram_def" sum="1a2b2c204559ae38a4cb35a3777c19ea" expanded="true">
+<theory name="Door__failure__subprogram_def" sum="769ed49e9c8c2aaabe29d081e6fdc778" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Door__updatedooralarm__subprogram_def" sum="aa5eb02af6f2c9f6a5f3f72eacf2c2c3" expanded="true">
+<theory name="Door__updatedooralarm__subprogram_def" sum="edcc6d52bf89e850403256b3675b8357" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.07" steps="32"/></proof>
-  <proof prover="1"><result status="failure" time="0.13"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="61593"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="38"/></proof>
+  <proof prover="0"><result status="unknown" time="0.08" steps="32"/></proof>
+  <proof prover="1"><result status="unknown" time="1.16"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="61853"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="38"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="51"/></proof>
+  <proof prover="3"><result status="valid" time="0.08" steps="51"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="3"><result status="valid" time="0.06" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
   <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="22"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="22"/></proof>
   </goal>
  </transf>
  </goal>

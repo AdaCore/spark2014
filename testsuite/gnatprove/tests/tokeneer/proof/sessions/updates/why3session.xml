@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/updates.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4466,15 +4458,15 @@
 </theory>
 <theory name="Admin__isavailable__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___143" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___148" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___144" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___153" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_162" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_158" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4490,7 +4482,7 @@
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_164" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_160" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4584,7 +4576,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___172" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___168" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4666,7 +4658,7 @@
 </theory>
 <theory name="Alarm__updatedevice" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_176" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_172" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Display__setvalue" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5594,13 +5586,13 @@
 </theory>
 <theory name="Updates__activity___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Updates__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Updates__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Updates__earlyactivity__subprogram_def" sum="d2f5878c7fc48196482e8d9cb7aa1204" expanded="true">
+<theory name="Updates__earlyactivity__subprogram_def" sum="85d7151c46e5f144944eeba92f3edd0d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
@@ -5612,11 +5604,11 @@
  </transf>
  </goal>
 </theory>
-<theory name="Updates__activity__subprogram_def" sum="7e5eb5e5fb5d580891eb671c2b3d8194" expanded="true">
+<theory name="Updates__activity__subprogram_def" sum="cd65cf647fbd6da199bf8a35a57f1b06" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>

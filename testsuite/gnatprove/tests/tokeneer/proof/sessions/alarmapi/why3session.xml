@@ -2,19 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="15000" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="120" steplimit="200" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="120" steplimit="610000" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="altergo" version="0.99.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.4.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/alarmapi.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2097,7 +2089,7 @@
 </theory>
 <theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___136" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___132" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__connecttospre" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2113,7 +2105,7 @@
 </theory>
 <theory name="Ada__strings__maps__null_set__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_146" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_142" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__strings__fixed__move" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2143,9 +2135,9 @@
 </theory>
 <theory name="Alarmapi__deactivate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_147" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_143" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__messagelengtht___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2157,7 +2149,7 @@
 </theory>
 <theory name="Tcpip__messaget__T4s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___170" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___166" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__messaget___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2923,37 +2915,37 @@
 </theory>
 <theory name="Alarmapi__deactivate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Alarmapi__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Alarmapi__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Alarmapi__activate__subprogram_def" sum="caa30220de69f0f285cdd89dd19eae23" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.10" steps="544"/></proof>
-  <proof prover="1"><result status="failure" time="0.05"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="104007"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="448"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Alarmapi__deactivate__subprogram_def" sum="9904341d624efa6f2b2b1d30723d4f0e" expanded="true">
+<theory name="Alarmapi__activate__subprogram_def" sum="95ac7e2c4e745922f873d842e211ed90" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
   <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.11" steps="565"/></proof>
-  <proof prover="1"><result status="failure" time="0.05"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="106141"/></proof>
+  <proof prover="0"><result status="unknown" time="0.09" steps="544"/></proof>
+  <proof prover="1"><result status="unknown" time="0.37"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="103967"/></proof>
+  <proof prover="3"><result status="unknown" time="0.07" steps="448"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Alarmapi__deactivate__subprogram_def" sum="de3fa7e7b8c43a4c556d9413174cf357" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="unknown" time="0.10" steps="565"/></proof>
+  <proof prover="1"><result status="unknown" time="0.32"/></proof>
+  <proof prover="2"><result status="unknown" time="0.11" steps="103340"/></proof>
   <proof prover="3"><result status="unknown" time="0.07" steps="464"/></proof>
   </goal>
  </transf>

@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/cert-id.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5300,7 +5292,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___146" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___142" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certprocessing__extractidcertdata" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5330,13 +5322,13 @@
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_153" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__streams__read" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_155" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_151" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6332,46 +6324,46 @@
 </theory>
 <theory name="Cert__id__cert_id_to_cert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Cert__id__package_def" sum="57cb4536a7ed92ef7d0bd4dc8ac6dda5" expanded="true">
+<theory name="Cert__id__package_def" sum="43ad77912d0bfbb80a8fc89412c23236" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__contentst__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Cert__id__contentst__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__thesubject__subprogram_def" sum="8daa319b60d8cf1bb71b9e8af1c5009f" expanded="true">
+<theory name="Cert__id__thesubject__subprogram_def" sum="ef739d49538ffc3c3256d08bf394e5ae" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__thepublickey__subprogram_def" sum="986fb7b53a57253586c2eb392ded465e" expanded="true">
+<theory name="Cert__id__thepublickey__subprogram_def" sum="c9d1fd1e377093330907b7d89fb99daf" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__extract__subprogram_def" sum="9df096c7e4916c0d80eee10d745803d2" expanded="true">
+<theory name="Cert__id__extract__subprogram_def" sum="915ce630a7148fe69be584445b4074d1" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__clear__subprogram_def" sum="cbab2290b5d35043b74e7889c22e96a5" expanded="true">
+<theory name="Cert__id__clear__subprogram_def" sum="4d151f10367ae8d5b7bd53de9a9cf54b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__cert_id_to_cert__subprogram_def" sum="6108c82221cf429cef9aa445c29fb061" expanded="true">
+<theory name="Cert__id__cert_id_to_cert__subprogram_def" sum="45e84a6951d30970014fbd6c944b03af" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

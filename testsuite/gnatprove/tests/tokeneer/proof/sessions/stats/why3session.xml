@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/stats.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -224,34 +216,25 @@
 </theory>
 <theory name="Stats__displaystats___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Stats__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Stats__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Stats__t__default_checks" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Stats__t__default_checks" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Stats__init__subprogram_def" sum="87567191089c82a177eacd99b1b9c5af" expanded="true">
+<theory name="Stats__init__subprogram_def" sum="8b2cacc9b54b23d555e489cabc5f98d3" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addsuccessfulentry__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Stats__addfailedentry__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
+<theory name="Stats__addsuccessfulentry__subprogram_def" sum="80367eae868e0edfe5452709495e1cf5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -260,7 +243,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addsuccessfulbio__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
+<theory name="Stats__addfailedentry__subprogram_def" sum="80367eae868e0edfe5452709495e1cf5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -269,7 +252,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Stats__addfailedbio__subprogram_def" sum="e12fe85cb599b350355e04aa35986f46" expanded="true">
+<theory name="Stats__addsuccessfulbio__subprogram_def" sum="80367eae868e0edfe5452709495e1cf5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
@@ -278,7 +261,16 @@
  </transf>
  </goal>
 </theory>
-<theory name="Stats__displaystats__subprogram_def" sum="a9e680f5b3ae9ba77eded5a1248f1af3" expanded="true">
+<theory name="Stats__addfailedbio__subprogram_def" sum="80367eae868e0edfe5452709495e1cf5" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="32"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Stats__displaystats__subprogram_def" sum="0177b65f8098a7d8170b5daef61bf635" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

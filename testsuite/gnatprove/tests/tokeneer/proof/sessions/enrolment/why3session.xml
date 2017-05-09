@@ -2,19 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="15000" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="120" steplimit="200" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="120" steplimit="610000" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="altergo" version="0.99.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.4.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/enrolment.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5337,7 +5329,7 @@
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_135" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5353,7 +5345,7 @@
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_141" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_137" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5447,7 +5439,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5529,9 +5521,9 @@
 </theory>
 <theory name="Enrolment__validate__makedescription" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_156" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_152" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_159" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_155" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Enrolment__validate__validateandaddkey" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5891,15 +5883,15 @@
 </theory>
 <theory name="Enrolment__validate__T15b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1048" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1044" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1053" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1049" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1085" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1081" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1086" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1082" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1087" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1083" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6387,89 +6379,89 @@
 </theory>
 <theory name="Enrolment__validate__validateandaddkey___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Enrolment__package_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Enrolment__package_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__subprogram_def" sum="d4fa8751e6d72df20cbe3822957f70db" expanded="true">
+<theory name="Enrolment__validate__subprogram_def" sum="479f18e970bca946272b500318e736eb" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.08" steps="278"/></proof>
-  <proof prover="1"><result status="failure" time="0.07"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="32344"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="256"/></proof>
+  <proof prover="0"><result status="unknown" time="0.09" steps="278"/></proof>
+  <proof prover="1"><result status="unknown" time="0.33"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="32849"/></proof>
+  <proof prover="3"><result status="unknown" time="0.08" steps="256"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.18" steps="822"/></proof>
-  <proof prover="1"><result status="failure" time="0.07"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="41204"/></proof>
-  <proof prover="3"><result status="unknown" time="0.16" steps="500"/></proof>
+  <proof prover="0"><result status="unknown" time="0.16" steps="822"/></proof>
+  <proof prover="1"><result status="unknown" time="0.68"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="41659"/></proof>
+  <proof prover="3"><result status="unknown" time="0.16" steps="498"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__makedescription__subprogram_def" sum="e39876e52a257794cf8ad86c27ab15d0" expanded="true">
+<theory name="Enrolment__validate__makedescription__subprogram_def" sum="7dbcba530f277c88338b910c50a96001" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="0"><result status="unknown" time="0.06" steps="157"/></proof>
-  <proof prover="1"><result status="failure" time="0.05"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="31781"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="169"/></proof>
+  <proof prover="1"><result status="unknown" time="0.12"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="32207"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="169"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.09" steps="258"/></proof>
-  <proof prover="1"><result status="failure" time="0.06"/></proof>
-  <proof prover="2"><result status="unknown" time="0.12" steps="110824"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="258"/></proof>
+  <proof prover="1"><result status="unknown" time="0.24"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="124214"/></proof>
   <proof prover="3"><result status="unknown" time="0.06" steps="307"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.94" steps="15012"/></proof>
-  <proof prover="1"><result status="failure" time="0.09"/></proof>
-  <proof prover="2"><result status="unknown" time="0.12" steps="135555"/></proof>
-  <proof prover="3"><result status="unknown" time="1.04" steps="15012"/></proof>
+  <proof prover="0"><result status="timeout" time="10.00"/></proof>
+  <proof prover="1"><result status="unknown" time="0.57"/></proof>
+  <proof prover="2"><result status="unknown" time="0.10" steps="122890"/></proof>
+  <proof prover="3"><result status="timeout" time="20.00"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="3"><result status="valid" time="0.15" steps="597"/></proof>
+  <proof prover="3"><result status="valid" time="0.12" steps="597"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. assertion">
   <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="3"><result status="valid" time="0.13" steps="504"/></proof>
+  <proof prover="3"><result status="valid" time="0.10" steps="504"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. assertion">
-  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. assertion">
-  <proof prover="3"><result status="valid" time="0.14" steps="504"/></proof>
+  <proof prover="3"><result status="valid" time="0.11" steps="504"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. assertion">
-  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Enrolment__validate__validateandaddkey__subprogram_def" sum="5de1a7d77a6e6146d5fce9a70538a915" expanded="true">
+<theory name="Enrolment__validate__validateandaddkey__subprogram_def" sum="3bbae014ea6392aa13f1f33df216f2ab" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="3"><result status="valid" time="0.17" steps="73"/></proof>
+  <proof prover="3"><result status="valid" time="0.16" steps="93"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="3"><result status="valid" time="0.17" steps="225"/></proof>
+  <proof prover="3"><result status="valid" time="0.14" steps="254"/></proof>
   </goal>
  </transf>
  </goal>

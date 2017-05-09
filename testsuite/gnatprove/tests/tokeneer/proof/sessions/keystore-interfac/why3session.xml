@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/keystore-interfac.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5440,7 +5432,7 @@
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_143" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5666,7 +5658,7 @@
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_166" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_162" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__streams__stream_io__create" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5734,7 +5726,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___170" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___166" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5800,7 +5792,7 @@
 </theory>
 <theory name="Keystore__delete" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___174" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___170" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__interfac__initialize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -7026,88 +7018,88 @@
 </theory>
 <theory name="Keystore__interfac__delete___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Keystore__interfac__package_def" sum="d600e6c8a84544802cae639c17ee140d" expanded="true">
+<theory name="Keystore__interfac__package_def" sum="57b878b17cdd881defef2eee0d573ef8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__initialize__subprogram_def" sum="add34901e64f95583d61107b46d0abe7" expanded="true">
+<theory name="Keystore__interfac__initialize__subprogram_def" sum="ed6c80030d1ca71bd7928fdd1576177d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__finalize__subprogram_def" sum="add34901e64f95583d61107b46d0abe7" expanded="true">
+<theory name="Keystore__interfac__finalize__subprogram_def" sum="ed6c80030d1ca71bd7928fdd1576177d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__createobject__subprogram_def" sum="c9ac41f1d787c42543a7414e476ca8b7" expanded="true">
+<theory name="Keystore__interfac__createobject__subprogram_def" sum="76eb47fa790ffe694dfc5437cb427052" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjectsinit__subprogram_def" sum="c9ac41f1d787c42543a7414e476ca8b7" expanded="true">
+<theory name="Keystore__interfac__findobjectsinit__subprogram_def" sum="76eb47fa790ffe694dfc5437cb427052" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjects__subprogram_def" sum="5ca705a45cd2fdaf9f0ee922cace372c" expanded="true">
+<theory name="Keystore__interfac__findobjects__subprogram_def" sum="84b8020fce0ceff5b8df779f81f33c7e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjectsfinal__subprogram_def" sum="add34901e64f95583d61107b46d0abe7" expanded="true">
+<theory name="Keystore__interfac__findobjectsfinal__subprogram_def" sum="ed6c80030d1ca71bd7928fdd1576177d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestinit__subprogram_def" sum="4f91b31b0dbef0bf40214f94cfe590e9" expanded="true">
+<theory name="Keystore__interfac__digestinit__subprogram_def" sum="a3537e6a000370b1eea02b6ab9a0e3b4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestupdate__subprogram_def" sum="0795e6f6871cf859875b7798227540d1" expanded="true">
+<theory name="Keystore__interfac__digestupdate__subprogram_def" sum="fe77605256ac8ce90795d5a8095ef9c8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestfinal__subprogram_def" sum="932f296c113b2d4606eca8617ba3d721" expanded="true">
+<theory name="Keystore__interfac__digestfinal__subprogram_def" sum="1993c507befcee24eb803b84c57005c6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__sign__subprogram_def" sum="a3cc9b92e0e865ceaf26217171a0b06a" expanded="true">
+<theory name="Keystore__interfac__sign__subprogram_def" sum="d791e232130979d80198a8e39dfe7a34" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__verify__subprogram_def" sum="f54a8b57e5d6fd4414bdfa51310a708a" expanded="true">
+<theory name="Keystore__interfac__verify__subprogram_def" sum="7ee2c6a9871fa55cd3b18ce03aaf073b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__getattributevalue__subprogram_def" sum="af7f02e43593c0f4e526dfc333c6e28a" expanded="true">
+<theory name="Keystore__interfac__getattributevalue__subprogram_def" sum="9cc9233f03a324812a6905491318dae6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__delete__subprogram_def" sum="f9de85c68523907f00815fee8e13558c" expanded="true">
+<theory name="Keystore__interfac__delete__subprogram_def" sum="e284967f6dbb6592898a5ced2974229f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

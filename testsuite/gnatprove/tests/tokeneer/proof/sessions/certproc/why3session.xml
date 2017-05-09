@@ -2,16 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/certproc.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3290,7 +3282,7 @@
 </theory>
 <theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___136" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___132" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__connecttospre" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3308,7 +3300,7 @@
 </theory>
 <theory name="Ada__strings__maps__null_set__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Ada__strings__fixed__move" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3338,7 +3330,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___157" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___153" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__nullcryptocontrol__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3358,19 +3350,19 @@
 </theory>
 <theory name="Certproc__addauthsignature" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Temp___String_Literal_160" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_161" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_162" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_163" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Temp___String_Literal_164" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_165" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_166" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_167" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_168" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_169" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_170" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__standard_library__abort_undefer_direct" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3420,7 +3412,7 @@
 </theory>
 <theory name="Tcpip__messaget__T4s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___215" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___211" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__messaget___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4488,7 +4480,7 @@
 </theory>
 <theory name="Ada__exceptions__string_to_eo___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certproc__package_def" sum="ce9742ac27956a638851d78625429b15" expanded="true">
+<theory name="Certproc__package_def" sum="bc8e9fd50b6c09f25b9cd5cfaacdd793" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
@@ -4497,49 +4489,49 @@
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__extractidcertdata__subprogram_def" sum="2b0945e4f22b202598ab2d46849249a3" expanded="true">
+<theory name="Certproc__extractidcertdata__subprogram_def" sum="f853b2e8e5be3c3e71ac38e3ec5c23a9" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__extractprivcertdata__subprogram_def" sum="e1dede50bedba45cacb995151617826b" expanded="true">
+<theory name="Certproc__extractprivcertdata__subprogram_def" sum="47d6547137fb1499f297a431fbb9d626" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__extractiacertdata__subprogram_def" sum="ba27f52160dce5c702f1e189b7b68d5d" expanded="true">
+<theory name="Certproc__extractiacertdata__subprogram_def" sum="0abf2d8b974dcea38795cc9869ab69e0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__extractauthcertdata__subprogram_def" sum="e1dede50bedba45cacb995151617826b" expanded="true">
+<theory name="Certproc__extractauthcertdata__subprogram_def" sum="47d6547137fb1499f297a431fbb9d626" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__obtainrawdata__subprogram_def" sum="25485f3670bc6a917bcddb318e3ae554" expanded="true">
+<theory name="Certproc__obtainrawdata__subprogram_def" sum="bdd93a790da8fb0e792bdaaa21e2bac7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__obtainsignaturedata__subprogram_def" sum="25485f3670bc6a917bcddb318e3ae554" expanded="true">
+<theory name="Certproc__obtainsignaturedata__subprogram_def" sum="bdd93a790da8fb0e792bdaaa21e2bac7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__constructauthcert__subprogram_def" sum="94aa82b71b64a8d4ed72902210fccb2f" expanded="true">
+<theory name="Certproc__constructauthcert__subprogram_def" sum="a1c41dd9dd4a8c8f15f917af550844c1" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certproc__addauthsignature__subprogram_def" sum="03ab01d7611874a7ded83f212a839b98" expanded="true">
+<theory name="Certproc__addauthsignature__subprogram_def" sum="e83c271b77fba3841fdea5e79de1ced1" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

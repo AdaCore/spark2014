@@ -2,19 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="15000" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="120" steplimit="200" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="120" steplimit="610000" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="120" steplimit="15000" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
+<prover id="1" name="altergo" version="0.99.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.4.1" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/certificatestore.mlw" expanded="true">
-<theory name="Temp___finite_float_literal_42" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_43" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_56" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___finite_float_literal_57" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3639,7 +3631,7 @@
 </theory>
 <theory name="Audittypes__nodescription__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_139" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_135" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3655,7 +3647,7 @@
 </theory>
 <theory name="Ada__streams__write" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_141" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_137" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__strncpy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3749,7 +3741,7 @@
 </theory>
 <theory name="Iandatypes__nulltemplatepad__aggregate_def" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___149" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___145" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3807,17 +3799,17 @@
 </theory>
 <theory name="Certificatestore__serialnumber" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Temp___String_Literal_152" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_153" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_154" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Temp___String_Literal_155" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Temp___String_Literal_156" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_157" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_158" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_159" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_160" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Temp___String_Literal_161" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__standard_library__abort_undefer_direct" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3843,7 +3835,7 @@
 </theory>
 <theory name="Ada__exceptions__poll" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_163" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_159" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certificatestore__getnextserialnumber" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4245,13 +4237,13 @@
 </theory>
 <theory name="Certificatestore__updatestore__T20b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1034" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1030" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1035" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1031" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1037" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1033" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___1048" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___1044" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4781,7 +4773,7 @@
 </theory>
 <theory name="Certificatestore__putnextserialnumber__convertfrom32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certificatestore__package_def" sum="adf87d4d1871585bf3bfe8f612ce09ca" expanded="true">
+<theory name="Certificatestore__package_def" sum="c76dd661aff4ea1b92ccf116030c4205" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
@@ -4790,14 +4782,14 @@
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__init__subprogram_def" sum="3c00d682d9c6e46eb45dccef2b713b6b" expanded="true">
+<theory name="Certificatestore__init__subprogram_def" sum="b382fbcfcc6f29dd237686ee54513910" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
   <proof prover="0"><result status="unknown" time="0.05" steps="15"/></proof>
-  <proof prover="1"><result status="failure" time="0.12"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="58788"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="15"/></proof>
+  <proof prover="1"><result status="unknown" time="0.30"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="61161"/></proof>
+  <proof prover="3"><result status="unknown" time="0.03" steps="15"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
   <proof prover="3"><result status="valid" time="0.04" steps="28"/></proof>
@@ -4805,82 +4797,82 @@
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__updatestore__subprogram_def" sum="81207ebe940de6a448fc0c4ea409605c" expanded="true">
+<theory name="Certificatestore__updatestore__subprogram_def" sum="a42618c56c7fe17cf35143128fc0e526" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.05" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.10" steps="32"/></proof>
-  <proof prover="1"><result status="failure" time="0.07"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="67276"/></proof>
-  <proof prover="3"><result status="unknown" time="0.06" steps="28"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="32"/></proof>
+  <proof prover="1"><result status="unknown" time="0.46"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="67040"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="32"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="3"><result status="valid" time="0.05" steps="41"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="45"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__serialnumberhasoverflowed__subprogram_def" sum="ba6639bae7e54fef44854f39b2babc1d" expanded="true">
+<theory name="Certificatestore__serialnumberhasoverflowed__subprogram_def" sum="1fbdf1167b374f93255b316edc1adde3" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__serialnumber__subprogram_def" sum="26ed2932d94cc31e7ee2bbc1a71fbf4d" expanded="true">
+<theory name="Certificatestore__serialnumber__subprogram_def" sum="be55420a9854fefee5325b4163a02e9a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__getnextserialnumber__subprogram_def" sum="f4bedf645d6a61c10dc6bd32e7c937e8" expanded="true">
+<theory name="Certificatestore__getnextserialnumber__subprogram_def" sum="a3daf3327d4cc12db0cd7dd70b25808d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__putnextserialnumber__subprogram_def" sum="adea7cf165d7124cc088615c328bb090" expanded="true">
+<theory name="Certificatestore__putnextserialnumber__subprogram_def" sum="7c0cf70ff6aa951eacaac765b274ef94" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__putnextserialnumber__convertfrom32__subprogram_def" sum="d85d4d72763e0f84c947c7bae9c4e8cb" expanded="true">
+<theory name="Certificatestore__putnextserialnumber__convertfrom32__subprogram_def" sum="ce2b987b90010ba50cc9e386faa7ec37" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="22"/></proof>
+  <proof prover="3"><result status="valid" time="0.05" steps="22"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
   <proof prover="0"><result status="unknown" time="0.06" steps="115"/></proof>
-  <proof prover="1"><result status="unknown" time="0.06"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="29478"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="121"/></proof>
+  <proof prover="1"><result status="unknown" time="0.05"/></proof>
+  <proof prover="2"><result status="unknown" time="0.05" steps="29449"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="121"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="unknown" time="0.05"/></proof>
-  <proof prover="2"><result status="unknown" time="0.02" steps="29908"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="70"/></proof>
+  <proof prover="1"><result status="unknown" time="0.06"/></proof>
+  <proof prover="2"><result status="unknown" time="0.05" steps="29922"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="70"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="3"><result status="valid" time="0.05" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="0"><result status="unknown" time="0.06" steps="64"/></proof>
-  <proof prover="1"><result status="unknown" time="0.06"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="29931"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="64"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="29945"/></proof>
   <proof prover="3"><result status="unknown" time="0.06" steps="70"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="3"><result status="valid" time="0.07" steps="19"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="117"/></proof>
+  <proof prover="3"><result status="valid" time="0.07" steps="117"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. assertion">
   <proof prover="3"><result status="valid" time="0.06" steps="97"/></proof>
