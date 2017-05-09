@@ -635,16 +635,28 @@ package body Why.Gen.Binders is
               and then Entity_In_SPARK (E);
             --  For state abstractions pretend there is no Entity
             Typ    : constant W_Type_Id :=
-              (if Ekind (E) = E_Abstract_State then EW_Private_Type
+              (if Ekind (E) = E_Abstract_State then
+                 EW_Private_Type
+
+               --  For loop parameters, we use a split type instead of the
+               --  base type in the case where the data might require range
+               --  checking. Otherwise we use the Why3 base type.
+
                elsif Ekind (E) = E_Loop_Parameter then
-                 (if Is_Standard_Boolean_Type (Ty) then
-                    EW_Int_Type
+                 (if Use_Base_Type_For_Type (Ty) then
+                    EW_Split (Ty)
                   else
-                    EW_Split (Ty))
+                    Base_Why_Type_No_Bool (Ty))
+
+               --  For function parameters, we also use a split type in the
+               --  same cases.
+
                elsif In_Fun_Decl and then Use_Why_Base_Type (E) then
                   EW_Split (Ty)
+
+               --  Otherwise we use Why3 representation for the type
+
                else Type_Of_Node (Ty));
-            --  For loop parameters, we use the Why3 representation type.
 
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
