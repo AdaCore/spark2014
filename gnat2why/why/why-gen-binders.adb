@@ -530,10 +530,7 @@ package body Why.Gen.Binders is
             for D in 1 .. Dim loop
                declare
                   Index_Typ : constant W_Type_Id :=
-                    (if In_Fun_Decl
-                     and then Use_Base_Type_For_Type (Etype (Index)) then
-                        Base_Why_Type (Etype (Index))
-                     else EW_Abstract (Base_Type (Etype (Index))));
+                    EW_Abstract (Base_Type (Etype (Index)));
                begin
                   Bounds (D).First :=
                     Attr_Append (Name, Attribute_First, D, Index_Typ);
@@ -634,25 +631,17 @@ package body Why.Gen.Binders is
               not (Ekind (E) = E_Abstract_State)
               and then Entity_In_SPARK (E);
             --  For state abstractions pretend there is no Entity
+
             Typ    : constant W_Type_Id :=
               (if Ekind (E) = E_Abstract_State then
                  EW_Private_Type
 
-               --  For loop parameters, we use a split type instead of the
-               --  base type in the case where the data might require range
-               --  checking. Otherwise we use the Why3 base type.
+               --  For loop parameters, use mathematical integers instead of
+               --  booleans.
 
-               elsif Ekind (E) = E_Loop_Parameter then
-                 (if Use_Base_Type_For_Type (Ty) then
-                    EW_Split (Ty)
-                  else
-                    Base_Why_Type_No_Bool (Ty))
-
-               --  For function parameters, we also use a split type in the
-               --  same cases.
-
-               elsif In_Fun_Decl and then Use_Why_Base_Type (E) then
-                  EW_Split (Ty)
+               elsif Ekind (E) = E_Loop_Parameter
+               and then Is_Standard_Boolean_Type (Ty) then
+                    EW_Int_Type
 
                --  Otherwise we use Why3 representation for the type
 

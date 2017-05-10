@@ -2524,7 +2524,7 @@ package body Why.Gen.Expr is
 
       if Is_Scalar_Type (Ty)
         and then (Type_Is_Modeled_As_Base (Ty)
-                  or else Use_Base_Type_For_Type (Ty))
+                  or else Use_Split_Form_For_Type (Ty))
       then
 
          pragma Assert (not Depends_On_Discriminant (Get_Range (Ty)));

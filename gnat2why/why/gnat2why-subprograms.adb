@@ -4769,27 +4769,16 @@ package body Gnat2Why.Subprograms is
                  or else Within_Protected_Type (E))
             then
                declare
-                  Use_Base  : constant Boolean :=
-                    not Is_Standard_Boolean_Type (Etype (E))
-                    and then Has_Scalar_Type (Etype (E))
-                    and then Use_Base_Type_For_Type (Etype (E));
-                  Eq_Ty     : constant W_Type_Id :=
-                    (if Use_Base then Base_Why_Type (Etype (E))
-                     else Why_Type);
                   Domain    : constant EW_Domain :=
                     (if Is_Standard_Boolean_Type (Etype (E)) then EW_Pred
                      else EW_Term);
                   Expr_Body : constant W_Expr_Id :=
                     Transform_Expr (Expression (Expr_Fun_N),
-                                    Expected_Type => Eq_Ty,
+                                    Expected_Type => Why_Type,
                                     Domain        => Domain,
                                     Params        => Params);
                   Res_Expr  : constant W_Expr_Id :=
-                    Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => +New_Result_Ident (Why_Type),
-                       To             => Eq_Ty,
-                       Force_No_Slide => True);
+                    +New_Result_Ident (Why_Type);
                   Eq_Expr   : constant W_Pred_Id :=
                     (if Is_Standard_Boolean_Type (Etype (E))
                      then New_Equal_Bool (+Res_Expr, +Expr_Body)

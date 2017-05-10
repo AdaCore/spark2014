@@ -453,12 +453,6 @@ package Gnat2Why.Util is
    --  be treated as having constants bounds, because translation of the loop
    --  in Why may lead to having two coexisting versions of the type.
 
-   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  Decide whether for function declarations, the Why base type should be
-   --  used instead of the Ada type.
-   --  This function should be used on entities denoting a type
-
    function Use_Guard_For_Function (E : Entity_Id) return Boolean with
      Pre => Ekind (E) = E_Function;
    --  Decide wether we need a guard for the axiom specifying the contract of
@@ -469,12 +463,6 @@ package Gnat2Why.Util is
    --  Decide whether we should use a split form for expressions of a given
    --  type.
    --  This function should be used on entities denoting a type
-
-   function Use_Why_Base_Type (E : Entity_Id) return Boolean with
-     Pre => Is_Object (E);
-   --  Decide whether for function declarations, the Why base type should be
-   --  used instead of the Ada type.
-   --  This function should be used on entities denoting an object.
 
    ------------------------------
    -- Symbol table subprograms --

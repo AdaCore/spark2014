@@ -13949,9 +13949,7 @@ package body Gnat2Why.Expr is
            Insert_Simple_Conversion
              (Domain   => Domain,
               Expr     => W_Over_E,
-              To       => (if Use_Base_Type_For_Type (Cont_Type)
-                           then Base_Why_Type (Cont_Type)
-                           else Type_Of_Node (Cont_Type)));
+              To       => Type_Of_Node (Cont_Type));
          Curs_Type   : constant Entity_Id :=
            Etype (Next_Entity (First_Entity (Element_E)));
          Curs_Expr   : constant W_Expr_Id :=
@@ -13959,10 +13957,7 @@ package body Gnat2Why.Expr is
              (Ada_Node => Empty,
               Domain   => Domain,
               Expr     => +W_Index_Var,
-              To       =>
-                (if Use_Base_Type_For_Type (Curs_Type)
-                 then Base_Why_Type (Curs_Type)
-                 else Type_Of_Node (Curs_Type)));
+              To       => Type_Of_Node (Curs_Type));
       begin
          if Domain in EW_Prog | EW_Pterm then
             return New_VC_Call
@@ -14047,9 +14042,7 @@ package body Gnat2Why.Expr is
               Insert_Simple_Conversion
                 (Domain   => Subdomain,
                  Expr     => W_Over_E,
-                 To       => (if Use_Base_Type_For_Type (Cont_Type)
-                              then Base_Why_Type (Cont_Type)
-                              else Type_Of_Node (Cont_Type)));
+                 To       => Type_Of_Node (Cont_Type));
             Curs_Type   : constant Entity_Id :=
               Etype (Next_Entity (First_Entity (Has_Element)));
             Curs_Expr   : constant W_Expr_Id :=
@@ -14057,9 +14050,7 @@ package body Gnat2Why.Expr is
                 (Ada_Node => Empty,
                  Domain   => Subdomain,
                  Expr     => +W_Index_Var,
-                 To       => (if Use_Base_Type_For_Type (Curs_Type)
-                              then Base_Why_Type (Curs_Type)
-                              else Type_Of_Node (Curs_Type)));
+                 To       => Type_Of_Node (Curs_Type));
             T           : W_Expr_Id;
 
          begin
@@ -14146,9 +14137,7 @@ package body Gnat2Why.Expr is
                     Insert_Simple_Conversion
                       (Domain   => Subdomain,
                        Expr     => W_Over_E,
-                       To       => (if Use_Base_Type_For_Type (Cont_Type)
-                                    then Base_Why_Type (Cont_Type)
-                                    else Type_Of_Node (Cont_Type)));
+                       To       => Type_Of_Node (Cont_Type));
                begin
                   Over_Type := Etype (Model);
                   if Subdomain = EW_Term then
