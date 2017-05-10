@@ -1,0 +1,1 @@
+ALL XFAIL circular elaboration of constants (Q510-009)
