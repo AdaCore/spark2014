@@ -13,7 +13,7 @@ window.adb:5:37: info: precondition proved (CVC4: 1 VC)
 window.adb:18:07: high: "Rec" is not initialized
 window.adb:19:07: info: initialization of "Rec" proved
 window.adb:20:24: info: initialization of "Rec" proved
-window.adb:21:07: medium: precondition might fail (e.g. when Rec = (Width => 0, Height => 0) and Total_Area = 0)
+window.adb:21:07: info: precondition proved (CVC4: 1 VC)
 window.adb:21:13: info: initialization of "Rec" proved
 window.ads:11:16: info: postcondition proved (CVC4: 1 VC)
 window.ads:11:44: info: overflow check proved (CVC4: 1 VC)
