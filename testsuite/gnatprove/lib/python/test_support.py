@@ -653,12 +653,13 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
-    if inverse_prover():
-        inverse = prover[:]
-        inverse.reverse()
-        fullopt += [build_prover_switch(inverse)]
-    else:
-        fullopt += [build_prover_switch(prover)]
+    if prover:
+        if inverse_prover():
+            inverse = prover[:]
+            inverse.reverse()
+            fullopt += [build_prover_switch(inverse)]
+        else:
+            fullopt += [build_prover_switch(prover)]
     if benchmark_mode():
         fullopt += ["--benchmark"]
     if not counterexample:
