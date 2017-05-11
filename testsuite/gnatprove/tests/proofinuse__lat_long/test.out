@@ -12,6 +12,7 @@ lat_long.adb:10:43: info: initialization of "Delta_Long" proved
 lat_long.adb:10:54: medium: float overflow check might fail
 lat_long.ads:8:34: medium: float overflow check might fail
 lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1
+lat_long.ads:18:26: medium: precondition might fail
 lat_long.ads:29:14: info: postcondition proved (CVC4: 1 VC)
 lat_long.ads:30:57: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:30:101: info: float overflow check proved (CVC4: 1 VC)

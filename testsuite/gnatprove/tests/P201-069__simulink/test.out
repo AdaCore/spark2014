@@ -62,6 +62,10 @@ errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1
 errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
 errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
+simulink_functions.adb:189:47: medium: precondition might fail
+simulink_functions.adb:199:14: medium: precondition might fail
+simulink_functions.adb:208:47: medium: precondition might fail
+simulink_functions.adb:219:14: medium: precondition might fail
 simulink_functions.adb:234:40: medium: overflow check might fail
 simulink_functions.adb:234:51: info: division check proved (CodePeer)
 simulink_functions.adb:234:51: info: overflow check proved (CodePeer)
@@ -177,19 +181,37 @@ simulink_functions.adb:567:19: medium: float overflow check might fail
 simulink_functions.adb:567:49: medium: divide by zero might fail
 simulink_functions.adb:567:49: medium: float overflow check might fail
 simulink_functions.adb:567:58: medium: float overflow check might fail
+simulink_functions.adb:577:26: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:577:26: medium: range check might fail
 simulink_functions.adb:577:39: info: range check proved (Interval)
+simulink_functions.adb:587:27: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:587:27: medium: range check might fail
 simulink_functions.adb:587:40: info: range check proved (Interval)
+simulink_functions.adb:597:27: info: precondition proved (Z3: 1 VC)
 simulink_functions.adb:597:27: medium: range check might fail
 simulink_functions.adb:597:40: info: range check proved (Interval)
+simulink_functions.adb:607:25: medium: precondition might fail
 simulink_functions.adb:607:25: medium: range check might fail
 simulink_functions.adb:607:38: info: range check proved (Interval)
+simulink_functions.adb:617:26: medium: precondition might fail
 simulink_functions.adb:617:26: medium: range check might fail
 simulink_functions.adb:617:39: info: range check proved (Interval)
+simulink_functions.adb:627:26: medium: precondition might fail
 simulink_functions.adb:627:26: medium: range check might fail
 simulink_functions.adb:627:39: info: range check proved (Interval)
+simulink_functions.adb:637:21: medium: precondition might fail
 simulink_functions.adb:637:21: medium: range check might fail
+simulink_functions.adb:647:14: medium: precondition might fail
+simulink_functions.adb:1032:47: medium: precondition might fail
+simulink_functions.adb:1041:52: medium: precondition might fail
+simulink_functions.adb:1050:47: medium: precondition might fail
+simulink_functions.adb:1059:52: medium: precondition might fail
+simulink_functions.adb:1068:47: info: precondition proved (CVC4: 1 VC)
+simulink_functions.adb:1077:52: info: precondition proved (CVC4: 1 VC)
+simulink_functions.adb:1158:47: medium: precondition might fail
+simulink_functions.adb:1167:52: medium: precondition might fail
+simulink_functions.adb:1176:47: medium: precondition might fail
+simulink_functions.adb:1185:52: medium: precondition might fail
 simulink_functions.adb:1194:21: medium: range check might fail
 simulink_functions.adb:1209:31: info: division check proved (CVC4: 1 VC)
 simulink_functions.adb:1209:31: medium: float overflow check might fail
@@ -214,6 +236,8 @@ simulink_functions.adb:1414:14: info: initialization of "Res" proved
 simulink_functions.adb:1430:14: info: initialization of "Res" proved
 simulink_functions.adb:1446:14: info: initialization of "Res" proved
 simulink_functions.adb:1462:14: info: initialization of "Res" proved
+simulink_functions.adb:1473:19: medium: precondition might fail
+simulink_functions.adb:1484:19: medium: precondition might fail
 simulink_functions.adb:1494:19: medium: overflow check might fail
 simulink_functions.adb:1494:31: medium: range check might fail
 simulink_functions.adb:1504:19: medium: overflow check might fail
@@ -255,6 +279,3 @@ smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved
-
-
-

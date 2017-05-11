@@ -576,6 +576,7 @@ homothetical.adb:8:14: medium: postcondition might fail
 homothetical.adb:12:21: medium: float overflow check might fail
 homothetical.adb:12:24: medium: divide by zero might fail
 homothetical.adb:12:24: medium: float overflow check might fail
+homothetical.adb:13:17: medium: precondition might fail
 homothetical.adb:13:28: medium: float overflow check might fail
 homothetical.adb:31:32: info: length check proved (Z3: 1 VC)
 homothetical.adb:34:33: info: length check proved (Z3: 1 VC)

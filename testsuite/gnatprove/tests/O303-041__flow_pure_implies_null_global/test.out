@@ -1,4 +1,10 @@
+a-ngelfu.ads:117:31: info: divide by zero proved, in instantiation at ff.ads:3
+a-ngelfu.ads:117:61: info: float overflow check proved (Interval), in instantiation at ff.ads:3
+a-ngelfu.ads:126:27: info: divide by zero proved, in instantiation at ff.ads:3
+a-ngelfu.ads:127:31: info: divide by zero proved, in instantiation at ff.ads:3
+a-ngelfu.ads:127:59: info: float overflow check proved (Interval), in instantiation at ff.ads:3
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
+foo.adb:5:09: medium: precondition might fail
 foo.adb:5:09: warning: assuming "Log" has no effect on global items
 foo.adb:5:09: warning: no Global contract available for "Log"
