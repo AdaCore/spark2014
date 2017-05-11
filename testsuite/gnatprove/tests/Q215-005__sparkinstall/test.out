@@ -20,7 +20,6 @@ gprname
 gprslave
 scilrm
 spark_codepeer_wrapper
-spark_memcached_wrapper
 spark_report
 target.atp
 why3config
@@ -30,7 +29,7 @@ z3
 libexec/spark/share dir
 codepeer
 doc
-gcc-6.3.1
+gcc-6.2.1
 gnatcoll
 gprconfig
 info
