@@ -57,6 +57,6 @@ ng_v2.adb:68:53: medium: divide by zero might fail
 ng_v2.adb:68:56: info: initialization of "T1" proved
 ng_v2.adb:68:61: info: initialization of "T2" proved
 ng_v2.ads:11:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v2.ads:12:14: info: postcondition proved (altergo: 2 VC)
 ng_v2.ads:12:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
-ng_v2.ads:13:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (DistanceSinceLastClickBeforeLastUpdate * 3600) / (TimeSinceLastClickBeforeLastUpdate)
 ng_v2.ads:14:67: medium: divide by zero might fail
