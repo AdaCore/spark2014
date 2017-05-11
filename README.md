@@ -1,3 +1,5 @@
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/959/badge)](https://bestpractices.coreinfrastructure.org/projects/959)
+
 # 1. Introduction
 
 This repository contains the source code for the SPARK 2014 project. SPARK
