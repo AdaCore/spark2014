@@ -3518,8 +3518,9 @@ package body Flow.Control_Flow_Graph is
       --  create a vertex to check for uninitialized variables within the
       --  Default_Initial_Condition's expression.
       declare
-         Typ  : constant Node_Id := Etype (E);
-         Expr : Node_Id;
+         Typ : constant Node_Id := Etype (E);
+
+         DIC_Expr : Node_Id;
 
          Variables_Used       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          Components_Of_Type   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -3531,9 +3532,9 @@ package body Flow.Control_Flow_Graph is
                or else Has_Inherited_DIC (Typ))
            and then Present (DIC_Procedure (Typ))
          then
-            Expr := Get_Expr_From_Check_Only_Proc (DIC_Procedure (Typ));
+            DIC_Expr := Get_Expr_From_Check_Only_Proc (DIC_Procedure (Typ));
 
-            if Present (Expr) then
+            if Present (DIC_Expr) then
                --  Note that default initial conditions can make use of
                --  the type mark. For example
                --
@@ -3548,7 +3549,7 @@ package body Flow.Control_Flow_Graph is
                --  all components of T with all components of X)
                --  to produce the correct default initial condition.
                Variables_Used := Get_Variables
-                 (Expr,
+                 (DIC_Expr,
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
@@ -3570,7 +3571,7 @@ package body Flow.Control_Flow_Graph is
                end if;
 
                Collect_Functions_And_Read_Locked_POs
-                 (Expr,
+                 (DIC_Expr,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
                   Include_Predicates => FA.Generating_Globals);
@@ -3592,7 +3593,7 @@ package body Flow.Control_Flow_Graph is
                Inits.Append (V);
 
                --  Check for folded functions
-               Ctx.Folded_Function_Checks (N).Include (Expr);
+               Ctx.Folded_Function_Checks (N).Include (DIC_Expr);
             end if;
          end if;
       end;
