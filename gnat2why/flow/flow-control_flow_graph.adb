@@ -3401,6 +3401,12 @@ package body Flow.Control_Flow_Graph is
                end if;
             end loop;
 
+            Collect_Functions_And_Read_Locked_POs
+              (Expr,
+               Functions_Called   => Funcs,
+               Tasking            => FA.Tasking,
+               Include_Predicates => FA.Generating_Globals);
+
             if RHS_Split_Useful (N, FA.B_Scope) then
 
                declare
@@ -3416,13 +3422,8 @@ package body Flow.Control_Flow_Graph is
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;
-               begin
-                  Collect_Functions_And_Read_Locked_POs
-                    (Expr,
-                     Functions_Called   => Funcs,
-                     Tasking            => FA.Tasking,
-                     Include_Predicates => FA.Generating_Globals);
 
+               begin
                   for C in M.Iterate loop
                      declare
                         Output : Flow_Id          renames Flow_Id_Maps.Key (C);
@@ -3486,12 +3487,6 @@ package body Flow.Control_Flow_Graph is
                end;
 
             else
-               Collect_Functions_And_Read_Locked_POs
-                 (Expr,
-                  Functions_Called   => Funcs,
-                  Tasking            => FA.Tasking,
-                  Include_Predicates => FA.Generating_Globals);
-
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (N),
