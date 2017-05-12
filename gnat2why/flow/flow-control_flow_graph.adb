@@ -3350,36 +3350,9 @@ package body Flow.Control_Flow_Graph is
                                          Variable_Kind,
                                          FA);
 
-      if No (Expr) then
-         --  We have no initializing expression so we fall back to the default
-         --  initialization (if any).
+      --  We have a declaration with an explicit initialization
 
-         for F of Flatten_Variable (E, FA.B_Scope) loop
-            if Is_Default_Initialized (F) then
-               Add_Vertex
-                 (FA,
-                  Make_Default_Initialization_Attributes
-                    (FA    => FA,
-                     Scope => FA.B_Scope,
-                     F     => F,
-                     Loops => Ctx.Current_Loops),
-                  V);
-               Inits.Append (V);
-            end if;
-         end loop;
-
-         if Inits.Is_Empty then
-            --  We did not have anything with a default initial value,
-            --  so we just create a null vertex here.
-            Add_Vertex (FA,
-                        Direct_Mapping_Id (N),
-                        Null_Node_Attributes,
-                        V);
-            Inits.Append (V);
-         end if;
-
-      else
-         --  We have a variable declaration with an initialization
+      if Present (Expr) then
          declare
             Var_Def : Flow_Id_Sets.Set;
             Funcs   : Node_Sets.Set;
@@ -3510,6 +3483,35 @@ package body Flow.Control_Flow_Graph is
 
             Ctx.Folded_Function_Checks (N).Include (Expr);
          end;
+
+      --  We have no initializing expression so we fall back to the default
+      --  initialization (if any).
+
+      else
+         for F of Flatten_Variable (E, FA.B_Scope) loop
+            if Is_Default_Initialized (F) then
+               Add_Vertex
+                 (FA,
+                  Make_Default_Initialization_Attributes
+                    (FA    => FA,
+                     Scope => FA.B_Scope,
+                     F     => F,
+                     Loops => Ctx.Current_Loops),
+                  V);
+               Inits.Append (V);
+            end if;
+         end loop;
+
+         if Inits.Is_Empty then
+            --  We did not have anything with a default initial value,
+            --  so we just create a null vertex here.
+            Add_Vertex (FA,
+                        Direct_Mapping_Id (N),
+                        Null_Node_Attributes,
+                        V);
+            Inits.Append (V);
+         end if;
+
       end if;
 
       --  If this type has a Default_Initial_Condition then we need to
