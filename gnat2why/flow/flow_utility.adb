@@ -3001,82 +3001,61 @@ package body Flow_Utility is
    -- Has_Variable_Input --
    ------------------------
 
-   function Has_Variable_Input (V : Entity_Id) return Boolean is
-      E    : Entity_Id := V;
+   function Has_Variable_Input (C : Entity_Id) return Boolean is
+      E    : Entity_Id := C;
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
 
    begin
-      pragma Assert (Nkind (E) = N_Defining_Identifier);
+      if Is_Imported (E) then
+         --  If we are dealing with an imported constant, we consider this to
+         --  have potentially variable input.
+         return True;
+      end if;
 
-      case Ekind (E) is
-         --  Formal IN parameters and loop parameters are considered to have
-         --  variable input.
-         when E_In_Parameter | E_Loop_Parameter =>
-            return True;
+      Decl := Declaration_Node (E);
+      if No (Expression (Decl)) then
+         --  We are dealing with a deferred constant so we need to get to the
+         --  full view.
+         E    := Full_View (E);
+         Decl := Declaration_Node (E);
+      end if;
 
-         when E_Constant =>
-            --  Actuals of generics that are IN OUT formal parameters have
-            --  variable input.
-            if In_Generic_Actual (E)
-              and then Nkind (Parent (E)) = N_Object_Renaming_Declaration
-            then
-               return True;
-            end if;
+      if not Entity_In_SPARK (E) then
+         --  We are dealing with an entity that is not in SPARK so we assume
+         --  that it does not have variable input.
+         return False;
+      end if;
 
-            if Is_Imported (E) then
-               --  If we are dealing with an imported constant, we consider
-               --  this to have potentially variable input.
-               return True;
-            end if;
+      FS := Get_Variables
+        (Expression (Decl),
+         Scope                => Get_Flow_Scope (E),
+         Local_Constants      => Node_Sets.Empty_Set,
+         Fold_Functions       => True,
+         Use_Computed_Globals => GG_Has_Been_Generated);
+      --  Note that Get_Variables calls Has_Variable_Input when it finds a
+      --  constant. This means that there might be some mutual recursion here
+      --  (but this should be fine).
 
-            Decl := Declaration_Node (E);
-            if No (Expression (Decl)) then
-               --  We are dealing with a deferred constant so we need to get to
-               --  the full view.
-               E    := Full_View (E);
-               Decl := Declaration_Node (E);
-            end if;
+      if not FS.Is_Empty then
+         --  If any variable was found then return True
+         return True;
+      end if;
 
-            if not Entity_In_SPARK (E) then
-               --  We are dealing with an entity that is not in SPARK so we
-               --  assume that it does not have variable input.
-               return False;
-            end if;
-
-            FS := Get_Variables
-              (Expression (Decl),
-               Scope                => Get_Flow_Scope (E),
-               Local_Constants      => Node_Sets.Empty_Set,
-               Fold_Functions       => True,
-               Use_Computed_Globals => GG_Has_Been_Generated);
-            --  Note that Get_Variables calls Has_Variable_Input when it
-            --  finds a constant. This means that there might be some
-            --  mutual recursion here (but this should be fine).
-
-            if not FS.Is_Empty then
-               --  If any variable was found then return True
-               return True;
-            end if;
-
-            if GG_Has_Been_Generated
-              or else
-                Get_Functions (Expression (Decl),
-                               Include_Predicates => False).Is_Empty
-            then
-               --  If we reach this point then the constant does not have
-               --  variable input
-               return False;
-            else
-               --  Globals have not yet been computed. If we find any function
-               --  calls we consider the constant to have variable inputs (this
-               --  is the safe thing to do).
-               return True;
-            end if;
-
-         when others =>
-            return False;
-      end case;
+      if GG_Has_Been_Generated
+        or else
+        Get_Functions (Expression (Decl),
+                       Include_Predicates => False).Is_Empty
+      then
+         --  If we reach this point then the constant does not have variable
+         --  input.
+         return False;
+      else
+         --  Globals have not yet been computed. If we find any function calls
+         --  we consider the constant to have variable inputs (this is the safe
+         --  thing to do).
+         return True;
+      end if;
    end Has_Variable_Input;
 
    ----------------
@@ -3441,8 +3420,11 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return not Is_Constant_Object (E)
-                 or else Has_Variable_Input (E);
+               if Ekind (E) = E_Constant then
+                  return Has_Variable_Input (E);
+               else
+                  return True;
+               end if;
             end;
 
          when Magic_String =>

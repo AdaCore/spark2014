@@ -10437,7 +10437,8 @@ package body Gnat2Why.Expr is
                      --  Check the type invariant of visible constants with no
                      --  variable inputs.
 
-                     if not Has_Variable_Input (Obj)
+                     if Ekind (Obj) = E_Constant
+                       and then not Has_Variable_Input (Obj)
                        and then Is_Globally_Visible (Obj)
                        and then Invariant_Check_Needed (Obj_Type)
                      then

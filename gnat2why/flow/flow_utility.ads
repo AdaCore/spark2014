@@ -719,7 +719,8 @@ is
    --  ??? this function is inefficient and its uses should be probably
    --  replaced with a call to Ada.Containers.Hashed_Sets.Replace_Element
 
-   function Has_Variable_Input (V : Entity_Id) return Boolean;
+   function Has_Variable_Input (C : Entity_Id) return Boolean
+   with Pre => Ekind (C) = E_Constant;
    --  Returns True if V is a constant with variable input.
    --
    --  If called before the globals graph has been generated then the results
