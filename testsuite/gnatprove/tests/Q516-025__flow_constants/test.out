@@ -1,0 +1,2 @@
+main_proc.adb:6:09: constant without variable input "Val" must be listed in the Global aspect of "Main_Proc" (SPARK RM 6.1.4(13))
+gnatprove: error during flow analysis and proof
