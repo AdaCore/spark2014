@@ -4158,7 +4158,7 @@ package body Flow.Analysis is
                        Get_Direct_Mapping_Id (Constituent);
 
                   begin
-                     if Is_Constant (Constituent)
+                     if Ekind (Constituent_E) = E_Constant
                        and then not Has_Variable_Input (Constituent_E)
                      then
                         Error_Msg_Flow
