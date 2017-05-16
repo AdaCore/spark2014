@@ -2889,15 +2889,20 @@ package body Flow_Utility is
                      if Nkind (N) = N_Object_Declaration
                        and then Is_Action (N)
                      then
-                        case Nkind (Expression (N)) is
-                           when N_Identifier | N_Expanded_Name =>
-                              S.Include
-                                (F'Update
-                                   (Node => Unique_Entity
-                                      (Entity (Expression (N)))));
+                        declare
+                           Expr : constant Node_Id := Expression (N);
+                        begin
+                           case Nkind (Expr) is
+                              when N_Identifier | N_Expanded_Name =>
+                                 S.Include
+                                   (F'Update
+                                      (Node =>
+                                         Unique_Entity (Entity (Expr))));
+
                            when others =>
-                              S.Union (Recurse (Expression (N)));
-                        end case;
+                              S.Union (Recurse (Expr));
+                           end case;
+                        end;
                      else
                         S.Include (F);
                      end if;
@@ -2909,7 +2914,7 @@ package body Flow_Utility is
          end loop;
 
          --  And finally, we remove all local constants
-         Remove_Constants (S, Ctx.Local_Constants);
+         Remove_Constants (S, Skip => Ctx.Local_Constants);
       end return;
    end Get_Variables_Internal;
 
