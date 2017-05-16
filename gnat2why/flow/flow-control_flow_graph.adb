@@ -4316,7 +4316,7 @@ package body Flow.Control_Flow_Graph is
 
    begin
       if No (Expr) then
-         --  We have a return for a procedure
+         --  We have a return for a procedure or entry
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Make_Aux_Vertex_Attributes (E_Loc => N),
