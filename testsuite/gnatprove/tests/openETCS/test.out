@@ -45,6 +45,7 @@ deceleration_curve.adb:84:44: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.adb:84:47: info: initialization of "speed" proved
 deceleration_curve.adb:88:13: info: initialization of "speed" proved
 deceleration_curve.adb:88:19: medium: float overflow check might fail
+deceleration_curve.adb:88:21: medium: precondition might fail
 deceleration_curve.adb:88:32: medium: float overflow check might fail
 deceleration_curve.adb:89:13: medium: float overflow check might fail
 deceleration_curve.adb:89:29: medium: float overflow check might fail

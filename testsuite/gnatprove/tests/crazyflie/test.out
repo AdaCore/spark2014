@@ -128,7 +128,9 @@ maths_pack.adb:15:18: info: division check proved (CVC4: 1 VC)
 maths_pack.adb:15:18: medium: float overflow check might fail
 maths_pack.adb:15:20: info: precondition proved (CVC4: 1 VC)
 maths_pack.adb:23:14: info: range check proved (CVC4: 1 VC)
+maths_pack.adb:23:24: medium: precondition might fail
 maths_pack.adb:31:14: info: range check proved (CVC4: 1 VC)
+maths_pack.adb:31:24: medium: precondition might fail
 maths_pack.ads:18:16: medium: postcondition might fail, cannot prove Inv_Sqrt'Result > 0.0
 pid_pack.adb:47:35: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: float overflow check proved (Interval), in instantiation at controller_pack.ads:24

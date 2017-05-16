@@ -408,9 +408,12 @@ control_structures.adb:111:51: info: initialization of "A" proved
 control_structures.adb:111:58: info: initialization of "F" proved
 control_structures.adb:111:60: info: division check proved (CVC4: 1 VC)
 control_structures.adb:113:07: info: initialization of "X" proved
+control_structures.adb:114:12: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:114:18: info: initialization of "X" proved
+control_structures.adb:116:12: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:116:23: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:116:25: info: initialization of "X" proved
+control_structures.adb:119:09: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:119:44: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:119:46: info: initialization of "X" proved
 control_structures.adb:123:11: info: initialization of "C" proved
@@ -644,6 +647,7 @@ elaboration_demo.adb:4:04: warning: initialization of Line has no effect
 elaboration_demo.adb:4:34: info: length check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
 elaboration_demo.adb:5:26: medium: float overflow check might fail
+elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
 enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"

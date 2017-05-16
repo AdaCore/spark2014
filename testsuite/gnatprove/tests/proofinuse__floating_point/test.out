@@ -87,11 +87,13 @@ floating_point.adb:156:40: info: float overflow check proved (Interval)
 floating_point.adb:158:46: medium: float overflow check might fail
 floating_point.adb:158:57: medium: float overflow check might fail
 floating_point.adb:159:46: medium: float overflow check might fail
+floating_point.adb:161:70: medium: precondition might fail
 floating_point.adb:162:15: info: float overflow check proved (Interval)
 floating_point.adb:162:22: medium: float overflow check might fail
 floating_point.adb:162:27: medium: float overflow check might fail
 floating_point.adb:162:34: info: float overflow check proved (Interval)
 floating_point.adb:162:41: medium: float overflow check might fail
+floating_point.adb:164:70: medium: precondition might fail
 floating_point.adb:165:15: info: float overflow check proved (Interval)
 floating_point.adb:165:22: medium: float overflow check might fail
 floating_point.adb:165:27: medium: float overflow check might fail
@@ -115,6 +117,7 @@ floating_point.adb:203:16: info: division check proved (Z3_noquant: 1 VC)
 floating_point.adb:203:16: medium: float overflow check might fail
 floating_point.adb:204:22: info: initialization of "Res" proved
 floating_point.adb:204:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:212:14: info: precondition proved (Z3_noquant: 1 VC)
 floating_point.adb:213:22: info: initialization of "Res" proved
 floating_point.adb:213:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:225:17: info: float overflow check proved (Z3_noquant: 1 VC)
@@ -172,6 +175,7 @@ floating_point.adb:327:20: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:327:24: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:328:22: info: initialization of "Res" proved
 floating_point.adb:328:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:338:14: medium: precondition might fail
 floating_point.adb:338:22: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:338:26: info: float overflow check proved (Z3_noquant: 1 VC)
 floating_point.adb:338:30: info: float overflow check proved (Z3_noquant: 1 VC)
