@@ -204,6 +204,8 @@ package body Flow.Interprocedural is
                   Output : Flow_Id          renames Dependency_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames Deps (C);
                begin
+                  Remove_Constants (Inputs, Skip => FA.Local_Constants);
+
                   for Input of Inputs loop
                      --  Output could be a null node, in which case we do not
                      --  add any edges.
@@ -242,6 +244,8 @@ package body Flow.Interprocedural is
                          Writes                 => Outputs,
                          Consider_Discriminants => True,
                          Use_Deduced_Globals    => not FA.Generating_Globals);
+
+            Remove_Constants (Inputs, Skip => FA.Local_Constants);
 
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop

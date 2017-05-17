@@ -4514,6 +4514,13 @@ package body Flow.Control_Flow_Graph is
                    Writes              => Writes,
                    Use_Deduced_Globals => not FA.Generating_Globals);
 
+      --  User-written Inputs and Proof_Ins may include constants without
+      --  variable input and we will complain about this when analyzying such
+      --  contracts. Here we filter such constants to not propagate the user's
+      --  mistake.
+      Remove_Constants (Proof_Reads, Skip => FA.Local_Constants);
+      Remove_Constants (Reads,       Skip => FA.Local_Constants);
+
       for R of Proof_Reads loop
          Add_Vertex (FA,
                      Make_Global_Attributes
