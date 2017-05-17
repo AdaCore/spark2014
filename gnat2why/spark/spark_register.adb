@@ -269,9 +269,11 @@ package body SPARK_Register is
                            Register_Entity (Defining_Entity (N));
                         end if;
 
+                     when N_Entry_Declaration =>
+                        Register_Entity (Defining_Entity (N));
+
                      when N_Access_To_Subprogram_Definition |
-                          N_Entry_Body_Formal_Part          |
-                          N_Entry_Declaration               =>
+                          N_Entry_Body_Formal_Part          =>
                         null;
 
                      when others =>

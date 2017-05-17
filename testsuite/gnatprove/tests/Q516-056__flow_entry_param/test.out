@@ -1,0 +1,2 @@
+tasks.adb:4:41: warning: statement has no effect
+tasks.ads:4:19: warning: unused variable "Dummy"
