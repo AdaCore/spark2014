@@ -318,9 +318,6 @@ package body Flow.Interprocedural is
                   begin
                      for Input of Inputs loop
                         declare
-                           Input_V : constant Flow_Graphs.Vertex_Id :=
-                             Find_Parameter_Vertex (FA, V, Input);
-
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Ghost
                                or else
@@ -336,7 +333,10 @@ package body Flow.Interprocedural is
 
                         begin
                            if Dependency_Allowed then
-                              FA.TDG.Add_Edge (Input_V, Output_V, EC_TDG);
+                              FA.TDG.Add_Edge
+                                (Find_Parameter_Vertex (FA, V, Input),
+                                 Output_V,
+                                 EC_TDG);
                            end if;
                         end;
                      end loop;
