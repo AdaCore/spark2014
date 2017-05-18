@@ -33,6 +33,7 @@ User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
  * does not generate counterexamples for failed proofs
  * has limited proof support for programs using modular arithmetic or
    floating-point arithmetic
+ * comes without a lemma library for more difficult proofs
 
 Note that GPS is not strictly required for |SPARK| as all the commands can be
 invoked from the command line, or from Eclipse using the GNATbench plug-in, but
