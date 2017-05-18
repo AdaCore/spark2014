@@ -1,6 +1,6 @@
 test.adb:11:08: info: overflow check proved (CVC4: 1 VC)
-test.adb:11:10: info: overflow check proved (altergo: 1 VC)
-test.adb:11:12: info: overflow check proved (altergo: 1 VC)
-test.adb:11:14: info: overflow check proved (Z3: 1 VC)
-test.adb:11:17: info: overflow check proved (Z3: 1 VC)
+test.adb:11:10: info: overflow check proved (CVC4: 1 VC)
+test.adb:11:12: info: overflow check proved (CVC4: 1 VC)
+test.adb:11:14: info: overflow check proved (CVC4: 1 VC)
+test.adb:11:17: info: overflow check proved (CVC4: 1 VC)
 test.ads:5:05: info: initialization of "Y" proved

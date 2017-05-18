@@ -2925,13 +2925,13 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.09" steps="544"/></proof>
-  <proof prover="1"><result status="unknown" time="0.37"/></proof>
-  <proof prover="2"><result status="unknown" time="0.08" steps="103967"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="448"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="514"/></proof>
+  <proof prover="1"><result status="unknown" time="0.16"/></proof>
+  <proof prover="2"><result status="unknown" time="0.07" steps="103967"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="418"/></proof>
   </goal>
  </transf>
  </goal>
@@ -2940,13 +2940,13 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.10" steps="565"/></proof>
-  <proof prover="1"><result status="unknown" time="0.32"/></proof>
-  <proof prover="2"><result status="unknown" time="0.11" steps="103340"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="464"/></proof>
+  <proof prover="0"><result status="unknown" time="0.04" steps="535"/></proof>
+  <proof prover="1"><result status="unknown" time="0.16"/></proof>
+  <proof prover="2"><result status="unknown" time="0.07" steps="103340"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="434"/></proof>
   </goal>
  </transf>
  </goal>

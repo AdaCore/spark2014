@@ -9,7 +9,7 @@ a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiati
 aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
-aggregates.adb:14:20: medium: float overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:14:20: info: float overflow check proved (CVC4: 2 VC), in call inlined at aggregates.adb:29
 aggregates.adb:14:22: info: initialization of "Approx" proved
 aggregates.adb:14:22: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29
@@ -437,7 +437,7 @@ control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
 control_structures.adb:158:16: info: float overflow check proved (Interval)
 control_structures.adb:159:15: info: initialization of "X" proved
-control_structures.adb:159:17: medium: float overflow check might fail
+control_structures.adb:159:17: info: float overflow check proved (CVC4: 2 VC)
 control_structures.adb:159:19: info: initialization of "Approx" proved
 control_structures.adb:159:26: medium: float overflow check might fail
 control_structures.adb:160:21: info: float overflow check proved (Interval)
@@ -1016,10 +1016,10 @@ raster_graphics.adb:15:39: medium: range check might fail
 raster_graphics.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:16:39: medium: range check might fail
 raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
-raster_graphics.adb:18:20: info: overflow check proved (altergo: 1 VC)
-raster_graphics.adb:18:24: info: overflow check proved (altergo: 1 VC)
+raster_graphics.adb:18:20: info: overflow check proved (CVC4: 1 VC)
+raster_graphics.adb:18:24: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
-raster_graphics.adb:18:33: info: overflow check proved (altergo: 1 VC)
+raster_graphics.adb:18:33: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:27:10: info: initialization of "Status" proved
 raster_graphics.adb:31:41: medium: overflow check might fail
 raster_graphics.ads:21:29: info: initialization of "Status" proved
@@ -1211,23 +1211,23 @@ shapes.adb:12:34: info: range check proved (CVC4: 1 VC)
 shapes.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:13:34: info: range check proved (CVC4: 1 VC)
 shapes.adb:14:14: info: initialization of "Delta_X" proved
-shapes.adb:14:21: info: overflow check proved (altergo: 1 VC)
-shapes.adb:14:30: info: overflow check proved (altergo: 1 VC)
+shapes.adb:14:21: info: overflow check proved (CVC4: 1 VC)
+shapes.adb:14:30: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:14:32: info: initialization of "Delta_Y" proved
-shapes.adb:14:39: info: overflow check proved (altergo: 1 VC)
-shapes.adb:14:75: info: overflow check proved (altergo: 1 VC)
-shapes.adb:14:75: info: range check proved (altergo: 1 VC)
+shapes.adb:14:39: info: overflow check proved (CVC4: 1 VC)
+shapes.adb:14:75: info: overflow check proved (CVC4: 1 VC)
+shapes.adb:14:75: info: range check proved (CVC4: 1 VC)
 shapes2.adb:12:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:12:34: info: range check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: range check proved (CVC4: 1 VC)
 shapes2.adb:14:14: info: initialization of "Delta_X" proved
-shapes2.adb:14:21: info: overflow check proved (altergo: 1 VC)
-shapes2.adb:14:30: info: overflow check proved (altergo: 1 VC)
+shapes2.adb:14:21: info: overflow check proved (CVC4: 1 VC)
+shapes2.adb:14:30: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:14:32: info: initialization of "Delta_Y" proved
-shapes2.adb:14:39: info: overflow check proved (altergo: 1 VC)
-shapes2.adb:14:75: info: overflow check proved (altergo: 1 VC)
-shapes2.adb:14:75: info: range check proved (altergo: 1 VC)
+shapes2.adb:14:39: info: overflow check proved (CVC4: 1 VC)
+shapes2.adb:14:75: info: overflow check proved (CVC4: 1 VC)
+shapes2.adb:14:75: info: range check proved (CVC4: 1 VC)
 shapes3.adb:7:08: info: refined post proved (CVC4: 4 VC)
 shapes3.adb:18:10: info: initialization of "R" proved
 shapes3.adb:19:36: info: range check proved (CVC4: 1 VC)
@@ -1243,12 +1243,12 @@ shapes3.adb:41:34: info: range check proved (CVC4: 1 VC)
 shapes3.adb:42:34: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes3.adb:43:14: info: initialization of "Delta_X" proved
-shapes3.adb:43:21: info: overflow check proved (altergo: 1 VC)
-shapes3.adb:43:30: info: overflow check proved (altergo: 1 VC)
+shapes3.adb:43:21: info: overflow check proved (CVC4: 1 VC)
+shapes3.adb:43:30: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:43:32: info: initialization of "Delta_Y" proved
-shapes3.adb:43:39: info: overflow check proved (altergo: 1 VC)
-shapes3.adb:43:75: info: overflow check proved (altergo: 1 VC)
-shapes3.adb:43:75: info: range check proved (altergo: 1 VC)
+shapes3.adb:43:39: info: overflow check proved (CVC4: 1 VC)
+shapes3.adb:43:75: info: overflow check proved (CVC4: 1 VC)
+shapes3.adb:43:75: info: range check proved (CVC4: 1 VC)
 shapes3.ads:11:18: info: postcondition proved (CVC4: 1 VC)
 shapes4.adb:10:10: info: initialization of "R" proved
 shapes4.adb:10:72: info: range check proved (CVC4: 1 VC)
@@ -1264,12 +1264,12 @@ shapes4.adb:25:34: info: range check proved (CVC4: 1 VC)
 shapes4.adb:26:34: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:26:34: info: range check proved (CVC4: 1 VC)
 shapes4.adb:27:14: info: initialization of "Delta_X" proved
-shapes4.adb:27:21: info: overflow check proved (altergo: 1 VC)
-shapes4.adb:27:30: info: overflow check proved (altergo: 1 VC)
+shapes4.adb:27:21: info: overflow check proved (CVC4: 1 VC)
+shapes4.adb:27:30: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:27:32: info: initialization of "Delta_Y" proved
-shapes4.adb:27:39: info: overflow check proved (altergo: 1 VC)
-shapes4.adb:27:75: info: overflow check proved (altergo: 1 VC)
-shapes4.adb:27:75: info: range check proved (altergo: 1 VC)
+shapes4.adb:27:39: info: overflow check proved (CVC4: 1 VC)
+shapes4.adb:27:75: info: overflow check proved (CVC4: 1 VC)
+shapes4.adb:27:75: info: range check proved (CVC4: 1 VC)
 shapes4.ads:8:13: info: invariant check proved (CVC4: 1 VC)
 shapes4.ads:16:09: info: invariant check proved on default value (CVC4: 1 VC)
 shapes5.adb:8:08: info: refined post proved (CVC4: 4 VC)
@@ -1287,12 +1287,12 @@ shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:43:34: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:44:14: info: initialization of "Delta_X" proved
-shapes5.adb:44:21: info: overflow check proved (altergo: 1 VC)
-shapes5.adb:44:30: info: overflow check proved (altergo: 1 VC)
+shapes5.adb:44:21: info: overflow check proved (CVC4: 1 VC)
+shapes5.adb:44:30: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:44:32: info: initialization of "Delta_Y" proved
-shapes5.adb:44:39: info: overflow check proved (altergo: 1 VC)
-shapes5.adb:44:75: info: overflow check proved (altergo: 1 VC)
-shapes5.adb:44:75: info: range check proved (altergo: 1 VC)
+shapes5.adb:44:39: info: overflow check proved (CVC4: 1 VC)
+shapes5.adb:44:75: info: overflow check proved (CVC4: 1 VC)
+shapes5.adb:44:75: info: range check proved (CVC4: 1 VC)
 shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
 shapes5.ads:21:04: info: initialization of "Wild_Man" proved
 silly.adb:3:21: info: initialization of "Result" proved
@@ -1309,7 +1309,7 @@ simple_math.adb:14:19: info: initialization of "Q" proved
 simple_math.adb:14:23: info: initialization of "R" proved
 simple_math.adb:14:25: info: division check proved (CVC4: 1 VC)
 simple_math.adb:17:14: info: initialization of "Q" proved
-simple_math.adb:17:14: info: range check proved (altergo: 1 VC)
+simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" may not return)
 sorted_arrays2.ads:18:18: info: function contract not available for proof ("Is_Sorted" may not return)
 sorters.adb:21:19: info: postcondition proved (CVC4: 4 VC)

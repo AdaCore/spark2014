@@ -6,5 +6,5 @@ data.adb:20:60: info: index check proved (CVC4: 2 VC)
 data.adb:20:71: info: index check proved (CVC4: 2 VC)
 data.ads:6:30: warning: "X" is not modified, could be IN
 data.ads:7:39: medium: postcondition might fail, cannot prove X(I) = not X'Old(I) (e.g. when I = 1 and X'Old = (1 => True, others => False))
-data.ads:9:39: medium: postcondition might fail, cannot prove X(I) = not X'Old(I) (e.g. when I = 9 and X = (10 => True, 9 => True, others => False) and X'Old = (10 => False, others => True))
+data.ads:9:39: medium: postcondition might fail, cannot prove X(I) = not X'Old(I) (e.g. when I = 9 and X = (9 => True, others => False) and X'Old = (others => True))
 data.ads:14:14: info: postcondition proved (CVC4: 2 VC)

@@ -1,4 +1,4 @@
 r.adb:11:29: info: length check proved (CVC4: 1 VC)
 r.adb:35:24: info: initialization of "Total_Ones" proved
-r.adb:35:35: medium: range check might fail (e.g. when D = (others => 8) and I = 1 and Total_Ones = 20000)
+r.adb:35:35: medium: range check might fail (e.g. when D = (others => 128) and I = 1 and Total_Ones = 20000)
 r.adb:42:14: info: initialization of "Total_Ones" proved

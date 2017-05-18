@@ -1,14 +1,14 @@
-nonlinear.adb:10:17: info: overflow check proved (altergo: 1 VC)
+nonlinear.adb:10:17: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:10:22: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:10:22: info: range check proved (altergo: 1 VC)
+nonlinear.adb:10:22: info: range check proved (CVC4: 1 VC)
+nonlinear.adb:11:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:11:22: info: initialization of "Res" proved
-nonlinear.adb:11:22: medium: assertion might fail, cannot prove Res <= X
 nonlinear.adb:18:22: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:19:22: info: initialization of "Res" proved
 nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 0 and X = 0)
 nonlinear.adb:25:16: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:25:16: info: range check proved (altergo: 1 VC)
-nonlinear.adb:26:22: medium: assertion might fail, cannot prove Res * Y) / Res = Y
+nonlinear.adb:25:16: info: range check proved (CVC4: 1 VC)
+nonlinear.adb:26:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:26:23: info: initialization of "Res" proved
 nonlinear.adb:26:27: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:26:32: info: division check proved (CVC4: 1 VC)
@@ -19,20 +19,20 @@ nonlinear.adb:32:33: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:32:38: info: range check proved (CVC4: 1 VC)
 nonlinear.adb:32:46: medium: overflow check might fail
 nonlinear.adb:32:51: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:38:16: info: overflow check proved (altergo: 1 VC)
-nonlinear.adb:38:20: info: overflow check proved (altergo: 1 VC)
+nonlinear.adb:38:16: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:38:20: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:39:22: info: initialization of "Res" proved
 nonlinear.adb:39:22: medium: assertion might fail, cannot prove Res in -99 .. -Y
 nonlinear.adb:39:36: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:44:43: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:45:16: medium: overflow check might fail
+nonlinear.adb:45:16: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:46:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:46:22: info: initialization of "Res" proved
-nonlinear.adb:46:22: medium: assertion might fail, cannot prove Res <= Z
 nonlinear.adb:52:17: medium: overflow check might fail
 nonlinear.adb:52:22: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:52:22: info: range check proved (altergo: 1 VC)
+nonlinear.adb:52:22: info: range check proved (CVC4: 1 VC)
+nonlinear.adb:53:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:53:22: info: initialization of "Res" proved
-nonlinear.adb:53:22: medium: assertion might fail, cannot prove Res <= X
 nonlinear.ads:7:43: info: initialization of "Res" proved
 nonlinear.ads:8:53: info: initialization of "Res" proved
 nonlinear.ads:11:42: info: initialization of "Res" proved

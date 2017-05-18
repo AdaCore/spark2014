@@ -26,7 +26,7 @@ prime_and_coprime_numbers.adb:65:65: info: initialization of "R" proved, in inst
 prime_and_coprime_numbers.adb:67:18: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:68:18: info: initialization of "R" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:68:18: info: range check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:71:25: info: assertion proved (altergo: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:71:25: info: assertion proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:71:30: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:71:40: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:73:17: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6

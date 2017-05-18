@@ -117,7 +117,7 @@ sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: medium: precondition might fail
 sec_3_13_6_deceleration.ads:46:38: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
-sec_3_13_6_deceleration.ads:46:57: medium: float overflow check might fail
+sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: medium: precondition might fail
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail

@@ -145,7 +145,7 @@ tokens.adb:59:19: medium: exception might be raised
 tokens.adb:70:14: info: range check proved (CVC4: 1 VC)
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
-tokens.adb:77:30: medium: precondition might fail (e.g. when Last = 1)
+tokens.adb:77:30: medium: precondition might fail (e.g. when Last = 0)
 tokens.adb:77:41: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
 tokens.ads:19:20: info: initialization of "V.Instr" proved

@@ -89,7 +89,7 @@ algorithm.adb:257:10: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:257:29: info: initialization of "iterL.Node" proved
 algorithm.adb:258:16: info: initialization of "iterL.Node" proved
 algorithm.adb:258:45: info: initialization of "iterR.Node" proved
-algorithm.adb:261:35: info: loop invariant initialization proved (CVC4: 4 VC)
+algorithm.adb:261:35: info: loop invariant initialization proved (CVC4: 3 VC; Z3: 1 VC)
 algorithm.adb:261:35: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC)
 algorithm.adb:261:61: info: initialization of "iterR.Node" proved
 algorithm.adb:262:61: info: initialization of "iterL.Node" proved
@@ -104,11 +104,11 @@ algorithm.adb:268:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:58: info: initialization of "iterR.Node" proved
 algorithm.adb:278:19: info: initialization of "iterR.Node" proved
-algorithm.adb:279:19: info: precondition proved (altergo: 1 VC)
+algorithm.adb:279:19: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:279:40: info: initialization of "iterR.Node" proved
 algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:282:51: info: initialization of "iterR.Node" proved
-algorithm.adb:283:19: info: precondition proved (altergo: 1 VC)
+algorithm.adb:283:19: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:283:40: info: initialization of "iterR.Node" proved
 algorithm.adb:284:19: info: precondition proved (Z3: 1 VC)
 algorithm.adb:284:38: info: initialization of "iterL.Node" proved
@@ -147,7 +147,7 @@ algorithm.adb:331:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:81: info: initialization of "riterL.Node" proved
-algorithm.adb:340:16: info: precondition proved (altergo: 1 VC)
+algorithm.adb:340:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:340:37: info: initialization of "riterL.Node" proved
 algorithm.adb:344:23: info: initialization of "riterR.Node" proved
 algorithm.adb:345:13: info: precondition proved (Z3: 1 VC)
@@ -183,7 +183,7 @@ algorithm.adb:415:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:415:56: info: initialization of "iR.Node" proved
 algorithm.adb:421:16: info: precondition proved (Z3: 1 VC)
 algorithm.adb:422:42: info: precondition proved (Z3: 1 VC)
-algorithm.adb:427:38: info: precondition proved (CVC4: 1 VC)
+algorithm.adb:427:38: info: precondition proved (Z3: 1 VC)
 algorithm.adb:427:74: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:428:39: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:428:61: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
@@ -297,7 +297,7 @@ algorithm.adb:639:40: info: initialization of "driveTurnRate" proved
 algorithm.adb:645:51: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:645:65: info: initialization of "relGoal" proved
 algorithm.adb:645:82: info: initialization of "robotPose" proved
-algorithm.adb:647:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:647:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:647:22: info: initialization of "distToGoal" proved
 algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range
 algorithm.adb:652:27: info: initialization of "distToGoal" proved

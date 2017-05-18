@@ -45,7 +45,7 @@ failsafe.adb:26:36: info: loop invariant preservation proved (CVC4: 1 VC)
 failsafe.adb:28:17: info: initialization of "Res" proved
 failsafe.adb:38:22: info: assertion proved (CVC4: 1 VC)
 failsafe.adb:39:22: info: assertion proved (CVC4: 2 VC)
-failsafe.adb:43:27: medium: assertion might fail, cannot prove Counter >= Time_Slot_Length'Last - 1
+failsafe.adb:41:22: info: assertion proved (CVC4: 2 VC)
 failsafe.adb:49:31: info: range check proved (CVC4: 1 VC)
 failsafe.adb:50:25: info: assertion proved (CVC4: 2 VC)
 failsafe.adb:52:25: info: assertion proved (CVC4: 2 VC)
@@ -82,8 +82,6 @@ test_failsafe.adb:13:19: medium: assertion might fail, cannot prove (Is_Raised)
 test_failsafe.adb:14:04: info: precondition proved (CVC4: 1 VC)
 test_failsafe.adb:15:19: info: assertion proved (CVC4: 1 VC)
 test_failsafe.adb:15:23: info: precondition proved (CVC4: 1 VC)
-
-
 
 
 

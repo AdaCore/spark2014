@@ -3,15 +3,15 @@ fruit-priv_child.adb:10:43: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:21:42: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
+fruit-priv_child.adb:34:31: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:34:31: medium: overflow check might fail
-fruit-priv_child.adb:34:31: medium: range check might fail
 fruit-priv_child.adb:36:18: info: initialization of "Money" proved
+fruit-priv_child.adb:36:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:36:24: medium: overflow check might fail
-fruit-priv_child.adb:36:24: medium: range check might fail
 fruit-priv_child.adb:36:33: medium: overflow check might fail
 fruit-priv_child.adb:37:18: info: initialization of "Money" proved
+fruit-priv_child.adb:37:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:37:24: medium: overflow check might fail
-fruit-priv_child.adb:37:24: medium: range check might fail
 fruit-priv_child.adb:37:34: medium: overflow check might fail
 fruit-priv_child.adb:41:18: info: initialization of "Money" proved
 fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
@@ -22,19 +22,19 @@ fruit-pub_child.adb:23:30: medium: divide by zero might fail
 fruit-pub_child.adb:23:30: medium: range check might fail
 fruit-pub_child.adb:25:31: medium: divide by zero might fail
 fruit-pub_child.adb:25:31: medium: range check might fail
-fruit-pub_child.adb:27:07: medium: precondition might fail
+fruit-pub_child.adb:27:07: info: precondition proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.adb:27:41: medium: overflow check might fail
-fruit-pub_child.adb:27:41: medium: range check might fail
+fruit-pub_child.adb:27:41: info: overflow check proved (CVC4: 1 VC)
+fruit-pub_child.adb:27:41: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:28:07: medium: precondition might fail
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.adb:28:42: medium: overflow check might fail
-fruit-pub_child.adb:28:42: medium: range check might fail
+fruit-pub_child.adb:28:42: info: overflow check proved (CVC4: 1 VC)
+fruit-pub_child.adb:28:42: info: range check proved (CVC4: 1 VC)
+fruit-pub_child.adb:33:31: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:33:31: medium: overflow check might fail
-fruit-pub_child.adb:33:31: medium: range check might fail
 fruit-pub_child.adb:33:56: medium: overflow check might fail
+fruit-pub_child.adb:34:32: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:34:32: medium: overflow check might fail
-fruit-pub_child.adb:34:32: medium: range check might fail
 fruit-pub_child.adb:34:57: medium: overflow check might fail
 fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits"
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved

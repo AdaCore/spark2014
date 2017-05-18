@@ -295,7 +295,7 @@ linted-update.adb:95:42: info: range check proved (CVC4: 1 VC)
 linted-update.adb:96:09: info: initialization of "C203b" proved
 linted-update.adb:96:42: info: range check proved (CVC4: 1 VC)
 linted-update.adb:97:09: info: initialization of "C213b" proved
-linted-update.adb:97:43: info: range check proved (Z3: 1 VC)
+linted-update.adb:97:43: info: range check proved (CVC4: 1 VC)
 linted-update.adb:98:09: info: initialization of "C223b" proved
 linted-update.adb:98:43: info: range check proved (Z3: 1 VC)
 linted-update.adb:99:09: info: initialization of "C233b" proved

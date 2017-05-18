@@ -571,8 +571,6 @@
 </theory>
 <theory name="System__parameters__no_abort" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__parameters__runtime_traces" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="System__crtl__chars" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__chars__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2453,10 +2451,6 @@
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__timeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__updateendtimefromfile__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__updateendtimefromfile__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Auditlog__updateendtimefromfile__lasttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__updateendtimefromfile__lasttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2476,6 +2470,10 @@
 <theory name="Auditlog__updateendtimefromfile__description" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__updateendtimefromfile__description___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__updateendtimefromfile__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__updateendtimefromfile__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__updateendtimefromfile__overwritetimeintext__descr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2549,10 +2547,6 @@
 </theory>
 <theory name="Auditlog__addelementtologfilewithtruncatechecks__truncatedescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__init__setfiledetails__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Auditlog__init__setfiledetails__numberentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__init__setfiledetails__numberentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2564,6 +2558,10 @@
 <theory name="Auditlog__init__setfiledetails__fileh" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__init__setfiledetails__fileh___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__init__setfiledetails__getfiledetails__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2653,10 +2651,6 @@
 </theory>
 <theory name="Configdata__validatefile__readfilesize__rawsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__validatefile__readclass__rawclass" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__validatefile__readclass__rawclass___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Configdata__validatefile__readclass__stop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readclass__stop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -2668,6 +2662,10 @@
 <theory name="Configdata__validatefile__readclass__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readclass__value___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__validatefile__readclass__rawclass" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__validatefile__readclass__rawclass___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readworkinghours__theduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3037,10 +3035,6 @@
 </theory>
 <theory name="Clock__printtime__localtext___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__init__localworkinghoursend" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__init__localworkinghoursend___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Configdata__init__localmaxauthduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__localmaxauthduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3097,6 +3091,10 @@
 </theory>
 <theory name="Configdata__init__localworkinghoursstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Configdata__init__localworkinghoursend" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__localworkinghoursend___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Configdata__writefile__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__writefile__closeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3137,10 +3135,6 @@
 </theory>
 <theory name="File__exists__tempf___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Latchapi__readback__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Latchapi__readback__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Latchapi__readback__outmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Latchapi__readback__outmsg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3164,6 +3158,10 @@
 <theory name="Latchapi__readback__inmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Latchapi__readback__inmsg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Latchapi__readback__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Latchapi__readback__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="File__putstring__strm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3333,10 +3331,6 @@
 </theory>
 <theory name="File__copy__chara___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__spremachine" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__spremachine___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tcpip__portto" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__portto___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3372,6 +3366,10 @@
 <theory name="Tcpip__adminport" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__adminport___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__spremachine" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__spremachine___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__connecttospre__address" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3979,7 +3977,7 @@
 </theory>
 <theory name="Latch__updatedevice__T6b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_840" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_842" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Audittypes__nodescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4070,8 +4068,6 @@
 <theory name="System__parameters__single_lock___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__parameters__no_abort___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="System__parameters__runtime_traces___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Interfaces__c_streams__eof___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4473,28 +4469,28 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.07" steps="36"/></proof>
-  <proof prover="1"><result status="unknown" time="1.02"/></proof>
+  <proof prover="0"><result status="unknown" time="0.02" steps="31"/></proof>
+  <proof prover="1"><result status="unknown" time="0.46"/></proof>
   <proof prover="2"><result status="unknown" time="0.05" steps="64224"/></proof>
-  <proof prover="3"><result status="unknown" time="0.06" steps="31"/></proof>
+  <proof prover="3"><result status="unknown" time="0.02" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="44"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="60"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="45"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="56"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="41"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="38"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="3"><result status="valid" time="0.05" steps="37"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="27"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4503,19 +4499,19 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.05" steps="18"/></proof>
-  <proof prover="1"><result status="unknown" time="0.38"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="63657"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="18"/></proof>
+  <proof prover="0"><result status="unknown" time="0.02" steps="18"/></proof>
+  <proof prover="1"><result status="unknown" time="0.17"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="63657"/></proof>
+  <proof prover="3"><result status="unknown" time="0.02" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="31"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="33"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="31"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="26"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4524,10 +4520,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="82"/></proof>
+  <proof prover="3"><result status="valid" time="0.01" steps="52"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="3"><result status="valid" time="0.02" steps="132"/></proof>
+  <proof prover="3"><result status="valid" time="0.02" steps="102"/></proof>
   </goal>
  </transf>
  </goal>

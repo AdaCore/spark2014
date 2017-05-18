@@ -3,13 +3,13 @@ pck.adb:18:27: info: range check proved (CVC4: 1 VC)
 pck.adb:19:27: info: division check proved (CVC4: 1 VC)
 pck.adb:19:27: info: range check proved (CVC4: 1 VC)
 pck.adb:33:15: info: initialization of "V_Hi" proved
-pck.adb:33:20: info: overflow check proved (altergo: 1 VC)
-pck.adb:33:20: info: range check proved (altergo: 1 VC)
+pck.adb:33:20: info: overflow check proved (CVC4: 1 VC)
+pck.adb:33:20: info: range check proved (CVC4: 1 VC)
 pck.adb:34:15: info: initialization of "V_Lo" proved
-pck.adb:34:20: info: overflow check proved (altergo: 1 VC)
-pck.adb:34:20: info: range check proved (altergo: 1 VC)
+pck.adb:34:20: info: overflow check proved (CVC4: 1 VC)
+pck.adb:34:20: info: range check proved (CVC4: 1 VC)
 pck.adb:35:15: info: initialization of "V_Hi" proved
-pck.adb:35:20: medium: overflow check might fail
+pck.adb:35:20: info: overflow check proved (CVC4: 1 VC)
 pck.adb:35:22: info: initialization of "V_Lo" proved
 pck.adb:35:27: info: division check proved (CVC4: 1 VC)
 pck.adb:36:15: info: initialization of "V_Lo" proved
@@ -35,8 +35,8 @@ pck.adb:58:37: info: overflow check proved (CVC4: 1 VC)
 pck.adb:58:51: info: division check proved (CVC4: 1 VC)
 pck.adb:58:56: info: division check proved (CVC4: 1 VC)
 pck.adb:58:56: info: range check proved (CVC4: 1 VC)
+pck.adb:61:11: info: assertion proved (CVC4: 1 VC)
 pck.adb:61:11: info: initialization of "Result_Lo" proved
-pck.adb:61:11: medium: assertion might fail, cannot prove Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
 pck.adb:61:59: info: initialization of "Result_Hi" proved
 pck.adb:70:14: info: initialization of "Result_Hi" proved
 pck.adb:70:24: info: overflow check proved (CVC4: 1 VC)

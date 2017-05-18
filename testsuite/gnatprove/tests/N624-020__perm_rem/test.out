@@ -416,7 +416,7 @@ perm.adb:357:63: info: initialization of "Ia2" proved
 perm.adb:358:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:359:25: info: assertion proved (CVC4: 1 VC)
 perm.adb:359:25: info: initialization of "H" proved
-perm.adb:361:12: medium: precondition might fail
+perm.adb:361:12: info: precondition proved (CVC4: 3 VC)
 perm.adb:362:14: info: initialization of "H" proved
 perm.ads:11:14: info: postcondition proved (CVC4: 5 VC)
 perm.ads:12:34: info: overflow check proved (CVC4: 1 VC)
@@ -466,8 +466,8 @@ perm.ads:61:14: info: postcondition proved (CVC4: 2 VC)
 perm.ads:62:17: info: precondition proved (CVC4: 2 VC)
 perm.ads:62:26: info: precondition proved (CVC4: 3 VC)
 perm.ads:62:42: info: precondition proved (CVC4: 3 VC)
+sort.adb:14:15: info: postcondition proved (CVC4: 1 VC)
 sort.adb:14:15: info: precondition proved (CVC4: 2 VC)
-sort.adb:14:15: medium: postcondition might fail, cannot prove Is_Perm (Values'Old, Values)
 sort.adb:23:29: info: index check proved (CVC4: 2 VC)
 sort.adb:24:15: info: index check proved (CVC4: 2 VC)
 sort.adb:24:29: info: index check proved (CVC4: 2 VC)

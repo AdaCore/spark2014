@@ -16,8 +16,8 @@ single_compilation_unit.adb:43:18: info: initialization of "Temp" proved
 single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
 single_compilation_unit.adb:53:25: info: range check proved (CVC4: 1 VC)
 single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
+single_compilation_unit.adb:54:23: info: range check proved (CVC4: 1 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail
-single_compilation_unit.adb:54:23: medium: range check might fail
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 1 VC)
 single_compilation_unit.adb:69:35: medium: overflow check might fail
 single_compilation_unit.adb:69:50: info: overflow check proved (CVC4: 1 VC)

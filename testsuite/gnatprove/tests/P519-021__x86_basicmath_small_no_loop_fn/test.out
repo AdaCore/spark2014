@@ -103,7 +103,7 @@ basicmath_small.ads:61:31: info: initialization of "XMM0" proved
 basicmath_small.ads:61:41: info: initialization of "XMM1" proved
 basicmath_small.ads:61:51: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:63:14: info: postcondition proved (CVC4_CBQI: 2 VC)
-basicmath_small.ads:82:17: medium: postcondition might fail, cannot prove X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'old)
+basicmath_small.ads:90:17: medium: postcondition might fail, cannot prove X86.RBX = X86.RBX'old
 basicmath_small.ads:99:17: info: postcondition proved (CVC4_CBQI: 1 VC)
 basicmath_small.ads:103:17: info: postcondition proved (CVC4_CBQI: 1 VC)
 basicmath_small.ads:106:31: info: initialization of "RCX" proved

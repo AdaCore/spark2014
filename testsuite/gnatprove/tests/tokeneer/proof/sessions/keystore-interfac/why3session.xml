@@ -462,8 +462,6 @@
 </theory>
 <theory name="System__parameters__no_abort" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__parameters__runtime_traces" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="System__crtl__chars" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__chars__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3820,13 +3818,13 @@
 </theory>
 <theory name="Spark_io__set_col__col___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark_io__col__col" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark_io__col__col___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Spark_io__col__posn" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark_io__col__posn___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark_io__col__col" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark_io__col__col___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark_io__line__posn" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4000,10 +3998,6 @@
 </theory>
 <theory name="Auditlog__converttoauditdescription__localdesc___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__getstartandendtimefromfile__firsttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__getstartandendtimefromfile__firsttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Auditlog__getstartandendtimefromfile__lasttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__lasttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4027,6 +4021,10 @@
 <theory name="Auditlog__getstartandendtimefromfile__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__getstartandendtimefromfile__firsttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__getstartandendtimefromfile__firsttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__updateendtimefromfile__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4180,10 +4178,6 @@
 </theory>
 <theory name="Spark_io__mode__fmode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Clock__interfac__convert__sec" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__sec___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Clock__interfac__convert__year" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__interfac__convert__year___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4195,6 +4189,10 @@
 <theory name="Clock__interfac__convert__day" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__interfac__convert__day___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__sec" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__sec___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readduration__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4592,13 +4590,13 @@
 </theory>
 <theory name="Crypto__clearstore__keys___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__init__fileages" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__fileages___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Auditlog__init__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__init__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__fileages" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__fileages___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__addelementtolog__oldalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4643,10 +4641,6 @@
 <theory name="Clock__printtime__localtext" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__printtime__localtext___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__init__locallatchunlockduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__init__locallatchunlockduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__localalarmsilentduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4703,6 +4697,10 @@
 <theory name="Configdata__init__unused" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__unused___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__locallatchunlockduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__locallatchunlockduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__writefile__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4856,10 +4854,6 @@
 </theory>
 <theory name="Keystore__keymatchingissuerpresent__theissuerkey___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Keystore__isverifiedby__theissuerkey" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Keystore__isverifiedby__theissuerkey___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Keystore__isverifiedby__retval" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__isverifiedby__retval___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4871,6 +4865,10 @@
 <theory name="Keystore__isverifiedby__digested" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__isverifiedby__digested___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keystore__isverifiedby__theissuerkey" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keystore__isverifiedby__theissuerkey___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__sign__theprivatekeyh" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5104,10 +5102,6 @@
 </theory>
 <theory name="Crypto__initialize__updatelocalstore__readownertext__index___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Crypto__initialize__updatelocalstore__readkeyid__idstring" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Crypto__initialize__updatelocalstore__readkeyid__idstring___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Crypto__initialize__updatelocalstore__readkeyid__idlength" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__initialize__updatelocalstore__readkeyid__idlength___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5119,6 +5113,10 @@
 <theory name="Crypto__initialize__updatelocalstore__readkeyid__idtitle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__initialize__updatelocalstore__readkeyid__idtitle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Crypto__initialize__updatelocalstore__readkeyid__idstring" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Crypto__initialize__updatelocalstore__readkeyid__idstring___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__initialize__updatelocalstore__readkeylength__lengthtitle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5368,10 +5366,6 @@
 </theory>
 <theory name="Tcpip__sendandreceive__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__init__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__init__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tcpip__init__arg_count" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__init__arg_count___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5379,6 +5373,10 @@
 <theory name="Tcpip__init__B_5__this_host" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__init__B_5__this_host___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__init__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__init__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6354,8 +6352,6 @@
 </theory>
 <theory name="System__parameters__no_abort___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__parameters__runtime_traces___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Interfaces__c_streams__eof___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Interfaces__c_streams__iofbf___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -7022,7 +7018,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

@@ -568,8 +568,6 @@
 </theory>
 <theory name="System__parameters__no_abort" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__parameters__runtime_traces" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="System__crtl__chars" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__crtl__chars__rep" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3256,10 +3254,6 @@
 </theory>
 <theory name="Displayapi__settoptext__B_3__msg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Displayapi__setbottomtext__B_4__msg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Displayapi__setbottomtext__B_4__msg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Displayapi__setbottomtext__written" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Displayapi__setbottomtext__written___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3275,6 +3269,10 @@
 <theory name="Displayapi__setbottomtext__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Displayapi__setbottomtext__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Displayapi__setbottomtext__B_4__msg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Displayapi__setbottomtext__B_4__msg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Displayapi__settoptextscrollable__outmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3512,10 +3510,6 @@
 </theory>
 <theory name="Keyboard__interfac__readerTK__readok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Keyboard__interfac__read__len" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Keyboard__interfac__read__len___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Keyboard__interfac__read__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keyboard__interfac__read__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3523,6 +3517,10 @@
 <theory name="Keyboard__interfac__read__buffer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keyboard__interfac__read__buffer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keyboard__interfac__read__len" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keyboard__interfac__read__len___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="File__putchar__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3892,10 +3890,6 @@
 </theory>
 <theory name="Usertoken__readandcheck__checkprivcert__baseidmatches___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Usertoken__readandcheck__checkiandacert__extractok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Usertoken__readandcheck__checkiandacert__extractok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Usertoken__readandcheck__checkiandacert__verified" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Usertoken__readandcheck__checkiandacert__verified___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3919,6 +3913,10 @@
 <theory name="Usertoken__readandcheck__checkiandacert__certfound" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Usertoken__readandcheck__checkiandacert__certfound___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Usertoken__readandcheck__checkiandacert__extractok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Usertoken__readandcheck__checkiandacert__extractok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Usertoken__interfac__getcertificate__rawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4164,10 +4162,6 @@
 </theory>
 <theory name="Tokenapi__getprivcert__B_8__rawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__getiacert__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenapi__getiacert__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tokenapi__getiacert__stringhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__getiacert__stringhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4200,9 +4194,9 @@
 </theory>
 <theory name="Tokenapi__getiacert__inmsg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__getauthcert__exists" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tokenapi__getiacert__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__getauthcert__exists___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tokenapi__getiacert__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__getauthcert__statusok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4239,6 +4233,10 @@
 <theory name="Tokenapi__getauthcert__rawauthcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__getauthcert__rawauthcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenapi__getauthcert__exists" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenapi__getauthcert__exists___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__updateauthcert__statusok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4632,10 +4630,6 @@
 </theory>
 <theory name="Admintoken__idcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Display__currentdisplay" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Display__currentdisplay___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Display__currentlydisplayed" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Display__currentlydisplayed___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4647,6 +4641,10 @@
 <theory name="Display__msgtostrings" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Display__msgtostrings___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Display__currentdisplay" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Display__currentdisplay___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Latch__currentlatch" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4796,10 +4794,6 @@
 </theory>
 <theory name="Certproc__extractidcertdata__thesubjectpublickey___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certproc__extractprivcertdata__theprivilege" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Certproc__extractprivcertdata__theprivilege___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Certproc__extractprivcertdata__privcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__extractprivcertdata__privcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4863,6 +4857,10 @@
 <theory name="Certproc__extractprivcertdata__theholder" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__extractprivcertdata__theholder___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__extractprivcertdata__theprivilege" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__extractprivcertdata__theprivilege___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__extractiacertdata__lengthok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5088,14 +5086,6 @@
 </theory>
 <theory name="Certproc__constructauthcert__unsignedrawauthcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certproc__addauthsignature__lengthvalstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Certproc__addauthsignature__lengthvalstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Certproc__addauthsignature__signedrawauthcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Certproc__addauthsignature__signedrawauthcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Certproc__addauthsignature__lengthvalend" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__addauthsignature__lengthvalend___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5123,6 +5113,14 @@
 <theory name="Certproc__addauthsignature__lengthkeystart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__addauthsignature__lengthkeystart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__addauthsignature__lengthvalstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__addauthsignature__lengthvalstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__addauthsignature__signedrawauthcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__addauthsignature__signedrawauthcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__extractname__thename" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5244,10 +5242,6 @@
 </theory>
 <theory name="Certproc__getholder__holderdict___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certproc__getvalidity__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Certproc__getvalidity__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Certproc__getvalidity__B_3__thedict" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__getvalidity__B_3__thedict___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5259,6 +5253,10 @@
 <theory name="Certproc__getvalidity__validity" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__getvalidity__validity___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__getvalidity__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Certproc__getvalidity__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Certproc__getkeyinfo__thekey" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5600,10 +5598,6 @@
 </theory>
 <theory name="Clock__printtime__localtext___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__init__localminpreservedlogsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__init__localminpreservedlogsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Configdata__init__localalarmthresholdsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__localalarmthresholdsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5659,6 +5653,10 @@
 <theory name="Configdata__init__localminentryclass" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__localminentryclass___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__localminpreservedlogsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__localminpreservedlogsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__writefile__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5864,10 +5862,6 @@
 </theory>
 <theory name="Keystore__digest__getblock__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Keystore__dofind__retvaldo" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Keystore__dofind__retvaldo___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Keystore__dofind__retvalfin" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__dofind__retvalfin___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -5883,6 +5877,10 @@
 <theory name="Keystore__dofind__retvalini" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__dofind__retvalini___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keystore__dofind__retvaldo" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Keystore__dofind__retvaldo___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Keystore__keymatchingissuer__issuerkey" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6140,10 +6138,6 @@
 </theory>
 <theory name="Latch__updateinternallatch__id___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Crypto__nullkeystore" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Crypto__nullkeystore___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Crypto__keystore" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__keystore___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -6179,6 +6173,10 @@
 <theory name="Crypto__findstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__findstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Crypto__nullkeystore" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Crypto__nullkeystore___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__initialize__returnvalue" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6396,10 +6394,6 @@
 </theory>
 <theory name="Spark_io__create__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark_io__open__fmode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark_io__open__fmode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Spark_io__open__file" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark_io__open__file___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -6407,6 +6401,10 @@
 <theory name="Spark_io__open__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark_io__open__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark_io__open__fmode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark_io__open__fmode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark_io__close__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -6916,10 +6914,6 @@
 </theory>
 <theory name="Tokenreader__interfac__connect__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenreader__interfac__status__responsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Tokenreader__interfac__status__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenreader__interfac__status__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -6939,6 +6933,10 @@
 <theory name="Tokenreader__interfac__status__atr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenreader__interfac__status__atr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__responsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Crypto__digestfinal__calcdigestfinalreturn__returnvalue" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -8458,8 +8456,6 @@
 </theory>
 <theory name="System__parameters__no_abort___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__parameters__runtime_traces___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Interfaces__c_streams__eof___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Interfaces__c_streams__iofbf___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -9064,46 +9060,46 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
+  <goal name="WP_parameter def.9" expl="9. postcondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
   <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="23"/></proof>
+  <proof prover="0"><result status="valid" time="0.00" steps="18"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="14. postcondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

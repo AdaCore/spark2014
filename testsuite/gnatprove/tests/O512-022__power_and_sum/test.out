@@ -30,15 +30,15 @@ power_and_sum.adb:11:15: info: initialization of "I" proved
 power_and_sum.adb:11:17: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:19:13: info: initialization of "I" proved
 power_and_sum.adb:20:33: info: loop invariant initialization proved (CVC4: 1 VC)
-power_and_sum.adb:20:33: info: loop invariant preservation proved (altergo: 1 VC)
+power_and_sum.adb:20:33: info: loop invariant preservation proved (CVC4: 1 VC)
 power_and_sum.adb:20:35: info: initialization of "TotalSum" proved
 power_and_sum.adb:20:46: info: initialization of "I" proved
 power_and_sum.adb:22:22: info: initialization of "TotalSum" proved
 power_and_sum.adb:22:31: medium: overflow check might fail
 power_and_sum.adb:22:33: info: initialization of "I" proved
 power_and_sum.adb:23:15: info: initialization of "I" proved
-power_and_sum.adb:23:17: info: overflow check proved (altergo: 1 VC)
-power_and_sum.adb:25:22: info: assertion proved (altergo: 1 VC)
+power_and_sum.adb:23:17: info: overflow check proved (CVC4: 1 VC)
+power_and_sum.adb:25:22: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:25:24: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: info: range check proved (CVC4: 1 VC)
@@ -52,18 +52,18 @@ power_and_sum.adb:36:47: info: initialization of "I" proved
 power_and_sum.adb:40:16: info: initialization of "J" proved
 power_and_sum.adb:40:21: info: initialization of "I" proved
 power_and_sum.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
-power_and_sum.adb:41:36: info: loop invariant preservation proved (altergo: 1 VC)
+power_and_sum.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
 power_and_sum.adb:41:38: info: initialization of "InnerSum" proved
 power_and_sum.adb:41:49: info: initialization of "J" proved
 power_and_sum.adb:43:25: info: initialization of "InnerSum" proved
 power_and_sum.adb:43:34: medium: overflow check might fail
 power_and_sum.adb:43:36: info: initialization of "J" proved
 power_and_sum.adb:44:18: info: initialization of "J" proved
-power_and_sum.adb:44:20: info: overflow check proved (altergo: 1 VC)
+power_and_sum.adb:44:20: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:46:25: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:46:25: info: initialization of "J" proved
 power_and_sum.adb:46:29: info: initialization of "I" proved
-power_and_sum.adb:47:25: info: assertion proved (altergo: 1 VC)
+power_and_sum.adb:47:25: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:47:27: info: initialization of "InnerSum" proved
 power_and_sum.adb:47:38: info: initialization of "I" proved
 power_and_sum.adb:48:22: info: initialization of "TotalSum" proved
@@ -71,7 +71,7 @@ power_and_sum.adb:48:31: medium: overflow check might fail
 power_and_sum.adb:48:33: info: initialization of "InnerSum" proved
 power_and_sum.adb:49:15: info: initialization of "I" proved
 power_and_sum.adb:49:17: info: overflow check proved (CVC4: 1 VC)
-power_and_sum.adb:51:22: medium: assertion might fail, cannot prove 6*TotalSum = N*(N+1)*(N+2
+power_and_sum.adb:51:22: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:51:24: info: initialization of "TotalSum" proved
 power_and_sum.adb:52:17: info: initialization of "TotalSum" proved
 power_and_sum.adb:52:17: info: range check proved (CVC4: 1 VC)

@@ -71,7 +71,7 @@ simulink_functions.adb:234:51: info: division check proved (CodePeer)
 simulink_functions.adb:234:51: info: overflow check proved (CodePeer)
 simulink_functions.adb:234:51: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:234:53: medium: overflow check might fail
-simulink_functions.adb:236:28: info: overflow check proved (altergo: 1 VC)
+simulink_functions.adb:236:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:236:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:236:38: info: initialization of "Quotient" proved
 simulink_functions.adb:236:47: info: overflow check proved (CodePeer)
@@ -85,7 +85,7 @@ simulink_functions.adb:255:52: info: division check proved (CodePeer)
 simulink_functions.adb:255:52: info: overflow check proved (CodePeer)
 simulink_functions.adb:255:52: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:255:54: medium: overflow check might fail
-simulink_functions.adb:257:28: info: overflow check proved (altergo: 1 VC)
+simulink_functions.adb:257:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:257:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:257:38: info: initialization of "Quotient" proved
 simulink_functions.adb:257:47: info: overflow check proved (CodePeer)
@@ -99,7 +99,7 @@ simulink_functions.adb:277:52: info: division check proved (CodePeer)
 simulink_functions.adb:277:52: info: overflow check proved (CodePeer)
 simulink_functions.adb:277:52: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:277:54: medium: overflow check might fail
-simulink_functions.adb:279:28: info: overflow check proved (altergo: 1 VC)
+simulink_functions.adb:279:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:279:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:279:38: info: initialization of "Quotient" proved
 simulink_functions.adb:279:47: info: overflow check proved (CodePeer)
@@ -279,3 +279,13 @@ smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved
+
+
+
+
+
+
+
+
+
+

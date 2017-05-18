@@ -24,8 +24,8 @@ test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
 test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
 test.adb:79:21: high: "C" is not initialized
 test.adb:80:15: high: "A" is not initialized
+test.adb:80:17: info: range check proved (CVC4: 1 VC)
 test.adb:80:17: medium: overflow check might fail
-test.adb:80:17: medium: range check might fail
 test.adb:88:04: warning: analyzing unreferenced procedure "Ineffective_Statements_1"
 test.adb:90:11: info: range check proved (CVC4: 2 VC)
 test.adb:91:17: medium: overflow check might fail
@@ -44,8 +44,8 @@ test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:137:17: info: initialization of "Temp" proved
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
+test.adb:150:24: info: range check proved (CVC4: 1 VC)
 test.adb:150:24: medium: overflow check might fail
-test.adb:150:24: medium: range check might fail
 test.adb:150:41: info: range check proved (CVC4: 1 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
 test.adb:173:25: info: assertion proved (CVC4: 1 VC), in instantiation at test.adb:176

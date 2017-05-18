@@ -54,5 +54,5 @@ victor_divmod_rules.adb:195:40: info: overflow check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:205:22: medium: postcondition might fail, cannot prove X mod Y = X rem Y
 victor_divmod_rules.adb:205:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:205:34: info: division check proved (CVC4: 1 VC)
-victor_divmod_rules.adb:220:22: info: postcondition proved (altergo: 1 VC)
+victor_divmod_rules.adb:220:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:220:24: info: division check proved (CVC4: 1 VC)

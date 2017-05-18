@@ -2,34 +2,34 @@ spark-arithmetic_lemmas.ads:90:51: info: division check proved (CVC4: 1 VC), in 
 spark-arithmetic_lemmas.ads:101:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 test_arith.adb:16:41: info: initialization of "R" proved
 test_arith.adb:18:14: info: initialization of "R" proved
-test_arith.adb:18:14: info: postcondition proved (altergo: 1 VC)
-test_arith.adb:21:14: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:18:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:21:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:24:52: info: initialization of "R" proved
 test_arith.adb:25:14: info: initialization of "R" proved
-test_arith.adb:25:14: info: postcondition proved (Z3: 2 VC)
-test_arith.adb:28:14: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:25:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:28:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:31:50: info: initialization of "R" proved
-test_arith.adb:32:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
+test_arith.adb:32:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:32:18: info: initialization of "R" proved
-test_arith.adb:35:14: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:35:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:38:60: info: initialization of "R1" proved
 test_arith.adb:38:64: info: initialization of "R2" proved
 test_arith.adb:40:14: info: initialization of "R1" proved
-test_arith.adb:40:14: medium: postcondition might fail, cannot prove R1 <= R2
+test_arith.adb:40:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:40:20: info: initialization of "R2" proved
-test_arith.adb:43:16: info: overflow check proved (altergo: 1 VC)
-test_arith.adb:44:16: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:43:16: info: overflow check proved (CVC4: 1 VC)
+test_arith.adb:44:16: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:47:86: info: initialization of "R1" proved
 test_arith.adb:47:90: info: initialization of "R2" proved
 test_arith.adb:49:14: info: initialization of "R1" proved
-test_arith.adb:49:14: medium: postcondition might fail, cannot prove R1 < R2
+test_arith.adb:49:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:49:19: info: initialization of "R2" proved
-test_arith.adb:52:16: info: overflow check proved (altergo: 1 VC)
-test_arith.adb:53:16: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:52:16: info: overflow check proved (CVC4: 1 VC)
+test_arith.adb:53:16: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:56:71: info: initialization of "R" proved
 test_arith.adb:58:14: info: initialization of "R" proved
 test_arith.adb:58:14: info: postcondition proved (CVC4: 2 VC)
-test_arith.adb:61:15: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:61:15: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:61:20: info: division check proved (CVC4: 1 VC)
 test_arith.adb:62:07: info: precondition proved (CVC4: 2 VC)
 test_arith.adb:62:34: info: initialization of "R" proved
@@ -38,17 +38,17 @@ test_arith.adb:65:58: info: initialization of "R2" proved
 test_arith.adb:66:14: info: initialization of "R1" proved
 test_arith.adb:66:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:66:19: info: initialization of "R2" proved
-test_arith.adb:69:21: info: overflow check proved (altergo: 1 VC)
-test_arith.adb:70:15: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:69:21: info: overflow check proved (CVC4: 1 VC)
+test_arith.adb:70:15: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:70:19: info: overflow check proved (CVC4: 1 VC)
-test_arith.adb:70:23: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:70:23: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:75:40: info: initialization of "R" proved
 test_arith.adb:77:14: info: initialization of "R" proved
 test_arith.adb:77:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:80:15: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:80:20: info: division check proved (CVC4: 1 VC)
 test_arith.adb:83:66: info: initialization of "R" proved
-test_arith.adb:84:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
+test_arith.adb:84:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:84:18: info: initialization of "R" proved
 test_arith.adb:84:33: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:87:14: info: division check proved (CVC4: 1 VC)
@@ -62,8 +62,8 @@ test_arith.adb:96:16: info: division check proved (CVC4: 1 VC)
 test_arith.adb:97:07: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:102:52: info: initialization of "R" proved
 test_arith.adb:103:14: info: initialization of "R" proved
-test_arith.adb:103:14: info: postcondition proved (altergo: 1 VC)
-test_arith.adb:106:15: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:103:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:106:15: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:106:20: info: division check proved (CVC4: 1 VC)
 test_arith.adb:109:62: info: initialization of "R" proved
 test_arith.adb:110:14: info: initialization of "R" proved
@@ -76,7 +76,7 @@ test_arith.adb:117:21: info: division check proved (CVC4: 1 VC)
 test_arith.adb:118:14: info: initialization of "R" proved
 test_arith.adb:118:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:121:07: info: precondition proved (CVC4: 1 VC)
-test_arith.adb:122:14: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:122:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:127:47: info: initialization of "R" proved
 test_arith.adb:129:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:129:14: info: postcondition proved (CVC4: 1 VC)
@@ -101,9 +101,9 @@ test_arith.adb:155:18: info: division check proved (CVC4: 1 VC)
 test_arith.adb:156:07: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:159:50: info: initialization of "R" proved
 test_arith.adb:161:14: info: initialization of "R" proved
-test_arith.adb:161:14: info: postcondition proved (altergo: 1 VC)
+test_arith.adb:161:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:161:16: info: division check proved (CVC4: 1 VC)
-test_arith.adb:164:14: info: overflow check proved (altergo: 1 VC)
+test_arith.adb:164:14: info: overflow check proved (CVC4: 1 VC)
 test_arith.adb:166:42: info: range check proved (CVC4: 1 VC)
 test_arith.adb:168:42: info: range check proved (CVC4: 1 VC)
 test_arith.adb:169:10: info: precondition proved (CVC4: 1 VC)

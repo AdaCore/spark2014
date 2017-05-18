@@ -31,7 +31,7 @@ arrays.adb:191:41: info: range check proved (CVC4: 2 VC)
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 'NUL' and I = 'NUL' and Single_Char_Set_Broken'Result = (others => True))
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = (others => True))
 arrays.adb:206:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC4: 2 VC)
@@ -84,8 +84,8 @@ counterexample expected for check at arrays.adb:178
   trace at arrays.adb:174 --> A = (others => 0)
   trace at arrays.adb:178 --> A = (others => 0)
 counterexample expected for check at arrays.adb:199
-  trace at arrays.adb:197 --> C = 'NUL' and Single_Char_Set_Broken'Result = (others => True)
-  trace at arrays.adb:199 --> C = 'NUL' and I = 'NUL' and Single_Char_Set_Broken'Result = (others => True)
+  trace at arrays.adb:197 --> C = 'SOH' and Single_Char_Set_Broken'Result = (others => True)
+  trace at arrays.adb:199 --> C = 'SOH' and I = 'SOH' and Single_Char_Set_Broken'Result = (others => True)
   trace at arrays.adb:203 --> R = (others => True) and X = 'LC_Y_Diaeresis'
   trace at arrays.adb:204 --> R = (others => False)
   trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = (others => True)

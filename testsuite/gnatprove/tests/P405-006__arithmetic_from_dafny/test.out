@@ -1,12 +1,12 @@
 div_lemmas.adb:16:37: info: initialization of "Res" proved
 div_lemmas.adb:18:14: info: initialization of "Res" proved
-div_lemmas.adb:18:14: info: postcondition proved (altergo: 1 VC)
+div_lemmas.adb:18:14: info: postcondition proved (CVC4: 1 VC)
 div_lemmas.adb:21:16: info: division check proved (CVC4: 1 VC)
 div_lemmas.adb:24:40: info: initialization of "Res" proved
 div_lemmas.adb:26:14: info: initialization of "Res" proved
-div_lemmas.adb:26:14: info: postcondition proved (Z3: 1 VC)
+div_lemmas.adb:26:14: info: postcondition proved (CVC4: 1 VC)
 div_lemmas.adb:29:16: info: division check proved (CVC4: 1 VC)
-div_lemmas.adb:29:16: info: overflow check proved (Z3: 1 VC)
+div_lemmas.adb:29:16: info: overflow check proved (CVC4: 1 VC)
 div_lemmas.adb:32:52: info: initialization of "Res" proved
 div_lemmas.adb:34:14: info: initialization of "Res" proved
 div_lemmas.adb:34:14: info: postcondition proved (CVC4: 1 VC)
@@ -35,19 +35,19 @@ mod_lemmas.adb:26:14: medium: postcondition might fail, cannot prove X = Res
 mod_lemmas.adb:26:18: info: initialization of "Res" proved
 mod_lemmas.adb:29:16: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:29:21: info: division check proved (CVC4: 1 VC)
-mod_lemmas.adb:29:21: info: overflow check proved (Z3: 1 VC)
+mod_lemmas.adb:29:21: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:29:26: medium: overflow check might fail
 mod_lemmas.adb:29:31: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:32:42: info: initialization of "Res1" proved
 mod_lemmas.adb:32:48: info: initialization of "Res2" proved
 mod_lemmas.adb:33:14: info: initialization of "Res1" proved
-mod_lemmas.adb:33:14: info: postcondition proved (altergo: 2 VC)
+mod_lemmas.adb:33:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
 mod_lemmas.adb:33:32: info: initialization of "Res2" proved
 mod_lemmas.adb:36:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:37:20: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:40:52: info: initialization of "Res" proved
 mod_lemmas.adb:42:14: info: initialization of "Res" proved
-mod_lemmas.adb:42:14: info: postcondition proved (altergo: 1 VC)
+mod_lemmas.adb:42:14: info: postcondition proved (CVC4: 1 VC)
 mod_lemmas.adb:45:16: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:48:52: info: initialization of "Res" proved
 mod_lemmas.adb:49:14: info: initialization of "Res" proved
@@ -56,7 +56,7 @@ mod_lemmas.adb:52:16: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:55:52: info: initialization of "Res1" proved
 mod_lemmas.adb:55:58: info: initialization of "Res2" proved
 mod_lemmas.adb:56:14: info: initialization of "Res1" proved
-mod_lemmas.adb:56:14: medium: postcondition might fail, cannot prove Res1 = Res2
+mod_lemmas.adb:56:14: info: postcondition proved (CVC4: 1 VC)
 mod_lemmas.adb:56:21: info: initialization of "Res2" proved
 mod_lemmas.adb:59:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:60:15: info: initialization of "Res1" proved
@@ -112,93 +112,93 @@ mod_lemmas.adb:111:19: info: initialization of "Z" proved
 mod_lemmas.adb:111:19: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:16:60: info: initialization of "Res" proved
 mul_lemmas.adb:17:14: info: initialization of "Res" proved
-mul_lemmas.adb:17:14: info: postcondition proved (altergo: 1 VC)
-mul_lemmas.adb:20:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:17:14: info: postcondition proved (CVC4: 1 VC)
+mul_lemmas.adb:20:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:23:49: info: initialization of "Res" proved
 mul_lemmas.adb:24:14: info: postcondition proved (CVC4: 3 VC)
 mul_lemmas.adb:24:18: info: initialization of "Res" proved
-mul_lemmas.adb:27:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:27:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:30:59: info: initialization of "Res1" proved
 mul_lemmas.adb:30:65: info: initialization of "Res2" proved
 mul_lemmas.adb:31:14: info: initialization of "Res1" proved
 mul_lemmas.adb:31:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:31:21: info: initialization of "Res2" proved
-mul_lemmas.adb:34:17: info: overflow check proved (Z3: 1 VC)
-mul_lemmas.adb:34:22: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:35:18: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:34:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:34:22: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:35:18: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:35:23: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:38:63: info: initialization of "Res1" proved
 mul_lemmas.adb:38:69: info: initialization of "Res2" proved
 mul_lemmas.adb:39:14: info: initialization of "Res1" proved
 mul_lemmas.adb:39:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:39:21: info: initialization of "Res2" proved
-mul_lemmas.adb:42:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:43:17: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:42:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:43:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:43:21: info: overflow check proved (CVC4: 1 VC)
-mul_lemmas.adb:43:25: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:43:25: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:46:51: info: initialization of "Res" proved
-mul_lemmas.adb:47:14: info: postcondition proved (Z3: 2 VC)
+mul_lemmas.adb:47:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:47:19: info: initialization of "Res" proved
 mul_lemmas.adb:47:37: info: initialization of "Res" proved
-mul_lemmas.adb:50:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:50:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:53:77: info: initialization of "Res1" proved
 mul_lemmas.adb:53:83: info: initialization of "Res2" proved
 mul_lemmas.adb:55:14: info: initialization of "Res1" proved
-mul_lemmas.adb:55:14: medium: postcondition might fail, cannot prove Res1 < Res2
+mul_lemmas.adb:55:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:55:21: info: initialization of "Res2" proved
-mul_lemmas.adb:58:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:59:17: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:58:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:59:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:62:70: info: initialization of "Res1" proved
 mul_lemmas.adb:62:76: info: initialization of "Res2" proved
 mul_lemmas.adb:64:14: info: initialization of "Res1" proved
-mul_lemmas.adb:64:14: medium: postcondition might fail, cannot prove Res1 <= Res2
+mul_lemmas.adb:64:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:64:22: info: initialization of "Res2" proved
-mul_lemmas.adb:67:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:68:17: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:67:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:68:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:71:69: info: initialization of "Res1" proved
 mul_lemmas.adb:71:75: info: initialization of "Res2" proved
 mul_lemmas.adb:73:14: info: initialization of "Res1" proved
-mul_lemmas.adb:73:14: medium: postcondition might fail, cannot prove Res1 <= Res2
+mul_lemmas.adb:73:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:73:22: info: initialization of "Res2" proved
-mul_lemmas.adb:76:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:77:23: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:76:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:77:23: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:80:76: info: initialization of "Res1" proved
 mul_lemmas.adb:80:82: info: initialization of "Res2" proved
 mul_lemmas.adb:82:14: info: initialization of "Res1" proved
-mul_lemmas.adb:82:14: medium: postcondition might fail, cannot prove Res1 < Res2
+mul_lemmas.adb:82:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:82:21: info: initialization of "Res2" proved
-mul_lemmas.adb:85:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:86:23: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:85:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:86:23: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:89:76: info: initialization of "Res1" proved
 mul_lemmas.adb:89:82: info: initialization of "Res2" proved
+mul_lemmas.adb:90:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:90:30: info: initialization of "Res1" proved
-mul_lemmas.adb:90:30: medium: postcondition might fail, cannot prove Res1 <= Res2
 mul_lemmas.adb:90:38: info: initialization of "Res2" proved
 mul_lemmas.adb:91:29: info: initialization of "Res1" proved
 mul_lemmas.adb:91:36: info: initialization of "Res2" proved
-mul_lemmas.adb:94:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:95:17: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:100:16: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:100:24: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:101:14: medium: postcondition might fail, cannot prove X < Y
-mul_lemmas.adb:109:16: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:109:25: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:110:14: medium: postcondition might fail, cannot prove X <= Y
-mul_lemmas.adb:118:16: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:118:24: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:119:14: medium: postcondition might fail, cannot prove X = Y
+mul_lemmas.adb:94:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:95:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:100:16: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:100:24: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:101:14: info: postcondition proved (CVC4: 1 VC)
+mul_lemmas.adb:109:16: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:109:25: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:110:14: info: postcondition proved (CVC4: 1 VC)
+mul_lemmas.adb:118:16: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:118:24: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:119:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:125:76: info: initialization of "Res" proved
-mul_lemmas.adb:127:14: info: postcondition proved (Z3: 1 VC)
+mul_lemmas.adb:127:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:127:18: info: initialization of "Res" proved
-mul_lemmas.adb:130:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:130:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:133:51: info: initialization of "Res" proved
-mul_lemmas.adb:134:14: info: postcondition proved (Z3: 1 VC)
+mul_lemmas.adb:134:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:134:19: info: initialization of "Res" proved
-mul_lemmas.adb:137:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:137:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:140:52: info: initialization of "Res" proved
-mul_lemmas.adb:141:14: info: postcondition proved (altergo: 1 VC)
+mul_lemmas.adb:141:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:141:19: info: initialization of "Res" proved
-mul_lemmas.adb:144:16: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:144:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:147:55: info: initialization of "Res1" proved
 mul_lemmas.adb:147:61: info: initialization of "Res2" proved
 mul_lemmas.adb:147:67: info: initialization of "Res3" proved
@@ -207,19 +207,19 @@ mul_lemmas.adb:148:14: info: postcondition proved (CVC4: 2 VC)
 mul_lemmas.adb:148:21: info: initialization of "Res2" proved
 mul_lemmas.adb:148:35: info: initialization of "Res2" proved
 mul_lemmas.adb:148:42: info: initialization of "Res3" proved
-mul_lemmas.adb:151:20: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:151:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:152:15: info: overflow check proved (CVC4: 1 VC)
-mul_lemmas.adb:152:20: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:152:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:153:17: info: overflow check proved (CVC4: 1 VC)
-mul_lemmas.adb:158:32: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:158:40: info: overflow check proved (altergo: 1 VC)
-mul_lemmas.adb:159:14: medium: postcondition might fail, cannot prove X = Y
+mul_lemmas.adb:158:32: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:158:40: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:159:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:165:58: info: initialization of "Res1" proved
 mul_lemmas.adb:165:64: info: initialization of "Res2" proved
 mul_lemmas.adb:166:14: info: initialization of "Res1" proved
 mul_lemmas.adb:166:14: info: postcondition proved (CVC4: 1 VC)
 mul_lemmas.adb:166:21: info: initialization of "Res2" proved
-mul_lemmas.adb:169:17: info: overflow check proved (altergo: 1 VC)
+mul_lemmas.adb:169:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:170:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:178:27: info: initialization of "X" proved
 mul_lemmas.adb:178:27: info: range check proved (CVC4: 1 VC)

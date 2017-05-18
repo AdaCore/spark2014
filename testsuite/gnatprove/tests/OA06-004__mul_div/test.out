@@ -1,11 +1,11 @@
 mul_div_2.adb:10:32: info: division check proved (CVC4: 1 VC)
 mul_div_2.adb:11:32: info: division check proved (CVC4: 1 VC)
-mul_div_2.adb:25:22: medium: overflow check might fail
-mul_div_2.adb:25:32: medium: overflow check might fail
-mul_div_2.adb:25:61: medium: overflow check might fail
+mul_div_2.adb:25:22: info: overflow check proved (CVC4: 1 VC)
+mul_div_2.adb:25:32: info: overflow check proved (CVC4: 1 VC)
+mul_div_2.adb:25:61: info: overflow check proved (CVC4: 1 VC)
 mul_div_2.adb:25:70: info: division check proved (CVC4: 1 VC)
-mul_div_2.adb:26:22: medium: overflow check might fail
-mul_div_2.adb:26:32: medium: overflow check might fail
+mul_div_2.adb:26:22: info: overflow check proved (CVC4: 1 VC)
+mul_div_2.adb:26:32: info: overflow check proved (CVC4: 1 VC)
 mul_div_2.adb:26:34: info: initialization of "V_M_Lo" proved
 mul_div_2.adb:26:41: info: division check proved (CVC4: 1 VC)
 mul_div_2.adb:27:17: info: initialization of "V_M_Lo" proved
