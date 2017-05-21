@@ -1,0 +1,43 @@
+pumpunit.adb:11:04: info: initialization of "cur_state" constituent of "State" proved
+pumpunit.adb:68:14: info: initialization of "sum" proved
+pumpunit.adb:71:48: info: no contextual analysis of "current_variant" (inside expression function)
+pumpunit.adb:77:36: info: initialization of "pump_one.Name" constituent of "Children" proved
+pumpunit.adb:77:36: info: initialization of "pump_one.Price" constituent of "Children" proved
+pumpunit.adb:77:36: info: initialization of "pump_one.Remaining" constituent of "Children" proved
+pumpunit.adb:77:36: info: initialization of "pump_one.Resevoir" constituent of "Children" proved
+pumpunit.adb:77:46: info: initialization of "pump_two.Name" constituent of "Children" proved
+pumpunit.adb:77:46: info: initialization of "pump_two.Price" constituent of "Children" proved
+pumpunit.adb:77:46: info: initialization of "pump_two.Remaining" constituent of "Children" proved
+pumpunit.adb:77:46: info: initialization of "pump_two.Resevoir" constituent of "Children" proved
+pumpunit.adb:77:56: info: initialization of "cur_state" constituent of "State" proved
+pumpunit.adb:77:67: info: initialization of "cur_pump.Name" constituent of "Children" proved
+pumpunit.adb:77:67: info: initialization of "cur_pump.Price" constituent of "Children" proved
+pumpunit.adb:77:67: info: initialization of "cur_pump.Remaining" constituent of "Children" proved
+pumpunit.adb:77:67: info: initialization of "cur_pump.Resevoir" constituent of "Children" proved
+pumpunit.adb:77:77: info: initialization of "outstanding" constituent of "Account" proved
+pumpunit.adb:77:90: info: initialization of "total_pay" constituent of "Account" proved
+pumpunit.adb:77:101: info: initialization of "invariant_value" constituent of "Account" proved
+pumpunit.adb:83:24: info: length check proved (CVC4: 1 VC)
+pumpunit.adb:84:24: info: length check proved (CVC4: 1 VC)
+pumpunit.adb:97:19: info: initialization of "pump_one.Name" constituent of "Children" proved
+pumpunit.adb:97:19: info: initialization of "pump_one.Price" constituent of "Children" proved
+pumpunit.adb:97:19: info: initialization of "pump_one.Remaining" constituent of "Children" proved
+pumpunit.adb:97:19: info: initialization of "pump_one.Resevoir" constituent of "Children" proved
+pumpunit.adb:113:37: info: overflow check proved (CVC4: 1 VC)
+pumpunit.adb:114:49: info: range check proved (CVC4: 1 VC)
+pumpunit.adb:142:36: info: initialization of "cur_pump.Name" constituent of "Children" proved
+pumpunit.adb:142:36: info: initialization of "cur_pump.Price" constituent of "Children" proved
+pumpunit.adb:142:36: info: initialization of "cur_pump.Remaining" constituent of "Children" proved
+pumpunit.adb:142:36: info: initialization of "cur_pump.Resevoir" constituent of "Children" proved
+pumpunit.adb:169:33: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:10:05: info: initial condition proved (CVC4: 1 VC)
+pumpunit.ads:10:26: info: initialization of "cur_state" constituent of "State" proved
+pumpunit.ads:62:62: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:64:15: info: postcondition proved (CVC4: 3 VC)
+pumpunit.ads:64:73: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:71:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:79:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:85:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:92:59: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:93:31: medium: postcondition might fail, cannot prove get_total = get_total'Old + (get_outstanding)
+pumpunit.ads:93:57: info: overflow check proved (CVC4: 1 VC)
