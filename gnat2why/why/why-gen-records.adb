@@ -342,7 +342,7 @@ package body Why.Gen.Records is
 
       Declare_Rep_Record_Type (P, E);
 
-      Close_Theory (P, Kind => Definition_Theory);
+      Close_Theory (P, Kind => Definition_Theory, Defined_Entity => E);
    end Create_Rep_Record_Theory_If_Needed;
 
    ------------------------
