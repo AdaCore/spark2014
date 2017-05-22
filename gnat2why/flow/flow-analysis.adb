@@ -3059,10 +3059,12 @@ package body Flow.Analysis is
       --  Returns True if there is an enclosing package of E (not
       --  necessarily direcly) which has a state abstraction.
 
-      procedure Warn_About_Hidden_States (E : Entity_Id);
+      procedure Warn_About_Hidden_States (E : Entity_Id)
+      with Pre => Ekind (E) = E_Package;
       --  Issues a medium check per hidden state found in package E
 
-      procedure Warn_About_Unreferenced_Constants (E : Entity_Id);
+      procedure Warn_About_Unreferenced_Constants (E : Entity_Id)
+      with Pre => Ekind (E) = E_Package;
       --  Issues a high check for every constant with variable input
       --  which is not exposed through a state abstraction.
 
@@ -3122,7 +3124,7 @@ package body Flow.Analysis is
          begin
             Hidden_State := First_Ent;
             while Present (Hidden_State) loop
-               if Ekind (Hidden_State) in Object_Kind
+               if Is_Object (Hidden_State)
                  and then Is_Variable (Direct_Mapping_Id (Hidden_State))
                then
                   Error_Msg_Flow
@@ -3157,11 +3159,9 @@ package body Flow.Analysis is
 
       procedure Warn_About_Unreferenced_Constants (E : Entity_Id) is
          Refined_State_N  : constant Node_Id :=
-           Get_Pragma (Body_Entity (E),
-                       Pragma_Refined_State);
+           Get_Pragma (Body_Entity (E), Pragma_Refined_State);
 
-         DM               : Dependency_Maps.Map;
-         All_Constituents : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         All_Constituents : Flow_Id_Sets.Set;
 
          procedure Warn_On_Unexposed_Constant (First_Ent : Entity_Id);
          --  Goes through a list of entities and issues medium checks
@@ -3203,19 +3203,14 @@ package body Flow.Analysis is
          --  Sanity check that we do have a Refined_State aspect
          pragma Assert (Present (Refined_State_N));
 
-         --  Gather up all constituents mentioned in the Refined_State
-         --  aspect.
-         DM := Parse_Refined_State (Refined_State_N);
-         for State of DM loop
-            All_Constituents.Union (State);
+         --  Collect constituents mentioned in the Refined_State aspect
+         for Constituents of Parse_Refined_State (Refined_State_N) loop
+            All_Constituents.Union (Constituents);
          end loop;
 
-         --  Warn about hidden unexposed constants with variable input
-         --  that lie in the private part.
+         --  Detect unexposed constants with variable input hidden in the
+         --  private part of the package spec and in package body declarations.
          Warn_On_Unexposed_Constant (First_Private_Entity (E));
-
-         --  Warn about hidden unexposed constants with variable input
-         --  that lie in the body.
          Warn_On_Unexposed_Constant (First_Entity (Body_Entity (E)));
       end Warn_About_Unreferenced_Constants;
 
@@ -3233,8 +3228,8 @@ package body Flow.Analysis is
 
       else
          --  If the package does not have an abstract state aspect and an
-         --  enclosing package does introduces a state abstraction then issue
-         --  a medium check per hidden state.
+         --  enclosing package introduces a state abstraction then issue a
+         --  medium check per hidden state.
 
          if Enclosing_Package_Has_State (FA.Spec_Entity) then
             Warn_About_Hidden_States (FA.Spec_Entity);
