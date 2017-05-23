@@ -1447,7 +1447,7 @@ package body SPARK_Util is
 
    procedure Iterate_Generic_Parameters (E : Entity_Id)
    is
-      Instance : constant Node_Id := Get_Package_Instantiation_Node (E);
+      Instance : constant Node_Id := Get_Unit_Instantiation_Node (E);
 
       pragma Assert (Nkind (Instance) = N_Package_Instantiation);
 

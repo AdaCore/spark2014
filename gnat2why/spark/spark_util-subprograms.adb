@@ -712,7 +712,7 @@ package body SPARK_Util.Subprograms is
             then
                Parent_Scope :=
                  Entity
-                   (Name (Get_Package_Instantiation_Node (Parent_Scope)));
+                   (Name (Get_Unit_Instantiation_Node (Parent_Scope)));
             end if;
 
             Scope_Id := Scope_Id - 1;
