@@ -1,7 +1,6 @@
 import os
 import shutil
 import difflib
-import sys
 
 
 def exec_gnatprove(file_to_prove, option=""):

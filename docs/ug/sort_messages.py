@@ -7,7 +7,6 @@ It should be called with the absolute path for the command.
 
 import os
 import sys
-import glob
 
 # Add directory for finding test_support
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "../../testsuite/gnatprove/lib/python")))
