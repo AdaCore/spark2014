@@ -53,7 +53,9 @@ package body SPARK_Register is
          subtype Rewriten_Call is Node_Kind with
            Static_Predicate => Rewriten_Call in N_Block_Statement
                                               | N_Identifier
+                                              | N_Integer_Literal
                                               | N_Null_Statement
+                                              | N_Qualified_Expression
                                               | N_Unchecked_Type_Conversion;
          --  Type with kinds of nodes that may represent rewritten subprogram
          --  calls.

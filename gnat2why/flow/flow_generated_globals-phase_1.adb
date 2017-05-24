@@ -168,12 +168,20 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for Call of Calls loop
             --  Generic actual subprograms should not appear in direct calls,
-            --  except for a default null subprogram for which a body is
-            --  created by the front end.
+            --  except for default subprograms. They are either null procedures
+            --  or functions that wrap arbitrary expressions.
             pragma Assert
               (if Is_Subprogram (Call)
                  and then Is_Generic_Actual_Subprogram (Call)
-               then Null_Present (Subprogram_Specification (Call)));
+               then
+                 (case Ekind (Call) is
+                     when E_Procedure =>
+                        Null_Present (Subprogram_Specification (Call)),
+                     when E_Function =>
+                        True,
+                     when others =>
+                        raise Program_Error));
+
             Callees.Append (To_Entity_Name (Call));
          end loop;
       end;
