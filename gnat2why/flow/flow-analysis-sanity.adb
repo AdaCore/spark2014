@@ -254,7 +254,7 @@ package body Flow.Analysis.Sanity is
                                   (First_Formal (Spec));
 
                            begin
-                              if Ekind (Typ) = E_Record_Type then
+                              if Ekind (Typ) in Record_Kind then
                                  Check_Flow_Id_Set
                                    (Flow_Ids => Global_Reads (Spec),
                                     Err_Desc => "user-defined equality",
