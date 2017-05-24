@@ -128,10 +128,10 @@ counterexample expected for check at arithmetic.adb:10
   trace at arithmetic.adb:6 --> A = -2147483648 and B = 1 and Minus_I'Result = 0
   trace at arithmetic.adb:10 --> A = -2147483648 and B = 1 and Minus_I'Result = 0
 counterexample expected for check at arithmetic.adb:17
-  trace at arithmetic.adb:13 --> A = -2147483648 and Negation_I'Result = 0
+  trace at arithmetic.adb:13 --> A = -2147483648
   trace at arithmetic.adb:17 --> A = -2147483648 and Negation_I'Result = 0
 counterexample expected for check at arithmetic.adb:76
-  trace at arithmetic.adb:75 --> A = -2147483648 and B = -1 and I = 0 and Plus'Result = 0
+  trace at arithmetic.adb:75 --> A = -2147483648 and B = -1 and I = 0 and Plus'Result = 0 and R = 0
   trace at arithmetic.adb:76 --> A = -2147483648 and B = -1
   trace at arithmetic.adb:81 --> R = 0
   trace at arithmetic.adb:83 --> I = 0 and R = 0
@@ -140,24 +140,24 @@ counterexample expected for check at arithmetic.adb:76
   trace at arithmetic.adb:89 --> R = 0
   trace at arithmetic.adb:93 --> Plus'Result = 0
 counterexample expected for check at arithmetic.adb:113
-  trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
+  trace at arithmetic.adb:112 --> Halve_B'Result = 0 and I = 127 and N = 2 and R = 0
   trace at arithmetic.adb:113 --> Halve_B'Result = 0 and N = 2
-  trace at arithmetic.adb:120 --> I = 127 and R = 0
+  trace at arithmetic.adb:120 --> I = 0 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:124
-  trace at arithmetic.adb:112 --> Halve_B'Result = 0 and N = 2
-  trace at arithmetic.adb:120 --> I = 0 and R = 0
+  trace at arithmetic.adb:112 --> Halve_B'Result = 0 and I = 0 and N = 2 and R = 0
+  trace at arithmetic.adb:120 --> I = 2 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:124 --> N = 2 and R = 2
   trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:171
-  trace at arithmetic.adb:163 --> Abs_Test_A'Result = 0 and N = -2147483648
+  trace at arithmetic.adb:163 --> N = -2147483648 and R = 0
   trace at arithmetic.adb:169 --> R = 0
   trace at arithmetic.adb:171 --> N = -2147483648 and R = 0
   trace at arithmetic.adb:173 --> Abs_Test_A'Result = 0
 counterexample expected for check at arithmetic.adb:194
-  trace at arithmetic.adb:190 --> Abs_Test_C'Result = 0 and N = -2147483648
+  trace at arithmetic.adb:190 --> N = -2147483648
   trace at arithmetic.adb:194 --> Abs_Test_C'Result = 0 and N = -2147483648
 counterexample expected for check at arithmetic.adb:226
   trace at arithmetic.adb:223 --> N = -1

@@ -157,7 +157,7 @@ simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove A.V 
 simple_unc_arrays.ads:30:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:30:51: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:30:51: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.ads:40:14: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 1)) and A.V'First = 1 and A.V'Last = 2 and Min'Result = 0)
+simple_unc_arrays.ads:40:14: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Min'Result = -1)
 simple_unc_arrays.ads:40:64: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:42:65: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:52:15: medium: postcondition might fail (e.g. when A = (Last => 2, V => (0 => 2, others => 0)) and A.V'First = 1 and A.V'Last = 2 and Max'Result = 1)

@@ -35,7 +35,7 @@ fib.adb:36:15: info: initialization of "i" proved
 fib.adb:36:17: info: overflow check proved (CVC4: 1 VC)
 fib.adb:38:09: warning: unused assignment
 fib.adb:40:33: info: initialization of "a2" proved
-fib.adb:40:33: medium: loop invariant might fail after first iteration, cannot prove a2 = Fibonacci(i) (e.g. when a2 = 0 and i = 1)
+fib.adb:40:33: medium: loop invariant might fail after first iteration, cannot prove a2 = Fibonacci(i) (e.g. when a2 = 0 and i = 2)
 fib.adb:40:33: medium: loop invariant might fail in first iteration, cannot prove a2 = Fibonacci(i) (e.g. when a2 = 1 and i = 2)
 fib.adb:40:38: info: precondition proved (CVC4: 1 VC)
 fib.adb:40:48: info: initialization of "i" proved
@@ -193,7 +193,7 @@ fib.ads:41:58: info: index check proved (CVC4: 2 VC)
 fib.ads:42:55: info: index check proved (CVC4: 2 VC)
 fib.ads:42:68: info: index check proved (CVC4: 2 VC)
 fib.ads:43:49: medium: "A1" might not be initialized
-fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) (e.g. when A1 = (100 => 0, 99 => 0, others => -1) and A2 = (100 => -1, 99 => 0, others => -1) and I = 100)
+fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) (e.g. when A1 = (99 => 0, others => 1) and A2 = (100 => 0, 99 => 0, others => 1) and I = 100)
 fib.ads:43:57: medium: "A2" might not be initialized
 fib.ads:47:43: medium: "A1" might not be initialized in "ArrayPartitionedTransferSIFL"
 fib.ads:47:47: medium: "A2" might not be initialized in "ArrayPartitionedTransferSIFL"

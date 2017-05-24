@@ -7,7 +7,7 @@ aliasing.adb:26:23: medium: array index check might fail (e.g. when A = (others 
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
-search_array.adb:12:07: medium: exception might be raised (e.g. when I = 2 and Search_Zero_P'Result = 0)
+search_array.adb:12:07: medium: exception might be raised (e.g. when I = 0 and Search_Zero_P'Result = 0)
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL')
@@ -293,7 +293,7 @@ p_max_array.adb:56:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:56:25: info: initialization of "J" proved
 p_max_array.adb:58:15: info: initialization of "J" proved
 p_max_array.adb:58:17: info: overflow check proved (CVC4: 1 VC)
-p_max_array.ads:10:14: info: postcondition proved (CVC4: 2 VC)
+p_max_array.ads:10:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
 p_max_array.ads:11:24: info: index check proved (CVC4: 2 VC)
 p_max_array.ads:11:34: info: overflow check proved (CVC4: 1 VC)
 p_max_array.ads:11:44: info: index check proved (CVC4: 2 VC)

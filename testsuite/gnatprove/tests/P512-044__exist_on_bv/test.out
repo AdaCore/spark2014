@@ -20,9 +20,9 @@ x86.adb:77:34: medium: assertion might fail, cannot prove var1 + N1 /= var2 + N2
 x86.adb:79:22: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at x86.adb:99
 x86.adb:79:47: medium: loop invariant might fail after first iteration, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and N2 = 18446744073709551615 and var1 = 0 and var2 = 9223372036854775808)
 x86.adb:82:57: medium: assertion might fail, cannot prove var1 + N1 /= var2 + J, in call inlined at x86.adb:99 (e.g. when J = 9223372036854775808 and N1 = 0 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
-x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 576460752303423487 and i = 0 and j = 0 and var1 = 8791026472627208192 and var2 = 8791026472627208192 and var2_range_size = 17381642762306191362)
+x86.adb:86:42: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 9223372036854775807 and i = 0 and j = 0 and var1 = 4611686018427387904 and var2 = 4611686018427387904 and var2_range_size = 1152921504472629250)
 x86.adb:89:37: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when N1 = 0 and i = 0 and j = 9223372036854775808 and var1 = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551614)
 x86.adb:94:34: medium: assertion might fail, cannot prove var1 + i) /= (var2 + j, in call inlined at x86.adb:99 (e.g. when i = 0 and j = 9223372036854775808 and var1 = 0 and var1_range_size = 0 and var2 = 9223372036854775808 and var2_range_size = 18446744073709551615)
-x86.ads:16:14: medium: postcondition might fail (e.g. when InRange64'Result = True and bottom = 1211702862243255639 and range_size = 15052859542020816896 and var = 5563646117071028224)
+x86.ads:16:14: medium: postcondition might fail (e.g. when InRange64'Result = True and bottom = 875177170849234945 and range_size = 14195368382208236885 and var = 2511357718313306113)
 x86.ads:16:44: info: range check proved (CVC4: 2 VC)
 x86.ads:22:14: info: postcondition proved (CVC4: 2 VC)

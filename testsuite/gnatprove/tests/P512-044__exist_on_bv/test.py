@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(prover=["cvc4", "altergo"],steps=222)
+prove_all(prover=["cvc4", "altergo"],steps=300)

@@ -33,7 +33,7 @@ enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:206:14: info: initialization of "Tmp.F" proved
 counterexample expected for check at enums.adb:19
-  trace at enums.adb:16 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:16 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True and Tmp = Elem_0
   trace at enums.adb:19 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
   trace at enums.adb:21 --> Tmp = Elem_0
   trace at enums.adb:23 --> Enum_Equals_Broken_A'Result = True
@@ -42,7 +42,7 @@ counterexample expected for check at enums.adb:27
   trace at enums.adb:27 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True
   trace at enums.adb:30 --> Enum_Equals_Broken_B'Result = True
 counterexample expected for check at enums.adb:67
-  trace at enums.adb:66 --> A = Elem_7 and Enum_LT_5_Broken_A'Result = True
+  trace at enums.adb:66 --> A = Elem_7 and Enum_LT_5_Broken_A'Result = True and R = True
   trace at enums.adb:67 --> A = Elem_7 and Enum_LT_5_Broken_A'Result = True
   trace at enums.adb:73 --> R = True
   trace at enums.adb:75 --> R = True

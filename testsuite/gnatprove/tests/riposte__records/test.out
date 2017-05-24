@@ -69,7 +69,7 @@ records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:316:14: info: initialization of "Tmp.Exists" proved
 records.adb:316:14: info: initialization of "Tmp.The_Pair.A" proved
 records.adb:316:14: info: initialization of "Tmp.The_Pair.B" proved
-records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)))
 records.adb:329:27: info: range check proved (CVC4: 1 VC)
 records.adb:330:14: info: initialization of "Tmp.Exists" proved
 records.adb:330:14: info: initialization of "Tmp.The_Pair.A" proved
@@ -114,7 +114,7 @@ records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (PairPair'(A => 5), (B => 5))
 stack.ads:35:54: info: length check proved (CVC4: 1 VC)
 counterexample expected for check at records.adb:86
-  trace at records.adb:83 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
+  trace at records.adb:83 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and R = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
   trace at records.adb:86 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
   trace at records.adb:94 --> R = (A => 0, B => 0)
   trace at records.adb:96 --> R = (A => 0, B => 0)
@@ -171,14 +171,14 @@ counterexample expected for check at records.adb:300
   trace at records.adb:303 --> X = (Exists => True, The_Pair => (A => 5, B => 5))
   trace at records_prooffuncs.ads:19 --> X = (Exists => True, The_Pair => (A => 5, B => 5))
 counterexample expected for check at records.adb:323
-  trace at records.adb:319 --> Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:320 --> N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:323 --> N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:328 --> Tmp = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:329 --> Tmp = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:330 --> Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0))
+  trace at records.adb:319 --> Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:320 --> N = 0 and Tmp = (Exists => False, The_Pair => (A => 1, B => 1)) and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:323 --> N = 0 and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:328 --> Tmp = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:329 --> Tmp = (Exists => False, The_Pair => (A => 1, B => 1))
+  trace at records.adb:330 --> Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:380
-  trace at records.adb:379 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
+  trace at records.adb:379 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and R = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
   trace at records.adb:380 --> Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
   trace at records.adb:386 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
   trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0))

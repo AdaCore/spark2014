@@ -10,5 +10,5 @@ counterex_forall.adb:21:28: medium: overflow check might fail (e.g. when R = (ot
 counterex_forall.adb:24:41: medium: loop invariant might fail after first iteration, cannot prove I + J < X + Y + 1 (e.g. when I = 2 and J = 2 and X = 1 and Y = 2)
 counterex_forall.adb:24:41: medium: loop invariant might fail in first iteration, cannot prove I + J < X + Y + 1 (e.g. when I = 1 and J = 2 and X = 1 and Y = 1)
 counterex_forall.adb:24:43: info: overflow check proved (CVC4: 1 VC)
-counterex_forall.ads:12:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 0 and I = 0 and Single_Char_Set_Broken'Result = (others => True))
+counterex_forall.ads:12:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 0 and I = 0 and Single_Char_Set_Broken'Result = (0 => True, others => False))
 counterex_forall.ads:14:30: info: initialization of "R" proved

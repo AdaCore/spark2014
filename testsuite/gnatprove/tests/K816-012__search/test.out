@@ -45,7 +45,7 @@ search.ads:13:50: info: initialization of "Index1" proved
 search.ads:13:50: medium: array index check might fail (e.g. when Index1 = -1 and Table = (-1 => 0, others => 1) and Table'First = 0 and Table'Last = 0)
 search.ads:14:29: info: initialization of "Found2" proved
 search.ads:14:50: info: initialization of "Index2" proved
-search.ads:14:50: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
+search.ads:14:50: medium: array index check might fail (e.g. when Index2 = -1 and Table = (-1 => 0, others => 1) and Table'First = 0 and Table'Last = 0)
 search.ads:24:25: info: postcondition proved (CVC4: 3 VC)
 search.ads:24:53: info: index check proved (CVC4: 2 VC)
 search.ads:25:55: info: index check proved (CVC4: 2 VC)
