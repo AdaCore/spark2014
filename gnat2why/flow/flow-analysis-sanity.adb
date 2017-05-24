@@ -88,6 +88,10 @@ package body Flow.Analysis.Sanity is
       function Check_Expression (N : Node_Id) return Traverse_Result;
       --  Helper function to walk over the tree
 
+      function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set;
+      --  Wrapper around Get_Globals that only returns global reads and proof
+      --  reads.
+
       function Simple_Variable_Set (N : Node_Id)
                                     return Ordered_Flow_Id_Sets.Set
       is
@@ -112,6 +116,23 @@ package body Flow.Analysis.Sanity is
                            Use_Computed_Globals         => True,
                            Expand_Synthesized_Constants => True)));
       --  As above.
+
+      ------------------
+      -- Global_Reads --
+      ------------------
+
+      function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set
+      is
+         Proof_Ins, Reads, Writes : Flow_Id_Sets.Set;
+      begin
+         Get_Globals (Subprogram => N,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => Proof_Ins,
+                      Reads      => Reads,
+                      Writes     => Writes);
+         return To_Ordered_Flow_Id_Set (Reads or Proof_Ins);
+      end Global_Reads;
 
       ----------------------
       -- Check_Expression --
@@ -218,6 +239,31 @@ package body Flow.Analysis.Sanity is
                --  own pass of flow analysis.
 
                if N = Entry_Node then
+                  --  If we are dealing with a user-defined equality that we
+                  --  need to check that it does not read any variable.
+                  if Nkind (N) = N_Subprogram_Body then
+                     declare
+                        Spec : constant Entity_Id :=
+                          Unique_Defining_Entity (N);
+
+                     begin
+                        if Is_User_Defined_Equality (Spec) then
+                           declare
+                              Typ : constant Entity_Id :=
+                                Get_Full_Type_Without_Checking
+                                  (First_Formal (Spec));
+
+                           begin
+                              if Ekind (Typ) = E_Record_Type then
+                                 Check_Flow_Id_Set
+                                   (Flow_Ids => Global_Reads (Spec),
+                                    Err_Desc => "user-defined equality",
+                                    Err_Node => N);
+                              end if;
+                           end;
+                        end if;
+                     end;
+                  end if;
                   return OK;
                else
                   return Skip;
@@ -231,28 +277,10 @@ package body Flow.Analysis.Sanity is
                   Typ : constant Type_Id := Defining_Identifier (N);
                begin
                   if Has_Predicates (Typ) then
-                     declare
-                        GP, GI, GO : Flow_Id_Sets.Set;
-                        Deps       : Ordered_Flow_Id_Sets.Set;
-                     begin
-                        Get_Globals (Subprogram => Predicate_Function (Typ),
-                                     Scope      => FA.B_Scope,
-                                     Classwide  => False,
-                                     Proof_Ins  => GP,
-                                     Reads      => GI,
-                                     Writes     => GO);
-                        pragma Assert (GO.Is_Empty);
-
-                        for F of GP loop
-                           Deps.Insert (Change_Variant (F, Normal_Use));
-                        end loop;
-                        for F of GI loop
-                           Deps.Insert (Change_Variant (F, Normal_Use));
-                        end loop;
-                        Check_Flow_Id_Set (Flow_Ids => Deps,
-                                           Err_Desc => "predicate",
-                                           Err_Node => Typ);
-                     end;
+                     Check_Flow_Id_Set
+                       (Flow_Ids => Global_Reads (Predicate_Function (Typ)),
+                        Err_Desc => "predicate",
+                        Err_Node => Typ);
                   end if;
 
                   if Has_Invariants_In_SPARK (Typ) then
