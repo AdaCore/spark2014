@@ -11,9 +11,9 @@ package Names is
    -- Returns True if the given string has the format of a DNS domain name.
    function Is_Domain_Name(Name : String) return Boolean
      with Post =>
-       (if Is_Domain_Name'Result then --@POSTCONDITION:FAIL
+       (if Is_Domain_Name'Result then
           (for all I in Name'Range =>
-             Is_Letter(Name(I)) or Is_Digit(Name(I)) or Name(I) = '-'));
+             Is_Letter(Name(I)) or Is_Digit(Name(I)) or Name(I) = '-')); --@POSTCONDITION:FAIL
 
 
    -- subtype Email_Address is String
