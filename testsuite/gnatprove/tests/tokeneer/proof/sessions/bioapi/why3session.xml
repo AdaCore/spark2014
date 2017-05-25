@@ -5692,14 +5692,14 @@
 </theory>
 <theory name="Ada__exceptions__string_to_eo___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Bioapi__package_def" sum="9131eece29bc4f0be5b497f5a596b7ef" expanded="true">
+<theory name="Bioapi__package_def" sum="fd55bebc9e7c9e773d2095b0cc062604" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5710,7 +5710,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bioapi__verify__subprogram_def" sum="018873efd054ca142edc5976d63eeb3e" expanded="true">
+<theory name="Bioapi__verify__subprogram_def" sum="a10f0ebb6fab219ac3dc3a8d828a4ce0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

@@ -370,14 +370,14 @@
 </theory>
 <theory name="Iandatypes__nulltemplate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Iandatypes__package_def" sum="26d050ea72cf554640da9680f85ff000" expanded="true">
+<theory name="Iandatypes__package_def" sum="f8aeab9131d9be2dc59ea663ed5a3c1f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

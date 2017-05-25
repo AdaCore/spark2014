@@ -7416,11 +7416,11 @@
 </theory>
 <theory name="Ada__command_line__set_exit_status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__package_def" sum="818273fdc0e7d81bcbe421fc1190e246" expanded="true">
+<theory name="Tcpip__package_def" sum="3a5dbc6886093dd2e30dffc391a169d9" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -7449,7 +7449,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tcpip__sendandreceive__subprogram_def" sum="4dfcb39a0598580c09a3099de3bcced3" expanded="true">
+<theory name="Tcpip__sendandreceive__subprogram_def" sum="f80de03cad16f872332e4df448edbb68" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

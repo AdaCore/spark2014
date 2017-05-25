@@ -3513,32 +3513,32 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__unlock__subprogram_def" sum="fcfd64cb5019f6a4d05f50f615508313" expanded="true">
+<theory name="Latchapi__unlock__subprogram_def" sum="3e4d3178d5c145a786e06c5e337c53b5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.04" steps="487"/></proof>
-  <proof prover="1"><result status="unknown" time="0.16"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="87355"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="397"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="487"/></proof>
+  <proof prover="1"><result status="unknown" time="0.45"/></proof>
+  <proof prover="2"><result status="unknown" time="0.10" steps="87355"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="397"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__lock__subprogram_def" sum="ee9fffd812ecf39e4b9db18e05fa3ee8" expanded="true">
+<theory name="Latchapi__lock__subprogram_def" sum="3bf66dbef299266d1bd40cbd91fec7a8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.04" steps="457"/></proof>
-  <proof prover="1"><result status="unknown" time="0.16"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="75501"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="375"/></proof>
+  <proof prover="0"><result status="unknown" time="0.07" steps="457"/></proof>
+  <proof prover="1"><result status="unknown" time="0.39"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="75501"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="375"/></proof>
   </goal>
  </transf>
  </goal>

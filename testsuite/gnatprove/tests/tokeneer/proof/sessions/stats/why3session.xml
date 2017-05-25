@@ -238,7 +238,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="27"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="27"/></proof>
   </goal>
  </transf>
  </goal>
@@ -247,7 +247,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="27"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="27"/></proof>
   </goal>
  </transf>
  </goal>
@@ -265,7 +265,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="27"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="27"/></proof>
   </goal>
  </transf>
  </goal>

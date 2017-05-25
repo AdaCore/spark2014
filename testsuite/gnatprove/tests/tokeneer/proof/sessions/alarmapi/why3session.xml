@@ -2921,32 +2921,32 @@
  </transf>
  </goal>
 </theory>
-<theory name="Alarmapi__activate__subprogram_def" sum="95ac7e2c4e745922f873d842e211ed90" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.04" steps="514"/></proof>
-  <proof prover="1"><result status="unknown" time="0.16"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="103967"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="418"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Alarmapi__deactivate__subprogram_def" sum="de3fa7e7b8c43a4c556d9413174cf357" expanded="true">
+<theory name="Alarmapi__activate__subprogram_def" sum="24bafc5cf6e6d8aa59a5966a382ce412" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
   <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="0"><result status="unknown" time="0.04" steps="535"/></proof>
-  <proof prover="1"><result status="unknown" time="0.16"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="103340"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="434"/></proof>
+  <proof prover="0"><result status="unknown" time="0.06" steps="514"/></proof>
+  <proof prover="1"><result status="unknown" time="0.45"/></proof>
+  <proof prover="2"><result status="unknown" time="0.12" steps="103967"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="418"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Alarmapi__deactivate__subprogram_def" sum="d9c322903e4894c04ebf79f0498908ba" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. assertion">
+  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. assertion">
+  <proof prover="0"><result status="unknown" time="0.08" steps="535"/></proof>
+  <proof prover="1"><result status="unknown" time="0.43"/></proof>
+  <proof prover="2"><result status="unknown" time="0.12" steps="103340"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="434"/></proof>
   </goal>
  </transf>
  </goal>

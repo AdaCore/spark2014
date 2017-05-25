@@ -360,11 +360,11 @@
 </theory>
 <theory name="Certtypes__nullid___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Certtypes__package_def" sum="e3f8c6aa2f0a5d754f3eeff7cc3b85e6" expanded="true">
+<theory name="Certtypes__package_def" sum="4a188cc43c6eecb4cde0c187ac9683d8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

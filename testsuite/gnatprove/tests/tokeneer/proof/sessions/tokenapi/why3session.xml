@@ -4002,11 +4002,11 @@
 </theory>
 <theory name="Ada__exceptions__string_to_eo___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__package_def" sum="da6354fe62efc32c155eff93853f8333" expanded="true">
+<theory name="Tokenapi__package_def" sum="6463ae62156d31767d6b48fb98a98184" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -4029,7 +4029,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__status__subprogram_def" sum="fc91435ad469e27e811009ef406eeeba" expanded="true">
+<theory name="Tokenapi__status__subprogram_def" sum="2abc037f621abf7e217d689a0940ec53" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -4041,31 +4041,31 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__getidcert__subprogram_def" sum="3b12a0c154cbadccb35a5cc90ca6ccfe" expanded="true">
+<theory name="Tokenapi__getidcert__subprogram_def" sum="e4382bf5ce0437e4d04b06b1c4682e61" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__getprivcert__subprogram_def" sum="3b12a0c154cbadccb35a5cc90ca6ccfe" expanded="true">
+<theory name="Tokenapi__getprivcert__subprogram_def" sum="e4382bf5ce0437e4d04b06b1c4682e61" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__getiacert__subprogram_def" sum="3b12a0c154cbadccb35a5cc90ca6ccfe" expanded="true">
+<theory name="Tokenapi__getiacert__subprogram_def" sum="e4382bf5ce0437e4d04b06b1c4682e61" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__getauthcert__subprogram_def" sum="3b12a0c154cbadccb35a5cc90ca6ccfe" expanded="true">
+<theory name="Tokenapi__getauthcert__subprogram_def" sum="e4382bf5ce0437e4d04b06b1c4682e61" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tokenapi__updateauthcert__subprogram_def" sum="6ed120c113f4e3c1d4ea09884eaa3d83" expanded="true">
+<theory name="Tokenapi__updateauthcert__subprogram_def" sum="c345d472811bdd94c5f9970e637128ab" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
