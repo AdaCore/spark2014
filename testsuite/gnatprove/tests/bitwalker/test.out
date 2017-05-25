@@ -192,18 +192,18 @@ bitwalker.ads:99:61: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:101:18: info: initialization of "Result" proved
 bitwalker.ads:102:60: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:104:20: info: initialization of "Result" proved
-bitwalker.ads:106:26: info: precondition proved (Z3: 2 VC)
-bitwalker.ads:106:54: info: precondition proved (Z3: 2 VC)
+bitwalker.ads:106:26: info: precondition proved (CVC4: 2 VC)
+bitwalker.ads:106:54: info: precondition proved (CVC4: 2 VC)
 bitwalker.ads:108:20: info: initialization of "Result" proved
-bitwalker.ads:110:26: info: precondition proved (Z3: 2 VC)
+bitwalker.ads:110:26: info: precondition proved (CVC4: 2 VC)
 bitwalker.ads:110:45: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:111:22: info: precondition proved (CVC4: 1 VC)
 bitwalker.ads:111:46: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:113:20: info: initialization of "Result" proved
 bitwalker.ads:114:56: info: range check proved (CVC4: 1 VC)
-bitwalker.ads:115:26: info: precondition proved (Z3: 2 VC)
+bitwalker.ads:115:26: info: precondition proved (CVC4: 2 VC)
 bitwalker.ads:115:45: info: range check proved (CVC4: 1 VC)
-bitwalker.ads:116:22: info: precondition proved (Z3: 2 VC)
+bitwalker.ads:116:22: info: precondition proved (CVC4: 2 VC)
 bitwalker.ads:116:45: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:122:47: info: precondition proved (CVC4: 1 VC)
 bitwalker.ads:122:55: info: range check proved (CVC4: 1 VC)
