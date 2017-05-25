@@ -710,14 +710,13 @@ The Depends aspect shall only be specified for the initial declaration of a
 subprogram (which may be a declaration, a body or a body stub), of a
 protected entry, or of a task unit.
 
-Unlike a postcondition, the functional behavior of a subprogram is
-not specified by the Depends aspect but the Depends aspect has to be
+Unlike a postcondition, the Depends aspect must be 
 complete in the sense that every input and output of the subprogram
-must appear in it.  Whereas, a postcondition may be partial and only
+must appear in it.  A postcondition need only
 specify properties of particular interest.
 
 Like a postcondition, the dependency relation may be omitted from a
-subprogram declaration in when it defaults to the conservative
+subprogram declaration when it defaults to the conservative
 relation that each output depends on every input of the subprogram.  A
 particular |SPARK| tool may synthesize a more accurate approximation
 from the subprogram implementation if it is present (see
