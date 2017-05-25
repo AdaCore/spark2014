@@ -32,14 +32,14 @@ generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instant
 generic_float_tests.adb:72:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:75:18: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:75:18: info: overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:80:19: medium: postcondition might fail, cannot prove Underflow_1'Result > 0.0, in instantiation at foo.ads:10
-generic_float_tests.adb:80:19: medium: postcondition might fail, cannot prove Underflow_1'Result > 0.0, in instantiation at foo.ads:15
+generic_float_tests.adb:80:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:80:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:83:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:83:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:90:19: medium: postcondition might fail, cannot prove Inverse_Reciprocal'Result = A, in instantiation at foo.ads:10
-generic_float_tests.adb:90:19: medium: postcondition might fail, cannot prove Inverse_Reciprocal'Result = A, in instantiation at foo.ads:15
+generic_float_tests.adb:90:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:90:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:93:18: medium: divide by zero might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:93:18: medium: divide by zero might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:93:18: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -50,20 +50,20 @@ generic_float_tests.adb:93:25: medium: overflow check might fail, in instantiati
 generic_float_tests.adb:93:25: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:97:20: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:97:20: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:98:19: medium: postcondition might fail, cannot prove Underflow_2'result, in instantiation at foo.ads:10
-generic_float_tests.adb:98:19: medium: postcondition might fail, cannot prove Underflow_2'result, in instantiation at foo.ads:15
-generic_float_tests.adb:106:19: medium: postcondition might fail, cannot prove Underflow_3'Result > 0.0, in instantiation at foo.ads:10
-generic_float_tests.adb:106:19: medium: postcondition might fail, cannot prove Underflow_3'Result > 0.0, in instantiation at foo.ads:15
+generic_float_tests.adb:98:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:98:19: medium: postcondition might fail, in instantiation at foo.ads:15
+generic_float_tests.adb:106:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:106:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:109:16: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:109:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:113:20: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:113:20: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:113:34: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:113:34: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:114:19: medium: postcondition might fail, cannot prove Sqrt_Comedy_1'result, in instantiation at foo.ads:10
-generic_float_tests.adb:114:19: medium: postcondition might fail, cannot prove Sqrt_Comedy_1'result, in instantiation at foo.ads:15
-generic_float_tests.adb:122:19: medium: postcondition might fail, cannot prove Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:10
-generic_float_tests.adb:122:19: medium: postcondition might fail, cannot prove Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:15
+generic_float_tests.adb:114:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:114:19: medium: postcondition might fail, in instantiation at foo.ads:15
+generic_float_tests.adb:122:19: medium: postcondition might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:122:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:122:49: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:122:49: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:122:49: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -572,7 +572,7 @@ generic_interval_tests.adb:184:18: info: overflow check proved (CVC4: 1 VC), in 
 generic_interval_tests.adb:184:18: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:184:22: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:184:22: info: overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
-homothetical.adb:8:14: medium: postcondition might fail, cannot prove adjust2triangle'Result > 0.0
+homothetical.adb:8:14: medium: postcondition might fail
 homothetical.adb:12:21: medium: overflow check might fail
 homothetical.adb:12:24: info: division check proved (CVC4: 1 VC)
 homothetical.adb:12:24: medium: overflow check might fail
@@ -612,7 +612,7 @@ homothetical.adb:65:22: info: initialization of "upsilon" proved
 homothetical.adb:65:33: medium: overflow check might fail
 homothetical.ads:17:17: info: initialization of "kvmax" proved
 homothetical.ads:18:17: info: initialization of "kamax" proved
+homothetical.ads:24:14: medium: postcondition might fail
 homothetical.ads:25:17: info: initialization of "kvmax" proved
-homothetical.ads:25:17: medium: postcondition might fail, cannot prove kvmax(j) > 0.0
 homothetical.ads:26:17: info: initialization of "kamax" proved
 reduced_02.ads:9:15: info: range check proved (CVC4: 1 VC)
