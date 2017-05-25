@@ -574,7 +574,16 @@ procedure Gnatprove with SPARK_Mode is
 
          Args.Append ("-cargs:Ada");
          Args.Append ("-gnatc");              --  No object file generation
-         Args.Prepend ("--complete-output");  --  Replay results if up-to-date
+
+         --  Replay results if up-to-date. We disable this in debug mode to
+         --  be able to see gnat2why output "as it happens", and not only
+         --  when gnat2why is finished.
+
+         if Debug then
+            Args.Prepend ("--no-complete-output");
+         else
+            Args.Prepend ("--complete-output");
+         end if;
 
          Args.Append ("-gnates=" & Opt_File);
 
