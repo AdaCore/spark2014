@@ -3967,10 +3967,30 @@ package body Gnat2Why.Subprograms is
                            B_Ent     => Null_Entity_Name,
                            Mutable   => False)
                 & Tag_B & Logic_Why_Binders;
+            Tag_Comp      : constant W_Pred_Id :=
+              (if Is_Tagged_Type (Retysp (Etype (E)))
+               and then not Is_Class_Wide_Type (Etype (E))
+               then
+                 +New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   => New_Tag_Access
+                      (Domain   => EW_Term,
+                       Name     => +New_Result_Ident (Why_Type),
+                       Ty       => Retysp (Etype (E))),
+                    Right  => (if Dispatch and then Has_Controlling_Result (E)
+                               then +Tag_Binder.B_Name
+                               else +E_Symb (Etype (E), WNE_Tag)),
+                    Domain => EW_Pred)
+               else True_Pred);
+            --  For functions with tagged results, assume the value of the tag
+            --  of the result.
+
             Complete_Post : constant W_Pred_Id :=
-              +New_And_Expr (Left   => +Post,
-                             Right  => +Dynamic_Prop_Result,
-                             Domain => EW_Pred);
+              +New_And_Expr (Conjuncts =>
+                               (1 => +Post,
+                                2 => +Dynamic_Prop_Result,
+                                3 => +Tag_Comp),
+                             Domain    => EW_Pred);
             Guarded_Post  : constant W_Pred_Id :=
               (if not Use_Guard_For_Function (E) then Complete_Post
                else New_Conditional
