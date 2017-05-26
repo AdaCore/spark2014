@@ -1,5 +1,5 @@
-example.adb:6:38: subtype constraint cannot depend on "X" (SPARK RM 4.4(2))
-example.adb:6:38: subtype constraint cannot depend on "X" (SPARK RM 4.4(2)), in call inlined at example.adb:14
-example2.adb:10:38: subtype constraint cannot depend on "X" (SPARK RM 4.4(2))
+example.adb:6:38: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+example.adb:6:38: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2)), in call inlined at example.adb:14
+example2.adb:10:38: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 example2.adb:18:04: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof

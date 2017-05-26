@@ -71,7 +71,7 @@ test.adb:80:12: info: initialization of "Tmp.B.B" proved
 test.adb:80:12: info: initialization of "Tmp.B.D" proved
 test.adb:80:12: info: initialization of "Tmp.B.F" proved
 test.adb:80:12: info: initialization of "Tmp.B.G" proved
-test.adb:100:25: default initialization cannot depend on "Tmp" (SPARK RM 4.4(2))
+test.adb:100:25: default initialization cannot depend on variable input "Tmp" (SPARK RM 4.4(2))
 test.adb:103:23: info: initialization of "X" proved
 test.adb:108:15: info: initialization of "Wibble.X" proved
 gnatprove: error during flow analysis and proof

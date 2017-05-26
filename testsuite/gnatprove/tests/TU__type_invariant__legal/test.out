@@ -77,6 +77,7 @@ type_invariant_legal_2.ads:23:21: warning: unused variable "X"
 type_invariant_legal_3.ads:9:16: warning: unused variable "X"
 type_invariant_legal_3.ads:10:16: warning: unused variable "X"
 type_invariant_legal_3.ads:13:43: info: invariant check proved (CVC4: 1 VC)
+type_invariant_legal_3.ads:15:09: high: cannot call boundary subprogram "F" for type "T1" in its own invariant (SPARK RM 7.3.2(4))
 type_invariant_legal_3.ads:15:09: info: invariant check proved on default value (CVC4: 1 VC)
 type_invariant_legal_3.ads:15:50: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_3.ads:16:09: info: invariant check proved on default value (CVC4: 1 VC)

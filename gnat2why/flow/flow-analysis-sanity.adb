@@ -92,8 +92,7 @@ package body Flow.Analysis.Sanity is
       --  Wrapper around Get_Globals that only returns global reads and proof
       --  reads.
 
-      function Simple_Variable_Set (N : Node_Id)
-                                    return Ordered_Flow_Id_Sets.Set
+      function Variables (N : Node_Id) return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (N,
@@ -105,8 +104,7 @@ package body Flow.Analysis.Sanity is
       --  A helpful wrapper around Get_Variables as it is used in this sanity
       --  checking procedure.
 
-      function Simple_Variable_Set (L : List_Id)
-                                    return Ordered_Flow_Id_Sets.Set
+      function Variables (L : List_Id) return Ordered_Flow_Id_Sets.Set
       is
         (To_Ordered_Flow_Id_Set
            (Get_Variables (L,
@@ -115,7 +113,7 @@ package body Flow.Analysis.Sanity is
                            Fold_Functions               => False,
                            Use_Computed_Globals         => True,
                            Expand_Synthesized_Constants => True)));
-      --  As above.
+      --  As above
 
       ------------------
       -- Global_Reads --
@@ -140,7 +138,7 @@ package body Flow.Analysis.Sanity is
 
       function Check_Expression (N : Node_Id) return Traverse_Result
       is
-         procedure Check_Flow_Id_Set
+         procedure Check_Variable_Inputs
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
             Err_Desc : String;
             Err_Node : Node_Id);
@@ -148,15 +146,20 @@ package body Flow.Analysis.Sanity is
          --  denote a constant, a bound or a discriminant (of an enclosing
          --  concurrent type).
 
-         function Check_Name (N : Node_Id) return Traverse_Result;
-         --  Checks indexed components and slices which are part of a Name
-         --  subtree.
+         function Check_Renaming (N : Node_Id) return Traverse_Result;
+         --  Checks that indexed components and slices in object renaming
+         --  declarations do not have variable inputs.
 
-         -----------------------
-         -- Check_Flow_Id_Set --
-         -----------------------
+         procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
+         --  Checks that for a generic instance there is no Actual with
+         --  variable inputs corresponding to a Formal object declaration with
+         --  mode in.
 
-         procedure Check_Flow_Id_Set
+         ---------------------------
+         -- Check_Variable_Inputs --
+         ---------------------------
+
+         procedure Check_Variable_Inputs
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
             Err_Desc : String;
             Err_Node : Node_Id)
@@ -174,56 +177,73 @@ package body Flow.Analysis.Sanity is
                then
                   Error_Msg_Flow
                     (FA       => FA,
-                     Msg      => Err_Desc & " cannot depend on &",
+                     Msg      => Err_Desc & " cannot depend on variable " &
+                       "input &",
                      SRM_Ref  => "4.4(2)",
                      N        => Err_Node,
                      Severity => Error_Kind,
-                     F1       => F);
+                     F1       => Entire_Variable (F));
                   Sane := False;
                end if;
             end loop;
-         end Check_Flow_Id_Set;
+         end Check_Variable_Inputs;
 
-         ----------------
-         -- Check_Name --
-         ----------------
+         --------------------
+         -- Check_Renaming --
+         --------------------
 
-         function Check_Name (N : Node_Id) return Traverse_Result is
+         function Check_Renaming (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
                when N_Indexed_Component =>
-                  declare
-                     Renamed_Indexes : constant List_Id := Expressions (N);
-
-                     Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       Simple_Variable_Set (Renamed_Indexes);
-                  begin
-                     Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Desc => "renamed index",
-                                        Err_Node => N);
-                  end;
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (Expressions (N)),
+                     Err_Desc => "renamed index",
+                     Err_Node => N);
 
                when N_Slice =>
-                  declare
-                     Renamed_Slice : constant Node_Id := Discrete_Range (N);
-
-                     Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       Simple_Variable_Set (Renamed_Slice);
-                  begin
-                     Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Desc => "renamed slice",
-                                        Err_Node => Renamed_Slice);
-                  end;
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (Discrete_Range (N)),
+                     Err_Desc => "renamed slice",
+                     Err_Node => Discrete_Range (N));
 
                when others =>
                   null;
             end case;
 
             return OK; -- Keep searching in case of nested prefixes
-         end Check_Name;
+         end Check_Renaming;
+
+         -----------------------
+         -- Handle_Parameters --
+         -----------------------
+
+         procedure Handle_Parameters (Formal : Node_Id;
+                                      Actual : Node_Id)
+         is
+         begin
+            if Nkind (Formal) = N_Formal_Object_Declaration then
+               declare
+                  Formal_E : constant Entity_Id :=
+                    Defining_Entity (Formal);
+
+               begin
+                  if Ekind (Formal_E) = E_Generic_In_Parameter then
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Actual),
+                        Err_Desc => "actual for formal object with"
+                        & " mode in",
+                        Err_Node => Actual);
+                  end if;
+               end;
+            end if;
+         end Handle_Parameters;
+
+         procedure Check_Actuals is new
+           Iterate_Generic_Parameters (Handle_Parameters);
 
          procedure Check_Name_Indexes_And_Slices is new
-           Traverse_Proc (Check_Name);
+           Traverse_Proc (Check_Renaming);
 
       --  Start of processing for Check_Expression
 
@@ -239,14 +259,14 @@ package body Flow.Analysis.Sanity is
                --  own pass of flow analysis.
 
                if N = Entry_Node then
-                  --  If we are dealing with a user-defined equality that we
-                  --  need to check that it does not read any variable.
-                  if Nkind (N) = N_Subprogram_Body then
-                     declare
-                        Spec : constant Entity_Id :=
-                          Unique_Defining_Entity (N);
+                  declare
+                     Spec : constant Entity_Id :=
+                       Unique_Defining_Entity (N);
 
-                     begin
+                  begin
+                     --  If we are dealing with a user-defined equality then we
+                     --  need to check that it does not read any variable.
+                     if Nkind (N) = N_Subprogram_Body then
                         if Is_User_Defined_Equality (Spec) then
                            declare
                               Typ : constant Entity_Id :=
@@ -255,15 +275,31 @@ package body Flow.Analysis.Sanity is
 
                            begin
                               if Ekind (Typ) in Record_Kind then
-                                 Check_Flow_Id_Set
+                                 Check_Variable_Inputs
                                    (Flow_Ids => Global_Reads (Spec),
                                     Err_Desc => "user-defined equality",
                                     Err_Node => N);
                               end if;
                            end;
                         end if;
-                     end;
-                  end if;
+                     end if;
+
+                     --  If the node is an instance of a generic then we need
+                     --  to check its actuals.
+                     if Is_Generic_Instance (Spec) then
+                        declare
+                           Instance : constant Entity_Id :=
+                             (if Nkind (N) = N_Subprogram_Body
+                              then Unique_Defining_Entity (Parent (N))
+                              else Spec);
+                           --  For subprogram instances we need to get to the
+                           --  wrapper package.
+
+                        begin
+                           Check_Actuals (Instance);
+                        end;
+                     end if;
+                  end;
                   return OK;
                else
                   return Skip;
@@ -271,54 +307,59 @@ package body Flow.Analysis.Sanity is
 
             when N_Full_Type_Declaration
                | N_Subtype_Declaration
+               | N_Private_Type_Declaration
                | N_Private_Extension_Declaration
             =>
                declare
                   Typ : constant Type_Id := Defining_Identifier (N);
+
                begin
-                  if Has_Predicates (Typ) then
-                     Check_Flow_Id_Set
+                  if Has_Predicates (Typ)
+                    and then Present (Predicate_Function (Typ))
+                  then
+                     Check_Variable_Inputs
                        (Flow_Ids => Global_Reads (Predicate_Function (Typ)),
                         Err_Desc => "predicate",
                         Err_Node => Typ);
                   end if;
 
-                  if Has_Invariants_In_SPARK (Typ) then
+                  --  Has_Invariants_In_SPARK operates on the public view of a
+                  --  type and therefore we use call it on private type
+                  --  delcarations or extensions.
+                  if Nkind (N) in N_Private_Type_Declaration
+                                | N_Private_Extension_Declaration
+                    and then Has_Invariants_In_SPARK (Typ)
+                  then
                      --  This is the check for 7.3.2(3) [which is really
                      --  4.4(2)] and the check for 7.3.2(4).
                      declare
-                        IP   : constant Entity_Id := Invariant_Procedure (Typ);
                         Expr : constant Node_Id :=
-                          Get_Expr_From_Check_Only_Proc (IP);
-                        Vars : constant Flow_Id_Sets.Set :=
-                          Get_Variables
-                            (Expr,
-                             Scope                => FA.B_Scope,
-                             Local_Constants      => Node_Sets.Empty_Set,
-                             Fold_Functions       => False,
-                             Use_Computed_Globals => True,
-                             Reduced              => True);
+                          Get_Expr_From_Check_Only_Proc
+                            (Invariant_Procedure (Typ));
+
                         Funs : constant Node_Sets.Set :=
                           Get_Functions
                             (Expr,
                              Include_Predicates => False);
+
                      begin
                         --  Check 4.4(2) (no variable inputs)
-                        Check_Flow_Id_Set (Flow_Ids => To_Ordered_Flow_Id_Set
-                                             (Vars),
-                                           Err_Desc => "invariant",
-                                           Err_Node => Typ);
+                        Check_Variable_Inputs
+                          (Flow_Ids => Variables (Expr),
+                           Err_Desc => "invariant",
+                           Err_Node => Full_View (Typ));
 
                         --  Check 7.3.2(4) (no calls to boundary subprograms)
                         for F of Funs loop
-                           if Is_Boundary_Subprogram_For_Type (F, Typ) then
+                           if Is_Boundary_Subprogram_For_Type (F, Typ)
+                           then
                               Error_Msg_Flow
                                 (FA       => FA,
                                  Msg      =>
                                    "cannot call boundary subprogram & " &
                                    "for type & in its own invariant",
                                  Severity => High_Check_Kind,
-                                 N        => Typ,
+                                 N        => Full_View (Typ),
                                  F1       => Direct_Mapping_Id (F),
                                  F2       => Direct_Mapping_Id (Typ),
                                  SRM_Ref  => "7.3.2(4)");
@@ -361,31 +402,20 @@ package body Flow.Analysis.Sanity is
                begin
                   case Nkind (C) is
                      when N_Range_Constraint =>
-                        declare
-                           --  Note that fetching the variable set for C
-                           --  returns the union of the sets of the low-bound
-                           --  and the high-bound.
-
-                           Deps : constant Ordered_Flow_Id_Sets.Set :=
-                             Simple_Variable_Set (C);
-                        begin
-                           Check_Flow_Id_Set (Flow_Ids => Deps,
-                                              Err_Desc => "subtype constraint",
-                                              Err_Node => C);
-                        end;
-
+                        --  Note that fetching the Variables for C returns the
+                        --  union of the sets of the low-bound and the
+                        --  high-bound.
+                        Check_Variable_Inputs
+                          (Flow_Ids => Variables (C),
+                           Err_Desc => "subtype constraint",
+                           Err_Node => C);
                         return Skip;
 
                      when N_Index_Or_Discriminant_Constraint =>
-                        declare
-                           Deps : constant Ordered_Flow_Id_Sets.Set :=
-                             Simple_Variable_Set (Constraints (C));
-                        begin
-                           Check_Flow_Id_Set (Flow_Ids => Deps,
-                                              Err_Desc => "subtype constraint",
-                                              Err_Node => C);
-                        end;
-
+                        Check_Variable_Inputs
+                          (Flow_Ids => Variables (Constraints (C)),
+                           Err_Desc => "subtype constraint",
+                           Err_Node => C);
                         return Skip;
 
                      when N_Delta_Constraint
@@ -405,18 +435,12 @@ package body Flow.Analysis.Sanity is
             when N_Component_Declaration
                | N_Discriminant_Specification
             =>
-
                if Present (Expression (N)) then
-                  declare
-                     Deps : constant Ordered_Flow_Id_Sets.Set :=
-                       Simple_Variable_Set (Expression (N));
-                  begin
-                     Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Desc => "default initialization",
-                                        Err_Node => Expression (N));
-                  end;
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (Expression (N)),
+                     Err_Desc => "default initialization",
+                     Err_Node => Expression (N));
                end if;
-
                return Skip;
 
             when others =>

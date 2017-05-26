@@ -514,7 +514,9 @@ package SPARK_Util is
    with Pre => Ekind (E) = E_Package;
    --  Call [Handle_Parameters] for each generic formal and actual parameter of
    --  a generic instance.
-   --  @param E represents the entity of the instantiated package
+   --  @param E represents the entity of the instantiated generic package. For
+   --  subprogram instances this is the wrapper package obtained after
+   --  expansion.
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node

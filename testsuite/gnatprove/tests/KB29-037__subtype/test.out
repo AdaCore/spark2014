@@ -13,6 +13,6 @@ p.adb:10:25: info: initialization of "Var.Access_Count" proved, in call inlined 
 p.adb:10:40: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:17
 p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.g. when Var = (Access_Count => 1, Locked => ?))
 sub.adb:43:17: info: initialization of "Global" proved
-sub.ads:11:12: predicate cannot depend on "Global" (SPARK RM 4.4(2))
+sub.ads:11:12: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
 sub.ads:24:14: info: initialization of "Global" proved
 gnatprove: error during flow analysis and proof

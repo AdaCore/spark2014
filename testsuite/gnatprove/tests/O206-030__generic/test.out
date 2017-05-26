@@ -1,22 +1,3 @@
-gen_func.ads:9:17: low: unused global "External", in instantiation at main.adb:16
-gen_func.ads:10:13: low: unused global constant with variable input "Inner", in instantiation at main.adb:16
-gen_func.ads:12:08: medium: missing dependency "null => External", in instantiation at main.adb:16
-gen_func.ads:12:08: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:16
-gen_func.ads:14:17: medium: incorrect dependency "Func_Inst_1'Result => External", in instantiation at main.adb:16
-gen_func.ads:15:13: medium: incorrect dependency "Func_Inst_1'Result => constant with variable input Inner", in instantiation at main.adb:16
-gen_func.ads:19:17: info: postcondition proved (CVC4: 1 VC), in instantiation at main.adb:16
-gen_func.ads:20:09: info: complete contract cases proved (CVC4: 1 VC), in instantiation at main.adb:16
-gen_func.ads:20:09: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at main.adb:16
-gen_func.ads:20:39: info: contract case proved (CVC4: 2 VC), in instantiation at main.adb:16
-gen_func.ads:21:39: info: contract case proved (CVC4: 2 VC), in instantiation at main.adb:16
-gen_func.ads:22:39: info: contract case proved (CVC4: 2 VC), in instantiation at main.adb:16
-gen_func_pragmas.ads:9:18: low: unused global "External", in instantiation at main.adb:20
-gen_func_pragmas.ads:10:14: low: unused global constant with variable input "Inner", in instantiation at main.adb:20
-gen_func_pragmas.ads:12:01: medium: missing dependency "null => External", in instantiation at main.adb:20
-gen_func_pragmas.ads:12:01: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:20
-gen_func_pragmas.ads:14:18: medium: incorrect dependency "Func_Inst_2'Result => External", in instantiation at main.adb:20
-gen_func_pragmas.ads:15:14: medium: incorrect dependency "Func_Inst_2'Result => constant with variable input Inner", in instantiation at main.adb:20
-gen_pack.adb:4:04: info: initialization of "Constit" constituent of "State" proved, in instantiation at main.adb:24
 gen_pack.adb:9:20: low: unused global "External", in instantiation at main.adb:24
 gen_pack.adb:10:16: low: unused global constant with variable input "Outer", in instantiation at main.adb:24
 gen_pack.adb:11:16: low: unused global "Constit" constituent of "State", in instantiation at main.adb:24
@@ -30,41 +11,8 @@ gen_pack.ads:17:11: medium: missing dependency "null => External", in instantiat
 gen_pack.ads:17:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:24
 gen_pack.ads:25:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:24
-gen_pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved, in instantiation at main.adb:32
-gen_pack_gen.adb:9:20: low: unused global "External", in instantiation at main.adb:33
-gen_pack_gen.adb:10:16: low: unused global constant with variable input "Outer", in instantiation at main.adb:33
-gen_pack_gen.adb:11:16: low: unused global "Constit" constituent of "State", in instantiation at main.adb:33
-gen_pack_gen.adb:12:16: low: unused global "Pack_Inner", in instantiation at main.adb:33
-gen_pack_gen.adb:13:16: low: unused global constant with variable input "Inner", in instantiation at main.adb:33
-gen_pack_gen.adb:16:18: medium: incorrect dependency "Func_Inst_3'Result => Pack_Inst_3.State", in instantiation at main.adb:33
-gen_pack_gen.adb:17:20: medium: incorrect dependency "Func_Inst_3'Result => External", in instantiation at main.adb:33
-gen_pack_gen.adb:18:16: medium: incorrect dependency "Func_Inst_3'Result => constant with variable input Outer", in instantiation at main.adb:33
-gen_pack_gen.adb:20:16: medium: incorrect dependency "Func_Inst_3'Result => Pack_Inner", in instantiation at main.adb:33
-gen_pack_gen.adb:21:16: medium: incorrect dependency "Func_Inst_3'Result => constant with variable input Inner", in instantiation at main.adb:33
-gen_pack_gen.ads:21:11: medium: missing dependency "null => External", in instantiation at main.adb:33
-gen_pack_gen.ads:21:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:33
-gen_pack_gen.ads:21:11: medium: missing dependency "null => Pack_Inst_3.State", in instantiation at main.adb:33
-gen_pack_gen.ads:21:11: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:33
-gen_pack_gen.ads:21:11: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:33
 gen_pack_gen.ads:30:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:32
-gen_pack_gen_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved, in instantiation at main.adb:37
-gen_pack_gen_pragmas.adb:9:24: low: unused global "External", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:10:20: low: unused global constant with variable input "Outer", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:11:20: low: unused global "Constit" constituent of "State", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:12:20: low: unused global "Pack_Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:13:20: low: unused global constant with variable input "Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:16:22: medium: incorrect dependency "Func_Inst_4'Result => Pack_Inst_4.State", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:17:24: medium: incorrect dependency "Func_Inst_4'Result => External", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:18:20: medium: incorrect dependency "Func_Inst_4'Result => constant with variable input Outer", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:20:20: medium: incorrect dependency "Func_Inst_4'Result => Pack_Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:21:20: medium: incorrect dependency "Func_Inst_4'Result => constant with variable input Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => External", in instantiation at main.adb:38
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Pack_Inst_4.State", in instantiation at main.adb:38
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:38
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:30:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:37
-gen_pack_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved, in instantiation at main.adb:28
 gen_pack_pragmas.adb:9:24: low: unused global "External", in instantiation at main.adb:28
 gen_pack_pragmas.adb:10:20: low: unused global constant with variable input "Outer", in instantiation at main.adb:28
 gen_pack_pragmas.adb:11:20: low: unused global "Constit" constituent of "State", in instantiation at main.adb:28
@@ -78,33 +26,19 @@ gen_pack_pragmas.ads:17:04: medium: missing dependency "null => External", in in
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:28
 gen_pack_pragmas.ads:25:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:28
+main.adb:16:42: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:20:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:24:41: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:28:49: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:32:45: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:33:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:37:53: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:38:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:42:47: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:46:55: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved
-pack_gen.adb:9:20: low: unused global "External", in instantiation at main.adb:42
-pack_gen.adb:10:16: low: unused global "Constit" constituent of "State", in instantiation at main.adb:42
-pack_gen.adb:11:16: low: unused global "Pack_Inner", in instantiation at main.adb:42
-pack_gen.adb:12:16: low: unused global constant with variable input "Inner", in instantiation at main.adb:42
-pack_gen.adb:15:18: medium: incorrect dependency "Func_Inst_6'Result => Pack_Gen.State", in instantiation at main.adb:42
-pack_gen.adb:16:20: medium: incorrect dependency "Func_Inst_6'Result => External", in instantiation at main.adb:42
-pack_gen.adb:18:16: medium: incorrect dependency "Func_Inst_6'Result => Pack_Inner", in instantiation at main.adb:42
-pack_gen.adb:19:16: medium: incorrect dependency "Func_Inst_6'Result => constant with variable input Inner", in instantiation at main.adb:42
-pack_gen.ads:18:11: medium: missing dependency "null => External", in instantiation at main.adb:42
-pack_gen.ads:18:11: medium: missing dependency "null => Pack_Gen.State", in instantiation at main.adb:42
-pack_gen.ads:18:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:42
-pack_gen.ads:18:11: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:42
 pack_gen.ads:26:04: info: initialization of "Pack_Inner" proved
 pack_gen_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved
-pack_gen_pragmas.adb:9:24: low: unused global "External", in instantiation at main.adb:46
-pack_gen_pragmas.adb:10:20: low: unused global "Constit" constituent of "State", in instantiation at main.adb:46
-pack_gen_pragmas.adb:11:20: low: unused global "Pack_Inner", in instantiation at main.adb:46
-pack_gen_pragmas.adb:12:20: low: unused global constant with variable input "Inner", in instantiation at main.adb:46
-pack_gen_pragmas.adb:15:22: medium: incorrect dependency "Func_Inst_7'Result => Pack_Gen_Pragmas.State", in instantiation at main.adb:46
-pack_gen_pragmas.adb:16:24: medium: incorrect dependency "Func_Inst_7'Result => External", in instantiation at main.adb:46
-pack_gen_pragmas.adb:18:20: medium: incorrect dependency "Func_Inst_7'Result => Pack_Inner", in instantiation at main.adb:46
-pack_gen_pragmas.adb:19:20: medium: incorrect dependency "Func_Inst_7'Result => constant with variable input Inner", in instantiation at main.adb:46
-pack_gen_pragmas.ads:18:04: medium: missing dependency "null => External", in instantiation at main.adb:46
-pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Gen_Pragmas.State", in instantiation at main.adb:46
-pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:46
-pack_gen_pragmas.ads:18:04: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:26:04: info: initialization of "Pack_Inner" proved
 pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5 (e.g. when External = 2147483647 and Formal = 1 and Func_Inst'Result = 0)
 pack_refs.ads:12:19: info: postcondition proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
@@ -114,3 +48,4 @@ pack_refs.ads:13:11: info: disjoint contract cases proved (CVC4: 1 VC), in insta
 pack_refs.ads:13:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:14:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:15:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
+gnatprove: error during flow analysis and proof
