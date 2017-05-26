@@ -3,5 +3,5 @@ weapon_class.adb:19:27: info: initialization of extension of "E" proved
 weapon_class.adb:20:14: info: initialization of extension of "E" proved
 weapon_class.ads:23:25: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 weapon_class.ads:23:25: info: postcondition proved (CVC4: 2 VC)
-weapon_class.ads:30:14: medium: postcondition might fail, cannot prove Hit (Select_Bullet'Result) in 0 .. 10 (e.g. when Select_Bullet'Result = 0)
-weapon_class.ads:33:14: medium: postcondition might fail, cannot prove Hit (Select_Bullet2'Result) in 0 .. 10 (e.g. when Select_Bullet2'Result = 0)
+weapon_class.ads:30:14: medium: postcondition might fail, cannot prove Hit (Select_Bullet'Result) in 0 .. 10
+weapon_class.ads:33:14: medium: postcondition might fail, cannot prove Hit (Select_Bullet2'Result) in 0 .. 10
