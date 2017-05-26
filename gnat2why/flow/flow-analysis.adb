@@ -3800,7 +3800,7 @@ package body Flow.Analysis is
                               SRM_Ref  => "7.2.6(6)");
                         end if;
                      else
-                        exit;  --  ??? why not null?
+                        null;
                      end if;
                   end loop;
                end if;
