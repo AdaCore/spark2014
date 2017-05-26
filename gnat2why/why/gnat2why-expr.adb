@@ -11008,30 +11008,41 @@ package body Gnat2Why.Expr is
       --  Expressions that cannot be translated to predicates directly are
       --  translated to (boolean) terms, and compared to "True".
 
-      if Domain = EW_Pred and then
-         not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
-         | N_Op_Or | N_Or_Else | N_In | N_If_Expression |
-         N_Quantified_Expression | N_Case_Expression) and then
-         not (Nkind (Expr) in N_Identifier | N_Expanded_Name and then
-              Ekind (Entity (Expr)) in E_Enumeration_Literal and then
-              (Entity (Expr) in Standard_True | Standard_False)) and then
-        not (Nkind (Expr) = N_Function_Call
+      if Domain = EW_Pred
+        and then
+          not (Nkind (Expr) in N_Op_Compare
+                             | N_Op_Not
+                             | N_Op_And
+                             | N_And_Then
+                             | N_Op_Or
+                             | N_Or_Else
+                             | N_In
+                             | N_If_Expression
+                             | N_Quantified_Expression
+                             | N_Case_Expression)
+        and then
+          not (Nkind (Expr) in N_Identifier | N_Expanded_Name
+              and then Ekind (Entity (Expr)) in E_Enumeration_Literal
+              and then Entity (Expr) in Standard_True | Standard_False)
+        and then
+          not (Nkind (Expr) = N_Function_Call
              and then Is_Predicate_Function (Get_Called_Entity (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (+Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params));
 
-      elsif Domain /= EW_Pred and then
-        Is_Discrete_Type (Expr_Type) and then
-        Compile_Time_Known_Value (Expr)
-      then
+      --  Optimization: if we have a discrete value that is statically known,
+      --  use the static value.
 
-         --  Optimization: if we have a discrete value that is statically
-         --  known, use the static value.
+      elsif Domain /= EW_Pred
+        and then Is_Discrete_Type (Expr_Type)
+        and then Compile_Time_Known_Value (Expr)
+      then
 
          T := New_Discrete_Constant
            (Value => Expr_Value (Expr),
             Typ   => Base_Why_Type_No_Bool (Expr_Type));
+
       else
          case Nkind (Expr) is
          when N_Aggregate =>
