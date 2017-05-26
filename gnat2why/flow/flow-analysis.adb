@@ -3774,28 +3774,19 @@ package body Flow.Analysis is
    procedure Check_Consistent_AS_For_Private_Child
      (FA : in out Flow_Analysis_Graphs)
    is
+      Scop : constant Entity_Id := Scope (FA.Spec_Entity);
    begin
       if Is_Child_Unit (FA.Spec_Entity)
         and then Is_Private_Descendant (FA.Spec_Entity)
-        and then Present (Abstract_States (FA.Spec_Entity))
       then
-         for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+         for Child_State of Iter (Abstract_States (FA.Spec_Entity)) loop
             declare
-               Child_State   : constant Entity_Id := State;
                Encapsulating : constant Entity_Id :=
-                 Encapsulating_State (State);
-
-               Scop : constant Entity_Id := Scope (FA.Spec_Entity);
-
+                 Encapsulating_State (Child_State);
             begin
-               if Present (Encapsulating)
-                 and then Present (Scop)
-                 and then Present (Abstract_States (Scop))
-               then
+               if Present (Encapsulating) then
                   for State of Iter (Abstract_States (Scop)) loop
-                     if State /= Encapsulating then
-                        exit;
-                     else
+                     if State = Encapsulating then
                         if Refinement_Exists (State)
                           and then not Find_In_Refinement (State, Child_State)
                         then
@@ -3805,9 +3796,11 @@ package body Flow.Analysis is
                               Severity => Error_Kind,
                               F1       => Direct_Mapping_Id (Encapsulating),
                               F2       => Direct_Mapping_Id (Child_State),
-                                 N        => Scop,
+                              N        => Scop,
                               SRM_Ref  => "7.2.6(6)");
                         end if;
+                     else
+                        exit;  --  ??? why not null?
                      end if;
                   end loop;
                end if;

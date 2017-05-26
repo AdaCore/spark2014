@@ -2337,14 +2337,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
    is
-      Abstract_State : constant Entity_Name := To_Entity_Name (AS);
-      Constituent    : constant Entity_Name := To_Entity_Name (C);
-
-      Constituents : constant Name_Graphs.Cursor :=
-        State_Comp_Map.Find (Abstract_State);
-   begin
-      return (State_Comp_Map (Constituents).Contains (Constituent));
-   end Find_In_Refinement;
+     (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
 
    ----------------------------
    -- GG_Encapsulating_State --
@@ -2639,15 +2632,8 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Refinement_Exists --
    -----------------------
 
-   function Refinement_Exists (AS : Entity_Id) return Boolean
-   is
-      Abstract_State : constant Entity_Name := To_Entity_Name (AS);
-
-      Constituents : constant Name_Graphs.Cursor :=
-        State_Comp_Map.Find (Abstract_State);
-   begin
-      return (Name_Graphs.Has_Element (Constituents));
-   end Refinement_Exists;
+   function Refinement_Exists (AS : Entity_Id) return Boolean is
+     (State_Comp_Map.Contains (To_Entity_Name (AS)));
 
    --------------------------
    -- Register_Task_Object --

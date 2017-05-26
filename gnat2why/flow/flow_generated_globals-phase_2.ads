@@ -85,11 +85,16 @@ package Flow_Generated_Globals.Phase_2 is
    -- Querying --
    --------------
 
-   function Refinement_Exists (AS : Entity_Id) return Boolean;
+   function Refinement_Exists (AS : Entity_Id) return Boolean
+   with Pre => Ekind (AS) = E_Abstract_State;
    --  Returns True iff a refinement has been specified for abstract state AS
 
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
-     with Pre => Refinement_Exists (AS);
+   with Pre => Ekind (AS) = E_Abstract_State
+                 and then
+               Ekind (C) in E_Abstract_State | E_Constant | E_Variable
+                 and then
+               Refinement_Exists (AS);
    --  Returns True iff constituent C is mentioned in the refinement of the
    --  abstract state AS.
 
