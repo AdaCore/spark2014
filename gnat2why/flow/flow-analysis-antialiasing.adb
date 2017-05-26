@@ -39,14 +39,19 @@ package body Flow.Analysis.Antialiasing is
    --  Enable this for gratuitous tracing output for aliasing
    --  detection.
 
-   type Aliasing_Check_Result is (Impossible,
-                                  No_Aliasing,
-                                  Possible_Aliasing,
-                                  Definite_Aliasing);
-   pragma Ordered (Aliasing_Check_Result);
+   subtype Computed_Aliasing_Result is Aliasing_Check_Result
+     range Impossible .. Definite_Aliasing;
 
    subtype Non_Obvious_Aliasing_Check_Result is Aliasing_Check_Result
      range No_Aliasing .. Definite_Aliasing;
+
+   package Aliasing_Statuses is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Aliasing_Check_Result,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   Aliasing_Status : Aliasing_Statuses.Map := Aliasing_Statuses.Empty_Map;
 
    function Check_Range (AL, AH : Node_Id;
                          BL, BH : Node_Id)
@@ -55,7 +60,7 @@ package body Flow.Analysis.Antialiasing is
 
    function Aliasing (A,        B        : Node_Id;
                       Formal_A, Formal_B : Node_Id)
-                      return Aliasing_Check_Result
+                      return Computed_Aliasing_Result
    with Pre => Present (Formal_A);
    --  Returns if A and B alias.
 
@@ -70,7 +75,8 @@ package body Flow.Analysis.Antialiasing is
      (FA       : in out Flow_Analysis_Graphs;
       A, B     : Node_Or_Entity_Id;
       A_Formal : Entity_Id;
-      B_Formal : Entity_Id)
+      B_Formal : Entity_Id;
+      Status   : out Computed_Aliasing_Result)
    with Pre => Present (A_Formal);
    --  Checks the two nodes for aliasing and issues an error message
    --  if appropriate. The formal for B can be Empty, in which case we
@@ -78,9 +84,15 @@ package body Flow.Analysis.Antialiasing is
 
    procedure Check_Parameter_Against_Parameters_And_Globals
      (FA     : in out Flow_Analysis_Graphs;
+      Status : out Computed_Aliasing_Result;
       Actual : Node_Id);
    --  Checks the given actual against all other parameters and
    --  globals.
+
+   procedure Update_Status (Status         : in out Computed_Aliasing_Result;
+                            Current_Status : Computed_Aliasing_Result);
+   --  Updates the aliasing Status only if the Current_Status is worse (in
+   --  terms of the ordering given but the type Computed_Aliasing_Result).
 
    -----------------
    -- Check_Range --
@@ -151,7 +163,7 @@ package body Flow.Analysis.Antialiasing is
 
    function Aliasing (A,        B        : Node_Id;
                       Formal_A, Formal_B : Node_Id)
-                      return Aliasing_Check_Result
+                      return Computed_Aliasing_Result
    is
       --  Expressions are not interesting. Names are, but only some:
       Is_Interesting : constant array (Node_Kind) of Boolean :=
@@ -298,6 +310,8 @@ package body Flow.Analysis.Antialiasing is
 
       Ptr_A, Ptr_B      : Node_Id;
       Definitive_Result : Boolean := True;
+
+   --  Start of processing for Aliasing
 
    begin
 
@@ -584,17 +598,15 @@ package body Flow.Analysis.Antialiasing is
      (FA       : in out Flow_Analysis_Graphs;
       A, B     : Node_Or_Entity_Id;
       A_Formal : Entity_Id;
-      B_Formal : Entity_Id)
+      B_Formal : Entity_Id;
+      Status   : out Computed_Aliasing_Result)
    is
-      Msg : Unbounded_String               := Null_Unbounded_String;
-      Tmp : constant Aliasing_Check_Result := Aliasing (A,
-                                                        B,
-                                                        A_Formal,
-                                                        B_Formal);
+      Msg    : Unbounded_String := Null_Unbounded_String;
       B_Node : Node_Id;
    begin
+      Status := Aliasing (A, B, A_Formal, B_Formal);
 
-      case Tmp is
+      case Status is
          when Impossible =>
             return;
 
@@ -617,31 +629,33 @@ package body Flow.Analysis.Antialiasing is
          B_Node := B;
       end if;
 
-      case Tmp is
+      case Status is
          when Possible_Aliasing =>
             Append (Msg, " might be aliased");
 
          when Definite_Aliasing =>
             Append (Msg, " are aliased");
 
-         when Impossible
-            | No_Aliasing
-         =>
+         when No_Aliasing =>
             Append (Msg, " proved");
+
+         when Impossible =>
+            raise Program_Error;
       end case;
 
       Error_Msg_Flow (FA       => FA,
                       Msg      => To_String (Msg),
                       Severity =>
-                        (case Tmp is
-                         when Impossible | No_Aliasing => Info_Kind,
-                         when Possible_Aliasing        => Medium_Check_Kind,
-                         when Definite_Aliasing        => High_Check_Kind),
+                        (case Status is
+                         when No_Aliasing       => Info_Kind,
+                         when Possible_Aliasing => Medium_Check_Kind,
+                         when Definite_Aliasing => High_Check_Kind,
+                         when Impossible        => raise Program_Error),
                       N        => A,
                       F1       => Direct_Mapping_Id (A_Formal),
                       F2       => Direct_Mapping_Id (B_Node),
                       Tag      => Aliasing,
-                      SRM_Ref  => (if Tmp = No_Aliasing
+                      SRM_Ref  => (if Status = No_Aliasing
                                    then ""
                                    else "6.4.2"));
    end Check_Node_Against_Node;
@@ -652,12 +666,18 @@ package body Flow.Analysis.Antialiasing is
 
    procedure Check_Parameter_Against_Parameters_And_Globals
      (FA     : in out Flow_Analysis_Graphs;
+      Status : out Computed_Aliasing_Result;
       Actual : Node_Id)
    is
-      Formal : Entity_Id;
-      Call   : Node_Id;
-      Is_Out : Boolean;
+      Formal         : Entity_Id;
+      Call           : Node_Id;
+      Is_Out         : Boolean;
+      Current_Status : Computed_Aliasing_Result;
+
    begin
+      Status := Impossible;
+      --  Set the status to the best Computed_Aliasing_Result. This would be
+      --  later updated if a worse status would be computed.
 
       --  Work out who we are.
 
@@ -717,7 +737,9 @@ package body Flow.Analysis.Antialiasing is
                   A        => Actual,
                   B        => Other,
                   A_Formal => Formal,
-                  B_Formal => Other_Formal);
+                  B_Formal => Other_Formal,
+                  Status   => Current_Status);
+               Update_Status (Status, Current_Status);
             end if;
 
             Next (P);
@@ -751,7 +773,9 @@ package body Flow.Analysis.Antialiasing is
                            A        => Actual,
                            B        => Get_Direct_Mapping_Id (R),
                            A_Formal => Formal,
-                           B_Formal => Empty);
+                           B_Formal => Empty,
+                           Status   => Current_Status);
+                        Update_Status (Status, Current_Status);
 
                      when Magic_String =>
                         --  If we don't have a name for the global, by
@@ -773,7 +797,9 @@ package body Flow.Analysis.Antialiasing is
                      A        => Actual,
                      B        => Get_Direct_Mapping_Id (W),
                      A_Formal => Formal,
-                     B_Formal => Empty);
+                     B_Formal => Empty,
+                     Status   => Current_Status);
+                  Update_Status (Status, Current_Status);
 
                when Magic_String =>
                   --  If we don't have a name for the global, by
@@ -786,7 +812,6 @@ package body Flow.Analysis.Antialiasing is
             end case;
          end loop;
       end;
-
    end Check_Parameter_Against_Parameters_And_Globals;
 
    --------------------------
@@ -806,6 +831,10 @@ package body Flow.Analysis.Antialiasing is
          Actual : Node_Id;
          Formal : Entity_Id;
          Call   : Node_Id;
+
+         Current_Status : Computed_Aliasing_Result;
+         Status         : Computed_Aliasing_Result := Impossible;
+
       begin
          P := First (Parameter_Associations (N));
          while Present (P) loop
@@ -815,15 +844,43 @@ package body Flow.Analysis.Antialiasing is
             Find_Actual (Actual, Formal, Call);
             pragma Assert (Call = N);
 
-            Check_Parameter_Against_Parameters_And_Globals (FA, Actual);
-
+            Check_Parameter_Against_Parameters_And_Globals (FA,
+                                                            Current_Status,
+                                                            Actual);
+            Update_Status (Status, Current_Status);
             Next (P);
          end loop;
+         --  Store in the map the aliasing status of the current procedure call
+         Aliasing_Status.Insert (N, Status);
       end;
 
       --  ??? Need to check for aliasing between abstract state and computed
       --  globals.
 
    end Check_Procedure_Call;
+
+   -----------------------------------
+   -- Get_Aliasing_Status_For_Proof --
+   -----------------------------------
+
+   function Get_Aliasing_Status_For_Proof (N : Node_Id)
+                                           return Proof_Aliasing_Result
+   is
+     (if Aliasing_Status.Contains (N)
+      then Aliasing_Status (N)
+      else Unchecked);
+
+   -------------------
+   -- Update_Status --
+   -------------------
+
+   procedure Update_Status (Status         : in out Computed_Aliasing_Result;
+                            Current_Status : Computed_Aliasing_Result)
+   is
+   begin
+      if Current_Status > Status then
+         Status := Current_Status;
+      end if;
+   end Update_Status;
 
 end Flow.Analysis.Antialiasing;
