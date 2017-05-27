@@ -451,7 +451,7 @@ Excluding Selected Unit Bodies
 If a unit spec is in |SPARK|, but its body is not in |SPARK|, the spec can be
 marked with ``SPARK_Mode => On`` and the body with ``SPARK_Mode => Off``. This
 allows client code in |SPARK| to use this unit. If ``SPARK_Mode`` is On by
-default, then it needs not be repeated on the unit spec.
+default, then it need not be repeated on the unit spec.
 
 .. literalinclude:: /gnatprove_by_example/examples/exclude_unit_body.ads
    :language: ada

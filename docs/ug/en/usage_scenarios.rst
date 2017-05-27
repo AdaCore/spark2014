@@ -556,7 +556,7 @@ Implementation with the Standard"):
   Characteristics" of the GNAT Reference Manual.
 
 * *Unspecified behavior* - The set of possible behaviors is specified in the
-  language, but the particular behavior chosen in a compiler needs not be
+  language, but the particular behavior chosen in a compiler need not be
   documented. An example of unspecified behavior is the order of evaluation of
   arguments in a subprogram call.
 
@@ -650,7 +650,7 @@ types of errors (see Ada RM 1.1.5 "Classification of Errors"):
   to new bounded errors.
 
 * *Erroneous execution* - For the remaining errors, a program exhibits
-  erroneous execution, which means that the error needs not be detected, and
+  erroneous execution, which means that the error need not be detected, and
   its effects are not bounded by the language rules. These errors might be a
   cause of portability problems.
 

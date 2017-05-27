@@ -60,7 +60,7 @@ Let's consider the various cases that may occur when overridding a subprogram:
 In package ``Geometry``, a type ``Shape`` is derived in a type ``Rectangle``. A
 function ``Shape.Valid`` defines what it is to be a valid shape. It is
 overridden by ``Rectangle.Valid`` which defines what it is to be a valid
-rectangle. Here, a valid rectangle is also a valid shape, but that needs not be
+rectangle. Here, a valid rectangle is also a valid shape, but that need not be
 the case. Procedure ``Set_Default`` and its variants demonstrate the various
 configurations that can be found in practice:
 

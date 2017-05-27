@@ -228,7 +228,7 @@ justified, when placing pragma Annotate in such places.
    :language: ada
    :lines: 4-7
 
-or on the body when it is an implementation choice that needs not be visible
+or on the body when it is an implementation choice that need not be visible
 to users of the unit:
 
 .. literalinclude:: /gnatprove_by_example/examples/justifications.ads
