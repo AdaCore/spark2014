@@ -1,2 +1,2 @@
 constr.adb:6:24: medium: overflow check might fail (e.g. when I = 1 and X = (1 => 2147483647, others => 0))
-constr.ads:6:20: medium: postcondition might fail, cannot prove X(1) = 1 (e.g. when X = (10 => 1, 1 => 0, others => 4))
+constr.ads:6:20: medium: postcondition might fail, cannot prove X(1) = 1 (e.g. when X = (10 => 1, 1 => 0, others => 5))
