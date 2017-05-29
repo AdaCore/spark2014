@@ -1306,7 +1306,7 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Of_Int :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("of_int_rna"),
+                           Symbol => NID ("of_int_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Truncate :=
            New_Identifier (Module => M_Floats (Fl).Module,

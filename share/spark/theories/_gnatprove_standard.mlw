@@ -250,7 +250,7 @@ module Float32RNE
   function add_rne (x y : t) : t = add RNE x y
   function sub_rne (x y : t) : t = sub RNE x y
 
-  function of_int_rna (x:int) : t = of_int RNA x
+  function of_int_rne (x:int) : t = of_int RNE x
   function to_int_rna (x:t) : int = to_int RNA x
 
   function ceil     (x:t) : t = roundToIntegral RTP x
@@ -267,7 +267,7 @@ module Float64RNE
   function add_rne (x y : t) : t = add RNE x y
   function sub_rne (x y : t) : t = sub RNE x y
 
-  function of_int_rna (x:int) : t = of_int RNA x
+  function of_int_rne (x:int) : t = of_int RNE x
   function to_int_rna (x:t) : int = to_int RNA x
 
   function ceil     (x:t) : t = roundToIntegral RTP x
@@ -283,7 +283,7 @@ module Float32_power
     type t = t,
     function ( * ) = mul_rne,
     function div = div_rne,
-    function of_int = of_int_rna,
+    function of_int = of_int_rne,
     predicate eq = eq,
     predicate is_finite = t'isFinite,
     predicate is_zero = is_zero
@@ -296,7 +296,7 @@ module Float64_power
     type t = t,
     function ( * ) = mul_rne,
     function div = div_rne,
-    function of_int = of_int_rna,
+    function of_int = of_int_rne,
     predicate eq = eq,
     predicate is_finite = t'isFinite,
     predicate is_zero = is_zero
