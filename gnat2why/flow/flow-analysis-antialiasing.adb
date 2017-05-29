@@ -864,7 +864,7 @@ package body Flow.Analysis.Antialiasing is
    -----------------------------------
 
    function Get_Aliasing_Status_For_Proof (N : Node_Id)
-                                           return Proof_Aliasing_Result
+                                           return Aliasing_Check_Result
    is
      (if Aliasing_Status.Contains (N)
       then Aliasing_Status (N)

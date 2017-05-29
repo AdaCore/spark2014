@@ -29,6 +29,7 @@ with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
 with Elists;                         use Elists;
 with Errout;                         use Errout;
+with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
@@ -1994,9 +1995,16 @@ package body Gnat2Why.Expr is
       Nb_Of_Lets : out Natural;
       Params     :     Transformation_Params) return W_Expr_Array
    is
-      Subp    : constant Entity_Id := Get_Called_Entity (Call);
-      Binders : constant Item_Array :=
+      Subp     : constant Entity_Id := Get_Called_Entity (Call);
+      Binders  : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
+      Aliasing : constant Boolean :=
+        Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+        and then Get_Aliasing_Status_For_Proof (Call) in
+          Possible_Aliasing .. Unchecked;
+      --  If aliasing can occur for this subprogram call, we should introduce
+      --  intermediate variables for every parameters in order to avoid
+      --  crashing inside Why3.
 
    begin
       Nb_Of_Refs := 0;
@@ -2039,9 +2047,14 @@ package body Gnat2Why.Expr is
                   --  caller; this function only signals the existence of
                   --  such parameters by incrementing Nb_Of_Refs.
 
-                  if Needs_Temporary_Ref (Actual, Formal,
-                                          Get_Typ
-                                            (Binders (Bind_Cnt).Main.B_Name))
+                  --  If aliasing can occur and the parameter is mutable then
+                  --  we need a temporary reference.
+
+                  if (Aliasing and then Binders (Bind_Cnt).Main.Mutable)
+                    or else
+                      Needs_Temporary_Ref (Actual, Formal,
+                                           Get_Typ
+                                             (Binders (Bind_Cnt).Main.B_Name))
                   then
                      --  We should never use the Formal for the Ada_Node,
                      --  because there is no real dependency here; We only
@@ -2058,6 +2071,7 @@ package body Gnat2Why.Expr is
                   else
                      case Ekind (Formal) is
                      when E_In_Out_Parameter | E_Out_Parameter =>
+                        pragma Assert (not Aliasing);
 
                         --  Parameters that are "out" are refs;
                         --  if the actual is a simple identifier and no
@@ -2079,10 +2093,6 @@ package body Gnat2Why.Expr is
                         end;
 
                      when others =>
-
-                        --  When the formal is an "in" scalar, we actually use
-                        --  "int" as a type.
-
                         Why_Args (Arg_Cnt) :=
                           Transform_Expr
                             (Actual,
@@ -2136,8 +2146,11 @@ package body Gnat2Why.Expr is
                   begin
 
                      --  The actual is in split form iff it is an identifier.
+                     --  If aliasing can occur, we cannot use the variables
+                     --  from the actual's split form. We need to introduce a
+                     --  temporary for it.
 
-                     if Simple_Actual then
+                     if Simple_Actual and then not Aliasing then
                         declare
                            Actual_Binder : constant Item_Type :=
                              Ada_Ent_To_Why.Element
@@ -2351,12 +2364,18 @@ package body Gnat2Why.Expr is
 
                   --  If the actual is not in split form, we use a temporary
                   --  variable for it to avoid computing it multiple times.
+                  --  If aliasing can occur, we need a temporary for the
+                  --  actual.
 
                   declare
                      Actual_Type : constant W_Type_Id :=
-                       Type_Of_Node (Actual);
+                       (if Aliasing then
+                           EW_Abstract (Get_Ada_Node (+Type_Of_Node (Actual)))
+                        else Type_Of_Node (Actual));
                      Array_Expr  : constant W_Expr_Id :=
-                       (if Get_Type_Kind (Actual_Type) = EW_Abstract then
+                       (if Aliasing
+                        or else Get_Type_Kind (Actual_Type) = EW_Abstract
+                        then
                         +New_Identifier
                           (Ada_Node => Empty,
                            Name     => Full_Name (Formal) & "__compl",
@@ -2365,13 +2384,17 @@ package body Gnat2Why.Expr is
                           (Actual, Actual_Type, Domain, Params));
                      Need_Ref : constant Boolean :=
                        Get_Type_Kind (Actual_Type) = EW_Abstract
-                       or else not Simple_Actual;
+                       or else not Simple_Actual
+                       or else Aliasing;
                   begin
                      if Need_Ref then
-                        if Get_Type_Kind (Actual_Type) = EW_Abstract then
+                        if Get_Type_Kind (Actual_Type) = EW_Abstract
+                          or else Aliasing
+                        then
 
-                           --  The actual is not in split form. We need a
-                           --  temporary variable for the content of the array.
+                           --  The actual is not in split form or aliasing can
+                           --  occur. We need a temporary variable for the
+                           --  content of the array.
 
                            Nb_Of_Lets := Nb_Of_Lets + 1;
                         end if;
@@ -4368,6 +4391,14 @@ package body Gnat2Why.Expr is
       --  children during the traversal and that only root nodes can have
       --  their children modified.
 
+      Aliasing     : constant Boolean :=
+        Nkind (Ada_Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+        and then Get_Aliasing_Status_For_Proof (Ada_Call) in
+          Possible_Aliasing .. Unchecked;
+      --  If aliasing can occur for this subprogram call, we should introduce
+      --  intermediate variables for every parameters in order to avoid
+      --  crashing inside Why3.
+
       Ref_Context  : W_Prog_Id;
       Ref_Index    : Positive := 1;
       Ref_Tmp_Vars : W_Identifier_Array (1 .. Nb_Of_Refs);
@@ -4401,8 +4432,13 @@ package body Gnat2Why.Expr is
                null;
 
             when Regular =>
-               if Needs_Temporary_Ref
-                 (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
+
+               --  If aliasing can occur and the parameter is mutable then we
+               --  need a temporary reference.
+
+               if (Aliasing and then Binders (Bind_Cnt).Main.Mutable)
+                 or else Needs_Temporary_Ref
+                   (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
                then
                   declare
                      --  Types:
@@ -4531,7 +4567,8 @@ package body Gnat2Why.Expr is
                end if;
 
             when UCArray =>
-               if Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
+               if Aliasing
+                 or else Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
                  or else not Simple_Actual
                then
                   declare
@@ -4540,7 +4577,11 @@ package body Gnat2Why.Expr is
                      Formal_T : constant W_Type_Id :=
                        Get_Typ (Binders (Bind_Cnt).Content.B_Name);
                      Actual_T : constant W_Type_Id :=
-                       Type_Of_Node (Actual);
+                       (if Aliasing then
+                           EW_Abstract (Get_Ada_Node (+Type_Of_Node (Actual)))
+                        else Type_Of_Node (Actual));
+                     --  If aliasing can occur, we also need a temporary for
+                     --  the actual.
 
                      --  Variables:
 
@@ -4647,9 +4688,15 @@ package body Gnat2Why.Expr is
                end if;
 
             when DRecord =>
-               if not (Simple_Actual
-                       and then Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
-                                         Type_Of_Node (Actual)))
+
+               --  If aliasing can occur, we cannot use the variables from the
+               --  actual's split form. We need to introduce a temporary for
+               --  it.
+
+               if Aliasing
+                 or else not Simple_Actual
+                 or else not Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
+                                      Type_Of_Node (Actual))
                then
                   declare
                      Formal_T                : constant W_Type_Id :=
@@ -4658,7 +4705,7 @@ package body Gnat2Why.Expr is
                        Type_Of_Node (Actual);
 
                      Actual_Is_Split         : constant Boolean :=
-                       Simple_Actual;
+                       Simple_Actual and then not Aliasing;
                      --  The actual is split if and only if it is an
                      --  identifier.
 
