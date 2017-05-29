@@ -4062,6 +4062,10 @@ package body Gnat2Why.Subprograms is
       --  @params D a descendant of the dispatching type of E
       --  @return the primitive of D that corresponds to E
 
+      function Same_Globals (E, D : Entity_Id) return Boolean;
+      --  @params D a descendant of the dispatching type of E
+      --  @return True if E and D access the same set of global variables
+
       -----------------------------
       -- Corresponding_Primitive --
       -----------------------------
@@ -4087,6 +4091,34 @@ package body Gnat2Why.Subprograms is
          end loop;
          raise Program_Error;
       end Corresponding_Primitive;
+
+      ------------------
+      -- Same_Globals --
+      ------------------
+
+      function Same_Globals (E, D : Entity_Id) return Boolean is
+         use type Flow_Types.Flow_Id_Sets.Set;
+
+         E_Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         D_Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         E_Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+         D_Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      begin
+         --  Collect global variables potentially read and written
+
+         Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                         Classwide  => True,
+                                         Reads      => E_Read_Ids,
+                                         Writes     => E_Write_Ids);
+
+         Flow_Utility.Get_Proof_Globals (Subprogram => D,
+                                         Classwide  => True,
+                                         Reads      => D_Read_Ids,
+                                         Writes     => D_Write_Ids);
+
+         return E_Read_Ids.Union (E_Write_Ids) =
+           D_Read_Ids.Union (D_Write_Ids);
+      end Same_Globals;
 
       Ty            : constant Entity_Id := Retysp (Find_Dispatching_Type (E));
       Descendants   : Node_Sets.Set := Get_Descendant_Set (Ty);
@@ -4129,6 +4161,13 @@ package body Gnat2Why.Subprograms is
                         Args   => Dispatch_Args,
                         Typ    => Anc_Ty);
          begin
+            --  If Descendant_E has has not the same globals as E, there
+            --  should be an error in flow analysis. Do not attempt to
+            --  generate a compatibility axiom.
+
+            if not Same_Globals (E, Descendant_E) then
+               return;
+            end if;
 
             --  If E is a function, emit:
             --    for all x1 ... [<E>__dispatch Descendant.tag x1 ...].
@@ -4151,7 +4190,6 @@ package body Gnat2Why.Subprograms is
                   --  of E.
 
                begin
-
                   pragma Assert (Anc_Binders'First = Desc_Binders'First
                                  and Anc_Binders'Last = Desc_Binders'Last);
 
