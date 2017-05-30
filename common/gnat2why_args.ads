@@ -89,11 +89,6 @@ package Gnat2Why_Args is
 
    Prove_Mode : Boolean := False;
 
-   --  For debug purposes, flow analysis can be disabled entirely with the
-   --  following switch.
-
-   Debug_Proof_Only : Boolean := False;
-
    --  Enable basic debugging for gnat2why. This will dump the CFG and PDG is
    --  dot format, and print the gnatwhy3 command line.
 

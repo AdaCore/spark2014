@@ -723,7 +723,6 @@ package body Configuration is
          Flow_Extra_Debug  := CL_Switches.Flow_Debug;
          Flow_Termination  := CL_Switches.Flow_Termination;
          Flow_Show_GG      := CL_Switches.Flow_Show_GG;
-         Debug_Proof_Only  := CL_Switches.Dbg_Proof_Only;
          Continue_On_Error := CL_Switches.K;
          All_Projects      := CL_Switches.UU;
          IDE_Mode          := CL_Switches.IDE_Progress_Bar;

@@ -750,7 +750,6 @@ procedure Gnatprove with SPARK_Mode is
 
       Gnat2Why_Args.Debug_Mode := Debug;
       Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
-      Gnat2Why_Args.Debug_Proof_Only := Configuration.Debug_Proof_Only;
       Gnat2Why_Args.Flow_Generate_Contracts :=
         not Configuration.No_Global_Generation;
 

@@ -1,1 +1,1 @@
-ALL XFAIL GG: missing support for dbg-proof-only
+ALL DEAD consumes a lot of time and memory (intentionally)

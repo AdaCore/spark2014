@@ -155,7 +155,6 @@ package Configuration is
    Flow_Extra_Debug     : Boolean;
    Flow_Termination     : Boolean;
    Flow_Show_GG         : Boolean;
-   Debug_Proof_Only     : Boolean;
    Continue_On_Error    : Boolean;
    All_Projects         : Boolean;
    IDE_Mode             : Boolean;

@@ -484,10 +484,8 @@ package body Gnat2Why.Driver is
          Compute_Global_Effects (Current_Unit_Only => True);
          Timing_Phase_Completed (Timing, "globals (frontend)");
 
-         if not Gnat2Why_Args.Debug_Proof_Only then
-            Generate_Globals (GNAT_Root);
-            Timing_Phase_Completed (Timing, "globals (partial)");
-         end if;
+         Generate_Globals (GNAT_Root);
+         Timing_Phase_Completed (Timing, "globals (partial)");
 
       else
 
@@ -503,11 +501,9 @@ package body Gnat2Why.Driver is
 
          --  Do some flow analysis
 
-         if not Gnat2Why_Args.Debug_Proof_Only then
-            Flow_Analyse_CUnit (GNAT_Root);
-            Generate_Assumptions;
-            Timing_Phase_Completed (Timing, "flow analysis");
-         end if;
+         Flow_Analyse_CUnit (GNAT_Root);
+         Generate_Assumptions;
+         Timing_Phase_Completed (Timing, "flow analysis");
 
          --  Start the translation to Why
 
