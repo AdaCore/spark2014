@@ -123,7 +123,7 @@ package Flow_Refinement is
    --  Returns True iff the node N is visible from the scope S
 
    function Is_Visible (Target_Scope : Flow_Scope;
-                        S            : Flow_Scope)
+                        Looking_From : Flow_Scope)
                         return Boolean;
    --  Returns True iff Target_Scope is visible from the scope S
 

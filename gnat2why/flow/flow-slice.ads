@@ -62,7 +62,6 @@ package Flow.Slice is
       Conditional_Calls     : out Node_Sets.Set;
       Local_Variables       : out Node_Sets.Set;
       Local_Ghost_Variables : out Node_Sets.Set;
-      Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    with Pre  => (FA.Generating_Globals and then
                    FA.Is_Generative and then

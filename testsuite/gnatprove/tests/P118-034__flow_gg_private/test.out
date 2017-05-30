@@ -1,0 +1,63 @@
+Generated contracts for f_5
+   Global =>
+      Input =>
+         I
+   Refined_Global =>
+      Input =>
+         I
+Generated contracts for f_6
+   Global =>
+      Input =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         G
+Generated contracts for p_1
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Proof_In =>
+         I
+      Input =>
+         H
+      In_Out =>
+         G
+Generated contracts for f_1
+   Global =>
+      Input =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         H
+         I
+         G
+Generated contracts for f_2
+   Global =>
+      Input =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         H
+         I
+         G
+Generated contracts for f_3
+   Global =>
+      Input =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         G
+Generated contracts for f_4
+   Global =>
+      Input =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         G
+Generated contracts for a
+a.adb:10:14: medium: overflow check might fail
+a.adb:12:22: medium: assertion might fail, cannot prove Priv.I > 0
+a.adb:15:38: medium: overflow check might fail
+a.ads:2:22: warning: no procedure exists that can initialize abstract state "A.State_A"
+a.ads:5:19: info: initialization of "X" proved

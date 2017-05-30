@@ -24,6 +24,7 @@
 
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 with Sem_Util;         use Sem_Util;
+with SPARK_Xrefs;      use SPARK_Xrefs;
 
 package body Common_Containers is
 
@@ -109,7 +110,9 @@ package body Common_Containers is
    begin
       return X : Name_Sets.Set := Name_Sets.Empty_Set do
          for E of S loop
-            X.Insert (To_Entity_Name (E));
+            X.Insert (if Present (E)
+                      then To_Entity_Name (E)
+                      else To_Entity_Name (Name_Of_Heap_Variable));
          end loop;
       end return;
    end To_Name_Set;

@@ -162,9 +162,11 @@ package body SPARK_Register is
             end;
          end if;
 
-         --  Explicitly traverse rewritten subprogram calls
+         --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
+         --  pragma Debug, which should be really ignored but might come from
+         --  the frontend globals).
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N)) in N_Subprogram_Call
+           and then Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma
          then
             Process_Tree (Original_Node (N));
          end if;

@@ -117,6 +117,12 @@ package Gnat2Why_Args is
 
    Flow_Termination_Proof : Boolean := False;
 
+   --  This debug flag will show all generated contracts in a human-readable
+   --  form. The main use are a few tests where we want to observe that GG is
+   --  working correctly.
+
+   Flow_Show_GG : Boolean := False;
+
    --  Generate guards for axioms of functions to avoid having an unsound axiom
    --  when a function has an inconsistent contract.
 

@@ -1,0 +1,68 @@
+Generated contracts for test_01
+   Global =>
+      Input =>
+         A.State
+      In_Out =>
+         A.Ext_State
+   Refined_Global =>
+      Input =>
+         Cache
+         Sensor
+      In_Out =>
+         Actuator
+Generated contracts for test_02
+   Global =>
+      In_Out =>
+         A.Ext_State
+   Refined_Global =>
+      Input =>
+         Sensor
+      Output =>
+         Actuator
+Generated contracts for a
+   Initializes =>
+      A.State
+a.adb:7:04: info: initialization of "Cache" constituent of "State" proved
+a.adb:14:04: info: initialization of "Actuator" constituent of "Ext_State" proved
+a.ads:8:14: info: initialization of "Actuator" constituent of "Ext_State" proved
+Generated contracts for p_read_state
+   Global =>
+      Input =>
+         Priv.State
+   Refined_Global =>
+      Input =>
+         Flag_3
+Generated contracts for p_read_atomic_state
+   Global =>
+      In_Out =>
+         Priv.Atomic_State
+   Refined_Global =>
+      In_Out =>
+         Flag_4
+Generated contracts for priv
+b-priv.ads:2:24: warning: no procedure exists that can initialize abstract state "Priv.State" constituent of "B.State"
+b-priv.ads:6:28: info: initialization of "X" proved
+b-priv.ads:7:35: info: initialization of "X" proved
+Generated contracts for read_state
+   Global =>
+      Input =>
+         B.State
+   Refined_Global =>
+      Input =>
+         Flag_1
+         Priv.State
+Generated contracts for read_atomic_state
+   Global =>
+      In_Out =>
+         B.Atomic_State
+   Refined_Global =>
+      Input =>
+         Flag_2
+      In_Out =>
+         Priv.Atomic_State
+Generated contracts for b
+b.adb:15:12: info: initialization of "X" proved
+b.adb:23:12: info: initialization of "X" proved
+b.ads:2:23: warning: no procedure exists that can initialize abstract state "B.State"
+b.ads:6:26: info: initialization of "X" proved
+b.ads:7:33: info: initialization of "X" proved

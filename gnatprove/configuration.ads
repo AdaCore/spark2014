@@ -74,6 +74,7 @@ package Configuration is
       --  The list of files to be compiled
       Flow_Debug           : aliased Boolean;
       Flow_Termination     : aliased Boolean;
+      Flow_Show_GG         : aliased Boolean;
       GPR_Project_Path     : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
       IDE_Progress_Bar     : aliased Boolean;
@@ -153,6 +154,7 @@ package Configuration is
    Minimal_Compile      : Boolean;
    Flow_Extra_Debug     : Boolean;
    Flow_Termination     : Boolean;
+   Flow_Show_GG         : Boolean;
    Debug_Proof_Only     : Boolean;
    Continue_On_Error    : Boolean;
    All_Projects         : Boolean;

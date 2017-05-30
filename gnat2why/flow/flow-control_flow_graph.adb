@@ -3785,6 +3785,7 @@ package body Flow.Control_Flow_Graph is
 
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Package_Spec, Initializes_Scope);
+      --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -5770,6 +5771,7 @@ package body Flow.Control_Flow_Graph is
                   Reads     : Flow_Id_Sets.Set;
                   Writes    : Flow_Id_Sets.Set;
                   Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
+
                begin
                   Get_Globals (Subprogram => FA.Analyzed_Entity,
                                Scope      => FA.B_Scope,

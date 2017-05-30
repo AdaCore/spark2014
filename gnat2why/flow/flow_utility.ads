@@ -708,6 +708,9 @@ is
    --  Returns the Flow_Id of the closest encapsulating state of F that
    --  Is_Visible from Scope.
 
+   function Parent_State (E : Entity_Id) return Entity_Id;
+   --  Wrapper for Encapsulating state that does not crash on formals
+
    function Replace_Flow_Ids
      (Of_This   : Entity_Id;
       With_This : Entity_Id;

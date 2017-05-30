@@ -326,8 +326,22 @@ package Flow is
    procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id);
    --  Flow analyses the current compilation unit
 
-   procedure Generate_Flow_Globals (GNAT_Root : Node_Id);
+   procedure Generate_Globals (GNAT_Root : Node_Id);
    --  Generate flow globals for the current compilation unit
+
+   function Flow_Analyse_Entity
+     (E                  : Entity_Id;
+      Generating_Globals : Boolean)
+      return Flow_Analysis_Graphs
+   with Pre => Ekind (E) in E_Function       |
+                            E_Procedure      |
+                            E_Task_Type      |
+                            E_Protected_Type |
+                            E_Entry          |
+                            E_Package        |
+                            E_Package_Body;
+   --  Flow analyse entity E. Do nothing for entities with no body or not in
+   --  SPARK 2014.
 
 private
 

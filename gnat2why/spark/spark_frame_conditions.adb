@@ -471,6 +471,7 @@ package body SPARK_Frame_Conditions is
       --  those, instead return empty sets.
 
       if Is_Subprogram_Or_Entry (E)
+        and then Ekind (E) /= E_Entry_Family
         and then Is_Abstract_Subprogram (E_Alias)
       then
          return Name_Sets.Empty_Set;
@@ -515,6 +516,7 @@ package body SPARK_Frame_Conditions is
       --  those, which do not have effects, instead return the empty set.
 
       if Is_Subprogram_Or_Entry (E)
+        and then Ekind (E) /= E_Entry_Family
         and then Is_Abstract_Subprogram (E_Alias)
       then
          return Name_Sets.Empty_Set;
@@ -523,7 +525,8 @@ package body SPARK_Frame_Conditions is
       --  Go through the reads and check if the entities corresponding to
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
-
+      --  ??? call to Computed_Reads repeats what is already done here; this
+      --  should be refactored.
       for E_N of Computed_Reads (E, Include_Constants => False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
@@ -1059,10 +1062,9 @@ package body SPARK_Frame_Conditions is
    -------------------------------------
 
    procedure Collect_Direct_Computed_Globals
-     (E                  : Entity_Id;
-      Inputs             : out Name_Sets.Set;
-      Outputs            : out Name_Sets.Set;
-      Called_Subprograms : out Name_Sets.Set)
+     (E       :     Entity_Id;
+      Inputs  : out Name_Sets.Set;
+      Outputs : out Name_Sets.Set)
    is
       pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
       --  Alias is empty for entries and meaningless for entry families
@@ -1073,28 +1075,23 @@ package body SPARK_Frame_Conditions is
          then Ultimate_Alias (E)
          else E);
 
-      E_Name : Entity_Name;
-
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
       if Is_Subprogram_Or_Entry (E)
+        and then Ekind (E) /= E_Entry_Family
         and then Is_Abstract_Subprogram (E_Alias)
       then
          --  Initialize to empty sets and return
-         Inputs             := Name_Sets.Empty_Set;
-         Outputs            := Name_Sets.Empty_Set;
-         Called_Subprograms := Name_Sets.Empty_Set;
+         Inputs  := Name_Sets.Empty_Set;
+         Outputs := Name_Sets.Empty_Set;
 
          return;
       end if;
 
-      E_Name := To_Entity_Name (E_Alias);
-
-      Called_Subprograms := Calls (E_Name);
-      Inputs             := Computed_Reads (E, Include_Constants => False);
-      Outputs            := Computed_Writes (E);
+      Inputs  := Computed_Reads (E, Include_Constants => False);
+      Outputs := Computed_Writes (E);
 
       --  Add variables written to variables read
       --  ??? for composite variables fine, but why for simple ones?

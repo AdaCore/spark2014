@@ -1552,64 +1552,12 @@ package body Flow_Utility is
         and then Use_Deduced_Globals
       then
 
-         if GG_Exist (Subprogram) then
-            --  We don't have a global or a depends aspect so we look at the
-            --  generated globals.
+         --  We don't have a global or a depends aspect so we look at the
+         --  generated globals.
 
-            Debug ("using Pavlos globals");
+         Debug ("using generated globals");
 
-            GG_Get_Globals (Subprogram, Scope,
-                            Proof_Ins, Reads, Writes);
-
-            Debug ("proof ins", Proof_Ins);
-            Debug ("reads",     Reads);
-            Debug ("writes",    Writes);
-
-         --  We don't have a global or a depends aspect and we don't have
-         --  generated globals, so we should look at the computed globals...
-
-         else
-            Debug ("using Yannick globals");
-
-            --  ??? we should not enter here, Yannick's globals should be
-            --  captured in phase 1 and never touched later; we should also
-            --  do not compute their transitive closure in both phases.
-
-            declare
-               ALI_Reads  : constant Name_Sets.Set :=
-                 Computed_Reads (Subprogram,
-                                 Include_Constants => True);
-               ALI_Writes : constant Name_Sets.Set :=
-                 Computed_Writes (Subprogram);
-
-               F : Flow_Id;
-            begin
-               for R of ALI_Reads loop
-                  F := Get_Flow_Id (R, In_View);
-
-                  if Is_Variable (F) then
-                     Reads.Include (F);
-                  end if;
-               end loop;
-
-               Debug ("reads", Reads);
-
-               for W of ALI_Writes loop
-                  --  This is not a mistake, we must assume that all values
-                  --  written may also not change or that they are only
-                  --  partially updated.
-                  --
-                  --  This also takes care of discriminants as every out is
-                  --  really an in out.
-                  F := Get_Flow_Id (W, Out_View);
-
-                  Reads.Include (Change_Variant (F, In_View));
-                  Writes.Include (F);
-               end loop;
-
-               Debug ("writes", Writes);
-            end;
-         end if;
+         GG_Get_Globals (Subprogram, Scope, Proof_Ins, Reads, Writes);
 
       --  We don't have user globals and we're not allowed to use computed
       --  globals (i.e. we're trying to compute globals).
@@ -2210,6 +2158,7 @@ package body Flow_Utility is
                          Reads               => Global_Reads,
                          Writes              => Global_Writes,
                          Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+
             if not Ctx.Fold_Functions then
                --  If we fold functions we're interested in real world,
                --  otherwise (this case) we're interested in the proof world
@@ -3012,6 +2961,10 @@ package body Flow_Utility is
       FS   : Flow_Id_Sets.Set;
 
    begin
+      --  This routine is mirrored in Variable_Inputs_Of_Constants;
+      --  any change here should be reflected there.
+      --  ??? ideally, this should be refactored
+
       if Is_Imported (E) then
          --  If we are dealing with an imported constant, we consider this to
          --  have potentially variable input.
@@ -4947,5 +4900,16 @@ package body Flow_Utility is
 
       return False;
    end Is_Empty_Record_Type;
+
+   ------------------
+   -- Parent_State --
+   ------------------
+
+   function Parent_State (E : Entity_Id) return Entity_Id is
+     (if Ekind (E) in E_Abstract_State |
+                      E_Constant       |
+                      E_Variable
+      then Encapsulating_State (E)
+      else Empty);
 
 end Flow_Utility;

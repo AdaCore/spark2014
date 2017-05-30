@@ -94,10 +94,9 @@ package SPARK_Frame_Conditions is
    --  Extract xref information from an ALI file
 
    procedure Collect_Direct_Computed_Globals
-     (E                  : Entity_Id;
-      Inputs             : out Name_Sets.Set;
-      Outputs            : out Name_Sets.Set;
-      Called_Subprograms : out Name_Sets.Set)
+     (E       :     Entity_Id;
+      Inputs  : out Name_Sets.Set;
+      Outputs : out Name_Sets.Set)
    with Pre  => Ekind (E) in Entry_Kind
                            | E_Function
                            | E_Procedure

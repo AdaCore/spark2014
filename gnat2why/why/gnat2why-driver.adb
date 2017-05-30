@@ -482,9 +482,11 @@ package body Gnat2Why.Driver is
          --  Compute basic globals. These will be used for subprograms
          --  that are NOT in SPARK.
          Compute_Global_Effects (Current_Unit_Only => True);
+         Timing_Phase_Completed (Timing, "globals (frontend)");
 
          if not Gnat2Why_Args.Debug_Proof_Only then
-            Generate_Flow_Globals (GNAT_Root);
+            Generate_Globals (GNAT_Root);
+            Timing_Phase_Completed (Timing, "globals (partial)");
          end if;
 
       else

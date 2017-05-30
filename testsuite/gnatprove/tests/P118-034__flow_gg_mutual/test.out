@@ -1,0 +1,226 @@
+Generated contracts for terminal_a
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Output =>
+         Flag_A_0
+Generated contracts for do_a_b
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+   Refined_Global =>
+      In_Out =>
+         B.State_B
+      Output =>
+         Flag_A_1
+Generated contracts for do_a_c
+   Global =>
+      In_Out =>
+         A.State_A
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         C.State_C
+      Output =>
+         Flag_A_2
+Generated contracts for do_a_b_a
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+   Refined_Global =>
+      In_Out =>
+         Flag_A_4
+         Flag_A_5
+         Flag_A_0
+         Flag_A_6
+         Flag_A_1
+         B.State_B
+         Flag_A_7
+         Flag_A_2
+         Flag_A_3
+Generated contracts for do_a_b_c
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         B.State_B
+         C.State_C
+      Output =>
+         Flag_A_4
+Generated contracts for do_a_c_a
+   Global =>
+      In_Out =>
+         A.State_A
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         Flag_A_4
+         Flag_A_5
+         Flag_A_0
+         Flag_A_6
+         Flag_A_1
+         Flag_A_7
+         Flag_A_2
+         C.State_C
+         Flag_A_3
+Generated contracts for do_a_b_c_a
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         Flag_A_4
+         Flag_A_5
+         Flag_A_0
+         Flag_A_6
+         Flag_A_1
+         B.State_B
+         Flag_A_7
+         Flag_A_2
+         C.State_C
+         Flag_A_3
+Generated contracts for do_a_b_c_b_a
+   Global =>
+      In_Out =>
+         A.State_A
+         B.State_B
+         C.State_C
+   Refined_Global =>
+      In_Out =>
+         Flag_A_4
+         Flag_A_5
+         Flag_A_0
+         Flag_A_6
+         Flag_A_1
+         B.State_B
+         Flag_A_7
+         Flag_A_2
+         C.State_C
+         Flag_A_3
+Generated contracts for a
+   Initializes =>
+      A.State_A
+a.adb:8:04: info: initialization of "Flag_A_0" constituent of "State_A" proved
+a.adb:9:04: info: initialization of "Flag_A_1" constituent of "State_A" proved
+a.adb:10:04: info: initialization of "Flag_A_2" constituent of "State_A" proved
+a.adb:11:04: info: initialization of "Flag_A_3" constituent of "State_A" proved
+a.adb:12:04: info: initialization of "Flag_A_4" constituent of "State_A" proved
+a.adb:13:04: info: initialization of "Flag_A_5" constituent of "State_A" proved
+a.adb:14:04: info: initialization of "Flag_A_6" constituent of "State_A" proved
+a.adb:15:04: info: initialization of "Flag_A_7" constituent of "State_A" proved
+a.ads:4:14: info: initialization of "Flag_A_0" constituent of "State_A" proved
+a.ads:5:14: info: initialization of "Flag_A_1" constituent of "State_A" proved
+a.ads:6:14: info: initialization of "Flag_A_2" constituent of "State_A" proved
+a.ads:8:14: info: initialization of "Flag_A_4" constituent of "State_A" proved
+Generated contracts for terminal_b
+   Global =>
+      In_Out =>
+         B.State_B
+   Refined_Global =>
+      Output =>
+         Flag_B_0
+Generated contracts for do_b_a
+   Global =>
+      In_Out =>
+         B.State_B
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         A.State_A
+      Output =>
+         Flag_B_1
+Generated contracts for do_b_c
+   Global =>
+      In_Out =>
+         C.State_C
+         B.State_B
+   Refined_Global =>
+      In_Out =>
+         C.State_C
+      Output =>
+         Flag_B_2
+Generated contracts for do_b_c_a
+   Global =>
+      In_Out =>
+         C.State_C
+         B.State_B
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         C.State_C
+         A.State_A
+      Output =>
+         Flag_B_3
+Generated contracts for do_b_c_b_a
+   Global =>
+      In_Out =>
+         C.State_C
+         B.State_B
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         C.State_C
+         Flag_B_0
+         Flag_B_1
+         Flag_B_2
+         Flag_B_3
+         A.State_A
+         Flag_B_4
+Generated contracts for b
+   Initializes =>
+      B.State_B
+b.adb:8:04: info: initialization of "Flag_B_0" constituent of "State_B" proved
+b.adb:9:04: info: initialization of "Flag_B_1" constituent of "State_B" proved
+b.adb:10:04: info: initialization of "Flag_B_2" constituent of "State_B" proved
+b.adb:11:04: info: initialization of "Flag_B_3" constituent of "State_B" proved
+b.adb:12:04: info: initialization of "Flag_B_4" constituent of "State_B" proved
+b.ads:4:14: info: initialization of "Flag_B_0" constituent of "State_B" proved
+b.ads:5:14: info: initialization of "Flag_B_1" constituent of "State_B" proved
+b.ads:6:14: info: initialization of "Flag_B_2" constituent of "State_B" proved
+b.ads:7:14: info: initialization of "Flag_B_3" constituent of "State_B" proved
+Generated contracts for terminal_c
+   Global =>
+      In_Out =>
+         C.State_C
+   Refined_Global =>
+      Output =>
+         Flag_C_0
+Generated contracts for do_c_a
+   Global =>
+      In_Out =>
+         C.State_C
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         A.State_A
+      Output =>
+         Flag_C_1
+Generated contracts for do_c_b_a
+   Global =>
+      In_Out =>
+         B.State_B
+         C.State_C
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         B.State_B
+         A.State_A
+      Output =>
+         Flag_C_2
+Generated contracts for c
+   Initializes =>
+      C.State_C
+c.adb:8:04: info: initialization of "Flag_C_0" constituent of "State_C" proved
+c.adb:9:04: info: initialization of "Flag_C_1" constituent of "State_C" proved
+c.adb:10:04: info: initialization of "Flag_C_2" constituent of "State_C" proved
+c.ads:4:14: info: initialization of "Flag_C_0" constituent of "State_C" proved
+c.ads:5:14: info: initialization of "Flag_C_1" constituent of "State_C" proved
+c.ads:6:14: info: initialization of "Flag_C_2" constituent of "State_C" proved

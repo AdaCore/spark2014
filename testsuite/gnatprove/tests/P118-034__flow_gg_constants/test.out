@@ -1,0 +1,33 @@
+Generated contracts for add
+   Global =>
+   Refined_Global =>
+Generated contracts for test_01
+   Global =>
+   Refined_Global =>
+Generated contracts for test_02
+   Global =>
+      Input =>
+         VI1
+   Refined_Global =>
+      Input =>
+         VI1
+Generated contracts for a
+   Initializes =>
+      Var
+      VI1
+a.adb:4:55: medium: overflow check might fail
+a.adb:6:65: medium: overflow check might fail
+a.adb:10:10: medium: overflow check might fail
+a.adb:26:30: info: initialization of "Var" proved
+a.adb:36:22: info: overflow check proved (CVC4: 1 VC)
+a.adb:36:27: info: overflow check proved (CVC4: 1 VC)
+a.adb:36:32: info: overflow check proved (CVC4: 1 VC)
+a.adb:36:37: info: overflow check proved (CVC4: 1 VC)
+a.adb:36:42: info: overflow check proved (CVC4: 1 VC)
+a.adb:36:47: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:22: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:27: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:32: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:37: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:42: info: overflow check proved (CVC4: 1 VC)
+a.adb:48:47: info: overflow check proved (CVC4: 1 VC)

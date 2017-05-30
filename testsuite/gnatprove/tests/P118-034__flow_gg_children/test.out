@@ -1,0 +1,92 @@
+Generated contracts for p4
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Output =>
+         G
+Generated contracts for p5
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         A.State_A
+Generated contracts for p6
+   Global =>
+      Input =>
+         A.State_A
+      Output =>
+         Child.State_B
+   Refined_Global =>
+      Input =>
+         G
+      Output =>
+         J
+         H
+Generated contracts for p7
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      In_Out =>
+         A.State_A
+a-child.adb:15:07: "A.State_A" must be listed in the Global aspect of "P5" (SPARK RM 6.1.4(13))
+a-child.adb:16:07: warning: no Global contract available for "P4"
+a-child.adb:16:07: warning: assuming "P4" has no effect on global items
+a-child.adb:29:07: "A.State_A" must be listed in the Global aspect of "P7" (SPARK RM 6.1.4(13))
+a-child.adb:30:07: warning: no Global contract available for "P5"
+a-child.adb:30:07: warning: assuming "P5" has no effect on global items
+a-child.ads:4:14: info: initialization of "G" constituent of "State_A" proved
+a-child.ads:8:14: info: initialization of "J" constituent of "State_B" proved
+a-child.ads:8:14: info: initialization of "H" constituent of "State_B" proved
+Generated contracts for p1
+   Global =>
+      Output =>
+         A.State_A
+   Refined_Global =>
+      Output =>
+         I
+         G
+Generated contracts for p2
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Input =>
+         G
+      Output =>
+         I
+Generated contracts for p3
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Output =>
+         I
+Generated contracts for p8
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Output =>
+         G
+Generated contracts for a
+a.ads:4:14: info: initialization of "I" constituent of "State_A" proved
+a.ads:4:14: info: initialization of "G" constituent of "State_A" proved
+a.ads:6:14: info: initialization of "I" constituent of "State_A" proved
+a.ads:8:14: info: initialization of "I" constituent of "State_A" proved
+a.ads:10:14: info: initialization of "G" constituent of "State_A" proved
+Generated contracts for child
+b-child.adb:20:52: info: initialization of "H" constituent of "State_B" proved
+b-child.adb:20:55: info: initialization of "J" constituent of "State_B" proved
+b-child.ads:4:14: warning: unused initial value of "G" constituent of "State_A"
+b-child.ads:4:43: warning: "B.State_A" is not modified, could be INPUT
+b-child.ads:4:43: low: unused global "B.State_A"
+Generated contracts for b
+b.adb:6:52: info: initialization of "G" constituent of "State_A" proved
+b.adb:6:55: info: initialization of "I" constituent of "State_A" proved
+b.adb:14:51: info: initialization of "I" constituent of "State_A" proved
+b.adb:20:51: info: initialization of "I" constituent of "State_A" proved
+b.adb:26:51: info: initialization of "G" constituent of "State_A" proved
+gnatprove: error during flow analysis and proof

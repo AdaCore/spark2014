@@ -30,11 +30,20 @@ package body Flow_Generated_Globals.ALI_Serialization is
    --  Special dummy value for serialization which is not expected to represent
    --  any valid entity name, yet it must reside in the Entity_Name type.
 
-   Null_Global_Info : constant Global_Phase_1_Info :=
-     (Name   => Invalid_Entity_Name,
-      Kind   => Analyzed_Subject_Kind'First,
-      Origin => Globals_Origin_T'First,
-      others => <>);
+   Inavlid_Constant_Calls : constant Name_Constant_Callees :=
+     (Const   => Invalid_Entity_Name,
+      Callees => Name_Lists.Empty_List);
+   --  Dummy value required only for the serialization API
+
+   Null_Partial_Contract : constant Partial_Contract :=
+     (Name          => Invalid_Entity_Name,
+      Local         => Boolean'First,
+      Kind          => Entity_Kind'First,
+      Origin        => Globals_Origin_T'First,
+      Has_Terminate => Boolean'First,
+      Nonreturning  => Boolean'First,
+      Nonblocking   => Boolean'First,
+      others        => <>);
    --  Dummy value required only for the serialization API
 
    Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry :=
@@ -53,7 +62,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 others => <>),
 
       EK_Globals            => (Kind            => EK_Globals,
-                                The_Global_Info => Null_Global_Info),
+                                The_Global_Info => Null_Partial_Contract),
 
       EK_Protected_Instance => (Kind         => EK_Protected_Instance,
                                 The_Variable => Invalid_Entity_Name,
@@ -68,22 +77,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                    Instances => 1,
                                    Node      => Empty)),
 
-      EK_Tasking_Info       => (Kind       => EK_Tasking_Info,
-                                The_Entity => Invalid_Entity_Name,
-                                others     => <>),
-
       EK_Max_Queue_Length   => (Kind                 => EK_Max_Queue_Length,
                                 The_Entry            => Invalid_Entity_Name,
                                 The_Max_Queue_Length => Nat'First),
-
-      EK_Nonblocking        => (Kind   => EK_Nonblocking,
-                                others => <>),
-
-      EK_Nonreturning       => (Kind   => EK_Nonreturning,
-                                others => <>),
-
-      EK_Terminating        => (Kind   => EK_Terminating,
-                                others => <>),
 
       EK_Direct_Calls       => (Kind       => EK_Direct_Calls,
                                 The_Caller => Invalid_Entity_Name,
@@ -92,6 +88,19 @@ package body Flow_Generated_Globals.ALI_Serialization is
    --  Dummy value required only for the serialization API
 
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
+
+   procedure Serialize is new Serialisation.Serialize_List
+     (T              => Name_Lists.List,
+      E              => Entity_Name,
+      Cursor         => Name_Lists.Cursor,
+      Null_Container => Name_Lists.Empty_List,
+      Null_Element   => Invalid_Entity_Name,
+      First          => Name_Lists.First,
+      Next           => Name_Lists.Next,
+      Length         => Name_Lists.Length,
+      Element        => Name_Lists.Element,
+      Append         => Name_Lists.Append,
+      Serialize      => Serialize);
 
    procedure Serialize is new Serialize_Set
      (T                => Name_Sets.Set,
@@ -108,9 +117,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
    procedure Serialize (A : in out Archive; V : in out Task_Object);
 
-   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
-
-   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info);
+   procedure Serialize (A : in out Archive; V : in out Partial_Contract);
 
    ---------------
    -- Serialize --
@@ -142,34 +149,100 @@ package body Flow_Generated_Globals.ALI_Serialization is
       end if;
    end Serialize;
 
-   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
-   begin
-      for Kind in Tasking_Info_Kind loop
-         Serialize (A, V (Kind), Kind'Img);
-      end loop;
-   end Serialize;
-
-   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
+   procedure Serialize (A : in out Archive; V : in out Partial_Contract) is
       procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Analyzed_Subject_Kind);
+        (T => Entity_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Boolean);
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Globals_Origin_T);
 
+      procedure Serialize
+        (A     : in out Archive;
+         G     : in out Global_Names;
+         Label : String);
+
+      procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
+
+      procedure Serialize (A : in out Archive;
+                           V : in out Name_Constant_Callees);
+
+      ---------------
+      -- Serialize --
+      ---------------
+
+      procedure Serialize
+        (A     : in out Archive;
+         G     : in out Global_Names;
+         Label : String)
+      is
+      begin
+         Serialize (A, G.Proof_Ins, Label & "proof_in");
+         Serialize (A, G.Inputs,    Label & "input");
+         Serialize (A, G.Outputs,   Label & "output");
+      end Serialize;
+
+      procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
+      begin
+         for Kind in Tasking_Info_Kind loop
+            Serialize (A, V (Kind), Kind'Img);
+         end loop;
+      end Serialize;
+
+      procedure Serialize (A : in out Archive;
+                           V : in out Name_Constant_Callees)
+      is
+      begin
+         Serialize (A, V.Const);
+         Serialize (A, V.Callees);
+      end Serialize;
+
+      procedure Serialize is new Serialisation.Serialize_List
+        (T              => Name_Constant_Callees_List.List,
+         E              => Name_Constant_Callees,
+         Cursor         => Name_Constant_Callees_List.Cursor,
+         Null_Container => Name_Constant_Callees_List.Empty_List,
+         Null_Element   => Inavlid_Constant_Calls,
+         First          => Name_Constant_Callees_List.First,
+         Next           => Name_Constant_Callees_List.Next,
+         Element        => Name_Constant_Callees_List.Element,
+         Append         => Name_Constant_Callees_List.Append,
+         Length         => Name_Constant_Callees_List.Length,
+         Serialize      => Serialize);
+
+   --  Start of processing for Serialize
+
    begin
       Serialize (A, V.Name);
+      Serialize (A, V.Local, "local");
       Serialize (A, V.Kind);
       Serialize (A, V.Origin);
-      Serialize (A, V.Inputs_Proof,          "var_proof");
-      Serialize (A, V.Inputs,                "var_in");
-      Serialize (A, V.Outputs,               "var_out");
-      Serialize (A, V.Proof_Calls,           "calls_proof");
-      Serialize (A, V.Definite_Calls,        "calls");
-      Serialize (A, V.Conditional_Calls,     "calls_conditional");
-      Serialize (A, V.Local_Variables,       "local_var");
-      Serialize (A, V.Local_Ghost_Variables, "local_ghost");
-      Serialize (A, V.Local_Subprograms,     "local_sub");
-      if V.Kind in Kind_Package | Kind_Package_Body then
-         Serialize (A, V.Local_Definite_Writes, "local_init");
+      Serialize (A, V.Globals.Proper,  "proper_");  -- ??? replace _ with :
+      Serialize (A, V.Globals.Refined, "refined_");
+      if V.Kind = E_Package then
+         Serialize (A, V.Globals.Initializes, "initializes");
+      end if;
+      Serialize (A, V.Globals.Calls.Proof_Calls,       "calls_proof");
+      Serialize (A, V.Globals.Calls.Definite_Calls,    "calls");
+      Serialize (A, V.Globals.Calls.Conditional_Calls, "calls_conditional");
+      Serialize (A, V.Local_Variables,         "local_var");
+      Serialize (A, V.Local_Ghost_Variables,   "local_ghost");
+
+      Serialize (A, V.Constant_Calls);
+
+      if V.Kind in Entry_Kind
+                 | E_Function
+                 | E_Procedure
+                 | E_Task_Type
+                 | E_Package
+      then
+         --  ??? use Is_Proper_Callee here
+         if V.Kind /= E_Task_Type then
+            Serialize (A, V.Has_Terminate);
+            Serialize (A, V.Nonreturning);
+            Serialize (A, V.Nonblocking);
+         end if;
+         Serialize (A, V.Tasking);
       end if;
    end Serialize;
 
@@ -182,19 +255,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Int);
-
-      procedure Serialize is new Serialisation.Serialize_List
-        (T              => Name_Lists.List,
-         E              => Entity_Name,
-         Cursor         => Name_Lists.Cursor,
-         Null_Container => Name_Lists.Empty_List,
-         Null_Element   => Invalid_Entity_Name,
-         First          => Name_Lists.First,
-         Next           => Name_Lists.Next,
-         Length         => Name_Lists.Length,
-         Element        => Name_Lists.Element,
-         Append         => Name_Lists.Append,
-         Serialize      => Serialize);
 
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
 
@@ -243,22 +303,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
             Serialize (A, V.The_Type);
             Serialize (A, V.The_Object);
 
-         when EK_Tasking_Info =>
-            Serialize (A, V.The_Entity);
-            Serialize (A, V.The_Tasking_Info);
-
          when EK_Max_Queue_Length =>
             Serialize (A, V.The_Entry);
             Serialize (A, V.The_Max_Queue_Length);
-
-         when EK_Nonblocking =>
-            Serialize (A, V.The_Nonblocking_Subprograms);
-
-         when EK_Nonreturning =>
-            Serialize (A, V.The_Nonreturning_Subprograms);
-
-         when EK_Terminating =>
-            Serialize (A, V.The_Terminating_Subprograms);
 
          when EK_Direct_Calls =>
             Serialize (A, V.The_Caller);

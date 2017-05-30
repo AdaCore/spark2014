@@ -7,8 +7,10 @@ extension.ads:9:04: info: implicit function contract not available for proof ("L
 extension.ads:9:04: info: implicit function contract not available for proof ("Length" may not return)
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
+main.adb:7:11: medium: "the heap" might not be initialized after elaboration of main program "Main"
 main.adb:14:04: info: initialization of "N" proved
 main.adb:16:30: info: initialization of "Tag_V" proved
+main.adb:19:06: warning: unused assignment
 main.adb:19:15: info: initialization of "Tag_V" proved
 main.adb:26:21: info: initialization of "Tag_V" proved
 main.adb:27:30: info: precondition proved (CVC4: 1 VC)

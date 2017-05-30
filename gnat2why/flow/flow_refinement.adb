@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Lib;                    use Lib;
 with Nlists;                 use Nlists;
 with Output;                 use Output;
 with Sem_Aux;                use Sem_Aux;
@@ -44,7 +45,7 @@ package body Flow_Refinement is
    ----------------
 
    function Is_Visible (Target_Scope : Flow_Scope;
-                        S            : Flow_Scope)
+                        Looking_From : Flow_Scope)
                         return Boolean
    is
       --  Returns True iff the target scope is visible from S. We do this by
@@ -78,6 +79,8 @@ package body Flow_Refinement is
       --  The visibility is the same as before, i.e.
       --     S.Section = Enclosing_Scope (S).Section
       --  unless S is a private descendant, in which case it is always "priv".
+
+      S : Flow_Scope renames Looking_From;
 
       Context : Flow_Scope;
    begin
@@ -174,7 +177,18 @@ package body Flow_Refinement is
    -------------------------
 
    function Is_Globally_Visible (N : Node_Id) return Boolean is
-      (Is_Visible (N, Null_Flow_Scope));
+
+      Looking_Scop : constant Flow_Scope :=
+        (if Is_Child_Unit (Main_Unit_Entity)
+         then Get_Flow_Scope (Main_Unit_Entity)
+         else Null_Flow_Scope);
+      --  External scope for deciding "global" visibility of N
+      --  ??? needs more testing for nodes in child units, e.g. bodies of child
+      --  subprograms
+
+   begin
+      return Is_Visible (N, Looking_Scop);
+   end Is_Globally_Visible;
 
    ------------------------------
    -- Get_Enclosing_Flow_Scope --
@@ -386,11 +400,25 @@ package body Flow_Refinement is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
 
    begin
+      --  Pretend that expression functions declared in package spec are in
+      --  package body.
+      --  ??? There are other places in code where we also took this decision
+      if Is_Expression_Function (E) then
+         declare
+            Scop : constant Flow_Scope := Get_Flow_Scope (E);
+
+         begin
+            return No (Scop)
+              or else Is_Visible (Body_Scope (Get_Flow_Scope (E)), S);
+         end;
+
       --  To see the refinement there must be some body and it must be visible
       --  (which is never the case if we look from the Standard scope).
-      return
-        Present (Body_E)
-        and then Is_Visible (Body_E, S);
+
+      else
+         return Present (Body_E)
+           and then Is_Visible (Get_Flow_Scope (Body_E), S);
+      end if;
    end Subprogram_Refinement_Is_Visible;
 
    ---------------------------------
@@ -459,40 +487,47 @@ package body Flow_Refinement is
 
       procedure Expand (E : Entity_Id) is
       begin
-         case Ekind (E) is
-            when E_Abstract_State =>
-               declare
-                  Possible_Hidden_Components : Boolean := False;
-               begin
-                  if State_Refinement_Is_Visible (E, S) then
-                     for C of Iter (Refinement_Constituents (E)) loop
-                        if Nkind (C) /= N_Null then
-                           Expand (C);
-                        end if;
-                     end loop;
-                  else
-                     Possible_Hidden_Components := True;
-                  end if;
-
-                  for C of Iter (Part_Of_Constituents (E)) loop
-                     if Is_Visible (C, S) then
-                        Expand (C);
+         if Present (E) then
+            case Ekind (E) is
+               when E_Abstract_State =>
+                  declare
+                     Possible_Hidden_Components : Boolean := False;
+                  begin
+                     if State_Refinement_Is_Visible (E, S) then
+                        for C of Iter (Refinement_Constituents (E)) loop
+                           if Nkind (C) /= N_Null then
+                              Expand (C);
+                           end if;
+                        end loop;
                      else
                         Possible_Hidden_Components := True;
                      end if;
-                  end loop;
 
-                  if Possible_Hidden_Components then
-                     --  We seem to have an abstract state which has no
-                     --  refinement, or where we have unexpanded state.
-                     --  Lets include the abstract state itself.
-                     P.Include (E);
-                  end if;
-               end;
+                     for C of Iter (Part_Of_Constituents (E)) loop
+                        if Is_Visible (C, S) then
+                           Expand (C);
+                        else
+                           Possible_Hidden_Components := True;
+                        end if;
+                     end loop;
 
-            when others =>
-               P.Include (E);
-         end case;
+                     if Possible_Hidden_Components then
+                        --  We seem to have an abstract state which has no
+                        --  refinement, or where we have unexpanded state;
+                        --  include the abstract state itself.
+                        P.Include (E);
+                     end if;
+                  end;
+
+               when others =>
+                  P.Include (E);
+            end case;
+
+         --  Empty E represent the HEAP entity
+
+         else
+            P.Include (E);
+         end if;
       end Expand;
 
    --  Start of processing for Down_Project

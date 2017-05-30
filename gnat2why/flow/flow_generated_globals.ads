@@ -24,9 +24,11 @@
 --  This package implements writing, reading and computing global contracts
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
+with Einfo;                              use Einfo;
 with Flow;                               use Flow;
-with Flow_Types;                         use Flow_Types;
+with GNATCOLL.Terminal;                  use GNATCOLL.Terminal;
 with Types;                              use Types;
 
 package Flow_Generated_Globals is
@@ -129,27 +131,77 @@ package Flow_Generated_Globals is
    --  Flow     : Produced using flow analysis
    --  Frontend : Produced from the XREF sections of the ALI files
 
-   type Global_Phase_1_Info is record
+   function Disjoint (A, B, C : Name_Sets.Set) return Boolean;
+   --  Returns True iff sets A, B, C are mutually disjoint
+
+   type Global_Names is record
+      Proof_Ins : Name_Sets.Set;          --  Flow/User
+      Inputs    : Name_Sets.Set;          --  Flow/Frontend/User
+      Outputs   : Name_Sets.Set;          --  Flow/Frontend/User
+   end record
+   with Dynamic_Predicate =>
+          (for all G of Global_Names.Proof_Ins =>
+              not Global_Names.Inputs.Contains (G) and then
+              not Global_Names.Outputs.Contains (G));
+
+   type Call_Names is record
+      Proof_Calls       : Name_Sets.Set;  --  Flow
+      Conditional_Calls : Name_Sets.Set;  --  Flow
+      Definite_Calls    : Name_Sets.Set;  --  Flow/Frontend
+   end record
+   with Dynamic_Predicate => Disjoint (Call_Names.Proof_Calls,
+                                       Call_Names.Conditional_Calls,
+                                       Call_Names.Definite_Calls);
+
+   type Flow_Names is record
+      Proper  : Global_Names;
+      Refined : Global_Names;
+
+      Initializes : Name_Sets.Set;
+      --  Only meaningful for packages
+
+      Calls : Call_Names;
+   end record;
+   --  Information needed to synthesize the the Global contract
+
+   type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
+   --  Tasking objects accessed by a given entity
+
+   type Name_Constant_Callees is record
+      Const   : Entity_Name;
+      Callees : Name_Lists.List;
+   end record;
+   --  Constants and subprograms called (directly or indirectly) from their
+   --  initialization expressions.
+
+   package Name_Constant_Callees_List is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Name_Constant_Callees);
+
+   type Partial_Contract is record
       Name                  : Entity_Name;
-      Kind                  : Analyzed_Subject_Kind;
+      Local                 : Boolean;
+      Kind                  : Entity_Kind;
       Origin                : Globals_Origin_T;
-      Inputs_Proof          : Name_Sets.Set; --  Flow/User
-      Inputs                : Name_Sets.Set; --  Flow/Frontend/User
-      Outputs               : Name_Sets.Set; --  Flow/Frontend/User
-      Proof_Calls           : Name_Sets.Set; --  Flow
-      Definite_Calls        : Name_Sets.Set; --  Flow
-      Conditional_Calls     : Name_Sets.Set; --  Flow/Frontend
+
+      Globals               : Flow_Names;
+
       Local_Variables       : Name_Sets.Set; --  Flow
       Local_Ghost_Variables : Name_Sets.Set; --  Flow
-      Local_Subprograms     : Name_Sets.Set; --  Flow
-      Local_Definite_Writes : Name_Sets.Set; --  Flow (only for packages)
+
+      Constant_Calls        : Name_Constant_Callees_List.List;
+
+      Tasking               : Name_Tasking_Info;
+
+      Has_Terminate         : Boolean;
+      Nonreturning          : Boolean;
+      Nonblocking           : Boolean;
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and
-   --  update Null_Global_Info.
+   --  update Null_Partial_Contract.
 
-   package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Global_Phase_1_Info);
+   package Partial_Contract_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Partial_Contract);
 
    ----------------------------------------------------------------------
    --  Protected types instances
@@ -208,5 +260,23 @@ private
    -------------
 
    function GG_Mode return GG_Mode_T is (Current_Mode);
+
+   Term_Info : GNATCOLL.Terminal.Terminal_Info;
+   --  For colored debug output; ??? should be global for Flow
+
+   XXX : constant Boolean := False;
+   --  Flag to enable debugging of the global generation in both phases
+   --  ??? RENAME THIS PLEASE
+
+   Debug_Partial_Contracts : constant Boolean := True and XXX;
+   --  Display contracts as they are built
+
+   procedure Debug_Traversal (E : Entity_Id) with Pre => Present (E);
+   --  Display order of traversal
+
+   Variable_Input : constant Entity_Name := To_Entity_Name ("__VARIABLE");
+   --  ??? unlike in phase 1, we cannot reuse Null_Entity_Id, because it is not
+   --  in range of Entity_Name and so it cannot be stored in the containers
+   --  based on that type.
 
 end Flow_Generated_Globals;

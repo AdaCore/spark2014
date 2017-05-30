@@ -24,7 +24,6 @@
 with Ada.Strings.Unbounded;
 
 with Lib.Util;                use Lib.Util;
-with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
 with Sem_Aux;                 use Sem_Aux;
 with Sem_Util;                use Sem_Util;
@@ -61,38 +60,11 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   Nonblocking_Subprograms : Name_Lists.List;
-   --  Subprograms, entries and tasks that do not contain potentially blocking
-   --  statements (but still may call another blocking subprogram).
-
-   Nonreturning_Subprograms : Name_Lists.List;
-   --  We save here:
-   --  * procedures annotated with No_Return
-   --  * subprograms that call a predefined procedure with No_Return
-   --  * subprograms that contain a possibly nonterminating loop
-   --  * subprograms with body not in SPARK.
-
-   Terminating_Subprograms : Name_Lists.List;
-   --  We save here subprograms with Terminating annotation
-
-   type Accessed_Tasking_Objects is record
-      Caller  : Entity_Name;
-      Entries : Entry_Call_Sets.Set;
-      Objects : Tasking_Info;
-   end record;
-
-   package Tasking_Info_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Accessed_Tasking_Objects);
-   --  Containers with tasking objects accessed by a given caller
-
-   Tasking_Info_List : Tasking_Info_Lists.List;
-   --  List with tasking objects directly accessed by subprograms
-
-   Entity_Infos : Global_Info_Lists.List;
+   Entity_Infos : Partial_Contract_Lists.List;
    --  Entity-specific information as discovered by their analysis
    --
    --  ??? we keep this locally only because in the ALI file we first want to
-   --  have entity-indenpendent info; perhaps we do not care and can safely
+   --  have entity-independent info; perhaps we do not care and can safely
    --  dump information locally for each scope.
 
    type Entry_With_Max_Queue_Length is record
@@ -191,7 +163,7 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Global_Info --
    -----------------------------
 
-   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
+   procedure GG_Register_Global_Info (GI : Partial_Contract) is
 
       procedure Process_Volatiles_And_States
         (Names      : Name_Sets.Set;
@@ -240,36 +212,16 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Collect volatile variables and state abstractions; these sets are
       --  disjoint, so it is more efficient to process them separately instead
       --  of doing an expensive union to have a single procedure call.
-      Process_Volatiles_And_States (GI.Inputs_Proof);
-      Process_Volatiles_And_States (GI.Inputs);
-      Process_Volatiles_And_States (GI.Outputs);
-
-      Process_Volatiles_And_States (GI.Local_Variables,
-                                    Local_Vars => True);
-      Process_Volatiles_And_States (GI.Local_Ghost_Variables,
-                                    Local_Vars => True);
+      if not GI.Local then
+         Process_Volatiles_And_States (GI.Globals.Proper.Proof_Ins);
+         Process_Volatiles_And_States (GI.Globals.Proper.Inputs);
+         Process_Volatiles_And_States (GI.Globals.Proper.Outputs);
+         Process_Volatiles_And_States (GI.Local_Variables,
+                                       Local_Vars => True);
+         Process_Volatiles_And_States (GI.Local_Ghost_Variables,
+                                       Local_Vars => True);
+      end if;
    end GG_Register_Global_Info;
-
-   -----------------------------
-   -- GG_Register_Nonblocking --
-   -----------------------------
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name) renames
-     Nonblocking_Subprograms.Append;
-
-   ------------------------------
-   -- GG_Register_Nonreturning --
-   ------------------------------
-
-   procedure GG_Register_Nonreturning (EN : Entity_Name) renames
-     Nonreturning_Subprograms.Append;
-
-   -----------------------------
-   -- GG_Register_Terminating --
-   -----------------------------
-
-   procedure GG_Register_Terminating (EN : Entity_Name) renames
-     Terminating_Subprograms.Append;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -287,11 +239,9 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_State_Refinement --
    ----------------------------------
 
-   procedure GG_Register_State_Refinement (Pkg_Body : Entity_Id)
-   is
-      Pkg_Spec : constant Entity_Id := Unique_Entity (Pkg_Body);
+   procedure GG_Register_State_Refinement (E : Entity_Id) is
    begin
-      for State of Iter (Abstract_States (Pkg_Spec)) loop
+      for State of Iter (Abstract_States (E)) loop
          --  Append an empty container and then populate it
          State_Constituents.Append
            ((State        => To_Entity_Name (State),
@@ -302,6 +252,7 @@ package body Flow_Generated_Globals.Phase_1 is
               State_Constituents (State_Constituents.Last).Constituents;
 
          begin
+            --  ??? how about Part_Of_Constituents?
             for Constituent of Iter (Refinement_Constituents (State)) loop
                if Nkind (Constituent) = N_Null then
                   null;
@@ -328,20 +279,6 @@ package body Flow_Generated_Globals.Phase_1 is
       Task_Instances.Append ((Type_Name => Type_Name,
                               Object    => Object));
    end GG_Register_Task_Object;
-
-   ------------------------------
-   -- GG_Register_Tasking_Info --
-   ------------------------------
-
-   procedure GG_Register_Tasking_Info (Caller  : Entity_Name;
-                                       Entries : Entry_Call_Sets.Set;
-                                       Objects : Tasking_Info)
-   is
-   begin
-      Tasking_Info_List.Append ((Caller  => Caller,
-                                 Entries => Entries,
-                                 Objects => Objects));
-   end GG_Register_Tasking_Info;
 
    ----------------------------------
    -- GG_Register_Max_Queue_Length --
@@ -447,47 +384,11 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Effective_Writes => Effective_Writes_Vars);
       Write_To_ALI (V);
 
-      --  Write nonblocking subprograms
-      V := (Kind                        => EK_Nonblocking,
-            The_Nonblocking_Subprograms => Nonblocking_Subprograms);
-      Write_To_ALI (V);
-
-      --  Write nonreturning subprograms
-      V := (Kind                         => EK_Nonreturning,
-            The_Nonreturning_Subprograms => Nonreturning_Subprograms);
-      Write_To_ALI (V);
-
-      --  Write terminating subprograms
-      V := (Kind                         => EK_Terminating,
-            The_Terminating_Subprograms  => Terminating_Subprograms);
-      Write_To_ALI (V);
-
       --  Write direct calls
       for Direct_Calls of Direct_Calls_List loop
-         V := (Kind                      => EK_Direct_Calls,
-               The_Caller                => Direct_Calls.Caller,
-               The_Callees               => Direct_Calls.Callees);
-         Write_To_ALI (V);
-      end loop;
-
-      for Subprogram : Accessed_Tasking_Objects of Tasking_Info_List loop
-         V := (Kind             => EK_Tasking_Info,
-               The_Entity       => Subprogram.Caller,
-               The_Tasking_Info => <>);
-
-         for EC : Entry_Call of Subprogram.Entries loop
-            V.The_Tasking_Info (Entry_Calls).Insert
-              (To_Entity_Name (To_String (EC.Obj) & "__" &
-                 Get_Name_String (Chars (EC.Entr))));
-         end loop;
-
-         for Kind in Subprogram.Objects'Range loop
-            for N of Subprogram.Objects (Kind) loop
-               pragma Assert (Ekind (N) in E_Abstract_State | Object_Kind);
-               V.The_Tasking_Info (Kind).Insert (To_Entity_Name (N));
-            end loop;
-         end loop;
-
+         V := (Kind        => EK_Direct_Calls,
+               The_Caller  => Direct_Calls.Caller,
+               The_Callees => Direct_Calls.Callees);
          Write_To_ALI (V);
       end loop;
 
