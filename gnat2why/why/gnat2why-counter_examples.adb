@@ -217,6 +217,10 @@ package body Gnat2Why.Counter_Examples is
          return False;
       end Compile_Time_Known_And_Constant;
 
+      function Print_Float (Cnt_Value : Cntexmp_Value)
+                            return Unbounded_String;
+      --  ??? Used to print float counterex. This version is temporary.
+
       --------------
       -- Contains --
       --------------
@@ -309,9 +313,6 @@ package body Gnat2Why.Counter_Examples is
                   return Cnt_Value.I;
                end if;
 
-            when Cnt_Float =>
-               return Cnt_Value.F;
-
             when Cnt_Boolean =>
                return To_Unbounded_String (Cnt_Value.Bo);
 
@@ -326,6 +327,18 @@ package body Gnat2Why.Counter_Examples is
                end if;
 
                return Cnt_Value.B;
+
+            when Cnt_Decimal =>
+               return Cnt_Value.D;
+
+            when Cnt_Float =>
+
+               if Is_Floating_Point_Type (AST_Type) then
+                  return Print_Float (Cnt_Value.all);
+               else
+                  --  ??? only float types are expected here
+                  return Print_Float (Cnt_Value.all);
+               end if;
 
             when Cnt_Unparsed =>
                return Cnt_Value.U;
@@ -517,6 +530,40 @@ package body Gnat2Why.Counter_Examples is
       begin
          return Trim (Res, Both);
       end Refine_Value;
+
+      -----------------
+      -- Print_Float --
+      -----------------
+
+      function Print_Float (Cnt_Value : Cntexmp_Value)
+                            return Unbounded_String
+      is
+         F : Float_Value renames Cnt_Value.F.all;
+      begin
+         case F.F_Type is
+         when Float_Plus_Infinity  =>
+            return To_Unbounded_String ("+oo");
+
+         when Float_Minus_Infinity =>
+            return To_Unbounded_String ("-oo");
+
+         when Float_Plus_Zero      =>
+            return To_Unbounded_String ("+zero");
+
+         when Float_Minus_Zero     =>
+            return To_Unbounded_String ("-zero");
+
+         when Float_NaN            =>
+            return To_Unbounded_String ("NaN");
+
+         when Float_Val =>
+            declare
+            begin
+               return "(fp " & F.F_Sign & ", " & F.F_Exponent & ", "
+                 & F.F_Significand & ")";
+            end;
+         end case;
+      end Print_Float;
 
    --  Start of processing for Refine
 

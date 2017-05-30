@@ -166,6 +166,10 @@ package body VC_Kinds is
          return Cnt_Integer;
       end if;
 
+      if E = "Decimal" then
+         return Cnt_Decimal;
+      end if;
+
       if E = "Float" then
          return Cnt_Float;
       end if;
@@ -206,9 +210,58 @@ package body VC_Kinds is
             Result := new Cntexmp_Value'(T => Cnt_Integer,
                                          I => Get (V, "val"));
 
+         when Cnt_Decimal   =>
+            Result := new Cntexmp_Value'(T => Cnt_Decimal,
+                                         D => Get (V, "val"));
+
+         --  Float values are complex so they are sent as JSON records. Example
+         --  of values are infinities, zeroes, etc
          when Cnt_Float     =>
-            Result := new Cntexmp_Value'(T => Cnt_Float,
-                                         F => Get (V, "val"));
+            declare
+               Val        : constant JSON_Value := Get (V, "val");
+               Float_Type : constant String := Get (Val, "cons");
+               Value      : Float_Value_Ptr;
+            begin
+               if Float_Type = "Plus_infinity" then
+                  Value := new Float_Value'(F_Type => Float_Plus_Infinity);
+                  Result := new Cntexmp_Value'(T => Cnt_Float,
+                                               F => Value);
+
+               elsif Float_Type = "Minus_infinity" then
+                  Value := new Float_Value'(F_Type => Float_Minus_Infinity);
+                  Result := new Cntexmp_Value'(T => Cnt_Float,
+                                               F => Value);
+
+               elsif Float_Type = "Plus_zero" then
+                  Value := new Float_Value'(F_Type => Float_Plus_Zero);
+                  Result := new Cntexmp_Value'(T => Cnt_Float,
+                                               F => Value);
+
+               elsif Float_Type = "Minus_zero" then
+                  Value := new Float_Value'(F_Type => Float_Minus_Zero);
+                  Result := new Cntexmp_Value'(T => Cnt_Float,
+                                               F => Value);
+
+               elsif Float_Type = "Not_a_number" then
+                  Value := new Float_Value'(F_Type => Float_NaN);
+                  Result := new Cntexmp_Value'(T => Cnt_Float,
+                                               F => Value);
+
+               elsif Float_Type = "Float_value" then
+                  Value :=
+                    new Float_Value'(F_Type        => Float_Val,
+                                     F_Sign        =>
+                                       Get (Val, "sign"),
+                                     F_Exponent    =>
+                                       Get (Val, "exponent"),
+                                     F_Significand =>
+                                       Get (Val, "significand"));
+                  Result :=
+                    new Cntexmp_Value'(T => Cnt_Float,
+                                       F => Value);
+
+               end if;
+            end;
 
          when Cnt_Boolean   =>
             Result := new Cntexmp_Value'(T  => Cnt_Boolean,

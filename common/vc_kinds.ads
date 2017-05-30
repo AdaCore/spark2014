@@ -285,6 +285,7 @@ package VC_Kinds is
 
    type Cntexmp_Type is
      (Cnt_Integer,
+      Cnt_Decimal,
       Cnt_Float,
       Cnt_Boolean,
       Cnt_Bitvector,
@@ -296,6 +297,32 @@ package VC_Kinds is
    --  Matching on this types in the code should make debugging easier.
    --  Without this we would only be manipulating Unbounded_String which
    --  is not usable.
+
+   --  Enumeration of possible float values in float counterex.
+   type Float_Type is
+     (Float_Plus_Infinity,
+      Float_Minus_Infinity,
+      Float_Plus_Zero,
+      Float_Minus_Zero,
+      Float_NaN,
+      Float_Val);
+
+   --  Record for float types
+   type Float_Value (F_Type : Float_Type) is record
+      case F_Type is
+         when Float_Plus_Infinity
+            | Float_Minus_Infinity
+            | Float_Plus_Zero
+            | Float_Minus_Zero
+            | Float_NaN => null;
+         when Float_Val =>
+            F_Sign        : Unbounded_String;
+            F_Exponent    : Unbounded_String;
+            F_Significand : Unbounded_String;
+      end case;
+   end record;
+
+   type Float_Value_Ptr is access Float_Value;
 
    type Cntexmp_Value;
    type Cntexmp_Value_Ptr is access Cntexmp_Value;
@@ -309,11 +336,13 @@ package VC_Kinds is
 
    type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
       case T is
-         when Cnt_Integer   => I  : Unbounded_String;
-         when Cnt_Float     => F  : Unbounded_String;
-         when Cnt_Boolean   => Bo : Boolean;
-         when Cnt_Bitvector => B  : Unbounded_String;
-         when Cnt_Unparsed  => U  : Unbounded_String;
+         when Cnt_Integer   => I   : Unbounded_String;
+         when Cnt_Decimal   => D   : Unbounded_String;
+         when Cnt_Float     =>
+            F                      : Float_Value_Ptr;
+         when Cnt_Boolean   => Bo  : Boolean;
+         when Cnt_Bitvector => B   : Unbounded_String;
+         when Cnt_Unparsed  => U   : Unbounded_String;
          when Cnt_Record    =>
             Fi                    : Cntexmp_Value_Array.Map;
             Di                    : Cntexmp_Value_Array.Map;
