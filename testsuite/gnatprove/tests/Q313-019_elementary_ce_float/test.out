@@ -1,0 +1,5 @@
+float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = +zero and B = (fp #b0, #b10000000101, #x2920092000000) and Minus_I'Result = (fp #b1, #b10000000101, #x2920092000000))
+float_example.adb:8:38: medium: float overflow check might fail
+float_example.adb:11:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111010011, #x0000000000004))
+float_example.adb:16:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0
+float_example.adb:19:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111111001, #x0400000000008))
