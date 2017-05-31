@@ -279,6 +279,11 @@ package body Gnat2Why.Driver is
          begin
             Load_SPARK_Xrefs (ALI_File_Name_Str);
          end;
+
+         --  Compute the frame condition from raw SPARK cross-reference
+         --  information.
+
+         Propagate_Through_Call_Graph;
       else
          Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
 
@@ -297,11 +302,6 @@ package body Gnat2Why.Driver is
          end loop;
       end if;
 
-      --  Compute the frame condition from raw SPARK cross-reference
-      --  information.
-
-      Propagate_Through_Call_Graph (Ignore_Errors     => Current_Unit_Only,
-                                    Current_Unit_Only => Current_Unit_Only);
    end Compute_Global_Effects;
 
    ---------------------

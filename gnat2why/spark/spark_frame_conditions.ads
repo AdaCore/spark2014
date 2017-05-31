@@ -112,17 +112,11 @@ package SPARK_Frame_Conditions is
    --  The Inputs set will contain both variables that are either read or
    --  written (since the Computed Globals are an over-approximation).
 
-   procedure Propagate_Through_Call_Graph
-     (Ignore_Errors     : Boolean;
-      Current_Unit_Only : Boolean := False);
+   procedure Propagate_Through_Call_Graph;
    --  Propagate reads and writes through the call-graph defined by calls and
-   --  callers. If Ignore_Errors is true, then ignore failures to find some
-   --  scope that should have been present in some ALI file. This mode is used
-   --  in simpler modes of operation that do not lead to translation into Why.
-   --  It also determines which subprograms are (mutually) recursive.
-   --
-   --  If Current_Unit_Only is set then we only want the direct calls and
-   --  globals.
+   --  callers.
+   --  ??? This procedure only initializes maps and doesn't propagate anything;
+   --  the name comes from the the previous design of the generated globals.
 
    function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
    --  Return True if E_Name refers to entry or protected subprogram
