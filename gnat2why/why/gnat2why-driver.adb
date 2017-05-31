@@ -271,14 +271,7 @@ package body Gnat2Why.Driver is
       --  If Current_Unit_Only is set then we do NOT load the with'ed
       --  ALI files.
       if Current_Unit_Only then
-         declare
-            ALI_File_Name : constant File_Name_Type :=
-              ALIs.Table (Main_Lib_Id).Afile;
-            ALI_File_Name_Str : constant String :=
-              Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
-         begin
-            Load_SPARK_Xrefs (ALI_File_Name_Str);
-         end;
+         Load_SPARK_Xrefs (Main_Lib_Id);
 
          --  Compute the frame condition from raw SPARK cross-reference
          --  information.
@@ -291,14 +284,7 @@ package body Gnat2Why.Driver is
          --  dependent units.
 
          for Index in ALIs.First .. ALIs.Last loop
-            declare
-               ALI_File_Name : constant File_Name_Type :=
-                 ALIs.Table (Index).Afile;
-               ALI_File_Name_Str : constant String :=
-                 Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
-            begin
-               Load_SPARK_Xrefs (ALI_File_Name_Str);
-            end;
+            Load_SPARK_Xrefs (Index);
          end loop;
       end if;
 

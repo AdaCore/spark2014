@@ -33,6 +33,7 @@
 
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
+with ALI;                             use ALI;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
@@ -90,7 +91,7 @@ package SPARK_Frame_Conditions is
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
    --  Return the name of the file defining the entity E
 
-   procedure Load_SPARK_Xrefs (ALI_Filename : String);
+   procedure Load_SPARK_Xrefs (ALI_File : ALI_Id);
    --  Extract xref information from an ALI file
 
    procedure Collect_Direct_Computed_Globals

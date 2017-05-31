@@ -28,6 +28,7 @@ with Ada.Text_IO;                    use Ada.Text_IO;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Get_SPARK_Xrefs;
 with Lib.Xref;                       use Lib.Xref;
+with Osint;                          use Osint;
 with Sem_Aux;                        use Sem_Aux;
 with Snames;                         use Snames;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
@@ -75,6 +76,8 @@ package body SPARK_Frame_Conditions is
 
    procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name);
    --  Add the relation From -> To in map Map
+
+   procedure Load_SPARK_Xrefs (ALI_Filename : String);
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
@@ -366,6 +369,15 @@ package body SPARK_Frame_Conditions is
    ----------------------
    -- Load_SPARK_Xrefs --
    ----------------------
+
+   procedure Load_SPARK_Xrefs (ALI_File : ALI_Id) is
+      ALI_File_Name : constant File_Name_Type :=
+        ALIs.Table (ALI_File).Afile;
+      ALI_File_Name_Str : constant String :=
+        Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
+   begin
+      Load_SPARK_Xrefs (ALI_File_Name_Str);
+   end Load_SPARK_Xrefs;
 
    procedure Load_SPARK_Xrefs (ALI_Filename : String)
    is
