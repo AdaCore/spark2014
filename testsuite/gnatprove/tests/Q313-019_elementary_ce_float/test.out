@@ -1,5 +1,17 @@
 float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = +zero and B = (fp #b0, #b10000000101, #x2920092000000) and Minus_I'Result = (fp #b1, #b10000000101, #x2920092000000))
 float_example.adb:8:38: medium: float overflow check might fail
-float_example.adb:11:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111010011, #x0000000000004))
-float_example.adb:16:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0
-float_example.adb:19:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111111001, #x0400000000008))
+float_example.adb:12:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111010011, #x0000000000004))
+float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0
+float_example.adb:21:16: medium: float overflow check might fail (e.g. when B = (fp #b1, #b11111111001, #x0400000000008))
+counterexample expected for check at float_example.adb:8
+  trace at float_example.adb:7 --> A = +zero and B = (fp #b0, #b10000000101, #x2920092000000) and Minus_I'Result = (fp #b1, #b10000000101, #x2920092000000)
+  trace at float_example.adb:8 --> A = +zero and B = (fp #b0, #b10000000101, #x2920092000000) and Minus_I'Result = (fp #b1, #b10000000101, #x2920092000000)
+  trace at float_example.adb:12 --> Minus_I'Result = (fp #b1, #b10000000101, #x2920092000000)
+counterexample expected for check at float_example.adb:12
+  trace at float_example.adb:7 --> B = (fp #b1, #b11111010011, #x0000000000004)
+  trace at float_example.adb:12 --> B = (fp #b1, #b11111010011, #x0000000000004)
+counterexample expected for check at float_example.adb:17
+  trace at float_example.adb:15 --> Bounded_Add'Result = +oo
+counterexample expected for check at float_example.adb:21
+  trace at float_example.adb:15 --> B = (fp #b1, #b11111111001, #x0400000000008)
+  trace at float_example.adb:21 --> B = (fp #b1, #b11111111001, #x0400000000008)
