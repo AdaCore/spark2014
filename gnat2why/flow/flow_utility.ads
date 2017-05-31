@@ -53,12 +53,12 @@ is
      (N                  : Node_Id;
       Functions_Called   : out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
-      Include_Predicates : Boolean)
+      Generating_Globals : Boolean)
    with Pre => Present (N);
    --  For an expression N collect its called functions and update the set of
    --  protected objects that are read-locked when evaluating these functions.
    --
-   --  When Include_Predicates is set, then the implicit calls to predicate
+   --  When Generating_Globals is set, then the implicit calls to predicate
    --  functions appear in the set of subprograms called. This is what we
    --  use in phase 1; in phase 2 this should not be set as we add the
    --  global effects directly.

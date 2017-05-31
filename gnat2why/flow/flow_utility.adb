@@ -189,7 +189,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Functions_Called   : out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
-      Include_Predicates : Boolean)
+      Generating_Globals : Boolean)
    is
       Scop : constant Flow_Scope := Get_Flow_Scope (N);
 
@@ -198,7 +198,7 @@ package body Flow_Utility is
       --  corresponding Entity_Id; for protected functions store the
       --  read-locked protected object.
 
-      procedure Process_Type (E : Entity_Id);
+      procedure Process_Type (E : Entity_Id) with Pre => Generating_Globals;
       --  Merge predicate function for the given type
 
       ------------------
@@ -206,15 +206,10 @@ package body Flow_Utility is
       ------------------
 
       procedure Process_Type (E : Entity_Id) is
+         P : constant Entity_Id := Predicate_Function (E);
       begin
-         if Include_Predicates then
-            declare
-               P : constant Entity_Id := Predicate_Function (E);
-            begin
-               if Present (P) then
-                  Functions_Called.Include (P);
-               end if;
-            end;
+         if Present (P) then
+            Functions_Called.Include (P);
          end if;
       end Process_Type;
 
@@ -236,7 +231,8 @@ package body Flow_Utility is
 
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
-                  if Ekind (Scope (Called_Func)) = E_Protected_Type
+                  if Generating_Globals
+                    and then Ekind (Scope (Called_Func)) = E_Protected_Type
                     and then Is_External_Call (N)
                   then
                      Tasking (Locks).Include
@@ -249,25 +245,27 @@ package body Flow_Utility is
                --  predicate function appear during GG, but not in phase 2.
                --  See mirroring code in Get_Variables that deals with this
                --  as well.
-               if Present (Right_Opnd (N)) then
-                  --  x in t
-                  P := Right_Opnd (N);
-                  if Nkind (P) in N_Identifier | N_Expanded_Name
-                    and then Ekind (Entity (P)) in Type_Kind
-                  then
-                     Process_Type (Get_Type (P, Scop));
-                  end if;
-               else
-                  --  x in t | 1 .. y | u
-                  P := First (Alternatives (N));
-                  while Present (P) loop
+               if Generating_Globals then
+                  if Present (Right_Opnd (N)) then
+                     --  x in t
+                     P := Right_Opnd (N);
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Ekind (Entity (P)) in Type_Kind
                      then
                         Process_Type (Get_Type (P, Scop));
                      end if;
-                     Next (P);
-                  end loop;
+                  else
+                     --  x in t | 1 .. y | u
+                     P := First (Alternatives (N));
+                     while Present (P) loop
+                        if Nkind (P) in N_Identifier | N_Expanded_Name
+                          and then Ekind (Entity (P)) in Type_Kind
+                        then
+                           Process_Type (Get_Type (P, Scop));
+                        end if;
+                        Next (P);
+                     end loop;
+                  end if;
                end if;
 
             when others =>
@@ -1153,7 +1151,7 @@ package body Flow_Utility is
         (N,
          Functions_Called   => Funcs,
          Tasking            => Unused,
-         Include_Predicates => Include_Predicates);
+         Generating_Globals => Include_Predicates);
       return Funcs;
    end Get_Functions;
 

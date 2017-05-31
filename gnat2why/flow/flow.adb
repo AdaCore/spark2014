@@ -346,7 +346,11 @@ package body Flow is
                  when E_Package_Body                     => Kind_Package_Body,
                  when others => raise Program_Error)
        and then (if not X.Generating_Globals
-                 then not X.GG.Aborted and then X.GG.Globals.Is_Empty)
+                 then
+                   not X.GG.Aborted
+                   and then X.GG.Globals.Is_Empty
+                   and then X.Entries.Is_Empty
+                   and then (for all Info of X.Tasking => Info.Is_Empty))
       );
 
    -------------------------------

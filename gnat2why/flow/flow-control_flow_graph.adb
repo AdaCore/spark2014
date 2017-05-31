@@ -1401,7 +1401,7 @@ package body Flow.Control_Flow_Graph is
         (N,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -1605,7 +1605,7 @@ package body Flow.Control_Flow_Graph is
         (Expression (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       --  We have a vertex V for the case statement itself
       Add_Vertex
@@ -1711,7 +1711,7 @@ package body Flow.Control_Flow_Graph is
         (Expression (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -1773,7 +1773,7 @@ package body Flow.Control_Flow_Graph is
            (Condition (N),
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => FA.Generating_Globals);
+            Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -1846,7 +1846,7 @@ package body Flow.Control_Flow_Graph is
         (Ret_Object,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -1935,7 +1935,7 @@ package body Flow.Control_Flow_Graph is
         (Condition (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -2001,7 +2001,7 @@ package body Flow.Control_Flow_Graph is
                  (Condition (Elsif_Statement),
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => FA.Generating_Globals);
+                  Generating_Globals => FA.Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -2340,7 +2340,7 @@ package body Flow.Control_Flow_Graph is
            (Condition (Iteration_Scheme (N)),
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => FA.Generating_Globals);
+            Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -2438,7 +2438,7 @@ package body Flow.Control_Flow_Graph is
               (DSD,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
-               Include_Predicates => FA.Generating_Globals);
+               Generating_Globals => FA.Generating_Globals);
 
             Add_Vertex
               (FA,
@@ -2856,7 +2856,7 @@ package body Flow.Control_Flow_Graph is
            (Cont,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => FA.Generating_Globals);
+            Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -3358,7 +3358,7 @@ package body Flow.Control_Flow_Graph is
               (Expr,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
-               Include_Predicates => FA.Generating_Globals);
+               Generating_Globals => FA.Generating_Globals);
 
             if RHS_Split_Useful (N, FA.B_Scope) then
 
@@ -3551,7 +3551,7 @@ package body Flow.Control_Flow_Graph is
                  (DIC_Expr,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => FA.Generating_Globals);
+                  Generating_Globals => FA.Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -4021,7 +4021,7 @@ package body Flow.Control_Flow_Graph is
                  (N,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => FA.Generating_Globals);
+                  Generating_Globals => FA.Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -4125,39 +4125,6 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  Check for calls to protected procedures and entries
-      --
-      --  Ignore calls from within the same protected type (internal)
-      --  including calls from protected procedure to entry of the same
-      --  protected type. These calls are already reported as potentially
-      --  blocking.
-      --  Only register tasking-related info for calls from the
-      --  outside of the protected type (external).
-
-      if Ekind (Scope (Called_Thing)) = E_Protected_Type
-        and then Is_External_Call (N)
-      then
-         declare
-            Protected_Object : constant Node_Id := Prefix (Name (N));
-
-         begin
-            if Is_Entry (Called_Thing) then
-               FA.Entries.Include
-                 (Entry_Call'(Obj  => To_Entity_Name
-                                        (Full_Entry_Name (Protected_Object)),
-                              Entr => Called_Thing));
-            end if;
-         end;
-
-         FA.Tasking (Locks).Include (Get_Enclosing_Object (Prefix (Name (N))));
-      end if;
-
-      --  Check for suspending on a suspension object
-      if Suspends_On_Suspension_Object (Called_Thing) then
-         FA.Tasking (Suspends_On).Include
-           (Get_Enclosing_Object (First_Actual (N)));
-      end if;
-
       --  A magic null export is needed when:
       --    * there is a usable Depends => (null => ...);
       --    * the subprogram has no exports
@@ -4259,6 +4226,42 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => Vertex_Sets.To_Set (Prev)));
          end if;
       end;
+
+      if FA.Generating_Globals then
+         --  Check for calls to protected procedures and entries
+         --
+         --  Ignore calls from within the same protected type (internal)
+         --  including calls from protected procedure to entry of the same
+         --  protected type. These calls are already reported as potentially
+         --  blocking.
+         --  Only register tasking-related info for calls from the outside of
+         --  the protected type (external).
+
+         if Ekind (Scope (Called_Thing)) = E_Protected_Type
+           and then Is_External_Call (N)
+         then
+            declare
+               Protected_Object : constant Node_Id := Prefix (Name (N));
+
+            begin
+               if Is_Entry (Called_Thing) then
+                  FA.Entries.Include
+                    (Entry_Call'(Obj  => To_Entity_Name
+                                 (Full_Entry_Name (Protected_Object)),
+                                 Entr => Called_Thing));
+               end if;
+            end;
+
+            FA.Tasking (Locks).Include
+              (Get_Enclosing_Object (Prefix (Name (N))));
+         end if;
+
+         --  Check for suspending on a suspension object
+         if Suspends_On_Suspension_Object (Called_Thing) then
+            FA.Tasking (Suspends_On).Include
+              (Get_Enclosing_Object (First_Actual (N)));
+         end if;
+      end if;
    end Do_Call_Statement;
 
    ----------------------------
@@ -4280,7 +4283,7 @@ package body Flow.Control_Flow_Graph is
         (N,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => FA.Generating_Globals);
+         Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -4328,7 +4331,7 @@ package body Flow.Control_Flow_Graph is
            (Expr,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => FA.Generating_Globals);
+            Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -4399,7 +4402,7 @@ package body Flow.Control_Flow_Graph is
               (Cond,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
-               Include_Predicates => FA.Generating_Globals);
+               Generating_Globals => FA.Generating_Globals);
 
             Add_Vertex
               (FA,
@@ -4604,7 +4607,7 @@ package body Flow.Control_Flow_Graph is
            (Actual,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => FA.Generating_Globals);
+            Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
            (FA,
