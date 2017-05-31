@@ -2933,13 +2933,14 @@ package body Gnat2Why.Expr is
 
             Default_Init_Pred : constant W_Pred_Id :=
               Compute_Default_Init
-                (Expr           => +New_Result_Ident (EW_Abstract (Ty_Ext)),
-                 Ty             => Ty_Ext,
-                 Params         => Params,
-                 Skip_Last_Cond => (if Has_DIC (Ty_Ext)
-                                    and then Needs_DIC_Check_At_Decl (Ty_Ext)
-                                    then True_Term
-                                    else False_Term));
+                (Expr             => +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                 Ty               => Ty_Ext,
+                 Params           => Params,
+                 Include_Subtypes => Include_Subtypes,
+                 Skip_Last_Cond   => (if Has_DIC (Ty_Ext)
+                                      and then Needs_DIC_Check_At_Decl (Ty_Ext)
+                                      then True_Term
+                                      else False_Term));
             --  If the DIC is checked at use, we can safely assume it here. If
             --  it is checked on declaration, then it is checked assuming that
             --  the predicate of Ty_Ext holds, so we should not assume it here.
