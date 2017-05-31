@@ -711,21 +711,15 @@ package body Flow.Analysis is
 
                         --  Globals are disjoint except for an overlap between
                         --  inputs and outputs (which cannot be union-ed
-                        --  because they differ in Flow_Id_Variant). Just
-                        --  iterate sets one-by-one using Include where Insert
-                        --  would crash on globals that are both Input and
-                        --  Output.
+                        --  because they differ in Flow_Id_Variant), so
+                        --  iterate over sets one-by-one.
 
                         for F of Proof_Ins loop
                            Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
                         for F of Inputs loop
-                           --   ??? here we should use Insert here, but we
-                           --   can't since Edit_Proof_Ins is broken for
-                           --   abstract states. This does not affect the final
-                           --   contents of the Vars_Known container.
-                           Vars_Known.Include (Change_Variant (F, Normal_Use));
+                           Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
                         for F of Outputs loop
