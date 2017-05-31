@@ -81,10 +81,11 @@ package body SPARK_Frame_Conditions is
    --  Build a name for an entity, making sure the name is not empty
 
    procedure Set_Default_To_Empty
-     (Map : in out Name_Graphs.Map;
-      Set : Name_Sets.Set);
-   --  Make sure each element in Set has an entry in Map. If not already
-   --  present, add one which maps the element to the empty set.
+     (Map  : in out Name_Graphs.Map;
+      Name : Entity_Name)
+   with Post => Map.Contains (Name);
+   --  Make sure that element Name has an entry in Map. If not already present,
+   --  add one which maps the element to the empty set.
 
    ----------------
    -- Add_To_Map --
@@ -676,11 +677,13 @@ package body SPARK_Frame_Conditions is
       --  Initialize all maps so that each subprogram has an entry in each map.
       --  This is not needed for File_Defines.
 
-      Set_Default_To_Empty (Defines, Scopes);
-      Set_Default_To_Empty (Writes,  Scopes);
-      Set_Default_To_Empty (Reads,   Scopes);
-      Set_Default_To_Empty (Callers, Scopes);
-      Set_Default_To_Empty (Calls,   Scopes);
+      for Scope of Scopes loop
+         Set_Default_To_Empty (Defines, Scope);
+         Set_Default_To_Empty (Writes,  Scope);
+         Set_Default_To_Empty (Reads,   Scope);
+         Set_Default_To_Empty (Callers, Scope);
+         Set_Default_To_Empty (Calls,   Scope);
+      end loop;
    end Propagate_Through_Call_Graph;
 
    ---------------------
@@ -698,20 +701,18 @@ package body SPARK_Frame_Conditions is
    --------------------------
 
    procedure Set_Default_To_Empty
-     (Map : in out Name_Graphs.Map;
-      Set : Name_Sets.Set)
+     (Map  : in out Name_Graphs.Map;
+      Name : Entity_Name)
    is
       Inserted : Boolean;
       Position : Name_Graphs.Cursor;
       --  Dummy variables required by the container API
 
    begin
-      for Ent of Set loop
-         Map.Insert (Key      => Ent,
-                     Position => Position,
-                     Inserted => Inserted);
-         --  Attempt to map entity Ent to a default element (i.e. empty set)
-      end loop;
+      Map.Insert (Key      => Name,
+                  Position => Position,
+                  Inserted => Inserted);
+      --  Attempt to map entity Ent to a default element (i.e. empty set)
    end Set_Default_To_Empty;
 
    -------------------------------------
