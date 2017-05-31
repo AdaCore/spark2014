@@ -1038,24 +1038,26 @@ package body Flow_Utility is
                    Ignore_Depends      => True);
 
       --  Change variant of All_Proof_Ins to Normal_Use
-      All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
+      if not All_Proof_Ins.Is_Empty then
+         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
 
-      --  Create new dependency with "null => All_Proof_Ins" or extend the
-      --  existing "null => ..." with All_Proof_Ins.
-      declare
-         Position : Dependency_Maps.Cursor;
-         Inserted : Boolean;
+         --  Create new dependency with "null => All_Proof_Ins" or extend the
+         --  existing "null => ..." with All_Proof_Ins.
+         declare
+            Position : Dependency_Maps.Cursor;
+            Inserted : Boolean;
 
-      begin
-         Depends.Insert (Key      => Null_Flow_Id,
-                         New_Item => All_Proof_Ins,
-                         Position => Position,
-                         Inserted => Inserted);
+         begin
+            Depends.Insert (Key      => Null_Flow_Id,
+                            New_Item => All_Proof_Ins,
+                            Position => Position,
+                            Inserted => Inserted);
 
-         if not Inserted then
-            Depends (Position).Union (All_Proof_Ins);
-         end if;
-      end;
+            if not Inserted then
+               Depends (Position).Union (All_Proof_Ins);
+            end if;
+         end;
+      end if;
 
       ----------------------------------------------------------------------
       --  Step 4: If we are dealing with a protected operation and the
