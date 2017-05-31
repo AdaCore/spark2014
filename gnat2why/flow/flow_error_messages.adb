@@ -869,7 +869,8 @@ package body Flow_Error_Messages is
                      F_Name_String : constant String := To_String (F.Name);
                   begin
                      if F_Name_String = "__HEAP" then
-                        Append (R, "the heap");
+                        Append (R, "memory accessed through objects of " &
+                                   "access type");
                      else
                         declare
                            Index : Positive := F_Name_String'First;

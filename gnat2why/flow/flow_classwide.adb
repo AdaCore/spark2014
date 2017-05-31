@@ -161,9 +161,8 @@ package body Flow_Classwide is
             Error_Msg_Flow
               (E          => E,
                Msg        =>
-                 "class-wide proof_in & must also be a " &
-                 "class-wide (proof) input " &
-                 "of overridden subprogram #",
+                 "& is a proof_in of overriding subprogram, but not of " &
+                 "overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -181,8 +180,8 @@ package body Flow_Classwide is
             Error_Msg_Flow
               (E          => E,
                Msg        =>
-                 "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide input of overridden subprogram #",
+                 "& is an " & Mode (F) & " of overriding subprogram, but it " &
+                 "is not an input of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -202,8 +201,8 @@ package body Flow_Classwide is
             Error_Msg_Flow
               (E          => E,
                Msg        =>
-                 "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide output of overridden subprogram #",
+                 "& is an " & Mode (F) & " of overriding subprogram, but it " &
+                 "is not an output of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -241,8 +240,8 @@ package body Flow_Classwide is
                Error_Msg_Flow
                  (E          => E,
                   Msg        =>
-                    "class-wide output & of overridden subprogram # " &
-                    "must also be a class-wide output here",
+                    "& is an output of overridden subprogram # and must be " &
+                    "an output here",
                   Severity   => Error_Kind,
                   N          => E,
                   Suppressed => Suppressed,

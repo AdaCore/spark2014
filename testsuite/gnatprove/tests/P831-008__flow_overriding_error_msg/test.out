@@ -1,7 +1,7 @@
 q.adb:17:07: warning: statement has no effect
 q.adb:17:10: side effects of function "Heap" are not modeled in SPARK
-q.ads:10:25: class-wide in_out "the heap" must also be a class-wide input of overridden subprogram "Proc" at p.ads:9 (SPARK RM 6.1.6)
-q.ads:10:25: class-wide in_out "the heap" must also be a class-wide output of overridden subprogram "Proc" at p.ads:9 (SPARK RM 6.1.6)
-q.ads:10:25: warning: "the heap" is not modified, could be INPUT
+q.ads:10:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an input of overridden subprogram "Proc" at p.ads:9 (SPARK RM 6.1.6)
+q.ads:10:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an output of overridden subprogram "Proc" at p.ads:9 (SPARK RM 6.1.6)
+q.ads:10:25: warning: "memory accessed through objects of access type" is not modified, could be INPUT
 q.ads:10:31: warning: unused variable "A"
 gnatprove: error during flow analysis and proof

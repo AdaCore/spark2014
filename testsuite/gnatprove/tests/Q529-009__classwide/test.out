@@ -4,9 +4,9 @@ p_heir2.adb:16:41: medium: overflow check might fail (e.g. when This = (X2 => 21
 p_heir2.adb:17:41: medium: overflow check might fail
 p_parent.adb:16:41: medium: overflow check might fail (e.g. when This = (X0 => 2147483647))
 p_parent.ads:11:22: warning: unused initial value of "This"
-p_u_parent.ads:11:24: class-wide input "the heap" must also be a class-wide input of overridden subprogram "Get_X0" at p_i_parent.ads:9 (SPARK RM 6.1.6)
-p_u_parent.ads:13:25: class-wide in_out "the heap" must also be a class-wide input of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
-p_u_parent.ads:13:25: class-wide in_out "the heap" must also be a class-wide output of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
-p_u_parent.ads:16:25: class-wide in_out "the heap" must also be a class-wide input of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
-p_u_parent.ads:16:25: class-wide in_out "the heap" must also be a class-wide output of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
+p_u_parent.ads:11:24: "memory accessed through objects of access type" is an input of overriding subprogram, but it is not an input of overridden subprogram "Get_X0" at p_i_parent.ads:9 (SPARK RM 6.1.6)
+p_u_parent.ads:13:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an input of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
+p_u_parent.ads:13:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an output of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
+p_u_parent.ads:16:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an input of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
+p_u_parent.ads:16:25: "memory accessed through objects of access type" is an in_out of overriding subprogram, but it is not an output of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

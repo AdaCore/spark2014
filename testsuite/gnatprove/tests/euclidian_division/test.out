@@ -12,7 +12,7 @@ linear_div.adb:24:19: info: initialization of "Quotient" proved
 linear_div.adb:24:28: info: overflow check proved (CVC4: 1 VC)
 linear_div.adb:25:20: info: initialization of "Remainder" proved
 linear_div.adb:25:30: info: overflow check proved (CVC4: 1 VC)
-main.adb:3:11: medium: "the heap" might not be initialized after elaboration of main program "Main"
+main.adb:3:11: medium: "memory accessed through objects of access type" might not be initialized after elaboration of main program "Main"
 main.adb:6:20: warning: unused assignment to "Res"
 random_testing.adb:9:27: info: initialization of "Result" proved
 random_testing.adb:10:16: info: initialization of "Result" proved

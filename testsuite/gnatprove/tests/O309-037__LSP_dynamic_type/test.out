@@ -2,7 +2,7 @@ lsp_checks.adb:1:11: warning: subprogram "LSP_Checks" has no effect
 lsp_checks.adb:15:07: info: initialization of "Glob" proved
 lsp_checks.adb:27:27: warning: unused variable "R"
 lsp_checks.adb:27:44: warning: unused variable "G"
-lsp_checks.adb:38:17: class-wide input "C" must also be a class-wide input of overridden subprogram "Do_Something" at line 17 (SPARK RM 6.1.6)
+lsp_checks.adb:38:17: "C" is an input of overriding subprogram, but it is not an input of overridden subprogram "Do_Something" at line 17 (SPARK RM 6.1.6)
 lsp_checks.adb:67:04: info: initialization of "Glob" proved
 lsp_checks.adb:67:18: info: initialization of "R1.F1" proved
 lsp_checks.adb:67:18: info: initialization of extension of "R1" proved
