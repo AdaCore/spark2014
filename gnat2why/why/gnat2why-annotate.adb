@@ -122,9 +122,11 @@ package body Gnat2Why.Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      First_Node      : Node_Id);
+      First_Node      : Node_Id;
+      Skip            : Node_Id := Empty);
    --  Same as above, but also consider all nodes "next" after First_Node,
-   --  until (and excluding) a node which comes from source.
+   --  until (and excluding) a node which comes from source. The Exclude
+   --  argument can be used to skip a specific node.
 
    procedure Syntax_Check_Pragma_Annotate_Gnatprove
      (Node    : Node_Id;
@@ -586,8 +588,18 @@ package body Gnat2Why.Annotate is
                                 Whole => True);
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
                                 Declarations (Range_Node));
-         Insert_With_Next (Prgma, Kind, Pattern, Reason,
-                           Parent (Parent (Corresponding_Spec (Range_Node))));
+         declare
+            Spec_Node : constant Node_Id :=
+              Parent (Parent (Corresponding_Spec (Range_Node)));
+         begin
+
+            --  The spec might be just before the body, so Insert_With_Next
+            --  might loop indefinitely. We use the Exclude argument to skip
+            --  our own current node in that case, to prevent an infinite loop.
+
+            Insert_With_Next (Prgma, Kind, Pattern, Reason, Spec_Node,
+                              Skip => Range_Node);
+         end;
          return;
       end if;
       if Whole then
@@ -651,8 +663,9 @@ package body Gnat2Why.Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      First_Node      : Node_Id)
-   is
+      First_Node      : Node_Id;
+      Skip            : Node_Id := Empty)
+      is
       Node : Node_Id := First_Node;
    begin
       Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
@@ -662,8 +675,10 @@ package body Gnat2Why.Annotate is
         and then not Comes_From_Source (Node)
         and then Nkind (Node) /= N_Expression_Function
       loop
-         Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
-                                Whole => True);
+         if Node /= Skip then
+            Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
+                                   Whole => True);
+         end if;
          Next (Node);
       end loop;
    end Insert_With_Next;
