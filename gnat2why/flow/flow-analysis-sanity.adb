@@ -918,7 +918,6 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global output of &",
-               SRM_Ref  => "6.1.4",
                N        => FA.Global_N,
                Severity => Error_Kind,
                F1       => W,
@@ -977,7 +976,6 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global input of &",
-               SRM_Ref  => "6.1.4",
                N        => FA.Global_N,
                Severity => Error_Kind,
                F1       => R,
@@ -1013,7 +1011,6 @@ package body Flow.Analysis.Sanity is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "& must be a global Proof_In of &",
-               SRM_Ref  => "6.1.4",
                N        => FA.Global_N,
                Severity => Error_Kind,
                F1       => P,

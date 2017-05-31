@@ -1,2 +1,2 @@
-foo.ads:7:09: "Foo.State" must be a global input of "Test" (SPARK RM 6.1.4)
+foo.ads:7:09: "Foo.State" must be a global input of "Test"
 gnatprove: error during flow analysis and proof
