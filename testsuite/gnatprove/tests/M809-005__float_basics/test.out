@@ -4,12 +4,12 @@ foo.adb:7:22: medium: assertion might fail, cannot prove Float (Y) = X) = (Long_
 foo.adb:7:30: medium: range check might fail
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:10
-generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:15
+generic_float_tests.adb:22:07: medium: assertion might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:22:07: medium: assertion might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:10
-generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:15
+generic_float_tests.adb:35:07: medium: assertion might fail, in instantiation at foo.ads:10
+generic_float_tests.adb:35:07: medium: assertion might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:48:22: medium: assertion might fail, cannot prove X + Y >= X, in instantiation at foo.ads:10
