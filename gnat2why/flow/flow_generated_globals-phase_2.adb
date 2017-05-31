@@ -1816,9 +1816,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Start of processing for Dump_Entity_Contract
 
          begin
-            pragma Assert (Entity_Contract_Maps.Has_Element (C));
-
-            if Entity_Contract_Maps.Has_Element (C) then
+            --  ??? For protected types we don't record ALI info now
+            if Ekind (Scop) /= E_Protected_Type then
                declare
                   Contr : Flow_Names renames Global_Contracts (C);
 
