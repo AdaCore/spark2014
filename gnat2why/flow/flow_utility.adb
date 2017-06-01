@@ -1486,7 +1486,12 @@ package body Flow_Utility is
       then
          declare
             D_Map  : Dependency_Maps.Map;
-            Params : Node_Sets.Set;
+            Params : constant Node_Sets.Set := Get_Formals (Subprogram);
+            --  We need to make sure not to include our own parameters in the
+            --  globals we produce here. Note that the formal parameters that
+            --  we collect here will also include implicit formal parameters of
+            --  subprograms that belong to concurrent types.
+
          begin
             Debug ("reversing depends annotation");
 
@@ -1496,49 +1501,47 @@ package body Flow_Utility is
                          Depends              => D_Map,
                          Use_Computed_Globals => Use_Deduced_Globals);
 
-            --  We need to make sure not to include our own parameters in the
-            --  globals we produce here. Note that the formal parameters that
-            --  we collect here will also include implicit formal parameters of
-            --  subprograms that belong to concurrent types.
-            Params.Union (Get_Formals (Subprogram));
-
             --  Always OK to call direct_mapping here since you can't refer
             --  to hidden state in user-written depends contracts.
 
             for C in D_Map.Iterate loop
                declare
-                  E      : Entity_Id;
                   Output : Flow_Id          renames Dependency_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames D_Map (C);
                begin
-                  E := (if Present (Output)
-                        then Get_Direct_Mapping_Id (Output)
-                        else Empty);
-
-                  if Present (E)
-                    and then E /= Subprogram
-                    and then not Params.Contains (E)
-                  then
-                     --  Note we also filter out the function'result construct
-                     --  here.
-                     Writes.Include (Change_Variant (Output, Out_View));
+                  --  Filter function'Result and parameters
+                  if Present (Output) then
+                     declare
+                        E : constant Entity_Id :=
+                          Get_Direct_Mapping_Id (Output);
+                     begin
+                        if E /= Subprogram
+                          and then not Params.Contains (E)
+                        then
+                           Writes.Include (Change_Variant (Output, Out_View));
+                        end if;
+                     end;
                   end if;
 
-                  for R of Inputs loop
-                     E := (if Present (R)
-                           then Get_Direct_Mapping_Id (R)
-                           else Empty);
+                  for Input of Inputs loop
+                     if Present (Input) then
+                        declare
+                           E : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (Input);
+                        begin
+                           if not Params.Contains (E) then
+                              Reads.Include (Change_Variant (Input, In_View));
 
-                     if Present (E) and then not Params.Contains (E) then
-                        Reads.Include (Change_Variant (R, In_View));
-
-                        if Has_Effective_Reads (R) then
-                           --  A volatile with effective reads is always an
-                           --  output as well (this should be recorded in the
-                           --  depends, but the front-end does not enforce
-                           --  this).
-                           Writes.Include (Change_Variant (R, Out_View));
-                        end if;
+                              --  A volatile with effective reads is always
+                              --  an output as well (this should be recorded
+                              --  in the depends, but the front-end does not
+                              --  enforce this).
+                              if Has_Effective_Reads (Input) then
+                                 Writes.Include
+                                   (Change_Variant (Input, Out_View));
+                              end if;
+                           end if;
+                        end;
                      end if;
                   end loop;
                end;
