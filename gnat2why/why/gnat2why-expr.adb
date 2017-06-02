@@ -352,10 +352,10 @@ package body Gnat2Why.Expr is
    --            updated at the point specified by N, with value Value
 
    function Transform_Aggregate
-     (Params              : Transformation_Params;
-      Domain              : EW_Domain;
-      Expr                : Node_Id;
-      In_Attribute_Update : Boolean := False) return W_Expr_Id;
+     (Params        : Transformation_Params;
+      Domain        : EW_Domain;
+      Expr          : Node_Id;
+      Update_Prefix : Node_Id := Empty) return W_Expr_Id;
    --  Transform an aggregate Expr. It may be called multiple times on the
    --  same Ada node, corresponding to different phases of the translation. The
    --  first time it is called on an Ada node, a logic function is generated
@@ -6867,22 +6867,20 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Transform_Aggregate
-     (Params              : Transformation_Params;
-      Domain              : EW_Domain;
-      Expr                : Node_Id;
-      In_Attribute_Update : Boolean := False) return W_Expr_Id
+     (Params        : Transformation_Params;
+      Domain        : EW_Domain;
+      Expr          : Node_Id;
+      Update_Prefix : Node_Id := Empty) return W_Expr_Id
    is
-      --  When the aggregate is the argument of a 'Update attribute_reference,
-      --  get the prefix of the attribute_reference.
+      --  The aggregate is the argument of a 'Update attribute_reference if and
+      --  only if Update_Prefix has been supplied.
 
-      Update_Prefix : constant Node_Id :=
-        (if In_Attribute_Update then Prefix (Parent (Expr)) else Empty);
-
-      Expr_Typ      : constant Entity_Id := Type_Of_Node (Expr);
-      Nb_Dim        : constant Positive :=
+      In_Attribute_Update : constant Boolean := Present (Update_Prefix);
+      Expr_Typ            : constant Entity_Id := Type_Of_Node (Expr);
+      Nb_Dim              : constant Positive :=
         (if Ekind (Expr_Typ) = E_String_Literal_Subtype then 1
          else Integer (Number_Dimensions (Expr_Typ)));
-      Needs_Bounds  : constant Boolean :=
+      Needs_Bounds        : constant Boolean :=
         not In_Attribute_Update and then not Is_Static_Array_Type (Expr_Typ);
       --  We do not need to give the array bounds as additional arguments to
       --  the aggregate function if it is a 'Update (we will use the bounds of
@@ -9451,10 +9449,10 @@ package body Gnat2Why.Expr is
                else
                   pragma Assert (Is_Array_Type (Pref_Typ));
                   T := Transform_Aggregate
-                    (Params              => Params,
-                     Domain              => Domain,
-                     Expr                => Aggr,
-                     In_Attribute_Update => True);
+                    (Params        => Params,
+                     Domain        => Domain,
+                     Expr          => Aggr,
+                     Update_Prefix => Pref);
                end if;
             end;
 
