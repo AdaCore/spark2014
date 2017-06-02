@@ -313,7 +313,7 @@ package body Gnat2Why.Expr.Loops is
                         (Ada_Node => Stmt,
                          Name => Exc_Name);
    begin
-      if Nkind (Condition (Stmt)) = N_Empty then
+      if No (Condition (Stmt)) then
          return Raise_Stmt;
       else
          return
