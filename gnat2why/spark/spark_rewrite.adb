@@ -273,7 +273,24 @@ package body SPARK_Rewrite is
       ------------------
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result is
+         subtype Rewriten_Call is Node_Kind with
+           Static_Predicate => Rewriten_Call in N_Block_Statement
+                                              | N_Identifier
+                                              | N_Integer_Literal
+                                              | N_Null_Statement
+                                              | N_Qualified_Expression
+                                              | N_Unchecked_Type_Conversion;
+         --  ??? this is copy-pasted from SPARK_Register; refactor
+
       begin
+         --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
+         --  pragma Debug).
+         if Nkind (N) in Rewriten_Call
+           and then Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma
+         then
+            Rewrite_Nodes (Original_Node (N));
+         end if;
+
          case Nkind (N) is
             when N_Real_Literal =>
                Rewrite_Real_Literal (N);
@@ -337,6 +354,8 @@ package body SPARK_Rewrite is
                         DIC_Expr := SPARK_Util.Subprograms.
                           Get_Expr_From_Check_Only_Proc (DIC_Subp);
                         Rewrite_Nodes (DIC_Expr);
+                        --  ??? this is slighly different from SPARK_Register;
+                        --  both should be unified.
                      end if;
                   end if;
                end;
