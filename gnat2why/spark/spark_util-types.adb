@@ -852,7 +852,7 @@ package body SPARK_Util.Types is
       return Node (Elmt);
    end Get_Stored_Constraint_For_Discr;
 
-   ------------------------------
+   -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
 
@@ -934,9 +934,9 @@ package body SPARK_Util.Types is
         and then Has_Predicates (E)
         and then Present (Static_Discrete_Predicate (E)));
 
-   ------------------------------
+   ----------------------------
    -- Invariant_Check_Needed --
-   ------------------------------
+   ----------------------------
 
    function Invariant_Check_Needed (Ty : Entity_Id) return Boolean
    is

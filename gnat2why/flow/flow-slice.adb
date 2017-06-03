@@ -380,9 +380,9 @@ package body Flow.Slice is
             --  Insert E to either Local_Variables or Local_Ghost_Variables
             --  depending on its Ghost status.
 
-            -----------------------
+            ----------------------
             -- Exposed_As_State --
-            -----------------------
+            ----------------------
 
             function Exposed_As_State (E : Entity_Id) return Boolean is
                S : constant Entity_Id := Scope (E);

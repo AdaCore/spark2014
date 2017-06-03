@@ -1016,9 +1016,9 @@ package body Gnat2Why.Counter_Examples is
       --  it has already been inserted, return the existing; if not, create new
       --  entry, store it in the map, and return it.
 
-      -------------------------
+      ------------------------
       -- Insert_CNT_Element --
-      -------------------------
+      ------------------------
 
       function Insert_CNT_Element
         (Name   : String;

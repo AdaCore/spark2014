@@ -161,9 +161,9 @@ package body Why.Atree.Sprint is
    --  callback for the printing of sequences, to avoid too many parens when
    --  nesting sequences
 
-   --------------------------
+   -------------------------
    -- Print_Abstract_Expr --
-   --------------------------
+   -------------------------
 
    procedure Print_Abstract_Expr (Node : W_Abstract_Expr_Id) is
    begin
@@ -174,9 +174,9 @@ package body Why.Atree.Sprint is
       P (O, " end ");
    end Print_Abstract_Expr;
 
-   ---------------------
+   --------------------
    -- Print_Any_Expr --
-   ---------------------
+   --------------------
 
    procedure Print_Any_Expr (Node : W_Any_Expr_Id) is
       Res_Ty  : constant W_Type_Id := Get_Return_Type (Node);
@@ -206,9 +206,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Any_Expr;
 
-   -------------------
+   ------------------
    -- Print_Assert --
-   -------------------
+   ------------------
 
    procedure Print_Assert (Node : W_Assert_Id) is
    begin
@@ -219,9 +219,9 @@ package body Why.Atree.Sprint is
       P (O, " }");
    end Print_Assert;
 
-   -----------------------
+   ----------------------
    -- Print_Assignment --
-   -----------------------
+   ----------------------
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
    begin
@@ -235,9 +235,9 @@ package body Why.Atree.Sprint is
       P (O, " )");
    end Print_Assignment;
 
-   ------------------
+   -----------------
    -- Print_Axiom --
-   ------------------
+   -----------------
 
    procedure Print_Axiom (Node : W_Axiom_Id) is
    begin
@@ -250,9 +250,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Axiom;
 
-   -------------------
+   ------------------
    -- Print_Binder --
-   -------------------
+   ------------------
 
    procedure Print_Binder (Node  : W_Binder_Id)
    is
@@ -262,9 +262,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Arg_Type (Node));
    end Print_Binder;
 
-   --------------------
+   -------------------
    -- Print_Binding --
-   --------------------
+   -------------------
 
    procedure Print_Binding (Node : W_Binding_Id) is
       Name             : constant W_Identifier_Id := Get_Name (Node);
@@ -291,9 +291,9 @@ package body Why.Atree.Sprint is
       PL (O, "))");
    end Print_Binding;
 
-   ------------------------
+   -----------------------
    -- Print_Binding_Ref --
-   ------------------------
+   -----------------------
 
    procedure Print_Binding_Ref (Node : W_Binding_Ref_Id) is
       Context          : constant W_Prog_Id := Get_Context (Node);
@@ -320,9 +320,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Binding_Ref;
 
-   -----------------
+   ----------------
    -- Print_Call --
-   -----------------
+   ----------------
 
    procedure Print_Call (Node : W_Call_Id) is
       Name : constant W_Identifier_Id := Get_Name (Node);
@@ -377,9 +377,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Call;
 
-   ------------------------------
+   -----------------------------
    -- Print_Clone_Declaration --
-   ------------------------------
+   -----------------------------
 
    procedure Print_Clone_Declaration (Node : W_Clone_Declaration_Id) is
       As_Name    : constant Name_Id := Get_As_Name (Node);
@@ -402,9 +402,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Clone_Declaration;
 
-   -------------------------------
+   ------------------------------
    -- Print_Clone_Substitution --
-   -------------------------------
+   ------------------------------
 
    procedure Print_Clone_Substitution (Node : W_Clone_Substitution_Id) is
    begin
@@ -426,9 +426,9 @@ package body Why.Atree.Sprint is
       PL (O, " *)");
    end Print_Comment;
 
-   ------------------------
+   -----------------------
    -- Print_Conditional --
-   ------------------------
+   -----------------------
 
    procedure Print_Conditional (Node : W_Conditional_Id) is
       Condition   : constant W_Expr_Id := Get_Condition (Node);
@@ -477,9 +477,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Conditional;
 
-   ------------------------
+   ----------------------
    -- Print_Connection --
-   ------------------------
+   ----------------------
 
    procedure Print_Connection (Node  : W_Connection_Id) is
       Left       : constant W_Expr_Id := Get_Left (Node);
@@ -512,9 +512,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Connection;
 
-   -------------------------------
+   ------------------------------
    -- Print_Custom_Declaration --
-   -------------------------------
+   ------------------------------
 
    procedure Print_Custom_Declaration (Node : W_Custom_Declaration_Id) is
       use GNAT.Regpat;
@@ -734,9 +734,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Custom_Declaration;
 
-   ------------------
+   -----------------
    -- Print_Deref --
-   ------------------
+   -----------------
 
    procedure Print_Deref (Node : W_Deref_Id) is
    begin
@@ -747,9 +747,9 @@ package body Why.Atree.Sprint is
       P (O, "__content");
    end Print_Deref;
 
-   --------------------
+   -------------------
    -- Print_Effects --
-   --------------------
+   -------------------
 
    procedure Print_Effects (Node  : W_Effects_Id)
    is
@@ -776,9 +776,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Effects;
 
-   ------------------
+   -----------------
    -- Print_Elsif --
-   ------------------
+   -----------------
 
    procedure Print_Elsif (Node : W_Elsif_Id) is
       Condition : constant W_Expr_Id := Get_Condition (Node);
@@ -815,9 +815,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Epsilon;
 
-   ----------------------------------
+   ---------------------------------
    -- Print_Exception_Declaration --
-   ----------------------------------
+   ---------------------------------
 
    procedure Print_Exception_Declaration (Node : W_Exception_Declaration_Id) is
       Arg : constant W_Type_OId := Get_Arg (Node);
@@ -832,9 +832,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Exception_Declaration;
 
-   --------------------------------
+   -------------------------------
    -- Print_Existential_Quantif --
-   --------------------------------
+   -------------------------------
 
    procedure Print_Existential_Quantif (Node : W_Existential_Quantif_Id) is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
@@ -864,9 +864,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Existential_Quantif;
 
-   --------------------------
+   -------------------------
    -- Print_Exn_Condition --
-   --------------------------
+   -------------------------
 
    procedure Print_Exn_Condition (Node : W_Exn_Condition_Id)
    is
@@ -888,9 +888,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Value (Node));
    end Print_Field_Association;
 
-   ---------------------------
+   --------------------------
    -- Print_Fixed_Constant --
-   ---------------------------
+   --------------------------
 
    procedure Print_Fixed_Constant (Node : W_Fixed_Constant_Id) is
       Value : constant Uint := Get_Value (Node);
@@ -904,9 +904,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Fixed_Constant;
 
-   ---------------------------
+   --------------------------
    -- Print_Float_Constant --
-   ---------------------------
+   --------------------------
 
    procedure Print_Float_Constant (Node : W_Float_Constant_Id) is
 
@@ -964,9 +964,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Float_Constant;
 
-   --------------------------
+   -------------------------
    -- Print_Function_Decl --
-   --------------------------
+   -------------------------
 
    procedure Print_Function_Decl (Node : W_Function_Decl_Id) is
       Name        : constant W_Identifier_Id := Get_Name (Node);
@@ -1101,9 +1101,9 @@ package body Why.Atree.Sprint is
       end case;
    end Print_Function_Decl;
 
-   -----------------------------------
+   ----------------------------------
    -- Print_Global_Ref_Declaration --
-   -----------------------------------
+   ----------------------------------
 
    procedure Print_Global_Ref_Declaration (Node : W_Global_Ref_Declaration_Id)
    is
@@ -1125,9 +1125,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Global_Ref_Declaration;
 
-   -----------------
+   ----------------
    -- Print_Goal --
-   -----------------
+   ----------------
 
    procedure Print_Goal (Node : W_Goal_Id) is
    begin
@@ -1140,9 +1140,9 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Goal;
 
-   --------------------
+   -------------------
    -- Print_Handler --
-   --------------------
+   -------------------
 
    procedure Print_Handler (Node : W_Handler_Id) is
       Arg : constant W_Prog_OId := Get_Arg (Node);
@@ -1158,18 +1158,18 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Def (Node));
    end Print_Handler;
 
-   -----------------------
+   ----------------------
    -- Print_Identifier --
-   -----------------------
+   ----------------------
 
    procedure Print_Identifier (Node : W_Identifier_Id) is
    begin
       Print_Name (Get_Name (Node));
    end Print_Identifier;
 
-   --------------------------------
+   -------------------------------
    -- Print_Include_Declaration --
-   --------------------------------
+   -------------------------------
 
    procedure Print_Include_Declaration (Node  : W_Include_Declaration_Id) is
    begin
@@ -1193,9 +1193,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Inner_Sequence;
 
-   -----------------------------
+   ----------------------------
    -- Print_Integer_Constant --
-   -----------------------------
+   ----------------------------
 
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id) is
       Value : constant Uint := Get_Value (Node);
@@ -1225,9 +1225,9 @@ package body Why.Atree.Sprint is
 
    end Print_Meta_Declaration;
 
-   -----------------------------
+   ----------------------------
    -- Print_Modular_Constant --
-   -----------------------------
+   ----------------------------
 
    procedure Print_Modular_Constant (Node : W_Modular_Constant_Id) is
       Value : constant Uint := Get_Value (Node);
@@ -1250,9 +1250,9 @@ package body Why.Atree.Sprint is
       P (O, " )");
    end Print_Modular_Constant;
 
-   ------------------
+   -----------------
    -- Print_Label --
-   ------------------
+   -----------------
 
    procedure Print_Label (Node : W_Label_Id) is
       use Why_Node_Lists;
@@ -1324,9 +1324,9 @@ package body Why.Atree.Sprint is
       end loop;
    end Print_List;
 
-   --------------------
+   -------------------
    -- Print_Literal --
-   --------------------
+   -------------------
 
    procedure Print_Literal (Node : W_Literal_Id) is
    begin
@@ -1657,9 +1657,9 @@ package body Why.Atree.Sprint is
       end case;
    end Print_Node;
 
-   ----------------
+   ---------------
    -- Print_Not --
-   ----------------
+   ---------------
 
    procedure Print_Not (Node : W_Not_Id) is
       Pred : constant W_Expr_Id := +Not_Get_Right (+Node);
@@ -1669,9 +1669,9 @@ package body Why.Atree.Sprint is
       P (O, " )");
    end Print_Not;
 
-   --------------------------
+   -------------------------
    -- Print_Postcondition --
-   --------------------------
+   -------------------------
 
    procedure Print_Postcondition (Node : W_Postcondition_Id)
    is
@@ -1687,9 +1687,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Postcondition;
 
-   ------------------
+   -----------------
    -- Print_Raise --
-   ------------------
+   -----------------
 
    procedure Print_Raise (Node : W_Raise_Id) is
       Exn_Type : constant W_Type_OId := Get_Exn_Type (Node);
@@ -1704,9 +1704,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Raise;
 
-   --------------------------
+   -------------------------
    -- Print_Real_Constant --
-   --------------------------
+   -------------------------
 
    procedure Print_Real_Constant (Node : W_Real_Constant_Id) is
    begin
@@ -1715,9 +1715,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Real_Constant;
 
-   --------------------------
+   -------------------------
    -- Print_Record_Access --
-   --------------------------
+   -------------------------
 
    procedure Print_Record_Access (Node : W_Record_Access_Id) is
    begin
@@ -1726,9 +1726,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Field (Node));
    end Print_Record_Access;
 
-   -----------------------------
+   ----------------------------
    -- Print_Record_Aggregate --
-   -----------------------------
+   ----------------------------
 
    procedure Print_Record_Aggregate (Node : W_Record_Aggregate_Id) is
    begin
@@ -1754,9 +1754,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Arg_Type (Node));
    end Print_Record_Binder;
 
-   ------------------------------
+   -----------------------------
    -- Print_Record_Definition --
-   ------------------------------
+   -----------------------------
 
    procedure Print_Record_Definition (Node : W_Record_Definition_Id)
    is
@@ -1766,9 +1766,9 @@ package body Why.Atree.Sprint is
       P (O, " }");
    end Print_Record_Definition;
 
-   --------------------------
+   -------------------------
    -- Print_Record_Update --
-   --------------------------
+   -------------------------
 
    procedure Print_Record_Update (Node : W_Record_Update_Id) is
    begin
@@ -1815,9 +1815,9 @@ package body Why.Atree.Sprint is
       Print_List (WF.Theories, Separator => "", Newline => True);
    end Print_Section;
 
-   -------------------------------
+   ------------------------------
    -- Print_Statement_Sequence --
-   -------------------------------
+   ------------------------------
 
    procedure Print_Statement_Sequence
      (Node  : W_Statement_Sequence_Id;
@@ -1835,9 +1835,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Statement_Sequence;
 
-   -----------------------
+   ------------------
    -- Print_Tagged --
-   -----------------------
+   ------------------
 
    procedure Print_Tagged (Node : W_Tagged_Id) is
       Tag : constant Name_Id := Get_Tag (Node);
@@ -1857,9 +1857,9 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Tagged;
 
-   -------------------------------
+   ------------------------------
    -- Print_Theory_Declaration --
-   -------------------------------
+   ------------------------------
 
    procedure Print_Theory_Declaration (Node : W_Theory_Declaration_Id) is
       Kind : constant EW_Theory_Type := Get_Kind (Node);
@@ -1890,9 +1890,9 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Type_Definition (N));
    end Print_Transparent_Type_Definition;
 
-   --------------------
+   -------------------
    -- Print_Trigger --
-   --------------------
+   -------------------
 
    procedure Print_Trigger (Node : W_Trigger_Id)
    is
@@ -1901,9 +1901,9 @@ package body Why.Atree.Sprint is
       Print_List (+Terms);
    end Print_Trigger;
 
-   ---------------------
+   --------------------
    -- Print_Triggers --
-   ---------------------
+   --------------------
 
    procedure Print_Triggers (Node : W_Triggers_Id)
    is
@@ -1914,9 +1914,9 @@ package body Why.Atree.Sprint is
       P (O, "]");
    end Print_Triggers;
 
-   ----------------------
+   ---------------------
    -- Print_Try_Block --
-   ----------------------
+   ---------------------
 
    procedure Print_Try_Block (Node : W_Try_Block_Id) is
    begin
@@ -2017,13 +2017,13 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Type_Decl;
 
-   ------------------------------
+   -----------------------------
    -- Print_Universal_Quantif --
-   ------------------------------
+   -----------------------------
 
    procedure Print_Universal_Quantif (Node   : W_Universal_Quantif_Id) is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
-      Labels         : constant Name_Id_Set := Get_Labels (Node);
+      Labels          : constant Name_Id_Set := Get_Labels (Node);
       Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId := Get_Triggers (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);
@@ -2073,9 +2073,9 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Print_Universal_Quantif;
 
-   -----------------------
+   ----------------------
    -- Print_While_Loop --
-   -----------------------
+   ----------------------
 
    procedure Print_While_Loop (Node : W_While_Loop_Id) is
 

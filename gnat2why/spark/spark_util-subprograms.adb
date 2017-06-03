@@ -573,9 +573,9 @@ package body SPARK_Util.Subprograms is
       return Empty;
    end Get_Priority_Or_Interrupt_Priority;
 
-   --------------------------
+   ---------------------------
    -- Includes_Current_Task --
-   --------------------------
+   ---------------------------
 
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean is
       (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
@@ -1058,9 +1058,9 @@ package body SPARK_Util.Subprograms is
       end;
    end Is_Simple_Shift_Or_Rotate;
 
-   ---------------------------------------
+   ------------------------------------
    -- Is_Volatile_For_Internal_Calls --
-   ---------------------------------------
+   ------------------------------------
 
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean is
    begin

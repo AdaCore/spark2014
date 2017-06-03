@@ -660,9 +660,9 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Returns the most refined constituents of variable or state
       --  abstraction.
 
-      -------------------
+      ------------------
       -- Fully_Refine --
-      -------------------
+      ------------------
 
       function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
          Refined : Name_Sets.Set;

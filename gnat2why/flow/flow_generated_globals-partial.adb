@@ -1094,9 +1094,9 @@ package body Flow_Generated_Globals.Partial is
       procedure Collect_Calls (Expr : Node_Id);
       --  Collect function calls in expression Expr and put them in Calls
 
-      ------------------
+      -------------------
       -- Collect_Calls --
-      ------------------
+      -------------------
 
       procedure Collect_Calls (Expr : Node_Id) is
       begin

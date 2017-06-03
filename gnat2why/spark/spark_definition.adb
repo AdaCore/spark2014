@@ -6023,9 +6023,9 @@ package body SPARK_Definition is
       end if;
    end Mark_Violation;
 
-   ----------------------------
+   -------------------------------
    -- Mark_Violation_In_Tasking --
-   ----------------------------
+   -------------------------------
 
    procedure Mark_Violation_In_Tasking (N : Node_Id) is
       Msg_Prefix : constant String := "tasking in SPARK requires ";

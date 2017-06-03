@@ -976,9 +976,9 @@ package body Why.Inter is
        Has_Array_Type (Get_Ada_Node (+Left)) and then
        Has_Array_Type (Get_Ada_Node (+Right)));
 
-   ------------------------------
+   ---------------------------
    -- Is_Private_Conversion --
-   ------------------------------
+   ---------------------------
 
    function Is_Private_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split

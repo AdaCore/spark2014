@@ -4588,9 +4588,9 @@ package body Gnat2Why.Subprograms is
                     Defined_Entity => E);
    end Generate_Subprogram_Completion;
 
-   --------------------------------------
+   -------------------------------------
    -- Generate_Subprogram_Program_Fun --
-   --------------------------------------
+   -------------------------------------
 
    procedure Generate_Subprogram_Program_Fun
      (File : W_Section_Id;

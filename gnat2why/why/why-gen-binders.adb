@@ -333,9 +333,9 @@ package body Why.Gen.Binders is
       return Count;
    end Item_Array_Length;
 
-   ------------------------------
+   -----------------------------
    -- Localize_Variable_Parts --
-   ------------------------------
+   -----------------------------
 
    procedure Localize_Variable_Parts
      (Binders : in out Item_Array;

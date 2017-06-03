@@ -1160,9 +1160,9 @@ package body SPARK_Util is
         and then Present (Parent (Parent (N)))
         and then Is_Predicate_Function_Call (Parent (Parent (N))));
 
-   -------------------------------------
+   --------------------------------------
    -- Is_Concurrent_Component_Or_Discr --
-   -------------------------------------
+   --------------------------------------
 
    function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean is
    begin

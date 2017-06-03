@@ -2725,9 +2725,9 @@ package body Why.Gen.Expr is
       return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
    end New_Located_Label;
 
-   --------------------
+   ---------------------
    -- New_Shape_Label --
-   --------------------
+   ---------------------
 
    function New_Shape_Label (Node : Node_Id) return Name_Id is
 

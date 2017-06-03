@@ -174,9 +174,9 @@ package body Flow_Utility.Initialization is
       function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
       --  Returns True iff F has full default initialization
 
-      ---------------------------------
+      -------------------------------------
       -- Has_Full_Default_Initialization --
-      ---------------------------------
+      -------------------------------------
 
       function Has_Full_Default_Initialization (E : Entity_Id) return Boolean
       is

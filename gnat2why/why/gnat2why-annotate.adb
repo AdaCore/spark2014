@@ -314,9 +314,9 @@ package body Gnat2Why.Annotate is
          Entity : Entity_Id);
       --  Insert an iterable annotation into the Iterable_Annotations map
 
-      ------------------------
+      ---------------------------
       -- Check_Contains_Entity --
-      ------------------------
+      ---------------------------
 
       procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
          Params  : constant List_Id :=
@@ -696,9 +696,9 @@ package body Gnat2Why.Annotate is
       end if;
    end Mark_Pragma_Annotate;
 
-   ---------------------------
+   --------------------------------
    -- Retrieve_Inline_Annotation --
-   ---------------------------
+   --------------------------------
 
    function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id is
       Position : constant Common_Containers.Node_Maps.Cursor :=

@@ -60,9 +60,9 @@ package body Why.Gen.Names is
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
-   ----------------------
+   ----------------
    -- Append_Num --
-   ----------------------
+   ----------------
 
    function Append_Num (S : String; Count : Positive) return String is
    begin

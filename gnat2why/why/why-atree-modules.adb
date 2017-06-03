@@ -174,9 +174,9 @@ package body Why.Atree.Modules is
       end if;
    end E_Axiom_Module;
 
-   --------------------
+   ------------------
    -- E_Rep_Module --
-   --------------------
+   ------------------
 
    function E_Rep_Module (E : Entity_Id) return W_Module_Id is
       use Ada_To_Why;
