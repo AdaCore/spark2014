@@ -32,9 +32,9 @@ with Why.Gen.Names;           use Why.Gen.Names;
 
 package body Why.Gen.Progs is
 
-   ------------------------------------
-   -- Insert_Always_True_Range_Check --
-   ------------------------------------
+   ----------------------------------
+   -- Emit_Always_True_Range_Check --
+   ----------------------------------
 
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;

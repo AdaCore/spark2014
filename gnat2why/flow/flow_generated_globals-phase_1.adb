@@ -173,9 +173,9 @@ package body Flow_Generated_Globals.Phase_1 is
       --  processing local variables for a run-time check that they do not
       --  represent remote states.
 
-      -----------------------------------
-      -- Processs_Volatiles_And_States --
-      -----------------------------------
+      ----------------------------------
+      -- Process_Volatiles_And_States --
+      ----------------------------------
 
       procedure Process_Volatiles_And_States
         (Names      : Name_Sets.Set;

@@ -290,9 +290,9 @@ package body Flow_Types is
       end if;
    end Belongs_To_Concurrent_Type;
 
-   ---------------------------------
-   -- Belongs_To_Protected_Object --
-   ---------------------------------
+   -------------------------------
+   -- Belongs_To_Protected_Type --
+   -------------------------------
 
    function Belongs_To_Protected_Type (F : Flow_Id) return Boolean is
      (F.Kind in Direct_Mapping | Record_Field

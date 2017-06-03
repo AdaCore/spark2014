@@ -654,9 +654,9 @@ package body Configuration is
          --  Remove prover from Provers list
          --  @param Name prover name to be removed
 
-         ------------------
-         -- Limit_Prover --
-         ------------------
+         -------------------
+         -- Remove_Prover --
+         -------------------
 
          procedure Remove_Prover (Name : String) is
             C : String_Lists.Cursor := Case_Insensitive_Find (Provers, Name);
@@ -891,9 +891,9 @@ package body Configuration is
          end if;
       end Sanity_Checking;
 
-      -------------------------------------
-      -- Set_Level_Timeout_Steps_Provers --
-      -------------------------------------
+      ------------------------------------------------
+      -- Set_Level_Timeout_Steps_Provers_Proof_Mode --
+      ------------------------------------------------
 
       procedure Set_Level_Timeout_Steps_Provers_Proof_Mode is
       begin

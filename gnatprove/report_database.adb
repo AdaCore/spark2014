@@ -240,9 +240,9 @@ package body Report_Database is
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Suppressed_Warning;
 
-   ----------------
-   -- Iter_Subps --
-   ----------------
+   --------------------
+   -- Iter_All_Subps --
+   --------------------
 
    procedure Iter_All_Subps
      (Process : not null access

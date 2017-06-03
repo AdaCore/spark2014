@@ -696,9 +696,9 @@ package body Gnat2Why.Error_Messages is
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
 
-      -------------------
-      -- Handle_Timing --
-      -------------------
+      --------------------
+      -- Handle_Timings --
+      --------------------
 
       procedure Handle_Timings (V : JSON_Value) is
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value);
@@ -888,9 +888,9 @@ package body Gnat2Why.Error_Messages is
       end case;
    end Proved_Message;
 
-   --------------
-   -- Register --
-   --------------
+   -----------------
+   -- Register_VC --
+   -----------------
 
    function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id is
       Registered_Id : VC_Id;

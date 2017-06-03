@@ -3632,9 +3632,9 @@ package body Gnat2Why.Subprograms is
                     Defined_Entity => E);
    end Generate_VCs_For_Subprogram;
 
-   ---------------------------
-   -- Generate_VCs_For_Task --
-   ---------------------------
+   --------------------------------
+   -- Generate_VCs_For_Task_Type --
+   --------------------------------
 
    procedure Generate_VCs_For_Task_Type
      (File : W_Section_Id;

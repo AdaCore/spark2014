@@ -637,9 +637,9 @@ package body Flow_Error_Messages is
       end if;
    end Is_Specified_Line;
 
-   ------------------------
-   -- Msg_Kind_To_String --
-   ------------------------
+   ----------------------------
+   -- Msg_Severity_To_String --
+   ----------------------------
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String is
      (case Severity is

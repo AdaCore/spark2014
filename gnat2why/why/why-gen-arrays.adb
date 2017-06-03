@@ -1580,9 +1580,9 @@ package body Why.Gen.Arrays is
       end if;
    end New_Array_Update;
 
-   --------------------------
-   -- NNew_Bounds_Equality --
-   --------------------------
+   -------------------------
+   -- New_Bounds_Equality --
+   -------------------------
 
    function New_Bounds_Equality
      (Left_Arr  : W_Expr_Id;

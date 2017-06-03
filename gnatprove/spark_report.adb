@@ -898,9 +898,9 @@ procedure SPARK_Report is
       end;
    end Show_Header;
 
-   -----------------------------
-   -- String_To_Summary_Entry --
-   -----------------------------
+   ------------------------
+   -- VC_Kind_To_Summary --
+   ------------------------
 
    function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries is
    begin

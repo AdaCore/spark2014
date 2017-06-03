@@ -166,9 +166,9 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Claim (C : Claim) renames Claims.Include;
 
-   -----------------------------------------
-   -- Register_Proof_Assumptions_For_Call --
-   -----------------------------------------
+   -----------------------------------
+   -- Register_Assumptions_For_Call --
+   -----------------------------------
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id)
    is

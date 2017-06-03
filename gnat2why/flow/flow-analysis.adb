@@ -2135,7 +2135,7 @@ package body Flow.Analysis is
       end Mark_Definition_Free_Path;
 
       ----------------------------------------
-      -- Mentioned_On_Generated_Initialized --
+      -- Mentioned_On_Generated_Initializes --
       ----------------------------------------
 
       function Mentioned_On_Generated_Initializes
@@ -4570,9 +4570,9 @@ package body Flow.Analysis is
          end loop;
       end Check_Ownership;
 
-      ---------------------------------------
-      -- Check_Concurrent_Calls_To_Entries --
-      ---------------------------------------
+      ------------------------------------------
+      -- Check_Concurrent_Accesses_To_Entries --
+      ------------------------------------------
 
       procedure Check_Concurrent_Accesses_To_Entries
         (Entry_Callers : Name_To_Name_Lists.Map)

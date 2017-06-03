@@ -896,9 +896,9 @@ package body SPARK_Util is
       return Flat_Stmts;
    end Get_Flat_Statement_And_Declaration_List;
 
-   ---------------------------------
-   -- Get_Formal_Type_From_Actual --
-   ---------------------------------
+   ----------------------------
+   -- Get_Formal_From_Actual --
+   ----------------------------
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id := Empty;
@@ -1296,7 +1296,7 @@ package body SPARK_Util is
         and then Get_Pragma_Id (Pragma_Name (N)) = Name);
 
    ----------------------------------
-   -- Is_Pragma_Annotate_Gnatprove --
+   -- Is_Pragma_Annotate_GNATprove --
    ----------------------------------
 
    function Is_Pragma_Annotate_GNATprove (N : Node_Id) return Boolean is

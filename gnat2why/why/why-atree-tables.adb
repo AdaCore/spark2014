@@ -109,9 +109,9 @@ package body Why.Atree.Tables is
       return List_Table.Last_Index;
    end New_List;
 
-   ------------------
-   -- New_Why_Node --
-   ------------------
+   ---------------------
+   -- New_Why_Node_Id --
+   ---------------------
 
    function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id is
    begin

@@ -499,9 +499,9 @@ package body Flow_Generated_Globals.Partial is
    --  Bodies
    ----------------------------------------------------------------------------
 
-   ------------------
-   -- Analyze_Body --
-   ------------------
+   ---------------------
+   -- Preanalyze_Body --
+   ---------------------
 
    function Preanalyze_Body (E : Entity_Id) return Contract
    is
@@ -601,9 +601,9 @@ package body Flow_Generated_Globals.Partial is
       return Contr;
    end Preanalyze_Body;
 
-   ------------------
-   -- Analyze_Spec --
-   ------------------
+   ---------------------
+   -- Preanalyze_Spec --
+   ---------------------
 
    function Preanalyze_Spec (E : Entity_Id) return Contract is
 
@@ -1084,9 +1084,9 @@ package body Flow_Generated_Globals.Partial is
               Definite_Calls    => O_Definite - O_Conditional);
    end Categorize_Calls;
 
-   ---------------------
-   -- Contracts_Calls --
-   ---------------------
+   --------------------
+   -- Contract_Calls --
+   --------------------
 
    function Contract_Calls (E : Entity_Id) return Node_Sets.Set is
       Calls : Node_Sets.Set;
@@ -1186,9 +1186,9 @@ package body Flow_Generated_Globals.Partial is
       end if;
    end Debug;
 
-   ------------------------
-   -- Do_Global_Contract --
-   ------------------------
+   ---------------
+   -- Do_Global --
+   ---------------
 
    procedure Do_Global
      (Analyzed  :        Entity_Id;

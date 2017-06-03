@@ -525,9 +525,9 @@ package body Gnat2Why.Tables is
       end if;
    end Search_Component_In_Type;
 
-   -----------------------
-   -- Store_In_Ancestor --
-   -----------------------
+   ------------------------
+   -- Store_In_Ancestors --
+   ------------------------
 
    procedure Store_In_Ancestors (E : Entity_Id) is
       Current  : Entity_Id := E;

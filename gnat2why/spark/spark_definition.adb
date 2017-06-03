@@ -6075,9 +6075,9 @@ package body SPARK_Definition is
       end if;
    end Mark_Violation_Of_SPARK_Mode;
 
-   ----------------------------------
-   -- Most_Underlying_Type_In_SPARK --
-   ----------------------------------
+   ----------------------------------------
+   -- Mark_Most_Underlying_Type_In_SPARK --
+   ----------------------------------------
 
    procedure Mark_Most_Underlying_Type_In_SPARK
      (Id : Entity_Id;
@@ -6089,9 +6089,9 @@ package body SPARK_Definition is
       end if;
    end Mark_Most_Underlying_Type_In_SPARK;
 
-   --------------
-   -- In_SPARK --
-   --------------
+   ---------------------
+   -- Retysp_In_SPARK --
+   ---------------------
 
    function Retysp_In_SPARK (E : Entity_Id) return Boolean is
    begin

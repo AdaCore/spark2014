@@ -1237,9 +1237,9 @@ package body Flow_Generated_Globals.Phase_2 is
                   Line (Line'First .. Line'First + 2) = "GG ";
          --  Parse single line of the GG section
 
-         --------------------------------
-         -- Issue_Corrupted_File_Error --
-         --------------------------------
+         ------------------------
+         -- Corrupted_ALI_File --
+         ------------------------
 
          procedure Corrupted_ALI_File (Msg : String) is
          begin
@@ -1872,9 +1872,9 @@ package body Flow_Generated_Globals.Phase_2 is
             end if;
          end Dump_Contract;
 
-         --------------------
-         -- Dump_Contracts --
-         --------------------
+         ------------------------------
+         -- Dump_Main_Unit_Contracts --
+         ------------------------------
 
          procedure Dump_Main_Unit_Contracts (Highlight : Entity_Name) is
          begin
@@ -2490,9 +2490,9 @@ package body Flow_Generated_Globals.Phase_2 is
          is
            (Constant_Graph.Edge_Exists (E, Variable_Input));
 
-         -----------
-         -- Strip --
-         -----------
+         ---------------------
+         -- Strip_Constants --
+         ---------------------
 
          procedure Strip_Constants
            (From           : in out Flow_Names;

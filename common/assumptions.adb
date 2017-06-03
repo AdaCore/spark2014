@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,7 +30,7 @@ package body Assumptions is
    function To_JSON (R : Rule) return JSON_Value;
 
    ---------------
-   -- From_Json --
+   -- From_JSON --
    ---------------
 
    function From_JSON (S : String) return Rule_Lists.List is

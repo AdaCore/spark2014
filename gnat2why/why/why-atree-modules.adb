@@ -567,9 +567,9 @@ package body Why.Atree.Modules is
                        Name => NID ("Array__4")));
    end Initialize;
 
-   ------------------------
-   -- Init_Array_Modules --
-   ------------------------
+   -----------------------
+   -- Init_Array_Module --
+   -----------------------
 
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type
    is

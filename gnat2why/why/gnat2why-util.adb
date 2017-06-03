@@ -989,9 +989,9 @@ package body Gnat2Why.Util is
         and then not Is_Tagged_Type (Ty);
    end Is_Simple_Private_Type;
 
-   -------------------------
-   -- Make_Empty_Why_File --
-   -------------------------
+   ----------------------------
+   -- Make_Empty_Why_Section --
+   ----------------------------
 
    procedure Make_Empty_Why_Section
      (Kind : W_Section_Id; Section : out Why_Section) is
@@ -1275,7 +1275,7 @@ package body Gnat2Why.Util is
    end Use_Guard_For_Function;
 
    -----------------------------
-   -- Use_Split_From_For_Type --
+   -- Use_Split_Form_For_Type --
    -----------------------------
 
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean is

@@ -104,9 +104,9 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Basic_Attributes;
 
-   ------------------------------------
-   -- Make_Extened_Return_Attributes --
-   ------------------------------------
+   -------------------------------------
+   -- Make_Extended_Return_Attributes --
+   -------------------------------------
 
    function Make_Extended_Return_Attributes
      (Var_Def         : Flow_Id_Sets.Set;
