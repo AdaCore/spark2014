@@ -34,7 +34,6 @@ with Namet;                          use Namet;
 with Output;                         use Output;
 with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
-with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 
 package body Flow_Types is
 
@@ -514,8 +513,11 @@ package body Flow_Types is
          when Direct_Mapping | Record_Field =>
             return Is_Constant_Object (F.Node);
 
+         --  Constants (without variable input) are filtered in phase 1 and
+         --  never appear in the contracts written to the ALI file.
+
          when Magic_String =>
-            return Is_Constant (F.Name);
+            return False;
 
          when Synthetic_Null_Export =>
             return False;

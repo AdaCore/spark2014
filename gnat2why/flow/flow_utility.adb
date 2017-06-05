@@ -443,9 +443,7 @@ package body Flow_Utility is
             end;
 
          when Magic_String =>
-            return (if Erase_Constants and then Is_Constant (F.Name)
-                    then Flow_Id_Sets.Empty_Set
-                    else Flow_Id_Sets.To_Set (F));
+            return Flow_Id_Sets.To_Set (F);
 
          when Record_Field | Null_Value | Synthetic_Null_Export =>
             raise Program_Error;
@@ -3389,7 +3387,7 @@ package body Flow_Utility is
             end;
 
          when Magic_String =>
-            return not Is_Constant (F.Name);
+            return True;
 
          --  Consider anything that is not a Direct_Mapping or a Record_Field
          --  to be a variable.
@@ -3513,10 +3511,6 @@ package body Flow_Utility is
             when Magic_String =>
                pragma Assert (not Only_Generic_Formals);
                --  Filtering magic strings for generic formals is meaningless
-
-               if Is_Constant (F.Name) then
-                  Constants.Insert (F);
-               end if;
 
             when Synthetic_Null_Export =>
                null;

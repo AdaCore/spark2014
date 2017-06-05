@@ -57,7 +57,6 @@ package body SPARK_Frame_Conditions is
    --  False for a degraded mode of operation in which such errors are ignored.
 
    Scopes       : Name_Sets.Set;    --  All scope entities
-   Constants    : Name_Sets.Set;    --  All constants
 
    File_Defines : Name_Maps.Map;    --  File defining each entities
    Defines      : Name_Graphs.Map;  --  Entities defined by each scope
@@ -199,13 +198,12 @@ package body SPARK_Frame_Conditions is
    is
    begin
       for S of Defines loop
-         --  External objects are those in the sets of defined objects Defines,
-         --  that are not constant objects from the set Constants.
+         --  External objects are those in the sets of defined objects Defines
+         --  ??? no, they are "state variables" (as defined in the old SPARK)
+         --  of library-level packages; we have a TN for that.
 
          for Elt of S loop
-            if not Constants.Contains (Elt)
-              and then not Translated_Object_Entities.Contains (Elt)
-            then
+            if not Translated_Object_Entities.Contains (Elt) then
                Process (Elt);
             end if;
          end loop;
@@ -241,9 +239,7 @@ package body SPARK_Frame_Conditions is
    -- Computed_Reads --
    --------------------
 
-   function Computed_Reads
-     (E                 : Entity_Id;
-      Include_Constants : Boolean) return Name_Sets.Set
+   function Computed_Reads (E : Entity_Id) return Name_Sets.Set
    is
       pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
       --  Alias is empty for entries and meaningless for entry families
@@ -269,10 +265,6 @@ package body SPARK_Frame_Conditions is
       end if;
 
       Read_Ids := Reads (E_Name);
-
-      if not Include_Constants then
-         Read_Ids.Difference (Constants);
-      end if;
 
       return Read_Ids - Defines (E_Name);
    exception
@@ -318,7 +310,7 @@ package body SPARK_Frame_Conditions is
       --  then these entities are also writes.
       --  ??? call to Computed_Reads repeats what is already done here; this
       --  should be refactored.
-      for E_N of Computed_Reads (E, Include_Constants => False) loop
+      for E_N of Computed_Reads (E) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
@@ -351,13 +343,6 @@ package body SPARK_Frame_Conditions is
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
      (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
-
-   -----------------
-   -- Is_Constant --
-   -----------------
-
-   function Is_Constant (Ent : Entity_Name) return Boolean
-     renames Constants.Contains;
 
    ----------------------------
    -- Is_Protected_Operation --
@@ -637,7 +622,6 @@ package body SPARK_Frame_Conditions is
                            when 'r' =>
                               Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
                            when 'c' =>
-                              Constants.Include (Ref_Entity);
                               Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
                            when 'm' =>
                               Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
@@ -760,7 +744,7 @@ package body SPARK_Frame_Conditions is
          return;
       end if;
 
-      Inputs  := Computed_Reads (E, Include_Constants => False);
+      Inputs  := Computed_Reads (E);
       Outputs := Computed_Writes (E);
 
       --  Add variables written to variables read
