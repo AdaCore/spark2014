@@ -101,6 +101,23 @@ successful if-and-only-if the list contains the value searched, and if so the
 cursor returned is one at which the list contains this value. |GNATprove|
 proves all checks on these programs.
 
+.. rubric:: ``trajectory_computation``
+
+This example contains code from an embedded safety-critical software, which
+computes the speed of a device submitted to gravitational acceleration and drag
+from the atmosphere around it. This program was used as challenge example in
+the article `"Automating the Verification of Floating-Point Programs"`
+published at VSTTE 2017 conference.
+
+The Ada files contain multiple variants of the example in increasing order of
+difficulty, see ``README`` file for details. The challenge example used in the
+article corresponds to files ``simple_trajectory.ads`` and
+``simple_trajectory.adb``. In this version, only the speed is updated, not the
+distance. Both absence of run-time errors (including overflows) and safe bounds
+on the computed speed are proved by using a combination of provers. A dozen
+intermediate assertions are needed to benefit from this combination, so that
+different provers can prove different parts of the property.
+
 Single Units
 ------------
 
@@ -178,7 +195,7 @@ See the relevant sections for more details on :ref:`Ghost Code` and
 
 This program implements a toy interface to a bank account database, with
 procedures to deposit and withdraw money, and functions to query the account
-balance and information. This program was used as running example in the paper
+balance and information. This program was used as running example in the article
 `"Integrating Formal Program Verification with Testing"` (at
 http://www.open-do.org/wp-content/uploads/2011/12/hi-lite-erts2012.pdf). The
 API is annotated with full functional contracts, as well as test cases
@@ -498,7 +515,7 @@ This program is a case study performed by David Mentré in the context of the
 openETCS European project aiming at making an open-source, open-proof reference
 model of ETCS (European Train Control System). ETCS is a radio-based train
 control system aiming at unifying train signaling and control over all European
-countries. The results of this case study are described in the paper `"Rail,
+countries. The results of this case study are described in the article `"Rail,
 Space, Security: Three Case Studies for SPARK 2014"`.
 
 Package ``Section_4_6`` models a subset of the transitions allowed in the
@@ -520,7 +537,7 @@ This program is an implementation of the Skein cryptographic hash algorithm
 portable to a wide-variety of machines of differing word-sizes and
 endianness. This program was originally written in SPARK 2005 by Rod Chapman as
 a case study for the applicability of SPARK to cryptographic code. For details
-on this case study, see the paper `"SPARKSkein: A Formal and Fast Reference
+on this case study, see the article `"SPARKSkein: A Formal and Fast Reference
 Implementation of Skein"` (at
 http://www.adacore.com/knowledge/technical-papers/sparkskein/). The program in
 the toolset distribution is the SPARK 2014 version of this case study.
