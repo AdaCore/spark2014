@@ -1,1 +1,1 @@
-ALL XFAIL wrong message by flow analysis
+ALL XFAIL GG: incomplete front-end calls
