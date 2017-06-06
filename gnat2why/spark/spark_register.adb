@@ -162,9 +162,15 @@ package body SPARK_Register is
             end;
          end if;
 
-         --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
-         --  pragma Debug, which should be really ignored but might come from
-         --  the frontend globals).
+         --  Explicitly traverse rewritten subprogram calls and pragmas
+
+         --  In particular, take care of pragma Debug, which is intentionally
+         --  ignored by both flow a proof, but not-intentionally processed by
+         --  front-end cross-references. In effect, if a subprogram is not in
+         --  SPARK but has a pragma Debug, the call from that pragma will
+         --  appear as its callee and must be resolved just like other calls.
+         --  ??? this is a yet another reason for replacing front-end xrefs
+         --  with something more precise and easier to control.
          if Nkind (N) in Rewriten_Call
            and then Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma
          then
