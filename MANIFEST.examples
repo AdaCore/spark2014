@@ -55,3 +55,4 @@ text_io_get_line
 thumper
 tokeneer
 traffic_light
+trajectory_computation

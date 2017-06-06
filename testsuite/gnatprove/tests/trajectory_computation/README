@@ -1,0 +1,34 @@
+This example contains code from an embedded safety-critical software, which
+program computes the speed of a device submitted to gravitational acceleration
+and drag from the atmosphere around it.
+
+This program was used as challenge example in the article "Automating the
+Verification of Floating-Point Programs" by Clément Fumex, Claude Marché, and
+Yannick Moy, published at VSTTE 2017 conference.
+
+The Ada files contain multiple variants of the example in increasing order of
+difficulty:
+
+- simple_trajectory_overflow.ads and simple_trajectory_overflow.adb
+
+Simple version of the computation, which only updates the speed by not the
+distance. Only absence of run-time errors (including overflows) is proved.
+
+- simple_trajectory.ads and simple_trajectory.adb
+
+Simple version of the computation, which only updates the speed by not the
+distance. Both absence of run-time errors (including overflows) and safe bounds
+on the computed speed are proved.
+
+- complex_trajectory_overflow.ads and complex_trajectory_overflow.adb
+
+More complex version of the computation, which updates both the speed and the
+distance. Only absence of run-time errors (including overflows) is proved, but
+this depends on the proof of safe bounds on the computed speed.
+
+- complex_trajectory.ads and complex_trajectory.adb
+
+More complex version of the computation, which updates both the speed and the
+distance. Both absence of run-time errors (including overflows) and safe bounds
+on the computed speed and distance are expressed as properties, but the safe
+bounds on distance are not proved yet.
