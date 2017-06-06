@@ -8901,9 +8901,12 @@ package body Gnat2Why.Expr is
    begin
 
       --  Do not generate old when they are not allowed (eg in postconditions
-      --  of functions or inside prefixes of 'Old attributes).
+      --  of functions or inside prefixes of 'Old attributes), or when the
+      --  expression contains no variable.
 
-      if not Params.Old_Allowed then
+      if not Params.Old_Allowed
+        or else Get_Variables_For_Proof (Expr, Expr).Is_Empty
+      then
          return Transform_Expr (Expr, Domain, Params);
       end if;
 
