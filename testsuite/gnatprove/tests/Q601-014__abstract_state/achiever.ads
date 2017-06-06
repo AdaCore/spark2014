@@ -54,7 +54,9 @@ package Achiever with SPARK_Mode is
 private
    type Internal_State is new Integer;
 
-   function Get_Internal_State return Internal_State is (0);
+   My_Internal_State : Internal_State;
+
+   function Get_Internal_State return Internal_State is (My_Internal_State);
 
    function Prf_Do_Something (St     : St_Type;
                               Op     : Op_Type;
