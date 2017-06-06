@@ -1,0 +1,2 @@
+gen.ads:11:22: warning: unused variable "E", in instantiation at test.ads:10
+gen.ads:14:14: medium: postcondition might fail, cannot prove Get_Val'Result = Get_Val'result, in instantiation at test.ads:10

@@ -46,7 +46,7 @@ list.adb:37:65: info: overflow check proved (CVC4: 1 VC)
 list.adb:37:65: info: range check proved (CVC4: 1 VC)
 list.ads:10:37: info: range check proved (CVC4: 1 VC)
 list.ads:15:17: info: precondition proved (CVC4: 2 VC)
-list.ads:15:17: medium: postcondition might fail, cannot prove Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1) (e.g. when I = 0 and Reverse_List'Result = (Capacity => 0, others => ?))
+list.ads:15:17: medium: postcondition might fail, cannot prove Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1) (e.g. when I = 0)
 list.ads:15:29: info: range check proved (CVC4: 1 VC)
 list.ads:15:34: medium: precondition might fail
 list.ads:15:79: info: overflow check proved (CVC4: 1 VC)
