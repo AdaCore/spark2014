@@ -1963,9 +1963,11 @@ were declared within a protected unit or task unit (see section
 
    end Q.Child;
 
+   with Q.Child;
+
    package body Q
      with Refined_State => (Q1 => Q.Child.C1,
-                            Q2 => Hidden_State, State_In_Body)
+                            Q2 => (Hidden_State, State_In_Body))
    is
       --  Q1 and Q2 shall not be denoted here but the constituents
       --  Q.Child.C1, State_In_Body and Hidden_State may be.
@@ -1984,7 +1986,7 @@ were declared within a protected unit or task unit (see section
              Refined_Depends => ((Hidden_State, State_in_Body) => null)
       is
       begin
-         Sate_In_Body := 42;
+         State_In_Body := 42;
          Q.Child.Init_Q2;
       end Init_Q2;
    end Q;
