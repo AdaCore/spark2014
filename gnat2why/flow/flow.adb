@@ -132,6 +132,9 @@ package body Flow is
             Outdent;
          end if;
       end Print_Named_Flow_Id_Set;
+
+   --  Start of processing for Debug_Print_Generated_Contracts
+
    begin
       Write_Str ("Generated contracts for ");
       Sprint_Node (FA.Analyzed_Entity);
