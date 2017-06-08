@@ -710,7 +710,7 @@ The Depends aspect shall only be specified for the initial declaration of a
 subprogram (which may be a declaration, a body or a body stub), of a
 protected entry, or of a task unit.
 
-Unlike a postcondition, the Depends aspect must be 
+Unlike a postcondition, the Depends aspect must be
 complete in the sense that every input and output of the subprogram
 must appear in it.  A postcondition need only
 specify properties of particular interest.
@@ -1703,9 +1703,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 
 .. _tu-cbatu-ghost_entities-21:
 
-21. An output of a non-ghost subprogram other than a ghost global
-    shall not depend on a ghost input. [It is intended that this follows
-    as a consequence of other rules.]
+21. An output of a non-ghost subprogram other than a ghost global or an
+    abstract state shall not depend on a ghost input. [It is intended that this
+    follows as a consequence of other rules.]
 
 .. _tu-fe-ghost_entities-22:
 
