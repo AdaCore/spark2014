@@ -1,4 +1,4 @@
-legal.adb:50:21: medium: range check might fail
+legal.adb:50:21: medium: range check might fail (e.g. when Tmp = 4294967295)
 legal.adb:80:12: info: initialization of "Tmp" proved
 legal.ads:91:19: info: initialization of "X" proved
 legal.ads:95:32: info: initialization of "V1" proved

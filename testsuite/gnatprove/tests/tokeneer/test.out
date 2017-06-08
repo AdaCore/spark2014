@@ -137,11 +137,11 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:217:22: medium: postcondition might fail
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
@@ -257,10 +257,10 @@ auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:719:22: medium: postcondition might fail
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
@@ -1809,8 +1809,8 @@ enclave.adb:399:15: medium: precondition might fail
 enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
+enclave.adb:490:06: medium: postcondition might fail
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
-enclave.adb:499:11: medium: postcondition might fail, cannot prove (AdminToken.isgood)
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
 enclave.adb:528:18: medium: precondition might fail
@@ -1864,8 +1864,8 @@ enclave.adb:1108:15: medium: precondition might fail
 enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
+enclave.adb:1206:06: medium: postcondition might fail
 enclave.adb:1215:18: medium: precondition might fail
-enclave.adb:1218:11: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.useronly
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
 enclave.adb:1249:19: medium: precondition might fail
@@ -1874,7 +1874,7 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1424:13: medium: postcondition might fail, cannot prove Admin.IsPresent(TheAdmin)
+enclave.adb:1409:06: medium: postcondition might fail
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
@@ -1912,8 +1912,8 @@ enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
+enclave.adb:2188:09: medium: postcondition might fail
 enclave.adb:2197:21: medium: precondition might fail
-enclave.adb:2199:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
 enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved
@@ -2018,7 +2018,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
+enrolment.ads:78:22: medium: postcondition might fail
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
@@ -2806,10 +2806,10 @@ tismain.adb:165:40: info: initialization of "Screen.State" proved
 tismain.adb:166:34: info: initialization of "TheAdmin" proved
 tismain.adb:167:34: info: initialization of "TheStats" proved
 tismain.adb:168:43: info: initialization of "UserToken.State" proved
+tismain.adb:209:22: medium: postcondition might fail
 tismain.adb:209:35: info: initialization of "Enclave.State" proved
 tismain.adb:210:33: info: initialization of "KeyStore.State" proved
 tismain.adb:215:42: info: initialization of "TheAdmin" proved
-tismain.adb:218:22: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) /= PrivTypes.guard
 tismain.adb:224:36: info: initialization of "AdminToken.State" proved
 tismain.adb:233:15: info: initialization of "ConfigData.State" proved
 tismain.adb:234:15: info: initialization of "AuditLog.State" proved
@@ -2835,10 +2835,10 @@ tismain.adb:280:43: medium: "UserToken.Output" might not be written
 tismain.adb:556:20: medium: precondition might fail
 tismain.adb:562:21: medium: precondition might fail
 tismain.adb:569:20: medium: precondition might fail
+tismain.adb:602:08: medium: postcondition might fail
 tismain.adb:617:22: medium: precondition might fail
 tismain.adb:623:23: medium: precondition might fail
 tismain.adb:630:22: medium: precondition might fail
-tismain.adb:637:14: medium: postcondition might fail, cannot prove not Admin.IsPresent(TheAdmin)
 tismain.adb:703:17: info: precondition proved (CVC4: 2 VC)
 tismain.adb:706:17: info: precondition proved (CVC4: 3 VC)
 tismain.adb:710:19: info: precondition proved (CVC4: 6 VC)
@@ -2855,7 +2855,7 @@ tismain.adb:749:43: medium: "UserToken.Output" might not be written
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
-tismain.adb:1121:13: medium: postcondition might fail, cannot prove Latch.IsLocked = Latch.Interfac_IsLocked or SystemFault
+tismain.adb:1118:13: medium: postcondition might fail
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1156:25: medium: precondition might fail
@@ -2882,9 +2882,9 @@ tismain.adb:1293:40: info: initialization of "Screen.Output" proved
 tismain.adb:1294:34: info: initialization of "TheAdmin" proved
 tismain.adb:1336:39: info: initialization of "TheAdmin" proved
 tismain.adb:1347:10: info: loop invariant preservation proved (CVC4: 19 VC)
+tismain.adb:1347:10: medium: loop invariant might fail in first iteration
 tismain.adb:1347:23: info: initialization of "Enclave.State" proved
 tismain.adb:1347:57: info: initialization of "KeyStore.State" proved
-tismain.adb:1351:10: medium: loop invariant might fail in first iteration, cannot prove Latch.IsLocked = Latch(Latch.interfac_islocked)
 tismain.adb:1351:15: info: initialization of "Latch.State" proved
 tismain.adb:1353:33: info: initialization of "TheAdmin" proved
 tismain.adb:1354:25: info: initialization of "AdminToken.State" proved

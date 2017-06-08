@@ -104,7 +104,6 @@ main_test.adb:37:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:38:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:39:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:40:26: info: range check proved (CVC4: 1 VC)
-main_test.adb:41:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:44:21: info: initialization of "Field_10" proved
 main_test.adb:44:39: info: overflow check proved (CVC4: 1 VC)
 main_test.adb:44:41: info: initialization of "Field_06" proved
@@ -131,4 +130,3 @@ main_test.adb:59:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:60:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:61:26: info: range check proved (CVC4: 1 VC)
 main_test.adb:62:26: info: range check proved (CVC4: 1 VC)
-main_test.adb:63:26: info: range check proved (CVC4: 1 VC)
