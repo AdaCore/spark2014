@@ -952,7 +952,7 @@ procedure Gnatprove with SPARK_Mode is
       --  The full command line
 
    begin
-      --  Add <prefix>/libexec/spark2014/bin in front of the PATH
+      --  Add <prefix>/libexec/spark/bin in front of the PATH
 
       Set ("PATH",
            File_System.Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
