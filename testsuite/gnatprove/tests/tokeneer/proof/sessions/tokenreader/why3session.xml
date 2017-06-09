@@ -2,10 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="10" steplimit="0" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="20" steplimit="0" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.5-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4_CE" version="1.5-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <file name="../../../gnatprove/tokenreader.mlw" expanded="true">
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -2889,18 +2889,6 @@
 </theory>
 <theory name="Tokenreader__writeauthcertificate__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="File__exists__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__exists__closeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__exists__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__exists__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__exists__tempf" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__exists__tempf___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="File__putstring__strm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="File__putstring__strm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3069,6 +3057,10 @@
 </theory>
 <theory name="Tokenapi__getstatuschange__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tokenapi__connect__cardhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenapi__connect__cardhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tokenapi__connect__responsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__connect__responsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3097,9 +3089,9 @@
 </theory>
 <theory name="Tokenapi__connect__B_4__handlestr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__connect__cardhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tokenapi__status__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tokenapi__connect__cardhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tokenapi__status__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__status__outmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3132,10 +3124,6 @@
 <theory name="Tokenapi__status__inmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__status__inmsg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenapi__status__commsisok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenapi__status__commsisok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__disconnect__inmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3337,6 +3325,30 @@
 </theory>
 <theory name="Tokenreader__interfac__convertfromtisrawcert__trimmedcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="File__putchar__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__putchar__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__putchar__strm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__putchar__strm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__skipline__skiponeline__discardedchar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__skipline__skiponeline__discardedchar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Gnat__sockets__no_sock_addr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Gnat__sockets__no_sock_addr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__setstringsegment__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__setstringsegment__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__setstringsegment__v" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__setstringsegment__v___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Msgproc__getstringbypos__valstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Msgproc__getstringbypos__valstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3348,6 +3360,10 @@
 <theory name="Msgproc__getstringbypos__localmsg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Msgproc__getstringbypos__localmsg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__addduration__localtime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__addduration__localtime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Msgproc__getdictionary__dicstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3372,6 +3388,10 @@
 <theory name="Msgproc__getdictionary__localreturn" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Msgproc__getdictionary__localreturn___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__isvalidtime__localtime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__isvalidtime__localtime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Msgproc__getstringbykey__valstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3469,6 +3489,10 @@
 </theory>
 <theory name="Tcpip__connecttospre__readok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tcpip__disconnectfromspre__otherdevice" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__disconnectfromspre__otherdevice___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tcpip__disconnectfromspre__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__disconnectfromspre__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3481,17 +3505,13 @@
 </theory>
 <theory name="Tcpip__disconnectfromspre__server___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__disconnectfromspre__otherdevice" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tcpip__openall__connectok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Tcpip__disconnectfromspre__otherdevice___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Tcpip__openall__connectok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__openall__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__openall__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__openall__connectok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__openall__connectok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tcpip__closeall__ignored" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3533,6 +3553,22 @@
 </theory>
 <theory name="Tcpip__init__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tokenreader__interfac__listreaders__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__listreaders__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__listreaders__localnumber" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__listreaders__localnumber___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__listreaders__locallist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__listreaders__locallist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__addelementtolog__oldalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__addelementtolog__oldalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tokenapi__getstringhandle__stringhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenapi__getstringhandle__stringhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3557,13 +3593,193 @@
 </theory>
 <theory name="Tokenapi__updateauthcert__constructupdatemessage__newitem___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tokenreader__interfac__getstatuschange__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getstatuschange__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getstatuschange__localcurrentstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getstatuschange__localcurrentstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getstatuschange__localnewstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getstatuschange__localnewstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Clock__currenttimevar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__currenttimevar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tokenreader__interfac__disconnect__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__disconnect__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__connect__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__connect__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__connect__localcardhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__connect__localcardhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localcstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localcstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localatr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__status__localatr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__msgtoread__localreturn" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__msgtoread__localreturn___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__readmsg__msg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__readmsg__msg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__readmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__readmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__sendmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__sendmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__sendmsg__B_2__dummychar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__sendmsg__B_2__dummychar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getidcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getidcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getidcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getidcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__commsisok__codestart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tcpip__commsisok__codestart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getauthcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getauthcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getauthcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getauthcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getprivcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getprivcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getprivcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getprivcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getiacert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getiacert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getiacert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__getiacert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__classstringlookup" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__classstringlookup___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__accessstringlookup" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__accessstringlookup___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__latchunlockduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__latchunlockduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__alarmsilentduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__alarmsilentduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__fingerwaitduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__fingerwaitduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__tokenremovalduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__tokenremovalduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__enclaveclearance" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__enclaveclearance___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__workinghoursstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__workinghoursstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__workinghoursend" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__workinghoursend___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__maxauthduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__maxauthduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__accesspolicy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__accesspolicy___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__minentryclass" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__minentryclass___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__minpreservedlogsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__minpreservedlogsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__alarmthresholdsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__alarmthresholdsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__systemmaxfar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__systemmaxfar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__configfile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__configfile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__updateauthcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tokenreader__interfac__updateauthcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__year" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__year___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__month" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__month___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__day" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__day___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__sec" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Clock__interfac__convert__sec___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Auditlog__converttoauditdescription__localdesc" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__converttoauditdescription__localdesc___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__getstartandendtimefromfile__timeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__getstartandendtimefromfile__timeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3588,10 +3804,6 @@
 <theory name="Auditlog__getstartandendtimefromfile__timecount" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__timecount___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__getstartandendtimefromfile__timeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__getstartandendtimefromfile__timeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__updateendtimefromfile__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3669,114 +3881,6 @@
 </theory>
 <theory name="Auditlog__addelementtologfile__addelementtocurrentfile__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__addelementtologfile__addelementtonextfile__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__addelementtologfile__addelementtonextfile__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__description" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__description___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__head" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__truncatelog__head___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__addelementtologfilewithtruncatechecks__truncatedescription" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__addelementtologfilewithtruncatechecks__truncatedescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__fileh" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__fileh___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__numberentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__numberentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__firsttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__firsttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__timeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__timeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__timecount" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__timecount___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Gnat__sockets__no_sock_addr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Gnat__sockets__no_sock_addr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__setstringsegment__s" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__setstringsegment__s___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__setstringsegment__v" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__setstringsegment__v___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__addduration__localtime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__addduration__localtime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__isvalidtime__localtime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__isvalidtime__localtime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__msgtoread__localreturn" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__msgtoread__localreturn___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__readmsg__msg" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__readmsg__msg___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__readmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__readmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__sendmsg__success" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__sendmsg__success___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__sendmsg__B_2__dummychar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__sendmsg__B_2__dummychar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__commsisok__codestart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tcpip__commsisok__codestart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__year" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__year___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__month" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__month___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__day" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__day___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__sec" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Clock__interfac__convert__sec___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Configdata__validatefile__readduration__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readduration__value___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3785,13 +3889,17 @@
 </theory>
 <theory name="Configdata__validatefile__readduration__rawduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__validatefile__readfilesize__rawsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Auditlog__addelementtologfile__addelementtonextfile__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__validatefile__readfilesize__rawsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Auditlog__addelementtologfile__addelementtonextfile__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readfilesize__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readfilesize__value___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__validatefile__readfilesize__rawsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__validatefile__readfilesize__rawsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readclass__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3809,6 +3917,26 @@
 </theory>
 <theory name="Configdata__validatefile__readclass__matched___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Auditlog__init__fileages" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__fileages___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__description" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__description___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__head" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__truncatelog__head___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Configdata__validatefile__readworkinghours__theduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readworkinghours__theduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3825,6 +3953,38 @@
 </theory>
 <theory name="Configdata__validatefile__readworkinghours__char___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Auditlog__archivelog__description" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__description___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__archivefault" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__archivefault___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__archivedfilecount" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__archivedfilecount___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__fileindex" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__fileindex___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__fileindexinusedlist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__archivelog__fileindexinusedlist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__addelementtologfilewithtruncatechecks__truncatedescription" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__addelementtologfilewithtruncatechecks__truncatedescription___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Configdata__validatefile__readfar__value" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readfar__value___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3833,6 +3993,26 @@
 </theory>
 <theory name="Configdata__validatefile__readfar__rawfar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Auditlog__clearlogentries__oldalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__clearlogentries__oldalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__fileh" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__fileh___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__status" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__status___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__numberentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__numberentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__firsttime" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__firsttime___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Configdata__validatefile__readalarmsilent__thetitle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readalarmsilent__thetitle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -3840,6 +4020,18 @@
 <theory name="Configdata__validatefile__readalarmsilent__stop" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readalarmsilent__stop___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__timeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__timeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__timecount" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__timecount___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__validatefile__readlatchunlock__thetitle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -3953,254 +4145,6 @@
 </theory>
 <theory name="Configdata__writefile__workinghourstext__localvalue___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__classstringlookup" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__classstringlookup___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__accessstringlookup" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__accessstringlookup___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__latchunlockduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__latchunlockduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__alarmsilentduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__alarmsilentduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__fingerwaitduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__fingerwaitduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__tokenremovalduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__tokenremovalduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__enclaveclearance" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__enclaveclearance___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__workinghoursstart" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__workinghoursstart___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__workinghoursend" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__workinghoursend___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__maxauthduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__maxauthduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__accesspolicy" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__accesspolicy___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__minentryclass" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__minentryclass___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__minpreservedlogsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__minpreservedlogsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__alarmthresholdsize" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__alarmthresholdsize___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__systemmaxfar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__systemmaxfar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__configfile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__configfile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__emptylist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__emptylist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__noelement" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__noelement___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfiles" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfiles___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__currentlogfile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__currentlogfile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfilesstatus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfilesstatus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__numberlogentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__numberlogentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__usedlogfiles" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__usedlogfiles___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfileentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfileentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__auditalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__auditalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__auditsystemfault" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__auditsystemfault___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfilenames" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__logfilenames___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__putchar__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__putchar__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__putchar__strm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__putchar__strm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__skipline__skiponeline__discardedchar" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="File__skipline__skiponeline__discardedchar___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__localnumber" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__localnumber___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__locallist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__listreaders__locallist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__addelementtolog__oldalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__addelementtolog__oldalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localcurrentstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localcurrentstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localnewstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getstatuschange__localnewstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__disconnect__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__disconnect__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__connect__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__connect__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__connect__localcardhandle" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__connect__localcardhandle___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localcstate" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localcstate___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localatr" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__status__localatr___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getidcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getidcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getidcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getidcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getauthcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getauthcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getauthcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getauthcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getprivcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getprivcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getprivcert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getprivcert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getiacert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getiacert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getiacert__localrawcert" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__getiacert__localrawcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__updateauthcert__localresponsecode" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Tokenreader__interfac__updateauthcert__localresponsecode___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__fileages" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__fileages___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__init__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__description" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__description___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__thefile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__thefile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__ok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__ok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__archivefault" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__archivefault___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__archivedfilecount" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__archivedfilecount___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__fileindex" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__fileindex___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__fileindexinusedlist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__archivelog__fileindexinusedlist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__clearlogentries__oldalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Auditlog__clearlogentries__oldalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Clock__printduration__localtext" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__printduration__localtext___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4208,6 +4152,10 @@
 <theory name="Clock__printtime__localtext" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Clock__printtime__localtext___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__localtokenremovalduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Configdata__init__localtokenremovalduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__init__localenclaveclearance" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4265,10 +4213,6 @@
 </theory>
 <theory name="Configdata__init__localfingerwaitduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Configdata__init__localtokenremovalduration" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Configdata__init__localtokenremovalduration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Configdata__writefile__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Configdata__writefile__closeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -4296,6 +4240,62 @@
 <theory name="File__construct__newname" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="File__construct__newname___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__emptylist" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__emptylist___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__noelement" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__noelement___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfiles" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfiles___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__currentlogfile" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__currentlogfile___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfilesstatus" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfilesstatus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__numberlogentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__numberlogentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__usedlogfiles" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__usedlogfiles___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfileentries" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfileentries___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__auditalarm" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__auditalarm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__auditsystemfault" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__auditsystemfault___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfilenames" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Auditlog__logfilenames___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__closeok" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__closeok___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__tempf" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="File__exists__tempf___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4551,9 +4551,9 @@
 </theory>
 <theory name="Temp___String_Literal_164" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_165" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_168" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_166" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_173" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tokenreader__init__setreadername" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4989,9 +4989,9 @@
 </theory>
 <theory name="Temp___String_Literal_1142" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1155" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1157" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1158" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1160" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_1165" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -5503,118 +5503,118 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__init__subprogram_def" sum="0eff8dd63708a4cd632e3189e3f2605b" expanded="true">
+<theory name="Tokenreader__init__subprogram_def" sum="02f60d8083e3b2a86fac09aef4ab5459" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. loop invariant init">
-  <proof prover="3"><result status="valid" time="0.08" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. loop invariant init">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. loop invariant init">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. loop invariant init">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. loop invariant preservation">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. loop invariant preservation">
-  <proof prover="3"><result status="valid" time="0.07" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. loop invariant preservation">
-  <proof prover="3"><result status="valid" time="0.09" steps="13"/></proof>
+  <proof prover="1"><result status="valid" time="0.10" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="13. loop invariant preservation">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="0"><result status="unknown" time="0.32" steps="491"/></proof>
-  <proof prover="1"><result status="unknown" time="2.79"/></proof>
-  <proof prover="2"><result status="unknown" time="0.51" steps="343850"/></proof>
-  <proof prover="3"><result status="unknown" time="0.26" steps="675"/></proof>
+  <proof prover="0"><result status="unknown" time="2.14"/></proof>
+  <proof prover="1"><result status="unknown" time="0.22" steps="675"/></proof>
+  <proof prover="2"><result status="unknown" time="0.26" steps="343850"/></proof>
+  <proof prover="3"><result status="unknown" time="0.26" steps="495"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="15. precondition">
-  <proof prover="3"><result status="valid" time="0.13" steps="137"/></proof>
+  <proof prover="1"><result status="valid" time="0.10" steps="137"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="16. precondition">
-  <proof prover="0"><result status="unknown" time="0.30" steps="594"/></proof>
-  <proof prover="1"><result status="unknown" time="4.35"/></proof>
-  <proof prover="2"><result status="unknown" time="0.49" steps="320841"/></proof>
-  <proof prover="3"><result status="unknown" time="0.27" steps="819"/></proof>
+  <proof prover="0"><result status="unknown" time="3.49"/></proof>
+  <proof prover="1"><result status="unknown" time="0.20" steps="819"/></proof>
+  <proof prover="2"><result status="unknown" time="0.25" steps="320841"/></proof>
+  <proof prover="3"><result status="unknown" time="0.28" steps="602"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="17. precondition">
-  <proof prover="3"><result status="valid" time="0.14" steps="149"/></proof>
+  <proof prover="1"><result status="valid" time="0.11" steps="149"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="18. precondition">
-  <proof prover="0"><result status="unknown" time="0.10" steps="18"/></proof>
-  <proof prover="1"><result status="unknown" time="1.39"/></proof>
-  <proof prover="2"><result status="unknown" time="0.17" steps="170961"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="18"/></proof>
+  <proof prover="0"><result status="unknown" time="1.08"/></proof>
+  <proof prover="1"><result status="unknown" time="0.11" steps="18"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="170961"/></proof>
+  <proof prover="3"><result status="unknown" time="0.10" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="19. precondition">
-  <proof prover="3"><result status="valid" time="0.10" steps="26"/></proof>
+  <proof prover="1"><result status="valid" time="0.10" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.20" expl="20. precondition">
-  <proof prover="0"><result status="unknown" time="0.12" steps="16"/></proof>
-  <proof prover="1"><result status="unknown" time="1.17"/></proof>
-  <proof prover="2"><result status="unknown" time="0.26" steps="319990"/></proof>
-  <proof prover="3"><result status="unknown" time="0.10" steps="16"/></proof>
+  <proof prover="0"><result status="unknown" time="1.00"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="16"/></proof>
+  <proof prover="2"><result status="unknown" time="0.15" steps="319990"/></proof>
+  <proof prover="3"><result status="unknown" time="0.09" steps="17"/></proof>
   </goal>
   <goal name="WP_parameter def.21" expl="21. precondition">
-  <proof prover="3"><result status="valid" time="0.09" steps="24"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="24"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__poll__subprogram_def" sum="71d89a6a2a6173fe3c2d7ac42a710595" expanded="true">
+<theory name="Tokenreader__poll__subprogram_def" sum="388c878a8c87d52cb9b1e27a179a5f03" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.07" steps="78"/></proof>
-  <proof prover="1"><result status="unknown" time="0.51"/></proof>
-  <proof prover="2"><result status="unknown" time="0.15" steps="230365"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="90"/></proof>
+  <proof prover="0"><result status="unknown" time="0.34"/></proof>
+  <proof prover="1"><result status="unknown" time="0.05" steps="90"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="230365"/></proof>
+  <proof prover="3"><result status="unknown" time="0.08" steps="80"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="3"><result status="valid" time="0.06" steps="70"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="70"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5653,7 +5653,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5662,7 +5662,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.00" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5671,78 +5671,78 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__makedescription__subprogram_def" sum="89117b0eff7c284e12f7eee14ab4f015" expanded="true">
+<theory name="Tokenreader__makedescription__subprogram_def" sum="47b62e099e1a3079e19d18ead6b8c656" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__makedescription__setresultstring__subprogram_def" sum="8dc935ffaa9b7762cdfcfa1e8e21a28e" expanded="true">
+<theory name="Tokenreader__makedescription__setresultstring__subprogram_def" sum="97e5a1619d7ce392c0958a3566abe41e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.04" steps="57"/></proof>
-  <proof prover="1"><result status="unknown" time="0.06"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="23662"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="63"/></proof>
+  <proof prover="0"><result status="unknown" time="0.05"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="63"/></proof>
+  <proof prover="2"><result status="unknown" time="0.02" steps="23662"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="57"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.05" steps="353"/></proof>
-  <proof prover="1"><result status="unknown" time="0.10"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="40156"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="359"/></proof>
+  <proof prover="0"><result status="unknown" time="0.10"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="359"/></proof>
+  <proof prover="2"><result status="unknown" time="0.03" steps="40049"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="353"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1"><result status="unknown" time="0.42"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="43208"/></proof>
-  <proof prover="3"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="unknown" time="0.21"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="44505"/></proof>
+  <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1"><result status="unknown" time="0.83"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="65542"/></proof>
-  <proof prover="3"><result status="unknown" time="0.12" steps="1959"/></proof>
+  <proof prover="0"><result status="unknown" time="0.64"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="64029"/></proof>
+  <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1"><result status="unknown" time="1.93"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="82231"/></proof>
-  <proof prover="3"><result status="unknown" time="0.20" steps="4425"/></proof>
+  <proof prover="0"><result status="unknown" time="1.47"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="84662"/></proof>
+  <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1"><result status="unknown" time="9.53"/></proof>
-  <proof prover="2"><result status="unknown" time="0.15" steps="120624"/></proof>
-  <proof prover="3"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="unknown" time="2.78"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="108514"/></proof>
+  <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="3"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="8. assertion">
-  <proof prover="3"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="9. assertion">
-  <proof prover="0"><result status="timeout" time="10.00"/></proof>
-  <proof prover="1"><result status="unknown" time="6.69"/></proof>
-  <proof prover="2"><result status="unknown" time="0.12" steps="107855"/></proof>
-  <proof prover="3"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="unknown" time="3.39"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.07" steps="114303"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="10. assertion">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="11. assertion">
-  <proof prover="1"><result status="unknown" time="8.21"/></proof>
-  <proof prover="2"><result status="unknown" time="0.14" steps="117229"/></proof>
-  <proof prover="3"><result status="timeout" time="20.00"/></proof>
+  <proof prover="0"><result status="unknown" time="3.34"/></proof>
+  <proof prover="1"><result status="timeout" time="20.00"/></proof>
+  <proof prover="2"><result status="unknown" time="0.07" steps="114876"/></proof>
+  <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="12. assertion">
-  <proof prover="3"><result status="valid" time="0.06" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
@@ -5789,7 +5789,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__poll__checkcardstate__subprogram_def" sum="665b2b83323a17d3238ec5ad14c6fd26" expanded="true">
+<theory name="Tokenreader__poll__checkcardstate__subprogram_def" sum="163b2e003c6c2c28b4cca640ff841186" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

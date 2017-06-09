@@ -3052,24 +3052,24 @@ userentry.adb:116:15: medium: precondition might fail
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
 userentry.adb:220:21: medium: precondition might fail
-userentry.adb:229:21: info: precondition proved (CVC4: 2 VC)
+userentry.adb:229:21: medium: precondition might fail
 userentry.adb:244:16: info: initialization of "TokenOK" proved
 userentry.adb:248:24: medium: precondition might fail
-userentry.adb:257:24: info: precondition proved (CVC4: 2 VC)
+userentry.adb:257:24: medium: precondition might fail
 userentry.adb:277:24: medium: precondition might fail
-userentry.adb:287:24: info: precondition proved (CVC4: 2 VC)
+userentry.adb:287:24: medium: precondition might fail
 userentry.adb:291:34: info: initialization of "Description" proved
 userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:476:15: low: range check might fail
-userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
+userentry.adb:482:45: medium: length check might fail
 userentry.adb:482:48: info: initialization of "FullString" proved
-userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
+userentry.adb:482:48: medium: length check might fail
 userentry.adb:484:26: info: initialization of "FullString" proved
-userentry.adb:484:26: info: length check proved (CVC4: 1 VC)
-userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
+userentry.adb:484:26: medium: length check might fail
+userentry.adb:484:26: medium: range check might fail
 userentry.adb:493:10: info: initialization of "Result" proved
 userentry.adb:495:17: info: initialization of "Result" proved
 userentry.adb:514:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved
@@ -3087,7 +3087,7 @@ userentry.adb:548:21: medium: precondition might fail
 userentry.adb:552:32: info: initialization of "AchievedFAR" proved
 userentry.adb:588:34: info: initialization of "Status" constituent of "State" proved
 userentry.adb:589:43: medium: "UserToken.Output" might not be written
-userentry.adb:651:19: info: precondition proved (CVC4: 1 VC)
+userentry.adb:651:19: medium: precondition might fail
 userentry.adb:658:13: info: initialization of "UpdateOK" proved
 userentry.adb:663:13: info: initialization of "UpdateOK" proved
 userentry.adb:667:21: medium: precondition might fail
@@ -3095,20 +3095,20 @@ userentry.adb:682:21: medium: precondition might fail
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
-userentry.adb:859:13: info: postcondition proved (CVC4: 4 VC)
+userentry.adb:859:13: medium: postcondition might fail
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: info: refined post proved (CVC4: 4 VC)
-userentry.adb:1197:37: info: range check proved (CVC4: 1 VC)
+userentry.adb:1183:13: medium: refined postcondition might fail
+userentry.adb:1197:37: medium: range check might fail
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
-userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)
-userentry.adb:1207:13: info: precondition proved (CVC4: 1 VC)
-userentry.adb:1211:13: info: precondition proved (CVC4: 5 VC)
+userentry.adb:1203:13: medium: precondition might fail
+userentry.adb:1207:13: medium: precondition might fail
+userentry.adb:1211:13: medium: precondition might fail
 userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
-userentry.ads:264:13: info: postcondition proved (CVC4: 4 VC)
+userentry.ads:264:13: medium: postcondition might fail
 usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
