@@ -3832,17 +3832,17 @@ package body Flow.Control_Flow_Graph is
          if Elaboration_Has_Effect then
             --  Traverse package body declarations
             Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
-
-            Move_Connections (CM,
-                              Dst => Union_Id (N),
-                              Src => Union_Id (Pkg_Body_Declarations));
          end if;
 
          --  The package has been now elaborated and vertices for the variables
          --  in the package body declarations are created. Now apply the
          --  Initializes aspect, if present.
 
-         if not DM.Is_Empty then
+         if DM.Is_Empty then
+            Move_Connections (CM,
+                              Dst => Union_Id (N),
+                              Src => Union_Id (Pkg_Body_Declarations));
+         else
             declare
                Verts          : Union_Lists.List := Union_Lists.Empty_List;
                Initializes_CM : Graph_Connections;
@@ -3882,19 +3882,19 @@ package body Flow.Control_Flow_Graph is
                   --  Initializes_CM.
                   Linkup
                     (FA,
-                     CM (Union_Id (N)).Standard_Exits,
+                     CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
                      Initializes_CM.Standard_Entry);
 
                   --  We set the standard entry of N to the standard entry
                   --  of the body's declarations and the standard exists of N
                   --  to the standard exists of the last element in the Verts
                   --  union list.
-                  --  ??? this overwrites the CM entry for N
-                  CM (Union_Id (N)) :=
-                    Graph_Connections'
-                      (Standard_Entry => CM.Element
-                         (Union_Id (N)).Standard_Entry,
-                       Standard_Exits => Initializes_CM.Standard_Exits);
+                  CM.Insert
+                    (Union_Id (N),
+                     Graph_Connections'
+                       (Standard_Entry => CM.Element
+                            (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
+                        Standard_Exits => Initializes_CM.Standard_Exits));
                else
                   --  Since we do not process any declarations all we have to
                   --  do is to connect N to the Initializes_CM.
