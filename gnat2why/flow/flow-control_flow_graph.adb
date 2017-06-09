@@ -247,10 +247,12 @@ package body Flow.Control_Flow_Graph is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   procedure Copy_Connections (CM  : in out Connection_Maps.Map;
+   procedure Move_Connections (CM  : in out Connection_Maps.Map;
                                Dst : Union_Id;
-                               Src : Union_Id);
-   --  Create the connection map for Dst and copies all fields from Src to it
+                               Src : Union_Id)
+   with Pre  => CM.Contains (Src) and not CM.Contains (Dst),
+        Post => CM.Contains (Dst) and not CM.Contains (Src);
+   --  Create the connection map for Dst and moves all fields from Src to it
 
    procedure fndi (E : Entity_Id; N : Node_Id);
    --  This is a debug procedure that is called whenever we add a vertex N to
@@ -913,16 +915,40 @@ package body Flow.Control_Flow_Graph is
    ------------------------------------------------------------
 
    ----------------------
-   -- Copy_Connections --
+   -- Move_Connections --
    ----------------------
 
-   procedure Copy_Connections (CM  : in out Connection_Maps.Map;
+   procedure Move_Connections (CM  : in out Connection_Maps.Map;
                                Dst : Union_Id;
                                Src : Union_Id)
    is
+      Dst_Position : Connection_Maps.Cursor;
+      Src_Position : Connection_Maps.Cursor;
+      Inserted : Boolean;
    begin
-      CM.Insert (Dst, CM.Element (Src));
-   end Copy_Connections;
+      --  This code is subtle, but efficient. It does only 2 lookups in the
+      --  map (for Src and Dst) while avoiding tampering with cursors. Also, it
+      --  avoids extra memory re-allocation by reusing the container from Src.
+
+      CM.Insert (Key      => Dst,
+                 Position => Dst_Position,
+                 Inserted => Inserted);
+
+      pragma Assert (Inserted);
+
+      Src_Position := CM.Find (Src);
+
+      declare
+         New_Connections : Graph_Connections renames CM (Dst_Position);
+         Old_Connections : Graph_Connections renames CM (Src_Position);
+      begin
+         New_Connections.Standard_Entry := Old_Connections.Standard_Entry;
+         Vertex_Sets.Move (Target => New_Connections.Standard_Exits,
+                           Source => Old_Connections.Standard_Exits);
+      end;
+
+      CM.Delete (Src_Position);
+   end Move_Connections;
 
    ----------------------
    -- Add_Dummy_Vertex --
@@ -1912,7 +1938,7 @@ package body Flow.Control_Flow_Graph is
       Stmts : constant List_Id := Statements (N);
    begin
       Process_Statement_List (Stmts, FA, CM, Ctx);
-      Copy_Connections (CM,
+      Move_Connections (CM,
                         Dst => Union_Id (N),
                         Src => Union_Id (Stmts));
    end Do_Handled_Sequence_Of_Statements;
@@ -3752,7 +3778,7 @@ package body Flow.Control_Flow_Graph is
          --  the connections of N from Visible_Decls.
 
          else
-            Copy_Connections (CM,
+            Move_Connections (CM,
                               Dst => Union_Id (N),
                               Src => Union_Id (Visible_Decls));
          end if;
@@ -3807,7 +3833,7 @@ package body Flow.Control_Flow_Graph is
             --  Traverse package body declarations
             Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
 
-            Copy_Connections (CM,
+            Move_Connections (CM,
                               Dst => Union_Id (N),
                               Src => Union_Id (Pkg_Body_Declarations));
          end if;
@@ -3856,7 +3882,7 @@ package body Flow.Control_Flow_Graph is
                   --  Initializes_CM.
                   Linkup
                     (FA,
-                     CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
+                     CM (Union_Id (N)).Standard_Exits,
                      Initializes_CM.Standard_Entry);
 
                   --  We set the standard entry of N to the standard entry
@@ -3867,7 +3893,7 @@ package body Flow.Control_Flow_Graph is
                   CM (Union_Id (N)) :=
                     Graph_Connections'
                       (Standard_Entry => CM.Element
-                         (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
+                         (Union_Id (N)).Standard_Entry,
                        Standard_Exits => Initializes_CM.Standard_Exits);
                else
                   --  Since we do not process any declarations all we have to
