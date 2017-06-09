@@ -337,7 +337,7 @@ package body Flow.Control_Flow_Graph is
       --  Set to True iff the current loop has been proven to terminate
 
       Entry_References       : Node_Graphs.Map;
-      --  A map from loops -> 'loop_entry references
+      --  A map from loops -> 'Loop_Entry references
 
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
@@ -397,10 +397,11 @@ package body Flow.Control_Flow_Graph is
      (FA    : in out Flow_Analysis_Graphs;
       CM    : in out Connection_Maps.Map;
       Nodes : Union_Lists.List;
-      Block : out Graph_Connections);
+      Block : out Graph_Connections)
+   with Post => CM.Length = CM.Length'Old - Nodes.Length;
    --  Join up the standard entry and standard exits of the given nodes.
    --  Block contains the combined standard entry and exits of the joined
-   --  up sequence.
+   --  up sequence. Entries for the nodes are removed from the connection map.
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
@@ -1062,12 +1063,16 @@ package body Flow.Control_Flow_Graph is
                        CM (Nodes (Prev)).Standard_Exits,
                        CM (Nodes (Curr)).Standard_Entry);
 
+               CM.Delete (Nodes (Prev));
+
                Prev := Curr;
                Curr := Union_Lists.Next (Curr);
             end loop;
          end;
 
          Block.Standard_Exits := CM (Nodes.Last_Element).Standard_Exits;
+
+         CM.Delete (Nodes.Last_Element);
       end if;
    end Join;
 
@@ -2968,7 +2973,7 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      --  Now we need to glue the 'loop_entry checks to the front of the loop
+      --  Now we need to glue the 'Loop_Entry checks to the front of the loop
       declare
          Augmented_Loop : Union_Lists.List := Union_Lists.Empty_List;
          V              : Flow_Graphs.Vertex_Id;
@@ -2998,13 +3003,13 @@ package body Flow.Control_Flow_Graph is
          --  Then we stick the actual loop at the end
          Augmented_Loop.Append (Union_Id (N));
 
-         --  And connect up the dots, and finally replacing the
-         --  connection map we have for N with the new augmented one.
+         --  Connect up the dots, and finally re-insert the connection to the
+         --  block with 'Loop_Entry checks.
          Join (FA    => FA,
                CM    => CM,
                Nodes => Augmented_Loop,
                Block => Block);
-         CM (Union_Id (N)) := Block;
+         CM.Insert (Union_Id (N), Block);
       end;
 
       Ctx.Entry_References.Delete (Loop_Id);
@@ -3852,7 +3857,7 @@ package body Flow.Control_Flow_Graph is
                   Linkup
                     (FA,
                      CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
-                     CM (Verts.First_Element).Standard_Entry);
+                     Initializes_CM.Standard_Entry);
 
                   --  We set the standard entry of N to the standard entry
                   --  of the body's declarations and the standard exists of N
@@ -3863,8 +3868,7 @@ package body Flow.Control_Flow_Graph is
                     Graph_Connections'
                       (Standard_Entry => CM.Element
                          (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
-                       Standard_Exits => CM.Element
-                         (Verts.Last_Element).Standard_Exits);
+                       Standard_Exits => Initializes_CM.Standard_Exits);
                else
                   --  Since we do not process any declarations all we have to
                   --  do is to connect N to the Initializes_CM.
