@@ -13,7 +13,7 @@ advancebutton.adb:69:41: info: initialization of "AdvPressed" constituent of "St
 advancebutton.adb:82:21: info: initialization of "StillPressed" proved
 advancebutton.adb:84:10: info: initialization of "StillPressed" proved
 advancebutton.adb:85:13: info: initialization of "TimeNow" proved
-advancebutton.adb:86:34: info: range check proved (CVC4: 1 VC)
+advancebutton.adb:86:34: info: range check proved (altergo: 1 VC)
 advancebutton.adb:98:41: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:105:21: info: initialization of "Pressed" proved
 advancebutton.adb:106:21: info: initialization of "Pressed" proved
@@ -27,33 +27,33 @@ heatingsystem_dfa.adb:16:39: info: initialization of "Actuator.Outputs" proved
 heatingsystem_dfa.adb:17:38: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:18:40: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:55:40: info: initialization of "Display.Outputs" proved
-heatingsystem_dfa.adb:65:20: info: division check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:66:23: info: division check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:66:42: info: division check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:68:38: info: length check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:68:44: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:65:20: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:66:23: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:66:42: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:68:38: info: length check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:68:44: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:69:39: info: initialization of "Hour" proved
-heatingsystem_dfa.adb:69:44: info: division check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:70:46: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:69:44: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:70:46: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:71:39: info: initialization of "Minute" proved
-heatingsystem_dfa.adb:71:46: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:71:46: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:72:22: info: initialization of "TheDisplay" proved
 heatingsystem_dfa.adb:100:16: info: initialization of "SlowAdvance" proved
-heatingsystem_dfa.adb:101:49: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:101:49: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:105:16: info: initialization of "ChangeToFastMode" proved
 heatingsystem_dfa.adb:111:16: info: initialization of "FastAdvance" proved
-heatingsystem_dfa.adb:112:54: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:112:54: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:116:16: info: initialization of "ChangeToSlowMode" proved
-heatingsystem_dfa.adb:129:22: info: postcondition proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:129:48: info: division check proved (CVC4: 1 VC)
-heatingsystem_dfa.adb:132:30: info: division check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:129:22: info: postcondition proved (altergo: 1 VC)
+heatingsystem_dfa.adb:129:48: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:132:30: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:140:40: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:163:23: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:168:23: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:171:32: info: index check proved (CVC4: 2 VC)
+heatingsystem_dfa.adb:171:32: info: index check proved (altergo: 2 VC)
 heatingsystem_dfa.adb:171:32: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:172:33: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:173:23: info: index check proved (CVC4: 2 VC)
+heatingsystem_dfa.adb:173:23: info: index check proved (altergo: 2 VC)
 heatingsystem_dfa.adb:173:23: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:173:39: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:173:42: info: initialization of "Timer" proved
@@ -65,7 +65,7 @@ heatingsystem_dfa.adb:275:12: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:281:37: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:288:07: info: initialization of "AboveTemp" proved
 heatingsystem_dfa.adb:288:07: info: initialization of "MayOperate" proved
-heatingsystem_dfa.adb:297:28: info: length check proved (CVC4: 1 VC)
+heatingsystem_dfa.adb:297:28: info: length check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:303:07: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:303:07: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:304:07: info: initialization of "Actuator.Outputs" proved
