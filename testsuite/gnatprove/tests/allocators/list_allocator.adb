@@ -76,6 +76,11 @@ is
 
          Model.Available := Remove (Model.Available, 1);
          Model.Allocated := Add (Model.Allocated, Res);
+
+         pragma Assert
+           (for all J in 1 .. Integer (Length (Model.Available)) =>
+              (for all K in 1 .. J - 1 =>
+                   Get (Model.Available, J) /= Get (Model.Available, K)));
       else
          Res := No_Resource;
       end if;

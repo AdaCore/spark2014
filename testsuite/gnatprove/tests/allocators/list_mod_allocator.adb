@@ -28,7 +28,7 @@ is
                Data (First_Available).Stat = Available)
          and then (for all R in Valid_Resource =>
                      (if Data (R).Stat = Available and then Data (R).Next /= No_Resource
-                        then Data (Data (R).Next).Stat = Available)));
+                      then Data (Data (R).Next).Stat = Available)));
       --  The Is_Well_Formed property is the part of the validity function
       --  which can be expressed without refering to the model of the
       --  allocator. In particular it does not included anything that would
@@ -169,6 +169,8 @@ is
          pragma Loop_Invariant
            (for all J in 2 .. I + 1 =>
               Get (S1, J - 1) = Get (S2, J));
+         pragma Assert (for all J in 1 .. I + 1 =>
+                          Get (S2, J) /= Data (Get (S1, I)).Next);
       end loop;
    end Prove_Is_Preprend;
 
@@ -182,6 +184,10 @@ is
          Data (Res) := Cell'(Stat => Allocated, Next => No_Resource);
          First_Available := Next_Avail;
 
+         pragma Assert
+           (for all R in Valid_Resource =>
+              (if Data (R).Stat = Available and then Data (R).Next /= No_Resource
+               then Data (Data (R).Next).Stat = Available));
          Prove_Is_Preprend (Model.Available, MA);
       else
          Res := No_Resource;
@@ -222,6 +228,9 @@ begin
    end loop;
 
    Prove_Init (Model.Available);
+   pragma Annotate (GNATprove, False_Positive,
+                    "needs to be a constituent of some state abstraction",
+                    "known issue with generation of Initializes");
    pragma Assert
      (Data (Get (Model.Available, Integer (Length (Model.Available)))).Next = No_Resource);
 end List_Mod_Allocator;
