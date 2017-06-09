@@ -233,7 +233,7 @@ package body Flow.Control_Flow_Graph is
                         Standard_Exits => Vertex_Sets.Empty_Set);
 
    function Trivial_Connection (V : Flow_Graphs.Vertex_Id)
-                               return Graph_Connections
+                                return Graph_Connections
    is (Graph_Connections'(Standard_Entry => V,
                           Standard_Exits => Vertex_Sets.To_Set (V)));
    --  Produce the trivial connection
