@@ -164,6 +164,7 @@ is
       pragma Assert (Eq_Sub (X, 0, Natural (Len_Bv), Natural (64 - Len_Bv)));
       pragma Assert (Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv));
       pragma Assert_And_Cut ((X and (MaxValue (Len) - 1)) = X);
+      pragma Assert (Unsigned_64 (Len) in 0 .. 63);
       return Void;
    end LemmaFunction;
 
