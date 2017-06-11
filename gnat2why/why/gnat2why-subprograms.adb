@@ -4556,7 +4556,7 @@ package body Gnat2Why.Subprograms is
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Add_Dependencies_For_Effects (File, E);
 
@@ -4596,19 +4596,19 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Func_Binders       : constant Item_Array := Compute_Binders (E, EW_Prog);
-      Func_Why_Binders   : constant Binder_Array :=
+      Func_Binders     : constant Item_Array := Compute_Binders (E, EW_Prog);
+      Func_Why_Binders : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
-      Params             : Transformation_Params;
-      Effects            : W_Effects_Id;
-      Pre                : W_Pred_Id;
-      Post               : W_Pred_Id;
-      Dispatch_Pre       : W_Pred_Id;
-      Dispatch_Post      : W_Pred_Id;
-      Refined_Post       : W_Pred_Id;
-      Prog_Id            : constant W_Identifier_Id :=
+      Params           : Transformation_Params;
+      Effects          : W_Effects_Id;
+      Pre              : W_Pred_Id;
+      Post             : W_Pred_Id;
+      Dispatch_Pre     : W_Pred_Id;
+      Dispatch_Post    : W_Pred_Id;
+      Refined_Post     : W_Pred_Id;
+      Prog_Id          : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
-      Why_Type           : W_Type_Id := Why_Empty;
+      Why_Type         : W_Type_Id := Why_Empty;
 
    begin
       Params :=
@@ -4877,7 +4877,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_Dispatch_Module)),
+                    (Name         => NID (To_String (WNE_Dispatch_Module)),
                      Declarations =>
                        (1 => Create_Function_Decl
                             (Logic_Id  => Dispatch_Logic_Id,
@@ -5057,7 +5057,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_No_Return_Module)),
+                    (Name         => NID (To_String (WNE_No_Return_Module)),
                      Declarations =>
                        (1 => New_Function_Decl
                             (Domain      => EW_Prog,
@@ -5074,7 +5074,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (File,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_Refine_Module)),
+                    (Name         => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
                        (1 => New_Function_Decl
                             (Domain      => EW_Prog,
@@ -5503,13 +5503,13 @@ package body Gnat2Why.Subprograms is
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => Why_Type),
                         2 => New_Function_Decl
-                          (Domain      => EW_Pred,
-                           Name        => Pred_Id,
-                           Binders     =>
-                             Pred_Binders (1) & Tag_Binder
-                           & Pred_Binders (2 .. Pred_Binders'Length),
-                           Labels      => Name_Id_Sets.Empty_Set,
-                           Return_Type => EW_Bool_Type))));
+                            (Domain      => EW_Pred,
+                             Name        => Pred_Id,
+                             Binders     =>
+                               Pred_Binders (1) & Tag_Binder &
+                               Pred_Binders (2 .. Pred_Binders'Length),
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Bool_Type))));
             end if;
 
             if Has_Contracts (E, Pragma_Refined_Post) then
