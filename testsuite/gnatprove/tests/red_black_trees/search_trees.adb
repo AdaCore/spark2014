@@ -846,7 +846,21 @@ package body Search_Trees with SPARK_Mode is
                 Get (Model (F_Old, T.Root) (X).A,
                      Length (Model (F_1, T.Root) (I).A) + 1)
               = Get (Model (T.Struct, T.Root) (Y).A,
-                     Length (Model (F_5, T.Root) (I).A) + 1)));
+                Length (Model (F_5, T.Root) (I).A) + 1)));
+         pragma Assert
+           (for all I in Index_Type =>
+              (if Model (F_5, T.Root) (I).K
+               and Model (F_5, T.Root) (I).A < Model (T.Struct, T.Root) (Y).A
+               then (if Get (Model (T.Struct, T.Root) (Y).A,
+                 Length (Model (F_5, T.Root) (I).A) + 1) = Left
+                 then
+                   (for all J in Index_Type =>
+                      (if Model (F_5, Y) (J).K
+                       then T.Values (J) < T.Values (I)))
+                 else
+                   (for all J in Index_Type =>
+                      (if Model (F_5, Y) (J).K
+                       then T.Values (J) > T.Values (I))))));
 
          --  Use Prove_Plug_Order to prove that the combined tree respects the
          --  property Ordered_Leafs.
