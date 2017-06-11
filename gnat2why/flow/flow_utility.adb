@@ -393,37 +393,70 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
+               --  Expand abstract states as much as possible while respecting
+               --  the SPARK_Mode barrier.
                if Ekind (E) = E_Abstract_State then
                   declare
+                     Pkg : constant Entity_Id := Scope (E);
+                     --  Package
+                     pragma Assert (Ekind (Pkg) = E_Package);
+
                      Result : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
                   begin
-                     for C of Iter (Refinement_Constituents (E)) loop
-                        --  We simply ignore the null refinement, it is treated
-                        --  as if it was not present.
-                        if Nkind (C) /= N_Null then
-                           Result.Union
-                             (Expand_Abstract_State
-                                (Direct_Mapping_Id (C, F.Variant),
-                                 Erase_Constants));
+                     --  If the state is null, this is known right at its
+                     --  declaration and is not affected by the SPARK_Mode.
+
+                     if Is_Null_State (E) then
+                        return Flow_Id_Sets.Empty_Set;
+                     else
+                        --  Use the Refined_State aspect, if visible
+                        if Entity_Body_In_SPARK (Pkg) then
+
+                           --  At this point we know whether the state has a
+                           --  null refinement; if it does, then we ignore it.
+                           if Has_Null_Refinement (E) then
+                              return Flow_Id_Sets.Empty_Set;
+                           else
+                              for C of Iter (Refinement_Constituents (E)) loop
+                                 Result.Union
+                                   (Expand_Abstract_State
+                                      (Direct_Mapping_Id (C, F.Variant),
+                                       Erase_Constants));
+                              end loop;
+
+                              return Result;
+                           end if;
+
+                        --  Pick the Part_Of constituents from the private part
+                        --  of the package, if visible.
+
+                        elsif Present
+                          (Private_Declarations (Package_Specification (Pkg)))
+                          and then Private_Spec_In_SPARK (Pkg)
+                        then
+                           for C of Iter (Part_Of_Constituents (E)) loop
+                              Result.Union
+                                (Expand_Abstract_State
+                                   (Direct_Mapping_Id (C, F.Variant),
+                                    Erase_Constants));
+                           end loop;
+
+                           --  There might be more constituents in the package
+                           --  body, but we can't see them. The state itself
+                           --  will represent them.
+
+                           Result.Insert (F);
+
+                           return Result;
+
+                        --  None of the constituents are visible. The state
+                        --  will behave as a blob of data.
+
+                        else
+                           return Flow_Id_Sets.To_Set (F);
                         end if;
-                     end loop;
-
-                     for C of Iter (Part_Of_Constituents (E)) loop
-                        --  Part_Of cannot include a null refinement
-                        Result.Union
-                          (Expand_Abstract_State
-                             (Direct_Mapping_Id (C, F.Variant),
-                              Erase_Constants));
-                     end loop;
-
-                     --  If we can't refine this state (maybe the body is not
-                     --  in SPARK, or simply not implemented or there is a null
-                     --  refinement) then we use the abstract state itself.
-                     return
-                       (if Result.Is_Empty
-                        then Flow_Id_Sets.To_Set (F)
-                        else Result);
+                     end if;
                   end;
 
                --  Entities translated as constants in Why3 should not be
