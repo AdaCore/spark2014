@@ -798,14 +798,11 @@ package body Gnat2Why.Subprograms is
                      when Direct_Mapping =>
                         Includes.Include (Get_Direct_Mapping_Id (F));
 
+                     --  Flow only gives us Entity_Names for objects that
+                     --  cannot be represented by an Entity_Id.
+
                      when Magic_String =>
-                        declare
-                           Entity : constant Entity_Id := Find_Entity (F.Name);
-                        begin
-                           if Present (Entity) then
-                              Includes.Include (Entity);
-                           end if;
-                        end;
+                        pragma Assert (No (Find_Entity (F.Name)));
 
                      when others =>
                         raise Program_Error;
@@ -876,14 +873,7 @@ package body Gnat2Why.Subprograms is
                                  Includes.Include (Get_Direct_Mapping_Id (X));
 
                               when Magic_String =>
-                                 declare
-                                    Entity : constant Entity_Id :=
-                                      Find_Entity (X.Name);
-                                 begin
-                                    if Present (Entity) then
-                                       Includes.Include (Entity);
-                                    end if;
-                                 end;
+                                 pragma Assert (No (Find_Entity (X.Name)));
 
                               when Null_Value
                                  | Record_Field
