@@ -2995,13 +2995,7 @@ package body Flow.Analysis is
             Output : Flow_Id          renames Dependency_Maps.Key (O);
             Inputs : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
          begin
-            pragma Assert (if Present (Output)
-                           then Output.Kind in Direct_Mapping | Magic_String);
-
-            if Present (Output)
-              and then Output.Kind = Direct_Mapping
-              and then not Is_Ghost_Entity (Get_Direct_Mapping_Id (Output))
-            then
+            if Present (Output) then
                for Input of Inputs loop
                   declare
                      V : constant Flow_Graphs.Vertex_Id :=
