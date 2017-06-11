@@ -1,0 +1,5 @@
+SOUNDNESS BUG at main.adb:6: mark @POSTCONDITION:FAIL not found
+main.adb:6:16: info: postcondition proved (CVC4: 1 VC)
+state.adb:7:04: info: initialization of "S2" constituent of "State" proved
+state.ads:9:14: info: postcondition proved (CVC4: 1 VC)
+state.ads:16:04: info: initialization of "S1" constituent of "State" proved
