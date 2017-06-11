@@ -490,7 +490,7 @@ specification. Instead, we introduce a state abstraction which is visible in the
 package specification and later, when the package body is declared, we specify
 the set of variables that *constitute* or *implement* the state abstraction.
 
-If immediately within a package body, for example, a nested_package is declared,
+If immediately within a package body, for example, a nested package is declared,
 then a state abstraction of the inner package may also be part of the
 implementation of the given state abstraction of the outer package.
 
