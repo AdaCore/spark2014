@@ -542,15 +542,19 @@ package body Flow.Analysis is
    -- Is_Param_Of_Null_Subp_Of_Generic --
    --------------------------------------
 
-   function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
-                                              return Boolean
-   is
-      Subp : constant Entity_Id := Scope (E);
+   function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id) return Boolean is
    begin
-      return (Ekind (E) in Formal_Kind
-                and then Ekind (Subp) in E_Procedure | E_Function
-                and then Is_Generic_Actual_Subprogram (Subp)
-                and then Null_Present (Subprogram_Specification (Subp)));
+      if Is_Formal (E) then
+         declare
+            Subp : constant Entity_Id := Scope (E);
+         begin
+            return Ekind (Subp) in E_Procedure | E_Function
+              and then Is_Generic_Actual_Subprogram (Subp)
+              and then Null_Present (Subprogram_Specification (Subp));
+         end;
+      else
+         return False;
+      end if;
    end Is_Param_Of_Null_Subp_Of_Generic;
 
    ------------------
