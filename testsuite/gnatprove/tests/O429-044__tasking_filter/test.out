@@ -1,4 +1,3 @@
-tasking_aspects.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:89:34: attribute "Identity" is not permitted in SPARK
 tasks.ads:3:46: access type is not allowed in SPARK
 tasks.ads:3:46: violation of pragma SPARK_Mode at test.adc:1

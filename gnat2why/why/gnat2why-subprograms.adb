@@ -3648,7 +3648,6 @@ package body Gnat2Why.Subprograms is
       Params : Transformation_Params;
 
       Why_Body   : W_Prog_Id := +Void;
-      Post       : W_Pred_Id;
       Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
       Vis_Decls  : constant List_Id := Visible_Declarations_Of_Task_Type (E);
 
@@ -3676,12 +3675,6 @@ package body Gnat2Why.Subprograms is
                  Gen_Marker  => False,
                  Ref_Allowed => True,
                  Old_Allowed => True);
-
-      Post :=
-        +New_VC_Expr (Ada_Node   => E,
-                      Expr       => +False_Pred,
-                      Reason     => VC_Task_Termination,
-                      Domain     => EW_Pred);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -3741,7 +3734,17 @@ package body Gnat2Why.Subprograms is
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+         Post      : W_Pred_Id;
       begin
+         if Entity_Body_In_SPARK (E) then
+            Post :=
+              +New_VC_Expr (Ada_Node   => E,
+                            Expr       => +False_Pred,
+                            Reason     => VC_Task_Termination,
+                            Domain     => EW_Pred);
+         else
+            Post := True_Pred;
+         end if;
          Label_Set.Include (NID ("W:diverges:N"));
          Emit (File,
                 Why.Gen.Binders.New_Function_Decl

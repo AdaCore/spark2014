@@ -11,4 +11,3 @@ discr_checks.ads:12:14: warning: subprogram "Check_Subtype_Priv" has no effect
 discr_checks.ads:14:14: warning: subprogram "Check_Derived_Priv" has no effect
 discr_checks.ads:16:14: warning: subprogram "Check_Subtype_Prot" has no effect
 discr_checks.ads:20:14: warning: subprogram "Check_Subtype_Task" has no effect
-my_types.ads:10:14: medium: the task might terminate, which is not allowed in SPARK (e.g. when X = 1)
