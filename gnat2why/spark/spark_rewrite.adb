@@ -26,7 +26,6 @@
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Namet;                  use Namet;
-with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
@@ -122,7 +121,7 @@ package body SPARK_Rewrite is
                Rewrite (Old_Node => N,
                         New_Node => Unchecked_Convert_To
                           (Typ  => Etype (Etype (N)),
-                           Expr => First (Parameter_Associations (N))));
+                           Expr => First_Actual (N)));
                Set_Comes_From_Source (N, True);
 
                --  Reset correct parent of original node, as this may be used
