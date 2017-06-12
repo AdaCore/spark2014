@@ -826,7 +826,6 @@ package body Gnat2Why.Subprograms is
             end;
 
             --  Collect parameters of E if any
-            --  ??? We may want to collect discriminants of task types
 
             if Is_Subprogram_Or_Entry (E) then
                Includes.Union (Get_Explicit_Formals (E));
@@ -840,6 +839,20 @@ package body Gnat2Why.Subprograms is
                then
                   Includes.Include (Containing_Protected_Type (E));
                end if;
+
+            --  Collect discriminants of task types
+
+            elsif Is_Task_Type (E) and then Count_Discriminants (E) > 0 then
+               declare
+                  Discr : Node_Id := First_Discriminant (E);
+               begin
+                  while Present (Discr) loop
+                     if Is_Not_Hidden_Discriminant (Discr) then
+                        Includes.Include (Discr);
+                        Next_Discriminant (Discr);
+                     end if;
+                  end loop;
+               end;
             end if;
 
          when E_Package =>

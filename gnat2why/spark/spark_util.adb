@@ -1177,13 +1177,15 @@ package body SPARK_Util is
    -- Is_Declared_In_Unit --
    -------------------------
 
-   --  Parameters of subprograms cannot be local to a unit
+   --  Parameters of subprograms cannot be local to a unit. Discriminants of
+   --  concurrent objects are not local to the object.
 
    function Is_Declared_In_Unit
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean
    is
-     (Enclosing_Unit (E) = Scope and then not Is_Formal (E));
+     (Enclosing_Unit (E) = Scope and then not Is_Formal (E)
+      and then (Ekind (E) /= E_Discriminant or else Sinfo.Scope (E) /= Scope));
 
    ---------------------
    -- Is_Empty_Others --

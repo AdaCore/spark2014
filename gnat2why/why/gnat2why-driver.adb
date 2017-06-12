@@ -841,8 +841,7 @@ package body Gnat2Why.Driver is
             --  Ignore discriminals, i.e. objects that occur for discriminants
             --  of protected types and task types.
 
-            if Ekind (E) in Formal_Kind
-              and then Present (Discriminal_Link (E))
+            if Is_Discriminal (E)
                 and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type
             then
                return;

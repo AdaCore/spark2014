@@ -12587,6 +12587,18 @@ package body Gnat2Why.Expr is
                                 Typ      => Get_Type (T));
             end if;
          end;
+
+      --  Discriminals are not translated in Why3. Use their discriminal link
+      --  instead.
+
+      elsif Is_Discriminal (Ent)
+        and then Ekind (Scope (Ent)) in E_Protected_Type | E_Task_Type
+      then
+         T := Transform_Identifier (Params   => Params,
+                                    Expr     => Expr,
+                                    Ent      => Discriminal_Link (Ent),
+                                    Domain   => Domain,
+                                    Selector => Selector);
       elsif Ekind (Ent) = E_Enumeration_Literal then
          T := Transform_Enum_Literal (Expr, Ent, Domain);
 
