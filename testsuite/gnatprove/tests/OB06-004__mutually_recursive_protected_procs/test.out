@@ -1,0 +1,6 @@
+p1.adb:11:17: high: potentially blocking operation in protected operation "Dummy"
+p1.adb:18:12: "PO" constituent of "State" must be listed in the Global aspect of "Dummy" (SPARK RM 6.1.4(13))
+p2.adb:10:24: info: range check proved (CVC4: 2 VC)
+p2.adb:11:17: high: potentially blocking operation in protected operation "Dummy"
+p2.adb:11:17: medium: ceiling priority protocol might not be respected
+gnatprove: error during flow analysis and proof

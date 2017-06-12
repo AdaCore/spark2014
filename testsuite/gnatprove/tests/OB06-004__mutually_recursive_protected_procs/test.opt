@@ -1,1 +1,0 @@
-ALL XFAIL crash on CFG for mutually recursive protected procs (OB06-004)

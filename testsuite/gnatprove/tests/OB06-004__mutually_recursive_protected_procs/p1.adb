@@ -9,7 +9,7 @@ is
    protected PO is
       pragma Priority (Prio);
       procedure Dummy with
-        Global => P2.State;
+        Global => (In_Out => P2.State);
    end;
 
    protected body PO is
