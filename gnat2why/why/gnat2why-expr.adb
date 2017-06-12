@@ -2720,11 +2720,11 @@ package body Gnat2Why.Expr is
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Discr   : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
+            Discr   : Node_Id := (if Discrs > 0
                                   then First_Discriminant (Ty_Ext)
                                   else Empty);
             Elmt    : Elmt_Id :=
-              (if Count_Discriminants (Ty_Ext) > 0
+              (if Discrs > 0
                and then Is_Constrained (Ty_Ext) then
                     First_Elmt (Stored_Constraint (Ty_Ext))
                else No_Elmt);
@@ -10265,7 +10265,7 @@ package body Gnat2Why.Expr is
       function Check_Itypes_Of_Components (Ent : Entity_Id) return W_Prog_Id is
          N      : constant Natural :=
            (if not Is_Constrained (Ent)
-            and then (Count_Discriminants (Ent) > 0)
+            and then Count_Discriminants (Ent) > 0
             then Natural (Number_Discriminants (Ent)) else 0);
          Vars   : W_Identifier_Array (1 .. N);
          Vals   : W_Expr_Array (1 .. N);
@@ -15797,11 +15797,13 @@ package body Gnat2Why.Expr is
          --  /\ ..
 
          declare
-            Discr  : Node_Id := (if Count_Discriminants (Ty_Ext) > 0
+            Num_Discr : constant Natural := Count_Discriminants (Ty_Ext);
+
+            Discr  : Node_Id := (if Num_Discr > 0
                                  then First_Discriminant (Ty_Ext)
                                  else Empty);
             Elmt   : Elmt_Id :=
-              (if Count_Discriminants (Ty_Ext) > 0
+              (if Num_Discr > 0
                and then Is_Constrained (Ty_Ext)
                then First_Elmt (Stored_Constraint (Ty_Ext))
                else No_Elmt);
