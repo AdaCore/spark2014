@@ -153,7 +153,8 @@ package SPARK_Util.Types is
 
    function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-      and then (not (Has_Record_Type (Typ) or else Has_Private_Type (Typ))
+      and then (not (Retysp_Kind (Typ) in
+                         Record_Kind | Private_Kind | Concurrent_Kind)
                 or else not Has_Discriminants (Typ)
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))

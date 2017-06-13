@@ -349,7 +349,13 @@ package Gnat2Why.Util is
    -- Queries --
    -------------
 
-   function Count_Why_Regular_Fields (E : Entity_Id) return Natural;
+   function Is_Record_Type_In_Why (E : Entity_Id) return Boolean is
+     (Is_Type (E)
+      and then Retysp_Kind (E) in
+          Record_Kind | Private_Kind | Concurrent_Kind);
+
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural with
+     Pre => Is_Record_Type_In_Why (E);
    --  @param E record type or private type whose most underlying type is
    --     a record type. E should be a "Representative Type in SPARK".
    --  @return the number of regular fields in the record representing E into
@@ -363,7 +369,8 @@ package Gnat2Why.Util is
    --       Has_Private_Ancestor_Or_Root)
    --     - One field for each part_of variable, if E is a protected type
 
-   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural with
+     Pre => Is_Record_Type_In_Why (E);
    --  @param E record type or private type whose most underlying type is
    --     a record type. E should be a "Representative Type in SPARK".
    --  @return the number of top-level fields in the record representing E into

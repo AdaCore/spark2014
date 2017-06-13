@@ -2691,10 +2691,7 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      elsif Is_Record_Type (Ty)
-        or else Is_Private_Type (Ty)
-        or else Is_Concurrent_Type (Ty)
-      then
+      elsif Is_Record_Type_In_Why (Ty) then
 
          --  Generates:
          --  let tmp1 = Discr1.default in <if Ty_Ext is unconstrained>
@@ -3250,7 +3247,7 @@ package body Gnat2Why.Expr is
 
             Assumption := Default_Init_For_Array (+Expr, Ty_Ext);
 
-      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+      elsif Is_Record_Type_In_Why (Ty_Ext) then
 
          --  Generates:
          --  let tmp1 = <Expr>.rec__disc1 in
@@ -10446,13 +10443,6 @@ package body Gnat2Why.Expr is
                                                  then Partial_View (Obj)
                                                  else Obj);
             begin
-               --  We can ignore task declarations
-
-               if Is_Task_Type (Obj_Type) then
-                  --  ??? missing checks for priority range
-                  return R;
-               end if;
-
                --  Non-scalar object declaration should not appear before the
                --  loop invariant in a loop.
 
@@ -12773,7 +12763,7 @@ package body Gnat2Why.Expr is
             begin
                --  Record subtypes are special
 
-               if Is_Record_Type (Ty) then
+               if Is_Record_Type_In_Why (Ty) then
 
                   --  We must check for two cases. Ty may be constrained, in
                   --  which case we need to check its dicriminant, or it may
@@ -12785,7 +12775,7 @@ package body Gnat2Why.Expr is
                      Spec_Ty    : constant Entity_Id :=
                        (if Is_Class_Wide_Type (Ty)
                         then Retysp (Get_Specific_Type_From_Classwide (Ty))
-                        else Ty);
+                        else Retysp (Ty));
                   begin
 
                      --  If Ty is constrained, we need to check its
@@ -12793,7 +12783,7 @@ package body Gnat2Why.Expr is
                      --  It is also the case if Ty's specific type is
                      --  constrained, see RM 3.9 (14)
 
-                     if Root_Type (Spec_Ty) /= Spec_Ty and then
+                     if Root_Record_Type (Spec_Ty) /= Spec_Ty and then
                        Count_Discriminants (Spec_Ty) > 0 and then
                        Is_Constrained (Spec_Ty)
                      then
@@ -12930,7 +12920,7 @@ package body Gnat2Why.Expr is
       Var       : constant Node_Id := Left_Opnd (Expr);
       Result    : W_Expr_Id;
       Base_Type : W_Type_Id :=
-        (if Has_Record_Type (Etype (Var)) then
+        (if Is_Record_Type_In_Why (Etype (Var)) then
             EW_Abstract (Root_Record_Type (Etype (Var)))
          else Base_Why_Type (Var));
       --  For records, checks are done on the root type.

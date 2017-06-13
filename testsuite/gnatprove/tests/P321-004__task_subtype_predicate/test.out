@@ -1,3 +1,4 @@
 p.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
+p.ads:7:25: medium: predicate check might fail on default value
 task_param.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 task_param.ads:5:14: warning: subprogram "P" has no effect

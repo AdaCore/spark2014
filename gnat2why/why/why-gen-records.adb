@@ -2614,13 +2614,20 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
    begin
-      return
-        New_Call
-          (Ada_Node => Ada_Node,
-           Name     => Discriminant_Check_Pred_Name (Ty, Field, False),
-           Args     => (1 => Name),
-           Domain   => Domain,
-           Typ      => EW_Bool_Type);
+      --  Do not emit checks for part of variables or discriminants
+
+      if Ekind (Field) = E_Component then
+         return
+           New_Call
+             (Ada_Node => Ada_Node,
+              Name     => Discriminant_Check_Pred_Name (Ty, Field, False),
+              Args     => (1 => Name),
+              Domain   => Domain,
+              Typ      => EW_Bool_Type);
+      else
+         return New_Literal (Domain => Domain,
+                             Value  => EW_True);
+      end if;
    end New_Ada_Record_Check_For_Field;
 
    ---------------------------
