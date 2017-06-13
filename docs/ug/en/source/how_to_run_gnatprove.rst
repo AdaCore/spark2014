@@ -120,31 +120,34 @@ refinement versions of these), and verifies the initialization of
 variables. Proof verifies the absence of run-time errors and the
 correctness of assertions such as ``Pre`` and ``Post`` aspects. Using the
 switch ``--mode=<mode>``, whose possible values are ``check``,
-``check_all``, ``flow``, ``prove`` and ``all``, you can choose which
-analysis is performed:
+``check_all``, ``flow``, ``prove`` ``all``, ``stone``, ``bronze``, ``silver``
+and ``gold``, you can choose which analysis is performed:
 
 * In mode ``check``, |GNATprove| partially checks that the program does not
   violate |SPARK| restrictions. The benefit of using this mode prior to mode
   ``check_all`` is that it is much faster, as it does not require the results
   of flow analysis.
 
-* In mode ``check_all``, |GNATprove| fully checks that the program does not
-  violate |SPARK| restrictions, including checks not performed in mode
-  ``check`` like the absence of side-effects in functions. Mode ``check_all``
-  includes mode ``check``.
+* In mode ``check_all`` (``stone`` is a synonym for this mode), |GNATprove|
+  fully checks that the program does not violate |SPARK| restrictions,
+  including checks not performed in mode ``check`` like the absence of
+  side-effects in functions. Mode ``check_all`` includes mode ``check``.
 
-* In mode ``flow``, |GNATprove| checks that no uninitialized data is read in
-  the program, and that the specified data dependencies and flow dependencies
-  are respected in the implementation. Mode ``flow`` includes mode
-  ``check_all``.  This phase is called *flow analysis*.
+* In mode ``flow`` (``bronze`` is a synonym for this mode), |GNATprove| checks
+  that no uninitialized data is read in the program, and that the specified
+  data dependencies and flow dependencies are respected in the implementation.
+  Mode ``flow`` includes mode ``check_all``.  This phase is called *flow
+  analysis*.
 
-* In mode ``prove``, |GNATprove| checks that the program is free from run-time
-  errors, and that the specified functional contracts are respected in the
-  implementation. Mode ``prove`` includes mode ``check_all``, as well as the
-  part of mode ``flow`` which checks that no uninitialized data is read, to
-  guarantees soundness of the proof results. This phase is called *proof*.
+* In mode ``prove`` ,
+  |GNATprove| checks that the program is free from run-time errors, and that
+  the specified functional contracts are respected in the implementation. Mode
+  ``prove`` includes mode ``check_all``, as well as the part of mode ``flow``
+  which checks that no uninitialized data is read, to guarantees soundness of
+  the proof results. This phase is called *proof*.
 
 * In the default mode ``all``, |GNATprove| does both flow analysis and proof.
+  The ``silver`` and ``gold`` modes are synonyms for this mode.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of

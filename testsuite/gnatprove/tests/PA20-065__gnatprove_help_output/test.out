@@ -21,7 +21,7 @@ gnatprove basic switches:
      --level=n         Set the level of proof (0 = faster to 4 = more powerful)
  -m                    Minimal reanalysis
      --mode=m          Set the mode of GNATprove (m=check, check_all, flow,
-                       prove, all*)
+                       prove, all*, stone, bronze, silver, gold)
      --output-msg-only Do not run any provers, output current flow and proof
                        results
  -q, --quiet           Be quiet/terse
@@ -34,11 +34,11 @@ gnatprove basic switches:
                        (w=off, continue*, error)
 
  * Main mode values
-   . check         - Fast partial check for SPARK violations
-   . check_all     - Full check for SPARK violations
-   . flow          - Prove correct initialization and data flow
-   . prove         - Prove absence of run-time errors and contracts
-   . all           - Activates all modes (default)
+   . check               - Fast partial check for SPARK violations
+   . check_all, stone    - Full check for SPARK violations
+   . flow, bronze        - Prove correct initialization and data flow
+   . prove               - Prove absence of run-time errors and contracts
+   . all, silver, gold   - Activates all modes (default)
 
  * Report mode values
    . fail          - Report failures to prove checks (default)

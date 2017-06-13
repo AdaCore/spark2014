@@ -1027,11 +1027,18 @@ package body Configuration is
             Mode := GPM_Prove;
          elsif CL_Switches.Mode.all = "check" then
             Mode := GPM_Check;
-         elsif CL_Switches.Mode.all = "check_all" then
+         elsif CL_Switches.Mode.all = "check_all"
+           or else CL_Switches.Mode.all = "stone"
+         then
             Mode := GPM_Check_All;
-         elsif CL_Switches.Mode.all = "flow" then
+         elsif CL_Switches.Mode.all = "flow"
+           or else CL_Switches.Mode.all = "bronze"
+         then
             Mode := GPM_Flow;
-         elsif CL_Switches.Mode.all = "all" then
+         elsif CL_Switches.Mode.all = "all"
+           or else CL_Switches.Mode.all = "silver"
+           or else CL_Switches.Mode.all = "gold"
+         then
             Mode := GPM_All;
          else
             Abort_Msg (Config,
