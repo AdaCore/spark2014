@@ -1,0 +1,3 @@
+p2.ads:5:19: warning: unused variable "X"
+p2.ads:5:22: warning: unused variable "Y"
+p2.ads:12:15: info: postcondition proved (CVC4: 2 VC)
