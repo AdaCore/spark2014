@@ -39,7 +39,7 @@ is
       Partial_Init_Without_Global;
    end Case_NG_NG;
 
-   --  ALl of the below should be correct and not issue warnings or errors.
+   --  All of the below should be correct and not issue warnings or errors
 
    procedure Test_G_G_G
    with Global => (Output => G1)
