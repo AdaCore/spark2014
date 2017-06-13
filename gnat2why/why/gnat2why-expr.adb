@@ -15455,7 +15455,7 @@ package body Gnat2Why.Expr is
      (Stmt_Or_Decl : Node_Id;
       Prev_Prog    : W_Prog_Id) return W_Prog_Id
    is
-      Result        : W_Prog_Id := Prev_Prog;
+      Result        : W_Prog_Id;
       Cut_Assertion_Expr : Node_Id;
       Cut_Assertion : W_Pred_Id;
       Prog          : constant W_Prog_Id :=
@@ -15466,7 +15466,7 @@ package body Gnat2Why.Expr is
    begin
       Result :=
         Sequence
-          (Result,
+          (Prev_Prog,
            New_Label (Labels =>
                         Name_Id_Sets.To_Set
                           (New_Located_Label (Stmt_Or_Decl)),
