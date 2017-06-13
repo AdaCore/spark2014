@@ -3647,7 +3647,7 @@ package body Gnat2Why.Subprograms is
       Body_N : constant Node_Id := Task_Body (E);
       Params : Transformation_Params;
 
-      Why_Body   : W_Prog_Id := +Void;
+      Why_Body   : W_Prog_Id;
       Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
       Vis_Decls  : constant List_Id := Visible_Declarations_Of_Task_Type (E);
 
@@ -3686,14 +3686,14 @@ package body Gnat2Why.Subprograms is
       then
          if Present (Handled_Statement_Sequence (Body_N)) then
             Why_Body :=
-              Sequence
-                (Transform_Statements_And_Declarations
-                   (Statements (Handled_Statement_Sequence (Body_N))),
-                 Why_Body);
+              Transform_Statements_And_Declarations
+                (Statements (Handled_Statement_Sequence (Body_N)));
          end if;
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      else
+         Why_Body := +Void;
       end if;
 
       --  We check any assertions and pragma (Interrupt)_Priority in the
