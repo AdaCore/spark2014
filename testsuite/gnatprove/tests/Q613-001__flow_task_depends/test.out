@@ -1,0 +1,25 @@
+single_explicit.adb:8:15: info: initialization of "Message" proved
+single_explicit.ads:5:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+single_explicit.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
+single_explicit.ads:7:11: medium: expected to see "Worker" on the left-hand-side of a dependency relation
+single_explicit.ads:7:11: medium: missing dependency "Worker'Result => Worker"
+single_explicit.ads:7:41: medium: incorrect dependency "Worker" is not an output of "Worker"
+single_implicit.adb:8:15: info: initialization of "Message" proved
+single_implicit.ads:5:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+single_implicit.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
+single_implicit.ads:7:11: medium: expected to see "Worker" on the left-hand-side of a dependency relation
+single_implicit.ads:7:11: medium: missing dependency "Worker'Result => Worker"
+tasking.adb:9:28: info: range check proved (CVC4: 1 VC)
+tasking.adb:15:35: info: range check proved (CVC4: 1 VC)
+tasking.adb:24:25: medium: range check might fail
+tasking.adb:32:34: info: range check proved (CVC4: 1 VC)
+tasking.ads:13:25: info: initialization of "M" proved
+tasking.ads:20:45: info: length check proved (CVC4: 1 VC)
+type_explicit.adb:8:15: info: initialization of "Message" proved
+type_explicit.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+type_explicit.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
+type_implicit.adb:8:15: info: initialization of "Message" proved
+type_implicit.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
+type_implicit.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
+type_implicit.ads:7:11: medium: expected to see "Worker" on the left-hand-side of a dependency relation
+type_implicit.ads:7:11: medium: missing dependency "Worker'Result => Worker"
