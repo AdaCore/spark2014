@@ -1,7 +1,6 @@
 package Repro with
-  SPARK_Mode    => On,
-  Abstract_State => (Game_State),
-  Initializes    => (Game_State)
+  Abstract_State => Game_State,
+  Initializes    => Game_State
 is
   type Cell is (Empty, I, O, J, L, S, T, Z);
 
