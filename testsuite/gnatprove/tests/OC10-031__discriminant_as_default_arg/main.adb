@@ -2,5 +2,5 @@ with P;
 
 procedure Main is
 begin
-   P.PO.Dummy (0);
+   P.PO.Dummy;
 end;
