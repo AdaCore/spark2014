@@ -948,9 +948,9 @@ package body Flow_Types is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         FS.Include (if Nkind (E) = N_Selected_Component
-                     then Record_Field_Id (E)
-                     else Direct_Mapping_Id (E));
+         FS.Insert (if Nkind (E) = N_Selected_Component
+                    then Record_Field_Id (E)
+                    else Direct_Mapping_Id (E));
       end loop;
       return FS;
    end To_Flow_Id_Set;
