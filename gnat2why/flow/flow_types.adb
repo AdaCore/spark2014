@@ -945,13 +945,17 @@ package body Flow_Types is
    -- To_Flow_Id_Set --
    --------------------
 
-   function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set is
+   function To_Flow_Id_Set
+     (S    : Node_Sets.Set;
+      View : Flow_Id_Variant := Normal_Use)
+      return Flow_Id_Sets.Set
+   is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
          FS.Insert (if Nkind (E) = N_Selected_Component
-                    then Record_Field_Id (E)
-                    else Direct_Mapping_Id (E));
+                    then Record_Field_Id (E, View)
+                    else Direct_Mapping_Id (E, View));
       end loop;
       return FS;
    end To_Flow_Id_Set;

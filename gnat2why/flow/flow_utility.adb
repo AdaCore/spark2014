@@ -1450,15 +1450,9 @@ package body Flow_Utility is
             --  Step 5: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
-            for V of G_Proof loop
-               Proof_Ins.Insert (Direct_Mapping_Id (V, In_View));
-            end loop;
-            for V of G_In loop
-               Reads.Insert (Direct_Mapping_Id (V, In_View));
-            end loop;
-            for V of G_Out loop
-               Writes.Insert (Direct_Mapping_Id (V, Out_View));
-            end loop;
+            Proof_Ins := To_Flow_Id_Set (G_Proof, In_View);
+            Reads     := To_Flow_Id_Set (G_In,    In_View);
+            Writes    := To_Flow_Id_Set (G_Out,   Out_View);
 
             ---------------------------------------------------------------
             --  Step 6: Remove generic formals without variable input
