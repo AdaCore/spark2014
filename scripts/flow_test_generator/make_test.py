@@ -15,11 +15,12 @@ MULTIPLIER = 10
 EXTRA_S_VAR_CHANCE = 45
 EXTRA_B_VAR_CHANCE = 55
 EXTRA_VAR_USE_CHANCE = 70
-IN_PARAMS  = [0, 1, 1, 2, 2, 3, 4, 5]
+IN_PARAMS = [0, 1, 1, 2, 2, 3, 4, 5]
 OUT_PARAMS = [0, 0, 1, 1, 2, 2, 3, 4, 5]
 MAX_SUBPROGRAM_CALLS = 25
 
 indent_depth = [0]
+
 
 def pl(fd, text=""):
     s = " " * (indent_depth[0] * 3)
@@ -27,17 +28,21 @@ def pl(fd, text=""):
     fd.write(s.rstrip())
     fd.write("\n")
 
+
 def indent():
     indent_depth[0] += 1
+
 
 def outdent():
     indent_depth[0] -= 1
 
 global_var_id = [0]
 
+
 def mk_global_var():
     global_var_id[0] += 1
     return "G_%03u" % global_var_id[0]
+
 
 def choices(iterable, count):
     tmp = copy(list(iterable))
@@ -48,12 +53,14 @@ def choices(iterable, count):
         del tmp[x]
     return rv
 
+
 def guaranteed_choices(iterable, count):
     rv = choices(iterable, count)
     while len(rv) < count:
         rv.append(choice(["True", "False"]))
     shuffle(rv)
     return rv
+
 
 def multiple_choices(iterable, count):
     assert len(iterable) > 0
@@ -65,6 +72,7 @@ def multiple_choices(iterable, count):
 
 pack = []
 
+
 def lookup_subprogram(name):
     for p in pack:
         for s in p["sub"]:
@@ -72,13 +80,15 @@ def lookup_subprogram(name):
                 return s
     assert False
 
+
 def get_params(s):
-    p_in    = set(s["p_inputs"])
-    p_out   = set(s["p_outputs"])
+    p_in = set(s["p_inputs"])
+    p_out = set(s["p_outputs"])
     p_inout = p_in & p_out
-    p_in    = p_in  - p_inout
-    p_out   = p_out - p_inout
+    p_in = p_in - p_inout
+    p_out = p_out - p_inout
     return p_in, p_inout, p_out
+
 
 def emit_decl(s):
     d = s["kind"] + " " + s["name"]
@@ -96,6 +106,7 @@ def emit_decl(s):
     if s["kind"] == "function":
         d += " return Boolean"
     return d
+
 
 def emit_body(fd, s):
     list_stmt = []
@@ -187,9 +198,10 @@ def emit_body(fd, s):
         for stmt in list_stmt:
             pl(fd, stmt)
     else:
-        pl(fd, "null;");
+        pl(fd, "null;")
     outdent()
     pl(fd, "end %s;" % s["name"])
+
 
 def emit_pkg(pkg_id):
     pkg = pack[pkg_id]
@@ -272,12 +284,12 @@ def main():
     for pkg_id in xrange(NUM_PACKAGES):
         pkg_name = "Package_%03u" % (pkg_id + 1)
         p = {
-            "name"   : pkg_name,
-            "s_with" : [],
-            "b_with" : [],
-            "s_var"  : [],
-            "b_var"  : [],
-            "sub"    : [],
+            "name": pkg_name,
+            "s_with": [],
+            "b_with": [],
+            "s_var": [],
+            "b_var": [],
+            "sub": [],
         }
 
         # Add dependency on some parent
@@ -285,7 +297,7 @@ def main():
         if pkg_id >= NUM_TOPLEVEL_PACKAGES:
             while len(possibilities) > 0:
                 the_with = choice(["s_with", "b_with"])
-                i        = choice(list(possibilities))
+                i = choice(list(possibilities))
                 possibilities.remove(i)
                 pack[i][the_with].append(pkg_id)
                 if randint(1, 100) > EXTRA_DEP_CHANCE:
@@ -315,16 +327,15 @@ def main():
 
         for s_id in xrange(num_subp):
             k = choice(["function", "procedure"])
-            s = {"kind" : k,
-                 "name" : "P_%u_%s_%u" % (pkg_id + 1,
-                                          k[0].upper(),
-                                          s_id + 1),
-                 "g_inputs"  : [],
-                 "g_outputs" : [],
-                 "p_inputs"  : [],
-                 "p_outputs" : [],
-                 "calls"     : [],
-             }
+            s = {"kind": k,
+                 "name": "P_%u_%s_%u" % (pkg_id + 1,
+                                         k[0].upper(),
+                                         s_id + 1),
+                 "g_inputs": [],
+                 "g_outputs": [],
+                 "p_inputs": [],
+                 "p_outputs": [],
+                 "calls": []}
 
             p_in = []
             p_out = []
@@ -336,7 +347,7 @@ def main():
                             if s["kind"] == "procedure"
                             else 0):
                 p_out.append(offs + i)
-            s["p_inputs"]  = [chr(65 + x) for x in p_in]
+            s["p_inputs"] = [chr(65 + x) for x in p_in]
             s["p_outputs"] = [chr(65 + x) for x in p_out]
 
             p["sub"].append(s)
