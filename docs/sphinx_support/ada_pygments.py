@@ -21,7 +21,8 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
     """
     if project_support:
         project_pattern = r'project\s+|'
-        project_pattern2 = r'project|'
+        project_pattern2 = \
+            r'aggregate|extends|external|external_as_list|library|project|'
     else:
         project_pattern = r''
         project_pattern2 = r''
