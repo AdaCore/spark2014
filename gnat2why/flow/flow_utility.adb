@@ -1296,7 +1296,8 @@ package body Flow_Utility is
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id)
             is
-               E : constant Entity_Id := Unique_Entity (The_Global);
+               E : constant Entity_Id :=
+                 Canonical_Entity (The_Global, Subprogram);
 
             begin
                case The_Mode is
@@ -4935,5 +4936,24 @@ package body Flow_Utility is
                       E_Variable
       then Encapsulating_State (E)
       else Empty);
+
+   ----------------------
+   -- Canonical_Entity --
+   ----------------------
+
+   function Canonical_Entity
+     (Ref     : Entity_Id;
+      Context : Entity_Id)
+      return Entity_Id
+   is
+   begin
+      if Is_Single_Concurrent_Object (Ref)
+        and then Is_CCT_Instance (Ref_Id => Etype (Ref), Context_Id => Context)
+      then
+         return Etype (Ref);
+      else
+         return Unique_Entity (Ref);
+      end if;
+   end Canonical_Entity;
 
 end Flow_Utility;

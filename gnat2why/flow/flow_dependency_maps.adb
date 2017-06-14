@@ -25,6 +25,7 @@ with Elists;                         use Elists;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Nlists;                         use Nlists;
+with Sem_Prag;                       use Sem_Prag;
 with Sinfo;                          use Sinfo;
 with SPARK_Util;                     use SPARK_Util;
 with Treepr;                         use Treepr;
@@ -52,6 +53,19 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
+      Decl_Id : constant Entity_Id :=
+        Defining_Entity (Find_Related_Declaration_Or_Body (N));
+      --  Declaration of the entity to which the parsed pragma is attached
+
+      Context : constant Entity_Id :=
+        (if Is_Single_Task_Object (Decl_Id)
+         then Etype (Decl_Id)
+         else Unique_Entity (Decl_Id));
+      --  Entity associated with the pragma of the parsed map. Needed to
+      --  substitute references to a current single concurrent object (which
+      --  are convenient for the frontend) with references to the corresponding
+      --  current concurrent type (which are convenient for GNATprove).
+
       pragma Assert (List_Length (Pragma_Argument_Associations (N)) = 1);
 
       PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
@@ -68,6 +82,9 @@ package body Flow_Dependency_Maps is
 
       Inputs  : Flow_Id_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
+
+   --  Start of processing for Parse_Raw_Dependency_Map
+
    begin
       --  Aspect is written either as:
       --  * "Aspect => null"
@@ -87,7 +104,7 @@ package body Flow_Dependency_Maps is
          declare
             E : constant Entity_Id := Entity (Original_Node (Row));
          begin
-            M.Insert (Direct_Mapping_Id (Unique_Entity (E)),
+            M.Insert (Direct_Mapping_Id (Canonical_Entity (E, Context)),
                       Flow_Id_Sets.Empty_Set);
          end;
          Row := Next (Row);
@@ -114,7 +131,8 @@ package body Flow_Dependency_Maps is
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
                   Outputs.Include
-                    (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
+                    (Direct_Mapping_Id
+                       (Canonical_Entity (Entity (LHS), Context)));
                   LHS := Next (LHS);
                end loop;
 
@@ -131,7 +149,8 @@ package body Flow_Dependency_Maps is
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
                Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (LHS))));
+                 (Direct_Mapping_Id
+                    (Canonical_Entity (Entity (LHS), Context)));
 
             when N_Null =>
                --  null => ...
@@ -155,17 +174,17 @@ package body Flow_Dependency_Maps is
                while Present (RHS) loop
                   Inputs.Include
                     (Direct_Mapping_Id
-                       (Unique_Entity
-                          (if Nkind (RHS) in N_Numeric_Or_String_Literal
-                           then Original_Constant (RHS)
-                           else Entity (RHS))));
+                       (if Nkind (RHS) in N_Numeric_Or_String_Literal
+                        then Unique_Entity (Original_Constant (RHS))
+                        else Canonical_Entity (Entity (RHS), Context)));
 
                   RHS := Next (RHS);
                end loop;
 
             when N_Identifier | N_Expanded_Name =>
                Inputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
+                 (Direct_Mapping_Id
+                    (Canonical_Entity (Entity (RHS), Context)));
 
             when N_Null =>
                null;

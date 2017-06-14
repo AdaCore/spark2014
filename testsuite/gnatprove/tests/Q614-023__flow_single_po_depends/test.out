@@ -1,4 +1,1 @@
 test.adb:8:28: info: overflow check proved (CVC4: 1 VC)
-test.ads:7:14: medium: expected to see "Pot" on the left-hand-side of a dependency relation
-test.ads:7:14: medium: missing dependency "Pot => Pot"
-test.ads:7:26: medium: incorrect dependency "PO" is not an output of "Increment"
