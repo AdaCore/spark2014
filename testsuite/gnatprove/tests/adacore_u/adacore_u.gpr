@@ -1,0 +1,9 @@
+aggregate project AdaCore_U is
+
+   for Project_Files use ("Overview/overview.gpr",
+                          "Flow_Analysis/flow_analysis.gpr",
+                          "Proof_Integrity/proof_integrity.gpr",
+                          "State_Abstraction/state_abstraction.gpr",
+                          "Functional_Correctness/functional_correctness.gpr");
+
+end AdaCore_U;
