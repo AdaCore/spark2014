@@ -37,7 +37,6 @@ docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
 slides/*/* no-precommit-check
 slides/*/*/* no-precommit-check
-scripts/*/* no-precommit-check
 include/*.adb no-precommit-check
 
 *.ads diff=ada
