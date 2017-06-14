@@ -215,10 +215,9 @@ package body Flow_Types is
                       Node      => <>,
                       Facet     => Facet,
                       Component => Entity_Vectors.Empty_Vector);
-      P : Node_Id;
+      P : Node_Id := N;
    begin
-      P := N;
-      while Nkind (P) = N_Selected_Component loop
+      loop
          declare
             Selector : constant Entity_Id := Entity (Selector_Name (P));
          begin
@@ -228,6 +227,8 @@ package body Flow_Types is
                else Selector);
          end;
          P := Prefix (P);
+
+         exit when Nkind (P) /= N_Selected_Component;
       end loop;
       F.Component.Reverse_Elements;
 
