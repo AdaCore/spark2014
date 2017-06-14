@@ -3524,8 +3524,8 @@ package body Flow.Analysis is
       Actual_Deps := Up_Project_Map (FA.Dependency_Map);
 
       if Debug_Trace_Depends then
-         Print_Dependency_Map (User_Deps);
-         Print_Dependency_Map (Actual_Deps);
+         Print_Dependency_Map ("user",   User_Deps);
+         Print_Dependency_Map ("actual", Actual_Deps);
       end if;
 
       --  If the user depends do not include something we have in the actual

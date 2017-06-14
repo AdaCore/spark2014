@@ -150,9 +150,9 @@ package body Flow_Debug is
    -- Print_Dependency_Map --
    --------------------------
 
-   procedure Print_Dependency_Map (M : Dependency_Maps.Map) is
+   procedure Print_Dependency_Map (Label : String; M : Dependency_Maps.Map) is
    begin
-      Write_Line ("Dependency_Map:");
+      Write_Line ("Dependency_Map (" & Label & "):");
       Indent;
       for C in M.Iterate loop
          declare
