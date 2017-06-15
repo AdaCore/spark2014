@@ -12,7 +12,7 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
     :param tag_highlighting: if True we support tag highlighting. See
         AdaLexerWithTags documentation
     :type tag_highlighting: bool
-    :param project_support: if True support additional keywors associated
+    :param project_support: if True support additional keywords associated
         with project files.
     :type project_support:  bool
 
