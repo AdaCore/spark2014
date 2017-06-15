@@ -10,7 +10,7 @@ package body Casper is
    begin
       pragma Assert (Tmp > G2);
       Par := G1;
-      Ghost_G1 := G2;  --  This is fine
+      Ghost_G1 := G2;  --  This is fine provided G2 is Input
    end P;
 
    package body Nested_Ghost_Package

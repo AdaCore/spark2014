@@ -12,8 +12,8 @@ is
                      Proof_In => G2);  --  This is the same as Input => G2
 
    procedure P (Par : out Integer)
-     with Global => (Input    => G1,
-                     Proof_In => G2,
+     with Global => (Input    => (G1, G2),
+
                      Output   => Ghost_G1);
 
    package Nested_Ghost_Package
