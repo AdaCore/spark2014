@@ -69,6 +69,10 @@ procedure SPARK_CodePeer_Wrapper is
 
    Ext_Vars     : String_Lists.List;
 
+   Scil_Dir_Arg : Virtual_File := No_File;
+   --  we need a single SCIL dir to pass to codepeer via -scil-dir, doesn't
+   --  matter which one we pick
+
    procedure Error (Message : String) with No_Return;
    --  Display error message and exit the application
 
@@ -447,6 +451,12 @@ procedure SPARK_CodePeer_Wrapper is
                Seen.Insert (Dir);
             end if;
          end loop;
+
+         --  If Seen was empty, we wouldn't have any object dir. I don't think
+         --  that's actually possible, and we would have problems earlier
+         --  anyway.
+
+         Scil_Dir_Arg := Virtual_File_Sets.Element (Seen.First);
       end;
 
       Ada.Text_IO.Close (F);
@@ -650,6 +660,12 @@ begin
    Append_Arg ("60000");
    Append_Arg ("-no-presumptions");
    Append_Arg ("-no-db-msgs");
+
+   --  CodePeer needs one of the SCIL directories passed using -scil-dir, we
+   --  use the one we stored earlier in Scil_Dir_Arg
+
+   Append_Arg ("-scil-dir");
+   Append_Arg (Scil_Dir_Arg.Display_Full_Name);
 
    Normalize_Arguments (Args);
 
