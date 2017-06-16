@@ -35,7 +35,7 @@ def main():
         print "deleting shapes file ", shape_file
     shutil.rmtree("gnatprove")
     os.chdir(curdir)
-    out = subprocess.check_output(["./run-tests", "-d", "large", test_name])
+    out = subprocess.check_output(["./run-tests", "-d", "large", "--diffs", test_name])
     print out
 
 
