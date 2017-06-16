@@ -1071,7 +1071,9 @@ package body Gnat2Why.Expr is
 
       L_Id : constant W_Expr_Id :=
         (if Is_Protected_Type (E) then
-            New_Deref (Right => Self_Name, Typ => Get_Typ (Self_Name))
+            (if Self_Is_Mutable then
+                   New_Deref (Right => Self_Name, Typ => Get_Typ (Self_Name))
+              else +Self_Name)
          else Transform_Identifier (Params   => Params,
                                     Expr     => E,
                                     Ent      => E,
@@ -2108,20 +2110,32 @@ package body Gnat2Why.Expr is
                      Prot : constant W_Identifier_Id :=
                        Binders (Bind_Cnt).Main.B_Name;
                   begin
-                     --  External call, pass the object itself
+                     --  External call, we need to reconstruct the object if
+                     --  it is mutable as protected types can be in split form.
 
                      if Is_External_Call (Call) then
-                        Why_Args (Arg_Cnt) :=
-                          Transform_Expr
-                            (Prefix (Sinfo.Name (Call)),
-                             Get_Typ (Prot),
-                             Domain,
-                             Params);
+                        if Binders (Bind_Cnt).Main.Mutable then
+                           Why_Args (Arg_Cnt) :=
+                             +New_Identifier
+                             (Ada_Node => Empty,
+                              Name     => "__self__compl",
+                              Typ      => Get_Typ (Prot));
+                           Nb_Of_Refs := Nb_Of_Refs + 1;
+                        else
+                           Why_Args (Arg_Cnt) :=
+                             Transform_Expr
+                               (Prefix (Sinfo.Name (Call)),
+                                Get_Typ (Prot),
+                                Domain,
+                                Params);
+                        end if;
 
                      --  Otherwise, it is an internal call
 
                      else
-                        if Self_Is_Mutable then
+                        if not Binders (Bind_Cnt).Main.Mutable
+                          and then Self_Is_Mutable
+                        then
                            Why_Args (Arg_Cnt) :=
                              New_Deref (Right => Prot,
                                         Typ   => Get_Typ (Prot));
@@ -4427,7 +4441,53 @@ package body Gnat2Why.Expr is
       begin
          case Binders (Bind_Cnt).Kind is
             when Concurrent_Self =>
-               null;
+               --  External call, we need to reconstruct the object if
+               --  it is mutable as protected types can be in split form.
+
+               if Is_External_Call (Ada_Call)
+                 and then Binders (Bind_Cnt).Main.Mutable
+               then
+                  declare
+                     Prefix_Node : constant Node_Id :=
+                       Prefix (Sinfo.Name (Ada_Call));
+                     Formal_T    : constant W_Type_Id :=
+                       Get_Typ (Binders (Bind_Cnt).Main.B_Name);
+
+                     Tmp_Var       : constant W_Identifier_Id :=
+                       New_Identifier (Ada_Node => Empty,
+                                       Name     => "__self__compl",
+                                       Typ      => Formal_T);
+                     Tmp_Var_Deref : constant W_Prog_Id :=
+                       New_Deref (Right => Tmp_Var,
+                                  Typ   => Formal_T);
+                     Fetch_Actual  : constant W_Prog_Id :=
+                       +Transform_Expr
+                         (Prefix_Node,
+                          Formal_T,
+                          EW_Prog,
+                          Params);
+
+                     Arg_Value   : constant W_Prog_Id :=
+                       +Insert_Checked_Conversion
+                       (Ada_Node => Prefix_Node,
+                        Domain   => EW_Prog,
+                        Expr     => +Tmp_Var_Deref,
+                        To       => Type_Of_Node (Prefix_Node));
+
+                     Store_Value : constant W_Prog_Id :=
+                       New_Assignment
+                         (Ada_Node => Prefix_Node,
+                          Lvalue   => Prefix_Node,
+                          Expr     => Arg_Value);
+                  begin
+                     Statement_Sequence_Append_To_Statements
+                       (Store, Store_Value);
+
+                     Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
+                     Ref_Fetch (Ref_Index) := Fetch_Actual;
+                     Ref_Index := Ref_Index + 1;
+                  end;
+               end if;
 
             when Regular =>
 
@@ -5368,7 +5428,7 @@ package body Gnat2Why.Expr is
       declare
          Ty : constant Entity_Id := Etype (Left_Side);
       begin
-         if Has_Record_Type (Ty) or else Full_View_Not_In_SPARK (Ty) then
+         if Is_Record_Type_In_Why (Ty) then
             Right_Side :=
               +New_Record_Attributes_Update
               (Ada_Node  => Ada_Node,
@@ -5396,35 +5456,12 @@ package body Gnat2Why.Expr is
       --  In the case of protected components, we have to generate the record
       --  code ourselves on top.
 
-      --  ??? the following test is excessive, assignement to discriminants is
-      --  would be rejected by the front end; this should be fixed in the
-      --  SPARK_Util API for protected objects.
-
       if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Left_Side)) then
          declare
-            Left : constant Entity_Id := Entity (Left_Side);
-
-            Prot_Obj : W_Identifier_Id;
+            Prot_Obj : constant W_Identifier_Id := Self_Name;
 
          begin
-            if Is_Part_Of_Protected_Object (Left) then
-               declare
-                  Ada_Obj : constant Entity_Id := Encapsulating_State (Left);
-                  Ada_Typ : constant Entity_Id := Etype (Ada_Obj);
-
-                  pragma Assert (Ekind (Ada_Obj) = E_Variable and then
-                                 Ekind (Ada_Typ) = E_Protected_Type);
-
-               begin
-                  Prot_Obj :=
-                    To_Why_Id
-                      (E      => Ada_Obj,
-                       Domain => EW_Prog,
-                       Typ    => Type_Of_Node (Ada_Typ));
-               end;
-            else
-               Prot_Obj := Self_Name;
-            end if;
+            pragma Assert (Self_Is_Mutable);
 
             Result :=
               New_Assignment
@@ -12621,7 +12658,7 @@ package body Gnat2Why.Expr is
                Name     =>
                  (if Self_Is_Mutable
                   then New_Deref (Right => Id, Typ => Type_Of_Node (Prot))
-                    else +Id),
+                  else +Id),
                Field    => Ent,
                Ty       => Prot);
          end;

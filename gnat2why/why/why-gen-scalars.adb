@@ -601,27 +601,31 @@ package body Why.Gen.Scalars is
       --  the variables they may read. These functions will be defined later
       --  in the axiom module of E.
       --  Compute the binders as the objects are not declared at that point.
+      --  First and Last attributes of Itypes are never used, do not declare
+      --  them.
 
-      Emit (Section,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        =>
-                 To_Local (E_Symb (E, WNE_Attr_First)),
-               Items       => Get_Binders_From_Expression
-                 (Low_Bound (Rng), Compute => True),
-               Return_Type => Base_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Def         => +First));
-      Emit (Section,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        =>
-                 To_Local (E_Symb (E, WNE_Attr_Last)),
-               Items       => Get_Binders_From_Expression
-                 (High_Bound (Rng), Compute => True),
-               Return_Type => Base_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Def         => +Last));
+      if not (Type_Is_Modeled_As_Base (E) and then Is_Itype (E)) then
+         Emit (Section,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_First)),
+                  Items       => Get_Binders_From_Expression
+                    (Low_Bound (Rng), Compute => True),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +First));
+         Emit (Section,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_Last)),
+                  Items       => Get_Binders_From_Expression
+                    (High_Bound (Rng), Compute => True),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +Last));
+      end if;
    end Define_Scalar_Attributes;
 
    ----------------------------

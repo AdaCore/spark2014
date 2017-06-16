@@ -1,4 +1,4 @@
-po_t.adb:9:34: medium: overflow check might fail (e.g. when The_Protected_Int = -2147483659)
+po_t.adb:9:34: info: overflow check proved (CVC4: 1 VC)
 po_t.adb:21:34: info: overflow check proved (CVC4: 1 VC)
 po_t.adb:31:04: info: initialization of "Hidden_PO" constituent of "State" proved
 po_t.adb:34:31: info: initialization of "Hidden_PO" constituent of "State" proved

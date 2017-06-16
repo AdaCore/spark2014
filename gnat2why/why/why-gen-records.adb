@@ -2898,11 +2898,11 @@ package body Why.Gen.Records is
          end;
       end if;
 
-         return New_Record_Update
-           (Ada_Node => Ada_Node,
-            Name     => Name,
-            Updates  => Associations,
-            Typ      => Get_Type (Name));
+      return New_Record_Update
+        (Ada_Node => Ada_Node,
+         Name     => Name,
+         Updates  => Associations,
+         Typ      => Get_Type (Name));
    end New_Record_Attributes_Update;
 
    --------------------

@@ -114,6 +114,8 @@ package body Gnat2Why.Decls is
       --  In this case, the variable should have its own name and not a Why3
       --  record component name.
 
+      pragma Assert (not Is_Protected_Component_Or_Discr_Or_Part_Of (E));
+
       Insert_Entity (E, To_Why_Id (E, No_Comp => True, Typ => Typ));
 
       Emit (File,

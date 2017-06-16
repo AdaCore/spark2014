@@ -921,24 +921,32 @@ package body Gnat2Why.Subprograms is
      (E      : Entity_Id;
       Params : Transformation_Params) return W_Pred_Id
    is
-      Func_Why_Binders     : constant Binder_Array :=
-        To_Binder_Array (Compute_Binders (E, EW_Prog));
+      Func_Why_Binders     : constant Item_Array :=
+        Compute_Binders (E, EW_Prog);
       Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
    begin
 
       --  Compute the dynamic property of mutable parameters
 
       for I in Func_Why_Binders'Range loop
-         if Func_Why_Binders (I).Mutable then
+         if Item_Is_Mutable (Func_Why_Binders (I))
+           and then Entity_In_SPARK
+             (Get_Ada_Node_From_Item (Func_Why_Binders (I)))
+         then
             declare
-               Binder   : constant Binder_Type := Func_Why_Binders (I);
+               Ada_Type : constant Node_Id :=
+                 Get_Ada_Type_From_Item (Func_Why_Binders (I));
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Invariant
-                   (Expr   => +Transform_Identifier (Params => Params,
-                                                     Expr   => Binder.Ada_Node,
-                                                     Ent    => Binder.Ada_Node,
-                                                     Domain => EW_Term),
-                    Ty     => Etype (Binder.Ada_Node),
+                   (Expr   =>
+                      +Transform_Identifier
+                        (Params   =>  Params,
+                         Expr     =>
+                           Get_Ada_Node_From_Item (Func_Why_Binders (I)),
+                         Ent      =>
+                           Get_Ada_Node_From_Item (Func_Why_Binders (I)),
+                         Domain   => EW_Term),
+                    Ty     => Ada_Type,
                     Params => Params);
             begin
                Dynamic_Prop_Effects := +New_And_Expr
@@ -971,7 +979,7 @@ package body Gnat2Why.Subprograms is
                  and then Entity_In_SPARK (Entity)
                then
 
-                  --  ??? skip dynamic invariant for protected type
+                  --  Reference to self is handled specifically
 
                   if Ekind (Entity) in Type_Kind then
                      pragma Assert (Ekind (Entity) in Protected_Kind);
@@ -1077,27 +1085,17 @@ package body Gnat2Why.Subprograms is
             Entity : constant Entity_Id := Find_Entity (Name);
          begin
 
-            if Present (Entity)
+            --  Effects on protected components are handled by other means
+
+            if Present (Entity) and then Is_Type (Entity)
+            then
+               null;
+            elsif Present (Entity)
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-               --  Special case of effect on protected components
-
-               declare
-                  Binder : Item_Type;
-               begin
-                  if Is_Type (Entity) then
-                     pragma Assert (Ekind (Entity) in E_Protected_Type);
-                     Binder :=
-                       Item_Type'(Kind  => Concurrent_Self,
-                                  Local => True,
-                                  Main  => Concurrent_Self_Binder (Entity));
-                  else
-                     Binder := Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-                  end if;
-
-                  Effects_Append_Binder_To_Writes (Binder);
-               end;
+               Effects_Append_Binder_To_Writes
+                 (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
             else
                Effects_Append_To_Writes
                  (Eff,
@@ -1143,28 +1141,17 @@ package body Gnat2Why.Subprograms is
             Entity : constant Entity_Id := Find_Entity (Name);
          begin
 
-            if Present (Entity)
+            --  Effects on protected components are handled by other means
+
+            if Present (Entity) and then Is_Type (Entity)
+            then
+               null;
+            elsif Present (Entity)
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-               declare
-                  Binder : Item_Type;
-               begin
-                  --  Special case of effect on protected components
-                  if Is_Type (Entity) then
-                     pragma Assert (Ekind (Entity) in E_Protected_Type |
-                                                      E_Task_Type);
-                     Binder :=
-                       Item_Type'(Kind  => Concurrent_Self,
-                                  Local => True,
-                                  Main  => Concurrent_Self_Binder (Entity));
-                  else
-                     Binder :=
-                       Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-                  end if;
-
-                  Effects_Append_Binder_To_Reads (Binder);
-               end;
+               Effects_Append_Binder_To_Reads
+                 (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
             else
                Effects_Append_To_Reads
                  (Eff,
@@ -1300,6 +1287,7 @@ package body Gnat2Why.Subprograms is
                         if Present (E)
                           and then Is_Object (E)
                           and then Entity_In_SPARK (E)
+                          and then not Is_Part_Of_Concurrent_Object (E)
                         then
                            declare
                               Binder : constant Item_Type :=
@@ -1562,8 +1550,13 @@ package body Gnat2Why.Subprograms is
       Write_Names := Flow_Types.To_Name_Set (Write_Ids);
       Write_Names.Difference (Read_Names);
 
-      return Get_Binders_From_Variables (Read_Names, Compute)
-        & Get_Binders_From_Variables (Write_Names, Compute);
+      --  Do not include binder for self reference as it is already included
+      --  in binders for parameters.
+
+      return Get_Binders_From_Variables
+        (Read_Names, Compute, Ignore_Self => True)
+        & Get_Binders_From_Variables
+        (Write_Names, Compute, Ignore_Self => True);
    end Compute_Binders_For_Effects;
 
    -------------------------
@@ -1591,7 +1584,8 @@ package body Gnat2Why.Subprograms is
          begin
             Result (1) :=
               (Concurrent_Self, Local => True,
-               Main => Concurrent_Self_Binder (Prot));
+               Main => Concurrent_Self_Binder
+                 (Prot, Mutable => Ekind (E) /= E_Function));
             Count := 2;
          end;
       end if;
@@ -2758,11 +2752,8 @@ package body Gnat2Why.Subprograms is
       --  The Ada_Node is important here, because that's how we detect
       --  occurrences of "self" in a term later.
 
-      Self_Name :=
-        New_Identifier
-          (Name     => "self__",
-           Ada_Node => E,
-           Typ      => Type_Of_Node (E));
+      Self_Name := Concurrent_Self_Ident (E);
+      Self_Is_Mutable := False;
 
       Emit (File,
             Why.Gen.Binders.New_Function_Decl
@@ -3481,11 +3472,7 @@ package body Gnat2Why.Subprograms is
             --  The Ada_Node is important here, because that's how we detect
             --  occurrences of "self" in a term later.
 
-            Self_Name :=
-              New_Identifier
-                (Name     => "self__",
-                 Ada_Node => CPT,
-                 Typ      => Type_Of_Node (CPT));
+            Self_Name := Concurrent_Self_Ident (CPT);
             Self_Is_Mutable := True;
          end;
       end if;
@@ -4574,6 +4561,12 @@ package body Gnat2Why.Subprograms is
             Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
          end if;
 
+         if Within_Protected_Type (E) then
+            Self_Name :=
+              Concurrent_Self_Ident (Containing_Protected_Type (E));
+            Self_Is_Mutable := Ekind (E) /= E_Function;
+         end if;
+
          Generate_Subprogram_Program_Fun (File, E);
 
          Generate_Axiom_For_Post (File, E);
@@ -4582,6 +4575,11 @@ package body Gnat2Why.Subprograms is
            and then Present (Find_Dispatching_Type (E))
          then
             Generate_Dispatch_Compatibility_Axioms (File, E);
+         end if;
+
+         if Within_Protected_Type (E) then
+            Self_Name := Why_Empty;
+            Self_Is_Mutable := False;
          end if;
 
          if Use_Result_Name then
@@ -5221,6 +5219,12 @@ package body Gnat2Why.Subprograms is
 
       Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
 
+      if Within_Protected_Type (E) then
+         Self_Name :=
+           Concurrent_Self_Ident (Containing_Protected_Type (E));
+         Self_Is_Mutable := False;
+      end if;
+
       Generate_Subprogram_Program_Fun (File, E);
 
       Generate_Axiom_For_Post (File, E);
@@ -5406,6 +5410,11 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      if Within_Protected_Type (E) then
+         Self_Name := Why_Empty;
+         Self_Is_Mutable := False;
+      end if;
 
       Result_Name := Why_Empty;
 

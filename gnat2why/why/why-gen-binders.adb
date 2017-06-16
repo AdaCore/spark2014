@@ -62,18 +62,30 @@ package body Why.Gen.Binders is
    -- Concurrent_Self_Binder --
    ----------------------------
 
-   function Concurrent_Self_Binder (Ty : Entity_Id) return Binder_Type is
+   function Concurrent_Self_Binder
+     (Ty      : Entity_Id;
+      Mutable : Boolean := True) return Binder_Type
+   is
    begin
       return
-        Binder_Type'
-          (B_Name   =>
-             New_Identifier
-               (Name => "self__",
-                Typ  => Type_Of_Node (Ty)),
-           B_Ent    => Null_Entity_Name,
-           Ada_Node => Ty,
-           Mutable  => False);
+        Binder_Type'(Ada_Node => Ty,
+                     B_Name   => Concurrent_Self_Ident (Ty),
+                     B_Ent    => Null_Entity_Name,
+                     Mutable  => Mutable);
    end Concurrent_Self_Binder;
+
+   ---------------------------
+   -- Concurrent_Self_Ident --
+   ---------------------------
+
+   function Concurrent_Self_Ident (Ty : Entity_Id) return W_Identifier_Id
+   is
+      Typ : constant W_Type_Id :=
+        (if Entity_In_SPARK (Ty) then Type_Of_Node (Ty)
+         else EW_Private_Type);
+   begin
+      return New_Identifier (Name => "self__", Typ => Typ);
+   end Concurrent_Self_Ident;
 
    ----------------------------
    -- Get_Ada_Node_From_Item --
@@ -101,6 +113,28 @@ package body Why.Gen.Binders is
             raise Program_Error;
       end case;
    end Get_Ada_Node_From_Item;
+
+   ----------------------------
+   -- Get_Ada_Type_From_Item --
+   ----------------------------
+
+   function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id is
+   begin
+      case B.Kind is
+         when Regular | UCArray | Func
+            =>
+            if No (Get_Ada_Node_From_Item (B)) then
+               return Empty;
+            else
+               return Etype (Get_Ada_Node_From_Item (B));
+            end if;
+         when Concurrent_Self =>
+            return B.Main.Ada_Node;
+
+         when DRecord =>
+            return B.Typ;
+      end case;
+   end Get_Ada_Type_From_Item;
 
    ---------------------------
    -- Get_Args_From_Binders --
@@ -187,9 +221,11 @@ package body Why.Gen.Binders is
    -- Get_Binders_From_Variables --
    --------------------------------
 
-   function Get_Binders_From_Variables (Variables : Name_Sets.Set;
-                                        Compute   : Boolean := False)
-                                        return Item_Array
+   function Get_Binders_From_Variables
+     (Variables   : Name_Sets.Set;
+      Compute     : Boolean := False;
+      Ignore_Self : Boolean := False)
+      return Item_Array
    is
       Binders : Item_Array (1 .. Natural (Variables.Length));
       I       : Positive := 1;
@@ -205,10 +241,36 @@ package body Why.Gen.Binders is
               Ada_Ent_To_Why.Find (Symbol_Table, V);
 
          begin
-            --  Do nothing if the entity is not mutable
+            --  For components of protected types, include a reference to self
 
-            if Present (Entity) and then not Is_Mutable_In_Why (Entity) then
-               null;
+            if Present (Entity)
+              and then (Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
+                        or else Is_Type (Entity))
+              and then not Ignore_Self
+            then
+               declare
+                  Prot_Ty : constant Entity_Id :=
+                    (if Is_Type (Entity) then Entity
+                     else Enclosing_Concurrent_Type (Entity));
+               begin
+                  Binders (I) :=
+                    Item_Type'(Kind  => Concurrent_Self,
+                               Local => True,
+                               Main  => Concurrent_Self_Binder (Prot_Ty));
+                  I := I + 1;
+               end;
+
+            --  Do nothing if the entity is not mutable or if it is a reference
+            --  to a concurrent type and they are ignored.
+
+            elsif Present (Entity)
+              and then (not Is_Mutable_In_Why (Entity)
+                        or else Is_Type (Entity))
+            then
+               pragma Assert
+                 (if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
+                  or else Is_Type (Entity)
+                  then Ignore_Self);
 
             --  If there is an existing binder for this entity use it
 
@@ -333,6 +395,26 @@ package body Why.Gen.Binders is
       return Count;
    end Item_Array_Length;
 
+   ---------------------
+   -- Item_Is_Mutable --
+   ---------------------
+
+   function Item_Is_Mutable (B : Item_Type) return Boolean is
+   begin
+      case B.Kind is
+         when Regular
+            | Concurrent_Self
+            =>
+            return B.Main.Mutable;
+
+         when UCArray | DRecord =>
+            return True;
+
+         when Func =>
+            raise Program_Error;
+      end case;
+   end Item_Is_Mutable;
+
    -----------------------------
    -- Localize_Variable_Parts --
    -----------------------------
@@ -344,9 +426,13 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular
-               | Concurrent_Self
-            =>
+            when Concurrent_Self =>
+               --  Concurrent self is already local
+
+               pragma Assert (Suffix = "");
+               null;
+
+            when Regular =>
                if B.Main.Mutable then
                   declare
                      Local_Name : constant String :=
@@ -384,10 +470,6 @@ package body Why.Gen.Binders is
                      else Full_Name (B.Discrs.Binder.Ada_Node))
                     & Suffix;
                begin
-                  pragma Assert
-                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
-                     or else (B.Fields.Present
-                       and then B.Fields.Binder.Mutable));
                   if B.Discrs.Present and then B.Discrs.Binder.Mutable then
                      B.Discrs.Binder.B_Name :=
                        New_Identifier
@@ -548,7 +630,7 @@ package body Why.Gen.Binders is
          end;
 
       elsif Entity_In_SPARK (Ty)
-        and then (Is_Record_Type (Ty) or else Is_Private_Type (Ty))
+        and then Is_Record_Type_In_Why (Ty)
         and then not Is_Simple_Private_Type (Ty)
         --  Do not use split form for completely private types.
 
@@ -1133,7 +1215,7 @@ package body Why.Gen.Binders is
          declare
             Node : constant Node_Id := Get_Ada_Node_From_Item (B);
          begin
-            if Present (Node) and then not Is_Type (Node) then
+            if Present (Node) then
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Get_Ada_Node_From_Item (B),
                                       B);

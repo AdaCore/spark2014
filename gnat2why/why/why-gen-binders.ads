@@ -246,9 +246,18 @@ package Why.Gen.Binders is
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
 
-   function Concurrent_Self_Binder (Ty : Entity_Id) return Binder_Type
+   function Concurrent_Self_Ident (Ty : Entity_Id) return W_Identifier_Id
      with Pre => Ekind (Ty) in E_Protected_Type | E_Task_Type;
    --  @param Ty a concurrent type entity
+   --  @return an identifier which corresponds to the "self" object of that
+   --    concurrent type
+
+   function Concurrent_Self_Binder
+     (Ty      : Entity_Id;
+      Mutable : Boolean := True) return Binder_Type
+     with Pre => Ekind (Ty) in E_Protected_Type | E_Task_Type;
+   --  @param Ty a concurrent type entity
+   --  @param Mutable Value for the binder Mutable component
    --  @return a binder type which corresponds to the "self" object of that
    --    concurrent type
 
@@ -293,6 +302,16 @@ package Why.Gen.Binders is
    --  @param B item whose type we querry.
    --  @return the type of the expression that can be reconstructed from B.
 
+   function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id;
+   --  Get the da type of an item.
+   --  @param B item whose type we querry.
+   --  @return the type of the ada node associated to B.
+
+   function Item_Is_Mutable (B : Item_Type) return Boolean;
+   --  Chcek if an Item is Mutable.
+   --  @param B item we querry.
+   --  @return True if B is mutable
+
    function Reconstruct_Item
      (E           : Item_Type;
       Ref_Allowed : Boolean := True) return W_Expr_Id;
@@ -302,14 +321,18 @@ package Why.Gen.Binders is
    --  @param Ref_Allowed use dereference for variables.
    --  @return an Item representing the Entity E.
 
-   function Get_Binders_From_Variables (Variables : Name_Sets.Set;
-                                        Compute   : Boolean := False)
-                                        return Item_Array;
+   function Get_Binders_From_Variables
+     (Variables   : Name_Sets.Set;
+      Compute     : Boolean := False;
+      Ignore_Self : Boolean := False)
+      return Item_Array;
    --  From a set of names returned by flow analysis, compute an array of
    --  items representing the variables in Why.
    --  @param Variables a set of names returned by flow analysis
    --  @param Compute Should be True if we want to compute binders missing from
    --  the Symbol_Table.
+   --  @param Ignore_Self True if we want to discard references to protected
+   --  components.
    --  Should only be put to True if only localized versions of names are used.
    --  @result An array of items used to represent these variables in Why
 
@@ -322,7 +345,8 @@ package Why.Gen.Binders is
    --  the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variables in Why
 
-   procedure Localize_Variable_Parts (Binders : in out Item_Array;
+   procedure Localize_Variable_Parts
+     (Binders : in out Item_Array;
       Suffix  : String := "");
    --  Changes variables components of Binders to refer to local names.
    --  @param Binders an array of items.

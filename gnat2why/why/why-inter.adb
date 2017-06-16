@@ -1356,6 +1356,7 @@ package body Why.Inter is
       elsif Nkind (N) in N_Identifier | N_Expanded_Name
         and then Is_Object (Entity (N))
         and then Ekind (Entity (N)) not in E_Discriminant | E_Component
+        and then not Is_Part_Of_Protected_Object (Entity (N))
       then
          return Why_Type_Of_Entity (Entity (N));
       elsif Is_Type (E)
