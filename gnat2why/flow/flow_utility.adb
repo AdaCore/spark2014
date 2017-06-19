@@ -250,7 +250,7 @@ package body Flow_Utility is
                      --  x in t
                      P := Right_Opnd (N);
                      if Nkind (P) in N_Identifier | N_Expanded_Name
-                       and then Ekind (Entity (P)) in Type_Kind
+                       and then Is_Type (Entity (P))
                      then
                         Process_Type (Get_Type (P, Scop));
                      end if;
@@ -259,7 +259,7 @@ package body Flow_Utility is
                      P := First (Alternatives (N));
                      while Present (P) loop
                         if Nkind (P) in N_Identifier | N_Expanded_Name
-                          and then Ekind (Entity (P)) in Type_Kind
+                          and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Scop));
                         end if;
@@ -2798,7 +2798,7 @@ package body Flow_Utility is
                      --  x in t
                      P := Right_Opnd (N);
                      if Nkind (P) in N_Identifier | N_Expanded_Name
-                        and then Ekind (Entity (P)) in Type_Kind
+                        and then Is_Type (Entity (P))
                      then
                         Process_Type (Get_Type (P, Ctx.Scope));
                      end if;
@@ -2807,7 +2807,7 @@ package body Flow_Utility is
                      P := First (Alternatives (N));
                      while Present (P) loop
                         if Nkind (P) in N_Identifier | N_Expanded_Name
-                          and then Ekind (Entity (P)) in Type_Kind
+                          and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Ctx.Scope));
                         end if;
