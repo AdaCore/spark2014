@@ -27,8 +27,6 @@ tagged_discr.adb:7:09: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.adb:15:14: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.adb:17:14: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.adb:23:08: info: discriminant check proved (CVC4: 1 VC)
-tagged_discr.adb:31:14: info: discriminant check proved (CVC4: 1 VC)
-tagged_discr.adb:33:14: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.adb:40:08: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.ads:19:28: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.ads:20:29: info: discriminant check proved (CVC4: 1 VC)
@@ -40,8 +38,6 @@ tagged_discr.ads:24:28: info: initialization of "V.X" proved
 tagged_discr.ads:24:28: info: initialization of "V.Y" proved
 tagged_discr.ads:24:28: info: initialization of "V.Z" proved
 tagged_discr.ads:27:14: info: postcondition proved (CVC4: 1 VC)
-tagged_discr.ads:36:28: info: discriminant check proved (CVC4: 1 VC)
-tagged_discr.ads:37:29: info: discriminant check proved (CVC4: 1 VC)
 tagged_discr.ads:40:20: info: initialization of "V.W" proved
 tagged_discr.ads:40:20: info: initialization of "V.X" proved
 tagged_discr.ads:40:20: info: initialization of "V.Y" proved

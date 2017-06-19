@@ -2437,9 +2437,10 @@ package body Why.Gen.Records is
          then New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
          else New_Fields_Access (Ada_Node, Domain, Name, Ty));
    begin
-      if Domain = EW_Prog and then
-        Nkind (Ada_Node) /= N_Identifier and then
-        Do_Discriminant_Check (Ada_Node)
+      if Domain = EW_Prog
+        and then Ekind (Field) = E_Component
+        and then Retysp_Kind (Rec) in Private_Kind | Record_Kind
+        and then Has_Variant_Info (Rec, Field)
       then
          return
            New_VC_Call

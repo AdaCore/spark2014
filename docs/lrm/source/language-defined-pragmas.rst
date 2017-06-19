@@ -62,7 +62,7 @@ Shared_Passive     	      No                     Distributed systems
 Storage_Size 	 	      Yes/No                 tasks, not access types
 Suppress           	      Yes
 Task_Dispatching_Policy       No		     Ravenscar
-Unchecked_Union	 	      No
+Unchecked_Union	 	      Yes
 Unsuppress 	  	      Yes
 Volatile           	      Yes
 Volatile_Components 	      Yes

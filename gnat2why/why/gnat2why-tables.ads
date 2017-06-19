@@ -106,6 +106,14 @@ package Gnat2Why.Tables is
    --  @param E entity of a type translated as a record in why
    --  @return True if E contains a component for its own private part
 
+   function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean
+   with
+     Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind
+     and Ekind (Comp) = E_Component;
+   --  @param Rec is a record type or a protected type
+   --  @param Comp component of the record type or of one of its ancestors
+   --  @return True if Comp is located under a variant.
+
    function Original_Declaration (Comp : Entity_Id) return Entity_Id
    with
      Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
@@ -117,7 +125,7 @@ package Gnat2Why.Tables is
    with
      Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
      and Ekind (Comp) in
-     E_Discriminant | E_Component | Type_Kind | E_In_Parameter;
+     E_Discriminant | E_Component | Type_Kind | E_Variable;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return the corresponding component stored in Rec's component

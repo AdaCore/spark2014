@@ -64,6 +64,11 @@ package body Gnat2Why.Tables is
    --  This map maps tagged types to all their descendants that are visible
    --  from the analyzed unit.
 
+   function Find_Rec_Node_For_Variant (E : Entity_Id) return Entity_Id
+   with Pre => Retysp_Kind (E) in Private_Kind | Record_Kind | Concurrent_Kind;
+   --  @param E record type
+   --  @return the entity to be used to query the variant information for E
+
    procedure Init_Component_Info (E : Entity_Id)
    with Pre => Ekind (E) in Record_Kind | Private_Kind;
    --  @param E record type
@@ -112,6 +117,51 @@ package body Gnat2Why.Tables is
              Present (Search_Component_By_Name (Rec, Comp)),
           when others => False);
 
+   -------------------------------
+   -- Find_Rec_Node_For_Variant --
+   -------------------------------
+
+   function Find_Rec_Node_For_Variant (E : Entity_Id) return Entity_Id is
+      Ty : constant Entity_Id :=
+        Retysp (if Is_Class_Wide_Type (E)
+                then Get_Specific_Type_From_Classwide (E) else E);
+   begin
+      case Ekind (Ty) is
+
+         --  Subtypes do not have their own variant part, rather use the one
+         --  from their Etype.
+
+         when E_Record_Subtype
+            | E_Record_Subtype_With_Private
+            | E_Protected_Subtype
+            | E_Task_Subtype
+         =>
+            return Retysp (Etype (Ty));
+
+         --  Record types always have their own variant part
+
+         when E_Record_Type
+            | E_Record_Type_With_Private
+         =>
+            return Ty;
+
+         --  Concurrent types only have their own variant part if their are
+         --  nouveau. If they are derived types, use the variant type of their
+         --  Etype.
+
+         when E_Protected_Type
+            | E_Task_Type
+         =>
+            return (if Nkind (Parent (Ty)) in N_Protected_Type_Declaration
+                                            | N_Task_Type_Declaration
+                    then Ty
+                    else Find_Rec_Node_For_Variant (Etype (Ty)));
+
+         when others =>
+            return Empty;
+      end case;
+   end Find_Rec_Node_For_Variant;
+
    -----------------------
    -- Get_Component_Set --
    -----------------------
@@ -141,42 +191,13 @@ package body Gnat2Why.Tables is
    ----------------------
 
    function Get_Variant_Info (E : Entity_Id) return Component_Info_Maps.Map is
-      Ty : constant Entity_Id := Retysp (E);
+      Ty : constant Entity_Id := Find_Rec_Node_For_Variant (E);
    begin
-      case Ekind (Ty) is
-
-         --  Subtypes do not have their own variant part, rather use the one
-         --  from their Etype.
-
-         when E_Record_Subtype
-            | E_Record_Subtype_With_Private
-            | E_Protected_Subtype
-            | E_Task_Subtype
-         =>
-            return Comp_Info (Retysp (Etype (Ty))).Variant_Info;
-
-         --  Record types always have their own variant part
-
-         when E_Record_Type
-            | E_Record_Type_With_Private
-         =>
-            return Comp_Info (Ty).Variant_Info;
-
-         --  Concurrent types only have their own variant part if their are
-         --  nouveau. If they are derived types, use the variant type of their
-         --  Etype.
-
-         when E_Protected_Type
-            | E_Task_Type
-         =>
-            return (if Nkind (Parent (Ty)) in N_Protected_Type_Declaration
-                                            | N_Task_Type_Declaration
-                    then Comp_Info (Ty).Variant_Info
-                    else Comp_Info (Retysp (Etype (Ty))).Variant_Info);
-
-         when others =>
-            return Component_Info_Maps.Empty_Map;
-      end case;
+      if Present (Ty) then
+         return Comp_Info (Ty).Variant_Info;
+      else
+         return Component_Info_Maps.Empty_Map;
+      end if;
    end Get_Variant_Info;
 
    ----------------------
@@ -190,6 +211,21 @@ package body Gnat2Why.Tables is
    begin
       return Comp_Info (Ty).Components.Contains (E);
    end Has_Private_Part;
+
+   ----------------------
+   -- Has_Variant_Info --
+   ----------------------
+
+   function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean is
+      Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
+      C_I_Map : constant Component_Info_Maps.Map :=
+        Comp_Info (Rec_Ty).Variant_Info;
+      Curs    : constant Component_Info_Maps.Cursor :=
+        C_I_Map.Find (Search_Component_In_Type (Rec_Ty, Comp));
+   begin
+      return Component_Info_Maps.Has_Element (Curs)
+        and then Present (Component_Info_Maps.Element (Curs).Parent_Variant);
+   end Has_Variant_Info;
 
    -------------------------
    -- Init_Component_Info --

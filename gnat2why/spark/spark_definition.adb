@@ -5105,6 +5105,7 @@ package body SPARK_Definition is
               Pragma_Restrictions                 |
               Pragma_Reviewable                   |
               Pragma_Suppress                     |
+              Pragma_Unchecked_Union              |
               Pragma_Unsuppress                   |
               Pragma_Volatile                     |
               Pragma_Volatile_Components          |
@@ -5315,7 +5316,6 @@ package body SPARK_Definition is
            Pragma_Thread_Local_Storage           |
            Pragma_Time_Slice                     |
            Pragma_Title                          |
-           Pragma_Unchecked_Union                |
            Pragma_Unimplemented_Unit             |
            Pragma_Universal_Aliasing             |
            Pragma_Universal_Data                 |
