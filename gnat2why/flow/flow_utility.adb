@@ -2692,10 +2692,6 @@ package body Flow_Utility is
                   --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.
 
-                  --  Sanity check that parent is an entry/subprogram call
-                  pragma Assert (Nkind (Parent (N)) in N_Entry_Call_Statement |
-                                                       N_Subprogram_Call);
-
                   Variables.Union (Do_Subprogram_Call (Parent (N)));
 
                elsif Ctx.Reduced then
