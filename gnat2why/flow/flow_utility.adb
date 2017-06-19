@@ -4240,8 +4240,8 @@ package body Flow_Utility is
                      M.Include (Comp, FS);
                   end loop;
                else
-                  for C in M.Iterate loop
-                     M (C).Union (FS);
+                  for Output of M loop
+                     Output.Union (FS);
                   end loop;
                end if;
             end;
