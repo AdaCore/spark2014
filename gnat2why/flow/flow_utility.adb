@@ -257,13 +257,15 @@ package body Flow_Utility is
                   else
                      --  x in t | 1 .. y | u
                      P := First (Alternatives (N));
-                     while Present (P) loop
+                     loop
                         if Nkind (P) in N_Identifier | N_Expanded_Name
                           and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Scop));
                         end if;
                         Next (P);
+
+                        exit when No (P);
                      end loop;
                   end if;
                end if;
@@ -2805,13 +2807,15 @@ package body Flow_Utility is
                   else
                      --  x in t | 1 .. y | u
                      P := First (Alternatives (N));
-                     while Present (P) loop
+                     loop
                         if Nkind (P) in N_Identifier | N_Expanded_Name
                           and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Ctx.Scope));
                         end if;
                         Next (P);
+
+                        exit when No (P);
                      end loop;
                   end if;
                end;
