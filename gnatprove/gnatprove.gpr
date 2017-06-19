@@ -44,6 +44,9 @@ project GNATprove is
          when "Production" =>
             for Default_Switches ("Ada") use
                Common_Switches & ("-O2", "-gnatn");
+         when "Coverage" =>
+            --  We don't do coverage of gnatprove yet, only gnat2why
+            null;
       end case;
    end Compiler;
 

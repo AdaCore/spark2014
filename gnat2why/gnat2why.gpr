@@ -46,7 +46,7 @@ project GNAT2Why is
             for Global_Configuration_Pragmas use "debug.adc";
          when "Devel" =>
             for Global_Configuration_Pragmas use "devel.adc";
-         when "Production" =>
+         when "Production" | "Coverage" =>
             null;
       end case;
 
