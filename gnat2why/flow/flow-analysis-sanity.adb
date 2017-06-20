@@ -88,6 +88,14 @@ package body Flow.Analysis.Sanity is
       function Check_Expression (N : Node_Id) return Traverse_Result;
       --  Helper function to walk over the tree
 
+      procedure Check_Variable_Inputs
+        (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+         Err_Desc : String;
+         Err_Node : Node_Id);
+      --  Issues an error for any member of the Flow_Ids which does NOT denote
+      --  a constant, a bound or a discriminant (of an enclosing concurrent
+      --  type).
+
       function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set;
       --  Wrapper around Get_Globals that only returns global reads and proof
       --  reads.
@@ -136,15 +144,7 @@ package body Flow.Analysis.Sanity is
       -- Check_Expression --
       ----------------------
 
-      function Check_Expression (N : Node_Id) return Traverse_Result
-      is
-         procedure Check_Variable_Inputs
-           (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-            Err_Desc : String;
-            Err_Node : Node_Id);
-         --  Issues an error for any member of the Flow_Ids which does NOT
-         --  denote a constant, a bound or a discriminant (of an enclosing
-         --  concurrent type).
+      function Check_Expression (N : Node_Id) return Traverse_Result is
 
          function Check_Renaming (N : Node_Id) return Traverse_Result;
          --  Checks that indexed components and slices in object renaming
@@ -154,39 +154,6 @@ package body Flow.Analysis.Sanity is
          --  Checks that for a generic instance there is no Actual with
          --  variable inputs corresponding to a Formal object declaration with
          --  mode in.
-
-         ---------------------------
-         -- Check_Variable_Inputs --
-         ---------------------------
-
-         procedure Check_Variable_Inputs
-           (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-            Err_Desc : String;
-            Err_Node : Node_Id)
-         is
-         begin
-            for F of Flow_Ids loop
-               if (F.Kind in Direct_Mapping | Record_Field
-                 and then Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-                 and then not (Is_Constant_Object (Get_Direct_Mapping_Id (F))
-                                 or else Is_Bound (F)
-                                 or else Ekind (Get_Direct_Mapping_Id (F)) =
-                                           E_Discriminant))
-                 or else
-                   F.Kind = Magic_String
-               then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => Err_Desc & " cannot depend on variable " &
-                       "input &",
-                     SRM_Ref  => "4.4(2)",
-                     N        => Err_Node,
-                     Severity => Error_Kind,
-                     F1       => Entire_Variable (F));
-                  Sane := False;
-               end if;
-            end loop;
-         end Check_Variable_Inputs;
 
          --------------------
          -- Check_Renaming --
@@ -263,26 +230,6 @@ package body Flow.Analysis.Sanity is
                      Spec : constant Entity_Id := Unique_Defining_Entity (N);
 
                   begin
-                     --  If we are dealing with a user-defined equality then we
-                     --  need to check that it does not read any variable.
-                     if Nkind (N) = N_Subprogram_Body then
-                        if Is_User_Defined_Equality (Spec) then
-                           declare
-                              Typ : constant Entity_Id :=
-                                Get_Full_Type_Without_Checking
-                                  (First_Formal (Spec));
-
-                           begin
-                              if Ekind (Typ) in Record_Kind then
-                                 Check_Variable_Inputs
-                                   (Flow_Ids => Global_Reads (Spec),
-                                    Err_Desc => "user-defined equality",
-                                    Err_Node => N);
-                              end if;
-                           end;
-                        end if;
-                     end if;
-
                      --  If the node is an instance of a generic then we need
                      --  to check its actuals.
                      if Is_Generic_Instance (Spec) then
@@ -451,6 +398,39 @@ package body Flow.Analysis.Sanity is
          end case;
       end Check_Expression;
 
+      ---------------------------
+      -- Check_Variable_Inputs --
+      ---------------------------
+
+      procedure Check_Variable_Inputs
+        (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+         Err_Desc : String;
+         Err_Node : Node_Id)
+      is
+      begin
+         for F of Flow_Ids loop
+            if (F.Kind in Direct_Mapping | Record_Field
+                and then Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
+                and then not (Is_Constant_Object (Get_Direct_Mapping_Id (F))
+                              or else Is_Bound (F)
+                              or else Ekind (Get_Direct_Mapping_Id (F)) =
+                                E_Discriminant))
+              or else
+                F.Kind = Magic_String
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => Err_Desc &
+                              " cannot depend on variable input &",
+                  SRM_Ref  => "4.4(2)",
+                  N        => Err_Node,
+                  Severity => Error_Kind,
+                  F1       => Entire_Variable (F));
+               Sane := False;
+            end if;
+         end loop;
+      end Check_Variable_Inputs;
+
       procedure Do_Checks is new Traverse_Proc (Check_Expression);
 
    --  Start of processing for Check_Expressions
@@ -465,6 +445,22 @@ package body Flow.Analysis.Sanity is
          when Kind_Subprogram =>
             Entry_Node := Get_Body (FA.Analyzed_Entity);
             Do_Checks (Entry_Node);
+
+            if Is_User_Defined_Equality (FA.Spec_Entity) then
+               declare
+                  Typ : constant Entity_Id :=
+                    Get_Full_Type_Without_Checking
+                      (First_Formal (FA.Spec_Entity));
+
+               begin
+                  if Ekind (Typ) in Record_Kind then
+                     Check_Variable_Inputs
+                       (Flow_Ids => Global_Reads (FA.Spec_Entity),
+                        Err_Desc => "user-defined equality",
+                        Err_Node => FA.Spec_Entity);
+                  end if;
+               end;
+            end if;
 
          when Kind_Task =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);

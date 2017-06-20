@@ -1,2 +1,2 @@
-test_eq.ads:9:04: user-defined equality cannot depend on variable input "B" (SPARK RM 4.4(2))
+test_eq.ads:9:13: user-defined equality cannot depend on variable input "B" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof
