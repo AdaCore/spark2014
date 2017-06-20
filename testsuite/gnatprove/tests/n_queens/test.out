@@ -3,7 +3,6 @@ queen.adb:11:27: info: range check proved (CVC4: 1 VC)
 queen.adb:15:25: info: assertion proved (CVC4: 1 VC)
 queen.adb:16:25: info: assertion proved (CVC4: 1 VC)
 queen.adb:16:68: info: range check proved (CVC4: 1 VC)
-queen.adb:21:20: info: length check proved (CVC4: 1 VC)
 queen.adb:25:13: info: loop invariant initialization proved (CVC4: 1 VC)
 queen.adb:25:13: info: loop invariant preservation proved (CVC4: 1 VC)
 queen.adb:25:50: info: initialization of "R" proved

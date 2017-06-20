@@ -33,7 +33,6 @@ parameter_tests.adb:36:32: info: initialization of "G.X" proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
-test.adb:32:34: info: length check proved (CVC4: 1 VC)
 test.adb:33:14: info: initialization of "P.Ammo" proved
 test.adb:33:14: info: initialization of "P.Look_Pitch" proved
 test.adb:33:14: info: initialization of "P.Look_Yaw" proved
@@ -41,7 +40,6 @@ test.adb:33:14: info: initialization of "P.Position.X" proved
 test.adb:33:14: info: initialization of "P.Position.Y" proved
 test.adb:33:14: info: initialization of "P.Position.Z" proved
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
-test.adb:42:23: info: length check proved (CVC4: 1 VC)
 test.adb:43:14: info: initialization of "P.Ammo" proved
 test.adb:43:14: info: initialization of "P.Look_Pitch" proved
 test.adb:43:14: info: initialization of "P.Look_Yaw" proved
@@ -49,7 +47,6 @@ test.adb:43:14: info: initialization of "P.Position.X" proved
 test.adb:43:14: info: initialization of "P.Position.Y" proved
 test.adb:43:14: info: initialization of "P.Position.Z" proved
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
-test.adb:54:23: info: length check proved (CVC4: 1 VC)
 test.adb:55:14: info: initialization of "P.Ammo" proved
 test.adb:55:14: info: initialization of "P.Look_Pitch" proved
 test.adb:55:14: info: initialization of "P.Look_Yaw" proved
@@ -73,7 +70,6 @@ untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Z" proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Vertices" proved
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:44:21: info: initialization of "P" proved
-untangle_tests.adb:48:12: info: length check proved (CVC4: 1 VC)
 untangle_tests.adb:52:13: info: initialization of "P" proved
 untangle_tests.adb:53:20: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:53:20: info: range check proved (CVC4: 1 VC)

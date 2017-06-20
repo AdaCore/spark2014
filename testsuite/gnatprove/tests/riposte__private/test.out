@@ -37,4 +37,3 @@ private_a.adb:85:24: info: initialization of "Dst.The_Stack" proved
 private_a.adb:91:28: info: initialization of "X" proved
 private_a.adb:96:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:96:40: info: initialization of "X" proved
-stack.ads:36:54: info: length check proved (CVC4: 1 VC)

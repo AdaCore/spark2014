@@ -388,8 +388,6 @@ generic_float_tests.adb:421:19: info: postcondition proved (Z3: 1 VC), in instan
 generic_float_tests.adb:421:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:421:23: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:421:23: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:426:18: info: length check proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:426:18: info: length check proved (Z3: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:428:13: info: initialization of "A" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:428:13: info: initialization of "A" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:429:13: info: initialization of "A" proved, in instantiation at foo.ads:10
@@ -578,9 +576,6 @@ homothetical.adb:12:24: info: division check proved (Z3: 1 VC)
 homothetical.adb:12:24: medium: float overflow check might fail
 homothetical.adb:13:17: info: precondition proved (Z3: 1 VC)
 homothetical.adb:13:28: medium: float overflow check might fail
-homothetical.adb:31:32: info: length check proved (Z3: 1 VC)
-homothetical.adb:34:33: info: length check proved (Z3: 1 VC)
-homothetical.adb:38:29: info: length check proved (Z3: 1 VC)
 homothetical.adb:41:33: info: loop invariant initialization proved (Z3: 1 VC)
 homothetical.adb:41:33: info: loop invariant preservation proved (Z3: 1 VC)
 homothetical.adb:42:35: info: initialization of "kvp" proved
@@ -588,9 +583,7 @@ homothetical.adb:42:40: info: index check proved (Z3: 2 VC)
 homothetical.adb:44:17: info: initialization of "kvp" proved
 homothetical.adb:44:20: info: precondition proved (Z3: 3 VC)
 homothetical.adb:47:13: warning: unused assignment
-homothetical.adb:47:16: info: length check proved (Z3: 1 VC)
 homothetical.adb:48:13: warning: unused assignment
-homothetical.adb:48:16: info: length check proved (Z3: 1 VC)
 homothetical.adb:50:29: info: assertion proved (Z3: 3 VC)
 homothetical.adb:51:35: info: initialization of "kvp" proved
 homothetical.adb:59:40: info: initialization of "lambda" proved

@@ -15,4 +15,3 @@ logger.ads:60:04: info: initialization of "Event_Log.Data" proved
 logger.ads:60:04: info: initialization of "Event_Log.Empty" proved
 logger.ads:60:04: info: initialization of "Event_Log.First" proved
 logger.ads:60:04: info: initialization of "Event_Log.Last" proved
-logger.ads:61:29: info: length check proved (CVC4: 1 VC)

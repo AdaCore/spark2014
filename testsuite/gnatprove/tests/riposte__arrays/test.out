@@ -1,4 +1,3 @@
-arrays.adb:21:50: info: length check proved (CVC4: 1 VC)
 arrays.adb:51:18: info: postcondition proved (CVC4: 2 VC)
 arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False))
 arrays.adb:71:19: info: postcondition proved (CVC4: 2 VC)
@@ -46,7 +45,6 @@ arrays.adb:236:22: info: initialization of "A" proved
 arrays.adb:236:22: medium: assertion might fail, cannot prove A ('A') (e.g. when A = (others => False))
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:245:22: info: initialization of "A" proved
-arrays.adb:253:22: info: length check proved (CVC4: 1 VC)
 arrays.adb:254:22: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) (e.g. when A = (0 => 0, 1 => 0, others => 1))
 counterexample expected for check at arrays.adb:62

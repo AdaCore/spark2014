@@ -1,6 +1,5 @@
 bitsets.adb:10:15: info: initialization of "Res" proved, in instantiation at test_main.adb:5
 bitsets.adb:11:14: info: initialization of "Res" proved, in instantiation at test_main.adb:5
-bitsets.adb:25:14: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5
 bitsets.adb:41:15: info: initialization of "Res" proved, in instantiation at test_main.adb:5
 bitsets.adb:42:14: info: initialization of "Res" proved, in instantiation at test_main.adb:5
 bitsets.adb:56:16: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5

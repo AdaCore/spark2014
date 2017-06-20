@@ -4,5 +4,4 @@ stack_14.adb:26:15: medium: array index check might fail (e.g. when Pointer = 0 
 stack_14.adb:27:26: info: range check proved (CVC4: 1 VC)
 stack_14.adb:31:41: info: initialization of "Pointer" constituent of "State" proved
 stack_14.adb:31:50: info: initialization of "S" constituent of "State" proved
-stack_14.adb:35:12: info: length check proved (CVC4: 1 VC)
 stack_14.ads:8:18: info: initialization of "X" proved

@@ -1,4 +1,3 @@
-natural_set.adb:9:34: info: length check proved (CVC4: 1 VC)
 natural_set.adb:17:31: info: range check proved (CVC4: 1 VC)
 natural_set.adb:18:16: info: index check proved (CVC4: 2 VC)
 natural_set.adb:19:25: info: assertion proved (CVC4: 1 VC)

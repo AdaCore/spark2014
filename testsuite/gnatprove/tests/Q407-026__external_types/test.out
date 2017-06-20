@@ -1,6 +1,5 @@
 store.adb:14:36: info: initialization of "Store" constituent of "State" proved
 store.adb:14:43: info: initialization of "Index" constituent of "State" proved
-store.adb:19:27: info: length check proved (CVC4: 1 VC)
 trace_test.adb:12:42: info: initialization of "Trace" proved
 trace_test.adb:13:15: info: initialization of "Store.State" proved
 trace_test.ads:12:33: info: initialization of "Store.State" proved

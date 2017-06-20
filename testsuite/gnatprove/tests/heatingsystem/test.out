@@ -30,7 +30,6 @@ heatingsystem_dfa.adb:55:40: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:65:20: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:66:23: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:66:42: info: division check proved (altergo: 1 VC)
-heatingsystem_dfa.adb:68:38: info: length check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:68:44: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:69:39: info: initialization of "Hour" proved
 heatingsystem_dfa.adb:69:44: info: division check proved (altergo: 1 VC)
@@ -65,7 +64,6 @@ heatingsystem_dfa.adb:275:12: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:281:37: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:288:07: info: initialization of "AboveTemp" proved
 heatingsystem_dfa.adb:288:07: info: initialization of "MayOperate" proved
-heatingsystem_dfa.adb:297:28: info: length check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:303:07: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:303:07: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:304:07: info: initialization of "Actuator.Outputs" proved

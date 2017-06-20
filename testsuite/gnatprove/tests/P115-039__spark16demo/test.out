@@ -30,8 +30,6 @@ concurrency_example.adb:32:25: info: initialization of "Value" proved
 concurrency_example.adb:32:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when Value = (others => 1))
 concurrency_example.adb:33:22: info: initialization of "Deadline" proved
 concurrency_example.adb:34:22: info: initialization of "Deadline" proved
-concurrency_example.ads:4:36: info: length check proved (CVC4: 1 VC)
-concurrency_example.ads:5:36: info: length check proved (CVC4: 1 VC)
 concurrency_example.ads:8:09: high: possible data race when accessing variable "concurrency_example.data"
 concurrency_example.ads:8:09: high: with task "concurrency_example.reader"
 concurrency_example.ads:8:09: high: with task "concurrency_example.writer"
@@ -50,8 +48,6 @@ concurrency_example_fixed.adb:41:25: info: initialization of "Value" proved
 concurrency_example_fixed.adb:41:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when Value = (0 => 8, others => 1))
 concurrency_example_fixed.adb:42:22: info: initialization of "Deadline" proved
 concurrency_example_fixed.adb:43:22: info: initialization of "Deadline" proved
-concurrency_example_fixed.ads:4:36: info: length check proved (CVC4: 1 VC)
-concurrency_example_fixed.ads:5:36: info: length check proved (CVC4: 1 VC)
 concurrency_example_fixed.ads:14:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 concurrency_example_fixed.ads:14:09: info: nontermination of task proved (CVC4: 1 VC)
 concurrency_example_fixed.ads:15:09: info: ceiling priority protocol is respected (CVC4: 1 VC)

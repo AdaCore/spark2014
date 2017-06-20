@@ -1,6 +1,4 @@
 communications.adb:5:38: medium: predicate check might fail
-communications.adb:5:47: info: length check proved (CVC4: 1 VC)
-communications.adb:5:73: info: length check proved (CVC4: 1 VC)
 communications.adb:7:16: info: length check proved (CVC4: 1 VC)
 communications.adb:7:19: info: length check proved (CVC4: 1 VC)
 communications.adb:11:30: medium: range check might fail
@@ -23,10 +21,6 @@ days.adb:18:16: info: initialization of "Tmp" proved
 days.adb:20:12: info: initialization of "Tmp" proved
 days.adb:20:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:5:07: medium: predicate check might fail
-main.adb:5:16: info: length check proved (CVC4: 1 VC)
-main.adb:5:42: info: length check proved (CVC4: 1 VC)
 main.adb:6:07: medium: predicate check might fail
-main.adb:6:16: info: length check proved (CVC4: 1 VC)
-main.adb:6:42: info: length check proved (CVC4: 1 VC)
 main.adb:7:26: info: range check proved (CVC4: 1 VC)
 messages.adb:6:12: medium: predicate check might fail

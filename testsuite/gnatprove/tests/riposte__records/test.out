@@ -112,7 +112,6 @@ records.adb:504:22: medium: assertion might fail, cannot prove R.Exists (e.g. wh
 records.adb:514:22: info: postcondition proved (CVC4: 2 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (PairPair'(A => 5), (B => 5))
-stack.ads:35:54: info: length check proved (CVC4: 1 VC)
 counterexample expected for check at records.adb:86
   trace at records.adb:83 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and R = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)
   trace at records.adb:86 --> A = (A => 255, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)

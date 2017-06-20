@@ -17,8 +17,6 @@ pumpunit.adb:77:67: info: initialization of "cur_pump.Resevoir" constituent of "
 pumpunit.adb:77:77: info: initialization of "outstanding" constituent of "Account" proved
 pumpunit.adb:77:90: info: initialization of "total_pay" constituent of "Account" proved
 pumpunit.adb:77:101: info: initialization of "invariant_value" constituent of "Account" proved
-pumpunit.adb:83:24: info: length check proved (CVC4: 1 VC)
-pumpunit.adb:84:24: info: length check proved (CVC4: 1 VC)
 pumpunit.adb:97:19: info: initialization of "pump_one.Name" constituent of "Children" proved
 pumpunit.adb:97:19: info: initialization of "pump_one.Price" constituent of "Children" proved
 pumpunit.adb:97:19: info: initialization of "pump_one.Remaining" constituent of "Children" proved

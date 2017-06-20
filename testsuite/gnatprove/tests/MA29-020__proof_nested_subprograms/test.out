@@ -47,7 +47,6 @@ skein.adb:115:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
 skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => False), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
 skein.adb:118:19: warning: unused assignment
-skein.adb:118:44: info: length check proved (CVC4: 1 VC)
 skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:121:27: info: initialization of "Byte_Count" proved
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
@@ -63,13 +62,7 @@ skein.adb:146:25: info: initialization of "Blocks_Done" proved
 skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = 0)
 skein.adb:147:20: info: initialization of "Blocks_Done" proved
 skein.adb:147:35: info: initialization of "Blocks_Required" proved
-skein.ads:110:21: info: length check proved (CVC4: 1 VC)
-skein.ads:113:21: info: length check proved (CVC4: 1 VC)
-skein.ads:116:21: info: length check proved (CVC4: 1 VC)
-skein.ads:121:21: info: length check proved (CVC4: 1 VC)
 skein.ads:132:31: info: initialization of "Hash" proved
-skein.ads:268:52: info: length check proved (CVC4: 1 VC)
-skein.ads:269:52: info: length check proved (CVC4: 1 VC)
 Summary of SPARK analysis
 =========================
 
@@ -80,24 +73,24 @@ Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
 Initialization 28 28 . . . . .
 Non-Aliasing . . . . . . .
-Run-time Checks 28 . . . 25 . 3
+Run-time Checks 21 . . . 18 . 3
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 56 28 (50%) . . 25 (45%) . 3 (5%)
+Total 49 28 (57%) . . 18 (37%) . 3 (6%)
 
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
- Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
+ Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 absence of run-time errors of Skein fully established
  Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
  Skein.Skein_512_Context at skein.ads:88 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 absence of run-time errors of Skein.Skein_512_Context fully established
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 18 checks out of 21 proved
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 17 checks out of 20 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right

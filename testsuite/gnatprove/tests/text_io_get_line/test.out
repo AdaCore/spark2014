@@ -32,7 +32,6 @@ textio-get_line.adb:66:115: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:67:55: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:67:72: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:68:12: info: initialization of "Rest" proved
-textio-get_line.adb:89:14: info: length check proved (CVC4: 1 VC)
 textio-get_line.adb:96:07: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:96:15: info: initialization of "Buf" proved
 textio-get_line.adb:98:22: info: assertion proved (CVC4: 1 VC)

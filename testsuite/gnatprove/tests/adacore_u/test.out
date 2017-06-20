@@ -142,7 +142,6 @@ communication.ads:15:26: info: initialization of "E" proved
 communication.ads:16:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
 communication.ads:18:07: info: range check proved (CVC4: 2 VC)
 communication.ads:19:07: medium: type "Buffer" is not fully initialized
-communication.ads:26:40: info: length check proved (CVC4: 1 VC)
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
 counting.adb:13:38: info: overflow check proved (CVC4: 1 VC)
 counting.adb:18:35: info: initialization of "Red_Counter" constituent of "State" proved
@@ -173,7 +172,6 @@ stack.adb:32:22: medium: range check might fail (e.g. when B_Top = 100)
 stack.adb:33:18: info: index check proved (CVC4: 2 VC)
 stack.adb:41:22: info: range check proved (CVC4: 1 VC)
 stack.adb:42:18: info: index check proved (CVC4: 2 VC)
-stack.adb:44:54: info: length check proved (CVC4: 1 VC)
 stack.adb:45:48: info: index check proved (CVC4: 2 VC)
 stack.adb:54:22: info: range check proved (CVC4: 1 VC)
 stack.adb:55:18: info: index check proved (CVC4: 2 VC)
@@ -185,7 +183,6 @@ stack.ads:30:14: info: postcondition proved (CVC4: 3 VC)
 stack.ads:31:58: info: precondition proved (CVC4: 1 VC)
 stack.ads:39:14: info: postcondition proved (CVC4: 3 VC)
 stack.ads:40:61: info: precondition proved (CVC4: 1 VC)
-stack.ads:56:55: info: length check proved (CVC4: 1 VC)
 stack.ads:57:49: info: index check proved (CVC4: 2 VC)
 use_stack.adb:2:11: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:2:11: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"

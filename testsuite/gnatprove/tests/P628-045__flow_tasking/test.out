@@ -26,11 +26,5 @@ polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi
 polyorb_hi_generated-activity.ads:22:03: warning: pragma "Storage_Size" ignored (not yet supported)
 polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
 polyorb_hi_generated-activity.ads:38:03: warning: pragma "Storage_Size" ignored (not yet supported)
-polyorb_hi_generated-deployment.ads:52:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:53:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:87:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:112:06: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:113:08: info: length check proved (CVC4: 1 VC)
-polyorb_hi_generated-deployment.ads:115:08: info: length check proved (CVC4: 1 VC)
 polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
 polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect

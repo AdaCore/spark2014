@@ -7093,10 +7093,10 @@ package body Gnat2Why.Expr is
            and then not Is_Static_Array_Type (Etype (Expr))
          then
             declare
-               Temp : constant W_Expr_Id := New_Temp_For_Expr (R, True);
+               Temp   : constant W_Expr_Id := New_Temp_For_Expr (R, True);
                A1, A2 : W_Prog_Id;
-               Typ : constant Node_Id := First_Index (Etype (Etype (Expr)));
-               W_Typ : constant W_Type_Id :=
+               Typ    : constant Node_Id := First_Index (Etype (Etype (Expr)));
+               W_Typ  : constant W_Type_Id :=
                  (if Typ = Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
             begin

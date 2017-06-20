@@ -1,6 +1,3 @@
-floats.adb:5:24: info: length check proved (Z3: 1 VC)
-floats.adb:6:24: info: length check proved (Z3: 1 VC)
-floats.adb:7:24: info: length check proved (Z3: 1 VC)
 floats.adb:11:16: info: assertion proved (Z3: 2 VC)
 floats.adb:12:16: info: assertion proved (Z3: 2 VC)
 floats.adb:13:16: info: assertion proved (Z3: 2 VC)

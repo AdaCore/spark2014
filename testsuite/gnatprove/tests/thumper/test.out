@@ -4,7 +4,6 @@ client_spark_boundary.ads:17:14: high: all paths in "Fetch_Timestamp" raise exce
 client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no effect
 client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.adb:34:17: warning: procedure "Make_Request" is not referenced
-client_timestamp_maker.adb:40:38: info: length check proved (CVC4: 1 VC)
 client_timestamp_maker.adb:42:13: info: initialization of "Address_Status" proved
 client_timestamp_maker.adb:43:24: warning: assuming "Put_Line" has no effect on global items
 client_timestamp_maker.adb:43:24: warning: no Global contract available for "Put_Line"
@@ -23,7 +22,6 @@ data_storage.adb:48:32: warning: formal parameter "Serial_Number" is not referen
 data_storage.adb:52:10: warning: variable "Result" is read but never assigned
 data_storage.adb:59:32: warning: formal parameter "Start" is not referenced
 data_storage.adb:59:46: warning: formal parameter "Stop" is not referenced
-hermes-der-decode.adb:24:09: info: length check proved (CVC4: 1 VC)
 hermes-der-decode.adb:59:48: info: initialization of "Tag_Class" proved
 hermes-der-decode.adb:75:48: info: initialization of "Structured_Flag" proved
 hermes-der-decode.adb:89:48: info: initialization of "Tag" proved
@@ -185,10 +183,6 @@ hermes-der-decode.ads:99:07: info: initialization of "Value" proved
 hermes-der-decode.ads:100:07: info: initialization of "Status" proved
 hermes-der-decode.ads:104:16: info: initialization of "Stop" proved
 hermes-der-decode.ads:104:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last (e.g. when Start = 1 and Stop = 0)
-hermes-der-encode.adb:20:09: info: length check proved (CVC4: 1 VC)
-hermes-der-encode.adb:26:09: info: length check proved (CVC4: 1 VC)
-hermes-der-encode.adb:30:09: info: length check proved (CVC4: 1 VC)
-hermes-der-encode.adb:76:43: info: length check proved (CVC4: 1 VC)
 hermes-der-encode.adb:82:34: info: initialization of "Result" proved
 hermes-der-encode.adb:82:50: info: initialization of "Value" proved
 hermes-der-encode.adb:82:50: info: range check proved (CVC4: 1 VC)
@@ -266,7 +260,6 @@ hermes-der-encode.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 hermes-der-encode.ads:28:19: info: postcondition proved (CVC4: 1 VC)
 hermes-der-encode.ads:31:13: high: all paths in "Put_Integer_Value" raise exceptions or do not terminate normally
 hermes-der-encode.ads:40:13: high: all paths in "Put_OID_Value" raise exceptions or do not terminate normally
-hermes-oid.adb:35:64: info: length check proved (CVC4: 1 VC)
 hermes-oid.adb:38:74: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:41:35: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:41:54: info: index check proved (CVC4: 2 VC)
@@ -374,7 +367,6 @@ hermes-oid.ads:40:07: info: initialization of "Result" proved
 hermes-oid.ads:41:07: info: initialization of "Number_Of_Components" proved
 hermes-oid.ads:53:42: info: initialization of "Result" proved
 hermes-oid.ads:53:68: info: initialization of "Octet_Count" proved
-messages.adb:15:40: info: length check proved (CVC4: 1 VC)
 messages.adb:18:29: info: initialization of "High_Level.Data" proved
 messages.adb:21:13: info: initialization of "High_Level.Size" proved
 messages.adb:21:13: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -383,7 +375,6 @@ messages.adb:21:46: info: initialization of "High_Level.Size" proved
 messages.adb:25:26: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Size" proved
-messages.adb:32:47: info: length check proved (CVC4: 1 VC)
 messages.adb:35:28: info: initialization of "Low_Level.Data" proved
 messages.adb:38:13: info: initialization of "Low_Level.Size" proved
 messages.adb:38:13: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -394,9 +385,6 @@ messages.adb:44:14: info: initialization of "Low_Level.Data" proved
 messages.adb:44:14: info: initialization of "Low_Level.Size" proved
 messages.ads:40:19: info: postcondition proved (CVC4: 3 VC)
 messages.ads:47:19: info: postcondition proved (CVC4: 3 VC)
-network-addresses.adb:20:26: info: length check proved (CVC4: 1 VC)
-network-addresses.adb:23:26: info: length check proved (CVC4: 1 VC)
-network-addresses.adb:35:22: info: length check proved (CVC4: 1 VC)
 network-addresses.adb:42:11: info: range check proved (CVC4: 2 VC)
 network-addresses.adb:43:31: info: initialization of "Seen_Value" proved
 network-addresses.adb:45:34: info: initialization of "Result" proved
@@ -417,7 +405,6 @@ network-addresses.adb:69:59: info: initialization of "Seen_Value" proved
 network-addresses.adb:72:31: info: initialization of "Result" proved
 network-addresses.adb:72:31: info: initialization of "Result_Index" proved
 network-addresses.adb:72:34: info: initialization of "Value" proved
-network-addresses.adb:93:36: info: length check proved (CVC4: 1 VC)
 network-addresses.adb:98:32: info: initialization of "Count" proved
 network-addresses.adb:98:32: info: loop invariant initialization proved (CVC4: 2 VC)
 network-addresses.adb:98:32: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -543,7 +530,6 @@ server_timestamp_maker.adb:91:51: medium: range check might fail, in call inline
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115 (e.g. when Result = False)
 server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
-server_timestamp_maker.adb:113:53: info: length check proved (CVC4: 1 VC)
 server_timestamp_maker.adb:116:10: medium: exception might be raised
 server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally

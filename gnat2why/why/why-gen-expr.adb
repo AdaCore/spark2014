@@ -406,29 +406,46 @@ package body Why.Gen.Expr is
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id
       is
-         Check : W_Pred_Id := True_Pred;
+         Check     : W_Pred_Id := True_Pred;
+         Is_Static : constant Boolean := Has_Static_Array_Type (To_Ent)
+           and then Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Expr)));
+
       begin
          for I in 1 .. Dim loop
-            declare
-               Input_Length    : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, Expr, I);
-               Expected_Length : constant W_Expr_Id :=
-                 Build_Length_Expr (Domain, To_Ent, I);
-            begin
-               Check :=
-                 +New_And_Then_Expr
-                   (Domain => EW_Pred,
-                    Left   => +Check,
-                    Right  =>
-                      New_Call
-                        (Name   => Why_Eq,
-                         Typ    => EW_Bool_Type,
-                         Domain => Domain,
-                         Args   => (+Input_Length, +Expected_Length)));
-            end;
+
+            --  Do not issue checks for statically matching lengths
+
+            if not Is_Static
+              or else Static_Array_Length (Retysp (To_Ent), I) /=
+                Static_Array_Length
+                  (Retysp (Get_Ada_Node (+Get_Type (Expr))), I)
+            then
+               declare
+                  Input_Length    : constant W_Expr_Id :=
+                    Build_Length_Expr (Domain, Expr, I);
+                  Expected_Length : constant W_Expr_Id :=
+                    Build_Length_Expr (Domain, To_Ent, I);
+               begin
+                  Check :=
+                    +New_And_Then_Expr
+                    (Domain => EW_Pred,
+                     Left   => +Check,
+                     Right  =>
+                       New_Call
+                         (Name   => Why_Eq,
+                          Typ    => EW_Bool_Type,
+                          Domain => Domain,
+                          Args   => (+Input_Length, +Expected_Length)));
+               end;
+            end if;
          end loop;
-         return
-           New_Located_Assert (Ada_Node, Check, VC_Length_Check, EW_Assert);
+
+         if Is_True_Boolean (+Check) then
+            return +Void;
+         else
+            return
+              New_Located_Assert (Ada_Node, Check, VC_Length_Check, EW_Assert);
+         end if;
       end Insert_Length_Check;
 
       -----------------

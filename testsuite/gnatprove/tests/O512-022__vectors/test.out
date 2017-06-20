@@ -1,6 +1,5 @@
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => 2147483647, Elements => (1 => 0, 2 => 0, others => 0), Last_Index => 2))
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => 2147483647, Elements => (10000 => 0, 9999 => 0, others => 0), Last_Index => 9998))
-vectors.adb:22:49: info: length check proved (CVC4: 1 VC)
 vectors.adb:37:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => 0, Elements => (others => 0), Last_Index => 0))
 vectors.adb:42:14: info: initialization of "Position.Container_Id" proved
 vectors.adb:42:14: info: initialization of "Position.Container_Sig" proved

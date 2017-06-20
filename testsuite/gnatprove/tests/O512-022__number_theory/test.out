@@ -14,7 +14,6 @@ number_theory.adb:23:30: medium: overflow check might fail
 number_theory.adb:23:32: info: initialization of "Temp" proved
 number_theory.adb:25:23: info: initialization of "Old" proved
 number_theory.adb:27:14: info: initialization of "Result" proved
-number_theory.adb:33:09: info: length check proved (CVC4: 1 VC)
 number_theory.ads:20:26: info: function contract not available for proof ("Fib" is recursive)
 number_theory.ads:20:32: info: range check proved (CVC4: 1 VC)
 number_theory.ads:20:37: medium: overflow check might fail

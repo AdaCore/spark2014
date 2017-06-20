@@ -1,13 +1,10 @@
 alignment_attribute.adb:18:23: info: range check proved (CVC4: 1 VC)
 alignment_attribute.adb:39:15: info: range check proved (CVC4: 1 VC)
-alignment_attribute.adb:44:25: info: length check proved (CVC4: 1 VC)
-alignment_attribute.adb:45:37: info: length check proved (CVC4: 1 VC)
 alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "P"
 alignment_attribute.adb:50:22: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:53:04: warning: analyzing unreferenced procedure "Q"
 alignment_attribute.adb:53:14: warning: subprogram "Q" has no effect
 alignment_attribute.adb:56:22: info: length check proved (CVC4: 1 VC)
-alignment_attribute.adb:57:22: info: length check proved (CVC4: 1 VC)
 alignment_attribute.adb:57:33: info: initialization of "A1" proved
 alignment_attribute.adb:59:22: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:59:22: info: initialization of "A2" proved
@@ -44,12 +41,9 @@ alignment_attribute.adb:89:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:89:19: info: initialization of "CA" proved
 alignment_attribute.adb:90:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:90:19: info: initialization of "UA" proved
-component_size_attribute.adb:10:30: info: length check proved (CVC4: 1 VC)
-component_size_attribute.adb:11:41: info: length check proved (CVC4: 1 VC)
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P"
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
 component_size_attribute.adb:17:22: info: length check proved (CVC4: 1 VC)
-component_size_attribute.adb:18:22: info: length check proved (CVC4: 1 VC)
 component_size_attribute.adb:18:33: info: initialization of "A1" proved
 component_size_attribute.adb:20:22: info: assertion proved (CVC4: 1 VC)
 component_size_attribute.adb:20:22: info: initialization of "A2" proved

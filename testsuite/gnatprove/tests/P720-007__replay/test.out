@@ -29,7 +29,6 @@ harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
 harness.adb:18:19: info: initialization of "H" proved
 harness.adb:18:19: medium: assertion might fail
-ring_buf.adb:9:29: medium: length check might fail
 ring_buf.adb:15:36: medium: divide by zero might fail
 ring_buf.adb:16:28: medium: range check might fail
 ring_buf.adb:23:32: medium: divide by zero might fail
@@ -77,7 +76,6 @@ harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
 harness.adb:18:19: info: initialization of "H" proved
 harness.adb:18:19: medium: assertion might fail, cannot prove H = Z (e.g. when H = 0 and Z = -1)
-ring_buf.adb:9:29: info: length check proved (CVC4: 1 VC)
 ring_buf.adb:15:36: info: division check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:23:32: info: division check proved (CVC4: 1 VC)
@@ -125,7 +123,6 @@ harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
 harness.adb:18:19: info: initialization of "H" proved
 harness.adb:18:19: medium: assertion might fail, cannot prove H = Z
-ring_buf.adb:9:29: info: length check proved (CVC4: 1 VC)
 ring_buf.adb:15:36: info: division check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:23:32: info: division check proved (CVC4: 1 VC)

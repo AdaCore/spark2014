@@ -1,12 +1,6 @@
 c74402a.adb:60:26: warning: subprogram "G1" has no effect
 c74402a.adb:61:26: warning: subprogram "G2" has no effect
 c74402a.adb:62:26: warning: subprogram "G3" has no effect
-c74402a.adb:79:32: info: length check proved (CVC4: 1 VC)
-c74402a.adb:84:33: info: length check proved (CVC4: 1 VC)
-c74402a.adb:84:39: info: length check proved (CVC4: 1 VC)
-c74402a.adb:96:33: info: length check proved (CVC4: 1 VC)
-c74402a.adb:103:34: info: length check proved (CVC4: 1 VC)
-c74402a.adb:103:40: info: length check proved (CVC4: 1 VC)
 c74402a.adb:122:21: warning: subprogram "G4" has no effect
 c74402a.adb:128:21: warning: subprogram "G5" has no effect
 c74402a.adb:134:21: warning: subprogram "G6" has no effect

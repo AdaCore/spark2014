@@ -1,5 +1,3 @@
-switch.adb:19:26: info: length check proved (CVC4: 1 VC)
-switch.adb:23:28: info: length check proved (CVC4: 1 VC)
 switch.adb:35:48: info: initialization of "A" proved
 switch.adb:36:25: info: initialization of "B" proved
 switch.adb:36:46: info: initialization of "C" proved

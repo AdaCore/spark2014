@@ -1,8 +1,5 @@
-foo.ads:17:39: info: length check proved (CVC4: 1 VC)
 foo.ads:17:53: info: length check proved (CVC4: 1 VC)
 main.adb:8:19: info: initialization of "d" proved
-main.adb:10:12: info: length check proved (CVC4: 1 VC), in call inlined at main.adb:17
-main.adb:14:33: info: length check proved (CVC4: 1 VC)
 main.adb:18:14: medium: precondition might fail
 main.adb:18:29: info: initialization of "arr" proved
 main.adb:18:29: info: range check proved (CVC4: 4 VC)

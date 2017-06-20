@@ -1,7 +1,5 @@
-simple.adb:4:34: info: length check proved (CVC4: 1 VC)
 simple.adb:4:54: medium: overflow check might fail (e.g. when Arr = (others => 0) and Init_Val = 2147483647)
 simple.adb:6:14: info: initialization of "Arr" proved
 simple.adb:7:14: info: initialization of "Arr" proved
 simple.ads:8:17: info: postcondition proved (CVC4: 1 VC)
-simple.ads:8:40: info: length check proved (CVC4: 1 VC)
 simple.ads:8:69: info: overflow check proved (CVC4: 1 VC)

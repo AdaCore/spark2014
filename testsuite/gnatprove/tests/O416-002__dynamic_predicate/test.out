@@ -97,17 +97,14 @@ dynamic_preds_array.adb:28:18: medium: predicate check might fail
 dynamic_preds_array.adb:29:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:34:18: medium: predicate check might fail
 dynamic_preds_array.adb:35:21: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:40:26: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: info: range check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: medium: predicate check might fail
 dynamic_preds_array.adb:40:30: info: range check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:30: medium: predicate check might fail
 dynamic_preds_array.adb:42:12: info: initialization of "Tmp" proved
-dynamic_preds_array.adb:46:26: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:46:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:46:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:48:12: info: initialization of "Tmp" proved
-dynamic_preds_array.adb:52:32: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:52:32: medium: predicate check might fail
 dynamic_preds_array.adb:54:12: info: initialization of "Tmp" proved
 dynamic_preds_array.adb:60:17: medium: "Result" might not be initialized
@@ -133,7 +130,6 @@ dynamic_preds_array.adb:93:20: info: initialization of "Result" proved
 dynamic_preds_array.adb:93:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:93:30: medium: overflow check might fail
 dynamic_preds_array.adb:95:14: info: initialization of "Result" proved
-dynamic_preds_array.adb:95:14: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:95:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:101:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:102:20: info: initialization of "Result" proved
@@ -146,7 +142,6 @@ dynamic_preds_array.adb:107:20: info: initialization of "Result" proved
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:107:30: medium: overflow check might fail
 dynamic_preds_array.adb:109:14: info: initialization of "Result" proved
-dynamic_preds_array.adb:109:14: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:109:14: medium: predicate check might fail
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail
@@ -165,19 +160,11 @@ dynamic_preds_array.adb:128:15: medium: predicate check might fail
 dynamic_preds_array.adb:129:15: medium: predicate check might fail
 dynamic_preds_array.adb:134:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:135:15: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:140:25: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:140:25: medium: predicate check might fail
-dynamic_preds_array.adb:141:34: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:141:34: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:151:31: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:151:31: medium: predicate check might fail
-dynamic_preds_array.adb:152:31: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:152:31: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:157:12: info: length check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:157:33: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:157:33: medium: predicate check might fail
-dynamic_preds_array.adb:158:12: info: length check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:158:33: info: length check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:158:33: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.ads:4:59: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.ads:11:25: warning: unused initial value of "X"
@@ -205,7 +192,6 @@ dynamic_preds_rte.adb:23:19: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:28:12: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:28:13: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:28:16: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_rte.adb:33:12: info: length check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:12: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:13: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:16: info: predicate check proved (CVC4: 1 VC)

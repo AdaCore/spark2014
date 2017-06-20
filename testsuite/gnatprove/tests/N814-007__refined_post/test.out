@@ -8,8 +8,6 @@ double_list.adb:23:55: info: initialization of "Free_List" constituent of "Inter
 double_list.adb:23:66: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:25:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:25:26: info: refined post proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.adb:29:17: info: length check proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.adb:33:20: info: length check proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
 double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:63:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:64:54: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11

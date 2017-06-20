@@ -1,5 +1,4 @@
 ap-altitude-pitch-rate.adb:13:04: info: initialization of "Pitch_History_C" constituent of "Pitch_History" proved
-ap-altitude-pitch-rate.adb:13:51: info: length check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:23:13: info: initialization of "Sum" proved
 ap-altitude-pitch-rate.adb:23:13: info: initialization of "Sum" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:23:13: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58

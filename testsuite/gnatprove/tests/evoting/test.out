@@ -1,8 +1,5 @@
 evoting.adb:46:07: info: precondition proved (CVC4: 1 VC)
-evoting.adb:49:21: info: length check proved (CVC4: 1 VC)
-evoting.adb:49:32: info: length check proved (CVC4: 1 VC)
 evoting.adb:52:57: info: initialization of "candidates" proved
-evoting.adb:52:60: info: length check proved (CVC4: 1 VC)
 evoting.adb:53:07: warning: assuming "Open" has no effect on global items
 evoting.adb:53:07: warning: no Global contract available for "Open"
 evoting.adb:53:20: info: initialization of "file" proved
@@ -162,7 +159,6 @@ evoting.adb:312:07: warning: no Global contract available for "Put_Line"
 evoting.adb:314:13: info: initialization of "winners" proved
 evoting.adb:316:13: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:316:13: warning: no Global contract available for "Put_Line"
-evoting.adb:323:32: info: length check proved (CVC4: 1 VC)
 evoting.adb:327:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:327:07: warning: no Global contract available for "Put_Line"
 evoting.adb:329:07: info: precondition proved (CVC4: 1 VC)
@@ -175,7 +171,6 @@ evoting.adb:333:07: info: precondition proved (CVC4: 1 VC)
 evoting.adb:333:45: info: initialization of "candidates" proved
 evoting.adb:333:57: info: initialization of "last_candidate" proved
 evoting.adb:333:73: info: initialization of "counters" proved
-evoting.ads:32:45: info: length check proved (CVC4: 1 VC)
 evoting.ads:53:07: info: initialization of "candidates" proved
 evoting.ads:54:07: info: initialization of "last_candidate" proved
 evoting.ads:57:17: info: postcondition proved (CVC4: 1 VC)

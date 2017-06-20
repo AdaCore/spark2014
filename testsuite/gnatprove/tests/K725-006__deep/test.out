@@ -1,6 +1,4 @@
 pack.adb:9:10: info: initialization of "Ary" proved, in instantiation at pack.adb:18
-pack.adb:9:29: info: length check proved (CVC4: 1 VC), in instantiation at pack.adb:18
 pack.adb:13:13: info: initialization of "Bry" proved, in instantiation at pack.adb:18
-pack.adb:13:32: info: length check proved (CVC4: 1 VC), in instantiation at pack.adb:18
 pack.adb:21:37: info: initialization of "Ary" proved
 pack.adb:25:49: info: initialization of "Bry" proved

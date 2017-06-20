@@ -1,4 +1,3 @@
-adt_stack-child.adb:11:31: info: length check proved (CVC4: 1 VC)
 adt_stack-child.adb:18:30: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (others => 0), Next_Value => 0))
 adt_stack-child.adb:19:36: medium: overflow check might fail (e.g. when S = (Next_Value => 2147483647, others => ?))
 adt_stack-child.adb:29:52: medium: array index check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 0, Child_Stack_Vector => (0 => 0, others => 0), Next_Value => 0))
@@ -7,7 +6,6 @@ adt_stack-child.ads:7:20: info: initialization of "S.Child_Stack_Vector" proved
 adt_stack-child.ads:7:20: info: initialization of "S.Next_Value" proved
 adt_stack-child.ads:7:20: info: initialization of "S.STack_Top" proved
 adt_stack-child.ads:7:20: info: initialization of "S.STack_Vector" proved
-adt_stack.adb:21:25: info: length check proved (CVC4: 1 VC)
 adt_stack.adb:28:10: medium: exception might be raised
 adt_stack.adb:30:33: medium: range check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => 100))
 adt_stack.adb:31:23: info: index check proved (CVC4: 2 VC)
@@ -19,11 +17,9 @@ adt_stack.adb:48:45: info: range check proved (CVC4: 4 VC)
 adt_stack.ads:13:20: info: initialization of "S.STack_Top" proved
 adt_stack.ads:13:20: info: initialization of "S.STack_Vector" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
-asm_stack.adb:30:23: info: length check proved (CVC4: 1 VC)
 asm_stack.adb:37:10: medium: exception might be raised
 asm_stack.adb:39:29: medium: range check might fail (e.g. when Stack_Top = 100)
 asm_stack.adb:40:20: info: index check proved (CVC4: 2 VC)
-asm_stack.adb:58:20: info: length check proved (CVC4: 1 VC)
 asm_stack.ads:9:14: info: initialization of "Stack_Top" proved
 asm_stack.ads:9:14: info: initialization of "Stack_Vector" proved
 generic_stack.adb:11:04: info: initialization of "Index" proved, in instantiation at use_stacks.adb:47

@@ -63,7 +63,6 @@ stack.adb:5:47: info: range check proved (Z3: 4 VC)
 stack.adb:17:22: info: range check proved (Z3: 1 VC)
 stack.adb:18:19: info: index check proved (Z3: 2 VC)
 stack.adb:29:22: info: range check proved (Z3: 1 VC)
-stack.adb:37:28: info: length check proved (Z3: 1 VC)
 stack.adb:38:14: info: initialization of "E.Content" proved
 stack.adb:38:14: info: initialization of "E.Top" proved
 stack.ads:12:17: info: postcondition proved (Z3: 2 VC)

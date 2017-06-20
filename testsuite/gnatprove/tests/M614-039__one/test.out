@@ -1,12 +1,9 @@
 unconstr.adb:9:20: info: postcondition proved (CVC4: 2 VC)
 unconstr.adb:18:20: info: postcondition proved (CVC4: 2 VC)
-unconstr.adb:22:31: info: length check proved (CVC4: 1 VC)
-unconstr.adb:23:33: info: length check proved (CVC4: 1 VC)
 unconstr.adb:25:22: info: initialization of "S" proved
 unconstr.adb:25:25: info: initialization of "S2" proved
 unconstr.adb:26:14: info: initialization of "B" proved
 unconstr.adb:30:20: info: postcondition proved (CVC4: 2 VC)
-unconstr.adb:44:14: info: length check proved (CVC4: 1 VC), in call inlined at unconstr.adb:49
 unconstr.adb:47:04: warning: analyzing unreferenced procedure "Constr_Return_Call"
 unconstr.adb:47:14: warning: subprogram "Constr_Return_Call" has no effect
 unconstr.adb:52:13: info: index check proved (CVC4: 2 VC)

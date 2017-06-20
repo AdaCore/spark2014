@@ -1,3 +1,1 @@
-scbe_main.adb:5:32: info: length check proved (CVC4: 1 VC)
 scbe_main.adb:7:37: info: initialization of "Var_B" proved
-unchecked.adb:14:22: info: length check proved (CVC4: 1 VC)

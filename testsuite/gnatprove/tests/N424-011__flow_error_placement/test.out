@@ -12,4 +12,3 @@ longest_common_prefix.adb:12:15: high: "L" is not initialized
 longest_common_prefix.adb:12:17: info: overflow check proved (CVC4: 1 VC)
 longest_common_prefix.adb:14:14: medium: "L" might not be initialized
 longest_common_prefix.ads:6:04: info: initialization of "A" proved
-longest_common_prefix.ads:6:28: info: length check proved (CVC4: 1 VC)

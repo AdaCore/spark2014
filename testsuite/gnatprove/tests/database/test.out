@@ -5,8 +5,6 @@ database.adb:52:17: info: postcondition proved (altergo: 3 VC)
 database.adb:52:35: info: initialization of "Account" proved
 database.adb:54:31: info: initialization of "Account" proved
 database.adb:60:17: info: postcondition proved (altergo: 3 VC)
-database.adb:105:52: info: length check proved (altergo: 1 VC)
-database.adb:109:46: info: length check proved (altergo: 1 VC)
 database.adb:118:17: info: initialization of "Links" proved
 database.adb:122:21: info: range check proved (altergo: 1 VC)
 database.adb:123:17: info: index check proved (altergo: 2 VC)
@@ -53,8 +51,6 @@ database.ads:126:14: info: postcondition proved (altergo: 1 VC)
 database.ads:126:14: info: precondition proved (altergo: 1 VC)
 database.ads:126:34: info: precondition proved (altergo: 1 VC)
 database.ads:126:56: info: precondition proved (altergo: 2 VC)
-identity.ads:10:36: info: length check proved (altergo: 1 VC)
-identity.ads:19:30: info: length check proved (altergo: 1 VC)
 money.adb:6:33: info: range check proved (altergo: 1 VC)
 money.adb:9:33: info: range check proved (altergo: 1 VC)
 money.ads:33:14: info: postcondition proved (altergo: 1 VC)

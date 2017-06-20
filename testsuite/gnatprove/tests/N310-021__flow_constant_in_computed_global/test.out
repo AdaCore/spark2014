@@ -26,7 +26,6 @@ heatingsystem_dfa.adb:26:14: info: initialization of "display.output_ext" proved
 heatingsystem_dfa.adb:35:20: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:36:23: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:36:42: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:38:38: info: length check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:38:44: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114
@@ -105,7 +104,6 @@ heatingsystem_dfa.adb:153:13: info: initialization of "MayOperate" proved, in ca
 heatingsystem_dfa.adb:155:16: info: initialization of "AboveTemp" proved, in call inlined at heatingsystem_dfa.adb:185
 heatingsystem_dfa.adb:172:12: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:178:37: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:194:28: info: length check proved (CVC4: 1 VC)
 heatingsystem_dfa.adb:201:07: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:201:07: info: initialization of "HeatingIsOn" proved
 heatingsystem_dfa.adb:201:07: info: initialization of "OnOffTime" proved

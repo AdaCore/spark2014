@@ -1,2 +1,1 @@
 p.adb:4:28: info: initialization of "S" proved
-p.adb:4:31: info: length check proved (CVC4: 1 VC)

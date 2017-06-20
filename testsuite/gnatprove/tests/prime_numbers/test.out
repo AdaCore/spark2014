@@ -88,7 +88,6 @@ prime_and_coprime_numbers.adb:191:14: info: precondition proved (CVC4: 5 VC), in
 prime_and_coprime_numbers.adb:197:30: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:198:16: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:198:16: medium: postcondition might fail, cannot prove (Valid_Prime_Data), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:205:23: info: length check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:206:24: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:207:24: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:209:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6

@@ -1,4 +1,3 @@
 memcpy.adb:8:37: info: range check proved (cvc4_cbqi: 1 VC)
 memcpy.adb:9:37: info: range check proved (cvc4_cbqi: 1 VC)
 memcpy.ads:27:08: info: postcondition proved (cvc4_cbqi: 11 VC)
-x86.ads:585:48: info: length check proved (cvc4_cbqi: 1 VC)

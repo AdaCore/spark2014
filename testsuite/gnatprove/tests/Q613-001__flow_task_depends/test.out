@@ -11,7 +11,6 @@ tasking.adb:15:35: info: range check proved (CVC4: 1 VC)
 tasking.adb:24:25: medium: range check might fail
 tasking.adb:32:34: info: range check proved (CVC4: 1 VC)
 tasking.ads:13:25: info: initialization of "M" proved
-tasking.ads:20:45: info: length check proved (CVC4: 1 VC)
 type_explicit.adb:8:15: info: initialization of "Message" proved
 type_explicit.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 type_explicit.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)

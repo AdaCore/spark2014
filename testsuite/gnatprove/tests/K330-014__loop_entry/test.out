@@ -24,11 +24,9 @@ for_loops.adb:61:36: info: loop invariant proved (CodePeer)
 for_loops.adb:61:43: info: initialization of "Counter" proved
 optional.adb:10:04: warning: assuming "Put_Line" has no effect on global items
 optional.adb:10:04: warning: no Global contract available for "Put_Line"
-optional.adb:13:35: info: length check proved (CVC4: 1 VC)
 optional.adb:17:33: info: loop invariant proved (CodePeer)
 optional.adb:17:35: info: initialization of "TA" proved
 optional.adb:19:21: info: initialization of "TA" proved
-optional.adb:24:46: info: length check proved (CVC4: 2 VC)
 optional.adb:27:11: medium: array index check might fail (e.g. when TA = !)
 optional.adb:27:26: info: initialization of "TA" proved
 optional.adb:31:36: info: loop invariant initialization proved (CVC4: 1 VC)

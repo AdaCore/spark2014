@@ -4,8 +4,6 @@ patris.adb:43:04: info: initialization of "Line_Counter" constituent of "Score_S
 patris.adb:46:04: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
 patris.adb:49:04: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:49:04: warning: initialization of Cur_Board has no effect
-patris.adb:49:34: info: length check proved (CVC4: 1 VC)
-patris.adb:49:45: info: length check proved (CVC4: 1 VC)
 patris.adb:50:04: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.adb:50:04: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
 patris.adb:50:04: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
@@ -42,7 +40,6 @@ patris.adb:132:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Boar
 patris.adb:136:54: info: index check proved (CVC4: 2 VC)
 patris.adb:137:45: info: index check proved (altergo: 2 VC)
 patris.adb:137:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => J)) and Cur_Piece = (X => 0, others => ?) and X = 0)
-patris.adb:153:37: info: length check proved (CVC4: 1 VC)
 patris.adb:165:31: info: initialization of "Complete_Lines" proved
 patris.adb:166:28: info: assertion proved (CVC4: 2 VC)
 patris.adb:169:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -86,8 +83,6 @@ patris.adb:236:41: info: initialization of "Action_Request_Nbr" constituent of "
 patris.adb:236:61: info: initialization of "Level_Nbr" constituent of "Score_State" proved
 patris.adb:237:41: info: initialization of "Score_Nbr" constituent of "Score_State" proved
 patris.adb:237:52: info: initialization of "Line_Counter" constituent of "Score_State" proved
-patris.adb:243:20: info: length check proved (CVC4: 1 VC)
-patris.adb:243:31: info: length check proved (CVC4: 1 VC)
 patris.adb:260:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:260:52: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.adb:260:63: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
@@ -112,32 +107,6 @@ patris.adb:432:64: info: overflow check proved (CVC4: 1 VC)
 patris.adb:432:64: info: range check proved (CVC4: 1 VC)
 patris.adb:434:41: info: division check proved (CVC4: 1 VC)
 patris.adb:434:50: info: initialization of "Interval" proved
-patris.ads:117:06: info: length check proved (CVC4: 1 VC)
-patris.ads:117:07: info: length check proved (CVC4: 2 VC)
-patris.ads:118:07: info: length check proved (CVC4: 2 VC)
-patris.ads:119:07: info: length check proved (CVC4: 2 VC)
-patris.ads:120:07: info: length check proved (CVC4: 2 VC)
-patris.ads:123:06: info: length check proved (CVC4: 2 VC)
-patris.ads:124:08: info: length check proved (CVC4: 2 VC)
-patris.ads:125:08: info: length check proved (CVC4: 2 VC)
-patris.ads:126:08: info: length check proved (CVC4: 2 VC)
-patris.ads:127:08: info: length check proved (CVC4: 2 VC)
-patris.ads:130:08: info: length check proved (CVC4: 2 VC)
-patris.ads:131:08: info: length check proved (CVC4: 2 VC)
-patris.ads:132:08: info: length check proved (CVC4: 2 VC)
-patris.ads:133:08: info: length check proved (CVC4: 2 VC)
-patris.ads:136:08: info: length check proved (CVC4: 2 VC)
-patris.ads:137:08: info: length check proved (CVC4: 2 VC)
-patris.ads:138:08: info: length check proved (CVC4: 2 VC)
-patris.ads:139:08: info: length check proved (CVC4: 2 VC)
-patris.ads:142:08: info: length check proved (CVC4: 2 VC)
-patris.ads:143:08: info: length check proved (CVC4: 2 VC)
-patris.ads:144:08: info: length check proved (CVC4: 2 VC)
-patris.ads:145:08: info: length check proved (CVC4: 2 VC)
-patris.ads:148:08: info: length check proved (CVC4: 2 VC)
-patris.ads:149:08: info: length check proved (CVC4: 2 VC)
-patris.ads:150:08: info: length check proved (CVC4: 2 VC)
-patris.ads:151:08: info: length check proved (CVC4: 2 VC)
 patris.ads:158:54: info: index check proved (CVC4: 2 VC)
 patris.ads:158:57: info: index check proved (CVC4: 2 VC)
 patris.ads:184:46: info: index check proved (CVC4: 2 VC)

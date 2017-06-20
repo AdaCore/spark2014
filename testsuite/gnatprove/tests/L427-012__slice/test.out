@@ -1,6 +1,4 @@
-p.adb:2:33: info: length check proved (CVC4: 1 VC)
 p.adb:3:33: info: initialization of "New_Str" proved
-p.adb:3:33: info: length check proved (CVC4: 1 VC)
 p.adb:6:10: info: initialization of "New_Str" proved
 p.adb:6:10: info: range check proved (CVC4: 8 VC)
 p.adb:6:19: info: initialization of "Pos" proved

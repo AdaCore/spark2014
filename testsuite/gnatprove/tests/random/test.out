@@ -36,7 +36,6 @@ random.adb:95:36: info: loop invariant initialization proved (CVC4: 1 VC)
 random.adb:95:36: info: loop invariant preservation proved (CVC4: 1 VC)
 random.adb:98:22: info: initialization of "G.State" proved
 random.adb:112:18: info: range check proved (CVC4: 1 VC)
-random.adb:115:09: info: length check proved (CVC4: 1 VC)
 random.adb:126:68: info: range check proved (CVC4: 1 VC)
 random.adb:127:68: info: range check proved (CVC4: 1 VC)
 random.adb:130:41: info: initialization of "Value" proved

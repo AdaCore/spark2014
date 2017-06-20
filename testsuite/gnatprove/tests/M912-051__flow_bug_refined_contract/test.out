@@ -2,8 +2,6 @@ outer.adb:33:46: info: initialization of "Inner.B1" constituent of "Outer.A1" pr
 outer.adb:41:42: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.adb:41:56: info: initialization of "State_In_Body" constituent of "A2" proved
 outer.ads:33:34: info: initialization of "Hidden_State" constituent of "A2" proved
-switch.adb:17:26: info: length check proved (CVC4: 1 VC)
-switch.adb:21:28: info: length check proved (CVC4: 1 VC)
 switch.adb:38:51: info: initialization of "A" proved
 switch.adb:39:51: info: initialization of "B" proved
 switch.adb:39:72: info: initialization of "C" proved

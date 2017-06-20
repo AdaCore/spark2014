@@ -1,4 +1,3 @@
-stable_marriage.adb:5:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:9:13: info: loop invariant initialization proved (CVC4: 2 VC)
 stable_marriage.adb:9:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:10:16: info: initialization of "Seen" proved
@@ -7,10 +6,7 @@ stable_marriage.adb:12:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
 stable_marriage.adb:15:22: medium: assertion might fail
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
-stable_marriage.adb:15:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
-stable_marriage.adb:19:34: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:26:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:30:13: info: loop invariant initialization proved (CVC4: 2 VC)
 stable_marriage.adb:30:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:31:16: info: initialization of "Seen" proved
@@ -19,10 +15,7 @@ stable_marriage.adb:33:26: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
 stable_marriage.adb:36:22: medium: assertion might fail
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
-stable_marriage.adb:36:43: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
-stable_marriage.adb:40:34: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:48:36: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:51:07: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -36,7 +29,6 @@ stable_marriage.adb:59:28: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:59:50: info: initialization of "Result" proved
 stable_marriage.adb:60:29: info: initialization of "Result" proved
 stable_marriage.adb:62:14: info: initialization of "Result" proved
-stable_marriage.adb:68:36: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:71:07: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -54,7 +46,6 @@ stable_marriage.adb:89:19: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:90:14: info: initialization of "Inverted" proved
 stable_marriage.adb:97:19: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:98:14: info: initialization of "Inverted" proved
-stable_marriage.adb:104:45: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:107:07: medium: precondition might fail
 stable_marriage.adb:110:13: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:110:13: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -68,14 +59,8 @@ stable_marriage.adb:115:35: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:116:29: info: initialization of "Result" proved
 stable_marriage.adb:117:33: info: initialization of "Result" proved
 stable_marriage.adb:119:14: info: initialization of "Result" proved
-stable_marriage.adb:149:41: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:153:50: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:156:51: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:159:45: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:167:11: info: postcondition proved (CVC4: 1 VC)
 stable_marriage.adb:168:36: info: precondition proved (CVC4: 1 VC)
-stable_marriage.adb:172:37: info: length check proved (CVC4: 1 VC)
-stable_marriage.adb:173:67: info: length check proved (CVC4: 1 VC)
 stable_marriage.adb:178:16: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:178:16: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:178:24: info: range check proved (CVC4: 2 VC)

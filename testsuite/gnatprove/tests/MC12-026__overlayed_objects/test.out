@@ -2,7 +2,6 @@ p.adb:24:07: info: initialization of "Full_S.A" proved
 p.adb:24:07: info: initialization of "Full_S.B" proved
 p.adb:31:28: medium: overflow check might fail
 p.adb:32:28: medium: float overflow check might fail
-p.ads:18:55: info: length check proved (CVC4: 1 VC)
 p.ads:25:34: info: initialization of "Full_S.A" proved
 p.ads:25:34: info: initialization of "Full_S.B" proved
 p.ads:25:42: info: initialization of "Raw_S" proved
@@ -18,7 +17,6 @@ p2.adb:31:07: info: initialization of "Full_S.A" proved
 p2.adb:31:07: info: initialization of "Full_S.B" proved
 p2.adb:39:28: medium: overflow check might fail
 p2.adb:40:28: medium: float overflow check might fail
-p2.ads:18:55: info: length check proved (CVC4: 1 VC)
 p2.ads:25:34: info: initialization of "Full_S.A" proved
 p2.ads:25:34: info: initialization of "Full_S.B" proved
 p2.ads:25:42: info: initialization of "Raw_S" proved

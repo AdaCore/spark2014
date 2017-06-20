@@ -34,7 +34,6 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names.adb:43
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names.adb:27
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at names.adb:43
-names.adb:21:34: info: length check proved (CVC4: 1 VC)
 names.adb:33:04: info: initialization of private part of "Char_Table" proved
 names.adb:33:38: info: range check proved (CVC4: 1 VC)
 names.adb:49:04: info: initialization of private part of "Entry_Table" proved

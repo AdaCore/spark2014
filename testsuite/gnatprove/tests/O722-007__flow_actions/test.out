@@ -1,6 +1,4 @@
-foo.adb:8:33: info: length check proved (CVC4: 1 VC)
 foo.adb:9:33: info: initialization of "New_Str" proved
-foo.adb:9:33: info: length check proved (CVC4: 1 VC)
 foo.adb:11:23: info: initialization of "B" proved
 foo.adb:16:13: medium: range check might fail
 foo.adb:16:22: info: initialization of "Pos" proved

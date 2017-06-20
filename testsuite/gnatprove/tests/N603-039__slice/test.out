@@ -1,3 +1,2 @@
-pack.adb:6:35: info: length check proved (CVC4: 1 VC)
 pack.adb:6:35: medium: range check might fail (e.g. when Glob'First = 2)
 pack.ads:2:14: warning: subprogram "A2" has no effect

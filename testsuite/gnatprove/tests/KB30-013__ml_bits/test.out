@@ -1,2 +1,1 @@
-ml_bits.adb:10:40: info: length check proved (CVC4: 1 VC)
 ml_bits.adb:11:14: info: initialization of "Result" proved
