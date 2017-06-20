@@ -25,17 +25,16 @@ def edit_file():
     copyfile(new_file, ads_file)
 
 
-# first call cvc4 to get rid of "easy" VCs
-prove_all(prover=["cvc4"], counterexample=False)
+# first call cvc4 to get rid of "easy" VCs. This call is removed.
 print "======================================="
 # first call to Coq, to produce a VC for the unproved postcondition
-prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False, filter_output=".*Grammar extension")
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 # "edit" the proof, in this case the proof is simply "admit"
 edit_proof()
 print "======================================="
-# rerun gnatprove with Coq again, to check the proof; everything should be
+# rerun gnatprove with Coq again, to check the proof; the coq proof should be
 # proved now.
-prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False, filter_output=".*Grammar extension")
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 print "======================================="
 # now edit the source file, we want to know if gnatprove can still associate
 # the VC with the proof. In fact here the file modification makes the VC
@@ -46,6 +45,7 @@ edit_file()
 # gprbuild will think nothing changed
 sleep_on_windows(4)
 # run gnatprove with Coq again to check proof
-prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-# run gnatprove again to see full results
+prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
+print "======================================="
+# run gnatprove again with cvc4 to see full results
 prove_all(counterexample=False)
