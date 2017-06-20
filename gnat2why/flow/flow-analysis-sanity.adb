@@ -260,8 +260,7 @@ package body Flow.Analysis.Sanity is
 
                if N = Entry_Node then
                   declare
-                     Spec : constant Entity_Id :=
-                       Unique_Defining_Entity (N);
+                     Spec : constant Entity_Id := Unique_Defining_Entity (N);
 
                   begin
                      --  If we are dealing with a user-defined equality then we
@@ -391,7 +390,7 @@ package body Flow.Analysis.Sanity is
                   Parent_N : constant Node_Id := Parent (N);
                begin
                   if Nkind (Parent_N) = N_Subtype_Declaration
-                    and then Is_Internal (Defining_Identifier (Parent (N)))
+                    and then Is_Internal (Defining_Identifier (Parent_N))
                   then
                      return Skip;
                   end if;
@@ -435,12 +434,16 @@ package body Flow.Analysis.Sanity is
             when N_Component_Declaration
                | N_Discriminant_Specification
             =>
-               if Present (Expression (N)) then
-                  Check_Variable_Inputs
-                    (Flow_Ids => Variables (Expression (N)),
-                     Err_Desc => "default initialization",
-                     Err_Node => Expression (N));
-               end if;
+               declare
+                  Default_Expression : constant Node_Id := Expression (N);
+               begin
+                  if Present (Default_Expression) then
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Default_Expression),
+                        Err_Desc => "default initialization",
+                        Err_Node => Default_Expression);
+                  end if;
+               end;
                return Skip;
 
             when others =>
