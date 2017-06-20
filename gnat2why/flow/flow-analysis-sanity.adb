@@ -191,15 +191,13 @@ package body Flow.Analysis.Sanity is
          begin
             if Nkind (Formal) = N_Formal_Object_Declaration then
                declare
-                  Formal_E : constant Entity_Id :=
-                    Defining_Entity (Formal);
+                  Formal_E : constant Entity_Id := Defining_Entity (Formal);
 
                begin
                   if Ekind (Formal_E) = E_Generic_In_Parameter then
                      Check_Variable_Inputs
                        (Flow_Ids => Variables (Actual),
-                        Err_Desc => "actual for formal object with"
-                        & " mode in",
+                        Err_Desc => "actual for formal object with mode in",
                         Err_Node => Actual);
                   end if;
                end;
@@ -284,9 +282,7 @@ package body Flow.Analysis.Sanity is
                             (Invariant_Procedure (Typ));
 
                         Funs : constant Node_Sets.Set :=
-                          Get_Functions
-                            (Expr,
-                             Include_Predicates => False);
+                          Get_Functions (Expr, Include_Predicates => False);
 
                      begin
                         --  Check 4.4(2) (no variable inputs)
@@ -297,8 +293,7 @@ package body Flow.Analysis.Sanity is
 
                         --  Check 7.3.2(4) (no calls to boundary subprograms)
                         for F of Funs loop
-                           if Is_Boundary_Subprogram_For_Type (F, Typ)
-                           then
+                           if Is_Boundary_Subprogram_For_Type (F, Typ) then
                               Error_Msg_Flow
                                 (FA       => FA,
                                  Msg      =>
