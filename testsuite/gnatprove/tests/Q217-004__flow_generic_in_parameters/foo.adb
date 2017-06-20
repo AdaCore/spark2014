@@ -22,6 +22,6 @@ package body Foo is
 
    package Inst_1 is new G (V => O_Var);     --  Illegal
    package Inst_2 is new G (V => O_Const);   --  Legal
-   package Inst_3 is new G (V => O_Const_V); --  Illegal
+   package Inst_3 is new G (V => O_Const_V); --  Legal
 
 end Foo;
