@@ -4306,7 +4306,7 @@ package body Flow_Utility is
       Seq           : Node_Lists.List           := Node_Lists.Empty_List;
 
       E             : Entity_Id;
-      Comp_Id       : Natural;
+      Comp_Id       : Positive;
       Current_Field : Flow_Id;
 
       Must_Abort    : Boolean                   := False;
