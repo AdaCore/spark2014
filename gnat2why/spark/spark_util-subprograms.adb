@@ -957,8 +957,6 @@ package body SPARK_Util.Subprograms is
    function Is_Local_Subprogram_Always_Inlined
      (E : Entity_Id) return Boolean
    is
-      Spec : Node_Id;
-
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean;
       --  Returns true iff subprogram E is completed by renaming-as-body
 
@@ -990,18 +988,21 @@ package body SPARK_Util.Subprograms is
 
       --  Also, subprograms of protected objects are never inlined
 
-      elsif not Is_Subprogram (E)
-        or else not Is_Inlined_Always (E)
-        or else Convention (E) = Convention_Protected
-      then
-         return False;
-
       else
-         Spec := Subprogram_Spec (E);
-
-         return Present (Spec)
-           and then Present (Body_To_Inline (Spec))
-           and then not Has_Renaming_As_Body (E);
+         if Is_Subprogram (E)
+           and then Is_Inlined_Always (E)
+           and then Convention (E) /= Convention_Protected
+         then
+            declare
+               Spec : constant Node_Id := Subprogram_Spec (E);
+            begin
+               return Present (Spec)
+                 and then Present (Body_To_Inline (Spec))
+                 and then not Has_Renaming_As_Body (E);
+            end;
+         else
+            return False;
+         end if;
       end if;
    end Is_Local_Subprogram_Always_Inlined;
 
