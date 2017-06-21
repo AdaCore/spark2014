@@ -265,8 +265,6 @@ package body Flow_Classwide is
                                       Scope : Flow_Scope;
                                       Valid : in out Boolean)
    is
-      use type Flow_Id_Sets.Set;
-
       function Get_Or_Make_Depends (E         : Entity_Id;
                                     Classwide : Boolean)
                                     return Dependency_Maps.Map

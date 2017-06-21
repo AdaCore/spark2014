@@ -35,7 +35,6 @@ package body Flow_Generated_Globals is
    ---------------------
 
    procedure Debug_Traversal (E : Entity_Id) is
-      use type Ada.Containers.Count_Type;
    begin
       if Debug_Tree_Traversal then
          Term_Info.Set_Style (Dim);

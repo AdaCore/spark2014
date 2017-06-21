@@ -206,7 +206,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
    Global_Contracts : Entity_Contract_Maps.Map;
 
-   use type Flow_Id_Sets.Set;
    use type Name_Sets.Set;
 
    use Name_Graphs;
@@ -1756,7 +1755,6 @@ package body Flow_Generated_Globals.Phase_2 is
             ----------
 
             procedure Dump (Label : String; Vars : Name_Sets.Set) is
-               use type Name_Sets.Cursor;
             begin
                if not Vars.Is_Empty then
                   Ada.Text_IO.Put (Indent & Indent & Indent & Label & ":");

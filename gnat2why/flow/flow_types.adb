@@ -31,7 +31,7 @@ with Gnat2Why_Args;
 with Hashing;                        use Hashing;
 with Interfaces;
 with Namet;                          use Namet;
-with Output;                         use Output;
+with Output;
 with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
 
@@ -132,7 +132,6 @@ package body Flow_Types is
               (Integer (N.Node) + Variable_Facet_T'Pos (N.Facet));
          when Record_Field =>
             declare
-               use type Ada.Containers.Hash_Type;
                use Interfaces;
 
                H : Unsigned_32 :=

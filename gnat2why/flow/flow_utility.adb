@@ -55,7 +55,6 @@ with Graphs;
 package body Flow_Utility is
 
    use type Flow_Id_Sets.Set;
-   use type Node_Sets.Set;
 
    ----------------------------------------------------------------------
    --  Debug

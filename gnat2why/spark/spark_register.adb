@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;                  use Atree;
-with Common_Containers;      use Common_Containers;
 with Einfo;                  use Einfo;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;

@@ -23,7 +23,7 @@
 
 with Ada.Strings;       use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Maps;  use Ada.Strings.Maps;
+with Ada.Strings.Maps;
 with Ada.Text_IO;       use Ada.Text_IO;
 
 package body Serialisation is

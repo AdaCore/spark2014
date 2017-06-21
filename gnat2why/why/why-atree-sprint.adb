@@ -1255,9 +1255,8 @@ package body Why.Atree.Sprint is
    -----------------
 
    procedure Print_Label (Node : W_Label_Id) is
-      use Why_Node_Lists;
-
       Labels : constant Name_Id_Set := Get_Labels (Node);
+
    begin
       if not Labels.Is_Empty then
          P (O, "( ");

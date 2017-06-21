@@ -56,7 +56,6 @@ package SPARK_Frame_Conditions is
       Hash                => File_Name_Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
-   use File_Name_Set;
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return True iff Ent is the special variable "__HEAP"

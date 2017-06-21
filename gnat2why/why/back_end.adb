@@ -59,7 +59,6 @@ package body Back_End is
 
    procedure Call_Back_End (Mode : Back_End_Mode_Type) is
       pragma Unreferenced (Mode);
-      use type Opt.Warning_Mode_Type;
 
       Save_Warning_Mode : constant Opt.Warning_Mode_Type := Opt.Warning_Mode;
       --  Save original frontend warning mode for restoration before returning

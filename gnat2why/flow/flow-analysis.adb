@@ -65,7 +65,6 @@ package body Flow.Analysis is
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
-   use type Node_Sets.Set;
    use type Flow_Id_Sets.Set;
 
    function Get_Line

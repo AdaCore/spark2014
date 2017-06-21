@@ -23,9 +23,9 @@
 
 with Ada.Characters.Latin_1;
 with Ada.Strings.Maps;
-with Ada.Strings;                      use Ada.Strings;
+with Ada.Strings;
 with Assumptions;                      use Assumptions;
-with Errout;                           use Errout;
+with Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
@@ -91,8 +91,6 @@ package body Flow is
    procedure Add_To_Temp_String (S : String);
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
-
-   use type Analysis_Maps.Map;
 
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2

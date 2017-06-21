@@ -315,7 +315,6 @@ package body Gnat2Why.Error_Messages is
       function Stat_Message return String is
          Buf : Unbounded_String := Null_Unbounded_String;
 
-         use type Ada.Containers.Count_Type;
          use Prover_Stat_Maps;
 
       begin

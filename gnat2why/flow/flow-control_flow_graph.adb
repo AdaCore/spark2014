@@ -87,7 +87,6 @@ package body Flow.Control_Flow_Graph is
 
    use Vertex_Sets;
    use type Flow_Id_Sets.Set;
-   use type Node_Sets.Set;
 
    package Union_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Union_Id,

@@ -22,13 +22,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Containers;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Atree;                  use Atree;
 with Output;                 use Output;
 with Sprint;                 use Sprint;
-
-use type Ada.Containers.Count_Type;
 
 package body Flow_Debug is
 

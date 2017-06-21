@@ -25,7 +25,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
-with Ada.Text_IO;                     use Ada.Text_IO;
+with Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
@@ -2575,8 +2575,6 @@ package body SPARK_Definition is
    procedure Mark_Compilation_Unit (N : Node_Id) is
       CU        : constant Node_Id := Parent (N);
       Context_N : Node_Id;
-
-      use type Node_Lists.Cursor;
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may

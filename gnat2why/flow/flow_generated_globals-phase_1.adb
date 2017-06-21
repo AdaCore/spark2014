@@ -351,8 +351,6 @@ package body Flow_Generated_Globals.Phase_1 is
 
       V : ALI_Entry;
 
-      use Common_Containers.Name_Graphs;
-
    --  Start of processing for GG_Write_Finalize
 
    begin
