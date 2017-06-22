@@ -169,13 +169,6 @@ patience.adb:150:14: info: initialization of "S.Preds" proved
 patience.adb:150:14: info: initialization of "S.StackSizes" proved
 patience.adb:150:14: info: initialization of "S.Stacks" proved
 patience.adb:150:14: info: initialization of "S.Values" proved
-patience.ads:45:37: info: length check proved (CVC4: 1 VC)
-patience.ads:47:38: info: length check proved (CVC4: 1 VC)
-patience.ads:48:39: info: length check proved (CVC4: 1 VC)
-patience.ads:48:50: info: length check proved (CVC4: 1 VC)
-patience.ads:49:38: info: length check proved (CVC4: 1 VC)
-patience.ads:50:38: info: length check proved (CVC4: 1 VC)
-patience.ads:51:38: info: length check proved (CVC4: 1 VC)
 patience.ads:63:26: info: index check proved (CVC4: 2 VC)
 patience.ads:66:26: info: index check proved (CVC4: 2 VC)
 patience.ads:69:45: info: index check proved (CVC4: 2 VC)

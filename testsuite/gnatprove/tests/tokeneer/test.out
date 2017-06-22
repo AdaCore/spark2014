@@ -1,8 +1,3 @@
-admin.adb:37:06: info: length check proved (CVC4: 1 VC)
-admin.adb:39:52: info: length check proved (CVC4: 1 VC)
-admin.adb:42:52: info: length check proved (CVC4: 1 VC)
-admin.adb:45:51: info: length check proved (CVC4: 1 VC)
-admin.adb:48:52: info: length check proved (CVC4: 1 VC)
 admin.adb:67:29: info: index check proved (CVC4: 2 VC)
 admin.adb:67:47: info: index check proved (CVC4: 2 VC)
 admin.adb:79:27: info: index check proved (CVC4: 2 VC)
@@ -32,10 +27,6 @@ admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:188:22: info: postcondition proved (CVC4: 4 VC)
 admin.ads:191:28: info: precondition proved (CVC4: 1 VC)
 admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
-admin.ads:233:08: info: length check proved (CVC4: 1 VC)
-admin.ads:233:48: info: length check proved (CVC4: 1 VC)
-admin.ads:235:48: info: length check proved (CVC4: 1 VC)
-admin.ads:237:48: info: length check proved (CVC4: 1 VC)
 admintoken.adb:95:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.adb:95:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:96:42: info: initialization of "IDCert.Contents" constituent of "State" proved
@@ -58,7 +49,6 @@ admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent o
 admintoken.adb:225:37: info: initialization of "Result" proved
 admintoken.adb:225:37: info: length check proved (CVC4: 1 VC)
 admintoken.adb:225:40: info: length check proved (CVC4: 1 VC)
-admintoken.adb:227:23: info: length check proved (CVC4: 1 VC)
 admintoken.adb:227:23: info: range check proved (CVC4: 4 VC)
 admintoken.adb:230:17: info: initialization of "Result" proved
 admintoken.adb:249:37: info: initialization of "Description" proved
@@ -155,30 +145,7 @@ alarmapi.adb:62:29: warning: assuming "Overwrite" has no effect on global items
 alarmapi.adb:62:29: warning: no Global contract available for "Overwrite"
 alarmapi.ads:29:14: warning: subprogram "Activate" has no effect
 alarmapi.ads:38:14: warning: subprogram "Deactivate" has no effect
-auditlog.adb:79:32: info: length check proved (CVC4: 1 VC)
-auditlog.adb:88:45: info: length check proved (CVC4: 1 VC)
-auditlog.adb:93:53: info: length check proved (CVC4: 1 VC)
-auditlog.adb:104:54: info: length check proved (CVC4: 1 VC)
 auditlog.adb:132:04: info: initialization of "LogFiles" constituent of "FileState" proved
-auditlog.adb:132:46: info: length check proved (CVC4: 1 VC)
-auditlog.adb:151:20: info: length check proved (CVC4: 1 VC)
-auditlog.adb:151:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:152:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:153:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:154:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:155:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:156:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:157:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:158:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:159:26: info: length check proved (CVC4: 1 VC)
-auditlog.adb:160:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:161:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:162:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:163:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:164:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:165:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:166:27: info: length check proved (CVC4: 1 VC)
-auditlog.adb:167:27: info: length check proved (CVC4: 1 VC)
 auditlog.adb:177:44: info: range check proved (CVC4: 1 VC)
 auditlog.adb:177:49: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:177:69: info: overflow check proved (CVC4: 1 VC)
@@ -462,10 +429,6 @@ auditlog.ads:92:22: info: postcondition proved (CVC4: 1 VC)
 auditlog.ads:105:26: info: initialization of "Archive" proved
 auditlog.ads:119:22: info: postcondition proved (CVC4: 1 VC)
 auditlog.ads:143:22: info: postcondition proved (CVC4: 1 VC)
-audittypes.ads:93:58: info: length check proved (CVC4: 1 VC)
-audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
-audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
-audittypes.ads:106:06: info: length check proved (CVC4: 1 VC)
 bio.adb:119:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:181
 bio.adb:119:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:181
 bio.adb:121:33: info: initialization of "Result" proved
@@ -487,7 +450,6 @@ bio.adb:173:45: info: initialization of "FullString" proved, in call inlined at 
 bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
-bio.adb:175:23: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
 bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
@@ -497,8 +459,6 @@ bio.adb:250:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
-bioapi.ads:42:19: info: length check proved (CVC4: 1 VC)
-bioapi.ads:58:25: info: length check proved (CVC4: 1 VC)
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -755,7 +715,6 @@ cert-attr.adb:47:43: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:47:46: info: initialization of "FullString" proved
 cert-attr.adb:47:46: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:49:23: info: initialization of "FullString" proved
-cert-attr.adb:49:23: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:52:14: info: initialization of "LocalUser" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.ID" proved
@@ -832,7 +791,6 @@ cert.adb:71:43: info: length check proved (CVC4: 1 VC)
 cert.adb:71:46: info: initialization of "FullString" proved
 cert.adb:71:46: info: length check proved (CVC4: 1 VC)
 cert.adb:73:23: info: initialization of "FullString" proved
-cert.adb:73:23: info: length check proved (CVC4: 1 VC)
 cert.adb:73:23: info: range check proved (CVC4: 4 VC)
 cert.adb:76:14: info: initialization of "LocalUser" proved
 cert.adb:116:14: info: initialization of "LocalRawData.DataLength" proved
@@ -842,7 +800,6 @@ cert.adb:136:14: info: initialization of "LocalSig.SigLength" proved
 cert.adb:170:11: info: initialization of "IsKnown" proved
 cert.ads:141:26: info: initialization of "IsKnown" proved
 cert.ads:169:20: info: initialization of "IsVerified" proved
-certificatestore.adb:38:42: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:46:04: info: initialization of "StoreFile" constituent of "FileState" proved
 certificatestore.adb:190:35: info: initialization of "Success" proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
@@ -877,7 +834,6 @@ certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
-certproc.ads:65:55: info: length check proved (CVC4: 1 VC)
 certprocessing.adb:43:34: info: initialization of "LocalData.SerialNumber" proved
 certprocessing.adb:44:34: info: initialization of "LocalData.SigAlgId" proved
 certprocessing.adb:45:34: info: initialization of "LocalData.Issuer.ID" proved
@@ -1084,7 +1040,6 @@ certprocessing.ads:203:20: info: initialization of "SignatureData.SigLength" pro
 certprocessing.ads:204:20: info: initialization of "ObtainSuccess" proved
 certprocessing.ads:223:07: info: initialization of "UnsignedRawAuthCert" proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
-certtypes.ads:35:22: info: length check proved (CVC4: 1 VC)
 clock.adb:73:11: info: range check proved (CVC4: 2 VC)
 clock.adb:74:12: info: index check proved (CVC4: 2 VC)
 clock.adb:74:54: info: initialization of "V" proved
@@ -1113,7 +1068,6 @@ clock.adb:245:41: info: range check proved (CVC4: 1 VC)
 clock.adb:246:44: info: division check proved (CVC4: 1 VC)
 clock.adb:247:25: info: division check proved (CVC4: 1 VC)
 clock.adb:247:25: info: range check proved (CVC4: 1 VC)
-clock.adb:272:36: info: length check proved (CVC4: 1 VC)
 clock.adb:289:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:289:24: info: initialization of "LocalText" proved
 clock.adb:290:44: info: division check proved (CVC4: 1 VC)
@@ -1129,7 +1083,6 @@ clock.adb:306:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:306:24: info: initialization of "LocalText" proved
 clock.adb:307:44: info: division check proved (CVC4: 1 VC)
 clock.adb:311:14: info: initialization of "LocalText" proved
-clock.adb:323:38: info: length check proved (CVC4: 1 VC)
 clock.adb:346:07: info: precondition proved (CVC4: 2 VC)
 clock.adb:346:24: info: initialization of "LocalText" proved
 clock.adb:351:07: info: precondition proved (CVC4: 2 VC)
@@ -1162,29 +1115,6 @@ clock.ads:207:07: info: initialization of "Month" proved
 clock.ads:208:07: info: initialization of "Day" proved
 clock.ads:209:07: info: initialization of "Hour" proved
 clock.ads:210:07: info: initialization of "Min" proved
-configdata.adb:89:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:91:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:93:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:95:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:97:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:99:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:101:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:103:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:105:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:107:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:109:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:111:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:113:09: info: length check proved (CVC4: 1 VC)
-configdata.adb:126:06: info: length check proved (CVC4: 1 VC)
-configdata.adb:126:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:127:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:128:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:129:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:130:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:131:47: info: length check proved (CVC4: 1 VC)
-configdata.adb:144:06: info: length check proved (CVC4: 1 VC)
-configdata.adb:144:38: info: length check proved (CVC4: 1 VC)
-configdata.adb:145:38: info: length check proved (CVC4: 1 VC)
 configdata.adb:165:04: info: initialization of "ConfigFile" constituent of "FileState" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:209:36: info: initialization of "Success" proved
@@ -1319,9 +1249,6 @@ configdata.adb:951:22: info: initialization of "TheMinPreservedLogSize" proved
 configdata.adb:951:48: info: initialization of "TheAlarmThresholdSize" proved
 configdata.adb:952:27: info: initialization of "TheEnclaveClearance" proved
 configdata.adb:952:50: info: initialization of "TheMinEntryClass" proved
-configdata.adb:1012:35: info: length check proved (CVC4: 1 VC), in call inlined at configdata.adb:1098
-configdata.adb:1012:35: info: length check proved (CVC4: 1 VC), in call inlined at configdata.adb:1108
-configdata.adb:1012:35: info: length check proved (CVC4: 1 VC), in call inlined at configdata.adb:1118
 configdata.adb:1017:30: info: division check proved (CVC4: 1 VC), in call inlined at configdata.adb:1098
 configdata.adb:1017:30: info: division check proved (CVC4: 1 VC), in call inlined at configdata.adb:1108
 configdata.adb:1017:30: info: division check proved (CVC4: 1 VC), in call inlined at configdata.adb:1118
@@ -1538,7 +1465,6 @@ configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
 configuration.adb:110:71: low: range check might fail
 configuration.adb:111:12: low: range check might fail
 configuration.adb:116:26: info: initialization of "Str" proved
-configuration.adb:116:26: info: length check proved (CVC4: 1 VC)
 configuration.adb:116:26: medium: range check might fail
 configuration.adb:118:38: info: initialization of "LocalText" proved
 configuration.adb:118:38: info: length check proved (CVC4: 1 VC)
@@ -1591,22 +1517,6 @@ configuration.adb:185:21: info: precondition proved (CVC4: 2 VC)
 configuration.adb:193:18: medium: precondition might fail
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
-cryptotypes.ads:28:40: info: length check proved (CVC4: 1 VC)
-display.adb:42:57: info: length check proved (CVC4: 1 VC)
-display.adb:45:43: info: length check proved (CVC4: 1 VC)
-display.adb:50:43: info: length check proved (CVC4: 1 VC)
-display.adb:53:43: info: length check proved (CVC4: 1 VC)
-display.adb:57:43: info: length check proved (CVC4: 1 VC)
-display.adb:60:43: info: length check proved (CVC4: 1 VC)
-display.adb:65:43: info: length check proved (CVC4: 1 VC)
-display.adb:69:43: info: length check proved (CVC4: 1 VC)
-display.adb:72:43: info: length check proved (CVC4: 1 VC)
-display.adb:76:43: info: length check proved (CVC4: 1 VC)
-display.adb:79:43: info: length check proved (CVC4: 1 VC)
-display.adb:84:43: info: length check proved (CVC4: 1 VC)
-display.adb:89:43: info: length check proved (CVC4: 1 VC)
-display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at display.adb:188
-display.adb:123:41: info: length check proved (CVC4: 1 VC), in call inlined at display.adb:280
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:188
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:280
 display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:188
@@ -1699,7 +1609,6 @@ display.adb:305:42: info: initialization of "CurrentDisplay" constituent of "Sta
 display.adb:306:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
 display.adb:307:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
 display.adb:307:42: info: initialization of "Sizes.Top" constituent of "State" proved
-display.ads:65:24: info: length check proved (CVC4: 1 VC)
 door.adb:88:22: info: postcondition proved (CVC4: 4 VC)
 door.adb:113:23: info: initialization of "LocalAlarm" proved
 door.adb:114:18: medium: precondition might fail
@@ -1954,7 +1863,6 @@ enrolment.adb:67:63: low: range check might fail
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved (CVC4: 1 VC)
 enrolment.adb:71:43: info: length check proved (CVC4: 1 VC)
-enrolment.adb:73:23: info: length check proved (CVC4: 1 VC)
 enrolment.adb:73:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:75:17: info: initialization of "Result" proved
 enrolment.adb:93:35: info: initialization of "KeyAdded" proved
@@ -2028,15 +1936,11 @@ file.adb:114:41: warning: suggested replacement: "TheName'First"
 file.adb:114:44: warning: index for "TheName" may assume lower bound of 1
 file.adb:114:44: warning: suggested replacement: "TheName'First - 1 + MaxNameLength"
 floppy.adb:48:04: warning: variable "CFloppyDrive" is never read and never assigned
-iandatypes.ads:45:19: info: length check proved (CVC4: 1 VC)
-iandatypes.ads:62:47: info: length check proved (CVC4: 1 VC)
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
 keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
-keystore-interfac.ads:111:42: info: length check proved (CVC4: 1 VC)
-keystore.adb:58:06: info: length check proved (CVC4: 1 VC)
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:268
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:284
@@ -2088,16 +1992,6 @@ keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at 
 keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
 keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
 keystore.adb:116:44: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
-keystore.adb:118:20: info: length check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
 keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:268
 keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:276
 keystore.adb:118:20: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:284
@@ -2127,7 +2021,6 @@ keystore.adb:137:22: info: initialization of "Success" proved
 keystore.adb:186:42: info: range check proved (CVC4: 1 VC)
 keystore.adb:186:53: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:186:69: info: overflow check proved (CVC4: 1 VC)
-keystore.adb:190:39: info: length check proved (CVC4: 1 VC)
 keystore.adb:194:16: info: loop invariant initialization proved (CVC4: 7 VC)
 keystore.adb:194:16: info: loop invariant preservation proved (CVC4: 7 VC)
 keystore.adb:199:24: info: initialization of "Result" proved
@@ -2176,7 +2069,6 @@ keystore.adb:280:18: medium: precondition might fail
 keystore.adb:284:28: info: initialization of "C58b" proved
 keystore.adb:284:28: info: initialization of "RetValFin" proved
 keystore.adb:303:07: info: initialization of "Handles" proved
-keystore.adb:328:40: info: length check proved (CVC4: 1 VC)
 keystore.adb:332:10: info: initialization of "RetValIni" proved
 keystore.adb:337:13: info: initialization of "RetValIni" proved
 keystore.adb:342:20: info: initialization of "RetValIni" proved
@@ -2260,7 +2152,6 @@ keystore.adb:757:22: info: initialization of "RetVal" proved
 keystore.adb:758:21: medium: precondition might fail
 keystore.adb:762:35: info: initialization of "C137b" proved
 keystore.adb:762:35: info: initialization of "RetVal" proved
-keystore.adb:773:47: info: length check proved (CVC4: 1 VC)
 keystore.adb:828:45: info: initialization of "TheKeyTemplate.AttrMask" proved
 keystore.adb:828:45: info: initialization of "TheKeyTemplate.IsPublic" proved
 keystore.adb:828:45: info: initialization of "TheKeyTemplate.KeyID" proved
@@ -2350,22 +2241,6 @@ poll.ads:49:24: info: initialization of "SystemFault" proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
 poll.ads:113:13: info: postcondition proved (CVC4: 14 VC)
 poll.ads:115:45: info: initialization of "Clock.CurrentTime" proved
-screen.adb:113:06: info: length check proved (CVC4: 1 VC)
-screen.adb:113:07: info: length check proved (CVC4: 1 VC)
-screen.adb:114:07: info: length check proved (CVC4: 1 VC)
-screen.adb:115:07: info: length check proved (CVC4: 1 VC)
-screen.adb:116:07: info: length check proved (CVC4: 1 VC)
-screen.adb:117:07: info: length check proved (CVC4: 1 VC)
-screen.adb:118:07: info: length check proved (CVC4: 1 VC)
-screen.adb:119:07: info: length check proved (CVC4: 1 VC)
-screen.adb:120:07: info: length check proved (CVC4: 1 VC)
-screen.adb:121:07: info: length check proved (CVC4: 1 VC)
-screen.adb:122:07: info: length check proved (CVC4: 1 VC)
-screen.adb:123:07: info: length check proved (CVC4: 1 VC)
-screen.adb:124:07: info: length check proved (CVC4: 1 VC)
-screen.adb:125:07: info: length check proved (CVC4: 1 VC)
-screen.adb:126:07: info: length check proved (CVC4: 1 VC)
-screen.adb:127:07: info: length check proved (CVC4: 1 VC)
 screen.adb:156:28: info: initialization of "OK" proved
 screen.adb:158:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:191:07: info: initialization of "OK" proved
@@ -2403,10 +2278,6 @@ screen.adb:368:13: info: initialization of "OK" proved
 screen.adb:368:20: info: initialization of "ConsoleOK" proved
 screen.adb:383:31: info: initialization of "OK" proved
 screen.adb:385:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
-screen.adb:434:39: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:591
-screen.adb:434:39: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:597
-screen.adb:434:39: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:603
-screen.adb:434:39: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:609
 screen.adb:437:17: info: initialization of "Str" proved
 screen.adb:437:17: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:437:17: info: initialization of "Str" proved, in call inlined at screen.adb:597
@@ -2459,8 +2330,6 @@ screen.adb:475:59: info: division check proved (CVC4: 1 VC), in call inlined at 
 screen.adb:475:59: info: division check proved (CVC4: 1 VC), in call inlined at screen.adb:657
 screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:651
 screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:657
-screen.adb:476:38: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:651
-screen.adb:476:38: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:657
 screen.adb:478:37: info: initialization of "Result" proved
 screen.adb:478:37: info: initialization of "Result" proved, in call inlined at screen.adb:651
 screen.adb:478:37: info: initialization of "Result" proved, in call inlined at screen.adb:657
@@ -2476,7 +2345,6 @@ screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb
 screen.adb:479:17: info: initialization of "Result" proved
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:651
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:657
-screen.adb:496:42: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:615
 screen.adb:498:33: info: initialization of "Result" proved
 screen.adb:498:33: info: initialization of "Result" proved, in call inlined at screen.adb:615
 screen.adb:498:33: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:615
@@ -2485,8 +2353,6 @@ screen.adb:498:36: info: initialization of "Data" proved, in call inlined at scr
 screen.adb:498:36: medium: length check might fail, in call inlined at screen.adb:615
 screen.adb:499:17: info: initialization of "Result" proved
 screen.adb:499:17: info: initialization of "Result" proved, in call inlined at screen.adb:615
-screen.adb:515:35: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:639
-screen.adb:515:35: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:645
 screen.adb:517:33: info: initialization of "Result" proved
 screen.adb:517:33: info: initialization of "Result" proved, in call inlined at screen.adb:639
 screen.adb:517:33: info: initialization of "Result" proved, in call inlined at screen.adb:645
@@ -2500,7 +2366,6 @@ screen.adb:517:36: medium: length check might fail, in call inlined at screen.ad
 screen.adb:518:17: info: initialization of "Result" proved
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:639
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:645
-screen.adb:535:33: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:663
 screen.adb:537:37: info: initialization of "Result" proved
 screen.adb:537:37: info: initialization of "Result" proved, in call inlined at screen.adb:663
 screen.adb:537:37: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:663
@@ -2616,10 +2481,6 @@ screen.adb:740:13: info: initialization of "OK" proved
 screen.adb:740:20: info: initialization of "ConsoleOK" proved
 screen.adb:755:30: info: initialization of "OK" proved
 screen.adb:757:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
-screen.adb:782:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:806
-screen.adb:782:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:812
-screen.adb:782:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:818
-screen.adb:782:40: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:824
 screen.adb:784:37: info: initialization of "Result" proved
 screen.adb:784:37: info: initialization of "Result" proved, in call inlined at screen.adb:806
 screen.adb:784:37: info: initialization of "Result" proved, in call inlined at screen.adb:812
@@ -2766,10 +2627,6 @@ stats.ads:98:28: info: initialization of "SuccessEntry" proved
 stats.ads:99:28: info: initialization of "FailEntry" proved
 stats.ads:100:28: info: initialization of "SuccessBio" proved
 stats.ads:101:28: info: initialization of "FailBio" proved
-tcpip.ads:30:41: info: length check proved (CVC4: 1 VC)
-tcpip.ads:30:41: info: length check proved (CVC4: 1 VC)
-tcpip.ads:30:41: info: length check proved (CVC4: 1 VC)
-tcpip.ads:34:46: info: length check proved (CVC4: 1 VC)
 tismain.adb:60:41: info: initialization of "AdminToken.State" proved
 tismain.adb:61:36: info: initialization of "Alarm.Output" proved
 tismain.adb:62:39: info: initialization of "AuditLog.State" proved
@@ -2950,12 +2807,6 @@ tismain.adb:1531:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1536:22: medium: precondition might fail
 tismain.adb:1542:23: medium: precondition might fail
 tismain.adb:1549:22: medium: precondition might fail
-tokenapi.ads:175:54: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:51:37: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:62:23: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:67:23: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:67:33: info: length check proved (CVC4: 1 VC)
-tokenreader.adb:68:33: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)
@@ -2967,7 +2818,6 @@ tokenreader.adb:175:12: low: range check might fail
 tokenreader.adb:175:56: low: range check might fail
 tokenreader.adb:180:43: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:180:46: medium: length check might fail
-tokenreader.adb:182:23: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:182:23: medium: range check might fail
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
@@ -3052,24 +2902,23 @@ userentry.adb:116:15: medium: precondition might fail
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
 userentry.adb:220:21: medium: precondition might fail
-userentry.adb:229:21: medium: precondition might fail
+userentry.adb:229:21: info: precondition proved (CVC4: 2 VC)
 userentry.adb:244:16: info: initialization of "TokenOK" proved
 userentry.adb:248:24: medium: precondition might fail
-userentry.adb:257:24: medium: precondition might fail
+userentry.adb:257:24: info: precondition proved (CVC4: 2 VC)
 userentry.adb:277:24: medium: precondition might fail
-userentry.adb:287:24: medium: precondition might fail
+userentry.adb:287:24: info: precondition proved (CVC4: 2 VC)
 userentry.adb:291:34: info: initialization of "Description" proved
 userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:476:15: low: range check might fail
-userentry.adb:482:45: medium: length check might fail
+userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
 userentry.adb:482:48: info: initialization of "FullString" proved
-userentry.adb:482:48: medium: length check might fail
+userentry.adb:482:48: info: length check proved (CVC4: 1 VC)
 userentry.adb:484:26: info: initialization of "FullString" proved
-userentry.adb:484:26: medium: length check might fail
-userentry.adb:484:26: medium: range check might fail
+userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
 userentry.adb:493:10: info: initialization of "Result" proved
 userentry.adb:495:17: info: initialization of "Result" proved
 userentry.adb:514:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved
@@ -3087,7 +2936,7 @@ userentry.adb:548:21: medium: precondition might fail
 userentry.adb:552:32: info: initialization of "AchievedFAR" proved
 userentry.adb:588:34: info: initialization of "Status" constituent of "State" proved
 userentry.adb:589:43: medium: "UserToken.Output" might not be written
-userentry.adb:651:19: medium: precondition might fail
+userentry.adb:651:19: info: precondition proved (CVC4: 1 VC)
 userentry.adb:658:13: info: initialization of "UpdateOK" proved
 userentry.adb:663:13: info: initialization of "UpdateOK" proved
 userentry.adb:667:21: medium: precondition might fail
@@ -3095,20 +2944,20 @@ userentry.adb:682:21: medium: precondition might fail
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
-userentry.adb:859:13: medium: postcondition might fail
+userentry.adb:859:13: info: postcondition proved (CVC4: 4 VC)
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: medium: refined postcondition might fail
-userentry.adb:1197:37: medium: range check might fail
+userentry.adb:1183:13: info: refined post proved (CVC4: 4 VC)
+userentry.adb:1197:37: info: range check proved (CVC4: 1 VC)
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
-userentry.adb:1203:13: medium: precondition might fail
-userentry.adb:1207:13: medium: precondition might fail
-userentry.adb:1211:13: medium: precondition might fail
+userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)
+userentry.adb:1207:13: info: precondition proved (CVC4: 1 VC)
+userentry.adb:1211:13: info: precondition proved (CVC4: 5 VC)
 userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
-userentry.ads:264:13: medium: postcondition might fail
+userentry.ads:264:13: info: postcondition proved (CVC4: 4 VC)
 usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -3210,26 +3059,6 @@ usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined a
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:958
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:961
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:985
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:737
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:740
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:743
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:846
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:849
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:852
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:955
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:958
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:961
-usertoken.adb:693:40: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:985
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:737
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:740
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:743
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:846
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:849
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:852
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:955
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:958
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:961
-usertoken.adb:695:23: info: length check proved (CVC4: 1 VC), in call inlined at usertoken.adb:985
 usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:737
 usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:740
 usertoken.adb:695:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:743

@@ -227,4 +227,3 @@ memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:120:16: info: postcondition proved (CVC4_CBQI: 34 VC)
 memcpy.ads:176:17: info: postcondition proved (CVC4_CBQI: 9 VC)
-x86.ads:577:48: info: length check proved (CVC4_CBQI: 1 VC)

@@ -19,7 +19,6 @@ math.adb:24:29: info: division check proved
 math.adb:24:29: info: range check proved
 math.adb:26:33: info: loop invariant initialization proved
 math.adb:26:33: info: loop invariant preservation proved
-math.adb:26:41: info: length check proved
 math.adb:27:33: info: initialization of "Prev_Value" proved
 math.adb:27:33: info: loop invariant initialization proved
 math.adb:27:33: info: loop invariant preservation proved
@@ -33,7 +32,6 @@ math.adb:31:13: info: loop invariant initialization proved
 math.adb:31:13: info: loop invariant preservation proved
 math.adb:31:51: info: index check proved
 math.adb:31:69: info: index check proved
-math.ads:12:35: info: length check proved
 math.ads:16:14: info: postcondition proved
 math.ads:16:53: info: overflow check proved
 math.ads:16:59: info: division check proved

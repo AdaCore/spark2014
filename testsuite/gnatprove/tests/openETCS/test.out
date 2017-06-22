@@ -92,9 +92,6 @@ sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
-sec_3_13_2_monitoring_inputs.ads:71:15: info: length check proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.ads:165:15: info: length check proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.ads:170:15: info: length check proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved (CVC4: 1 VC)
@@ -350,10 +347,6 @@ step_function.ads:114:40: info: precondition proved (CVC4: 1 VC)
 step_function.ads:115:61: info: index check proved (CVC4: 2 VC)
 step_function.ads:116:40: info: precondition proved (CVC4: 1 VC)
 step_function.ads:117:61: info: index check proved (CVC4: 2 VC)
-step_function_test.adb:7:15: info: length check proved (CVC4: 1 VC)
-step_function_test.adb:14:15: info: length check proved (CVC4: 1 VC)
-step_function_test.adb:21:15: info: length check proved (CVC4: 1 VC)
-step_function_test.adb:31:15: info: length check proved (CVC4: 1 VC)
 step_function_test.adb:41:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:41:28: info: initialization of "SFun1.Number_Of_Delimiters" proved
 step_function_test.adb:41:28: info: initialization of "SFun1.Step" proved

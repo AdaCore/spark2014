@@ -113,7 +113,6 @@ free_fall_pack.adb:72:16: info: initialization of "Derivative" proved
 free_fall_pack.adb:72:16: info: initialization of "Derivative" proved, in call inlined at free_fall_pack.adb:111
 free_fall_pack.adb:113:10: info: initialization of "Has_Landed" proved
 free_fall_pack.adb:121:35: info: initialization of "Has_Detected_FF" proved
-free_fall_pack.ads:80:61: info: length check proved (CVC4: 1 VC)
 free_fall_pack.ads:87:04: info: initialization of "FF_Mode" constituent of "FF_State" proved
 free_fall_pack.ads:91:04: info: initialization of "FF_Duration_Counter" constituent of "FF_State" proved
 free_fall_pack.ads:93:04: info: initialization of "In_Recovery" constituent of "FF_State" proved

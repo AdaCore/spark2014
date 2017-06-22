@@ -203,4 +203,3 @@ basicmath_small.ads:227:41: info: initialization of "SignFlag" proved
 basicmath_small.ads:227:55: info: initialization of "CarryFlag" proved
 basicmath_small.ads:227:70: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:231:17: info: postcondition proved (CVC4_CBQI: 10 VC)
-x86.ads:577:48: info: length check proved (CVC4_CBQI: 1 VC)
