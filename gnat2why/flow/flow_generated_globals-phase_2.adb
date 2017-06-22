@@ -413,11 +413,9 @@ package body Flow_Generated_Globals.Phase_2 is
    Null_Globals_Reported : Node_Sets.Set;
    --  Prevents repeated reports about giving null globals
 
-   procedure GG_Get_Globals (E           : Entity_Id;
-                             S           : Flow_Scope;
-                             Proof_Reads : out Flow_Id_Sets.Set;
-                             Reads       : out Flow_Id_Sets.Set;
-                             Writes      : out Flow_Id_Sets.Set)
+   procedure GG_Get_Globals (E       : Entity_Id;
+                             S       : Flow_Scope;
+                             Globals : out Global_Flow_Ids)
    is
       C : constant Entity_Contract_Maps.Cursor :=
         Global_Contracts.Find (To_Entity_Name (E));
@@ -467,9 +465,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
       procedure Populate_Results (G : Global_Names) is
       begin
-         Proof_Reads := To_Flow_Id_Set (G.Proof_Ins, View => In_View);
-         Reads       := To_Flow_Id_Set (G.Inputs,    View => In_View);
-         Writes      := To_Flow_Id_Set (G.Outputs,   View => Out_View);
+         Globals.Proof_Ins := To_Flow_Id_Set (G.Proof_Ins, View => In_View);
+         Globals.Reads     := To_Flow_Id_Set (G.Inputs,    View => In_View);
+         Globals.Writes    := To_Flow_Id_Set (G.Outputs,   View => Out_View);
       end Populate_Results;
 
    --  Start of processing for GG_Get_Globals
@@ -483,13 +481,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
          --  Down-project globals to the scope of the caller
 
-         Down_Project (Proof_Reads);
-         Down_Project (Reads);
-         Down_Project (Writes);
+         Down_Project (Globals.Proof_Ins);
+         Down_Project (Globals.Reads);
+         Down_Project (Globals.Writes);
       else
-         Proof_Reads.Clear;
-         Reads.Clear;
-         Writes.Clear;
+         Globals.Proof_Ins.Clear;
+         Globals.Reads.Clear;
+         Globals.Writes.Clear;
 
          if XXX then
             declare

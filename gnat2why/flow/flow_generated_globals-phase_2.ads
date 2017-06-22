@@ -106,11 +106,9 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns true if E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 
-   procedure GG_Get_Globals (E           : Entity_Id;
-                             S           : Flow_Scope;
-                             Proof_Reads : out Flow_Id_Sets.Set;
-                             Reads       : out Flow_Id_Sets.Set;
-                             Writes      : out Flow_Id_Sets.Set)
+   procedure GG_Get_Globals (E       : Entity_Id;
+                             S       : Flow_Scope;
+                             Globals : out Global_Flow_Ids)
    with Pre  => GG_Mode = GG_Read_Mode and then
                 Ekind (E) in E_Entry     |
                              E_Function  |

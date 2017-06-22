@@ -434,6 +434,12 @@ package Flow_Types is
       "<"          => "<",
       "="          => "=");
 
+   type Global_Flow_Ids is record
+      Proof_Ins : Flow_Id_Sets.Set;
+      Reads     : Flow_Id_Sets.Set;
+      Writes    : Flow_Id_Sets.Set;
+   end record;
+
    function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
                                     return Ordered_Flow_Id_Sets.Set;
    --  Convert a hashed flow id set into an ordered node set.

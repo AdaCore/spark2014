@@ -749,23 +749,20 @@ package body Flow.Analysis.Antialiasing is
       --  Check against globals.
 
       declare
-         Proof_Reads : Flow_Id_Sets.Set;
-         Reads       : Flow_Id_Sets.Set;
-         Writes      : Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
 
          Subprogram  : constant Entity_Id := Get_Called_Entity (Call);
       begin
          Get_Globals (Subprogram => Subprogram,
                       Scope      => FA.B_Scope,
                       Classwide  => Is_Dispatching_Call (Call),
-                      Proof_Ins  => Proof_Reads,
-                      Reads      => Reads,
-                      Writes     => Writes);
+                      Globals    => Globals);
          if Is_Out then
-            for R of Reads loop
+            for R of Globals.Reads loop
                --  No use in checking both the read and the write of
                --  an in out global.
-               if not Writes.Contains (Change_Variant (R, Out_View)) then
+               if not Globals.Writes.Contains (Change_Variant (R, Out_View))
+               then
                   case R.Kind is
                      when Direct_Mapping =>
                         Check_Node_Against_Node
@@ -789,7 +786,7 @@ package body Flow.Analysis.Antialiasing is
                end if;
             end loop;
          end if;
-         for W of Writes loop
+         for W of Globals.Writes loop
             case W.Kind is
                when Direct_Mapping =>
                   Check_Node_Against_Node

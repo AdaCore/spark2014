@@ -162,44 +162,42 @@ package body Flow is
          declare
             use type Flow_Id_Sets.Set;
 
-            P, R, W : Flow_Id_Sets.Set;
+            Globals : Global_Flow_Ids;
 
             procedure Print_Sets;
             procedure Print_Sets is
                RO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (R, Normal_Use) -
-                 Change_Variant (W, Normal_Use);
+                 Change_Variant (Globals.Reads, Normal_Use) -
+                 Change_Variant (Globals.Writes, Normal_Use);
                RW : constant Flow_Id_Sets.Set :=
-                 Change_Variant (R, Normal_Use) and
-                 Change_Variant (W, Normal_Use);
+                 Change_Variant (Globals.Reads, Normal_Use) and
+                 Change_Variant (Globals.Writes, Normal_Use);
                WO : constant Flow_Id_Sets.Set :=
-                 Change_Variant (W, Normal_Use) -
-                 Change_Variant (R, Normal_Use);
+                 Change_Variant (Globals.Writes, Normal_Use) -
+                 Change_Variant (Globals.Reads, Normal_Use);
             begin
                Print_Named_Flow_Id_Set ("Proof_In",
-                                        Change_Variant (P, Normal_Use),
+                                        Change_Variant
+                                          (Globals.Proof_Ins,
+                                           Normal_Use),
                                         False);
                Print_Named_Flow_Id_Set ("Input", RO, False);
                Print_Named_Flow_Id_Set ("In_Out", RW, False);
                Print_Named_Flow_Id_Set ("Output", WO, False);
             end Print_Sets;
          begin
-            GG_Get_Globals (E           => FA.Analyzed_Entity,
-                            S           => FA.S_Scope,
-                            Proof_Reads => P,
-                            Reads       => R,
-                            Writes      => W);
+            GG_Get_Globals (E       => FA.Analyzed_Entity,
+                            S       => FA.S_Scope,
+                            Globals => Globals);
             Write_Str ("Global =>");
             Write_Eol;
             Indent;
             Print_Sets;
             Outdent;
 
-            GG_Get_Globals (E           => FA.Analyzed_Entity,
-                            S           => FA.B_Scope,
-                            Proof_Reads => P,
-                            Reads       => R,
-                            Writes      => W);
+            GG_Get_Globals (E       => FA.Analyzed_Entity,
+                            S       => FA.B_Scope,
+                            Globals => Globals);
             Write_Str ("Refined_Global =>");
             Write_Eol;
             Indent;

@@ -4503,28 +4503,24 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Proof_Reads : Flow_Id_Sets.Set;
-      Reads       : Flow_Id_Sets.Set;
-      Writes      : Flow_Id_Sets.Set;
-      V           : Flow_Graphs.Vertex_Id;
+      Globals : Global_Flow_Ids;
+      V       : Flow_Graphs.Vertex_Id;
    begin
       --  Obtain globals (either from contracts or the computed stuff)
       Get_Globals (Subprogram          => Get_Called_Entity (Callsite),
                    Scope               => FA.B_Scope,
                    Classwide           => Is_Dispatching_Call (Callsite),
-                   Proof_Ins           => Proof_Reads,
-                   Reads               => Reads,
-                   Writes              => Writes,
+                   Globals             => Globals,
                    Use_Deduced_Globals => not FA.Generating_Globals);
 
       --  User-written Inputs and Proof_Ins may include constants without
       --  variable input and we will complain about this when analyzying such
       --  contracts. Here we filter such constants to not propagate the user's
       --  mistake.
-      Remove_Constants (Proof_Reads, Skip => FA.Local_Constants);
-      Remove_Constants (Reads,       Skip => FA.Local_Constants);
+      Remove_Constants (Globals.Proof_Ins, Skip => FA.Local_Constants);
+      Remove_Constants (Globals.Reads,     Skip => FA.Local_Constants);
 
-      for R of Proof_Reads loop
+      for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
@@ -4537,7 +4533,7 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
       end loop;
 
-      for R of Reads loop
+      for R of Globals.Reads loop
          Add_Vertex (FA,
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
@@ -4549,8 +4545,8 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
       end loop;
 
-      for W of Writes loop
-         if not Reads.Contains (Change_Variant (W, In_View)) then
+      for W of Globals.Writes loop
+         if not Globals.Reads.Contains (Change_Variant (W, In_View)) then
             Add_Vertex
               (FA,
                Make_Global_Attributes
@@ -5769,27 +5765,23 @@ package body Flow.Control_Flow_Graph is
                      Equivalent_Keys => "=",
                      "="             => "=");
 
-                  Proof_Ins : Flow_Id_Sets.Set;
-                  Reads     : Flow_Id_Sets.Set;
-                  Writes    : Flow_Id_Sets.Set;
+                  My_Globals : Global_Flow_Ids;
                   Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
 
                begin
                   Get_Globals (Subprogram => FA.Analyzed_Entity,
                                Scope      => FA.B_Scope,
                                Classwide  => False,
-                               Proof_Ins  => Proof_Ins,
-                               Reads      => Reads,
-                               Writes     => Writes);
+                               Globals    => My_Globals);
 
-                  for G of Proof_Ins loop
+                  for G of My_Globals.Proof_Ins loop
                      Globals.Insert (Change_Variant (G, Normal_Use),
                                      G_Prop'(Is_Proof_In => True,
                                              Is_Read     => False,
                                              Is_Write    => False));
                   end loop;
 
-                  for G of Reads loop
+                  for G of My_Globals.Reads loop
                      --  ??? here we should call Insert, because no global can
                      --  be both a Proof_In and Input. But it is not always the
                      --  case: apparently due to some bug in generated globals.
@@ -5799,7 +5791,7 @@ package body Flow.Control_Flow_Graph is
                                               Is_Write    => False));
                   end loop;
 
-                  for G of Writes loop
+                  for G of My_Globals.Writes loop
                      declare
                         Position : Global_Maps.Cursor;
                         Inserted : Boolean;

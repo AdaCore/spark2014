@@ -913,9 +913,7 @@ package body Flow_Utility is
         Parse_Depends (Depends_N);
       --  Step 1: Parse the appropriate dependency relation
 
-      All_Proof_Ins : Flow_Id_Sets.Set;
-      All_Reads     : Flow_Id_Sets.Set;
-      All_Writes    : Flow_Id_Sets.Set;
+      Globals : Global_Flow_Ids;
 
       function Trimming_Required return Boolean;
       --  Checks if the projected Depends constituents need to be trimmed
@@ -950,20 +948,18 @@ package body Flow_Utility is
          Get_Globals (Subprogram          => Subprogram,
                       Scope               => Scope,
                       Classwide           => False,
-                      Proof_Ins           => All_Proof_Ins,
-                      Reads               => All_Reads,
-                      Writes              => All_Writes,
+                      Globals             => Globals,
                       Use_Deduced_Globals => Use_Computed_Globals);
 
          --  Remove generic formals without variable input
-         Remove_Constants (All_Proof_Ins, Only_Generic_Formals => True);
-         Remove_Constants (All_Reads,     Only_Generic_Formals => True);
-         Remove_Constants (All_Writes,    Only_Generic_Formals => True);
+         Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
+         Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
+         Remove_Constants (Globals.Writes,    Only_Generic_Formals => True);
 
          --  Change all variants to Normal_Use
-         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
-         All_Reads     := Change_Variant (All_Reads,     Normal_Use);
-         All_Writes    := Change_Variant (All_Writes,    Normal_Use);
+         Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
+         Globals.Reads     := Change_Variant (Globals.Reads,     Normal_Use);
+         Globals.Writes    := Change_Variant (Globals.Writes,    Normal_Use);
 
          --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
@@ -972,32 +968,32 @@ package body Flow_Utility is
             begin
                case Ekind (Param) is
                   when E_In_Parameter     =>
-                     All_Reads.Insert (Formal_Param);
-                     All_Proof_Ins.Insert (Formal_Param);
+                     Globals.Reads.Insert (Formal_Param);
+                     Globals.Proof_Ins.Insert (Formal_Param);
 
                   when E_In_Out_Parameter =>
-                     All_Proof_Ins.Insert (Formal_Param);
-                     All_Reads.Insert (Formal_Param);
-                     All_Writes.Insert (Formal_Param);
+                     Globals.Proof_Ins.Insert (Formal_Param);
+                     Globals.Reads.Insert (Formal_Param);
+                     Globals.Writes.Insert (Formal_Param);
 
                   when E_Out_Parameter    =>
-                     All_Writes.Insert (Formal_Param);
+                     Globals.Writes.Insert (Formal_Param);
 
                   when others             =>
-                     All_Reads.Insert (Formal_Param);
-                     All_Proof_Ins.Insert (Formal_Param);
+                     Globals.Reads.Insert (Formal_Param);
+                     Globals.Proof_Ins.Insert (Formal_Param);
                      if Ekind (Subprogram) /= E_Function then
-                        All_Writes.Insert (Formal_Param);
+                        Globals.Writes.Insert (Formal_Param);
                      end if;
                end case;
             end;
          end loop;
 
          --  If Subprogram is a function then we need to add it to the
-         --  All_Writes set so that Subprogram'Result can appear on the LHS of
-         --  the Refined_Depends.
+         --  Globals.Writes set so that Subprogram'Result can appear on the LHS
+         --  of the Refined_Depends.
          if Ekind (Subprogram) = E_Function then
-            All_Writes.Insert (Direct_Mapping_Id (Subprogram));
+            Globals.Writes.Insert (Direct_Mapping_Id (Subprogram));
          end if;
 
          for C in Contract_Relation.Iterate loop
@@ -1017,10 +1013,10 @@ package body Flow_Utility is
 
             begin
                for O of D_Out loop
-                  if All_Writes.Contains (O) then
+                  if Globals.Writes.Contains (O) then
                      D_In.Intersection (if O = Null_Flow_Id
-                                        then All_Proof_Ins
-                                        else All_Reads);
+                                        then Globals.Proof_Ins
+                                        else Globals.Reads);
                      Depends.Insert (O, D_In);
                   end if;
                end loop;
@@ -1061,30 +1057,28 @@ package body Flow_Utility is
       Get_Globals (Subprogram          => Subprogram,
                    Scope               => Scope,
                    Classwide           => False,
-                   Proof_Ins           => All_Proof_Ins,
-                   Reads               => All_Reads,
-                   Writes              => All_Writes,
+                   Globals             => Globals,
                    Use_Deduced_Globals => Use_Computed_Globals,
                    Ignore_Depends      => True);
 
-      --  Change variant of All_Proof_Ins to Normal_Use
-      if not All_Proof_Ins.Is_Empty then
-         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
+      --  Change variant of Globals.Proof_Ins to Normal_Use
+      if not Globals.Proof_Ins.Is_Empty then
+         Globals.Proof_Ins := Change_Variant (Globals.Proof_Ins, Normal_Use);
 
-         --  Create new dependency with "null => All_Proof_Ins" or extend the
-         --  existing "null => ..." with All_Proof_Ins.
+         --  Create new dependency with "null => Globals.Proof_Ins" or extend
+         --  the existing "null => ..." with Globals.Proof_Ins.
          declare
             Position : Dependency_Maps.Cursor;
             Inserted : Boolean;
 
          begin
             Depends.Insert (Key      => Null_Flow_Id,
-                            New_Item => All_Proof_Ins,
+                            New_Item => Globals.Proof_Ins,
                             Position => Position,
                             Inserted => Inserted);
 
             if not Inserted then
-               Depends (Position).Union (All_Proof_Ins);
+               Depends (Position).Union (Globals.Proof_Ins);
             end if;
          end;
       end if;
@@ -1194,9 +1188,7 @@ package body Flow_Utility is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
                           Classwide              : Boolean;
-                          Proof_Ins              : out Flow_Id_Sets.Set;
-                          Reads                  : out Flow_Id_Sets.Set;
-                          Writes                 : out Flow_Id_Sets.Set;
+                          Globals                : out Global_Flow_Ids;
                           Consider_Discriminants : Boolean := False;
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
@@ -1246,9 +1238,9 @@ package body Flow_Utility is
    --  Start of processing for Get_Globals
 
    begin
-      Proof_Ins := Flow_Id_Sets.Empty_Set;
-      Reads     := Flow_Id_Sets.Empty_Set;
-      Writes    := Flow_Id_Sets.Empty_Set;
+      Globals.Proof_Ins := Flow_Id_Sets.Empty_Set;
+      Globals.Reads     := Flow_Id_Sets.Empty_Set;
+      Globals.Writes    := Flow_Id_Sets.Empty_Set;
 
       if Debug_Trace_Get_Global then
          Write_Str ("Get_Global (");
@@ -1485,22 +1477,22 @@ package body Flow_Utility is
             --  Step 5: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
-            Proof_Ins := To_Flow_Id_Set (G_Proof, In_View);
-            Reads     := To_Flow_Id_Set (G_In,    In_View);
-            Writes    := To_Flow_Id_Set (G_Out,   Out_View);
+            Globals.Proof_Ins := To_Flow_Id_Set (G_Proof, In_View);
+            Globals.Reads     := To_Flow_Id_Set (G_In,    In_View);
+            Globals.Writes    := To_Flow_Id_Set (G_Out,   Out_View);
 
             ---------------------------------------------------------------
             --  Step 6: Remove generic formals without variable input
             ---------------------------------------------------------------
 
-            Remove_Constants (Proof_Ins, Only_Generic_Formals => True);
-            Remove_Constants (Reads,     Only_Generic_Formals => True);
-            Remove_Constants (Writes,    Only_Generic_Formals => True);
+            Remove_Constants (Globals.Proof_Ins, Only_Generic_Formals => True);
+            Remove_Constants (Globals.Reads,     Only_Generic_Formals => True);
+            Remove_Constants (Globals.Writes,    Only_Generic_Formals => True);
          end;
 
-         Debug ("proof ins", Proof_Ins);
-         Debug ("reads",     Reads);
-         Debug ("writes",    Writes);
+         Debug ("proof ins", Globals.Proof_Ins);
+         Debug ("reads",     Globals.Reads);
+         Debug ("writes",    Globals.Writes);
 
       --  If we have no Global, but we do have a depends, we can
       --  reverse-engineer the Global. This also solves the issue where the
@@ -1545,7 +1537,8 @@ package body Flow_Utility is
                         if E /= Subprogram
                           and then not Params.Contains (E)
                         then
-                           Writes.Include (Change_Variant (Output, Out_View));
+                           Globals.Writes.Include
+                             (Change_Variant (Output, Out_View));
                         end if;
                      end;
                   end if;
@@ -1557,14 +1550,15 @@ package body Flow_Utility is
                              Get_Direct_Mapping_Id (Input);
                         begin
                            if not Params.Contains (E) then
-                              Reads.Include (Change_Variant (Input, In_View));
+                              Globals.Reads.Include
+                                (Change_Variant (Input, In_View));
 
                               --  A volatile with effective reads is always
                               --  an output as well (this should be recorded
                               --  in the depends, but the front-end does not
                               --  enforce this).
                               if Has_Effective_Reads (Input) then
-                                 Writes.Include
+                                 Globals.Writes.Include
                                    (Change_Variant (Input, Out_View));
                               end if;
                            end if;
@@ -1574,8 +1568,8 @@ package body Flow_Utility is
                end;
             end loop;
 
-            Debug ("reads", Reads);
-            Debug ("writes", Writes);
+            Debug ("reads", Globals.Reads);
+            Debug ("writes", Globals.Writes);
          end;
 
       elsif Gnat2Why_Args.Flow_Generate_Contracts
@@ -1587,7 +1581,7 @@ package body Flow_Utility is
 
          Debug ("using generated globals");
 
-         GG_Get_Globals (Subprogram, Scope, Proof_Ins, Reads, Writes);
+         GG_Get_Globals (Subprogram, Scope, Globals);
 
       --  We don't have user globals and we're not allowed to use computed
       --  globals (i.e. we're trying to compute globals).
@@ -1719,9 +1713,7 @@ package body Flow_Utility is
                                 Use_Deduced_Globals : Boolean := True;
                                 Keep_Constants      : Boolean := False)
    is
-      Unexpanded_Proof_Ins : Flow_Id_Sets.Set;
-      Unexpanded_Reads     : Flow_Id_Sets.Set;
-      Unexpanded_Writes    : Flow_Id_Sets.Set;
+      Globals : Global_Flow_Ids;
 
       S : constant Flow_Scope :=
         Get_Flow_Scope (if Is_In_Analyzed_Files (Subprogram)
@@ -1752,9 +1744,7 @@ package body Flow_Utility is
         (Subprogram             => Subprogram,
          Scope                  => S,
          Classwide              => Classwide,
-         Proof_Ins              => Unexpanded_Proof_Ins,
-         Reads                  => Unexpanded_Reads,
-         Writes                 => Unexpanded_Writes,
+         Globals                => Globals,
          Consider_Discriminants => False,
          Use_Deduced_Globals    => Use_Deduced_Globals);
 
@@ -1765,9 +1755,9 @@ package body Flow_Utility is
       --  Expand all variables; it is more efficent to process Proof_Ins and
       --  Reads separaterly, because they are disjoint and there is no point
       --  in computing their union.
-      Expand (Unexpanded_Proof_Ins, Reads);
-      Expand (Unexpanded_Reads,     Reads);
-      Expand (Unexpanded_Writes,    Writes);
+      Expand (Globals.Proof_Ins, Reads);
+      Expand (Globals.Reads,     Reads);
+      Expand (Globals.Writes,    Writes);
    end Get_Proof_Globals;
 
    --------------
@@ -2134,8 +2124,7 @@ package body Flow_Utility is
       is
          Subprogram    : constant Entity_Id := Get_Called_Entity (Callsite);
 
-         Global_Reads  : Flow_Id_Sets.Set;
-         Global_Writes : Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
 
          Folding       : constant Boolean :=
            Ctx.Fold_Functions
@@ -2177,25 +2166,19 @@ package body Flow_Utility is
       begin
          --  Determine the global effects of the called program
 
-         declare
-            Proof_Reads : Flow_Id_Sets.Set;
-         begin
-            Get_Globals (Subprogram          => Subprogram,
-                         Scope               => Ctx.Scope,
-                         Classwide           =>
-                           Is_Dispatching_Call (Callsite),
-                         Proof_Ins           => Proof_Reads,
-                         Reads               => Global_Reads,
-                         Writes              => Global_Writes,
-                         Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+         Get_Globals (Subprogram          => Subprogram,
+                      Scope               => Ctx.Scope,
+                      Classwide           =>
+                        Is_Dispatching_Call (Callsite),
+                      Globals             => Globals,
+                      Use_Deduced_Globals => Ctx.Use_Computed_Globals);
 
-            if not Ctx.Fold_Functions then
-               --  If we fold functions we're interested in real world,
-               --  otherwise (this case) we're interested in the proof world
-               --  too.
-               Global_Reads.Union (Proof_Reads);
-            end if;
-         end;
+         if not Ctx.Fold_Functions then
+            --  If we fold functions we're interested in real world,
+            --  otherwise (this case) we're interested in the proof world
+            --  too.
+            Globals.Reads.Union (Globals.Proof_Ins);
+         end if;
 
          --  If this is an external call to protected subprogram then we also
          --  need to add the enclosing object to the variables we're using.
@@ -2237,7 +2220,7 @@ package body Flow_Utility is
          --  Apply sanity check for functions
 
          if Nkind (Callsite) = N_Function_Call
-           and then not Global_Writes.Is_Empty
+           and then not Globals.Writes.Is_Empty
          then
             Error_Msg_NE
               (Msg => "side effects of function & are not modeled in SPARK",
@@ -2247,7 +2230,7 @@ package body Flow_Utility is
 
          --  Merge globals into the variables used
 
-         for G of Global_Reads loop
+         for G of Globals.Reads loop
             if not Folding
               or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
             then
@@ -2261,7 +2244,7 @@ package body Flow_Utility is
             end if;
          end loop;
 
-         for G of Global_Writes loop
+         for G of Globals.Writes loop
             V.Include (Change_Variant (G, Normal_Use));
             if Extensions_Visible (G, Ctx.Scope) and then not Ctx.Reduced then
                V.Include (Change_Variant (G, Normal_Use)'Update
@@ -2760,7 +2743,7 @@ package body Flow_Utility is
                   procedure Process_Type (E : Entity_Id) is
                      P : constant Entity_Id := Predicate_Function (E);
 
-                     GP, GI, GO : Flow_Id_Sets.Set;
+                     Globals : Global_Flow_Ids;
                   begin
                      if No (P) then
                         return;
@@ -2777,16 +2760,15 @@ package body Flow_Utility is
                        (Subprogram          => P,
                         Scope               => Ctx.Scope,
                         Classwide           => False,
-                        Proof_Ins           => GP,
-                        Reads               => GI,
-                        Writes              => GO,
+                        Globals             => Globals,
                         Use_Deduced_Globals => Ctx.Use_Computed_Globals);
-                     pragma Assert (GO.Is_Empty);
+                     pragma Assert (Globals.Writes.Is_Empty);
                      --  No function folding to deal with for predicate
                      --  functions (they always consume their single input).
 
                      declare
-                        Effects : constant Flow_Id_Sets.Set := GP or GI;
+                        Effects : constant Flow_Id_Sets.Set :=
+                          Globals.Proof_Ins or Globals.Reads;
                      begin
                         for F of Effects loop
                            Variables.Include (Change_Variant (F, Normal_Use));

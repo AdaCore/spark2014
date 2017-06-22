@@ -84,13 +84,8 @@ package body Flow_Classwide is
                                      Scope : Flow_Scope;
                                      Valid : in out Boolean)
    is
-      Anc_Proof : Flow_Id_Sets.Set;
-      Anc_Reads : Flow_Id_Sets.Set;
-      Anc_Write : Flow_Id_Sets.Set;
-
-      My_Proof : Flow_Id_Sets.Set;
-      My_Reads : Flow_Id_Sets.Set;
-      My_Write : Flow_Id_Sets.Set;
+      Anc_Globals : Global_Flow_Ids;
+      My_Globals  : Global_Flow_Ids;
 
       Suppressed : Boolean;
 
@@ -113,15 +108,15 @@ package body Flow_Classwide is
 
          M : Param_Mode := Mode_Invalid;
       begin
-         if My_Proof.Contains (F_In) then
+         if My_Globals.Proof_Ins.Contains (F_In) then
             M := Mode_Proof;
-         elsif My_Reads.Contains (F_In) then
-            if My_Write.Contains (F_Out) then
+         elsif My_Globals.Reads.Contains (F_In) then
+            if My_Globals.Writes.Contains (F_Out) then
                M := Mode_In_Out;
             else
                M := Mode_In;
             end if;
-         elsif My_Write.Contains (F_Out) then
+         elsif My_Globals.Writes.Contains (F_Out) then
             M := Mode_Out;
          end if;
 
@@ -139,16 +134,12 @@ package body Flow_Classwide is
       Get_Globals (Subprogram => Overridden_Operation (E),
                    Scope      => Scope,
                    Classwide  => True,
-                   Proof_Ins  => Anc_Proof,
-                   Reads      => Anc_Reads,
-                   Writes     => Anc_Write);
+                   Globals    => Anc_Globals);
 
       Get_Globals (Subprogram => E,
                    Scope      => Scope,
                    Classwide  => True,
-                   Proof_Ins  => My_Proof,
-                   Reads      => My_Reads,
-                   Writes     => My_Write);
+                   Globals    => My_Globals);
 
       --  A Global or Global'Class aspect specification G2 is said to be a
       --  valid overriding of another such specification, G1, if the
@@ -156,8 +147,10 @@ package body Flow_Classwide is
 
       --  each Input-mode item of G2 is an Input-mode or an In_Out-mode item
       --  of G1 or a direct or indirect constituent thereof; and
-      for F of My_Proof loop
-         if not (Anc_Proof.Contains (F) or else Anc_Reads.Contains (F)) then
+      for F of My_Globals.Proof_Ins loop
+         if not (Anc_Globals.Proof_Ins.Contains (F)
+                 or else Anc_Globals.Reads.Contains (F))
+         then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -175,8 +168,8 @@ package body Flow_Classwide is
          end if;
       end loop;
 
-      for F of My_Reads loop
-         if not Anc_Reads.Contains (F) then
+      for F of My_Globals.Reads loop
+         if not Anc_Globals.Reads.Contains (F) then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -196,8 +189,8 @@ package body Flow_Classwide is
 
       --  each Output-mode item of G2 is an Output-mode or In_Out-mode item
       --  of G1 or a direct or indirect constituent thereof; and
-      for F of My_Write loop
-         if not Anc_Write.Contains (F) then
+      for F of My_Globals.Writes loop
+         if not Anc_Globals.Writes.Contains (F) then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -228,14 +221,14 @@ package body Flow_Classwide is
       --  for each Output-mode item of G1 which is a state abstraction whose
       --  refinement is visible at the point of G2, each direct or indirect
       --  constituent thereof is an Output-mode item of G2.
-      for F_Out of Anc_Write loop
+      for F_Out of Anc_Globals.Writes loop
          declare
             F_In : constant Flow_Id := Change_Variant (F_Out, In_View);
          begin
-            if not (Anc_Reads.Contains (F_In)
-                    or else Anc_Proof.Contains (F_In))
-              and then (My_Reads.Contains (F_In)
-                        or else My_Proof.Contains (F_In))
+            if not (Anc_Globals.Reads.Contains (F_In)
+                    or else Anc_Globals.Proof_Ins.Contains (F_In))
+              and then (My_Globals.Reads.Contains (F_In)
+                        or else My_Globals.Proof_Ins.Contains (F_In))
             then
                Error_Msg_Flow
                  (E          => E,
@@ -293,19 +286,16 @@ package body Flow_Classwide is
          else
             --  Assemble the final dependency from globals...
             declare
-               Proof : Flow_Id_Sets.Set;
-               Reads : Flow_Id_Sets.Set;
-               Write : Flow_Id_Sets.Set;
+               Globals : Global_Flow_Ids;
+
             begin
                Get_Globals (Subprogram => E,
                             Scope      => Scope,
                             Classwide  => Classwide,
-                            Proof_Ins  => Proof,
-                            Reads      => Reads,
-                            Writes     => Write);
-               Void    := Change_Variant (Proof, Normal_Use);
-               Inputs  := Change_Variant (Reads, Normal_Use);
-               Outputs := Change_Variant (Write, Normal_Use);
+                            Globals    => Globals);
+               Void    := Change_Variant (Globals.Proof_Ins, Normal_Use);
+               Inputs  := Change_Variant (Globals.Reads, Normal_Use);
+               Outputs := Change_Variant (Globals.Writes, Normal_Use);
             end;
 
             --  ... all parameters...

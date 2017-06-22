@@ -129,15 +129,14 @@ package body Flow.Analysis.Sanity is
 
       function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set
       is
-         Proof_Ins, Reads, Writes : Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
+
       begin
          Get_Globals (Subprogram => N,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
-                      Proof_Ins  => Proof_Ins,
-                      Reads      => Reads,
-                      Writes     => Writes);
-         return To_Ordered_Flow_Id_Set (Reads or Proof_Ins);
+                      Globals    => Globals);
+         return To_Ordered_Flow_Id_Set (Globals.Reads or Globals.Proof_Ins);
       end Global_Reads;
 
       ----------------------
@@ -699,14 +698,10 @@ package body Flow.Analysis.Sanity is
    is
 
       --  Globals provided by the user
-      User_Proof_Ins             : Flow_Id_Sets.Set;
-      User_Reads                 : Flow_Id_Sets.Set;
-      User_Writes                : Flow_Id_Sets.Set;
+      User_Globals   : Global_Flow_Ids;
 
       --  Globals calculated by the tools
-      Actual_Proof_Ins           : Flow_Id_Sets.Set;
-      Actual_Reads               : Flow_Id_Sets.Set;
-      Actual_Writes              : Flow_Id_Sets.Set;
+      Actual_Globals : Global_Flow_Ids;
 
       --  Calculated globals projected upwards
       Projected_Actual_Proof_Ins : Flow_Id_Sets.Set;
@@ -813,7 +808,7 @@ package body Flow.Analysis.Sanity is
                   if Nkind (RC) /= N_Null then
                      Constit := Direct_Mapping_Id (RC, Out_View);
 
-                     if Actual_Writes.Contains (Constit) then
+                     if Actual_Globals.Writes.Contains (Constit) then
                         Writes_At_Least_One := True;
                      else
                         One_Is_Missing := True;
@@ -884,29 +879,28 @@ package body Flow.Analysis.Sanity is
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.S_Scope,
                    Classwide  => False,
-                   Proof_Ins  => User_Proof_Ins,
-                   Reads      => User_Reads,
-                   Writes     => User_Writes);
+                   Globals    => User_Globals);
 
       --  Read the Generated Globals (actual globals)
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
-                   Proof_Ins  => Actual_Proof_Ins,
-                   Reads      => Actual_Reads,
-                   Writes     => Actual_Writes);
+                   Globals    => Actual_Globals);
 
       --  Up project actual globals
-      Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes);
-      Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads);
-      Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins);
+      Projected_Actual_Writes    :=
+        Up_Project_Flow_Set (Actual_Globals.Writes);
+      Projected_Actual_Reads     :=
+        Up_Project_Flow_Set (Actual_Globals.Reads);
+      Projected_Actual_Proof_Ins :=
+        Up_Project_Flow_Set (Actual_Globals.Proof_Ins);
 
       --  Remove Reads from Proof_Ins
       Projected_Actual_Proof_Ins.Difference (Projected_Actual_Reads);
 
       --  Compare writes
       for W of Projected_Actual_Writes loop
-         if not User_Writes.Contains (W) then
+         if not User_Globals.Writes.Contains (W) then
             Sane := False;
 
             Error_Msg_Flow
@@ -920,7 +914,7 @@ package body Flow.Analysis.Sanity is
          end if;
       end loop;
 
-      for W of User_Writes loop
+      for W of User_Globals.Writes loop
          declare
             E : constant Entity_Id := Get_Direct_Mapping_Id (W);
          begin
@@ -944,7 +938,8 @@ package body Flow.Analysis.Sanity is
                end if;
 
             elsif Ekind (E) = E_Abstract_State
-              and then not User_Reads.Contains (Change_Variant (W, In_View))
+              and then not User_Globals.Reads.Contains
+                (Change_Variant (W, In_View))
               and then State_Partially_Written (W)
             then
                --  The synthesized Refined_Global is not fully written
@@ -964,7 +959,7 @@ package body Flow.Analysis.Sanity is
 
       --  Compare reads
       for R of Projected_Actual_Reads loop
-         if not User_Reads.Contains (R) then
+         if not User_Globals.Reads.Contains (R) then
             Sane := False;
 
             Error_Msg_Flow
@@ -978,7 +973,7 @@ package body Flow.Analysis.Sanity is
          end if;
       end loop;
 
-      for R of User_Reads loop
+      for R of User_Globals.Reads loop
          if not Extended_Set_Contains (R, Projected_Actual_Reads)
            and then not State_Partially_Written (R)
            --  Don't issue this error if we are dealing with a partially
@@ -999,7 +994,7 @@ package body Flow.Analysis.Sanity is
 
       --  Compare Proof_Ins
       for P of Projected_Actual_Proof_Ins loop
-         if not User_Proof_Ins.Contains (P) then
+         if not User_Globals.Proof_Ins.Contains (P) then
             Sane := False;
 
             Error_Msg_Flow
@@ -1013,7 +1008,7 @@ package body Flow.Analysis.Sanity is
          end if;
       end loop;
 
-      for P of User_Proof_Ins loop
+      for P of User_Globals.Proof_Ins loop
          if not Extended_Set_Contains (P, Projected_Actual_Proof_Ins) then
             Sane := False;
 

@@ -1127,9 +1127,7 @@ package body Flow_Generated_Globals.Partial is
       Refined : Boolean)
       return Global_Nodes
    is
-      Proof_Ins_FS : Flow_Id_Sets.Set;
-      Inputs_FS    : Flow_Id_Sets.Set;
-      Outputs_FS   : Flow_Id_Sets.Set;
+      Globals : Global_Flow_Ids;
 
    begin
       Get_Globals
@@ -1138,9 +1136,7 @@ package body Flow_Generated_Globals.Partial is
                                                  then Get_Body (E)
                                                  else E)),
          Classwide           => False,
-         Proof_Ins           => Proof_Ins_FS,
-         Reads               => Inputs_FS,
-         Writes              => Outputs_FS,
+         Globals             => Globals,
          Use_Deduced_Globals => False);
 
       --  Constants without variable inputs should not appear in Global/Depends
@@ -1155,12 +1151,12 @@ package body Flow_Generated_Globals.Partial is
       --  file excluded from the analysis by GPR's Excluded_Source_Files
       --  directive.
 
-      Remove_Constants (Proof_Ins_FS);
-      Remove_Constants (Inputs_FS);
+      Remove_Constants (Globals.Proof_Ins);
+      Remove_Constants (Globals.Reads);
 
-      return (Proof_Ins => To_Node_Set (Proof_Ins_FS),
-              Inputs    => To_Node_Set (Inputs_FS),
-              Outputs   => To_Node_Set (Outputs_FS));
+      return (Proof_Ins => To_Node_Set (Globals.Proof_Ins),
+              Inputs    => To_Node_Set (Globals.Reads),
+              Outputs   => To_Node_Set (Globals.Writes));
    end Contract_Globals;
 
    --------------

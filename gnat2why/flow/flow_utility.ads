@@ -162,9 +162,7 @@ is
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
                           Classwide              : Boolean;
-                          Proof_Ins              : out Flow_Id_Sets.Set;
-                          Reads                  : out Flow_Id_Sets.Set;
-                          Writes                 : out Flow_Id_Sets.Set;
+                          Globals                : out Global_Flow_Ids;
                           Consider_Discriminants : Boolean := False;
                           Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
@@ -172,11 +170,11 @@ is
                                       E_Function  |
                                       E_Procedure |
                                       E_Task_Type,
-        Post => (for all G of Proof_Ins =>
+        Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Reads =>
+       and then (for all G of Globals.Reads =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Writes =>
+       and then (for all G of Globals.Writes =>
                    Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is

@@ -594,9 +594,7 @@ package body Flow.Analysis is
 
       --  Local variables
 
-      Proof_Reads : Flow_Id_Sets.Set;
-      Reads       : Flow_Id_Sets.Set;
-      Unused      : Flow_Id_Sets.Set;
+      Globals : Global_Flow_Ids;
 
    --  Start of processing for Analyse_Main
 
@@ -609,18 +607,16 @@ package body Flow.Analysis is
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
-                   Proof_Ins  => Proof_Reads,
-                   Reads      => Reads,
-                   Writes     => Unused);
+                   Globals    => Globals);
 
       --  Proof_Reads and Reads are disjoint, iterate over their contents
       --  separately.
 
-      for R of Proof_Reads loop
+      for R of Globals.Proof_Ins loop
          Check_If_Initialized (R);
       end loop;
 
-      for R of Reads loop
+      for R of Globals.Reads loop
          Check_If_Initialized (R);
       end loop;
    end Analyse_Main;
@@ -703,29 +699,28 @@ package body Flow.Analysis is
                        To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
 
                      declare
-                        Proof_Ins, Inputs, Outputs : Flow_Id_Sets.Set;
+                        Globals : Global_Flow_Ids;
+
                      begin
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,
-                                     Proof_Ins  => Proof_Ins,
-                                     Reads      => Inputs,
-                                     Writes     => Outputs);
+                                     Globals    => Globals);
 
                         --  Globals are disjoint except for an overlap between
                         --  inputs and outputs (which cannot be union-ed
                         --  because they differ in Flow_Id_Variant), so
                         --  iterate over sets one-by-one.
 
-                        for F of Proof_Ins loop
+                        for F of Globals.Proof_Ins loop
                            Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
-                        for F of Inputs loop
+                        for F of Globals.Reads loop
                            Vars_Known.Insert (Change_Variant (F, Normal_Use));
                         end loop;
 
-                        for F of Outputs loop
+                        for F of Globals.Writes loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
                      end;
@@ -3274,26 +3269,24 @@ package body Flow.Analysis is
          while Present (E) loop
             if Ekind (E) = E_Procedure then
                declare
-                  Proof_Ins : Flow_Id_Sets.Set;
-                  Reads     : Flow_Id_Sets.Set;
-                  Writes    : Flow_Id_Sets.Set;
+                  Globals : Global_Flow_Ids;
+
                begin
                   Get_Globals (Subprogram => E,
                                Scope      => FA.S_Scope,
                                Classwide  => False,
-                               Proof_Ins  => Proof_Ins,
-                               Reads      => Reads,
-                               Writes     => Writes);
+                               Globals    => Globals);
 
                   --  If the Flow_Id is an Output (and not an Input) of the
                   --  procedure then include it in Outputs.
 
-                  for Write of Writes loop
+                  for Write of Globals.Writes loop
                      --  ??? we should only care about abstract states of the
                      --  package that we are analyzing.
                      if Is_Abstract_State (Write)
                        and then not
-                         Reads.Contains (Change_Variant (Write, In_View))
+                         Globals.Reads.Contains
+                           (Change_Variant (Write, In_View))
                      then
                         Outputs_Of_Procs.Include
                           (Change_Variant (Write, Normal_Use));
@@ -4290,9 +4283,7 @@ package body Flow.Analysis is
       --  Check that the procedure/entry/task does not modify variables that
       --  have Constant_After_Elaboration set.
       declare
-         Proof_Ins : Flow_Id_Sets.Set;
-         Reads     : Flow_Id_Sets.Set;
-         Writes    : Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
 
          G_Out     : Entity_Id;
          CAE_Scope : Flow_Scope;
@@ -4300,11 +4291,9 @@ package body Flow.Analysis is
          Get_Globals (Subprogram => FA.Analyzed_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
-                      Proof_Ins  => Proof_Ins,
-                      Reads      => Reads,
-                      Writes     => Writes);
+                      Globals    => Globals);
 
-         for W of Writes loop
+         for W of Globals.Writes loop
             if W.Kind in Direct_Mapping | Record_Field then
                G_Out     := Get_Direct_Mapping_Id (W);
                CAE_Scope := Get_Flow_Scope (G_Out);
@@ -4386,20 +4375,18 @@ package body Flow.Analysis is
          else Is_Volatile_Function (FA.Analyzed_Entity));
 
       declare
-         Proof_Ins : Flow_Id_Sets.Set;
-         Reads     : Flow_Id_Sets.Set;
-         Writes    : Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
+
       begin
          --  Populate global sets
          Get_Globals (Subprogram => FA.Analyzed_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
-                      Proof_Ins  => Proof_Ins,
-                      Reads      => Reads,
-                      Writes     => Writes);
+                      Globals    => Globals);
 
          --  Check globals for volatiles and emit messages if needed
-         Check_Set_For_Volatiles (Proof_Ins or Reads or Writes);
+         Check_Set_For_Volatiles
+           (Globals.Proof_Ins or Globals.Reads or Globals.Writes);
       end;
 
       --  Warn about volatile function without volatile effects
@@ -4804,10 +4791,7 @@ package body Flow.Analysis is
 
       Preconditions : Node_Lists.List;
 
-      Reads         : Flow_Id_Sets.Set;
-      Proof_Ins     : Flow_Id_Sets.Set;
-      Unused        : Flow_Id_Sets.Set;
-      --  The above 3 sets will contain the relevant globals.
+      Globals : Global_Flow_Ids;
 
       function Variable_Has_CAE (F : Flow_Id) return Boolean;
       --  Returns True iff F does not have Constant_After_Elaboration set.
@@ -4845,12 +4829,10 @@ package body Flow.Analysis is
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.S_Scope,
                    Classwide  => False,
-                   Proof_Ins  => Proof_Ins,
-                   Reads      => Reads,
-                   Writes     => Unused);
+                   Globals    => Globals);
 
       --  Add Proof_Ins to Reads
-      Reads.Union (Proof_Ins);
+      Globals.Reads.Union (Globals.Proof_Ins);
 
       for Precondition of Preconditions loop
          declare
@@ -4863,7 +4845,7 @@ package body Flow.Analysis is
             --  The above set contains all variables used in the precondition.
          begin
             for Var of VU loop
-               if Reads.Contains (Change_Variant (Var, In_View))
+               if Globals.Reads.Contains (Change_Variant (Var, In_View))
                  and then not Variable_Has_CAE (Var)
                then
                   Error_Msg_Flow

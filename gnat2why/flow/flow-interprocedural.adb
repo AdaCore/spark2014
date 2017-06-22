@@ -223,9 +223,7 @@ package body Flow.Interprocedural is
          --  outputs depend on all inputs (but respecting the non-interference
          --  of ghost entities).
          declare
-            Ignored : Flow_Id_Sets.Set;
-            Inputs  : Flow_Id_Sets.Set;
-            Outputs : Flow_Id_Sets.Set;
+            Globals : Global_Flow_Ids;
             --  Globals deduced from the contract (if available) or body
 
             The_In  : Flow_Id;
@@ -239,13 +237,11 @@ package body Flow.Interprocedural is
             Get_Globals (Subprogram             => Called_Thing,
                          Scope                  => FA.B_Scope,
                          Classwide              => Is_Dispatching_Call (N),
-                         Proof_Ins              => Ignored,
-                         Reads                  => Inputs,
-                         Writes                 => Outputs,
+                         Globals                => Globals,
                          Consider_Discriminants => True,
                          Use_Deduced_Globals    => not FA.Generating_Globals);
 
-            Remove_Constants (Inputs, Skip => FA.Local_Constants);
+            Remove_Constants (Globals.Reads, Skip => FA.Local_Constants);
 
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop
@@ -254,11 +250,11 @@ package body Flow.Interprocedural is
 
                case Ekind (E) is
                   when E_In_Parameter =>
-                     Inputs.Insert (The_In);
+                     Globals.Reads.Insert (The_In);
 
                   when E_In_Out_Parameter =>
-                     Inputs.Insert (The_In);
-                     Outputs.Insert (The_Out);
+                     Globals.Reads.Insert (The_In);
+                     Globals.Writes.Insert (The_Out);
 
                   when E_Out_Parameter =>
                      if Contains_Discriminants (The_In, FA.B_Scope)
@@ -267,9 +263,9 @@ package body Flow.Interprocedural is
                         --  Discriminated out parameters or out parameters
                         --  for which we need to keep track of the bounds
                         --  also appear as an input.
-                        Inputs.Insert (The_In);
+                        Globals.Reads.Insert (The_In);
                      end if;
-                     Outputs.Insert (The_Out);
+                     Globals.Writes.Insert (The_Out);
 
                   when others =>
                      raise Program_Error;
@@ -297,21 +293,21 @@ package body Flow.Interprocedural is
                   --  rejected by the flow analysis later, but now we must
                   --  conservatively Include and not Insert the protected
                   --  object.
-                  Inputs.Include (The_In);
+                  Globals.Reads.Include (The_In);
                   if Ekind (Called_Thing) /= E_Function then
-                     Outputs.Include (The_Out);
+                     Globals.Writes.Include (The_Out);
                   end if;
                end;
             end if;
 
-            if Outputs.Is_Empty then
+            if Globals.Writes.Is_Empty then
                --  All inputs flow into the null export vertex
-               for Input of Inputs loop
+               for Input of Globals.Reads loop
                   Add_TD_Edge (Input, Null_Export_Flow_Id);
                end loop;
             else
                --  Each output depends on all inputs
-               for Output of Outputs loop
+               for Output of Globals.Writes loop
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex (FA, V, Output);
@@ -320,7 +316,7 @@ package body Flow.Interprocedural is
                        Is_Ghost_Object (Output);
 
                   begin
-                     for Input of Inputs loop
+                     for Input of Globals.Reads loop
                         declare
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Ghost
