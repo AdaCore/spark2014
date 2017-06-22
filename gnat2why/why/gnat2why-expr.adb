@@ -10422,18 +10422,8 @@ package body Gnat2Why.Expr is
       -------------------
 
       function Get_Base_Type (N : Node_Id) return Entity_Id is
-         Ent : constant Entity_Id := Defining_Identifier (N);
       begin
-         --  Full type declarations can only require checks when they are
-         --  scalar types, and then only when the range is non-static.
-
          if Nkind (N) = N_Full_Type_Declaration then
-            if Is_Scalar_Type (Ent)
-              and then Is_OK_Static_Range (Get_Range (Ent))
-            then
-               return Empty;
-            end if;
-
             declare
                T_Def : constant Node_Id := Type_Definition (N);
             begin
@@ -10546,9 +10536,21 @@ package body Gnat2Why.Expr is
                if Entity_In_SPARK (Ent) then
                   case Ekind (Ent) is
                   when Scalar_Kind =>
-                     R := Check_Scalar_Range (Params => Body_Params,
-                                              N      => Ent,
-                                              Base   => Base);
+
+                     --  Scalar type declarations can only require checks when
+                     --  either their range is non-static, or their Base type
+                     --  is not static.
+
+                     if (Present (Base)
+                         and then
+                           not Sem_Eval.Is_OK_Static_Range (Get_Range (Base)))
+                       or else
+                         not Sem_Eval.Is_OK_Static_Range (Get_Range (Ent))
+                     then
+                        R := Check_Scalar_Range (Params => Body_Params,
+                                                 N      => Ent,
+                                                 Base   => Base);
+                     end if;
 
                   when Array_Kind =>
                      declare
