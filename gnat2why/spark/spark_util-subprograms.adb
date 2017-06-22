@@ -991,7 +991,6 @@ package body SPARK_Util.Subprograms is
       else
          if Is_Subprogram (E)
            and then Is_Inlined_Always (E)
-           and then Convention (E) /= Convention_Protected
          then
             declare
                Spec : constant Node_Id := Subprogram_Spec (E);
