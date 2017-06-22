@@ -195,10 +195,11 @@ package Configuration is
          --  prefix
          --  prefix/lib
          --  prefix/libexec/spark
-         --  prefix/libexec/spark/bin      - all auxiliary tools, e.g. gprbuild
+         --  prefix/libexec/spark/bin      - all auxiliary binaries,
+         --                                  e.g. gprbuild
          --  prefix/share
          --  prefix/share/why3             - files that come with Why3
-         --  prefix/share/spark/config     - gprbuild config files
+         --  prefix/share/spark/config     - various config files
          --  prefix/share/spark/stdlib     - Why3 files of the stdlib
          --  prefix/share/spark/theories   - Why3 files for Ada theories
 
@@ -237,6 +238,8 @@ package Configuration is
            Compose (Share_Spark_Config, Frames_Cov_Cgpr);
          Gpr_Gnat2why_Cov_Cnf_File  : constant String :=
            Compose (Share_Spark_Config, Gnat2why_Cov_Cgpr);
+         Gnatprove_Conf           : constant String :=
+           Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
       end Install;
