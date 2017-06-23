@@ -4425,11 +4425,11 @@
 </theory>
 <theory name="Temp___String_Literal_1076" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1078" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1077" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_1082" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1084" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1083" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Auditlog__getstartandendtimefromfile__converttimestotext__T51b___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4493,11 +4493,11 @@
 </theory>
 <theory name="Temp___String_Literal_1345" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1347" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1346" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_1351" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Temp___String_Literal_1353" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Temp___String_Literal_1352" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Temp___String_Literal_1372" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -4985,289 +4985,289 @@
 </theory>
 <theory name="Auditlog__init__setfiledetails__getfiledetails___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Auditlog__package_def" sum="1fb243cf8fadcd927078d44a31c3c7a1" expanded="true">
+<theory name="Auditlog__package_def" sum="1629658a2cbb52ef9ec1c506d60340aa" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__valid_numberlogentries__subprogram_def" sum="533fa34b9c2bc7ae0ac185a5fd117a27" expanded="true">
+<theory name="Auditlog__valid_numberlogentries__subprogram_def" sum="2d316395dbef699432b945d7bd1db38a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="28"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="28"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="28"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="34"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="34"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__init__subprogram_def" sum="ee7eb7db7c080f67d3e1cbc8ace05489" expanded="true">
+<theory name="Auditlog__init__subprogram_def" sum="cc342812b34e83187dab7077754c5a2c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.11"/></proof>
-  <proof prover="1"><result status="unknown" time="0.06" steps="760"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="109614"/></proof>
-  <proof prover="3"><result status="unknown" time="0.10" steps="568"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="unknown" time="0.13"/></proof>
-  <proof prover="1"><result status="unknown" time="0.07" steps="837"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="120121"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="619"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="21"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. assertion">
-  <proof prover="1"><result status="valid" time="0.06" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="0"><result status="unknown" time="0.13"/></proof>
-  <proof prover="1"><result status="unknown" time="0.07" steps="831"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="110058"/></proof>
-  <proof prover="3"><result status="unknown" time="0.08" steps="283"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="15. precondition">
-  <proof prover="0"><result status="unknown" time="4.30"/></proof>
-  <proof prover="1"><result status="unknown" time="0.07" steps="920"/></proof>
-  <proof prover="2"><result status="unknown" time="0.07" steps="120832"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="331"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="16. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="965"/></proof>
-  </goal>
-  <goal name="WP_parameter def.17" expl="17. precondition">
-  <proof prover="1"><result status="valid" time="0.11" steps="854"/></proof>
-  </goal>
-  <goal name="WP_parameter def.18" expl="18. precondition">
-  <proof prover="1"><result status="valid" time="0.12" steps="897"/></proof>
-  </goal>
-  <goal name="WP_parameter def.19" expl="19. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="897"/></proof>
-  </goal>
-  <goal name="WP_parameter def.20" expl="20. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.21" expl="21. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="0"><result status="unknown" time="0.31"/></proof>
+  <proof prover="1"><result status="unknown" time="0.12" steps="760"/></proof>
+  <proof prover="2"><result status="unknown" time="0.14" steps="109614"/></proof>
+  <proof prover="3"><result status="unknown" time="0.18" steps="568"/></proof>
   </goal>
-  <goal name="WP_parameter def.22" expl="22. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="79"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="0"><result status="unknown" time="0.42"/></proof>
+  <proof prover="1"><result status="unknown" time="0.12" steps="837"/></proof>
+  <proof prover="2"><result status="unknown" time="0.13" steps="120121"/></proof>
+  <proof prover="3"><result status="unknown" time="0.17" steps="619"/></proof>
   </goal>
-  <goal name="WP_parameter def.23" expl="23. postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.24" expl="24. postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.25" expl="25. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="46"/></proof>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="21"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.10" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.09" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.10" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="precondition">
+  <proof prover="0"><result status="unknown" time="0.19"/></proof>
+  <proof prover="1"><result status="unknown" time="0.12" steps="831"/></proof>
+  <proof prover="2"><result status="unknown" time="0.15" steps="110058"/></proof>
+  <proof prover="3"><result status="unknown" time="0.19" steps="283"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="precondition">
+  <proof prover="0"><result status="unknown" time="14.89"/></proof>
+  <proof prover="1"><result status="unknown" time="0.11" steps="920"/></proof>
+  <proof prover="2"><result status="unknown" time="0.12" steps="120832"/></proof>
+  <proof prover="3"><result status="unknown" time="0.17" steps="331"/></proof>
+  </goal>
+  <goal name="WP_parameter def.16" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.18" steps="965"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.18" steps="854"/></proof>
+  </goal>
+  <goal name="WP_parameter def.18" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.18" steps="897"/></proof>
+  </goal>
+  <goal name="WP_parameter def.19" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.21" steps="897"/></proof>
+  </goal>
+  <goal name="WP_parameter def.20" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.14" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.21" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.13" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.22" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.15" steps="79"/></proof>
+  </goal>
+  <goal name="WP_parameter def.23" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.14" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.24" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.15" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.25" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="46"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtolog__subprogram_def" sum="9ec4b2a2f3776464c907058db03f03e4" expanded="true">
+<theory name="Auditlog__addelementtolog__subprogram_def" sum="a63c54cca569139f7d3a21549474d1dc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="59"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="59"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="61"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="61"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="129"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="129"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="117"/></proof>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="117"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="49"/></proof>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="49"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="8. postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="14"/></proof>
+  <goal name="WP_parameter def.8" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="9. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="50"/></proof>
+  <goal name="WP_parameter def.9" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="50"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="62"/></proof>
+  <goal name="WP_parameter def.10" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="62"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__archivelog__subprogram_def" sum="f5514f0dedde6ff3c769bdfde12c4783" expanded="true">
+<theory name="Auditlog__archivelog__subprogram_def" sum="793486850904d1f0759722c958ca153e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="33"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="33"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.05" steps="49"/></proof>
+  <goal name="WP_parameter def.2" expl="loop invariant init">
+  <proof prover="1"><result status="valid" time="0.10" steps="49"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="47"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="47"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="47"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="47"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="37"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="37"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="loop invariant preservation">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.16" steps="293"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.19" steps="610"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.16" steps="315"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.18" steps="327"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.18" steps="327"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.14" steps="95"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.15" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.16" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.14" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="38"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__clearlogentries__subprogram_def" sum="3992755813cbf220311143c3738f3996" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="loop invariant init">
   <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="7. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="loop invariant init">
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
+  <goal name="WP_parameter def.3" expl="loop invariant init">
+  <proof prover="1"><result status="valid" time="0.09" steps="31"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="59"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="59"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="23"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="61"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="61"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="loop invariant preservation">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="loop invariant preservation">
   <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="293"/></proof>
+  <goal name="WP_parameter def.11" expl="loop invariant preservation">
+  <proof prover="1"><result status="valid" time="0.09" steps="146"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="10. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="610"/></proof>
+  <goal name="WP_parameter def.12" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.12" steps="419"/></proof>
   </goal>
-  <goal name="WP_parameter def.11" expl="11. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="315"/></proof>
+  <goal name="WP_parameter def.13" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="155"/></proof>
   </goal>
-  <goal name="WP_parameter def.12" expl="12. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="327"/></proof>
+  <goal name="WP_parameter def.14" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.13" steps="780"/></proof>
   </goal>
-  <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="1"><result status="valid" time="0.10" steps="327"/></proof>
+  <goal name="WP_parameter def.15" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="172"/></proof>
   </goal>
-  <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="1"><result status="valid" time="0.09" steps="95"/></proof>
+  <goal name="WP_parameter def.16" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="184"/></proof>
   </goal>
-  <goal name="WP_parameter def.15" expl="15. postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.17" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.12" steps="184"/></proof>
   </goal>
-  <goal name="WP_parameter def.16" expl="16. postcondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  <goal name="WP_parameter def.18" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.12" steps="40"/></proof>
   </goal>
-  <goal name="WP_parameter def.17" expl="17. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="38"/></proof>
+  <goal name="WP_parameter def.19" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.20" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.21" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="38"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__clearlogentries__subprogram_def" sum="06815fbf9bf634173499ff7b12e595fa" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. loop invariant init">
-  <proof prover="1"><result status="valid" time="0.05" steps="31"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="59"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="59"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="23"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="61"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="61"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. loop invariant preservation">
-  <proof prover="1"><result status="valid" time="0.06" steps="146"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="419"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="155"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="780"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="15. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="172"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="16. precondition">
-  <proof prover="1"><result status="valid" time="0.08" steps="184"/></proof>
-  </goal>
-  <goal name="WP_parameter def.17" expl="17. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="184"/></proof>
-  </goal>
-  <goal name="WP_parameter def.18" expl="18. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="40"/></proof>
-  </goal>
-  <goal name="WP_parameter def.19" expl="19. postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.20" expl="20. postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.21" expl="21. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="38"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__cancelarchive__subprogram_def" sum="cf73be9f11e83b44a530fd7e7ad3077f" expanded="true">
+<theory name="Auditlog__cancelarchive__subprogram_def" sum="41d1f76e296e73831647c9fe3f7b5bc6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__theauditalarm__subprogram_def" sum="93c2635dde72914ad805fd6817488966" expanded="true">
+<theory name="Auditlog__theauditalarm__subprogram_def" sum="aaa8ac673e99839a12e2bc740ad05cc6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -5279,373 +5279,374 @@
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__agelessthan__subprogram_def" sum="bc719807f6372f99ab733bfc6f407b03" expanded="true">
+<theory name="Auditlog__agelessthan__subprogram_def" sum="e925f98866647943260504696b240cc5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__nextlistindex__subprogram_def" sum="b8d24229559183796b4cc3b4b8fa7fb7" expanded="true">
+<theory name="Auditlog__nextlistindex__subprogram_def" sum="a509db2a5325a01592ebed9a61d3cd1c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.00" steps="13"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__checklogalarm__subprogram_def" sum="3f27305e3bf9636771cd18ce2c21abfc" expanded="true">
+<theory name="Auditlog__checklogalarm__subprogram_def" sum="d4933d32b8dcd32de04afb48394a9843" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__converttoauditdescription__subprogram_def" sum="b034dcc5fa5d698ce3bbc3b27f8a069b" expanded="true">
+<theory name="Auditlog__converttoauditdescription__subprogram_def" sum="996297222c52175defb135136e9d32d6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. assertion">
+  <goal name="WP_parameter def.4" expl="assertion">
   <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__getstartandendtimefromfile__subprogram_def" sum="98d787af929c5ed76bdc875f86e10a47" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__getstartandendtimefromfile__converttimestotext__subprogram_def" sum="5c7056cf045c94adb380b23f4874813b" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="assertion">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="52"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="104"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="52"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="104"/></proof>
+  <goal name="WP_parameter def.10" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__updateendtimefromfile__subprogram_def" sum="7fd18c6827bc21869190138fb15957d8" expanded="true">
+<theory name="Auditlog__getstartandendtimefromfile__subprogram_def" sum="4efa65191652179347bdc0954672031c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__updateendtimefromfile__overwritetimeintext__subprogram_def" sum="3b906abcdc5cd4ffc66db21d39c1e827" expanded="true">
+<theory name="Auditlog__getstartandendtimefromfile__converttimestotext__subprogram_def" sum="d41d08320ee8e29076ce52c230af8e45" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="16"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="52"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.05" steps="104"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="52"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="87"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="64"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="121"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="77"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="143"/></proof>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="104"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__deletearchivefile__subprogram_def" sum="1849576b5e88027b5d0fab5fdd100542" expanded="true">
+<theory name="Auditlog__updateendtimefromfile__subprogram_def" sum="369330fc5c08e8a03894eeb08b8c5526" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__updateendtimefromfile__overwritetimeintext__subprogram_def" sum="daf93433cd6d852936095a324d3819e0" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="16"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.04" steps="87"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="64"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="121"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.05" steps="77"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="143"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__deletearchivefile__subprogram_def" sum="cfafe6fe27da3e85e30993955ae2a9ca" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="29"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__deletelogfile__subprogram_def" sum="2e5dc427e5c4334c0b726ad9337f4edd" expanded="true">
+<theory name="Auditlog__deletelogfile__subprogram_def" sum="d5d2e90e824d16967425ebd7dea7dac8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="44"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__addelementtofile__subprogram_def" sum="4ea9760e0a76efeca6e71959f3966335" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="unknown" time="0.10"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="110"/></proof>
-  <proof prover="2"><result status="unknown" time="0.02" steps="34530"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="104"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__addelementtologfile__subprogram_def" sum="920313f14a44fb9c6d270de74576a5c4" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="41"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="57938"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="38"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="34"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="109"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="65"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="62"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="84"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. postcondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="103"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="69506"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. postcondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.05" steps="85"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="69235"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="74"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. postcondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="103"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="15. postcondition">
-  <proof prover="0"><result status="unknown" time="0.05"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="104"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="72883"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__addelementtologfile__addelementtocurrentfile__subprogram_def" sum="c03bcf587f8a1f36d01b32f6dd9c1988" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="30"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__addelementtologfile__addelementtonextfile__subprogram_def" sum="2f8fecce23f87fe231ea26e1d0d12b2c" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="32"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__addelementtologfile__addelementtonextfile__setcurrentfiletonextfreefile__subprogram_def" sum="40803c3794b4a4a5348608bef389797a" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__truncatelog__subprogram_def" sum="b5c0f8e16e59f91c7b9b06884ac8fd7d" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="26"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="12"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="55"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.04" steps="44"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="8. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__addelementtofile__subprogram_def" sum="45d3520d1bfaa84788f7343a76939893" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="assertion">
+  <proof prover="0"><result status="unknown" time="0.25"/></proof>
+  <proof prover="1"><result status="unknown" time="0.05" steps="110"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="34530"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="104"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__addelementtologfilewithtruncatechecks__subprogram_def" sum="ed03e655a82bac15a53df806937974bc" expanded="true">
+<theory name="Auditlog__addelementtologfile__subprogram_def" sum="e4ca3107c896486a2f007f761d0c0d0f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="unknown" time="0.13"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="41"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="93145"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="38"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="unknown" time="0.04"/></proof>
+  <proof prover="1"><result status="unknown" time="0.07" steps="41"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="57938"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="38"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="28"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="28"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="34"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="34"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="10. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="98"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. precondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="74"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="174"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="167"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="15. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="20"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="16. postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="170"/></proof>
-  </goal>
-  <goal name="WP_parameter def.17" expl="17. postcondition">
+  <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="109"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="65"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="62"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="84"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="postcondition">
+  <proof prover="0"><result status="unknown" time="0.07"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="103"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="69506"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="postcondition">
+  <proof prover="0"><result status="unknown" time="0.06"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="85"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="69235"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="postcondition">
+  <proof prover="0"><result status="unknown" time="0.08"/></proof>
+  <proof prover="1"><result status="unknown" time="0.09" steps="103"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="73849"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="postcondition">
+  <proof prover="0"><result status="unknown" time="0.08"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="104"/></proof>
+  <proof prover="2"><result status="unknown" time="0.09" steps="72883"/></proof>
+  <proof prover="3"><result status="unknown" time="0.10" steps="103"/></proof>
+  </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Auditlog__init__setfiledetails__subprogram_def" sum="0996a02eead963837af7ad59011e2b93" expanded="true">
+<theory name="Auditlog__addelementtologfile__addelementtocurrentfile__subprogram_def" sum="4ce2784f29d28830bc4c1554c9c5fc4c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Auditlog__init__setfiledetails__getfiledetails__subprogram_def" sum="b341fe5ec078dc942ccb3cece03b5db0" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="30"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__addelementtologfile__addelementtonextfile__subprogram_def" sum="d81c45e0ee636f8643cdf2f855e9f265" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="32"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__addelementtologfile__addelementtonextfile__setcurrentfiletonextfreefile__subprogram_def" sum="5e20ea9526cbb1043a0434540291ccd3" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__truncatelog__subprogram_def" sum="8eacf79ab5bd3e0bb898060ce5cbc15d" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="26"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="12"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="55"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="44"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__addelementtologfilewithtruncatechecks__subprogram_def" sum="52d73d7a22a4776cc39d469d188b3a93" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="unknown" time="0.34"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="41"/></proof>
+  <proof prover="2"><result status="unknown" time="0.12" steps="93145"/></proof>
+  <proof prover="3"><result status="unknown" time="0.08" steps="38"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="28"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="34"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="98"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="74"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="174"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="167"/></proof>
+  </goal>
+  <goal name="WP_parameter def.15" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="20"/></proof>
+  </goal>
+  <goal name="WP_parameter def.16" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="170"/></proof>
+  </goal>
+  <goal name="WP_parameter def.17" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__init__setfiledetails__subprogram_def" sum="331c40bd670132d2fe1fc387224e311f" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Auditlog__init__setfiledetails__getfiledetails__subprogram_def" sum="18dffad92cb5057e6b34452542b7040b" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

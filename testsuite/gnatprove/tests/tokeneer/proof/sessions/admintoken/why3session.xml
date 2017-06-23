@@ -8951,185 +8951,185 @@
 </theory>
 <theory name="Admintoken__readandcheck__checkauthcert___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Admintoken__package_def" sum="d0aa69ba30f61d778fca5f02298ba741" expanded="true">
+<theory name="Admintoken__package_def" sum="7f54144c5f68522d1b90d0683f733b93" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__theauthcertrole__subprogram_def" sum="1dbe0e3ed512081edd7aba63cd10a0cc" expanded="true">
+<theory name="Admintoken__theauthcertrole__subprogram_def" sum="947b93a54aac5c5b9cca813f0e868384" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__isgood__subprogram_def" sum="157a39fc916edf45d9210f4f35984114" expanded="true">
+<theory name="Admintoken__isgood__subprogram_def" sum="480c8df6f934ad60cccd5513ccebcd9b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__authcertvalid__subprogram_def" sum="9e995509572592de02c3477f00523ab6" expanded="true">
+<theory name="Admintoken__authcertvalid__subprogram_def" sum="582681f0f6835f892fdc43205debe057" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__init__subprogram_def" sum="5f03cc74d904b7d66498f52c7c178156" expanded="true">
+<theory name="Admintoken__init__subprogram_def" sum="60750669744abe6ba80ad1e2f8b169f2" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+  <goal name="WP_parameter def.1" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.07" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Admintoken__poll__subprogram_def" sum="15f0c116a0e80b32260ae9409ccb6269" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admintoken__poll__subprogram_def" sum="b82948be2318294fe1b23ad9cd7ddbd6" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admintoken__readandcheck__subprogram_def" sum="cd7489c284647e81c22ef5a2246d8344" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="26"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="29"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <goal name="WP_parameter def.2" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.05" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
+ </transf>
+ </goal>
+</theory>
+<theory name="Admintoken__readandcheck__subprogram_def" sum="dc9a484504dc2d416e22607cbd828e3f" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="26"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="16"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="29"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="17"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="21"/></proof>
+  <goal name="WP_parameter def.4" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="8. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="21"/></proof>
+  <goal name="WP_parameter def.5" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="16"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="9. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="36"/></proof>
+  <goal name="WP_parameter def.6" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="17"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="59"/></proof>
+  <goal name="WP_parameter def.7" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="21"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="21"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="36"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.10" steps="59"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__ispresent__subprogram_def" sum="93c2635dde72914ad805fd6817488966" expanded="true">
+<theory name="Admintoken__ispresent__subprogram_def" sum="aaa8ac673e99839a12e2bc740ad05cc6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__iscurrent__subprogram_def" sum="4fcf5d8b207570fe2342da8d2a40698f" expanded="true">
+<theory name="Admintoken__iscurrent__subprogram_def" sum="79abfc3ebca56163f1b74c520ef4df94" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__extractuser__subprogram_def" sum="af93867cc827507720aa7cb2d39e367d" expanded="true">
+<theory name="Admintoken__extractuser__subprogram_def" sum="a2952bca26b2d6b94269893a1fbf9843" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__getrole__subprogram_def" sum="1c653fba24baac80b1269cf22cd75694" expanded="true">
+<theory name="Admintoken__getrole__subprogram_def" sum="6680cb7cf056e7de3a7512e175359daf" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="31"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="31"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__clear__subprogram_def" sum="1542170448edab5d6c5d8ca4d522e40a" expanded="true">
+<theory name="Admintoken__clear__subprogram_def" sum="a12fcf34b701ac9a65846cfb7c28b0a4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="22"/></proof>
+  <goal name="WP_parameter def.1" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="22"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="22"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="22"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="unknown" time="0.08"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="52"/></proof>
-  <proof prover="2"><result status="unknown" time="0.10" steps="54694"/></proof>
-  <proof prover="3"><result status="unknown" time="0.09" steps="90"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="0"><result status="unknown" time="0.18"/></proof>
+  <proof prover="1"><result status="unknown" time="0.08" steps="52"/></proof>
+  <proof prover="2"><result status="unknown" time="0.27" steps="54694"/></proof>
+  <proof prover="3"><result status="unknown" time="0.17" steps="90"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__readandcheck__makedescription__subprogram_def" sum="333538f7ccda205c6a971705391ec888" expanded="true">
+<theory name="Admintoken__readandcheck__makedescription__subprogram_def" sum="4900aeb2b82116ec15fd04bdeb52a0cc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. assertion">
+  <goal name="WP_parameter def.1" expl="assertion">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. assertion">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Admintoken__readandcheck__checkidcertok__subprogram_def" sum="1bf3ffdfd7b29268a390d143cd4923b3" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="35"/></proof>
+  <goal name="WP_parameter def.4" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="31"/></proof>
+  <goal name="WP_parameter def.5" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Admintoken__readandcheck__checkauthcert__subprogram_def" sum="f808f42bcbb701fccc1f75fd1808fa6b" expanded="true">
+<theory name="Admintoken__readandcheck__checkidcertok__subprogram_def" sum="0f8bc52eea5dabb5032f6d1086befe37" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="84"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.09" steps="35"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="53"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.08" steps="31"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="49"/></proof>
+ </transf>
+ </goal>
+</theory>
+<theory name="Admintoken__readandcheck__checkauthcert__subprogram_def" sum="68ef9b330200ee85ee8d35da785dfaa3" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="84"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="53"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.11" steps="49"/></proof>
   </goal>
  </transf>
  </goal>

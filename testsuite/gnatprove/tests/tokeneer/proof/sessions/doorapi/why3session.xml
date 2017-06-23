@@ -2991,25 +2991,25 @@
  </transf>
  </goal>
 </theory>
-<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="f7e6516cd6eb48c123dee72b684c2cf7" expanded="true">
+<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="a30c2c8eef4a9a87a8df435c4762529a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="unknown" time="0.26"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="407"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="90941"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="499"/></proof>
+  <goal name="WP_parameter def.1" expl="assertion">
+  <proof prover="0"><result status="unknown" time="0.56"/></proof>
+  <proof prover="1"><result status="unknown" time="0.06" steps="407"/></proof>
+  <proof prover="2"><result status="unknown" time="0.06" steps="90941"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="499"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="unknown" time="0.46"/></proof>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="0"><result status="unknown" time="1.43"/></proof>
   <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="unknown" time="0.09" steps="157015"/></proof>
+  <proof prover="2"><result status="unknown" time="0.14" steps="157015"/></proof>
   <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="unknown" time="0.48"/></proof>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="0"><result status="unknown" time="1.56"/></proof>
   <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="unknown" time="0.10" steps="211406"/></proof>
+  <proof prover="2"><result status="unknown" time="0.16" steps="211406"/></proof>
   <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
  </transf>

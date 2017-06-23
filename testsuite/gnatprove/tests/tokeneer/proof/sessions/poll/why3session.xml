@@ -10688,50 +10688,50 @@
  </transf>
  </goal>
 </theory>
-<theory name="Poll__activity__subprogram_def" sum="4d21a5aa6b0462e1b262bee9c52e4366" expanded="true">
+<theory name="Poll__activity__subprogram_def" sum="944827e1ad7a84ba2de7be68af75a99b" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.7" expl="7. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="8. postcondition">
+  <goal name="WP_parameter def.6" expl="postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="9. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.7" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="10. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.8" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.11" expl="11. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.12" expl="12. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. postcondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="18"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. postcondition">
+  <goal name="WP_parameter def.9" expl="postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.13" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="18"/></proof>
+  </goal>
+  <goal name="WP_parameter def.14" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

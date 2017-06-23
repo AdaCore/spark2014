@@ -3557,11 +3557,11 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__unlock__subprogram_def" sum="50ae4542c0721137c4ea0498d62a0cae" expanded="true">
+<theory name="Latchapi__unlock__subprogram_def" sum="e0588b7ee59eba45b3e5a69463a3f286" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="unknown" time="0.19"/></proof>
+  <goal name="WP_parameter def.1" expl="assertion">
+  <proof prover="0"><result status="unknown" time="0.29"/></proof>
   <proof prover="1"><result status="unknown" time="0.03" steps="397"/></proof>
   <proof prover="2"><result status="unknown" time="0.06" steps="87355"/></proof>
   <proof prover="3"><result status="unknown" time="0.04" steps="487"/></proof>
@@ -3569,14 +3569,14 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__lock__subprogram_def" sum="9829ff2a5b6b7b48343c951936326a28" expanded="true">
+<theory name="Latchapi__lock__subprogram_def" sum="41e0a86a6ad40fa04fce13e9dfde5433" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. assertion">
-  <proof prover="0"><result status="unknown" time="0.18"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="375"/></proof>
+  <goal name="WP_parameter def.1" expl="assertion">
+  <proof prover="0"><result status="unknown" time="0.25"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="375"/></proof>
   <proof prover="2"><result status="unknown" time="0.05" steps="75501"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="457"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="457"/></proof>
   </goal>
  </transf>
  </goal>
