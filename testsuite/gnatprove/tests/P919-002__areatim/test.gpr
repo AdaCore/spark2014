@@ -4,7 +4,7 @@ project Test is
   for Source_Dirs use (".");
 
   package Compiler is
-    for Switches ("Ada") use ("-gnatg", "-nostdinc");
+    for Switches ("Ada") use ("-gnatg", "-gnatwU", "-nostdinc");
   end Compiler;
 
 end Test;

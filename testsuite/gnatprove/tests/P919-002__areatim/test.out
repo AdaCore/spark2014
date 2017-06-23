@@ -1,3 +1,1 @@
 a-reatim.ads:7:04: medium: assertion might fail
-s-osinte.ads:1:15: warning: unit "System.BB.MCU_Parameters" is not referenced
-gnatprove: error during flow analysis and proof
