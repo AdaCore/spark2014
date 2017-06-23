@@ -444,10 +444,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--replay");
       end if;
 
-      if CL_Switches.Benchmark then
-         Args.Append ("--benchmark");
-      end if;
-
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
@@ -1135,6 +1131,22 @@ procedure Gnatprove with SPARK_Mode is
       --  steps. The last argument of the regular arguments is preserved, that
       --  is, the extra arguments for steps are added just before.
 
+      function Build_Executable (Exec : String) return String;
+      --  build the part of a command that corresponds to the executable. Takes
+      --  into account Benchmark mode.
+
+      ----------------------
+      -- Build_Executable --
+      ----------------------
+
+      function Build_Executable (Exec : String) return String is
+      begin
+         if CL_Switches.Benchmark then
+            return "fake_" & Exec;
+         end if;
+         return Exec;
+      end Build_Executable;
+
       --------------------------
       -- Build_Prover_Command --
       --------------------------
@@ -1144,7 +1156,8 @@ procedure Gnatprove with SPARK_Mode is
          Command : Unbounded_String;
          Args : constant JSON_Array := Get (Get (Prover, "args"));
       begin
-         Append (Command, String'(Get (Get (Prover, "executable"))));
+         Append (Command,
+                 Build_Executable (String'(Get (Get (Prover, "executable")))));
          for Index in 1 .. Length (Args) loop
             Append (Command, " " & String'(Get (Get (Args, Index))));
          end loop;
@@ -1161,7 +1174,8 @@ procedure Gnatprove with SPARK_Mode is
          Args : constant JSON_Array := Get (Get (Prover, "args"));
          Args_Steps : constant JSON_Array := Get (Get (Prover, "args_steps"));
       begin
-         Append (Command, String'(Get (Get (Prover, "executable"))));
+         Append (Command,
+                 Build_Executable (String'(Get (Get (Prover, "executable")))));
          for Index in 1 .. Length (Args) - 1 loop
             Append (Command, " " & String'(Get (Get (Args, Index))));
          end loop;
