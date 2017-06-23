@@ -1,0 +1,2 @@
+pragma Eliminate (Test, Dispose, Source_Location => "test.adb:8");
+pragma Eliminate (Test, Open,    Source_Location => "test.ads:4");
