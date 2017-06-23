@@ -4824,7 +4824,7 @@ package body Gnat2Why.Subprograms is
             --  postcondition.
 
             if Present (Expr_Fun_N)
-              and then Entity_Body_In_SPARK (E)
+              and then Entity_Body_Compatible_With_SPARK (E)
               and then not No_Return (E)
               and then
                 (not Is_Volatile_Function (E)
@@ -5237,7 +5237,18 @@ package body Gnat2Why.Subprograms is
 
       --  If the entity's body is not in SPARK,
       --  if it is inlined for proof
+      --  if it is recursive and may not terminate
       --  or if the function does not return, do not generate axiom.
+
+      --  We do not generate axioms for body of expression function which do
+      --  not terminate because these axioms could be unsound.
+      --  If the function does not terminate but is not recursive, then it
+      --  must be because either it is itself not in part with SPARK_Mode On or
+      --  because it calls a non terminating function. These reasons should not
+      --  make the axiom unsound.
+      --  If the function is recursive but has a terminating annotation, then
+      --  the axiom should not be incorrect, so that is not a problem that it
+      --  is used to prove itself.
 
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
@@ -5245,6 +5256,7 @@ package body Gnat2Why.Subprograms is
         or else
           (Is_Volatile_Function (E)
             and then not Within_Protected_Type (E))
+        or else (Is_Recursive (E) and then Is_Potentially_Nonreturning (E))
       then
          Close_Theory (File,
                        Kind => Definition_Theory);

@@ -6,8 +6,8 @@ is
 
    function Mathematical_Factorial (X : Integer) return Integer is
      (if X <= 1 then 1 else X * Mathematical_Factorial (X-1))
-   with Pre => X in 1 .. 12,
-   Ghost;
+   with Pre => X in 1 .. 12, Ghost;
+   pragma Annotate (GNATprove, Terminating, Mathematical_Factorial);
 
    function Fact (X : Integer) return Integer
      with Pre => X in 1 .. 12,

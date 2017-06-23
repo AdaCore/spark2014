@@ -12467,27 +12467,48 @@ package body Gnat2Why.Expr is
       elsif Domain in EW_Pred | EW_Term
         and then not No_Return (Subp)
         and then not Entity_In_Ext_Axioms (Subp)
-        and then (Has_Contracts (Subp, Pragma_Postcondition)
-                   or else Has_Contracts (Subp, Pragma_Contract_Cases)
-                   or else Type_Needs_Dynamic_Invariant (Etype (Subp)))
       then
          declare
-            Implicit : constant String :=
-              (if Has_Contracts (Subp, Pragma_Postcondition)
-                    or else
-                  Has_Contracts (Subp, Pragma_Contract_Cases)
-               then ""
-               else "implicit ");
+            Has_Explicit_Contracts : constant Boolean :=
+              Has_Contracts (Subp, Pragma_Postcondition)
+              or else Has_Contracts (Subp, Pragma_Contract_Cases);
+            Has_Implicit_Contracts : constant Boolean :=
+              Type_Needs_Dynamic_Invariant (Etype (Subp));
+            Is_Expression_Function : constant Boolean :=
+              Ekind (Subp) = E_Function
+              and then Present (Get_Expression_Function (Subp))
+              and then Entity_Body_Compatible_With_SPARK (Subp);
+            Subp_Non_Returning     : constant Boolean :=
+              Is_Potentially_Nonreturning (Subp);
+            Subp_Recursive         : constant Boolean :=
+              Is_Recursive (Subp);
          begin
-            if Is_Recursive (Subp) then
-               Error_Msg_NE
-                 ("info: " & Implicit & "function contract not available for "
-                  & "proof (& is recursive)", Expr, Subp);
-            elsif Is_Potentially_Nonreturning (Subp)
-              and then not Has_Terminate_Annotation (Subp)
+
+            if (Subp_Non_Returning or else Subp_Recursive)
+              and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
+            then
+               declare
+                  String_For_Implicit : constant String :=
+                    (if Has_Explicit_Contracts then ""
+                     else "implicit ");
+                  String_For_Reason   : constant String :=
+                    (if Subp_Recursive
+                     then "is recursive"
+                     else "may not return");
+               begin
+                  Error_Msg_NE
+                    ("info: " & String_For_Implicit
+                     & "function contract not available for "
+                     & "proof (& " & String_For_Reason & ")", Expr, Subp);
+               end;
+            end if;
+
+            if Subp_Recursive
+              and then Subp_Non_Returning
+              and then Is_Expression_Function
             then
                Error_Msg_NE
-                 ("info: " & Implicit & "function contract not available for "
+                 ("info: expression function body not available for "
                   & "proof (& may not return)", Expr, Subp);
             end if;
          end;

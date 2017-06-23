@@ -21,6 +21,7 @@ package Number_Theory is
      with
        Ghost,
        Post => Float(Fib'Result) < (1.6181**N)/2.2360 + 1.0;
+   pragma Annotate (GNATprove, Terminating, Fib);
 
    -- Returns the Nth Fibonacci number.
    function Fibonacci(N : Fibonacci_Argument_Type) return Natural
