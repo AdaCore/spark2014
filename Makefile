@@ -99,7 +99,6 @@ install-all:
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
         # Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
-	$(CP) benchmark_script/why3.conf.fake install/share/spark/config
         # It is ok for developers to not have a local build of CVC4. In that
         # case we don't want to have an error to be issued.
 	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
