@@ -100,17 +100,12 @@ controller_pack.ads:91:07: info: initialization of "Roll_Rate_Desired" proved
 controller_pack.ads:92:07: info: initialization of "Pitch_Rate_Desired" proved
 controller_pack.ads:93:07: info: initialization of "Yaw_Rate_Desired" proved
 controller_pack.ads:117:04: info: initialization of "Is_Init" constituent of "Controller_State" proved
-free_fall_pack.adb:21:31: info: division check proved (CVC4: 1 VC), in call inlined at free_fall_pack.adb:107
-free_fall_pack.adb:30:61: info: index check proved (CVC4: 2 VC), in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:111
+free_fall_pack.adb:21:31: info: division check proved (CodePeer)
+free_fall_pack.adb:30:61: info: index check proved (CVC4: 2 VC)
 free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved
-free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved, in call inlined at free_fall_pack.adb:66
-free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:111
-free_fall_pack.adb:34:27: info: float overflow check proved (CVC4: 1 VC), in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:111
+free_fall_pack.adb:34:27: info: float overflow check proved (CodePeer)
 free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved
-free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved, in call inlined at free_fall_pack.adb:66
-free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:111
 free_fall_pack.adb:72:16: info: initialization of "Derivative" proved
-free_fall_pack.adb:72:16: info: initialization of "Derivative" proved, in call inlined at free_fall_pack.adb:111
 free_fall_pack.adb:113:10: info: initialization of "Has_Landed" proved
 free_fall_pack.adb:121:35: info: initialization of "Has_Detected_FF" proved
 free_fall_pack.ads:87:04: info: initialization of "FF_Mode" constituent of "FF_State" proved
@@ -802,34 +797,9 @@ sensfusion6_pack.ads:84:04: info: initialization of "Integral_FBy" constituent o
 sensfusion6_pack.ads:86:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:92:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:92:30: info: range check proved (Interval)
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:101
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:102
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:103
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:104
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:106
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:107
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:108
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:109
-stabilizer_pack.adb:78:25: info: assertion proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:277
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:101
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:102
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:103
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:104
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:106
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:107
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:108
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:109
-stabilizer_pack.adb:79:27: info: range check proved (CVC4: 1 VC), in call inlined at stabilizer_pack.adb:277
+stabilizer_pack.adb:78:25: info: assertion proved (CodePeer)
+stabilizer_pack.adb:79:27: info: range check proved (CodePeer)
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:101
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:102
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:103
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:104
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:106
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:107
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:108
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:109
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:277
 stabilizer_pack.adb:98:15: info: initialization of "R" proved
 stabilizer_pack.adb:98:17: info: division check proved (CodePeer)
 stabilizer_pack.adb:99:15: info: initialization of "P" proved
@@ -943,7 +913,6 @@ stabilizer_pack.adb:271:42: info: initialization of "Baro_V_Speed" proved
 stabilizer_pack.adb:271:55: info: float overflow check proved (Interval)
 stabilizer_pack.adb:271:57: info: initialization of "Alt_Hold_PID_Out" proved
 stabilizer_pack.adb:276:30: info: float overflow check proved (Interval)
-stabilizer_pack.adb:277:39: info: initialization of "C28b" proved
 stabilizer_pack.adb:277:62: info: initialization of "Raw_Thrust" proved
 stabilizer_pack.adb:317:33: medium: range check might fail
 stabilizer_pack.adb:318:33: medium: range check might fail

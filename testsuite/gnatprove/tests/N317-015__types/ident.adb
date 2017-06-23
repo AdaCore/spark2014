@@ -43,14 +43,14 @@ is
       Res := Id_Public (X);
       pragma Assert (Res = X);     -- @ASSERT:FAIL
       Res := Id_Private (X);
-      pragma Assert (Res = X);     -- @ASSERT:PASS
+      pragma Assert (Res = X);     -- @ASSERT:FAIL
       Res := Id_Body (X);
       pragma Assert (Res = X);     -- @ASSERT:PASS
 
       Incr_Public (X, Y);
       pragma Assert (Y = 9);   -- @ASSERT:FAIL
       Incr_Private (X, Y);
-      pragma Assert (Y = 9);   -- @ASSERT:PASS
+      pragma Assert (Y = 9);   -- @ASSERT:FAIL
       Incr_Body (X, Y);
       pragma Assert (Y = 9);   -- @ASSERT:PASS
    end Test;

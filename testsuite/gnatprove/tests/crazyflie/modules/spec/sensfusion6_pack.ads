@@ -92,25 +92,4 @@ private
    Beta         : T_Alpha := BETA_DEF
      with Part_Of => SensFusion6_State;
 
-   --  Procedures and functions
-
-   procedure Madgwick_Update_Q
-     (Gx : T_Rate;
-      Gy : T_Rate;
-      Gz : T_Rate;
-      Ax : T_Acc;
-      Ay : T_Acc;
-      Az : T_Acc;
-      Dt : T_Delta_Time);
-
-   procedure Mahony_Update_Q
-     (Gx : T_Rate;
-      Gy : T_Rate;
-      Gz : T_Rate;
-      Ax : T_Acc;
-      Ay : T_Acc;
-      Az : T_Acc;
-      Dt : T_Delta_Time);
-
-
 end SensFusion6_Pack;

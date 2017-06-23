@@ -89,8 +89,8 @@ ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:45:26: info: initialization of "X" proved
-ident.adb:46:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:46:22: info: initialization of "Res" proved
+ident.adb:46:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:46:28: info: initialization of "X" proved
 ident.adb:47:23: info: initialization of "X" proved
 ident.adb:48:22: info: assertion proved (CVC4: 1 VC)
@@ -99,9 +99,9 @@ ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
-ident.adb:52:07: info: initialization of "X" proved
-ident.adb:53:22: info: assertion proved (CVC4: 1 VC)
+ident.adb:52:21: info: initialization of "X" proved
 ident.adb:53:22: info: initialization of "Y" proved
+ident.adb:53:22: medium: assertion might fail, cannot prove Y = 9
 ident.adb:54:07: info: initialization of "X" proved
 ident.adb:55:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:55:22: info: initialization of "Y" proved

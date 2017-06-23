@@ -17,8 +17,8 @@ with SPARK_Mode,
                                           Integral_FBy,
                                           Integral_FBz,
                                           Beta))
-is
-
+is procedure Madgwick_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Acc; Ay : T_Acc; Az : T_Acc; Dt : T_Delta_Time);
+   procedure Mahony_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Acc; Ay : T_Acc; Az : T_Acc; Dt : T_Delta_Time);
    procedure SensFusion6_Init is
    begin
       if Is_Init = 1 then

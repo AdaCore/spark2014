@@ -9,9 +9,9 @@ ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
-ident.adb:45:14: info: initialization of "X" proved
-ident.adb:46:22: info: assertion proved (CVC4: 1 VC)
+ident.adb:45:26: info: initialization of "X" proved
 ident.adb:46:22: info: initialization of "Res" proved
+ident.adb:46:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:46:28: info: initialization of "X" proved
 ident.adb:47:14: info: initialization of "X" proved
 ident.adb:48:22: info: assertion proved (CVC4: 1 VC)
@@ -23,8 +23,8 @@ ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0)
 ident.adb:52:21: info: initialization of "X" proved
 ident.adb:52:21: info: range check proved (CVC4: 1 VC)
-ident.adb:53:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:53:22: info: initialization of "Y" proved
+ident.adb:53:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0)
 ident.adb:54:18: info: initialization of "X" proved
 ident.adb:54:18: info: range check proved (CVC4: 1 VC)
 ident.adb:55:22: info: assertion proved (CVC4: 1 VC)

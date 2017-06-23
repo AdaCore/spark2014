@@ -1,6 +1,5 @@
 base-ext.ads:10:48: medium: overflow check might fail (e.g. when X = (C => -1, D => -2147483648))
 base.ads:9:14: info: postcondition proved (CVC4: 1 VC)
-ext.adb:4:04: warning: analyzing unreferenced procedure "Test"
 ext.adb:8:22: medium: assertion might fail, cannot prove T(A).Sum = T(B).Sum (e.g. when A = (D => 1) and B = (D => 1))
 ext.ads:13:53: medium: overflow check might fail (e.g. when X = (D => -2147483648))
 ext.ads:17:14: warning: subprogram "Test" has no effect

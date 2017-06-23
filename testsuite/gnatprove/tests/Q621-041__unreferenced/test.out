@@ -1,4 +1,3 @@
 proc-execute.ads:3:23: info: initialization of "Output" proved
 proc-mw.ads:3:14: warning: subprogram "Mw" has no effect
-proc.adb:5:04: warning: analyzing unreferenced procedure "Set_Something"
 proc.ads:5:14: warning: subprogram "Set_Something" has no effect
