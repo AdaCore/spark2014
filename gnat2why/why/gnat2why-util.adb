@@ -74,13 +74,25 @@ package body Gnat2Why.Util is
 
    package body Ada_Ent_To_Why is
 
+      function Normalize_Entity (E : Entity_Id) return Entity_Id is
+        (if Nkind (E) in N_Entity and then Ekind (E) = E_Discriminant then
+              Root_Record_Component (E) else E);
+      --  Entities of discriminants can vary when types are derived. We want to
+      --  refer to the same item for every variants of a single discriminant
+      --  entity.
+      --  ??? Ada_Ent_To_Why is sometimes used to store nodes, see
+      --      Transform_Aggregate.
+      --  @param E entity to be registered in the map
+      --  @return a normalized version of E to avoid duplicates
+
       -------------
       -- Element --
       -------------
 
       function Element (M : Map; E : Entity_Id) return Item_Type is
+         Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
       begin
-         return M.Entity_Ids.Element (E);
+         return M.Entity_Ids.Element (Uniq_Ent);
       end Element;
 
       function Element (C : Cursor) return Item_Type is
@@ -98,7 +110,8 @@ package body Gnat2Why.Util is
       ----------
 
       function Find (M : Map; E : Entity_Id) return Cursor is
-         C : constant Ent_To_Why.Cursor := M.Entity_Ids.Find (E);
+         Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
+         C        : constant Ent_To_Why.Cursor := M.Entity_Ids.Find (Uniq_Ent);
       begin
          if Ent_To_Why.Has_Element (C) then
             return Cursor'(CK_Ent,
@@ -118,10 +131,11 @@ package body Gnat2Why.Util is
                            C);
          else
             declare
-               Ent : constant Entity_Id := Find_Entity (E);
+               Ent      : constant Entity_Id := Find_Entity (E);
+               Uniq_Ent : constant Entity_Id := Normalize_Entity (Ent);
             begin
-               if Present (Ent) then
-                  return Find (M, Ent);
+               if Present (Uniq_Ent) then
+                  return Find (M, Uniq_Ent);
                else
                   return Cursor'(CK_Ent, Ent_To_Why.No_Element,
                                  Name_To_Why_Map.No_Element);
@@ -134,10 +148,10 @@ package body Gnat2Why.Util is
       -- Has_Element --
       -----------------
 
-      function Has_Element (M : Map; E : Entity_Id) return Boolean
-      is
+      function Has_Element (M : Map; E : Entity_Id) return Boolean is
+         Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
       begin
-         return M.Entity_Ids.Contains (E);
+         return M.Entity_Ids.Contains (Uniq_Ent);
       end Has_Element;
 
       function Has_Element (C : Cursor) return Boolean
@@ -159,10 +173,11 @@ package body Gnat2Why.Util is
                         E : Entity_Id;
                         W : Item_Type)
       is
-         C : Ent_To_Why.Cursor;
+         Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
+         C        : Ent_To_Why.Cursor;
          Inserted : Boolean;
       begin
-         M.Entity_Ids.Insert (E, W, C, Inserted);
+         M.Entity_Ids.Insert (Uniq_Ent, W, C, Inserted);
          if Undo_Stacks.Is_Empty (M.Undo_Stack) then
 
             --  At the global level (no undo stack) we expect that there are no
@@ -171,7 +186,7 @@ package body Gnat2Why.Util is
             pragma Assert (Inserted);
          else
             if Inserted then
-               M.Undo_Stack.Append (Action'(Remove_Ent, E));
+               M.Undo_Stack.Append (Action'(Remove_Ent, Uniq_Ent));
             else
 
                --  If there was already an entry for the entity, we need to
@@ -182,8 +197,8 @@ package body Gnat2Why.Util is
                  (Action'(Kind       => Insert_Ent,
                           Ins_Entity => Ent_To_Why.Key (C),
                           Ins_Binder => Ent_To_Why.Element (C)));
-               M.Entity_Ids.Replace (E, W);
-               M.Undo_Stack.Append (Action'(Remove_Ent, E));
+               M.Entity_Ids.Replace (Uniq_Ent, W);
+               M.Undo_Stack.Append (Action'(Remove_Ent, Uniq_Ent));
             end if;
          end if;
       end Insert;

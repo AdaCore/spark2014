@@ -202,25 +202,9 @@ package body Why.Gen.Records is
               (Discr, EW_Abstract (Etype (Discr)));
             Binds (I) := R_Acc;
 
-            declare
-               Base_Discr : constant Entity_Id :=
-                 (if Is_Base_Type (Ty_Ext) then Discr
-                  else Original_Record_Component (Discr));
-               --  Depending on the case, we may also need to refer to
-               --  discriminants of the base type. It is the case for example
-               --  for default values which are declared on base types.
-            begin
+            --  We need entities of discrimiants
 
-               --  We need entities of discrimiants
-
-               Insert_Entity (Discr, Tmps (I));
-
-               --  and entities of discrimiants of the base type
-
-               if not Is_Base_Type (Ty_Ext) then
-                  Insert_Entity (Base_Discr, Tmps (I));
-               end if;
-            end;
+            Insert_Entity (Discr, Tmps (I));
 
             --  Call Build_Predicate_For_Discr on discriminants
 
