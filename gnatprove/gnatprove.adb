@@ -1116,6 +1116,9 @@ procedure Gnatprove with SPARK_Mode is
       --  connection with the overloading of JSON API, this will require type
       --  annotations.
 
+      procedure Set_Key_Value_Bool (Key : String; Value : Boolean);
+      --  same, but for Booleans.
+
       procedure Write_Prover_Config (Prover : JSON_Value);
       --  write the config of a prover
 
@@ -1228,6 +1231,20 @@ procedure Gnatprove with SPARK_Mode is
          Put_Line (File, Key & " = " & """" & Value & """");
       end Set_Key_Value;
 
+      ------------------------
+      -- Set_Key_Value_Bool --
+      ------------------------
+
+      procedure Set_Key_Value_Bool (Key : String; Value : Boolean) is
+      begin
+         Put (File, Key & " = ");
+         if Value then
+            Put_Line (File, "true");
+         else
+            Put_Line (File, "false");
+         end if;
+      end Set_Key_Value_Bool;
+
       -----------------------
       -- Set_Key_Value_Int --
       -----------------------
@@ -1272,6 +1289,15 @@ procedure Gnatprove with SPARK_Mode is
          Set_Key_Value ("name", Get (Get (Prover, "name")));
          Set_Key_Value ("shortcut", Get (Get (Prover, "shortcut")));
          Set_Key_Value ("version", Get (Get (Prover, "version")));
+         if Has_Field (Prover, "interactive") then
+            Set_Key_Value_Bool ("interactive",
+                                Get (Get (Prover, "interactive")));
+         end if;
+         if Has_Field (Prover, "in_place") then
+            Set_Key_Value_Bool ("in_place",
+                           Get (Get (Prover, "in_place")));
+         end if;
+
       end Write_Prover_Config;
 
       Editors : constant JSON_Array := Get (Get (Config, "editors"));
