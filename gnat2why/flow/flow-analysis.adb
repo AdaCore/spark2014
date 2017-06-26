@@ -2510,41 +2510,36 @@ package body Flow.Analysis is
                V_Error := Vertex;
          end case;
 
-         Msg :=
-           To_Unbounded_String
-             ((case Kind is
-                 when Init =>
-                    "initialization of & proved",
-                 when Unknown =>
-                   (if Default_Init
-                    then "input value of & might be used"
-                    elsif Is_Function
-                    then
-                      (if Has_Only_Infinite_Execution (Vertex)
-                       then "function & does not return on any path"
-                       else "function & does not return on some paths")
-                    else "& might not be "),
-                 when Err =>
-                   (if Default_Init
-                    then "input value of & will be used"
-                    else "& is not ")));
-
-         case Kind is
-            when Unknown | Err =>
-               if not (Default_Init or Is_Function) then
-                  if Has_Async_Readers (Var) then
-                     Append (Msg, "written");
-                  else
-                     Append (Msg, "initialized");
-                  end if;
-               end if;
-               if Is_Final_Use and not (Is_Global or Is_Function) then
-                  Append (Msg, " in &");
-               end if;
-
-            when others =>
-               null;
-         end case;
+         --  Assemble appropriate message for failed initialization. We deal
+         --  with a bunch of special cases first, but if they don't trigger we
+         --  create the standard message.
+         if Kind = Init then
+            Msg := To_Unbounded_String ("initialization of & proved");
+         elsif Is_Function then
+            Msg := To_Unbounded_String ("function & does not return on ");
+            if Has_Only_Infinite_Execution (Vertex) then
+               Append (Msg, "any path");
+            else
+               Append (Msg, "some paths");
+            end if;
+         else
+            Msg := To_Unbounded_String ("&");
+            if Kind = Err then
+               Append (Msg, " is not");
+            else
+               Append (Msg, " might not be");
+            end if;
+            if Default_Init then
+               Append (Msg, " set");
+            elsif Has_Async_Readers (Var) then
+               Append (Msg, " written");
+            else
+               Append (Msg, " initialized");
+            end if;
+            if Is_Final_Use and not Is_Global then
+               Append (Msg, " in &");
+            end if;
+         end if;
 
          if not Is_Final_Use then
             V_Goal    := V_Error;

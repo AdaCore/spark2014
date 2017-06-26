@@ -11,12 +11,12 @@ stackp.adb:44:29: info: range check proved (CVC4: 1 VC)
 stackp.ads:6:09: info: default initial condition proved (CVC4: 1 VC)
 stackp.ads:19:30: info: initialization of "S.First" proved, in inherited contract at stackp.ads:36
 stackp.ads:19:30: info: initialization of "S.Length" proved, in inherited contract at stackp.ads:36
-stackp.ads:19:30: medium: input value of "S.Content" will be used, in inherited contract at stackp.ads:36
+stackp.ads:19:30: medium: "S.Content" is not set, in inherited contract at stackp.ads:36
 stackp.ads:22:42: info: initialization of "E" proved, in inherited contract at stackp.ads:38
 stackp.ads:33:13: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:36:14: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:36:21: info: initialization of "S.Length" proved
-stackp.ads:36:21: medium: input value of "S.Content" will be used in "Reset"
+stackp.ads:36:21: medium: "S.Content" is not set in "Reset"
 stackp.ads:38:37: info: initialization of "E" proved
 stackp.ads:39:20: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:39:20: medium: class-wide postcondition might be weaker than overridden one
@@ -31,7 +31,7 @@ stackp.ads:52:13: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:55:14: info: postcondition proved (CVC4: 1 VC)
 stackp.ads:55:21: info: initialization of "S.First" proved
 stackp.ads:55:21: info: initialization of "S.Length" proved
-stackp.ads:55:21: medium: input value of "S.Content" will be used in "Reset"
+stackp.ads:55:21: medium: "S.Content" is not set in "Reset"
 stackp.ads:57:38: info: initialization of "E" proved
 stackp.ads:58:20: info: postcondition proved (Z3: 1 VC)
 stackp.ads:58:20: medium: class-wide postcondition might be weaker than overridden one

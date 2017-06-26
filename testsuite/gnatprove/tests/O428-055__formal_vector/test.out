@@ -43,20 +43,20 @@ init_list_zero.adb:14:07: info: precondition proved (CVC4: 1 VC)
 init_list_zero.adb:14:27: info: initialization of "Cu.Node" proved
 init_list_zero.adb:15:07: info: precondition proved (CVC4: 1 VC)
 init_list_zero.adb:15:16: info: initialization of "Cu.Node" proved
-init_vec_zero.adb:3:26: low: input value of private part of "V" might be used in "Init_Vec_Zero"
+init_vec_zero.adb:3:26: low: private part of "V" might not be set in "Init_Vec_Zero"
 init_vec_zero.adb:5:11: info: postcondition proved (CVC4: 1 VC)
-init_vec_zero.adb:5:56: low: input value of private part of "V" might be used
+init_vec_zero.adb:5:56: low: private part of "V" might not be set
 init_vec_zero.adb:5:62: info: precondition proved (CVC4: 2 VC)
 init_vec_zero.adb:5:74: info: range check proved (CVC4: 1 VC)
-init_vec_zero.adb:8:26: medium: input value of private part of "V" will be used
-init_vec_zero.adb:8:44: medium: input value of private part of "V" will be used
+init_vec_zero.adb:8:26: medium: private part of "V" is not set
+init_vec_zero.adb:8:44: medium: private part of "V" is not set
 init_vec_zero.adb:9:07: info: precondition proved (CVC4: 4 VC)
-init_vec_zero.adb:9:24: low: input value of private part of "V" might be used
+init_vec_zero.adb:9:24: low: private part of "V" might not be set
 init_vec_zero.adb:9:27: info: range check proved (CVC4: 2 VC)
 init_vec_zero.adb:10:30: info: loop invariant initialization proved (CVC4: 1 VC)
 init_vec_zero.adb:10:30: info: loop invariant preservation proved (CVC4: 1 VC)
 init_vec_zero.adb:10:42: info: initialization of private part of "V" proved
-init_vec_zero.adb:10:61: medium: input value of private part of "V" will be used
+init_vec_zero.adb:10:61: medium: private part of "V" is not set
 init_vec_zero.adb:11:30: info: loop invariant initialization proved (CVC4: 1 VC)
 init_vec_zero.adb:11:30: info: loop invariant preservation proved (CVC4: 1 VC)
 init_vec_zero.adb:11:56: info: initialization of private part of "V" proved

@@ -11,7 +11,7 @@ use_unchecked_union.ads:29:23: info: initialization of "output.record1.field1" p
 use_unchecked_union.ads:29:23: info: initialization of "output.record1.field2" proved
 use_unchecked_union.ads:29:23: info: initialization of "output.record2.field1" proved
 use_unchecked_union.ads:29:23: info: initialization of "output.record2.field2" proved
-use_unchecked_union.ads:33:24: low: input value of "output.record1.field1" might be used in "doStuff2"
-use_unchecked_union.ads:33:24: low: input value of "output.record1.field2" might be used in "doStuff2"
-use_unchecked_union.ads:33:24: low: input value of "output.record2.field1" might be used in "doStuff2"
-use_unchecked_union.ads:33:24: low: input value of "output.record2.field2" might be used in "doStuff2"
+use_unchecked_union.ads:33:24: low: "output.record1.field1" might not be set in "doStuff2"
+use_unchecked_union.ads:33:24: low: "output.record1.field2" might not be set in "doStuff2"
+use_unchecked_union.ads:33:24: low: "output.record2.field1" might not be set in "doStuff2"
+use_unchecked_union.ads:33:24: low: "output.record2.field2" might not be set in "doStuff2"

@@ -1350,7 +1350,7 @@ stacks.adb:15:25: medium: array index check might fail
 stacks.adb:21:33: medium: array index check might fail
 stacks.adb:22:30: info: range check proved (CVC4: 1 VC)
 stacks.ads:6:21: info: initialization of "Stack.Top" proved
-stacks.ads:6:21: medium: input value of "Stack.Items" will be used in "Clear"
+stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
 stacks.ads:10:19: info: initialization of "Item" proved
 stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
 stacks.ads:17:10: info: range check proved (CVC4: 2 VC)
