@@ -132,7 +132,7 @@ package body Call is
       while not End_Of_File (Temp_File) loop
          Append (Content, Get_Line (Temp_File));
       end loop;
-      Close (Temp_File);
+      Delete (Temp_File);
 
       --  Return output from string Content
 
