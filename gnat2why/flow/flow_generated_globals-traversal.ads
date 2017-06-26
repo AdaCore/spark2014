@@ -33,8 +33,7 @@ package Flow_Generated_Globals.Traversal is
    type Nested is record
       Subprograms     : Node_Lists.List;
       Packages        : Node_Lists.List;
-      Variables       : Node_Lists.List;
-      Ghost_Variables : Node_Lists.List;
+      Constants       : Node_Lists.List;
       Parent          : Entity_Id;
    end record with
      Iterable => (First       => First_Cursor,

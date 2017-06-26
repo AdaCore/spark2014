@@ -86,11 +86,6 @@ package body Flow_Generated_Globals.Traversal is
          procedure Insert (E : Entity_Id)
          with Pre => Ekind (E) in Container_Scope;
 
-         procedure Insert_Object (E : Entity_Id)
-         with Pre => Ekind (E) in E_Constant | E_Variable;
-         --  Insert E to either Variables or Ghost_Variables depending on its
-         --  Ghost status.
-
          ------------
          -- Insert --
          ------------
@@ -128,26 +123,11 @@ package body Flow_Generated_Globals.Traversal is
                   Scope_Map.Insert (Key      => E,
                                     New_Item => (Packages        => <>,
                                                  Subprograms     => <>,
-                                                 Variables       => <>,
-                                                 Ghost_Variables => <>,
+                                                 Constants       => <>,
                                                  Parent          => P));
                end;
             end if;
          end Insert;
-
-         -------------------
-         -- Insert_Object --
-         -------------------
-
-         procedure Insert_Object (E : Entity_Id) is
-            Mapping : Nested renames Scope_Map (Parent_Scope (E));
-         begin
-            if Is_Ghost_Entity (E) then
-               Mapping.Ghost_Variables.Append (E);
-            else
-               Mapping.Variables.Append (E);
-            end if;
-         end Insert_Object;
 
       --  Start of processing for Process
 
@@ -179,7 +159,7 @@ package body Flow_Generated_Globals.Traversal is
                     and then Has_Variable_Input (E)
                     and then not Is_Part_Of_Concurrent_Object (E)
                   then
-                     Insert_Object (E);
+                     Scope_Map (Parent_Scope (E)).Constants.Append (E);
                   end if;
                end;
 

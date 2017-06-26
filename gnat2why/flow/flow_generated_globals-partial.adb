@@ -1707,18 +1707,9 @@ package body Flow_Generated_Globals.Partial is
       -------------------------
 
       function Local_Pkg_Variables return Node_Sets.Set is
-         Info : Nested renames Scope_Map (Folded);
-         Vars : Node_Sets.Set;
+         Contr : Contract renames Contracts (Folded);
       begin
-         for E of Info.Variables loop
-            Vars.Insert (E);
-         end loop;
-
-         for E of Info.Ghost_Variables loop
-            Vars.Insert (E);
-         end loop;
-
-         return Vars;
+         return Contr.Local_Variables or Contr.Local_Ghost_Variables;
       end Local_Pkg_Variables;
 
       ----------------
@@ -2372,8 +2363,7 @@ package body Flow_Generated_Globals.Partial is
          begin
             --  ??? investigate this
             if Ekind (E) = E_Package then
-               Seed (Scope_Map (E).Variables);
-               Seed (Scope_Map (E).Ghost_Variables);
+               Seed (Scope_Map (E).Constants);
             end if;
 
             Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
@@ -2653,19 +2643,8 @@ package body Flow_Generated_Globals.Partial is
          --  ??? condition for "visible" packages should be more restrictive
 
          if Ekind (E) = E_Package then
-            declare
-               Map : Nested renames Scope_Map (E);
-            begin
-               Unresolved_Local_Constants
-                 (Map.Variables,
-                  Constant_Graph,
-                  Constant_Calls);
-
-               Unresolved_Local_Constants
-                 (Map.Ghost_Variables,
-                  Constant_Graph,
-                  Constant_Calls);
-            end;
+            Unresolved_Local_Constants
+              (Scope_Map (E).Constants, Constant_Graph, Constant_Calls);
          end if;
 
          Strip_Constants (Contr.Globals, Constant_Graph);
