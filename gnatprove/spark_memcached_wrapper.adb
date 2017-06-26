@@ -39,9 +39,9 @@ with Memcache_Client;
 procedure SPARK_Memcached_Wrapper is
 
    --  This is a wrapper program, which caches identical invocations of
-   --  gnatwhy3 by hashing the input to the tool (commandline and input files),
-   --  and compares this hash with previous runs of the same tool. If a match
-   --  is found, the output of the previous run is output.
+   --  gnatwhy3 and provers by hashing the input to the tool (commandline and
+   --  input files), and compares this hash with previous runs of the same
+   --  tool. If a match is found, the output of the previous run is output.
 
    --  Invocation:
    --  spark_memcached_wrapper hostname:port commandname <args> filename
@@ -50,10 +50,10 @@ procedure SPARK_Memcached_Wrapper is
    --  @param C the hash context to be updated
    --  Compute a hash of the commandline provided to the wrapper. The procedure
    --  starts hashing at the second argument (the command name) and stops
-   --  before the last (the file name). This procedure is specialized to
-   --  gnatwhy3 currently. This means that some arguments which can be ignored
-   --  are skipped, for others, instead of the argument some other content is
-   --  hashed.
+   --  before the last (the file name). This procedure only has special
+   --  handling for arguments of gnatwhy3 currently. This means that some
+   --  arguments which can be ignored are skipped, for others, instead of
+   --  the argument some other content is hashed.
 
    procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String);
    --  @param C the hash context to be updated

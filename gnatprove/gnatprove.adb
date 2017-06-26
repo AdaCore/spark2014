@@ -1140,11 +1140,44 @@ procedure Gnatprove with SPARK_Mode is
       ----------------------
 
       function Build_Executable (Exec : String) return String is
+
+         function Add_Memcached_Wrapper (Cmd : String) return String;
+         function Add_Benchmark_Prefix (Cmd : String) return String;
+
+         --------------------------
+         -- Add_Benchmark_Prefix --
+         --------------------------
+
+         function Add_Benchmark_Prefix (Cmd : String) return String is
+         begin
+            if CL_Switches.Benchmark then
+               return "fake_" & Cmd;
+            else
+               return Cmd;
+            end if;
+         end Add_Benchmark_Prefix;
+
+         ---------------------------
+         -- Add_Memcached_Wrapper --
+         ---------------------------
+
+         function Add_Memcached_Wrapper (Cmd : String) return String is
+         begin
+            if Memcached_Server /= null and then
+              Memcached_Server.all /= ""
+            then
+               return "spark_memcached_wrapper " &
+                 Memcached_Server.all & " " &
+                 Cmd;
+            else
+               return Cmd;
+            end if;
+         end Add_Memcached_Wrapper;
+
+         --  Start of processing for Build_Executable
+
       begin
-         if CL_Switches.Benchmark then
-            return "fake_" & Exec;
-         end if;
-         return Exec;
+         return Add_Memcached_Wrapper (Add_Benchmark_Prefix (Exec));
       end Build_Executable;
 
       --------------------------
