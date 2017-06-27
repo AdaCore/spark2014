@@ -2150,7 +2150,7 @@ package body Flow_Generated_Globals.Partial is
         (for all E of Inputs =>
            Ekind (E) in E_Constant | Entry_Kind | E_Function | E_Procedure))
         with Ghost;
-      --  A sanity-checking utility for routines that grows the constant graph
+      --  A sanity-checking utility for routines that grow the constant graph
 
       function Direct_Inputs_Of_Constant
         (E : Entity_Id)
@@ -2163,7 +2163,7 @@ package body Flow_Generated_Globals.Partial is
       function Direct_Inputs_Of_Subprogram
         (E : Entity_Id)
          return Node_Lists.List
-        with Pre  => Ekind (E) in  Entry_Kind | E_Function | E_Procedure,
+        with Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
              Post => Represent_Variable_Inputs
                         (Direct_Inputs_Of_Subprogram'Result);
       --  Returns variable inputs coming from the globals or calls of
@@ -2424,7 +2424,7 @@ package body Flow_Generated_Globals.Partial is
    ---------------------
 
    function Resolved_Inputs
-     (E : Entity_Id;
+     (E              : Entity_Id;
       Constant_Graph : Constant_Graphs.Graph)
       return Node_Lists.List
    is
@@ -2496,7 +2496,7 @@ package body Flow_Generated_Globals.Partial is
                          Source => Filtered);
       end Strip;
 
-      --  Start of processing for Strip_Constants
+   --  Start of processing for Strip_Constants
 
    begin
       Strip (From.Proper);
