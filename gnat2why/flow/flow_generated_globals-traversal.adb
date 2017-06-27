@@ -562,7 +562,7 @@ package body Flow_Generated_Globals.Traversal is
       --  Do not add scopes for generic units
 
       if Nkind (Lu) = N_Package_Body
-        and then Ekind (Corresponding_Spec (Lu)) in Generic_Unit_Kind
+        and then Is_Generic_Unit (Corresponding_Spec (Lu))
       then
          return;
       end if;
