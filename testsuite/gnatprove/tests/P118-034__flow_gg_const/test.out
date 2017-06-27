@@ -1,11 +1,9 @@
 Generated contracts for both_are_true
    Global =>
       Input =>
-         Ordinary_Constant
          Variable_Constant
    Refined_Global =>
       Input =>
-         Ordinary_Constant
          Variable_Constant
 Generated contracts for main
    Global =>

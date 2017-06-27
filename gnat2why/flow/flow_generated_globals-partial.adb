@@ -2361,7 +2361,15 @@ package body Flow_Generated_Globals.Partial is
             E     : Entity_Id renames Entity_Contract_Maps.Key (C);
             Contr : Contract  renames Contracts (C);
          begin
-            --  ??? investigate this
+            --  We lazily only care about constants referenced in the Global
+            --  contracts of the units of the current compilation unit
+            --  (including packages, which must have an implicit Global).
+            --
+            --  However, it is also our responsibility to record calls in
+            --  the initialization expressions of constants exposed from
+            --  the current compilation unit, i.e. declared in the visible and
+            --  private parts of .ads packages.
+            --  ??? test for such packages should be more restrictive
             if Ekind (E) = E_Package then
                Seed (Scope_Map (E).Constants);
             end if;
@@ -2602,10 +2610,15 @@ package body Flow_Generated_Globals.Partial is
    is
    begin
       for E of Locals loop
-         if Ekind (E) = E_Constant then
+         --  Locals represent all constants "owned" by a scope from the current
+         --  compilation unit, but we are only interested in those which were
+         --  seeded into constant graph.
+         --  ??? the graph might include constants that were not seeded, but
+         --  added while growing it; but this over-approximation is safe.
+         if Constant_Graph.Contains (E) then
             declare
-               Inputs : Node_Lists.List :=
-                 Resolved_Inputs (E, Constant_Graph);
+               Inputs : Node_Lists.List := Resolved_Inputs (E, Constant_Graph);
+
             begin
                Constant_Calls.Append ((Const => E,
                                        Callees => <>));
@@ -2638,14 +2651,11 @@ package body Flow_Generated_Globals.Partial is
 
       if Ekind (E) /= E_Protected_Type then
 
-         --  For externally visible packages record unresolved calls in
-         --  constant initialization expressions.
-         --  ??? condition for "visible" packages should be more restrictive
+         --  Record unresolved calls in initialization expressions of local
+         --  constants.
 
-         if Ekind (E) = E_Package then
-            Unresolved_Local_Constants
-              (Scope_Map (E).Constants, Constant_Graph, Constant_Calls);
-         end if;
+         Unresolved_Local_Constants
+           (Scope_Map (E).Constants, Constant_Graph, Constant_Calls);
 
          Strip_Constants (Contr.Globals, Constant_Graph);
 
