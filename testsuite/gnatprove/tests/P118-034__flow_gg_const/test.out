@@ -1,0 +1,31 @@
+Generated contracts for both_are_true
+   Global =>
+      Input =>
+         Ordinary_Constant
+         Variable_Constant
+   Refined_Global =>
+      Input =>
+         Ordinary_Constant
+         Variable_Constant
+Generated contracts for main
+   Global =>
+      Input =>
+         p__var
+   Refined_Global =>
+      Input =>
+         p__var
+main.adb:20:19: info: precondition proved (CVC4: 1 VC)
+main.adb:20:19: medium: assertion might fail, cannot prove (Both_Are_True)
+Generated contracts for read_variable
+   Global =>
+      Input =>
+         Var
+   Refined_Global =>
+      Input =>
+         Var
+Generated contracts for simply_true
+   Global =>
+   Refined_Global =>
+Generated contracts for p
+   Initializes =>
+      Var
