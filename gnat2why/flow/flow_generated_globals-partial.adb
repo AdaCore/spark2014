@@ -448,12 +448,12 @@ package body Flow_Generated_Globals.Partial is
       Constant_Graph : Constant_Graphs.Graph)
       return Node_Lists.List
    with Pre  => Ekind (E) = E_Constant,
-     Post => (Resolved_Inputs'Result = Variable
-               or else
-             (for all E of Resolved_Inputs'Result =>
-                Ekind (E) in E_Function | E_Procedure
-                  and then
-                not Is_In_Analyzed_Files (E)));
+        Post => (Resolved_Inputs'Result = Variable
+                  or else
+                (for all E of Resolved_Inputs'Result =>
+                   Ekind (E) in E_Function | E_Procedure
+                     and then
+                   not Is_In_Analyzed_Files (E)));
    --  Returns either a singleton list representing a variable input or a
    --  list with subprograms from other compilation unit called (directly
    --  or indirectly) in the initialization of E.

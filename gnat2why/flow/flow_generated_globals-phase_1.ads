@@ -44,6 +44,24 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register direct calls without caring if they are proof-only, definite or
    --  conditional.
 
+   procedure GG_Register_Global_Info (GI : Partial_Contract)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register information needed later to compute globals. It also stores
+   --  information related to volatiles and remote states.
+
+   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
+                                           Length : Nat)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register the value of Max_Queue_Length for an entry
+
+   procedure GG_Register_Protected_Object (PO   : Entity_Name;
+                                           Prio : Priority_Value)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register protected object and its priority
+
    procedure GG_Register_State_Refinement (E : Entity_Id)
    with Pre  => GG_Mode = GG_Write_Mode and then
                 Ekind (E) = E_Package,
@@ -53,29 +71,11 @@ package Flow_Generated_Globals.Phase_1 is
    --  depending on the caller (as opposed to always returning the most
    --  refined view). It also stores information related to external states.
 
-   procedure GG_Register_Global_Info (GI : Partial_Contract)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register information needed later to compute globals. It also stores
-   --  information related to volatiles and remote states.
-
-   procedure GG_Register_Protected_Object (PO   : Entity_Name;
-                                           Prio : Priority_Value)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register protected object and its priority
-
    procedure GG_Register_Task_Object (Type_Name : Entity_Name;
                                       Object    : Task_Object)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
-
-   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
-                                           Length : Nat)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register the value of Max_Queue_Length for an entry
 
    -------------
    -- Writing --

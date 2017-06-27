@@ -224,6 +224,19 @@ package body Flow_Generated_Globals.Phase_1 is
    end GG_Register_Global_Info;
 
    ----------------------------------
+   -- GG_Register_Max_Queue_Length --
+   ----------------------------------
+
+   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
+                                           Length : Nat)
+
+   is
+   begin
+      Entries_Max_Queue_Length.Append ((Entry_Name       => EN,
+                                        Max_Queue_Length => Length));
+   end GG_Register_Max_Queue_Length;
+
+   ----------------------------------
    -- GG_Register_Protected_Object --
    ----------------------------------
 
@@ -279,19 +292,6 @@ package body Flow_Generated_Globals.Phase_1 is
       Task_Instances.Append ((Type_Name => Type_Name,
                               Object    => Object));
    end GG_Register_Task_Object;
-
-   ----------------------------------
-   -- GG_Register_Max_Queue_Length --
-   ----------------------------------
-
-   procedure GG_Register_Max_Queue_Length (EN     : Entity_Name;
-                                           Length : Nat)
-
-   is
-   begin
-      Entries_Max_Queue_Length.Append ((Entry_Name       => EN,
-                                        Max_Queue_Length => Length));
-   end GG_Register_Max_Queue_Length;
 
    -----------------------
    -- Register_Volatile --
