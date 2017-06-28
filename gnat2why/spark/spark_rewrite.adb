@@ -30,7 +30,6 @@ with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
 with SPARK_Util.Subprograms;
 with Tbuild;                 use Tbuild;
 
@@ -103,33 +102,18 @@ package body SPARK_Rewrite is
 
       if Nkind (Name (N)) in N_Has_Entity
         and then Present (Entity (Name (N)))
-        and then Is_Intrinsic_Subprogram (Entity (Name (N)))
+        and then Is_Unchecked_Conversion_Instance (Entity (Name (N)))
       then
-         declare
-            E   : constant Entity_Id := Entity (Name (N));
-            Nam : Name_Id;
-         begin
-            if Present (Parent (E))
-              and then Present (Generic_Parent (Parent (E)))
-            then
-               Nam := Chars (Generic_Parent (Parent (E)));
-            else
-               Nam := Chars (E);
-            end if;
+         Rewrite (Old_Node => N,
+                  New_Node => Unchecked_Convert_To
+                    (Typ  => Etype (Etype (N)),
+                     Expr => First_Actual (N)));
+         Set_Comes_From_Source (N, True);
 
-            if Nam = Name_Unchecked_Conversion then
-               Rewrite (Old_Node => N,
-                        New_Node => Unchecked_Convert_To
-                          (Typ  => Etype (Etype (N)),
-                           Expr => First_Actual (N)));
-               Set_Comes_From_Source (N, True);
+         --  Reset correct parent of original node, as this may be used
+         --  during the translation to Why.
 
-               --  Reset correct parent of original node, as this may be used
-               --  during the translation to Why.
-
-               Set_Parent (Original_Node (N), Parent (N));
-            end if;
-         end;
+         Set_Parent (Original_Node (N), Parent (N));
       end if;
    end Rewrite_Call;
 
