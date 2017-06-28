@@ -1,0 +1,162 @@
+string_search.adb:7:29: info: range check proved (CVC4: 1 VC)
+string_search.adb:7:37: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:7:45: info: range check proved (CVC4: 1 VC)
+string_search.adb:7:53: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:11:45: info: index check proved (CVC4: 8 VC)
+string_search.adb:11:45: info: overflow check proved (CVC4: 4 VC)
+string_search.adb:12:23: info: initialization of "Diff" proved
+string_search.adb:13:36: info: loop invariant initialization proved (CVC4: 2 VC)
+string_search.adb:13:36: info: loop invariant preservation proved (CVC4: 2 VC)
+string_search.adb:13:36: info: precondition proved (CVC4: 4 VC)
+string_search.adb:13:75: info: range check proved (CVC4: 2 VC)
+string_search.adb:14:36: info: initialization of "Diff" proved
+string_search.adb:14:36: info: loop invariant initialization proved (CVC4: 4 VC)
+string_search.adb:14:36: info: loop invariant preservation proved (CVC4: 4 VC)
+string_search.adb:14:51: info: index check proved (CVC4: 4 VC)
+string_search.adb:14:68: info: index check proved (CVC4: 4 VC)
+string_search.adb:14:68: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:17:17: info: initialization of "Diff" proved
+string_search.adb:22:13: info: loop invariant initialization proved (Z3: 1 VC)
+string_search.adb:22:13: info: loop invariant preservation proved (CVC4: 1 VC)
+string_search.adb:30:29: info: range check proved (CVC4: 1 VC)
+string_search.adb:30:37: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:30:45: info: range check proved (CVC4: 1 VC)
+string_search.adb:30:53: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:31:22: info: range check proved (CVC4: 8 VC)
+string_search.adb:31:38: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:31:53: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:36:13: info: loop invariant initialization proved (CVC4: 1 VC)
+string_search.adb:36:13: info: loop invariant preservation proved (CVC4: 1 VC)
+string_search.adb:44:37: info: range check proved (CVC4: 1 VC)
+string_search.adb:44:45: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:47:31: info: initialization of "Bad_Shift" proved
+string_search.adb:47:40: info: range check proved (CVC4: 2 VC)
+string_search.adb:47:48: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:47:52: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:47:52: info: range check proved (CVC4: 2 VC)
+string_search.adb:48:33: info: loop invariant initialization proved (CVC4: 2 VC)
+string_search.adb:48:33: info: loop invariant preservation proved (CVC4: 2 VC)
+string_search.adb:48:59: info: initialization of "Bad_Shift" proved
+string_search.adb:48:86: info: range check proved (CVC4: 1 VC)
+string_search.adb:48:94: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:49:33: info: loop invariant initialization proved (CVC4: 3 VC)
+string_search.adb:49:33: info: loop invariant preservation proved (CVC4: 3 VC)
+string_search.adb:50:60: info: range check proved (CVC4: 1 VC)
+string_search.adb:50:68: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:51:74: info: index check proved (CVC4: 2 VC)
+string_search.adb:53:52: info: range check proved (CVC4: 1 VC)
+string_search.adb:53:62: info: initialization of "Bad_Shift" proved
+string_search.adb:53:75: info: index check proved (CVC4: 2 VC)
+string_search.adb:53:75: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:54:63: info: range check proved (CVC4: 1 VC)
+string_search.adb:54:86: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:54:105: info: index check proved (CVC4: 2 VC)
+string_search.adb:63:17: warning: subprogram "Prove_QS" has no effect
+string_search.adb:64:39: info: initialization of "Bad_Shift" proved, in call inlined at string_search.adb:85
+string_search.adb:64:58: info: initialization of "I" proved, in call inlined at string_search.adb:85
+string_search.adb:64:60: info: index check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:64:60: info: overflow check proved (CVC4: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:64:68: info: range check proved (CVC4: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:66:19: info: initialization of "I" proved, in call inlined at string_search.adb:85
+string_search.adb:66:21: info: overflow check proved (CVC4: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:66:28: info: initialization of "I" proved, in call inlined at string_search.adb:85
+string_search.adb:66:30: info: overflow check proved (CVC4: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:67:28: info: assertion proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:37: info: initialization of "I" proved, in call inlined at string_search.adb:85
+string_search.adb:67:39: info: index check proved (CVC4: 8 VC), in call inlined at string_search.adb:85
+string_search.adb:67:39: info: overflow check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:47: info: range check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:68: info: overflow check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:76: info: range check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:84: info: overflow check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:67:88: info: index check proved (CVC4: 8 VC), in call inlined at string_search.adb:85
+string_search.adb:67:88: info: overflow check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
+string_search.adb:69:16: info: loop invariant initialization proved (Z3: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:69:16: info: loop invariant preservation proved (Z3: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:75:07: info: precondition proved (CVC4: 1 VC)
+string_search.adb:79:13: info: initialization of "I" proved
+string_search.adb:79:26: info: range check proved (CVC4: 2 VC)
+string_search.adb:79:34: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:79:42: info: range check proved (CVC4: 2 VC)
+string_search.adb:79:50: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:80:22: info: range check proved (CVC4: 8 VC)
+string_search.adb:80:31: info: initialization of "I" proved
+string_search.adb:80:36: info: initialization of "I" proved
+string_search.adb:80:38: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:80:53: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:81:20: info: initialization of "I" proved
+string_search.adb:83:20: info: initialization of "I" proved
+string_search.adb:83:32: info: range check proved (CVC4: 2 VC)
+string_search.adb:83:40: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:83:48: info: range check proved (CVC4: 2 VC)
+string_search.adb:83:56: info: overflow check proved (CVC4: 2 VC)
+string_search.adb:87:33: info: initialization of "I" proved
+string_search.adb:87:33: info: loop invariant initialization proved (CVC4: 1 VC)
+string_search.adb:87:33: info: loop invariant preservation proved (CVC4: 1 VC)
+string_search.adb:87:46: info: range check proved (CVC4: 1 VC)
+string_search.adb:87:54: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:87:62: info: range check proved (CVC4: 1 VC)
+string_search.adb:89:13: info: loop invariant initialization proved (Z3: 1 VC)
+string_search.adb:89:13: info: loop invariant preservation proved (Z3: 1 VC)
+string_search.adb:89:31: info: initialization of "I" proved
+string_search.adb:89:33: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:89:35: info: initialization of "Bad_Shift" proved
+string_search.adb:89:56: info: index check proved (CVC4: 2 VC)
+string_search.adb:89:56: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:89:64: info: range check proved (CVC4: 1 VC)
+string_search.adb:91:15: info: initialization of "I" proved
+string_search.adb:91:17: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:91:19: info: initialization of "Bad_Shift" proved
+string_search.adb:91:40: info: index check proved (CVC4: 2 VC)
+string_search.adb:91:40: info: overflow check proved (CVC4: 1 VC)
+string_search.adb:91:48: info: range check proved (CVC4: 1 VC)
+string_search.ads:11:39: info: index check proved (CVC4: 2 VC)
+string_search.ads:11:57: info: index check proved (CVC4: 2 VC)
+string_search.ads:11:57: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:13:19: info: range check proved (CVC4: 1 VC)
+string_search.ads:14:34: info: range check proved (CVC4: 1 VC)
+string_search.ads:14:42: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:19:26: info: range check proved (CVC4: 1 VC)
+string_search.ads:19:34: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:19:42: info: range check proved (CVC4: 1 VC)
+string_search.ads:20:16: info: precondition proved (CVC4: 2 VC)
+string_search.ads:20:63: info: range check proved (CVC4: 1 VC)
+string_search.ads:24:14: info: postcondition proved (CVC4: 4 VC)
+string_search.ads:24:49: info: range check proved (CVC4: 1 VC)
+string_search.ads:24:57: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:24:65: info: range check proved (CVC4: 1 VC)
+string_search.ads:24:73: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:27:50: info: range check proved (CVC4: 1 VC)
+string_search.ads:30:46: info: range check proved (CVC4: 1 VC)
+string_search.ads:34:14: info: postcondition proved (CVC4: 3 VC; Z3: 1 VC)
+string_search.ads:34:55: info: range check proved (CVC4: 1 VC)
+string_search.ads:34:63: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:34:71: info: range check proved (CVC4: 1 VC)
+string_search.ads:34:79: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:37:56: info: range check proved (CVC4: 1 VC)
+string_search.ads:40:46: info: range check proved (CVC4: 1 VC)
+string_search.ads:44:45: info: initialization of "Bad_Shift" proved
+string_search.ads:45:20: info: range check proved (CVC4: 1 VC)
+string_search.ads:46:14: info: postcondition proved (CVC4: 5 VC)
+string_search.ads:46:41: info: initialization of "Bad_Shift" proved
+string_search.ads:46:68: info: range check proved (CVC4: 1 VC)
+string_search.ads:46:76: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:48:45: info: range check proved (CVC4: 1 VC)
+string_search.ads:48:53: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:49:65: info: index check proved (CVC4: 2 VC)
+string_search.ads:51:36: info: range check proved (CVC4: 1 VC)
+string_search.ads:51:46: info: initialization of "Bad_Shift" proved
+string_search.ads:51:59: info: index check proved (CVC4: 2 VC)
+string_search.ads:51:59: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:52:47: info: range check proved (CVC4: 1 VC)
+string_search.ads:52:70: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:52:99: info: index check proved (CVC4: 2 VC)
+string_search.ads:56:19: info: range check proved (CVC4: 1 VC)
+string_search.ads:57:25: info: range check proved (CVC4: 1 VC)
+string_search.ads:59:14: info: postcondition proved (CVC4: 2 VC; Z3: 2 VC)
+string_search.ads:59:40: info: range check proved (CVC4: 1 VC)
+string_search.ads:59:48: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:59:56: info: range check proved (CVC4: 1 VC)
+string_search.ads:59:64: info: overflow check proved (CVC4: 1 VC)
+string_search.ads:62:41: info: range check proved (CVC4: 1 VC)
+string_search.ads:65:46: info: range check proved (CVC4: 1 VC)
