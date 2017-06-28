@@ -4824,17 +4824,26 @@ package body Flow.Control_Flow_Graph is
 
          when N_Package_Body      |
               N_Package_Body_Stub =>
-            --  Skip generic package bodies
-            case Ekind (Unique_Defining_Entity (N)) is
-               when E_Generic_Package =>
-                  Add_Dummy_Vertex (N, FA, CM);
+            --  Skip bodies of generic packages and bodies of wrappers with
+            --  instances of generic subprograms.
+            declare
+               E : constant Entity_Id := Unique_Defining_Entity (N);
+            begin
+               case Ekind (E) is
+                  when E_Generic_Package =>
+                     Add_Dummy_Vertex (N, FA, CM);
 
-               when E_Package =>
-                  Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
+                  when E_Package =>
+                     if Is_Wrapper_Package (E) then
+                        Add_Dummy_Vertex (N, FA, CM);
+                     else
+                        Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
+                     end if;
 
-               when others =>
-                  raise Program_Error;
-            end case;
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end;
 
          when N_Package_Declaration =>
             Do_Package_Declaration (N, FA, CM, Ctx);
