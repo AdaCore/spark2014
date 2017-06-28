@@ -20,6 +20,7 @@ SPARK Guidance
       :alt: Creative Commons Attribution
 
    |
+
    Licensed under Creative Commons Attribution 4.0 International
 
 .. toctree::

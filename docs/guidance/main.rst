@@ -574,11 +574,12 @@ as follows:
       package body Pack_To_Analyze with SPARK_Mode => On is ...
    end Pack_To_Exclude;
 
-Note that cases 2 and 3 above are not exclusive: the violations of case 2 are
-in fact included in those of case 3. In case 2, all declarations in the visible
-part of the package are analyzed as well as their bodies when explicitly marked
-with a ``SPARK_Mode`` aspect. In case 3, only those declarations and bodies
-explicitly marked with a ``SPARK_Mode`` aspect are analyzed.
+Note that the second and last cases above are not exclusive: the violations of
+the second case are in fact included in those of the last case. In the second
+case, all declarations in the visible part of the package are analyzed as well
+as their bodies when explicitly marked with a ``SPARK_Mode`` aspect. In the
+last case, only those declarations and bodies explicitly marked with a
+``SPARK_Mode`` aspect are analyzed.
 
 Modifying Code To Remove SPARK Violations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1265,12 +1266,18 @@ introducing a default for each record component:
    end record;
 
 You can also annotate private types with the ``Default_Initial_Condition``
-aspect, which allows defining a property which should hold whenever a
-variable of this type is initialized by default. When no property is
-provided, it defaults to ``True`` and implies that the type can be safely
-initialized by default. If the full view of the type is in SPARK, a single
-initialization check will be issued for such a type at the type's
-declaration:
+aspect, which allows defining a property which should hold whenever a variable
+of this type is initialized by default. When no property is provided, it
+defaults to ``True`` and implies that the type can be safely initialized by
+default. This provides a way to specify that objects of that type should be
+considered as fully initialized by default, even if not all components of that
+type are initialized by default. For example, in the case of type ``Stack``
+below, the object ``S`` of type ``Stack`` is seen as initialized even though
+the component ``Content`` of ``Stack`` is not initialized by default. If the
+full view of the type is in SPARK, a single initialization check will be issued
+for such a type at the type's declaration. For example, GNATprove issues a
+message to point out that type ``Stack`` is not fully initialized by default,
+even if its ``Default_Initial_Condition`` aspect makes this promise:
 
 .. code-block:: ada
 
@@ -1449,7 +1456,7 @@ by the compiler, such as in the following subprogram:
 
    Swap (Z, Z);  --<<--  writable actual for "X" overlaps with actual for "Y"
 
-An 'in' and 'an' out parameter should not be aliased:
+An 'in' and an 'out' parameter should not be aliased:
 
 .. code-block:: ada
 
@@ -2282,18 +2289,19 @@ such checks:
 Investigating Unproved Run-time Checks
 --------------------------------------
 
-You should expect many messages about possible run-time errors to be issued
-the first time you analyze a program, for two main reasons: First, the
-analysis done by GNATprove relies on the information provided in the
-program to compute all possible values of variables. This information lies
-chiefly in the types and contracts added by programmers. If types are not
-precise enough and/or necessary contracts are not inserted, GNATprove
-cannot prove AoRTE.  Second, the initial analysis performed at proof level
-0 is the fastest but also the least precise.  Nevertheless, you should
-start at this level because many checks are not initially provable due to
-imprecise types and missing contracts. As you add precise types and
-contracts to the program, it becomes profitable for you to perform analyses
-at higher proof levels 1 and 2 to get more precise results.
+You should expect many messages about possible run-time errors to be issued the
+first time you analyze a program, for two main reasons: First, the analysis
+done by GNATprove relies on the information provided in the program to compute
+all possible values of variables. This information lies chiefly in the types
+and contracts added by programmers. If types are not precise enough and/or
+necessary contracts are not inserted, GNATprove cannot prove AoRTE.  Second,
+the initial analysis performed at proof level 0 is the fastest but also the
+least powerful, so it is expected that by moving to higher levels of proof one
+gets more run-time checks proved automatically. Nevertheless, you should start
+at this level because many checks are not initially provable due to imprecise
+types and missing contracts. As you add precise types and contracts to the
+program, it becomes profitable for you to perform analyses at higher proof
+levels 1 and 2 to get more run-time checks proved automatically.
 
 Proving AoRTE requires interacting with GNATprove inside GPS. Thus, we
 suggest that you select a unit (preferably one with few dependences over
@@ -2308,10 +2316,10 @@ level.
 For each unproved run-time check in this subprogram, you should follow the
 following steps:
 
-#. Understand why the run-time check can't fail. If you don't understand why a
-   run-time check can never fail, GNATprove can't either. You may discover at
-   this stage that the run-time check can indeed fail, in which case you must
-   first correct the program so that this isn't possible.
+#. Find out the reasons for which the run-time check can't fail. If you don't
+   understand why a run-time check can never fail, GNATprove can't either. You
+   may discover at this stage that the run-time check can indeed fail, in which
+   case you must first correct the program so that this isn't possible anymore.
 #. Determine if the reason(s) that the check always succeeds are known
    locally. GNATprove analysis is modular, meaning it only looks at locally
    available information to determine whether a check succeeds or not. This
@@ -2740,7 +2748,9 @@ specification and verification and have no effect on the functional
 behavior of the program at run time.
 
 Various kinds of ghost code are useful in different situations:
+
 * Ghost functions are typically used to express properties used in contracts.
+
 * Global ghost variables are typically used to keep track of the current state
   of a program or maintain a log of past events of some type. This information
   can then be referred to in contracts.
@@ -2794,8 +2804,12 @@ analyzed, for similar reasons:
    (``--prover=cvc4``), no step limit (``--steps=0``) and a higher timeout for
    individual proof attempts (``--timeout=30``) to get both faster and more
    precise results. Note that using timeouts instead of steps is not portable
-   between machines, so it's better to reserve it for interactive use. The
-   following snapshot shows the popup window from GPS (using the
+   between machines, so it's better to reserve it for interactive use.  Other
+   settings may be appropriate, and can be set through the various options in
+   the popup window from GPS or on the command line (see the specific section
+   of the SPARK User's Guide on that topic:
+   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_run_gnatprove.html#running-gnatprove-from-the-command-line).
+   The following snapshot shows the popup window from GPS (using the
    :guilabel:`Advanced User profile` set through the :menuselection:`Preference
    --> SPARK` menu) with these settings:
 
@@ -2815,10 +2829,10 @@ level.
 
 For each unproved property in this subprogram, you should follow the following steps:
 
-#. Understand why the property can't be false at run time. If you don't
-   understand why a property holds, GNATprove can't either. You may discover at
-   this stage that indeed the property may fail at run time, in which case you
-   first need to correct the program so that it can't fail.
+#. Find out the reasons for which the property can't be false at run time. If
+   you don't understand why a property holds, GNATprove can't either. You may
+   discover at this stage that indeed the property may fail at run time, in
+   which case you first need to correct the program so that it can't fail anymore.
 #. Determine if the reasons for the property to hold are known
    locally. GNATprove analysis is modular, which means it only looks at locally
    available information to determine whether a check succeeds or not. This
@@ -2832,7 +2846,7 @@ For each unproved property in this subprogram, you should follow the following s
    the loop on the variable value. See the specific section of the SPARK User's
    Guide on that topic:
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_write_loop_invariants.html.
-#. Once you are confident this property should be provable, run SPARK in proof
+#. Once you're confident this property should be provable, run SPARK in proof
    mode on the specific line with the check by right-clicking on this line in
    the editor panel inside GPS, selecting :menuselection:`SPARK --> Prove Line`
    from the contextual menu, selecting :guilabel:`2` as value for
@@ -2842,7 +2856,7 @@ For each unproved property in this subprogram, you should follow the following s
    panel, and clicking :guilabel:`Execute`. GNATprove should either output a
    message that confirms that the check is proved or the same message as
    before. In the latter case, you will need to interact with GNATprove to
-   investigate why the check is still not proved.
+   investigate why the check is still not proved, which is our next point below.
 #. It may sometimes be difficult to distinguish cases where some information is
    missing for the provers to prove the property from cases where the provers
    are incapable of proving the property even with the necessary
