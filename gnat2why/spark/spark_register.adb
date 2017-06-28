@@ -131,7 +131,9 @@ package body SPARK_Register is
                            end if;
 
                         when others =>
-                           null;
+                           if Is_Unchecked_Conversion_Instance (E) then
+                              Register_Entity (E);
+                           end if;
                      end case;
 
                   when E_Constant
@@ -171,7 +173,9 @@ package body SPARK_Register is
          --  ??? this is a yet another reason for replacing front-end xrefs
          --  with something more precise and easier to control.
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma
+           and then Nkind (Original_Node (N)) in N_Subprogram_Call
+                                               | N_Pragma
+                                               | N_Op
          then
             Process_Tree (Original_Node (N));
          end if;

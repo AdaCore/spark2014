@@ -2585,14 +2585,19 @@ package body Flow_Generated_Globals.Partial is
             --  ??? temporarily replace pragma with an error message below
 
          begin
-            if No (Node)
-              and then not Is_Heap_Variable (Name)
-            then
-               Ada.Text_IO.Put_Line ("no Entity_Id for " &
-                                     Common_Containers.To_String (Name));
-               raise Program_Error;
+            if Present (Node) then
+               if not Is_Unchecked_Conversion_Instance (Node) then
+                  Nodes.Insert (Node);
+               end if;
+            else
+               if Is_Heap_Variable (Name) then
+                  Nodes.Insert (Empty);
+               else
+                  Ada.Text_IO.Put_Line ("no Entity_Id for " &
+                                          Common_Containers.To_String (Name));
+                  raise Program_Error;
+               end if;
             end if;
-            Nodes.Insert (Node);
          end;
       end loop;
 

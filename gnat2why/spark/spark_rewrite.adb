@@ -269,7 +269,9 @@ package body SPARK_Rewrite is
          --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
          --  pragma Debug).
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma
+           and then Nkind (Original_Node (N)) in N_Subprogram_Call
+                                               | N_Pragma
+                                               | N_Op
          then
             Rewrite_Nodes (Original_Node (N));
          end if;
