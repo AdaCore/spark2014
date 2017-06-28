@@ -188,8 +188,6 @@ package Flow_Generated_Globals is
       Local_Variables       : Name_Sets.Set; --  Flow
       Local_Ghost_Variables : Name_Sets.Set; --  Flow
 
-      Constant_Calls        : Name_Constant_Callees_List.List;
-
       Tasking               : Name_Tasking_Info;
 
       Has_Terminate         : Boolean;

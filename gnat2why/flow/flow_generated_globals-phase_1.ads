@@ -21,13 +21,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sinfo; use Sinfo;
+with Sinfo;      use Sinfo;
+with SPARK_Util; use SPARK_Util;
 
 package Flow_Generated_Globals.Phase_1 is
 
    -----------------
    -- Registering --
    -----------------
+   procedure GG_Register_Constant_Calls
+     (E     : Entity_Id;
+      Calls : Node_Lists.List)
+   with Pre  => GG_Mode = GG_Write_Mode
+                and then Ekind (E) = E_Constant
+                and then (for all C of Calls =>
+                             Ekind (C) in E_Function | E_Procedure
+                               and then not Is_In_Analyzed_Files (C)),
+        Post => GG_Mode = GG_Write_Mode;
 
    procedure GG_Register_Direct_Calls (E : Entity_Id; Calls : Node_Sets.Set)
    with Pre  => GG_Mode = GG_Write_Mode and then

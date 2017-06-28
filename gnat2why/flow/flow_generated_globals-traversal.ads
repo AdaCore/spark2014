@@ -33,7 +33,6 @@ package Flow_Generated_Globals.Traversal is
    type Nested is record
       Subprograms     : Node_Lists.List;
       Packages        : Node_Lists.List;
-      Constants       : Node_Lists.List;
       Parent          : Entity_Id;
    end record with
      Iterable => (First       => First_Cursor,
@@ -109,6 +108,11 @@ package Flow_Generated_Globals.Traversal is
      (Process : not null access procedure (E : Entity_Id));
    --  Iterate over scopes of the main unit in bottom-up fashion
    --  ??? deprecated
+
+   generic
+      with procedure Process (E : Entity_Id);
+   procedure Iterate_Constants_In_Main_Unit;
+   --  Call Process on constants in the current compilation unit
 
 private
 

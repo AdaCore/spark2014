@@ -1353,33 +1353,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  ??? Clear the original map as a sanity check
                   --  Clear (V.The_Global_Info.Globals);
 
-                  --  Move constant information to a separate container
-
-                  declare
-                     C : Name_Constant_Callees_List.Cursor :=
-                       V.The_Global_Info.Constant_Calls.First;
-                  begin
-                     while Name_Constant_Callees_List.Has_Element (C) loop
-                        declare
-                           Item     : Name_Constant_Callees
-                             renames V.The_Global_Info.Constant_Calls (C);
-                           Position : Name_Graphs.Cursor;
-                           Inserted : Boolean;
-                        begin
-                           Constant_Calls.Insert
-                             (Key      => Item.Const,
-                              Position => Position,
-                              Inserted => Inserted);
-                           pragma Assert (Inserted);
-
-                           for Call of Item.Callees loop
-                              Constant_Calls (Position).Insert (Call);
-                           end loop;
-                        end;
-                        Name_Constant_Callees_List.Next (C);
-                     end loop;
-                  end;
-
                   Phase_1_Info.Insert (Key      => V.The_Global_Info.Name,
                                        New_Item => V.The_Global_Info);
 
@@ -1390,6 +1363,28 @@ package body Flow_Generated_Globals.Phase_2 is
                            V.The_Global_Info.Tasking (Kind));
                      end if;
                   end loop;
+
+               when EK_Constant_Calls =>
+                  declare
+                     Const : Name_Graphs.Cursor;
+                     --  Position of the caller in the direct calls graph
+
+                     Inserted : Boolean;
+
+                     Call : Name_Lists.Cursor := V.The_Calls.First;
+
+                  begin
+                     Constant_Calls.Insert (Key      => V.The_Constant,
+                                            Position => Const,
+                                            Inserted => Inserted);
+
+                     pragma Assert (Inserted);
+
+                     while Name_Lists.Has_Element (Call) loop
+                        Constant_Calls (Const).Insert (V.The_Calls (Call));
+                        Name_Lists.Next (Call);
+                     end loop;
+                  end;
 
                when EK_Protected_Instance =>
                   declare
@@ -1438,7 +1433,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      pragma Assert (Inserted);
 
-                     --  ??? cannot use Merge as To is not a variable
                      while Name_Lists.Has_Element (Callee) loop
                         Direct_Calls (Caller).Insert (V.The_Callees (Callee));
                         Name_Lists.Next (Callee);

@@ -36,6 +36,11 @@ package body Flow_Generated_Globals.Traversal is
 
    Root : Entity_Id := Empty;
 
+   Constants : Node_Lists.List;
+   --  Constants declared in the current compilation unit; needed to decide
+   --  wheather they have variable input and so can appear in the generated
+   --  Global.
+
    generic
       with procedure Process (N : Node_Id) is <>;
    procedure Traverse_Compilation_Unit (CU : Node_Id);
@@ -123,7 +128,6 @@ package body Flow_Generated_Globals.Traversal is
                   Scope_Map.Insert (Key      => E,
                                     New_Item => (Packages        => <>,
                                                  Subprograms     => <>,
-                                                 Constants       => <>,
                                                  Parent          => P));
                end;
             end if;
@@ -158,8 +162,9 @@ package body Flow_Generated_Globals.Traversal is
                     and then E = Unique_Entity (E)
                     and then Has_Variable_Input (E)
                     and then not Is_Part_Of_Concurrent_Object (E)
+                    --  ??? the Part_Of probably shouldn't be here
                   then
-                     Scope_Map (Parent_Scope (E)).Constants.Append (E);
+                     Constants.Append (E);
                   end if;
                end;
 
@@ -213,6 +218,17 @@ package body Flow_Generated_Globals.Traversal is
       return Scope_Map (C).Packages.Is_Empty
         and then Scope_Map (C).Subprograms.Is_Empty;
    end Is_Leaf;
+
+   ------------------------------------
+   -- Iterate_Constants_In_Main_Unit --
+   ------------------------------------
+
+   procedure Iterate_Constants_In_Main_Unit is
+   begin
+      for E of Constants loop
+         Process (E);
+      end loop;
+   end Iterate_Constants_In_Main_Unit;
 
    -----------------------
    -- Iterate_Main_Unit --

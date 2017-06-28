@@ -30,11 +30,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
    --  Special dummy value for serialization which is not expected to represent
    --  any valid entity name, yet it must reside in the Entity_Name type.
 
-   Inavlid_Constant_Calls : constant Name_Constant_Callees :=
-     (Const   => Invalid_Entity_Name,
-      Callees => Name_Lists.Empty_List);
-   --  Dummy value required only for the serialization API
-
    Null_Partial_Contract : constant Partial_Contract :=
      (Name          => Invalid_Entity_Name,
       Local         => Boolean'First,
@@ -63,6 +58,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
       EK_Globals            => (Kind            => EK_Globals,
                                 The_Global_Info => Null_Partial_Contract),
+
+      EK_Constant_Calls     => (Kind         => EK_Constant_Calls,
+                                The_Constant => Invalid_Entity_Name,
+                                The_Calls    => <>),
 
       EK_Protected_Instance => (Kind         => EK_Protected_Instance,
                                 The_Variable => Invalid_Entity_Name,
@@ -164,9 +163,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
       procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
 
-      procedure Serialize (A : in out Archive;
-                           V : in out Name_Constant_Callees);
-
       ---------------
       -- Serialize --
       ---------------
@@ -189,27 +185,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
          end loop;
       end Serialize;
 
-      procedure Serialize (A : in out Archive;
-                           V : in out Name_Constant_Callees)
-      is
-      begin
-         Serialize (A, V.Const);
-         Serialize (A, V.Callees);
-      end Serialize;
-
-      procedure Serialize is new Serialisation.Serialize_List
-        (T              => Name_Constant_Callees_List.List,
-         E              => Name_Constant_Callees,
-         Cursor         => Name_Constant_Callees_List.Cursor,
-         Null_Container => Name_Constant_Callees_List.Empty_List,
-         Null_Element   => Inavlid_Constant_Calls,
-         First          => Name_Constant_Callees_List.First,
-         Next           => Name_Constant_Callees_List.Next,
-         Element        => Name_Constant_Callees_List.Element,
-         Append         => Name_Constant_Callees_List.Append,
-         Length         => Name_Constant_Callees_List.Length,
-         Serialize      => Serialize);
-
    --  Start of processing for Serialize
 
    begin
@@ -227,8 +202,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
       Serialize (A, V.Globals.Calls.Conditional_Calls, "calls_conditional");
       Serialize (A, V.Local_Variables,         "local_var");
       Serialize (A, V.Local_Ghost_Variables,   "local_ghost");
-
-      Serialize (A, V.Constant_Calls);
 
       if V.Kind in Entry_Kind
                  | E_Function
@@ -291,6 +264,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Globals =>
             Serialize (A, V.The_Global_Info);
+
+         when EK_Constant_Calls =>
+            Serialize (A, V.The_Constant);
+            Serialize (A, V.The_Calls);
 
          when EK_Protected_Instance =>
             Serialize (A, V.The_Variable);

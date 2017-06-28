@@ -30,7 +30,6 @@ with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
 
 with Common_Iterators;        use Common_Iterators;
-with SPARK_Util;              use SPARK_Util;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 with SPARK2014VSN;            use SPARK2014VSN;
 
@@ -99,16 +98,20 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
-   type Direct_Calls is record
+   type Call_Info is record
       Caller  : Entity_Name;
       Callees : Name_Lists.List;
    end record;
 
-   package Direct_Call_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Direct_Calls);
+   package Call_Info_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Call_Info);
 
-   Direct_Calls_List : Direct_Call_Lists.List;
+   Direct_Calls_List : Call_Info_Lists.List;
    --  Container with direct calls for subprograms, entries and tasks types
+
+   Constant_Calls_List : Call_Info_Lists.List;
+   --  Calls from constants to subprograms (from other compilation units) in
+   --  their initialization expressions.
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -123,6 +126,30 @@ package body Flow_Generated_Globals.Phase_1 is
    procedure Register_Volatile (E : Entity_Id);
    --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
+
+   --------------------------------
+   -- GG_Register_Constant_Calls --
+   --------------------------------
+
+   procedure GG_Register_Constant_Calls
+     (E     : Entity_Id;
+      Calls : Node_Lists.List)
+   is
+   begin
+      Constant_Calls_List.Append ((Caller  => To_Entity_Name (E),
+                                   Callees => <>));
+
+      declare
+         Callees : Name_Lists.List renames
+           Constant_Calls_List (Constant_Calls_List.Last).Callees;
+
+      begin
+         for Call of Calls loop
+            Callees.Append (To_Entity_Name (Call));
+         end loop;
+      end;
+
+   end GG_Register_Constant_Calls;
 
    ------------------------------
    -- GG_Register_Direct_Calls --
@@ -381,6 +408,14 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Effective_Reads  => Effective_Reads_Vars,
             The_Effective_Writes => Effective_Writes_Vars);
       Write_To_ALI (V);
+
+      --  Write constant calls
+      for Constant_Calls of Constant_Calls_List loop
+         V := (Kind         => EK_Constant_Calls,
+               The_Constant => Constant_Calls.Caller,
+               The_Calls    => Constant_Calls.Callees);
+         Write_To_ALI (V);
+      end loop;
 
       --  Write direct calls
       for Direct_Calls of Direct_Calls_List loop

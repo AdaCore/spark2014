@@ -212,21 +212,6 @@ package body Flow_Generated_Globals.Partial is
    --  ### Idea: Lets try to use tri-valued logic instead of using
    --  boolean constant Meaningless
 
-   type Constant_Callees is record
-      Const   : Entity_Id;
-      Callees : Node_Lists.List;
-   end record
-   with Dynamic_Predicate =>
-      Ekind (Const) = E_Constant
-         and then
-      (for all Callee of Callees => not Is_In_Analyzed_Files (Callee));
-   --  Constant and subprograms from other compilation units (directly or
-   --  indirectly) called in its initialization expression.
-
-   package Constant_Calls_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Constant_Callees);
-   --  Container with constants and calls in their initialization expressions
-
    type Contract is record
       Globals : Flow_Nodes;
 
@@ -467,25 +452,14 @@ package body Flow_Generated_Globals.Partial is
    --  Convert names to nodes
 
    function To_Names
-     (Constant_Calls : Constant_Calls_Lists.List)
-      return Name_Constant_Callees_List.List;
-   --  Convert constant calls info from nodes to names
-
-   function To_Names
      (Entries : Entry_Call_Sets.Set;
       Objects : Tasking_Info)
       return Name_Tasking_Info;
    --  Convert tasking info from nodes to names
 
-   procedure Unresolved_Local_Constants
-     (Locals         :        Node_Lists.List;
-      Constant_Graph :        Constant_Graphs.Graph;
-      Constant_Calls : in out Constant_Calls_Lists.List)
-   with Post => Constant_Calls.Length in
-                  Constant_Calls.Length'Old ..
-                  Constant_Calls.Length'Old + Locals.Length;
-   --  Extend Constant_Calls with calls from initial expressions of Locals to
-   --  subprograms from other compilation units.
+   procedure Write_Constants_To_ALI (Constant_Graph : Constant_Graphs.Graph);
+   --  Register calls from the initial expressions of Locals to subprograms in
+   --  other compilation units.
 
    procedure Write_Contracts_To_ALI
      (E              :        Entity_Id;
@@ -1920,6 +1894,8 @@ package body Flow_Generated_Globals.Partial is
             Resolve_Constants (Contracts, Constant_Graph);
 
             Write_Contracts_To_ALI (Root_Entity, Constant_Graph, Contracts);
+
+            Write_Constants_To_ALI (Constant_Graph);
          end;
       end if;
 
@@ -2176,8 +2152,18 @@ package body Flow_Generated_Globals.Partial is
                       Ekind (E) = E_Constant);
       --  Selects constants from the given set
 
-      procedure Seed (Constants : Node_Lists.List);
-      --  Seeds the Constant_Graph and Todo with given Constants
+      procedure Seed (E : Entity_Id)
+      with Pre => Ekind (E) = E_Constant;
+      --  Seed the Constant_Graph and Todo with constant E
+
+      procedure Seed (L : Node_Lists.List);
+      --  Same as above, but lifted to lists
+
+      procedure Seed_Exposed_Constant (E : Entity_Id)
+      with Pre => Ekind (E) = E_Constant;
+      --  Seed the constant graph with E if it is exposed to other compilation
+      --  units (roughly speaking, if it is declared in the .ads file of a
+      --  package-unit).
 
       -------------------------------------------------------------------------
       --  Bodies
@@ -2336,13 +2322,33 @@ package body Flow_Generated_Globals.Partial is
       -- Seed --
       ----------
 
-      procedure Seed (Constants : Node_Lists.List) is
+      procedure Seed (E : Entity_Id) is
       begin
-         for E of Constants loop
-            Todo.Include (E);
-            Constant_Graph.Include_Vertex (E);
+         Todo.Include (E);
+         Constant_Graph.Include_Vertex (E);
+      end Seed;
+
+      procedure Seed (L : Node_Lists.List) is
+      begin
+         for E of L loop
+            Seed (E);
          end loop;
       end Seed;
+
+      ---------------------------
+      -- Seed_Exposed_Constant --
+      ---------------------------
+
+      procedure Seed_Exposed_Constant (E : Entity_Id) is
+      begin
+         --  ??? test for such packages should be more restrictive
+         if Ekind (Scope (E)) = E_Package then
+            Seed (E);
+         end if;
+      end Seed_Exposed_Constant;
+
+      procedure Seed_Exposed_Constants is
+         new Iterate_Constants_In_Main_Unit (Seed_Exposed_Constant);
 
    --  Start of processing for Resolve_Constants
 
@@ -2353,31 +2359,23 @@ package body Flow_Generated_Globals.Partial is
 
       Constant_Graph.Add_Vertex (Variable_Input);
 
+      --  We lazily only care about constants referenced in the Global
+      --  contracts of the units of the current compilation unit
+      --  (including packages, which must have an implicit Global).
       --  Initialize the workset with constants from the generated globals
       --  ??? better to initialize this when globals are picked from the AST
 
-      for C in Contracts.Iterate loop
-         declare
-            E     : Entity_Id renames Entity_Contract_Maps.Key (C);
-            Contr : Contract  renames Contracts (C);
-         begin
-            --  We lazily only care about constants referenced in the Global
-            --  contracts of the units of the current compilation unit
-            --  (including packages, which must have an implicit Global).
-            --
-            --  However, it is also our responsibility to record calls in
-            --  the initialization expressions of constants exposed from
-            --  the current compilation unit, i.e. declared in the visible and
-            --  private parts of .ads packages.
-            --  ??? test for such packages should be more restrictive
-            if Ekind (E) = E_Package then
-               Seed (Scope_Map (E).Constants);
-            end if;
-
-            Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
-            Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
-         end;
+      for Contr of Contracts loop
+         Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
+         Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
       end loop;
+
+      Seed_Exposed_Constants;
+
+      --  However, it is also our responsibility to record calls in the
+      --  initialization expressions of constants exposed from the current
+      --  compilation unit, i.e. declared in the visible and private parts
+      --  of .ads packages.
 
       --  Grow graph
 
@@ -2543,33 +2541,6 @@ package body Flow_Generated_Globals.Partial is
       return Result;
    end To_Names;
 
-   function To_Names
-     (Constant_Calls : Constant_Calls_Lists.List)
-      return Name_Constant_Callees_List.List
-   is
-      Result : Name_Constant_Callees_List.List;
-   begin
-      for Elem of Constant_Calls loop
-         Result.Append ((Const => To_Entity_Name (Elem.Const),
-                         Callees => <>));
-
-         declare
-            Callees : Name_Lists.List renames
-              Result (Result.Last).Callees;
-         begin
-            if Elem.Callees = Variable then
-               Callees.Append (Flow_Generated_Globals.Variable_Input);
-            else
-               for Call of Elem.Callees loop
-                  Callees.Append (To_Entity_Name (Call));
-               end loop;
-            end if;
-         end;
-      end loop;
-
-      return Result;
-   end To_Names;
-
    -----------------
    -- To_Node_Set --
    -----------------
@@ -2604,17 +2575,19 @@ package body Flow_Generated_Globals.Partial is
       return Nodes;
    end To_Node_Set;
 
-   --------------------------------
-   -- Unresolved_Local_Constants --
-   --------------------------------
+   ----------------------------
+   -- Write_Constants_To_ALI --
+   ----------------------------
 
-   procedure Unresolved_Local_Constants
-     (Locals         :        Node_Lists.List;
-      Constant_Graph :        Constant_Graphs.Graph;
-      Constant_Calls : in out Constant_Calls_Lists.List)
-   is
-   begin
-      for E of Locals loop
+   procedure Write_Constants_To_ALI (Constant_Graph : Constant_Graphs.Graph) is
+      procedure Write_Constant (E : Entity_Id);
+
+      --------------------
+      -- Write_Constant --
+      --------------------
+
+      procedure Write_Constant (E : Entity_Id) is
+      begin
          --  Locals represent all constants "owned" by a scope from the current
          --  compilation unit, but we are only interested in those which were
          --  seeded into constant graph.
@@ -2622,19 +2595,28 @@ package body Flow_Generated_Globals.Partial is
          --  added while growing it; but this over-approximation is safe.
          if Constant_Graph.Contains (E) then
             declare
-               Inputs : Node_Lists.List := Resolved_Inputs (E, Constant_Graph);
-
+               Inputs : constant Node_Lists.List :=
+                 Resolved_Inputs (E, Constant_Graph);
             begin
-               Constant_Calls.Append ((Const => E,
-                                       Callees => <>));
-
-               Node_Lists.Move
-                 (Target => Constant_Calls (Constant_Calls.Last).Callees,
-                  Source => Inputs);
+               --  If we know that constant has variable input, then don't even
+               --  register it in the ALI file, so it will be treated as an
+               --  ordinary global (i.e. variable).
+               if Inputs /= Variable then
+                  GG_Register_Constant_Calls
+                    (E, Resolved_Inputs (E, Constant_Graph));
+               end if;
             end;
          end if;
-      end loop;
-   end Unresolved_Local_Constants;
+      end Write_Constant;
+
+      procedure Write_Constants is
+         new Iterate_Constants_In_Main_Unit (Write_Constant);
+
+   --  Start of processing for Write_Constants_To_ALI
+
+   begin
+      Write_Constants;
+   end Write_Constants_To_ALI;
 
    ----------------------------
    -- Write_Contracts_To_ALI --
@@ -2647,20 +2629,12 @@ package body Flow_Generated_Globals.Partial is
    is
       Contr : Contract renames Contracts (E);
 
-      Constant_Calls : Constant_Calls_Lists.List;
-
    begin
       for Child of Scope_Map (E) loop
          Write_Contracts_To_ALI (Child, Constant_Graph, Contracts);
       end loop;
 
       if Ekind (E) /= E_Protected_Type then
-
-         --  Record unresolved calls in initialization expressions of local
-         --  constants.
-
-         Unresolved_Local_Constants
-           (Scope_Map (E).Constants, Constant_Graph, Constant_Calls);
 
          Strip_Constants (Contr.Globals, Constant_Graph);
 
@@ -2693,8 +2667,6 @@ package body Flow_Generated_Globals.Partial is
              Local_Variables       => To_Name_Set (Contr.Local_Variables),
              Local_Ghost_Variables => To_Name_Set
                (Contr.Local_Ghost_Variables),
-
-             Constant_Calls        => To_Names (Constant_Calls),
 
              Has_Terminate         => Contr.Has_Terminate,
              Nonreturning          => Contr.Nonreturning,
