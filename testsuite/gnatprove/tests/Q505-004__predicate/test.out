@@ -1,0 +1,2 @@
+bar.ads:4:55: medium: predicate check might fail (e.g. when X = False)
+bar.ads:5:14: warning: subprogram "P" has no effect
