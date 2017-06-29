@@ -148,9 +148,8 @@ units, examples with formally verified data flow, functional, or abstraction
 contracts, as well as erroneous programs, on which |GNATprove| detects failing
 checks.
 
-Opening the example in GPS or GNATbench opens the project corresponding to the
-first lecture. Projects corresponding to the following lectures are available
-in sibling subdirectories and can be opened manually.
+Opening the example in GPS or GNATbench opens an aggregate project, with
+separate sub-projects for each lecture.
 
 .. rubric:: ``allocators``
 
