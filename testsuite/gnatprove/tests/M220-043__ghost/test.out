@@ -7,7 +7,6 @@ semantics.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
 semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = 2147483647)
 semantics.adb:16:10: info: loop variant proved (CVC4: 1 VC)
 semantics.adb:16:53: medium: overflow check might fail (e.g. when Formal = 2)
-semantics.adb:25:17: warning: subprogram "Nested_Non_Ghost" has no effect
 semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.ads:12:19: info: postcondition proved (CVC4: 1 VC)

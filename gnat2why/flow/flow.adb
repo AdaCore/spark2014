@@ -1419,6 +1419,7 @@ package body Flow is
                                          (FA.Analyzed_Entity)
                           and then not Has_User_Supplied_Globals
                                          (FA.Analyzed_Entity)
+                          and then not Is_Ghost_Entity (FA.Analyzed_Entity)
                         then
                            Error_Msg_Flow
                              (FA       => FA,

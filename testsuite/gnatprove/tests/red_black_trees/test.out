@@ -1314,7 +1314,6 @@ red_black_trees.adb:186:39: info: initialization of "Res" proved
 red_black_trees.adb:193:14: info: initialization of "Res" proved
 red_black_trees.adb:199:22: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:200:27: info: precondition proved (CVC4: 1 VC)
-red_black_trees.adb:204:14: warning: subprogram "Prove_Same_Nb_Blacks" has no effect
 red_black_trees.adb:211:07: warning: statement has no effect, in call inlined at red_black_trees.adb:364
 red_black_trees.adb:211:07: warning: statement has no effect, in call inlined at red_black_trees.adb:368
 red_black_trees.adb:211:07: warning: statement has no effect, in call inlined at red_black_trees.adb:522
@@ -1345,7 +1344,6 @@ red_black_trees.adb:224:25: medium: assertion might fail, cannot prove Same_Nb_B
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:522
-red_black_trees.adb:229:14: warning: subprogram "Prove_Same_Nb_Blacks_Swap" has no effect
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at red_black_trees.adb:416
@@ -1382,7 +1380,6 @@ red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:262:30: info: assertion proved (Z3: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:262:30: info: assertion proved (Z3: 1 VC), in call inlined at red_black_trees.adb:471
-red_black_trees.adb:265:14: warning: subprogram "Prove_Same_Nb_Blacks_Rotate" has no effect
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
@@ -1425,7 +1422,6 @@ red_black_trees.adb:298:32: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:298:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:300:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:300:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:303:14: warning: subprogram "Prove_Same_Nb_Blacks_Rotate_Swap" has no effect
 red_black_trees.adb:312:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:312:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:314:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:440
@@ -2271,7 +2267,6 @@ search_trees.adb:809:46: info: initialization of "X" proved, in call inlined at 
 search_trees.adb:815:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:902
 search_trees.adb:815:46: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
 search_trees.adb:815:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:820:17: warning: subprogram "Prove_Plug_Y" has no effect
 search_trees.adb:825:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
@@ -2525,7 +2520,6 @@ search_trees.adb:1065:46: info: initialization of "Y" proved, in call inlined at
 search_trees.adb:1071:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1071:46: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1071:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1076:17: warning: subprogram "Prove_Plug_X" has no effect
 search_trees.adb:1081:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
