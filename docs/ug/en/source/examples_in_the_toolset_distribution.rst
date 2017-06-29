@@ -101,6 +101,21 @@ successful if-and-only-if the list contains the value searched, and if so the
 cursor returned is one at which the list contains this value. |GNATprove|
 proves all checks on these programs.
 
+.. rubric:: ``string_search``
+
+This example contains multiple variants of substring search:
+
+* a simple brute force search in ``Brute_Force`` and ``Brute_Force_Slice``.
+* a more efficient algorithm called quick search in ``QS``.
+
+The postcondition of all variants expresses that the search is successful
+if-and-only-if the string ``Haystack`` contains the substring ``Needle``
+searched, and if so the index returned is one at which the string contains this
+substring. |GNATprove| proves all checks on these programs. A detailed account
+of the development and verification of this example is given in the following
+post on SPARK 2014 Blog:
+http://www.spark-2014.org/entries/detail/applied-formal-logic-searching-in-strings
+
 .. rubric:: ``trajectory_computation``
 
 This example contains code from an embedded safety-critical software, which

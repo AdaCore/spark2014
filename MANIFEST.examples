@@ -16,9 +16,9 @@
 --   3. As 2, but in GNATBench.
 --
 --
--- The examples that follow all provide a test.gpr project file that
--- should be opened in GPS or GNATbench when selecting the example,
--- except for adacore_u, crazyflie, ipstack and thumper that are handled
+-- The examples that follow all provide a project file that should
+-- be opened in GPS or GNATbench when selecting the example, except
+-- for adacore_u, crazyflie, ipstack and thumper that are handled
 -- specially.
 --
 adacore_u
@@ -50,6 +50,7 @@ segway
 sparkskein
 spark_book
 spark_io
+string_search
 tetris
 text_io_get_line
 thumper
