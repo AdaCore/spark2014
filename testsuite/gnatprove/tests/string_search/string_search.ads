@@ -9,15 +9,16 @@ is
      (Needle, Haystack : Text; Loc : Positive; Len : Natural) return Boolean
    is
      (for all I in 1 .. Len => Needle(I) = Haystack(Loc + (I - 1)))
-   with Pre =>
-     Len <= Needle'Length
-     and then Loc - 1 <= Haystack'Length - Len;
+   with Ghost,
+        Pre => Len <= Needle'Length
+          and then Loc - 1 <= Haystack'Length - Len;
 
    --  There is a complete match of the needle at location loc in the
    --  haystack.
    function Match_At (Needle, Haystack : Text; Loc : Positive) return Boolean is
      (Loc - 1 <= Haystack'Length - Needle'Length
-      and then Partial_Match_At (Needle, Haystack, Loc, Needle'Length));
+      and then Partial_Match_At (Needle, Haystack, Loc, Needle'Length))
+   with Ghost;
 
    function Brute_Force (Needle, Haystack : in Text) return Natural with
      Pre  => Needle'Length in 1 .. Haystack'Length,

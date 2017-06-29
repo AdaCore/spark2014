@@ -84,6 +84,7 @@ is
 
          Prove_QS;
 
+         pragma Loop_Variant (Increases => I);
          pragma Loop_Invariant (I <= Haystack'Length - Needle'Length);
          pragma Loop_Invariant
            (for all K in 1 .. I + Bad_Shift(Haystack(I + Needle'Length)) - 1 => not Match_At (Needle, Haystack, K));
