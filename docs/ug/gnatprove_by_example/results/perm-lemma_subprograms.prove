@@ -1,6 +1,4 @@
-perm-lemma_subprograms.adb:5:14: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.adb:5:14: medium: postcondition might fail, cannot prove Occ (A, E) = Occ (B, E) (e.g. when A = (others => 0) and A'First = 0 and A'Last = 0 and B = (others => 0) and B'First = 0 and B'Last = 0 and E = 0)
-perm-lemma_subprograms.adb:5:27: info: function contract not available for proof ("Occ" may not return)
+perm-lemma_subprograms.adb:5:14: info: postcondition proved
 perm-lemma_subprograms.adb:13:14: info: index check proved
 perm-lemma_subprograms.adb:14:25: info: assertion proved
 perm-lemma_subprograms.adb:14:29: info: index check proved
@@ -25,22 +23,6 @@ perm-lemma_subprograms.ads:6:20: info: index check proved
 perm-lemma_subprograms.ads:8:39: info: index check proved
 perm-lemma_subprograms.ads:8:47: info: index check proved
 perm-lemma_subprograms.ads:13:39: info: precondition proved
+perm-lemma_subprograms.ads:15:08: info: postcondition proved
 perm-lemma_subprograms.ads:15:19: info: index check proved
-perm-lemma_subprograms.ads:15:27: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:15:27: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:15:40: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:15:40: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:16:26: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:16:26: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:16:39: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:16:39: info: function contract not available for proof ("Occ" may not return)
 perm-lemma_subprograms.ads:17:18: info: index check proved
-perm-lemma_subprograms.ads:17:30: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:17:30: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:17:30: medium: postcondition might fail, cannot prove Occ (R, E) = Occ (A, E) - 1 (e.g. when A = (100 => 1, others => 0) and A'First = 100 and A'Last = 100 and E = 1 and I = 100 and R = (100 => 0, others => 1) and R'First = 100 and R'Last = 100 and V = 0)
-perm-lemma_subprograms.ads:17:43: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:17:43: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:18:14: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:18:14: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:18:27: info: function contract not available for proof ("Occ" may not return)
-perm-lemma_subprograms.ads:18:27: info: function contract not available for proof ("Occ" may not return)

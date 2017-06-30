@@ -1,4 +1,3 @@
-sort.adb:29:17: warning: subprogram "Prove_Perm" has no effect
 sort.adb:53:21: info: initialization of "Temp" proved
 sort.adb:56:30: info: initialization of "Interm" proved
 sort.adb:57:07: info: initialization of "Interm" proved
