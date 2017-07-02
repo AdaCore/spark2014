@@ -688,16 +688,14 @@ package body Flow_Generated_Globals.Partial is
                     Enclosing_Generic_Instance (Enclosing_Instance);
 
                   if Present (Enclosing_Instance) then
-                     for S of Generic_Actual_Subprograms
-                       (Enclosing_Instance)
+                     for S of Generic_Actual_Subprograms (Enclosing_Instance)
                      loop
                         case Ekind (S) is
                            when E_Function | E_Procedure =>
                               Contr.Direct_Calls.Include (S);
 
                            when E_Operator =>
-                              pragma Assert
-                                (In_Predefined_Unit (S));
+                              pragma Assert (In_Predefined_Unit (S));
 
                            when others =>
                               raise Program_Error;
@@ -720,13 +718,12 @@ package body Flow_Generated_Globals.Partial is
 
          Contr.Nonreturning := not
            (In_Predefined_Unit (E)
-            or else
+              or else
             Is_Imported (E)
-            or else
+              or else
             Is_Intrinsic (E)
-            or else
-              (Has_No_Body_Yet (E)
-               and then not No_Return (E)));
+              or else
+            (Has_No_Body_Yet (E) and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
          --  status is meaningless; for others conservatively assume that they
