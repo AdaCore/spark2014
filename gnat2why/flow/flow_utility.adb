@@ -430,17 +430,18 @@ package body Flow_Utility is
                            end if;
 
                         --  Pick the Part_Of constituents from the private part
-                        --  of the package, if visible.
+                        --  of the package and private child packages, but only
+                        --  if they are visible (which is equivalent to being
+                        --  marked as in-SPARK).
 
-                        elsif Present
-                          (Private_Declarations (Package_Specification (Pkg)))
-                          and then Private_Spec_In_SPARK (Pkg)
-                        then
+                        else
                            for C of Iter (Part_Of_Constituents (E)) loop
-                              Result.Union
-                                (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C, F.Variant),
-                                    Erase_Constants));
+                              if Entity_In_SPARK (C) then
+                                 Result.Union
+                                   (Expand_Abstract_State
+                                      (Direct_Mapping_Id (C, F.Variant),
+                                       Erase_Constants));
+                              end if;
                            end loop;
 
                            --  There might be more constituents in the package
@@ -450,12 +451,6 @@ package body Flow_Utility is
                            Result.Insert (F);
 
                            return Result;
-
-                        --  None of the constituents are visible. The state
-                        --  will behave as a blob of data.
-
-                        else
-                           return Flow_Id_Sets.To_Set (F);
                         end if;
                      end if;
                   end;
