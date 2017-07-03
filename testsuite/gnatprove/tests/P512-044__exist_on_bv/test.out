@@ -1,4 +1,3 @@
-x86.adb:21:17: warning: subprogram "Prove_Post" has no effect
 x86.adb:36:40: info: initialization of "N2" proved
 x86.adb:36:40: info: initialization of "N2" proved, in call inlined at x86.adb:99
 x86.adb:36:40: medium: assertion might fail, cannot prove N2 <= var2_range_size, in call inlined at x86.adb:99 (e.g. when N2 = 1 and var2_range_size = 0)

@@ -1,4 +1,3 @@
-perm.adb:3:14: warning: subprogram "Occ_Eq" has no effect
 perm.adb:5:14: info: postcondition proved (CVC4: 1 VC)
 perm.adb:13:14: info: index check proved (CVC4: 2 VC)
 perm.adb:14:25: info: assertion proved (CVC4: 1 VC)
@@ -39,7 +38,6 @@ perm.ads:20:29: info: range check proved (CVC4: 1 VC)
 perm.ads:25:20: info: index check proved (CVC4: 2 VC)
 perm.ads:27:39: info: index check proved (CVC4: 2 VC)
 perm.ads:27:47: info: index check proved (CVC4: 2 VC)
-perm.ads:30:14: warning: subprogram "Occ_Set" has no effect
 perm.ads:32:39: info: precondition proved (CVC4: 2 VC)
 perm.ads:34:08: info: postcondition proved (CVC4: 4 VC)
 perm.ads:34:19: info: index check proved (CVC4: 2 VC)
@@ -52,7 +50,6 @@ sort.adb:17:35: info: index check proved (CVC4: 2 VC)
 sort.adb:19:48: info: index check proved (CVC4: 2 VC)
 sort.adb:19:65: info: index check proved (CVC4: 2 VC)
 sort.adb:24:53: info: length check proved (CVC4: 1 VC)
-sort.adb:27:17: warning: subprogram "Prove_Perm" has no effect
 sort.adb:29:09: info: precondition proved (CVC4: 2 VC)
 sort.adb:29:23: info: range check proved (CVC4: 1 VC)
 sort.adb:29:32: info: index check proved (CVC4: 2 VC)

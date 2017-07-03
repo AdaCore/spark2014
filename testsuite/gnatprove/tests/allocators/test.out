@@ -229,7 +229,6 @@ list_mod_allocator.adb:147:19: info: precondition proved (CVC4: 2 VC)
 list_mod_allocator.adb:147:24: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:147:58: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:150:62: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:157:14: warning: subprogram "Prove_Is_Preprend" has no effect
 list_mod_allocator.adb:165:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:191
 list_mod_allocator.adb:165:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:204
 list_mod_allocator.adb:165:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:191
@@ -278,7 +277,6 @@ list_mod_allocator.adb:198:33: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:200:44: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:201:16: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:204:33: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:208:14: warning: subprogram "Prove_Init" has no effect
 list_mod_allocator.adb:216:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:230
 list_mod_allocator.adb:216:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:230
 list_mod_allocator.adb:216:36: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:230
