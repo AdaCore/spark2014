@@ -2241,11 +2241,15 @@ package body Flow_Generated_Globals.Partial is
                end;
             end loop;
 
-            --  Only care about functions whose globals couldn't be resolved
-            --  by Get_Variables.
+            --  Only care about functions whose globals couldn't be resolved by
+            --  Get_Variables. For subprograms in predefined units with no
+            --  Global contract we assume Global => null, similarly as we do in
+            --  Mark_Call.
 
             for F of Get_Functions (Expr, Include_Predicates => False) loop
-               if not Has_User_Supplied_Globals (F) then
+               if not Has_User_Supplied_Globals (F)
+                 and then not In_Predefined_Unit (F)
+               then
                   Inputs.Append (F);
                end if;
             end loop;
