@@ -157,13 +157,19 @@ def kill_and_regenerate_all():
     with open("manual_proof.in") as v:
         for i in v:
             exec_gnatprove(i)
-    os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 \
---level=4 --no-counterexample -j0")
+    exec_cvc4 = "gnatprove -P spark_lemmas.gpr --prover=cvc4 \
+--level=4 --no-counterexample -j0"
+    exec_z3 = "gnatprove -P spark_lemmas.gpr --prover=z3 \
+--level=2 --no-counterexample -j0"
+    exec_altergo_report = "gnatprove -P spark_lemmas.gpr --report=statistics \
+--prover=alt-ergo --level=4 --no-counterexample -j0"
+    print (exec_cvc4)
+    os.system(exec_cvc4)
 #   discharge the remaining proofs with z3 and alt-ergo
-    os.system("gnatprove -P spark_lemmas.gpr --prover=z3 \
---level=2 --no-counterexample -j0")
-    os.system("gnatprove -P spark_lemmas.gpr --report=statistics \
---prover=alt-ergo --level=4 --no-counterexample -j0")
+    print (exec_z3)
+    os.system(exec_z3)
+    print (exec_altergo_report)
+    os.system(exec_altergo_report)
     change_all_spark_mode(True)
 
 kill_and_regenerate_all()
