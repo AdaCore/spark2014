@@ -12,7 +12,7 @@ run-time check or an assertion holds, there might be various reasons:
 * [SPEC] The check or assertion cannot be proved, because of some missing
   assertions about the behavior of the program.
 * [MODEL] The check or assertion is not proved because of current
-  limitations in the model used by |GNATProve|.
+  limitations in the model used by |GNATprove|.
 * [TIMEOUT] The check or assertion is not proved because the prover
   timeouts.
 * [PROVER] The check or assertion is not proved because the prover is not
@@ -63,9 +63,9 @@ generated on the path, with values of variables which exhibit the problem (see
 spot a missing assertion.
 
 A property can also be conceptually provable, but the model used by
-|GNATProve| can currently not reason about it [MODEL]. (See
-:ref:`GNATProve_Limitations` for a list of the current limitations in
-|GNATProve|.) In particular using the following features of the language
+|GNATprove| can currently not reason about it [MODEL]. (See
+:ref:`GNATprove_Limitations` for a list of the current limitations in
+|GNATprove|.) In particular using the following features of the language
 may yield checks that should be true, but cannot be proved:
 
 * Floating point arithmetic (although using |CodePeer| integration may help

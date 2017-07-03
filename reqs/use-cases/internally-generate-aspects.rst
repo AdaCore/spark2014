@@ -20,7 +20,7 @@ Scenario
 ^^^^^^^^
 
 #. User provides the specifications and body of a package without having included any |SPARK| aspects.
-#. All code is "in SPARK 2014" and GNATProve can generate global and dependency relationships where they do not exist. 
+#. All code is "in SPARK 2014" and GNATprove can generate global and dependency relationships where they do not exist. 
 #. Where global and dependency relationships have been specified by the user, these are used by the |SPARK tools| and the body ignored.
 #. The aggregation of user and tool generated relationships are used for modular flow analysis.
 
@@ -37,7 +37,7 @@ Postcondition
 
 Exceptions and alternative flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The body is not "in SPARK 2014" and thus GNATProve cannot generate relations.
+The body is not "in SPARK 2014" and thus GNATprove cannot generate relations.
 
 Special Requirements
 ^^^^^^^^^^^^^^^^^^^^

@@ -366,7 +366,7 @@ of ``Stack`` expresses that the ``Max`` field of a valid stack is the maximum of
 the elements stored in the stack.
 
 To make sure that the invariant holds for every value of type ``Stack`` outside
-of the package ``P``, |GNATProve| introduces invariant checks in several
+of the package ``P``, |GNATprove| introduces invariant checks in several
 places. First, at the type declaration, it will make sure that the invariant
 holds every time an object of type ``Stack`` is default initialized. Here, as
 the stack is empty by default and the default value of ``Max`` is 0, the check

@@ -20,7 +20,7 @@ Scenario
 
 #.  User provides the specifications and body of a package without having included any SPARK 2014 aspects.
 
-#.  The code is "in SPARK 2014" and GNATProve can generate relations upon reading the body.
+#.  The code is "in SPARK 2014" and GNATprove can generate relations upon reading the body.
 
     #. The tools automatically augment the source code with SPARK 2014 aspects (user has to request that).
 
@@ -34,11 +34,11 @@ Can these features actually be implemented?
 Postcondition
 ^^^^^^^^^^^^^
 
-#. Based on the relations that GNATProve generates after processing the body, the tools automatically introduce SPARK 2014 aspects at both the specifications and body of the package.
+#. Based on the relations that GNATprove generates after processing the body, the tools automatically introduce SPARK 2014 aspects at both the specifications and body of the package.
 
 Exceptions and alternative flows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The body is not "in SPARK 2014" and thus GNATProve cannot generate relations.
+The body is not "in SPARK 2014" and thus GNATprove cannot generate relations.
 
 Special Requirements
 ^^^^^^^^^^^^^^^^^^^^
