@@ -24,6 +24,7 @@ spark_memcached_wrapper
 spark_report
 target.atp
 why3config
+why3cpulimit
 why3realize
 why3server
 z3
