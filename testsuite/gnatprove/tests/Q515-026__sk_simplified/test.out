@@ -1,0 +1,2 @@
+gen.ads:24:22: warning: unused variable "E"
+gen.ads:27:14: medium: postcondition might fail, cannot prove false
