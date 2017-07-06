@@ -1,0 +1,2 @@
+prot.adb:6:29: medium: overflow check might fail
+prot.adb:11:29: medium: overflow check might fail
