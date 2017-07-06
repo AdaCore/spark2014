@@ -1,0 +1,2 @@
+prot.adb:8:25: medium: overflow check might fail
+prot.ads:4:17: high: potentially blocking operation in protected operation "Read"
