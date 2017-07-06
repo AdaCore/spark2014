@@ -97,6 +97,10 @@ package body Flow.Analysis.Sanity is
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
 
+      procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
+      --  Checks that for a generic instance there is no Actual with variable
+      --  inputs corresponding to a Formal object declaration with mode in.
+
       function Global_Reads (N : Node_Id) return Ordered_Flow_Id_Sets.Set;
       --  Wrapper around Get_Globals that only returns global reads and proof
       --  reads.
@@ -150,11 +154,6 @@ package body Flow.Analysis.Sanity is
          --  Checks that indexed components and slices in object renaming
          --  declarations do not have variable inputs.
 
-         procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
-         --  Checks that for a generic instance there is no Actual with
-         --  variable inputs corresponding to a Formal object declaration with
-         --  mode in.
-
          --------------------
          -- Check_Renaming --
          --------------------
@@ -181,32 +180,6 @@ package body Flow.Analysis.Sanity is
             return OK; -- Keep searching in case of nested prefixes
          end Check_Renaming;
 
-         -----------------------
-         -- Handle_Parameters --
-         -----------------------
-
-         procedure Handle_Parameters (Formal : Node_Id;
-                                      Actual : Node_Id)
-         is
-         begin
-            if Nkind (Formal) = N_Formal_Object_Declaration then
-               declare
-                  Formal_E : constant Entity_Id := Defining_Entity (Formal);
-
-               begin
-                  if Ekind (Formal_E) = E_Generic_In_Parameter then
-                     Check_Variable_Inputs
-                       (Flow_Ids => Variables (Actual),
-                        Err_Desc => "actual for formal object with mode in",
-                        Err_Node => Actual);
-                  end if;
-               end;
-            end if;
-         end Handle_Parameters;
-
-         procedure Check_Actuals is new
-           Iterate_Generic_Parameters (Handle_Parameters);
-
          procedure Check_Name_Indexes_And_Slices is new
            Traverse_Proc (Check_Renaming);
 
@@ -224,26 +197,6 @@ package body Flow.Analysis.Sanity is
                --  own pass of flow analysis.
 
                if N = Entry_Node then
-                  declare
-                     Spec : constant Entity_Id := Unique_Defining_Entity (N);
-
-                  begin
-                     --  If the node is an instance of a generic then we need
-                     --  to check its actuals.
-                     if Is_Generic_Instance (Spec) then
-                        declare
-                           Instance : constant Entity_Id :=
-                             (if Nkind (N) = N_Subprogram_Body
-                              then Unique_Defining_Entity (Parent (N))
-                              else Spec);
-                           --  For subprogram instances we need to get to the
-                           --  wrapper package.
-
-                        begin
-                           Check_Actuals (Instance);
-                        end;
-                     end if;
-                  end;
                   return OK;
                else
                   return Skip;
@@ -426,6 +379,32 @@ package body Flow.Analysis.Sanity is
          end loop;
       end Check_Variable_Inputs;
 
+      -----------------------
+      -- Handle_Parameters --
+      -----------------------
+
+      procedure Handle_Parameters (Formal : Node_Id;
+                                   Actual : Node_Id)
+      is
+      begin
+         if Nkind (Formal) = N_Formal_Object_Declaration then
+            declare
+               Formal_E : constant Entity_Id := Defining_Entity (Formal);
+
+            begin
+               if Ekind (Formal_E) = E_Generic_In_Parameter then
+                  Check_Variable_Inputs
+                    (Flow_Ids => Variables (Actual),
+                     Err_Desc => "actual for formal object with mode in",
+                     Err_Node => Actual);
+               end if;
+            end;
+         end if;
+      end Handle_Parameters;
+
+      procedure Check_Actuals is new
+        Iterate_Generic_Parameters (Handle_Parameters);
+
       procedure Do_Checks is new Traverse_Proc (Check_Expression);
 
    --  Start of processing for Check_Expressions
@@ -457,6 +436,14 @@ package body Flow.Analysis.Sanity is
                end;
             end if;
 
+            --  If the node is an instance of a generic then we need to check
+            --  its actuals.
+            if Is_Generic_Instance (FA.Analyzed_Entity) then
+               --  For subprogram instances we need to get to the
+               --  wrapper package.
+               Check_Actuals (Unique_Defining_Entity (Parent (Entry_Node)));
+            end if;
+
          when Kind_Task =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);
             Do_Checks (Entry_Node);
@@ -465,9 +452,21 @@ package body Flow.Analysis.Sanity is
             Entry_Node := Package_Specification (FA.Analyzed_Entity);
             Do_Checks (Entry_Node);
 
+            --  If the node is an instance of a generic then we need to check
+            --  its actuals.
+            if Is_Generic_Instance (FA.Spec_Entity) then
+               Check_Actuals (FA.Spec_Entity);
+            end if;
+
          when Kind_Package_Body =>
             Entry_Node := Package_Specification (FA.Spec_Entity);
             Do_Checks (Entry_Node);
+
+            --  If the node is an instance of a generic then we need to check
+            --  its actuals.
+            if Is_Generic_Instance (FA.Spec_Entity) then
+               Check_Actuals (FA.Spec_Entity);
+            end if;
 
             Entry_Node := Package_Body (FA.Analyzed_Entity);
             Do_Checks (Entry_Node);
