@@ -30,6 +30,8 @@ file will look like:
 
 saved in a file called ``my_project.gpr``.
 
+.. _Having Different Switches for Compilation and Verification:
+
 Having Different Switches for Compilation and Verification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -399,17 +401,22 @@ endianness or sizes and alignments of standard types.  If your target is not
 the same as the host on which you run |GNATprove|, you have to tell
 |GNATprove| the specificities of your target.
 
-Note that the ``Target`` attribute of Project files is currently silently
-ignored.
-
-Instead, you need to add the following to your project file:
+Note that the ``Target`` attribute of project files is ignored with a warning
+by |GNATprove|. Instead, you need to add the following to your project file,
+under a scenario variable as seen in :ref:`Having Different Switches for
+Compilation and Verification`:
 
 .. code-block:: gpr
 
   project My_Project is
      [...]
      package Builder is
-        for Global_Compilation_Switches ("Ada") use ("-gnateT=" & My_Project'Project_Dir & "/target.atp");
+        case Mode is
+           when "Compile" =>
+              ...
+           when "Analyze" =>
+              for Global_Compilation_Switches ("Ada") use ("-gnateT=" & My_Project'Project_Dir & "/target.atp");
+        end case;
      end Builder;
   end My_Project;
 
