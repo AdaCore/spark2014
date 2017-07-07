@@ -182,14 +182,11 @@ lexer.adb:651:13: info: initialization of "First_Line" proved
 lexer.adb:651:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:661:14: info: range check proved (CVC4: 1 VC)
 lexer.adb:669:12: info: precondition proved (CVC4: 1 VC)
-lexer.ads:76:17: info: initialization of "Current_Col" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "Current_Idx" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "Current_Line" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "Current_Read.C" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "Next_Idx" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "Next_Read.C" constituent of "State" proved
 lexer.ads:76:17: info: initialization of "The_File" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "The_Filename" constituent of "State" proved
 lexer.ads:76:17: info: postcondition proved (CVC4: 1 VC)
 lexer.ads:79:26: info: initialization of "T.Col" proved
 lexer.ads:79:26: info: initialization of "T.Length" proved

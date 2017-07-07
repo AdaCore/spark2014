@@ -50,6 +50,7 @@ with Flow.Analysis.Sanity;
 with Flow_Debug;                     use Flow_Debug;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
@@ -1240,11 +1241,10 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      =>
                        (if Present (FA.B_Scope)
-                          and then Is_Abstract_State (F)
-                          and then FA.B_Scope.Part /= Body_Part
-                          and then State_Refinement_Is_Visible
-                                     (Get_Direct_Mapping_Id (F),
-                                      Body_Scope (FA.B_Scope))
+                        and then Is_Abstract_State (F)
+                        and then FA.B_Scope.Part /= Body_Part
+                        and then State_Refinement_Is_Visible
+                                   (F, Body_Scope (FA.B_Scope))
                         then "non-visible constituents of & are not used " &
                               "- consider moving the subprogram to the " &
                               "package body and adding a Refined_Global"
@@ -3333,7 +3333,8 @@ package body Flow.Analysis is
 
    procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs) is
 
-      User_Deps   : Dependency_Maps.Map;
+      User_Deps           : Dependency_Maps.Map;
+      Projected_User_Deps : Dependency_Maps.Map;
       Actual_Deps : Dependency_Maps.Map;
 
       Params         : Node_Sets.Set;
@@ -3359,30 +3360,6 @@ package body Flow.Analysis is
       --  On the other hand, when there is a user-provided Global contract or
       --  when F is not a Global variable, emitted messages are medium checks.
 
-      function Up_Project_Map
-        (DM : Dependency_Maps.Map)
-         return Dependency_Maps.Map;
-      --  Up projects the constituents that are mentioned in DM to their
-      --  encapsulating state abstractions visible from Depends_Scope.
-      --
-      --  Example:
-      --     State1 => (Con1, Con2)
-      --     State2 => (Con3, Con4)
-      --
-      --     Original DM:
-      --       Con1 => (Con3, G)
-      --       Con3 => (Con4, G)
-      --       G    => Con3
-      --
-      --     Up-projected DM:
-      --       State1 => (State1, State2, G)
-      --       State2 => (State2, G)
-      --       G      => State2
-      --
-      --  Note that the self-depence of State1 is an indirect consequence of
-      --  the fact that Con2 is not an Output. So there is an implicit Con2 =>
-      --  Con2 dependence.
-
       ------------------
       -- Message_Kind --
       ------------------
@@ -3399,88 +3376,6 @@ package body Flow.Analysis is
          --  No need to raise an error
          return Medium_Check_Kind;
       end Message_Kind;
-
-      --------------------
-      -- Up_Project_Map --
-      --------------------
-
-      function Up_Project_Map
-        (DM : Dependency_Maps.Map)
-         return Dependency_Maps.Map
-      is
-         States_Written       : Node_Sets.Set;
-         Constituents_Written : Node_Sets.Set;
-         Up_Projected_Map     : Dependency_Maps.Map;
-
-      begin
-         for C in DM.Iterate loop
-            declare
-               F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
-               F_Deps : Flow_Id_Sets.Set renames DM (C);
-               AS     : Flow_Id;
-
-               Position : Dependency_Maps.Cursor;
-               --  Position of the mapped dependent entity
-
-               Unused : Boolean;
-               --  Dummy variable required by the maps API
-
-            begin
-               --  Add output
-               if Is_Non_Visible_Constituent (F_Out, Depends_Scope) then
-                  AS := Up_Project_Constituent (F_Out, Depends_Scope);
-
-                  --  Add the encapsulating abstract state to the map (if it is
-                  --  not already there).
-                  Up_Projected_Map.Insert (Key      => AS,
-                                           Position => Position,
-                                           Inserted => Unused);
-
-                  --  Taking some notes
-                  States_Written.Include (Get_Direct_Mapping_Id (AS));
-                  Constituents_Written.Include (Get_Direct_Mapping_Id (F_Out));
-               else
-                  --  Add output as it is
-                  Up_Projected_Map.Insert (Key      => F_Out,
-                                           Position => Position,
-                                           Inserted => Unused);
-               end if;
-
-               --  Add output's dependencies
-               declare
-                  Up_Projected_Deps : Flow_Id_Sets.Set renames
-                    Up_Projected_Map (Position);
-               begin
-                  for Dep of F_Deps loop
-                     Up_Projected_Deps.Include
-                       (if Is_Non_Visible_Constituent (Dep, Depends_Scope)
-                          then Up_Project_Constituent (Dep, Depends_Scope)
-                          else Dep);
-                  end loop;
-               end;
-            end;
-         end loop;
-
-         --  If at least one constituent of a state abstraction has not been
-         --  written, then the state abstraction also depends on itself.
-         for State of States_Written loop
-            for RC of Iter (Refinement_Constituents (State)) loop
-               if not Constituents_Written.Contains (RC) then
-                  declare
-                     AS : constant Flow_Id := Direct_Mapping_Id (State);
-                  begin
-                     --  Abstract state also depends on itself
-                     Up_Projected_Map (AS).Include (AS);
-                  end;
-
-                  --  There is no need to check the rest of the constituents
-                  exit;
-               end if;
-            end loop;
-         end loop;
-
-         return Up_Projected_Map;
-      end Up_Project_Map;
 
    --  Start of processing for Check_Depends_Contract
 
@@ -3501,11 +3396,11 @@ package body Flow.Analysis is
       Implicit_Param := Get_Implicit_Formal (FA.Analyzed_Entity);
 
       --  Up-project the dependencies
-      User_Deps   := Up_Project_Map (User_Deps);
-      Actual_Deps := Up_Project_Map (FA.Dependency_Map);
+      Up_Project (User_Deps, Projected_User_Deps, Depends_Scope);
+      Up_Project (FA.Dependency_Map, Actual_Deps, Depends_Scope);
 
       if Debug_Trace_Depends then
-         Print_Dependency_Map ("user",   User_Deps);
+         Print_Dependency_Map ("user",   Projected_User_Deps);
          Print_Dependency_Map ("actual", Actual_Deps);
       end if;
 
@@ -3514,7 +3409,7 @@ package body Flow.Analysis is
       --  sanity check there is nothing in the user dependencies which is *not*
       --  in the actual dependencies.
 
-      for C in User_Deps.Iterate loop
+      for C in Projected_User_Deps.Iterate loop
          declare
             F_Out : Flow_Id renames Dependency_Maps.Key (C);
          begin
@@ -3554,16 +3449,16 @@ package body Flow.Analysis is
                --  to write.
                declare
                   Null_Dep : constant Dependency_Maps.Cursor :=
-                    User_Deps.Find (Null_Flow_Id);
+                    Projected_User_Deps.Find (Null_Flow_Id);
                begin
                   if Dependency_Maps.Has_Element (Null_Dep) then
                      --  ??? Move should be fine here
-                     U_Deps := User_Deps (Null_Dep);
+                     U_Deps := Projected_User_Deps (Null_Dep);
                   end if;
                end;
-            elsif User_Deps.Contains (F_Out) then
+            elsif Projected_User_Deps.Contains (F_Out) then
                --  ??? repeated search in map
-               U_Deps := User_Deps (F_Out);
+               U_Deps := Projected_User_Deps (F_Out);
             elsif F_Out.Kind = Magic_String then
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
@@ -3675,9 +3570,8 @@ package body Flow.Analysis is
                   --  in reality.
                   if Is_Abstract_State (Wrong_Var)
                     and then Wrong_Var.Kind in Direct_Mapping | Record_Field
-                    and then State_Refinement_Is_Visible
-                               (Get_Direct_Mapping_Id (Wrong_Var),
-                                FA.B_Scope)
+                    and then State_Refinement_Is_Visible (Wrong_Var,
+                                                          FA.B_Scope)
                     and then Has_Null_Refinement
                                (Get_Direct_Mapping_Id (Wrong_Var))
                   then

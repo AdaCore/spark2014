@@ -1,1 +1,2 @@
+foo.adb:19:30: low: unused global "Y" constituent of "State"
 foo.ads:2:26: warning: no procedure exists that can initialize abstract state "Foo.State"

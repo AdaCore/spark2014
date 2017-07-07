@@ -24,13 +24,11 @@
 with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
-with Common_Iterators;                 use Common_Iterators;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                  use Flow_Refinement;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Utility;                     use Flow_Utility;
-with Flow_Types;                       use Flow_Types;
 with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Gnat2Why.Annotate;                use Gnat2Why.Annotate;
 with Graphs;
@@ -106,13 +104,6 @@ package body Flow_Generated_Globals.Partial is
    function Is_Caller_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity is can call other routines
 
-   function Is_Global_Entity (E : Entity_Id) return Boolean;
-   --  Returns True iff E represent an entity that can be a global
-
-   function Is_Heap_Entity (E : Entity_Id) return Boolean renames No;
-   --  Returns True iff E represens heap (which is in turn represented by an
-   --  empty entity id and __HEAP entity name).
-
    function Is_Callable (E : Entity_Id) return Boolean;
    --  Returns True iff E might be called
 
@@ -141,31 +132,9 @@ package body Flow_Generated_Globals.Partial is
    --  ??? Container_Scope isn't the best name; rethink
    --  ??? not sure how Protected_Type fits here
 
-   ----------------------
-   -- Is_Global_Entity --
-   ----------------------
-
-   function Is_Global_Entity (E : Entity_Id) return Boolean is
-     (Is_Heap_Entity (E)
-        or else
-      Ekind (E) in E_Abstract_State
-                 | E_Loop_Parameter
-                 | E_Variable
-                 | Formal_Kind
-                 | E_Protected_Type
-                 | E_Task_Type
-        or else
-      (Ekind (E) = E_Constant and then Has_Variable_Input (E)));
-   --  ??? this could be further restricted basen on what may appear in
-   --  Proof_In, Input, and Output.
-
    ----------------------------------------------------------------------------
    --  Types
    ----------------------------------------------------------------------------
-
-   subtype Global_Set is Node_Sets.Set
-   with Dynamic_Predicate =>
-          (for all E of Global_Set => Is_Global_Entity (E));
 
    subtype Callee_Set is Node_Sets.Set
    with Dynamic_Predicate =>
@@ -174,17 +143,6 @@ package body Flow_Generated_Globals.Partial is
    type No_Colours is (Dummy_Color);
    --  Dummy type inhabited by only a single value (just like a unit type in
    --  OCaml); needed for graphs with colorless edges.
-
-   type Global_Nodes is record
-      Proof_Ins : Global_Set;
-      Inputs    : Global_Set;
-      Outputs   : Global_Set;
-   end record
-   with Dynamic_Predicate =>
-          (for all G of Global_Nodes.Proof_Ins =>
-              not Global_Nodes.Inputs.Contains (G) and then
-              not Global_Nodes.Outputs.Contains (G));
-   --  ??? should it be an array then we could remove some repeated code
 
    type Call_Nodes is record
       Proof_Calls       : Callee_Set;
@@ -1463,24 +1421,6 @@ package body Flow_Generated_Globals.Partial is
       function Down_Project (G : Global_Nodes; Caller : Entity_Id)
                              return Global_Nodes;
 
-      function Is_Fully_Written
-        (State   : Entity_Id;
-         Outputs : Node_Sets.Set)
-            return Boolean
-        with Pre => Ekind (State) = E_Abstract_State;
-      --  Returns True iff all constituents of State are among Outputs
-
-      procedure Up_Project
-        (Vars      :     Node_Sets.Set;
-         Projected : out Node_Sets.Set;
-         Partial   : out Node_Sets.Set)
-        with Post =>
-          (for all E of Partial => Ekind (E) = E_Abstract_State);
-      --  ### Takes Vars and moves up *exactly* one level. For things
-      --  we've just lost visibility we file their encapsulating state
-      --  in Partial; otherwise the variable is put into Projected as
-      --  is.
-
       --------------------
       -- Callee_Globals --
       --------------------
@@ -1658,21 +1598,6 @@ package body Flow_Generated_Globals.Partial is
               Outputs   => Down_Project (G.Outputs,   Analyzed_View));
       end Down_Project;
 
-      ----------------------
-      -- Is_Fully_Written --
-      ----------------------
-
-      function Is_Fully_Written
-        (State   : Entity_Id;
-         Outputs : Node_Sets.Set)
-         return Boolean
-      is
-        ((for all C of Iter (Refinement_Constituents (State)) =>
-             Outputs.Contains (C))
-           and then
-         (for all C of Iter (Part_Of_Constituents (State)) =>
-             Outputs.Contains (C)));
-
       -------------------------
       -- Local_Pkg_Variables --
       -------------------------
@@ -1682,43 +1607,6 @@ package body Flow_Generated_Globals.Partial is
       begin
          return Contr.Local_Variables or Contr.Local_Ghost_Variables;
       end Local_Pkg_Variables;
-
-      ----------------
-      -- Up_Project --
-      ----------------
-
-      procedure Up_Project
-        (Vars      :     Node_Sets.Set;
-         Projected : out Node_Sets.Set;
-         Partial   : out Node_Sets.Set)
-      is
-      begin
-         Projected.Clear;
-         Partial.Clear;
-
-         for Var of Vars loop
-            if Is_Heap_Entity (Var)
-              or else Is_Visible (Var, Folded_Scope)
-            then
-               Projected.Include (Var);
-            else
-               declare
-                  State : constant Entity_Id := Parent_State (Var);
-               begin
-                  if Present (State) then
-                     Partial.Include (State);
-                  else
-                     --  ??? implicit abstract state
-                     --  Projected.Include
-                     --    (Get_Flow_Scope (Var).Ent);
-                     --  Old approach: pretend that variable is
-                     --  public.
-                     Projected.Include (Var);
-                  end if;
-               end;
-            end if;
-         end loop;
-      end Up_Project;
 
       --  Local variables
 
@@ -1731,26 +1619,11 @@ package body Flow_Generated_Globals.Partial is
 
       Update := Collect (Folded);
 
+      Up_Project (Update.Refined, Update.Proper, Folded_Scope);
+
       declare
          Projected, Partial : Node_Sets.Set;
       begin
-         Up_Project (Update.Refined.Inputs, Projected, Partial);
-         Update.Proper.Inputs := Projected or Partial;
-
-         Up_Project (Update.Refined.Outputs, Projected, Partial);
-         for State of Partial loop
-            if not Is_Fully_Written (State, Update.Refined.Outputs)
-            then
-               Update.Proper.Inputs.Include (State);
-            end if;
-         end loop;
-         Update.Proper.Outputs := Projected or Partial;
-
-         Up_Project (Update.Refined.Proof_Ins, Projected, Partial);
-         Update.Proper.Proof_Ins :=
-           (Projected or Partial) -
-           (Update.Proper.Inputs or Update.Proper.Outputs);
-
          --  Handle package Initializes aspect
          if Ekind (Folded) = E_Package then
             Update.Initializes :=
@@ -1759,10 +1632,10 @@ package body Flow_Generated_Globals.Partial is
                   and
                Local_Pkg_Variables);
 
-            Up_Project (Update.Initializes, Projected, Partial);
+            Up_Project (Update.Initializes, Folded_Scope, Projected, Partial);
 
             for State of Partial loop
-               if Is_Fully_Written (State, Update.Initializes) then
+               if Is_Fully_Contained (State, Update.Initializes) then
                   Projected.Include (State);
                end if;
             end loop;

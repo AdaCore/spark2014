@@ -28,6 +28,7 @@ with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
 with Einfo;                              use Einfo;
 with Flow;                               use Flow;
+with Flow_Types;                         use Flow_Types;
 with GNATCOLL.Terminal;                  use GNATCOLL.Terminal;
 with Types;                              use Types;
 
@@ -133,16 +134,6 @@ package Flow_Generated_Globals is
 
    function Disjoint (A, B, C : Name_Sets.Set) return Boolean;
    --  Returns True iff sets A, B, C are mutually disjoint
-
-   type Global_Names is record
-      Proof_Ins : Name_Sets.Set;          --  Flow/User
-      Inputs    : Name_Sets.Set;          --  Flow/Frontend/User
-      Outputs   : Name_Sets.Set;          --  Flow/Frontend/User
-   end record
-   with Dynamic_Predicate =>
-          (for all G of Global_Names.Proof_Ins =>
-              not Global_Names.Inputs.Contains (G) and then
-              not Global_Names.Outputs.Contains (G));
 
    type Call_Names is record
       Proof_Calls       : Name_Sets.Set;  --  Flow

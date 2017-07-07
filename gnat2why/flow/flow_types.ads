@@ -31,7 +31,6 @@ with Ada.Containers.Ordered_Sets;
 with Atree;                       use Atree;
 with Common_Containers;           use Common_Containers;
 with Einfo;                       use Einfo;
-with Flow_Refinement;             use Flow_Refinement;
 with Sinfo;                       use Sinfo;
 with SPARK_Util;                  use SPARK_Util;
 with Types;                       use Types;
@@ -190,6 +189,76 @@ package Flow_Types is
       end case;
    end record;
 
+   ----------------
+   -- Flow_Scope --
+   ----------------
+
+   --  The scopes we care about in flow analysis are restricted to packages,
+   --  protected objects and task objects.
+   --
+   --  Variables or subprograms can be declared or defined in:
+   --    * package's visible part
+   --    * package's private part
+   --    * package's body
+   --    * protected object's visible
+   --    * protected object's private part
+   --    * protected object's body
+   --    * task object's visible
+   --    * task object's body
+   --
+   --  Therefore flow scope is an entity + visible|private|body
+
+   type Any_Declarative_Part is
+     (Null_Part, Visible_Part, Private_Part, Body_Part);
+   pragma Ordered (Any_Declarative_Part);
+
+   subtype Declarative_Part is Any_Declarative_Part range
+     Visible_Part .. Body_Part;
+
+   subtype Scope_Id is Entity_Id
+   with Dynamic_Predicate =>
+     (if Present (Scope_Id)
+      then Ekind (Scope_Id) in E_Package        |
+                               E_Protected_Type |
+                               E_Task_Type);
+   --  Type that defines a subset of legal entities for the use in Flow_Scope
+
+   type Flow_Scope is record
+      Ent  : Scope_Id;
+      Part : Any_Declarative_Part;
+   end record
+   with Dynamic_Predicate => (Flow_Scope.Ent = Empty) =
+                             (Flow_Scope.Part = Null_Part);
+   --  Note: conceptually this is a discrimated record type, but discriminating
+   --  on Scope_Id (which is an Entity_Id with a predicate) is troublesome.
+
+   Null_Flow_Scope : constant Flow_Scope := (Empty, Null_Part);
+
+   subtype Global_Set is Node_Sets.Set
+   with Dynamic_Predicate =>
+          (for all E of Global_Set => Is_Global_Entity (E));
+
+   type Global_Nodes is record
+      Proof_Ins : Global_Set;
+      Inputs    : Global_Set;
+      Outputs   : Global_Set;
+   end record
+   with Dynamic_Predicate =>
+          (for all G of Global_Nodes.Proof_Ins =>
+              not Global_Nodes.Inputs.Contains (G) and then
+              not Global_Nodes.Outputs.Contains (G));
+   --  ??? should it be an array then we could remove some repeated code
+
+   type Global_Names is record
+      Proof_Ins : Name_Sets.Set;          --  Flow/User
+      Inputs    : Name_Sets.Set;          --  Flow/Frontend/User
+      Outputs   : Name_Sets.Set;          --  Flow/Frontend/User
+   end record
+   with Dynamic_Predicate =>
+          (for all G of Global_Names.Proof_Ins =>
+              not Global_Names.Inputs.Contains (G) and then
+                 not Global_Names.Outputs.Contains (G));
+
    function "=" (Left, Right : Flow_Id) return Boolean;
    --  Equality for Flow_Id
 
@@ -276,6 +345,11 @@ package Flow_Types is
    --     concurrent type
    --  @return concurrent type
 
+   function Encapsulating_State (F : Flow_Id) return Flow_Id
+   with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String
+               and then Is_Constituent (F);
+   --  Returns the encapsulating state of F
+
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff the given Flow_Id is discriminant (this includes
@@ -290,15 +364,6 @@ package Flow_Types is
    --  @param F is the Flow_Id which will be checked
    --  @return True iff the given Flow_Id is a discriminant belonging
    --    to a concurrent type.
-
-   function Has_Bounds
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Boolean
-   with Pre => (if F.Kind in Direct_Mapping | Record_Field
-                  and then F.Facet = Normal_Part
-                then Nkind (F.Node) in N_Entity);
-   --  Returns True if a Flow_Id needs separate representation for its bounds
 
    function Is_Private_Part (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
@@ -353,14 +418,14 @@ package Flow_Types is
    --  Checks if writes to F are always effective
 
    function Is_Abstract_State (F : Flow_Id) return Boolean;
-   --  Checks if F is an abstract state.
+   --  Checks if F is an abstract state
 
    function Is_Constant (F : Flow_Id) return Boolean
    with Pre => Present (F);
    --  Checks if F represents a constant object
 
    function Is_Constituent (F : Flow_Id) return Boolean;
-   --  Checks if F is a constituent of an abstract state.
+   --  Checks if F is a constituent of an abstract state
 
    function Is_Function_Entity (F : Flow_Id) return Boolean;
    --  Checks if F is a function entity (and thus used to capture the

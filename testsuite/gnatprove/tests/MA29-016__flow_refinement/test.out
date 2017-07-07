@@ -36,11 +36,7 @@ fruit-pub_child.adb:33:56: medium: overflow check might fail
 fruit-pub_child.adb:34:32: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:34:32: medium: overflow check might fail
 fruit-pub_child.adb:34:57: medium: overflow check might fail
-fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits"
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.ads:13:13: low: unused global "Apples" constituent of "Fruits"
-fruit-pub_child.ads:13:13: low: unused global "Oranges" constituent of "Fruits"
-fruit-pub_child.ads:13:13: low: unused global "Priv_Child.Price_Related_Stuff" constituent of "Fruit.Fruits"
 fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" constituent of "Fruit_Salad" proved
 fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" constituent of "Fruit_Salad" proved
 fruit.adb:21:24: info: overflow check proved (CVC4: 1 VC)
@@ -68,6 +64,8 @@ levels.adb:62:23: info: initialization of "A" proved
 levels.adb:76:15: medium: overflow check might fail
 levels.adb:77:14: medium: overflow check might fail
 levels.adb:80:23: info: initialization of "A" proved
+levels.adb:81:24: low: unused global "Y0" constituent of "Abs_0"
+levels.adb:81:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:98:09: medium: initial condition might fail
 levels.adb:98:30: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:109:10: info: initialization of "X2" constituent of "Abs_2" proved

@@ -44,6 +44,7 @@ with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 
+with Flow_Refinement;            use Flow_Refinement;
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
@@ -55,6 +56,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
    GG_Generated : Boolean := False;
    --  Set to True by GG_Read once the Global Graph has been generated.
+
+   GG_State_Constituents : Boolean := False;
+   --  Set to True by GG_Read once the mappings between abstract states and
+   --  their constituents have been populated.
 
    ---------------------------------------------------
    -- Regular expression for predefined subprograms --
@@ -307,10 +312,6 @@ package body Flow_Generated_Globals.Phase_2 is
    function Scope_Within_Or_Same (Scope1, Scope2 : Entity_Name) return Boolean;
    --  Equivalent of Sem_Util.Scope_Within_Or_Same for entity names;
    --  ??? see Scope_Truly_Within_Or_Same and make this one work for subunits
-
-   function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name;
-   --  Returns the Entity_Name of the directly encapsulating state. If one does
-   --  not exist it returns Null_Entity_Name.
 
    function Is_Predefined (EN : Entity_Name) return Boolean;
    --  Returns True iff EN is a predefined entity
@@ -684,7 +685,7 @@ package body Flow_Generated_Globals.Phase_2 is
             end if;
          end Refine;
 
-         --  Start of processing for Fully_Refine
+      --  Start of processing for Fully_Refine
 
       begin
          Refine (EN);
@@ -692,7 +693,7 @@ package body Flow_Generated_Globals.Phase_2 is
          return Refined;
       end Fully_Refine;
 
-   --  Start of processing for Fully_Refine
+   --  Start of processing for Up_Project
 
    begin
       --  Initialize Final_View
@@ -1597,6 +1598,8 @@ package body Flow_Generated_Globals.Phase_2 is
             For_Current_CUnit => Index = ALIs.First);
       end loop;
 
+      GG_State_Constituents := True;
+
       Note_Time ("gg_read - ALI files read");
 
       Add_Edges;
@@ -1915,17 +1918,6 @@ package body Flow_Generated_Globals.Phase_2 is
                Caller : Entity_Name)
                return Global_Names;
 
-            function Is_Fully_Written
-              (State   : Entity_Name;
-               Outputs : Name_Sets.Set)
-                  return Boolean;
-            --  Returns True iff all constituents of State are among Outputs
-
-            procedure Up_Project
-              (Vars      :     Name_Sets.Set;
-               Projected : out Name_Sets.Set;
-               Partial   : out Name_Sets.Set);
-
             --------------------
             -- Callee_Globals --
             --------------------
@@ -2076,68 +2068,6 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end Down_Project;
 
-            ----------------------
-            -- Is_Fully_Written --
-            ----------------------
-
-            function Is_Fully_Written
-              (State   : Entity_Name;
-               Outputs : Name_Sets.Set)
-               return Boolean
-            is
-            begin
-               return Name_Sets.Is_Subset (Subset => State_Comp_Map (State),
-                                           Of_Set => Outputs);
-            end Is_Fully_Written;
-
-            ----------------
-            -- Up_Project --
-            ----------------
-
-            procedure Up_Project
-              (Vars      :     Name_Sets.Set;
-               Projected : out Name_Sets.Set;
-               Partial   : out Name_Sets.Set)
-            is
-            begin
-               Projected.Clear;
-               Partial.Clear;
-
-               for Var of Vars loop
-                  if Is_Heap_Variable (Var)
-                    or else (Present (Find_Entity (Var))
-                             and then Is_Visible (Find_Entity (Var),
-                                                  Folded_Scope))
-                  then
-                     Projected.Include (Var);
-                  else
-                     declare
-                        S : constant Name_Maps.Cursor :=
-                          Comp_State_Map.Find (Var);
-                     begin
-                        if Name_Maps.Has_Element (S) then
-                           declare
-                              State : constant Entity_Name :=
-                                Comp_State_Map (S);
-                              --  Encapsulating state of a variable
-
-                           begin
-                              if Scope_Within_Or_Same (Scope (Folded),
-                                                       Scope (State))
-                              then
-                                 Partial.Include (State);
-                              else
-                                 Projected.Include (Var);
-                              end if;
-                           end;
-                        else
-                           Projected.Include (Var);
-                        end if;
-                     end;
-                  end if;
-               end loop;
-            end Up_Project;
-
             --  Local_Variables
             Update : Flow_Names;
 
@@ -2150,63 +2080,41 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  ... and then up-project them as necessary
 
-            declare
-               Partial, Projected : Name_Sets.Set;
+            Up_Project (Update.Refined, Update.Proper, Folded_Scope);
 
-            begin
-               Up_Project (Update.Refined.Inputs, Projected, Partial);
-               Update.Proper.Inputs := Projected or Partial;
+            pragma Assert (Phase_1_Info.Contains (Folded));
 
-               Up_Project (Update.Refined.Outputs, Projected, Partial);
-               for State of Partial loop
-                  if not Is_Fully_Written (State, Update.Refined.Outputs) then
-                     Update.Proper.Inputs.Include (State);
-                  end if;
-               end loop;
-               Update.Proper.Outputs := Projected or Partial;
+            --  Handle package Initializes aspect
+            if Phase_1_Info (Folded).Kind = E_Package then
+               declare
+                  P : Partial_Contract renames Phase_1_Info (Folded);
 
-               Up_Project (Update.Refined.Proof_Ins, Projected, Partial);
-               Update.Proper.Proof_Ins :=
-                 (Projected or Partial) -
-                 (Update.Proper.Inputs or Update.Proper.Outputs);
+                  True_Outputs : constant Name_Sets.Set :=
+                    (Update.Proper.Outputs - Update.Proper.Inputs) or
+                    Original.Initializes;
 
-               pragma Assert (Phase_1_Info.Contains (Folded));
+                  II : constant Initializes_Info :=
+                    (LHS       => True_Outputs and P.Local_Variables,
+                     LHS_Proof => True_Outputs and P.Local_Ghost_Variables,
+                     RHS       => Update.Proper.Inputs - P.Local_Variables,
+                     RHS_Proof => Update.Proper.Proof_Ins -
+                                  P.Local_Ghost_Variables);
+                  --  The name dependency map for the Folded package
+                  --
+                  --  LHS and LHS_Proof represent the left hand side of the
+                  --  generated initializes aspect. RHS and RHS_Proof
+                  --  represent the right hand side of the generated
+                  --  Initializes aspect.
 
-               --  Handle package Initializes aspect
-               if Phase_1_Info (Folded).Kind = E_Package then
-                  declare
-                     P : Partial_Contract renames Phase_1_Info (Folded);
+               begin
+                  --  Invariant: LHS and LHS_Proof are disjoint and do not
+                  --  overlap with Initialized_Vars_And_States.
+                  Initialized_Vars_And_States.Union (II.LHS);
+                  Initialized_Vars_And_States.Union (II.LHS_Proof);
 
-                     True_Outputs : constant Name_Sets.Set :=
-                       (Update.Proper.Outputs - Update.Proper.Inputs) or
-                       Original.Initializes;
-
-                     II : constant Initializes_Info :=
-                       (LHS       => True_Outputs
-                                     and P.Local_Variables,
-                        LHS_Proof => True_Outputs
-                                     and P.Local_Ghost_Variables,
-                        RHS       => Update.Proper.Inputs
-                                     - P.Local_Variables,
-                        RHS_Proof => Update.Proper.Proof_Ins
-                                     - P.Local_Ghost_Variables);
-                     --  The name dependency map for the Folded package
-                     --
-                     --  LHS and LHS_Proof represent the left hand side of the
-                     --  generated initializes aspect. RHS and RHS_Proof
-                     --  represent the right hand side of the generated
-                     --  Initializes aspect.
-
-                  begin
-                     --  Invariant: LHS and LHS_Proof are disjoint and do not
-                     --  overlap with Initialized_Vars_And_States.
-                     Initialized_Vars_And_States.Union (II.LHS);
-                     Initialized_Vars_And_States.Union (II.LHS_Proof);
-
-                     Initializes_Aspects.Insert (P.Name, II);
-                  end;
-               end if;
-            end;
+                  Initializes_Aspects.Insert (P.Name, II);
+               end;
+            end if;
 
             Patches.Append (Global_Patch'(Entity      => Folded,
                                           Proper      => Update.Proper,
@@ -2674,6 +2582,13 @@ package body Flow_Generated_Globals.Phase_2 is
    is
      (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
 
+   ----------------------
+   -- Get_Constituents --
+   ----------------------
+
+   function Get_Constituents (E : Entity_Name) return Name_Sets.Set
+   is (State_Comp_Map (E));
+
    ----------------------------
    -- GG_Encapsulating_State --
    ----------------------------
@@ -2692,6 +2607,13 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------------
 
    function GG_Has_Been_Generated return Boolean is (GG_Generated);
+
+   ----------------------------------------
+   -- GG_State_Constituents_Map_Is_Ready --
+   ----------------------------------------
+
+   function GG_State_Constituents_Map_Is_Ready return Boolean
+   is (GG_State_Constituents);
 
    --------------------------
    -- GG_Has_Async_Readers --

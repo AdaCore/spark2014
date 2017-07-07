@@ -2,8 +2,4 @@ a.ads:8:04: info: initialization of "DATA1" constituent of "aDATA1" proved
 a.ads:9:04: info: initialization of "DATA2" constituent of "aDATA2" proved
 a~b.adb:8:11: warning: unused assignment
 a~b.adb:8:20: info: overflow check proved (CVC4: 1 VC)
-a~b.ads:4:14: warning: unused initial value of "DATA1" constituent of "aDATA1"
-a~b.ads:4:14: warning: unused initial value of "DATA2" constituent of "aDATA2"
-a~b.ads:5:27: low: unused global "A.aDATA2"
-a~b.ads:6:27: low: unused global "A.aDATA1"
-a~b.ads:6:27: warning: "A.aDATA1" is not modified, could be INPUT
+a~b.ads:5:27: warning: unused initial value of "A.aDATA2"

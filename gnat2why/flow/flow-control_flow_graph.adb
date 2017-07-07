@@ -49,6 +49,7 @@ with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Generated_Globals;             use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_1;     use Flow_Generated_Globals.Phase_1;
+with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 
@@ -1541,6 +1542,7 @@ package body Flow.Control_Flow_Graph is
             Vars_Defined : Flow_Id_Sets.Set;
             Vars_Used    : Flow_Id_Sets.Set;
             Vars_Proof   : Flow_Id_Sets.Set;
+
          begin
             --  Work out which variables we define
             Untangle_Assignment_Target

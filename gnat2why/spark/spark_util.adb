@@ -36,6 +36,8 @@ with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
 
+with Flow_Utility;                       use Flow_Utility;
+
 package body SPARK_Util is
 
    ------------------------------
@@ -1199,6 +1201,24 @@ package body SPARK_Util is
         Nkind (First_Choice) = N_Others_Choice
         and then Is_Empty_List (Others_Discrete_Choices (First_Choice));
    end Is_Empty_Others;
+
+   ----------------------
+   -- Is_Global_Entity --
+   ----------------------
+
+   function Is_Global_Entity (E : Entity_Id) return Boolean is
+     (Is_Heap_Entity (E)
+        or else
+      Ekind (E) in E_Abstract_State
+                 | E_Loop_Parameter
+                 | E_Variable
+                 | Formal_Kind
+                 | E_Protected_Type
+                 | E_Task_Type
+        or else
+      (Ekind (E) = E_Constant and then Has_Variable_Input (E)));
+   --  ??? this could be further restricted basen on what may appear in
+   --  Proof_In, Input, and Output.
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --

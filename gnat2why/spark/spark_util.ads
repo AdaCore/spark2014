@@ -275,6 +275,13 @@ package SPARK_Util is
    --  @return True iff the entity is a component or discriminant of a
    --            concurrent type
 
+   function Is_Global_Entity (E : Entity_Id) return Boolean;
+   --  Returns True iff E represent an entity that can be a global
+
+   function Is_Heap_Entity (E : Entity_Id) return Boolean renames No;
+   --  Returns True iff E represens heap (which is in turn represented by an
+   --  empty entity id and __HEAP entity name).
+
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return Return True if E is not a Discriminant or if E is visible in

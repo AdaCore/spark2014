@@ -29,7 +29,6 @@ with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Dependency_Maps;       use Flow_Dependency_Maps;
-with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
 with Graphs;
 with Types;                      use Types;

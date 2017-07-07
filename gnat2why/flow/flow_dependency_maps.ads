@@ -27,7 +27,6 @@
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
 with Einfo;                      use Einfo;
-with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
 with Snames;                     use Snames;
 with Sem_Util;                   use Sem_Util;

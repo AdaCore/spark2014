@@ -29,7 +29,6 @@ with Common_Containers;    use Common_Containers;
 with Einfo;                use Einfo;
 with Flow;                 use Flow;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
-with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
@@ -681,33 +680,13 @@ is
                                               | E_Task_Type
                                               | Object_Kind),
         Post => Present (Search_Contract'Result);
-   --  Search the Contract of Unit for the given Output. If Input is
-   --  also given, search for that Input of the given Output. For now
+   --  Search the Contract of Unit for the given Output. If Input is also
+   --  given, search for that Input of the given Output. For now
    --  Search_Contract only works with either subprograms and pragma Depends
    --  or packages and pragma Initializes.
    --
    --  If we can't find what we're looking for, we return either the Unit
    --  itself or the corresponding contract (if it exists).
-
-   function Is_Non_Visible_Constituent
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Boolean;
-   --  Returns True if F is not visible from Scope and is either a constituent
-   --  of some state abstraction or a constituent of a concurrent type. This
-   --  means that F will have to be up projected.
-
-   function Up_Project_Constituent
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Flow_Id
-   with Pre  => Is_Non_Visible_Constituent (F, Scope),
-        Post => Up_Project_Constituent'Result.Variant = F.Variant;
-   --  Returns the Flow_Id of the closest encapsulating state of F that
-   --  Is_Visible from Scope.
-
-   function Parent_State (E : Entity_Id) return Entity_Id;
-   --  Wrapper for Encapsulating state that does not crash on formals
 
    function Replace_Flow_Ids
      (Of_This   : Entity_Id;
@@ -727,6 +706,21 @@ is
    --  If called before the globals graph has been generated then the results
    --  might not be accurate (this means that some constant that might not
    --  actually have variable input will be reported as having variable input).
+
+   function Has_Bounds
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   with Pre => (if F.Kind in Direct_Mapping | Record_Field
+                  and then F.Facet = Normal_Part
+                then Nkind (F.Node) in N_Entity);
+   --  Returns True if a Flow_Id needs separate representation for its bounds
+
+   function Is_Constituent (N : Node_Id) return Boolean;
+   --  Returns True iff N is a constituent of an abstract state
+
+   function Is_Abstract_State (N : Node_Id) return Boolean;
+   --  Returns True iff N is an abstract state
 
    function Is_Ghost_Object (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost object

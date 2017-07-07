@@ -23,20 +23,21 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Lib;                    use Lib;
-with Nlists;                 use Nlists;
-with Output;                 use Output;
-with Sem_Aux;                use Sem_Aux;
-with Sprint;                 use Sprint;
-with Stand;                  use Stand;
+with Lib;                            use Lib;
+with Nlists;                         use Nlists;
+with Output;                         use Output;
+with Sem_Aux;                        use Sem_Aux;
+with Sprint;                         use Sprint;
+with Stand;                          use Stand;
 
-with Common_Iterators;       use Common_Iterators;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with Common_Iterators;               use Common_Iterators;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with SPARK_Util;                     use SPARK_Util;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
-with Flow_Debug;             use Flow_Debug;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Types;             use Flow_Types;
+with Flow_Debug;                     use Flow_Debug;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
 
 package body Flow_Refinement is
 
@@ -172,6 +173,24 @@ package body Flow_Refinement is
       return Is_Visible (Target_Scope, S);
    end Is_Visible;
 
+   function Is_Visible (EN : Entity_Name;
+                        S  : Flow_Scope)
+                        return Boolean
+   is
+      E : constant Entity_Id := Find_Entity (EN);
+   begin
+      return (Present (E)
+              and then Is_Visible (E, S));
+   end Is_Visible;
+
+   function Is_Visible (F : Flow_Id;
+                        S : Flow_Scope)
+                        return Boolean
+   is
+     (case F.Kind is
+         when Direct_Mapping | Record_Field => Is_Visible (F.Node, S),
+         when others                        => raise Program_Error);
+
    -------------------------
    -- Is_Globally_Visible --
    -------------------------
@@ -198,9 +217,9 @@ package body Flow_Refinement is
       Enclosing_Scope : Flow_Scope;
       Ptr             : Node_Id := S.Ent;
    begin
-      while Nkind (Ptr) not in N_Package_Declaration        |
-                               N_Protected_Type_Declaration |
-                               N_Task_Type_Declaration
+      while Nkind (Ptr) not in N_Package_Declaration
+                             | N_Protected_Type_Declaration
+                             | N_Task_Type_Declaration
       loop
          Ptr := Parent (Ptr);
       end loop;
@@ -211,9 +230,9 @@ package body Flow_Refinement is
       then
          Ptr := Scope (S.Ent);
          while Present (Ptr)
-           and then Ekind (Ptr) not in E_Package      |
-                                       Protected_Kind |
-                                       Task_Kind
+           and then Ekind (Ptr) not in E_Package
+                                     | Protected_Kind
+                                     | Task_Kind
          loop
             Ptr := Scope (Ptr);
          end loop;
@@ -307,22 +326,23 @@ package body Flow_Refinement is
             --  Borders between other stubs should not be traversed, because
             --  the proper bodies act as flow scopes.
 
-            when N_Package_Body_Stub   |
-                 N_Protected_Body_Stub |
-                 N_Task_Body_Stub      =>
+            when N_Package_Body_Stub
+               | N_Protected_Body_Stub
+               | N_Task_Body_Stub
+            =>
                raise Program_Error;
 
-            when N_Package_Body   |
-                 N_Protected_Body |
-                 N_Task_Body      =>
-
+            when N_Package_Body
+               | N_Protected_Body
+               | N_Task_Body
+            =>
                return (Ent  => Unique_Defining_Entity (Context),
                        Part => Body_Part);
 
-            when N_Package_Specification |
-                 N_Protected_Definition  |
-                 N_Task_Definition       =>
-
+            when N_Package_Specification
+               | N_Protected_Definition
+               | N_Task_Definition
+            =>
                declare
                   Part : Declarative_Part;
 
@@ -367,7 +387,6 @@ package body Flow_Refinement is
             --  such cases we jump to the entity of the aspect.
 
             when N_Pragma =>
-
                Prev_Context := Context;
 
                if From_Aspect_Specification (Context) then
@@ -376,6 +395,25 @@ package body Flow_Refinement is
                   Context := Entity (Context);
                else
                   Context := Parent (Context);
+               end if;
+
+            when N_Subprogram_Body =>
+               --  In case of an expression function we want to get the same
+               --  Flow_Scope we would get if it was a function with a body.
+               --  For this we pretend that expression functions declared in
+               --  package spec are in package body.
+               Prev_Context := Context;
+               Context := Parent (Context);
+               if Was_Expression_Function (Prev_Context) then
+                  if Present (Context) then
+                     if Nkind (Context) in N_Package_Specification
+                                         | N_Protected_Definition
+                                         | N_Task_Definition
+                     then
+                        return (Ent  => Unique_Defining_Entity (Context),
+                                Part => Body_Part);
+                     end if;
+                  end if;
                end if;
 
             when others =>
@@ -400,26 +438,29 @@ package body Flow_Refinement is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
 
    begin
-      --  Pretend that expression functions declared in package spec are in
-      --  package body.
-      --  ??? There are other places in code where we also took this decision
-      if Is_Expression_Function (E) then
-         declare
-            Scop : constant Flow_Scope := Get_Flow_Scope (E);
-
-         begin
-            return No (Scop)
-              or else Is_Visible (Body_Scope (Get_Flow_Scope (E)), S);
-         end;
-
-      --  To see the refinement there must be some body and it must be visible
-      --  (which is never the case if we look from the Standard scope).
-
-      else
-         return Present (Body_E)
-           and then Is_Visible (Get_Flow_Scope (Body_E), S);
-      end if;
+      return Present (Body_E)
+        and then Is_Visible (Get_Flow_Scope (Body_E), S);
    end Subprogram_Refinement_Is_Visible;
+
+   function Subprogram_Refinement_Is_Visible (EN : Entity_Name;
+                                              S  : Flow_Scope)
+                                              return Boolean
+   is
+      E : constant Entity_Id := Find_Entity (EN);
+   begin
+      return (Present (E)
+              and then Subprogram_Refinement_Is_Visible (E, S));
+   end Subprogram_Refinement_Is_Visible;
+
+   function Subprogram_Refinement_Is_Visible (F : Flow_Id;
+                                              S : Flow_Scope)
+                                              return Boolean
+   is
+     (case F.Kind is
+         when Direct_Mapping =>
+            Subprogram_Refinement_Is_Visible (F.Node, S),
+         when others =>
+            raise Program_Error);
 
    ---------------------------------
    -- State_Refinement_Is_Visible --
@@ -429,7 +470,307 @@ package body Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    is
-     (Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
+     ((Present (S.Ent)
+       and then Is_Private_Descendant (S.Ent)
+       and then Is_Visible (Private_Scope (Get_Flow_Scope (E)), S))
+      or else
+      Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
+
+   function State_Refinement_Is_Visible (EN : Entity_Name;
+                                         S  : Flow_Scope)
+                                         return Boolean
+   is
+      E : constant Entity_Id := Find_Entity (EN);
+   begin
+      return (Present (E)
+              and then State_Refinement_Is_Visible (E, S));
+   end State_Refinement_Is_Visible;
+
+   function State_Refinement_Is_Visible (F : Flow_Id;
+                                         S : Flow_Scope)
+                                         return Boolean
+   is
+     (case F.Kind is
+         when Direct_Mapping =>
+            State_Refinement_Is_Visible (F.Node, S),
+         when others =>
+            raise Program_Error);
+
+   ------------------------
+   -- Is_Fully_Contained --
+   ------------------------
+
+   function Is_Fully_Contained (State   : Entity_Id;
+                                Outputs : Node_Sets.Set)
+                                return Boolean
+   is
+      --  ??? Respect SPARK_Mode barrier, see Expand_Abstract_State
+     ((for all C of Iter (Refinement_Constituents (State))
+       => Outputs.Contains (C))
+        and then
+      (for all C of Iter (Part_Of_Constituents (State))
+       => Outputs.Contains (C)));
+
+   function Is_Fully_Contained (State   : Entity_Name;
+                                Outputs : Name_Sets.Set)
+                                return Boolean
+   is
+     (Name_Sets.Is_Subset (Subset => Get_Constituents (State),
+                           Of_Set => Outputs));
+
+   function Is_Fully_Contained (State   : Flow_Id;
+                                Outputs : Flow_Id_Sets.Set)
+                                return Boolean
+   is
+     (case State.Kind is
+         when Direct_Mapping | Record_Field =>
+            Is_Fully_Contained (State.Node, To_Node_Set (Outputs)),
+         when others =>
+            raise Program_Error);
+
+   ----------------
+   -- Up_Project --
+   ----------------
+
+   procedure Up_Project (Vars      :     Node_Sets.Set;
+                         Scope     :     Flow_Scope;
+                         Projected : out Node_Sets.Set;
+                         Partial   : out Node_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if Is_Constituent (Var) then
+            declare
+               State : constant Node_Id := Encapsulating_State (Var);
+
+            begin
+               if Is_Visible (Var, Scope)
+                 and then Is_Abstract_State (State)
+                 and then State_Refinement_Is_Visible (State, Scope)
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
+   end Up_Project;
+
+   procedure Up_Project (Vars         :     Name_Sets.Set;
+                         Folded_Scope :     Flow_Scope;
+                         Projected    : out Name_Sets.Set;
+                         Partial      : out Name_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if GG_Is_Constituent (Var) then
+            declare
+               State : constant Entity_Name := GG_Encapsulating_State (Var);
+
+            begin
+               if Is_Visible (Var, Folded_Scope)
+                 and then GG_Get_State_Abstractions.Contains (State)
+                 and then State_Refinement_Is_Visible (State, Folded_Scope)
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
+   end Up_Project;
+
+   procedure Up_Project (Vars      :     Flow_Id_Sets.Set;
+                         Scope     :     Flow_Scope;
+                         Projected : out Flow_Id_Sets.Set;
+                         Partial   : out Flow_Id_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if Is_Constituent (Var) then
+            pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
+            declare
+               State : constant Flow_Id := Encapsulating_State (Var);
+
+            begin
+               if Is_Visible (Var, Scope)
+                 and then Is_Abstract_State (State)
+                 and then State_Refinement_Is_Visible (State, Scope)
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
+   end Up_Project;
+
+   procedure Up_Project (Vars           :     Global_Nodes;
+                         Projected_Vars : out Global_Nodes;
+                         Scope          : Flow_Scope)
+   is
+      use type Node_Sets.Set;
+
+      Projected, Partial : Node_Sets.Set;
+
+   begin
+      Up_Project (Vars.Inputs, Scope, Projected, Partial);
+      Projected_Vars.Inputs := Projected or Partial;
+
+      Up_Project (Vars.Outputs, Scope, Projected, Partial);
+      for State of Partial loop
+         if not Is_Fully_Contained (State, Vars.Outputs) then
+            Projected_Vars.Inputs.Include (State);
+         end if;
+      end loop;
+      Projected_Vars.Outputs := Projected or Partial;
+
+      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
+      Projected_Vars.Proof_Ins :=
+        (Projected or Partial) -
+        (Projected_Vars.Inputs or Projected_Vars.Outputs);
+   end Up_Project;
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Scope          : Flow_Scope)
+   is
+      use type Name_Sets.Set;
+
+      Projected, Partial : Name_Sets.Set;
+
+   begin
+      Up_Project (Vars.Inputs, Scope, Projected, Partial);
+      Projected_Vars.Inputs := Projected or Partial;
+
+      Up_Project (Vars.Outputs, Scope, Projected, Partial);
+      for State of Partial loop
+         if not Is_Fully_Contained (State, Vars.Outputs) then
+            Projected_Vars.Inputs.Include (State);
+         end if;
+      end loop;
+      Projected_Vars.Outputs := Projected or Partial;
+
+      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
+      Projected_Vars.Proof_Ins :=
+        (Projected or Partial) -
+        (Projected_Vars.Inputs or Projected_Vars.Outputs);
+   end Up_Project;
+
+   procedure Up_Project (Vars           :     Global_Flow_Ids;
+                         Projected_Vars : out Global_Flow_Ids;
+                         Scope          : Flow_Scope)
+   is
+      use type Flow_Id_Sets.Set;
+
+      Projected, Partial : Flow_Id_Sets.Set;
+
+   begin
+      Up_Project (Vars.Reads, Scope, Projected, Partial);
+      Projected_Vars.Reads := Projected or Partial;
+
+      Up_Project (Vars.Writes, Scope, Projected, Partial);
+      for State of Partial loop
+         if not Is_Fully_Contained (State, Vars.Writes) then
+            Projected_Vars.Reads.Include (Change_Variant (State, In_View));
+         end if;
+      end loop;
+      Projected_Vars.Writes := Projected or Partial;
+
+      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
+      Projected_Vars.Proof_Ins :=
+        (Projected or Partial) -
+        (Projected_Vars.Reads or
+           Change_Variant (Projected_Vars.Writes, In_View));
+   end Up_Project;
+
+   procedure Up_Project (Var           :     Flow_Id;
+                         Projected_Var : out Flow_Id;
+                         Scope         : Flow_Scope)
+   is
+   begin
+      if Is_Constituent (Var) then
+         declare
+            State : constant Flow_Id := Encapsulating_State (Var);
+
+         begin
+            if Is_Visible (Var, Scope)
+              and then Is_Abstract_State (State)
+              and then State_Refinement_Is_Visible (State, Scope)
+            then
+               Projected_Var := Var;
+            else
+               Projected_Var := State;
+            end if;
+         end;
+      else
+         Projected_Var := Var;
+      end if;
+   end Up_Project;
+
+   procedure Up_Project (Vars           : Dependency_Maps.Map;
+                         Projected_Vars : out Dependency_Maps.Map;
+                         Scope          : Flow_Scope)
+   is
+      use type Flow_Id_Sets.Set;
+
+      States_Written       : Flow_Id_Sets.Set;
+      Constituents_Written : Flow_Id_Sets.Set;
+
+   begin
+      for C in Vars.Iterate loop
+         declare
+            Var  : Flow_Id          renames Dependency_Maps.Key (C);
+            Deps : Flow_Id_Sets.Set renames Vars (C);
+
+            Projected_Var      : Flow_Id;
+            Projected, Partial : Flow_Id_Sets.Set;
+            Projected_Deps     : Flow_Id_Sets.Set;
+
+         begin
+            Up_Project (Deps, Scope, Projected, Partial);
+            Projected_Deps := Projected or Partial;
+
+            Up_Project (Var, Projected_Var, Scope);
+            Projected_Vars.Include (Key      => Projected_Var,
+                                    New_Item => Projected_Deps);
+
+            if Is_Constituent (Var) then
+               Constituents_Written.Include (Var);
+               if Is_Abstract_State (Projected_Var) then
+                  States_Written.Include (Projected_Var);
+               end if;
+            end if;
+         end;
+      end loop;
+
+      --  If at least one constituent of a state abstraction has not been
+      --  written, then the state abstraction also depends on itself.
+      for State of States_Written loop
+         if not Is_Fully_Contained (State, Constituents_Written) then
+            --  Abstract state also depends on itself
+            Projected_Vars (State).Include (State);
+         end if;
+      end loop;
+   end Up_Project;
 
    -----------------------
    -- Get_Contract_Node --
@@ -476,10 +817,8 @@ package body Flow_Refinement is
       P : Node_Sets.Set;
 
       procedure Expand (E : Entity_Id);
-      --  Include in P either E if its refinement is not visible, or all
-      --  consitituents of E otherwise.
-      --
-      --  If E is not abstract state, we put just E
+      --  Include the abstract state E into P if its refinement is not visible,
+      --  otherwise we include all of its consitituents.
 
       ------------
       -- Expand --
@@ -491,30 +830,31 @@ package body Flow_Refinement is
             case Ekind (E) is
                when E_Abstract_State =>
                   declare
-                     Possible_Hidden_Components : Boolean := False;
-                  begin
-                     if State_Refinement_Is_Visible (E, S) then
-                        for C of Iter (Refinement_Constituents (E)) loop
+                     procedure Expand (L : Elist_Id);
+                     --  Expand each constituent of L if there are no hidden
+                     --  constituents, otherwise include the abstract state E
+                     --  into P.
+
+                     procedure Expand (L : Elist_Id) is
+                     begin
+                        for C of Iter (L) loop
                            if Nkind (C) /= N_Null then
-                              Expand (C);
+                              if Is_Visible (C, S) then
+                                 Expand (C);
+                              else
+                                 P.Include (E);
+                                 return;
+                              end if;
                            end if;
                         end loop;
+                     end Expand;
+
+                  begin
+                     if State_Refinement_Is_Visible (E, S) then
+                        Expand (Refinement_Constituents (E));
+                        Expand (Part_Of_Constituents (E));
+                        --  ??? do the same as in Expand_Abstract_State
                      else
-                        Possible_Hidden_Components := True;
-                     end if;
-
-                     for C of Iter (Part_Of_Constituents (E)) loop
-                        if Is_Visible (C, S) then
-                           Expand (C);
-                        else
-                           Possible_Hidden_Components := True;
-                        end if;
-                     end loop;
-
-                     if Possible_Hidden_Components then
-                        --  We seem to have an abstract state which has no
-                        --  refinement, or where we have unexpanded state;
-                        --  include the abstract state itself.
                         P.Include (E);
                      end if;
                   end;

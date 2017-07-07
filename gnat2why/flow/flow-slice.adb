@@ -23,6 +23,7 @@
 
 with Common_Iterators;       use Common_Iterators;
 with Flow_Utility;           use Flow_Utility;
+with Flow_Refinement;        use Flow_Refinement;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Type;               use Sem_Type;
 with Sem_Util;               use Sem_Util;

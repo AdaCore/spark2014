@@ -40,6 +40,7 @@ with Flow_Generated_Globals.Partial;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;   use Flow_Generated_Globals.Phase_2;
 with Flow_Error_Messages;              use Flow_Error_Messages;
+with Flow_Refinement;                  use Flow_Refinement;
 with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;

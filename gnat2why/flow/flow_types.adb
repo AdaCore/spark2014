@@ -358,36 +358,6 @@ package body Flow_Types is
       end if;
    end Is_Concurrent_Discriminant;
 
-   ----------------
-   -- Has_Bounds --
-   ----------------
-
-   function Has_Bounds
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Boolean
-   is
-      T : Entity_Id;
-   begin
-      case F.Kind is
-         when Null_Value | Synthetic_Null_Export | Magic_String =>
-            return False;
-
-         when Direct_Mapping =>
-            T := Get_Type (F.Node, Scope);
-
-         when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
-               T := Get_Type (F.Component.Last_Element, Scope);
-            end if;
-      end case;
-
-      return Is_Array_Type (T)
-        and then not Is_Constrained (T);
-   end Has_Bounds;
-
    -----------------
    -- Is_Volatile --
    -----------------
@@ -490,18 +460,14 @@ package body Flow_Types is
    -- Is_Abstract_State --
    -----------------------
 
-   function Is_Abstract_State (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
-         when Direct_Mapping =>
-            return Nkind (F.Node) in N_Entity
-              and then Ekind (F.Node) = E_Abstract_State;
-         when Magic_String =>
-            return GG_Get_State_Abstractions.Contains (F.Name);
-         when others =>
-            return False;
-      end case;
-   end Is_Abstract_State;
+   function Is_Abstract_State (F : Flow_Id) return Boolean
+   is
+     (Present (F)
+      and then
+        (case F.Kind is
+            when Direct_Mapping => Is_Abstract_State (F.Node),
+            when Magic_String   => GG_Get_State_Abstractions.Contains (F.Name),
+            when others         => False));
 
    -----------------
    -- Is_Constant --
@@ -531,25 +497,26 @@ package body Flow_Types is
    -- Is_Constituent --
    --------------------
 
-   function Is_Constituent (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
+   function Is_Constituent (F : Flow_Id) return Boolean
+   is
+     (case F.Kind is
+         when Direct_Mapping | Record_Field => Is_Constituent (F.Node),
+         when Magic_String                  => GG_Is_Constituent (F.Name),
+         when others                        => False);
+
+   -------------------------
+   -- Encapsulating_State --
+   -------------------------
+
+   function Encapsulating_State (F : Flow_Id) return Flow_Id
+   is
+     (case F.Kind is
          when Direct_Mapping | Record_Field =>
-            return Nkind (F.Node) in N_Entity
-              and then Ekind (F.Node) in E_Abstract_State |
-                                         E_Constant       |
-                                         E_Variable
-              and then Present (Encapsulating_State (F.Node))
-              and then Ekind (Encapsulating_State (F.Node)) = E_Abstract_State;
-
+            Direct_Mapping_Id (Encapsulating_State (F.Node), F.Variant),
          when Magic_String =>
-            return GG_Is_Constituent (F.Name);
-
+            Magic_String_Id (GG_Encapsulating_State (F.Name), F.Variant),
          when others =>
-            return False;
-
-      end case;
-   end Is_Constituent;
+            raise Program_Error);
 
    ------------------------
    -- Is_Function_Entity --

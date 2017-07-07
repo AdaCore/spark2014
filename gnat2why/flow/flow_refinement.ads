@@ -25,64 +25,21 @@
 --  when to use the abstract or refined views of a subprogram, and if the
 --  refined view then which one.
 
-with Atree;             use Atree;
-with Einfo;             use Einfo;
-with Sem_Util;          use Sem_Util;
-with Snames;            use Snames;
-with Sinfo;             use Sinfo;
-with Types;             use Types;
+with Atree;                use Atree;
+with Einfo;                use Einfo;
+with Sem_Util;             use Sem_Util;
+with Snames;               use Snames;
+with Sinfo;                use Sinfo;
+with Types;                use Types;
 
-with Checked_Types;     use Checked_Types;
-with Common_Containers; use Common_Containers;
-with SPARK_Definition;  use SPARK_Definition;
-with SPARK_Util.Types;  use SPARK_Util.Types;
+with Checked_Types;        use Checked_Types;
+with Common_Containers;    use Common_Containers;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Types;           use Flow_Types;
+with SPARK_Definition;     use SPARK_Definition;
+with SPARK_Util.Types;     use SPARK_Util.Types;
 
 package Flow_Refinement is
-
-   ----------------
-   -- Flow_Scope --
-   ----------------
-
-   --  The scopes we care about in flow analysis are restricted to packages,
-   --  protected objects and task objects.
-   --
-   --  Variables or subprograms can be declared or defined in:
-   --    * package's visible part
-   --    * package's private part
-   --    * package's body
-   --    * protected object's visible
-   --    * protected object's private part
-   --    * protected object's body
-   --    * task object's visible
-   --    * task object's body
-   --
-   --  Therefore flow scope is an entity + visible|private|body
-
-   type Any_Declarative_Part is
-     (Null_Part, Visible_Part, Private_Part, Body_Part);
-   pragma Ordered (Any_Declarative_Part);
-
-   subtype Declarative_Part is Any_Declarative_Part range
-     Visible_Part .. Body_Part;
-
-   subtype Scope_Id is Entity_Id
-   with Dynamic_Predicate =>
-     (if Present (Scope_Id)
-      then Ekind (Scope_Id) in E_Package        |
-                               E_Protected_Type |
-                               E_Task_Type);
-   --  Type that defines a subset of legal entities for the use in Flow_Scope
-
-   type Flow_Scope is record
-      Ent  : Scope_Id;
-      Part : Any_Declarative_Part;
-   end record
-   with Dynamic_Predicate => (Flow_Scope.Ent = Empty) =
-                             (Flow_Scope.Part = Null_Part);
-   --  Note: conceptually this is a discrimated record type, but discriminating
-   --  on Scope_Id (which is an Entity_Id with a predicate) is troublesome.
-
-   Null_Flow_Scope : constant Flow_Scope := (Empty, Null_Part);
 
    -----------------
    -- Other types --
@@ -120,12 +77,22 @@ package Flow_Refinement is
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
                         return Boolean;
-   --  Returns True iff the node N is visible from the scope S
+   --  Returns True iff N is visible from S
+
+   function Is_Visible (EN : Entity_Name;
+                        S  : Flow_Scope)
+                        return Boolean;
+   --  Returns True iff EN is visible from S
+
+   function Is_Visible (F : Flow_Id;
+                        S : Flow_Scope)
+                        return Boolean;
+   --  Returns True iff F is visible from S
 
    function Is_Visible (Target_Scope : Flow_Scope;
                         Looking_From : Flow_Scope)
                         return Boolean;
-   --  Returns True iff Target_Scope is visible from the scope S
+   --  Returns True iff Target_Scope is visible from Looking_From
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Nkind (N) not in N_Subunit | N_Body_Stub;
@@ -140,11 +107,114 @@ package Flow_Refinement is
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
+   function Subprogram_Refinement_Is_Visible (EN : Entity_Name;
+                                              S  : Flow_Scope)
+                                              return Boolean;
+   --  Return True iff the implementation (and thus refined global or depends)
+   --  of subprogram EN is visible from S.
+
+   function Subprogram_Refinement_Is_Visible (F : Flow_Id;
+                                              S : Flow_Scope)
+                                              return Boolean;
+   --  Return True iff the implementation (and thus refined global or depends)
+   --  of subprogram F is visible from S.
+
    function State_Refinement_Is_Visible (E : Checked_Entity_Id;
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
    --  Return true iff the constituents of E are visible from S
+
+   function State_Refinement_Is_Visible (EN : Entity_Name;
+                                         S  : Flow_Scope)
+                                         return Boolean;
+   --  Return true iff the constituents of EN are visible from S
+
+   function State_Refinement_Is_Visible (F : Flow_Id;
+                                         S : Flow_Scope)
+                                         return Boolean
+   with Pre => Is_Abstract_State (F);
+   --  Return true iff the constituents of F are visible from S
+
+   function Is_Fully_Contained (State   : Entity_Id;
+                                Outputs : Node_Sets.Set)
+                                return Boolean
+   with Pre => Ekind (State) = E_Abstract_State;
+   --  Returns True iff all the constituents of State are among Outputs
+
+   function Is_Fully_Contained (State   : Entity_Name;
+                                Outputs : Name_Sets.Set)
+                                return Boolean;
+
+   function Is_Fully_Contained (State   : Flow_Id;
+                                Outputs : Flow_Id_Sets.Set)
+                                return Boolean
+   with Pre => Is_Abstract_State (State);
+
+   procedure Up_Project (Vars      :     Node_Sets.Set;
+                         Scope     :     Flow_Scope;
+                         Projected : out Node_Sets.Set;
+                         Partial   : out Node_Sets.Set)
+   with Post =>
+     (for all E of Partial => Ekind (E) = E_Abstract_State);
+   --  ### Takes Vars and moves up *exactly* one level. For things we've just
+   --  lost visibility we file their encapsulating state in Partial; otherwise
+   --  the variable is put into Projected as is.
+
+   procedure Up_Project (Vars         :     Name_Sets.Set;
+                         Folded_Scope :     Flow_Scope;
+                         Projected    : out Name_Sets.Set;
+                         Partial      : out Name_Sets.Set);
+
+   procedure Up_Project (Vars      :     Flow_Id_Sets.Set;
+                         Scope     :     Flow_Scope;
+                         Projected : out Flow_Id_Sets.Set;
+                         Partial   : out Flow_Id_Sets.Set)
+   with Post =>
+     (for all E of Partial => Is_Abstract_State (E));
+   --  For each variable in Vars it computes the closest encapsulating state
+   --  which is visible from Scope if the variable is not visible. It returns
+   --  the set of the up-projected variables in Vars.
+
+   procedure Up_Project (Vars           :     Global_Nodes;
+                         Projected_Vars : out Global_Nodes;
+                         Scope          : Flow_Scope);
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Scope          : Flow_Scope);
+
+   procedure Up_Project (Vars           :     Global_Flow_Ids;
+                         Projected_Vars : out Global_Flow_Ids;
+                         Scope          : Flow_Scope);
+
+   procedure Up_Project (Var           :     Flow_Id;
+                         Projected_Var : out Flow_Id;
+                         Scope         : Flow_Scope);
+
+   procedure Up_Project (Vars           :     Dependency_Maps.Map;
+                         Projected_Vars : out Dependency_Maps.Map;
+                         Scope          : Flow_Scope);
+   --  Up projects the constituents that are mentioned in Refined to their
+   --  encapsulating state abstractions visible from Scope.
+   --
+   --  Example:
+   --     State1 => (Con1, Con2)
+   --     State2 => (Con3, Con4)
+   --
+   --     Original map:
+   --       Con1 => (Con3, G)
+   --       Con3 => (Con4, G)
+   --       G    => Con3
+   --
+   --     Up-projected map:
+   --       State1 => (State1, State2, G)
+   --       State2 => (State2, G)
+   --       G      => State2
+   --
+   --  Note that the self-depence of State1 is an indirect consequence of
+   --  the fact that Con2 is not an Output. So there is an implicit Con2 =>
+   --  Con2 dependence.
 
    function Get_Contract_Node (E : Entity_Id;
                                S : Flow_Scope;

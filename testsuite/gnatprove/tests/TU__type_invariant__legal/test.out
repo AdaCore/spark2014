@@ -225,12 +225,10 @@ type_invariant_legal_5.adb:91:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:92:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:92:07: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_5.ads:7:09: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_5.ads:15:49: low: unused global "Type_Invariant_Legal_5.State"
 type_invariant_legal_5.ads:18:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.ads:19:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value
 type_invariant_legal_5.ads:24:04: info: initialization of "X" constituent of "State" proved
-type_invariant_legal_5.ads:27:50: low: unused global "Type_Invariant_Legal_5.State"
 type_invariant_legal_6.adb:6:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal_6.adb:7:24: info: initialization of "X" proved
 type_invariant_legal_6.adb:8:27: warning: unused initial value of "X"

@@ -2,9 +2,6 @@ foo.adb:5:04: info: initialization of "A" constituent of "State" proved
 foo.adb:6:04: info: initialization of "B" constituent of "State" proved
 foo.ads:4:04: medium: initial condition might fail
 foo.ads:4:25: info: initialization of "C" constituent of "State" proved
-foo.ads:4:32: info: initialization of "A" constituent of "State" proved
-foo.ads:4:32: info: initialization of "B" constituent of "State" proved
-foo.ads:9:46: low: unused global "Foo.State"
-foo.ads:11:13: low: unused global "C" constituent of "State"
-foo.ads:11:61: low: unused global "Foo.State"
+foo.ads:4:39: info: initialization of "A" constituent of "State" proved
+foo.ads:11:51: low: global input "Foo.State" of "F3_Totally_Unused" not read
 foo.ads:19:04: info: initialization of "C" constituent of "State" proved

@@ -24,8 +24,6 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Multisets;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
-with Flow_Refinement;                    use Flow_Refinement;
-with Flow_Types;                         use Flow_Types;
 with Sinfo;                              use Sinfo;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
@@ -101,13 +99,23 @@ package Flow_Generated_Globals.Phase_2 is
    --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
 
+   function GG_State_Constituents_Map_Is_Ready return Boolean
+   with Ghost;
+   --  Returns True iff the mapping between abstract states and their
+   --  constituents have been populated.
+
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
-   with Pre => GG_Has_Been_Generated;
-   --  Returns true if E is a constituent of some state abstraction
+   with Pre => GG_State_Constituents_Map_Is_Ready;
+   --  Returns true iff E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 
-   procedure GG_Get_Globals (E       : Entity_Id;
-                             S       : Flow_Scope;
+   function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name
+   with Pre => GG_State_Constituents_Map_Is_Ready;
+   --  Returns the Entity_Name of the directly encapsulating state. If one does
+   --  not exist it returns Null_Entity_Name.
+
+   procedure GG_Get_Globals (E           : Entity_Id;
+                             S           : Flow_Scope;
                              Globals : out Global_Flow_Ids)
    with Pre  => GG_Mode = GG_Read_Mode and then
                 Ekind (E) in E_Entry     |
@@ -118,7 +126,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  Determines the set of all globals
 
    function GG_Get_State_Abstractions return Name_Sets.Set
-   with Pre => GG_Has_Been_Generated;
+   with Pre => GG_State_Constituents_Map_Is_Ready;
    --  @return a set of Entity_Names with all the state abstractions
    --    that the Generated Globals know of.
 
@@ -225,6 +233,9 @@ package Flow_Generated_Globals.Phase_2 is
                 (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
+
+   function Get_Constituents (E : Entity_Name) return Name_Sets.Set;
+   --  Returns the constituents for abstract state E
 
    function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
                                                   return Boolean

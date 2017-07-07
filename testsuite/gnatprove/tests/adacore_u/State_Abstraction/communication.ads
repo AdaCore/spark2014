@@ -9,7 +9,9 @@ is
    procedure Send    (Message :     Data; To : in out Mailbox);
    procedure Receive (Message : out Data; To : in out Mailbox);
 private
-   package Ring_Buffer is
+   package Ring_Buffer
+     with Initializes => (Max => V_Ext)
+   is
       type Buffer is private with Default_Initial_Condition;
       procedure Enqueue (E :     Data; B : in out Buffer);
       procedure Dequeue (E : out Data; B : in out Buffer);

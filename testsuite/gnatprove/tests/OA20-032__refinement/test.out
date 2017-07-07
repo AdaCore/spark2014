@@ -123,30 +123,18 @@ patris.ads:254:16: medium: postcondition might fail, cannot prove Get_State = Bo
 patris.ads:260:14: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.ads:260:14: info: postcondition proved (CVC4: 3 VC)
 patris.ads:261:24: info: initialization of "Cur_Board" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
 patris.ads:262:14: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Speed_Up" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
 patris.ads:269:14: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.ads:269:14: info: postcondition proved (CVC4: 1 VC)
 patris.ads:272:07: info: initialization of "Redraw_Board" proved
 patris.ads:272:21: info: initialization of "Redraw_Score" proved
