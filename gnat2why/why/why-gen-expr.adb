@@ -2362,7 +2362,7 @@ package body Why.Gen.Expr is
    begin
       --  We do not generate axioms giving values to bounds of Itypes as they
       --  may contain locally defined entities that are not detected by
-      --  Get_Variables_Set ('Old, 'Loop_Entry, 'Return).
+      --  Get_Variables ('Old, 'Loop_Entry, 'Return).
 
       if Attr in Attribute_First | Attribute_Last
         and then Type_Is_Modeled_As_Base (Ty)

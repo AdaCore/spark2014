@@ -1,9 +1,10 @@
 foo.adb:8:31: info: initialization of "G_V" proved
-foo.adb:11:23: warning: unused variable "A"
 foo.adb:12:23: info: initialization of "O" proved
+foo.adb:20:07: info: initialization of "X" proved
 foo.adb:22:12: info: initialization of "X" proved
 foo.adb:34:12: predicate cannot depend on variable input "B" (SPARK RM 4.4(2))
 foo.adb:43:23: info: initialization of "O" proved
+foo.adb:50:07: info: initialization of "X" proved
 foo.adb:52:12: info: initialization of "X" proved
 foo.adb:56:23: info: initialization of "O" proved
 foo.adb:66:12: info: initialization of "X" proved

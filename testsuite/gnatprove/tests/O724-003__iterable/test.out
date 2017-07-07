@@ -1,3 +1,4 @@
+with_iterable.adb:4:07: info: initialization of "First.I" proved
 with_iterable.adb:4:07: warning: initialization of First has no effect
 with_iterable.adb:4:27: info: discriminant check proved (CVC4: 1 VC)
 with_iterable.adb:4:27: info: predicate check proved (CVC4: 1 VC)

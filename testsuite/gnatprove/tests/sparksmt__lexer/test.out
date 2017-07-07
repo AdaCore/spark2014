@@ -19,6 +19,7 @@ lexer.adb:113:07: info: initialization of "Current_Pos" constituent of "State" p
 lexer.adb:113:07: info: initialization of "Current_Read.C" constituent of "State" proved
 lexer.adb:114:07: info: precondition proved (CVC4: 1 VC)
 lexer.adb:114:13: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:134:07: info: initialization of "S" proved
 lexer.adb:141:20: info: postcondition proved (CVC4: 3 VC)
 lexer.adb:149:20: info: postcondition proved (CVC4: 1 VC)
 lexer.adb:156:20: info: postcondition proved (CVC4: 3 VC)

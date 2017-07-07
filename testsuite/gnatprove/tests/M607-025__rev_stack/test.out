@@ -10,6 +10,7 @@ a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
 list.adb:18:07: info: initialization of private part of "Res" proved
+list.adb:18:14: info: initialization of private part of "Res" proved
 list.adb:19:14: info: initialization of private part of "Res" proved
 list.adb:22:10: info: precondition proved (Z3: 2 VC)
 list.adb:22:16: info: initialization of "S" proved

@@ -140,7 +140,7 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Is_DIC        : Boolean           := False;
+      Aspect        : Type_Aspect       := No_Aspect;
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
@@ -160,8 +160,17 @@ package body Flow.Control_Flow_Graph.Utility is
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
-      elsif Is_DIC then
-         A.Pretty_Print_Kind := Pretty_Print_DIC;
+      else
+         case Aspect is
+            when DIC =>
+               A.Pretty_Print_Kind := Pretty_Print_DIC;
+            when Predicate =>
+               A.Pretty_Print_Kind := Pretty_Print_Predicate;
+            when Invariant =>
+               A.Pretty_Print_Kind := Pretty_Print_Invariant;
+            when No_Aspect =>
+               null;
+         end case;
       end if;
 
       Add_Volatile_Effects (A);

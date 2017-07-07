@@ -1,3 +1,4 @@
 p.adb:13:19: info: predicate check proved (CVC4: 1 VC)
 p.ads:3:09: warning: "T" is not used in its predicate
 p.ads:5:50: info: postcondition proved (CVC4: 1 VC)
+p.ads:8:17: high: potentially blocking operation in protected operation "Dummy"

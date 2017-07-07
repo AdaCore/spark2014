@@ -249,6 +249,7 @@ perm.adb:18:29: info: index check proved (Z3: 2 VC)
 perm.adb:21:07: info: precondition proved (Z3: 1 VC)
 perm.adb:21:15: info: precondition proved (Z3: 1 VC)
 perm.adb:21:32: info: precondition proved (Z3: 1 VC)
+perm.adb:25:07: info: initialization of "B" proved
 perm.adb:25:17: info: precondition proved (Z3: 1 VC)
 perm.adb:32:10: info: precondition proved (Z3: 1 VC)
 perm.adb:32:18: info: initialization of "B" proved

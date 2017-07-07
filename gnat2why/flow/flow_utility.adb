@@ -227,7 +227,14 @@ package body Flow_Utility is
                   Called_Func : constant Entity_Id := Get_Called_Entity (N);
 
                begin
-                  Functions_Called.Include (Called_Func);
+                  --  We include the called function only if it is visible from
+                  --  the scope. For example, the call might not be visible
+                  --  when it happens in the type invariant of an externally
+                  --  visible type and the function called is declared in the
+                  --  private part.
+                  if Is_Visible (Called_Func, Scop) then
+                     Functions_Called.Include (Called_Func);
+                  end if;
 
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
@@ -2843,11 +2850,10 @@ package body Flow_Utility is
       Traverse (N);
 
       return S : Flow_Id_Sets.Set do
-         --  We need to do some post-processing on the result here. First
-         --  we check each variable to see if it is the result of an
-         --  action. For flow analysis its more helpful to talk about the
-         --  original variables, so we undo these actions whenever
-         --  possible.
+         --  We need to do some post-processing on the result here. First we
+         --  check each variable to see if it is the result of an action. For
+         --  flow analysis its more helpful to talk about the original
+         --  variables, so we undo these actions whenever possible.
          for F of Variables loop
             case F.Kind is
                when Direct_Mapping | Record_Field =>
@@ -2867,8 +2873,8 @@ package body Flow_Utility is
                                       (Node =>
                                          Unique_Entity (Entity (Expr))));
 
-                           when others =>
-                              S.Union (Recurse (Expr));
+                              when others =>
+                                 S.Union (Recurse (Expr));
                            end case;
                         end;
                      else
@@ -4034,9 +4040,9 @@ package body Flow_Utility is
                  Ekind (Entity (N)) = E_Constant and then
                  not Local_Constants.Contains (Entity (N));
                --  We're assigning a local constant; and currently we just
-               --  use get_variable_set to "look through" it. We simply
-               --  assign all fields of the LHS to the RHS. Not as precise
-               --  as it could be, but it works for now...
+               --  use Get_Variables to "look through" it. We simply assign all
+               --  fields of the LHS to the RHS. Not as precise as it could be,
+               --  but it works for now...
 
                LHS : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (Map_Root, Scope);

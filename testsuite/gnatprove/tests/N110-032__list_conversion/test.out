@@ -24,7 +24,11 @@ my_lists.adb:5:18: info: range check proved (CVC4: 1 VC)
 my_lists.adb:6:07: info: initialization of private part of "L2" proved
 my_lists.adb:6:23: info: discriminant check proved (CVC4: 1 VC)
 my_lists.adb:6:23: info: initialization of private part of "L1" proved
+my_lists.adb:7:07: info: initialization of private part of "L3" proved
 my_lists.adb:8:07: info: initialization of private part of "L4" proved
+my_lists.adb:9:07: info: initialization of private part of "L5" proved
+my_lists.adb:10:07: info: initialization of private part of "L6" proved
+my_lists.adb:11:07: info: initialization of private part of "L7" proved
 my_lists.adb:13:14: info: initialization of private part of "L1" proved
 my_lists.adb:14:14: info: initialization of private part of "L2" proved
 my_lists.adb:15:14: info: initialization of private part of "L3" proved

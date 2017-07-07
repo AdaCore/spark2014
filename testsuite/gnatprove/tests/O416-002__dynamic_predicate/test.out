@@ -16,6 +16,8 @@ dynamic_preds.adb:45:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:45:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:47:12: info: initialization of "Tmp.A" proved
 dynamic_preds.adb:47:12: info: initialization of "Tmp.B" proved
+dynamic_preds.adb:51:07: info: initialization of "Tmp.A" proved
+dynamic_preds.adb:51:07: info: initialization of "Tmp.B" proved
 dynamic_preds.adb:51:32: medium: predicate check might fail
 dynamic_preds.adb:53:12: info: initialization of "Tmp.A" proved
 dynamic_preds.adb:53:12: info: initialization of "Tmp.B" proved
@@ -105,6 +107,7 @@ dynamic_preds_array.adb:42:12: info: initialization of "Tmp" proved
 dynamic_preds_array.adb:46:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:46:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:48:12: info: initialization of "Tmp" proved
+dynamic_preds_array.adb:52:07: info: initialization of "Tmp" proved
 dynamic_preds_array.adb:52:32: medium: predicate check might fail
 dynamic_preds_array.adb:54:12: info: initialization of "Tmp" proved
 dynamic_preds_array.adb:60:17: medium: "Result" might not be initialized

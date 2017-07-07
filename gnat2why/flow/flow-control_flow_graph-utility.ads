@@ -61,14 +61,14 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Is_DIC        : Boolean           := False;
+      Aspect        : Type_Aspect       := No_Aspect;
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
-   with Pre  => (if Is_DIC then Is_Assertion),
+   with Pre  => (if Aspect = DIC then Is_Assertion),
         Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
                 not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices modelling the following

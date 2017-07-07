@@ -1,7 +1,8 @@
-main.adb:3:11: info: initialization of "Global" proved
 main.adb:4:22: info: predicate check proved (CVC4: 1 VC)
+main.adb:6:04: info: initialization of "Z" proved
 main.adb:6:04: warning: initialization of Z has no effect
 main.adb:6:13: info: predicate check proved (CVC4: 1 VC)
+main.adb:7:04: info: initialization of "TV" proved
 main.adb:7:14: medium: predicate check might fail
 main.adb:13:06: warning: unused assignment
 main.adb:13:12: info: predicate check proved (CVC4: 1 VC)

@@ -9,6 +9,7 @@ dic_and_predicate_checks.ads:37:07: medium: type "P" is not fully initialized
 dic_and_predicate_checks.ads:41:09: info: predicate check proved on default value (CVC4: 1 VC)
 dic_and_predicate_checks.ads:53:04: info: initialization of "X1" proved
 dic_and_predicate_checks.ads:54:04: info: initialization of "X2" proved
+dic_and_predicate_checks.ads:55:04: info: initialization of "X3" proved
 private_types.ads:10:32: medium: range check might fail
 private_types.ads:24:32: medium: range check might fail
 private_types.ads:29:14: info: range check proved (CVC4: 1 VC)
