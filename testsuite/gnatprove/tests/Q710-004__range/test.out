@@ -1,0 +1,9 @@
+essai05.adb:17:16: info: initialization of "R" proved
+essai05.adb:17:16: info: initialization of "R" proved, in call inlined at essai05.adb:32
+essai05.adb:17:19: info: initialization of "A" proved, in call inlined at essai05.adb:32
+essai05.adb:19:14: info: initialization of "R" proved
+essai05.adb:19:14: info: initialization of "R" proved, in call inlined at essai05.adb:32
+essai05.adb:23:32: info: length check proved (CVC4: 1 VC)
+essai05.adb:26:16: info: initialization of "R" proved
+essai05.adb:28:14: info: initialization of "R" proved
+essai05.adb:32:19: info: initialization of "C23b" proved
