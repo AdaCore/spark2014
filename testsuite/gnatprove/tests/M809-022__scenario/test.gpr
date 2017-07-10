@@ -4,7 +4,7 @@ project Test is
 
    case Mode is
       when "proof" =>
-         for Excluded_Source_Files use ("q.adb", "q.ads");
+         for Excluded_Source_Files use ("q.adb");
       when "compile" =>
          null;
    end case;
