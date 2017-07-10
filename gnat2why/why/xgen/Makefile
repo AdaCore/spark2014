@@ -27,9 +27,6 @@ all:
 	cp $(GENERATED_FILES) ../
 
 clean:
-	-rm -f *~
-	-rm -f *.o
-	-rm -f *.ali
-	-rm -f b~*
+	-rm -rf obj
 	-rm -f xtree
 	-rm -f $(GENERATED_FILES)
