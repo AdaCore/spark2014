@@ -830,6 +830,8 @@ package body Flow_Refinement is
             case Ekind (E) is
                when E_Abstract_State =>
                   declare
+                     Pkg : constant Entity_Id := Scope (E);
+
                      procedure Expand (L : Elist_Id);
                      --  Expand each constituent of L if there are no hidden
                      --  constituents, otherwise include the abstract state E
@@ -850,7 +852,9 @@ package body Flow_Refinement is
                      end Expand;
 
                   begin
-                     if State_Refinement_Is_Visible (E, S) then
+                     if Entity_Body_In_SPARK (Pkg)
+                       and then State_Refinement_Is_Visible (E, S)
+                     then
                         Expand (Refinement_Constituents (E));
                         Expand (Part_Of_Constituents (E));
                         --  ??? do the same as in Expand_Abstract_State

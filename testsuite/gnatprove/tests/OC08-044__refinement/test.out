@@ -23,11 +23,9 @@ ok_semantics-priv.adb:18:45: low: unused global "YY" constituent of "OK_Semantic
 ok_semantics-priv.adb:18:45: warning: "YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
 ok_semantics-priv.adb:18:49: low: unused global "ZZ" constituent of "State"
 ok_semantics-priv.adb:18:49: warning: "ZZ" constituent of "State" is not modified, could be INPUT
-ok_semantics-priv.ads:9:06: global output "Priv.State" constituent of "OK_Semantics.State3" of "Create" not written
-ok_semantics-priv.ads:9:06: global output "X" constituent of "State1" of "Create" not written
-ok_semantics-priv.ads:9:06: global output "Y" constituent of "State2" of "Create" not written
-ok_semantics-priv.ads:9:06: global output "YY" constituent of "OK_Semantics.State2" of "Create" not written
-ok_semantics-priv.ads:9:06: global output "Z" constituent of "State3" of "Create" not written
+ok_semantics-priv.ads:9:06: global output "OK_Semantics.State1" of "Create" not written
+ok_semantics-priv.ads:9:06: global output "OK_Semantics.State2" of "Create" not written
+ok_semantics-priv.ads:9:06: global output "OK_Semantics.State3" of "Create" not written
 ok_semantics-priv.ads:17:04: info: initialization of "ZZ" constituent of "State" proved
 ok_semantics-pub.adb:7:35: low: unused global "X" constituent of "State1"
 ok_semantics-pub.adb:7:38: low: unused global "Y" constituent of "State2"

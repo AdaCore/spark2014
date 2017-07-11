@@ -882,9 +882,12 @@ package body Flow.Analysis.Sanity is
             then
                --  Don't issue this error for state abstractions that have a
                --  null refinement.
-
+               --  ??? Has_Non_Null_Refinement ignores the SPARK_Mode barrier
+               --  and only works for abstract states for the current
+               --  compilation unit.
                if Ekind (E) /= E_Abstract_State
                  or else Has_Non_Null_Refinement (E)
+                 or else Part_Of_Constituents (E) /= No_Elist
                then
                   Sane := False;
 
