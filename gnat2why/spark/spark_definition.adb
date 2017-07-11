@@ -4437,7 +4437,7 @@ package body SPARK_Definition is
             Decl : constant Node_Id :=
               (if Is_Itype (E)
                then Associated_Node_For_Itype (E)
-               else Parent (E));
+               else Declaration_Node (E));
 
          begin
             pragma Assert (Present (Parent (Decl)));
