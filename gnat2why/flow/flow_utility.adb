@@ -2439,8 +2439,7 @@ package body Flow_Utility is
                --  Dealt with using membership tests, if applicable
                null;
 
-            when E_Named_Integer
-               | E_Named_Real
+            when Named_Kind
                | E_Enumeration_Literal
             =>
                --  All of these are simply constants, with no flow concern
