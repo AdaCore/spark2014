@@ -2348,9 +2348,7 @@ package body Flow_Utility is
                | E_In_Out_Parameter
                | E_In_Parameter
             =>
-               if Ekind (E) = E_In_Parameter
-                 and then Present (Discriminal_Link (E))
-               then
+               if Is_Discriminal (E) then
                   return Do_Entity (Discriminal_Link (E));
                end if;
 
