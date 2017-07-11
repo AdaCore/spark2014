@@ -2017,21 +2017,18 @@ package body Flow_Utility is
       -- Subprograms that do *not* write into Variables --
       ----------------------------------------------------
 
-      function Do_Subprogram_Call (Callsite : Node_Id)
-                                   return Flow_Id_Sets.Set
+      function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (Callsite) in N_Entry_Call_Statement |
                                       N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
 
-      function Do_Entity (E : Entity_Id)
-                          return Flow_Id_Sets.Set
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (E) in N_Entity;
       --  Process the given entity and return the variables associated with it
 
-      function Do_N_Attribute_Reference (N : Node_Id)
-                                         return Flow_Id_Sets.Set
+      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Attribute_Reference;
       --  Process the given attribute reference. Do not follow children after
       --  calling this.
@@ -2135,21 +2132,20 @@ package body Flow_Utility is
       -- Do_Subprogram_Call --
       ------------------------
 
-      function Do_Subprogram_Call (Callsite : Node_Id)
-                                   return Flow_Id_Sets.Set
+      function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
       is
-         Subprogram    : constant Entity_Id := Get_Called_Entity (Callsite);
+         Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
 
          Globals : Global_Flow_Ids;
 
-         Folding       : constant Boolean :=
+         Folding : constant Boolean :=
            Ctx.Fold_Functions
            and then Ekind (Subprogram) = E_Function
            and then Has_Depends (Subprogram);
 
-         Used_Reads    : Flow_Id_Sets.Set;
+         Used_Reads : Flow_Id_Sets.Set;
 
-         V             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         V          : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
          --  Processing related to parameter of a call
@@ -2293,8 +2289,7 @@ package body Flow_Utility is
       -- Do_Entity --
       ---------------
 
-      function Do_Entity (E : Entity_Id)
-                          return Flow_Id_Sets.Set
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
       is
       begin
          if Ctx.Quantified_Variables_Introduced.Contains (E) then
@@ -2477,8 +2472,7 @@ package body Flow_Utility is
       -- Do_N_Attribute_Reference --
       ------------------------------
 
-      function Do_N_Attribute_Reference (N : Node_Id)
-                                         return Flow_Id_Sets.Set
+      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       is
          The_Attribute : constant Attribute_Id :=
            Get_Attribute_Id (Attribute_Name (N));
