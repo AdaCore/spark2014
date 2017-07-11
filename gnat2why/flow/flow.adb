@@ -1373,6 +1373,7 @@ package body Flow is
          if Is_Subprogram (E)
            and then SPARK_Util.Subprograms.Analysis_Requested
              (E, With_Inlined => True)
+           and then Entity_Spec_In_SPARK (E)
          then
             Check_Classwide_Contracts (E, Success);
          end if;

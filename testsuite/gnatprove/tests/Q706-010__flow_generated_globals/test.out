@@ -1,3 +1,0 @@
-objects.ads:6:25: "X" is an in_out of overriding subprogram, but it is not an input of overridden subprogram "Proc" at line 3 (SPARK RM 6.1.6)
-objects.ads:6:25: "X" is an in_out of overriding subprogram, but it is not an output of overridden subprogram "Proc" at line 3 (SPARK RM 6.1.6)
-gnatprove: error during flow analysis and proof
