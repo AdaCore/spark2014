@@ -2347,6 +2347,21 @@ package body Flow_Utility is
                   return Do_Entity (Discriminal_Link (E));
                end if;
 
+               --  References to the current instance of the single concurrent
+               --  type are represented as E_Variable of the corresponding
+               --  single concurrent object (because that is more convenient
+               --  for the frontend error reporing machinery). Here we detect
+               --  such references (with an abuse of Ctx.Scope to know the
+               --  current context) and ignore them, just like we ignore
+               --  references to the current instance of a non-single
+               --  concurrent type.
+
+               if Is_Single_Concurrent_Object (E)
+                 and then Is_CCT_Instance (Etype (E), Ctx.Scope.Ent)
+               then
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
+
                --  Ignore discriminants and components unless they come
                --  from task or protected types.
                if Ekind (E) in E_Discriminant | E_Component
