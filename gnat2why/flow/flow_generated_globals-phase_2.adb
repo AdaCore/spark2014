@@ -1688,9 +1688,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
             for C in Phase_1_Info.Iterate loop
                declare
-                  EN : Entity_Name renames Phase_1_Info_Maps.Key (C);
-                  Info : Partial_Contract renames
-                    Phase_1_Info_Maps.Element (C);
+                  EN   : Entity_Name      renames Phase_1_Info_Maps.Key (C);
+                  Info : Partial_Contract renames Phase_1_Info (C);
                begin
                   --  ??? remove double call to Find_Entity
                   if Info.Kind = E_Package
