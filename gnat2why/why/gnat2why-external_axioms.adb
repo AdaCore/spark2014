@@ -78,9 +78,7 @@ package body Gnat2Why.External_Axioms is
             --  the declaration won't come from source but its original node
             --  will.
 
-            if (Comes_From_Source (N)
-                 or else (Present (Original_Node (N))
-                           and then Comes_From_Source (Original_Node (N))))
+            if Comes_From_Source (Original_Node (N))
               and then Nkind (N) in
                   N_Full_Type_Declaration
                 | N_Private_Extension_Declaration
@@ -96,7 +94,7 @@ package body Gnat2Why.External_Axioms is
             --  Call Process_Decls recursively on Package_Declaration and
             --  Package_Instantiation.
 
-            if Comes_From_Source (N) then
+            if Comes_From_Source (Original_Node (N)) then
                case Nkind (N) is
                   when N_Package_Instantiation =>
                      Process_Decls

@@ -5,8 +5,10 @@ pair_insertion_sort.adb:13:25: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:13:42: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:15:55: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:15:72: info: index check proved (Z3: 2 VC)
+pair_insertion_sort.adb:20:07: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:20:47: info: length check proved (Z3: 1 VC)
 pair_insertion_sort.adb:20:47: info: predicate check proved (Z3: 1 VC)
+pair_insertion_sort.adb:21:07: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:28:20: info: precondition proved (Z3: 2 VC)
 pair_insertion_sort.adb:28:43: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:29:20: info: precondition proved (Z3: 2 VC)
@@ -37,6 +39,7 @@ pair_insertion_sort.adb:53:30: info: initialization of "Interm" proved
 pair_insertion_sort.adb:53:47: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:54:07: info: initialization of "Interm" proved
 pair_insertion_sort.adb:54:07: info: precondition proved (Z3: 6 VC)
+pair_insertion_sort.adb:59:07: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:59:36: info: length check proved (Z3: 1 VC)
 pair_insertion_sort.adb:59:36: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:62:13: info: initialization of "I" proved

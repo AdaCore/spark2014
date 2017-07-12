@@ -1107,7 +1107,7 @@ package body Gnat2Why.Expr is
          begin
             if Ekind (FV) /= E_In_Parameter
               and then Present (Expression (Decl))
-              and then Comes_From_Source (FV)
+              and then Comes_From_Source (Original_Node (FV))
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
             then
@@ -1941,7 +1941,7 @@ package body Gnat2Why.Expr is
                                                   Pre      => Precond,
                                                   Post     => True_Pred));
 
-            if Comes_From_Source (Low)
+            if Comes_From_Source (Original_Node (Low))
               and then not Is_OK_Static_Expression (Low)
             then
                Check_Range := Sequence
@@ -1952,7 +1952,7 @@ package body Gnat2Why.Expr is
                   Check_Range);
             end if;
 
-            if Comes_From_Source (High)
+            if Comes_From_Source (Original_Node (High))
               and then not Is_OK_Static_Expression (High)
             then
                Check_Range := Sequence
@@ -10572,7 +10572,7 @@ package body Gnat2Why.Expr is
 
                         if Present (Typ)
                           and then Nkind (Typ) = N_Subtype_Indication
-                          and then Comes_From_Source (Typ)
+                          and then Comes_From_Source (Original_Node (Typ))
                         then
                            R := Sequence
                              (Check_Subtype_Indication
@@ -10590,7 +10590,7 @@ package body Gnat2Why.Expr is
                         Index := First_Index (Ent);
                         while Present (Index) loop
                            if Nkind (Index) = N_Subtype_Indication then
-                              if Comes_From_Source (Index) then
+                              if Comes_From_Source (Original_Node (Index)) then
                                  R := Sequence
                                    (Check_Subtype_Indication
                                       (Params   => Body_Params,
@@ -10612,7 +10612,7 @@ package body Gnat2Why.Expr is
                            Index := First_Index (Ent);
                            Index_Base := First_Index (Base);
                            while Present (Index) loop
-                              if Comes_From_Source (Index) then
+                              if Comes_From_Source (Original_Node (Index)) then
                                  R := Sequence
                                    (Check_Scalar_Range
                                       (Params => Body_Params,
@@ -10654,7 +10654,8 @@ package body Gnat2Why.Expr is
 
                                  if Present (Typ)
                                    and then Nkind (Typ) = N_Subtype_Indication
-                                   and then Comes_From_Source (Typ)
+                                   and then
+                                     Comes_From_Source (Original_Node (Typ))
                                  then
                                     R := Sequence
                                       (Check_Subtype_Indication

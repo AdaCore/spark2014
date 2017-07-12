@@ -193,7 +193,7 @@ package body Gnat2Why.Decls is
       --  include X'Loop_Entry for a constant inserted in a block of actions).
 
       if Present (Expr)
-        and then Comes_From_Source (E)
+        and then Comes_From_Source (Original_Node (E))
       then
          declare
             Typ : constant W_Type_Id := Type_Of_Node (Etype (E));

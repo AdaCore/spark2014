@@ -3,4 +3,5 @@ dir.adb:6:07: warning: unused variable "Resolve_Links"
 dir.adb:18:07: warning: unused variable "Directory"
 dir.adb:23:23: warning: unused variable "Name"
 dir.adb:33:13: info: range check proved (CVC4: 2 VC)
+dir.adb:33:49: info: range check proved (CVC4: 1 VC)
 dir.adb:36:28: info: length check proved (CVC4: 1 VC)
