@@ -1306,6 +1306,7 @@ sorters.adb:54:42: info: index check proved (CVC4: 2 VC)
 sorters.adb:54:42: info: initialization of "Min" proved
 sorters.adb:55:20: info: range check proved (CVC4: 1 VC)
 sorters.adb:58:14: info: initialization of "Min" proved
+sorters.adb:63:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:68:50: info: overflow check proved (CVC4: 1 VC)
 sorters.adb:69:22: info: length check proved (CVC4: 2 VC)
 sorters.adb:69:25: info: length check proved (CVC4: 2 VC)
