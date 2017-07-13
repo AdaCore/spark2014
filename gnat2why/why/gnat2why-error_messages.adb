@@ -345,7 +345,7 @@ package body Gnat2Why.Error_Messages is
          Append (Buf, " (");
          for C in Stats.Iterate loop
             declare
-               Elt : constant Prover_Stat := Element (C);
+               Elt : Prover_Stat renames Stats (C);
             begin
                Append (Buf, Key (C));
                Append (Buf, ':');
