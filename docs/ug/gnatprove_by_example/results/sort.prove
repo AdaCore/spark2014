@@ -5,7 +5,9 @@ sort.adb:18:18: info: index check proved
 sort.adb:18:35: info: index check proved
 sort.adb:20:48: info: index check proved
 sort.adb:20:65: info: index check proved
+sort.adb:25:07: info: range check proved
 sort.adb:25:53: info: length check proved
+sort.adb:26:07: info: range check proved
 sort.adb:31:09: info: precondition proved
 sort.adb:31:23: info: range check proved
 sort.adb:31:32: info: index check proved
