@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Sem_Util;               use Sem_Util;
@@ -176,6 +177,24 @@ package body SPARK_Register is
                                                | N_Op
          then
             Process_Tree (Original_Node (N));
+         end if;
+
+         --  Aspect Address, unlike other aspects, it is not translated to
+         --  a semantically-equivalent pragma, and like other aspects it is
+         --  not attached to the tree. We need to explicitly traverse its
+         --  expression, which may contain references to objects and calls
+         --  to functions.
+         if Nkind (N) in N_Object_Declaration
+                       | N_Subprogram_Declaration
+         then
+            declare
+               Address : constant Node_Id :=
+                 Find_Aspect (Defining_Entity (N), Aspect_Address);
+            begin
+               if Present (Address) then
+                  Process_Tree (Expression (Address));
+               end if;
+            end;
          end if;
 
          --  Special-case type aspect subprograms

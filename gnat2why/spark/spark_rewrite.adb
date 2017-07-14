@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Namet;                  use Namet;
@@ -274,6 +275,24 @@ package body SPARK_Rewrite is
                                                | N_Op
          then
             Rewrite_Nodes (Original_Node (N));
+         end if;
+
+         --  Aspect Address, unlike other aspects, it is not translated to
+         --  a semantically-equivalent pragma, and like other aspects it is
+         --  not attached to the tree. We need to explicitly traverse its
+         --  expression, which may contain references to objects and calls
+         --  to functions.
+         if Nkind (N) in N_Object_Declaration
+                       | N_Subprogram_Declaration
+         then
+            declare
+               Address : constant Node_Id :=
+                 Find_Aspect (Defining_Entity (N), Aspect_Address);
+            begin
+               if Present (Address) then
+                  Rewrite_Nodes (Expression (Address));
+               end if;
+            end;
          end if;
 
          case Nkind (N) is
