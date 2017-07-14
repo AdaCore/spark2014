@@ -3388,12 +3388,19 @@ package body Flow.Control_Flow_Graph is
             Fold_Functions       => True,
             Use_Computed_Globals => not FA.Generating_Globals);
 
-         for Comp of Components_Of_Type loop
-            if Has_Bounds (Comp, FA.B_Scope) then
-               Components_Of_Type.Include
-                 (Comp'Update (Facet => The_Bounds));
-            end if;
-         end loop;
+         declare
+            Other_Components_Of_Type : Flow_Id_Sets.Set;
+
+         begin
+            for Comp of Components_Of_Type loop
+               if Has_Bounds (Comp, FA.B_Scope) then
+                  Other_Components_Of_Type.Include
+                    (Comp'Update (Facet => The_Bounds));
+               end if;
+            end loop;
+
+            Components_Of_Type.Union (Other_Components_Of_Type);
+         end;
 
          --  Replace components if needed
          if (for some Comp of Components_Of_Type =>
