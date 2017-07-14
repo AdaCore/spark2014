@@ -62,8 +62,6 @@ package body SPARK_Register is
          --  the original node.
 
       begin
-         --  First rewrite the node
-
          case Nkind (N) is
             --  Recursively call the tree rewriting procedure on subunits
 
