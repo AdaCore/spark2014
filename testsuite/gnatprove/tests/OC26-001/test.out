@@ -1,22 +1,22 @@
 cubedos-lib-xdr.adb:31:07: info: precondition proved (CVC4: 5 VC)
 cubedos-lib-xdr.adb:45:25: info: initialization of "Temporary_1" proved
-cubedos-lib-xdr.adb:45:37: info: division check proved (CVC4: 1 VC)
-cubedos-lib-xdr.adb:46:24: info: index check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:45:37: info: division check proved (CVC4: 4 VC)
+cubedos-lib-xdr.adb:46:24: info: index check proved (CVC4: 8 VC)
 cubedos-lib-xdr.adb:46:44: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:46:44: info: range check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:46:44: info: range check proved (CVC4: 8 VC)
 cubedos-lib-xdr.adb:47:25: info: initialization of "Temporary_1" proved
-cubedos-lib-xdr.adb:47:37: info: division check proved (CVC4: 1 VC)
+cubedos-lib-xdr.adb:47:37: info: division check proved (CVC4: 4 VC)
 cubedos-lib-xdr.adb:49:24: info: range check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:66:07: info: precondition proved (CVC4: 5 VC)
 cubedos-lib-xdr.adb:66:14: info: initialization of "Temporary" proved
 cubedos-lib-xdr.adb:77:07: info: precondition proved (CVC4: 5 VC)
 cubedos-lib-xdr.adb:91:25: info: initialization of "Temporary_1" proved
-cubedos-lib-xdr.adb:91:37: info: division check proved (CVC4: 1 VC)
-cubedos-lib-xdr.adb:92:24: info: index check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:91:37: info: division check proved (CVC4: 8 VC)
+cubedos-lib-xdr.adb:92:24: info: index check proved (CVC4: 16 VC)
 cubedos-lib-xdr.adb:92:44: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:92:44: info: range check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:92:44: info: range check proved (CVC4: 16 VC)
 cubedos-lib-xdr.adb:93:25: info: initialization of "Temporary_1" proved
-cubedos-lib-xdr.adb:93:37: info: division check proved (CVC4: 1 VC)
+cubedos-lib-xdr.adb:93:37: info: division check proved (CVC4: 8 VC)
 cubedos-lib-xdr.adb:95:24: info: range check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:108:55: info: length check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:108:58: info: length check proved (CVC4: 1 VC)
@@ -47,7 +47,7 @@ cubedos-lib-xdr.adb:149:40: info: initialization of "Temp" proved
 cubedos-lib-xdr.adb:159:55: info: index check proved (CVC4: 2 VC)
 cubedos-lib-xdr.adb:163:25: info: initialization of "Temporary_1" proved
 cubedos-lib-xdr.adb:164:25: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:164:66: info: index check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:164:66: info: index check proved (CVC4: 6 VC)
 cubedos-lib-xdr.adb:165:19: info: initialization of "Temporary_2" proved
 cubedos-lib-xdr.adb:166:25: info: initialization of "Value" proved
 cubedos-lib-xdr.adb:168:24: info: range check proved (CVC4: 1 VC)
@@ -58,7 +58,7 @@ cubedos-lib-xdr.adb:200:38: info: initialization of "Temporary" proved
 cubedos-lib-xdr.adb:211:67: info: index check proved (CVC4: 2 VC)
 cubedos-lib-xdr.adb:215:25: info: initialization of "Temporary_1" proved
 cubedos-lib-xdr.adb:216:25: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:216:72: info: index check proved (CVC4: 2 VC)
+cubedos-lib-xdr.adb:216:72: info: index check proved (CVC4: 14 VC)
 cubedos-lib-xdr.adb:217:19: info: initialization of "Temporary_2" proved
 cubedos-lib-xdr.adb:218:25: info: initialization of "Value" proved
 cubedos-lib-xdr.adb:220:15: info: range check proved (CVC4: 1 VC)

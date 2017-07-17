@@ -1,0 +1,74 @@
+game.adb:14:10: info: initialization of "Player_Turn" proved
+game.adb:15:10: warning: assuming "Put_Line" has no effect on global items
+game.adb:15:10: warning: no Global contract available for "Put_Line"
+game.adb:16:10: info: precondition proved (CVC4: 2 VC)
+game.adb:18:10: warning: assuming "Put_Line" has no effect on global items
+game.adb:18:10: warning: no Global contract available for "Put_Line"
+game.adb:19:10: info: precondition proved (CVC4: 2 VC)
+game.adb:23:26: info: initialization of "Player_Turn" proved
+game.adb:28:10: warning: assuming "Put_Line" has no effect on global items
+game.adb:28:10: warning: no Global contract available for "Put_Line"
+game.adb:30:10: warning: assuming "Put_Line" has no effect on global items
+game.adb:30:10: warning: no Global contract available for "Put_Line"
+game.adb:32:10: warning: assuming "Put_Line" has no effect on global items
+game.adb:32:10: warning: no Global contract available for "Put_Line"
+tictactoe.adb:13:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.adb:27:27: warning: assuming "Get_Line" has no effect on global items
+tictactoe.adb:27:27: warning: no Global contract available for "Get_Line"
+tictactoe.adb:32:36: info: initialization of "S" proved
+tictactoe.adb:32:40: info: index check proved (CVC4: 2 VC)
+tictactoe.adb:35:24: info: initialization of "C" proved
+tictactoe.adb:58:22: info: initialization of "Found" proved
+tictactoe.adb:58:47: info: initialization of "P.X" proved
+tictactoe.adb:58:52: info: initialization of "P.Y" proved
+tictactoe.adb:66:07: info: precondition proved (CVC4: 2 VC)
+tictactoe.adb:66:12: info: initialization of "P.X" proved
+tictactoe.adb:66:12: info: initialization of "P.Y" proved
+tictactoe.adb:96:07: warning: initialization of P has no effect
+tictactoe.adb:112:29: info: initialization of "P.X" proved
+tictactoe.adb:112:34: info: initialization of "P.Y" proved
+tictactoe.adb:113:28: info: initialization of "Score" proved
+tictactoe.adb:113:34: info: overflow check proved (CVC4: 48 VC)
+tictactoe.adb:114:32: info: initialization of "P.X" proved
+tictactoe.adb:114:37: info: initialization of "P.Y" proved
+tictactoe.adb:115:28: info: initialization of "Score" proved
+tictactoe.adb:115:34: info: overflow check proved (CVC4: 48 VC)
+tictactoe.adb:119:16: info: initialization of "Score" proved
+tictactoe.adb:119:24: info: initialization of "Target_Scores" proved
+tictactoe.adb:133:10: info: initialization of "Found" proved
+tictactoe.adb:134:10: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+tictactoe.adb:134:16: info: initialization of "P.X" proved
+tictactoe.adb:134:16: info: initialization of "P.Y" proved
+tictactoe.adb:138:22: info: assertion proved (CVC4: 1 VC)
+tictactoe.adb:143:16: info: precondition proved (CVC4: 18 VC)
+tictactoe.adb:162:19: warning: assuming "Put" has no effect on global items
+tictactoe.adb:162:19: warning: no Global contract available for "Put"
+tictactoe.adb:164:19: warning: assuming "Put" has no effect on global items
+tictactoe.adb:164:19: warning: no Global contract available for "Put"
+tictactoe.adb:166:19: warning: assuming "Put" has no effect on global items
+tictactoe.adb:166:19: warning: no Global contract available for "Put"
+tictactoe.adb:169:10: warning: assuming "New_Line" has no effect on global items
+tictactoe.adb:169:10: warning: no Global contract available for "New_Line"
+tictactoe.adb:185:26: info: initialization of "P.X" proved
+tictactoe.adb:185:31: info: initialization of "P.Y" proved
+tictactoe.adb:186:25: info: initialization of "Score" proved
+tictactoe.adb:186:31: info: overflow check proved (CVC4: 24 VC)
+tictactoe.adb:187:29: info: initialization of "P.X" proved
+tictactoe.adb:187:34: info: initialization of "P.Y" proved
+tictactoe.adb:188:25: info: initialization of "Score" proved
+tictactoe.adb:188:31: info: overflow check proved (CVC4: 24 VC)
+tictactoe.adb:192:13: info: initialization of "Score" proved
+tictactoe.adb:194:16: info: initialization of "Score" proved
+tictactoe.ads:16:26: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:17:50: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:18:50: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:20:29: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:21:53: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:23:16: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:25:29: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:26:53: info: overflow check proved (CVC4: 1 VC)
+tictactoe.ads:31:07: info: range check proved (CVC4: 1 VC)
+tictactoe.ads:36:19: info: postcondition proved (CVC4: 1 VC)
+tictactoe.ads:40:14: info: postcondition proved (CVC4: 1 VC)
+tictactoe.ads:44:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.ads:46:14: warning: subprogram "Display" has no effect

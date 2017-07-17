@@ -53,7 +53,7 @@ list.ads:15:79: info: overflow check proved (CVC4: 1 VC)
 list.ads:15:83: info: overflow check proved (CVC4: 1 VC)
 list.ads:15:83: info: range check proved (CVC4: 1 VC)
 main.adb:5:04: info: initialization of private part of "L" proved
-main.adb:9:15: medium: precondition might fail
+main.adb:9:15: info: precondition proved (CVC4: 10 VC)
 main.adb:9:24: info: initialization of private part of "L" proved
 main.adb:13:07: info: initialization of private part of "Rev_L" proved
 main.adb:13:42: info: initialization of private part of "L" proved

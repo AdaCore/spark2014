@@ -90,6 +90,7 @@ package Configuration is
       No_Counterexample    : aliased Boolean;
       Z3_Counterexample    : aliased Boolean;
       No_Inlining          : aliased Boolean;
+      No_Loop_Unrolling    : aliased Boolean;
       No_Global_Generation : aliased Boolean;
       Output_Header        : aliased Boolean;
       Output_Msg_Only      : aliased Boolean;

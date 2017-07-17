@@ -59,6 +59,7 @@ package body Gnat2Why_Args is
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Line_Name              : constant String := "limit_line";
    Pedantic_Name                : constant String := "pedantic";
+   No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
    Ide_Mode_Name                : constant String := "ide_mode";
    Report_Mode_Name             : constant String := "report_mode";
    Why3_Args_Name               : constant String := "why3_args";
@@ -113,6 +114,7 @@ package body Gnat2Why_Args is
       Flow_Show_GG            := Get_Opt_Bool (V, Flow_Show_GG_Name);
       Proof_Generate_Guards   := Get_Opt_Bool (V, Proof_Generate_Guards_Name);
       Pedantic                := Get_Opt_Bool (V, Pedantic_Name);
+      No_Loop_Unrolling       := Get_Opt_Bool (V, No_Loop_Unrolling_Name);
       Ide_Mode                := Get_Opt_Bool (V, Ide_Mode_Name);
       if Has_Field (V, Report_Mode_Name) then
          Report_Mode :=
@@ -204,6 +206,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Flow_Show_GG_Name, Flow_Show_GG);
       Set_Field (Obj, Proof_Generate_Guards_Name, Proof_Generate_Guards);
       Set_Field (Obj, Pedantic_Name, Pedantic);
+      Set_Field (Obj, No_Loop_Unrolling_Name, No_Loop_Unrolling);
       Set_Field (Obj, Ide_Mode_Name, Ide_Mode);
       Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));
       Set_Field (Obj, Limit_Subp_Name, Limit_Subp);

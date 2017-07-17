@@ -8,6 +8,52 @@ that contain loops may require the addition of explicit loop
 invariant contracts. This section describes a systematic approach
 for writing loop invariants.
 
+.. _Automatic Unrolling of Simple For-Loops:
+
+Automatic Unrolling of Simple For-Loops
+---------------------------------------
+
+|GNATprove| automatically unrolls simple for-loops, defined as:
+
+* for-loops over a range known at compile time,
+* with a number of iterations smaller than 20,
+* without :ref:`loop invariants` or :ref:`loop variants`.
+
+As a result, |GNATprove| conveys the exact meaning of the loop to provers,
+without requiring a loop invariant. While this is quite powerful, it is best
+applied to loops where the body of the loop is small, otherwise the unrolling
+may lead to complex formulas that provers cannot prove.
+
+For example, consider the subprograms ``Init`` and ``Sum`` below:
+
+.. literalinclude:: /gnatprove_by_example/examples/loop_unrolling.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /gnatprove_by_example/examples/loop_unrolling.adb
+   :language: ada
+   :linenos:
+
+As the loops in both subprograms are simple for-loops, |GNATprove| unrolls them
+and manages to prove the postconditions of ``Init`` and ``Sum`` without
+requiring a loop invariant:
+
+.. literalinclude:: /gnatprove_by_example/results/loop_unrolling.prove
+   :language: none
+   :linenos:
+
+Automatic loop unrolling can be disabled locally by explicitly adding a default
+loop invariant at the start of the loop:
+
+.. code-block:: ada
+
+   for X in A .. B loop
+      pragma Loop_Invariant (True);
+      ...
+   end loop;
+
+It can also be disabled globally by using the switch ``--no-loop-unrolling``.
+
 .. _Automatically Generated Loop Invariants:
 
 Automatically Generated Loop Invariants

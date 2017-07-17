@@ -68,6 +68,8 @@ gnatprove advanced switches:
                       code, instead assume "null". Note that this option also
                       implies --no-inlining.
  --no-inlining        Do not inline calls to local subprograms for proof
+ --no-loop-unrolling  Do not unroll loops with static bounds and no
+                      (in)variant for proof
  --output-header      Add a header with extra information in the generated
                       output file
  --pedantic           Use a strict interpretation of the Ada standard

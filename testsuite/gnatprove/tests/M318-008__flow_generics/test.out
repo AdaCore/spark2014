@@ -38,7 +38,7 @@ test.adb:116:07: medium: precondition might fail
 test.adb:120:28: info: discriminant check proved (CVC4: 1 VC)
 test.adb:124:29: info: discriminant check proved (CVC4: 1 VC)
 test.adb:124:57: info: discriminant check proved (CVC4: 1 VC)
-test.adb:129:31: info: discriminant check proved (CVC4: 1 VC)
+test.adb:129:31: info: discriminant check proved (CVC4: 5 VC)
 test.adb:161:34: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:194
 test.adb:163:34: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:194
 test.adb:200:07: medium: precondition might fail

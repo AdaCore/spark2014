@@ -1,4 +1,4 @@
 foo.adb:3:23: info: initialization of "O" proved
 foo.adb:13:32: info: division check proved (CVC4: 1 VC)
 foo.adb:16:18: info: initialization of "O" proved
-foo.adb:16:18: info: precondition proved (CVC4: 1 VC)
+foo.adb:16:18: info: precondition proved (CVC4: 10 VC)

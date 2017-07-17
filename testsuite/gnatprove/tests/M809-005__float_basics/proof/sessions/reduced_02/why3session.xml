@@ -176,7 +176,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.05" steps="77921"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="77921"/></proof>
   </goal>
  </transf>
  </goal>

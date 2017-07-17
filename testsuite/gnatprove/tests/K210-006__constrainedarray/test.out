@@ -1,2 +1,2 @@
-constr.adb:6:24: medium: overflow check might fail (e.g. when I = 2 and X = (2 => 2147483647, others => 0))
-constr.ads:6:20: medium: postcondition might fail, cannot prove X(1) = 1 (e.g. when X = (1 => 0, others => 1))
+constr.adb:6:24: medium: overflow check might fail (e.g. when I = 2 and X = (2 => 2147483647, others => 1))
+constr.ads:6:20: info: postcondition proved (CVC4: 1 VC)

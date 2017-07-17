@@ -256,9 +256,9 @@ decimal_fixed.ads:14:14: warning: subprogram "Test_Multiply" has no effect
 decimal_fixed.ads:17:14: warning: subprogram "Test_Divide" has no effect
 decimal_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 decimal_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
-dynamic_fixed.adb:6:18: info: range check proved (CVC4: 2 VC)
-dynamic_fixed.adb:6:40: info: range check proved (CVC4: 1 VC)
-dynamic_fixed.adb:7:19: info: range check proved (CVC4: 1 VC)
+dynamic_fixed.adb:6:18: info: range check proved (CVC4: 20 VC)
+dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
+dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported

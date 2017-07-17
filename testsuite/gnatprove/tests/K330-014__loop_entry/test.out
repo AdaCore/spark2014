@@ -27,9 +27,9 @@ optional.adb:10:04: warning: no Global contract available for "Put_Line"
 optional.adb:17:33: info: loop invariant proved (CodePeer)
 optional.adb:17:35: info: initialization of "TA" proved
 optional.adb:19:21: info: initialization of "TA" proved
-optional.adb:27:11: medium: array index check might fail (e.g. when TA = !)
+optional.adb:27:11: medium: array index check might fail (e.g. when Inner = 0 and Outer = 0 and TA = !)
 optional.adb:27:26: info: initialization of "TA" proved
-optional.adb:31:36: info: loop invariant initialization proved (CVC4: 1 VC)
+optional.adb:31:36: info: loop invariant initialization proved (CVC4: 3 VC)
 optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1 and TA = !)
 optional.adb:31:38: info: initialization of "TA" proved
 optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items

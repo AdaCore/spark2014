@@ -1531,6 +1531,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.No_Loop_Unrolling'Access,
+         Long_Switch => "--no-loop-unrolling");
+
+      Define_Switch
+        (Config,
          CL_Switches.No_Global_Generation'Access,
          Long_Switch => "--no-global-generation");
 

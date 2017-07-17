@@ -26,6 +26,7 @@
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Atree;                   use Atree;
 with Einfo;                   use Einfo;
+with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Namet;                   use Namet;
@@ -113,6 +114,17 @@ package body Gnat2Why.Expr.Loops is
      (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
    --  Returns Why nodes for the transformation of the list of statements and
    --  declaration Stmts_And_Decls from a loop body.
+
+   function Unroll_Loop
+     (Loop_Id         : Entity_Id;
+      Loop_Index      : W_Identifier_Id;
+      Loop_Index_Type : W_Type_Id;
+      Low_Val         : Uint;
+      High_Val        : Uint;
+      Reversed        : Boolean;
+      Body_Prog       : W_Prog_Id)
+      return W_Prog_Id;
+   --  Returns the unrolled loop expression in Why3
 
    function Wrap_Loop
      (Loop_Id            : Entity_Id;
@@ -1153,6 +1165,42 @@ package body Gnat2Why.Expr.Loops is
                   end if;
                end Construct_Update_Stmt;
 
+               -----------------------------
+               -- Candidate_For_Unrolling --
+               -----------------------------
+
+               function Candidate_For_Unrolling return Boolean;
+               function Candidate_For_Unrolling return Boolean is
+                  Low, High         : Node_Id;
+                  Low_Val, High_Val : Uint;
+
+               begin
+                  if Over_Range
+                    and then Loop_Invariants.Is_Empty
+                    and then Loop_Variants.Is_Empty
+                  then
+                     Low  := Low_Bound (Get_Range (Over_Node));
+                     High := High_Bound (Get_Range (Over_Node));
+
+                     if Compile_Time_Known_Value (Low)
+                       and then Compile_Time_Known_Value (High)
+                     then
+                        Low_Val  := Expr_Value (Low);
+                        High_Val := Expr_Value (High);
+
+                        return Low_Val <= High_Val
+                          and then High_Val <= Low_Val
+                            + Gnat2Why_Args.Max_Loop_Unrolling;
+                     end if;
+                  end if;
+
+                  return False;
+               end Candidate_For_Unrolling;
+
+               ---------------------
+               -- Local Variables --
+               ---------------------
+
                Index_Inv   : constant W_Pred_Id := Construct_Inv_For_Index;
                Cond_Prog   : constant W_Prog_Id := Construct_Cond;
                Update_Stmt : constant W_Prog_Id := Construct_Update_Stmt;
@@ -1161,7 +1209,45 @@ package body Gnat2Why.Expr.Loops is
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
                                 Right  => +Index_Inv,
                                 Domain => EW_Prog);
-               Entire_Loop : W_Prog_Id :=
+
+               Entire_Loop : W_Prog_Id;
+
+            --  Start of processing for For_Loop
+
+            begin
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+               --  Special case of a FOR loop without loop (in)variant on a
+               --  static range, which can be unrolled for every value of the
+               --  loop index.
+
+               if not Gnat2Why_Args.No_Loop_Unrolling
+                 and then Candidate_For_Unrolling
+               then
+                  declare
+                     Low_Val : constant Uint :=
+                       Expr_Value (Low_Bound (Get_Range (Over_Node)));
+                     High_Val : constant Uint :=
+                       Expr_Value (High_Bound (Get_Range (Over_Node)));
+                  begin
+                     Entire_Loop :=
+                       Unroll_Loop (Loop_Id         => Loop_Id,
+                                    Loop_Index      => Loop_Index,
+                                    Loop_Index_Type => Loop_Index_Type,
+                                    Low_Val         => Low_Val,
+                                    High_Val        => High_Val,
+                                    Reversed        =>
+                                      Reverse_Present (LParam_Spec),
+                                    Body_Prog       => Final_Prog);
+                  end;
+
+                  return Entire_Loop;
+               end if;
+
+               --  Regular case of a FOR loop with a loop (in)variant, or no
+               --  static bounds, requiring a proof by induction.
+
+               Entire_Loop :=
                  Wrap_Loop (Loop_Id            => Loop_Id,
                             Loop_Start         => Initial_Prog,
                             Loop_End           => Final_Prog,
@@ -1176,10 +1262,6 @@ package body Gnat2Why.Expr.Loops is
                             Variant_Check      => Variant_Check,
                             Update_Stmt        => Update_Stmt);
 
-            --  Start of processing for For_Loop
-
-            begin
-               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                Entire_Loop :=
                  Sequence
                    (Construct_Init_Prog,
@@ -1489,6 +1571,105 @@ package body Gnat2Why.Expr.Loops is
          Prev (Variant);
       end loop;
    end Transform_Loop_Variant;
+
+   -----------------
+   -- Unroll_Loop --
+   -----------------
+
+   function Unroll_Loop
+     (Loop_Id         : Entity_Id;
+      Loop_Index      : W_Identifier_Id;
+      Loop_Index_Type : W_Type_Id;
+      Low_Val         : Uint;
+      High_Val        : Uint;
+      Reversed        : Boolean;
+      Body_Prog       : W_Prog_Id)
+      return W_Prog_Id
+   is
+      function Repeat_Loop return W_Prog_Id;
+      --  Repeat the loop body for each value of the index
+
+      -----------------
+      -- Repeat_Loop --
+      -----------------
+
+      function Repeat_Loop return W_Prog_Id is
+         First_Val : constant Uint := (if Reversed then High_Val else Low_Val);
+         Last_Val  : constant Uint := (if Reversed then Low_Val else High_Val);
+         Cur_Val   : Uint;
+         Cur_Cst   : W_Prog_Id;
+
+         Stmt_List : W_Prog_Array
+           (1 .. 2 * (Integer (UI_To_Int (High_Val) -
+                               UI_To_Int (Low_Val) + 1)));
+         Cur_Idx   : Positive;
+
+      begin
+         Cur_Val := First_Val;
+         Cur_Idx := 1;
+         loop
+            Cur_Cst :=
+              (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                 New_Modular_Constant
+                   (Value => Cur_Val,
+                    Typ   => Loop_Index_Type)
+               else
+                 New_Integer_Constant (Value => Cur_Val));
+            Stmt_List (Cur_Idx) :=
+              New_Assignment
+                (Name  => Loop_Index,
+                 Value => Cur_Cst,
+                 Typ   => Loop_Index_Type);
+            Cur_Idx := Cur_Idx + 1;
+            Stmt_List (Cur_Idx) := Body_Prog;
+            Cur_Idx := Cur_Idx + 1;
+
+            exit when Cur_Val = Last_Val;
+
+            if Reversed then
+               Cur_Val := Cur_Val - 1;
+            else
+               Cur_Val := Cur_Val + 1;
+            end if;
+         end loop;
+
+         return Sequence (Stmt_List);
+      end Repeat_Loop;
+
+      ---------------------
+      -- Local Variables --
+      ---------------------
+
+      Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
+
+      Try_Body : constant W_Prog_Id :=
+        Bind_From_Mapping_In_Expr
+          (Params => Body_Params,
+           Map    => Map_For_Loop_Entry (Loop_Id),
+           Expr   => Sequence
+             ((1 => New_Comment
+               (Comment =>
+                  NID ("Unrolling of the loop statements"
+                    & (if Sloc (Loop_Id) > 0 then
+                         " of loop " & Build_Location_String
+                        (Sloc (Loop_Id))
+                      else ""))),
+               2 => Repeat_Loop)));
+
+      Loop_Try : constant W_Prog_Id :=
+        New_Try_Block
+          (Prog    => Try_Body,
+           Handler => (1 => New_Handler (Name => Loop_Ident,
+                                         Def  => +Void)));
+   begin
+      return Sequence
+        (New_Comment
+           (Comment => NID ("Translation of an Ada loop"
+            & (if Sloc (Loop_Id) > 0 then
+                 " from " & Build_Location_String (Sloc (Loop_Id))
+              else ""))),
+         Loop_Try);
+   end Unroll_Loop;
 
    ---------------
    -- Wrap_Loop --

@@ -36,7 +36,7 @@ input.ads:9:41: info: initialization of "Size" proved
 input.ads:11:14: info: initialization of "Size" proved
 input.ads:11:14: info: postcondition proved (CVC4: 1 VC)
 input.ads:28:14: info: initialization of "First_Char" proved
-instructions.adb:31:07: medium: exception might be raised (e.g. when I = Quit and Read'Result = Clear)
+instructions.adb:31:07: medium: exception might be raised (e.g. when I = Clear)
 instructions.adb:50:58: info: precondition proved (CVC4: 1 VC)
 instructions.adb:54:13: medium: exception might be raised
 screen_output.adb:25:07: warning: assuming "Put" has no effect on global items

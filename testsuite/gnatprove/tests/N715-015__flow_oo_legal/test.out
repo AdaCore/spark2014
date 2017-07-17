@@ -6,28 +6,28 @@ main.adb:34:13: info: initialization of "Professionals.State" proved, in call in
 main.adb:34:27: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
 main.adb:35:13: info: initialization of "Professionals.State" proved
 main.adb:35:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:35:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:35:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:35:20: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
 main.adb:38:13: info: initialization of "Professionals.State" proved
 main.adb:38:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:38:27: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
 main.adb:39:13: info: initialization of "Professionals.State" proved
 main.adb:39:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:39:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:39:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:39:20: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
 main.adb:42:13: info: initialization of "Professionals.State" proved
 main.adb:42:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:42:27: info: initialization of "Rambo" proved, in call inlined at main.adb:70
 main.adb:43:13: info: initialization of "Professionals.State" proved
 main.adb:43:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:43:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:43:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:43:20: info: initialization of "Rambo" proved, in call inlined at main.adb:70
 main.adb:46:13: info: initialization of "Professionals.State" proved
 main.adb:46:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:46:27: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
 main.adb:47:13: info: initialization of "Professionals.State" proved
 main.adb:47:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:47:13: info: precondition proved (CVC4: 1 VC), in call inlined at main.adb:70
+main.adb:47:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:47:20: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
 main.adb:54:07: medium: precondition might fail, in call inlined at main.adb:71
 main.adb:54:35: info: initialization of "Rambo" proved, in call inlined at main.adb:71
