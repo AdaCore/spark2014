@@ -1398,28 +1398,28 @@ package body Why.Atree.Modules is
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv8_rna"),
+                           Symbol => NID ("of_ubv8_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV16 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv16_rna"),
+                           Symbol => NID ("of_ubv16_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV32 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv32_rna"),
+                           Symbol => NID ("of_ubv32_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV64 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv64_rna"),
+                           Symbol => NID ("of_ubv64_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8_RTN :=
            New_Identifier (Module => (if Fl = Float32

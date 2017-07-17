@@ -393,10 +393,10 @@ module Float32_BV_Converter
   use export ieee_float.Float32_BV_Converter
   use import ieee_float.Float32
 
-  function of_ubv8_rna  (x:BV8.t)  : t = of_ubv8  RNA x
-  function of_ubv16_rna (x:BV16.t) : t = of_ubv16 RNA x
-  function of_ubv32_rna (x:BV32.t) : t = of_ubv32 RNA x
-  function of_ubv64_rna (x:BV64.t) : t = of_ubv64 RNA x
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
 
   function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
   function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
@@ -422,10 +422,10 @@ module Float64_BV_Converter
   use export ieee_float.Float64_BV_Converter
   use import ieee_float.Float64
 
-  function of_ubv8_rna  (x:BV8.t)  : t = of_ubv8  RNA x
-  function of_ubv16_rna (x:BV16.t) : t = of_ubv16 RNA x
-  function of_ubv32_rna (x:BV32.t) : t = of_ubv32 RNA x
-  function of_ubv64_rna (x:BV64.t) : t = of_ubv64 RNA x
+  function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
+  function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
+  function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
+  function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
 
   function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
   function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
