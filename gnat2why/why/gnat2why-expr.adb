@@ -10841,6 +10841,29 @@ package body Gnat2Why.Expr is
             null;
       end case;
 
+      --  Aspect or representation clause Address may involve computations
+      --  that could lead to a RTE. Thus we need to check absence of RTE in
+      --  the corresponding expression.
+
+      if Nkind (Decl) in N_Object_Declaration
+                       | N_Subprogram_Declaration
+      then
+         declare
+            Address : constant Node_Id :=
+              Get_Rep_Item (Defining_Entity (Decl), Name_Address);
+         begin
+            if Present (Address) then
+               declare
+                  Why_Expr : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Expression (Address), EW_Prog, Body_Params);
+               begin
+                  R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
+               end;
+            end if;
+         end;
+      end if;
+
       return R;
    end Transform_Declaration;
 

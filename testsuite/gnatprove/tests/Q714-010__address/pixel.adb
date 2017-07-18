@@ -13,6 +13,13 @@ procedure Pixel with SPARK_Mode is
       Import;
    for Clause'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero));
 
+   Asp : Integer with
+      Import, Address => Buffer + (Buffer mod Storage_Offset (1 / Zero));
+
+   Cla : Integer with
+      Import;
+   for Cla'Address use Buffer + (Buffer mod Storage_Offset (1 / Zero));
+
 begin
    Aspect;
    Clause;
