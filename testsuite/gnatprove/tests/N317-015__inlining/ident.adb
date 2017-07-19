@@ -1,3 +1,6 @@
+
+--  This test checks that gnat2why prevents inlining of functions as expected by
+--  reference manual.
 package body Ident
   with SPARK_Mode
 is
@@ -41,6 +44,9 @@ is
       Res : Integer;
    begin
       Res := Id_Public (X);
+      --  Id_Public's contract is empty and it is not inlined (rm: 7.4.5
+      --  Contextual Analysis of Subprograms Without Contracts). So,this assert
+      --  should not be provable.
       pragma Assert (Res = X);     -- @ASSERT:FAIL
       Res := Id_Private (X);
       pragma Assert (Res = X);     -- @ASSERT:FAIL
