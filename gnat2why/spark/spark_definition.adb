@@ -1433,25 +1433,7 @@ package body SPARK_Definition is
             Mark_Number_Declaration (N);
 
          when N_Object_Declaration =>
-            declare
-               E : constant Entity_Id := Defining_Entity (N);
-            begin
-               --  Store correspondence from completions of deferred constants,
-               --  so that Is_Full_View can be used for dealing correctly with
-               --  deferred constants, when the public part of the package is
-               --  marked as SPARK_Mode On, and the private part of the package
-               --  is marked as SPARK_Mode Off. This is also used later during
-               --  generation of Why.
-
-               if Ekind (E) = E_Constant
-                 and then Present (Full_View (E))
-               then
-                  Set_Partial_View (Full_View (E), E);
-               end if;
-
-               Mark_Object_Declaration (N);
-               Mark_Address (E);
-            end;
+            Mark_Object_Declaration (N);
 
          when N_Package_Body =>
             Mark_Package_Body (N);
@@ -4616,6 +4598,23 @@ package body SPARK_Definition is
       --  Start with no violation being detected
 
       Violation_Detected := False;
+
+      --  Store correspondence from completions of deferred constants, so
+      --  that Is_Full_View can be used for dealing correctly with deferred
+      --  constants, when the public part of the package is marked as
+      --  SPARK_Mode On, and the private part of the package is marked
+      --  as SPARK_Mode Off. This is also used later during generation of Why.
+
+      if Ekind (E) = E_Constant
+        and then Present (Full_View (E))
+      then
+         Set_Partial_View (Full_View (E), E);
+         Queue_For_Marking (Full_View (E));
+      end if;
+
+      if Ekind (E) in E_Constant | E_Variable then
+         Mark_Address (E);
+      end if;
 
       --  Mark differently each kind of entity
 
