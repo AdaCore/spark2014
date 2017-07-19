@@ -187,7 +187,7 @@ simulink_functions.adb:577:39: info: range check proved (Interval)
 simulink_functions.adb:587:27: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:587:27: medium: range check might fail
 simulink_functions.adb:587:40: info: range check proved (Interval)
-simulink_functions.adb:597:27: info: precondition proved (Z3: 1 VC)
+simulink_functions.adb:597:27: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:597:27: medium: range check might fail
 simulink_functions.adb:597:40: info: range check proved (Interval)
 simulink_functions.adb:607:25: medium: precondition might fail
@@ -279,13 +279,3 @@ smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
 smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
 smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
 smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved
-
-
-
-
-
-
-
-
-
-
