@@ -47,6 +47,14 @@ Installing CVC4 and Z3 for |SPARK| Discovery
    ``bin/z3``.
  * Add the location of the executable file to your ``PATH`` variable.
 
+.. note::
+
+   If you are using |SPARK| Discovery GPL 2017, a known problem with CVC4 is
+   that its options have changed. In order to use a current unstable CVC4
+   build, you should modify the file
+   ``<spark-install>/share/spark/config/why3.conf`` to remove
+   ``--boolean-term-conversion-mode=native`` at the 4 places where it occurs.
+
 Other Automatic or Manual Provers
 ---------------------------------
 
