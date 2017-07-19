@@ -17,7 +17,8 @@ Automatic Unrolling of Simple For-Loops
 
 * for-loops over a range known at compile time,
 * with a number of iterations smaller than 20,
-* without :ref:`loop invariants` or :ref:`loop variants`.
+* without :ref:`loop invariants` or :ref:`loop variants`,
+* that declare no local variables, or only variables of scalar type.
 
 As a result, |GNATprove| conveys the exact meaning of the loop to provers,
 without requiring a loop invariant. While this is quite powerful, it is best

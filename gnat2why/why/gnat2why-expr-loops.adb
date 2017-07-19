@@ -1165,38 +1165,6 @@ package body Gnat2Why.Expr.Loops is
                   end if;
                end Construct_Update_Stmt;
 
-               -----------------------------
-               -- Candidate_For_Unrolling --
-               -----------------------------
-
-               function Candidate_For_Unrolling return Boolean;
-               function Candidate_For_Unrolling return Boolean is
-                  Low, High         : Node_Id;
-                  Low_Val, High_Val : Uint;
-
-               begin
-                  if Over_Range
-                    and then Loop_Invariants.Is_Empty
-                    and then Loop_Variants.Is_Empty
-                  then
-                     Low  := Low_Bound (Get_Range (Over_Node));
-                     High := High_Bound (Get_Range (Over_Node));
-
-                     if Compile_Time_Known_Value (Low)
-                       and then Compile_Time_Known_Value (High)
-                     then
-                        Low_Val  := Expr_Value (Low);
-                        High_Val := Expr_Value (High);
-
-                        return Low_Val <= High_Val
-                          and then High_Val <= Low_Val
-                            + Gnat2Why_Args.Max_Loop_Unrolling;
-                     end if;
-                  end if;
-
-                  return False;
-               end Candidate_For_Unrolling;
-
                ---------------------
                -- Local Variables --
                ---------------------
@@ -1222,7 +1190,7 @@ package body Gnat2Why.Expr.Loops is
                --  loop index.
 
                if not Gnat2Why_Args.No_Loop_Unrolling
-                 and then Candidate_For_Unrolling
+                 and then Candidate_For_Loop_Unrolling (Loop_Stmt => Stmt)
                then
                   declare
                      Low_Val : constant Uint :=

@@ -26,7 +26,9 @@
 with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
+with Flow_Utility;                       use Flow_Utility;
 with Fname;                              use Fname;
+with Gnat2Why_Args;
 with Output;
 with Pprint;                             use Pprint;
 with Sem_Ch12;                           use Sem_Ch12;
@@ -35,8 +37,7 @@ with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with Stringt;                            use Stringt;
-
-with Flow_Utility;                       use Flow_Utility;
+with Uintp;                              use Uintp;
 
 package body SPARK_Util is
 
@@ -334,6 +335,139 @@ package body SPARK_Util is
 
       return File_Name (Sloc (CU));
    end Body_File_Name;
+
+   ----------------------------------
+   -- Candidate_For_Loop_Unrolling --
+   ----------------------------------
+
+   function Candidate_For_Loop_Unrolling
+     (Loop_Stmt : Node_Id) return Boolean
+   is
+      -----------------------
+      -- Local Subprograms --
+      -----------------------
+
+      function Is_Applicable_Loop_Variant_Or_Invariant
+        (N : Node_Id) return Traverse_Result;
+      --  Returns Abandon when a loop (in)variant applicable to the loop is
+      --  encountered and OK otherwise.
+
+      function Is_Non_Scalar_Object_Declaration
+        (N : Node_Id) return Traverse_Result;
+      --  Returns Abandon when an object declaration of a
+      --  non-scalar type is encountered and OK otherwise.
+
+      ---------------------------------------------
+      -- Is_Applicable_Loop_Variant_Or_Invariant --
+      ---------------------------------------------
+
+      function Is_Applicable_Loop_Variant_Or_Invariant
+        (N : Node_Id) return Traverse_Result
+      is
+         Par : Node_Id;
+      begin
+         if Is_Pragma_Check (N, Name_Loop_Invariant)
+           or else Is_Pragma (N, Pragma_Loop_Variant)
+         then
+            Par := N;
+            while Nkind (Par) /= N_Loop_Statement loop
+               Par := Parent (Par);
+            end loop;
+
+            if Par = Loop_Stmt then
+               return Abandon;
+            end if;
+         end if;
+
+         return OK;
+      end Is_Applicable_Loop_Variant_Or_Invariant;
+
+      function Find_Applicable_Loop_Variant_Or_Invariant is new
+        Traverse_Func (Is_Applicable_Loop_Variant_Or_Invariant);
+
+      --------------------------------------
+      -- Is_Non_Scalar_Object_Declaration --
+      --------------------------------------
+
+      function Is_Non_Scalar_Object_Declaration
+        (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Object_Declaration =>
+               if not Is_Scalar_Type (Etype (Defining_Identifier (N))) then
+                  return Abandon;
+               end if;
+
+            when others =>
+               null;
+         end case;
+
+         return OK;
+      end Is_Non_Scalar_Object_Declaration;
+
+      function Find_Non_Scalar_Object_Declaration is new
+        Traverse_Func (Is_Non_Scalar_Object_Declaration);
+
+      ---------------------
+      -- Local Variables --
+      ---------------------
+
+      Scheme     : constant Node_Id := Iteration_Scheme (Loop_Stmt);
+      Loop_Spec  : constant Node_Id := Loop_Parameter_Specification (Scheme);
+      Over_Range : constant Boolean := Present (Loop_Spec);
+      Over_Node  : constant Node_Id :=
+        (if Over_Range then Discrete_Subtype_Definition (Loop_Spec)
+         else Empty);
+
+      Low, High         : Node_Id;
+      Low_Val, High_Val : Uint;
+
+   --  Start of processing for Candidate_For_Unrolling
+
+   begin
+      --  Only simple FOR loops can be unrolled. Simple loops are
+      --  defined as having no (in)variant...
+
+      if Over_Range
+        and then Find_Applicable_Loop_Variant_Or_Invariant (Loop_Stmt)
+                 /= Abandon
+      then
+         Low  := Low_Bound (Get_Range (Over_Node));
+         High := High_Bound (Get_Range (Over_Node));
+
+         --  and compile-time known bounds, with a small number of
+         --  iterations...
+
+         if Compile_Time_Known_Value (Low)
+           and then Compile_Time_Known_Value (High)
+         then
+            Low_Val  := Expr_Value (Low);
+            High_Val := Expr_Value (High);
+
+            if Low_Val <= High_Val
+              and then High_Val <= Low_Val
+                + Gnat2Why_Args.Max_Loop_Unrolling
+
+              --  (also checking that the bounds fit in an Int, so that we can
+              --  convert them using UI_To_Int)
+
+              and then Low_Val >= UI_From_Int (Int'First)
+              and then High_Val <= UI_From_Int (Int'Last)
+            then
+               --  and no non-scalar object declarations
+
+               if Find_Non_Scalar_Object_Declaration (Loop_Stmt)
+                 /= Abandon
+               then
+                  return True;
+               end if;
+            end if;
+         end if;
+      end if;
+
+      return False;
+   end Candidate_For_Loop_Unrolling;
 
    -----------------------------------
    -- Char_To_String_Representation --

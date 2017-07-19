@@ -886,6 +886,11 @@ package body SPARK_Definition is
       --  coming from a nested construct of the loop (if, case, extended
       --  return statements and nested loops).
 
+      procedure Check_Unrolled_Loop (Loop_Stmt : Node_Id);
+      --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
+      --  declared in the loop so that their translation into Why3 does not
+      --  introduce constants.
+
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
@@ -920,19 +925,6 @@ package body SPARK_Definition is
                --  before the last invariant/variant.
 
                case Nkind (N) is
-                  when N_Full_Type_Declaration
-                     | N_Private_Extension_Declaration
-                     | N_Private_Type_Declaration
-                     | N_Subtype_Declaration
-                  =>
-                     declare
-                        E : constant Entity_Id := Defining_Entity (N);
-                     begin
-                        if Is_Scalar_Type (E) then
-                           Loop_Entity_Set.Insert (E);
-                        end if;
-                     end;
-
                   when N_Object_Declaration =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N))) then
                         --  Store scalar entities defined in loops before the
@@ -1000,6 +992,48 @@ package body SPARK_Definition is
             end if;
          end loop;
       end Check_Loop_Invariant_Placement;
+
+      -------------------------
+      -- Check_Unrolled_Loop --
+      -------------------------
+
+      procedure Check_Unrolled_Loop (Loop_Stmt : Node_Id) is
+
+         function Handle_Object_Declaration
+           (N : Node_Id) return Traverse_Result;
+         --  Register specially an object declared in an unrolled loop
+
+         -------------------------------
+         -- Handle_Object_Declaration --
+         -------------------------------
+
+         function Handle_Object_Declaration
+           (N : Node_Id) return Traverse_Result
+         is
+         begin
+            case Nkind (N) is
+               when N_Object_Declaration =>
+                  Loop_Entity_Set.Include (Defining_Entity (N));
+
+               when others =>
+                  null;
+            end case;
+
+            return OK;
+         end Handle_Object_Declaration;
+
+         procedure Handle_All_Object_Declarations is new
+           Traverse_Proc (Handle_Object_Declaration);
+
+      --  Start of processing for Check_Unrolled_Loop
+
+      begin
+         if not Gnat2Why_Args.No_Loop_Unrolling
+           and then Candidate_For_Loop_Unrolling (Loop_Stmt)
+         then
+            Handle_All_Object_Declarations (Loop_Stmt);
+         end if;
+      end Check_Unrolled_Loop;
 
       -------------------------
       -- Is_Update_Aggregate --
@@ -1301,6 +1335,7 @@ package body SPARK_Definition is
 
          when N_Loop_Statement =>
             Check_Loop_Invariant_Placement (Statements (N));
+            Check_Unrolled_Loop (N);
 
             --  Mark the entity for the loop, which is used in the translation
             --  phase to generate exceptions for this loop.
