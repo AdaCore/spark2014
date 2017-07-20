@@ -3660,9 +3660,7 @@ package body Flow.Control_Flow_Graph is
       --  If this type has a Default_Initial_Condition then we need to
       --  create a vertex to check for uninitialized variables within the
       --  Default_Initial_Condition's expression.
-      if Has_DIC (Typ)
-        or else Has_Inherited_DIC (Typ)
-      then
+      if Has_DIC (Typ) then
          declare
             DIC_Proc : constant Entity_Id := Get_Initial_DIC_Procedure (Typ);
 
@@ -4557,9 +4555,7 @@ package body Flow.Control_Flow_Graph is
       --  If the type has a Default_Initial_Condition then we:
       --    * check if the full type is as the aspect suggested
       --      and issue a warning if not
-      if Has_DIC (Typ)
-        or else Has_Inherited_DIC (Typ)
-      then
+      if Has_DIC (Typ) then
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
          --
