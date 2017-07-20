@@ -17,7 +17,7 @@ hard_stuff.adb:20:77: info: division check proved
 hard_stuff.adb:20:77: info: float overflow check proved
 hard_stuff.adb:21:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
 hard_stuff.adb:28:17: medium: float overflow check might fail
-hard_stuff.adb:28:21: info: float overflow check proved
+hard_stuff.adb:28:21: medium: float overflow check might fail
 hard_stuff.adb:29:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy
 
 
@@ -41,5 +41,5 @@ hard_stuff.adb:20:77: info: division check proved
 hard_stuff.adb:20:77: info: float overflow check proved
 hard_stuff.adb:21:22: medium: assertion might fail, cannot prove X in 0.0 .. 1.0
 hard_stuff.adb:28:17: medium: float overflow check might fail
-hard_stuff.adb:28:21: info: float overflow check proved
+hard_stuff.adb:28:21: medium: float overflow check might fail
 hard_stuff.adb:29:25: medium: assertion might fail, cannot prove X in 0.0 .. Copy
