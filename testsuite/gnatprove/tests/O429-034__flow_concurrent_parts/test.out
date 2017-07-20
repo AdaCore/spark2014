@@ -1,2 +1,2 @@
 tp.adb:5:19: info: overflow check proved (CVC4: 1 VC)
-tp.ads:5:09: medium: the task might terminate, which is not allowed in SPARK
+tp.ads:2:09: medium: the task might terminate, which is not allowed in SPARK

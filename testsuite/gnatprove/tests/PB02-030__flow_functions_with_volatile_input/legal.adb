@@ -2,6 +2,15 @@ with System;
 
 package body Legal is
 
+   protected PO_V3 is
+      function F return Integer;
+      procedure P (X : out Integer);
+   end;
+
+   protected PO_V4 is
+      procedure P (X : out Integer);
+   end;
+
    V1 : Integer with
      Volatile, Async_Readers, Async_Writers, Effective_Writes,
      Address => System'To_Address (16#DEADBEEF#), Import;
@@ -23,15 +32,6 @@ package body Legal is
      Address => System'To_Address (16#C0FFEE#), Import,
      Part_Of => PO_V4;
    --  Fully volatile
-
-   protected PO_V3 is
-      function F return Integer;
-      procedure P (X : out Integer);
-   end;
-
-   protected PO_V4 is
-      procedure P (X : out Integer);
-   end;
 
    protected body PO_V3 is
       function F return Integer -- OK

@@ -1,9 +1,6 @@
 package body Foo
 is
 
-   --  I think this is an acceptable use of G.
-   G : Boolean := False with Part_Of => P1;
-
    task T1;
 
    task T2;
@@ -11,6 +8,9 @@ is
    protected P1 is
       procedure Flip_G;
    end P1;
+
+   --  I think this is an acceptable use of G.
+   G : Boolean := False with Part_Of => P1;
 
    task body T1 is
    begin

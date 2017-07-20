@@ -1,8 +1,8 @@
 package TP is
+   task Singl_Task;
+
    B4 : Integer := 0
      with Part_Of => Singl_Task;
-
-   task Singl_Task;
 
    protected Singl_Prot is
       function Get_Content return Integer;

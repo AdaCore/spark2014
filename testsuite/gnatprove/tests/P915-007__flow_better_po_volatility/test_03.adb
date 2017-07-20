@@ -7,6 +7,17 @@ package body Test_03 with
                      State_EW => PO_EW,
                      State_V  => PO_V)
 is
+   protected PO_AR is
+   end PO_AR;
+   protected PO_AW is
+   end PO_AW;
+   protected PO_ER is
+   end PO_ER;
+   protected PO_EW is
+   end PO_EW;
+   protected PO_V is
+   end PO_V;
+
    V_AR : Integer with
      Volatile, Async_Readers,
      Import, Address => System'To_Address (16#DEADBEEF#),
@@ -31,17 +42,6 @@ is
      Volatile,
      Import, Address => System'To_Address (16#DEADBEEF#),
      Part_Of => PO_V;
-
-   protected PO_AR is
-   end PO_AR;
-   protected PO_AW is
-   end PO_AW;
-   protected PO_ER is
-   end PO_ER;
-   protected PO_EW is
-   end PO_EW;
-   protected PO_V is
-   end PO_V;
 
    protected body PO_AR is
    end PO_AR;

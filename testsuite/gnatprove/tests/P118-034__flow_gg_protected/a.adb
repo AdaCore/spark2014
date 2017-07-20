@@ -1,12 +1,12 @@
 package body A with Refined_State => (State_A => PO_A)
 is
 
-   Vol : Boolean with Volatile, Part_Of => PO_A;
-
    protected PO_A is
       procedure Read (X : out Boolean);
       procedure Write (X : Boolean);
    end PO_A;
+
+   Vol : Boolean with Volatile, Part_Of => PO_A;
 
    protected body PO_A is
       procedure Read (X : out Boolean)

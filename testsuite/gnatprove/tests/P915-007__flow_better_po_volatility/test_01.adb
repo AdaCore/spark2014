@@ -6,13 +6,6 @@ package body Test_01 with
    Refined_State => (State => (Database, Updater))
 is
 
-   Sensor : Integer with
-     Part_Of => Database,
-     Volatile,
-     Async_Readers,
-     Address => System'To_Address (16#DEADBEEF#),
-     Import;
-
    task Updater;
 
    protected Database is
@@ -21,6 +14,13 @@ is
    private
       Cache : Integer := Integer'First;
    end Database;
+
+   Sensor : Integer with
+     Part_Of => Database,
+     Volatile,
+     Async_Readers,
+     Address => System'To_Address (16#DEADBEEF#),
+     Import;
 
    protected body Database is
       procedure Update_Cache is

@@ -5,13 +5,6 @@ Package body Alarm
                                            Blinken_PO))
 is
 
-   The_Light : Boolean := False with
-     Volatile,
-     Atomic,
-     Async_Readers, Async_Writers,
-     Address => System.Storage_Elements.To_Address (16#FFFF_DDDD#),
-     Part_Of => Blinken_PO;
-
    protected Blinken_PO is
       procedure Turn_On;
       procedure Turn_Off;
@@ -19,6 +12,13 @@ is
    private
       Blinken_State : Boolean := False;
    end Blinken_PO;
+
+   The_Light : Boolean := False with
+     Volatile,
+     Atomic,
+     Async_Readers, Async_Writers,
+     Address => System.Storage_Elements.To_Address (16#FFFF_DDDD#),
+     Part_Of => Blinken_PO;
 
    task Blinken_Task;
 
