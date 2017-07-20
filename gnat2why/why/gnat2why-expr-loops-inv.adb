@@ -1348,6 +1348,15 @@ package body Gnat2Why.Expr.Loops.Inv is
               (Return_Object_Declarations (N), Loop_Writes, Inv_Seen,
                In_Nested => True);
 
+            --  These statements do not affect the loop frame condition.
+            --  We still include them here to match what flow analysis is
+            --  doing in Get_Loop_Variables so that we can keep the check at
+            --  the beginning of Generate_Frame_Condition.
+
+            Process_Statement
+              (Handled_Statement_Sequence (N), Loop_Writes, Inv_Seen,
+               In_Nested => True);
+
          --  Discard writes to variables local to an if statement
 
          when N_If_Statement =>
