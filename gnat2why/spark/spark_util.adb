@@ -414,7 +414,10 @@ package body SPARK_Util is
       ---------------------
 
       Scheme     : constant Node_Id := Iteration_Scheme (Loop_Stmt);
-      Loop_Spec  : constant Node_Id := Loop_Parameter_Specification (Scheme);
+      Loop_Spec  : constant Node_Id :=
+        (if Present (Scheme) and then No (Condition (Scheme)) then
+           Loop_Parameter_Specification (Scheme)
+         else Empty);
       Over_Range : constant Boolean := Present (Loop_Spec);
       Over_Node  : constant Node_Id :=
         (if Over_Range then Discrete_Subtype_Definition (Loop_Spec)

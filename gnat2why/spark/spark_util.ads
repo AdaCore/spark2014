@@ -415,9 +415,8 @@ package SPARK_Util is
    --  @return True iff N is fully initialized. For the aggregate extension,
    --      this only deals with the extension components.
 
-   function Candidate_For_Loop_Unrolling (Loop_Stmt : Node_Id) return Boolean
-     with Pre => No (Condition (Iteration_Scheme (Loop_Stmt)));
-   --  Check whether the FOR loop is a candidate for loop unrolling
+   function Candidate_For_Loop_Unrolling (Loop_Stmt : Node_Id) return Boolean;
+   --  Check whether a loop is a candidate for loop unrolling
 
    function Full_Entry_Name (N : Node_Id) return String
      with Pre => Nkind (N) in N_Selected_Component
