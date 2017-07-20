@@ -3662,7 +3662,6 @@ package body Flow.Control_Flow_Graph is
       --  Default_Initial_Condition's expression.
       if Has_DIC (Typ)
         or else Has_Inherited_DIC (Typ)
-        --  and then not Has_Inherited_DIC (Typ)
       then
          declare
             DIC_Proc : constant Entity_Id := Get_Initial_DIC_Procedure (Typ);

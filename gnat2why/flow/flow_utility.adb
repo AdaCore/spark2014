@@ -2018,8 +2018,8 @@ package body Flow_Utility is
       ----------------------------------------------------
 
       function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
-      with Pre => Nkind (Callsite) in N_Entry_Call_Statement |
-                                      N_Subprogram_Call;
+      with Pre => Nkind (Callsite) in N_Entry_Call_Statement
+                                    | N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
@@ -2722,18 +2722,18 @@ package body Flow_Utility is
                   declare
                      M : constant Flow_Id_Maps.Map :=
                        Untangle_Record_Assignment
-                       (N,
-                        Map_Root                     =>
-                          Direct_Mapping_Id (Etype (N)),
-                        Map_Type                     =>
-                          Get_Type (N, Ctx.Scope),
-                        Scope                        => Ctx.Scope,
-                        Local_Constants              => Ctx.Local_Constants,
-                        Fold_Functions               => Ctx.Fold_Functions,
-                        Use_Computed_Globals         =>
-                          Ctx.Use_Computed_Globals,
-                        Expand_Synthesized_Constants =>
-                          Ctx.Expand_Synthesized_Constants);
+                         (N,
+                          Map_Root                     =>
+                            Direct_Mapping_Id (Etype (N)),
+                          Map_Type                     =>
+                            Get_Type (N, Ctx.Scope),
+                          Scope                        => Ctx.Scope,
+                          Local_Constants              => Ctx.Local_Constants,
+                          Fold_Functions               => Ctx.Fold_Functions,
+                          Use_Computed_Globals         =>
+                            Ctx.Use_Computed_Globals,
+                          Expand_Synthesized_Constants =>
+                            Ctx.Expand_Synthesized_Constants);
                   begin
                      for FS of M loop
                         Variables.Union (Filter (FS));
@@ -2850,7 +2850,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-   --  Start of processing for Get_Variables
+   --  Start of processing for Get_Variables_Internal
 
    begin
       Traverse (N);
