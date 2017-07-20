@@ -1294,6 +1294,9 @@ procedure Gnatprove with SPARK_Mode is
             Set_Key_Value_Bool ("interactive",
                                 Get (Get (Prover, "interactive")));
          end if;
+         if Has_Field (Prover, "editor") then
+            Set_Key_Value ("editor", Get (Get (Prover, "editor")));
+         end if;
          if Has_Field (Prover, "in_place") then
             Set_Key_Value_Bool ("in_place",
                            Get (Get (Prover, "in_place")));
