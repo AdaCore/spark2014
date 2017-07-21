@@ -35,6 +35,7 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
 
 package body Why.Gen.Names is
 
@@ -287,7 +288,7 @@ package body Why.Gen.Names is
                      end if;
                   end;
 
-               --  Case of a conversion between two record or private types
+               --  Case of a conversion between two record or array types
 
                when EW_Abstract
                   | EW_Split
@@ -295,15 +296,31 @@ package body Why.Gen.Names is
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
-                     From_Base : constant Node_Id :=
-                       (if Full_View_Not_In_SPARK (From_Node)
-                        then Get_First_Ancestor_In_SPARK (From_Node)
-                        else Root_Record_Type (From_Node));
+
                   begin
-                     if From_Base = From_Node then
-                        return E_Symb (To_Node, WNE_Of_Base);
+                     --  Conversions on record types go through the root type
+
+                     if Is_Record_Type_In_Why (From_Node) then
+                        pragma Assert (Is_Record_Type_In_Why (To_Node));
+                        declare
+                           From_Base : constant Node_Id :=
+                             (if Full_View_Not_In_SPARK (From_Node)
+                              then Get_First_Ancestor_In_SPARK (From_Node)
+                              else Root_Record_Type (From_Node));
+                        begin
+                           if From_Base = From_Node then
+                              return E_Symb (To_Node, WNE_Of_Base);
+                           else
+                              return E_Symb (From_Node, WNE_To_Base);
+                           end if;
+                        end;
+
+                     --  Conversions on array types use predefined functions
+
                      else
-                        return E_Symb (From_Node, WNE_To_Base);
+                        pragma Assert (Has_Array_Type (From_Node)
+                                       and Has_Array_Type (To_Node));
+                        return Get_Array_Conversion_Name (From_Node, To_Node);
                      end if;
                   end;
             end case;

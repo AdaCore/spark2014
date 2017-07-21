@@ -1608,18 +1608,6 @@ package body SPARK_Definition is
             --  of GNATprove and issue an error on unsupported conversions.
 
             elsif Has_Array_Type (Etype (N)) then
-               declare
-                  Target_Comp_Typ : constant Entity_Id :=
-                    Retysp (Component_Type (Retysp (Etype (N))));
-                  Source_Comp_Typ : constant Entity_Id :=
-                    Retysp (Component_Type (Retysp (Etype (Expression (N)))));
-               begin
-                  if Target_Comp_Typ /= Source_Comp_Typ then
-                     Mark_Unsupported
-                       ("conversion between array types "
-                        & "that have different element types", N);
-                  end if;
-               end;
 
                --  Restrict array conversions to the cases where either:
                --  - corresponding indices have modular types of the same size

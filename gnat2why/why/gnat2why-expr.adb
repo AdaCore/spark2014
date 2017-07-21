@@ -12010,6 +12010,30 @@ package body Gnat2Why.Expr is
             --  the current node, to call the right checking function.
 
             else
+               --  For array conversions, if target and source types have
+               --  different component type, we may need to generate an
+               --  appropriate conversion theory.
+
+               if Has_Array_Type (Etype (Expr)) then
+                  declare
+                     Target_Typ      : constant Entity_Id :=
+                       Retysp (Etype (Expr));
+                     Target_Comp_Typ : constant Entity_Id :=
+                       Retysp (Component_Type (Target_Typ));
+                     Source_Typ      : constant Entity_Id :=
+                       Retysp (Etype (Expression (Expr)));
+                     Source_Comp_Typ : constant Entity_Id :=
+                       Retysp (Component_Type (Source_Typ));
+                  begin
+                     if Target_Comp_Typ /= Source_Comp_Typ then
+                        Create_Array_Conversion_Theory_If_Needed
+                          (Current_File => Local_Params.File,
+                           From         => Source_Typ,
+                           To           => Target_Typ);
+                     end if;
+                  end;
+               end if;
+
                T := Transform_Expr (Expression (Expr),
                                     Type_Of_Node (Expr),
                                     Domain,

@@ -536,105 +536,127 @@ package body Why.Gen.Expr is
           (Expr,
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
-      --  Add Sliding if needed.
+      --  1 - Put array in split form. If reconstruction is needed, also store
+      --  appropriate bounds in Args.
 
-      if Sliding then
-         declare
-            Args      : W_Expr_Array (1 .. 1 + 2 * Dim);
-            Arg_Ind   : Positive := 1;
-            Need_Conv : constant Boolean := not Is_Static_Array_Type (To_Ent)
-              and then Get_Type_Kind (To) /= EW_Split;
-            Split_Typ : constant W_Type_Id :=
-              (if not Need_Conv then To
-               else EW_Split (To_Ent));
-         begin
-            Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
-            for I in 1 .. Dim loop
-               Add_Attr_Arg
-                 (Domain, Args, Arr_Expr,
-                  Attribute_First, Dim, Arg_Ind);
-               Add_Attr_Arg
-                 (Domain, Args, To_Ent,
-                  Attribute_First, Dim, Arg_Ind);
-            end loop;
-            T := New_Call
-              (Domain => Domain,
-               Name   => Get_Array_Theory (To_Ent).Slide,
-               Args   => Args,
-               Typ    => Split_Typ);
+      declare
+         Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
+         Arg_Ind : Positive := 1;
 
-            if Need_Conv then
+         Need_Reconstruction : constant Boolean :=
+           (not Is_Static_Array_Type (To_Ent)
+            and then Get_Type_Kind (To) /= EW_Split);
+         Split_To            : constant W_Type_Id :=
+           (if not Need_Reconstruction then To
+            else EW_Split (To_Ent));
 
-               --  If from is in split form and not to, reconstruct the array.
-               --  Here, we must get attributes from the type as the slided
-               --  expression has no registered bounds. It is OK since
-               --  To must be constrained.
+      begin
+         --  Insert sliding if needed
 
-               declare
-                  Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
-                  Arg_Ind : Positive := 1;
-               begin
-                  Add_Map_Arg (Domain, Args, T, Arg_Ind);
-                  for I in 1 .. Dim loop
-                     Add_Attr_Arg
-                       (Domain, Args, To_Ent,
-                        Attribute_First, Dim, Arg_Ind);
-                     Add_Attr_Arg
-                       (Domain, Args, To_Ent,
-                        Attribute_Last, Dim, Arg_Ind);
-                  end loop;
-                  T :=
-                    New_Call
-                      (Domain => Domain,
-                       Name   => E_Symb (To_Ent, WNE_Of_Array),
-                       Args   => Args,
-                       Typ    => To);
-               end;
+         if Sliding then
+            declare
+               Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
+               Arg_Ind : Positive := 1;
+            begin
+               Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
+               for I in 1 .. Dim loop
+                  Add_Attr_Arg
+                    (Domain, Args, Arr_Expr,
+                     Attribute_First, Dim, Arg_Ind);
+                  Add_Attr_Arg
+                    (Domain, Args, To_Ent,
+                     Attribute_First, Dim, Arg_Ind);
+               end loop;
+
+               T := New_Call
+                 (Domain => Domain,
+                  Name   => Get_Array_Theory (From_Ent).Slide,
+                  Args   => Args,
+                  Typ    => Split_To);
+            end;
+
+            --  If reconstruction is needed, fill the Args array.
+            --  Here, we must get attributes from the type as the slided
+            --  expression has no registered bounds. It is OK since To must
+            --  be constrained.
+
+            if Need_Reconstruction then
+               Arg_Ind := 1;
+               Add_Map_Arg (Domain, Args, T, Arg_Ind);
+
+               for I in 1 .. Dim loop
+                  Add_Attr_Arg
+                    (Domain, Args, To_Ent,
+                     Attribute_First, Dim, Arg_Ind);
+                  Add_Attr_Arg
+                    (Domain, Args, To_Ent,
+                     Attribute_Last, Dim, Arg_Ind);
+               end loop;
             end if;
-         end;
-      elsif not Is_Static_Array_Type (To_Ent)
-        and then Get_Type_Kind (To) /= EW_Split
-      then
 
-         --  To is not in split form. Reconstruct array from base.
+         --  If reconstruction is needed, fill the Args array. T is the
+         --  first element of Args. It will be Arr_Expr if from is split
+         --  and To_Array (Arr_Expr) otherwise.
 
-         declare
-            Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
-            Arg_Ind : Positive := 1;
-         begin
+         elsif Need_Reconstruction then
             Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
+            T := Args (1);
+
+         --  Both are in split form, T is Arr_Expr
+
+         elsif Is_Static_Array_Type (From_Ent)
+           or else Get_Type_Kind (From) = EW_Split
+         then
+            T := Arr_Expr;
+
+         --  To is in split form but not From. Split From.
+
+         else
+            T :=
+              New_Call
+                (Domain => Domain,
+                 Name   => E_Symb (From_Ent, WNE_To_Array),
+                 Args   => (1 => Arr_Expr),
+                 Typ    => To);
+         end if;
+
+         --  2. To_Ent and From_Ent do not have the same component type, apply
+         --  the appropriate conversion.
+
+         if Retysp (Component_Type (To_Ent)) /=
+           Retysp (Component_Type (From_Ent))
+         then
+            T := Insert_Single_Conversion
+              (Ada_Node => Empty,
+               Domain   => Domain,
+               To       => Split_To,
+               Expr     => T);
+
+         --  No actual why call or conversion may have been inserted, but we
+         --  still need to change the type of the Why AST node. We do that by
+         --  adding a dummy node.
+
+         else
+            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
+                            Def    => T,
+                            Domain => Domain,
+                            Typ    => Split_To);
+         end if;
+
+         --  3. Reconstruct the array if needed
+
+         if Need_Reconstruction then
+            Args (1) := T;
             T :=
               New_Call
                 (Domain => Domain,
                  Name   => E_Symb (To_Ent, WNE_Of_Array),
                  Args   => Args,
                  Typ    => To);
-         end;
+         end if;
+      end;
 
-      elsif Is_Static_Array_Type (From_Ent)
-        or else Get_Type_Kind (From) = EW_Split
-      then
-
-         --  Both are in split form.
-         --  No actual why call or conversion is inserted here, but we still
-         --  need to change the type of the Why AST node. We do that by adding
-         --  a dummy node
-
-            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
-                            Def    => Arr_Expr,
-                            Domain => Domain,
-                            Typ    => To);
-      else
-
-         --  To is in split form but not From. Split From.
-
-         T :=
-           New_Call
-             (Domain => Domain,
-              Name   => E_Symb (From_Ent, WNE_To_Array),
-              Args => (1 => Arr_Expr),
-              Typ  => To);
-      end if;
+      --  4. Insert length and range check when necessary
 
       if Domain = EW_Prog and then Need_Check then
          declare

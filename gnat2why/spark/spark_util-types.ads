@@ -164,8 +164,8 @@ package SPARK_Util.Types is
    --  @return False if Typ is unconstrained.
 
    function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
-   --  @param From type of expression to be converted, which should be a Retysp
-   --  @param To target type of the conversion, which should be a Retysp
+   --  @param From type of expression to be converted
+   --  @param To target type of the conversion
    --  @return whether a check may be needed when converting an expression
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.

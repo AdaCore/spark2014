@@ -48,6 +48,7 @@ with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Inter;             use Why.Inter;
+with Why.Types;             use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -1862,6 +1863,218 @@ package body Why.Gen.Arrays is
       return T;
    end Build_Predicate_For_Array;
 
+   ----------------------------------------------
+   -- Create_Array_Conversion_Theory_If_Needed --
+   ----------------------------------------------
+
+   procedure Create_Array_Conversion_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      From         : Entity_Id;
+      To           : Entity_Id)
+   is
+      use Name_Id_Name_Id_Conversion_Name_Map;
+
+      File       : constant W_Section_Id := WF_Pure;
+      From_Name  : constant Name_Id := Get_Array_Theory_Name (From);
+      To_Name    : constant Name_Id := Get_Array_Theory_Name (To);
+      From_Symb  : constant M_Array_Type := M_Arrays.Element (From_Name);
+      To_Symb    : constant M_Array_Type := M_Arrays.Element (To_Name);
+      Module     : constant W_Module_Id :=
+        New_Module (File => No_Name,
+                    Name => NID (Get_Name_String (From_Name) & "__to__"
+                      & Get_Name_String (To_Name)));
+      Convert_Id : constant W_Identifier_Id :=
+        New_Identifier (Name      => "convert",
+                        Module    => Module,
+                        Typ       => To_Symb.Ty);
+      A_Binder   : constant Binder_Type :=
+        (Ada_Node => Empty,
+         B_Name   => New_Identifier (Name => "a", Typ => From_Symb.Ty),
+         B_Ent    => Null_Entity_Name,
+         Mutable  => False);
+      B_Binder   : constant Binder_Type :=
+        (Ada_Node => Empty,
+         B_Name   => New_Identifier (Name => "b", Typ => To_Symb.Ty),
+         B_Ent    => Null_Entity_Name,
+         Mutable  => False);
+
+      C         : Cursor;
+      Not_Found : Boolean;
+
+      Save_Theory : W_Theory_Declaration_Id;
+      --  Use this variable to temporarily store current theory
+
+   begin
+      --  Search for From_Name in M_Arrays_Conversion and initialize its value
+      --  to Empty_Map if it is not found.
+
+      M_Arrays_Conversion.Insert
+        (Key      => From_Name,
+         Position => C,
+         Inserted => Not_Found);
+
+      --  If there is a mapping for From_Name in M_Arrays_Conversion and it
+      --  contains To_Name, then there is nothing to do.
+
+      if not Not_Found and then M_Arrays_Conversion (C).Contains (To_Name) then
+         return;
+      end if;
+
+      --  Temporarily store the current theory if needed
+
+      if File = Current_File then
+         Save_Theory := Why_Sections (File).Cur_Theory;
+         Why_Sections (File).Cur_Theory := Why_Empty;
+      end if;
+
+      Open_Theory
+        (File, Module,
+         Comment =>
+           "Module for array conversion from type "
+         & """" & Get_Name_String (Chars (From)) & """"
+         & (if Sloc (From) > 0 then
+              " defined at " & Build_Location_String (Sloc (From))
+           else "")
+         & " to type "
+         & """" & Get_Name_String (Chars (To)) & """"
+         & (if Sloc (To) > 0 then
+              " defined at " & Build_Location_String (Sloc (To))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  Generate an abstract conversion function from From to To
+
+      Emit
+        (File,
+         Why.Gen.Binders.New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => To_Local (Convert_Id),
+            Binders     => (1 => A_Binder),
+            Return_Type => To_Symb.Ty,
+            Labels      => Name_Id_Sets.Empty_Set));
+
+      --  Generate an axiom for the conversion function:
+      --  axiom convert__def:
+      --    forall a : <from>.
+      --      let b = convert a in
+      --        forall i1 : <from.index_type1>, i2 : ....
+      --          to_base (get a i1 i2 ...) = to_base (get b i1 i2 ...)
+
+      declare
+         Call_Expr : constant W_Term_Id :=
+           +New_Call
+             (Name    => To_Local (Convert_Id),
+              Domain  => EW_Term,
+              Binders => (1 => A_Binder),
+              Typ     => To_Symb.Ty);
+         Ty_Ext    : constant Entity_Id := Retysp (From);
+         Dim       : constant Positive :=
+           Positive (Number_Dimensions (Ty_Ext));
+         Indexes   : Binder_Array (1 .. Dim);
+         Index     : Node_Id := First_Index (Ty_Ext);
+         I         : Positive := 1;
+         T_Comp    : W_Expr_Id;
+         Tmp       : W_Identifier_Id;
+         T         : W_Pred_Id := True_Pred;
+
+      begin
+         while Present (Index) loop
+            Tmp := New_Temp_Identifier
+              (Typ => Base_Why_Type_No_Bool (Index));
+            Indexes (I) := Binder_Type'(Ada_Node => Empty,
+                                        B_Name   => Tmp,
+                                        B_Ent    => Null_Entity_Name,
+                                        Mutable  => False);
+            Next_Index (Index);
+            I := I + 1;
+         end loop;
+
+         pragma Assert (I = Indexes'Last + 1);
+
+         --  Generate equality of array components
+
+         declare
+            From_Comp : constant Entity_Id := Retysp (Component_Type (From));
+            To_Comp   : constant Entity_Id := Retysp (Component_Type (To));
+            A_Comp    : W_Expr_Id := New_Call
+              (Domain  => EW_Term,
+               Name    => From_Symb.Get,
+               Binders => A_Binder & Indexes,
+               Typ     => EW_Abstract (From_Comp));
+            B_Comp    : W_Expr_Id := New_Call
+              (Domain  => EW_Term,
+               Name    => To_Symb.Get,
+               Binders => B_Binder & Indexes,
+               Typ     => EW_Abstract (To_Comp));
+
+         begin
+            --  If components are arrays, go to split form
+
+            if Is_Array_Type (From_Comp) then
+               if not Has_Static_Array_Type (From_Comp) then
+                  A_Comp := Array_Convert_To_Base (EW_Term, A_Comp);
+               end if;
+
+               if not Has_Static_Array_Type (To_Comp) then
+                  B_Comp := Array_Convert_To_Base (EW_Term, B_Comp);
+               end if;
+
+            --  Otherwise, use base type
+
+            else
+               declare
+                  BT : constant W_Type_Id := Base_Why_Type (From_Comp);
+               begin
+                  A_Comp := Insert_Simple_Conversion
+                   (Domain         => EW_Term,
+                    Expr           => A_Comp,
+                    To             => BT,
+                    Force_No_Slide => True);
+                  B_Comp := Insert_Simple_Conversion
+                   (Domain         => EW_Term,
+                    Expr           => B_Comp,
+                    To             => BT,
+                    Force_No_Slide => True);
+               end;
+            end if;
+
+            T_Comp :=
+              New_Comparison
+                (Symbol => Why_Eq,
+                 Left   => A_Comp,
+                 Right  => B_Comp,
+                 Domain => EW_Pred);
+         end;
+
+         T := New_Universal_Quantif
+           (Binders => Indexes,
+            Pred    => +T_Comp);
+
+         T := +New_Typed_Binding
+           (Domain  => EW_Pred,
+            Name    => B_Binder.B_Name,
+            Def     => +Call_Expr,
+            Context => +T);
+
+         Emit
+           (File,
+            New_Guarded_Axiom
+              (Name    => NID ("convert__def"),
+               Binders => (1 => A_Binder),
+               Def     => T));
+      end;
+
+      Close_Theory (File, Kind => Definition_Theory);
+
+      --  Restore the current theory
+
+      if File = Current_File then
+         Why_Sections (File).Cur_Theory := Save_Theory;
+      end if;
+
+      M_Arrays_Conversion (C).Insert (To_Name, Convert_Id);
+   end Create_Array_Conversion_Theory_If_Needed;
+
    -----------------------------
    -- Create_Rep_Array_Theory --
    -----------------------------
@@ -2004,6 +2217,16 @@ package body Why.Gen.Arrays is
          end if;
       end if;
    end Create_Rep_Array_Theory_If_Needed;
+
+   -------------------------------
+   -- Get_Array_Conversion_Name --
+   -------------------------------
+
+   function Get_Array_Conversion_Name
+     (From, To : Entity_Id) return W_Identifier_Id
+   is
+     (M_Arrays_Conversion.Element
+        (Get_Array_Theory_Name (From)).Element (Get_Array_Theory_Name (To)));
 
    ----------------------
    -- Get_Array_Theory --

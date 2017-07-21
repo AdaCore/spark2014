@@ -381,6 +381,18 @@ package Why.Gen.Arrays is
    --  @param Register_Only if Register_Only is true, the declaration is not
    --         emited.
 
+   procedure Create_Array_Conversion_Theory_If_Needed
+     (Current_File : W_Section_Id;
+      From         : Entity_Id;
+      To           : Entity_Id);
+   --  Check if the conversion theory for converting from From to To has
+   --  already been created. If not create it.
+   --  @param File the current file section. Conversion theories are always
+   --     created in WF_Pure, but it may be necessary to save the currently
+   --     opened theory if Current_File = WF_Pure.
+   --  @param From the entity of source type of the conversion
+   --  @param To the entity of target type of the conversion.
+
    function Get_Array_Theory (E : Entity_Id) return M_Array_Type;
    --  Return the m_array_type containing the theory of the type of E
    --  @param E the entity of type array
@@ -397,6 +409,12 @@ package Why.Gen.Arrays is
                                         return M_Array_1_Bool_Op_Type;
    --  Return the m_array_1_bool_op_type containing the theory of the type of E
    --  @param E the entity of type array
+
+   function Get_Array_Conversion_Name
+     (From, To : Entity_Id) return W_Identifier_Id;
+   --  Return the name of the conversion from type From to type To.
+   --  @param From the entity of source type of the conversion
+   --  @param To the entity of target type of the conversion.
 
    generic
       with function Build_Predicate_For_Comp
