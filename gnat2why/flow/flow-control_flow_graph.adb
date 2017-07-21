@@ -5880,8 +5880,8 @@ package body Flow.Control_Flow_Graph is
                                Classwide  => False,
                                Globals    => Current_Globals);
 
-                  --  We up project the globals in case they are too refined
-                  --  for the current scope.
+                  --  For subprograms, we up project the globals in case they
+                  --  are too refined for the current scope.
                   --
                   --  ??? In some situations (for example in a generic
                   --  subprogram instantiated in a different package or
@@ -5895,7 +5895,11 @@ package body Flow.Control_Flow_Graph is
                   --  same loss of precision.
                   --  Once the issues with flow scopes are resolved we should
                   --  remove this workaround for PA18-012.
-                  Up_Project (Current_Globals, My_Globals, FA.B_Scope);
+                  if FA.Kind = Kind_Subprogram then
+                     Up_Project (Current_Globals, My_Globals, FA.B_Scope);
+                  else
+                     My_Globals := Current_Globals;
+                  end if;
 
                   for G of My_Globals.Proof_Ins loop
                      Globals.Insert (Change_Variant (G, Normal_Use),
