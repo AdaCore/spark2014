@@ -9081,20 +9081,11 @@ package body Gnat2Why.Expr is
                   W_Type : W_Type_Id;
 
                begin
-                  if Is_Discrete_Type (Etype (Var)) then
-                     if Is_Standard_Boolean_Type (A_Type) then
-                        W_Type := EW_Bool_Type;
-                        Ada.Text_IO.Put_Line
-                          ("[Transform_Attr] boolean"
-                           & Attribute_Id'Image (Attr_Id));
-                        raise Not_Implemented;
-                     else
-                        W_Type := EW_Int_Type;
-                        Offset := New_Integer_Constant (Value => Uint_1);
-                     end if;
-
+                  if Is_Discrete_Type (A_Type) then
+                     W_Type := EW_Int_Type;
+                     Offset := New_Integer_Constant (Value => Uint_1);
                   else
-                     pragma Assert (Is_Fixed_Point_Type (Etype (Var)));
+                     pragma Assert (Is_Fixed_Point_Type (A_Type));
                      W_Type := EW_Fixed_Type;
                      Offset := New_Fixed_Constant (Value => Uint_1);
                   end if;
@@ -9564,7 +9555,7 @@ package body Gnat2Why.Expr is
          =>
             declare
                Ada_Ty : constant Entity_Id := Etype (Expr);
-               Base : constant W_Type_Id := Base_Why_Type (Ada_Ty);
+               Base : constant W_Type_Id := Base_Why_Type_No_Bool (Ada_Ty);
                Arg1 : constant W_Expr_Id :=
                  Transform_Expr (First (Expressions (Expr)),
                                  Base,
