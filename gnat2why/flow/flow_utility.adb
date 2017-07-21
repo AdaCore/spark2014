@@ -1138,14 +1138,14 @@ package body Flow_Utility is
             end if;
 
             --  Substitute references on RHS
-            for D in Depends.Iterate loop
+            for Inputs of Depends loop
                declare
                   C : constant Flow_Id_Sets.Cursor :=
-                    Depends (D).Find (Direct_Mapping_Id (PO_Type));
+                    Inputs.Find (Direct_Mapping_Id (PO_Type));
 
                begin
                   if Flow_Id_Sets.Has_Element (C) then
-                     Depends (D).Replace_Element
+                     Inputs.Replace_Element
                        (Position => C,
                         New_Item => Direct_Mapping_Id (The_PO));
                   end if;
