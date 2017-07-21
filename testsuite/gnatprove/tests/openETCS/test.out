@@ -393,14 +393,14 @@ step_function_test.adb:56:22: info: initialization of "sfun3.Number_Of_Delimiter
 step_function_test.adb:56:22: info: initialization of "sfun3.Step" proved
 step_function_test.adb:56:29: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:56:29: info: initialization of "sfun4.Step" proved
-step_function_test.adb:61:22: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:61:22: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:61:22: medium: assertion might fail, cannot prove Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:32: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:61:32: info: initialization of "sfun_merge.Step" proved
-step_function_test.adb:62:28: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:62:28: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:62:38: info: initialization of "sfun3.Number_Of_Delimiters" proved
 step_function_test.adb:62:38: info: initialization of "sfun3.Step" proved
-step_function_test.adb:62:49: info: precondition proved (CVC4: 1 VC)
+step_function_test.adb:62:49: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:62:59: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:62:59: info: initialization of "sfun4.Step" proved
 step_function_test.adb:65:19: info: assertion proved (CVC4: 1 VC)

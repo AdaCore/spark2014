@@ -11,16 +11,16 @@ skein.adb:226:44: info: division check proved (CVC4: 1 VC), in call inlined at s
 skein.adb:226:44: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:862
 skein.adb:227:35: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:862
 skein.adb:227:49: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:862
-skein.adb:253:52: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:575
+skein.adb:253:52: info: range check proved (CVC4: 8 VC), in call inlined at skein.adb:575
 skein.adb:255:29: info: initialization of "W" proved, in call inlined at skein.adb:575
-skein.adb:256:25: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:257:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:258:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:259:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:260:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:261:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:262:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
-skein.adb:263:47: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:575
+skein.adb:256:25: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:257:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:258:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:259:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:260:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:261:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:262:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
+skein.adb:263:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:575
 skein.adb:301:19: info: postcondition proved (CVC4: 4 VC)
 skein.adb:323:23: info: initialization of "KS" proved, in call inlined at skein.adb:571
 skein.adb:325:30: info: initialization of "KS" proved, in call inlined at skein.adb:571
@@ -38,12 +38,12 @@ skein.adb:350:49: info: initialization of "TS" proved, in call inlined at skein.
 skein.adb:351:30: info: initialization of "X" proved
 skein.adb:351:30: info: initialization of "X" proved, in call inlined at skein.adb:589
 skein.adb:351:49: info: initialization of "TS" proved, in call inlined at skein.adb:589
-skein.adb:362:45: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:535
-skein.adb:362:45: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:544
-skein.adb:365:58: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:535
-skein.adb:365:58: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:544
-skein.adb:366:64: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:535
-skein.adb:366:64: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:544
+skein.adb:362:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:535
+skein.adb:362:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:544
+skein.adb:365:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:535
+skein.adb:365:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:544
+skein.adb:366:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:535
+skein.adb:366:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:544
 skein.adb:557:47: info: initialization of "X" proved, in call inlined at skein.adb:599
 skein.adb:557:57: info: initialization of "W" proved, in call inlined at skein.adb:599
 skein.adb:561:11: info: range check proved (CVC4: 2 VC)

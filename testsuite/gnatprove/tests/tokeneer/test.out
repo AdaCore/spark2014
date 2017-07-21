@@ -317,7 +317,7 @@ auditlog.adb:1224:13: info: initialization of "LogFilesStatus" constituent of "S
 auditlog.adb:1225:16: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
 auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1232:20: info: range check proved (CVC4: 2 VC)
+auditlog.adb:1232:20: info: range check proved (CVC4: 34 VC)
 auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
 auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
@@ -325,13 +325,13 @@ auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent o
 auditlog.adb:1236:64: medium: range check might fail
 auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1237:65: medium: range check might fail
-auditlog.adb:1238:26: info: range check proved (CVC4: 2 VC)
-auditlog.adb:1239:32: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1238:26: info: range check proved (CVC4: 34 VC)
+auditlog.adb:1239:32: info: overflow check proved (CVC4: 17 VC)
 auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1241:43: info: index check proved (CVC4: 2 VC)
+auditlog.adb:1241:43: info: index check proved (CVC4: 34 VC)
 auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" constituent of "State" proved
-auditlog.adb:1241:69: info: index check proved (CVC4: 2 VC)
-auditlog.adb:1241:69: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:1241:69: info: index check proved (CVC4: 34 VC)
+auditlog.adb:1241:69: info: overflow check proved (CVC4: 17 VC)
 auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
@@ -1133,15 +1133,15 @@ configdata.adb:271:51: info: range check proved (CVC4: 1 VC)
 configdata.adb:293:28: info: initialization of "Value" proved
 configdata.adb:295:36: info: initialization of "Success" proved
 configdata.adb:308:16: info: initialization of "Stop" proved
-configdata.adb:313:20: info: range check proved (CVC4: 2 VC)
+configdata.adb:313:20: info: range check proved (CVC4: 12 VC)
 configdata.adb:313:47: info: initialization of "Stop" proved
 configdata.adb:315:42: info: initialization of "Stop" proved
-configdata.adb:315:42: info: loop invariant initialization proved (CVC4: 2 VC)
-configdata.adb:315:42: info: loop invariant preservation proved (CVC4: 2 VC)
+configdata.adb:315:42: info: loop invariant initialization proved (CVC4: 12 VC)
+configdata.adb:315:42: info: loop invariant preservation proved (CVC4: 12 VC)
 configdata.adb:315:53: info: initialization of "Stop" proved
-configdata.adb:317:48: info: index check proved (CVC4: 2 VC)
+configdata.adb:317:48: info: index check proved (CVC4: 12 VC)
 configdata.adb:317:54: info: initialization of "RawClass" proved
-configdata.adb:317:63: info: index check proved (CVC4: 2 VC)
+configdata.adb:317:63: info: index check proved (CVC4: 12 VC)
 configdata.adb:323:16: info: initialization of "Matched" proved
 configdata.adb:329:21: info: initialization of "Matched" proved
 configdata.adb:342:34: info: initialization of "TheDuration" proved
@@ -1202,15 +1202,15 @@ configdata.adb:681:37: info: initialization of "TheAccessPolicy" proved
 configdata.adb:693:13: info: initialization of "Stop" proved
 configdata.adb:694:12: info: initialization of "TheTitle" proved
 configdata.adb:699:19: info: initialization of "Stop" proved
-configdata.adb:703:23: info: range check proved (CVC4: 2 VC)
+configdata.adb:703:23: info: range check proved (CVC4: 4 VC)
 configdata.adb:703:51: info: initialization of "Stop" proved
 configdata.adb:704:45: info: initialization of "Stop" proved
-configdata.adb:704:45: info: loop invariant initialization proved (CVC4: 2 VC)
-configdata.adb:704:45: info: loop invariant preservation proved (CVC4: 2 VC)
+configdata.adb:704:45: info: loop invariant initialization proved (CVC4: 4 VC)
+configdata.adb:704:45: info: loop invariant preservation proved (CVC4: 4 VC)
 configdata.adb:704:56: info: initialization of "Stop" proved
-configdata.adb:706:53: info: index check proved (CVC4: 2 VC)
+configdata.adb:706:53: info: index check proved (CVC4: 4 VC)
 configdata.adb:707:24: info: initialization of "RawAccessPolicy" proved
-configdata.adb:707:40: info: index check proved (CVC4: 2 VC)
+configdata.adb:707:40: info: index check proved (CVC4: 4 VC)
 configdata.adb:714:19: info: initialization of "Matched" proved
 configdata.adb:720:24: info: initialization of "Matched" proved
 configdata.adb:739:37: info: initialization of "Success" proved

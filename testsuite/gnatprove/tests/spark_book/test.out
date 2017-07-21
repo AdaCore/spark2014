@@ -664,7 +664,7 @@ enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
 enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
 enum_example.adb:50:04: warning: no Global contract available for "New_Line"
 enum_example.adb:54:16: info: initialization of "Count" proved
-enum_example.adb:54:22: medium: overflow check might fail
+enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
 enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
 enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
@@ -1578,7 +1578,7 @@ utility.adb:13:13: info: loop invariant preservation proved (CVC4: 1 VC)
 utility.adb:13:67: info: index check proved (CVC4: 2 VC)
 utility.adb:15:07: info: raise statement proved unreachable (CVC4: 2 VC)
 utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
-various.adb:12:07: medium: exception might be raised
+various.adb:12:07: info: raise statement proved unreachable (CVC4: 2 VC)
 various.adb:20:21: info: assertion proved (CVC4: 1 VC)
 various.adb:20:23: medium: overflow check might fail
 various.adb:20:26: info: division check proved (CVC4: 1 VC)

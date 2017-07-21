@@ -10477,7 +10477,7 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="66"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="66"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
@@ -10501,13 +10501,13 @@
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="120"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="120"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.06" steps="99"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.07" steps="78"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="78"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.05" steps="73"/></proof>
@@ -10543,8 +10543,8 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.03"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="15"/></proof>
+  <proof prover="0"><result status="unknown" time="0.02"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="18487"/></proof>
   <proof prover="3"><result status="unknown" time="0.03" steps="16"/></proof>
   </goal>
@@ -10558,28 +10558,28 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.05" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="26043"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="17"/></proof>
+  <proof prover="0"><result status="unknown" time="0.03"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="15"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="26043"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="17"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="23"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="23"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="26097"/></proof>
-  <proof prover="3"><result status="unknown" time="0.06" steps="17"/></proof>
+  <proof prover="0"><result status="unknown" time="0.02"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="15"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="26097"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="17"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.06" steps="23"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
@@ -10588,19 +10588,19 @@
   <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.04"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="26125"/></proof>
+  <proof prover="0"><result status="unknown" time="0.03"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="15"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="26125"/></proof>
   <proof prover="3"><result status="unknown" time="0.05" steps="17"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="23"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
  </transf>
  </goal>
@@ -10610,17 +10610,17 @@
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown" time="0.32"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="27928"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="19"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="15"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="27928"/></proof>
+  <proof prover="3"><result status="unknown" time="0.05" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.04" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.35"/></proof>
-  <proof prover="1"><result status="unknown" time="0.04" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="28050"/></proof>
+  <proof prover="0"><result status="unknown" time="0.34"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="28050"/></proof>
   <proof prover="3"><result status="unknown" time="0.05" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
@@ -10633,22 +10633,22 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.46"/></proof>
-  <proof prover="1"><result status="unknown" time="0.05" steps="45"/></proof>
+  <proof prover="0"><result status="unknown" time="0.48"/></proof>
+  <proof prover="1"><result status="unknown" time="0.06" steps="45"/></proof>
   <proof prover="2"><result status="unknown" time="0.04" steps="42037"/></proof>
-  <proof prover="3"><result status="unknown" time="0.08" steps="51"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="51"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="29"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="29"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.48"/></proof>
-  <proof prover="1"><result status="unknown" time="0.05" steps="46"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="41023"/></proof>
-  <proof prover="3"><result status="unknown" time="0.08" steps="52"/></proof>
+  <proof prover="0"><result status="unknown" time="0.50"/></proof>
+  <proof prover="1"><result status="unknown" time="0.06" steps="46"/></proof>
+  <proof prover="2"><result status="unknown" time="0.05" steps="41023"/></proof>
+  <proof prover="3"><result status="unknown" time="0.07" steps="52"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="30"/></proof>
+  <proof prover="1"><result status="valid" time="0.06" steps="30"/></proof>
   </goal>
  </transf>
  </goal>
@@ -10664,24 +10664,24 @@
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown" time="0.06"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="67"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="22607"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="81"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="67"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="22607"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="81"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="181"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="181"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
   <proof prover="1"><result status="valid" time="0.03" steps="116"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="assertion">
-  <proof prover="1"><result status="valid" time="0.03" steps="116"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="116"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="assertion">
   <proof prover="1"><result status="valid" time="0.03" steps="5"/></proof>
@@ -10696,19 +10696,19 @@
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.03"/></proof>
+  <proof prover="0"><result status="unknown" time="0.02"/></proof>
   <proof prover="1"><result status="unknown" time="0.03" steps="15"/></proof>
-  <proof prover="2"><result status="unknown" time="0.02" steps="22694"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="20"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="22694"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="20"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="23"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="unknown" time="0.03"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="17"/></proof>
+  <proof prover="1"><result status="unknown" time="0.02" steps="17"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="21940"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="20"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="20"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
   <proof prover="1"><result status="valid" time="0.03" steps="25"/></proof>
@@ -10720,19 +10720,19 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.23"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="29"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="26715"/></proof>
+  <proof prover="0"><result status="unknown" time="0.26"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="29"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="26715"/></proof>
   <proof prover="3"><result status="unknown" time="0.06" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.04" steps="24"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.27"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="29"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="26758"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="34"/></proof>
+  <proof prover="0"><result status="unknown" time="0.25"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="29"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="26758"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="1"><result status="valid" time="0.04" steps="24"/></proof>
@@ -10746,23 +10746,23 @@
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="unknown" time="0.54"/></proof>
   <proof prover="1"><result status="unknown" time="0.04" steps="53"/></proof>
-  <proof prover="2"><result status="unknown" time="0.03" steps="29164"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="65"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="29164"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="65"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="38"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="38"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="14"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="26"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.04" steps="14"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="14"/></proof>
   </goal>
  </transf>
  </goal>
