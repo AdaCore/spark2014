@@ -1110,10 +1110,9 @@ package body Flow_Utility is
             The_PO : constant Entity_Id :=
               Get_Enclosing_Object (Prefix (Name (Callsite)));
 
-            PO_Type : constant Entity_Id := Etype (The_PO);
+            PO_Type : constant Entity_Id := Sinfo.Scope (Subprogram);
 
-            pragma Assert (Ekind (The_PO) = E_Variable and then
-                           Ekind (PO_Type) = E_Protected_Type);
+            pragma Assert (Ekind (The_PO) = E_Variable);
 
          begin
             --  Substitute reference on LHS
