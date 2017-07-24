@@ -200,6 +200,7 @@ package body Flow.Slice is
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
+
          begin
             if F_Final.Variant = Final_Value
               and then FA.Atr (V_Final).Is_Export
@@ -216,6 +217,7 @@ package body Flow.Slice is
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
             Attr : V_Attributes renames FA.Atr (V_Initial);
+
          begin
             if F_Initial.Variant = Initial_Value
               and then Attr.Is_Import

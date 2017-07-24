@@ -732,10 +732,70 @@ package body Flow_Refinement is
    is
       use type Flow_Id_Sets.Set;
 
-      States_Written       : Flow_Id_Sets.Set;
-      Constituents_Written : Flow_Id_Sets.Set;
+      function Constituents_Are_Partially_Mentioned (State : Flow_Id;
+                                                     Deps  : Flow_Id_Sets.Set)
+                                                     return Boolean;
+      --  Returns True in case at least one, but not all, of the constituents
+      --  of State are an input in the dependecy relation or in case the input
+      --  in the dependency relation is null and not all the constitutents of
+      --  State are outputs in the dependency relation.
+
+      ------------------------------------------
+      -- Constituents_Are_Partially_Mentioned --
+      ------------------------------------------
+
+      function Constituents_Are_Partially_Mentioned (State : Flow_Id;
+                                                     Deps  : Flow_Id_Sets.Set)
+                                                     return Boolean
+      is
+         Constituents_Written : Flow_Id_Sets.Set;
+         --  Contains the constituents that are outputs of the dependency map
+
+         function Contains_Some_Constituents return Boolean;
+         --  Returns True iff Deps contains some constituents of State
+
+         --------------------------------
+         -- Contains_Some_Constituents --
+         --------------------------------
+
+         function Contains_Some_Constituents return Boolean
+         is
+            --  ??? Do the same of Expand_Abstract_State
+           (for some C of Iter (Refinement_Constituents (State.Node))
+            => Deps.Contains (Direct_Mapping_Id (C))
+            or else
+              (for some C of Iter (Part_Of_Constituents (State.Node))
+               => Deps.Contains (Direct_Mapping_Id (C))));
+
+      --  Start of processing for Constituents_Are_Partially_Mentioned
+
+      begin
+         --  Collect outputs in the dependency relations that are constituents
+         --  of an abstract state.
+         for C in Vars.Iterate loop
+            declare
+               Var : Flow_Id renames Dependency_Maps.Key (C);
+
+            begin
+               if Is_Constituent (Var) then
+                  Constituents_Written.Insert (Var);
+               end if;
+            end;
+         end loop;
+
+         return
+           (Contains_Some_Constituents
+            and then not Is_Fully_Contained (State, Deps))
+           or else
+             (Deps.Is_Empty
+              and then not Is_Fully_Contained (State, Constituents_Written));
+      end Constituents_Are_Partially_Mentioned;
+
+   --  Start of processing for Up_Project
 
    begin
+      --  Up project the dependency relation and add a self dependency on an
+      --  abstract state if not all of its constituents are used.
       for C in Vars.Iterate loop
          declare
             Var  : Flow_Id          renames Dependency_Maps.Key (C);
@@ -750,25 +810,26 @@ package body Flow_Refinement is
             Projected_Deps := Projected or Partial;
 
             Up_Project (Var, Projected_Var, Scope);
-            Projected_Vars.Include (Key      => Projected_Var,
-                                    New_Item => Projected_Deps);
 
-            if Is_Constituent (Var) then
-               Constituents_Written.Include (Var);
-               if Is_Abstract_State (Projected_Var) then
-                  States_Written.Include (Projected_Var);
-               end if;
+            --  If Projected_Var is an abstract state and not all of its
+            --  constituents are mentioned in the dependency relation then we
+            --  add it as in input in the dependency relation.
+            if Is_Abstract_State (Projected_Var)
+              and then Constituents_Are_Partially_Mentioned (Projected_Var,
+                                                             Deps)
+            then
+               Projected_Deps.Include (Projected_Var);
+            end if;
+
+            --  This is to make sure we do not overwrite the Projected_Deps if
+            --  we try to insert Projected_Var twice if we were to use Include.
+            if not Projected_Vars.Contains (Projected_Var) then
+               Projected_Vars.Insert (Key      => Projected_Var,
+                                      New_Item => Projected_Deps);
+            else
+               Projected_Vars (Projected_Var).Union (Projected_Deps);
             end if;
          end;
-      end loop;
-
-      --  If at least one constituent of a state abstraction has not been
-      --  written, then the state abstraction also depends on itself.
-      for State of States_Written loop
-         if not Is_Fully_Contained (State, Constituents_Written) then
-            --  Abstract state also depends on itself
-            Projected_Vars (State).Include (State);
-         end if;
       end loop;
    end Up_Project;
 
@@ -892,6 +953,32 @@ package body Flow_Refinement is
          P.Union (Down_Project (V, S));
       end loop;
 
+      return P;
+   end Down_Project;
+
+   function Down_Project (Var : Flow_Id;
+                          S   : Flow_Scope)
+                          return Flow_Id_Sets.Set
+   is
+   begin
+      case Var.Kind is
+         when Direct_Mapping =>
+            return
+              To_Flow_Id_Set (Down_Project (Get_Direct_Mapping_Id (Var), S));
+         when others =>
+            raise Program_Error;
+      end case;
+   end Down_Project;
+
+   function Down_Project (Vars : Flow_Id_Sets.Set;
+                          S    : Flow_Scope)
+                          return Flow_Id_Sets.Set
+   is
+      P : Flow_Id_Sets.Set;
+   begin
+      for V of Vars loop
+         P.Union (Down_Project (V, S));
+      end loop;
       return P;
    end Down_Project;
 

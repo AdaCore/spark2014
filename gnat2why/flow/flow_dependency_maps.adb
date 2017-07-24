@@ -114,8 +114,8 @@ package body Flow_Dependency_Maps is
       --  above example.
       Row := First (Component_Associations (Expr));
       while Present (Row) loop
-         Inputs  := Flow_Id_Sets.Empty_Set;
-         Outputs := Flow_Id_Sets.Empty_Set;
+         Inputs.Clear;
+         Outputs.Clear;
 
          --  Processing for LHS (outputs) and RHS (inputs) is almost identical,
          --  except for few special cases. It seems good to leave this code

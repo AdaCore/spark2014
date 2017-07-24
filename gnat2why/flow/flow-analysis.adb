@@ -3387,7 +3387,7 @@ package body Flow.Analysis is
       end if;
 
       Get_Depends (Subprogram => FA.Analyzed_Entity,
-                   Scope      => Depends_Scope,
+                   Scope      => FA.B_Scope,
                    Classwide  => False,
                    Depends    => User_Deps);
 

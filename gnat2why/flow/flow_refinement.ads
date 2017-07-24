@@ -244,6 +244,17 @@ package Flow_Refinement is
                     V in Checked_Entity_Id_Or_Empty);
    --  Same as above, but for many nodes
 
+   function Down_Project (Var : Flow_Id;
+                          S   : Flow_Scope)
+                          return Flow_Id_Sets.Set;
+   --  Given a variable Var and a scope S, recursively expand abstract states
+   --  whose refinement is visible in S.
+
+   function Down_Project (Vars : Flow_Id_Sets.Set;
+                          S    : Flow_Scope)
+                          return Flow_Id_Sets.Set;
+   --  Same as above, but for many Flow_Ids
+
    function Find_In_Initializes (E : Checked_Entity_Id)
                                  return Entity_Id
    with Post => (if Present (Find_In_Initializes'Result)
