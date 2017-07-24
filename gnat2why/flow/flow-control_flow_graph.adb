@@ -4737,7 +4737,7 @@ package body Flow.Control_Flow_Graph is
          end if;
       end Handle_Parameter;
 
-      procedure Handle_Parameters is new SPARK_Util.Iterate_Call_Parameters
+      procedure Handle_Parameters is new Iterate_Call_Parameters
         (Handle_Parameter => Handle_Parameter);
 
    --  Start of processing for Process_Call_Actuals

@@ -44,6 +44,7 @@ with Gnat2Why_Args;             use Gnat2Why_Args;
 with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
+with Sem_Aux;                   use Sem_Aux;
 with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;

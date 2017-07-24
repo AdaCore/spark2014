@@ -23,13 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                            use Aspects;
-with Elists;                             use Elists;
-with Sem_Aux;                            use Sem_Aux;
-with Sem_Eval;                           use Sem_Eval;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
-with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
+with Aspects;                    use Aspects;
+with Elists;                     use Elists;
+with Sem_Eval;                   use Sem_Eval;
+with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
+with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 package body SPARK_Util.Types is
 

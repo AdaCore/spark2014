@@ -21,11 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Utility;                  use Flow_Utility;
-with Flow_Refinement;               use Flow_Refinement;
-with Sem_Type;                      use Sem_Type;
-with Sinfo;                         use Sinfo;
-with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
+with Flow_Utility;           use Flow_Utility;
+with Flow_Refinement;        use Flow_Refinement;
+with Sem_Aux;                use Sem_Aux;
+with Sem_Type;               use Sem_Type;
+with Sinfo;                  use Sinfo;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Flow.Control_Flow_Graph.Utility is
 

@@ -35,7 +35,6 @@ with Gnat2Why_Args;
 with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
-with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;

@@ -23,6 +23,7 @@
 
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
+with Sem_Aux;        use Sem_Aux;
 with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
 with SPARK_Util;     use SPARK_Util;

@@ -31,6 +31,7 @@ with Impunit;           use Impunit;
 with Lib;               use Lib;
 with Namet;             use Namet;
 with Nlists;            use Nlists;
+with Sem_Aux;           use Sem_Aux;
 with Sem_Util;          use Sem_Util;
 with Sinfo;             use Sinfo;
 with Sinput;            use Sinput;
@@ -434,18 +435,6 @@ package SPARK_Util is
    --  @param E instance of a generic unit
    --  @return actual subprogram parameters of E
 
-   function Get_Called_Entity (N : Node_Id) return Entity_Id
-     with Pre  => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call,
-          Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
-                  Ekind (Get_Called_Entity'Result) in E_Function  |
-                                                      E_Procedure |
-                                                      Entry_Kind;
-   --  @param N a call statement
-   --  @return the subprogram or entry called
-   --  ??? this duplicates a private function front end Get_Function_Id
-   --      (which perhaps should be renamed to Get_Subprogram_Id, since it
-   --       is explicitly used also for procedures and entries)
-
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
      with Pre  => Nkind (Parent (Actual)) in N_Function_Call            |
                                              N_Parameter_Association    |
@@ -509,14 +498,6 @@ package SPARK_Util is
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
-
-   generic
-      with procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
-   procedure Iterate_Call_Parameters (Call : Node_Id)
-   with Pre => Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement;
-   --  Call [Handle_Parameter] for each pair of formal and actual parameters
-   --  of a function or procedure call.
-   --  @param Call function or procedure call
 
    generic
       with procedure Handle_Parameters (Formal : Node_Id; Actual : Node_Id);
