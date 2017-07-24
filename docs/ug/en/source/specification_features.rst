@@ -976,7 +976,8 @@ private part of the enclosing package as not in |SPARK|:
 
 A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
 above should not be enabled during compilation, otherwise a compilation error
-is issued.
+is issued. Note also that |GNATprove| will not attempt proving the contract of
+a ghost imported subprogram, as it does not have its body.
 
 .. _Removal of Ghost Code:
 
