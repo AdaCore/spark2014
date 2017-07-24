@@ -494,6 +494,24 @@ package body Why.Gen.Records is
       Declare_Attributes (P, E, Ty_Name);
       Declare_Component_Attributes (P, E);
 
+      --  Declare place-holder for primitive equality function
+
+      declare
+         B_Ident : constant W_Identifier_Id :=
+           New_Identifier (Name => "b", Typ => Abstr_Ty);
+      begin
+         Emit
+           (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => New_Identifier (Name => "user_eq"),
+               Return_Type => EW_Bool_Type,
+               Binders     => R_Binder &
+                 Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
+                                                 others => <>)),
+               Labels      => Name_Id_Sets.Empty_Set));
+      end;
+
    end Declare_Ada_Record;
 
    ------------------------
@@ -1589,17 +1607,6 @@ package body Why.Gen.Records is
                            Else_Part => +False_Term))));
             end;
          end if;
-
-         Emit
-           (P,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => New_Identifier (Name => "user_eq"),
-               Return_Type => EW_Bool_Type,
-               Binders     => R_Binder &
-                 Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                 others => <>)),
-               Labels      => Name_Id_Sets.Empty_Set));
 
          --  Declare the dispatching equality function in root types
          if Is_Root and then Is_Tagged_Type (E) then
@@ -2959,7 +2966,7 @@ package body Why.Gen.Records is
             --  If Current is private, its fullview is not in SPARK. Thus, it
             --  is considered to have private fields of its own.
 
-            if Has_Private_Type (Current) then
+            if Has_Private_Part (Current) then
                return Current;
             end if;
 
