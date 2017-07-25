@@ -3,7 +3,7 @@ with "spark_lemmas";
 project Test is
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnata");
+      for Default_Switches ("Ada") use ("-gnata", "-gnateDSPARK_BODY_MODE=Off");
    end Compiler;
 
 end Test;

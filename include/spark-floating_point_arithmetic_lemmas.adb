@@ -28,7 +28,12 @@
 ------------------------------------------------------------------------------
 
 package body SPARK.Floating_Point_Arithmetic_Lemmas
-  with SPARK_Mode => Off -- TEST_ON
+  with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+  On
+#else
+  Off
+#end if;
 is
    procedure Lemma_Add_Is_Monotonic
         (Val1 : Fl;

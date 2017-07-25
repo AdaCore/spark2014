@@ -30,7 +30,12 @@
 with SPARK.Unconstrained_Array_Lemmas;
 
 package body SPARK.Constrained_Array_Lemmas
-with SPARK_Mode => Off -- TEST_ON
+  with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+  On
+#else
+  Off
+#end if;
 is
 
    type A_Unconstrained is array (Index_Type range <>) of Element_T;

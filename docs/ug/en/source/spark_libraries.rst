@@ -31,7 +31,7 @@ library:
 * ``Ada.Containers.Functional_Maps``
 * ``Ada.Containers.Functional_Sets``
 * ``Ada.Containers.Functional_Vectors``
- 
+
 Sequences defined in ``Functional_Vectors`` are no more than ordered collections
 of elements. In an Ada like manner, the user can choose the range used to index
 the elements:
@@ -196,12 +196,12 @@ cursors nor order of elements in a map:
      Post =>
        (for all N in 1 .. Length (L) =>
           Element (Model (L), N) = Element (Model (L)'Old, N) + 1);
-          
+
    procedure Increment_All (S : in out Map) with
      Post =>
        (for all K of Model (S)'Old => Has_Key (Model (S), K))
-          and 
-       (for all K of Model (S) => 
+          and
+       (for all K of Model (S) =>
           Has_Key (Model (S)'Old, K)
             and Get (Model (S), K) = Get (Model (S)'Old, K) + 1);
 
@@ -216,10 +216,10 @@ are preserved:
    procedure Increment_All (S : in out Map) with
      Post =>
        Keys (S) = Keys (S)'Old
-         and  
+         and
        (for all K of Model (S) =>
           Get (Model (S), K) = Get (Model (S)'Old, K) + 1);
-		     
+
 Finally, cursors are modeled using a functional map linking them to their
 position in the container. For example, we can state that the positions of
 cursors in a list are not modified by a call to ``Increment_All``:
@@ -230,7 +230,7 @@ cursors in a list are not modified by a call to ``Increment_All``:
    procedure Increment_All (L : in out List) with
      Post =>
        Positions (L) = Positions (L)'Old
-         and 
+         and
        (for all N in 1 .. Length (L) =>
           Element (Model (L), N) = Element (Model (L)'Old, N) + 1);
 
@@ -240,7 +240,7 @@ precise considerations when needed without polluting upper level specifications.
 For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
 there is one, and the special cursor ``No_Element`` otherwise:
- 
+
 .. literalinclude:: /gnatprove_by_example/examples/my_find.ads
    :language: ada
    :linenos:
@@ -251,13 +251,13 @@ For example, here, ghost function ``Positions`` is used in the loop invariant to
 query the position of the current cursor in the list, and ``Model`` is used to
 specify that the value searched is not contained in the part of the container
 already traversed (otherwise the loop would have exited):
- 
+
 .. literalinclude:: /gnatprove_by_example/examples/my_find.adb
    :language: ada
    :linenos:
- 
+
 |GNATprove| proves that function ``My_Find`` implements its specification:
- 
+
 .. literalinclude:: /gnatprove_by_example/results/my_find.prove
    :language: none
 
@@ -322,6 +322,10 @@ the absolute path of the object directory where you want compilation and
 verification artefacts for the lemma library to be created. This should be an
 absolute path (not a relative one) otherwise these artefacts will be created
 inside you |SPARK| install.
+
+Finally, if you instantiate in your code a generic from the lemma library, you
+also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
+these generic units.
 
 This library consists in a set of ghost null procedures with contracts (called
 `lemmas`). Here is an example of such a lemma:

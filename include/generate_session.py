@@ -1,51 +1,33 @@
+#!/usr/bin/env python
+
 import os
 import shutil
 import difflib
 
 
-def exec_gnatprove(file_to_prove, option=""):
+def run(cmd):
+    print ""
+    print "run: " + cmd
+    os.system(cmd)
+
+
+def run_manual(check_to_prove, option=""):
     cmd = "gnatprove -P spark_lemmas.gpr -U --prover=coq"
-    if ":" not in file_to_prove:
-        print (cmd + " " + option + file_to_prove)
-        os.system(cmd + " " + option + file_to_prove)
+    if ":" not in check_to_prove:
+        run(cmd + " " + option + check_to_prove)
     else:
-        print (cmd + " " + option + "--limit-line=" + file_to_prove)
-        os.system(cmd + " " + option + "--limit-line=" + file_to_prove)
+        run(cmd + " " + option + "--limit-line=" + check_to_prove)
 
 
-def check_all(f):
-    for i in f:
-        exec_gnatprove(i)
-    os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 --level=2\
- --no-counterexample -j0")
+def run_automatic(prover, level=4):
+    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0" + \
+          " --prover=" + prover + " --level=" + str(level)
+    run(cmd)
 
 
-# b = true => change to off
-# b = false => change to on
-def replace_spark_mode(fname, b):
-    temp = fname + "___tmp.tmp"
-    with open(temp, 'w') as new:
-        with open(fname) as f:
-            for line in f:
-                if b:
-                    new.write(
-                        line.replace("SPARK_Mode => On -- TEST_ON", "SPARK\
-_Mode => Off -- TEST_ON"))
-                else:
-                    new.write(
-                        line.replace("SPARK_Mode => Off -- TEST_ON", "SPARK\
-_Mode => On -- TEST_ON"))
-    os.remove(fname)
-    shutil.move(temp, fname)
-
-
-# This changes the spark_mode in lines tagged with -- TEST_ON in commentary
-# true => change to off
-# false => change to on
-def change_all_spark_mode(b):
-    for files in os.listdir('.'):
-        if files.endswith(".adb"):
-            replace_spark_mode(files, b)
+def run_options(opt):
+    cmd = "gnatprove -P spark_lemmas.gpr --no-counterexample -j0 " + opt
+    run(cmd)
 
 
 def copy_file(f_ctx, f_v):
@@ -124,7 +106,10 @@ def diff_all(gen_ctx):
 
 
 def kill_and_regenerate_all():
-    change_all_spark_mode(False)
+    print ""
+    print "--------------------------"
+    print "Cleanup previous artifacts"
+    print "--------------------------"
     if os.path.isdir("./proof/sessions"):
         print("The folder proof/sessions still exists.")
         print("Please, move it to be able to regenerate session.")
@@ -135,6 +120,10 @@ def kill_and_regenerate_all():
     else:
         os.makedirs("./temp")
     os.system("make clean")
+    print ""
+    print "----------------------------"
+    print "Generate the Coq proof files"
+    print "----------------------------"
 #   Force regeneration of coq files where necessary.
 #   This step is used to generate the fake coq files and put the names of
 #   coq files inside the session. This cannot be done in one step because
@@ -142,34 +131,47 @@ def kill_and_regenerate_all():
 #   check the present coq files).
     with open("manual_proof.in") as f:
         for i in f:
-            exec_gnatprove(i)
+            run_manual(i)
 #   Make the diff between generated .v and .ctx files. If there are differences
 #   between them not in the proof, you are sure to fail
     diff_all(False)
+    print ""
+    print "-----------------------------"
+    print "Check and register Coq proofs"
+    print "-----------------------------"
 #   cleaning and regeneration of *.v
     os.system("make clean")
     os.system("make generate")
-    os.system("gnatprove -P spark_lemmas.gpr --prover=cvc4 \
---level=1 --no-counterexample -j0")
+    run_automatic("cvc4", level=1)
 #   Do *not* remove this call as it is used to check that coq proofs are
 #   correct after regeneration. And ability to generate session is *necessary*
 #   as there is no way to extend a session in gnatprove.
     with open("manual_proof.in") as v:
         for i in v:
-            exec_gnatprove(i)
-    exec_cvc4 = "gnatprove -P spark_lemmas.gpr --prover=cvc4 \
---level=4 --no-counterexample -j0"
-    exec_z3 = "gnatprove -P spark_lemmas.gpr --prover=z3 \
---level=2 --no-counterexample -j0"
-    exec_altergo_report = "gnatprove -P spark_lemmas.gpr --report=statistics \
---prover=alt-ergo --level=4 --no-counterexample -j0"
-    print (exec_cvc4)
-    os.system(exec_cvc4)
-#   discharge the remaining proofs with z3 and alt-ergo
-    print (exec_z3)
-    os.system(exec_z3)
-    print (exec_altergo_report)
-    os.system(exec_altergo_report)
-    change_all_spark_mode(True)
+            run_manual(i)
+    print ""
+    print "---------------------------------------------"
+    print "Prove remaining checks with automatic provers"
+    print "---------------------------------------------"
+    print ""
+    print "---------------"
+    print "Start with CVC4"
+    print "---------------"
+    run_automatic("cvc4")
+    print ""
+    print "------------"
+    print "Then with Z3"
+    print "------------"
+    run_automatic("z3", level=2)
+    print ""
+    print "-----------------"
+    print "End with Alt-Ergo"
+    print "-----------------"
+    run_automatic("altergo")
+    print ""
+    print "---------------------------"
+    print "Summarize all proved checks"
+    print "---------------------------"
+    run_options(opt="--output-msg-only --report=all")
 
 kill_and_regenerate_all()

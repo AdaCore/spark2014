@@ -279,117 +279,117 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="3a0770808935b8ea4f354510e9a0f89d" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="48dd19b6422903a11aa8ddb2786541c0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <goal name="WP_parameter def.3" expl="postcondition">
   <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><unedited/></proof>
-  <proof prover="1"><result status="valid" time="0.05" steps="440"/></proof>
+  <proof prover="1"><result status="valid" time="0.08" steps="440"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="d7b851e7c4e54ddbc80f7278b2521dc8" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="0ea06d2ff847b5a906c1a4b41f2ec352" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="debc6180b948fe5af8d6c2ba0b234710" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.35"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="28"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="21b9f56a63c35ade4f50accf52716679" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="503bfd6c739f79d34fa905ed7da30dfb" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.57"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="28"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="115e41c047566ffc89b799929461f3bb" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><unedited/></proof>
-  <proof prover="1"><result status="valid" time="0.03" steps="625"/></proof>
+  <proof prover="1"><result status="valid" time="0.05" steps="625"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="a32d16d3e5fb7b61b04c83f0f9793efb" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="b26532d560ac3e162ba2c6d76fc0c5fd" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><unedited/></proof>
-  <proof prover="1"><result status="valid" time="0.02" steps="405"/></proof>
+  <proof prover="1"><result status="valid" time="0.03" steps="405"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="b06e225910f66693e8e0fb35c94854ed" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="408889c92d7fd313130843d30d02bd3d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="585"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="585"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="2e1f91793ddbfcc76d31f569ba85dabf" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="d499c1655dcae5b55495a2f06bea9f75" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="550"/></proof>
+  <goal name="WP_parameter def.2" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.08" steps="550"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. assertion">
-  <proof prover="1"><result status="valid" time="0.05" steps="509"/></proof>
+  <goal name="WP_parameter def.3" expl="assertion">
+  <proof prover="1"><result status="valid" time="0.07" steps="509"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. postcondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.4" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="141"/></proof>
+  <goal name="WP_parameter def.5" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="141"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="146"/></proof>
+  <goal name="WP_parameter def.6" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.04" steps="146"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="3145552a7e4e126f1fb18fcc10cf6553" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="9ff8904ed06ebe2a7baaa378a38e6b2a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="409"/></proof>
+  <goal name="WP_parameter def.2" expl="postcondition">
+  <proof prover="1"><result status="valid" time="0.06" steps="409"/></proof>
   </goal>
  </transf>
  </goal>
