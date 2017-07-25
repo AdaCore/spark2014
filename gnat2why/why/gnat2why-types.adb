@@ -437,7 +437,7 @@ package body Gnat2Why.Types is
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       declare
-         Eq : Entity_Id := Get_User_Defined_Eq (E);
+         Eq : Entity_Id := Get_User_Defined_Eq (Base_Type (E));
       begin
 
          --  This module only contains an axiom when there is a user-provided
@@ -455,8 +455,6 @@ package body Gnat2Why.Types is
             end if;
 
             declare
-               Need_Convert : constant Boolean :=
-                 Is_Scalar_Type (E) and then not Is_Boolean_Type (E);
                Var_A : constant W_Identifier_Id :=
                  New_Identifier (Ada_Node => E,
                                  Name     => "a",
@@ -466,19 +464,15 @@ package body Gnat2Why.Types is
                                  Name     => "b",
                                  Typ      => Ty);
                Arg_A : constant W_Expr_Id :=
-                 (if Need_Convert then
-                     Insert_Simple_Conversion
-                       (Domain => EW_Term,
-                        Expr   => +Var_A,
-                        To     => Base_Why_Type (Ty))
-                  else +Var_A);
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +Var_A,
+                    To     => Type_Of_Node (Base_Type (E)));
                Arg_B : constant W_Expr_Id :=
-                 (if Need_Convert then
-                     Insert_Simple_Conversion
-                       (Domain => EW_Term,
-                        Expr   => +Var_B,
-                        To     => Base_Why_Type (Ty))
-                  else +Var_B);
+                 Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +Var_B,
+                    To     => Type_Of_Node (Base_Type (E)));
                Def   : constant W_Expr_Id :=
                  New_Function_Call
                    (Ada_Node => Eq,
