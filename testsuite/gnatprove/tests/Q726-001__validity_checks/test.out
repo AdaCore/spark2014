@@ -1,0 +1,9 @@
+essai05.adb:16:16: info: initialization of "R" proved
+essai05.adb:16:16: info: initialization of "R" proved, in call inlined at essai05.adb:22
+essai05.adb:16:19: info: initialization of "A" proved, in call inlined at essai05.adb:22
+essai05.adb:18:14: info: initialization of "R" proved
+essai05.adb:18:14: info: initialization of "R" proved, in call inlined at essai05.adb:22
+essai05.adb:21:04: warning: "A" is not modified, could be declared constant
+essai05.adb:22:04: warning: variable "B" is not referenced
+essai05.adb:22:19: info: initialization of "C17b" proved
+essai05.adb:22:19: medium: range check might fail (e.g. when A'First = -3 and A'Last = -1 and B'First = -3 and B'Last = -3)

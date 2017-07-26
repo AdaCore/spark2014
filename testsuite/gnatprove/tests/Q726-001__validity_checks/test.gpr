@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+     for Switches ("ada") use ("-gnatw.eH.YD", "-gnato", "-gnatE", "-gnatf", "-fstack-check", "-g", "-gnata", "-gnatVa", "-gnateA", "-gnateE", "-gnateF", "-gnateV");
+   end Compiler;
+end Test;
