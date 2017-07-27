@@ -658,55 +658,55 @@
 </theory>
 <theory name="Clock__setstringsegment___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Clock__package_def" sum="a586b2635ac7cefce6f37a5eac481545" expanded="true">
+<theory name="Clock__package_def" sum="1e2cd7ceaa02b59ebafe96a702ab08a3" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__poll__subprogram_def" sum="ee2f36c9a5cb4d28aa5dc145d39baff2" expanded="true">
+<theory name="Clock__poll__subprogram_def" sum="6be7de68b667f2b22d85ca0a4c882e29" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__thecurrenttime__subprogram_def" sum="452ee01db1592c0ee6d4afb868453801" expanded="true">
+<theory name="Clock__thecurrenttime__subprogram_def" sum="515146804edbb6a99e0cf1b005ed3c4e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__getnow__subprogram_def" sum="5941ed8171a8a223ac890ee97577a70d" expanded="true">
+<theory name="Clock__getnow__subprogram_def" sum="af611c84ef2ede5f85b6bbf2d3abcbc5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__greaterthan__subprogram_def" sum="8fa674833fa2f98fb2dda611d2d01a64" expanded="true">
+<theory name="Clock__greaterthan__subprogram_def" sum="53138ffcc5566aed772363d2ac6d72d6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__lessthan__subprogram_def" sum="8fa674833fa2f98fb2dda611d2d01a64" expanded="true">
+<theory name="Clock__lessthan__subprogram_def" sum="53138ffcc5566aed772363d2ac6d72d6" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__greaterthanorequal__subprogram_def" sum="2c60a01d79c934d62f94748a6c3361c0" expanded="true">
+<theory name="Clock__greaterthanorequal__subprogram_def" sum="dc01e7c61e855b0157e4ede329747226" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__lessthanorequal__subprogram_def" sum="174f768bf1c774ecf51f15ac8e3019db" expanded="true">
+<theory name="Clock__lessthanorequal__subprogram_def" sum="2f01427103b69e437e2ceb1023fcbd27" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Clock__constructtime__subprogram_def" sum="a8891aae00467bc3200c7113ecf71147" expanded="true">
+<theory name="Clock__constructtime__subprogram_def" sum="8f3a1aa0303af46b0bf2e1a5547ec1c0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
@@ -725,42 +725,42 @@
   <proof prover="0"><result status="valid" time="0.03" steps="9"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="9"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="9"/></proof>
   </goal>
   <goal name="WP_parameter def.7" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Clock__splittime__subprogram_def" sum="33ce8d0bb8c8c3c39b4dbffa086150ec" expanded="true">
+<theory name="Clock__splittime__subprogram_def" sum="04141f0474fe881ac273cd00ee78b158" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="65"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="65"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="84"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="84"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Clock__startofday__subprogram_def" sum="315976f34cd06356697466963c9a6f85" expanded="true">
+<theory name="Clock__startofday__subprogram_def" sum="13706abf2ba26aabf3ce515f8721ea39" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -773,7 +773,7 @@
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
@@ -797,34 +797,34 @@
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="precondition">
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.12" expl="precondition">
+  <goal name="WP_parameter def.11" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.14" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Clock__printtime__subprogram_def" sum="f10bef2fd9531c89221bac963522181b" expanded="true">
+<theory name="Clock__printtime__subprogram_def" sum="c3c9f41e4f30f98cbf822051630428a8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
@@ -833,25 +833,25 @@
   <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.6" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="precondition">
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  </goal>
   <goal name="WP_parameter def.8" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.9" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.10" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.11" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.12" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.13" expl="precondition">
   <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
@@ -860,30 +860,30 @@
   <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.15" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.16" expl="precondition">
   <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.17" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.18" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.19" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.20" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.21" expl="precondition">
+  <goal name="WP_parameter def.20" expl="precondition">
   <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.21" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.04" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Clock__addduration__subprogram_def" sum="844ddeea1cd1630d57f39bc8e7bbb2dd" expanded="true">
+<theory name="Clock__addduration__subprogram_def" sum="4f99602b623990d1fb22e38cc6de9901" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -896,13 +896,13 @@
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="assertion">
-  <proof prover="0"><result status="valid" time="0.04" steps="13"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="13"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="assertion">
   <proof prover="0"><result status="valid" time="0.03" steps="13"/></proof>

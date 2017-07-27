@@ -6271,12 +6271,12 @@
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Updates__activity__subprogram_def" sum="23329b3a9374ac61979fa1b3360be050" expanded="true">
+<theory name="Updates__activity__subprogram_def" sum="59e4390eaba7529240c174b3d1c610d8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="postcondition">

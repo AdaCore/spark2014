@@ -2991,25 +2991,25 @@
  </transf>
  </goal>
 </theory>
-<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="a30c2c8eef4a9a87a8df435c4762529a" expanded="true">
+<theory name="Doorapi__getdoorstateraw__subprogram_def" sum="bc24cc2ab1966de5a5ebf440580f8c5d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.39"/></proof>
-  <proof prover="1"><result status="unknown" time="0.08" steps="407"/></proof>
+  <proof prover="0"><result status="unknown" time="0.54"/></proof>
+  <proof prover="1"><result status="unknown" time="0.07" steps="407"/></proof>
   <proof prover="2"><result status="unknown" time="0.07" steps="90941"/></proof>
-  <proof prover="3"><result status="unknown" time="0.06" steps="499"/></proof>
+  <proof prover="3"><result status="unknown" time="0.09" steps="499"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="0"><result status="unknown" time="1.32"/></proof>
+  <proof prover="0"><result status="unknown" time="1.39"/></proof>
   <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="unknown" time="0.17" steps="157015"/></proof>
+  <proof prover="2"><result status="unknown" time="0.14" steps="157015"/></proof>
   <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="precondition">
-  <proof prover="0"><result status="unknown" time="1.68"/></proof>
+  <proof prover="0"><result status="unknown" time="1.70"/></proof>
   <proof prover="1"><result status="timeout" time="20.00"/></proof>
-  <proof prover="2"><result status="unknown" time="0.17" steps="211406"/></proof>
+  <proof prover="2"><result status="unknown" time="0.18" steps="211406"/></proof>
   <proof prover="3"><result status="timeout" time="10.00"/></proof>
   </goal>
  </transf>

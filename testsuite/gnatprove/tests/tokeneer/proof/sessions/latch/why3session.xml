@@ -4895,7 +4895,7 @@
 </theory>
 <theory name="Latch__interfac__unlock___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Latch__package_def" sum="f78f3d0c4340f54b04e421bd861aa5cc" expanded="true">
+<theory name="Latch__package_def" sum="459f7d7b4c90d33f90daf9bdd66a0165" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -4907,7 +4907,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__latch_timeout__subprogram_def" sum="452ee01db1592c0ee6d4afb868453801" expanded="true">
+<theory name="Latch__latch_timeout__subprogram_def" sum="515146804edbb6a99e0cf1b005ed3c4e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -4925,7 +4925,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__init__subprogram_def" sum="ebd3d41f7ddd7bed7d26631de3c4d9aa" expanded="true">
+<theory name="Latch__init__subprogram_def" sum="876bc6fdbd7052fdf209e17eebb7af7d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -4937,23 +4937,23 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__updateinternallatch__subprogram_def" sum="5f68a5642d4779db10a9dbb1cb25088f" expanded="true">
+<theory name="Latch__updateinternallatch__subprogram_def" sum="896179f3a4df05f62d2db221dbc02fa5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.71"/></proof>
+  <proof prover="0"><result status="unknown" time="0.61"/></proof>
   <proof prover="1"><result status="unknown" time="0.05" steps="26"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="64248"/></proof>
+  <proof prover="2"><result status="unknown" time="0.07" steps="64248"/></proof>
   <proof prover="3"><result status="unknown" time="0.06" steps="33"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
-  <proof prover="1"><result status="valid" time="0.05" steps="34"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="34"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="45"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="45"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="41"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="41"/></proof>
   </goal>
   <goal name="WP_parameter def.5" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
@@ -4971,16 +4971,16 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="precondition">
-  <proof prover="0"><result status="unknown" time="0.23"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="18"/></proof>
-  <proof prover="2"><result status="unknown" time="0.04" steps="63657"/></proof>
-  <proof prover="3"><result status="unknown" time="0.03" steps="19"/></proof>
+  <proof prover="0"><result status="unknown" time="0.21"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="18"/></proof>
+  <proof prover="2"><result status="unknown" time="0.08" steps="63657"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="19"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="1"><result status="valid" time="0.02" steps="26"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="28"/></proof>
+  <proof prover="1"><result status="valid" time="0.04" steps="28"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.03" steps="26"/></proof>
@@ -4988,19 +4988,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__settimeout__subprogram_def" sum="cca69065f9abd61b3e48042490f0381a" expanded="true">
+<theory name="Latch__settimeout__subprogram_def" sum="adf4fc9af099f0712406f7add0f8502d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="1"><result status="valid" time="0.02" steps="52"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="postcondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="102"/></proof>
+  <proof prover="1"><result status="valid" time="0.02" steps="102"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Latch__failure__subprogram_def" sum="ebd3d41f7ddd7bed7d26631de3c4d9aa" expanded="true">
+<theory name="Latch__failure__subprogram_def" sum="876bc6fdbd7052fdf209e17eebb7af7d" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

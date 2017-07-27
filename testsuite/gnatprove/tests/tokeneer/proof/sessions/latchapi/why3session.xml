@@ -3557,26 +3557,26 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__unlock__subprogram_def" sum="e0588b7ee59eba45b3e5a69463a3f286" expanded="true">
+<theory name="Latchapi__unlock__subprogram_def" sum="4e8bd0b0fbaa24f601c8876b2b7dbd72" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.32"/></proof>
-  <proof prover="1"><result status="unknown" time="0.07" steps="397"/></proof>
-  <proof prover="2"><result status="unknown" time="0.06" steps="87355"/></proof>
-  <proof prover="3"><result status="unknown" time="0.07" steps="487"/></proof>
+  <proof prover="0"><result status="unknown" time="0.23"/></proof>
+  <proof prover="1"><result status="unknown" time="0.04" steps="397"/></proof>
+  <proof prover="2"><result status="unknown" time="0.05" steps="87355"/></proof>
+  <proof prover="3"><result status="unknown" time="0.04" steps="487"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Latchapi__lock__subprogram_def" sum="41e0a86a6ad40fa04fce13e9dfde5433" expanded="true">
+<theory name="Latchapi__lock__subprogram_def" sum="590a4bd36507c3301fbc8f54a96b3e96" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" time="0.30"/></proof>
-  <proof prover="1"><result status="unknown" time="0.05" steps="375"/></proof>
-  <proof prover="2"><result status="unknown" time="0.05" steps="75501"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="457"/></proof>
+  <proof prover="0"><result status="unknown" time="0.22"/></proof>
+  <proof prover="1"><result status="unknown" time="0.03" steps="375"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="75501"/></proof>
+  <proof prover="3"><result status="unknown" time="0.06" steps="457"/></proof>
   </goal>
  </transf>
  </goal>
