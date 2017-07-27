@@ -1746,10 +1746,6 @@ module Constr_Array
 
   type __t = map
 
-  function to_array (a : __t) : map = a
-
-  function of_array (a : map) : __t = a
-
   function dummy : __t
 
   function value__size : int
@@ -1808,10 +1804,6 @@ module Constr_Array_2
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 : bool
 
   type __t = map
-
-  function to_array (a : __t) : map = a
-
-  function of_array (a : map) : __t = a
 
   function dummy : __t
 
@@ -1875,10 +1867,6 @@ module Constr_Array_3
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 : bool
 
   type __t = map
-
-  function to_array (a : __t) : map = a
-
-  function of_array (a : map) : __t = a
 
   function dummy : __t
 
@@ -1946,10 +1934,6 @@ module Constr_Array_4
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 : bool
 
   type __t = map
-
-  function to_array (a : __t) : map = a
-
-  function of_array (a : map) : __t = a
 
   function dummy : __t
 
