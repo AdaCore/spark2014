@@ -782,6 +782,70 @@
 </theory>
 <theory name="Tree_model__d_seq__sequenceDefault_Initial_Condition___object___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__v_set__included_except__L253s__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__included_except__L253s__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__L_4__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__2__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__includes_intersection__L259s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__includes_intersection__L259s__item___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__to_count__idx___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__included_in_union__L256s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__included_in_union__L256s__item___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Ole__L_2__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__L_3__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__L_3__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__L52s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__L52s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__add__L_3__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__v_set__containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__add__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -789,6 +853,46 @@
 <theory name="Tree_model__v_set__containers__add__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__add__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__find__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__2__L_4__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Ole__L46s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Ole__L46s__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Ole__L149s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Ole__L149s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__to_index__position___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__to_count__idx" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__to_count__idx___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__intersection__L_5__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -798,6 +902,38 @@
 </theory>
 <theory name="Tree_model__v_set__containers__intersection__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__v_set__containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__intersection__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__intersection__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_equal__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_equal__L_5__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_equal__L56s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_equal__L56s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L60s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L60s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L58s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L58s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__range_shifted__L_6__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__remove__L_7__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__v_set__containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__remove__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -806,9 +942,21 @@
 </theory>
 <theory name="Tree_model__v_set__containers__remove__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__v_set__containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__remove__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__remove__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__v_set__containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__union__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__union__B_8__L_9__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -822,9 +970,57 @@
 </theory>
 <theory name="Tree_model__v_set__containers__union__B_8__l___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__v_set__containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__union__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__union__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__L_6__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__v_set__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__num_overlaps__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__num_overlaps__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__to_index__position" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__to_index__position___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__get__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__get__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__L_1__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Oeq__2__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__L_3__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__L_3__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__add__a" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -834,9 +1030,73 @@
 </theory>
 <theory name="Tree_model__d_seq__containers__add__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__d_seq__containers__add__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__add__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Olt__L44s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Olt__L44s__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Olt__L144s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Olt__L144s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__L_6__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__num_overlaps__L_6__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__d_seq__containers__num_overlaps__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__num_overlaps__p___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__contains__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__contains__L_2__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__contains__L48s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__contains__L48s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__length__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__constant_range__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__constant_range__L_1__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__constant_range__L50s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__constant_range__L50s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__2__L_4__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__2__L_4__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__2__L54s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__equal_except__2__L54s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__remove__L_7__j" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__remove__L_7__j___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__remove__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -846,9 +1106,53 @@
 </theory>
 <theory name="Tree_model__d_seq__containers__remove__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__d_seq__containers__remove__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__remove__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__remove__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__remove__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__set__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__d_seq__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__set__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__find__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__length__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__length__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__L_2__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__Ole__L_2__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__union__B_8__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -862,9 +1166,33 @@
 </theory>
 <theory name="Tree_model__d_seq__containers__union__B_8__l___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__d_seq__containers__union__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__union__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__union__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__union__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__d_seq__containers__union__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__union__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__union__B_8__L_9__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__union__B_8__L_9__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__L_5__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__containers__intersection__L_5__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__d_seq__containers__intersection__p" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -874,9 +1202,65 @@
 </theory>
 <theory name="Tree_model__d_seq__containers__intersection__a___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Tree_model__Oeq__L141s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__Oeq__L141s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__not_in_both__L266s__item" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__not_in_both__L266s__item___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__get__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__get__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__get__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__get__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Oeq__L42s__n" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__d_seq__Oeq__L42s__n___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__c1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__c1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__c2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__c2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__L_1__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__Oeq__2__L_1__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__c" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__c___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__e" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__v_set__containers__set__e___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Tree_model__v_set__containers__set__result" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__set__result___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L138s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L138s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L136s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L136s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L134s__i" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Tree_model__is_concat__L134s__i___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Tree_model__v_set__containers__empty_element_array_access" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -1118,19 +1502,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__length__subprogram_def" sum="711ea96b44095851aa187674fae482e7" expanded="true">
+<theory name="Tree_model__d_seq__length__subprogram_def" sum="7a47999812e27b973411d3c68f4253f0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__last__subprogram_def" sum="55b25daa00cff2a27a7530cbea662414" expanded="true">
+<theory name="Tree_model__d_seq__last__subprogram_def" sum="4936da3fbfb949f360a6165eb152a5af" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__get__subprogram_def" sum="6b3bce3c6dca96409194b6ea71a15b50" expanded="true">
+<theory name="Tree_model__d_seq__get__subprogram_def" sum="dbfe59925a0b83c4acab27192e51f125" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -1142,229 +1526,229 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Oeq__subprogram_def" sum="d68548c5694c6078ef5ae59856c47c50" expanded="true">
+<theory name="Tree_model__d_seq__Oeq__subprogram_def" sum="5695c230a5dd306a461d1862b1e4bbfc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Olt__subprogram_def" sum="d68548c5694c6078ef5ae59856c47c50" expanded="true">
+<theory name="Tree_model__d_seq__Olt__subprogram_def" sum="5695c230a5dd306a461d1862b1e4bbfc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__Ole__subprogram_def" sum="d68548c5694c6078ef5ae59856c47c50" expanded="true">
+<theory name="Tree_model__d_seq__Ole__subprogram_def" sum="5695c230a5dd306a461d1862b1e4bbfc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__contains__subprogram_def" sum="ee1cf8ad8a7677dfec41bd88f66d0429" expanded="true">
+<theory name="Tree_model__d_seq__contains__subprogram_def" sum="5b6218391874b54df26240c24e947131" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__constant_range__subprogram_def" sum="ee1cf8ad8a7677dfec41bd88f66d0429" expanded="true">
+<theory name="Tree_model__d_seq__constant_range__subprogram_def" sum="5b6218391874b54df26240c24e947131" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__equal_except__subprogram_def" sum="57727d3654083d3537117f2525679a80" expanded="true">
+<theory name="Tree_model__d_seq__equal_except__subprogram_def" sum="0e72d25a67032771687696faaa5e029c" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__equal_except__2__subprogram_def" sum="c8239d25a55b203b1ab9c3bc53b45485" expanded="true">
+<theory name="Tree_model__d_seq__equal_except__2__subprogram_def" sum="4e4aaa282f07c4d7c23417d40cfc3869" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_equal__subprogram_def" sum="51a3b2b80f37c37f17119acc7117de8b" expanded="true">
+<theory name="Tree_model__d_seq__range_equal__subprogram_def" sum="2b031e530ddbd817094c49c157eae596" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__d_seq__range_shifted__subprogram_def" sum="71dacda80c328066c245888d8b527229" expanded="true">
+<theory name="Tree_model__d_seq__range_shifted__subprogram_def" sum="e4d8e123ef6bdc1b9301d319c593f46e" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.4" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.00" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__set__subprogram_def" sum="c49d275e1c117b0fc35b33b0c28ad171" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__add__subprogram_def" sum="ed2c3689862077e0ebb7c0f500d9ca38" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__add__2__subprogram_def" sum="6ed254eeb503c00cb7bc16ad0edd4b7c" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__remove__subprogram_def" sum="4ae33c39a40341c928100579007740e6" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__iter_first__subprogram_def" sum="4936da3fbfb949f360a6165eb152a5af" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__iter_has_element__subprogram_def" sum="964ecff2468c2c46953a0121fa330c42" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__d_seq__iter_next__subprogram_def" sum="5ad872ea55a10c1bec13e114860cad39" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__path_typePredicate__subprogram_def" sum="01a05bd2310fc25018ae9f7338620871" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+ </transf>
+ </goal>
+</theory>
+<theory name="Tree_model__is_concat__subprogram_def" sum="c8b78af305ad97aaaccecc21718ad068" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="8"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
+  <goal name="WP_parameter def.4" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
+  <goal name="WP_parameter def.5" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.6" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.7" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.8" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="14"/></proof>
+  </goal>
+  <goal name="WP_parameter def.9" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.10" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
+  </goal>
+  <goal name="WP_parameter def.11" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.12" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="14"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__set__subprogram_def" sum="2c27f4a1735929d5415d8c2d9d24f51e" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__add__subprogram_def" sum="8daddc9ad38bc7014ffb7aa4ce29d79a" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__add__2__subprogram_def" sum="6a0ebe899b581d03e877c6e3b4b22c53" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__remove__subprogram_def" sum="1bfbd23ec09e1a23ec477ac12f934a09" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__iter_first__subprogram_def" sum="55b25daa00cff2a27a7530cbea662414" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__iter_has_element__subprogram_def" sum="4e954c0ddcb8c62f6824fe5ec92f5769" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__d_seq__iter_next__subprogram_def" sum="0ff031dd8abd13ca9cdc62cb866c1394" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__path_typePredicate__subprogram_def" sum="be5b4c4a5b43f3afd6ffff73094c1e49" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
- </transf>
- </goal>
-</theory>
-<theory name="Tree_model__is_concat__subprogram_def" sum="8cc50dc72ee207e06f76567a3134450b" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="8"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.5" expl="5. precondition">
+  <goal name="WP_parameter def.13" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="7. precondition">
+  <goal name="WP_parameter def.14" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.8" expl="8. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="14"/></proof>
+  <goal name="WP_parameter def.15" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.9" expl="9. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.16" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.10" expl="10. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="11. precondition">
+  <goal name="WP_parameter def.17" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.12" expl="12. precondition">
-  <proof prover="0"><result status="valid" time="0.00" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.13" expl="13. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.14" expl="14. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.15" expl="15. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
-  </goal>
-  <goal name="WP_parameter def.16" expl="16. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.17" expl="17. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.18" expl="18. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
+  <goal name="WP_parameter def.18" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.02" steps="13"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__Oeq__subprogram_def" sum="225c133b9c6447059d93051d17c52516" expanded="true">
+<theory name="Tree_model__Oeq__subprogram_def" sum="1895a5c85b9f663f70690b5652f34d3a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_add__subprogram_def" sum="6eaf30bcab82f9d0ea687806cf20abb0" expanded="true">
+<theory name="Tree_model__is_add__subprogram_def" sum="152f2ad62bd81cd06362ac2d2d4970a9" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_equal__subprogram_def" sum="bf40ea7f1533d72685b63b048337546e" expanded="true">
+<theory name="Tree_model__preserve_equal__subprogram_def" sum="c044cde1abe5b96df52cc4ad841ad7fc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. postcondition">
+  <goal name="WP_parameter def.1" expl="postcondition">
   <proof prover="0"><result status="valid" time="0.02" steps="226"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__preserve_concat__subprogram_def" sum="2218d5c8adcdc26cc7305629486c40b3" expanded="true">
+<theory name="Tree_model__preserve_concat__subprogram_def" sum="b63d10067e393ebe613b482c33ba0e81" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="valid" time="0.03" steps="1250"/></proof>
+  <goal name="WP_parameter def.3" expl="postcondition">
+  <proof prover="0"><result status="valid" time="0.04" steps="1250"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__package_def" sum="ea6626e1baa40998403baca47ddbc0dc" expanded="true">
+<theory name="Tree_model__v_set__package_def" sum="49e8d4a12ddbce6bd15773ccfb801ede" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
@@ -1382,133 +1766,133 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_first__subprogram_def" sum="719728c814b89a7f614ee1fa37b37c7c" expanded="true">
+<theory name="Tree_model__v_set__iter_first__subprogram_def" sum="5121d1d0db5344d4c4c85c7a3b2c72bc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_has_element__subprogram_def" sum="3708492f1ea07abb2fe0105a536872bd" expanded="true">
+<theory name="Tree_model__v_set__iter_has_element__subprogram_def" sum="f7ec01551c728e450bdb071c348d1e79" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_next__subprogram_def" sum="58a77dad08f4fb96e156b34bfae97d91" expanded="true">
+<theory name="Tree_model__v_set__iter_next__subprogram_def" sum="74a5c031276da2b3bf34b7fa9f9accaa" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__iter_element__subprogram_def" sum="f091a080d4fe49f4bf9b678a2f730616" expanded="true">
+<theory name="Tree_model__v_set__iter_element__subprogram_def" sum="d077ab3e61261f3c528117f7096fd897" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__contains__subprogram_def" sum="5b5529ab45a7e8fffeabc6ce286590b8" expanded="true">
+<theory name="Tree_model__v_set__contains__subprogram_def" sum="154b097985437ae40e173c50106b4347" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__length__subprogram_def" sum="32a70e7af2463e3ab57fc97ef3321841" expanded="true">
+<theory name="Tree_model__v_set__length__subprogram_def" sum="3c95dd4f97c703a57a4101f5462840c5" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__Ole__subprogram_def" sum="510728f2f2ac7c2aa8fcade08c4935f9" expanded="true">
+<theory name="Tree_model__v_set__Ole__subprogram_def" sum="1589cba3c1edc31c85bc096156569ae0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__Oeq__subprogram_def" sum="510728f2f2ac7c2aa8fcade08c4935f9" expanded="true">
+<theory name="Tree_model__v_set__Oeq__subprogram_def" sum="1589cba3c1edc31c85bc096156569ae0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__is_empty__subprogram_def" sum="719728c814b89a7f614ee1fa37b37c7c" expanded="true">
+<theory name="Tree_model__v_set__is_empty__subprogram_def" sum="5121d1d0db5344d4c4c85c7a3b2c72bc" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__included_except__subprogram_def" sum="f95d932c3f0c524bbed1764ade2056e5" expanded="true">
+<theory name="Tree_model__v_set__included_except__subprogram_def" sum="e3150e4bfd85f50e666d401e35edd1b4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__includes_intersection__subprogram_def" sum="90bf9200849644476a00dc8367ff765f" expanded="true">
+<theory name="Tree_model__v_set__includes_intersection__subprogram_def" sum="1bf1d5d4460bfad8adcaceabbc4cc967" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__included_in_union__subprogram_def" sum="90bf9200849644476a00dc8367ff765f" expanded="true">
+<theory name="Tree_model__v_set__included_in_union__subprogram_def" sum="1bf1d5d4460bfad8adcaceabbc4cc967" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__is_singleton__subprogram_def" sum="64c7167c43fbee7574984b857e1a4b3b" expanded="true">
+<theory name="Tree_model__v_set__is_singleton__subprogram_def" sum="3cf428c31da7bc08132b85ba2629d72a" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__not_in_both__subprogram_def" sum="90bf9200849644476a00dc8367ff765f" expanded="true">
+<theory name="Tree_model__v_set__not_in_both__subprogram_def" sum="1bf1d5d4460bfad8adcaceabbc4cc967" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__no_overlap__subprogram_def" sum="07243892b023a2ef21615cfa0d8ce062" expanded="true">
+<theory name="Tree_model__v_set__no_overlap__subprogram_def" sum="c0b099a82fd60233a7c6e2daf33b3257" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__intersection__subprogram_def" sum="07243892b023a2ef21615cfa0d8ce062" expanded="true">
+<theory name="Tree_model__v_set__intersection__subprogram_def" sum="c0b099a82fd60233a7c6e2daf33b3257" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__num_overlaps__subprogram_def" sum="07243892b023a2ef21615cfa0d8ce062" expanded="true">
+<theory name="Tree_model__v_set__num_overlaps__subprogram_def" sum="c0b099a82fd60233a7c6e2daf33b3257" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__add__subprogram_def" sum="0d1c3b7b65c3740f744f2be0efe8d87b" expanded="true">
+<theory name="Tree_model__v_set__add__subprogram_def" sum="ac512e881c7273429d5f24c25e786b79" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__remove__subprogram_def" sum="ba374df7a912d3c1c2a90264974c3f15" expanded="true">
+<theory name="Tree_model__v_set__remove__subprogram_def" sum="47094bc532366b6ebbc000e4594a10f8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__v_set__union__subprogram_def" sum="f4fa51ab50bf43db4bff6232a301436f" expanded="true">
+<theory name="Tree_model__v_set__union__subprogram_def" sum="d19a6f353edaf5b6fe3a0e8edb3cd5df" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
+  <goal name="WP_parameter def.1" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
   <proof prover="0"><result status="valid" time="0.01" steps="9"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Tree_model__is_add__2__subprogram_def" sum="2a6702c2ab3bf74141ccb1e870d223e3" expanded="true">
+<theory name="Tree_model__is_add__2__subprogram_def" sum="1f99c93517f49a43de4f0c5a58f039a8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>
