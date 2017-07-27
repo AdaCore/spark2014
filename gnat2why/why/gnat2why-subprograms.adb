@@ -4734,6 +4734,7 @@ package body Gnat2Why.Subprograms is
                Pred_Name : Why_Name_Enum;
                Pre       : W_Pred_Id;
                Post      : W_Pred_Id;
+               Effects   : W_Effects_Id;
                Dispatch  : Boolean := False) return W_Declaration_Id;
             --  create the function declaration with the given Logic_Id,
             --  Prog_Id, Pre and Post.
@@ -4748,6 +4749,7 @@ package body Gnat2Why.Subprograms is
                Pred_Name : Why_Name_Enum;
                Pre       : W_Pred_Id;
                Post      : W_Pred_Id;
+               Effects   : W_Effects_Id;
                Dispatch  : Boolean := False) return W_Declaration_Id
             is
                --  Each function has in its postcondition that its result is
@@ -4770,23 +4772,15 @@ package body Gnat2Why.Subprograms is
                Pred_Args  : constant W_Expr_Array :=
                  +Result_Id & Tag_Arg & Logic_Func_Args;
 
-               Effects : constant W_Effects_Id := New_Effects;
-
             begin
 
                --  A volatile function has an effect, and should not have the
                --  special postcondition which says it's result is equal to the
                --  logic function.
 
-               --  For a volatile function that is not protected, we need to
-               --  generate a dummy effect. Protected functions are OK, they
-               --  already have their own state (the protected object).
-
-               if Is_Volatile_Function (E)
-                 and then not Within_Protected_Type (E)
+               if not Is_Volatile_Function (E)
+                 or else Within_Protected_Type (E)
                then
-                  Effects_Append_To_Writes (Effects, Volatile_State);
-               else
                   Param_Post :=
                     +New_And_Expr
                     (Domain    => EW_Pred,
@@ -4808,6 +4802,7 @@ package body Gnat2Why.Subprograms is
                               else +True_Pred),
                         3 => +Param_Post));
                end if;
+
                return New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
@@ -4857,9 +4852,15 @@ package body Gnat2Why.Subprograms is
                end;
             end if;
 
+            --  For a volatile function that is not protected, we need to
+            --  generate a dummy effect. Protected functions are OK, they
+            --  already have their own state (the protected object).
+
             if Is_Volatile_Function (E)
               and then not Within_Protected_Type (E)
             then
+               Effects_Append_To_Writes (Effects, Volatile_State);
+
                Emit
                  (File,
                   New_Global_Ref_Declaration
@@ -4875,7 +4876,8 @@ package body Gnat2Why.Subprograms is
                                      Prog_Id   => Prog_Id,
                                      Pred_Name => WNE_Func_Guard,
                                      Pre       => Pre,
-                                     Post      => Post));
+                                     Post      => Post,
+                                     Effects   => Effects));
 
             if Is_Dispatching_Operation (E) then
                Emit
@@ -4889,6 +4891,7 @@ package body Gnat2Why.Subprograms is
                              Pred_Name => WNE_Dispatch_Func_Guard,
                              Pre       => Dispatch_Pre,
                              Post      => Dispatch_Post,
+                             Effects   => Effects,
                              Dispatch  => True))));
             end if;
 
@@ -4903,7 +4906,8 @@ package body Gnat2Why.Subprograms is
                              Prog_Id   => Prog_Id,
                              Pred_Name => WNE_Refined_Func_Guard,
                              Pre       => Pre,
-                             Post      => Refined_Post))));
+                             Post      => Refined_Post,
+                             Effects   => Effects))));
             end if;
          end;
 
