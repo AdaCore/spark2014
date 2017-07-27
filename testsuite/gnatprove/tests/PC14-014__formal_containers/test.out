@@ -772,7 +772,7 @@ my_maps.adb:113:16: info: initialization of private part of "L" proved
 my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:115:15: info: initialization of private part of "L" proved
 my_maps.adb:116:18: info: initialization of private part of "L" proved
-my_maps.adb:117:07: medium: precondition might fail (e.g. when C = (Node => 0))
+my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:117:15: info: initialization of private part of "L" proved
 my_maps.adb:117:18: info: initialization of "C.Node" proved
 my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
@@ -1224,7 +1224,7 @@ my_ordered_sets.adb:135:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:136:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:136:15: info: initialization of private part of "K" proved
 my_ordered_sets.adb:137:18: info: initialization of private part of "K" proved
-my_ordered_sets.adb:138:22: medium: assertion might fail, cannot prove Contains (K, 2)
+my_ordered_sets.adb:138:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:138:32: info: initialization of private part of "K" proved
 my_ordered_sets.adb:139:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:139:15: info: initialization of private part of "K" proved
