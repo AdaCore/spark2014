@@ -130,7 +130,7 @@ Attribute                              Allowed in SPARK 2014 Comment
 P'Access			      No		     Restricted access types
 X'Access	    		      Yes
 X'Address	    		      No                     Only allowed in representation clauses
-S'Adjacent	    		      Yes
+S'Adjacent	    		      Yes                    Implicit precondition (Ada RM A.5.3(50))
 S'Aft				      Yes
 S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
@@ -201,7 +201,7 @@ X'Overlaps_Storage 		      No
 D'Partition_Id			      Yes
 S'Pos				      Yes
 R.C'Position			      Warn                   Warning in pedantic mode
-S'Pred				      Yes
+S'Pred				      Yes                    Implicit precondition (Ada RM 3.5(27))
 P'Priority	   		      No                     Ravenscar
 A'Range				      Yes
 S'Range				      Yes
@@ -223,7 +223,7 @@ S'Storage_Pool			      No		     Restricted access types
 S'Storage_Size			      No		     Restricted access types
 T'Storage_Size			      Yes
 S'Stream_Size			      No		     No streams
-S'Succ				      Yes
+S'Succ				      Yes                    Implicit precondition (Ada RM 3.5(24))
 S'Tag				      No		     No tags
 X'Tag				      No		     No tags
 T'Terminated			      Yes
@@ -232,14 +232,14 @@ S'Truncation			      Yes
 S'Truncation			      Yes
 X'Unchecked_Access  		      No
 X'Update            		      Yes
-S'Val				      Yes
+S'Val				      Yes                    Implicit precondition (Ada RM 3.5.5(7))
 X'Valid				      Yes	             Assumed to be True at present
-S'Value				      Yes
+S'Value				      Yes                    Implicit precondition (Ada RM 3.5(55/3))
 P'Version	  		      Yes
 S'Wide_Image			      Yes
-S'Wide_Value			      Yes
+S'Wide_Value			      Yes                    Implicit precondition (Ada RM 3.5(43/3))
 S'Wide_Wide_Image 		      Yes
-S'Wide_Wide_Value 		      Yes
+S'Wide_Wide_Value 		      Yes                    Implicit precondition (Ada RM 3.5(39.12/3))
 S'Wide_Wide_Width		      Yes
 S'Wide_Width			      Yes
 S'Width				      Yes
