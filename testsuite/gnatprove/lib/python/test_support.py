@@ -27,7 +27,7 @@ TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
 os.chdir(TESTDIR)
 
-is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*:" +
+is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
                     r" (info|warning|low|medium|high)?(: )?(.*$)")
 is_mark = re.compile(r"@(\w*):(\w*)")
 
