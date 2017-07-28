@@ -203,18 +203,9 @@ package body SPARK_Util.Types is
          then Associated_Node_For_Itype (Ty)
          else Ty);
 
-      Main_CU : Entity_Id := Main_Unit_Entity;
-
    begin
-      --  If the current compilation unit is a child unit, go to its parent.
-
-      while Is_Child_Unit (Main_CU) loop
-         Main_CU := Unique_Defining_Entity
-           (Unit (Enclosing_Lib_Unit_Node (Scope (Main_CU))));
-      end loop;
       return Has_Invariants_In_SPARK (Ty) and then
-        Unique_Defining_Entity (Unit (Enclosing_Lib_Unit_Node (Real_Node))) =
-        Main_CU;
+        Is_Declared_In_Main_Lib_Unit (Real_Node);
    end Has_Visible_Type_Invariants;
 
    --------------------------------

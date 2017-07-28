@@ -201,13 +201,14 @@ package Gnat2Why.Expr is
    --     over [Expr].
 
    function Compute_Dynamic_Invariant
-     (Expr          : W_Term_Id;
-      Ty            : Entity_Id;
-      Params        : Transformation_Params;
-      Initialized   : W_Term_Id := True_Term;
-      Only_Var      : W_Term_Id := True_Term;
-      Top_Predicate : W_Term_Id := True_Term;
-      Use_Pred      : Boolean := True) return W_Pred_Id
+     (Expr             : W_Term_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params;
+      Initialized      : W_Term_Id := True_Term;
+      Only_Var         : W_Term_Id := True_Term;
+      Top_Predicate    : W_Term_Id := True_Term;
+      Include_Type_Inv : W_Term_Id := True_Term;
+      Use_Pred         : Boolean := True) return W_Pred_Id
    with Post => (if not Use_Pred
                    and Compute_Dynamic_Invariant'Result /= True_Pred then
                    Type_Needs_Dynamic_Invariant (Ty));
@@ -218,6 +219,8 @@ package Gnat2Why.Expr is
    --     the variable parts of [Expr].
    --  @param Top_Predicate true term iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
+   --  @param Include_Type_Inv true term iff the dynamic invariant should
+   --     consider the non-local type invariants possibly associated with [Ty].
    --  @param Params transformation parameters
    --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic invariant of type [Ty]

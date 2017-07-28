@@ -261,7 +261,12 @@ package body Gnat2Why.Types is
             Top_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => EW_Bool_Type,
                                    Base_Name => "do_toplevel");
-            --  Should we check the toplevel predicate
+            --  Should we include the toplevel predicate
+
+            Inv_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                   Base_Name => "do_typ_inv");
+            --  Should we include the non local type invariants
 
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => Type_Of_Node (E),
@@ -281,13 +286,14 @@ package body Gnat2Why.Types is
             Push_Binders_To_Symbol_Table (Items);
 
             Def := Compute_Dynamic_Invariant
-              (Expr          => +Main_Arg,
-               Ty            => E,
-               Initialized   => +Init_Arg,
-               Only_Var      => +Ovar_Arg,
-               Top_Predicate => +Top_Arg,
-               Params        => Logic_Params (File),
-               Use_Pred      => False);
+              (Expr             => +Main_Arg,
+               Ty               => E,
+               Initialized      => +Init_Arg,
+               Only_Var         => +Ovar_Arg,
+               Top_Predicate    => +Top_Arg,
+               Include_Type_Inv => +Inv_Arg,
+               Params           => Logic_Params (File),
+               Use_Pred         => False);
 
             Emit (File,
                   New_Function_Decl
@@ -303,6 +309,8 @@ package body Gnat2Why.Types is
                                      3 => Binder_Type'(B_Name => Ovar_Arg,
                                                        others => <>),
                                      4 => Binder_Type'(B_Name => Top_Arg,
+                                                       others => <>),
+                                     5 => Binder_Type'(B_Name => Inv_Arg,
                                                        others => <>))
                      & To_Binder_Array (Items)));
 

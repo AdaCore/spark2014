@@ -3451,13 +3451,14 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Invariant
-     (Expr          : W_Term_Id;
-      Ty            : Entity_Id;
-      Params        : Transformation_Params;
-      Initialized   : W_Term_Id := True_Term;
-      Only_Var      : W_Term_Id := True_Term;
-      Top_Predicate : W_Term_Id := True_Term;
-      Use_Pred      : Boolean := True) return W_Pred_Id
+     (Expr             : W_Term_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params;
+      Initialized      : W_Term_Id := True_Term;
+      Only_Var         : W_Term_Id := True_Term;
+      Top_Predicate    : W_Term_Id := True_Term;
+      Include_Type_Inv : W_Term_Id := True_Term;
+      Use_Pred         : Boolean := True) return W_Pred_Id
    is
 
       function Invariant_For_Comp
@@ -3497,17 +3498,18 @@ package body Gnat2Why.Expr is
 
          T_Comp :=
            +Compute_Dynamic_Invariant
-           (Expr          => C_Expr,
-            Ty            => C_Ty,
-            Initialized   =>
+           (Expr             => C_Expr,
+            Ty               => C_Ty,
+            Initialized      =>
               (if (Present (E) and then Ekind (E) = E_Discriminant)
-                 or else Is_Protected_Type (Retysp (Ty))
+               or else Is_Protected_Type (Retysp (Ty))
                then True_Term
                else Initialized),
-            Only_Var      => False_Term,
-            Top_Predicate => True_Term,
-            Params        => Params,
-            Use_Pred      => Use_Pred);
+            Only_Var         => False_Term,
+            Top_Predicate    => True_Term,
+            Include_Type_Inv => Include_Type_Inv,
+            Params           => Params,
+            Use_Pred         => Use_Pred);
 
          --  If elements of a cmposite type have default discriminants and are
          --  not constrained then 'Constrained returns false on them.
@@ -3571,7 +3573,7 @@ package body Gnat2Why.Expr is
             Vars  : constant W_Expr_Array :=
               Get_Args_From_Variables
                 (To_Name_Set (Variables), Params.Ref_Allowed);
-            Num_B : constant Positive := 4 + Vars'Length;
+            Num_B : constant Positive := 5 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
 
          begin
@@ -3579,7 +3581,8 @@ package body Gnat2Why.Expr is
             Args (2) := +Initialized;
             Args (3) := +Only_Var;
             Args (4) := +Top_Predicate;
-            Args (5 .. Num_B) := Vars;
+            Args (5) := +Include_Type_Inv;
+            Args (6 .. Num_B) := Vars;
 
             return New_Call (Name => E_Symb (E => Ty_Ext,
                                              S => WNE_Dynamic_Invariant),
@@ -3786,9 +3789,15 @@ package body Gnat2Why.Expr is
               Include_Comp => False,
               Use_Pred     => Use_Pred);
       begin
-         T := +New_And_Then_Expr (Left   => +T,
-                                  Right  => +Type_Inv,
-                                  Domain => EW_Pred);
+         if not Is_True_Boolean (+Type_Inv) then
+            T := +New_And_Then_Expr
+              (Left   => +T,
+               Right  => New_Conditional (Domain    => EW_Pred,
+                                          Condition => +Include_Type_Inv,
+                                          Then_Part => +Type_Inv,
+                                          Typ       => EW_Bool_Type),
+               Domain => EW_Pred);
+         end if;
       end;
 
       --  Compute dynamic invariant for its components

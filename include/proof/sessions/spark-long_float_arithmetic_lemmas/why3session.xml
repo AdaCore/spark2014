@@ -331,7 +331,7 @@
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="1" timelimit="10"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="399"/></proof>
+  <proof prover="3"><result status="valid" steps="513"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
@@ -348,8 +348,7 @@
   </goal>
   <goal name="WP_parameter def.1" expl="precondition" proved="true">
   <proof prover="1" timelimit="10"><result status="timeout"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="440"/></proof>
+  <proof prover="2"><result status="valid" steps="9587827"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="236"/></proof>
@@ -357,7 +356,7 @@
   <goal name="WP_parameter def.3" expl="precondition" proved="true">
   <proof prover="1" timelimit="10"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="406"/></proof>
+  <proof prover="3"><result status="valid" steps="514"/></proof>
   </goal>
   <goal name="WP_parameter def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>

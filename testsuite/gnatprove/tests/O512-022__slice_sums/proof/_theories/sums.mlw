@@ -24,7 +24,7 @@ module Sums__extended_index
    writes { x }
 
  (* All values of type extended_index are in range *)
- predicate dynamic_invariant (expr : int) bool bool bool  =
+ predicate dynamic_invariant (expr : int) bool bool bool bool =
    dynamic_property first last expr
  
  (* We know nothing for default initialization of variables of type
@@ -68,7 +68,7 @@ module Sums__index
    writes { x }
 
  (* All values of type index are in range *)
- predicate dynamic_invariant (expr : int) bool bool bool  =
+ predicate dynamic_invariant (expr : int) bool bool bool bool =
    dynamic_property first last expr
  
  (* We know nothing for default initialization of variables of type index *)
@@ -218,7 +218,7 @@ module Sums__vector
 
  (* If vectors are not empty, their bounds are between Index.first and
     Index.last *)
- predicate dynamic_invariant (expr : vector) bool (skip_bounds : bool) bool  =
+ predicate dynamic_invariant (expr : vector) bool (skip_bounds : bool) bool bool =
   (if skip_bounds then true
    else dynamic_property Sums__index.first Sums__index.last
           (first expr) (last expr))
@@ -285,7 +285,7 @@ module Sums__slice_bounds
  function dummy : slice_bounds
 
  (* No particular property applies to all values of types slice_bounds *)
- predicate dynamic_invariant slice_bounds bool bool bool = true
+ predicate dynamic_invariant slice_bounds bool bool bool bool = true
  
  (* We know nothing for default initialization of variables of slice_bounds *)
  predicate default_initial_assumption slice_bounds bool = true

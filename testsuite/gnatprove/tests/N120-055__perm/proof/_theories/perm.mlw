@@ -18,7 +18,7 @@ module Perm__index
  function last = last,
  predicate in_range = in_range
 
- predicate dynamic_invariant (expr : int) bool bool bool  =
+ predicate dynamic_invariant (expr : int) bool bool bool bool =
   dynamic_property first last expr
  
  predicate default_initial_assumption int bool = true
@@ -68,7 +68,7 @@ module Perm__nat_array
 
  type nat_array  = __t
 
- predicate dynamic_invariant (expr : nat_array) bool (skip_bounds : bool) bool  =
+ predicate dynamic_invariant (expr : nat_array) bool (skip_bounds : bool) bool bool  =
   (if skip_bounds then true else
     dynamic_property Perm__index.first Perm__index.last (first expr) (last expr))
 end
