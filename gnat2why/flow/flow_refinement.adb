@@ -196,6 +196,13 @@ package body Flow_Refinement is
    -------------------------
 
    function Is_Globally_Visible (N : Node_Id) return Boolean is
+     (Is_Visible (N, Null_Flow_Scope));
+
+   ---------------------------------
+   -- Is_Visible_From_Other_Units --
+   ---------------------------------
+
+   function Is_Visible_From_Other_Units (N : Node_Id) return Boolean is
 
       Looking_Scop : constant Flow_Scope :=
         (if Is_Child_Unit (Main_Unit_Entity)
@@ -207,7 +214,7 @@ package body Flow_Refinement is
 
    begin
       return Is_Visible (N, Looking_Scop);
-   end Is_Globally_Visible;
+   end Is_Visible_From_Other_Units;
 
    ------------------------------
    -- Get_Enclosing_Flow_Scope --

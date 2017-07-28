@@ -1,0 +1,8 @@
+test_type-test.ads:1:27: info: invariant check proved (CVC4: 1 VC)
+test_type-test.ads:5:16: info: overflow check proved (CVC4: 1 VC)
+test_type-test.ads:7:22: info: precondition proved (CVC4: 1 VC)
+test_type-test.ads:8:19: medium: assertion might fail, cannot prove X = Y (e.g. when Y = (F => -1))
+test_type.ads:3:13: info: invariant check proved (CVC4: 1 VC)
+test_type.ads:5:09: info: invariant check proved on default value (CVC4: 1 VC)
+test_type.ads:11:16: info: overflow check proved (CVC4: 1 VC)
+test_type.ads:18:17: info: precondition proved (CVC4: 1 VC)

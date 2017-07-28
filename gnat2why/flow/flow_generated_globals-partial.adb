@@ -2516,7 +2516,7 @@ package body Flow_Generated_Globals.Partial is
 
          GG_Register_Global_Info
            ((Name                  => To_Entity_Name (E),
-             Local                 => not Is_Globally_Visible (E),
+             Local                 => not Is_Visible_From_Other_Units (E),
              Kind                  => Ekind (E),
              Origin                => Origin_Flow,      --  ??? dummy
              Globals               =>
