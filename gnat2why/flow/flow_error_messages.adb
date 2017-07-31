@@ -96,8 +96,12 @@ package body Flow_Error_Messages is
       Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree  : JSON_Value;
       VC_File     : String := "";
+      VC_Loc      : Source_Ptr := No_Location;
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "");
+   --  Note that VC_Loc is the location of the verification check as opposed to
+   --  Slc which is the location of the first failing part of a VC (raised as
+   --  location for messages).
 
    function Warning_Is_Suppressed
      (N   : Node_Id;
@@ -449,6 +453,7 @@ package body Flow_Error_Messages is
       Cntexmp     : JSON_Value;
       Check_Tree  : JSON_Value;
       VC_File     : String;
+      VC_Loc      : Node_Id;
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
@@ -499,6 +504,7 @@ package body Flow_Error_Messages is
 
       Msg2 : constant String     := Compute_Message (Msg, N);
       Slc  : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      VC_Slc : constant Source_Ptr := Compute_Sloc (VC_Loc, Place_First);
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
@@ -563,6 +569,7 @@ package body Flow_Error_Messages is
          Cntexmp     => Pretty_Cntexmp,
          Check_Tree  => Check_Tree,
          VC_File     => VC_File,
+         VC_Loc      => VC_Slc,
          How_Proved  => How_Proved,
          Stats       => Stats,
          Editor_Cmd  => Editor_Cmd);
@@ -665,6 +672,7 @@ package body Flow_Error_Messages is
       Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree  : JSON_Value;
       VC_File     : String := "";
+      VC_Loc      : Source_Ptr := No_Location;
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "")
    is
@@ -694,6 +702,21 @@ package body Flow_Error_Messages is
       Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
       Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
       Set_Field (Value, "check_tree", Check_Tree);
+
+      if VC_Loc /= No_Location then
+         declare
+            VC_File  : constant String     := File_Name (VC_Loc);
+            VC_Line  : constant Natural    :=
+                         Natural (Get_Logical_Line_Number (VC_Loc));
+            VC_Col   : constant Natural    :=
+                         Natural (Get_Column_Number (VC_Loc));
+         begin
+            --  Note that vc_file already exists
+            Set_Field (Value, "check_file", VC_File);
+            Set_Field (Value, "check_line", VC_Line);
+            Set_Field (Value, "check_col", VC_Col);
+         end;
+      end if;
 
       if Tracefile /= "" then
          Set_Field (Value, "tracefile", Tracefile);

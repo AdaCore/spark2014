@@ -79,12 +79,16 @@ package Gnat2Why.Error_Messages is
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";
+      VC_Loc     : Node_Id := Empty;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd : String := "");
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are
    --  "codepeer", "interval" and "", the empty string meaning "some prover
-   --  used by why3 backend"
+   --  used by why3 backend".
+   --  @parameter VC_Loc is the location of the verification check as opposed
+   --  to @parameter Node which contains the location of the first failing part
+   --  of a VC (raised as location for messages).
 
 end Gnat2Why.Error_Messages;

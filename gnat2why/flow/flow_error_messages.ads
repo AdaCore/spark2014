@@ -126,6 +126,7 @@ package Flow_Error_Messages is
       Cntexmp     : JSON_Value;
       Check_Tree  : JSON_Value;
       VC_File     : String;
+      VC_Loc      : Node_Id;
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
@@ -152,6 +153,9 @@ package Flow_Error_Messages is
    --          the model element.
    --        - "other"
    --  @param VC_File if the VC is a manual proof, the VC file for manual proof
+   --  @param VC_Loc is the location of the verification check as opposed to
+   --  parameter N which contains the location of the first failing part of a
+   --  VC (raised as location for messages).
    --  @param Editor_Cmd the editor command to spawn manual prover
    --  @param E which subprogram this VC belongs to
    --  @param How_Proved which prover or analysis discharged this VC

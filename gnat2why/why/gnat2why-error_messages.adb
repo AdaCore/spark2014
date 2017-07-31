@@ -290,6 +290,7 @@ package body Gnat2Why.Error_Messages is
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";
+      VC_Loc     : Node_Id := Empty;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd : String := "") is
 
@@ -395,6 +396,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmp     => Cntexmp,
          Check_Tree  => Check_Tree,
          VC_File     => VC_File,
+         VC_Loc      => VC_Loc,
          Editor_Cmd  => Editor_Cmd,
          Stats       => Stats,
          How_Proved  => How_Proved,
@@ -677,6 +679,10 @@ package body Gnat2Why.Error_Messages is
            (if Extra_Text /= "" then ", cannot prove ~" else "");
          Node   : constant Node_Id :=
            (if Present (Rec.Extra_Info) then Rec.Extra_Info else VC.Node);
+         --  Extra_info contains the locations of the first failing part of the
+         --  VC (which is required in messages). VC_Sloc contains the location
+         --  of the check (required in messages for manual provers).
+         VC_Sloc    : constant Node_Id := VC.Node;
       begin
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
          Errout.Error_Msg_Strlen := Extra_Text'Length;
@@ -691,6 +697,7 @@ package body Gnat2Why.Error_Messages is
             Cntexmp     => Rec.Cntexmp,
             Check_Tree  => Rec.Check_Tree,
             VC_File     => To_String (Rec.VC_File),
+            VC_Loc      => VC_Sloc,
             Editor_Cmd  => To_String (Rec.Editor_Cmd),
             Stats       => Rec.Stats,
             Extra_Msg   => Extra_Msg);
