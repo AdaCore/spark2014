@@ -1,2 +1,3 @@
 !large SKIP part of large testsuite
 Darwin SKIP test too slow
+inverse-prover SKIP test too slow
