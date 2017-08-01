@@ -949,7 +949,7 @@ Examples of this are:
 - It is the use of the entity declared by the errant declaration, for instance
   a call of a subprogram or the denoting of an object in an expression
   (generally within the statements of a body) that will result in an
-  unsupressible error. The body of a unit causing the unsuppressible (or
+  unsupressible error. The body of a unit causing the unsuppressible message (or
   declaration if this is the cause) will need to be marked as not in |SPARK| to
   prevent its future analysis.
 
