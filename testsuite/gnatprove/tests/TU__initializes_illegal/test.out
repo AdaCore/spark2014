@@ -18,6 +18,7 @@ initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" constituent of "State" proved
+initializes_illegal_4.adb:30:35: medium: overflow check might fail (e.g. when G_Var = -2147483648 and G_Var2 = 1)
 initializes_illegal_4.ads:17:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
 initializes_illegal_4.ads:18:11: warning: initialization of Z is not mentioned in Initializes contract
 initializes_illegal_4.ads:33:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
@@ -27,11 +28,11 @@ initializes_illegal_4.ads:49:29: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:53:07: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:53:07: info: initialization of "Var" proved
 initializes_illegal_4.ads:53:24: info: initialization of "G_Var" proved
-initializes_illegal_4.ads:53:32: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
+initializes_illegal_4.ads:53:30: medium: overflow check might fail (e.g. when G_Var = 0 and G_Var2 = -2147483649 and Var = 0)
+initializes_illegal_4.ads:53:32: high: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:53:32: info: initialization of "G_Var2" proved
-initializes_illegal_4.ads:65:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
+initializes_illegal_4.ads:65:22: high: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:65:22: info: initialization of "G_Var" proved
-gnatprove: error during flow analysis and proof
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"
 initializes_illegal_6.adb:8:04: high: "Var" constituent of "State" is not initialized in "Initializes_Illegal_6"

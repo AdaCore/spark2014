@@ -1,2 +1,1 @@
-foo.ads:7:09: "Foo.State" must be a global input of "Test"
-gnatprove: error during flow analysis and proof
+foo.ads:7:09: medium: "Foo.State" must be a global input of "Test"

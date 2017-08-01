@@ -1,4 +1,4 @@
 pack.adb:6:04: info: initialization of "A" constituent of "Content" proved
 pack.adb:6:07: info: initialization of "B" constituent of "Content" proved
-pack.adb:11:16: "B" constituent of "Content" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))
-gnatprove: error during flow analysis and proof
+pack.adb:11:14: medium: overflow check might fail (e.g. when A = 0 and B = -2147483649)
+pack.adb:11:16: high: "B" constituent of "Content" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))

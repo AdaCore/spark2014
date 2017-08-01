@@ -6,16 +6,16 @@ ic.adb:32:32: info: initialization of "X03" constituent of "IC.State_A" proved
 ic.adb:34:07: high: "X01" constituent of "IC.State_A" is not initialized
 ic.adb:34:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:34:07: info: initialization of "X03" constituent of "IC.State_A" proved
-ic.adb:40:45: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
+ic.adb:40:45: high: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
 ic.adb:42:07: high: "X01" constituent of "IC.State_A" is not initialized
 ic.adb:42:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:42:07: info: initialization of "X04" constituent of "IC.State_A" proved
-ic.adb:49:34: "X01" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
-ic.adb:49:34: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:49:34: high: "X01" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:49:34: high: "Y01" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
 ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
-ic.adb:91:31: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
-ic.adb:109:37: "Y02" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
-ic.adb:118:41: "Y01" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
+ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
+ic.adb:109:37: high: "Y02" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
+ic.adb:118:41: high: "Y01" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
 ic.adb:125:14: info: initialization of "X01" constituent of "IC.State_A" proved
 ic.adb:126:21: info: initialization of "X01" constituent of "IC.State_A" proved
 ic.adb:132:14: info: initialization of "X01" constituent of "IC.State_A" proved
@@ -36,8 +36,8 @@ pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: info: initialization of "Z" proved
 pkg_a.ads:10:04: warning: initialization of Z has no effect
 pkg_a.ads:13:04: info: initialization of "Q" proved
-pkg_b.adb:10:14: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(12))
-pkg_c.adb:15:12: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
+pkg_b.adb:10:14: high: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(12))
+pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
 pkg_d.ads:4:32: high: X must be initialized at elaboration
 pkg_d.ads:10:04: info: initialization of "X" proved
 pkg_d.ads:11:04: info: initialization of "Y" proved

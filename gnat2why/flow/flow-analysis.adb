@@ -789,7 +789,7 @@ package body Flow.Analysis is
                                                         Precise => False),
                         F1       => Var,
                         F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Severity => Error_Kind);
+                        Severity => High_Check_Kind);
                      Sane := False;
 
                   elsif FA.Kind in Kind_Package | Kind_Package_Body
@@ -1407,7 +1407,7 @@ package body Flow.Analysis is
                      F1       => F,
                      F2       => Direct_Mapping_Id (FA.Spec_Entity),
                      F3       => Direct_Mapping_Id (Scope (N)),
-                     Severity => Error_Kind,
+                     Severity => Medium_Check_Kind,
                      Tag      => Pragma_Elaborate_All_Needed);
                end if;
             end;
@@ -3013,7 +3013,7 @@ package body Flow.Analysis is
                                                         Input),
                               F1        => Output,
                               F2        => Input,
-                              Severity  => Error_Kind,
+                              Severity  => Medium_Check_Kind,
                               Tag       => Export_Depends_On_Proof_In);
 
                            Write_Vertex_Set

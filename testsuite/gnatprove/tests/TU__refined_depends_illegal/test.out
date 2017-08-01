@@ -11,8 +11,9 @@ refined_depends_illegal.adb:81:48: duplicate use of item "W"
 refined_depends_illegal.adb:89:48: cannot mix null and non-null dependency items
 refined_depends_illegal_2.adb:5:04: info: initialization of "X" constituent of "State" proved
 refined_depends_illegal_2.adb:5:07: info: initialization of "Y" constituent of "State" proved
-refined_depends_illegal_2.adb:11:18: "Y" constituent of "State" must be listed in the Refined_Depends aspect of "P1" (SPARK RM 6.1.4(13))
+refined_depends_illegal_2.adb:11:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649)
+refined_depends_illegal_2.adb:11:18: high: "Y" constituent of "State" must be listed in the Refined_Depends aspect of "P1" (SPARK RM 6.1.4(13))
 refined_depends_illegal_2.adb:16:42: info: initialization of "X" constituent of "State" proved
 refined_depends_illegal_2.adb:16:45: info: initialization of "Y" constituent of "State" proved
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y constituent of State => Par"
-gnatprove: error during flow analysis and proof
+refined_depends_illegal_2.adb:22:14: medium: overflow check might fail (e.g. when Par = 2147483647)

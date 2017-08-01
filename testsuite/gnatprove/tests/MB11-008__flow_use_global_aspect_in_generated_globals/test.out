@@ -1,6 +1,10 @@
-foo.adb:11:07: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:64
-foo.adb:11:07: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:28
-foo.adb:11:07: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:37, in call inlined at foo.adb:54
-foo.adb:71:07: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:88
-foo.adb:71:07: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:97, in call inlined at foo.adb:114
-gnatprove: error during flow analysis and proof
+foo.adb:11:07: high: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:64
+foo.adb:11:07: high: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:28
+foo.adb:11:07: high: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:37, in call inlined at foo.adb:54
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:20
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:28
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37, in call inlined at foo.adb:46
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37, in call inlined at foo.adb:54
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:64
+foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:88
+foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(13)), in call inlined at foo.adb:97, in call inlined at foo.adb:114

@@ -1,5 +1,4 @@
 p1.adb:4:04: info: initialization of "Hidden_Var" constituent of "State" proved
 p2.adb:4:04: info: initialization of "Hidden_Var" constituent of "State" proved
-p2.adb:11:04: use of remote abstract state "P1.State" during elaboration of "P2" - Elaborate_All pragma required for "P1" (SPARK RM 7.7.1(4))
+p2.adb:11:04: medium: use of remote abstract state "P1.State" during elaboration of "P2" - Elaborate_All pragma required for "P1" (SPARK RM 7.7.1(4))
 p2.ads:7:14: info: initialization of "Hidden_Var" constituent of "State" proved
-gnatprove: error during flow analysis and proof

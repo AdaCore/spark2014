@@ -1,2 +1,1 @@
-a_package.adb:7:14: "S" must be listed in the Global aspect of "Procedure_Instance" (SPARK RM 6.1.4(13)), in instantiation at instances.ads:9
-gnatprove: error during flow analysis and proof
+a_package.adb:7:14: high: "S" must be listed in the Global aspect of "Procedure_Instance" (SPARK RM 6.1.4(13)), in instantiation at instances.ads:9

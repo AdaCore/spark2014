@@ -1,2 +1,1 @@
-foo.adb:18:10: cannot write "VT" during elaboration of "P" (SPARK RM 7.7.1(6))
-gnatprove: error during flow analysis and proof
+foo.adb:18:10: high: cannot write "VT" during elaboration of "P" (SPARK RM 7.7.1(6))

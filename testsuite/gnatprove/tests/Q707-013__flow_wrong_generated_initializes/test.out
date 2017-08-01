@@ -1,3 +1,2 @@
 p.ads:6:19: medium: initialization of "P.State" does not depend on "Ext" (SPARK RM 7.1.5(11))
-p.ads:11:33: "Ext" must be listed in the Initializes aspect of "Nested" (SPARK RM 7.1.5(12))
-gnatprove: error during flow analysis and proof
+p.ads:11:33: high: "Ext" must be listed in the Initializes aspect of "Nested" (SPARK RM 7.1.5(12))

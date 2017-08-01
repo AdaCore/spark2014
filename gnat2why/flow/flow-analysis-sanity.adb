@@ -527,7 +527,7 @@ package body Flow.Analysis.Sanity is
                                        " elaboration of &",
                            SRM_Ref  => "7.7.1(6)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity => Error_Kind,
+                           Severity => High_Check_Kind,
                            F1       => Entire_Variable (Var),
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
@@ -571,7 +571,7 @@ package body Flow.Analysis.Sanity is
                                        " elaboration of &",
                            SRM_Ref  => "7.7.1(6)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity => Error_Kind,
+                           Severity => High_Check_Kind,
                            F1       => Var,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
@@ -582,7 +582,7 @@ package body Flow.Analysis.Sanity is
                            Msg      => "& must be a global output of &",
                            SRM_Ref  => "6.1.4(16)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity => Error_Kind,
+                           Severity => High_Check_Kind,
                            F1       => (if A.Is_Parameter
                                         then A.Parameter_Formal
                                         else Var),
@@ -670,7 +670,7 @@ package body Flow.Analysis.Sanity is
                            F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
                                         then Var
                                         else Entire_Variable (Var)),
-                           Severity => Error_Kind,
+                           Severity => High_Check_Kind,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
 
@@ -867,7 +867,7 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => "& must be a global output of &",
                N        => FA.Global_N,
-               Severity => Error_Kind,
+               Severity => High_Check_Kind,
                F1       => W,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                Tag      => Global_Missing);
@@ -930,7 +930,7 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => "& must be a global input of &",
                N        => FA.Global_N,
-               Severity => Error_Kind,
+               Severity => Medium_Check_Kind,
                F1       => R,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                Tag      => Global_Missing);
@@ -965,7 +965,7 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => "& must be a global Proof_In of &",
                N        => FA.Global_N,
-               Severity => Error_Kind,
+               Severity => Medium_Check_Kind,
                F1       => P,
                F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                Tag      => Global_Missing);

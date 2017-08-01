@@ -1,4 +1,4 @@
-client.adb:7:07: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-client.adb:7:12: "X" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-client.adb:8:07: "Z" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-gnatprove: error during flow analysis and proof
+client.adb:7:07: high: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
+client.adb:7:12: high: "X" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
+client.adb:8:07: high: "Z" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
+client.adb:8:14: medium: overflow check might fail
