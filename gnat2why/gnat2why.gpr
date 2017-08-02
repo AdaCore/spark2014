@@ -7,7 +7,7 @@ project GNAT2Why is
    for Exec_Dir use "../install/bin";
 
    for Source_Dirs use ("why", ".", "spark", "utils", "..",
-                        "flow", "../common", "obj");
+                        "flow", "../common", "obj", "gnat_src");
 
    for Main use ("gnat1drv.adb");
 

@@ -52,15 +52,7 @@ setup:
 	cd obj-tools && gnatmake -q xtreeprs xnmake xsnamest && \
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj && \
 	./xsnamest && mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb
-ifeq ($(USE_LN),true)
-	cd obj && ln -sf ../gnat_src/*.ad[sb] .
-else
-	cd gnat_src && cp -p *.ads ../obj && cp -p *.adb ../obj
-endif
-	cd obj && $(RM) x*.ad? system* mlib* back_end.adb \
-	  ada.ads gnat.ads interfac.ads unch*.ads text_io.ads && \
-	$(RM) ?-*.ad? && \
-	mv -f ada_get_targ.adb get_targ.adb
+	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
 
 build: setup force
 	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
