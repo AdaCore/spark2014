@@ -918,10 +918,10 @@ non-|SPARK| in the same program, such as (though not limited to):
 Hence, it must be possible within the language to indicate what parts are
 (intended to be) in and what parts are (intended to be) out, of |SPARK|.
 
-The default is to assume all of the program text is in |SPARK|, although this
-could be overridden. A new aspect  *SPARK_Mode* is provided, which may be applied to a unit
+The default is to assume none of the program text is in |SPARK|, although this
+can be overridden. A new aspect  *SPARK_Mode* is provided, which may be applied to a unit
 declaration or a unit body, to indicate when a unit declaration or just its body
-is not in SPARK and should not be analyzed. If just the body is not in |SPARK| a
+is in SPARK and should be analyzed. If just the body is not in |SPARK| a
 |SPARK| compatible contract may be supplied on the declaration which facilitates
 the analysis of units which use the declaration. The tools cannot check that the
 the given contract is met by the body as it is not analyzed. The burden falls
@@ -973,7 +973,6 @@ The following combinations may be typical:
   in a referenced package specification does not by itself mean that
   a client is not in SPARK 2014.
 
-
 Such patterns are intended to allow for mixed-language programming,
 mixed-verification using different analysis tools, and mixed-verification
 between formal verification and more traditional testing. A condition for
@@ -991,7 +990,7 @@ only part of a program is formally verified.  Thus, combining these results
 with other verification results depends on the verification of global and local
 assumptions made during formal verification.
 
-Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (*Identifying |SPARK| Code*).
+Full details on the SPARK_Mode aspect are given in the SPARK Toolset User's Guide (*Identifying SPARK Code*).
 
 .. _volatile:
 
