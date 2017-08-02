@@ -208,6 +208,8 @@ integers as well as a range axiom.
 
 As an example, let us look at the following type::
 
+.. code-block:: ada
+
    type Signed_Int is range 1 .. 10;
 
 Here are the axioms and declarations generated in Why for it. We do
@@ -287,6 +289,8 @@ range if any. The closed form is linked to the representative type
 using a range predicate, as well as of_rep and to_rep functions to
 convert to and from bit-vectors. As an example, let us look at the
 following type::
+
+.. code-block:: ada
 
    type Modular_Int is mod 500;
 
@@ -368,6 +372,8 @@ floating point types which only allows numbers in the specified range.
 
 As an example, let us look at the following type::
 
+.. code-block:: ada
+
    type Floating_Point is digits 6 range 0.0 .. 100.0;
 
 Here are the axioms and declarations generated in Why for it. Like for
@@ -421,6 +427,8 @@ This specific translation is triggered when
 ``Gnat2why.Util.Type_Is_Modeled_As_Base`` returns ``True``. As an example, let
 us look at the translation of the following signed integer type
 declaration, where X is a non-static constant::
+
+.. code-block:: ada
 
     subtype Dyn_Ty is Integer range 1 .. X;
 
@@ -485,6 +493,8 @@ An (n-dimensional) Ada array is translated in Why as an infinite
 array index types to closed values of the component type along with
 values for index bounds. As an example, the objects of the following
 array type::
+
+.. code-block:: ada
 
        type My_Matrix is array
 	   (Positive range 1 .. 100,
@@ -569,6 +579,8 @@ to directly translate maps for arrays of dimension 1 to the built-in
 Map type in Why to benefit from this support.
 
 As an example, let us consider the following 1 dimensional array type::
+
+.. code-block:: ada
 
      type My_Array is array (Positive range <>) of Natural;
 
@@ -726,6 +738,8 @@ type is reused as is.
 
 As an example, let us consider the following array type::
 
+.. code-block:: ada
+
      type My_Array_100 is array (Positive range 1 .. 100) of Natural;
 
 Here are the declarations generated for it::
@@ -858,6 +872,8 @@ Get_Array_Conversion_Name from Why.Gen.Arrays.
 
 As an example, assume we want to convert between the two following
 types::
+
+.. code-block:: ada
 
    type My_Array is array (Positive range <>) of Natural;
 
@@ -997,7 +1013,9 @@ on the value of its discriminants if any. In the simplest case, if the
 record has no discriminant or if the component is not nested in a
 variant part, this predicate simply returns True.
 
-As an example, let us consider a record type with a variant part::
+As an example, let us consider a record type with a variant part:
+
+.. code-block:: ada
 
      type My_Rec (L : Natural) is record
 	case L is
@@ -1039,7 +1057,9 @@ under a SPARK_Mode (Off) pragma (see
 just ignore the components it is not allowed to see. Instead, it
 creates a special field for them, named rec__t for a type T, of an
 abstract logic type. As an example, let us consider a semi private
-type, of which we can only see the discriminants::
+type, of which we can only see the discriminants:
+
+.. code-block:: ada
 
        package P  is
 	  type Priv (B: Boolean) is private;
@@ -1076,16 +1096,17 @@ types with same fields. Conversely, the primitive equality symbol
 user_eq is declared in specific modules as it can be overridden after
 derivation.
 
-As an example, let us consider a the following type structure::
+As an example, let us consider a the following type structure:
 
-      type My_Rec (L : Natural) is record …;
+.. code-block:: ada
+
+      type My_Rec (L : Natural) is record ...;
 
       subtype My_Rec_100 is My_Rec (100);
 
       type Rec_Eq is new My_Rec (100);
 
       function "=" (X, Y : My_Rec_2) return Boolean;
-
 
       type Big_Rec (B : Boolean) is record
 	 X : My_Rec_100;
@@ -1137,7 +1158,9 @@ changed throughout the program. In the why translation of record types
 with mutable discriminants, the constrained information is kept as a
 separate top-level field.
 
-As an example, consider the following type with mutable discriminants::
+As an example, consider the following type with mutable discriminants:
+
+.. code-block:: ada
 
      type My_Option (Present : Boolean := False) is record
 	case Present is
@@ -1217,7 +1240,9 @@ special regular field named rec__ext__ of the abstract __private type.
 It is stored in the __split_fields top-level field, along with other
 components and stands for potential hidden component of derived types.
 
-As an example, let us consider the following tagged type::
+As an example, let us consider the following tagged type:
+
+.. code-block:: ada
 
      type Root is tagged record
         F : Integer;
@@ -1243,7 +1268,9 @@ going through the root type may cause some loss of precision when
 going from two types which share some components that are not in the
 root.
 
-As an example, let us consider a tagged extension of Root named Child::
+As an example, let us consider a tagged extension of Root named Child:
+
+.. code-block:: ada
 
      type Child is new Root with record
         G : Integer;
@@ -1296,7 +1323,9 @@ is given through the mean of an axiom::
 To avoid losing information when converting between types which share
 a component which is not in the root, the same extraction function is
 reused for every type which share the same component. As an example, a
-type::
+type:
+
+.. code-block:: ada
 
      type Grand_Child is new Child with record
         H : Integer;
@@ -1351,7 +1380,9 @@ always the identity. As for the predefined equality function, it is
 the True function since there is only one object of a null record
 type.
 
-As an example, let us consider an untagged null record type::
+As an example, let us consider an untagged null record type:
+
+.. code-block:: ada
 
     type Null_Rec is null record;
 
@@ -1365,7 +1396,9 @@ Here are the Why declarations introduced for it::
 
     function bool_eq (a : null_rec) (b : null_rec) : bool = True
 
-On derived null record types::
+On derived null record types:
+
+.. code-block:: ada
 
     type Null_Rec_2 is new Null_Rec;
 
@@ -1459,7 +1492,9 @@ Why (see ``Gnat2why.Subprograms.Generate_Subprogram_Fun``). It is supplied
 in a module named <my_subprogram_full_name>___axiom and mimics as much
 as possible the effects and contracts of the Ada procedure.
 
-As an example, let us consider the following minimalist procedure declaration::
+As an example, let us consider the following minimalist procedure declaration:
+
+.. code-block:: ada
 
      procedure P;
 
@@ -1503,7 +1538,9 @@ assuming the information on actual calls of the subprogram. It is not
 required if all functions are thoroughly verified, which is why its
 usage can be disabled by the --no-axiom-guard option.
 
-As an example, let us look at the following Ada function::
+As an example, let us look at the following Ada function:
+
+.. code-block:: ada
 
      function F return Boolean;
 
@@ -1568,7 +1605,9 @@ composite type, be presented in closed form, whereas in out and out
 parameters will be translated as variables, and are therefore given in
 split form.
 
-As an example, let us consider the following Ada subprograms::
+As an example, let us consider the following Ada subprograms:
+
+.. code-block:: ada
 
    function F (X : Integer; Y : My_Rec; Z : My_Array) return Integer;
    procedure P
@@ -1639,7 +1678,9 @@ form, and so, even if the global mode in Input. Also, for global
 variables in split form, only the variable parts are given as
 parameters to the Why logic function.
 
-As an example, let us look at the following Ada subprograms::
+As an example, let us look at the following Ada subprograms:
+
+.. code-block:: ada
 
    function F return Integer with Global => (X, Y, Z);
 
@@ -1680,7 +1721,9 @@ assertions, they have no associated logic functions. Then, to model
 effects of volatile functions, a new global variable is introduced and
 added as a write effect of the subprogram.
 
-As an example, let us consider the following volatile function::
+As an example, let us consider the following volatile function:
+
+.. code-block:: ada
 
    function F_Vol return Integer with Volatile_Function;
 
@@ -1801,7 +1844,9 @@ what is done for the Why logic function generated for the subprogram
 in its post axiom.
 
 As an example, let us consider the following function F_Inv, where
-type T has a type invariant, and F_Inv is boundary for T::
+type T has a type invariant, and F_Inv is boundary for T:
+
+.. code-block:: ada
 
     package P is
        type T is private;
@@ -1877,7 +1922,9 @@ Ada Contracts
 When supplied, Ada contracts are translated into Why logical
 expressions and added to the contracts of the Why program function and
 to the post axiom of the logic function. As an example, let us
-consider the following function::
+consider the following function:
+
+.. code-block:: ada
 
    function F (X : Integer) return Integer with
      Pre  => My_Pre (X),
@@ -1922,12 +1969,14 @@ into these contracts. When a subprogram has a contract case, it is
 transformed into an if expression and conjuncted to the postcondition
 (see ``Gnat2why.Subprograms.Compute_Contract_Cases_Postcondition``).
 
-As an example, lets us consider the following procedure::
+As an example, lets us consider the following procedure:
 
-   procedure P (X : in out Integer) with
-     Contract_Cases =>
-       ((X in Natural) => My_Post (X'Old, X),
-        others         => X = X’Old);
+.. code-block:: ada
+
+    procedure P (X : in out Integer);
+      Contract_Cases =>
+        ((X in Natural) => My_Post (X'Old, X),
+         others         => X = X’Old);
 
 The contract case of P is used as a postcondition to describe the
 result of its Why program function::
@@ -1953,7 +2002,9 @@ Another source of contracts in Ada is classwide contracts. More
 precisely, when no contracts are specified for a primitive of a tagged
 type, Gnat2why will use the (potentially inherited) classwide contract
 instead. As an example, let us look at a primitive of a tagged Root
-type::
+type:
+
+.. code-block:: ada
 
      function F (X : Root) return Integer with
        Pre'Class  => X.F > 0,
@@ -2003,7 +2054,9 @@ Finally, a last case which should be considered are procedures
 annotated with the No_return aspect (see ``Einfo.No_Return``). A function
 with this aspect will never return, so its postcondition will never be
 exercised. To express it, the postcondition of the associated program
-function is set to false. As an example, the following procedure::
+function is set to false. As an example, the following procedure:
+
+.. code-block:: ada
 
    procedure P (X : in out Integer) with
      No_Return;
