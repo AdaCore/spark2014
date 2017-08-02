@@ -1,5 +1,5 @@
 illegal_update.adb:4:04: warning: initialization of Tmp has no effect
-illegal_update.adb:12:11: "X" must be a global output of "Do_Stuff" (SPARK RM 6.1.4(16))
+illegal_update.adb:12:11: high: "X" must be a global output of "Do_Stuff" (SPARK RM 6.1.4(16))
 illegal_update.adb:16:04: warning: statement has no effect
 illegal_update.adb:16:04: warning: unused assignment to "Tmp"
 illegal_update.ads:1:27: warning: "X" is not modified, could be IN
