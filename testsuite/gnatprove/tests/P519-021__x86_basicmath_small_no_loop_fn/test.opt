@@ -1,3 +1,4 @@
 !large SKIP part of large testsuite
+NT SKIP minor proof differences difficult to consolidate
 inverse-prover SKIP too slow
 ALL RLIMIT 1500
