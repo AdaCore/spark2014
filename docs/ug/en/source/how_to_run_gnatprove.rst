@@ -115,7 +115,7 @@ be analyzed by |GNATprove|:
   This is intended for the day-to-day command-line or IDE use of
   |GNATprove| when implementing a project.
 
-|GNATprove| consists of two distinct analyses, flow analysis and proof.
+|GNATprove| consists of two distinct analyses: flow analysis and proof.
 Flow analysis checks the correctness of aspects related to data flow
 (``Global``, ``Depends``, ``Abstract_State``, ``Initializes``, and
 refinement versions of these), and verifies the initialization of
@@ -136,7 +136,7 @@ and ``gold``, you can choose which analysis is performed:
   side-effects in functions. Mode ``check_all`` includes mode ``check``.
 
 * In mode ``flow`` (``bronze`` is a synonym for this mode), |GNATprove| checks
-  that no uninitialized data is read in the program, and that the specified
+  that no uninitialized data are read in the program, and that the specified
   data dependencies and flow dependencies are respected in the implementation.
   Mode ``flow`` includes mode ``check_all``.  This phase is called *flow
   analysis*.
@@ -145,7 +145,7 @@ and ``gold``, you can choose which analysis is performed:
   |GNATprove| checks that the program is free from run-time errors, and that
   the specified functional contracts are respected in the implementation. Mode
   ``prove`` includes mode ``check_all``, as well as the part of mode ``flow``
-  which checks that no uninitialized data is read, to guarantees soundness of
+  that checks that no uninitialized data are read, to guarantee soundness of
   the proof results. This phase is called *proof*.
 
 * In the default mode ``all``, |GNATprove| does both flow analysis and proof.
@@ -223,7 +223,7 @@ the value set through ``--level``.
 Note that using ``--level`` does not provide results that are reproducible
 accross different machines. For nightly builds or shared repositories, consider
 using the ``--steps`` or ``--replay`` switches instead. The number of steps
-required to proved an example can be accessed by running |GNATprove| the option
+required to proved an example can be accessed by running |GNATprove| with the option
 ``--report=statistics``.
 
 |GNATprove| also supports using the static analysis tool |CodePeer| as an
@@ -321,7 +321,7 @@ locations. There are two possible cases, depending on the kind of runtime used:
 * Configurable runtime
 
   The simplest way to use configurable runtimes in |SPARK| is to install
-  both |SPARK| and your cross GNAT compiler under the same root directory.
+  both |SPARK| and your GNAT cross compiler under the same root directory.
 
   If you do that and have in your project file the Target and Runtime
   properties set, then |GNATprove| (starting with version 16.0.1) will find the
