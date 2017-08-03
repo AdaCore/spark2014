@@ -3477,6 +3477,14 @@ package body SPARK_Definition is
             end;
          end if;
 
+         --  Make sure to mark needed entities for checks related to interrupts
+
+         if Ekind (E) = E_Procedure
+           and then Present (Get_Pragma (E, Pragma_Attach_Handler))
+         then
+            Mark_Entity (RTE (RE_Is_Reserved));
+         end if;
+
          --  Enforce the current limitation that a subprogram is only inherited
          --  from a single source, so that there is at most one inherited
          --  Pre'Class or Post'Class to consider for LSP.
