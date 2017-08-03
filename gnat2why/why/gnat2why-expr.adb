@@ -12536,7 +12536,7 @@ package body Gnat2Why.Expr is
                      else "may not return");
                begin
                   Error_Msg_NE
-                    ("info: " & String_For_Implicit
+                    ("info: ?" & String_For_Implicit
                      & "function contract not available for "
                      & "proof (& " & String_For_Reason & ")", Expr, Subp);
                end;
