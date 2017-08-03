@@ -1334,6 +1334,19 @@ package body SPARK_Definition is
             Mark_Entity (Defining_Identifier (N));
 
          when N_Loop_Statement =>
+            --  Detect loops coming from rewritten GOTO statements (see
+            --  Find_Natural_Loops in the parser) and reject them by marking
+            --  the original node.
+            declare
+               Orig : constant Node_Id := Original_Node (N);
+            begin
+               if Orig /= N
+                 and then Nkind (Original_Node (N)) = N_Goto_Statement
+               then
+                  Mark (Orig);
+               end if;
+            end;
+
             Check_Loop_Invariant_Placement (Statements (N));
             Check_Unrolled_Loop (N);
 
