@@ -258,7 +258,7 @@ are any violations of Ada legality rules, |GNATprove| does not attempt any
 analysis. If there are violations of |SPARK| legality rules, |GNATprove| stops
 after the checking phase and does not attempt flow analysis or proof.
 
-When an error is detected (which does not included issuing check messages),
+When an error is detected (which does not include issuing check messages),
 |GNATprove| returns with a non-zero exit status. Otherwise, |GNATprove| returns
 with an exit status of zero, even when warnings and check messages are issued.
 
