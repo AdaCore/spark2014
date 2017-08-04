@@ -2,8 +2,6 @@ aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: inf
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:20: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:25
 aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:59: info: range check proved (CVC4: 1 VC), in instantiation at vk.ads:10
 extension.ads:9:04: info: implicit function contract not available for proof ("Length" may not return)
-extension.ads:9:04: info: implicit function contract not available for proof ("Length" may not return)
-extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 main.adb:9:11: medium: "memory accessed through objects of access type" might not be initialized after elaboration of main program "Main"
 main.adb:16:04: info: initialization of "N" proved
@@ -20,24 +18,8 @@ main.adb:30:47: info: initialization of "Tag_V" proved
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:11
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:11
 vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:11
 vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:22
-vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:22
 vk.ads:10:10: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:22
 vk.ads:25:07: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:25:07: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:25:07: info: implicit function contract not available for proof ("Length" may not return)
-vk.ads:25:07: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
-vk.ads:25:07: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 vk.ads:25:07: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10

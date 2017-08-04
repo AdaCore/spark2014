@@ -82,24 +82,14 @@ container.ads:20:13: info: subprogram "Next" will terminate
 container.ads:23:13: info: subprogram "Element" will terminate
 container.ads:27:14: warning: subprogram "Test4" might not terminate
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" may not return)
-file_io.ads:50:33: info: implicit function contract not available for proof ("Size" may not return)
-file_io.ads:55:17: info: function contract not available for proof ("Index" may not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" may not return)
 file_io.ads:61:17: info: implicit function contract not available for proof ("Size" may not return)
-file_io.ads:61:17: info: implicit function contract not available for proof ("Size" may not return)
-file_io.ads:61:28: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:61:28: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:62:17: info: function contract not available for proof ("Index" may not return)
-file_io.ads:62:17: info: function contract not available for proof ("Index" may not return)
-file_io.ads:62:30: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:62:30: info: implicit function contract not available for proof ("Size" may not return)
 file_io.ads:63:42: info: function contract not available for proof ("Index" may not return)
-file_io.ads:63:42: info: function contract not available for proof ("Index" may not return)
-file_io.ads:63:54: info: function contract not available for proof ("Index" may not return)
 file_io.ads:63:54: info: function contract not available for proof ("Index" may not return)
 file_io.ads:64:42: info: function contract not available for proof ("Index" may not return)
-file_io.ads:64:42: info: function contract not available for proof ("Index" may not return)
-file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
 file_io.ads:64:54: info: function contract not available for proof ("Index" may not return)
 formal_cont.adb:11:14: info: initialization of "Result" proved
 formal_cont.adb:15:07: info: initialization of "L" proved
@@ -202,7 +192,6 @@ functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.ads:3:13: warning: subprogram "Non_Ter_Func" might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
 functions.ads:6:13: warning: subprogram "Expr_Func" might not terminate
-functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" may not return)
 functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" may not return)
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
