@@ -1341,7 +1341,7 @@ package body SPARK_Definition is
                Orig : constant Node_Id := Original_Node (N);
             begin
                if Orig /= N
-                 and then Nkind (Original_Node (N)) = N_Goto_Statement
+                 and then Nkind (Orig) = N_Goto_Statement
                then
                   Mark (Orig);
                end if;
