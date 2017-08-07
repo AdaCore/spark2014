@@ -1164,7 +1164,6 @@ package body Flow_Refinement is
 
          case Ekind (Ent) is
             when E_Abstract_State
-               | E_Component
                | E_Constant
             =>
                null;
@@ -1186,10 +1185,6 @@ package body Flow_Refinement is
             when E_Protected_Type =>
                --  Protected types are always fully default initialized in
                --  SPARK.
-               return True;
-
-            when E_Discriminant   =>
-               --  Discriminants are always initialized
                return True;
 
             when E_Task_Type      =>
