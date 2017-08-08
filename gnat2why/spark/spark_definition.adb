@@ -5665,13 +5665,10 @@ package body SPARK_Definition is
       elsif Subprogram_Is_Ignored_For_Proof (E) then
          return;
 
-      --  Ignore subprograms that front-end generates to analyze default
-      --  expressions. They have no spec, only body and whose Is_Eliminated
-      --  flag is set. Unlike user's subprograms with pragma Eliminated, they
-      --  do come not from source. See Freeze.Process_Default_Expressions for
-      --  details.
+      --  Ignore subprograms annotated with pragma Eliminate; this includes
+      --  subprograms that front-end generates to analyze default expressions.
 
-      elsif Is_Eliminated (E) and then not Comes_From_Source (E) then
+      elsif Is_Eliminated (E) then
          return;
 
       else
@@ -5870,13 +5867,10 @@ package body SPARK_Definition is
       elsif Subprogram_Is_Ignored_For_Proof (E) then
          return;
 
-      --  Ignore subprograms that front-end generates to analyze default
-      --  expressions. They have no spec, only body and whose Is_Eliminated
-      --  flag is set. Unlike user's subprograms with pragma Eliminated, they
-      --  do come not from source. See Freeze.Process_Default_Expressions for
-      --  details.
+      --  Ignore subprograms annotated with pragma Eliminate; this includes
+      --  subprograms that front-end generates to analyze default expressions.
 
-      elsif Is_Eliminated (E) and then not Comes_From_Source (E) then
+      elsif Is_Eliminated (E) then
          return;
 
       --  Mark entity

@@ -98,9 +98,7 @@ package body Flow_Generated_Globals.Traversal is
          procedure Insert (E : Entity_Id) is
          begin
             if not Is_Wrapper_Package (E)
-              and then not (Ekind (E) = E_Procedure
-                              and then Is_Eliminated (E)
-                              and then not Comes_From_Source (E))
+              and then not Is_Eliminated (E)
             then
                declare
                   P : constant Entity_Id := Parent_Scope (E);

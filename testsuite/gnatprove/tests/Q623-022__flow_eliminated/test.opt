@@ -1,1 +1,0 @@
-ALL XFAIL flow: pragma Eliminated on unchecked deallocation (Q623-022)
