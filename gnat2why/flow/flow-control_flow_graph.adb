@@ -3348,6 +3348,10 @@ package body Flow.Control_Flow_Graph is
          end if;
       end Find_Tasks;
 
+      --------------------------------
+      -- Add_Vertex_For_Type_Aspect --
+      --------------------------------
+
       procedure Add_Vertex_For_Type_Aspect (Subp   : Entity_Id;
                                             Aspect : Valid_Type_Aspect)
       is
