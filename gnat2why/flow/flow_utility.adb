@@ -2997,26 +2997,28 @@ package body Flow_Utility is
 
    function Has_Variable_Input (C : Entity_Id) return Boolean is
       E    : Entity_Id := C;
-      Decl : Node_Id;
+      Expr : Node_Id;
       FS   : Flow_Id_Sets.Set;
 
    begin
-      --  This routine is mirrored in Variable_Inputs_Of_Constants;
-      --  any change here should be reflected there.
+      --  This routine is mirrored in Direct_Inputs_Of_Constant; any change
+      --  here should be reflected there.
       --  ??? ideally, this should be refactored
 
-      if Is_Imported (E) then
+      if Is_Imported (C) then
          --  If we are dealing with an imported constant, we consider this to
          --  have potentially variable input.
          return True;
       end if;
 
-      Decl := Declaration_Node (E);
-      if No (Expression (Decl)) then
+      Expr := Expression (Declaration_Node (C));
+      if Present (Expr) then
+         E := C;
+      else
          --  We are dealing with a deferred constant so we need to get to the
          --  full view.
          E    := Full_View (E);
-         Decl := Declaration_Node (E);
+         Expr := Expression (Declaration_Node (E));
       end if;
 
       if not Entity_In_SPARK (E) then
@@ -3026,7 +3028,7 @@ package body Flow_Utility is
       end if;
 
       FS := Get_Variables
-        (Expression (Decl),
+        (Expr,
          Scope                => Get_Flow_Scope (E),
          Local_Constants      => Node_Sets.Empty_Set,
          Fold_Functions       => True,
@@ -3041,9 +3043,7 @@ package body Flow_Utility is
       end if;
 
       if GG_Has_Been_Generated
-        or else
-        Get_Functions (Expression (Decl),
-                       Include_Predicates => False).Is_Empty
+        or else Get_Functions (Expr, Include_Predicates => False).Is_Empty
       then
          --  If we reach this point then the constant does not have variable
          --  input.

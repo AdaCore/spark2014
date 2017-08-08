@@ -701,7 +701,7 @@ is
 
    function Has_Variable_Input (C : Entity_Id) return Boolean
    with Pre => Ekind (C) = E_Constant;
-   --  Returns True if V is a constant with variable input.
+   --  Returns True if V is a constant with variable input
    --
    --  If called before the globals graph has been generated then the results
    --  might not be accurate (this means that some constant that might not
