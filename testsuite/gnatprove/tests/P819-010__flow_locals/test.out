@@ -1,18 +1,18 @@
-outer.adb:4:14: warning: initialization of Body_Var is not mentioned in Initializes contract
-outer.adb:4:14: warning: initialization of Private_Var is not mentioned in Initializes contract
-outer.adb:6:10: info: initialization of "Visible_Var" proved
-outer.adb:16:52: medium: overflow check might fail
-outer.adb:16:66: medium: overflow check might fail
-outer.adb:22:20: info: initialization of "Body_Var" proved
-outer.adb:22:20: info: initialization of "Private_Var" proved
-outer.adb:22:20: info: initialization of "Visible_Var" proved
-outer.ads:2:17: info: initialization of "Arg" proved
-outer2.adb:10:10: info: initialization of "Private_Var" constituent of "Private_State" proved
-outer2.adb:10:10: warning: initialization of Private_Var has no effect
-outer2.adb:16:10: info: initialization of "Body_Var" constituent of "Body_State" proved
-outer2.adb:18:52: medium: overflow check might fail
-outer2.adb:18:66: medium: overflow check might fail
-outer2.adb:24:20: info: initialization of "Nested.Body_State" proved
-outer2.adb:24:20: info: initialization of "Nested.Private_State" proved
-outer2.adb:24:20: info: initialization of "Visible_Var" proved
-outer2.ads:2:17: info: initialization of "Arg" proved
+p1.adb:3:11: warning: initialization of Body_Var is not mentioned in Initializes contract
+p1.adb:3:11: warning: initialization of Private_Var is not mentioned in Initializes contract
+p1.adb:5:07: info: initialization of "Visible_Var" proved
+p1.adb:15:49: medium: overflow check might fail
+p1.adb:15:63: medium: overflow check might fail
+p1.adb:21:17: info: initialization of "Body_Var" proved
+p1.adb:21:17: info: initialization of "Private_Var" proved
+p1.adb:21:17: info: initialization of "Visible_Var" proved
+p1.ads:1:15: info: initialization of "Arg" proved
+p2.adb:9:07: info: initialization of "Private_Var" constituent of "Private_State" proved
+p2.adb:9:07: warning: initialization of Private_Var has no effect
+p2.adb:15:07: info: initialization of "Body_Var" constituent of "Body_State" proved
+p2.adb:17:49: medium: overflow check might fail
+p2.adb:17:63: medium: overflow check might fail
+p2.adb:23:17: info: initialization of "Nested.Body_State" proved
+p2.adb:23:17: info: initialization of "Nested.Private_State" proved
+p2.adb:23:17: info: initialization of "Visible_Var" proved
+p2.ads:1:15: info: initialization of "Arg" proved
