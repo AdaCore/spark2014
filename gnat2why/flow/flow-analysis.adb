@@ -2477,7 +2477,7 @@ package body Flow.Analysis is
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N             : Node_Or_Entity_Id := FA.Atr (Vertex).Error_Location;
+         N             : Node_Or_Entity_Id;
          Msg           : Unbounded_String;
 
          V_Error       : Flow_Graphs.Vertex_Id;
@@ -2556,6 +2556,7 @@ package body Flow.Analysis is
             N      := Find_Global (FA.Analyzed_Entity, Var);
          else
             V_Goal := V_Error;
+            N      := FA.Atr (Vertex).Error_Location;
          end if;
 
          if Kind = Init and then Is_Function_Entity (Var) then
