@@ -459,16 +459,6 @@ package body Flow_Refinement is
               and then Subprogram_Refinement_Is_Visible (E, S));
    end Subprogram_Refinement_Is_Visible;
 
-   function Subprogram_Refinement_Is_Visible (F : Flow_Id;
-                                              S : Flow_Scope)
-                                              return Boolean
-   is
-     (case F.Kind is
-         when Direct_Mapping =>
-            Subprogram_Refinement_Is_Visible (F.Node, S),
-         when others =>
-            raise Program_Error);
-
    ---------------------------------
    -- State_Refinement_Is_Visible --
    ---------------------------------
