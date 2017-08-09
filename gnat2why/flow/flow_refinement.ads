@@ -158,8 +158,7 @@ package Flow_Refinement is
                          Scope     :     Flow_Scope;
                          Projected : out Node_Sets.Set;
                          Partial   : out Node_Sets.Set)
-   with Post =>
-     (for all E of Partial => Ekind (E) = E_Abstract_State);
+   with Post => (for all E of Partial => Ekind (E) = E_Abstract_State);
    --  ### Takes Vars and moves up *exactly* one level. For things we've just
    --  lost visibility we file their encapsulating state in Partial; otherwise
    --  the variable is put into Projected as is.
@@ -173,8 +172,7 @@ package Flow_Refinement is
                          Scope     :     Flow_Scope;
                          Projected : out Flow_Id_Sets.Set;
                          Partial   : out Flow_Id_Sets.Set)
-   with Post =>
-     (for all E of Partial => Is_Abstract_State (E));
+   with Post => (for all E of Partial => Is_Abstract_State (E));
    --  For each variable in Vars it computes the closest encapsulating state
    --  which is visible from Scope if the variable is not visible. It returns
    --  the set of the up-projected variables in Vars.
