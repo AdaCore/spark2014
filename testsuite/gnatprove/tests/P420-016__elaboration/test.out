@@ -1,0 +1,2 @@
+main.adb:7:19: medium: assertion might fail, cannot prove Globs.x (e.g. when X = False)
+main.adb:8:19: medium: assertion might fail, cannot prove Globs.y (e.g. when Y = False)
