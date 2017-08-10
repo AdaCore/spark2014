@@ -127,11 +127,11 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:217:22: medium: postcondition might fail
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
@@ -224,10 +224,10 @@ auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:719:22: medium: postcondition might fail
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
@@ -1821,8 +1821,8 @@ enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
+enclave.adb:2188:09: medium: postcondition might fail
 enclave.adb:2197:21: medium: precondition might fail
-enclave.adb:2199:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
 enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved

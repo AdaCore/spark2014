@@ -13,14 +13,14 @@ do_loops.adb:39:22: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:39:22: info: initialization of "D.F3" proved
 do_loops.adb:39:40: info: initialization of "D.F3" proved
 do_loops.adb:40:22: info: initialization of "D.F4" proved
-do_loops.adb:40:22: medium: assertion might fail, cannot prove D.F4 = D.F4'loop_entry (e.g. when D = (F3 => (others => (F1 => 0, F2 => 0)), F4 => (others => (F1 => 0, F2 => 0))))
+do_loops.adb:40:22: medium: assertion might fail, cannot prove D.F4 = D.F4'loop_entry (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 101 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 100, F2 => 100)), F4 => (100 => (F1 => 0, F2 => 0), 101 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 100, F2 => 100))))
 do_loops.adb:40:33: info: initialization of "D.F4" proved
 do_loops.adb:47:22: info: initialization of "D.F3" proved
 do_loops.adb:48:22: info: initialization of "D.F4" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F3" proved
 do_loops.adb:49:15: info: initialization of "D_outer.F4" proved
 do_loops.adb:50:25: info: initialization of "D.F3" proved
-do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when D = (F3 => (others => (F1 => 0, F2 => 0)), F4 => (others => (F1 => 0, F2 => 0))) and I = 0)
+do_loops.adb:50:25: medium: assertion might fail, cannot prove D.F3 (I).F1 = D.F3'Loop_Entry (I).F1 (e.g. when D = (F3 => (100 => (F1 => 0, F2 => 0), 101 => (F1 => -1, F2 => -1), 99 => (F1 => -1, F2 => 0), others => (F1 => 1, F2 => 100)), F4 => (100 => (F1 => 0, F2 => 0), 101 => (F1 => 0, F2 => 0), 99 => (F1 => 0, F2 => 0), others => (F1 => 1, F2 => 1))) and I = 99)
 do_loops.adb:50:43: info: initialization of "D.F3" proved
 do_loops.adb:51:25: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:51:25: info: initialization of "D.F3" proved
