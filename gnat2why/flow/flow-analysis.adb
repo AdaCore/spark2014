@@ -1176,7 +1176,8 @@ package body Flow.Analysis is
                --  * the variable is a formal parameter of a null subprogram of
                --    a generic unit.
                declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+                  E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
+                  E_Typ : constant Entity_Id := Etype (E);
 
                   Msg : constant String :=
                     (if Ekind (Scope (E)) = E_Function
@@ -1185,10 +1186,10 @@ package body Flow.Analysis is
                      else "unused variable &");
 
                begin
-                  if Is_Concurrent_Type (Etype (E))
+                  if Is_Concurrent_Type (E_Typ)
                     or else Belongs_To_Concurrent_Type (F)
-                    or else (Is_Type (Etype (E))
-                             and then Is_Empty_Record_Type (Etype (E)))
+                    or else (Is_Type (E_Typ)
+                             and then Is_Empty_Record_Type (E_Typ))
                     or else Has_Pragma_Un (E)
                     or else Is_Param_Of_Null_Subp_Of_Generic (E)
                   then
