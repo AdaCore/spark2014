@@ -2683,25 +2683,27 @@ package body Flow.Analysis is
                begin
                   if (FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
                       and then not AS_In_Generated_Initializes (Var_Used))
+
                     or else
                       (FA.Kind in Kind_Package | Kind_Package_Body
                        and then
                          (Is_Abstract_State (Var_Used)
-                          or else
-                            (Final_Value_Of_Var_Used = V
+                            or else
+                          (Final_Value_Of_Var_Used = V
                              and then
-                               Mentioned_On_Generated_Initializes (Var_Used))))
+                           Mentioned_On_Generated_Initializes (Var_Used))))
+
+                    or else
+                      Is_Constant (Var_Used)
+
                     or else
                       (Var_Used.Kind in Direct_Mapping | Record_Field
                        and then
-                         (Is_Constant_Object (Get_Direct_Mapping_Id (Var_Used))
-                          or else
-                            (Is_Type (Etype (Get_Direct_Mapping_Id (Var_Used)))
+                         ((Is_Type (Etype (Get_Direct_Mapping_Id (Var_Used)))
                              and then
-                               (Is_Empty_Record_Type
-                                  (Etype
-                                     (Get_Direct_Mapping_Id (Var_Used)))))
-                          or else
+                           (Is_Empty_Record_Type
+                              (Etype (Get_Direct_Mapping_Id (Var_Used)))))
+                            or else
                             (Var_Used.Kind = Record_Field
                              and then Var_Used.Facet = Normal_Part
                              and then
@@ -3002,7 +3004,7 @@ package body Flow.Analysis is
                              (FA        => FA,
                               Tracefile => Tracefile,
                               Msg       => "export & must not depend " &
-                                "on Proof_In &",
+                                           "on Proof_In &",
                               SRM_Ref   => "6.1.4(17)",
                               N         => Find_Global (FA.Analyzed_Entity,
                                                         Input),
