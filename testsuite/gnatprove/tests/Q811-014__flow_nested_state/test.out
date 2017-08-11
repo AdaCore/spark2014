@@ -1,0 +1,7 @@
+pkg.adb:8:19: info: assertion proved (CVC4: 1 VC)
+pkg.ads:4:48: medium: postcondition might fail, cannot prove Get'result
+pkg.ads:6:07: info: initialization of "X" constituent of "State" proved
+proc.adb:4:48: medium: postcondition might fail, cannot prove Get'result
+proc.adb:6:07: info: initialization of "X" constituent of "State" proved
+proc.adb:14:19: info: assertion proved (CVC4: 1 VC)
+proc.adb:14:25: info: initialization of "Nested.State" proved
