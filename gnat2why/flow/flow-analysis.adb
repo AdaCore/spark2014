@@ -2140,14 +2140,7 @@ package body Flow.Analysis is
         (Var : Flow_Id)
          return Boolean
       is
-         DM : constant Dependency_Maps.Map :=
-           GG_Get_Initializes (FA.Spec_Entity, FA.S_Scope);
-
-      begin
-         return
-           (for some Init_Var in DM.Iterate =>
-              Dependency_Maps.Key (Init_Var) = Var);
-      end Mentioned_On_Generated_Initializes;
+         (GG_Get_Initializes (FA.Spec_Entity, FA.S_Scope).Contains (Var));
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --
