@@ -629,27 +629,20 @@ package body Flow.Slice is
                --  see the call to Process_Subprogram_Globals in
                --  Do_Call_Statement.
                --  ??? refactor those to using a common routine
-               case Ekind (E) is
-                  when Entry_Kind
-                     | E_Function
-                     | E_Procedure
-                  =>
-                     if not Has_User_Supplied_Globals (E)
-                       or else Rely_On_Generated_Global (E, FA.B_Scope)
-                     then
-                        if A.Is_Assertion then
-                           Proof_Calls.Include (E);
-                        else
-                           Unresolved.Include (E);
-                        end if;
-                     end if;
 
-                  when E_Package =>
-                     null;
+               pragma Assert (Ekind (E) in Entry_Kind
+                                         | E_Function
+                                         | E_Procedure);
 
-                  when others =>
-                     raise Program_Error;
-               end case;
+               if not Has_User_Supplied_Globals (E)
+                 or else Rely_On_Generated_Global (E, FA.B_Scope)
+               then
+                  if A.Is_Assertion then
+                     Proof_Calls.Include (E);
+                  else
+                     Unresolved.Include (E);
+                  end if;
+               end if;
             end loop;
          end;
       end loop;
