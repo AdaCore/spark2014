@@ -1,0 +1,3 @@
+initialization_and_elaboration-private_child.adb:7:40: info: initialization of "S" constituent of "State" proved
+initialization_and_elaboration.adb:14:53: info: initialization of "Private_Child.State" constituent of "Initialization_And_Elaboration.State" proved
+initialization_and_elaboration.ads:4:08: medium: initial condition might fail
