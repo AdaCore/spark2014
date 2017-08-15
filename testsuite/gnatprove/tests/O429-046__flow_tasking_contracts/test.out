@@ -1,6 +1,4 @@
-alarm.adb:8:14: info: initialization of "Blinken_PO" constituent of "Blinkenlights" proved
 alarm.adb:23:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
-alarm.adb:23:09: info: initialization of "Blinken_Task" constituent of "Blinkenlights" proved
 alarm.adb:23:09: info: nontermination of task proved (CVC4: 1 VC)
 main.adb:5:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 sensor.ads:5:20: info: initialization of "T" proved

@@ -19,3 +19,4 @@ outer.adb:84:12: info: initialization of "X" constituent of "Outer.State" proved
 outer.adb:84:14: info: overflow check proved (CVC4: 1 VC)
 outer.adb:85:26: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
 outer.adb:85:36: medium: overflow check might fail
+outer.adb:85:52: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved

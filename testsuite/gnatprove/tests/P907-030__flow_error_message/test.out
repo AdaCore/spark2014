@@ -1,5 +1,3 @@
-dp.adb:11:04: info: initialization of "The_T.X" constituent of "T" proved
-dp.adb:11:04: info: initialization of "The_T.Y" constituent of "T" proved
 p.ads:6:23: info: initialization of "Y" proved
 p_run.adb:11:25: high: "Dp.T" is not an input in the Global contract of subprogram "Run" at p_run.ads:7
 p_run.adb:11:25: high: "Dp.T" is not initialized

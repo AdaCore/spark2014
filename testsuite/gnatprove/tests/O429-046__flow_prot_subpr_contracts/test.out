@@ -1,5 +1,3 @@
-prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
-prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:10:25: medium: overflow check might fail
 prot.adb:15:33: medium: overflow check might fail
 prot.adb:15:37: medium: overflow check might fail

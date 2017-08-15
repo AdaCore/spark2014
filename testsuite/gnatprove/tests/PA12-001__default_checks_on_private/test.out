@@ -15,7 +15,6 @@ private_types.ads:24:32: medium: range check might fail
 private_types.ads:29:14: info: range check proved (CVC4: 1 VC)
 private_types.ads:31:25: info: range check proved (CVC4: 1 VC)
 private_types.ads:40:32: medium: range check might fail
-private_types.ads:45:07: info: initialization of "X.F" proved
 private_types.ads:45:14: info: range check proved (CVC4: 1 VC)
 private_types.ads:56:32: medium: range check might fail
 private_types.ads:61:25: info: range check proved (CVC4: 1 VC)

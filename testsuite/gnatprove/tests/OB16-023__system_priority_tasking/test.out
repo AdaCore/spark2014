@@ -1,2 +1,1 @@
 main.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-p.adb:5:14: info: initialization of "PO" constituent of "State" proved

@@ -26,7 +26,6 @@ ok_semantics-priv.adb:18:49: warning: "ZZ" constituent of "State" is not modifie
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State1" of "Create" not written
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State2" of "Create" not written
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State3" of "Create" not written
-ok_semantics-priv.ads:17:04: info: initialization of "ZZ" constituent of "State" proved
 ok_semantics-pub.ads:5:27: low: unused global "OK_Semantics.State1"
 ok_semantics-pub.ads:5:35: low: unused global "OK_Semantics.State2"
 ok_semantics-pub.ads:5:43: low: unused global "OK_Semantics.State3"
@@ -83,7 +82,6 @@ ok_semantics.adb:24:49: low: unused global "YY" constituent of "OK_Semantics.Sta
 ok_semantics.adb:24:49: warning: "YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
 ok_semantics.adb:24:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
 ok_semantics.adb:24:58: warning: "Priv.State" constituent of "OK_Semantics.State3" is not modified, could be INPUT
-ok_semantics.ads:7:04: info: initialization of "X" constituent of "State1" proved
 ok_semantics2-priv.adb:6:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2-priv.adb:6:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2-priv.adb:6:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -112,7 +110,6 @@ ok_semantics2-priv.ads:11:14: warning: "Y" constituent of "State2" is not modifi
 ok_semantics2-priv.ads:11:14: warning: "YY" constituent of "OK_Semantics2.State2" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "ZZ" constituent of "State" is not modified, could be INPUT
-ok_semantics2-priv.ads:17:04: info: initialization of "ZZ" constituent of "State" proved
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State1"
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State2"
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State3"
@@ -145,7 +142,6 @@ ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constit
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
 ok_semantics2.adb:10:56: medium: incorrect dependency "Check'Result => YY constituent of OK_Semantics2.State2"
 ok_semantics2.adb:10:65: medium: incorrect dependency "Check'Result => Priv.State constituent of OK_Semantics2.State3"
-ok_semantics2.ads:7:04: info: initialization of "X" constituent of "State1" proved
 ok_semantics2.ads:11:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2.ads:11:13: low: unused global "X" constituent of "State1"
 ok_semantics2.ads:11:13: low: unused global "Y" constituent of "State2"

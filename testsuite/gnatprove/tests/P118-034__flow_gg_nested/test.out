@@ -78,8 +78,6 @@ Generated contracts for state_a_out
 Generated contracts for nested
    Initializes =>
       Nested.State_A
-nested.adb:6:04: info: initialization of "A_1" constituent of "State_A" proved
-nested.adb:7:04: info: initialization of "A_2" constituent of "State_A" proved
 nested.adb:31:20: info: initialization of "Helper_1.H_1" proved
 nested.adb:39:20: info: initialization of "Tmp" constituent of "H_2" proved
 nested.adb:56:22: info: initialization of "Helper_2.H_2" proved

@@ -77,7 +77,6 @@ lots_of_tests.ads:82:14: info: initialization of "G1" proved
 lots_of_tests.ads:96:14: info: initialization of "B" constituent of "State" proved
 lots_of_tests.ads:105:14: info: initialization of "A" constituent of "State" proved
 lots_of_tests.ads:105:14: info: initialization of "B" constituent of "State" proved
-refinement_needed.adb:5:04: info: initialization of "A" constituent of "State" proved
 refinement_needed.adb:14:17: medium: overflow check might fail
 user.ads:4:36: info: initialization of "X" proved
 user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved

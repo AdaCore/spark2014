@@ -26,13 +26,8 @@ test.adb:77:17: info: discriminant check proved (CVC4: 1 VC), in instantiation a
 test.adb:77:27: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
 test.adb:79:17: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
 test.adb:79:33: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
-test.adb:98:04: info: initialization of "Apple_Basket.Arr" proved
 test.adb:98:29: info: range check proved (CVC4: 1 VC)
 test.adb:98:35: info: discriminant check proved (CVC4: 1 VC)
-test.adb:104:04: info: initialization of "Mixed_Basket.A" proved
-test.adb:104:04: info: initialization of "Mixed_Basket.Arr" proved
-test.adb:104:04: info: initialization of "Mixed_Basket.B" proved
-test.adb:104:04: info: initialization of "Mixed_Basket.Single_Item" proved
 test.adb:111:44: info: initialization of "Has_Apple" proved
 test.adb:116:07: medium: precondition might fail
 test.adb:120:28: info: discriminant check proved (CVC4: 1 VC)

@@ -9,7 +9,6 @@ types.ads:12:09: medium: invariant check might fail on default value
 types.ads:13:09: warning: subprogram "T2predicate" might not terminate
 types.ads:19:04: info: initialization of "TO2" proved
 types.ads:19:16: medium: predicate check might fail
-types.ads:20:04: info: initialization of "TO3.C" proved
 types.ads:22:14: info: subprogram "Proc1" will terminate
 types.ads:23:14: info: subprogram "Proc2" will terminate
 types.ads:24:14: info: subprogram "Proc3" will terminate

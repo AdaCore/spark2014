@@ -1,4 +1,3 @@
-a.ads:7:04: info: initialization of "DATA1" constituent of "aDATA1" proved
 a~b.adb:6:13: high: "A.aDATA1" is not an input in the Global contract of subprogram "example" at ab.ads:4
 a~b.adb:6:13: high: "A.aDATA1" is not initialized
 a~b.adb:6:13: high: either make "A.aDATA1" an input in the Global contract or initialize it before use

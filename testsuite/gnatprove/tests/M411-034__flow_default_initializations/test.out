@@ -1,13 +1,3 @@
-test.adb:34:04: info: initialization of "G.A.A" proved
-test.adb:34:04: info: initialization of "G.A.B" proved
-test.adb:34:04: info: initialization of "G.A.D" proved
-test.adb:34:04: info: initialization of "G.A.F" proved
-test.adb:34:04: info: initialization of "G.A.G" proved
-test.adb:34:04: info: initialization of "G.B.A" proved
-test.adb:34:04: info: initialization of "G.B.B" proved
-test.adb:34:04: info: initialization of "G.B.D" proved
-test.adb:34:04: info: initialization of "G.B.F" proved
-test.adb:34:04: info: initialization of "G.B.G" proved
 test.adb:36:23: info: initialization of "X.A" proved
 test.adb:36:23: info: initialization of "X.B" proved
 test.adb:36:23: info: initialization of "X.D" proved

@@ -1,11 +1,9 @@
-cae.adb:4:04: info: initialization of "Body_Var" constituent of "State" proved
 cae.adb:8:17: info: initialization of "Var" proved
 cae.ads:7:14: high: constant after elaboration "Var" must not be an output of procedure "P"
 cae.ads:7:14: info: initialization of "Var" proved
 cae.ads:9:14: high: constant after elaboration "Priv_Var" constituent of "State" must not be an output of procedure "P2"
 cae.ads:9:14: info: initialization of "Priv_Var" constituent of "State" proved
 cae.ads:11:14: info: initialization of "Body_Var" constituent of "State" proved
-cae.ads:13:04: info: initialization of "Priv_Var" constituent of "State" proved
 cae.ads:17:14: high: constant after elaboration "Var" must not be an output of procedure "P4"
 cae.ads:17:14: info: initialization of "Var" proved
 some_proc.adb:3:11: high: constant after elaboration "Var" must not be an output of procedure "Some_Proc"

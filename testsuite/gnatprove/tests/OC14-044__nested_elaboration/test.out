@@ -1,2 +1,0 @@
-list_allocator.ads:12:07: info: initialization of "Model.Allocated" proved
-list_allocator.ads:12:07: info: initialization of "Model.Available" proved

@@ -108,14 +108,6 @@ Generated contracts for do_a_b_c_b_a
 Generated contracts for a
    Initializes =>
       A.State_A
-a.adb:8:04: info: initialization of "Flag_A_0" constituent of "State_A" proved
-a.adb:9:04: info: initialization of "Flag_A_1" constituent of "State_A" proved
-a.adb:10:04: info: initialization of "Flag_A_2" constituent of "State_A" proved
-a.adb:11:04: info: initialization of "Flag_A_3" constituent of "State_A" proved
-a.adb:12:04: info: initialization of "Flag_A_4" constituent of "State_A" proved
-a.adb:13:04: info: initialization of "Flag_A_5" constituent of "State_A" proved
-a.adb:14:04: info: initialization of "Flag_A_6" constituent of "State_A" proved
-a.adb:15:04: info: initialization of "Flag_A_7" constituent of "State_A" proved
 a.ads:4:14: info: initialization of "Flag_A_0" constituent of "State_A" proved
 a.ads:5:14: info: initialization of "Flag_A_1" constituent of "State_A" proved
 a.ads:6:14: info: initialization of "Flag_A_2" constituent of "State_A" proved
@@ -177,11 +169,6 @@ Generated contracts for do_b_c_b_a
 Generated contracts for b
    Initializes =>
       B.State_B
-b.adb:8:04: info: initialization of "Flag_B_0" constituent of "State_B" proved
-b.adb:9:04: info: initialization of "Flag_B_1" constituent of "State_B" proved
-b.adb:10:04: info: initialization of "Flag_B_2" constituent of "State_B" proved
-b.adb:11:04: info: initialization of "Flag_B_3" constituent of "State_B" proved
-b.adb:12:04: info: initialization of "Flag_B_4" constituent of "State_B" proved
 b.ads:4:14: info: initialization of "Flag_B_0" constituent of "State_B" proved
 b.ads:5:14: info: initialization of "Flag_B_1" constituent of "State_B" proved
 b.ads:6:14: info: initialization of "Flag_B_2" constituent of "State_B" proved
@@ -218,9 +205,6 @@ Generated contracts for do_c_b_a
 Generated contracts for c
    Initializes =>
       C.State_C
-c.adb:8:04: info: initialization of "Flag_C_0" constituent of "State_C" proved
-c.adb:9:04: info: initialization of "Flag_C_1" constituent of "State_C" proved
-c.adb:10:04: info: initialization of "Flag_C_2" constituent of "State_C" proved
 c.ads:4:14: info: initialization of "Flag_C_0" constituent of "State_C" proved
 c.ads:5:14: info: initialization of "Flag_C_1" constituent of "State_C" proved
 c.ads:6:14: info: initialization of "Flag_C_2" constituent of "State_C" proved

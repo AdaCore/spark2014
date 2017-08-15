@@ -1,4 +1,3 @@
-database.adb:39:07: info: initialization of "Links" proved
 database.adb:41:07: info: initialization of "First_Available" proved
 database.adb:49:42: info: initialization of "Account" proved
 database.adb:52:17: info: postcondition proved (altergo: 3 VC)

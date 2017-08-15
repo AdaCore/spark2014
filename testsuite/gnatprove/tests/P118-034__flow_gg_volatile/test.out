@@ -22,8 +22,6 @@ Generated contracts for test_02
 Generated contracts for a
    Initializes =>
       A.State
-a.adb:7:04: info: initialization of "Cache" constituent of "State" proved
-a.adb:14:04: info: initialization of "Actuator" constituent of "Ext_State" proved
 a.ads:8:14: info: initialization of "Actuator" constituent of "Ext_State" proved
 Generated contracts for p_read_state
    Global =>

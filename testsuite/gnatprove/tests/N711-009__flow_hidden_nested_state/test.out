@@ -1,4 +1,3 @@
-p.adb:4:04: info: initialization of "G" constituent of "State" proved
 p.adb:11:07: info: initialization of "Pr_Var" proved
 p.adb:11:07: medium: "Pr_Var" needs to be a constituent of some state abstraction
 p.adb:17:07: info: initialization of "GN" proved

@@ -7,13 +7,9 @@ caller.ads:13:04: medium: type "Pr_TT" is not fully initialized
 callers_caller.adb:8:22: medium: assertion might fail, cannot prove Add3 (R) = 0
 callers_caller.adb:8:28: info: initialization of "R" proved
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
-dic.adb:2:04: info: initialization of "A.X" proved
-dic.adb:2:04: info: initialization of "A.Y" proved
 dic.adb:3:04: high: "G" is not initialized
 dic.adb:3:04: info: initialization of "B.X" proved
 dic.adb:3:04: info: initialization of "B.Y" proved
-dic.adb:5:04: info: initialization of "D.X" proved
-dic.adb:5:04: info: initialization of "D.Y" proved
 dic.adb:11:58: medium: overflow check might fail
 dic.adb:13:63: medium: overflow check might fail
 dic.adb:17:14: medium: overflow check might fail

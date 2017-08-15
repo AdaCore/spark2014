@@ -134,4 +134,6 @@ intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826)
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
+initialization_and_elaboration.ads:8:42: high: "Private_Child.State" constituent of "Initialization_And_Elaboration.State" is not initialized
+initialization_and_elaboration.ads:8:42: high: initialization of "Initialization_And_Elaboration.State" is specified at line 6
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved

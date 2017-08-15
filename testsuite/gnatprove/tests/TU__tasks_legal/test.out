@@ -3,4 +3,3 @@ po_t.adb:21:34: info: overflow check proved (CVC4: 1 VC)
 po_t.adb:31:04: info: initialization of "Hidden_PO" constituent of "State" proved
 po_t.adb:34:31: info: initialization of "Hidden_PO" constituent of "State" proved
 po_t.adb:36:22: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1)
-po_t.ads:56:14: info: initialization of "Hidden_PO" constituent of "State" proved

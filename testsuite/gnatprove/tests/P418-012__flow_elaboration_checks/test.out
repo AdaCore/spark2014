@@ -4,8 +4,6 @@ foo-blah.adb:15:20: high: modification of "Body_Elaborated" in elaboration requi
 foo-blah.adb:16:10: high: modification of "Foo.B" in elaboration requires Elaborate_Body on package "Blah"
 foo-blah.adb:17:10: high: modification of "Baz" in elaboration requires Elaborate_Body on package "Blah"
 foo-blah.ads:10:04: warning: initialization of Body_Elaborated has no effect
-foo-blah.ads:11:04: info: initialization of "Foo.A" proved
-foo-blah.ads:11:04: info: initialization of "Foo.B" proved
 foo-blah.ads:14:14: warning: subprogram "P" has no effect
 foo-blah.ads:18:04: warning: initialization of Baz has no effect
 foo.adb:6:07: info: initialization of "X" proved
@@ -14,8 +12,6 @@ foo.adb:15:20: high: modification of "Body_Elaborated" in elaboration requires E
 foo.adb:16:10: high: modification of "Foo.B" in elaboration requires Elaborate_Body on package "Foo"
 foo.adb:17:10: high: modification of "Baz" in elaboration requires Elaborate_Body on package "Foo"
 foo.ads:10:04: warning: initialization of Body_Elaborated has no effect
-foo.ads:11:04: info: initialization of "Foo.A" proved
-foo.ads:11:04: info: initialization of "Foo.B" proved
 foo.ads:14:14: warning: subprogram "P" has no effect
 foo.ads:18:04: warning: initialization of Baz has no effect
 init.adb:5:04: info: initialization of "D" constituent of "State" proved

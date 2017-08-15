@@ -5,6 +5,5 @@ bar.adb:36:07: high: "G" must be a global output of "Test_02" (SPARK RM 6.1.4(16
 foo.ads:3:25: warning: no procedure exists that can initialize abstract state "Foo.State"
 nested.adb:8:07: info: initialization of "G" constituent of "S1" proved
 nested.adb:17:09: high: "P1.S1" must be a global output of "Test_01" (SPARK RM 6.1.4(16))
-nested.adb:26:10: info: initialization of "G" constituent of "S2" proved
 nested.adb:35:12: high: "P2.S2" must be a global output of "Foo" (SPARK RM 6.1.4(16))
 nested.adb:38:07: info: initialization of "P2.S2" proved

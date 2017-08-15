@@ -1998,6 +1998,19 @@ package body Flow.Analysis is
       --  Returns True iff every path from V_Final going backwards in the CFG
       --  contains an infinite loop.
 
+      function Expand_Initializes return Node_Sets.Set
+      with Pre  => FA.Kind in Kind_Package | Kind_Package_Body
+                   and then Present (FA.Initializes_N),
+           Post => (for all E of Expand_Initializes'Result =>
+                      Ekind (E) in E_Abstract_State | E_Constant | E_Variable);
+      --  Returns entities that appear (either directly or as immediate
+      --  constituents of an abstract state) on the LHS of the Initializes
+      --  contract of the currently analyzed package.
+      --
+      --  In other words, this routine down-projects the LHS of the Initializes
+      --  contract to the scope of the private part or body of the current
+      --  package (depending on the SPARK_Mode barrier).
+
       procedure Mark_Definition_Free_Path
         (From      : Flow_Graphs.Vertex_Id;
          To        : Flow_Graphs.Vertex_Id;
@@ -2259,6 +2272,52 @@ package body Flow.Analysis is
             end;
          end if;
       end Emit_Message;
+
+      ------------------------
+      -- Expand_Initializes --
+      ------------------------
+
+      function Expand_Initializes return Node_Sets.Set is
+         Results : Node_Sets.Set;
+
+         Initializes : constant Dependency_Maps.Map :=
+           Parse_Initializes (FA.Spec_Entity, Null_Flow_Scope);
+         --  Initializes aspect parsed into Flow_Ids; the second parameter is
+         --  irrelevant, as Parse_Initializes only uses it when dealing with a
+         --  generated contract.
+
+      begin
+         for Clause in Initializes.Iterate loop
+            declare
+               E : constant Entity_Id :=
+                 Get_Direct_Mapping_Id (Dependency_Maps.Key (Clause));
+            begin
+               --  ??? here we basically down-project items on the LHS to the
+               --  FA.B_Scope, but we can't reuse the Down_Project routine yet,
+               --  as it trumps over the SPARK_Mode barrier (which is explained
+               --  in a ??? comment there).
+
+               if Ekind (E) = E_Abstract_State then
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                     if not Has_Null_Refinement (E) then
+                        for C of Iter (Refinement_Constituents (E)) loop
+                           Results.Insert (C);
+                        end loop;
+                     end if;
+                  elsif Private_Spec_In_SPARK (FA.Spec_Entity) then
+                     for C of Iter (Part_Of_Constituents (E)) loop
+                        Results.Insert (C);
+                     end loop;
+                  end if;
+               else
+                  pragma Assert (Ekind (E) in E_Constant | E_Variable);
+                  Results.Insert (E);
+               end if;
+            end;
+         end loop;
+
+         return Results;
+      end Expand_Initializes;
 
       ---------------------------------
       -- Has_Only_Infinite_Execution --
@@ -2649,6 +2708,22 @@ package body Flow.Analysis is
          end if;
       end Might_Be_Defined_In_Other_Path;
 
+      --  Local variables:
+
+      Expanded_Initializes : constant Node_Sets.Set :=
+        (if FA.Kind in Kind_Package | Kind_Package_Body
+           and then Present (FA.Initializes_N)
+         then Expand_Initializes
+         else Node_Sets.Empty_Set);
+      --  Objects that appear (either directly or via an abstract state) in LHS
+      --  of the Initializes contract of the currently analyzed pacakge, if
+      --  any.
+      --
+      --  Note: expanding the Initializes contract is much simpler and more
+      --  robust than locating an object there (or rather an abstract state
+      --  that contains such an object). Also, expansion saves us from dealing
+      --  with anomalies like Part_Of in private child units.
+
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
@@ -2684,17 +2759,26 @@ package body Flow.Analysis is
                   if (FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
                       and then not AS_In_Generated_Initializes (Var_Used))
 
+                    --  Skip this check for objects written when elaborating a
+                    --  package, unless they appear in the explicit Initializes
+                    --  contract. For them we either emit an "info:
+                    --  initialization proved" message here, or an error in
+                    --  Check_Initializes_Contract.
                     or else
-                      (FA.Kind in Kind_Package | Kind_Package_Body
-                       and then
-                         (Is_Abstract_State (Var_Used)
-                            or else
-                          (Final_Value_Of_Var_Used = V
-                             and then
-                           Mentioned_On_Generated_Initializes (Var_Used))))
+                      (Final_Value_Of_Var_Used = V
+                         and then
+                       FA.Kind in Kind_Package | Kind_Package_Body
+                         and then
+                       not Expanded_Initializes.Contains
+                              (Get_Direct_Mapping_Id (Var_Used)))
+
+                    --  Skip obvious messages about initialization of constants
 
                     or else
                       Is_Constant (Var_Used)
+
+                    --  Skip annoying message about initialization of records
+                    --  that carry no data.
 
                     or else
                       (Var_Used.Kind in Direct_Mapping | Record_Field
@@ -2722,12 +2806,6 @@ package body Flow.Analysis is
                      --  they define it. We record initialized / uninitialized
                      --  reads accordingly.
                      --
-                     --  Note we skip this check for abstract state iff we
-                     --  analyze a package, since it is OK to leave some state
-                     --  uninitialized (Check_Initializes_Contract will pick
-                     --  this up). We also skip this check when checking final
-                     --  vertices of variables mentioned in the generated
-                     --  Initializes aspect.
                      for V_Def of
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop

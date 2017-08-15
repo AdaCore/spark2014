@@ -1,2 +1,1 @@
 test.adb:12:14: medium: overflow check might fail
-test.ads:17:04: info: initialization of "T" constituent of "State" proved

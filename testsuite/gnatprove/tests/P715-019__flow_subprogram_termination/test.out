@@ -8,9 +8,7 @@ call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" might not terminate
-container.adb:8:04: info: initialization of "My_Container.A" proved
 container.adb:8:39: info: initialization of "Arr" proved
-container.adb:9:04: info: initialization of "Position.Index" proved
 container.adb:19:67: info: overflow check proved (CVC4: 1 VC)
 container.adb:23:14: info: index check proved (CVC4: 2 VC)
 container.adb:26:14: warning: subprogram "Test3" might not terminate
