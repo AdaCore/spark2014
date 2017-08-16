@@ -1,0 +1,3 @@
+e.adb:9:23: high: "X" must be listed in the Initializes aspect of "E" (SPARK RM 7.1.5(12))
+e.ads:3:14: warning: subprogram "Unused" has no effect
+p.ads:4:25: info: range check proved (CVC4: 2 VC)

@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
 with Errout;                         use Errout;
@@ -49,7 +50,6 @@ package body Flow_Types is
    -----------------------
 
    function "=" (Left, Right : Flow_Id) return Boolean is
-      use type Ada.Containers.Count_Type;
    begin
       if Left.Kind /= Right.Kind then
          return False;
@@ -90,6 +90,7 @@ package body Flow_Types is
                declare
                   Left_Len : constant Ada.Containers.Count_Type :=
                     Left.Component.Length;
+
                begin
                   return
                     Left_Len > 0
@@ -113,7 +114,81 @@ package body Flow_Types is
 
    function "<" (Left, Right : Flow_Id) return Boolean is
    begin
-      return Flow_Id_To_String (Left) < Flow_Id_To_String (Right);
+      if Left.Kind /= Right.Kind then
+         return Left.Kind < Right.Kind;
+      end if;
+
+      pragma Assert (Left.Kind = Right.Kind);
+
+      if Left.Variant /= Right.Variant then
+         return Left.Variant < Right.Variant;
+      end if;
+
+      pragma Assert (Left.Variant = Right.Variant);
+
+      case Left.Kind is
+         when Null_Value =>
+            return False;
+
+         when Direct_Mapping
+            | Record_Field
+            =>
+            if Left.Node /= Right.Node then
+               return Unique_Name (Left.Node) < Unique_Name (Right.Node);
+            end if;
+
+            pragma Assert (Left.Node = Right.Node);
+
+            if Left.Facet /= Right.Facet then
+               return Left.Facet < Right.Facet;
+            end if;
+
+            pragma Assert (Left.Facet = Right.Facet);
+
+            if Left.Kind = Record_Field then
+               declare
+                  Left_Len  : constant Ada.Containers.Count_Type :=
+                    Left.Component.Length;
+
+                  Right_Len : constant Ada.Containers.Count_Type :=
+                    Right.Component.Length;
+
+               begin
+                  pragma Assert (Left_Len > 0 and then Right_Len > 0);
+                  if Left_Len = Right_Len then
+                     for J in 1 .. Positive (Left_Len) loop
+                        --  We iterate until we find two different elements and
+                        --  at that point we return the result of their
+                        --  comparison.
+                        declare
+                           Left_Comp  : constant Entity_Id :=
+                             Left.Component (J);
+                           Right_Comp : constant Entity_Id :=
+                             Right.Component (J);
+
+                        begin
+                           if Left_Comp /= Right_Comp then
+                              return Unique_Name (Left_Comp) <
+                                Unique_Name (Right_Comp);
+                           end if;
+                        end;
+                     end loop;
+                     return False;
+                  else
+                     return Left_Len < Right_Len;
+                  end if;
+               end;
+            end if;
+
+            pragma Assert (Left = Right);
+            return False;
+
+         when Magic_String =>
+            return To_String (Left.Name) < To_String (Right.Name);
+
+         when Synthetic_Null_Export =>
+            return False;
+      end case;
    end "<";
 
    ----------
