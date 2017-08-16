@@ -460,7 +460,7 @@ package body SPARK_Definition is
          return False;
       end Restriction_No_Dependence;
 
-   --  Start of processing for Ravenscar_Profile
+   --  Start of processing for GNATprove_Tasking_Profile
 
    begin
       if Ravenscar_Profile_Cached then
