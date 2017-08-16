@@ -1,1 +1,2 @@
+outer.ads:9:25: high: "Var" must be listed in the Initializes aspect of "Outer" (SPARK RM 7.1.5(12))
 outer.ads:13:25: medium: range check might fail

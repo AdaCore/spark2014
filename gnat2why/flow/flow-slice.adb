@@ -21,15 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Iterators;       use Common_Iterators;
 with Flow_Utility;           use Flow_Utility;
-with Flow_Refinement;        use Flow_Refinement;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Type;               use Sem_Type;
 with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
@@ -292,8 +285,6 @@ package body Flow.Slice is
       Proof_Calls           : out Node_Sets.Set;
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
-      Local_Variables       : out Node_Sets.Set;
-      Local_Ghost_Variables : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    is
       --  The "Get_" functions that follow collect nodes that are purely of the
@@ -310,12 +301,6 @@ package body Flow.Slice is
       procedure Get_Definite_Calls (Calls : out Node_Sets.Set)
       with Global => (Input => Unresolved);
       --  Get subprograms that are definitely called
-
-      procedure Get_Local_Variables
-      with Global => (Output => (Local_Variables, Local_Ghost_Variables));
-      --  Traverses the tree under FA.Analyzed_Entity and gathers all object
-      --  and subprogram declarations and puts them in Local_Variables,
-      --  Local_Ghost_Variables and Local_Subprograms, respectively.
 
       procedure Get_Local_Definite_Writes
       with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
@@ -346,240 +331,13 @@ package body Flow.Slice is
          end loop;
       end Get_Definite_Calls;
 
-      -------------------------
-      -- Get_Local_Variables --
-      -------------------------
-
-      procedure Get_Local_Variables is
-         function Get_Object_Declaration (N : Node_Id) return Traverse_Result;
-
-         --  Pick entities coming from object and subprogram declarations and
-         --  add them respectively to Local_Variables and Local_Subprograms.
-         --  ??? respect SPARK_Mode => Off
-
-         ----------------------------
-         -- Get_Object_Declaration --
-         ----------------------------
-
-         function Get_Object_Declaration (N : Node_Id) return Traverse_Result
-         is
-            function Exposed_As_State (E : Entity_Id) return Boolean
-            with Pre => Ekind (E) in E_Constant
-                                   | E_Variable
-                                   | E_Loop_Parameter;
-            --  Returns True if E is either declared in the analyzed entity
-            --  (either directly in its scope or in a nested declare block), or
-            --  in a nested package (expcept for its package body statements
-            --  which are not traversed) and thus is like other variables of
-            --  the enclosing entity.
-            --
-            --  ??? what if it is already exposed as a part of (nested)
-            --  abstract state?
-
-            procedure Insert_Local_Variable (E : Entity_Id);
-            --  Insert E to either Local_Variables or Local_Ghost_Variables
-            --  depending on its Ghost status.
-
-            ----------------------
-            -- Exposed_As_State --
-            ----------------------
-
-            function Exposed_As_State (E : Entity_Id) return Boolean is
-               S : constant Flow_Scope := Get_Flow_Scope (E);
-            begin
-               if Ekind (S.Ent) = E_Package then
-                  if S.Ent = FA.Spec_Entity then
-                     return True;
-                  else
-                     return
-                       (case S.Part is
-                           when Visible_Part =>
-                              True,
-                           when Private_Part =>
-                              Private_Spec_In_SPARK (S.Ent),
-                           when Body_Part    =>
-                              Entity_Body_In_SPARK (S.Ent),
-                           when Null_Part    =>
-                              raise Program_Error);
-                  end if;
-               else
-                  return True;
-               end if;
-            end Exposed_As_State;
-
-            ---------------------------
-            -- Insert_Local_Variable --
-            ---------------------------
-
-            procedure Insert_Local_Variable (E : Entity_Id) is
-            begin
-               --  ??? Entity_In_SPARK is added to work around that this
-               --  traversal does not consider the barrier SPARK_Mode => Off.
-               --  Same story for Comes_From_Source as we shouldn't get those
-               --  entities.
-               if Entity_In_SPARK (E)
-                 and then Comes_From_Source (E)
-               then
-                  if Is_Ghost_Entity (E) then
-                     Local_Ghost_Variables.Insert (E);
-                  else
-                     Local_Variables.Insert (E);
-                  end if;
-               end if;
-            end Insert_Local_Variable;
-
-         --  Start of processing for Get_Object_Or_Subprogram_Declaration
-
-         begin
-            case Nkind (N) is
-               when N_Entry_Body
-                  | N_Entry_Declaration
-                  | N_Generic_Package_Declaration
-                  | N_Generic_Subprogram_Declaration
-                  | N_Subprogram_Body
-                  | N_Subprogram_Body_Stub
-                  | N_Subprogram_Declaration
-                  | N_Task_Type_Declaration
-                  | N_Task_Body
-               =>
-                  return Skip;
-
-               --  Skip statements of a nested package's body
-
-               when N_Handled_Sequence_Of_Statements =>
-                  pragma Assert (Nkind (Parent (N)) = N_Package_Body);
-                  return Skip;
-
-               when N_Object_Declaration =>
-                  declare
-                     E : constant Entity_Id := Defining_Entity (N);
-                  begin
-                     --  Ignore:
-                     --
-                     --   * formals of nested instantiations,
-                     --
-                     --   * object declarations that occur in the private
-                     --     part of nested packages that have an Initializes
-                     --     aspect.
-
-                     if not In_Generic_Actual (E)
-                       and then not Is_Part_Of_Concurrent_Object (E)
-                       and then Exposed_As_State (E)
-                     then
-                        case Ekind (E) is
-                           when E_Variable =>
-                              Insert_Local_Variable (E);
-
-                           when E_Constant =>
-                              --  ??? there is no point in checking both the
-                              --  partial and the full views; also no need to
-                              --  include the full view for the second time.
-                              --  ??? Entity_In_SPARK is added to work around
-                              --  that this traversal does not consider the
-                              --  barrier SPARK_Mode => Off. Same story for
-                              --  Comes_From_Source as we shouldn't get those
-                              --  entities.
-                              if Entity_In_SPARK (E)
-                                and then Comes_From_Source (E)
-                                and then Has_Variable_Input (E)
-                              then
-                                 --  If the Full_View is present then add that
-                                 if Is_Ghost_Entity (E) then
-                                    Local_Ghost_Variables.Include
-                                      (if Present (Full_View (E))
-                                       then Full_View (E)
-                                       else E);
-                                 else
-                                    Local_Variables.Include
-                                      (if Present (Full_View (E))
-                                       then Full_View (E)
-                                       else E);
-                                 end if;
-                              end if;
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end if;
-                  end;
-
-                  return Skip;
-
-               when N_Package_Body      |
-                    N_Package_Body_Stub =>
-                  declare
-                     E : constant Entity_Id := Unique_Defining_Entity (N);
-                  begin
-                     --  Skip bodies of generic packages
-                     if Ekind (E) = E_Generic_Package
-
-                       --  and bodies of packages that are not in SPARK
-                       or else not Entity_Body_In_SPARK (E)
-
-                       --  and bodies of nested packages with Abstract_State
-                       --  contract.
-                       or else
-                       (E /= FA.Spec_Entity
-                          and then
-                             Present
-                               (Get_Pragma (E, Pragma_Abstract_State)))
-                     then
-                        return Skip;
-                     end if;
-                  end;
-
-               when N_Package_Declaration =>
-                  --  State abstractions appear as local variables
-                  for State of Iter (Abstract_States (Defining_Entity (N)))
-                  loop
-                     if not Is_Null_State (State)
-                       and not Is_Part_Of_Concurrent_Object (State)
-                     then
-                        Insert_Local_Variable (State);
-                     end if;
-                  end loop;
-
-               when N_Single_Protected_Declaration |
-                    N_Single_Task_Declaration      =>
-                  --  These nodes should never occur after expansion
-                  raise Program_Error;
-
-               when others =>
-                  null;
-            end case;
-
-            return OK;
-         end Get_Object_Declaration;
-
-         procedure Gather_Local_Variables is
-            new Traverse_Proc (Get_Object_Declaration);
-
-      --  Start of processing for Get_Local_Variables
-
-      begin
-         --  Initialize Local_Variables and Local_Subprograms
-
-         Local_Variables       := Node_Sets.Empty_Set;
-         Local_Ghost_Variables := Node_Sets.Empty_Set;
-
-         --  Gather local variables and subprograms
-         if Ekind (FA.Spec_Entity) = E_Package then
-            Gather_Local_Variables (Package_Spec (FA.Spec_Entity));
-
-            if FA.Kind = Kind_Package_Body then
-               Gather_Local_Variables (Package_Body (FA.Analyzed_Entity));
-            end if;
-         end if;
-
-      end Get_Local_Variables;
-
       -------------------------------
       -- Get_Local_Definite_Writes --
       -------------------------------
 
       procedure Get_Local_Definite_Writes is
          All_Local_Variables : constant Node_Sets.Set :=
-           Local_Variables or Local_Ghost_Variables;
+           FA.GG.Local_Variables or FA.GG.Local_Ghost_Variables;
 
       begin
          --  Detect initialized local variables
@@ -738,7 +496,6 @@ package body Flow.Slice is
 
       --  Only needed for packages
       if FA.Kind in Kind_Package | Kind_Package_Body then
-         Get_Local_Variables;
          Get_Local_Definite_Writes;
       end if;
    end Compute_Globals;

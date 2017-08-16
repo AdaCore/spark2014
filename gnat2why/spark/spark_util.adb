@@ -32,6 +32,7 @@ with Output;
 with Pprint;                             use Pprint;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
+with Sem_Type;                           use Sem_Type;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
@@ -1413,6 +1414,9 @@ package body SPARK_Util is
    function Is_Package_State (E : Entity_Id) return Boolean is
      (case Ekind (E) is
          when E_Abstract_State => True,
+         when E_Constant       => Ekind (Scope (E)) = E_Package
+                                  and then not In_Generic_Actual (E)
+                                  and then Has_Variable_Input (E),
          when E_Variable       => Ekind (Scope (E)) = E_Package,
          when others           => False);
 

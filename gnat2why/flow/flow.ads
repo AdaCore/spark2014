@@ -116,6 +116,9 @@ package Flow is
       Globals : Node_Sets.Set;
       --  Non-local variables and parameters other than those of the analyzed
       --  entity.
+
+      Local_Variables       : Node_Sets.Set;
+      Local_Ghost_Variables : Node_Sets.Set;
    end record;
 
    type Entry_Call is record

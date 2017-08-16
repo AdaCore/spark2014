@@ -1,18 +1,18 @@
-procedure P2 (Arg : out Integer) is    --  local
+procedure P2 (Arg : out Integer) is                     --  local  of P2
    package Nested
-     with Abstract_State => (Private_State, Body_State)
+     with Abstract_State => (Private_State, Body_State) --  locals of P2
    is
-      Visible_Var : Integer;           --  local
+      Visible_Var : Integer;                            --  local  of P2
 
       function F return Integer;
    private
-      Private_Var : Integer := 5 with Part_Of => Private_State;      --  SHOULD BE local
+      Private_Var : Integer := 5 with Part_Of => Private_State;
    end Nested;
 
    package body Nested
      with Refined_State => (Private_State => (Private_Var), Body_State => (Body_Var))
    is
-      Body_Var : Integer := 10;        --  local (SHOULD BE kept as local)
+      Body_Var : Integer := 10;
 
       function F return Integer is (Visible_Var + Private_Var + Body_Var);
    begin

@@ -24,6 +24,7 @@
 with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
+with Common_Iterators;                 use Common_Iterators;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                  use Flow_Refinement;
@@ -34,7 +35,9 @@ with Gnat2Why.Annotate;                use Gnat2Why.Annotate;
 with Graphs;
 with Lib;                              use Lib;
 with Namet;                            use Namet;
+with Nlists;                           use Nlists;
 with Sem_Aux;                          use Sem_Aux;
+with Sem_Type;                         use Sem_Type;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
 with Snames;                           use Snames;
@@ -153,11 +156,20 @@ package body Flow_Generated_Globals.Partial is
                                        Call_Nodes.Conditional_Calls,
                                        Call_Nodes.Definite_Calls);
 
+   subtype Pkg_State_Set is Global_Set
+   with Dynamic_Predicate =>
+          (for all E of Pkg_State_Set => Is_Package_State (E));
+
+   type Initializes_Nodes is record
+      Proper  : Pkg_State_Set;  --  ??? Abstract, just like in Flow_Nodes
+      Refined : Pkg_State_Set;
+   end record;
+
    type Flow_Nodes is record
       Proper  : Global_Nodes;  --  ??? Abstract
       Refined : Global_Nodes;
 
-      Initializes : Global_Set;
+      Initializes : Initializes_Nodes;
       --  Only meaningful for packages
 
       Calls : Call_Nodes;
@@ -185,15 +197,6 @@ package body Flow_Generated_Globals.Partial is
 
       Local_Variables       : Global_Set;
       Local_Ghost_Variables : Global_Set;
-      --  Only meaningful for packages
-      --
-      --  ### Used for synthesis of Initializes. It is messy, because it should
-      --  come from AST traversal, not from slicing, but this again is messy
-      --  because of wrong handling of generic IN parameters.
-      --
-      --  We populate it for all entities, but write to ALI only for packages;
-      --  for subprograms they are only used to decide which of their (local)
-      --  constants have variable input.
 
       --  ### Intention for these is to only capture the obvious (for
       --  example, has loop at end, aspect no_return, etc.). This is
@@ -457,9 +460,10 @@ package body Flow_Generated_Globals.Partial is
             Proof_Calls           => Contr.Globals.Calls.Proof_Calls,
             Definite_Calls        => Contr.Globals.Calls.Definite_Calls,
             Conditional_Calls     => Contr.Globals.Calls.Conditional_Calls,
-            Local_Variables       => Contr.Local_Variables,
-            Local_Ghost_Variables => Contr.Local_Ghost_Variables,
-            Local_Definite_Writes => Contr.Globals.Initializes);
+            Local_Definite_Writes => Contr.Globals.Initializes.Refined);
+
+         Contr.Local_Variables       := FA.GG.Local_Variables;
+         Contr.Local_Ghost_Variables := FA.GG.Local_Ghost_Variables;
 
       else
          case Ekind (E) is
@@ -1284,8 +1288,11 @@ package body Flow_Generated_Globals.Partial is
                      --     Boolean'Image (Contr.Nonreturning));
 
                   when E_Package =>
-                     Dump (Indent & "Initializes  ",
-                           Contr.Globals.Initializes);
+                     Dump (Indent & "Initializes  (proper)",
+                           Contr.Globals.Initializes.Proper);
+
+                     Dump (Indent & "Initializes  (refined)",
+                           Contr.Globals.Initializes.Refined);
 
                   when others =>
                      null;
@@ -1410,8 +1417,7 @@ package body Flow_Generated_Globals.Partial is
 
       function Collect (E : Entity_Id) return Flow_Nodes
       with Pre => Is_Caller_Entity (E),
-           Post => Node_Sets.Is_Empty (Collect'Result.Initializes) and then
-                   Is_Empty (Collect'Result.Proper);
+           Post => Is_Empty (Collect'Result.Proper);
       --  ### This will go through all calls down the tree (so in our
       --  picture if we are at proc_1 we will not look at calls to
       --  pkg, but we do collect calls to proc_2) and collect their
@@ -1623,27 +1629,42 @@ package body Flow_Generated_Globals.Partial is
 
       Up_Project (Update.Refined, Update.Proper, Folded_Scope);
 
-      declare
-         Projected, Partial : Node_Sets.Set;
-      begin
          --  Handle package Initializes aspect
-         if Ekind (Folded) = E_Package then
-            Update.Initializes :=
-              Original.Initializes or
-              ((Update.Refined.Outputs - Update.Refined.Inputs)
-                  and
-               Local_Pkg_Variables);
+      if Ekind (Folded) = E_Package then
+         declare
+            Projected, Partial : Node_Sets.Set;
+         begin
+            Update.Initializes.Refined :=
+              Original.Initializes.Refined or
+                ((Update.Refined.Outputs - Update.Refined.Inputs)
+                   and
+                 Local_Pkg_Variables);
 
-            Up_Project (Update.Initializes, Folded_Scope, Projected, Partial);
+            Up_Project (Update.Initializes.Refined, Folded_Scope,
+                        Projected, Partial);
 
             for State of Partial loop
-               if Is_Fully_Contained (State, Update.Initializes) then
+               if Is_Fully_Contained (State, Update.Initializes.Refined) then
                   Projected.Include (State);
                end if;
             end loop;
-            Update.Initializes := Projected;
-         end if;
-      end;
+
+            --  Add states that are trivially initialized because they have
+            --  null refinements (their initialization is missed while looking
+            --  at the initialization of the constituents).
+            for State of Iter (Abstract_States (Folded)) loop
+               if not Is_Null_State (State)
+                 and then Entity_Body_In_SPARK (Folded)
+                 and then Has_Null_Refinement (State)
+               then
+                  Projected.Insert (State);
+               end if;
+            end loop;
+
+            Node_Sets.Move (Target => Update.Initializes.Proper,
+                            Source => Projected);
+         end;
+      end if;
 
       Filter_Local (Analyzed, Update.Calls.Proof_Calls);
       Filter_Local (Analyzed, Update.Calls.Definite_Calls);
@@ -2385,7 +2406,10 @@ package body Flow_Generated_Globals.Partial is
    begin
       Strip (From.Proper);
       Strip (From.Refined);
-      Strip (From.Initializes);
+      Strip (From.Initializes.Proper);
+      Strip (From.Initializes.Refined);
+      --  ??? stripping the refined Initializes is excessive, because currently
+      --  they are not written to the ALI file but that needs to be revisited
    end Strip_Constants;
 
    --------------
@@ -2507,12 +2531,143 @@ package body Flow_Generated_Globals.Partial is
    is
       Contr : Contract renames Contracts (E);
 
+      Visible_Pkg_State       : Global_Set;
+      Visible_Pkg_Ghost_State : Global_Set;
+      --  Objects that may appear on the LHS of an Initializes contract;
+      --  only used when E represents a package.
+      --  ??? this is just to keep the current code in phase-2 working;
+      --  generation of Initializes needs to be revisited
+
+      procedure Collect_Pkg_State with Pre => Ekind (E) = E_Package;
+      --  Detect objects that may appear on the LHS of an Initializes contract
+
+      -----------------------
+      -- Collect_Pkg_State --
+      -----------------------
+
+      procedure Collect_Pkg_State is
+
+         procedure Register_Object (Obj : Entity_Id)
+           with Pre => Ekind (Obj) in E_Abstract_State
+                                    | E_Constant
+                                    | E_Variable;
+         --  Register Obj as either a ghost or an ordinary variable
+
+         procedure Traverse_Declarations (L : List_Id);
+
+         ---------------------
+         -- Register_Object --
+         ---------------------
+
+         procedure Register_Object (Obj : Entity_Id) is
+         begin
+            if Is_Ghost_Entity (Obj) then
+               Visible_Pkg_Ghost_State.Insert (Obj);
+            else
+               Visible_Pkg_State.Insert (Obj);
+            end if;
+         end Register_Object;
+
+         ---------------------------
+         -- Traverse_Declarations --
+         ---------------------------
+
+         procedure Traverse_Declarations (L : List_Id) is
+            N : Node_Id := First (L);
+         begin
+            while Present (N) loop
+               if Nkind (N) = N_Object_Declaration then
+                  declare
+                     Obj : constant Entity_Id := Defining_Entity (N);
+                  begin
+                     if Ekind (Obj) = E_Variable then
+                        Register_Object (Obj);
+
+                     else pragma Assert (Ekind (Obj) = E_Constant);
+
+                        if not In_Generic_Actual (Obj)
+                          and then Has_Variable_Input (Obj)
+                        then
+                           if Present (Expression (N)) then
+                              --  Completion of a deferred constant
+
+                              if Is_Full_View (Obj) then
+                                 null;
+
+                              --  Ordinary constant with an initialization
+                              --  expression.
+
+                              else
+                                 Register_Object (Obj);
+                              end if;
+
+                           else
+                              --  Declaration of a deferred constant
+
+                              if Present (Full_View (Obj)) then
+                                 Register_Object (Full_View (Obj));
+
+                              --  Imported constant
+
+                              else
+                                 pragma Assert (Is_Imported (Obj));
+                                 Register_Object (Obj);
+                              end if;
+                           end if;
+                        end if;
+                     end if;
+                  end;
+               end if;
+               Next (N);
+            end loop;
+         end Traverse_Declarations;
+
+         --  Local variables:
+
+         Pkg_Spec : constant Node_Id := Package_Specification (E);
+
+      --  Start of processing for Collect_Pkg_State
+
+      begin
+         --  Pick objects from visible declarations (always), then abstract
+         --  states (if given explicitly) or objects in private/body parts
+         --  which are lifted to implicit abstract states (if no abstract
+         --  states are given).
+
+         Traverse_Declarations (Visible_Declarations (Pkg_Spec));
+
+         if Present (Get_Pragma (E, Pragma_Abstract_State)) then
+            for State of Iter (Abstract_States (E)) loop
+               if not Is_Null_State (State) then
+                  Register_Object (State);
+               end if;
+            end loop;
+         else
+            Traverse_Declarations (Private_Declarations (Pkg_Spec));
+            declare
+               Pkg_Body : constant Node_Id := Package_Body (E);
+            begin
+               if Present (Pkg_Body) then
+                  Traverse_Declarations (Declarations (Pkg_Body));
+               end if;
+            end;
+         end if;
+      end Collect_Pkg_State;
+
+   --  Start of processing for Write_Contracts_To_ALI
+
    begin
       for Child of Scope_Map (E) loop
          Write_Contracts_To_ALI (Child, Constant_Graph, Contracts);
       end loop;
 
       if Ekind (E) /= E_Protected_Type then
+
+         if Ekind (E) = E_Package
+           and then No (Get_Pragma (E, Pragma_Initializes))
+         then
+            Collect_Pkg_State;
+         end if;
 
          Strip_Constants (Contr.Globals, Constant_Graph);
 
@@ -2533,7 +2688,7 @@ package body Flow_Generated_Globals.Partial is
                    Inputs    => To_Name_Set (Contr.Globals.Refined.Inputs),
                    Outputs   => To_Name_Set (Contr.Globals.Refined.Outputs)),
                 Initializes =>
-                  To_Name_Set (Contr.Globals.Initializes),
+                  To_Name_Set (Contr.Globals.Initializes.Proper),
                 Calls   =>
                   (Proof_Calls       =>
                      To_Name_Set (Contr.Globals.Calls.Proof_Calls),
@@ -2542,9 +2697,8 @@ package body Flow_Generated_Globals.Partial is
                    Conditional_Calls =>
                      To_Name_Set (Contr.Globals.Calls.Conditional_Calls))),
 
-             Local_Variables       => To_Name_Set (Contr.Local_Variables),
-             Local_Ghost_Variables => To_Name_Set
-               (Contr.Local_Ghost_Variables),
+             Local_Variables       => To_Name_Set (Visible_Pkg_State),
+             Local_Ghost_Variables => To_Name_Set (Visible_Pkg_Ghost_State),
 
              Has_Terminate         => Contr.Has_Terminate,
              Nonreturning          => Contr.Nonreturning,

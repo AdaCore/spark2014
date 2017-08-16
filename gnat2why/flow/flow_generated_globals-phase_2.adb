@@ -1812,7 +1812,9 @@ package body Flow_Generated_Globals.Phase_2 is
                         null;
 
                      when E_Package =>
-                        Dump (Indent & "Initializes  ", Contr.Initializes);
+                        --  ??? by reusing the Dump procedure defined for
+                        --  Input/Ouput/Proof_In, we get an extra indentation
+                        Dump ("Initializes  ", Contr.Initializes);
 
                      when others =>
                         null;
@@ -2075,7 +2077,13 @@ package body Flow_Generated_Globals.Phase_2 is
                   Initialized_Vars_And_States.Union (II.LHS);
                   Initialized_Vars_And_States.Union (II.LHS_Proof);
 
+                  --  ??? here we put the contract into the old-gg container;
+                  --  this should be removed as part of moving synthesis of the
+                  --  Initializes contract to the new-gg (but this can be done
+                  --  merely as a refactoring)
                   Initializes_Aspects.Insert (P.Name, II);
+
+                  Update.Initializes := II.LHS or II.LHS_Proof;
                end;
             end if;
 

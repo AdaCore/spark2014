@@ -908,6 +908,14 @@ package body Flow.Control_Flow_Graph is
    --  Delete all vertices from exceptional paths from the control flow
    --  graph.
 
+   procedure Register_Own_Variable (FA : in out Flow_Analysis_Graphs;
+                                    E  :        Entity_Id)
+   with Pre => Ekind (E) in E_Abstract_State
+                          | E_Constant
+                          | E_Variable;
+   --  Register E as an "owned" variable of a package, i.e. as a candidate to
+   --  appear on the LHS of the generated Initialized.
+
    procedure Separate_Dead_Paths (FA : in out Flow_Analysis_Graphs);
    --  Make sure dead code remains separate from the rest of the control
    --  flow graph, so that the post-dominance frontier can be constructed
@@ -3456,23 +3464,51 @@ package body Flow.Control_Flow_Graph is
          return;
       end if;
 
-      --  We are dealing with a local constant. These constants are *not*
-      --  ignored.
-      if Constant_Present (N) then
-         if Present (Expr) or else Is_Imported (E) then
-            FA.Local_Constants.Insert (E);
+      case Ekind (E) is
+         when E_Constant =>
+            if Present (Expr) then
+               --  Completion of a deferred constant
 
-         else
-            --  This is a deferred constant, ignore it
-            Add_Dummy_Vertex (N, FA, CM);
-            return;
-         end if;
-      end if;
+               if Is_Full_View (E) then
+                  null;
 
-      --  First, we need a 'initial and 'final vertex for this object
-      Create_Initial_And_Final_Vertices (E,
-                                         Variable_Kind,
-                                         FA);
+               --  Ordinary constant with an initialization expression
+
+               else
+                  Register_Own_Variable (FA, E);
+                  FA.Local_Constants.Insert (E);
+                  Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+               end if;
+
+            else
+               --  Declaration of a deferred constant
+
+               if Present (Full_View (E)) then
+                  Register_Own_Variable (FA, Full_View (E));
+                  FA.Local_Constants.Insert (Full_View (E));
+                  Create_Initial_And_Final_Vertices (Full_View (E),
+                                                     Variable_Kind, FA);
+                  Add_Dummy_Vertex (N, FA, CM);
+                  return;
+
+               --  Imported constant
+
+               else
+                  pragma Assert (Is_Imported (E));
+                  Register_Own_Variable (FA, E);
+                  FA.Local_Constants.Insert (E);
+                  Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+
+               end if;
+            end if;
+
+         when E_Variable =>
+            Register_Own_Variable (FA, E);
+            Create_Initial_And_Final_Vertices (E, Variable_Kind, FA);
+
+         when others =>
+            raise Program_Error;
+      end case;
 
       --  We have a declaration with an explicit initialization
 
@@ -3810,6 +3846,8 @@ package body Flow.Control_Flow_Graph is
                   end if;
                end if;
             end;
+
+            Register_Own_Variable (FA, State);
          end if;
       end loop;
 
@@ -3824,7 +3862,8 @@ package body Flow.Control_Flow_Graph is
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
 
          --  Process the private declarations if they are present and in SPARK
-         if Present (Private_Decls)
+         if No (Get_Pragma (Spec_E, Pragma_Abstract_State))
+           and then Present (Private_Decls)
            and then Private_Spec_In_SPARK (Spec_E)
          then
             Process_Statement_List (Private_Decls, FA, CM, Ctx);
@@ -5726,6 +5765,27 @@ package body Flow.Control_Flow_Graph is
 
    end Pragma_Relevant_To_Flow;
 
+   ---------------------------
+   -- Register_Own_Variable --
+   ---------------------------
+
+   procedure Register_Own_Variable (FA : in out Flow_Analysis_Graphs;
+                                    E  :        Entity_Id)
+   is
+   begin
+      if FA.Generating_Globals
+        and then FA.Kind in Kind_Package | Kind_Package_Body
+        and then FA.Is_Generative
+        and then Is_Package_State (E)
+      then
+         if Is_Ghost_Entity (E) then
+            FA.GG.Local_Ghost_Variables.Insert (E);
+         else
+            FA.GG.Local_Variables.Insert (E);
+         end if;
+      end if;
+   end Register_Own_Variable;
+
    ------------------------------------------------------------
    --  Package functions and procedures
    ------------------------------------------------------------
@@ -5804,14 +5864,6 @@ package body Flow.Control_Flow_Graph is
               (FA.Analyzed_Entity, Parameter_Kind, FA);
 
          when Kind_Package | Kind_Package_Body =>
-            --  Create initial and final vertices for the package's state
-            --  abstractions.
-            for State of Iter (Abstract_States (FA.Spec_Entity)) loop
-               if not Is_Null_State (State) then
-                  Create_Initial_And_Final_Vertices (State, Variable_Kind, FA);
-               end if;
-            end loop;
-
             if Is_Generic_Instance (FA.Spec_Entity) then
                declare
                   procedure Create_Parameter_Vertices (Formal    : Node_Id;
@@ -6221,7 +6273,9 @@ package body Flow.Control_Flow_Graph is
                --  of the hard work we've done so far.
                FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
-               if Present (Private_Decls) then
+               if Present (Private_Decls)
+                 and then Private_Spec_In_SPARK (FA.Spec_Entity)
+               then
                   Process_Statement_List (Private_Decls,
                                           FA, Connection_Map, The_Context);
                   Nodes.Append (Union_Id (Private_Decls));

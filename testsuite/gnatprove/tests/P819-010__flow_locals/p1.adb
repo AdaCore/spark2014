@@ -6,11 +6,11 @@ procedure P1 (Arg : out Integer) is    --  local
 
       function F return Integer;
    private
-      Private_Var : Integer := 5;      --  SHOULD BE local
+      Private_Var : Integer := 5;      --  local (implicit abstract state)
    end Nested;
 
    package body Nested is
-      Body_Var : Integer := 10;        --  local (SHOULD BE kept as local)
+      Body_Var : Integer := 10;        --  local (implicit abstract state)
 
       function F return Integer is (Visible_Var + Private_Var + Body_Var);
    begin
