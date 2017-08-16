@@ -1482,7 +1482,7 @@ package body Flow.Analysis is
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
                                 return Boolean;
       --  Checks if variables in the set Variables_Defined have been
-      --  mentioned in a pragma Unreferenced, Unused or Unreferenced.
+      --  mentioned in a pragma Unmodified, Unused or Unreferenced.
 
       function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
                                              return Boolean;
