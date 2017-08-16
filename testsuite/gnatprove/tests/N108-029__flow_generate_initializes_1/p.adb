@@ -1,4 +1,4 @@
-procedure P (X : out Integer) with Global => null is
+procedure P (X : out Integer) is
    package Nested
      with Abstract_State => State
    is
@@ -17,5 +17,3 @@ procedure P (X : out Integer) with Global => null is
 begin
    X := Nested.Foo;
 end P;
-
---  P531-027 regression: the global annotation pm P should not be necessary
