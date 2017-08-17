@@ -104,6 +104,7 @@ package Configuration is
       Report               : aliased GNAT.Strings.String_Access;
       RTS                  : aliased GNAT.Strings.String_Access;
       Steps                : aliased Integer;
+      Target               : aliased GNAT.Strings.String_Access;
       Timeout              : aliased GNAT.Strings.String_Access;
       U                    : aliased Boolean;
       UU                   : aliased Boolean;
@@ -164,7 +165,6 @@ package Configuration is
    Limit_Subp           : GNAT.Strings.String_Access;
    Only_Given           : Boolean;
    CodePeer             : Boolean;
-   RTS_Dir              : GNAT.Strings.String_Access;
    Counterexample       : Boolean;
    No_Axiom_Guard       : Boolean;
    Z3_Counterexample    : Boolean;
@@ -224,21 +224,16 @@ package Configuration is
            Compose (Share_Why3, "drivers");
          Share_Spark_Runtimes     : constant String :=
            Compose (Share_Spark, "runtimes");
-         Help_Msg_File : constant String :=
+         Help_Msg_File            : constant String :=
            Compose (Share_Spark, "help.txt");
-         Frames_Cgpr              : constant String := "frames.cgpr";
-         Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
-         Frames_Cov_Cgpr          : constant String := "frames_coverage.cgpr";
-         Gnat2why_Cov_Cgpr        : constant String :=
-           "gnat2why_coverage.cgpr";
-         Gpr_Frames_Cnf_File      : constant String :=
-           Compose (Share_Spark_Config, Frames_Cgpr);
-         Gpr_Translation_Cnf_File : constant String :=
-           Compose (Share_Spark_Config, Gnat2why_Cgpr);
-         Gpr_Frames_Cov_Cnf_File  : constant String :=
-           Compose (Share_Spark_Config, Frames_Cov_Cgpr);
-         Gpr_Gnat2why_Cov_Cnf_File  : constant String :=
-           Compose (Share_Spark_Config, Gnat2why_Cov_Cgpr);
+         Gpr_Frames_DB            : constant String :=
+           Compose (Share_Spark_Config, "frames");
+         Gpr_Translation_DB : constant String :=
+           Compose (Share_Spark_Config, "gnat2why");
+         Gpr_Frames_Cov_DB        : constant String :=
+           Compose (Share_Spark_Config, "frames_coverage");
+         Gpr_Gnat2why_Cov_DB     : constant String :=
+           Compose (Share_Spark_Config, "gnat2why_coverage");
          Gnatprove_Conf           : constant String :=
            Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;

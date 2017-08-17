@@ -91,13 +91,11 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Call_Gprbuild
      (Project_File : String;
-      Config_File  : String;
-      New_File     : String;
+      DB_Dir       : String;
       Args         : in out String_Lists.List;
       Status       : out Integer);
-   --  Call gprbuild with the given arguments. Pass in explicitly a number of
-   --  parallel processes, so that we can force sequential execution when
-   --  needed.
+   --  Call gprbuild with the given arguments. DB_Dir is the directory
+   --  which contains the information to configure gprbuild correctly.
 
    procedure Compute_ALI_Information
      (Project_File : String;
@@ -166,14 +164,6 @@ procedure Gnatprove with SPARK_Mode is
       Arguments : String_Lists.List) return Process_Descriptor;
    --  Spawn a process in a non-blocking way
 
-   function Replace_Config_File_If_Needed
-     (Config_File : String;
-      New_File    : String) return String;
-   --  If option --RTS was not used, do nothing (i.e. return the first
-   --  argument). Otherwise, copy the provided config file to a new file with
-   --  the name of the second argument while adding the runtime information to
-   --  it. Return the second argument.
-
    procedure Write_Why3_Conf_File (Obj_Dir : String);
    --  Write the Why3 conf file to process prover configuration
 
@@ -183,13 +173,9 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Call_Gprbuild
       (Project_File : String;
-       Config_File  : String;
-       New_File     : String;
+       DB_Dir       : String;
        Args         : in out String_Lists.List;
-       Status       : out Integer)
-   is
-      Actual_Config_File : constant String :=
-        Replace_Config_File_If_Needed (Config_File, New_File);
+       Status       : out Integer) is
    begin
 
       if Verbose then
@@ -231,8 +217,19 @@ procedure Gnatprove with SPARK_Mode is
          Args.Prepend ("-P");
       end if;
 
-      if Config_File /= "" then
-         Args.Prepend ("--config=" & Actual_Config_File);
+      Args.Prepend (DB_Dir);
+      Args.Prepend ("--db");
+
+      if CL_Switches.RTS /= null
+        and then CL_Switches.RTS.all /= ""
+      then
+         Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
+      end if;
+
+      if CL_Switches.Target /= null
+        and then CL_Switches.Target.all /= ""
+      then
+         Args.Prepend ("--target=" & CL_Switches.Target.all);
       end if;
 
       for S of CL_Switches.GPR_Project_Path loop
@@ -297,20 +294,15 @@ procedure Gnatprove with SPARK_Mode is
 
       Args.Append ("-gnates=" & Opt_File);
 
-      if RTS_Dir.all /= "" then
-         Args.Append ("--RTS=" & RTS_Dir.all);
-      end if;
-
       declare
-         Cnf_File : constant String :=
+         Cnf_DB : constant String :=
            (if CL_Switches.Coverage then
-               File_System.Install.Gpr_Frames_Cov_Cnf_File
+               File_System.Install.Gpr_Frames_Cov_DB
             else
-               File_System.Install.Gpr_Frames_Cnf_File);
+               File_System.Install.Gpr_Frames_DB);
       begin
          Call_Gprbuild (Project_File,
-                        Cnf_File,
-                        Compose (Obj_Dir, File_System.Install.Frames_Cgpr),
+                        Cnf_DB,
                         Args,
                         Status);
       end;
@@ -599,23 +591,18 @@ procedure Gnatprove with SPARK_Mode is
          for Carg of CL_Switches.Cargs_List loop
             Args.Append (Carg);
          end loop;
-         if RTS_Dir.all /= "" then
-            Args.Append ("--RTS=" & RTS_Dir.all);
-         end if;
 
          Id := Spawn_VC_Server (Proj.Root_Project);
 
          declare
-            Cnf_File : constant String :=
+            Cnf_DB : constant String :=
               (if CL_Switches.Coverage then
-                  File_System.Install.Gpr_Gnat2why_Cov_Cnf_File
+                  File_System.Install.Gpr_Gnat2why_Cov_DB
                else
-                  File_System.Install.Gpr_Translation_Cnf_File);
+                  File_System.Install.Gpr_Translation_DB);
          begin
             Call_Gprbuild (Project_File,
-                           Cnf_File,
-                           Compose (Obj_Dir,
-                             File_System.Install.Gnat2why_Cgpr),
+                           Cnf_DB,
                            Args,
                            Status);
          end;
@@ -813,67 +800,6 @@ procedure Gnatprove with SPARK_Mode is
       return Gnat2Why_Args.Set (Obj_Dir);
    end Pass_Extra_Options_To_Gnat2why;
 
-   -----------------------------------
-   -- Replace_Config_File_If_Needed --
-   -----------------------------------
-
-   function Replace_Config_File_If_Needed
-     (Config_File : String;
-      New_File    : String) return String
-   is
-      Handle     : File_Type;
-      RTS_Set    : Boolean;
-      Target_Set : Boolean;
-
-      procedure Copy_Replace_Line (Line : String);
-      --  Copy the given line over to Handle. If the line corresponds to the
-      --  Runtime_Library_Dir pattern, replace it by
-      --    for Runtime_Library_Dir ("Ada") use ("dir");
-
-      -----------------------
-      -- Copy_Replace_Line --
-      -----------------------
-
-      procedure Copy_Replace_Line (Line : String) is
-      begin
-         if RTS_Set and then
-           GNATCOLL.Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
-         then
-            Put_Line
-              (Handle,
-               " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
-                 """;");
-         elsif Target_Set and then
-           GNATCOLL.Utils.Starts_With (Line, "--TARGET")
-         then
-            Put_Line
-              (Handle,
-               " for Target use """ & Prj_Attr.Target.all & """;");
-         else
-            Put_Line (Handle, Line);
-         end if;
-      end Copy_Replace_Line;
-
-      procedure Copy_File is new For_Line_In_File (Copy_Replace_Line);
-
-   --  Start of processing for Replace_Config_File_If_Needed
-
-   begin
-      if RTS_Dir.all = "" and then
-        Null_Or_Empty_String (Prj_Attr.Target)
-      then
-         return Config_File;
-      end if;
-
-      RTS_Set    := RTS_Dir.all /= "";
-      Target_Set := not Null_Or_Empty_String (Prj_Attr.Target);
-
-      Create (Handle, Out_File, New_File);
-      Copy_File (Config_File);
-      Close (Handle);
-      return New_File;
-   end Replace_Config_File_If_Needed;
-
    --------------------------
    -- Report_File_Is_Empty --
    --------------------------
@@ -918,8 +844,16 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-U");
       end if;
 
-      if RTS_Dir.all /= "" then
-         Args.Append ("--RTS=" & RTS_Dir.all);
+      if CL_Switches.RTS /= null
+        and then CL_Switches.RTS.all /= ""
+      then
+         Args.Prepend ("--RTS=" & CL_Switches.RTS.all);
+      end if;
+
+      if CL_Switches.Target /= null
+        and then CL_Switches.Target.all /= ""
+      then
+         Args.Prepend ("--target=" & CL_Switches.Target.all);
       end if;
 
       --  ??? we only limit codepeer analysis if the user has given a single

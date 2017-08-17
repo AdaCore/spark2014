@@ -100,12 +100,6 @@ package body Configuration is
       Input  : String);
    --  parse the --codepeer option (possibilities are "on" and "off")
 
-   procedure Set_RTS_Dir (Config    : Command_Line_Configuration);
-   --  if a runtime dir was defined, normalize it into an absolute path. To
-   --  find the runtime dir, we first look at the initial value of RTS which
-   --  contains the command-line argument of --RTS, if present. If it was not
-   --  present, look in the project file to find the Runtime attribute.
-
    procedure Check_gnateT_Switch;
    --  Do the actual check and issue warning for the check mentioned in
    --  Set_Target_Dir: if -gnateT is not set in
@@ -142,7 +136,9 @@ package body Configuration is
 
    procedure Check_gnateT_Switch is
    begin
-      if Prj_Attr.Target.all /= "" then
+      if Prj_Attr.Target.all /= ""
+        or else CL_Switches.Target.all /= ""
+      then
 
          --  We check the conditions for *not* issuing the warning, in which
          --  case we return. At the end of the procedure, the warning is issued
@@ -159,7 +155,7 @@ package body Configuration is
          Put_Line
            (Standard_Error,
             "warning: attribute ""Target"" of your project file is " &
-              "currently ignored by gnatprove");
+              "only used to determine runtime library");
          Put_Line
            (Standard_Error,
             "warning: to specify target properties, specify option " &
@@ -781,7 +777,6 @@ package body Configuration is
          Check_gnateT_Switch;
          Set_Mode;
          Set_Warning_Mode;
-         Set_RTS_Dir (Config);
          Set_Report_Mode;
          Set_Level_Timeout_Steps_Provers_Proof_Mode;
          Set_Proof_Dir;
@@ -1443,6 +1438,11 @@ package body Configuration is
 
       Define_Switch
         (Config,
+         CL_Switches.Target'Access,
+         Long_Switch => "--target=");
+
+      Define_Switch
+        (Config,
          CL_Switches.IDE_Progress_Bar'Access,
          Long_Switch => "--ide-progress-bar");
 
@@ -1762,87 +1762,6 @@ package body Configuration is
                     With_Help => False);
       end if;
    end Set_CodePeer_Mode;
-
-   -----------------
-   -- Set_RTS_Dir --
-   -----------------
-
-   procedure Set_RTS_Dir (Config : Command_Line_Configuration) is
-   begin
-      RTS_Dir := CL_Switches.RTS;
-
-      --  When command-line switch --RTS is not provided, consider attribute
-      --  Runtime of project file.
-
-      if Null_Or_Empty_String (RTS_Dir) then
-
-         --  If project has a target and runtime attribute specified, then
-         --  look for a corresponding runtime directory in the compiler
-         --  installation, which should work if GNAT and SPARK were
-         --  installed at the same location.
-
-         if Prj_Attr.Target.all /= ""
-           and then Prj_Attr.Runtime.all /= ""
-         then
-            declare
-               Dir     : constant String :=
-                 Executable_Location & Prj_Attr.Target.all &
-                 GNAT.Directory_Operations.Dir_Separator & "lib" &
-                 GNAT.Directory_Operations.Dir_Separator & "gnat" &
-                 GNAT.Directory_Operations.Dir_Separator &
-                 Prj_Attr.Runtime.all;
-            begin
-               if GNAT.OS_Lib.Is_Directory (Dir) then
-                  RTS_Dir := new String'(Dir);
-               end if;
-            end;
-         end if;
-
-         --  Otherwise, pass the value of the runtime attribute directly, which
-         --  should work if the runtime has been copied in SPARK installation.
-
-         if Null_Or_Empty_String (RTS_Dir)
-           and then Prj_Attr.Runtime.all /= ""
-         then
-            RTS_Dir := Prj_Attr.Runtime;
-         end if;
-      end if;
-
-      --  When --RTS is not provided and attribute Runtime is not set in the
-      --  project file, return.
-
-      if Null_Or_Empty_String (RTS_Dir) then
-         return;
-      end if;
-
-      --  Search for the full path to the runtime directory
-
-      declare
-         Dir : Virtual_File :=
-           Create_From_Base (Filesystem_String (RTS_Dir.all));
-      begin
-
-         --  If this test is true, then RTS_Dir is a valid absolute or relative
-         --  path (we don't care which).
-
-         if Is_Directory (Dir) then
-            Normalize_Path (Dir);
-            RTS_Dir := new String'(Dir.Display_Full_Name);
-         else
-            Dir := Create_From_Dir
-              (Create (Filesystem_String
-               (File_System.Install.Share_Spark_Runtimes)),
-               Filesystem_String (RTS_Dir.all));
-            if Is_Directory (Dir) then
-               Normalize_Path (Dir);
-               RTS_Dir := new String'(Dir.Display_Full_Name);
-            else
-               Abort_Msg (Config, "could not find runtime " & RTS_Dir.all,
-                          With_Help => False);
-            end if;
-         end if;
-      end;
-   end Set_RTS_Dir;
 
    -----------------------
    -- SPARK_Report_File --
