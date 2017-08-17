@@ -11,9 +11,4 @@ package Addr is
    function F return System.Address
      with SPARK_Mode => Off;
 
-   Z : Integer;
-   for Z'Address use F;
-   --  the above should be rejected because of the use of a non-SPARK
-   --  expression
-
 end Addr;

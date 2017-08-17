@@ -688,6 +688,9 @@ package body SPARK_Definition is
    procedure Mark_Call                        (N : Node_Id) with
      Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
 
+   procedure Mark_Address                     (E : Entity_Id)
+     with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
+
    procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
@@ -1396,6 +1399,7 @@ package body SPARK_Definition is
                end if;
 
                Mark_Object_Declaration (N);
+               Mark_Address (E);
             end;
 
          when N_Package_Body =>
@@ -2117,6 +2121,18 @@ package body SPARK_Definition is
       Inside_Actions := Save_Inside_Actions;
    end Mark_Actions;
 
+   ------------------
+   -- Mark_Address --
+   ------------------
+
+   procedure Mark_Address (E : Entity_Id) is
+      Address : constant Node_Id := Get_Rep_Item (E, Name_Address);
+   begin
+      if Present (Address) then
+         Mark (Expression (Address));
+      end if;
+   end Mark_Address;
+
    ---------------------------------------------
    -- Mark_Aspect_Clauses_And_Pragmas_In_List --
    ---------------------------------------------
@@ -2255,6 +2271,18 @@ package body SPARK_Definition is
               and then SPARK_Pragma_Is (Opt.On)
             then
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
+            end if;
+
+         when Attribute_Address =>
+            --  As per SPARK RM 15.2 attribute Address in only allowed in
+            --  attribute definition clauses.
+            if Nkind (Parent (N)) /= N_Attribute_Definition_Clause then
+               Violation_Detected := True;
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_Name_1 := Aname;
+                  Error_Msg_N ("attribute % is only permitted in SPARK " &
+                                 "inside an attribute definition clause", N);
+               end if;
             end if;
 
          when others =>
@@ -5895,8 +5923,10 @@ package body SPARK_Definition is
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end;
+         if Ekind (E) in E_Procedure | E_Function then
+            Mark_Address (E);
+         end if;
       end if;
-
    end Mark_Subprogram_Declaration;
 
    -----------------------------

@@ -1,6 +1,6 @@
-deref_test.adb:4:20: attribute "Address" is not permitted in SPARK
+deref_test.adb:4:20: attribute "Address" is only permitted in SPARK inside an attribute definition clause
 deref_test.adb:6:14: attribute "Deref" is not permitted in SPARK
-deref_test2.adb:4:20: attribute "Address" is not permitted in SPARK
+deref_test2.adb:4:20: attribute "Address" is only permitted in SPARK inside an attribute definition clause
 deref_test2.adb:6:14: attribute "Deref" is not permitted in SPARK
 deref_test2.adb:9:11: attribute "Deref" is not permitted in SPARK
 deref_test2.adb:10:14: attribute "Deref" is not permitted in SPARK

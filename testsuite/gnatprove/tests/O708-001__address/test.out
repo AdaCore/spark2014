@@ -1,2 +1,2 @@
-addr.adb:12:04: attribute "Address" is not permitted in SPARK
+addr.adb:12:04: attribute "Address" is only permitted in SPARK inside an attribute definition clause
 gnatprove: error during flow analysis and proof
