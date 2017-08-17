@@ -26,6 +26,6 @@ outer.adb:84:18: info: initialization of "Nested_Var" proved
 outer.adb:84:18: info: initialization of "Nested_Var2" proved
 outer.adb:84:18: info: initialization of "Used" proved
 outer.ads:2:17: info: initialization of "X" proved
-outer.ads:5:18: info: initialization of "X" proved
-outer.ads:7:14: warning: subprogram "P3" has no effect
-outer.ads:9:18: info: initialization of "X" proved
+outer.ads:4:18: info: initialization of "X" proved
+outer.ads:6:14: warning: subprogram "P3" has no effect
+outer.ads:8:18: info: initialization of "X" proved
