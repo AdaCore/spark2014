@@ -52,7 +52,7 @@ package body Why.Gen.Decl is
       SPARK_Node    : Node_Or_Entity_Id := Empty);
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
-   --  The declaration consists of a declaration  of a function that returns a
+   --  The declaration consists of a declaration of a function that returns a
    --  value of a field Field_Id of a value of the type Param_Ty_Name and
    --  declaration projection metas (see Emit_Projection_Metas).
    --  @param Section the section where the projection declaration will be

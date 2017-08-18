@@ -739,7 +739,7 @@ package body Gnat2Why.Types is
          --  are clones of existing types with the same name and statically
          --  constrained array type as no new type is declared for them.
          --  Classwide types are a special case as they are clones of their
-         --  specifica types but do not have the same short name.
+         --  specific types but do not have the same short name.
 
          if (not (Has_Record_Type (E) or else Has_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))

@@ -1892,7 +1892,7 @@ package body Why.Gen.Records is
          if Is_Simple_Private_Type (E) then
             Emit (P,
                   New_Type_Decl
-                    (Name  => To_String (WNE_Rec_Rep)));
+                    (Name => To_String (WNE_Rec_Rep)));
          else
 
             --  Generate a record type for E's discriminants if E is a root
