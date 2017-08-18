@@ -148,9 +148,7 @@ package body Why.Gen.Decl is
       "<"          => Standard."<",
       "="          => Standard."=");
 
-   use Projection_Names;
-
-   Projection_Names_Decls : Map;
+   Projection_Names_Decls : Projection_Names.Map;
    --  Map from the name of projection to the number of declarations of
    --  projections with this name.
    --  The name of the projection is composed from the name of the type that
@@ -173,6 +171,8 @@ package body Why.Gen.Decl is
       Field_Id      : W_Identifier_Id;
       SPARK_Node    : Node_Or_Entity_Id := Empty)
    is
+      use Projection_Names;
+
       --  Projection function name
       Param_Ty_Name_Str : constant String :=
         Get_Name_String (Get_Symbol (Param_Ty_Name));
