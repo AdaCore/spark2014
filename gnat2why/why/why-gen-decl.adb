@@ -49,7 +49,8 @@ package body Why.Gen.Decl is
      (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
-      SPARK_Node    : Node_Or_Entity_Id := Empty);
+      SPARK_Node    : Node_Or_Entity_Id := Empty)
+   with Pre => Field_Id /= Why_Empty;
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
    --  The declaration consists of a declaration of a function that returns a
@@ -60,7 +61,7 @@ package body Why.Gen.Decl is
    --  @param Param_Ty_Name the name of the record type being projected.
    --  @param Field_Id the identifier of the field to that the record is
    --      projected. Its type is the type to that the record type is projected
-   --      and must be different from Why_Empty.
+   --      (and must be different from Why_Empty).
    --  @param SPARK_Node if the projection projects SPARK record to the SPARK
    --      field, the AST node corresponding to the field, Empty otherwise.
    --      The string "." & Node_Or_Entity_Id'Image (SPARK_Node) will be
