@@ -52,7 +52,7 @@ package Why.Gen.Decl is
    procedure Emit_Projection_Metas
      (Section        : W_Section_Id;
       Projection_Fun : String);
-   --  Emit meta that marks a function as a projection function and disables
+   --  Emit metas that mark a function as a projection function and disables
    --  inlining of this function in Why3.
    --  @param Theory the theory where the projection meta will be emitted.
    --  @param Projection_Fun the name of the function that will be marked as
