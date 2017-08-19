@@ -191,7 +191,7 @@ package body Why.Gen.Decl is
         Proj_Name
         & (if Proj_Name_Decls_Num = 1
            then ""
-           else Image (Proj_Name_Decls_Num, 1))
+           else "__" & Image (Proj_Name_Decls_Num, 1))
         & "__projection";
 
       --  Parameter type and identifier
