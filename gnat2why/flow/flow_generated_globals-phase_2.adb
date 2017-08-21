@@ -423,43 +423,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
       procedure Populate_Results (G : Global_Names);
 
-      procedure Down_Project (Vars : in out Flow_Id_Sets.Set);
-      --  ??? In other code (which perhaps should be deleted) this is called
-      --  Expand; we should decide on a single name. Also, this should be
-      --  a function.
-
-      ------------------
-      -- Down_Project --
-      ------------------
-
-      procedure Down_Project (Vars : in out Flow_Id_Sets.Set) is
-         Projected : Flow_Id_Sets.Set;
-
-      begin
-         for Var of Vars loop
-            case Var.Kind is
-               when Direct_Mapping =>
-                  --  ??? this expression involves a lot of unnecessary
-                  --  conversions; this is the price for broken API.
-                  Projected.Union
-                    (Change_Variant
-                       (To_Flow_Id_Set
-                          (Flow_Refinement.Down_Project
-                             (Get_Direct_Mapping_Id (Var), S)),
-                       Variant => Var.Variant));
-
-               when Magic_String =>
-                  Projected.Insert (Var);
-
-               when others =>
-                  raise Program_Error;
-            end case;
-         end loop;
-
-         Flow_Id_Sets.Move (Target => Vars,
-                            Source => Projected);
-      end Down_Project;
-
       ----------------------
       -- Populate_Results --
       ----------------------
@@ -482,9 +445,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
          --  Down-project globals to the scope of the caller
 
-         Down_Project (Globals.Proof_Ins);
-         Down_Project (Globals.Reads);
-         Down_Project (Globals.Writes);
+         Globals.Proof_Ins := Down_Project (Globals.Proof_Ins, S);
+         Globals.Reads     := Down_Project (Globals.Reads,     S);
+         Globals.Writes    := Down_Project (Globals.Writes,    S);
+
       else
          Globals.Proof_Ins.Clear;
          Globals.Reads.Clear;

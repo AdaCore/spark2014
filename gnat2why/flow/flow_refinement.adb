@@ -961,7 +961,10 @@ package body Flow_Refinement is
       case Var.Kind is
          when Direct_Mapping =>
             return
-              To_Flow_Id_Set (Down_Project (Get_Direct_Mapping_Id (Var), S));
+              To_Flow_Id_Set (Down_Project (Get_Direct_Mapping_Id (Var), S),
+                              View => Var.Variant);
+         when Magic_String =>
+            return Flow_Id_Sets.To_Set (Var);
          when others =>
             raise Program_Error;
       end case;
