@@ -83,6 +83,11 @@ package body Flow_Refinement is
 
       S : Flow_Scope renames Looking_From;
 
+      function Looking_From_Generic (S : Flow_Scope) return Boolean
+        is (Present (S)
+            and then Ekind (S.Ent) = E_Generic_Package);
+      --  Returns True iff we are looking from a generic scope
+
       Context : Flow_Scope;
    begin
       --  Go upwards from S (the scope we are in) and see if we end up in
@@ -159,7 +164,7 @@ package body Flow_Refinement is
          end case;
       end loop;
 
-      return No (Context)
+      return (No (Context) and then not Looking_From_Generic (S))
         or else Context = S
         or else (Context /= Target_Scope and then Is_Visible (Context, S));
    end Is_Visible;
@@ -225,6 +230,7 @@ package body Flow_Refinement is
       Ptr             : Node_Id := S.Ent;
    begin
       while Nkind (Ptr) not in N_Package_Declaration
+                             | N_Generic_Package_Declaration
                              | N_Protected_Type_Declaration
                              | N_Task_Type_Declaration
       loop
@@ -238,6 +244,7 @@ package body Flow_Refinement is
          Ptr := Scope (S.Ent);
          while Present (Ptr)
            and then Ekind (Ptr) not in E_Package
+                                     | E_Generic_Package
                                      | Protected_Kind
                                      | Task_Kind
          loop
@@ -273,7 +280,7 @@ package body Flow_Refinement is
 
       Proper_Body : constant Node_Id :=
         (case Ekind (S.Ent) is
-            when E_Package =>
+            when E_Package | E_Generic_Package =>
               Package_Body (S.Ent),
             when E_Protected_Type =>
               Protected_Body (S.Ent),
@@ -301,7 +308,10 @@ package body Flow_Refinement is
         (if Nkind (Proper_Parent) in N_Package_Body
                                    | N_Protected_Body
                                    | N_Task_Body
-         then Enclosing.Ent = Unique_Defining_Entity (Proper_Parent));
+         then
+           (Enclosing.Ent
+            in Unique_Defining_Entity (Proper_Parent)
+             | Generic_Parent (Parent (Corresponding_Spec (Proper_Parent)))));
 
    begin
       return Enclosing;
@@ -311,9 +321,87 @@ package body Flow_Refinement is
    -- Get_Flow_Scope --
    --------------------
 
-   function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
-      Context      : Node_Id := N;
-      Prev_Context : Node_Id := Empty;
+   function Get_Flow_Scope (N : Node_Id) return Flow_Scope
+   is
+      Context         : Node_Id := N;
+      Prev_Context    : Node_Id := Empty;
+      Comes_From_Body : Boolean := False;
+
+      function Generic_Parent_Or_Parent (Context : Node_Id) return Node_Id;
+      --  Returns the parent node for subprograms and packages. For generics
+      --  returns the generic parent.
+
+      ------------------------------
+      -- Generic_Parent_Or_Parent --
+      ------------------------------
+
+      function Generic_Parent_Or_Parent (Context : Node_Id) return Node_Id is
+         Parent_Context : constant Entity_Id := Parent (Context);
+
+      begin
+         case Nkind (Context) is
+            when N_Package_Body =>
+               declare
+                  Spec : constant Entity_Id := Corresponding_Spec (Context);
+                  Par  : constant Entity_Id := Parent (Spec);
+
+               begin
+                  return (if Is_Generic_Instance (Spec)
+                          and then Nkind (Par) = N_Package_Specification
+                          then Generic_Parent (Par)
+                          else Unique_Defining_Entity (Context));
+               end;
+
+            when N_Subprogram_Body =>
+               declare
+                  Spec : constant Entity_Id := Corresponding_Spec (Context);
+
+               begin
+                  return (if Present (Spec)
+                          and then Is_Generic_Instance (Spec)
+                          then Generic_Parent (Parent (Spec))
+                          else Parent_Context);
+               end;
+
+            when N_Package_Specification =>
+               declare
+                  Gen_Par : constant Entity_Id := Generic_Parent (Context);
+
+               begin
+                  return (if Present (Gen_Par)
+                          then Gen_Par
+                          else Unique_Defining_Entity (Parent_Context));
+               end;
+
+            when N_Protected_Body
+               | N_Task_Body
+            =>
+               return Unique_Defining_Entity (Context);
+
+            when N_Protected_Definition
+               | N_Task_Definition
+            =>
+               return Unique_Defining_Entity (Parent_Context);
+
+            when others =>
+               if Nkind (Parent_Context) in N_Function_Specification
+                                          | N_Procedure_Specification
+               then
+                  declare
+                     Gen_Par : constant Entity_Id :=
+                       Generic_Parent (Parent_Context);
+
+                  begin
+                     if Present (Gen_Par) then
+                        return Gen_Par;
+                     end if;
+                  end;
+               end if;
+               return Parent_Context;
+         end case;
+      end Generic_Parent_Or_Parent;
+
+   --  Start of processing for Get_Flow_Scope
 
    begin
       loop
@@ -343,7 +431,7 @@ package body Flow_Refinement is
                | N_Protected_Body
                | N_Task_Body
             =>
-               return (Ent  => Unique_Defining_Entity (Context),
+               return (Ent  => Generic_Parent_Or_Parent (Context),
                        Part => Body_Part);
 
             when N_Package_Specification
@@ -357,7 +445,9 @@ package body Flow_Refinement is
                   if Present (Prev_Context) then
                      pragma Assert (Context = Parent (Prev_Context));
 
-                     if Nkind (Context) = N_Task_Definition then
+                     if Comes_From_Body then
+                        Part := Body_Part;
+                     elsif Nkind (Context) = N_Task_Definition then
                         Part := Visible_Part;
                      else
                         if Is_List_Member (Prev_Context)
@@ -373,7 +463,7 @@ package body Flow_Refinement is
                      Part := Visible_Part;
                   end if;
 
-                  return (Ent  => Unique_Defining_Entity (Parent (Context)),
+                  return (Ent  => Generic_Parent_Or_Parent (Context),
                           Part => Part);
                end;
 
@@ -405,19 +495,30 @@ package body Flow_Refinement is
                end if;
 
             when N_Subprogram_Body =>
-               --  In case of an expression function we want to get the same
-               --  Flow_Scope we would get if it was a function with a body.
-               --  For this we pretend that expression functions declared in
-               --  package spec are in package body.
                Prev_Context := Context;
-               Context := Parent (Context);
+               Context      := Generic_Parent_Or_Parent (Context);
+
+               --  In case we are in the body of a generic subprogram, we
+               --  remember this to get the correct scope for an instance of
+               --  it.
+               if Nkind (Context) in N_Entity
+                 and then Ekind (Context) in E_Generic_Function
+                                           | E_Generic_Procedure
+               then
+                  Comes_From_Body := True;
+               end if;
+
+                --  In case of an expression function we want to get the same
+                --  Flow_Scope we would get if it was a function with a body.
+                --  For this we pretend that expression functions declared in
+                --  package spec are in package body.
                if Was_Expression_Function (Prev_Context) then
                   if Present (Context) then
                      if Nkind (Context) in N_Package_Specification
                                          | N_Protected_Definition
                                          | N_Task_Definition
                      then
-                        return (Ent  => Unique_Defining_Entity (Context),
+                        return (Ent  => Generic_Parent_Or_Parent (Context),
                                 Part => Body_Part);
                      end if;
                   end if;
@@ -425,7 +526,7 @@ package body Flow_Refinement is
 
             when others =>
                Prev_Context := Context;
-               Context      := Parent (Context);
+               Context      := Generic_Parent_Or_Parent (Context);
          end case;
 
          exit when No (Context);
@@ -544,9 +645,46 @@ package body Flow_Refinement is
                State : constant Node_Id := Encapsulating_State (Var);
 
             begin
+               pragma Assert (if Present (Scope)
+                              and then Is_Visible (Var, Scope)
+                              and then not Is_Visible (State, Scope)
+                              then Is_Generic_Unit (Scope.Ent));
+               --  The only case where Var is visible from Scope and State
+               --  isn't is when we have a generic with an abstract state which
+               --  is used as a refinement for an abstract state for another
+               --  package where the generic is instantiated. In this case, in
+               --  fact, Encapsulating_State will return the abstract state of
+               --  the package where the instantiation happens but this is not
+               --  visible from the generic scope so we don't have to up
+               --  project to it.
+               --
+               --  For example:
+               --
+               --  generic
+               --  package Gen with Abstract_State => Gen_State
+               --     ...
+               --  end Gen;
+               --
+               --  -----------
+               --
+               --  package P with Abstract_State => State
+               --  ...
+               --  end P;
+               --
+               --  with Gen;
+               --  package body P
+               --     with Refined_State => (State => Instance.Gen_State)
+               --  is
+               --     package Instance is new Gen;
+               --  ...
+               --  end P;
+
                if Is_Visible (Var, Scope)
-                 and then Is_Abstract_State (State)
-                 and then State_Refinement_Is_Visible (State, Scope)
+                 and then
+                   (not Is_Visible (State, Scope)
+                      or else
+                    (Is_Abstract_State (State)
+                     and then State_Refinement_Is_Visible (State, Scope)))
                then
                   Projected.Include (Var);
                else
@@ -574,9 +712,18 @@ package body Flow_Refinement is
                State : constant Entity_Name := GG_Encapsulating_State (Var);
 
             begin
+               pragma Assert (if Present (Folded_Scope)
+                              and then Is_Visible (Var, Folded_Scope)
+                              and then not Is_Visible (State, Folded_Scope)
+                              then Is_Generic_Unit (Folded_Scope.Ent));
+
                if Is_Visible (Var, Folded_Scope)
-                 and then GG_Get_State_Abstractions.Contains (State)
-                 and then State_Refinement_Is_Visible (State, Folded_Scope)
+                 and then (not Is_Visible (State, Folded_Scope)
+                           or else
+                             (GG_Get_State_Abstractions.Contains (State)
+                              and then
+                              State_Refinement_Is_Visible (State,
+                                                           Folded_Scope)))
                then
                   Projected.Include (Var);
                else
@@ -605,9 +752,17 @@ package body Flow_Refinement is
                State : constant Flow_Id := Encapsulating_State (Var);
 
             begin
+               pragma Assert (if Present (Scope)
+                              and then Is_Visible (Var, Scope)
+                              and then not Is_Visible (State, Scope)
+                              then Is_Generic_Unit (Scope.Ent));
+
                if Is_Visible (Var, Scope)
-                 and then Is_Abstract_State (State)
-                 and then State_Refinement_Is_Visible (State, Scope)
+                 and then (not Is_Visible (State, Scope)
+                           or else (Is_Abstract_State (State)
+                                    and then
+                                    State_Refinement_Is_Visible (State,
+                                                                 Scope)))
                then
                   Projected.Include (Var);
                else
@@ -709,9 +864,16 @@ package body Flow_Refinement is
             State : constant Flow_Id := Encapsulating_State (Var);
 
          begin
+            pragma Assert (if Present (Scope)
+                           and then Is_Visible (Var, Scope)
+                           and then not Is_Visible (State, Scope)
+                           then Is_Generic_Unit (Scope.Ent));
+
             if Is_Visible (Var, Scope)
-              and then Is_Abstract_State (State)
-              and then State_Refinement_Is_Visible (State, Scope)
+              and then (not Is_Visible (State, Scope)
+                        or else (Is_Abstract_State (State)
+                                 and then
+                                 State_Refinement_Is_Visible (State, Scope)))
             then
                Projected_Var := Var;
             else

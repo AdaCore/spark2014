@@ -385,29 +385,22 @@ package body Flow.Slice is
             ----------------------
 
             function Exposed_As_State (E : Entity_Id) return Boolean is
-               S : constant Entity_Id := Scope (E);
+               S : constant Flow_Scope := Get_Flow_Scope (E);
             begin
-               if Ekind (S) = E_Package then
-                  if S = FA.Spec_Entity then
+               if Ekind (S.Ent) = E_Package then
+                  if S.Ent = FA.Spec_Entity then
                      return True;
                   else
-                     declare
-                        Scop : constant Flow_Scope := Get_Flow_Scope (E);
-
-                        pragma Assert (Scop.Ent = S);
-
-                     begin
-                        return
-                          (case Scop.Part is
-                              when Visible_Part =>
-                                 True,
-                              when Private_Part =>
-                                 Private_Spec_In_SPARK (Scop.Ent),
-                              when Body_Part    =>
-                                 Entity_Body_In_SPARK (Scop.Ent),
-                              when Null_Part    =>
-                                 raise Program_Error);
-                     end;
+                     return
+                       (case S.Part is
+                           when Visible_Part =>
+                              True,
+                           when Private_Part =>
+                              Private_Spec_In_SPARK (S.Ent),
+                           when Body_Part    =>
+                              Entity_Body_In_SPARK (S.Ent),
+                           when Null_Part    =>
+                              raise Program_Error);
                   end if;
                else
                   return True;
@@ -420,10 +413,18 @@ package body Flow.Slice is
 
             procedure Insert_Local_Variable (E : Entity_Id) is
             begin
-               if Is_Ghost_Entity (E) then
-                  Local_Ghost_Variables.Insert (E);
-               else
-                  Local_Variables.Insert (E);
+               --  ??? Entity_In_SPARK is added to work around that this
+               --  traversal does not consider the barrier SPARK_Mode => Off.
+               --  Same story for Comes_From_Source as we shouldn't get those
+               --  entities.
+               if Entity_In_SPARK (E)
+                 and then Comes_From_Source (E)
+               then
+                  if Is_Ghost_Entity (E) then
+                     Local_Ghost_Variables.Insert (E);
+                  else
+                     Local_Variables.Insert (E);
+                  end if;
                end if;
             end Insert_Local_Variable;
 
@@ -473,7 +474,15 @@ package body Flow.Slice is
                               --  ??? there is no point in checking both the
                               --  partial and the full views; also no need to
                               --  include the full view for the second time.
-                              if Has_Variable_Input (E) then
+                              --  ??? Entity_In_SPARK is added to work around
+                              --  that this traversal does not consider the
+                              --  barrier SPARK_Mode => Off. Same story for
+                              --  Comes_From_Source as we shouldn't get those
+                              --  entities.
+                              if Entity_In_SPARK (E)
+                                and then Comes_From_Source (E)
+                                and then Has_Variable_Input (E)
+                              then
                                  --  If the Full_View is present then add that
                                  if Is_Ghost_Entity (E) then
                                     Local_Ghost_Variables.Include

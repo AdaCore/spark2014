@@ -96,14 +96,38 @@ a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at dic_of_cont.ads:27
 dic_of_cont.adb:3:07: info: initialization of private part of "Dlli" proved
 dic_of_cont.adb:3:28: info: range check proved (CVC4: 1 VC)
+dic_of_cont.adb:4:07: info: initialization of "Dhama.Buckets" proved
+dic_of_cont.adb:4:07: info: initialization of "Dhama.Free" proved
+dic_of_cont.adb:4:07: info: initialization of "Dhama.Length" proved
+dic_of_cont.adb:4:07: info: initialization of "Dhama.Nodes" proved
+dic_of_cont.adb:4:07: info: initialization of "Dhama.TC" proved
 dic_of_cont.adb:4:07: info: initialization of private part of "Dhama" proved
 dic_of_cont.adb:4:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:4:45: info: range check proved (CVC4: 1 VC)
+dic_of_cont.adb:5:07: info: initialization of "Dhase.Buckets" proved
+dic_of_cont.adb:5:07: info: initialization of "Dhase.Free" proved
+dic_of_cont.adb:5:07: info: initialization of "Dhase.Length" proved
+dic_of_cont.adb:5:07: info: initialization of "Dhase.Nodes" proved
+dic_of_cont.adb:5:07: info: initialization of "Dhase.TC" proved
 dic_of_cont.adb:5:07: info: initialization of private part of "Dhase" proved
 dic_of_cont.adb:5:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:5:45: info: range check proved (CVC4: 1 VC)
+dic_of_cont.adb:6:07: info: initialization of "Dorma.First" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.Free" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.Last" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.Length" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.Nodes" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.Root" proved
+dic_of_cont.adb:6:07: info: initialization of "Dorma.TC" proved
 dic_of_cont.adb:6:07: info: initialization of private part of "Dorma" proved
 dic_of_cont.adb:6:28: info: range check proved (CVC4: 1 VC)
+dic_of_cont.adb:7:07: info: initialization of "Dorse.First" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.Free" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.Last" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.Length" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.Nodes" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.Root" proved
+dic_of_cont.adb:7:07: info: initialization of "Dorse.TC" proved
 dic_of_cont.adb:7:07: info: initialization of private part of "Dorse" proved
 dic_of_cont.adb:7:28: info: range check proved (CVC4: 1 VC)
 dic_of_cont.adb:8:07: info: initialization of private part of "Dfove" proved
@@ -112,15 +136,39 @@ dic_of_cont.adb:10:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:10:40: info: initialization of private part of "Dlli" proved
 dic_of_cont.adb:11:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:12:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:12:40: info: initialization of "Dhama.Buckets" proved
+dic_of_cont.adb:12:40: info: initialization of "Dhama.Free" proved
+dic_of_cont.adb:12:40: info: initialization of "Dhama.Length" proved
+dic_of_cont.adb:12:40: info: initialization of "Dhama.Nodes" proved
+dic_of_cont.adb:12:40: info: initialization of "Dhama.TC" proved
 dic_of_cont.adb:12:40: info: initialization of private part of "Dhama" proved
 dic_of_cont.adb:13:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:14:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:14:40: info: initialization of "Dhase.Buckets" proved
+dic_of_cont.adb:14:40: info: initialization of "Dhase.Free" proved
+dic_of_cont.adb:14:40: info: initialization of "Dhase.Length" proved
+dic_of_cont.adb:14:40: info: initialization of "Dhase.Nodes" proved
+dic_of_cont.adb:14:40: info: initialization of "Dhase.TC" proved
 dic_of_cont.adb:14:40: info: initialization of private part of "Dhase" proved
 dic_of_cont.adb:15:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:16:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:16:40: info: initialization of "Dorma.First" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.Free" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.Last" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.Length" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.Nodes" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.Root" proved
+dic_of_cont.adb:16:40: info: initialization of "Dorma.TC" proved
 dic_of_cont.adb:16:40: info: initialization of private part of "Dorma" proved
 dic_of_cont.adb:17:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:18:22: info: assertion proved (CVC4: 1 VC)
+dic_of_cont.adb:18:40: info: initialization of "Dorse.First" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.Free" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.Last" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.Length" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.Nodes" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.Root" proved
+dic_of_cont.adb:18:40: info: initialization of "Dorse.TC" proved
 dic_of_cont.adb:18:40: info: initialization of private part of "Dorse" proved
 dic_of_cont.adb:19:22: info: assertion proved (CVC4: 1 VC)
 dic_of_cont.adb:20:22: info: assertion proved (CVC4: 1 VC)

@@ -1148,8 +1148,8 @@ package body Flow is
             end if;
 
          when E_Package =>
-            FA.B_Scope       := Flow_Scope'(E, Private_Part);
-            FA.S_Scope       := Flow_Scope'(E, Private_Part);
+            FA.B_Scope := Private_Scope (Get_Flow_Scope (E));
+            FA.S_Scope := Private_Scope (Get_Flow_Scope (E));
 
             Append (FA.Base_Filename, "pkg_spec_");
 
@@ -1161,8 +1161,8 @@ package body Flow is
             FA.Is_Generative := No (FA.Initializes_N);
 
          when E_Package_Body =>
-            FA.B_Scope       := Flow_Scope'(FA.Spec_Entity, Body_Part);
-            FA.S_Scope       := Flow_Scope'(FA.Spec_Entity, Private_Part);
+            FA.B_Scope := Body_Scope (Get_Flow_Scope (FA.Spec_Entity));
+            FA.S_Scope := Private_Scope (Get_Flow_Scope (FA.Spec_Entity));
 
             Append (FA.Base_Filename, "pkg_body_");
 

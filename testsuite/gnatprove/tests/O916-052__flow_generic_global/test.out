@@ -1,2 +1,1 @@
-crtp_pack.adb:7:07: high: "Handler" must be listed in the Global aspect of "CRTP_Append_Character_Data" (SPARK RM 6.1.4(13)), in instantiation at console_pack.adb:4
 crtp_pack.adb:7:38: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:4

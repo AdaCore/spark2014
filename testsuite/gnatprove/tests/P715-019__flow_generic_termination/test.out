@@ -79,22 +79,22 @@ term.ads:11:04: info: function contract not available for proof ("Contains" is r
 term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
 term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
-term.ads:11:04: info: function contract not available for proof ("Contains" is recursive)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
+term.ads:11:04: info: function contract not available for proof ("Contains" may not return)
 term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
 term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
 term.ads:11:04: info: function contract not available for proof ("E_Elements_Included" may not return)
@@ -1428,4 +1428,9 @@ term.ads:11:04: info: in instantiation at a-cofuve.ads:82
 term.ads:11:04: info: in instantiation at a-cofuve.ads:91
 term.ads:11:04: warning: in instantiation at a-cfhase.ads:1122
 term.ads:11:04: warning: recursive function cannot be inlined for proof
+term.ads:16:04: info: initialization of "S.Buckets" proved
+term.ads:16:04: info: initialization of "S.Free" proved
+term.ads:16:04: info: initialization of "S.Length" proved
+term.ads:16:04: info: initialization of "S.Nodes" proved
+term.ads:16:04: info: initialization of "S.TC" proved
 term.ads:16:04: info: initialization of private part of "S" proved

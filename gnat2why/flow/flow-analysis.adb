@@ -758,17 +758,7 @@ package body Flow.Analysis is
                  To_Entire_Variables
                    (Get_Variables
                       (Expr,
-                       Scope                => (case FA.Kind is
-                                                when Kind_Subprogram =>
-                                                   Get_Flow_Scope (Expr),
-
-                                                when Kind_Package
-                                                   | Kind_Package_Body =>
-                                                     Private_Scope
-                                                     (Get_Flow_Scope (Expr)),
-
-                                                when Kind_Task =>
-                                                   raise Program_Error),
+                       Scope                => Get_Flow_Scope (Expr),
                        Local_Constants      => FA.Local_Constants,
                        Fold_Functions       => False,
                        Reduced              => True,
