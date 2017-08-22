@@ -39,7 +39,7 @@ ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (othe
 ring_buf.ads:45:13: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:45:52: medium: range check might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:47:58: info: index check proved (CVC4: 2 VC)
-ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (others => 0) and M'First = 0 and M'Last = 0 and X = 0)
+ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (others => 0) and M'First = 65535 and M'Last = 65535 and X = 0)
 ring_buf.ads:51:51: medium: range check might fail (e.g. when M = (others => 0) and M'First = 0 and M'Last = 0)
 ring_buf.ads:58:21: info: initialization of "R.Data" proved
 ring_buf.ads:58:21: info: initialization of "R.First" proved
