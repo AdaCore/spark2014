@@ -382,17 +382,6 @@ package SPARK_Util is
    --  @return Same as [Spec_File_Name], but always return the file name of the
    --    body, if there is one.
 
-   function In_Internal_Unit (N : Node_Or_Entity_Id) return Boolean;
-   --  Returns True if the given node or entity appears within the source text
-   --  of an internal unit (i.e. within Ada, GNAT, Interfaces, System or within
-   --  one of the descendant packages of one of these four packages).
-   --
-   --  Note: this routine is based on In_Predefined_Unit from the front end,
-   --  but also detected nodes for the GNAT package.
-
-   function In_Internal_Unit (S : Source_Ptr) return Boolean;
-   --  Same function as above but argument is a source pointer
-
    function Spec_File_Name (N : Node_Id) return String;
    --  @param N any node
    --  @return the name of the spec file of the unit which contains the node,

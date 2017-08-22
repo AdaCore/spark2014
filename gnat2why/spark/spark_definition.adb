@@ -36,6 +36,7 @@ with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Util;
+with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Nmake;                           use Nmake;

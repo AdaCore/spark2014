@@ -27,7 +27,6 @@ with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Flow_Utility;                       use Flow_Utility;
-with Fname;                              use Fname;
 with Gnat2Why_Args;
 with Output;
 with Pprint;                             use Pprint;
@@ -1387,20 +1386,6 @@ package body SPARK_Util is
 
       return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
-
-   ----------------------
-   -- In_Internal_Unit --
-   ----------------------
-
-   function In_Internal_Unit (N : Node_Or_Entity_Id) return Boolean is
-     (In_Internal_Unit (Sloc (N)));
-
-   function In_Internal_Unit (S : Source_Ptr) return Boolean is
-      Unit : constant Unit_Number_Type := Get_Source_Unit (S);
-      File : constant File_Name_Type   := Unit_File_Name (Unit);
-   begin
-      return Is_Internal_File_Name (File);
-   end In_Internal_Unit;
 
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
