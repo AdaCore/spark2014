@@ -3246,6 +3246,7 @@ package body Flow.Analysis is
       --  Start of processing for Warn_About_Unreferenced_Constants
 
       begin
+
          --  Sanity check that we do have a Refined_State aspect
          pragma Assert (Present (Refined_State_N));
 
@@ -3264,11 +3265,15 @@ package body Flow.Analysis is
 
    begin
       if Present (Abstract_States (FA.Spec_Entity)) then
-         --  If the package has an abstract state aspect then issue high
-         --  checks for every constant with variable input that is part of
+         --  If the package has a non-null abstract state aspect then issue
+         --  high checks for every constant with variable input that is part of
          --  the package's hidden state and is not exposed through a state
          --  abstraction.
-         if Entity_Body_In_SPARK (FA.Spec_Entity) then
+         --  For a null abstract state the front end will check the absence of
+         --  state variables.
+         if not Has_Null_Abstract_State (FA.Spec_Entity)
+           and then Entity_Body_In_SPARK (FA.Spec_Entity)
+         then
             Warn_About_Unreferenced_Constants (FA.Spec_Entity);
          end if;
 
