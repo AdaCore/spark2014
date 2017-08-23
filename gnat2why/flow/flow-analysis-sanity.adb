@@ -854,9 +854,7 @@ package body Flow.Analysis.Sanity is
                    Globals    => Actual_Globals);
 
       --  Up project actual globals
-      Up_Project (Actual_Globals,
-                  Projected_Actual_Globals,
-                  Get_Flow_Scope (FA.Analyzed_Entity));
+      Up_Project (Actual_Globals, Projected_Actual_Globals, FA.S_Scope);
 
       --  Compare writes
       for W of Projected_Actual_Globals.Writes loop
