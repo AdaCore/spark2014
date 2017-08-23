@@ -1,4 +1,8 @@
 #!/bin/sh
+
+MY_DIR=`dirname "$0"`
+cd "$MY_DIR"
+
 prefix=`type gps 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
 if [ "$prefix" = "" -o "$prefix" = "found" ]; then
   prefix="/opt/spark2014"
