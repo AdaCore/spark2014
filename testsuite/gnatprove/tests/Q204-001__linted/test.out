@@ -1,17 +1,9 @@
-linted-controls.adb:33:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
-linted-controls.adb:33:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
 linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
-linted-controls.adb:34:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
-linted-controls.adb:34:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:34:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
 linted-controls.adb:34:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
-linted-controls.adb:35:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
-linted-controls.adb:35:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:35:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
 linted-controls.adb:35:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
-linted-controls.adb:36:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
-linted-controls.adb:36:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:36:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
 linted-controls.adb:36:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:44:10: info: initialization of "X" proved
@@ -32,9 +24,7 @@ linted-controls.adb:47:28: info: overflow check proved (CVC4: 1 VC), in call inl
 linted-controls.adb:49:14: info: initialization of "Y" proved
 linted-controls.adb:49:14: info: initialization of "Y" proved, in call inlined at linted-controls.adb:54
 linted-controls.adb:49:14: info: initialization of "Y" proved, in call inlined at linted-controls.adb:55
-linted-controls.adb:54:27: info: length check proved (CVC4: 1 VC)
 linted-controls.adb:54:27: info: range check proved (CVC4: 4 VC)
-linted-controls.adb:55:27: info: length check proved (CVC4: 1 VC)
 linted-controls.adb:55:27: info: range check proved (CVC4: 4 VC)
 linted-controls.ads:37:41: info: initialization of "C.Back" proved
 linted-controls.ads:37:41: info: initialization of "C.Forward" proved
@@ -97,14 +87,6 @@ linted-timer.adb:23:04: call to operation of a formal protected parameter is not
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:17
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:22
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:31
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:100
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:101
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:94
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:95
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:96
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:97
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:98
-linted-update.adb:33:09: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:99
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94
@@ -137,14 +119,6 @@ linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined 
 linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:97
 linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:98
 linted-update.adb:42:51: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:99
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
-linted-update.adb:48:36: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
@@ -153,14 +127,6 @@ linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined 
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
 linted-update.adb:48:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
-linted-update.adb:49:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
@@ -169,14 +135,6 @@ linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined 
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
 linted-update.adb:49:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
-linted-update.adb:50:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
@@ -185,14 +143,6 @@ linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined 
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:86
 linted-update.adb:50:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:87
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:83
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:84
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:85
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:86
-linted-update.adb:51:59: info: length check proved (CVC4: 1 VC), in call inlined at linted-update.adb:87
 linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:80
 linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:81
 linted-update.adb:51:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:58, in call inlined at linted-update.adb:82
@@ -272,33 +222,25 @@ linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at 
 linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:97
 linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:98
 linted-update.adb:75:14: info: initialization of "Y" proved, in call inlined at linted-update.adb:99
-linted-update.adb:80:31: info: length check proved (CVC4: 1 VC)
 linted-update.adb:80:31: info: range check proved (CVC4: 4 VC)
-linted-update.adb:81:31: info: length check proved (CVC4: 1 VC)
 linted-update.adb:81:31: info: range check proved (CVC4: 4 VC)
-linted-update.adb:82:31: info: length check proved (CVC4: 1 VC)
 linted-update.adb:82:31: info: range check proved (CVC4: 4 VC)
-linted-update.adb:83:32: info: length check proved (CVC4: 1 VC)
 linted-update.adb:83:32: info: range check proved (CVC4: 4 VC)
-linted-update.adb:84:32: info: length check proved (CVC4: 1 VC)
 linted-update.adb:84:32: info: range check proved (CVC4: 4 VC)
-linted-update.adb:85:32: info: length check proved (CVC4: 1 VC)
 linted-update.adb:85:32: info: range check proved (CVC4: 4 VC)
-linted-update.adb:86:35: info: length check proved (CVC4: 1 VC)
 linted-update.adb:86:35: info: range check proved (CVC4: 4 VC)
-linted-update.adb:87:35: info: length check proved (CVC4: 1 VC)
 linted-update.adb:87:35: info: range check proved (CVC4: 4 VC)
-linted-update.adb:94:09: info: initialization of "C183b" proved
+linted-update.adb:94:09: info: initialization of "C207b" proved
 linted-update.adb:94:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:95:09: info: initialization of "C193b" proved
+linted-update.adb:95:09: info: initialization of "C217b" proved
 linted-update.adb:95:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:96:09: info: initialization of "C203b" proved
+linted-update.adb:96:09: info: initialization of "C227b" proved
 linted-update.adb:96:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:97:09: info: initialization of "C213b" proved
+linted-update.adb:97:09: info: initialization of "C237b" proved
 linted-update.adb:97:43: info: range check proved (CVC4: 1 VC)
-linted-update.adb:98:09: info: initialization of "C223b" proved
+linted-update.adb:98:09: info: initialization of "C247b" proved
 linted-update.adb:98:43: info: range check proved (Z3: 1 VC)
-linted-update.adb:99:09: info: initialization of "C233b" proved
+linted-update.adb:99:09: info: initialization of "C257b" proved
 linted-update.adb:99:43: info: range check proved (Z3: 1 VC)
 linted-update.adb:100:33: info: length check proved (Z3: 1 VC)
 linted-update.adb:100:33: info: range check proved (Z3: 1 VC)
