@@ -1,0 +1,4 @@
+foo-pc-c.adb:5:04: info: initialization of "B" constituent of "State" proved
+foo-pc-c.ads:8:22: info: initialization of "Y" proved
+foo.adb:8:04: info: initialization of "A" constituent of "State_A" proved
+foo.adb:16:11: high: "C.State" constituent of "Foo.State_B" must be listed in the Global aspect of "Do_Stuff" (SPARK RM 6.1.4(13))
