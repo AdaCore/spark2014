@@ -99,7 +99,6 @@ controller_pack.ads:83:07: info: initialization of "Actuator_Yaw" proved
 controller_pack.ads:91:07: info: initialization of "Roll_Rate_Desired" proved
 controller_pack.ads:92:07: info: initialization of "Pitch_Rate_Desired" proved
 controller_pack.ads:93:07: info: initialization of "Yaw_Rate_Desired" proved
-controller_pack.ads:117:04: info: initialization of "Is_Init" constituent of "Controller_State" proved
 free_fall_pack.adb:21:31: info: division check proved (CodePeer)
 free_fall_pack.adb:30:61: info: index check proved (CVC4: 2 VC)
 free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved
