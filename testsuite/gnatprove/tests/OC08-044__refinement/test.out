@@ -26,9 +26,21 @@ ok_semantics-priv.adb:18:49: warning: "ZZ" constituent of "State" is not modifie
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State1" of "Create" not written
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State2" of "Create" not written
 ok_semantics-priv.ads:9:06: global output "OK_Semantics.State3" of "Create" not written
-ok_semantics-pub.ads:5:27: low: unused global "OK_Semantics.State1"
-ok_semantics-pub.ads:5:35: low: unused global "OK_Semantics.State2"
-ok_semantics-pub.ads:5:43: low: unused global "OK_Semantics.State3"
+ok_semantics-pub.adb:7:35: low: unused global "X" constituent of "State1"
+ok_semantics-pub.adb:7:38: low: unused global "Y" constituent of "State2"
+ok_semantics-pub.adb:7:41: low: unused global "Z" constituent of "State3"
+ok_semantics-pub.adb:7:48: low: unused global "YY" constituent of "OK_Semantics.State2"
+ok_semantics-pub.adb:7:57: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
+ok_semantics-pub.adb:19:36: low: unused global "X" constituent of "State1"
+ok_semantics-pub.adb:19:36: warning: "X" constituent of "State1" is not modified, could be INPUT
+ok_semantics-pub.adb:19:39: low: unused global "Y" constituent of "State2"
+ok_semantics-pub.adb:19:39: warning: "Y" constituent of "State2" is not modified, could be INPUT
+ok_semantics-pub.adb:19:42: low: unused global "Z" constituent of "State3"
+ok_semantics-pub.adb:19:42: warning: "Z" constituent of "State3" is not modified, could be INPUT
+ok_semantics-pub.adb:19:49: low: unused global "YY" constituent of "OK_Semantics.State2"
+ok_semantics-pub.adb:19:49: warning: "YY" constituent of "OK_Semantics.State2" is not modified, could be INPUT
+ok_semantics-pub.adb:19:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
+ok_semantics-pub.adb:19:58: warning: "Priv.State" constituent of "OK_Semantics.State3" is not modified, could be INPUT
 ok_semantics-pub.ads:8:28: high: "OK_Semantics.State1" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:8:28: high: "OK_Semantics.State1" is not initialized
 ok_semantics-pub.ads:8:28: high: either make "OK_Semantics.State1" an input in the Global contract or initialize it before use
@@ -41,12 +53,6 @@ ok_semantics-pub.ads:8:44: high: "OK_Semantics.State3" is not an input in the Gl
 ok_semantics-pub.ads:8:44: high: "OK_Semantics.State3" is not initialized
 ok_semantics-pub.ads:8:44: high: either make "OK_Semantics.State3" an input in the Global contract or initialize it before use
 ok_semantics-pub.ads:8:44: low: unused global "OK_Semantics.State3"
-ok_semantics-pub.ads:11:28: low: unused global "OK_Semantics.State1"
-ok_semantics-pub.ads:11:28: warning: "OK_Semantics.State1" is not modified, could be INPUT
-ok_semantics-pub.ads:11:36: low: unused global "OK_Semantics.State2"
-ok_semantics-pub.ads:11:36: warning: "OK_Semantics.State2" is not modified, could be INPUT
-ok_semantics-pub.ads:11:44: low: unused global "OK_Semantics.State3"
-ok_semantics-pub.ads:11:44: warning: "OK_Semantics.State3" is not modified, could be INPUT
 ok_semantics.adb:10:35: low: unused global "X" constituent of "State1"
 ok_semantics.adb:10:38: low: unused global "Y" constituent of "State2"
 ok_semantics.adb:10:41: low: unused global "Z" constituent of "State3"
@@ -113,9 +119,11 @@ ok_semantics2-priv.ads:11:14: warning: "ZZ" constituent of "State" is not modifi
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State1"
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State2"
 ok_semantics2-pub.adb:7:31: medium: incorrect dependency "Check'Result => OK_Semantics2.State3"
-ok_semantics2-pub.ads:4:13: low: unused global "OK_Semantics2.State1"
-ok_semantics2-pub.ads:4:13: low: unused global "OK_Semantics2.State2"
-ok_semantics2-pub.ads:4:13: low: unused global "OK_Semantics2.State3"
+ok_semantics2-pub.ads:4:13: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
+ok_semantics2-pub.ads:4:13: low: unused global "X" constituent of "State1"
+ok_semantics2-pub.ads:4:13: low: unused global "Y" constituent of "State2"
+ok_semantics2-pub.ads:4:13: low: unused global "YY" constituent of "OK_Semantics2.State2"
+ok_semantics2-pub.ads:4:13: low: unused global "Z" constituent of "State3"
 ok_semantics2-pub.ads:5:06: medium: missing dependency "null => OK_Semantics2.State1"
 ok_semantics2-pub.ads:5:06: medium: missing dependency "null => OK_Semantics2.State2"
 ok_semantics2-pub.ads:5:06: medium: missing dependency "null => OK_Semantics2.State3"
@@ -131,12 +139,16 @@ ok_semantics2-pub.ads:7:14: high: either make "OK_Semantics2.State3" an input in
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State1"
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State2"
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State3"
-ok_semantics2-pub.ads:10:14: low: unused global "OK_Semantics2.State1"
-ok_semantics2-pub.ads:10:14: low: unused global "OK_Semantics2.State2"
-ok_semantics2-pub.ads:10:14: low: unused global "OK_Semantics2.State3"
-ok_semantics2-pub.ads:10:14: warning: "OK_Semantics2.State1" is not modified, could be INPUT
-ok_semantics2-pub.ads:10:14: warning: "OK_Semantics2.State2" is not modified, could be INPUT
-ok_semantics2-pub.ads:10:14: warning: "OK_Semantics2.State3" is not modified, could be INPUT
+ok_semantics2-pub.ads:10:14: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
+ok_semantics2-pub.ads:10:14: low: unused global "X" constituent of "State1"
+ok_semantics2-pub.ads:10:14: low: unused global "Y" constituent of "State2"
+ok_semantics2-pub.ads:10:14: low: unused global "YY" constituent of "OK_Semantics2.State2"
+ok_semantics2-pub.ads:10:14: low: unused global "Z" constituent of "State3"
+ok_semantics2-pub.ads:10:14: warning: "Priv.State" constituent of "OK_Semantics2.State3" is not modified, could be INPUT
+ok_semantics2-pub.ads:10:14: warning: "X" constituent of "State1" is not modified, could be INPUT
+ok_semantics2-pub.ads:10:14: warning: "Y" constituent of "State2" is not modified, could be INPUT
+ok_semantics2-pub.ads:10:14: warning: "YY" constituent of "OK_Semantics2.State2" is not modified, could be INPUT
+ok_semantics2-pub.ads:10:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2.adb:10:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"

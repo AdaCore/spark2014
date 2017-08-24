@@ -5874,36 +5874,14 @@ package body Flow.Control_Flow_Graph is
                      Equivalent_Keys => "=",
                      "="             => "=");
 
-                  Current_Globals : Global_Flow_Ids;
-                  My_Globals      : Global_Flow_Ids;
-                  Globals         : Global_Maps.Map := Global_Maps.Empty_Map;
+                  My_Globals : Global_Flow_Ids;
+                  Globals    : Global_Maps.Map := Global_Maps.Empty_Map;
 
                begin
                   Get_Globals (Subprogram => FA.Analyzed_Entity,
                                Scope      => FA.B_Scope,
                                Classwide  => False,
-                               Globals    => Current_Globals);
-
-                  --  For subprograms, we up project the globals in case they
-                  --  are too refined for the current scope.
-                  --
-                  --  ??? In some situations (for example in a generic
-                  --  subprogram instantiated in a different package or
-                  --  subprogram) flow does not correctly deal with visibility.
-                  --  For things happening in this subprogram
-                  --  (FA.Analyzed_Entity) we project mistakenly to state, not
-                  --  constituents we should be able to see. But, calling
-                  --  Get_Globals on this subprogram would look directly at the
-                  --  contract and no projection occurs. This projection here
-                  --  makes sure the globals produced by Get_Global have the
-                  --  same loss of precision.
-                  --  Once the issues with flow scopes are resolved we should
-                  --  remove this workaround for PA18-012.
-                  if FA.Kind = Kind_Subprogram then
-                     Up_Project (Current_Globals, My_Globals, FA.B_Scope);
-                  else
-                     My_Globals := Current_Globals;
-                  end if;
+                               Globals    => My_Globals);
 
                   for G of My_Globals.Proof_Ins loop
                      Globals.Insert (Change_Variant (G, Normal_Use),

@@ -1,0 +1,1 @@
+p-child.adb:4:07: high: "P.State" must be listed in the Global aspect of "Proc" (SPARK RM 6.1.4(13))
