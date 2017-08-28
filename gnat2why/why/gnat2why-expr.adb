@@ -12340,6 +12340,10 @@ package body Gnat2Why.Expr is
          Expected_Type := Type_Of_Node (Expr);
       end if;
 
+      --  Set error node so that bugbox information will be correct
+
+      Current_Error_Node := Expr;
+
       return Transform_Expr (Expr, Expected_Type, Domain, Params);
    end Transform_Expr;
 
@@ -15176,6 +15180,10 @@ package body Gnat2Why.Expr is
 
       Assert_And_Cut_Expr := Empty;
       Assert_And_Cut := Why_Empty;
+
+      --  Set error node so that bugbox information will be correct
+
+      Current_Error_Node := Stmt_Or_Decl;
 
       case Nkind (Stmt_Or_Decl) is
          when N_Label
