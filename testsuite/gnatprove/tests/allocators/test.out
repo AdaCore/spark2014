@@ -99,8 +99,6 @@ list_allocator.ads:53:53: info: precondition proved (CVC4: 2 VC)
 list_allocator.ads:61:48: info: overflow check proved (CVC4: 1 VC)
 list_allocator.ads:62:19: info: precondition proved (CVC4: 2 VC)
 list_allocator.ads:63:19: info: precondition proved (CVC4: 4 VC)
-list_allocator.ads:80:07: info: initialization of "Model.Allocated" proved
-list_allocator.ads:80:07: info: initialization of "Model.Available" proved
 list_allocator.ads:86:21: info: initialization of "Res" proved
 list_allocator.ads:88:14: info: postcondition proved (CVC4: 1 VC)
 list_allocator.ads:94:38: info: contract case proved (CVC4: 3 VC)

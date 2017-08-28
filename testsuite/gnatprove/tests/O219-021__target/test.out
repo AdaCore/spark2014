@@ -1,3 +1,7 @@
+cf_spark.gpr:1:09: no compiler for language "Ada", cannot compile "main.adb"
+Error: no compiler found for language 'ada', target = arm-eabi, default runtime
 gnatprove: Could not locate exec arm-eabi-gnatls
-warning: attribute "Target" of your project file is currently ignored by gnatprove
+gnatprove: error during generation of Global contracts
+gprbuild: *** compilation phase failed
+warning: attribute "Target" of your project file is only used to determine runtime library
 warning: to specify target properties, specify option "-gnateT" using "Builder.Global_Compilation_Switches"

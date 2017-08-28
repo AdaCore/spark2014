@@ -2928,7 +2928,7 @@ my_ordered_sets.adb:84:18: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:84:18: info: initialization of "L.Root" proved
 my_ordered_sets.adb:84:18: info: initialization of "L.TC" proved
 my_ordered_sets.adb:84:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:07: medium: precondition might fail (e.g. when C = (Node => 0))
+my_ordered_sets.adb:85:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:85:15: info: initialization of "L.First" proved
 my_ordered_sets.adb:85:15: info: initialization of "L.Free" proved
 my_ordered_sets.adb:85:15: info: initialization of "L.Last" proved

@@ -12,7 +12,7 @@ const.ads:15:33: info: precondition proved (CVC4: 1 VC)
 const2.adb:2:08: all constituents must be declared before body at line 5
 const2.adb:2:08: body "Get_V" declared at line 5 freezes the contract of "Const2"
 const2.adb:2:35: "V2" is undefined
-compilation abandoned due to previous error
+compilation abandoned
 gnatprove: error during generation of Global contracts
 const3.adb:3:19: info: initialization of "F" proved
 const3.adb:4:19: info: initialization of "L" proved
