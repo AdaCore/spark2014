@@ -64,7 +64,6 @@ with Osint;                           use Osint;
 with Output;                          use Output;
 with Outputs;                         use Outputs;
 with Sem;
-with Sem_SPARK;                       use Sem_SPARK;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
@@ -421,13 +420,6 @@ package body Gnat2Why.Driver is
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
-
-      --  Perform the new SPARK checking rules for pointer aliasing. This is
-      --  only activated in GNATprove mode and on SPARK code.
-
-      if Debug_Flag_FF then
-         Check_Safe_Pointers (GNAT_Root);
-      end if;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.
