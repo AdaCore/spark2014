@@ -655,6 +655,9 @@ package body Gnat2Why.Error_Messages is
 
       procedure Handle_Error (Msg : String; Internal : Boolean) is
       begin
+         --  For errors in gnatwhy3 the source code location is meaningless
+         Current_Error_Node := Empty;
+
          if Internal then
             Compiler_Abort (Msg);
          else

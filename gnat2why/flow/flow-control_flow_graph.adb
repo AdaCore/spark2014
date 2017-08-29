@@ -4839,6 +4839,7 @@ package body Flow.Control_Flow_Graph is
    is
       L : Vertex_Lists.List;
    begin
+      Current_Error_Node := N;
 
       --  Initialize the set of expressions we need to double check.
       Ctx.Folded_Function_Checks.Insert (N, Node_Sets.Empty_Set);

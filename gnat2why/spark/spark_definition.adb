@@ -1111,6 +1111,8 @@ package body SPARK_Definition is
    --  Start of processing for Mark
 
    begin
+      Current_Error_Node := N;
+
       --  If present, the type of N should be in SPARK. This also allows
       --  marking Itypes and class-wide types at their first occurrence
       --  (inside In_SPARK).

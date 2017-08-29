@@ -1121,6 +1121,8 @@ package body Flow_Generated_Globals.Partial is
    is
       Has_Children : constant Boolean := not Is_Leaf (Analyzed);
    begin
+      Current_Error_Node := Analyzed;
+
       if Has_Children then
          for Child of Scope_Map (Analyzed) loop
             Do_Global (Child, Contracts);
@@ -1830,6 +1832,8 @@ package body Flow_Generated_Globals.Partial is
          --  Contract for the analyzed entity
 
       begin
+         Current_Error_Node := E;
+
          --  This is first traversal of the current compilation unit, so it's
          --  a good place for some debug.
          Debug_Traversal (E);

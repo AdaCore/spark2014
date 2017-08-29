@@ -1097,6 +1097,8 @@ package body Flow is
    --  Start of processing for Flow_Analyse_Entity
 
    begin
+      Current_Error_Node := E;
+
       FA.Analyzed_Entity                      := E;
       FA.Spec_Entity                          := Unique_Entity (E);
       FA.Start_Vertex                         := Null_Vertex;
