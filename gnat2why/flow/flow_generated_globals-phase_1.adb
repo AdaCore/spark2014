@@ -30,6 +30,7 @@ with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
 
 with Common_Iterators;        use Common_Iterators;
+with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 with SPARK2014VSN;            use SPARK2014VSN;
 
@@ -124,7 +125,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Volatile information
 
    procedure Register_Volatile (E : Entity_Id);
-   --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
+   --  Process E and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
 
    --------------------------------
@@ -281,31 +282,59 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Register_State_Refinement (E : Entity_Id) is
    begin
-      for State of Iter (Abstract_States (E)) loop
-         --  Append an empty container and then populate it
-         State_Constituents.Append
-           ((State        => To_Entity_Name (State),
-             Constituents => Name_Lists.Empty_List));
+      if not Has_Null_Abstract_State (E) then
+         for State of Iter (Abstract_States (E)) loop
+            --  Append an empty container and then populate it
+            State_Constituents.Append
+              ((State        => To_Entity_Name (State),
+                Constituents => Name_Lists.Empty_List));
 
-         declare
-            New_Constituents : Name_Lists.List renames
-              State_Constituents (State_Constituents.Last).Constituents;
+            declare
+               New_Constituents : Name_Lists.List renames
+                 State_Constituents (State_Constituents.Last).Constituents;
 
-         begin
-            --  ??? how about Part_Of_Constituents?
-            for Constituent of Iter (Refinement_Constituents (State)) loop
-               if Nkind (Constituent) = N_Null then
+            begin
+               --  ??? this logic is common to Expand_Abstrat_State; possibly
+               --  to be refactored.
+               if Is_Null_State (State) then
                   null;
                else
-                  New_Constituents.Append (To_Entity_Name (Constituent));
-               end if;
-            end loop;
-         end;
+                  --  Use the Refined_State aspect, if visible
+                  if Entity_Body_In_SPARK (E) then
 
-         --  Check if state is volatile and if it is then add it to the
-         --  appropriate sets.
-         Register_Volatile (State);
-      end loop;
+                     --  At this point we know whether the state has a null
+                     --  refinement; if it does, then we ignore it.
+                     if Has_Null_Refinement (State) then
+                        null;
+                     else
+                        for C of Iter (Refinement_Constituents (State)) loop
+                           New_Constituents.Append (To_Entity_Name (C));
+                        end loop;
+                     end if;
+
+                  --  Pick the Part_Of constituents from the private part of
+                  --  the package.
+
+                  else
+                     if Private_Spec_In_SPARK (E) then
+                        for C of Iter (Part_Of_Constituents (State)) loop
+                           New_Constituents.Append (To_Entity_Name (C));
+                        end loop;
+                     end if;
+
+                     --  ??? There might be more constituents in the package
+                     --  body and in private child packages, but we can't see
+                     --  them; to be decided what do with this in phase 2.
+                  end if;
+               end if;
+
+            end;
+
+            --  Check if state is volatile and if it is then add it to the
+            --  appropriate sets.
+            Register_Volatile (State);
+         end loop;
+      end if;
    end GG_Register_State_Refinement;
 
    -----------------------------
