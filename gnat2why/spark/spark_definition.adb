@@ -125,10 +125,6 @@ package body SPARK_Definition is
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
    --  messages when a violation is encountered.
 
-   Current_Protected_Type : Entity_Id := Empty;
-   --  Set to protected type entity when marking inside the type to detect
-   --  internal calls.
-
    Current_Delayed_Aspect_Type : Entity_Id := Empty;
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
@@ -2589,9 +2585,6 @@ package body SPARK_Definition is
          end case;
       end if;
 
-      --  Current_Protected_Type is either empty or points to what is says
-      pragma Assert (Present (Scope (E)));
-
       if Ekind (E) in E_Function
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
@@ -2750,7 +2743,6 @@ package body SPARK_Definition is
       Delayed_Type_Aspects.Clear;
 
       --  Ensure that global variables are restored to their initial values
-      pragma Assert (No (Current_Protected_Type));
       pragma Assert (No (Current_Delayed_Aspect_Type));
    end Mark_Compilation_Unit;
 
@@ -2806,19 +2798,8 @@ package body SPARK_Definition is
          begin
             Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
             if not SPARK_Pragma_Is (Opt.Off) then
-               declare
-                  Save_Protected_Type : constant Entity_Id :=
-                    Current_Protected_Type;
-
-               begin
-                  Current_Protected_Type := E;
-
                   Mark_Stmt_Or_Decl_List
                     (Private_Declarations (Type_Def));
-
-                  Current_Protected_Type :=
-                    Save_Protected_Type;
-               end;
             end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -3344,29 +3325,7 @@ package body SPARK_Definition is
             Expr :=
               Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
 
-            --  Postconditions of protected subprograms declared in protected
-            --  type declarations are executed as part of protected operations,
-            --  so calls to protected functions of the same protected type are
-            --  internal.
-            --
-            --  Subprograms declared in protected bodies can only be called
-            --  internally and then Current_Protected_Type is already set
-            --  anyway.
-
-            if Is_Pragma (Prag, Pragma_Postcondition)
-              and then Is_Protected_Type (Scope (E))
-            then
-               declare
-                  Save_Protected_Type : constant Entity_Id :=
-                    Current_Protected_Type;
-               begin
-                  Current_Protected_Type := Scope (E);
-                  Mark (Expr);
-                  Current_Protected_Type := Save_Protected_Type;
-               end;
-            else
-               Mark (Expr);
-            end if;
+            Mark (Expr);
 
             --  For a class-wide condition, a corresponding expression must
             --  be created in which a reference to a controlling formal
@@ -3407,26 +3366,7 @@ package body SPARK_Definition is
 
                   Mark (Case_Guard);
 
-                  --  Consequences of protected subprograms declared in
-                  --  protected type declarations are executed as part of
-                  --  protected operations, so any calls to protected
-                  --  functions of the same protected type are internal.
-                  --
-                  --  Subprograms declared in protected bodies can only be
-                  --  called internally and then Current_Protected_Type is
-                  --  already set anyway.
-                  if Is_Protected_Type (Scope (E)) then
-                     declare
-                        Save_Protected_Type : constant Entity_Id :=
-                          Current_Protected_Type;
-                     begin
-                        Current_Protected_Type := Scope (E);
-                        Mark (Conseq);
-                        Current_Protected_Type := Save_Protected_Type;
-                     end;
-                  else
-                     Mark (Conseq);
-                  end if;
+                  Mark (Conseq);
 
                   Next (Contract_Case);
                end loop;
@@ -3884,14 +3824,10 @@ package body SPARK_Definition is
                  and then not SPARK_Pragma_Is (Opt.Off)
                then
                   declare
-                     Save_Protected_Type : constant Entity_Id :=
-                       Current_Protected_Type;
                      Save_Violation_Detected : constant Boolean :=
                        Violation_Detected;
 
                   begin
-                     Current_Protected_Type := E;
-
                      Comp := First_Component (E);
                      while Present (Comp) loop
 
@@ -3935,7 +3871,6 @@ package body SPARK_Definition is
                      else
                         Fullview_In_SPARK := True;
                      end if;
-                     Current_Protected_Type := Save_Protected_Type;
                   end;
 
                --  Tasks are considered as always having a private part which
@@ -4376,22 +4311,8 @@ package body SPARK_Definition is
                         begin
                            Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
                            if SPARK_Pragma_Is (Opt.On) then
-                              declare
-                                 Save_Protected_Type : constant Entity_Id :=
-                                   Current_Protected_Type;
-
-                              begin
-                                 --  Private section may contain pragmas and
-                                 --  they are marked here.
-
-                                 Current_Protected_Type := E;
-
-                                 Mark_Aspect_Clauses_And_Pragmas_In_List
-                                   (Private_Declarations (Type_Def));
-
-                                 Current_Protected_Type :=
-                                   Save_Protected_Type;
-                              end;
+                              Mark_Aspect_Clauses_And_Pragmas_In_List
+                                (Private_Declarations (Type_Def));
                            end if;
 
                            Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -5449,14 +5370,9 @@ package body SPARK_Definition is
 
             if not SPARK_Pragma_Is (Opt.Off) then
                declare
-                  Save_Protected_Type : constant Entity_Id :=
-                    Current_Protected_Type;
-
                   Save_Violation_Detected : constant Boolean :=
                     Violation_Detected;
-
                begin
-                  Current_Protected_Type := Spec;
                   Violation_Detected := False;
 
                   Mark_Stmt_Or_Decl_List (Declarations (N));
@@ -5466,9 +5382,7 @@ package body SPARK_Definition is
                   end if;
 
                   Violation_Detected := Save_Violation_Detected;
-                  Current_Protected_Type := Save_Protected_Type;
                end;
-
             end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
