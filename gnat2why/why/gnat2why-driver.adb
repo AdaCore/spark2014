@@ -388,8 +388,8 @@ package body Gnat2Why.Driver is
       procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Mark_Compilation_Unit);
 
-      --  this Boolean indicates whether proof have been attempted
-      --  anywhere in the unit
+      --  This Boolean indicates whether proof have been attempted anywhere in
+      --  the unit.
       Proof_Done : Boolean := False;
 
    begin
