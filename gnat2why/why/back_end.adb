@@ -39,8 +39,6 @@ with Types; use Types;
 
 package body Back_End is
 
-   use Gnat2Why.Driver;
-
    package GNAT2Why_BE is new Adabkend
      (Product_Name       => "GNAT2WHY",
       Copyright_Years    => "2010-2017",
