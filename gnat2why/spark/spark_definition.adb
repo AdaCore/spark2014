@@ -2452,22 +2452,32 @@ package body SPARK_Definition is
       E : Entity_Id;
       --  Entity of the called subprogram or entry
 
-      function Is_Volatile_Call (Target : Entity_Id) return Boolean;
-      --  Returns True iff call to Target is volatile
+      function Is_Volatile_Call (Call_Node : Node_Id) return Boolean;
+      --  Returns True iff call is volatile
+
+      procedure Mark_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Mark actuals of the call
 
       ----------------------
       -- Is_Volatile_Call --
       ----------------------
 
-      function Is_Volatile_Call (Target : Entity_Id) return Boolean is
-        (if Current_Protected_Type = Scope (Target) then
-           --  This is an internal call to protected function
-           Is_Enabled_Pragma (Get_Pragma (Target, Pragma_Volatile_Function))
-         else
-           Is_Volatile_Function (Target));
+      function Is_Volatile_Call (Call_Node : Node_Id) return Boolean
+      is
+         Target : constant Entity_Id := Get_Called_Entity (Call_Node);
+      begin
+         if Ekind (Scope (Target)) in Protected_Kind
+           and then not Is_External_Call (Call_Node)
+         then
 
-      procedure Mark_Param (Formal : Entity_Id; Actual : Node_Id);
-      --  Mark actuals of the call
+            --  This is an internal call to protected function
+
+            return Is_Enabled_Pragma
+              (Get_Pragma (Target, Pragma_Volatile_Function));
+         else
+            return Is_Volatile_Function (Target);
+         end if;
+      end Is_Volatile_Call;
 
       ----------------
       -- Mark_Param --
@@ -2483,7 +2493,7 @@ package body SPARK_Definition is
              (Is_Effectively_Volatile_Object (Actual)
               or else (Nkind (Actual) = N_Function_Call
                        and then Nkind (Name (Actual)) /= N_Explicit_Dereference
-                       and then Is_Volatile_Call (Get_Called_Entity (Actual))))
+                         and then Is_Volatile_Call (Actual)))
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
@@ -2585,7 +2595,7 @@ package body SPARK_Definition is
       if Ekind (E) in E_Function
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
-        and then Is_Volatile_Call (E)
+        and then Is_Volatile_Call (N)
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
