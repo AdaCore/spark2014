@@ -2594,9 +2594,15 @@ package body SPARK_Definition is
 
       Mark_Actuals (N);
 
+      --  There should not be calls to default initial condition and invariant
+      --  procedures.
+
+      if Subprogram_Is_Ignored_For_Proof (E) then
+         raise Program_Error;
+
       --  Call is in SPARK only if the subprogram called is in SPARK
 
-      if not In_SPARK (E) then
+      elsif not In_SPARK (E) then
          Mark_Violation (N,
                          From => (if Ekind (E) = E_Function
                                     and then Is_Predicate_Function (E)
@@ -2609,12 +2615,6 @@ package body SPARK_Definition is
       then
          Mark_Violation
            ("dispatching call on primitive of untagged private", N);
-
-      --  There should not be calls to default initial condition and invariant
-      --  procedures.
-
-      elsif Subprogram_Is_Ignored_For_Proof (E) then
-         raise Program_Error;
 
       --  Warn about calls to predefined and imported subprograms with no
       --  manually-written Global or Depends contracts. Exempt calls to pure
