@@ -1,5 +1,5 @@
-a-tags.adb:22:49: implicit dereference is not allowed in SPARK
-a-tags.adb:22:49: violation of pragma SPARK_Mode at test.adc:1
+a-tags.adb:22:22: "Type_Specific_Data" is not allowed in SPARK
+a-tags.adb:22:22: violation of pragma SPARK_Mode at test.adc:1
 a-tags.adb:27:09: call through access to function is not allowed in SPARK
 a-tags.adb:27:09: violation of pragma SPARK_Mode at test.adc:1
 a-tags.ads:11:09: access type is not allowed in SPARK
