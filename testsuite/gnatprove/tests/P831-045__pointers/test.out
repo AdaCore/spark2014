@@ -30,5 +30,5 @@ pointers2.ads:12:14: expected at least "read_write", got "write_only"
 pointers2.ads:12:14: insufficient permission for "Y" when returning from "Bad_Swap_Global"
 pointers2.ads:20:14: expected at least "read_write", got "write_only"
 pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
-compilation abandoned due to previous error
+compilation abandoned
 gnatprove: error during generation of Global contracts
