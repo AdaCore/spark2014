@@ -2147,10 +2147,10 @@ search_trees.adb:675:07: info: initialization of "T_Old.Struct" proved
 search_trees.adb:675:07: info: initialization of "T_Old.Values" proved
 search_trees.adb:676:07: info: initialization of "F_Old" proved
 search_trees.adb:680:07: info: initialization of "F_1" proved
-search_trees.adb:680:12: info: initialization of "F_2" proved
-search_trees.adb:680:17: info: initialization of "F_3" proved
-search_trees.adb:680:22: info: initialization of "F_4" proved
-search_trees.adb:680:27: info: initialization of "F_5" proved
+search_trees.adb:680:07: info: initialization of "F_2" proved
+search_trees.adb:680:07: info: initialization of "F_3" proved
+search_trees.adb:680:07: info: initialization of "F_4" proved
+search_trees.adb:680:07: info: initialization of "F_5" proved
 search_trees.adb:686:17: info: initialization of "F_1" proved
 search_trees.adb:694:13: info: precondition proved (CVC4: 12 VC), in call inlined at search_trees.adb:882
 search_trees.adb:694:44: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:882
@@ -2400,10 +2400,10 @@ search_trees.adb:928:07: info: initialization of "T_Old.Struct" proved
 search_trees.adb:928:07: info: initialization of "T_Old.Values" proved
 search_trees.adb:929:07: info: initialization of "F_Old" proved
 search_trees.adb:933:07: info: initialization of "F_1" proved
-search_trees.adb:933:12: info: initialization of "F_2" proved
-search_trees.adb:933:17: info: initialization of "F_3" proved
-search_trees.adb:933:22: info: initialization of "F_4" proved
-search_trees.adb:933:27: info: initialization of "F_5" proved
+search_trees.adb:933:07: info: initialization of "F_2" proved
+search_trees.adb:933:07: info: initialization of "F_3" proved
+search_trees.adb:933:07: info: initialization of "F_4" proved
+search_trees.adb:933:07: info: initialization of "F_5" proved
 search_trees.adb:939:17: info: initialization of "F_1" proved
 search_trees.adb:947:13: info: precondition proved (CVC4: 12 VC), in call inlined at search_trees.adb:1134
 search_trees.adb:947:44: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1134

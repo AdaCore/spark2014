@@ -11,15 +11,15 @@ fb20a00.adb:34:18: medium: length check might fail (e.g. when New_Str = (others 
 fb20a00.adb:35:15: info: length check proved (CVC4: 1 VC)
 fb20a00.adb:35:18: medium: length check might fail (e.g. when New_Sub = (others => 'NUL') and Sub = (others => 'NUL') and Sub'First = 1 and Sub'Last = 0)
 fb20a00.adb:37:15: info: initialization of "Pos" proved
+fb20a00.adb:37:22: info: initialization of "New_Str" proved
 fb20a00.adb:37:34: medium: overflow check might fail
+fb20a00.adb:37:35: info: initialization of "New_Sub" proved
 fb20a00.adb:37:42: info: range check proved (CodePeer)
 fb20a00.adb:37:49: medium: overflow check might fail
-fb20a00.adb:39:11: info: initialization of "New_Str" proved
 fb20a00.adb:39:11: medium: range check might fail (e.g. when New_Str'First = 0 and Pos = 0)
 fb20a00.adb:39:31: medium: overflow check might fail
 fb20a00.adb:39:39: info: range check proved (CodePeer)
 fb20a00.adb:39:46: info: overflow check proved (CodePeer)
-fb20a00.adb:39:54: info: initialization of "New_Sub" proved
 fb20a00.adb:42:17: info: initialization of "Pos" proved
 fb20a00.adb:42:21: medium: overflow check might fail (e.g. when Pos = 0)
 fb20a00.adb:45:12: info: initialization of "Pos" proved

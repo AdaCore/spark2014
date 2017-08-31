@@ -66,9 +66,9 @@ tetris_functional.adb:102:36: info: loop invariant initialization proved (CVC4: 
 tetris_functional.adb:102:36: info: loop invariant preservation proved (CVC4: 1 VC)
 tetris_functional.adb:102:48: info: overflow check proved (CVC4: 1 VC)
 tetris_functional.adb:102:50: info: initialization of "To_Line" proved
-tetris_functional.adb:102:71: info: initialization of "Num_Deleted" proved
+tetris_functional.adb:102:60: info: initialization of "Num_Deleted" proved
 tetris_functional.adb:102:83: info: overflow check proved (CVC4: 1 VC)
-tetris_functional.adb:102:92: info: initialization of "To_Line" proved
+tetris_functional.adb:102:85: info: initialization of "To_Line" proved
 tetris_functional.adb:104:36: info: initialization of "To_Line" proved
 tetris_functional.adb:106:27: info: initialization of "To_Line" proved
 tetris_functional.adb:106:35: info: range check proved (CVC4: 1 VC)
@@ -160,9 +160,9 @@ tetris_integrity.adb:94:36: info: loop invariant initialization proved (CVC4: 1 
 tetris_integrity.adb:94:36: info: loop invariant preservation proved (CVC4: 1 VC)
 tetris_integrity.adb:94:48: info: overflow check proved (CVC4: 1 VC)
 tetris_integrity.adb:94:50: info: initialization of "To_Line" proved
-tetris_integrity.adb:94:71: info: initialization of "Num_Deleted" proved
+tetris_integrity.adb:94:60: info: initialization of "Num_Deleted" proved
 tetris_integrity.adb:94:83: info: overflow check proved (CVC4: 1 VC)
-tetris_integrity.adb:94:92: info: initialization of "To_Line" proved
+tetris_integrity.adb:94:85: info: initialization of "To_Line" proved
 tetris_integrity.adb:96:36: info: initialization of "To_Line" proved
 tetris_integrity.adb:98:27: info: initialization of "To_Line" proved
 tetris_integrity.adb:98:35: info: range check proved (CVC4: 1 VC)

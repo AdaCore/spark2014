@@ -3,7 +3,7 @@ dyn_arrays.adb:10:10: info: length check proved (CVC4: 1 VC)
 dyn_arrays.ads:6:42: info: initialization of "To" proved
 dyn_arrays.ads:7:51: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:8:14: info: postcondition proved (CVC4: 1 VC)
-dyn_arrays.ads:9:17: info: initialization of "To" proved
+dyn_arrays.ads:8:28: info: initialization of "To" proved
 dyn_arrays.ads:9:21: info: index check proved (CVC4: 2 VC)
 dyn_arrays.ads:9:34: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:9:45: info: index check proved (CVC4: 2 VC)

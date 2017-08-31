@@ -32,11 +32,11 @@ fixed_stream.ads:40:20: info: postcondition proved (CVC4: 1 VC)
 fixed_stream.ads:40:34: info: range check proved (CVC4: 1 VC)
 fixed_stream.ads:52:28: info: initialization of "Change" proved
 fixed_stream.ads:55:15: info: postcondition proved (Z3: 1 VC)
+fixed_stream.ads:55:29: info: initialization of "Change" proved
 fixed_stream.ads:57:19: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.ads:57:48: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.ads:58:21: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.ads:58:34: info: overflow check proved (CVC4: 1 VC)
-fixed_stream.ads:59:22: info: initialization of "Change" proved
 fixed_stream.ads:59:29: info: index check proved (CVC4: 2 VC)
 fixed_stream.ads:59:43: info: overflow check proved (CVC4: 1 VC)
 fixed_stream.ads:59:56: info: index check proved (CVC4: 2 VC)
@@ -77,11 +77,11 @@ fixed_string.ads:33:20: info: postcondition proved (CVC4: 1 VC)
 fixed_string.ads:33:34: info: range check proved (CVC4: 1 VC)
 fixed_string.ads:45:28: info: initialization of "Change" proved
 fixed_string.ads:48:15: info: postcondition proved (Z3: 1 VC)
+fixed_string.ads:48:29: info: initialization of "Change" proved
 fixed_string.ads:50:19: info: overflow check proved (CVC4: 1 VC)
 fixed_string.ads:50:48: info: overflow check proved (CVC4: 1 VC)
 fixed_string.ads:51:21: info: overflow check proved (CVC4: 1 VC)
 fixed_string.ads:51:34: info: overflow check proved (CVC4: 1 VC)
-fixed_string.ads:52:22: info: initialization of "Change" proved
 fixed_string.ads:52:29: info: index check proved (CVC4: 2 VC)
 fixed_string.ads:52:43: info: overflow check proved (CVC4: 1 VC)
 fixed_string.ads:52:56: info: index check proved (CVC4: 2 VC)

@@ -36,7 +36,7 @@ list.adb:36:42: info: overflow check proved (Z3: 1 VC)
 list.adb:38:39: info: overflow check proved (Z3: 1 VC)
 list.adb:38:43: info: overflow check proved (Z3: 1 VC)
 list.adb:39:34: info: index check proved (Z3: 2 VC)
-list.adb:39:50: info: initialization of "S" proved
+list.adb:39:49: info: initialization of "S" proved
 list.adb:39:64: info: index check proved (Z3: 2 VC)
 list.adb:41:40: info: overflow check proved (Z3: 1 VC)
 list.adb:42:20: info: precondition proved (Z3: 2 VC)

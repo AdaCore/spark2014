@@ -264,7 +264,7 @@ lsc-bignum.adb:625:64: info: range check proved (CVC4: 1 VC)
 lsc-bignum.adb:628:47: info: initialization of "S" proved
 lsc-bignum.adb:629:21: info: division check proved (CVC4: 1 VC)
 lsc-bignum.adb:629:53: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:629:62: info: initialization of "S" proved
+lsc-bignum.adb:629:61: info: initialization of "S" proved
 lsc-bignum.adb:632:45: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:632:45: info: range check proved (CVC4: 1 VC)
 lsc-bignum.adb:634:16: medium: precondition might fail
@@ -315,7 +315,7 @@ lsc-bignum.adb:664:64: info: range check proved (CVC4: 1 VC)
 lsc-bignum.adb:667:47: info: initialization of "S" proved
 lsc-bignum.adb:668:21: info: division check proved (CVC4: 1 VC)
 lsc-bignum.adb:668:53: info: overflow check proved (CVC4: 1 VC)
-lsc-bignum.adb:668:62: info: initialization of "S" proved
+lsc-bignum.adb:668:61: info: initialization of "S" proved
 lsc-bignum.adb:671:45: info: overflow check proved (CVC4: 1 VC)
 lsc-bignum.adb:671:45: info: range check proved (CVC4: 1 VC)
 lsc-bignum.adb:674:13: medium: precondition might fail

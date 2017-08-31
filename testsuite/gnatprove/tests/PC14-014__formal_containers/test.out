@@ -169,8 +169,8 @@ a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+my_bounded_vectors.adb:9:07: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:9:07: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:9:10: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:9:22: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:12:22: info: assertion proved (Z3: 1 VC)
 my_bounded_vectors.adb:12:32: info: initialization of private part of "L" proved
@@ -355,8 +355,8 @@ my_bounded_vectors.adb:110:22: info: assertion proved (Z3: 1 VC)
 my_bounded_vectors.adb:110:33: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:112:14: info: initialization of private part of "L" proved
 my_bounded_vectors.ads:9:14: warning: subprogram "Test_Bounded_Vectors" has no effect
+my_lists.adb:7:07: info: initialization of private part of "K" proved
 my_lists.adb:7:07: info: initialization of private part of "L" proved
-my_lists.adb:7:10: info: initialization of private part of "K" proved
 my_lists.adb:7:20: info: range check proved (Z3: 1 VC)
 my_lists.adb:10:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:10:32: info: initialization of private part of "L" proved
@@ -602,18 +602,18 @@ my_lists.adb:141:33: info: initialization of private part of "L" proved
 my_lists.adb:142:07: medium: assertion might fail
 my_lists.ads:8:14: warning: subprogram "Test_List" has no effect
 my_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
+my_maps.adb:6:07: info: initialization of "K.Buckets" proved
+my_maps.adb:6:07: info: initialization of "K.Free" proved
+my_maps.adb:6:07: info: initialization of "K.Length" proved
+my_maps.adb:6:07: info: initialization of "K.Nodes" proved
+my_maps.adb:6:07: info: initialization of "K.TC" proved
 my_maps.adb:6:07: info: initialization of "L.Buckets" proved
 my_maps.adb:6:07: info: initialization of "L.Free" proved
 my_maps.adb:6:07: info: initialization of "L.Length" proved
 my_maps.adb:6:07: info: initialization of "L.Nodes" proved
 my_maps.adb:6:07: info: initialization of "L.TC" proved
+my_maps.adb:6:07: info: initialization of private part of "K" proved
 my_maps.adb:6:07: info: initialization of private part of "L" proved
-my_maps.adb:6:10: info: initialization of "K.Buckets" proved
-my_maps.adb:6:10: info: initialization of "K.Free" proved
-my_maps.adb:6:10: info: initialization of "K.Length" proved
-my_maps.adb:6:10: info: initialization of "K.Nodes" proved
-my_maps.adb:6:10: info: initialization of "K.TC" proved
-my_maps.adb:6:10: info: initialization of private part of "K" proved
 my_maps.adb:6:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:6:23: info: range check proved (Z3: 1 VC)
 my_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
@@ -806,18 +806,18 @@ my_maps.adb:40:30: info: initialization of "L.TC" proved
 my_maps.adb:40:30: info: initialization of private part of "L" proved
 my_maps.adb:41:07: medium: assertion might fail
 my_maps.adb:44:14: warning: subprogram "Test_Map_Rec" has no effect
+my_maps.adb:46:07: info: initialization of "K.Buckets" proved
+my_maps.adb:46:07: info: initialization of "K.Free" proved
+my_maps.adb:46:07: info: initialization of "K.Length" proved
+my_maps.adb:46:07: info: initialization of "K.Nodes" proved
+my_maps.adb:46:07: info: initialization of "K.TC" proved
 my_maps.adb:46:07: info: initialization of "L.Buckets" proved
 my_maps.adb:46:07: info: initialization of "L.Free" proved
 my_maps.adb:46:07: info: initialization of "L.Length" proved
 my_maps.adb:46:07: info: initialization of "L.Nodes" proved
 my_maps.adb:46:07: info: initialization of "L.TC" proved
+my_maps.adb:46:07: info: initialization of private part of "K" proved
 my_maps.adb:46:07: info: initialization of private part of "L" proved
-my_maps.adb:46:10: info: initialization of "K.Buckets" proved
-my_maps.adb:46:10: info: initialization of "K.Free" proved
-my_maps.adb:46:10: info: initialization of "K.Length" proved
-my_maps.adb:46:10: info: initialization of "K.Nodes" proved
-my_maps.adb:46:10: info: initialization of "K.TC" proved
-my_maps.adb:46:10: info: initialization of private part of "K" proved
 my_maps.adb:46:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:46:23: info: range check proved (Z3: 1 VC)
 my_maps.adb:50:22: info: assertion proved (Z3: 1 VC)
@@ -1025,18 +1025,18 @@ my_maps.adb:82:30: info: initialization of "L.TC" proved
 my_maps.adb:82:30: info: initialization of private part of "L" proved
 my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
+my_maps.adb:88:07: info: initialization of "K.Buckets" proved
+my_maps.adb:88:07: info: initialization of "K.Free" proved
+my_maps.adb:88:07: info: initialization of "K.Length" proved
+my_maps.adb:88:07: info: initialization of "K.Nodes" proved
+my_maps.adb:88:07: info: initialization of "K.TC" proved
 my_maps.adb:88:07: info: initialization of "L.Buckets" proved
 my_maps.adb:88:07: info: initialization of "L.Free" proved
 my_maps.adb:88:07: info: initialization of "L.Length" proved
 my_maps.adb:88:07: info: initialization of "L.Nodes" proved
 my_maps.adb:88:07: info: initialization of "L.TC" proved
+my_maps.adb:88:07: info: initialization of private part of "K" proved
 my_maps.adb:88:07: info: initialization of private part of "L" proved
-my_maps.adb:88:10: info: initialization of "K.Buckets" proved
-my_maps.adb:88:10: info: initialization of "K.Free" proved
-my_maps.adb:88:10: info: initialization of "K.Length" proved
-my_maps.adb:88:10: info: initialization of "K.Nodes" proved
-my_maps.adb:88:10: info: initialization of "K.TC" proved
-my_maps.adb:88:10: info: initialization of private part of "K" proved
 my_maps.adb:88:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:88:23: info: range check proved (Z3: 1 VC)
 my_maps.adb:92:22: info: assertion proved (Z3: 1 VC)
@@ -1241,6 +1241,13 @@ my_maps.adb:131:07: info: precondition proved (Z3: 1 VC)
 my_maps.ads:20:17: info: postcondition proved (Z3: 2 VC)
 my_maps.ads:31:14: warning: subprogram "Test_Map" has no effect
 my_ordered_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
+my_ordered_maps.adb:6:07: info: initialization of "K.First" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.Free" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.Last" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.Length" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.Nodes" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.Root" proved
+my_ordered_maps.adb:6:07: info: initialization of "K.TC" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.First" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.Free" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.Last" proved
@@ -1248,15 +1255,8 @@ my_ordered_maps.adb:6:07: info: initialization of "L.Length" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.Nodes" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.Root" proved
 my_ordered_maps.adb:6:07: info: initialization of "L.TC" proved
+my_ordered_maps.adb:6:07: info: initialization of private part of "K" proved
 my_ordered_maps.adb:6:07: info: initialization of private part of "L" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.First" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.Free" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.Last" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.Length" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.Nodes" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.Root" proved
-my_ordered_maps.adb:6:10: info: initialization of "K.TC" proved
-my_ordered_maps.adb:6:10: info: initialization of private part of "K" proved
 my_ordered_maps.adb:6:19: info: range check proved (Z3: 1 VC)
 my_ordered_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:10:32: info: initialization of "L.First" proved
@@ -1619,6 +1619,13 @@ my_ordered_maps.adb:56:20: info: initialization of "L.TC" proved
 my_ordered_maps.adb:56:20: info: initialization of private part of "L" proved
 my_ordered_maps.adb:57:07: medium: assertion might fail
 my_ordered_maps.adb:60:14: warning: subprogram "Test_Map_Rec" has no effect
+my_ordered_maps.adb:62:07: info: initialization of "K.First" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.Free" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.Last" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.Length" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.Nodes" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.Root" proved
+my_ordered_maps.adb:62:07: info: initialization of "K.TC" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.First" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.Free" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.Last" proved
@@ -1626,15 +1633,8 @@ my_ordered_maps.adb:62:07: info: initialization of "L.Length" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.Nodes" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.Root" proved
 my_ordered_maps.adb:62:07: info: initialization of "L.TC" proved
+my_ordered_maps.adb:62:07: info: initialization of private part of "K" proved
 my_ordered_maps.adb:62:07: info: initialization of private part of "L" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.First" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.Free" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.Last" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.Length" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.Nodes" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.Root" proved
-my_ordered_maps.adb:62:10: info: initialization of "K.TC" proved
-my_ordered_maps.adb:62:10: info: initialization of private part of "K" proved
 my_ordered_maps.adb:62:19: info: range check proved (Z3: 1 VC)
 my_ordered_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:66:32: info: initialization of "L.First" proved
@@ -1891,6 +1891,13 @@ my_ordered_maps.adb:98:30: info: initialization of "L.TC" proved
 my_ordered_maps.adb:98:30: info: initialization of private part of "L" proved
 my_ordered_maps.adb:99:07: medium: assertion might fail
 my_ordered_maps.adb:102:14: warning: subprogram "Test_Map_Rec_2" has no effect
+my_ordered_maps.adb:104:07: info: initialization of "K.First" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.Free" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.Last" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.Length" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.Nodes" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.Root" proved
+my_ordered_maps.adb:104:07: info: initialization of "K.TC" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.First" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.Free" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.Last" proved
@@ -1898,15 +1905,8 @@ my_ordered_maps.adb:104:07: info: initialization of "L.Length" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.Nodes" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.Root" proved
 my_ordered_maps.adb:104:07: info: initialization of "L.TC" proved
+my_ordered_maps.adb:104:07: info: initialization of private part of "K" proved
 my_ordered_maps.adb:104:07: info: initialization of private part of "L" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.First" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.Free" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.Last" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.Length" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.Nodes" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.Root" proved
-my_ordered_maps.adb:104:10: info: initialization of "K.TC" proved
-my_ordered_maps.adb:104:10: info: initialization of private part of "K" proved
 my_ordered_maps.adb:104:19: info: range check proved (Z3: 1 VC)
 my_ordered_maps.adb:108:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:108:32: info: initialization of "L.First" proved
@@ -2178,6 +2178,13 @@ my_ordered_maps.adb:149:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.ads:17:12: info: postcondition proved (Z3: 2 VC)
 my_ordered_maps.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 my_ordered_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
+my_ordered_sets.adb:6:07: info: initialization of "K.First" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.Free" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.Last" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.Length" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.Nodes" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.Root" proved
+my_ordered_sets.adb:6:07: info: initialization of "K.TC" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.First" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.Free" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.Last" proved
@@ -2185,15 +2192,8 @@ my_ordered_sets.adb:6:07: info: initialization of "L.Length" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.Root" proved
 my_ordered_sets.adb:6:07: info: initialization of "L.TC" proved
+my_ordered_sets.adb:6:07: info: initialization of private part of "K" proved
 my_ordered_sets.adb:6:07: info: initialization of private part of "L" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.First" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.Free" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.Last" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.Length" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.Nodes" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.Root" proved
-my_ordered_sets.adb:6:10: info: initialization of "K.TC" proved
-my_ordered_sets.adb:6:10: info: initialization of private part of "K" proved
 my_ordered_sets.adb:6:19: info: range check proved (Z3: 1 VC)
 my_ordered_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:10:32: info: initialization of "L.First" proved
@@ -2991,6 +2991,13 @@ my_ordered_sets.adb:91:30: info: initialization of "L.TC" proved
 my_ordered_sets.adb:91:30: info: initialization of private part of "L" proved
 my_ordered_sets.adb:92:07: medium: assertion might fail
 my_ordered_sets.adb:95:14: warning: subprogram "Test_Set_Rec" has no effect
+my_ordered_sets.adb:98:07: info: initialization of "K.First" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.Free" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.Last" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.Length" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.Nodes" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.Root" proved
+my_ordered_sets.adb:98:07: info: initialization of "K.TC" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.First" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.Free" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.Last" proved
@@ -2998,15 +3005,8 @@ my_ordered_sets.adb:98:07: info: initialization of "L.Length" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.Root" proved
 my_ordered_sets.adb:98:07: info: initialization of "L.TC" proved
+my_ordered_sets.adb:98:07: info: initialization of private part of "K" proved
 my_ordered_sets.adb:98:07: info: initialization of private part of "L" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.First" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.Free" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.Last" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.Length" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.Nodes" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.Root" proved
-my_ordered_sets.adb:98:10: info: initialization of "K.TC" proved
-my_ordered_sets.adb:98:10: info: initialization of private part of "K" proved
 my_ordered_sets.adb:98:19: info: range check proved (Z3: 1 VC)
 my_ordered_sets.adb:102:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:102:32: info: initialization of "L.First" proved
@@ -3363,6 +3363,13 @@ my_ordered_sets.adb:145:30: info: initialization of "K.TC" proved
 my_ordered_sets.adb:145:30: info: initialization of private part of "K" proved
 my_ordered_sets.adb:146:07: medium: assertion might fail
 my_ordered_sets.adb:149:14: warning: subprogram "Test_Set_Rec_2" has no effect
+my_ordered_sets.adb:151:07: info: initialization of "K.First" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.Free" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.Last" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.Length" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.Nodes" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.Root" proved
+my_ordered_sets.adb:151:07: info: initialization of "K.TC" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.First" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.Free" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.Last" proved
@@ -3370,15 +3377,8 @@ my_ordered_sets.adb:151:07: info: initialization of "L.Length" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.Root" proved
 my_ordered_sets.adb:151:07: info: initialization of "L.TC" proved
+my_ordered_sets.adb:151:07: info: initialization of private part of "K" proved
 my_ordered_sets.adb:151:07: info: initialization of private part of "L" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.First" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.Free" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.Last" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.Length" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.Nodes" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.Root" proved
-my_ordered_sets.adb:151:10: info: initialization of "K.TC" proved
-my_ordered_sets.adb:151:10: info: initialization of private part of "K" proved
 my_ordered_sets.adb:151:19: info: range check proved (Z3: 1 VC)
 my_ordered_sets.adb:155:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:155:32: info: initialization of "L.First" proved
@@ -3629,18 +3629,18 @@ my_ordered_sets.ads:22:53: medium: range check might fail (e.g. when Get_F'Resul
 my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
 my_ordered_sets.ads:31:14: warning: subprogram "Test_Ordered_Set" has no effect
 my_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
+my_sets.adb:6:07: info: initialization of "K.Buckets" proved
+my_sets.adb:6:07: info: initialization of "K.Free" proved
+my_sets.adb:6:07: info: initialization of "K.Length" proved
+my_sets.adb:6:07: info: initialization of "K.Nodes" proved
+my_sets.adb:6:07: info: initialization of "K.TC" proved
 my_sets.adb:6:07: info: initialization of "L.Buckets" proved
 my_sets.adb:6:07: info: initialization of "L.Free" proved
 my_sets.adb:6:07: info: initialization of "L.Length" proved
 my_sets.adb:6:07: info: initialization of "L.Nodes" proved
 my_sets.adb:6:07: info: initialization of "L.TC" proved
+my_sets.adb:6:07: info: initialization of private part of "K" proved
 my_sets.adb:6:07: info: initialization of private part of "L" proved
-my_sets.adb:6:10: info: initialization of "K.Buckets" proved
-my_sets.adb:6:10: info: initialization of "K.Free" proved
-my_sets.adb:6:10: info: initialization of "K.Length" proved
-my_sets.adb:6:10: info: initialization of "K.Nodes" proved
-my_sets.adb:6:10: info: initialization of "K.TC" proved
-my_sets.adb:6:10: info: initialization of private part of "K" proved
 my_sets.adb:6:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:6:23: info: range check proved (Z3: 1 VC)
 my_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
@@ -4176,18 +4176,18 @@ my_sets.adb:78:30: info: initialization of "L.TC" proved
 my_sets.adb:78:30: info: initialization of private part of "L" proved
 my_sets.adb:79:07: medium: assertion might fail
 my_sets.adb:82:14: warning: subprogram "Test_Set_Rec" has no effect
+my_sets.adb:85:07: info: initialization of "K.Buckets" proved
+my_sets.adb:85:07: info: initialization of "K.Free" proved
+my_sets.adb:85:07: info: initialization of "K.Length" proved
+my_sets.adb:85:07: info: initialization of "K.Nodes" proved
+my_sets.adb:85:07: info: initialization of "K.TC" proved
 my_sets.adb:85:07: info: initialization of "L.Buckets" proved
 my_sets.adb:85:07: info: initialization of "L.Free" proved
 my_sets.adb:85:07: info: initialization of "L.Length" proved
 my_sets.adb:85:07: info: initialization of "L.Nodes" proved
 my_sets.adb:85:07: info: initialization of "L.TC" proved
+my_sets.adb:85:07: info: initialization of private part of "K" proved
 my_sets.adb:85:07: info: initialization of private part of "L" proved
-my_sets.adb:85:10: info: initialization of "K.Buckets" proved
-my_sets.adb:85:10: info: initialization of "K.Free" proved
-my_sets.adb:85:10: info: initialization of "K.Length" proved
-my_sets.adb:85:10: info: initialization of "K.Nodes" proved
-my_sets.adb:85:10: info: initialization of "K.TC" proved
-my_sets.adb:85:10: info: initialization of private part of "K" proved
 my_sets.adb:85:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:85:23: info: range check proved (Z3: 1 VC)
 my_sets.adb:89:22: info: assertion proved (Z3: 1 VC)
@@ -4465,18 +4465,18 @@ my_sets.adb:133:30: info: initialization of "K.TC" proved
 my_sets.adb:133:30: info: initialization of private part of "K" proved
 my_sets.adb:134:07: medium: assertion might fail
 my_sets.adb:137:14: warning: subprogram "Test_Set_Rec_2" has no effect
+my_sets.adb:139:07: info: initialization of "K.Buckets" proved
+my_sets.adb:139:07: info: initialization of "K.Free" proved
+my_sets.adb:139:07: info: initialization of "K.Length" proved
+my_sets.adb:139:07: info: initialization of "K.Nodes" proved
+my_sets.adb:139:07: info: initialization of "K.TC" proved
 my_sets.adb:139:07: info: initialization of "L.Buckets" proved
 my_sets.adb:139:07: info: initialization of "L.Free" proved
 my_sets.adb:139:07: info: initialization of "L.Length" proved
 my_sets.adb:139:07: info: initialization of "L.Nodes" proved
 my_sets.adb:139:07: info: initialization of "L.TC" proved
+my_sets.adb:139:07: info: initialization of private part of "K" proved
 my_sets.adb:139:07: info: initialization of private part of "L" proved
-my_sets.adb:139:10: info: initialization of "K.Buckets" proved
-my_sets.adb:139:10: info: initialization of "K.Free" proved
-my_sets.adb:139:10: info: initialization of "K.Length" proved
-my_sets.adb:139:10: info: initialization of "K.Nodes" proved
-my_sets.adb:139:10: info: initialization of "K.TC" proved
-my_sets.adb:139:10: info: initialization of private part of "K" proved
 my_sets.adb:139:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:139:23: info: range check proved (Z3: 1 VC)
 my_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
@@ -4672,8 +4672,8 @@ my_sets.adb:181:07: info: precondition proved (Z3: 1 VC)
 my_sets.ads:19:17: info: postcondition proved (Z3: 2 VC)
 my_sets.ads:30:17: info: postcondition proved (Z3: 1 VC)
 my_sets.ads:39:14: warning: subprogram "Test_Set" has no effect
+my_vectors.adb:7:07: info: initialization of private part of "K" proved
 my_vectors.adb:7:07: info: initialization of private part of "L" proved
-my_vectors.adb:7:10: info: initialization of private part of "K" proved
 my_vectors.adb:7:22: info: range check proved (Z3: 1 VC)
 my_vectors.adb:10:22: info: assertion proved (Z3: 1 VC)
 my_vectors.adb:10:32: info: initialization of private part of "L" proved

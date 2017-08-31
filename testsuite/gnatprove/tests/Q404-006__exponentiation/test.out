@@ -14,7 +14,7 @@ exponentiate.adb:18:61: info: initialization of "Iter" proved
 exponentiate.adb:19:30: info: initialization of "Cur_Exp" proved
 exponentiate.adb:19:30: info: loop invariant initialization proved (CVC4: 1 VC)
 exponentiate.adb:19:30: medium: loop invariant might fail after first iteration, cannot prove Cur_Exp = Cur_Exp'Loop_Entry / (Pow2 (Iter)
-exponentiate.adb:19:47: info: initialization of "Cur_Exp" proved
+exponentiate.adb:19:40: info: initialization of "Cur_Exp" proved
 exponentiate.adb:19:59: medium: divide by zero might fail
 exponentiate.adb:19:68: info: initialization of "Iter" proved
 exponentiate.adb:20:10: info: initialization of "Cur_Exp" proved

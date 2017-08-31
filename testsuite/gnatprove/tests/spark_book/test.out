@@ -273,7 +273,7 @@ buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
 buffers.adb:110:13: info: loop invariant initialization proved (CVC4: 2 VC)
 buffers.adb:110:13: info: loop invariant preservation proved (CVC4: 2 VC)
 buffers.adb:110:41: info: range check proved (CVC4: 1 VC)
-buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
+buffers.adb:111:35: info: initialization of "Characters_To_Copy" proved
 buffers.adb:113:25: info: initialization of "Buffer" proved
 buffers.adb:113:49: info: index check proved (CVC4: 2 VC)
 buffers.adb:113:49: info: overflow check proved (CVC4: 1 VC)
@@ -468,7 +468,7 @@ datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 2 VC)
 datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebook.adb:169:35: info: initialization of "Index" proved
 datebook.adb:169:73: info: range check proved (CVC4: 1 VC)
-datebook.adb:170:35: info: initialization of "Index" proved
+datebook.adb:170:30: info: initialization of "Index" proved
 datebook.adb:171:43: info: range check proved (CVC4: 1 VC)
 datebook.adb:173:49: info: index check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: overflow check proved (CVC4: 1 VC)
@@ -520,7 +520,7 @@ datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 2 VC)
 datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 2 VC)
 datebooks.adb:120:27: info: initialization of "I" proved
 datebooks.adb:120:61: info: range check proved (CVC4: 1 VC)
-datebooks.adb:121:27: info: initialization of "I" proved
+datebooks.adb:121:26: info: initialization of "I" proved
 datebooks.adb:122:41: info: range check proved (CVC4: 1 VC)
 datebooks.adb:124:49: info: index check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: overflow check proved (CVC4: 1 VC)

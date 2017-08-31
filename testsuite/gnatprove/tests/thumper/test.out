@@ -371,7 +371,7 @@ messages.adb:18:29: info: initialization of "High_Level.Data" proved
 messages.adb:21:13: info: initialization of "High_Level.Size" proved
 messages.adb:21:13: info: loop invariant initialization proved (CVC4: 3 VC)
 messages.adb:21:13: info: loop invariant preservation proved (CVC4: 3 VC)
-messages.adb:21:46: info: initialization of "High_Level.Size" proved
+messages.adb:21:31: info: initialization of "High_Level.Size" proved
 messages.adb:25:26: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Data" proved
 messages.adb:27:14: info: initialization of "High_Level.Size" proved
@@ -379,7 +379,7 @@ messages.adb:35:28: info: initialization of "Low_Level.Data" proved
 messages.adb:38:13: info: initialization of "Low_Level.Size" proved
 messages.adb:38:13: info: loop invariant initialization proved (CVC4: 3 VC)
 messages.adb:38:13: info: loop invariant preservation proved (CVC4: 3 VC)
-messages.adb:38:44: info: initialization of "Low_Level.Size" proved
+messages.adb:38:30: info: initialization of "Low_Level.Size" proved
 messages.adb:42:26: info: initialization of "Low_Level.Data" proved
 messages.adb:44:14: info: initialization of "Low_Level.Data" proved
 messages.adb:44:14: info: initialization of "Low_Level.Size" proved
