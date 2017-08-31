@@ -481,8 +481,8 @@ package SPARK_Util is
    --
    --  Note: calls to protected functions in preconditions and guards of the
    --  Contract_Cases are external, but this routine treats them as internal.
-   --  However, this only matters for marking where such a calls are rejected
-   --  anyway; for flow and proof this routine gives correct results.
+   --  However, the front end rejects these two cases. For the SPARK back end,
+   --  this routine gives correct results.
 
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
