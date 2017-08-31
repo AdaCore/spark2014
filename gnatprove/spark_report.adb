@@ -43,7 +43,7 @@ with Assumptions;                         use Assumptions;
 with Assumptions.Search;                  use Assumptions.Search;
 with Assumption_Types;                    use Assumption_Types;
 with Call;                                use Call;
-with Configuration;                       use Configuration;
+with Configuration;
 with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;                         use GNAT.OS_Lib;

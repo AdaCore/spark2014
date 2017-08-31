@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters;             use Ada.Characters;
-with Ada.Characters.Handling;    use Ada.Characters.Handling;
+with Ada.Characters;
+with Ada.Characters.Handling;
 with Ada.Command_Line;           use Ada.Command_Line;
 with Ada.Containers.Hashed_Sets;
 with Ada.Directories;            use Ada.Directories;
