@@ -38,11 +38,12 @@ with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
 with Gnat2Why.Annotate;           use Gnat2Why.Annotate;
+with Gnat2Why_Args;               use Gnat2Why_Args;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
-with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
@@ -2163,13 +2164,21 @@ package body Flow.Analysis is
          if not Is_Final_Use then
             V_Goal    := V_Error;
             V_Allowed := Vertex;
-            N         := First_Variable_Use
-              (N        => Error_Location (FA.PDG, FA.Atr, V_Error),
-               FA       => FA,
-               Scope    => FA.B_Scope,
-               Var      => Var,
-               Precise  => True,
-               Targeted => True);
+            N         := Error_Location (FA.PDG, FA.Atr, V_Error);
+            --  When the message is a failed check we produce a more precise
+            --  location (but this can be very expensive, see the test for
+            --  Q824-007 for a good example). So, if the message is an info
+            --  message AND we use --report=fail (the default), we don't do
+            --  this refinement.
+            if not (Kind = Init and Gnat2Why_Args.Report_Mode = GPR_Fail) then
+               N := First_Variable_Use
+                 (N        => N,
+                  FA       => FA,
+                  Scope    => FA.B_Scope,
+                  Var      => Var,
+                  Precise  => True,
+                  Targeted => True);
+            end if;
          elsif Is_Global then
             V_Goal := FA.Helper_End_Vertex;
             N      := Find_Global (FA.Analyzed_Entity, Var);
