@@ -16,7 +16,7 @@ pragma SPARK_Mode(Off);
 with Interfaces.C;
 
 package body Cryptographic_Services is
-   use type Hermes.Octet;
+
 
    type SHA_LONG is new Interfaces.C.unsigned;
    type SHA256_CTX_Array is array(SHA_LONG range <>) of Natural;

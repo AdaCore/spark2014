@@ -19,7 +19,7 @@ package body PolyORB_HI_Generated.Activity is
   function RMAAadl_Task1_Job return PolyORB_HI.Errors.Error_Kind is
     Error_Ü : constant PolyORB_HI.Errors.Error_Kind :=
      PolyORB_HI.Errors.Error_None;
-    use type PolyORB_HI.Errors.Error_Kind;
+
   begin
     --  Call implementation
     PolyORB_HI_Generated.Subprograms.RMAAadl_Hello_Spg_1;
@@ -36,7 +36,7 @@ package body PolyORB_HI_Generated.Activity is
   function RMAAadl_Task2_Job return PolyORB_HI.Errors.Error_Kind is
     Error_Ü : constant PolyORB_HI.Errors.Error_Kind :=
      PolyORB_HI.Errors.Error_None;
-    use type PolyORB_HI.Errors.Error_Kind;
+
   begin
     --  Call implementation
     PolyORB_HI_Generated.Subprograms.RMAAadl_Hello_Spg_2;
