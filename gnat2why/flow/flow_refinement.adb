@@ -508,20 +508,17 @@ package body Flow_Refinement is
                   Comes_From_Body := True;
                end if;
 
-                --  In case of an expression function we want to get the same
-                --  Flow_Scope we would get if it was a function with a body.
-                --  For this we pretend that expression functions declared in
-                --  package spec are in package body.
-               if Was_Expression_Function (Prev_Context) then
-                  if Present (Context) then
-                     if Nkind (Context) in N_Package_Specification
-                                         | N_Protected_Definition
-                                         | N_Task_Definition
-                     then
-                        return (Ent  => Generic_Parent_Or_Parent (Context),
-                                Part => Body_Part);
-                     end if;
-                  end if;
+               --  In case of an expression function we want to get the same
+               --  Flow_Scope we would get if it was a function with a body.
+               --  For this we pretend that expression functions declared in
+               --  package spec are in package body.
+               if Was_Expression_Function (Prev_Context)
+                 and then Nkind (Context) in N_Package_Specification
+                                           | N_Protected_Definition
+                                           | N_Task_Definition
+               then
+                  return (Ent  => Generic_Parent_Or_Parent (Context),
+                          Part => Body_Part);
                end if;
 
             when others =>
