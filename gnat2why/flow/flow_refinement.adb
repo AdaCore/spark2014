@@ -325,7 +325,6 @@ package body Flow_Refinement is
    is
       Context         : Node_Id := N;
       Prev_Context    : Node_Id := Empty;
-      Comes_From_Body : Boolean := False;
 
       function Generic_Parent_Or_Parent (Context : Node_Id) return Node_Id;
       --  Returns the parent node for subprograms and packages. For generics
@@ -462,9 +461,7 @@ package body Flow_Refinement is
                   if Present (Prev_Context) then
                      pragma Assert (Context = Parent (Prev_Context));
 
-                     if Comes_From_Body then
-                        Part := Body_Part;
-                     elsif Nkind (Context) = N_Task_Definition then
+                     if Nkind (Context) = N_Task_Definition then
                         Part := Visible_Part;
                      else
                         if Is_List_Member (Prev_Context)
@@ -512,17 +509,49 @@ package body Flow_Refinement is
                end if;
 
             when N_Subprogram_Body =>
-               Prev_Context := Context;
-               Context      := Generic_Parent_Or_Parent (Context);
+               --  For bodies that come from instances of generic subprograms
+               --  we divert the traversal to where the generic subprogram body
+               --  is defined.
 
-               --  In case we are in the body of a generic subprogram, we
-               --  remember this to get the correct scope for an instance of
-               --  it.
-               if Nkind (Context) in N_Entity
-                 and then Is_Generic_Subprogram (Context)
-               then
-                  Comes_From_Body := True;
+               if Is_Generic_Instance (Unique_Defining_Entity (Context)) then
+                  declare
+                     Instance : constant Entity_Id :=
+                       Corresponding_Spec (Context);
+
+                     pragma Assert (Is_Subprogram (Instance));
+
+                     Generic_Spec : constant Entity_Id :=
+                       Generic_Parent (Subprogram_Specification (Instance));
+
+                     pragma Assert (Is_Generic_Subprogram (Generic_Spec));
+
+                     Generic_Decl : constant Node_Id :=
+                       Parent (Subprogram_Specification (Generic_Spec));
+
+                     pragma Assert (Nkind (Generic_Decl) =
+                                      N_Generic_Subprogram_Declaration);
+
+                     Generic_Body : constant Entity_Id :=
+                       Corresponding_Body (Generic_Decl);
+
+                     pragma Assert (Ekind (Generic_Body) = E_Subprogram_Body);
+
+                  begin
+                     Prev_Context := Subprogram_Body (Generic_Body);
+                     Context      := Parent (Prev_Context);
+                  end;
+
+               --  For bodies of ordinary subprograms we simply up-traverse
+
+               else
+                  Prev_Context := Context;
+                  Context      := Parent (Context);
                end if;
+
+               --  In both cases the previous context should point to the
+               --  subprogram body, either generic or ordinary.
+
+               pragma Assert (Nkind (Prev_Context) = N_Subprogram_Body);
 
                --  In case of an expression function we want to get the same
                --  Flow_Scope we would get if it was a function with a body.
