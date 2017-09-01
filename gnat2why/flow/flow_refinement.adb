@@ -502,8 +502,7 @@ package body Flow_Refinement is
                --  remember this to get the correct scope for an instance of
                --  it.
                if Nkind (Context) in N_Entity
-                 and then Ekind (Context) in E_Generic_Function
-                                           | E_Generic_Procedure
+                 and then Is_Generic_Subprogram (Context)
                then
                   Comes_From_Body := True;
                end if;
