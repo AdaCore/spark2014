@@ -170,3 +170,4 @@ clean:
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
 	$(MAKE) -C alt-ergo clean
+	$(MAKE) -C include clean

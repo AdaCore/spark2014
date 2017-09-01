@@ -13,6 +13,6 @@ ALL_COQ=$(sort $(patsubst %.ctx,%.v,$(ALL_CTX)))
 cpp -w -I proof/Coq/common | sed -e 's/^#.*$$//g' > $@
 
 clean:
-	rm proof/Coq/*/*.v
+	find proof -name "*.v" -delete
 
 generate: $(ALL_COQ)
