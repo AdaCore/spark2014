@@ -477,7 +477,7 @@ package body Flow_Refinement is
                pragma Assert
                  (Nkind (Parent (Context)) = N_Package_Declaration);
 
-               return (Ent  => Unique_Defining_Entity (Parent (Context)),
+               return (Ent  => Defining_Entity (Parent (Context)),
                        Part => Visible_Part);
 
             --  Front end rewrites aspects into pragmas with empty parents. In
