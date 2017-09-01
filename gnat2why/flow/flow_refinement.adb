@@ -376,7 +376,8 @@ package body Flow_Refinement is
             when N_Protected_Body
                | N_Task_Body
             =>
-               return Unique_Defining_Entity (Context);
+               --  These have nothing to do with generics
+               raise Program_Error;
 
             when N_Protected_Definition
                | N_Task_Definition
@@ -427,11 +428,14 @@ package body Flow_Refinement is
             =>
                raise Program_Error;
 
-            when N_Package_Body
-               | N_Protected_Body
+            when N_Package_Body =>
+               return (Ent  => Generic_Parent_Or_Parent (Context),
+                       Part => Body_Part);
+
+            when N_Protected_Body
                | N_Task_Body
             =>
-               return (Ent  => Generic_Parent_Or_Parent (Context),
+               return (Ent  => Unique_Defining_Entity (Context),
                        Part => Body_Part);
 
             when N_Package_Specification
