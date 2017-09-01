@@ -1493,25 +1493,7 @@ package body Flow_Refinement is
                                              Typ        : Type_Id)
                                              return Boolean
    is
-   begin
-      if Is_Globally_Visible (Subprogram) then
-         --  If the subprogram is visible, then it could be boundary subprogram
-         declare
-            S : constant Flow_Scope := Get_Flow_Scope (Subprogram);
-         begin
-            --  If it is visible, it is a boundary subprogram if it can see the
-            --  private part of the invariant bearing type.
-            --
-            --  It may be tempting here to check if the subprogram has a
-            --  parameter or global of the invariant bearing type, but remember
-            --  that it can still allocate object that with this invariant and
-            --  can break their invariant. See SRM 7.3.2(1).
-            return Is_Visible (Typ, S)
-              or else Is_Visible (Typ, Private_Scope (S));
-         end;
-      else
-         return False;
-      end if;
-   end Is_Boundary_Subprogram_For_Type;
+     (Scope_Within_Or_Same (Scope (Subprogram), Scope (Typ))
+      and then Is_Globally_Visible (Subprogram));
 
 end Flow_Refinement;

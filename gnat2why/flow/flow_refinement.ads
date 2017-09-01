@@ -320,5 +320,11 @@ package Flow_Refinement is
                                              Typ        : Type_Id)
                                              return Boolean
    with Pre => Has_Invariants_In_SPARK (Typ);
+   --  Returns True iff Subprogram is a boundary subprogram for Typ, i.e. if it
+   --  is declared inside the immediate scope of Typ, and it is visible outside
+   --  the immediate scope of Typ.
+   --  Because we currently do not support invariants on types declared in a
+   --  nested package it is enough to use Is_Globally_Visible to determine if
+   --  Subprogram is a boundary subprogram for type Typ.
 
 end Flow_Refinement;

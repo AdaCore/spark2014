@@ -4,7 +4,6 @@ types.adb:21:11: info: initialization of "TO2" proved
 types.ads:2:09: info: invariant check proved (CVC4: 1 VC)
 types.ads:5:13: warning: subprogram "Func" might not terminate
 types.ads:9:09: info: default initial condition proved (CVC4: 3 VC)
-types.ads:12:09: high: cannot call boundary subprogram "R" for type "T1" in its own invariant (SPARK RM 7.3.2(4))
 types.ads:12:09: medium: invariant check might fail on default value
 types.ads:13:09: warning: subprogram "T2predicate" might not terminate
 types.ads:19:04: info: initialization of "TO2" proved

@@ -23,15 +23,11 @@ test_06.ads:9:09: medium: invariant check might fail on default value
 test_06.ads:13:27: medium: invariant check might fail
 
 === test_07.ads ===
-test_07.ads:9:09: high: cannot call boundary subprogram "Exclusive_Or" for type "T" in its own invariant (SPARK RM 7.3.2(4))
 test_07.ads:9:09: medium: invariant check might fail on default value
 
 === test_08.adb ===
-test_08.ads:11:09: high: cannot call boundary subprogram "Is_Positive_Good" for type "T1" in its own invariant (SPARK RM 7.3.2(4))
 test_08.ads:11:09: medium: invariant check might fail on default value
-test_08.ads:17:09: high: cannot call boundary subprogram "Is_Positive_Bad" for type "T2" in its own invariant (SPARK RM 7.3.2(4))
 test_08.ads:17:09: medium: invariant check might fail on default value
-test_08.ads:23:09: high: cannot call boundary subprogram "Is_Positive_Ugly" for type "T3" in its own invariant (SPARK RM 7.3.2(4))
 test_08.ads:23:09: medium: invariant check might fail on default value
 
 === test_08_util.adb ===
