@@ -516,9 +516,7 @@ package body Flow_Refinement is
                --  For this we pretend that expression functions declared in
                --  package spec are in package body.
                if Was_Expression_Function (Prev_Context)
-                 and then Nkind (Context) in N_Package_Specification
-                                           | N_Protected_Definition
-                                           | N_Task_Definition
+                 and then Nkind (Context) = N_Package_Specification
                then
                   return (Ent  => Generic_Parent_Or_Parent (Context),
                           Part => Body_Part);
