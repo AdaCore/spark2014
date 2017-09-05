@@ -49,10 +49,10 @@ with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;                         use GNAT.OS_Lib;
 with GNATCOLL.JSON;                       use GNATCOLL.JSON;
 with GNATCOLL.Utils;                      use GNATCOLL.Utils;
+with Platform;                            use Platform;
 with Print_Table;                         use Print_Table;
 with Report_Database;                     use Report_Database;
 with SPARK2014VSN;                        use SPARK2014VSN;
-with String_Utils;                        use String_Utils;
 with System;
 with System.Storage_Elements;
 with VC_Kinds;                            use VC_Kinds;
@@ -811,15 +811,11 @@ procedure SPARK_Report is
    procedure Show_Header (Handle : Ada.Text_IO.File_Type) is
       use Ada, Ada.Text_IO;
 
-      type Host_Operating_System_Flavor is (Windows, Solaris, Linux, Darwin);
-
       function Get_Env_Variable (Name : String) return String;
       --  Return the value of environment variable Name
 
-      function Get_OS_Flavor return Host_Operating_System_Flavor;
-      --  Return the flavor of host operating system, based on the result of
-      --  calling "gcc -dumpmachine" with version of GCC distributed as part
-      --  of GNSA in SPARK product.
+      function OS_String return String;
+      --  Return a nice string for the OS GNATprove was compiled for
 
       ----------------------
       -- Get_Env_Variable --
@@ -834,33 +830,15 @@ procedure SPARK_Report is
          return Str;
       end Get_Env_Variable;
 
-      -------------------
-      -- Get_OS_Flavor --
-      -------------------
+      ---------------
+      -- OS_String --
+      ---------------
 
-      function Get_OS_Flavor return Host_Operating_System_Flavor is
-         Args   : String_Lists.List;
-         Status : Integer;
-      begin
-         Args.Append ("-dumpmachine");
-
-         declare
-            GCC_Dumpmachine : constant String :=
-              Call_With_Status (Command   => "gcc",
-                                Arguments => Args,
-                                Status    => Status);
-         begin
-            if Contains (GCC_Dumpmachine, "linux") then
-               return Linux;
-            elsif Contains (GCC_Dumpmachine, "solaris") then
-               return Solaris;
-            elsif Contains (GCC_Dumpmachine, "darwin") then
-               return Darwin;
-            else
-               return Windows;
-            end if;
-         end;
-      end Get_OS_Flavor;
+      function OS_String return String is
+         (case Get_OS_Flavor is
+             when X86_Windows => "Windows",
+             when X86_Linux | X86_64_Linux => "Linux",
+             when X86_64_Darwin => "Darwin");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
@@ -878,9 +856,7 @@ procedure SPARK_Report is
          "gnatprove version  : " & SPARK2014_Version_String);
       Put_Line
         (Handle,
-         "host               : " &
-           Capitalize
-           (Host_Operating_System_Flavor'Image (Get_OS_Flavor)) &
+         "host               : " & OS_String &
            Integer'Image (Pointer_Size * 8) & " bits");
 
       declare
