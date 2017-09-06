@@ -50,8 +50,11 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 The_State => Invalid_Entity_Name,
                                 others    => <>),
 
-      EK_Remote_States      => (Kind          => EK_Remote_States,
+      EK_Remote_States      => (Kind              => EK_Remote_States,
                                 The_Remote_States => Name_Sets.Empty_Set),
+
+      EK_Predef_Init_Vars   => (Kind                 => EK_Predef_Init_Vars,
+                                The_Predef_Init_Vars => Name_Sets.Empty_Set),
 
       EK_Volatiles          => (Kind   => EK_Volatiles,
                                 others => <>),
@@ -255,6 +258,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
 
          when EK_Remote_States =>
             Serialize (A, V.The_Remote_States, "RS");
+
+         when EK_Predef_Init_Vars =>
+            Serialize (A, V.The_Predef_Init_Vars, "PIV");
 
          when EK_Volatiles =>
             Serialize (A, V.The_Async_Readers,    "AR");

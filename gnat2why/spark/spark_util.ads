@@ -304,6 +304,15 @@ package SPARK_Util is
    --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    protected object.
 
+   function Is_Predefined_Initialized_Variable (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True if E is predefined and initialized variable (see below)
+   --
+   --  Note: this function, as it is implemented now, may fail to recognize
+   --  some variables as initialized, but this is acceptable (i.e. this will
+   --  only cause false alarms and not missing checks). If this happens, then
+   --  the implementation should be improved to match the spec.
+
    function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a

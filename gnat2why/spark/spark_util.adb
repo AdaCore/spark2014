@@ -1485,6 +1485,37 @@ package body SPARK_Util is
      (Nkind (N) = N_Function_Call
         and then Is_Predicate_Function (Entity (Name (N))));
 
+   ----------------------------------------
+   -- Is_Predefined_Initialized_Variable --
+   ----------------------------------------
+
+   function Is_Predefined_Initialized_Variable (E : Entity_Id) return Boolean
+   is
+   begin
+      if Ekind (E) = E_Variable
+        and then In_Predefined_Unit (E)
+      then
+         --  In general E might not be in SPARK (e.g. if it came from the front
+         --  end globals), so we prefer not to risk a precise check and crash
+         --  by an accident. Instead, we do a simple and robust check that is
+         --  known to be potentially incomplete (e.g. it will not recognize
+         --  variables with default initialization).
+         declare
+            Full_Type : constant Entity_Id :=
+              (if Is_Private_Type (Etype (E))
+               then Full_View (Etype (E))
+               else Etype (E));
+
+         begin
+            return (Is_Scalar_Type (Full_Type)
+                    or else Is_Access_Type (Full_Type))
+              and then Present (Expression (Parent (E)));
+         end;
+      else
+         return False;
+      end if;
+   end Is_Predefined_Initialized_Variable;
+
    -------------------------------------
    -- Is_Protected_Component_Or_Discr --
    -------------------------------------

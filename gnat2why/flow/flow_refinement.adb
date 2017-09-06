@@ -1367,6 +1367,11 @@ package body Flow_Refinement is
                   --  Variables that are Part_Of a concurrent type are always
                   --  fully default initialized.
                   return True;
+               elsif Is_Predefined_Initialized_Variable (Ent) then
+                  --  We don't have many predefined units with an Initializes
+                  --  contract, but we still want to know if their variables
+                  --  are initialized.
+                  return True;
                end if;
 
             when others           =>

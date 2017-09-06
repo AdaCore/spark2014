@@ -1293,6 +1293,10 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Remote_States =>
                   State_Abstractions.Union (V.The_Remote_States);
 
+               when EK_Predef_Init_Vars =>
+                  Initialized_Vars_And_States.Union
+                    (V.The_Predef_Init_Vars);
+
                when EK_Volatiles =>
                   Async_Writers_Vars.Union (V.The_Async_Writers);
                   Volatile_Vars.Union (V.The_Async_Writers);

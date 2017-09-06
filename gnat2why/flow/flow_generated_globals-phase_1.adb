@@ -98,6 +98,12 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
+   Predefined_Initialized_Variables : Name_Sets.Set;
+   --  Variables in predefined units that are known to be initialized. We
+   --  attach them to units where they are used as inputs or proof_ins, because
+   --  in phase 2 we might only know them by Entity_Name (which is not enough
+   --  to decide their initialization status).
+
    type Call_Info is record
       Caller  : Entity_Name;
       Callees : Name_Lists.List;
@@ -200,6 +206,39 @@ package body Flow_Generated_Globals.Phase_1 is
       --  processing local variables for a run-time check that they do not
       --  represent remote states.
 
+      procedure Process_Predefined_Variables (Names : Name_Sets.Set);
+      --  Similarly to registering so called "remote states", i.e. states that
+      --  are pulled from other compilation units and might only be known by
+      --  Entity_Name in phase 2, we need to register variables in predefined
+      --  units to know their initialization status.
+      --
+      --  ??? this routine repeats conversion from Entity_Name to Entity_Id,
+      --  which is already done in Process_Volatiles_And_States; however, those
+      --  conversion will be eliminated by rewriting front-end globals to
+      --  work on Entity_Id, not by refactoring those two routines.
+
+      ----------------------------------
+      -- Process_Predefined_Variables --
+      ----------------------------------
+
+      procedure Process_Predefined_Variables (Names : Name_Sets.Set) is
+      begin
+         for Name of Names loop
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+            begin
+               --  Convert name back to Entity_Id; this should work for
+               --  everything except the special __HEAP name that represent a
+               --  non-existing heap entity.
+               if Present (E)
+                 and then Is_Predefined_Initialized_Variable (E)
+               then
+                  Predefined_Initialized_Variables.Include (Name);
+               end if;
+            end;
+         end loop;
+      end Process_Predefined_Variables;
+
       ----------------------------------
       -- Process_Volatiles_And_States --
       ----------------------------------
@@ -247,6 +286,11 @@ package body Flow_Generated_Globals.Phase_1 is
                                        Local_Vars => True);
          Process_Volatiles_And_States (GI.Local_Ghost_Variables,
                                        Local_Vars => True);
+
+         --  In phase 2 we only need to know the initialization status of
+         --  proof_ins and inputs; outputs are irrelevant.
+         Process_Predefined_Variables (GI.Globals.Proper.Proof_Ins);
+         Process_Predefined_Variables (GI.Globals.Proper.Inputs);
       end if;
    end GG_Register_Global_Info;
 
@@ -392,6 +436,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Write remote states
       V := (Kind              => EK_Remote_States,
             The_Remote_States => Remote_States);
+      Write_To_ALI (V);
+
+      --  Write predefined initialized variables
+      V := (Kind                 => EK_Predef_Init_Vars,
+            The_Predef_Init_Vars => Predefined_Initialized_Variables);
       Write_To_ALI (V);
 
       --  Write entity-specific info
