@@ -1225,9 +1225,12 @@ package body Flow_Refinement is
             declare
                F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
             begin
-               if F.Kind = Direct_Mapping
-                 and then Get_Direct_Mapping_Id (F) = Target_Ent
-               then
+               --  The package whose state variable E is known by an Entity_Id
+               --  must itself be known by an Entity_Id, and so the left-hand
+               --  sides of its Initializes aspect.
+               pragma Assert (F.Kind = Direct_Mapping);
+
+               if Get_Direct_Mapping_Id (F) = Target_Ent then
                   return Target_Ent;
                end if;
             end;
