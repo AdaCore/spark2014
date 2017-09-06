@@ -304,11 +304,6 @@ package SPARK_Util is
    --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    protected object.
 
-   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Loop_Parameter | E_Variable;
-   --  @param E loop parameter
-   --  @return True iff E has been introduced by a quantified expression
-
    function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a
@@ -321,6 +316,11 @@ package SPARK_Util is
    --  @param E an entity
    --  @return True iff E is logically part of a protected object, either being
    --    a discriminant of field of the object, or being a "part_of".
+
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) in E_Loop_Parameter | E_Variable;
+   --  @param E loop parameter
+   --  @return True iff E has been introduced by a quantified expression
 
    function Is_Synchronized (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Abstract_State |
