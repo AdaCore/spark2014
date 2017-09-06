@@ -1,12 +1,9 @@
 package body Copy_Values
   with SPARK_Mode
 is
-   procedure Adjust is
-      Cur_Speed : constant F := Speed;
+   procedure Adjust (X: F) is
    begin
-      if abs (Cur_Speed) > 100.0 then
-         Motor := Motor - 1.0;
-      end if;
+      pragma Assert (X < 5.0);
    end Adjust;
 
 end Copy_Values;
