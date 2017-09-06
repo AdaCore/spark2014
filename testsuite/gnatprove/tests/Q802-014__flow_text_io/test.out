@@ -1,7 +1,8 @@
 a-tiinio.ads:48:04: info: initialization of "Default_Width" proved, in instantiation at main.adb:5
 a-tiinio.ads:49:04: info: initialization of "Default_Base" proved, in instantiation at main.adb:5
-main.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Main"
 main.adb:11:04: info: initialization of "Default_Base" proved
 main.adb:11:04: info: initialization of "Default_Width" proved
 main.adb:11:04: warning: assuming "Put" has no effect on global items
 main.adb:11:04: warning: no Global contract available for "Put"
+main.ads:1:11: medium: "Current_Out" might not be initialized after elaboration of main program "Main"
+other_main.adb:3:11: medium: "ada.text_io.current_out" might not be initialized after elaboration of main program "Other_Main"
