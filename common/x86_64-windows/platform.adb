@@ -4,7 +4,7 @@
 --                                                                          --
 --                              P L A T F O R M                             --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010-2017, AdaCore                   --
 --                                                                          --
@@ -23,11 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Platform is
+package body Platform is
 
-   type Host_Operating_System_Flavor is
-      (X86_Windows, X86_64_Windows, X86_Linux, X86_64_Linux, X86_64_Darwin);
+   -------------------
+   -- Get_OS_Flavor --
+   -------------------
 
-   function Get_OS_Flavor return Host_Operating_System_Flavor;
+   function Get_OS_Flavor return Host_Operating_System_Flavor is
+   begin
+      return X86_64_Windows;
+   end Get_OS_Flavor;
 
 end Platform;
