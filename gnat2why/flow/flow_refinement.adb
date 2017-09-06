@@ -1395,32 +1395,7 @@ package body Flow_Refinement is
                   --  Variables that are Part_Of a concurrent type are always
                   --  fully default initialized.
                   return True;
-               elsif not Is_Package_State (Ent) then
-                  return False;
                end if;
-
-            when E_Protected_Type =>
-               --  Protected types are always fully default initialized in
-               --  SPARK.
-               return True;
-
-            when E_Task_Type      =>
-               --  Task types act as records whose flattened view includes
-               --  discriminants and Part_Of variables; both are always
-               --  initialized.
-               return True;
-
-            when Formal_Kind      =>
-               --  This is for the case of a package nested in a subprogram
-               --  that uses the subprogram's parameter.
-               --  In case these parameters have not been initialized yet, an
-               --  error would be raised somewhere else.
-               return True;
-
-            when E_Loop_Parameter =>
-               --  In case we use the loop parameter in a package nested within
-               --  a declare block.
-               return True;
 
             when others           =>
                raise Program_Error;
