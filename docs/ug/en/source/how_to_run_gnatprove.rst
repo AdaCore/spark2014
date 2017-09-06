@@ -262,13 +262,26 @@ When an error is detected (which does not include issuing check messages),
 |GNATprove| returns with a non-zero exit status. Otherwise, |GNATprove| returns
 with an exit status of zero, even when warnings and check messages are issued.
 
-Specifying the Run-Time Library and Target
-------------------------------------------
+Using the GNAT Target Runtime Directory
+---------------------------------------
 
-The handling of runtimes of SPARK is now unified with that of the GNAT
-compiler. See "GNAT User's Guide Supplement for Cross Platforms",
-Section 3. If you specify a target, note that SPARK requires
-additional configuration, see the next section.
+If you are using GNAT as your target compiler and explicitly specify
+a runtime and target to use in your project, for instance:
+
+.. code-block:: gpr
+
+   for Target use "arm-eabi";
+   for Runtime ("Ada") use "ravenscar-sfp-stm32f4";
+
+|GNATprove| will take such setting into account and will use the GNAT
+runtime directory, as long as your target compiler is found in your PATH
+environment variable. Note that you will need to use a matching version
+of GNAT and |SPARK| (e.g. GNAT 18.2 and SPARK 18.2).
+
+The handling of runtimes of |GNATprove| is in fact unified with that of the
+GNAT compiler. For details, see "GNAT User's Guide Supplement for Cross
+Platforms", Section 3. If you specify a target, note that |GNATprove| requires
+additional configuration, see the section :ref:`implementation_defined`.
 
 .. _implementation_defined:
 
