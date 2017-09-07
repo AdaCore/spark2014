@@ -231,9 +231,9 @@ state that ``Num_Accounts`` is only accessed by the task object
 .. code-block:: ada
 
    package Account is
-      Num_Accounts : Natural := 0 with Part_Of => Account_Management;
-
       task Account_Management;
+
+      Num_Accounts : Natural := 0 with Part_Of => Account_Management;
    end Account;
 
 Task Contracts
