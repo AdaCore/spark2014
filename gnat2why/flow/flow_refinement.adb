@@ -363,20 +363,7 @@ package body Flow_Refinement is
                raise Program_Error;
 
             when others =>
-               if Nkind (Parent_Context) in N_Function_Specification
-                                          | N_Procedure_Specification
-               then
-                  declare
-                     Gen_Par : constant Entity_Id :=
-                       Generic_Parent (Parent_Context);
-
-                  begin
-                     if Present (Gen_Par) then
-                        return Gen_Par;
-                     end if;
-                  end;
-               end if;
-               return Parent_Context;
+               raise Program_Error;
          end case;
       end Generic_Parent_Or_Parent;
 
@@ -562,9 +549,44 @@ package body Flow_Refinement is
 
                pragma Assert (Nkind (Prev_Context) = N_Subprogram_Body);
 
+            when N_Subprogram_Declaration =>
+               --  For declarations that come from instances of generic
+               --  subprograms we divert the traversal to where the generic
+               --  subprogram is declared (similar to what we do for their
+               --  bodies).
+               if Is_Generic_Instance (Defining_Entity (Context)) then
+                  declare
+                     Instance : constant Entity_Id :=
+                       Defining_Entity (Context);
+
+                     pragma Assert (Is_Subprogram (Instance));
+
+                     Generic_Spec : constant Entity_Id :=
+                       Generic_Parent (Subprogram_Specification (Instance));
+
+                     pragma Assert (Is_Generic_Subprogram (Generic_Spec));
+
+                     Generic_Decl : constant Node_Id :=
+                       Parent (Subprogram_Specification (Generic_Spec));
+
+                     pragma Assert (Nkind (Generic_Decl) =
+                                      N_Generic_Subprogram_Declaration);
+
+                  begin
+                     Prev_Context := Generic_Decl;
+                     Context      := Parent (Prev_Context);
+                  end;
+
+               --  For ordinary subprograms we simply up-traverse
+
+               else
+                  Prev_Context := Context;
+                  Context      := Parent (Context);
+               end if;
+
             when others =>
                Prev_Context := Context;
-               Context      := Generic_Parent_Or_Parent (Context);
+               Context      := Parent (Context);
          end case;
 
          exit when No (Context);
