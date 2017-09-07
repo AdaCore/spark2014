@@ -341,16 +341,7 @@ package body Flow_Refinement is
       begin
          case Nkind (Context) is
             when N_Package_Body =>
-               declare
-                  Spec : constant Entity_Id := Corresponding_Spec (Context);
-                  Par  : constant Entity_Id := Parent (Spec);
-
-               begin
-                  return (if Is_Generic_Instance (Spec)
-                          and then Nkind (Par) = N_Package_Specification
-                          then Generic_Parent (Par)
-                          else Unique_Defining_Entity (Context));
-               end;
+               raise Program_Error;
 
             when N_Subprogram_Body =>
                declare
@@ -429,8 +420,30 @@ package body Flow_Refinement is
                raise Program_Error;
 
             when N_Package_Body =>
-               return (Ent  => Generic_Parent_Or_Parent (Context),
-                       Part => Body_Part);
+               --  For bodies of instances of generic packages we want the spec
+               --  of the corresponding generic; for ordinary bodies, we want
+               --  the original spec.
+
+               declare
+                  Context_Spec : constant Entity_Id :=
+                    Unique_Defining_Entity (Context);
+
+                  pragma Assert (Ekind (Context_Spec) = E_Package);
+
+                  Orig_Spec : Entity_Id;
+
+               begin
+                  if Is_Generic_Instance (Context_Spec) then
+                     Orig_Spec := Generic_Parent
+                       (Package_Specification (Context_Spec));
+                     pragma Assert (Ekind (Orig_Spec) = E_Generic_Package);
+                  else
+                     Orig_Spec := Context_Spec;
+                  end if;
+
+                  return (Ent  => Orig_Spec,
+                          Part => Body_Part);
+               end;
 
             when N_Protected_Body
                | N_Task_Body
