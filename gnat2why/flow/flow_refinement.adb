@@ -339,19 +339,10 @@ package body Flow_Refinement is
 
       begin
          case Nkind (Context) is
-            when N_Package_Body =>
+            when N_Package_Body
+               | N_Subprogram_Body
+            =>
                raise Program_Error;
-
-            when N_Subprogram_Body =>
-               declare
-                  Spec : constant Entity_Id := Corresponding_Spec (Context);
-
-               begin
-                  return (if Present (Spec)
-                          and then Is_Generic_Instance (Spec)
-                          then Generic_Parent (Parent (Spec))
-                          else Parent_Context);
-               end;
 
             when N_Package_Specification =>
                declare
@@ -471,12 +462,22 @@ package body Flow_Refinement is
                   pragma Assert (Present (Prev_Context)
                                  and then Context = Parent (Prev_Context));
 
+                  --  For an expression function we want to get the same
+                  --  Flow_Scope we would get if it was a function with a body.
+                  --  For this we pretend that expression functions declared in
+                  --  package spec are in package body.
+
+                  if Nkind (Prev_Context) = N_Subprogram_Body
+                    and then Was_Expression_Function (Prev_Context)
+                  then
+                     Part := Body_Part;
+
                   --  If we came from the package entity ifself, or from its
                   --  contract, then the previous context is not a list member.
                   --  Those cases are handled as the visible part, we only need
                   --  a dedicated check for the private part.
 
-                  if Is_List_Member (Prev_Context)
+                  elsif Is_List_Member (Prev_Context)
                     and then List_Containing (Prev_Context) =
                              Private_Declarations (Context)
                   then
@@ -560,17 +561,6 @@ package body Flow_Refinement is
                --  subprogram body, either generic or ordinary.
 
                pragma Assert (Nkind (Prev_Context) = N_Subprogram_Body);
-
-               --  In case of an expression function we want to get the same
-               --  Flow_Scope we would get if it was a function with a body.
-               --  For this we pretend that expression functions declared in
-               --  package spec are in package body.
-               if Was_Expression_Function (Prev_Context)
-                 and then Nkind (Context) = N_Package_Specification
-               then
-                  return (Ent  => Generic_Parent_Or_Parent (Context),
-                          Part => Body_Part);
-               end if;
 
             when others =>
                Prev_Context := Context;
