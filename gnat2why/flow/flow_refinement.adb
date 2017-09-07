@@ -364,15 +364,12 @@ package body Flow_Refinement is
                end;
 
             when N_Protected_Body
+               | N_Protected_Definition
                | N_Task_Body
+               | N_Task_Definition
             =>
                --  These have nothing to do with generics
                raise Program_Error;
-
-            when N_Protected_Definition
-               | N_Task_Definition
-            =>
-               return Unique_Defining_Entity (Parent_Context);
 
             when others =>
                if Nkind (Parent_Context) in N_Function_Specification
@@ -450,29 +447,40 @@ package body Flow_Refinement is
                return (Ent  => Unique_Defining_Entity (Context),
                        Part => Body_Part);
 
-            when N_Package_Specification
-               | N_Protected_Definition
+            when N_Protected_Definition
                | N_Task_Definition
             =>
+               --  Concurrent types have visible and private parts, but as
+               --  far as state refinement it concerned, this does not matter.
+               --
+               --  ??? shall we eliminate concurrent types from Flow_Scope
+               --  altogether?
+               --
+               --  ??? Defining_Entity doesn't work for concurrent definition;
+               --  we need to call Parent to get to their declarations (there
+               --  is no point in fixing this before the above ??? is decided).
+               return (Ent  => Defining_Entity (Parent (Context)),
+                       Part => Visible_Part);
+
+            when N_Package_Specification =>
                declare
                   Part : Declarative_Part;
 
                begin
-                  if Present (Prev_Context) then
-                     pragma Assert (Context = Parent (Prev_Context));
+                  --  We have to decide if we come from visible or private part
+                  pragma Assert (Present (Prev_Context)
+                                 and then Context = Parent (Prev_Context));
 
-                     if Nkind (Context) = N_Task_Definition then
-                        Part := Visible_Part;
-                     else
-                        if Is_List_Member (Prev_Context)
-                          and then List_Containing (Prev_Context) =
-                            Private_Declarations (Context)
-                        then
-                           Part := Private_Part;
-                        else
-                           Part := Visible_Part;
-                        end if;
-                     end if;
+                  --  If we came from the package entity ifself, or from its
+                  --  contract, then the previous context is not a list member.
+                  --  Those cases are handled as the visible part, we only need
+                  --  a dedicated check for the private part.
+
+                  if Is_List_Member (Prev_Context)
+                    and then List_Containing (Prev_Context) =
+                             Private_Declarations (Context)
+                  then
+                     Part := Private_Part;
                   else
                      Part := Visible_Part;
                   end if;
