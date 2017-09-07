@@ -1,1 +1,1 @@
-ALL XFAIL GG: generic actuals
+ALL XFAIL generated Initializes ignores ineffective reads (PC21-009)

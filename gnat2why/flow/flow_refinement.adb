@@ -1315,12 +1315,14 @@ package body Flow_Refinement is
          end if;
 
          case Ekind (Ent) is
-            when E_Abstract_State
-               | E_Constant
-            =>
+            when E_Abstract_State =>
                null;
 
-            when E_Variable =>
+            when E_Constant       =>
+               --  Constants are always initialized at elaboration
+               return True;
+
+            when E_Variable       =>
                if Is_Concurrent_Type (Etype (Ent)) then
                   --  Instances of a protected type are always fully default
                   --  initialized.

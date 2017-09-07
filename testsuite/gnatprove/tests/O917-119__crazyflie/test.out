@@ -63,6 +63,14 @@ crtp_pack.ads:138:07: info: initialization of "Packet.Size" proved
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
 crtp_pack.ads:160:14: info: initialization of "Is_Connected" proved
 crtp_pack.ads:167:63: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))
+crtp_pack.ads:167:63: high: "Bla.Channel" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Data_1" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Data_2" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Header" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Port" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Raw" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Reserved" is not initialized
+crtp_pack.ads:167:63: high: "Bla.Size" is not initialized
 crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized before start of tasks of type "CRTP_Tx_Task"
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167

@@ -1,3 +1,3 @@
-foo.adb:11:22: high: constant with variable input "I" must be listed in the Global aspect of "Foo" (SPARK RM 6.1.4(13)), in instantiation at foo.adb:14
 foo.adb:14:29: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2))
+foo.adb:14:29: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof

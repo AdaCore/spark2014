@@ -27,15 +27,25 @@ gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Pack_Inner", in 
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:28
 gen_pack_pragmas.ads:25:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:28
 main.adb:16:42: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:16:42: info: initialization of "Local" proved
 main.adb:20:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:20:50: info: initialization of "Local" proved
 main.adb:24:41: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:24:41: info: initialization of "Pack_Local" proved
 main.adb:28:49: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:28:49: info: initialization of "Pack_Local" proved
 main.adb:32:45: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:32:45: info: initialization of "Pack_Local" proved
 main.adb:33:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:33:50: info: initialization of "Local" proved
 main.adb:37:53: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:37:53: info: initialization of "Pack_Local" proved
 main.adb:38:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:38:50: info: initialization of "Local" proved
 main.adb:42:47: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:42:47: info: initialization of "Local" proved
 main.adb:46:55: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:46:55: info: initialization of "Local" proved
 pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved
 pack_gen.ads:26:04: info: initialization of "Pack_Inner" proved
 pack_gen_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved

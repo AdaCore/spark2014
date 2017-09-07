@@ -31,6 +31,7 @@ with Output;                      use Output;
 with Restrict;                    use Restrict;
 with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
+with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -1227,11 +1228,18 @@ package body Flow.Analysis is
 
          begin
             if F.Kind = Direct_Mapping
-              and then Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+              and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+                          or else
+                        (In_Generic_Actual (Get_Direct_Mapping_Id (F)) and then
+                         Scope_Within_Or_Same
+                           (Scope (Get_Direct_Mapping_Id (F)),
+                            FA.Spec_Entity)))
             then
                --  This variable is marked with a pragma Unreferenced, pragma
-               --  Unused or pragma Unmodified so we do not emit the warning
-               --  here.
+               --  Unused or pragma Unmodified so we do not warn here; also, we
+               --  do not warn for ineffective declarations of constants in
+               --  wrapper packages of generic subprograms. ??? maybe we want a
+               --  separate check for them.
                null;
             elsif Atr.Mode = Mode_Proof then
                --  Proof_Ins are never ineffective imports, for now

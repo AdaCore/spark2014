@@ -3457,8 +3457,13 @@ package body Flow.Control_Flow_Graph is
       pragma Assert (if FA.Generating_Globals and then Has_Task (Etype (E))
                      then Is_Library_Level_Entity (E));
 
-      --  Ignore generic actuals and Part_Ofs single concurrent objects
-      if In_Generic_Actual (E)
+      --  Ignore generic actuals of the currently analysed instance (they
+      --  act as globals and only appear in the AST as locals because that is
+      --  how frontend expands them) and Part_Ofs single concurrent objects
+      --  (??? this is wrong, because Part_Ofs single concurrent object might
+      --  appear in the Initializes clause).
+
+      if (In_Generic_Actual (E) and then Scope (E) = FA.Spec_Entity)
         or else Is_Part_Of_Concurrent_Object (E)
       then
          Add_Dummy_Vertex (N, FA, CM);
@@ -5866,48 +5871,7 @@ package body Flow.Control_Flow_Graph is
               (FA.Analyzed_Entity, Parameter_Kind, FA);
 
          when Kind_Package | Kind_Package_Body =>
-            if Is_Generic_Instance (FA.Spec_Entity) then
-               declare
-                  procedure Create_Parameter_Vertices (Formal    : Node_Id;
-                                                       Parameter : Node_Id);
-                  --  Create initial and final vertices for parameters of the
-                  --  generic instance.
-
-                  procedure Create_Vertices is new
-                    Iterate_Generic_Parameters (Create_Parameter_Vertices);
-
-                  -------------------------------
-                  -- Create_Parameter_Vertices --
-                  -------------------------------
-
-                  procedure Create_Parameter_Vertices (Formal    : Node_Id;
-                                                       Parameter : Node_Id)
-                  is
-                     pragma Unreferenced (Formal);
-                     Parent_N : constant Node_Id := Parent (Parameter);
-                  begin
-                     if Nkind (Parent_N) in
-                       N_Object_Declaration | N_Object_Renaming_Declaration
-                     then
-                        Create_Initial_And_Final_Vertices
-                          (Direct_Mapping_Id
-                             (Defining_Identifier (Parent_N)),
-                           (case (Nkind (Parent_N)) is
-                               when N_Object_Declaration =>
-                                  Mode_In,
-                               when N_Object_Renaming_Declaration =>
-                                  Mode_In_Out,
-                               when others =>
-                                  raise Program_Error),
-                           False,
-                           FA);
-                     end if;
-                  end Create_Parameter_Vertices;
-
-               begin
-                  Create_Vertices (FA.Spec_Entity);
-               end;
-            end if;
+            null;
       end case;
 
       --  Collect globals for the analyzed entity and create initial and final
@@ -6064,31 +6028,11 @@ package body Flow.Control_Flow_Graph is
                end loop;
 
                for G of Global_Ins loop
-                  case G.Kind is
-                     when Direct_Mapping =>
-                        --  We have already introduced initial and final
-                        --  vertices for formals of generics so skip them.
-                        --  ??? handling of formals of generics is broken
-                        if not In_Generic_Actual (Get_Direct_Mapping_Id (G))
-                        then
-                           Create_Initial_And_Final_Vertices
-                             (F             => G,
-                              Mode          => Mode_In,
-                              Uninitialized => False,
-                              FA            => FA);
-                        end if;
-
-                     when Magic_String =>
-                        --  ??? this is the same code as above; refactor later
-                        Create_Initial_And_Final_Vertices
-                          (F             => G,
-                           Mode          => Mode_In,
-                           Uninitialized => False,
-                           FA            => FA);
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
+                  Create_Initial_And_Final_Vertices
+                    (F             => G,
+                     Mode          => Mode_In,
+                     Uninitialized => False,
+                     FA            => FA);
                end loop;
             end;
 
