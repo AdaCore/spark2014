@@ -1,9 +1,12 @@
 with Ada.Interrupts.Names; use Ada.Interrupts.Names;
+with System;
 
 package Protected_Objects
   with SPARK_Mode
 is
-   protected P1 is
+   protected P1 with
+     Interrupt_Priority => System.Interrupt_Priority'First
+   is
       procedure Set (V : Natural);
       function Get return Natural;
       entry Reset;
@@ -12,7 +15,9 @@ is
       The_Data : Natural := 0;
    end P1;
 
-   protected type PT is
+   protected type PT with
+     Interrupt_Priority => System.Interrupt_Priority'First
+   is
       procedure Set (V : Natural);
       function Get return Natural;
       entry Reset;
