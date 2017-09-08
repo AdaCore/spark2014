@@ -1,0 +1,2 @@
+foo-pc-c.adb:5:04: info: initialization of "B" constituent of "State" proved
+foo-pc-c.ads:8:22: info: initialization of "Y" proved
