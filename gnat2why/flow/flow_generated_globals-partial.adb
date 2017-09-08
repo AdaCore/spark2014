@@ -496,6 +496,17 @@ package body Flow_Generated_Globals.Partial is
          Contr.Direct_Calls := FA.Direct_Calls;
       end if;
 
+      --  Register abstract state components; if any then there should be
+      --  a Refined_State aspect.
+      --  ??? isn't this just checking if there are any abstract states?
+      if Ekind (E) = E_Package
+        and then Entity_Body_In_SPARK (E)
+        and then Present (Get_Pragma (FA.Analyzed_Entity,
+                          Pragma_Refined_State))
+      then
+         GG_Register_State_Refinement (FA.Spec_Entity);
+      end if;
+
       --  We register the following:
       --  * subprograms which contain at least one loop that may not terminate
       --  * procedures annotated with No_Return
@@ -1863,9 +1874,6 @@ package body Flow_Generated_Globals.Partial is
                Contr := (if Entity_In_SPARK (E)
                          then Preanalyze_Body (E)
                          else Preanalyze_Spec (E));
-
-               --  Register abstract states and their constituents
-               GG_Register_State_Refinement (E);
 
             when E_Protected_Type =>
                --   ??? perhaps we should do something, but now we don't
