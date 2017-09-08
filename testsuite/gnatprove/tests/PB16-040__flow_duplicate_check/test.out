@@ -1,5 +1,6 @@
 p.adb:12:16: info: range check proved (CVC4: 1 VC)
 p.adb:13:33: info: range check proved (CVC4: 1 VC)
+p.adb:14:16: info: range check proved (CVC4: 4 VC)
 p.adb:14:29: info: initialization of "Target.Length" proved
 p.adb:14:44: info: length check proved (CVC4: 1 VC)
 p.adb:14:44: medium: "Target.Value" might not be initialized

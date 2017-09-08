@@ -18,6 +18,8 @@ cubedos-lib-xdr.adb:92:44: info: range check proved (CVC4: 16 VC)
 cubedos-lib-xdr.adb:93:25: info: initialization of "Temporary_1" proved
 cubedos-lib-xdr.adb:93:37: info: division check proved (CVC4: 8 VC)
 cubedos-lib-xdr.adb:95:24: info: range check proved (CVC4: 1 VC)
+cubedos-lib-xdr.adb:108:07: info: range check proved (CVC4: 4 VC)
+cubedos-lib-xdr.adb:108:41: info: range check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:108:55: info: length check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:108:58: info: length check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:111:23: info: division check proved (CVC4: 1 VC)
@@ -27,6 +29,7 @@ cubedos-lib-xdr.adb:113:26: info: initialization of "Padding_Start" proved
 cubedos-lib-xdr.adb:113:40: info: range check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:113:52: info: range check proved (CVC4: 1 VC)
 cubedos-lib-xdr.adb:113:60: info: division check proved (CVC4: 1 VC)
+cubedos-lib-xdr.adb:114:10: info: range check proved (CVC4: 4 VC)
 cubedos-lib-xdr.adb:114:15: info: initialization of "Padding_Start" proved
 cubedos-lib-xdr.adb:114:32: info: initialization of "Padding_Stop" proved
 cubedos-lib-xdr.adb:114:46: info: length check proved (CVC4: 1 VC)

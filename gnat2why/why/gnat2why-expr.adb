@@ -8785,7 +8785,7 @@ package body Gnat2Why.Expr is
             Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Prog, Body_Params), True);
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
          begin

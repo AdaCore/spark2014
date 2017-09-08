@@ -154,11 +154,13 @@ textio.adb:186:41: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: range check proved (CVC4: 1 VC)
 textio.adb:186:43: info: initialization of "Last" proved
 textio.adb:188:16: info: initialization of "Last" proved
+textio.adb:189:16: info: range check proved (CVC4: 4 VC)
 textio.adb:189:29: info: initialization of "Num" proved
 textio.adb:189:34: info: length check proved (CVC4: 1 VC)
 textio.adb:189:37: info: length check proved (CVC4: 1 VC)
 textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:192:31: info: initialization of "Last" proved
+textio.adb:199:19: info: range check proved (CVC4: 4 VC)
 textio.adb:199:32: info: initialization of "Num" proved
 textio.adb:199:37: info: length check proved (CVC4: 1 VC)
 textio.adb:199:40: info: length check proved (CVC4: 1 VC)

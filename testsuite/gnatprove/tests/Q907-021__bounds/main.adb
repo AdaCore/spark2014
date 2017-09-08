@@ -9,7 +9,7 @@ is
                              Payload_Bytes : in out Payload_Byte_Array)
    is
    begin
-      Payload_Bytes (Payload'Range) := Payload; --@LENGTH_CHECK:FAIL
+      Payload_Bytes (Payload'Range) := Payload; --@RANGE_CHECK:FAIL
    end Copy_To_Buffer;
 
    Payload_Bytes : Payload_Byte_Array := (others => 0);

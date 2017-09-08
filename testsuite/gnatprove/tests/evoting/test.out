@@ -17,6 +17,7 @@ evoting.adb:63:31: info: index check proved (CVC4: 2 VC)
 evoting.adb:65:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:65:10: warning: no Global contract available for "Get_Line"
 evoting.adb:65:27: info: initialization of "file" proved
+evoting.adb:66:10: info: range check proved (CVC4: 4 VC)
 evoting.adb:66:43: info: initialization of "last" proved
 evoting.adb:66:49: info: initialization of "candidates" proved
 evoting.adb:66:49: info: initialization of "current_candidate" proved
