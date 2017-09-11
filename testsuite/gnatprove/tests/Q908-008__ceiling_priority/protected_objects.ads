@@ -6,6 +6,7 @@ package Protected_Objects
   with SPARK_Mode
 is
    protected P is
+      pragma Priority (1);
       procedure Signal with Attach_Handler => SIGHUP;
    end P;
 

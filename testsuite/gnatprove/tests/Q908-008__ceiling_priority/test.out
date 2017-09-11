@@ -1,1 +1,3 @@
-protected_objects.ads:9:47: medium: this interrupt might be reserved
+protected_objects.ads:8:14: medium: ceiling priority might not be in Interrupt_Priority
+protected_objects.ads:9:24: info: range check proved (CVC4: 2 VC)
+protected_objects.ads:10:47: medium: this interrupt might be reserved
