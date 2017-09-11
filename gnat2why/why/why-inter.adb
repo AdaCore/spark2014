@@ -72,7 +72,7 @@ package body Why.Inter is
    --  other units).
 
    function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set;
-   --  transform a module set into a node set by taking the Ada_Node of each
+   --  Transform a module set into a node set by taking the Ada_Node of each
    --  element.
 
    function LCA (Left, Right : W_Type_Id) return W_Type_Id;
@@ -316,8 +316,7 @@ package body Why.Inter is
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
    is
-      Module      : constant W_Module_Id := E_Module (N);
-   --  Start of processing for Add_Use_For_Entity
+      Module : constant W_Module_Id := E_Module (N);
 
    begin
       --  In the few special cases for which the Full_Name of N is not based on

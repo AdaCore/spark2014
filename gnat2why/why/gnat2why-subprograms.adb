@@ -5466,8 +5466,8 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  No logic function is created for volatile functions The function's
-      --  effects are model by an effect on the program function.
+      --  No logic function is created for volatile functions. The function's
+      --  effects are modelled by an effect on the program function.
 
       if Ekind (E) = E_Function
         and then (if Is_Volatile_Function (E)
