@@ -463,8 +463,8 @@ package body Why.Inter is
       Kind           : Theory_Kind;
       Defined_Entity : Entity_Id := Empty)
    is
-      use Why_Node_Sets;
-      S : constant Set := Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
+      S : constant Why_Node_Sets.Set :=
+        Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
 
       function Is_Relevant_Node_For_Imports
         (N             : Node_Id;
