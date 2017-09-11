@@ -3745,32 +3745,22 @@ package body Flow.Analysis is
             declare
                Encapsulating : constant Entity_Id :=
                  Encapsulating_State (Child_State);
+
             begin
                if Present (Encapsulating) then
-                  declare
-                     Scop : constant Entity_Id := Scope (Encapsulating);
-
-                  begin
-                     for State of Iter (Abstract_States (Scop)) loop
-                        if State = Encapsulating then
-                           if Refinement_Exists (State)
-                             and then not Find_In_Refinement (State,
-                                                              Child_State)
-                           then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      => "Refinement of % shall mention %",
-                                 Severity => Error_Kind,
-                                 F1       => Direct_Mapping_Id (Encapsulating),
-                                 F2       => Direct_Mapping_Id (Child_State),
-                                 N        => Scop,
-                                 SRM_Ref  => "7.2.6(6)");
-                           end if;
-                        else
-                           null;
-                        end if;
-                     end loop;
-                  end;
+                  if Refinement_Exists (Encapsulating)
+                    and then not Find_In_Refinement (Encapsulating,
+                                                     Child_State)
+                  then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "Refinement of % shall mention %",
+                        Severity => Error_Kind,
+                        F1       => Direct_Mapping_Id (Encapsulating),
+                        F2       => Direct_Mapping_Id (Child_State),
+                        N        => Scope (Encapsulating),
+                        SRM_Ref  => "7.2.6(6)");
+                  end if;
                end if;
             end;
          end loop;
