@@ -3737,7 +3737,6 @@ package body Flow.Analysis is
    procedure Check_Consistent_AS_For_Private_Child
      (FA : in out Flow_Analysis_Graphs)
    is
-      Scop : constant Entity_Id := Scope (FA.Spec_Entity);
    begin
       if Is_Child_Unit (FA.Spec_Entity)
         and then Is_Private_Descendant (FA.Spec_Entity)
@@ -3748,24 +3747,30 @@ package body Flow.Analysis is
                  Encapsulating_State (Child_State);
             begin
                if Present (Encapsulating) then
-                  for State of Iter (Abstract_States (Scop)) loop
-                     if State = Encapsulating then
-                        if Refinement_Exists (State)
-                          and then not Find_In_Refinement (State, Child_State)
-                        then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "Refinement of % shall mention %",
-                              Severity => Error_Kind,
-                              F1       => Direct_Mapping_Id (Encapsulating),
-                              F2       => Direct_Mapping_Id (Child_State),
-                              N        => Scop,
-                              SRM_Ref  => "7.2.6(6)");
+                  declare
+                     Scop : constant Entity_Id := Scope (Encapsulating);
+
+                  begin
+                     for State of Iter (Abstract_States (Scop)) loop
+                        if State = Encapsulating then
+                           if Refinement_Exists (State)
+                             and then not Find_In_Refinement (State,
+                                                              Child_State)
+                           then
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      => "Refinement of % shall mention %",
+                                 Severity => Error_Kind,
+                                 F1       => Direct_Mapping_Id (Encapsulating),
+                                 F2       => Direct_Mapping_Id (Child_State),
+                                 N        => Scop,
+                                 SRM_Ref  => "7.2.6(6)");
+                           end if;
+                        else
+                           null;
                         end if;
-                     else
-                        null;
-                     end if;
-                  end loop;
+                     end loop;
+                  end;
                end if;
             end;
          end loop;
