@@ -331,7 +331,6 @@ package body Why.Inter is
       Add_With_Clause (P, Module, Use_Kind);
 
       if With_Completion
-        and then Nkind (E) in N_Entity
         and then (not Entity_In_Ext_Axioms (E) or else Is_Type (E))
       then
          Add_With_Clause (P, E_Axiom_Module (E), Use_Kind);
