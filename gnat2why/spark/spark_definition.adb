@@ -4928,11 +4928,11 @@ package body SPARK_Definition is
             --  SPARK; if SPARK_Mode is Off then they will be not. Same for
             --  visible declarations.
 
-            for State of Iter (Abstract_States (Id)) loop
-               if not Is_Null_State (State) then
+            if not Has_Null_Abstract_State (Id) then
+               for State of Iter (Abstract_States (Id)) loop
                   Mark_Entity (State);
-               end if;
-            end loop;
+               end loop;
+            end if;
 
             Mark_Stmt_Or_Decl_List (Vis_Decls);
 
