@@ -15,9 +15,9 @@ generation only.
 Modules for Entities
 ====================
 
-What is translated: All visible entities that are spark-compatible (+
-fake entities for invisible / non spark globals), both library level
-and scoped, from current and withed units.
+What is translated: all visible entities that are spark-compatible (+
+fake entities for invisible / non-spark globals), both library-level
+and scoped, from the current and withed units.
 
 Visibility: Precision is maximal, based on current unit and spec of
 withed units only, both private and public declarations, stopping at
@@ -68,7 +68,6 @@ is 2.
 Types
 -----
 
-
 There are two modules (at least) for every visible type entity, one
 for declarations, one for type completion (predicates, invariants,
 default initialization…). This is necessary to avoid circularity
@@ -88,8 +87,8 @@ not repeated in the following sections.
 References and Havoc
 """"""""""""""""""""
 
-Why is a ML like language. In particular, declared variables are
-usually constants and cannot be modified. Why provides a way to define
+Why is an ML-like language. In particular, declared variables are
+usually constant and cannot be modified. Why provides a way to define
 mutable variable using a polymorphic reference type named ref.
 However, to avoid introducing polymorphism which can be harmful to
 some background solvers, we do not use this type in gnat2why. Instead,
@@ -123,7 +122,7 @@ looks like for a given type t::
     val t__havoc (x : t__ref) : unit
     writes {x}
 
-An havoc function is introduced every time a new reference type is
+A havoc function is introduced every time a new reference type is
 declared. It is called to havoc an object when we know it can have be
 modified in an unknown way since the last time it was read. In
 particular, volatile objects with asynchronous writers are havoced
@@ -132,7 +131,7 @@ every time they are read.
 Predefined / primitive equality
 """""""""""""""""""""""""""""""
 
-For every ada type, we also introduce two equality functions, one for
+For every Ada type, we also introduce two equality functions, one for
 the predefined equality, named bool_eq, and one for the user-defined
 primitive equality. A notable exception, predefined equality is not
 used on scalar types. Instead, equality on such types is directly
@@ -155,7 +154,7 @@ component of type Integer::
 It simply states that two records are equal when their F components
 are equal.
 
-As for the user defined primitive equality, it is declared with no
+As for the user-defined primitive equality, it is declared with no
 definition. The definition will be given during the type completion if
 a primitive equality has been encountered::
 
@@ -186,9 +185,9 @@ Primitive equality on scalar types is translated as Why equality on
 the corresponding representative types.
 
 We first explain how static non-empty scalar types are translated into
-SPARK, going over each kind of type alternatively. Dynamic (and
+SPARK, going over each kind of type individually. Dynamic (and
 statically empty) types are handled a bit differently, this is
-explained afterward (see ``Gnat2why.Util.Type_Is_Modeled_As_Base`` for the
+explained afterwards (see ``Gnat2why.Util.Type_Is_Modeled_As_Base`` for the
 exact check).
 
 Signed Integer Types
@@ -196,8 +195,8 @@ Signed Integer Types
 
 The representative type for signed integer types is mathematical
 integers. Indeed, solvers have powerful tactics to reason about linear
-arithmetics and comparison operators on mathematical integers.
-Arithmetics operations and comparisons on signed integer are
+arithmetic and comparison operators on mathematical integers.
+Arithmetic operations and comparisons on signed integer are
 translated as operations on mathematical integers so that GNATprove
 can benefit from this support.
 
@@ -271,7 +270,7 @@ bit-vector in which they fit (we only use bit-vectors of size 8, 16,
 operations such as shift or rotate on bit-vectors whereas there is no
 equivalence on mathematical integers. They also handle wrap-around
 semantics of operators natively. Solvers can sometimes be more precise
-about non-linear arithmetics on bit-vectors, especially on small
+about non-linear arithmetic on bit-vectors, especially on small
 bit-vectors.
 
 Operations on modular types are generally translated as operations on
@@ -1562,7 +1561,7 @@ of the associated Why logic function. Here are the axioms and
 declarations introduced for F::
 
     module P__f___axiom
-     val f  (__void_param : unit) : bool
+     val f (__void_param : unit) : bool
       requires { true }
       ensures { result = P__f.f ()
 	     /\ P__f.f__function_guard result () }
@@ -1622,13 +1621,13 @@ will result in different translations in Why::
       requires { true }
       ensures { … }
 
-     val p  (x : int__ref)
-	    (y__split_fields : P__my_rec.__split_fields__ref)
-	    (y__split_discrs : P__my_rec.__split_discrs__ref)
-	    (y__attr__constrained : bool)
-	    (z : Array__Int__Standard__natural.map__ref)
-	    (z__first : integer)
-	    (z__last : integer) : unit
+     val p (x : int__ref)
+	   (y__split_fields : P__my_rec.__split_fields__ref)
+	   (y__split_discrs : P__my_rec.__split_discrs__ref)
+	   (y__attr__constrained : bool)
+	   (z : Array__Int__Standard__natural.map__ref)
+	   (z__first : integer)
+	   (z__last : integer) : unit
       requires { true }
       ensures { … }
       writes {x, y__split_fields, y__split_discrs, z}
@@ -1769,7 +1768,7 @@ Implicit Contracts
 
 It is often the case that a only part of the Ada typing information is
 available in the Why types of the subprogram (both parameter types and
-return type). For example, the return type of both why functions f is
+return type). For example, the return type of both Why functions f is
 int, that is, mathematical integers, although the return type of the
 Ada function F is Integer. Additional information for types are added
 in a dynamic way, by enriching the postcondition for the result type
