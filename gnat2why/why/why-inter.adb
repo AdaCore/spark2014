@@ -312,11 +312,11 @@ package body Why.Inter is
 
    procedure Add_Use_For_Entity
      (P               : W_Section_Id;
-      N               : Entity_Id;
+      E               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
    is
-      Module : constant W_Module_Id := E_Module (N);
+      Module : constant W_Module_Id := E_Module (E);
 
    begin
       --  In the few special cases for which the Full_Name of N is not based on
@@ -324,17 +324,17 @@ package body Why.Inter is
       --  with separately). Return in that case, to avoid generating wrong
       --  includes based on a non-unique Full_Name.
 
-      if Full_Name_Is_Not_Unique_Name (N) then
+      if Full_Name_Is_Not_Unique_Name (E) then
          return;
       end if;
 
       Add_With_Clause (P, Module, Use_Kind);
 
       if With_Completion
-        and then Nkind (N) in N_Entity
-        and then (not Entity_In_Ext_Axioms (N) or else Is_Type (N))
+        and then Nkind (E) in N_Entity
+        and then (not Entity_In_Ext_Axioms (E) or else Is_Type (E))
       then
-         Add_With_Clause (P, E_Axiom_Module (N), Use_Kind);
+         Add_With_Clause (P, E_Axiom_Module (E), Use_Kind);
       end if;
    end Add_Use_For_Entity;
 

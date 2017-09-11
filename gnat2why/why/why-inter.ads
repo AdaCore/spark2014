@@ -86,11 +86,11 @@ package Why.Inter is
 
    procedure Add_Use_For_Entity
      (P               : W_Section_Id;
-      N               : Entity_Id;
+      E               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
    --  For the given entity, add a use clause to the current theory.
-   --  With_Completion is True if the completion theories for N should be
+   --  With_Completion is True if the completion theories for E should be
    --  added too.
 
    procedure Add_Effect_Import (P : W_Section_Id;
