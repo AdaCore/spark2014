@@ -263,6 +263,9 @@ package body Gnat2Why.Decls is
    procedure Translate_External_Object (E : Entity_Name) is
       File : constant W_Section_Id := WF_Variables;
 
+      Object_Name : constant String := To_String (E);
+      Module_Name : constant String := Capitalize_First (Object_Name);
+
    begin
       --  Objects in axiomatized units should not be treated as external
       --  objects, since the axiomatization should define them. In particular,
@@ -283,16 +286,16 @@ package body Gnat2Why.Decls is
       Open_Theory
         (File,
          Module =>
-           New_Module (Name => NID (Capitalize_First (To_String (E))),
+           New_Module (Name => NID (Module_Name),
                        File => No_Name),
          Comment =>
-           "Module declaring the external object """ & To_String (E) &
+           "Module declaring the external object """ & Object_Name &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Emit
         (File,
          New_Global_Ref_Declaration
-           (Name     => To_Why_Id (To_String (E), Local => True),
+           (Name     => To_Why_Id (Object_Name, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => EW_Private_Type));
 
@@ -303,13 +306,11 @@ package body Gnat2Why.Decls is
 
       Open_Theory
         (File,
-         New_Module (Name =>
-                       NID (Capitalize_First
-                         (To_String (E)) & To_String (WNE_Axiom_Suffix)),
+         New_Module (Name => NID (Module_Name & To_String (WNE_Axiom_Suffix)),
                      File => No_Name),
          Comment =>
            "Module giving an empty axiom for the entity "
-           & """" & To_String (E) & """"
+           & """" & Object_Name & """"
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Close_Theory (File,
