@@ -1,7 +1,7 @@
+# All VCs here are provable in theory, but there are various encoding
+# issues making these very difficult problems.
+
 from test_support import *
-prove_all(steps=500000,
-          prover=["cvc4_cbqi", "cvc4"],
-          opt=["--why3-conf=why3.conf"],
-          counterexample=False,
-          no_fail=True,
-          subdue_flow=True)
+prove_all(prover=["cvc4"],
+          opt=["--no-axiom-guard"],
+          counterexample=False)

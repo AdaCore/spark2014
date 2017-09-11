@@ -454,31 +454,31 @@
  </transf>
  </goal>
 </theory>
-<theory name="Bitspec__nth8_stream__subprogram_def" sum="d6be998efe5d565fa683024940aad914" expanded="true">
+<theory name="Bitspec__nth8_stream__subprogram_def" sum="cc651c134d047a5b570b796bcca36ef7" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
+  <goal name="WP_parameter def.1" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
+  <goal name="WP_parameter def.2" expl="precondition">
+  <proof prover="0"><result status="valid" time="0.03" steps="5"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="precondition">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="3. precondition">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.4" expl="4. assertion">
+  <goal name="WP_parameter def.4" expl="assertion">
   <proof prover="0"><result status="valid" time="0.02" steps="62"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="5. assertion">
-  <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
+  <goal name="WP_parameter def.5" expl="assertion">
+  <proof prover="0"><result status="valid" time="0.01" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="6. VC for def">
+  <goal name="WP_parameter def.6" expl="VC for def">
   <proof prover="0"><result status="valid" time="0.02" steps="5"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Bitspec__maxvalue__subprogram_def" sum="426a9101e45d0546b1f3355c4f4247e0" expanded="true">
+<theory name="Bitspec__maxvalue__subprogram_def" sum="4dc4793355c73258f1a859f90099f73f" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp_conj" expanded="true">
  </transf>

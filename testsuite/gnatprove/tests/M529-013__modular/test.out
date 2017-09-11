@@ -1,4 +1,4 @@
-modular.adb:7:23: info: postcondition proved (Z3: 1 VC)
+modular.adb:7:23: info: postcondition proved (CVC4: 1 VC)
 modular.adb:7:61: medium: overflow check might fail
 modular.adb:7:66: info: division check proved (CVC4: 1 VC)
 modular.adb:7:66: info: range check proved (CVC4: 1 VC)

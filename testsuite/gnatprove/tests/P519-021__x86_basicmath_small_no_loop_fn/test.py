@@ -1,9 +1,7 @@
+# All VCs here are provable in theory (probably), but there are various
+# encoding issues making these very difficult problems.
+
 from test_support import *
-# allow parallelism on this test which has a handful of very long-running VCs (~2 minutes each)
-prove_all(steps=500000,
-          prover=["cvc4_cbqi", "cvc4"],
-          opt=["--why3-conf=why3.conf"],
-          counterexample=False,
-          procs=8,
-          # no_fail=True,
-          subdue_flow=True)
+prove_all(prover=["cvc4"],
+          opt=["--no-axiom-guard"],
+          counterexample=False)
