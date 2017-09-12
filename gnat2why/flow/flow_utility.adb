@@ -1169,15 +1169,15 @@ package body Flow_Utility is
             Inserted : Boolean;
 
          begin
+            --  Attempt to insert a default, i.e. empty, dependency or do
+            --  nothing if Current_Task_Type was already on the LHS.
             Depends.Insert (Key      => Current_Task_Type,
-                            New_Item => Flow_Id_Sets.To_Set
-                                          (Current_Task_Type),
                             Position => Position,
                             Inserted => Inserted);
 
-            if not Inserted then
-               Depends (Position).Include (Current_Task_Type);
-            end if;
+            --  Extend the dependency with Current_Task_Type or do nothing if
+            --  if was already on the RHS.
+            Depends (Position).Include (Current_Task_Type);
          end;
       end if;
 
