@@ -323,51 +323,8 @@ package body Flow_Refinement is
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    is
-      Context         : Node_Id := N;
-      Prev_Context    : Node_Id := Empty;
-
-      function Generic_Parent_Or_Parent (Context : Node_Id) return Node_Id;
-      --  Returns the parent node for subprograms and packages. For generics
-      --  returns the generic parent.
-
-      ------------------------------
-      -- Generic_Parent_Or_Parent --
-      ------------------------------
-
-      function Generic_Parent_Or_Parent (Context : Node_Id) return Node_Id is
-         Parent_Context : constant Entity_Id := Parent (Context);
-
-      begin
-         case Nkind (Context) is
-            when N_Package_Body
-               | N_Subprogram_Body
-            =>
-               raise Program_Error;
-
-            when N_Package_Specification =>
-               declare
-                  Gen_Par : constant Entity_Id := Generic_Parent (Context);
-
-               begin
-                  return (if Present (Gen_Par)
-                          then Gen_Par
-                          else Unique_Defining_Entity (Parent_Context));
-               end;
-
-            when N_Protected_Body
-               | N_Protected_Definition
-               | N_Task_Body
-               | N_Task_Definition
-            =>
-               --  These have nothing to do with generics
-               raise Program_Error;
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end Generic_Parent_Or_Parent;
-
-   --  Start of processing for Get_Flow_Scope
+      Context      : Node_Id := N;
+      Prev_Context : Node_Id := Empty;
 
    begin
       loop
@@ -442,9 +399,24 @@ package body Flow_Refinement is
 
             when N_Package_Specification =>
                declare
+                  Gen_Par : constant Entity_Id := Generic_Parent (Context);
+                  --  For checking if Context is an instance of generic package
+
+                  Ent  : Entity_Id;
                   Part : Declarative_Part;
+                  --  Components of the result
 
                begin
+                  --  For an instance of a generic package we want the generic;
+                  --  for an ordinary package, we want the package itself.
+                  if Present (Gen_Par) then
+                     Ent := Gen_Par;
+                     pragma Assert (Ekind (Ent) = E_Generic_Package);
+                  else
+                     Ent := Defining_Entity (Context);
+                     pragma Assert (Ekind (Ent) = E_Package);
+                  end if;
+
                   --  We have to decide if we come from visible or private part
                   pragma Assert (Present (Prev_Context)
                                  and then Context = Parent (Prev_Context));
@@ -473,7 +445,7 @@ package body Flow_Refinement is
                      Part := Visible_Part;
                   end if;
 
-                  return (Ent  => Generic_Parent_Or_Parent (Context),
+                  return (Ent  => Ent,
                           Part => Part);
                end;
 
