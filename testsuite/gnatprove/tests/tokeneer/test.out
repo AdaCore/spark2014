@@ -46,6 +46,7 @@ admintoken.adb:199:30: info: refined post proved (CVC4: 4 VC)
 admintoken.adb:199:41: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.adb:200:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:225:13: info: range check proved (CVC4: 4 VC)
 admintoken.adb:225:37: info: initialization of "Result" proved
 admintoken.adb:225:37: info: length check proved (CVC4: 1 VC)
 admintoken.adb:225:40: info: length check proved (CVC4: 1 VC)
@@ -127,11 +128,11 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:22: medium: postcondition might fail
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:219:22: medium: postcondition might fail, cannot prove not (TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
@@ -207,6 +208,7 @@ auditlog.adb:531:52: info: initialization of "OK" proved
 auditlog.adb:532:30: info: initialization of "TheFile" proved
 auditlog.adb:534:52: info: initialization of "OK" proved
 auditlog.adb:536:26: info: initialization of "TheFile" proved
+auditlog.adb:588:10: medium: range check might fail, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: initialization of "ElementText" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:636
@@ -224,10 +226,10 @@ auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:718:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:719:22: medium: postcondition might fail
 auditlog.adb:720:59: info: range check proved (CVC4: 1 VC)
 auditlog.adb:720:64: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:721:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:726:26: medium: postcondition might fail, cannot prove LogFileEntries(CurrentLogFile) = 1
 auditlog.adb:766:25: info: postcondition proved (CVC4: 1 VC)
 auditlog.adb:773:28: info: initialization of "TheFile" proved
 auditlog.adb:778:39: info: initialization of "TheFile" proved
@@ -443,6 +445,7 @@ bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at
 bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:167:56: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:173:13: info: range check proved (CVC4: 4 VC), in call inlined at bio.adb:183
 bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.adb:183
 bio.adb:173:42: info: length check proved (CVC4: 1 VC), in call inlined at bio.adb:183
 bio.adb:173:45: info: initialization of "FullString" proved
@@ -710,6 +713,7 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
 cert-attr.adb:38:09: low: range check might fail
 cert-attr.adb:39:09: low: range check might fail
 cert-attr.adb:40:09: low: range check might fail
+cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
 cert-attr.adb:47:43: info: length check proved (CVC4: 1 VC)
 cert-attr.adb:47:46: info: initialization of "FullString" proved
@@ -786,6 +790,7 @@ cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength"
 cert.adb:63:09: low: range check might fail
 cert.adb:64:09: low: range check might fail
 cert.adb:65:09: low: range check might fail
+cert.adb:71:10: info: range check proved (CVC4: 4 VC)
 cert.adb:71:43: info: initialization of "LocalUser" proved
 cert.adb:71:43: info: length check proved (CVC4: 1 VC)
 cert.adb:71:46: info: initialization of "FullString" proved
@@ -806,6 +811,7 @@ certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
 certificatestore.adb:221:23: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:221:31: medium: range check might fail
+certificatestore.adb:222:10: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:222:18: info: initialization of "Length" proved
 certificatestore.adb:222:26: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:26: medium: "Text" might not be initialized
@@ -813,6 +819,7 @@ certificatestore.adb:222:29: info: initialization of "Str" proved
 certificatestore.adb:222:29: info: length check proved (CVC4: 1 VC)
 certificatestore.adb:222:29: medium: range check might fail
 certificatestore.adb:222:36: info: initialization of "Length" proved
+certificatestore.adb:223:10: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:223:15: info: initialization of "Length" proved
 certificatestore.adb:223:42: info: initialization of "Text" proved
 certificatestore.adb:223:42: info: length check proved (CVC4: 1 VC)
@@ -1466,6 +1473,7 @@ configuration.adb:110:71: low: range check might fail
 configuration.adb:111:12: low: range check might fail
 configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: medium: range check might fail
+configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:38: info: initialization of "LocalText" proved
 configuration.adb:118:38: info: length check proved (CVC4: 1 VC)
 configuration.adb:118:41: info: initialization of "Str" proved
@@ -1821,8 +1829,8 @@ enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
-enclave.adb:2188:09: medium: postcondition might fail
 enclave.adb:2197:21: medium: precondition might fail
+enclave.adb:2199:13: medium: postcondition might fail, cannot prove Admin.RolePresent(TheAdmin) = PrivTypes.guard
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
 enclave.adb:2235:13: info: initialization of "KeyedDataPresence" proved
@@ -1860,6 +1868,7 @@ enclave.ads:648:30: medium: precondition might fail
 enrolment.adb:66:66: low: range check might fail
 enrolment.adb:67:55: low: range check might fail
 enrolment.adb:67:63: low: range check might fail
+enrolment.adb:71:13: info: range check proved (CVC4: 4 VC)
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved (CVC4: 1 VC)
 enrolment.adb:71:43: info: length check proved (CVC4: 1 VC)
@@ -1961,6 +1970,26 @@ keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at k
 keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
 keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
 keystore.adb:115:19: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:268
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:276
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:284
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:347
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:355
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:363
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:542
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:694
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:762
+keystore.adb:116:10: info: range check proved (CVC4: 4 VC), in call inlined at keystore.adb:847
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:268
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:276
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:284
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:347
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:355
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:363
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:542
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:694
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:762
+keystore.adb:116:32: info: range check proved (CVC4: 1 VC), in call inlined at keystore.adb:847
 keystore.adb:116:41: info: initialization of "Result" proved
 keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:268
 keystore.adb:116:41: info: initialization of "Result" proved, in call inlined at keystore.adb:276
@@ -2292,6 +2321,14 @@ screen.adb:437:37: medium: array index check might fail, in call inlined at scre
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609
+screen.adb:440:13: medium: range check might fail, in call inlined at screen.adb:591
+screen.adb:440:13: medium: range check might fail, in call inlined at screen.adb:597
+screen.adb:440:13: medium: range check might fail, in call inlined at screen.adb:603
+screen.adb:440:13: medium: range check might fail, in call inlined at screen.adb:609
+screen.adb:440:19: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:591
+screen.adb:440:19: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:597
+screen.adb:440:19: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:603
+screen.adb:440:19: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:609
 screen.adb:440:41: info: initialization of "Str" proved
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:597
@@ -2330,6 +2367,10 @@ screen.adb:475:59: info: division check proved (CVC4: 1 VC), in call inlined at 
 screen.adb:475:59: info: division check proved (CVC4: 1 VC), in call inlined at screen.adb:657
 screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:651
 screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:657
+screen.adb:478:10: medium: range check might fail, in call inlined at screen.adb:651
+screen.adb:478:10: medium: range check might fail, in call inlined at screen.adb:657
+screen.adb:478:32: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:651
+screen.adb:478:32: info: overflow check proved (CVC4: 1 VC), in call inlined at screen.adb:657
 screen.adb:478:37: info: initialization of "Result" proved
 screen.adb:478:37: info: initialization of "Result" proved, in call inlined at screen.adb:651
 screen.adb:478:37: info: initialization of "Result" proved, in call inlined at screen.adb:657
@@ -2345,6 +2386,7 @@ screen.adb:478:50: info: initialization of "Data" proved, in call inlined at scr
 screen.adb:479:17: info: initialization of "Result" proved
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:651
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:657
+screen.adb:498:10: medium: range check might fail, in call inlined at screen.adb:615
 screen.adb:498:33: info: initialization of "Result" proved
 screen.adb:498:33: info: initialization of "Result" proved, in call inlined at screen.adb:615
 screen.adb:498:33: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:615
@@ -2353,6 +2395,8 @@ screen.adb:498:36: info: initialization of "Data" proved, in call inlined at scr
 screen.adb:498:36: medium: length check might fail, in call inlined at screen.adb:615
 screen.adb:499:17: info: initialization of "Result" proved
 screen.adb:499:17: info: initialization of "Result" proved, in call inlined at screen.adb:615
+screen.adb:517:10: medium: range check might fail, in call inlined at screen.adb:639
+screen.adb:517:10: medium: range check might fail, in call inlined at screen.adb:645
 screen.adb:517:33: info: initialization of "Result" proved
 screen.adb:517:33: info: initialization of "Result" proved, in call inlined at screen.adb:639
 screen.adb:517:33: info: initialization of "Result" proved, in call inlined at screen.adb:645
@@ -2366,6 +2410,8 @@ screen.adb:517:36: medium: length check might fail, in call inlined at screen.ad
 screen.adb:518:17: info: initialization of "Result" proved
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:639
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:645
+screen.adb:537:10: medium: range check might fail, in call inlined at screen.adb:663
+screen.adb:537:32: medium: overflow check might fail, in call inlined at screen.adb:663
 screen.adb:537:37: info: initialization of "Result" proved
 screen.adb:537:37: info: initialization of "Result" proved, in call inlined at screen.adb:663
 screen.adb:537:37: info: length check proved (CVC4: 1 VC), in call inlined at screen.adb:663
@@ -2481,6 +2527,14 @@ screen.adb:740:13: info: initialization of "OK" proved
 screen.adb:740:20: info: initialization of "ConsoleOK" proved
 screen.adb:755:30: info: initialization of "OK" proved
 screen.adb:757:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
+screen.adb:784:10: medium: range check might fail, in call inlined at screen.adb:806
+screen.adb:784:10: medium: range check might fail, in call inlined at screen.adb:812
+screen.adb:784:10: medium: range check might fail, in call inlined at screen.adb:818
+screen.adb:784:10: medium: range check might fail, in call inlined at screen.adb:824
+screen.adb:784:32: medium: overflow check might fail, in call inlined at screen.adb:806
+screen.adb:784:32: medium: overflow check might fail, in call inlined at screen.adb:812
+screen.adb:784:32: medium: overflow check might fail, in call inlined at screen.adb:818
+screen.adb:784:32: medium: overflow check might fail, in call inlined at screen.adb:824
 screen.adb:784:37: info: initialization of "Result" proved
 screen.adb:784:37: info: initialization of "Result" proved, in call inlined at screen.adb:806
 screen.adb:784:37: info: initialization of "Result" proved, in call inlined at screen.adb:812
@@ -2798,6 +2852,7 @@ tokenreader.adb:174:12: low: range check might fail
 tokenreader.adb:174:55: low: range check might fail
 tokenreader.adb:175:12: low: range check might fail
 tokenreader.adb:175:56: low: range check might fail
+tokenreader.adb:180:13: info: range check proved (CVC4: 4 VC)
 tokenreader.adb:180:43: info: length check proved (CVC4: 1 VC)
 tokenreader.adb:180:46: medium: length check might fail
 tokenreader.adb:182:23: medium: range check might fail
@@ -2896,6 +2951,7 @@ userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:476:15: low: range check might fail
+userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
 userentry.adb:482:45: info: length check proved (CVC4: 1 VC)
 userentry.adb:482:48: info: initialization of "FullString" proved
 userentry.adb:482:48: info: length check proved (CVC4: 1 VC)

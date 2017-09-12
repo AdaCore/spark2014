@@ -1365,6 +1365,7 @@ string_examples.adb:21:17: info: length check proved (CVC4: 1 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
 string_examples.adb:22:19: info: initialization of "Address" proved
 string_examples.adb:22:22: info: initialization of "Name" proved
+string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
 string_examples.adb:25:12: info: initialization of "Count" proved
 string_examples.adb:25:19: info: initialization of "Name" proved
 string_examples.adb:25:19: info: length check proved (CVC4: 1 VC)
