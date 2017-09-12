@@ -1093,7 +1093,7 @@ package body Gnat2Why.Expr is
 
       --  Assume value if constant
 
-      if (Is_Object (E) and then Ekind (E) = E_Constant)
+      if Ekind (E) = E_Constant
         or else Is_Named_Number (E)
       then
          declare
@@ -1157,7 +1157,7 @@ package body Gnat2Why.Expr is
       --  Assume the value of 'Constrained attribute for variables with
       --  Defaulted discriminants.
 
-      elsif Is_Object (E) and then Ekind (E) = E_Variable then
+      elsif Ekind (E) = E_Variable then
          declare
             B  : constant Item_Type :=
                   Ada_Ent_To_Why.Element (Symbol_Table, E);
