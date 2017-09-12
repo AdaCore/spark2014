@@ -301,20 +301,6 @@ package body Gnat2Why.Decls is
 
       Close_Theory (File,
                     Kind => Standalone_Theory);
-
-      --  Also generate an empty axiom module
-
-      Open_Theory
-        (File,
-         New_Module (Name => NID (Module_Name & To_String (WNE_Axiom_Suffix)),
-                     File => No_Name),
-         Comment =>
-           "Module giving an empty axiom for the entity "
-           & """" & Object_Name & """"
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Close_Theory (File,
-                    Kind => Standalone_Theory);
    end Translate_External_Object;
 
    ---------------------------
