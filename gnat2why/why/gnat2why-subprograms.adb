@@ -2992,8 +2992,7 @@ package body Gnat2Why.Subprograms is
 
       function Assume_For_Input return W_Prog_Id is
          Pred_Fun_Param : constant Entity_Id :=
-           (if Ekind (E) in E_Function | E_Procedure
-            and then Is_Predicate_Function (E)
+           (if Ekind (E) = E_Function and then Is_Predicate_Function (E)
             then
                Defining_Entity (First (Parameter_Specifications
               (Subprogram_Specification (E))))
