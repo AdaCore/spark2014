@@ -241,24 +241,27 @@ timeout of 1s for the default automatic prover CVC4.
 Manual Proof Using Coq
 ^^^^^^^^^^^^^^^^^^^^^^
 
-This section presents a simple example where |GNATprove| does not
-prove automatically some checks, which can then be proved with an interactive
-prover like Coq. Here is a simple |SPARK| procedure:
+This section presents a simple example how to prove interactively a check with
+an interactive prover like Coq when |GNATprove| fails to prove it
+automatically. Here is a simple |SPARK| procedure:
 
 .. literalinclude:: examples/nonlinear.adb
    :language: ada
    :linenos:
 
-|GNATprove| does not prove automatically the postcondition of the procedure,
-even when increasing the value of the timeout:
+When only the Alt-Ergo prover is used, |GNATprove| does not prove automatically
+the postcondition of the procedure, even when increasing the value of the
+timeout:
 
 .. literalinclude:: results/nonlinear.prove
    :language: none
 
-This is expected, as the automatic prover Alt-Ergo used by |GNATprove| has only
-a simple support for non-linear integer arithmetic. More generally, it is a
-known difficulty for all automatic provers. Thus, it is a case where using a
-manual prover is justified. We will use Coq here.
+This is expected, as the automatic prover Alt-Ergo has only a simple support
+for non-linear integer arithmetic. More generally, it is a known difficulty for
+all automatic provers, although, in the case above, using prover CVC4 is enough
+to prove automatically the postcondition of procedure ``Nonlinear``. We will
+use this case to demonstrate the use of a manual prover, as an example of what
+can be done when automatic provers fail to prove a check. We will use Coq here.
 
 The Coq input file associated to this postcondition can be produced by either
 selecting :menuselection:`SPARK --> Prove Check` and specifying ``Coq`` as

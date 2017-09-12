@@ -33,6 +33,7 @@ prove:
 	   examples/spark_mode.txt  \
 	   examples/codepeer_on.txt \
 	   examples/long.txt        \
+	   examples/altergo.txt      \
 	   prove
 	echo "" > prove/illegal.txt
 	echo "" > prove/flow_error.txt
@@ -40,10 +41,12 @@ prove:
  	    examples/codepeer_on.txt \
             examples/illegal.txt     \
             examples/flow_error.txt  \
-            examples/long.txt > prove/spark_mode_or_illegal.txt
+            examples/long.txt        \
+            examples/altergo.txt > prove/spark_mode_or_illegal.txt
 	cd prove && gnatprove $(PROVE_OPTS) -P codepeer_on.gpr --steps=100 >  prove.results
 	cd prove && gnatprove $(PROVE_OPTS) -P intro.gpr --steps=100       >>  prove.results
-	cd prove && gnatprove $(PROVE_OPTS) -P long.gpr  --steps=10000     >> prove.results
+	cd prove && gnatprove $(PROVE_OPTS) -P long.gpr --steps=10000      >> prove.results
+	cd prove && gnatprove $(COMMON_OPTS) -P altergo.gpr --steps=100    >> prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 
