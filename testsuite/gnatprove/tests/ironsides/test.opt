@@ -1,2 +1,2 @@
-ALL XFAIL waiting for PA07-045 and P428-013 and Q825-009
+ALL XFAIL waiting for and P428-013 and Q825-009
 !large SKIP part of large testsuite
