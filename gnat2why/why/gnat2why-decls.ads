@@ -27,6 +27,7 @@ with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with Gnat2Why.Util;     use Gnat2Why.Util;
+with SPARK_Definition;  use SPARK_Definition;
 with Types;             use Types;
 
 package Gnat2Why.Decls is
@@ -35,12 +36,6 @@ package Gnat2Why.Decls is
      (File : W_Section_Id;
       E    : Entity_Id);
    --  Generate Why declarations that correspond to an abstract state
-
-   procedure Translate_Variable
-     (File : W_Section_Id;
-      E    : Entity_Id);
-   --  Generate Why declarations that correspond to an Ada top level object
-   --  declaration
 
    procedure Translate_Constant
      (File : W_Section_Id;
@@ -63,5 +58,12 @@ package Gnat2Why.Decls is
    procedure Translate_Loop_Entity
      (File : W_Section_Id;
       E    : Entity_Id);
+
+   procedure Translate_Variable
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   with Pre => Entity_In_SPARK (E);
+   --  Generate Why declarations that correspond to an Ada top level object
+   --  declaration.
 
 end Gnat2Why.Decls;
