@@ -16,6 +16,4 @@ is
      Priority => 5,
      Global   => (In_Out => Num_Accounts),
      Depends  => (Num_Accounts => Num_Accounts);
-              --  Account_Management => Account_Management);
-              --  ??? the above implicit dependency is not yet supported
 end Account8;

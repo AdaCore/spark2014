@@ -113,10 +113,6 @@ Flow Analysis Limitations
    considered to participate in the derivation of another field that it does
    not really participate in.
 
-#. The Depends and Refined_Depends aspect of a task unit T must explicitly
-   mention T, which is an implicit parameter (despite |SPARK| Reference Manual
-   rule 6.1.4 which says that a "T => T" specification is assumed).
-
 Proof Limitations
 -----------------
 

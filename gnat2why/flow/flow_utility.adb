@@ -1153,6 +1153,34 @@ package body Flow_Utility is
          end;
       end if;
 
+      ----------------------------------------------------------------------
+      --  Step 5: If we are dealing with a task unit T then, as per SPARK RM
+      --  6.1.4. in the section Global Aspects, we assume an implicit
+      --  specification of T => T. In practice, we add this dependency into
+      --  the Depends map in case is not already there.
+      ----------------------------------------------------------------------
+
+      if Ekind (Subprogram) = E_Task_Type then
+         declare
+            Current_Task_Type : constant Flow_Id :=
+              Direct_Mapping_Id (Subprogram);
+
+            Position : Dependency_Maps.Cursor;
+            Inserted : Boolean;
+
+         begin
+            Depends.Insert (Key      => Current_Task_Type,
+                            New_Item => Flow_Id_Sets.To_Set
+                                          (Current_Task_Type),
+                            Position => Position,
+                            Inserted => Inserted);
+
+            if not Inserted then
+               Depends (Position).Include (Current_Task_Type);
+            end if;
+         end;
+      end if;
+
    end Get_Depends;
 
    -----------------

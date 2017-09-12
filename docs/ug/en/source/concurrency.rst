@@ -296,10 +296,9 @@ Notice that the task unit itself is both an input and an output of the task:
   subprogram call. But note that the task object cannot be modified once
   created.
 
-.. The dependency of the task on itself can be left implicit as well, as
-   follows:
+The dependency of the task on itself can be left implicit as well, as follows:
 
-   .. code-block:: ada
+.. code-block:: ada
 
    package Account is
       Num_Accounts : Natural := 0 with Atomic;
