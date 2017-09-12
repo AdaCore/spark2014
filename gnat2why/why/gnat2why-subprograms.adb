@@ -393,7 +393,7 @@ package body Gnat2Why.Subprograms is
                end if;
             end;
          end if;
-         Context_Item := Next (Context_Item);
+         Next (Context_Item);
       end loop;
 
       return Assumption;
