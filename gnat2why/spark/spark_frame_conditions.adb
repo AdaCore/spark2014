@@ -23,10 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with Get_SPARK_Xrefs;
 with Lib.Xref;                       use Lib.Xref;
+with Namet;                          use Namet;
 with Osint;                          use Osint;
 with Sem_Aux;                        use Sem_Aux;
 with Snames;                         use Snames;
@@ -167,13 +169,6 @@ package body SPARK_Frame_Conditions is
       Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
-   --------------------
-   -- File_Of_Entity --
-   --------------------
-
-   function File_Of_Entity (E : Entity_Name) return Entity_Name
-     renames File_Defines.Element;
-
    -----------------
    -- Find_Entity --
    -----------------
@@ -212,6 +207,8 @@ package body SPARK_Frame_Conditions is
 
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
+
+      use type Name_Sets.Set;
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
@@ -253,6 +250,8 @@ package body SPARK_Frame_Conditions is
 
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
+
+      use type Name_Sets.Set;
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on

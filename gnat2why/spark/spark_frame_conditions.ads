@@ -31,31 +31,17 @@
 --  Internally, entities are represented as integers, to avoid costly repeated
 --  hashing of strings in computations over sets/maps of entities.
 
-with Ada.Containers;             use Ada.Containers;
-with Ada.Containers.Hashed_Sets;
-with ALI;                             use ALI;
-with Atree;                      use Atree;
-with Common_Containers;          use Common_Containers;
-with Einfo;                      use Einfo;
-with Namet;                      use Namet;
-with Types;                      use Types;
+with ALI;               use ALI;
+with Atree;             use Atree;
+with Common_Containers; use Common_Containers;
+with Einfo;             use Einfo;
+with Types;             use Types;
 
 package SPARK_Frame_Conditions is
-
-   use Name_Sets;
 
    Translated_Object_Entities : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Filled by gnat2why-driver.adb, and represents all object entities that
    --  are actually translated to Why.
-
-   function File_Name_Hash (F : File_Name_Type) return Hash_Type is
-     (Hash_Type (F));
-
-   package File_Name_Set is new Hashed_Sets
-     (Element_Type        => File_Name_Type,
-      Hash                => File_Name_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return True iff Ent is the special variable "__HEAP"
@@ -81,9 +67,6 @@ package SPARK_Frame_Conditions is
                           | E_Procedure
                           | E_Task_Type;
    --  Get the variables written by subprogram E
-
-   function File_Of_Entity (E : Entity_Name) return Entity_Name;
-   --  Return the name of the file defining the entity E
 
    procedure Load_SPARK_Xrefs (ALI_File : ALI_Id);
    --  Extract xref information from an ALI file
