@@ -117,7 +117,7 @@ package Why.Gen.Binders is
    --  arrays, where extra objects are created to represent the bounds,
    --  functions where we need different translations when used in programs or
    --  in assertions, and records where we can have up to four objects, a set
-   --  of fields, a set of discriminant, a 'Constrained attribute, and a 'Tag
+   --  of fields, a set of discriminants, a 'Constrained attribute, and a 'Tag
    --  attribute. The 'Concurrent_Self' case corresponds to the "self" object
    --  used in task types, protected subprograms and entries, and can be seen
    --  as as "0 to 1" mapping. See also the general description of protected
