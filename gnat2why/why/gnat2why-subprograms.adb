@@ -975,7 +975,7 @@ package body Gnat2Why.Subprograms is
                Entity : constant Entity_Id := Find_Entity (Name);
             begin
                if Present (Entity)
-                 and then not (Ekind (Entity) = E_Abstract_State)
+                 and then Ekind (Entity) /= E_Abstract_State
                  and then Entity_In_SPARK (Entity)
                then
 
@@ -1091,7 +1091,7 @@ package body Gnat2Why.Subprograms is
             then
                null;
             elsif Present (Entity)
-              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Ekind (Entity) /= E_Abstract_State
               and then Entity_In_SPARK (Entity)
             then
                Effects_Append_Binder_To_Writes
@@ -1147,7 +1147,7 @@ package body Gnat2Why.Subprograms is
             then
                null;
             elsif Present (Entity)
-              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Ekind (Entity) /= E_Abstract_State
               and then Entity_In_SPARK (Entity)
             then
                Effects_Append_Binder_To_Reads

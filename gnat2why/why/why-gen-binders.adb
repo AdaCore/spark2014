@@ -234,7 +234,7 @@ package body Why.Gen.Binders is
          declare
             Entity  : constant Entity_Id := Find_Entity (V);
             Use_Ent : constant Boolean := Present (Entity)
-              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Ekind (Entity) /= E_Abstract_State
               and then Entity_In_SPARK (Entity);
 
             C : constant Ada_Ent_To_Why.Cursor :=
@@ -708,7 +708,7 @@ package body Why.Gen.Binders is
       else
          declare
             Use_Ent : constant Boolean :=
-              not (Ekind (E) = E_Abstract_State)
+              Ekind (E) /= E_Abstract_State
               and then Entity_In_SPARK (E);
             --  For state abstractions pretend there is no Entity
 
