@@ -28,9 +28,7 @@ with Gnat2Why.Expr;                use Gnat2Why.Expr;
 with Namet;                        use Namet;
 with Sinfo;                        use Sinfo;
 with Sinput;                       use Sinput;
-with SPARK_Frame_Conditions;
 with SPARK_Util;                   use SPARK_Util;
-with SPARK_Util.External_Axioms;   use SPARK_Util.External_Axioms;
 with Ada.Strings;                  use Ada.Strings;
 with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
 with String_Utils;                 use String_Utils;
@@ -47,41 +45,6 @@ with Why.Sinfo;                    use Why.Sinfo;
 with Why.Types;                    use Why.Types;
 
 package body Gnat2Why.Decls is
-
-   ------------------------------
-   -- Translate_Abstract_State --
-   ------------------------------
-
-   procedure Translate_Abstract_State
-     (File : W_Section_Id;
-      E    : Entity_Id)
-   is
-      Var : constant Item_Type := Mk_Item_Of_Entity (E);
-   begin
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module for defining a ref holding the value "
-                       & "of abstract state "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  We generate a global ref
-
-      Emit
-        (File,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Labels   => Name_Id_Sets.Empty_Set,
-            Ref_Type => EW_Private_Type));
-
-      Insert_Item (E, Var);
-
-      Close_Theory (File,
-                    Kind => Standalone_Theory);
-   end Translate_Abstract_State;
 
    ------------------------
    -- Translate_Constant --
@@ -266,22 +229,6 @@ package body Gnat2Why.Decls is
       Module_Name : constant String := Capitalize_First (Object_Name);
 
    begin
-      --  Objects in axiomatized units should not be treated as external
-      --  objects, since the axiomatization should define them. In particular,
-      --  constants in axiomatized units should be treated as constants without
-      --  variable input, which do not matter for effects, and as such do not
-      --  need to be translated as external objects.
-
-      declare
-         Ent : constant Entity_Id := SPARK_Frame_Conditions.Find_Entity (E);
-      begin
-         if Present (Ent)
-           and then Entity_In_Ext_Axioms (Ent)
-         then
-            return;
-         end if;
-      end;
-
       Open_Theory
         (File,
          Module =>
@@ -297,6 +244,35 @@ package body Gnat2Why.Decls is
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => EW_Private_Type));
+
+      Close_Theory (File,
+                    Kind => Standalone_Theory);
+   end Translate_External_Object;
+
+   procedure Translate_External_Object (E : Entity_Id)
+   is
+      File : constant W_Section_Id := WF_Variables;
+--      Var : constant Item_Type := Mk_Item_Of_Entity (E);
+--   ??? this doesn't seem to be needed
+
+   begin
+      Open_Theory (File, E_Module (E),
+                   Comment =>
+                     "Module declaring the external object "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & " defined at " & Build_Location_String (Sloc (E))
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  We generate a global ref
+
+      Emit
+        (File,
+         New_Global_Ref_Declaration
+           (Name     => To_Why_Id (E, Local => True),
+            Labels   => Name_Id_Sets.Empty_Set,
+            Ref_Type => EW_Private_Type));
+
+--      Insert_Item (E, Var);
 
       Close_Theory (File,
                     Kind => Standalone_Theory);

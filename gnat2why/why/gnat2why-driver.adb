@@ -42,6 +42,7 @@ with Flow;                            use Flow;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
+with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
 with GNAT.Expect;
 with GNAT.Source_Info;
@@ -75,6 +76,7 @@ with SPARK_Util;                      use SPARK_Util;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
+with SPARK_Xrefs;
 with Stand;                           use Stand;
 with Switch;                          use Switch;
 with Why;                             use Why;
@@ -119,6 +121,11 @@ package body Gnat2Why.Driver is
                 else Entity_In_SPARK (E));
    --  Translates entity E into Why
 
+   procedure Translate_Hidden_Globals (E : Entity_Id);
+   --  Translate "hidden" globals of E, e.g. declared in other compilation
+   --  units (and thus only known by name), or not in SPARK (thus ignored by
+   --  marking), or representing invisible constituents of abstract states.
+
    procedure Do_Generate_VCs (E : Entity_Id)
    with Pre => (if Ekind (E) = E_Package
                 then Entity_Spec_In_SPARK (E)
@@ -149,6 +156,12 @@ package body Gnat2Why.Driver is
 
    Timing : Time_Token;
    --  Timing of various gnat2why phases
+
+   Translated_Object_Entities : Node_Sets.Set;
+   Translated_Object_Names    : Name_Sets.Set;
+   --  Object entities that have been actually translated to Why; needed to
+   --  avoid repeated declarations in Why for objects appearing in the Global
+   --  contracts (where such repetitions are fine).
 
    --------------------------
    -- Complete_Declaration --
@@ -748,6 +761,11 @@ package body Gnat2Why.Driver is
    --  Start of processing for Translate_CUnit
 
    begin
+      --  Translation of the __HEAP is hardcoded into the
+      --  _gnatprove_standard.Main module.
+      Translated_Object_Names.Insert
+        (To_Entity_Name (SPARK_Xrefs.Name_Of_Heap_Variable));
+
       --  Store information for entities
 
       For_All_Entities (Store_Information_For_Entity'Access);
@@ -760,12 +778,7 @@ package body Gnat2Why.Driver is
       --  translated to Why), we generate a dummy declaration. This must
       --  be done after translating above entities.
 
-      For_All_External_Objects (Translate_External_Object'Access);
-
-      --  For all state abstractions whose declaration is not visible (has not
-      --  been translated to Why), we generate a dummy declaration.
-
-      For_All_External_States (Translate_External_Object'Access);
+      For_All_Entities (Translate_Hidden_Globals'Access);
 
       For_All_Entities (Complete_Declaration'Access);
 
@@ -774,6 +787,11 @@ package body Gnat2Why.Driver is
       --  and expression functions are defined.
 
       For_All_Entities (Generate_VCs'Access);
+
+      --  Clear global data that is no longer be needed to leave more memory
+      --  for solvers.
+      Translated_Object_Entities.Clear;
+      Translated_Object_Names.Clear;
    end Translate_CUnit;
 
    ----------------------
@@ -834,6 +852,12 @@ package body Gnat2Why.Driver is
                Translate_Type (File, E, New_Theory);
             end if;
 
+            --  Concurrent types may appear as globals in subprograms nested in
+            --  them.
+            if Ekind (E) in E_Protected_Type | E_Task_Type then
+               Translated_Object_Entities.Insert (E);
+            end if;
+
          when Named_Kind => return;  --  Ignore named kind
 
          when Object_Kind =>
@@ -850,7 +874,7 @@ package body Gnat2Why.Driver is
             --  Fill the set of translated object entities and do not generate
             --  a dummy declaration for those.
 
-            Translated_Object_Entities.Include (To_Entity_Name (E));
+            Translated_Object_Entities.Insert (E);
 
             --  Variables that are part of a protected object are not
             --  translated separately.
@@ -882,10 +906,6 @@ package body Gnat2Why.Driver is
                Translate_Variable (File, E);
                Generate_Empty_Axiom_Theory (File, E);
             end if;
-
-         when E_Abstract_State =>
-            Translate_Abstract_State (File, E);
-            Generate_Empty_Axiom_Theory (File, E);
 
          --  Generate a logic function for Ada subprograms
 
@@ -919,6 +939,75 @@ package body Gnat2Why.Driver is
             raise Program_Error;
       end case;
    end Translate_Entity;
+
+   ------------------------------
+   -- Translate_Hidden_Globals --
+   ------------------------------
+
+   procedure Translate_Hidden_Globals (E : Entity_Id) is
+      Unused_Node : Node_Sets.Cursor;
+      Unused_Name : Name_Sets.Cursor;
+      Inserted    : Boolean;
+
+   begin
+      if (case Ekind (E) is
+          when Entry_Kind | E_Task_Type => True,
+          when E_Function | E_Procedure => Is_Translated_Subprogram (E),
+          when others                   => False
+      --  For packages we don't translate objects from the RHS of their
+      --  (generated) Initializes contract, because such objects are either
+      --  visible (and thus translated anyway) or are pulled by subprograms
+      --  called from the Initial_Condition (and thus already translated).
+      )
+      then
+         declare
+            Reads  : Flow_Types.Flow_Id_Sets.Set;
+            Writes : Flow_Types.Flow_Id_Sets.Set;
+         begin
+            --  Collect global variables potentially read and written
+            Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                            Classwide  => True,
+                                            Reads      => Reads,
+                                            Writes     => Writes);
+
+            --  Union reads with writes (essentially just ignore the
+            --  variant).
+            Reads.Union (Change_Variant (Writes, In_View));
+
+            for G of Reads loop
+               case G.Kind is
+                  when Magic_String =>
+                     Translated_Object_Names.Insert
+                       (New_Item => G.Name,
+                        Position => Unused_Name,
+                        Inserted => Inserted);
+
+                     if Inserted then
+                        Translate_External_Object (G.Name);
+                     end if;
+
+                  when Direct_Mapping =>
+                     declare
+                        Obj : constant Entity_Id := Get_Direct_Mapping_Id (G);
+
+                     begin
+                        Translated_Object_Entities.Insert
+                          (New_Item => Obj,
+                           Position => Unused_Node,
+                           Inserted => Inserted);
+
+                        if Inserted then
+                           Translate_External_Object (Obj);
+                        end if;
+                     end;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end loop;
+         end;
+      end if;
+   end Translate_Hidden_Globals;
 
    --------------------------------
    -- Translate_Standard_Package --

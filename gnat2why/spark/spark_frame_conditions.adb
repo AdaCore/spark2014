@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Get_SPARK_Xrefs;
 with Lib.Xref;                       use Lib.Xref;
 with Osint;                          use Osint;
@@ -188,45 +187,6 @@ package body SPARK_Frame_Conditions is
               then Element (C)
               else Empty);
    end Find_Entity;
-
-   ------------------------------
-   -- For_All_External_Objects --
-   ------------------------------
-
-   procedure For_All_External_Objects
-     (Process : not null access procedure (E : Entity_Name))
-   is
-   begin
-      for S of Defines loop
-         --  External objects are those in the sets of defined objects Defines
-         --  ??? no, they are "state variables" (as defined in the old SPARK)
-         --  of library-level packages; we have a TN for that.
-
-         for Elt of S loop
-            if not Translated_Object_Entities.Contains (Elt) then
-               Process (Elt);
-            end if;
-         end loop;
-      end loop;
-   end For_All_External_Objects;
-
-   -----------------------------
-   -- For_All_External_States --
-   -----------------------------
-
-   procedure For_All_External_States
-     (Process : not null access procedure (E : Entity_Name))
-   is
-   begin
-      for State_Name of GG_Get_State_Abstractions loop
-         --  Any state abstraction for which we do NOT have a
-         --  corresponding Entidy_Id is an External state abstraction.
-
-         if No (Find_Entity (State_Name)) then
-            Process (State_Name);
-         end if;
-      end loop;
-   end For_All_External_States;
 
    --------------------
    -- Computed_Calls --

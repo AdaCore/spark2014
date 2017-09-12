@@ -32,11 +32,6 @@ with Types;             use Types;
 
 package Gnat2Why.Decls is
 
-   procedure Translate_Abstract_State
-     (File : W_Section_Id;
-      E    : Entity_Id);
-   --  Generate Why declarations that correspond to an abstract state
-
    procedure Translate_Constant
      (File : W_Section_Id;
       E    : Entity_Id);
@@ -54,6 +49,25 @@ package Gnat2Why.Decls is
    procedure Translate_External_Object (E : Entity_Name);
    --  For a "magic string" generate a dummy declaration module which contains
    --  the type and the variable declaration.
+
+   procedure Translate_External_Object (E : Entity_Id)
+   with Pre => (case Ekind (E) is
+                   when E_Variable       => not Entity_In_SPARK (E),
+                   when E_Abstract_State => True,
+                   when others           => False);
+   --  Generate Why declarations for an entity E that is only known to proof
+   --  as a generated Global of some subprogram. The declaration looks same as
+   --  for external objects represented by Entity_Name, just with more precise
+   --  tracability comments, e.g. sloc and preserved casing.
+
+   --  The entity is either a variable which is not in SPARK, or an abstract
+   --  state which represents its hidden constituents. It is never a constant,
+   --  because those in SPARK are translated elsewhere and those not in SPARK
+   --  do not appear in Global for they are considered as without variable
+   --  input. Other objects, e.g. parameters or loop variables, can only appear
+   --  in Global contract of subprograms nested inside their scopes, but if
+   --  such an object is not in SPARK then such a nested subprogram is also not
+   --  in SPARK (and so it ignored in proof).
 
    procedure Translate_Loop_Entity
      (File : W_Section_Id;
