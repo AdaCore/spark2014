@@ -245,8 +245,8 @@ package body Flow_Refinement is
          while Present (Ptr)
            and then Ekind (Ptr) not in E_Package
                                      | E_Generic_Package
-                                     | Protected_Kind
-                                     | Task_Kind
+                                     | E_Protected_Type
+                                     | E_Task_Type
          loop
             Ptr := Scope (Ptr);
          end loop;
