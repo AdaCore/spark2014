@@ -2531,20 +2531,17 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Start of processing for Directly_Called_Protected_Objects
 
    begin
-      --  Vertex V might be null if we only have a spec for entity Ent
-      if V /= Null_Vertex then
-         --  Collect objects from the caller subprogram itself
-         Collect_Objects_From_Subprogram (EN);
+      --  Collect objects from the caller subprogram itself
+      Collect_Objects_From_Subprogram (EN);
 
-         --  and from all its callees
-         for Obj of Call_Graph.Get_Collection (V, Out_Neighbours) loop
-            declare
-               Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
-            begin
-               Collect_Objects_From_Subprogram (Callee);
-            end;
-         end loop;
-      end if;
+      --  and from all its callees
+      for Obj of Call_Graph.Get_Collection (V, Out_Neighbours) loop
+         declare
+            Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
+         begin
+            Collect_Objects_From_Subprogram (Callee);
+         end;
+      end loop;
 
       return Res;
    end Directly_Called_Protected_Objects;

@@ -3670,6 +3670,14 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+
+         --  We check that the call graph starting from this task respects the
+         --  ceiling priority protocol.
+
+         Why_Body :=
+           Sequence
+             (Check_Ceiling_Protocol (Params, E),
+              Why_Body);
       else
          Why_Body := +Void;
       end if;
@@ -3688,14 +3696,6 @@ package body Gnat2Why.Subprograms is
       if Present (Vis_Decls) then
          Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
-
-      --  We check that the call graph starting from this task respects the
-      --  ceiling priority protocol.
-
-      Why_Body :=
-        Sequence
-          (Check_Ceiling_Protocol (Params, E),
-           Why_Body);
 
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
