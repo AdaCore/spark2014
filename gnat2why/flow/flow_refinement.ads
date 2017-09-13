@@ -268,12 +268,6 @@ package Flow_Refinement is
    --  ??? this should be moved to Functions and renamed to Enclosing_Scope
    --  (since Get is meaningless and Flow repeats the type of parameter)
 
-   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
-   with Pre => S.Part = Body_Part;
-   --  Returns the flow scope of the enclosing package or concurrent object if
-   --  it exists and the null scope otherwise.
-   --  ??? this should be merged into Get_Enclosing_Body_Flow_Scope
-
    function Is_Initialized_At_Elaboration (E : Checked_Entity_Id;
                                            S : Flow_Scope)
                                            return Boolean

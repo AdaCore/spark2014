@@ -3921,11 +3921,8 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      Initializes_Scope : constant Flow_Scope :=
-        Get_Enclosing_Body_Flow_Scope (Get_Flow_Scope (Pkg_Body));
-
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (Package_Spec, Initializes_Scope);
+        Parse_Initializes (Package_Spec, Get_Flow_Scope (Package_Spec));
       --  ??? This needs to take into account initializes from gg
 
       V : Flow_Graphs.Vertex_Id;

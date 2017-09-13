@@ -41,6 +41,12 @@ with Flow_Utility;                   use Flow_Utility;
 
 package body Flow_Refinement is
 
+   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
+   with Pre => S.Part = Body_Part;
+   --  Returns the flow scope of the enclosing package or concurrent object if
+   --  it exists and the null scope otherwise.
+   --  ??? this should be merged into Get_Enclosing_Body_Flow_Scope
+
    ----------------
    -- Is_Visible --
    ----------------
