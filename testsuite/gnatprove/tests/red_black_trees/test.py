@@ -10,6 +10,7 @@ def replay():
 prove_all(opt=["--replay",
                "--no-axiom-guard",
                "--no-counterexample"],
+          procs=4,
           steps=None,
           vc_timeout=120,
           prover=["cvc4", "z3"])
