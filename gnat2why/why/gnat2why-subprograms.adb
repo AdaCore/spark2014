@@ -834,7 +834,6 @@ package body Gnat2Why.Subprograms is
                --  for the self reference.
 
                if Within_Protected_Type (E)
-                 and then Present (Get_Body (E))
                  and then Entity_Body_In_SPARK (E)
                then
                   Includes.Include (Containing_Protected_Type (E));
@@ -2542,11 +2541,9 @@ package body Gnat2Why.Subprograms is
       --  Translate declarations and statements in the package body, if there
       --  is one and it is in SPARK.
 
-      if Present (Body_N) and then
-        Entity_Body_In_SPARK (E)
-      then
-         if Present (Handled_Statement_Sequence (Body_N)) and then
-           Body_Statements_In_SPARK (E)
+      if Entity_Body_In_SPARK (E) then
+         if Present (Handled_Statement_Sequence (Body_N))
+           and then Body_Statements_In_SPARK (E)
          then
             Why_Body :=
               Sequence
@@ -3075,7 +3072,6 @@ package body Gnat2Why.Subprograms is
                  Kind     => EW_Assert);
          else
             if Is_Entry (E)
-              and then Present (Body_N)
               and then Entity_Body_In_SPARK (E)
             then
                declare
@@ -3201,7 +3197,7 @@ package body Gnat2Why.Subprograms is
 
       function Comp_Decl_At_Subp_Start return W_Prog_Id is
       begin
-         if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+         if Entity_Body_In_SPARK (E) then
             return
            Sequence
              ((New_Comment
@@ -3284,7 +3280,7 @@ package body Gnat2Why.Subprograms is
          else
             Post_N := Empty;
          end if;
-         if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+         if Entity_Body_In_SPARK (E) then
 
             --  Translate contract of E. A No_Return subprogram, from the
             --  inside, has postcondition true as non termination verification
@@ -3500,7 +3496,7 @@ package body Gnat2Why.Subprograms is
 
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
-      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+      if Entity_Body_In_SPARK (E) then
 
          Get_Pre_Post_Pragmas
            (Get_Flat_Statement_And_Declaration_List
@@ -3667,9 +3663,7 @@ package body Gnat2Why.Subprograms is
       --  Translate declarations and statements in the task body, if there
       --  is one.
 
-      if Present (Body_N)
-        and then Entity_Body_In_SPARK (E)
-      then
+      if Entity_Body_In_SPARK (E) then
          if Present (Handled_Statement_Sequence (Body_N)) then
             Why_Body :=
               Transform_Statements_And_Declarations
