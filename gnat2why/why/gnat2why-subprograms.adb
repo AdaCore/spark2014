@@ -3664,11 +3664,9 @@ package body Gnat2Why.Subprograms is
       --  is one.
 
       if Entity_Body_In_SPARK (E) then
-         if Present (Handled_Statement_Sequence (Body_N)) then
-            Why_Body :=
-              Transform_Statements_And_Declarations
-                (Statements (Handled_Statement_Sequence (Body_N)));
-         end if;
+         Why_Body :=
+           Transform_Statements_And_Declarations
+             (Statements (Handled_Statement_Sequence (Body_N)));
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
