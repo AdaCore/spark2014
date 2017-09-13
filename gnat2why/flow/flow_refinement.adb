@@ -226,18 +226,14 @@ package body Flow_Refinement is
    ------------------------------
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-      Enclosing_Scope : Flow_Scope;
-      Ptr             : Node_Id := S.Ent;
-   begin
-      while Nkind (Ptr) not in N_Package_Declaration
-                             | N_Generic_Package_Declaration
-                             | N_Protected_Type_Declaration
-                             | N_Task_Type_Declaration
-      loop
-         Ptr := Parent (Ptr);
-      end loop;
-      Enclosing_Scope := Get_Flow_Scope (Ptr);
+      Enclosing_Scope : Flow_Scope :=
+        Get_Flow_Scope (Unit_Declaration_Node (S.Ent));
+      --  Call to Get_Flow_Scope on a declaration node returns the scope where
+      --  S.Ent is declared, not the scope of the S.Ent itself.
 
+      Ptr : Node_Id;
+
+   begin
       if No (Enclosing_Scope)
         and then Scope (S.Ent) /= Standard_Standard
       then
