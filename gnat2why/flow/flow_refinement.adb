@@ -237,26 +237,25 @@ package body Flow_Refinement is
       --  Call to Get_Flow_Scope on a declaration node returns the scope where
       --  S.Ent is declared, not the scope of the S.Ent itself.
 
-      Ptr : Node_Id;
-
    begin
       if No (Enclosing_Scope)
         and then Scope (S.Ent) /= Standard_Standard
       then
-         Ptr := Scope (S.Ent);
-         while Present (Ptr)
-           and then Ekind (Ptr) not in E_Package
-                                     | E_Generic_Package
-                                     | E_Protected_Type
-                                     | E_Task_Type
-         loop
-            Ptr := Scope (Ptr);
-         end loop;
-         if Present (Ptr)
-           and then Ptr /= Standard_Standard
-         then
-            Enclosing_Scope := Flow_Scope'(Ptr, S.Part);
-         end if;
+         declare
+            Context : Entity_Id := Scope (S.Ent);
+         begin
+            while Present (Context)
+              and then Context not in Scope_Id
+            loop
+               Context := Scope (Context);
+            end loop;
+
+            if Present (Context)
+              and then Context /= Standard_Standard
+            then
+               Enclosing_Scope := Flow_Scope'(Context, S.Part);
+            end if;
+         end;
       end if;
 
       if Is_Private_Descendant (S.Ent)
