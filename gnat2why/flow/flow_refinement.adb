@@ -248,48 +248,36 @@ package body Flow_Refinement is
    -----------------------------------
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-
-      --  Up-traverse to a proper parent of the current scope, i.e. to the
-      --  parent of the body node (if the current scope is non-separate) or of
-      --  the stub node (if the current scope is separate).
-
-      Proper_Body : constant Node_Id :=
-        (case Ekind (S.Ent) is
-            when E_Package | E_Generic_Package =>
-              Package_Body (S.Ent),
-            when E_Protected_Type =>
-              Protected_Body (S.Ent),
-            when E_Task_Type =>
-              Task_Body (S.Ent),
-            when others =>
-              raise Program_Error);
-
-      Body_Parent : constant Node_Id := Parent (Proper_Body);
-
-      Proper_Parent : constant Node_Id :=
-        (if Nkind (Body_Parent) = N_Subunit
-         then Parent (Corresponding_Stub (Body_Parent))
-         else Body_Parent);
-      --  ??? perhaps re-use True_Parent from the body of Sem_Ch12 package
-
-      --  Proper parent can be anything with a declarative_part, e.g. package
-      --  body or task body (which immediately are what we are looking for) but
-      --  also entry body or a block statement (which we still need to
-      --  up-traverse); just call Get_Flow_Scope to complete the work.
-
-      Enclosing : constant Flow_Scope := Get_Flow_Scope (Proper_Parent);
-
-      pragma Assert
-        (if Nkind (Proper_Parent) in N_Package_Body
-                                   | N_Protected_Body
-                                   | N_Task_Body
-         then
-           (Enclosing.Ent
-            in Unique_Defining_Entity (Proper_Parent)
-             | Generic_Parent (Parent (Corresponding_Spec (Proper_Parent)))));
-
    begin
-      return Enclosing;
+      --  Top-level (generic) and child package bodies are nested immediately
+      --  in the Standard package.
+      --  ??? is this really what want for child packages?
+      if Is_Compilation_Unit (S.Ent) then
+         return Null_Flow_Scope;
+
+      --  Other body scopes are nested in the bodies of their enclosing scopes
+
+      else
+         declare
+            Enclosing_Scope : constant Flow_Scope :=
+              Get_Enclosing_Flow_Scope ((S.Ent, Visible_Part));
+         begin
+            --  Typically bodies that are not compilation units are nested in
+            --  other bodies.
+
+            if Present (Enclosing_Scope) then
+               return (Ent  => Enclosing_Scope.Ent,
+                       Part => Body_Part);
+
+            --  Except for (generic) package bodies declared immediately in the
+            --  bodies of top-level subprograms.
+
+            else
+               pragma Assert (Is_Subprogram (Main_Unit_Entity));
+               return Null_Flow_Scope;
+            end if;
+         end;
+      end if;
    end Get_Enclosing_Body_Flow_Scope;
 
    --------------------
