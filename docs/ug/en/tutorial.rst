@@ -9,6 +9,13 @@ completely in |SPARK|, within the GPS integrated development environment. All
 the tools may also be run from the command-line, see :ref:`Command Line
 Invocation`.
 
+.. note::
+
+  If you're using SPARK Discovery instead of SPARK Pro, some of the proofs in
+  this tutorial may not be obtained automatically. See the section on
+  :ref:`Alternative_Provers` to install additional provers that are not present
+  in SPARK Discovery.
+
 Writing |SPARK| Programs
 ========================
 
