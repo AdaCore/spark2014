@@ -28,7 +28,6 @@ with Nlists;                         use Nlists;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
 with Sprint;                         use Sprint;
-with Stand;                          use Stand;
 
 with Common_Iterators;               use Common_Iterators;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
@@ -232,41 +231,16 @@ package body Flow_Refinement is
    ------------------------------
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-      Enclosing_Scope : Flow_Scope :=
-        Get_Flow_Scope (Unit_Declaration_Node (S.Ent));
+   begin
+      return
+        (if Is_Child_Unit (S.Ent)
+         then (Ent  => Scope (S.Ent),
+               Part => (if Is_Private_Descendant (S.Ent)
+                        then Private_Part
+                        else S.Part))
+         else Get_Flow_Scope (Unit_Declaration_Node (S.Ent)));
       --  Call to Get_Flow_Scope on a declaration node returns the scope where
       --  S.Ent is declared, not the scope of the S.Ent itself.
-
-   begin
-      if No (Enclosing_Scope)
-        and then Scope (S.Ent) /= Standard_Standard
-      then
-         declare
-            Context : Entity_Id := Scope (S.Ent);
-         begin
-            while Present (Context)
-              and then Context not in Scope_Id
-            loop
-               Context := Scope (Context);
-            end loop;
-
-            if Present (Context)
-              and then Context /= Standard_Standard
-            then
-               Enclosing_Scope := Flow_Scope'(Context, S.Part);
-            end if;
-         end;
-      end if;
-
-      if Is_Private_Descendant (S.Ent)
-        and then Scope (S.Ent) /= Standard_Standard
-      then
-         --  The extra check for standard might seem pointless, but in
-         --  theory its possible to have a top-level private package.
-         Enclosing_Scope.Part := Private_Part;
-      end if;
-
-      return Enclosing_Scope;
    end Get_Enclosing_Flow_Scope;
 
    -----------------------------------
