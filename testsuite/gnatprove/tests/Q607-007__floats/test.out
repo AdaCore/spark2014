@@ -113,7 +113,7 @@ normalize.adb:134:30: info: float overflow check proved (Interval)
 normalize.adb:135:14: info: initialization of "V2" proved
 normalize.adb:135:14: info: range check proved (CodePeer)
 normalize.adb:142:14: info: precondition proved (Z3: 1 VC)
-normalize.adb:142:14: info: range check proved (Z3: 1 VC)
+normalize.adb:142:14: medium: range check might fail
 normalize.adb:142:19: info: division check proved (CodePeer)
 normalize.adb:142:19: info: float overflow check proved (Interval)
 normalize.adb:142:19: info: range check proved (Interval)

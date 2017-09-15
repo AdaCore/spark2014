@@ -433,44 +433,44 @@ my_lists.adb:49:22: info: initialization of "C.Node" proved
 my_lists.adb:50:07: info: precondition proved (Z3: 2 VC)
 my_lists.adb:50:15: info: initialization of private part of "L" proved
 my_lists.adb:50:18: info: initialization of "C.Node" proved
-my_lists.adb:51:07: info: precondition proved (Z3: 2 VC)
+my_lists.adb:51:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 my_lists.adb:51:15: info: initialization of private part of "L" proved
 my_lists.adb:51:18: info: initialization of "C.Node" proved
 my_lists.adb:53:12: info: discriminant check proved (Z3: 1 VC)
 my_lists.adb:53:12: info: precondition proved (Z3: 1 VC)
 my_lists.adb:53:18: info: initialization of private part of "L" proved
-my_lists.adb:55:12: info: precondition proved (Z3: 1 VC)
+my_lists.adb:55:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:55:18: info: initialization of private part of "L" proved
 my_lists.adb:55:21: info: initialization of "D.Node" proved
-my_lists.adb:56:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:56:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:56:15: info: initialization of private part of "L" proved
 my_lists.adb:56:18: info: initialization of "D.Node" proved
-my_lists.adb:57:12: info: precondition proved (Z3: 1 VC)
+my_lists.adb:57:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:57:22: info: initialization of private part of "L" proved
 my_lists.adb:57:25: info: initialization of "C.Node" proved
-my_lists.adb:58:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:58:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:58:15: info: initialization of private part of "L" proved
 my_lists.adb:58:18: info: initialization of "D.Node" proved
-my_lists.adb:59:12: info: precondition proved (Z3: 1 VC)
+my_lists.adb:59:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:59:18: info: initialization of private part of "L" proved
 my_lists.adb:59:21: info: initialization of "C.Node" proved
-my_lists.adb:61:10: info: assertion proved (Z3: 1 VC)
-my_lists.adb:61:26: info: precondition proved (Z3: 1 VC)
+my_lists.adb:61:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 < Length (L)
+my_lists.adb:61:26: medium: precondition might fail
 my_lists.adb:61:58: info: initialization of private part of "L" proved
 my_lists.adb:61:62: info: initialization of "D.Node" proved
-my_lists.adb:61:65: info: overflow check proved (Z3: 1 VC)
-my_lists.adb:62:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:61:65: medium: overflow check might fail
+my_lists.adb:62:07: medium: precondition might fail
 my_lists.adb:62:15: info: initialization of private part of "L" proved
 my_lists.adb:62:18: info: initialization of "D.Node" proved
-my_lists.adb:63:12: info: precondition proved (Z3: 1 VC)
+my_lists.adb:63:12: medium: precondition might fail
 my_lists.adb:63:18: info: initialization of private part of "L" proved
 my_lists.adb:63:21: info: initialization of "C.Node" proved
-my_lists.adb:65:10: info: assertion proved (Z3: 1 VC)
-my_lists.adb:65:26: info: precondition proved (Z3: 1 VC)
+my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L)
+my_lists.adb:65:26: medium: precondition might fail
 my_lists.adb:65:58: info: initialization of private part of "L" proved
 my_lists.adb:65:62: info: initialization of "D.Node" proved
-my_lists.adb:65:65: info: overflow check proved (Z3: 1 VC)
-my_lists.adb:66:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:65:65: medium: overflow check might fail
+my_lists.adb:66:07: medium: precondition might fail
 my_lists.adb:66:15: info: initialization of private part of "L" proved
 my_lists.adb:66:18: info: initialization of "D.Node" proved
 my_lists.adb:68:14: info: initialization of private part of "L" proved
@@ -492,32 +492,32 @@ my_lists.adb:78:22: info: initialization of "C.Node" proved
 my_lists.adb:79:07: info: precondition proved (Z3: 2 VC)
 my_lists.adb:79:15: info: initialization of private part of "L" proved
 my_lists.adb:79:18: info: initialization of "C.Node" proved
-my_lists.adb:80:07: info: precondition proved (Z3: 2 VC)
+my_lists.adb:80:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 my_lists.adb:80:15: info: initialization of private part of "L" proved
 my_lists.adb:80:18: info: initialization of "C.Node" proved
-my_lists.adb:81:07: info: precondition proved (Z3: 2 VC)
+my_lists.adb:81:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 my_lists.adb:81:15: info: initialization of private part of "L" proved
 my_lists.adb:81:18: info: initialization of "C.Node" proved
 my_lists.adb:83:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:83:30: info: initialization of private part of "L" proved
-my_lists.adb:86:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:86:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:86:24: info: initialization of private part of "L" proved
 my_lists.adb:86:27: info: initialization of "C.Node" proved
-my_lists.adb:87:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:87:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:87:24: info: initialization of private part of "L" proved
-my_lists.adb:87:27: info: precondition proved (Z3: 1 VC)
+my_lists.adb:87:27: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:87:33: info: initialization of private part of "L" proved
 my_lists.adb:87:36: info: initialization of "C.Node" proved
-my_lists.adb:89:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:89:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:89:22: info: precondition proved (Z3: 1 VC)
 my_lists.adb:89:28: info: initialization of private part of "L" proved
 my_lists.adb:89:37: info: initialization of "C.Node" proved
-my_lists.adb:90:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:90:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:90:22: info: precondition proved (Z3: 1 VC)
 my_lists.adb:90:36: info: initialization of private part of "L" proved
 my_lists.adb:90:45: info: precondition proved (Z3: 1 VC)
 my_lists.adb:90:54: info: initialization of "C.Node" proved
-my_lists.adb:91:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:91:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:91:22: info: precondition proved (Z3: 1 VC)
 my_lists.adb:91:28: info: initialization of private part of "L" proved
 my_lists.adb:92:22: info: assertion proved (Z3: 1 VC)
@@ -1187,7 +1187,7 @@ my_maps.adb:116:18: info: initialization of "L.Length" proved
 my_maps.adb:116:18: info: initialization of "L.Nodes" proved
 my_maps.adb:116:18: info: initialization of "L.TC" proved
 my_maps.adb:116:18: info: initialization of private part of "L" proved
-my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:117:07: medium: precondition might fail
 my_maps.adb:117:15: info: initialization of "L.Buckets" proved
 my_maps.adb:117:15: info: initialization of "L.Free" proved
 my_maps.adb:117:15: info: initialization of "L.Length" proved
@@ -1227,7 +1227,7 @@ my_maps.adb:122:16: info: initialization of "L.Length" proved
 my_maps.adb:122:16: info: initialization of "L.Nodes" proved
 my_maps.adb:122:16: info: initialization of "L.TC" proved
 my_maps.adb:122:16: info: initialization of private part of "L" proved
-my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
+my_maps.adb:123:22: info: assertion proved (CVC4: 1 VC)
 my_maps.adb:123:30: info: initialization of "L.Buckets" proved
 my_maps.adb:123:30: info: initialization of "L.Free" proved
 my_maps.adb:123:30: info: initialization of "L.Length" proved
@@ -2073,7 +2073,7 @@ my_ordered_maps.adb:128:16: info: initialization of "L.Nodes" proved
 my_ordered_maps.adb:128:16: info: initialization of "L.Root" proved
 my_ordered_maps.adb:128:16: info: initialization of "L.TC" proved
 my_ordered_maps.adb:128:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:129:22: medium: assertion might fail, cannot prove not Contains (L, (f => 3), (g => 4))
+my_ordered_maps.adb:129:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:129:36: info: initialization of "L.First" proved
 my_ordered_maps.adb:129:36: info: initialization of "L.Free" proved
 my_ordered_maps.adb:129:36: info: initialization of "L.Last" proved
@@ -2109,7 +2109,7 @@ my_ordered_maps.adb:133:18: info: initialization of "L.Root" proved
 my_ordered_maps.adb:133:18: info: initialization of "L.TC" proved
 my_ordered_maps.adb:133:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:134:22: info: initialization of "C.Node" proved
-my_ordered_maps.adb:134:22: medium: assertion might fail, cannot prove C /= No_Element (e.g. when C = (Node => 0) and No_Element = (Node => 0))
+my_ordered_maps.adb:134:22: medium: assertion might fail, cannot prove C /= No_Element
 my_ordered_maps.adb:135:07: info: precondition proved (Z3: 1 VC)
 my_ordered_maps.adb:135:15: info: initialization of "L.First" proved
 my_ordered_maps.adb:135:15: info: initialization of "L.Free" proved
@@ -2686,7 +2686,7 @@ my_ordered_sets.adb:61:42: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:61:42: info: initialization of "L.Root" proved
 my_ordered_sets.adb:61:42: info: initialization of "L.TC" proved
 my_ordered_sets.adb:61:42: info: initialization of private part of "L" proved
-my_ordered_sets.adb:62:25: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:62:25: medium: assertion might fail, cannot prove Equivalent_Sets (M and L, K and L)
 my_ordered_sets.adb:62:42: info: initialization of "M.First" proved
 my_ordered_sets.adb:62:42: info: initialization of "M.Free" proved
 my_ordered_sets.adb:62:42: info: initialization of "M.Last" proved
@@ -2928,7 +2928,7 @@ my_ordered_sets.adb:84:18: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:84:18: info: initialization of "L.Root" proved
 my_ordered_sets.adb:84:18: info: initialization of "L.TC" proved
 my_ordered_sets.adb:84:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:85:07: medium: precondition might fail
 my_ordered_sets.adb:85:15: info: initialization of "L.First" proved
 my_ordered_sets.adb:85:15: info: initialization of "L.Free" proved
 my_ordered_sets.adb:85:15: info: initialization of "L.Last" proved
@@ -3291,7 +3291,7 @@ my_ordered_sets.adb:137:18: info: initialization of "K.Nodes" proved
 my_ordered_sets.adb:137:18: info: initialization of "K.Root" proved
 my_ordered_sets.adb:137:18: info: initialization of "K.TC" proved
 my_ordered_sets.adb:137:18: info: initialization of private part of "K" proved
-my_ordered_sets.adb:138:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:138:22: medium: assertion might fail, cannot prove Contains (K, 2)
 my_ordered_sets.adb:138:32: info: initialization of "K.First" proved
 my_ordered_sets.adb:138:32: info: initialization of "K.Free" proved
 my_ordered_sets.adb:138:32: info: initialization of "K.Last" proved
@@ -3559,7 +3559,7 @@ my_ordered_sets.adb:178:18: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:178:18: info: initialization of "L.Root" proved
 my_ordered_sets.adb:178:18: info: initialization of "L.TC" proved
 my_ordered_sets.adb:178:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:179:07: medium: precondition might fail
 my_ordered_sets.adb:179:15: info: initialization of "L.First" proved
 my_ordered_sets.adb:179:15: info: initialization of "L.Free" proved
 my_ordered_sets.adb:179:15: info: initialization of "L.Last" proved
@@ -3594,7 +3594,7 @@ my_ordered_sets.adb:182:16: info: initialization of "L.Nodes" proved
 my_ordered_sets.adb:182:16: info: initialization of "L.Root" proved
 my_ordered_sets.adb:182:16: info: initialization of "L.TC" proved
 my_ordered_sets.adb:182:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:183:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (f => 1), (g => 8))
 my_ordered_sets.adb:183:32: info: initialization of "L.First" proved
 my_ordered_sets.adb:183:32: info: initialization of "L.Free" proved
 my_ordered_sets.adb:183:32: info: initialization of "L.Last" proved
@@ -3625,7 +3625,7 @@ my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:192:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:193:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
-my_ordered_sets.ads:22:53: medium: range check might fail (e.g. when Get_F'Result = 0 and X = (F => 0, G => 0))
+my_ordered_sets.ads:22:53: medium: range check might fail
 my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
 my_ordered_sets.ads:31:14: warning: subprogram "Test_Ordered_Set" has no effect
 my_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
@@ -3871,7 +3871,7 @@ my_sets.adb:43:21: info: initialization of "K.Length" proved
 my_sets.adb:43:21: info: initialization of "K.Nodes" proved
 my_sets.adb:43:21: info: initialization of "K.TC" proved
 my_sets.adb:43:21: info: initialization of private part of "K" proved
-my_sets.adb:44:25: info: assertion proved (Z3: 1 VC)
+my_sets.adb:44:25: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:44:26: info: initialization of "M.Buckets" proved
 my_sets.adb:44:26: info: initialization of "M.Free" proved
 my_sets.adb:44:26: info: initialization of "M.Length" proved
@@ -3934,7 +3934,7 @@ my_sets.adb:50:21: info: initialization of "K.Length" proved
 my_sets.adb:50:21: info: initialization of "K.Nodes" proved
 my_sets.adb:50:21: info: initialization of "K.TC" proved
 my_sets.adb:50:21: info: initialization of private part of "K" proved
-my_sets.adb:51:25: info: assertion proved (Z3: 1 VC)
+my_sets.adb:51:25: medium: assertion might fail, cannot prove M or L) = (K or L
 my_sets.adb:51:26: info: initialization of "M.Buckets" proved
 my_sets.adb:51:26: info: initialization of "M.Free" proved
 my_sets.adb:51:26: info: initialization of "M.Length" proved
@@ -4024,7 +4024,7 @@ my_sets.adb:59:21: info: initialization of "K.Length" proved
 my_sets.adb:59:21: info: initialization of "K.Nodes" proved
 my_sets.adb:59:21: info: initialization of "K.TC" proved
 my_sets.adb:59:21: info: initialization of private part of "K" proved
-my_sets.adb:60:25: medium: assertion might fail, cannot prove M - L) = (K - L
+my_sets.adb:60:25: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:60:26: info: initialization of "M.Buckets" proved
 my_sets.adb:60:26: info: initialization of "M.Free" proved
 my_sets.adb:60:26: info: initialization of "M.Length" proved

@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=450)
+prove_all(steps=5000)

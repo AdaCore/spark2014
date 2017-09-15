@@ -5,7 +5,7 @@ safety_pack.adb:41:21: info: float overflow check proved (CVC4: 1 VC)
 safety_pack.adb:43:17: info: initialization of "Res" proved
 safety_pack.adb:43:21: info: float overflow check proved (CVC4: 1 VC)
 safety_pack.adb:46:14: info: initialization of "Res" proved
-safety_pack.adb:57:26: medium: range check might fail
+safety_pack.adb:57:26: info: range check proved (Z3: 1 VC)
 safety_pack.adb:60:14: info: initialization of "Res" proved
 safety_pack.adb:67:17: info: predicate check proved (CVC4: 1 VC)
 safety_pack.adb:69:17: info: predicate check proved (CVC4: 1 VC)

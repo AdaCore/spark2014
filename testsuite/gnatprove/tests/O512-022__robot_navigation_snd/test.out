@@ -110,7 +110,7 @@ algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:282:51: info: initialization of "iterR.Node" proved
 algorithm.adb:283:19: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:283:40: info: initialization of "iterR.Node" proved
-algorithm.adb:284:19: info: precondition proved (Z3: 1 VC)
+algorithm.adb:284:19: medium: precondition might fail
 algorithm.adb:284:38: info: initialization of "iterL.Node" proved
 algorithm.adb:289:22: info: initialization of "iterL.Node" proved
 algorithm.adb:290:13: info: precondition proved (CVC4: 1 VC)
@@ -133,8 +133,8 @@ algorithm.adb:320:33: info: initialization of "riterR.Node" proved
 algorithm.adb:321:16: info: initialization of "riterL.Node" proved
 algorithm.adb:321:46: info: initialization of "riterR.Node" proved
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
-algorithm.adb:324:35: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 2 VC)
 algorithm.adb:324:61: info: initialization of "riterR.Node" proved
+algorithm.adb:325:35: medium: loop invariant might fail after first iteration, cannot prove Has_Element (This.gapVec, riterL)
 algorithm.adb:325:61: info: initialization of "riterL.Node" proved
 algorithm.adb:326:44: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
@@ -150,20 +150,20 @@ algorithm.adb:335:81: info: initialization of "riterL.Node" proved
 algorithm.adb:340:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:340:37: info: initialization of "riterL.Node" proved
 algorithm.adb:344:23: info: initialization of "riterR.Node" proved
-algorithm.adb:345:13: info: precondition proved (Z3: 1 VC)
+algorithm.adb:345:13: medium: precondition might fail
 algorithm.adb:345:36: info: initialization of "riterR.Node" proved
 algorithm.adb:348:13: info: initialization of "riterL.Node" proved
 algorithm.adb:351:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:351:47: info: initialization of "riterR.Node" proved
-algorithm.adb:351:64: info: precondition proved (Z3: 1 VC)
+algorithm.adb:351:64: medium: precondition might fail
 algorithm.adb:351:86: info: initialization of "riterL.Node" proved
 algorithm.adb:351:109: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:352:15: info: precondition proved (Z3: 1 VC)
+algorithm.adb:352:15: medium: precondition might fail
 algorithm.adb:352:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:81: info: initialization of "riterL.Node" proved
-algorithm.adb:361:27: info: precondition proved (Z3: 1 VC)
+algorithm.adb:361:27: medium: precondition might fail
 algorithm.adb:361:49: info: initialization of "riterL.Node" proved
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
 algorithm.adb:381:71: medium: range check might fail

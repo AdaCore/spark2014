@@ -87,19 +87,19 @@ floating_point.adb:156:40: info: float overflow check proved (Interval)
 floating_point.adb:158:46: medium: float overflow check might fail
 floating_point.adb:158:57: medium: float overflow check might fail
 floating_point.adb:159:46: medium: float overflow check might fail
-floating_point.adb:161:70: medium: precondition might fail
+floating_point.adb:161:70: info: precondition proved (Z3_noquant: 1 VC)
 floating_point.adb:162:15: info: float overflow check proved (Interval)
 floating_point.adb:162:22: medium: float overflow check might fail
 floating_point.adb:162:27: medium: float overflow check might fail
 floating_point.adb:162:34: info: float overflow check proved (Interval)
 floating_point.adb:162:41: medium: float overflow check might fail
-floating_point.adb:164:70: medium: precondition might fail
+floating_point.adb:164:70: info: precondition proved (Z3_noquant: 1 VC)
 floating_point.adb:165:15: info: float overflow check proved (Interval)
 floating_point.adb:165:22: medium: float overflow check might fail
 floating_point.adb:165:27: medium: float overflow check might fail
 floating_point.adb:165:34: info: float overflow check proved (Interval)
 floating_point.adb:165:41: medium: float overflow check might fail
-floating_point.adb:169:24: info: division check proved (Z3_noquant: 1 VC)
+floating_point.adb:169:24: medium: divide by zero might fail
 floating_point.adb:169:24: medium: float overflow check might fail
 floating_point.adb:169:37: medium: float overflow check might fail
 floating_point.adb:170:22: info: initialization of "Res" proved
