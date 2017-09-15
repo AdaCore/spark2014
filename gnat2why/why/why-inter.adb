@@ -1263,24 +1263,29 @@ package body Why.Inter is
       end if;
    end To_Why_Id;
 
-   function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id
+   function To_Why_Id
+     (Obj   : Entity_Name;
+      Local : Boolean)
+      return W_Identifier_Id
    is
    begin
-      if Obj = SPARK_Xrefs.Name_Of_Heap_Variable then
+      if Is_Heap_Variable (Obj) then
          return New_Identifier (Name => SPARK_Xrefs.Name_Of_Heap_Variable,
                                 Typ  => M_Main.Type_Of_Heap);
       else
          declare
-            Name : constant String :=
-              Avoid_Why3_Keyword (Extract_Object_Name (Obj));
+            Ada_Name : constant String := To_String (Obj);
+            Why_Name : constant String :=
+              Avoid_Why3_Keyword (Extract_Object_Name (Ada_Name));
          begin
             if Local then
-               return New_Identifier (Name => Name,
+               return New_Identifier (Name => Why_Name,
                                       Typ  => EW_Private_Type);
             else
                return New_Identifier
-                 (Module => New_Module (File => No_Name, Name => NID (Obj)),
-                  Name   => Name,
+                 (Module => New_Module (File => No_Name,
+                                        Name => NID (Ada_Name)),
+                  Name   => Why_Name,
                   Typ    => EW_Private_Type);
             end if;
          end;

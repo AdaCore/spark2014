@@ -294,7 +294,7 @@ package body Gnat2Why.Decls is
       Emit
         (File,
          New_Global_Ref_Declaration
-           (Name     => To_Why_Id (Object_Name, Local => True),
+           (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => EW_Private_Type));
 

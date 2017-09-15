@@ -1098,7 +1098,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Writes
                  (Eff,
-                  To_Why_Id (Obj => To_String (Name), Local => False));
+                  To_Why_Id (Obj => Name, Local => False));
             end if;
          end;
       end loop;
@@ -1154,7 +1154,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Reads
                  (Eff,
-                  To_Why_Id (Obj => To_String (Name), Local => False));
+                  To_Why_Id (Obj => Name, Local => False));
             end if;
          end;
       end loop;

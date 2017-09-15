@@ -295,7 +295,7 @@ package body Why.Gen.Binders is
                   Local => False,
                   Main  => (Ada_Node => Empty,
                             B_Name   =>
-                              To_Why_Id (To_String (V), Local => False),
+                              To_Why_Id (V, Local => False),
                             B_Ent    => V,
                             Mutable  => True));
                I := I + 1;

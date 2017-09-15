@@ -176,7 +176,10 @@ package Why.Inter is
    --  @param Typ Expected type of the id.
    --  @result The Why identifier to be used for E.
 
-   function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id;
+   function To_Why_Id
+     (Obj   : Entity_Name;
+      Local : Boolean)
+      return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
    function To_Why_Type
