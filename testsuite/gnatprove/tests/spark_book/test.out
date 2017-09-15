@@ -333,8 +333,6 @@ contains3.adb:22:37: info: index check proved (CVC4: 2 VC)
 contains3.adb:24:10: info: initialization of "Result_Index" proved
 contains3.adb:24:46: info: index check proved (CVC4: 2 VC)
 contains3.adb:25:11: info: initialization of "Result_Index" proved
-control_structures.adb:7:11: medium: "Default_Base" might not be initialized after elaboration of main program "Control_Structures"
-control_structures.adb:7:11: medium: "Default_Width" might not be initialized after elaboration of main program "Control_Structures"
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
 control_structures.adb:31:08: medium: overflow check might fail
@@ -624,9 +622,6 @@ elaboration_demo.adb:5:26: medium: float overflow check might fail
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
-enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"
-enum_example.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Enum_Example"
-enum_example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Enum_Example"
 enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
 enum_example.adb:18:32: info: range check proved (CVC4: 1 VC)
 enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
@@ -668,7 +663,6 @@ enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
 enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
 enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
-example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
 example.adb:10:07: info: initialization of "Changed" proved
 example.adb:13:10: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:21: info: initialization of "Value" proved, in call inlined at example.adb:27
@@ -685,8 +679,6 @@ example.adb:32:26: warning: no Global contract available for "Put"
 example.adb:32:41: info: initialization of "Value" proved
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
-generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
-generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
 generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:30: medium: overflow check might fail
 generic_examples.adb:15:14: info: initialization of "Result" proved
@@ -800,8 +792,6 @@ generic_searchers.ads:16:20: info: initialization of "Found" proved, in instanti
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
-good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
-good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:20:11: warning: assuming "Get" has no effect on global items
