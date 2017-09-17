@@ -277,7 +277,6 @@ package body Flow.Control_Flow_Graph.Utility is
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
       A        : V_Attributes     := Null_Attributes;
-      Tmp_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
    begin
@@ -291,27 +290,29 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location               := E_Loc;
 
       if In_Vertex then
-         Tmp_Used := Get_Variables
-           (Actual,
-            Scope                => Scope,
-            Local_Constants      => FA.Local_Constants,
-            Fold_Functions       => True,
-            Use_Computed_Globals => not FA.Generating_Globals,
-            Consider_Extensions  => Ext_Relevant_To_Formal);
+         declare
+            Used : constant Flow_Id_Sets.Set :=
+              Get_Variables
+                (Actual,
+                 Scope                => Scope,
+                 Local_Constants      => FA.Local_Constants,
+                 Fold_Functions       => True,
+                 Use_Computed_Globals => not FA.Generating_Globals,
+                 Consider_Extensions  => Ext_Relevant_To_Formal);
+         begin
+            for F of Used loop
+               if not Discriminants_Or_Bounds_Only
+                 or else Is_Record_Discriminant (F)
+               then
+                  A.Variables_Used.Include (F);
+               end if;
+               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
+                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+               end if;
+            end loop;
 
-         for F of Tmp_Used loop
-            if not Discriminants_Or_Bounds_Only
-              or else Is_Record_Discriminant (F)
-            then
-               A.Variables_Used.Include (F);
-            end if;
-            if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-               A.Variables_Used.Include (F'Update (Facet => The_Bounds));
-            end if;
-         end loop;
-
-         A.Variables_Explicitly_Used := A.Variables_Used;
-
+            A.Variables_Explicitly_Used := A.Variables_Used;
+         end;
       else
          declare
             Partial    : Boolean;
