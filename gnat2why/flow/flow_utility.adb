@@ -500,7 +500,7 @@ package body Flow_Utility is
    begin
       return Ekind (E) in Formal_Kind
         and then Is_Tagged_Type (T)
-        and then Ekind (T) not in Class_Wide_Kind
+        and then not Is_Class_Wide_Type (T)
         and then Has_Extensions_Visible (Sinfo.Scope (E));
    end Extensions_Visible;
 
