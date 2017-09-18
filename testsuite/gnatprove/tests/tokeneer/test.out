@@ -2473,13 +2473,16 @@ screen.adb:615:35: info: initialization of "C152b" proved
 screen.adb:615:35: info: initialization of "Policy" proved
 screen.adb:619:16: info: initialization of "OK" proved
 screen.adb:619:23: info: initialization of "ConsoleOK" proved
+screen.adb:621:35: info: initialization of "C160b" proved
 screen.adb:621:35: info: initialization of "WorkStart" proved
 screen.adb:625:16: info: initialization of "OK" proved
 screen.adb:625:23: info: initialization of "ConsoleOK" proved
+screen.adb:627:35: info: initialization of "C166b" proved
 screen.adb:627:35: info: initialization of "WorkEnd" proved
 screen.adb:631:16: info: initialization of "OK" proved
 screen.adb:631:23: info: initialization of "ConsoleOK" proved
 screen.adb:633:35: info: initialization of "AuthDuration" proved
+screen.adb:633:35: info: initialization of "C172b" proved
 screen.adb:637:16: info: initialization of "OK" proved
 screen.adb:637:23: info: initialization of "ConsoleOK" proved
 screen.adb:639:35: info: initialization of "C178b" proved
