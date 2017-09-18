@@ -56,7 +56,7 @@ array_arith.ads:15:35: info: initialization of "X" proved
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 1 and X = (others => 0))
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:35: info: initialization of "X" proved
-array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 (e.g. when J = 8 and X = (8 => 1, others => 0))
+array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 (e.g. when J = 9 and X = (9 => 1, others => 0))
 ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved

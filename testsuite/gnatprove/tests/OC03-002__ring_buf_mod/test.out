@@ -1,34 +1,34 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
-harness.adb:10:04: medium: precondition might fail
+harness.adb:10:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:10:10: info: initialization of "R.Data" proved
 harness.adb:10:10: info: initialization of "R.First" proved
 harness.adb:10:10: info: initialization of "R.Length" proved
-harness.adb:11:04: medium: precondition might fail
+harness.adb:11:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:11:10: info: initialization of "R.Data" proved
 harness.adb:11:10: info: initialization of "R.First" proved
 harness.adb:11:10: info: initialization of "R.Length" proved
-harness.adb:12:04: medium: precondition might fail
+harness.adb:12:04: medium: precondition might fail (e.g. when H = 0 and R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:12:09: info: initialization of "R.Data" proved
 harness.adb:12:09: info: initialization of "R.First" proved
 harness.adb:12:09: info: initialization of "R.Length" proved
 harness.adb:13:19: info: initialization of "H" proved
-harness.adb:13:19: medium: assertion might fail, cannot prove H = X
-harness.adb:14:04: medium: precondition might fail
+harness.adb:13:19: medium: assertion might fail, cannot prove H = X (e.g. when H = 0 and X = 0)
+harness.adb:14:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:14:10: info: initialization of "R.Data" proved
 harness.adb:14:10: info: initialization of "R.First" proved
 harness.adb:14:10: info: initialization of "R.Length" proved
-harness.adb:15:04: medium: precondition might fail
+harness.adb:15:04: medium: precondition might fail (e.g. when H = 0 and R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:15:09: info: initialization of "R.Data" proved
 harness.adb:15:09: info: initialization of "R.First" proved
 harness.adb:15:09: info: initialization of "R.Length" proved
 harness.adb:16:19: info: initialization of "H" proved
-harness.adb:16:19: medium: assertion might fail, cannot prove H = Y
-harness.adb:17:04: medium: precondition might fail
+harness.adb:16:19: medium: assertion might fail, cannot prove H = Y (e.g. when H = 0 and Y = 0)
+harness.adb:17:04: medium: precondition might fail (e.g. when H = 0 and R = (Data => (others => 0), First => 0, Length => 0))
 harness.adb:17:09: info: initialization of "R.Data" proved
 harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
 harness.adb:18:19: info: initialization of "H" proved
-harness.adb:18:19: medium: assertion might fail, cannot prove H = Z
+harness.adb:18:19: medium: assertion might fail, cannot prove H = Z (e.g. when H = 0 and Z = 0)
 ring_buf.adb:15:37: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:24:28: info: range check proved (CVC4: 1 VC)
@@ -44,15 +44,15 @@ ring_buf.ads:51:51: medium: range check might fail (e.g. when M = (others => 0) 
 ring_buf.ads:58:21: info: initialization of "R.Data" proved
 ring_buf.ads:58:21: info: initialization of "R.First" proved
 ring_buf.ads:58:21: info: initialization of "R.Length" proved
-ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = ModelModel'(1..0 => 0)
+ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = ModelModel'(1..0 => 0) (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:59:30: info: initialization of "R.Data" proved
 ring_buf.ads:59:30: info: initialization of "R.First" proved
 ring_buf.ads:59:30: info: initialization of "R.Length" proved
-ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R)
-ring_buf.ads:63:31: medium: precondition might fail
-ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X)
+ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R) (e.g. when Head'Result = 0 and R = (Data => (others => 0), First => 0, Length => 0))
+ring_buf.ads:63:31: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
+ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X) (e.g. when R = (Data => (others => 0), First => 0, Length => 0) and R'Old = (Data => (others => 0), First => 0, Length => 0) and X = 0)
 ring_buf.ads:69:43: info: initialization of "Element" proved
-ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old)
+ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old) (e.g. when R = (Data => (others => 0), First => 0, Length => 0) and R'Old = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:71:34: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:72:14: info: initialization of "Element" proved
 ring_buf.ads:72:24: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 0))

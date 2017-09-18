@@ -14,27 +14,27 @@ arith.adb:12:14: info: overflow check proved (CodePeer)
 arith.adb:12:19: medium: overflow check might fail (e.g. when Tmp2 = 0 and Y = -2147483648 and Z = 1)
 arith.adb:15:09: warning: unused assignment
 arith.adb:15:12: warning: possible reassociation due to missing parentheses
-arith.adb:15:14: medium: overflow check might fail
-arith.adb:15:18: medium: divide by zero might fail
+arith.adb:15:14: medium: overflow check might fail (e.g. when Tmp1 = 0 and X = -11 and Y = 2)
+arith.adb:15:18: medium: divide by zero might fail (e.g. when Tmp1 = 0 and Z = 0)
 arith.adb:16:09: warning: unused assignment
 arith.adb:16:12: warning: possible reassociation due to missing parentheses
 arith.adb:16:14: medium: divide by zero might fail (e.g. when Tmp2 = 0 and Y = 0)
-arith.adb:16:14: medium: overflow check might fail
-arith.adb:16:18: medium: overflow check might fail
+arith.adb:16:14: medium: overflow check might fail (e.g. when Tmp2 = 0 and X = -1 and Y = 0)
+arith.adb:16:18: medium: overflow check might fail (e.g. when Tmp2 = 0)
 arith.adb:19:09: warning: unused assignment
 arith.adb:19:14: info: overflow check proved (CVC4: 1 VC)
-arith.adb:19:18: medium: overflow check might fail
+arith.adb:19:18: medium: overflow check might fail (e.g. when Tmp1 = 0)
 arith.adb:20:14: info: division check proved (CodePeer)
 arith.adb:20:14: info: overflow check proved (CodePeer)
-arith.adb:20:18: medium: overflow check might fail
+arith.adb:20:18: medium: overflow check might fail (e.g. when Tmp2 = 0)
 arith.adb:23:12: warning: possible reassociation due to missing parentheses
 arith.adb:23:14: medium: overflow check might fail
 arith.adb:23:17: warning: possible reassociation due to missing parentheses
-arith.adb:23:19: medium: overflow check might fail
-arith.adb:23:23: medium: overflow check might fail
+arith.adb:23:19: medium: overflow check might fail (e.g. when Tmp1 = 0 and X = -2147483648 and Y = 1)
+arith.adb:23:23: medium: overflow check might fail (e.g. when Tmp1 = 0)
 arith.adb:23:28: info: division check proved (CodePeer)
 arith.adb:26:11: info: initialization of "Tmp2" proved
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
-arith.adb:26:16: medium: overflow check might fail
+arith.adb:26:16: medium: overflow check might fail (e.g. when Tmp1 = 2147483649 and Tmp2 = 0)
 arith.adb:26:18: info: initialization of "Tmp1" proved
 arith.adb:26:23: medium: overflow check might fail

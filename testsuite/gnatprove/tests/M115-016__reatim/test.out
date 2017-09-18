@@ -18,7 +18,7 @@ pck.adb:40:20: info: initialization of "V_Hi" proved
 pck.adb:40:25: info: division check proved (CVC4: 1 VC)
 pck.adb:40:25: info: range check proved (CVC4: 1 VC)
 pck.adb:42:22: info: initialization of "Result_Hi" proved
-pck.adb:42:22: medium: assertion might fail, cannot prove Result_Hi < 16#7FFF_FFFF#
+pck.adb:42:22: medium: assertion might fail, cannot prove Result_Hi < 16#7FFF_FFFF# (e.g. when Result_Hi = 2147483647)
 pck.adb:51:20: info: initialization of "V_Hi" proved
 pck.adb:51:25: info: overflow check proved (CVC4: 1 VC)
 pck.adb:51:25: info: range check proved (CVC4: 1 VC)

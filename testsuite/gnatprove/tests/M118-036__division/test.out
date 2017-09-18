@@ -5,7 +5,7 @@ t3q3.adb:7:11: info: postcondition proved (CVC4: 1 VC)
 t3q3.adb:7:17: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:12:12: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:16:34: info: initialization of "K" proved
-t3q3.adb:18:13: medium: overflow check might fail
+t3q3.adb:18:13: medium: overflow check might fail (e.g. when I = 2 and J = 2)
 t3q3.adb:19:11: info: initialization of "K" proved
 t3q3.adb:19:11: info: postcondition proved (CVC4: 1 VC)
 t3q3.adb:19:17: info: overflow check proved (CVC4: 1 VC)
@@ -35,4 +35,4 @@ t3q3.adb:46:05: medium: precondition might fail
 t3q3.adb:46:07: info: initialization of "P" proved
 t3q3.adb:46:10: info: initialization of "Q" proved
 t3q3.adb:46:16: warning: unused assignment to "R"
-t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old
+t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old (e.g. when Y = 0 and Y'Old = 2)

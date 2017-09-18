@@ -4,17 +4,17 @@ main.adb:13:11: info: initialization of "I" proved
 main.adb:14:18: info: initialization of "I" proved
 main.adb:15:07: warning: assuming "Put_Line" has no effect on global items
 main.adb:15:07: warning: no Global contract available for "Put_Line"
-main.adb:15:24: low: range check might fail
+main.adb:15:24: low: range check might fail (e.g. when I = 1)
 main.adb:15:41: info: initialization of "I" proved
 main.adb:15:44: low: range check might fail
-main.adb:15:54: low: range check might fail
+main.adb:15:54: low: range check might fail (e.g. when Result = 3)
 main.adb:15:71: info: initialization of "Result" proved
 main.adb:16:07: warning: assuming "Put_Line" has no effect on global items
 main.adb:16:07: warning: no Global contract available for "Put_Line"
-main.adb:16:31: low: range check might fail
+main.adb:16:31: low: range check might fail (e.g. when I = 0)
 main.adb:16:48: info: initialization of "I" proved
 main.adb:16:51: low: range check might fail
-main.adb:16:61: low: range check might fail
+main.adb:16:61: low: range check might fail (e.g. when Result2 = 0)
 main.adb:16:78: info: initialization of "Result2" proved
 main.adb:17:12: info: initialization of "I" proved
 main.adb:17:14: info: overflow check proved (CVC4: 1 VC)
@@ -25,7 +25,7 @@ power_and_sum.adb:9:33: info: loop invariant preservation proved (CVC4: 2 VC)
 power_and_sum.adb:9:47: info: initialization of "I" proved
 power_and_sum.adb:9:47: info: range check proved (CVC4: 1 VC)
 power_and_sum.adb:10:20: info: initialization of "Result" proved
-power_and_sum.adb:10:27: medium: overflow check might fail
+power_and_sum.adb:10:27: medium: overflow check might fail (e.g. when Result = 0 and X = 0)
 power_and_sum.adb:11:15: info: initialization of "I" proved
 power_and_sum.adb:11:17: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:19:13: info: initialization of "I" proved
@@ -34,7 +34,7 @@ power_and_sum.adb:20:33: info: loop invariant preservation proved (CVC4: 1 VC)
 power_and_sum.adb:20:35: info: initialization of "TotalSum" proved
 power_and_sum.adb:20:46: info: initialization of "I" proved
 power_and_sum.adb:22:22: info: initialization of "TotalSum" proved
-power_and_sum.adb:22:31: medium: overflow check might fail
+power_and_sum.adb:22:31: medium: overflow check might fail (e.g. when I = 2 and TotalSum = 2147483646)
 power_and_sum.adb:22:33: info: initialization of "I" proved
 power_and_sum.adb:23:15: info: initialization of "I" proved
 power_and_sum.adb:23:17: info: overflow check proved (CVC4: 1 VC)
@@ -76,7 +76,7 @@ power_and_sum.adb:51:24: info: initialization of "TotalSum" proved
 power_and_sum.adb:52:17: info: initialization of "TotalSum" proved
 power_and_sum.adb:52:17: info: range check proved (CVC4: 1 VC)
 power_and_sum.ads:2:53: info: initialization of "Result" proved
-power_and_sum.ads:3:14: medium: postcondition might fail, cannot prove X ** N = Result
+power_and_sum.ads:3:14: medium: postcondition might fail, cannot prove X ** N = Result (e.g. when N = 2 and Result = 0 and X = 0)
 power_and_sum.ads:3:23: info: initialization of "Result" proved
 power_and_sum.ads:5:35: info: initialization of "Result" proved
 power_and_sum.ads:6:14: info: postcondition proved (CVC4: 1 VC)

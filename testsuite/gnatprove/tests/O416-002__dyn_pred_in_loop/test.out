@@ -1,4 +1,4 @@
-dyn_pred_in_loop.adb:8:35: medium: overflow check might fail
+dyn_pred_in_loop.adb:8:35: medium: overflow check might fail (e.g. when I = 2)
 dyn_pred_in_loop.adb:11:15: info: initialization of "X" proved
 dyn_pred_in_loop.adb:12:17: info: initialization of "X" proved
 dyn_pred_in_loop.adb:12:19: info: overflow check proved (CVC4: 1 VC)

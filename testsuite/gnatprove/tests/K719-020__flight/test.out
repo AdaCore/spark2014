@@ -1,15 +1,15 @@
 flight_manager.adb:16:19: medium: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:19: medium: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
-flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42
-flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43
+flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42 (e.g. when Result = (X_Speed => -100, Y_Speed => -100))
+flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43 (e.g. when Result = (X_Speed => -20, Y_Speed => -100))
 flight_manager.adb:16:43: info: division check proved (CVC4: 1 VC), in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved (CVC4: 1 VC), in call inlined at flight_manager.adb:43
 flight_manager.adb:23:20: medium: overflow check might fail (e.g. when I = -2147483648)
 flight_manager.adb:42:56: medium: overflow check might fail (e.g. when Position_X = 2147483647 and Target_X = -1)
-flight_manager.adb:43:56: medium: overflow check might fail
+flight_manager.adb:43:56: medium: overflow check might fail (e.g. when Position_Y = 2147483647 and Target_Y = -1)
 flight_manager.adb:45:14: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:45:14: medium: "Result.Y_Speed" might not be initialized
-flight_manager.ads:11:14: medium: postcondition might fail, cannot prove Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed
+flight_manager.ads:11:14: medium: postcondition might fail, cannot prove Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed (e.g. when Position_X = 1 and Set_Engine_Speed'Result = (X_Speed => -20, Y_Speed => -20) and Target_X = 0)
 flight_manager.ads:11:27: info: overflow check proved (CVC4: 1 VC)
 flight_manager.ads:11:62: medium: overflow check might fail
 flight_manager.ads:12:18: info: overflow check proved (CodePeer)

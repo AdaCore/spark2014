@@ -11,7 +11,7 @@ a.adb:13:25: info: overflow check proved (CVC4: 1 VC)
 a.adb:13:35: info: overflow check proved (CVC4: 1 VC)
 a.adb:13:49: info: overflow check proved (CVC4: 1 VC)
 a.adb:13:59: info: overflow check proved (CVC4: 1 VC)
-a.adb:14:10: medium: loop variant might fail
+a.adb:14:10: medium: loop variant might fail (e.g. when Bn = -2)
 a.adb:14:44: info: initialization of "Bn" proved
 a.adb:15:16: info: initialization of "An" proved
 a.adb:16:16: info: initialization of "Bn" proved

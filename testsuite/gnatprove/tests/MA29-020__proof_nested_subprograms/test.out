@@ -1,5 +1,5 @@
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash = (others => 0) and Hash'First = 0 and N = 0)
 skein.adb:35:34: info: initialization of "Hash" proved, in call inlined at skein.adb:139
 skein.adb:36:70: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:139
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139

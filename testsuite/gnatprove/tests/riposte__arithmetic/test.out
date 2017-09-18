@@ -6,7 +6,7 @@ arithmetic.adb:14:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = -2147483648 and Negation_I'Result = 0)
 arithmetic.adb:21:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:21:41: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:24:16: medium: overflow check might fail
+arithmetic.adb:24:16: medium: overflow check might fail (e.g. when A = -2 and B = 2 and Multiply_A'Result = 0)
 arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
 arithmetic.adb:32:11: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:33:15: info: initialization of "R" proved
@@ -19,11 +19,11 @@ arithmetic.adb:37:14: info: initialization of "R" proved
 arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:46:14: info: initialization of "R" proved
-arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C
-arithmetic.adb:59:31: medium: overflow check might fail
+arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 323 and Double_A = 2 and Double_B = 2)
+arithmetic.adb:59:31: medium: overflow check might fail (e.g. when Double_A = 2 and Double_B = 2)
 arithmetic.adb:59:45: info: initialization of "C" proved
-arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C
-arithmetic.adb:71:24: medium: overflow check might fail
+arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 12166397)
+arithmetic.adb:71:24: medium: overflow check might fail (e.g. when A = 2 and B = 2)
 arithmetic.adb:71:31: info: initialization of "C" proved
 arithmetic.adb:76:21: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
 arithmetic.adb:77:19: info: postcondition proved (CVC4: 1 VC)
@@ -87,21 +87,21 @@ arithmetic.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:191:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: medium: overflow check might fail (e.g. when Abs_Test_C'Result = 0 and N = -2147483648)
-arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N
+arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N (e.g. when N = 10 and Test_Mod_A'Result = 0)
 arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N
+arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N (e.g. when N = 0 and Test_Mod_B'Result = -10)
 arithmetic.adb:208:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A
+arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A (e.g. when A = 0 and Test_Mod_C'Result = -1)
 arithmetic.adb:218:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
 arithmetic.adb:226:36: medium: assertion might fail, cannot prove N / 10 < 0 (e.g. when N = -1)
 arithmetic.adb:226:38: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A
+arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A (e.g. when A = 1 and Test_Rem_A'Result = 0)
 arithmetic.adb:237:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:244:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:244:39: medium: overflow check might fail
 arithmetic.adb:244:45: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:244:45: medium: overflow check might fail
+arithmetic.adb:244:45: medium: overflow check might fail (e.g. when A = -128 and B = -1)
 arithmetic.adb:244:50: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:244:55: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:247:16: info: division check proved (CVC4: 1 VC)
@@ -109,10 +109,10 @@ arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = -128 and
 arithmetic.adb:257:17: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:257:22: medium: divide by zero might fail
 arithmetic.adb:257:30: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:257:37: medium: overflow check might fail
+arithmetic.adb:257:37: medium: overflow check might fail (e.g. when A = -128 and B = 3 and C = -127)
 arithmetic.adb:266:22: info: assertion proved (Z3: 1 VC)
 arithmetic.adb:266:26: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0
+arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0 (e.g. when A = 2)
 arithmetic.adb:277:26: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:283:19: info: postcondition proved (CVC4: 2 VC)
 arithmetic.adb:288:29: info: range check proved (CVC4: 1 VC)

@@ -196,6 +196,6 @@ decadriver.ads:187:21: info: range check proved (CVC4: 1 VC)
 decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:210:27: info: initialization of "Result" proved
-decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode (e.g. when Config = (Channel => 0, PRF => PRF_16MHz, Tx_Preamble_Length => 0, Tx_PAC => PAC_8, Tx_Preamble_Code => 0, Rx_Preamble_Code => 0, Use_Nonstandard_SFD => False, Data_Rate => Data_Rate_110k, PHR_Mode => 0, SFD_Timeout => 0, Enable_Smart_Power => False))
 decadriver.ads:331:17: medium: ceiling priority protocol might not be respected
 decadriver.ads:332:49: medium: this interrupt might be reserved

@@ -8,7 +8,7 @@ loop_tutorial.adb:27:33: info: initialization of "Lower" proved
 loop_tutorial.adb:27:33: info: loop invariant initialization proved (CVC4: 5 VC)
 loop_tutorial.adb:27:33: info: loop invariant preservation proved (CVC4: 5 VC)
 loop_tutorial.adb:28:37: info: initialization of "Upper" proved
-loop_tutorial.adb:30:43: medium: overflow check might fail
+loop_tutorial.adb:30:43: medium: overflow check might fail (e.g. when Upper = 46340)
 loop_tutorial.adb:31:43: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 loop_tutorial.adb:33:44: info: initialization of "Lower" proved

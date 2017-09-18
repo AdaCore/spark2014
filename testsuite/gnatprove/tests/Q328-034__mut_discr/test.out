@@ -81,7 +81,7 @@ screen_output.adb:82:07: warning: no Global contract available for "Put"
 screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
 screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: low: range check might fail
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (others => 'NUL') and S'First = 0 and S'Last = 0)
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (-2 => ' ', 2 => ' ', 3 => ' ', 4 => ' ', others => ':') and S'First = 1 and S'Last = 2147483647)
 screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
 screen_output.adb:84:07: warning: no Global contract available for "New_Line"
 screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
@@ -162,10 +162,10 @@ values-operations.adb:63:28: info: overflow check proved (CVC4: 1 VC)
 values-operations.adb:63:30: info: initialization of "V2.E" proved
 values-operations.adb:66:23: info: initialization of "V1.E" proved
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
-values-operations.adb:66:28: medium: overflow check might fail
+values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => -2147483648) and V2 = (E => -1))
 values-operations.adb:66:30: info: initialization of "V2.E" proved
 values-operations.adb:69:23: info: initialization of "V1.E" proved
-values-operations.adb:69:28: medium: overflow check might fail
+values-operations.adb:69:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => 2) and V2 = (E => -2))
 values-operations.adb:69:30: info: initialization of "V2.E" proved
 values-operations.adb:72:23: info: initialization of "V1.E" proved
 values-operations.adb:72:28: info: overflow check proved (CVC4: 1 VC)

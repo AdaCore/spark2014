@@ -1,4 +1,4 @@
-tab_init.adb:5:19: medium: overflow check might fail
+tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -195225787 and I = 2 and T = (others => -195225787))
 tab_init.adb:6:33: info: loop invariant proved (CodePeer)
 tab_init.adb:7:39: info: initialization of "T" proved
 tab_init.adb:7:39: medium: "T" might not be initialized

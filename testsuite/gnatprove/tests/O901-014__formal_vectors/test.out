@@ -47,7 +47,7 @@ aida-containers-formal_vectors.adb:84:50: info: range check proved (CVC4: 1 VC),
 aida-containers-formal_vectors.adb:91:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:91:51: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:96:14: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:99:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => (Capacity => 0, others => ?)) and New_Item = (Capacity => 1, Hidden_Vector => ?))
+aida-containers-formal_vectors.adb:99:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => (Capacity => 0, others => ?)) and New_Item = (Capacity => ?, Hidden_Vector => 1))
 aida-containers-formal_vectors.adb:99:42: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:100:41: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:106:24: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => (Capacity => 1, others => ?)))
@@ -60,12 +60,12 @@ aida-containers-formal_vectors.adb:123:40: info: range check proved (CVC4: 1 VC)
 aida-containers-formal_vectors.adb:126:13: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:129:54: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:132:13: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:134:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 0, Hidden_Vector => ?))
+aida-containers-formal_vectors.adb:134:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => 0))
 aida-containers-formal_vectors.adb:134:56: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:137:13: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:139:53: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:142:13: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:144:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 0, Hidden_Vector => ?))
+aida-containers-formal_vectors.adb:144:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => 0))
 aida-containers-formal_vectors.adb:144:55: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:147:13: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:152:53: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
@@ -77,11 +77,11 @@ aida-containers-formal_vectors.adb:175:13: info: range check proved (CVC4: 1 VC)
 aida-containers-formal_vectors.adb:179:54: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:24:09: medium: default initial condition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:49:20: info: postcondition proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => (Capacity => 0, others => ?)) and New_Item = (Capacity => 0, Hidden_Vector => ?))
+aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => ?, Hidden_Vector => (Capacity => 0, others => ?)) and New_Item = (Capacity => ?, Hidden_Vector => 0))
 aida-containers-formal_vectors.ads:184:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 hnco-test2.adb:7:08: medium: precondition might fail
 hnco-test2.adb:8:08: medium: precondition might fail
-hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1) (e.g. when V = (Hidden_Vector => ?, others => ?))
-hnco-test2.adb:11:22: medium: assertion might fail, cannot prove V.Contains (2) (e.g. when V = (Hidden_Vector => ?, others => ?))
+hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1) (e.g. when V = (Capacity => ?, Hidden_Vector => 10))
+hnco-test2.adb:11:22: medium: assertion might fail, cannot prove V.Contains (2) (e.g. when V = (Capacity => ?, Hidden_Vector => 10))
 hnco-test2.ads:11:04: info: initialization of private part of "V" proved
 hnco-test2.ads:11:34: info: range check proved (CVC4: 1 VC)

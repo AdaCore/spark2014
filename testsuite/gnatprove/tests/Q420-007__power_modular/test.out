@@ -7,5 +7,5 @@ non_binary_mod_power.adb:16:19: info: assertion proved (CVC4: 1 VC)
 non_binary_mod_power.adb:16:19: info: initialization of "Z" proved
 non_binary_mod_power.adb:16:32: info: initialization of "Y" proved
 non_binary_mod_power.adb:17:19: info: initialization of "X" proved
-non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = Y
+non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = Y (e.g. when X = 51 and Y = 1)
 non_binary_mod_power.adb:17:27: info: initialization of "Y" proved

@@ -13,7 +13,7 @@ aco-math-very_longs.adb:54:21: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:54:31: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:54:41: info: initialization of "Carry" proved
 aco-math-very_longs.adb:55:57: info: initialization of "Sum" proved
-aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I = 2147483647 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1)
+aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I = 2 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1)
 aco-math-very_longs.adb:56:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:56:50: info: initialization of "Sum" proved
 aco-math-very_longs.adb:62:37: info: range check proved (CVC4: 1 VC)
@@ -29,7 +29,7 @@ aco-math-very_longs.adb:77:25: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:77:35: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:77:46: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:78:14: info: initialization of "Difference" proved
-aco-math-very_longs.adb:83:29: medium: array index check might fail (e.g. when I = 2147483647 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1)
+aco-math-very_longs.adb:83:29: medium: array index check might fail (e.g. when I = 2 and Result = (Long_Digits => (others => 0), others => ?) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1)
 aco-math-very_longs.adb:83:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:83:50: info: initialization of "Difference" proved
 aco-math-very_longs.adb:97:26: info: range check proved (CVC4: 1 VC)
@@ -360,7 +360,7 @@ aco-math-very_longs.adb:583:55: info: division check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:584:34: info: division check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:585:62: info: initialization of "Bit_Position" proved
 aco-math-very_longs.adb:586:42: info: initialization of "Digit_Number" proved
-aco-math-very_longs.adb:586:42: medium: array index check might fail
+aco-math-very_longs.adb:586:42: medium: array index check might fail (e.g. when Digit_Number = 2 and Number = (Octet_Length => 1, Long_Digits => (others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 1)
 aco-math-very_longs.adb:588:11: info: initialization of "Digit" proved
 aco-math-very_longs.adb:588:21: info: initialization of "Mask" proved
 aco-math-very_longs.adb:593:14: info: initialization of "Result" proved
