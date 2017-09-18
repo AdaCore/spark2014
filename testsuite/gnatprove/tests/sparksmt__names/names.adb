@@ -24,7 +24,7 @@
 with Ada.Containers;         use Ada.Containers;
 with Ada.Strings.Hash;
 
-with Names.Data;             use Names.Data;
+with Names.Data;             use Names.Data; pragma Elaborate_All (Names.Data);
 
 use Names.Data.Char_Tables;
 use Names.Data.Entry_Tables;

@@ -1,4 +1,4 @@
-with Q; use Q;
+with Q; use Q; pragma Elaborate_All (Q);
 package P
   with
   Elaborate_Body,

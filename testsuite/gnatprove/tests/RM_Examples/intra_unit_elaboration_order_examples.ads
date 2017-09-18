@@ -1,4 +1,4 @@
-with Times_2;
+with Times_2; pragma Elaborate_All (Times_2);
 
 package Intra_Unit_Elaboration_Order_Examples
   with Initializes => (X, Y)

@@ -1,5 +1,5 @@
 with Types; use Types;
-with P_List; use P_List;
+with P_List; use P_List; pragma Elaborate_All (P_List);
 with P_U_Parent; use P_U_Parent;
 with Ada.Text_IO; use Ada.Text_IO;
 

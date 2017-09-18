@@ -1,4 +1,4 @@
-with Proxy;
+with Proxy; pragma Elaborate_All (Proxy);
 
 package body P is
 

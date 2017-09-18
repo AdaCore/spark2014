@@ -1,4 +1,4 @@
-with Tab;
+with Tab; pragma Elaborate (Tab);
 with Other;
 package body Count is
    package Key_Value_Table is new Tab (Integer);

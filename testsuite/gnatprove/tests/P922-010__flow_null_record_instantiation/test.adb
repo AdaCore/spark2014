@@ -1,4 +1,4 @@
-with My_Generic;
+with My_Generic; pragma Elaborate_All (My_Generic);
 
 package body Test is
 

@@ -1,4 +1,4 @@
-with Ext;
+with Ext; pragma Elaborate_All (Ext);
 
 package TP
    with Initializes => (B4 => null)

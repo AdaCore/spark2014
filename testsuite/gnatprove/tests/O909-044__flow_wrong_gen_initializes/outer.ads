@@ -1,4 +1,4 @@
-with Helper; use Helper;
+with Helper; use Helper; pragma Elaborate_All (Helper);
 
 package Outer with SPARK_Mode,
    Abstract_State => Out_State

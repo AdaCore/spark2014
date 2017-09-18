@@ -1,4 +1,4 @@
-with Init_2;
+with Init_2; pragma Elaborate_All (Init_2);
 
 package Initializes_Illegal_2
   with SPARK_Mode,

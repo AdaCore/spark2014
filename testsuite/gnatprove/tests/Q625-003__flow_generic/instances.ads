@@ -1,4 +1,4 @@
-with A_Package; use A_Package;
+with A_Package; use A_Package; pragma Elaborate_All (A_Package);
 
 package Instances
 with SPARK_Mode => On

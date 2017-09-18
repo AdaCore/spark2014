@@ -12,7 +12,7 @@
 -- implied.  See the License for the specific language governing
 -- permissions and limitations under the License.
 with Linted.Channels;
-with Linted.Queue;
+with Linted.Queue;    pragma Elaborate_All (Linted.Queue);
 
 package body Linted.IO_Pool with
      Spark_Mode,

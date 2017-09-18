@@ -1,4 +1,4 @@
-with G;
+with G; pragma Elaborate_All (G);
 
 package body P with SPARK_Mode is
 

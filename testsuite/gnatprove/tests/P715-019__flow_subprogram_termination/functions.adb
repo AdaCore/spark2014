@@ -1,5 +1,5 @@
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with Nonreturning_Spec; use Nonreturning_Spec;
+with Nonreturning_Spec; use Nonreturning_Spec; pragma Elaborate_All (Nonreturning_Spec);
 
 package body Functions is
 

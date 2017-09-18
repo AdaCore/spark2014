@@ -1,4 +1,4 @@
-with Context;
+with Context; pragma Elaborate_All (Context);
 with Response_Types;
 
 package ResponseStream is
