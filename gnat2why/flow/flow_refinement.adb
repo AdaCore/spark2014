@@ -678,8 +678,7 @@ package body Flow_Refinement is
                  and then
                    (not Is_Visible (State, Scope)
                       or else
-                    (Is_Abstract_State (State)
-                     and then State_Refinement_Is_Visible (State, Scope)))
+                    State_Refinement_Is_Visible (State, Scope))
                then
                   Projected.Include (Var);
                else
@@ -714,11 +713,8 @@ package body Flow_Refinement is
 
                if Is_Visible (Var, Folded_Scope)
                  and then (not Is_Visible (State, Folded_Scope)
-                           or else
-                             (GG_Get_State_Abstractions.Contains (State)
-                              and then
-                              State_Refinement_Is_Visible (State,
-                                                           Folded_Scope)))
+                             or else
+                           State_Refinement_Is_Visible (State, Folded_Scope))
                then
                   Projected.Include (Var);
                else
@@ -754,10 +750,8 @@ package body Flow_Refinement is
 
                if Is_Visible (Var, Scope)
                  and then (not Is_Visible (State, Scope)
-                           or else (Is_Abstract_State (State)
-                                    and then
-                                    State_Refinement_Is_Visible (State,
-                                                                 Scope)))
+                             or else
+                           State_Refinement_Is_Visible (State, Scope))
                then
                   Projected.Include (Var);
                else
@@ -866,9 +860,8 @@ package body Flow_Refinement is
 
             if Is_Visible (Var, Scope)
               and then (not Is_Visible (State, Scope)
-                        or else (Is_Abstract_State (State)
-                                 and then
-                                 State_Refinement_Is_Visible (State, Scope)))
+                          or else
+                        State_Refinement_Is_Visible (State, Scope))
             then
                Projected_Var := Var;
             else
