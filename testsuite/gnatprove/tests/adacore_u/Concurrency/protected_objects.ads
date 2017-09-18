@@ -10,7 +10,7 @@ is
       procedure Set (V : Natural);
       function Get return Natural;
       entry Reset;
-      procedure Signal with Attach_Handler => SIGHUP;
+      procedure Signal with Attach_Handler => SIGINT;
    private
       The_Data : Natural := 0;
    end P1;
@@ -21,7 +21,7 @@ is
       procedure Set (V : Natural);
       function Get return Natural;
       entry Reset;
-      procedure Signal with Attach_Handler => SIGHUP;
+      procedure Signal with Attach_Handler => SIGINT;
    private
       The_Data : Natural := 0;
    end PT;

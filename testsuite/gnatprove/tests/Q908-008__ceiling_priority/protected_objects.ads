@@ -7,7 +7,7 @@ package Protected_Objects
 is
    protected P is
       pragma Priority (1);
-      procedure Signal with Attach_Handler => SIGHUP;
+      procedure Signal with Attach_Handler => SIGINT;
    end P;
 
 end Protected_Objects;
