@@ -637,7 +637,7 @@ package body Flow_Refinement is
       for Var of Vars loop
          if Is_Constituent (Var) then
             declare
-               State : constant Node_Id := Encapsulating_State (Var);
+               State : constant Entity_Id := Encapsulating_State (Var);
 
             begin
                pragma Assert (if Present (Scope)
