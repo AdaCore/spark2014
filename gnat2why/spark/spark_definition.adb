@@ -1885,6 +1885,7 @@ package body SPARK_Definition is
 
          when N_At_Clause
             | N_Attribute_Definition_Clause
+            | N_Call_Marker
             | N_Character_Literal
             | N_Enumeration_Representation_Clause
             | N_Exception_Declaration
@@ -2075,7 +2076,8 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Null_Statement
+               when N_Call_Marker
+                  | N_Null_Statement
                   | N_Freeze_Entity
                =>
                   null;

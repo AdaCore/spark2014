@@ -196,7 +196,8 @@ package body Flow.Interprocedural is
          begin
             Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
-                         Classwide            => Is_Dispatching_Call (N),
+                         Classwide            =>
+                           Flow_Classwide.Is_Dispatching_Call (N),
                          Depends              => Deps,
                          Use_Computed_Globals => not FA.Generating_Globals,
                          Callsite             => N);
@@ -237,7 +238,8 @@ package body Flow.Interprocedural is
             --  Collect all the globals first
             Get_Globals (Subprogram             => Called_Thing,
                          Scope                  => FA.B_Scope,
-                         Classwide              => Is_Dispatching_Call (N),
+                         Classwide              =>
+                           Flow_Classwide.Is_Dispatching_Call (N),
                          Globals                => Globals,
                          Consider_Discriminants => True,
                          Use_Deduced_Globals    => not FA.Generating_Globals);

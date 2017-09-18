@@ -6818,7 +6818,8 @@ package body Gnat2Why.Expr is
                        Context => T);
                end;
 
-            when N_Null_Statement
+            when N_Call_Marker
+               | N_Null_Statement
                | N_Freeze_Entity
             =>
                null;
@@ -6876,7 +6877,8 @@ package body Gnat2Why.Expr is
                  (Defining_Identifier (N),
                   Id);
 
-            when N_Null_Statement
+            when N_Call_Marker
+               | N_Null_Statement
                | N_Freeze_Entity
             =>
                null;
@@ -15186,7 +15188,8 @@ package body Gnat2Why.Expr is
       Current_Error_Node := Stmt_Or_Decl;
 
       case Nkind (Stmt_Or_Decl) is
-         when N_Label
+         when N_Call_Marker
+            | N_Label
             | N_Null_Statement
          =>
             return +Void;

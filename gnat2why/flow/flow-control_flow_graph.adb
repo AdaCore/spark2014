@@ -656,7 +656,8 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) in N_Null_Statement
+   with Pre => Nkind (N) in N_Call_Marker
+                          | N_Null_Statement
                           | N_Raise_Statement
                           | N_Raise_xxx_Error
                           | N_Exception_Declaration
@@ -4284,7 +4285,8 @@ package body Flow.Control_Flow_Graph is
          begin
             Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
-                         Classwide            => Is_Dispatching_Call (N),
+                         Classwide            =>
+                           Flow_Classwide.Is_Dispatching_Call (N),
                          Depends              => D_Map,
                          Use_Computed_Globals => not FA.Generating_Globals,
                          Callsite             => N);
@@ -4645,7 +4647,8 @@ package body Flow.Control_Flow_Graph is
       --  Obtain globals (either from contracts or the computed stuff)
       Get_Globals (Subprogram          => Get_Called_Entity (Callsite),
                    Scope               => FA.B_Scope,
-                   Classwide           => Is_Dispatching_Call (Callsite),
+                   Classwide           =>
+                     Flow_Classwide.Is_Dispatching_Call (Callsite),
                    Globals             => Globals,
                    Use_Deduced_Globals => not FA.Generating_Globals);
 
@@ -4926,7 +4929,9 @@ package body Flow.Control_Flow_Graph is
          when N_Loop_Statement =>
             Do_Loop_Statement (N, FA, CM, Ctx);
 
-         when N_Null_Statement =>
+         when N_Call_Marker
+            | N_Null_Statement
+         =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
 
          when N_Package_Body      |

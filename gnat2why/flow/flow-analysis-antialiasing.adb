@@ -755,7 +755,7 @@ package body Flow.Analysis.Antialiasing is
       begin
          Get_Globals (Subprogram => Subprogram,
                       Scope      => FA.B_Scope,
-                      Classwide  => Is_Dispatching_Call (Call),
+                      Classwide  => Flow_Classwide.Is_Dispatching_Call (Call),
                       Globals    => Globals);
          if Is_Out then
             for R of Globals.Reads loop

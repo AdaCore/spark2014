@@ -1378,6 +1378,7 @@ package body Gnat2Why.Expr.Loops.Inv is
               (N, Loop_Writes, Inv_Seen, In_Nested => True);
 
          when N_Abstract_Subprogram_Declaration
+            | N_Call_Marker
             | N_Delay_Relative_Statement
             | N_Delay_Until_Statement
             | N_Exception_Declaration
