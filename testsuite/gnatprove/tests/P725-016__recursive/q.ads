@@ -1,3 +1,3 @@
- package Q is
-    function S return Boolean;
- end;
+package Q is
+   function S return Boolean;
+end;
