@@ -7,3 +7,4 @@ prove_all(steps=350, opt=["-U", "-P", "Functional_Correctness/functional_correct
 # commented out due to crash with volatile float (Q906-010)
 # prove_all(opt=["-U", "-P", "Systems_Programming/systems_programming"])
 prove_all(opt=["-U", "-P", "Concurrency/concurrency"])
+prove_all(opt=["-U", "-P", "Object_Oriented_Programming/object_oriented_programming"])
