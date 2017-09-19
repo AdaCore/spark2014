@@ -1,4 +1,4 @@
-with Volatiles_Illegal_Helper;
+with Volatiles_Illegal_Helper; pragma Elaborate (Volatiles_Illegal_Helper);
 with System.Storage_Elements;
 
 package Volatiles_Illegal_3

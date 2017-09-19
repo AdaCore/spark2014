@@ -1,4 +1,4 @@
-with Initializes_Illegal_5.Pr_Child;
+with Initializes_Illegal_5.Pr_Child; pragma Elaborate_All (Initializes_Illegal_5.Pr_Child);
 
 package body Initializes_Illegal_5
   with SPARK_Mode,
