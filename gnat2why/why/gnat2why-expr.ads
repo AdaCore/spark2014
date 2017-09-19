@@ -201,7 +201,7 @@ package Gnat2Why.Expr is
    --     over [Expr].
 
    function Compute_Dynamic_Invariant
- (Expr          : W_Term_Id;
+     (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Params        : Transformation_Params;
       Initialized   : W_Term_Id := True_Term;
