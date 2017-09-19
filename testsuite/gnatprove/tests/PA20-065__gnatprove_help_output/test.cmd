@@ -1,1 +1,2 @@
 gnatprove --help
+echo $?
