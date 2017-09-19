@@ -33,7 +33,7 @@ algorithm.adb:111:49: medium: float overflow check might fail
 algorithm.adb:114:43: info: initialization of "d" proved
 algorithm.adb:143:46: info: function contract not available for proof ("Create" may not return)
 algorithm.adb:150:63: info: range check proved (Interval)
-algorithm.adb:150:70: medium: float overflow check might fail
+algorithm.adb:150:70: medium: float overflow check might fail (e.g. when I = 0 and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and risingGap = (iDir => 0, others => ?))
 algorithm.adb:150:72: info: function contract not available for proof ("alDiff" may not return)
 algorithm.adb:154:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
@@ -98,7 +98,7 @@ algorithm.adb:267:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:267:47: info: initialization of "iterR.Node" proved
 algorithm.adb:267:63: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:267:85: info: initialization of "iterL.Node" proved
-algorithm.adb:267:107: medium: float overflow check might fail
+algorithm.adb:267:107: medium: float overflow check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:268:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:268:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:36: info: precondition proved (CVC4: 1 VC)
@@ -110,7 +110,7 @@ algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:282:51: info: initialization of "iterR.Node" proved
 algorithm.adb:283:19: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:283:40: info: initialization of "iterR.Node" proved
-algorithm.adb:284:19: medium: precondition might fail
+algorithm.adb:284:19: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and iterL = (Node => 0))
 algorithm.adb:284:38: info: initialization of "iterL.Node" proved
 algorithm.adb:289:22: info: initialization of "iterL.Node" proved
 algorithm.adb:290:13: info: precondition proved (CVC4: 1 VC)
@@ -134,14 +134,14 @@ algorithm.adb:321:16: info: initialization of "riterL.Node" proved
 algorithm.adb:321:46: info: initialization of "riterR.Node" proved
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:324:61: info: initialization of "riterR.Node" proved
-algorithm.adb:325:35: medium: loop invariant might fail after first iteration, cannot prove Has_Element (This.gapVec, riterL)
+algorithm.adb:325:35: medium: loop invariant might fail after first iteration, cannot prove Has_Element (This.gapVec, riterL) (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterL = (Node => 0))
 algorithm.adb:325:61: info: initialization of "riterL.Node" proved
 algorithm.adb:326:44: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:47: info: initialization of "riterR.Node" proved
 algorithm.adb:330:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:86: info: initialization of "riterL.Node" proved
-algorithm.adb:330:109: medium: float overflow check might fail
+algorithm.adb:330:109: medium: float overflow check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:331:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:331:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:36: info: precondition proved (CVC4: 1 VC)
@@ -150,23 +150,23 @@ algorithm.adb:335:81: info: initialization of "riterL.Node" proved
 algorithm.adb:340:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:340:37: info: initialization of "riterL.Node" proved
 algorithm.adb:344:23: info: initialization of "riterR.Node" proved
-algorithm.adb:345:13: medium: precondition might fail
+algorithm.adb:345:13: medium: precondition might fail (e.g. when No_Element = (Node => 0) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterR = (Node => 0))
 algorithm.adb:345:36: info: initialization of "riterR.Node" proved
 algorithm.adb:348:13: info: initialization of "riterL.Node" proved
 algorithm.adb:351:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:351:47: info: initialization of "riterR.Node" proved
-algorithm.adb:351:64: medium: precondition might fail
+algorithm.adb:351:64: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterL = (Node => 0))
 algorithm.adb:351:86: info: initialization of "riterL.Node" proved
 algorithm.adb:351:109: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:352:15: medium: precondition might fail
+algorithm.adb:352:15: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterL = (Node => 0))
 algorithm.adb:352:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:81: info: initialization of "riterL.Node" proved
-algorithm.adb:361:27: medium: precondition might fail
+algorithm.adb:361:27: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and riterL = (Node => 0))
 algorithm.adb:361:49: info: initialization of "riterL.Node" proved
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
-algorithm.adb:381:71: medium: range check might fail
+algorithm.adb:381:71: medium: range check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:397:39: info: initialization of "iR.Node" proved
 algorithm.adb:398:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -213,7 +213,7 @@ algorithm.adb:477:35: info: precondition proved (Z3: 1 VC)
 algorithm.adb:477:57: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:477:77: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:477:96: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:478:36: medium: precondition might fail
+algorithm.adb:478:36: medium: precondition might fail (e.g. when Best_Valley_IDS = (rising => (Node => 0), other => (Node => 0), others => ?) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:478:58: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:478:73: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:478:92: info: precondition proved (CVC4: 1 VC)
@@ -228,15 +228,15 @@ algorithm.adb:504:29: info: initialization of "iR.Node" proved
 algorithm.adb:510:30: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:510:52: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:510:67: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:514:20: medium: precondition might fail
+algorithm.adb:514:20: medium: precondition might fail (e.g. when Best_Valley_IDS = (rising => (Node => 0), other => (Node => 0), others => ?) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:514:42: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:514:57: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:515:20: medium: precondition might fail
+algorithm.adb:515:20: medium: precondition might fail (e.g. when Best_Valley_IDS = (rising => (Node => 0), other => (Node => 0), others => ?) and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:515:42: info: initialization of "Best_Valley_IDS.other.Node" proved
 algorithm.adb:515:57: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant initialization proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant preservation proved (CVC4: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail
+algorithm.adb:538:52: medium: float overflow check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: float overflow check proved (CVC4: 1 VC)
@@ -266,7 +266,7 @@ algorithm.adb:586:27: info: initialization of "goal" proved
 algorithm.adb:589:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:596:10: info: initialization of "iNumLPs" proved
 algorithm.adb:601:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:605:67: medium: float overflow check might fail
+algorithm.adb:605:67: medium: float overflow check might fail (e.g. when I = 0 and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and iNumLPs = 0)
 algorithm.adb:605:101: info: range check proved (Interval)
 algorithm.adb:605:103: info: initialization of "iNumLPs" proved
 algorithm.adb:605:111: info: division check proved (CVC4: 1 VC)
@@ -299,7 +299,7 @@ algorithm.adb:645:65: info: initialization of "relGoal" proved
 algorithm.adb:645:82: info: initialization of "robotPose" proved
 algorithm.adb:647:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:647:22: info: initialization of "distToGoal" proved
-algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range
+algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:652:27: info: initialization of "distToGoal" proved
 algorithm.adb:655:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:655:31: info: initialization of "distToGoal" proved
@@ -310,13 +310,13 @@ algorithm.adb:661:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:661:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:661:70: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:673:72: medium: float overflow check might fail
+algorithm.adb:673:72: medium: float overflow check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:674:43: info: range check proved (Z3: 1 VC)
 algorithm.adb:674:49: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:679:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:679:31: info: initialization of "distToGoal" proved
 algorithm.adb:679:68: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
+algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:680:46: info: division check proved (CVC4: 1 VC)
 algorithm.adb:680:46: info: float overflow check proved (Interval)
 algorithm.adb:681:21: info: precondition proved (CVC4: 1 VC)
@@ -347,8 +347,8 @@ algorithm.adb:730:53: info: initialization of "distToGoal" proved
 algorithm.adb:737:52: info: division check proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: float overflow check proved (Interval)
 algorithm.adb:738:37: info: initialization of "driveTurnRate" proved
-algorithm.adb:744:58: medium: precondition might fail
-algorithm.adb:745:88: medium: float overflow check might fail
+algorithm.adb:744:58: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and pBestValley = (Opt => ?, value => (risingGap => (iDir => 0, others => ?), otherGap => (iDir => 0, others => ?))))
+algorithm.adb:745:88: medium: float overflow check might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:746:93: info: initialization of "pBestValley.value.risingGap.distance" proved
 algorithm.adb:746:104: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:757:33: info: initialization of "pBestValley.value.risingGap.bearing" proved
@@ -382,7 +382,7 @@ algorithm.adb:780:35: info: initialization of "safeRisingGapAngle" proved
 algorithm.adb:782:35: info: initialization of "midValleyAngle" proved
 algorithm.adb:795:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:795:31: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:798:29: medium: precondition might fail
+algorithm.adb:798:29: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:798:50: info: initialization of "safetyDist" proved
 algorithm.adb:806:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:806:31: info: initialization of "distToClosestObstacle" proved
@@ -411,13 +411,13 @@ algorithm.adb:860:40: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:860:47: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:860:59: info: initialization of "distToGoal" proved
 algorithm.adb:861:22: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:861:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius > 0.0
+algorithm.adb:861:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius > 0.0 (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:861:44: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:862:22: medium: assertion might fail, cannot prove This.robot.obstacle_avoid_dist > 0.0
+algorithm.adb:862:22: medium: assertion might fail, cannot prove This.robot.obstacle_avoid_dist > 0.0 (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:862:76: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:862:77: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:862:99: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:863:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius) / This.robot.obstacle_avoid_dist > 0.0
+algorithm.adb:863:22: medium: assertion might fail, cannot prove distToClosestObstacle - This.robot.robot_radius) / This.robot.obstacle_avoid_dist > 0.0 (e.g. when This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?))
 algorithm.adb:863:23: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:863:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:72: info: division check proved (CVC4: 1 VC)

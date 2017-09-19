@@ -22,13 +22,13 @@ nonlinear.adb:32:51: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:38:16: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:38:20: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:39:22: info: initialization of "Res" proved
-nonlinear.adb:39:22: medium: assertion might fail, cannot prove Res in -99 .. -Y
+nonlinear.adb:39:22: medium: assertion might fail, cannot prove Res in -99 .. -Y (e.g. when Res = 0 and Y = 1)
 nonlinear.adb:39:36: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:44:43: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:45:16: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:46:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:46:22: info: initialization of "Res" proved
-nonlinear.adb:52:17: medium: overflow check might fail
+nonlinear.adb:52:17: medium: overflow check might fail (e.g. when Res = 0 and X = 2 and Y = 2)
 nonlinear.adb:52:22: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:52:22: info: range check proved (CVC4: 1 VC)
 nonlinear.adb:53:22: info: assertion proved (CVC4: 1 VC)

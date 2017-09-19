@@ -1,1 +1,1 @@
-prover_crash.adb:14:23: medium: range check might fail
+prover_crash.adb:14:23: medium: range check might fail (e.g. when X = 0 and Y = 0)

@@ -4,7 +4,7 @@ prefixsum.adb:10:34: info: initialization of "Space" proved
 prefixsum.adb:10:40: info: range check proved (CVC4: 1 VC)
 prefixsum.adb:15:27: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:22:30: info: division check proved (CVC4: 1 VC)
-prefixsum.adb:25:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'Loop_Entry (K-3)
+prefixsum.adb:25:18: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K-1) + A'Loop_Entry (K-2) + A'Loop_Entry (K-3) (e.g. when A = (others => 0) and K = 0 and Space = 0)
 prefixsum.adb:25:60: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:41: info: index check proved (CVC4: 2 VC)
 prefixsum.adb:26:62: info: index check proved (CVC4: 2 VC)
@@ -14,13 +14,13 @@ prefixsum.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum.adb:33:44: info: initialization of "Space" proved
 prefixsum.adb:35:18: info: initialization of "Space" proved
 prefixsum.adb:37:16: info: initialization of "Left" proved
+prefixsum.adb:39:15: info: loop invariant initialization proved (CVC4: 5 VC; altergo: 1 VC)
 prefixsum.adb:39:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum.adb:39:16: info: initialization of "Left" proved
 prefixsum.adb:39:26: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:39:30: info: initialization of "Space" proved
 prefixsum.adb:41:56: info: range check proved (CVC4: 1 VC)
 prefixsum.adb:43:57: info: range check proved (CVC4: 1 VC)
-prefixsum.adb:45:15: medium: loop invariant might fail in first iteration, cannot prove Left + 1) mod (Space * 2) = Space
 prefixsum.adb:45:26: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:51:37: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:53:64: medium: array index check might fail
@@ -119,9 +119,9 @@ prefixsum.ads:32:34: info: index check proved (CVC4: 2 VC)
 prefixsum.ads:36:41: info: initialization of "Output_Space" proved
 prefixsum.ads:39:17: info: initialization of "Output_Space" proved
 prefixsum.ads:40:17: info: precondition proved (CVC4: 2 VC)
-prefixsum.ads:40:17: medium: postcondition might fail, cannot prove Intermediate_Form (A, A'old)
+prefixsum.ads:40:17: medium: postcondition might fail, cannot prove Intermediate_Form (A, A'old) (e.g. when A = (others => 0) and A'Old = (others => 0))
 prefixsum.ads:48:17: info: precondition proved (CVC4: 2 VC)
-prefixsum.ads:52:08: medium: postcondition might fail, cannot prove A (1) = Ghost (0)
+prefixsum.ads:52:08: medium: postcondition might fail, cannot prove A (1) = Ghost (0) (e.g. when A = (others => 0) and Ghost = (others => 0))
 prefixsum_expanded.adb:10:13: info: initialization of "Space" proved
 prefixsum_expanded.adb:12:14: info: loop invariant initialization proved (CVC4: 10 VC)
 prefixsum_expanded.adb:12:14: info: loop invariant preservation proved (CVC4: 19 VC)
@@ -132,7 +132,7 @@ prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 5 VC; altergo: 1 VC)
-prefixsum_expanded.adb:58:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
+prefixsum_expanded.adb:58:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0 (e.g. when Left = 0 and Space = 0)
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:58:30: info: initialization of "Space" proved
@@ -140,7 +140,7 @@ prefixsum_expanded.adb:60:56: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:62:57: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:64:26: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:70:37: info: division check proved (CVC4: 1 VC)
-prefixsum_expanded.adb:72:64: medium: array index check might fail
+prefixsum_expanded.adb:72:64: medium: array index check might fail (e.g. when Space = 0)
 prefixsum_expanded.adb:75:13: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:75:47: info: initialization of "Left" proved
 prefixsum_expanded.adb:77:26: info: initialization of "Left" proved
@@ -151,7 +151,7 @@ prefixsum_expanded.adb:78:29: info: index check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:78:29: info: initialization of "Left" proved
 prefixsum_expanded.adb:78:35: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:78:40: info: initialization of "Right" proved
-prefixsum_expanded.adb:78:40: medium: array index check might fail
+prefixsum_expanded.adb:78:40: medium: array index check might fail (e.g. when A = (others => 0) and Right = 0)
 prefixsum_expanded.adb:79:26: info: initialization of "Left" proved
 prefixsum_expanded.adb:79:31: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:79:31: info: range check proved (CVC4: 1 VC)
@@ -160,7 +160,7 @@ prefixsum_expanded.adb:79:39: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:81:19: info: initialization of "Space" proved
 prefixsum_expanded.adb:81:25: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:81:25: info: range check proved (CVC4: 1 VC)
-prefixsum_expanded.adb:85:10: medium: assertion might fail, cannot prove A (7) = Saved_A (0) + Saved_A (1) + Saved_A (2) + Saved_A (3) + Saved_A (4) + Saved_A (5) + Saved_A (6) + Saved_A (7)
+prefixsum_expanded.adb:85:10: medium: assertion might fail, cannot prove A (7) = Saved_A (0) + Saved_A (1) + Saved_A (2) + Saved_A (3) + Saved_A (4) + Saved_A (5) + Saved_A (6) + Saved_A (7) (e.g. when A = (others => 0) and Saved_A = (others => 0))
 prefixsum_expanded.adb:102:23: info: initialization of "Space" proved
 prefixsum_expanded.adb:108:26: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:116:21: info: initialization of "Space" proved
@@ -171,7 +171,7 @@ prefixsum_expanded.adb:119:11: info: initialization of "Saved_A" proved
 prefixsum_expanded.adb:135:13: info: initialization of "Space" proved
 prefixsum_expanded.adb:137:13: info: loop invariant initialization proved (CVC4: 8 VC)
 prefixsum_expanded.adb:137:14: info: initialization of "Space" proved
-prefixsum_expanded.adb:139:13: medium: loop invariant might fail after first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum_expanded.adb:139:13: medium: loop invariant might fail after first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum) (e.g. when A = (others => 0) and Space = 0)
 prefixsum_expanded.adb:139:36: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:139:49: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:161:10: info: loop variant proved (CVC4: 1 VC)
@@ -184,7 +184,7 @@ prefixsum_expanded.adb:164:16: info: initialization of "Right" proved
 prefixsum_expanded.adb:166:15: info: loop invariant initialization proved (CVC4: 4 VC)
 prefixsum_expanded.adb:167:37: info: initialization of "Right" proved
 prefixsum_expanded.adb:168:31: info: division check proved (CVC4: 1 VC)
-prefixsum_expanded.adb:169:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
+prefixsum_expanded.adb:169:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space) (e.g. when A = (others => 0) and K = 0 and Right = 0 and Space = 0)
 prefixsum_expanded.adb:169:66: info: index check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:170:34: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:171:47: info: index check proved (CVC4: 2 VC)
@@ -215,7 +215,7 @@ prefixsum_expanded.adb:187:40: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:189:19: info: initialization of "Space" proved
 prefixsum_expanded.adb:189:25: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:193:18: info: initialization of "Saved_A" proved
-prefixsum_expanded.adb:195:10: medium: assertion might fail, cannot prove A (1) = Saved_A (0) + Saved_A (7)
+prefixsum_expanded.adb:195:10: medium: assertion might fail, cannot prove A (1) = Saved_A (0) + Saved_A (7) (e.g. when A = (others => 0) and Saved_A = (others => 0))
 prefixsum_expanded.ads:25:23: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.ads:25:31: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.ads:25:39: info: overflow check proved (CVC4: 1 VC)
@@ -256,15 +256,15 @@ prefixsum_general.adb:38:25: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:44:16: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum_general.adb:44:27: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:56:43: info: division check proved (CVC4: 1 VC)
-prefixsum_general.adb:57:20: medium: loop invariant might fail in first iteration, cannot prove A (K) = Summation (A_Old, K + 1 - Space * 2, K)
+prefixsum_general.adb:57:20: medium: loop invariant might fail in first iteration, cannot prove A (K) = Summation (A_Old, K + 1 - Space * 2, K) (e.g. when A = (1 => -1, others => 0) and A_Old = (1 => 0, others => -1) and K = 1 and Left = 2 and Space = 3)
 prefixsum_general.adb:57:28: info: precondition proved (CVC4: 1 VC)
-prefixsum_general.adb:57:52: medium: range check might fail
+prefixsum_general.adb:57:52: medium: range check might fail (e.g. when Space = 0)
 prefixsum_general.adb:58:46: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:59:28: info: precondition proved (CVC4: 1 VC)
-prefixsum_general.adb:59:52: medium: range check might fail
+prefixsum_general.adb:59:52: medium: range check might fail (e.g. when Space = 0)
 prefixsum_general.adb:61:19: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:61:27: info: precondition proved (CVC4: 1 VC)
-prefixsum_general.adb:61:54: medium: range check might fail
+prefixsum_general.adb:61:54: medium: range check might fail (e.g. when Left = 0 and Space = 0)
 prefixsum_general.adb:61:63: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:63:24: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:63:35: info: precondition proved (CVC4: 1 VC)
@@ -335,6 +335,6 @@ prefixsum_general.adb:126:14: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.ads:8:56: info: division check proved (CVC4: 1 VC)
 prefixsum_general.ads:13:14: info: postcondition proved (CVC4: 2 VC)
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
-prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'last)
+prefixsum_general.ads:18:17: medium: postcondition might fail, cannot prove A (A'Last) = Summation (A'Old, 0, A'last) (e.g. when A = (others => 0) and A'Old = (others => 0))
 prefixsum_general.ads:18:30: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.ads:21:07: warning: unused variable "Ghost"

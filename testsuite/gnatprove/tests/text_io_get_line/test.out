@@ -51,7 +51,7 @@ textio-get_line.adb:139:37: info: initialization of "P" proved
 textio-get_line.adb:139:39: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:145:106: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:146:31: info: initialization of "K" proved
-textio-get_line.adb:146:31: medium: assertion might fail, cannot prove K = Find_Char_In_Slice (ASCII.LF, Cur_Position_At_Start, Cur_Position_At_Start + N - 2) - Cur_Position_At_Start
+textio-get_line.adb:146:31: medium: assertion might fail, cannot prove K = Find_Char_In_Slice (ASCII.LF, Cur_Position_At_Start, Cur_Position_At_Start + N - 2) - Cur_Position_At_Start (e.g. when Cur_Position_At_Start = 0 and EOF_Ch = 'NUL' and K = -1 and N = 0 and The_File = (others => 'NUL'))
 textio-get_line.adb:146:35: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:146:114: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:148:16: info: initialization of "K" proved
@@ -60,11 +60,11 @@ textio-get_line.adb:148:34: info: initialization of "Buf" proved
 textio-get_line.adb:148:41: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:148:41: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:152:31: info: initialization of "Buf" proved
-textio-get_line.adb:152:31: medium: assertion might fail, cannot prove Buf (K) = ASCII.nul
+textio-get_line.adb:152:31: medium: assertion might fail, cannot prove Buf (K) = ASCII.nul (e.g. when Buf = (others => 'NUL') and K = -1)
 textio-get_line.adb:152:36: info: initialization of "K" proved
-textio-get_line.adb:152:36: medium: array index check might fail
+textio-get_line.adb:152:36: medium: array index check might fail (e.g. when K = -1)
 textio-get_line.adb:153:21: info: initialization of "K" proved
-textio-get_line.adb:153:23: medium: range check might fail
+textio-get_line.adb:153:23: medium: range check might fail (e.g. when K = -1)
 textio-get_line.adb:156:13: info: precondition proved (CVC4: 9 VC)
 textio-get_line.adb:156:47: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:157:27: info: initialization of "Buf" proved
@@ -73,7 +73,7 @@ textio-get_line.adb:158:26: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:158:28: info: initialization of "K" proved
 textio-get_line.adb:173:09: info: length check proved (CVC4: 1 VC)
 textio-get_line.adb:174:23: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:174:23: medium: range check might fail
+textio-get_line.adb:174:23: medium: range check might fail (e.g. when Last = 0)
 textio-get_line.adb:184:19: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: range check proved (CVC4: 1 VC)
@@ -135,18 +135,18 @@ textio.adb:152:54: info: index check proved (CVC4: 2 VC)
 textio.adb:154:35: info: initialization of "Num" proved
 textio.adb:155:17: info: initialization of "Result" proved
 textio.adb:155:17: medium: "Result" might not be initialized
-textio.adb:155:17: medium: postcondition might fail, cannot prove Result (Idx) = The_File (Idx - 1 + Cur_Position_At_Start)
+textio.adb:155:17: medium: postcondition might fail, cannot prove Result (Idx) = The_File (Idx - 1 + Cur_Position_At_Start) (e.g. when Cur_Position_At_Start = 0 and Idx = 0 and Num = 0 and Result = (others => 'NUL') and The_File = (others => 'NUL'))
 textio.adb:155:25: info: index check proved (CVC4: 2 VC)
 textio.adb:156:53: info: initialization of "Num" proved
 textio.adb:174:10: info: range check proved (CVC4: 2 VC)
 textio.adb:174:51: info: range check proved (CVC4: 1 VC)
 textio.adb:178:10: info: precondition proved (CVC4: 1 VC)
-textio.adb:181:38: low: range check might fail
+textio.adb:181:38: low: range check might fail (e.g. when R = (others => 'NUL') and R'First = 0 and R'Last = 0 and S = (others => 'NUL') and S'First = 0 and S'Last = 0)
 textio.adb:181:40: info: initialization of "Buffer" proved
 textio.adb:181:40: info: range check proved (CVC4: 4 VC)
 textio.adb:181:53: info: initialization of "Last" proved
-textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
-textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last
+textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first (e.g. when R = (others => 'NUL') and R'First = 0 and R'Last = 0 and S = (others => 'NUL') and S'First = 0 and S'Last = 0)
+textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last (e.g. when R = (others => 'NUL') and R'First = 0 and R'Last = 0 and S = (others => 'NUL') and S'First = 0 and S'Last = 0)
 textio.adb:184:46: info: initialization of "Last" proved
 textio.adb:186:27: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:37: info: overflow check proved (CVC4: 1 VC)

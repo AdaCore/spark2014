@@ -38,7 +38,7 @@ hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
-hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2
+hermes-der-decode.adb:135:87: medium: loop invariant might fail after first iteration, cannot prove Result < 128*256**(I - 2 (e.g. when I = 0 and Octet_Count = 4 and Result = 0)
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 1 VC)
@@ -325,8 +325,8 @@ hermes-oid.adb:134:20: info: initialization of "Out_Of_Space" proved
 hermes-oid.adb:143:31: info: initialization of "Result_Index" proved
 hermes-oid.adb:143:44: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:143:46: info: initialization of "Start_Index" proved
-hermes-oid.adb:143:58: medium: overflow check might fail
-hermes-oid.adb:143:58: medium: range check might fail
+hermes-oid.adb:143:58: medium: overflow check might fail (e.g. when Octet_Count = 0)
+hermes-oid.adb:143:58: medium: range check might fail (e.g. when Octet_Count = 0)
 hermes-oid.adb:150:41: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:150:41: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:151:28: info: initialization of "Result_Index" proved

@@ -13,7 +13,7 @@ pi_euler.adb:14:16: info: initialization of "Pi" proved
 pi_euler.adb:14:18: medium: float overflow check might fail
 pi_euler.adb:14:19: info: initialization of "Erreur" proved
 pi_euler.adb:15:19: info: initialization of "Index" proved
-pi_euler.adb:15:24: medium: overflow check might fail
+pi_euler.adb:15:24: medium: overflow check might fail (e.g. when Index = 0)
 pi_euler.adb:19:12: info: initialization of "Pi" proved
 pi_euler_2.adb:8:10: warning: unused assignment
 pi_euler_2.adb:11:15: info: initialization of "Erreur" proved
@@ -32,7 +32,7 @@ pi_euler_2.adb:18:18: medium: float overflow check might fail
 pi_euler_2.adb:18:19: info: initialization of "Erreur" proved
 pi_euler_2.adb:19:16: warning: unused assignment
 pi_euler_2.adb:19:19: info: initialization of "Index" proved
-pi_euler_2.adb:19:24: medium: overflow check might fail
+pi_euler_2.adb:19:24: medium: overflow check might fail (e.g. when Index = 0)
 pi_euler_2.adb:20:25: info: initialization of "Index_Float" proved
 pi_euler_2.adb:20:37: info: range check proved (Interval)
 pi_euler_2.adb:20:37: medium: float overflow check might fail
