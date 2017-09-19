@@ -21,4 +21,6 @@ package Types is
 
    type AM is array (IT1 range <>, IT2 range <>, IT3 range <>) of ET1;
 
+   function Dummy return AM;
+
 end Types;
