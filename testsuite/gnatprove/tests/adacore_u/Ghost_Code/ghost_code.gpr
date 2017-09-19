@@ -1,0 +1,5 @@
+project Ghost_Code is
+
+   for Excluded_Source_Files use ("bad_mem.ads", "bad_mem.adb");
+
+end Ghost_Code;
