@@ -1,3 +1,4 @@
+with Test_Type; pragma Elaborate_All (Test_Type);
 private package Test_Type.Test with SPARK_Mode is
    X : constant T := (F => 0);
 
