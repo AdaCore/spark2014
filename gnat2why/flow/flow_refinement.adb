@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 
 with Lib;                            use Lib;
@@ -843,36 +844,6 @@ package body Flow_Refinement is
            Change_Variant (Projected_Vars.Writes, In_View));
    end Up_Project;
 
-   procedure Up_Project (Var           :     Flow_Id;
-                         Projected_Var : out Flow_Id;
-                         Scope         : Flow_Scope)
-   is
-   begin
-      if Is_Constituent (Var) then
-         declare
-            State : constant Flow_Id := Encapsulating_State (Var);
-
-         begin
-            pragma Assert (if Present (Scope)
-                           and then Is_Visible (Var, Scope)
-                           and then not Is_Visible (State, Scope)
-                           then Is_Generic_Unit (Scope.Ent));
-
-            if Is_Visible (Var, Scope)
-              and then (not Is_Visible (State, Scope)
-                          or else
-                        State_Refinement_Is_Visible (State, Scope))
-            then
-               Projected_Var := Var;
-            else
-               Projected_Var := State;
-            end if;
-         end;
-      else
-         Projected_Var := Var;
-      end if;
-   end Up_Project;
-
    procedure Up_Project (Vars           : Dependency_Maps.Map;
                          Projected_Vars : out Dependency_Maps.Map;
                          Scope          : Flow_Scope)
@@ -959,7 +930,14 @@ package body Flow_Refinement is
             Up_Project (Deps, Scope, Projected, Partial);
             Projected_Deps := Projected or Partial;
 
-            Up_Project (Var, Projected_Var, Scope);
+            --  Reuse set-based up-projection routine with a singleton set, for
+            --  which the result is also a singleton set.
+            Up_Project (Flow_Id_Sets.To_Set (Var), Scope, Projected, Partial);
+            pragma Assert (Partial.Length + Projected.Length = 1);
+
+            Projected_Var := (if Projected.Is_Empty
+                              then Partial (Partial.First)
+                              else Projected (Projected.First));
 
             --  If Projected_Var is an abstract state and not all of its
             --  constituents are mentioned in the dependency relation then we

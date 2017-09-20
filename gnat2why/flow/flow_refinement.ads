@@ -183,10 +183,6 @@ package Flow_Refinement is
                          Projected_Vars : out Global_Flow_Ids;
                          Scope          : Flow_Scope);
 
-   procedure Up_Project (Var           :     Flow_Id;
-                         Projected_Var : out Flow_Id;
-                         Scope         : Flow_Scope);
-
    procedure Up_Project (Vars           :     Dependency_Maps.Map;
                          Projected_Vars : out Dependency_Maps.Map;
                          Scope          : Flow_Scope);
