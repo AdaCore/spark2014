@@ -182,7 +182,7 @@ stable_marriage.adb:396:10: info: initialization of "Result" proved
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Cardinality" proved
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
-stable_marriage.adb:396:10: info: precondition proved (CVC4: 4 VC)
+stable_marriage.adb:396:10: medium: precondition might fail
 stable_marriage.adb:399:14: info: initialization of "Result" proved
 stable_marriage.ads:21:14: medium: postcondition might fail
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)

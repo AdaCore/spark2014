@@ -29,7 +29,7 @@ fib.adb:34:16: info: initialization of "a1" proved
 fib.adb:34:19: info: overflow check proved (CVC4: 1 VC)
 fib.adb:34:19: info: range check proved (CVC4: 1 VC)
 fib.adb:34:21: info: initialization of "b1" proved
-fib.adb:35:19: info: range check proved (CVC4: 1 VC)
+fib.adb:35:19: medium: range check might fail (e.g. when n1 = 0)
 fib.adb:36:12: warning: unused assignment
 fib.adb:36:15: info: initialization of "i" proved
 fib.adb:36:17: info: overflow check proved (CVC4: 1 VC)
@@ -51,7 +51,7 @@ fib.adb:46:16: info: initialization of "a2" proved
 fib.adb:46:19: info: overflow check proved (CVC4: 1 VC)
 fib.adb:46:19: info: range check proved (CVC4: 1 VC)
 fib.adb:46:21: info: initialization of "b2" proved
-fib.adb:47:19: info: range check proved (CVC4: 1 VC)
+fib.adb:47:19: medium: range check might fail (e.g. when n2 = 0)
 fib.adb:48:12: warning: unused assignment
 fib.adb:48:15: info: initialization of "i" proved
 fib.adb:48:17: info: overflow check proved (CVC4: 1 VC)
@@ -175,7 +175,7 @@ fib.adb:158:13: info: index check proved (CVC4: 2 VC)
 fib.adb:158:16: medium: "A2" might not be initialized
 fib.adb:158:24: info: index check proved (CVC4: 2 VC)
 fib.adb:158:24: info: overflow check proved (CVC4: 1 VC)
-fib.ads:14:14: info: postcondition proved (CVC4: 1 VC)
+fib.ads:14:14: medium: postcondition might fail, cannot prove l1 = l2 (e.g. when l1 = 1 and l2 = 2)
 fib.ads:23:48: info: initialization of "p1" proved
 fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved (CVC4: 1 VC)

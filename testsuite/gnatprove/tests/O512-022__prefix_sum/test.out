@@ -14,13 +14,13 @@ prefixsum.adb:33:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum.adb:33:44: info: initialization of "Space" proved
 prefixsum.adb:35:18: info: initialization of "Space" proved
 prefixsum.adb:37:16: info: initialization of "Left" proved
-prefixsum.adb:39:15: info: loop invariant initialization proved (CVC4: 5 VC; altergo: 1 VC)
 prefixsum.adb:39:15: medium: loop invariant might fail after first iteration, cannot prove Left + 1) mod Space = 0
 prefixsum.adb:39:16: info: initialization of "Left" proved
 prefixsum.adb:39:26: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:39:30: info: initialization of "Space" proved
 prefixsum.adb:41:56: info: range check proved (CVC4: 1 VC)
 prefixsum.adb:43:57: info: range check proved (CVC4: 1 VC)
+prefixsum.adb:45:15: medium: loop invariant might fail in first iteration, cannot prove Left + 1) mod (Space * 2) = Space
 prefixsum.adb:45:26: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:51:37: info: division check proved (CVC4: 1 VC)
 prefixsum.adb:53:64: medium: array index check might fail
