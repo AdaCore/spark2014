@@ -909,10 +909,10 @@ package body Flow_Refinement is
          is
             --  ??? Do the same of Expand_Abstract_State
            (for some C of Iter (Refinement_Constituents (State.Node))
-            => Deps.Contains (Direct_Mapping_Id (C))
+              => Deps.Contains (Direct_Mapping_Id (C))
             or else
-              (for some C of Iter (Part_Of_Constituents (State.Node))
-               => Deps.Contains (Direct_Mapping_Id (C))));
+           (for some C of Iter (Part_Of_Constituents (State.Node))
+              => Deps.Contains (Direct_Mapping_Id (C))));
 
       --  Start of processing for Constituents_Are_Partially_Mentioned
 

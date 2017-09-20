@@ -3442,7 +3442,7 @@ package body Flow.Analysis is
 
       User_Deps           : Dependency_Maps.Map;
       Projected_User_Deps : Dependency_Maps.Map;
-      Actual_Deps : Dependency_Maps.Map;
+      Actual_Deps         : Dependency_Maps.Map;
 
       Params         : Node_Sets.Set;
       Implicit_Param : Entity_Id;
