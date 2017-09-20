@@ -952,10 +952,10 @@ be a *Boolean_*\ ``expression``.
    expression defines properties (a predicate) of the state of the
    package which can be assumed to be true immediately following the
    elaboration of the package. [The expression of the
-   Initial_Condition cannot denote a state abstraction. This means
-   that to express properties of hidden state, functions declared in
-   the visible part acting on the state abstractions of the package
-   must be used.]
+   Initial_Condition cannot denote a state abstraction or hidden
+   state. This means that to express properties of hidden state,
+   functions declared in the visible part acting on the state
+   abstractions of the package must be used.]
 
 .. _etu-initial_condition_aspects-ss:
 
