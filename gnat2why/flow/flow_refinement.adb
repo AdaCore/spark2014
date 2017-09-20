@@ -952,6 +952,9 @@ package body Flow_Refinement is
             Projected, Partial : Flow_Id_Sets.Set;
             Projected_Deps     : Flow_Id_Sets.Set;
 
+            Position : Dependency_Maps.Cursor;
+            Unused   : Boolean;
+
          begin
             Up_Project (Deps, Scope, Projected, Partial);
             Projected_Deps := Projected or Partial;
@@ -968,14 +971,14 @@ package body Flow_Refinement is
                Projected_Deps.Include (Projected_Var);
             end if;
 
-            --  This is to make sure we do not overwrite the Projected_Deps if
-            --  we try to insert Projected_Var twice if we were to use Include.
-            if not Projected_Vars.Contains (Projected_Var) then
-               Projected_Vars.Insert (Key      => Projected_Var,
-                                      New_Item => Projected_Deps);
-            else
-               Projected_Vars (Projected_Var).Union (Projected_Deps);
-            end if;
+            --  Insert {Projected_Var -> Projected_Deps} into Projected_Vars
+            --  without crashing if the mapping is already there.
+
+            Projected_Vars.Insert (Key      => Projected_Var,
+                                   Position => Position,
+                                   Inserted => Unused);
+
+            Projected_Vars (Position).Union (Projected_Deps);
          end;
       end loop;
    end Up_Project;
