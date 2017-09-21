@@ -93,4 +93,3 @@ begin
    -- Clear the list at package elaboration time.
    Clear;
 end Double_List;
-
