@@ -1,1 +1,1 @@
-ALL XFAIL gg: circular constantnts with variable input (Q510-009)
+ALL DEAD gg: circular constantnts with variable input (Q510-009,Q918-021)
