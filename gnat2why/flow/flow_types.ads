@@ -432,6 +432,10 @@ package Flow_Types is
    --  Checks if F is a function entity (and thus used to capture the
    --  function's return value).
 
+   function Is_Internal (F : Flow_Id) return Boolean
+   with Pre => Present (F);
+   --  Checks if F represents an internal entity
+
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;

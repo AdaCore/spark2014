@@ -230,28 +230,14 @@ linted-update.adb:84:32: info: range check proved (CVC4: 4 VC)
 linted-update.adb:85:32: info: range check proved (CVC4: 4 VC)
 linted-update.adb:86:35: info: range check proved (CVC4: 4 VC)
 linted-update.adb:87:35: info: range check proved (CVC4: 4 VC)
-linted-update.adb:94:09: info: initialization of "C207b" proved
-linted-update.adb:94:09: info: initialization of "C211b" proved
 linted-update.adb:94:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:95:09: info: initialization of "C217b" proved
-linted-update.adb:95:09: info: initialization of "C221b" proved
 linted-update.adb:95:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:96:09: info: initialization of "C227b" proved
-linted-update.adb:96:09: info: initialization of "C231b" proved
 linted-update.adb:96:42: info: range check proved (CVC4: 1 VC)
-linted-update.adb:97:09: info: initialization of "C237b" proved
-linted-update.adb:97:09: info: initialization of "C241b" proved
 linted-update.adb:97:43: info: range check proved (CVC4: 1 VC)
-linted-update.adb:98:09: info: initialization of "C247b" proved
-linted-update.adb:98:09: info: initialization of "C251b" proved
 linted-update.adb:98:43: info: range check proved (Z3: 1 VC)
-linted-update.adb:99:09: info: initialization of "C257b" proved
-linted-update.adb:99:09: info: initialization of "C261b" proved
 linted-update.adb:99:43: info: range check proved (Z3: 1 VC)
-linted-update.adb:100:09: info: initialization of "C267b" proved
 linted-update.adb:100:33: info: length check proved (Z3: 1 VC)
 linted-update.adb:100:33: info: range check proved (Z3: 1 VC)
-linted-update.adb:101:09: info: initialization of "C273b" proved
 linted-update.ads:40:38: info: initialization of "S" proved
 linted-update.ads:41:41: info: initialization of "U.MX_Position" proved
 linted-update.ads:41:41: info: initialization of "U.MY_Position" proved

@@ -7,5 +7,4 @@ essai05.adb:23:07: medium: range check might fail (e.g. when R'First = 0 and R'L
 essai05.adb:23:32: info: length check proved (CVC4: 1 VC)
 essai05.adb:26:16: info: initialization of "R" proved
 essai05.adb:28:14: info: initialization of "R" proved
-essai05.adb:32:19: info: initialization of "C23b" proved
 essai05.adb:32:19: medium: range check might fail (e.g. when A'First = -3 and A'Last = -1 and B'First = -3 and B'Last = -3)

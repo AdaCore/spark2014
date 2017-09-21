@@ -1983,7 +1983,8 @@ package body Flow.Analysis is
                               Vertex           : Flow_Graphs.Vertex_Id;
                               Is_Initialized   : Boolean;
                               Is_Uninitialized : Boolean)
-      with Pre => Is_Initialized or Is_Uninitialized;
+      with Pre => (Is_Initialized or Is_Uninitialized)
+                  and then not Is_Internal (Var);
       --  Produces an appropriately worded info/low/high message for the given
       --  variable Var at the given location Vertex.
       --
@@ -2786,6 +2787,14 @@ package body Flow.Analysis is
 
                     or else
                       Is_Constant (Var_Used)
+
+                    --  Skip messages about initialization of internal objects,
+                    --  assuming that they are created by the frontend inlining
+                    --  and if they would cause access to an uninitialized
+                    --  objects then we should get an error when analyzing
+                    --  the inlined subprogram.
+                    or else
+                      Is_Internal (Var_Used)
 
                     --  Skip annoying message about initialization of records
                     --  that carry no data.

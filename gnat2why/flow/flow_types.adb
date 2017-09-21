@@ -602,6 +602,15 @@ package body Flow_Types is
       and then Nkind (F.Node) in N_Entity
       and then Ekind (F.Node) in E_Function);
 
+   -----------------
+   -- Is_Constant --
+   -----------------
+
+   function Is_Internal (F : Flow_Id) return Boolean is
+     (F.Kind in Direct_Mapping | Record_Field
+      and then Nkind (F.Node) in N_Entity
+      and then Is_Internal (F.Node));
+
    ---------------------
    -- Magic_String_Id --
    ---------------------

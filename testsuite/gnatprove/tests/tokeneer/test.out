@@ -221,7 +221,6 @@ auditlog.adb:610:52: info: initialization of "Now.Day" proved
 auditlog.adb:610:52: info: initialization of "Now.MilliSec" proved
 auditlog.adb:610:52: info: initialization of "Now.Month" proved
 auditlog.adb:610:52: info: initialization of "Now.Year" proved
-auditlog.adb:636:35: info: initialization of "C76b" proved
 auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail
 auditlog.adb:717:64: info: overflow check proved (CVC4: 1 VC)
@@ -435,8 +434,6 @@ bio.adb:119:33: info: loop invariant initialization proved (CVC4: 3 VC), in call
 bio.adb:119:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:181
 bio.adb:121:33: info: initialization of "Result" proved
 bio.adb:121:33: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:122:25: info: initialization of "C30b" proved, in call inlined at bio.adb:181
-bio.adb:122:25: info: initialization of "C5b" proved
 bio.adb:127:14: info: initialization of "Result" proved
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
 bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183
@@ -456,7 +453,6 @@ bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at 
 bio.adb:175:23: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:185:14: info: initialization of "Result" proved
 bio.adb:241:10: info: initialization of "NumericReturn" proved
-bio.adb:241:27: info: initialization of "C44b" proved
 bio.adb:244:18: medium: precondition might fail
 bio.adb:250:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
@@ -1324,9 +1320,6 @@ configdata.adb:1047:69: info: division check proved (CVC4: 1 VC)
 configdata.adb:1057:69: info: division check proved (CVC4: 1 VC)
 configdata.adb:1067:70: info: division check proved (CVC4: 1 VC)
 configdata.adb:1077:68: info: division check proved (CVC4: 1 VC)
-configdata.adb:1098:36: info: initialization of "C39b" proved
-configdata.adb:1108:36: info: initialization of "C44b" proved
-configdata.adb:1118:36: info: initialization of "C49b" proved
 configdata.adb:1148:69: info: division check proved (CVC4: 1 VC)
 configdata.adb:1158:68: info: division check proved (CVC4: 1 VC)
 configdata.adb:1179:18: info: initialization of "CloseOK" proved
@@ -1594,7 +1587,6 @@ display.adb:152:14: info: initialization of "Result.Text" proved
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
 display.adb:184:18: medium: precondition might fail
-display.adb:188:32: info: initialization of "C28b.Text" proved
 display.adb:235:49: medium: "Interfac.Output" constituent of "Display.Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:266:36: info: initialization of "TheMsg.Top.Len" proved
@@ -1605,8 +1597,6 @@ display.adb:273:50: info: initialization of "TheMsg.Bottom.Len" proved
 display.adb:273:50: info: initialization of "TheMsg.Bottom.Text" proved
 display.adb:275:24: info: initialization of "TopWritten" proved
 display.adb:275:39: info: initialization of "BottomWritten" proved
-display.adb:280:57: info: initialization of "C36b.Len" proved
-display.adb:280:57: info: initialization of "C36b.Text" proved
 display.adb:280:57: info: initialization of "TheMsg.Bottom.Len" proved
 display.adb:280:57: info: initialization of "TheMsg.Bottom.Text" proved
 display.adb:280:57: info: initialization of "TheMsg.Top.Len" proved
@@ -2087,30 +2077,24 @@ keystore.adb:260:18: info: initialization of "RetValUpd" proved
 keystore.adb:261:18: info: initialization of "RetValFin" proved
 keystore.adb:263:20: info: initialization of "RetValIni" proved
 keystore.adb:264:18: medium: precondition might fail
-keystore.adb:268:29: info: initialization of "C34b" proved
 keystore.adb:268:29: info: initialization of "RetValIni" proved
 keystore.adb:271:20: info: initialization of "RetValUpd" proved
 keystore.adb:272:18: medium: precondition might fail
-keystore.adb:276:29: info: initialization of "C46b" proved
 keystore.adb:276:29: info: initialization of "RetValUpd" proved
 keystore.adb:279:20: info: initialization of "RetValFin" proved
 keystore.adb:280:18: medium: precondition might fail
-keystore.adb:284:28: info: initialization of "C58b" proved
 keystore.adb:284:28: info: initialization of "RetValFin" proved
 keystore.adb:303:07: info: initialization of "Handles" proved
 keystore.adb:332:10: info: initialization of "RetValIni" proved
 keystore.adb:337:13: info: initialization of "RetValIni" proved
 keystore.adb:342:20: info: initialization of "RetValIni" proved
 keystore.adb:343:18: medium: precondition might fail
-keystore.adb:347:28: info: initialization of "C72b" proved
 keystore.adb:347:28: info: initialization of "RetValIni" proved
 keystore.adb:350:20: info: initialization of "RetValDo" proved
 keystore.adb:351:18: medium: precondition might fail
-keystore.adb:355:28: info: initialization of "C84b" proved
 keystore.adb:355:28: info: initialization of "RetValDo" proved
 keystore.adb:358:20: info: initialization of "RetValFin" proved
 keystore.adb:359:18: medium: precondition might fail
-keystore.adb:363:28: info: initialization of "C96b" proved
 keystore.adb:363:28: info: initialization of "RetValFin" proved
 keystore.adb:381:33: info: initialization of "IssuerKey" proved
 keystore.adb:414:29: info: initialization of "IssuerTemplate.AttrMask" proved
@@ -2142,7 +2126,6 @@ keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.Name" constituen
 keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.adb:536:19: info: initialization of "RetVal" proved
 keystore.adb:538:18: medium: precondition might fail
-keystore.adb:542:32: info: initialization of "C110b" proved
 keystore.adb:542:32: info: initialization of "RetVal" proved
 keystore.adb:548:33: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:550:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
@@ -2168,7 +2151,6 @@ keystore.adb:683:40: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:687:23: info: initialization of "RetVal" proved
 keystore.adb:689:22: info: initialization of "RetVal" proved
 keystore.adb:690:21: medium: precondition might fail
-keystore.adb:694:36: info: initialization of "C125b" proved
 keystore.adb:694:36: info: initialization of "RetVal" proved
 keystore.adb:746:10: info: initialization of "Digested" proved
 keystore.adb:750:39: info: initialization of "ThePrivateKeyH" proved
@@ -2179,7 +2161,6 @@ keystore.adb:751:39: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:755:21: info: initialization of "RetVal" proved
 keystore.adb:757:22: info: initialization of "RetVal" proved
 keystore.adb:758:21: medium: precondition might fail
-keystore.adb:762:35: info: initialization of "C137b" proved
 keystore.adb:762:35: info: initialization of "RetVal" proved
 keystore.adb:828:45: info: initialization of "TheKeyTemplate.AttrMask" proved
 keystore.adb:828:45: info: initialization of "TheKeyTemplate.IsPublic" proved
@@ -2192,7 +2173,6 @@ keystore.adb:831:17: info: initialization of "RetVal" proved
 keystore.adb:833:10: info: initialization of "Added" proved
 keystore.adb:842:19: info: initialization of "RetVal" proved
 keystore.adb:843:18: medium: precondition might fail
-keystore.adb:847:33: info: initialization of "C151b" proved
 keystore.adb:847:33: info: initialization of "RetVal" proved
 keystore.adb:863:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
@@ -2449,59 +2429,46 @@ screen.adb:576:65: info: initialization of "NewConfig.WorkEnd" proved
 screen.adb:576:65: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:589:16: info: initialization of "OK" proved
 screen.adb:589:23: info: initialization of "ConsoleOK" proved
-screen.adb:591:35: info: initialization of "C112b" proved
 screen.adb:591:49: info: initialization of "LatchUnlock" proved
 screen.adb:591:49: info: range check proved (CVC4: 1 VC)
 screen.adb:595:16: info: initialization of "OK" proved
 screen.adb:595:23: info: initialization of "ConsoleOK" proved
-screen.adb:597:35: info: initialization of "C122b" proved
 screen.adb:597:49: info: initialization of "AlarmSilent" proved
 screen.adb:597:49: info: range check proved (CVC4: 1 VC)
 screen.adb:601:16: info: initialization of "OK" proved
 screen.adb:601:23: info: initialization of "ConsoleOK" proved
-screen.adb:603:35: info: initialization of "C132b" proved
 screen.adb:603:49: info: initialization of "FingerWait" proved
 screen.adb:603:49: info: range check proved (CVC4: 1 VC)
 screen.adb:607:16: info: initialization of "OK" proved
 screen.adb:607:23: info: initialization of "ConsoleOK" proved
-screen.adb:609:35: info: initialization of "C142b" proved
 screen.adb:609:49: info: initialization of "TokenRemove" proved
 screen.adb:609:49: info: range check proved (CVC4: 1 VC)
 screen.adb:613:16: info: initialization of "OK" proved
 screen.adb:613:23: info: initialization of "ConsoleOK" proved
-screen.adb:615:35: info: initialization of "C152b" proved
 screen.adb:615:35: info: initialization of "Policy" proved
 screen.adb:619:16: info: initialization of "OK" proved
 screen.adb:619:23: info: initialization of "ConsoleOK" proved
-screen.adb:621:35: info: initialization of "C160b" proved
 screen.adb:621:35: info: initialization of "WorkStart" proved
 screen.adb:625:16: info: initialization of "OK" proved
 screen.adb:625:23: info: initialization of "ConsoleOK" proved
-screen.adb:627:35: info: initialization of "C166b" proved
 screen.adb:627:35: info: initialization of "WorkEnd" proved
 screen.adb:631:16: info: initialization of "OK" proved
 screen.adb:631:23: info: initialization of "ConsoleOK" proved
 screen.adb:633:35: info: initialization of "AuthDuration" proved
-screen.adb:633:35: info: initialization of "C172b" proved
 screen.adb:637:16: info: initialization of "OK" proved
 screen.adb:637:23: info: initialization of "ConsoleOK" proved
-screen.adb:639:35: info: initialization of "C178b" proved
 screen.adb:639:35: info: initialization of "Clearance" proved
 screen.adb:643:16: info: initialization of "OK" proved
 screen.adb:643:23: info: initialization of "ConsoleOK" proved
-screen.adb:645:35: info: initialization of "C186b" proved
 screen.adb:645:35: info: initialization of "MinEntry" proved
 screen.adb:649:16: info: initialization of "OK" proved
 screen.adb:649:23: info: initialization of "ConsoleOK" proved
-screen.adb:651:35: info: initialization of "C194b" proved
 screen.adb:651:35: info: initialization of "MinPreservedLog" proved
 screen.adb:655:16: info: initialization of "OK" proved
 screen.adb:655:23: info: initialization of "ConsoleOK" proved
 screen.adb:657:35: info: initialization of "AlarmThreshold" proved
-screen.adb:657:35: info: initialization of "C206b" proved
 screen.adb:661:16: info: initialization of "OK" proved
 screen.adb:661:23: info: initialization of "ConsoleOK" proved
-screen.adb:663:35: info: initialization of "C218b" proved
 screen.adb:663:35: info: initialization of "MaxFAR" proved
 screen.adb:667:16: info: initialization of "OK" proved
 screen.adb:667:23: info: initialization of "ConsoleOK" proved
@@ -2565,19 +2532,15 @@ screen.adb:785:17: info: initialization of "Result" proved, in call inlined at s
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:812
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:818
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:824
-screen.adb:806:35: info: initialization of "C249b" proved
 screen.adb:806:35: info: initialization of "SuccessEntry" proved
 screen.adb:810:16: info: initialization of "OK" proved
 screen.adb:810:23: info: initialization of "ConsoleOK" proved
-screen.adb:812:35: info: initialization of "C260b" proved
 screen.adb:812:35: info: initialization of "FailEntry" proved
 screen.adb:816:16: info: initialization of "OK" proved
 screen.adb:816:23: info: initialization of "ConsoleOK" proved
-screen.adb:818:35: info: initialization of "C271b" proved
 screen.adb:818:35: info: initialization of "SuccessBio" proved
 screen.adb:822:16: info: initialization of "OK" proved
 screen.adb:822:23: info: initialization of "ConsoleOK" proved
-screen.adb:824:35: info: initialization of "C282b" proved
 screen.adb:824:35: info: initialization of "FailBio" proved
 screen.adb:828:16: info: initialization of "OK" proved
 screen.adb:828:23: info: initialization of "ConsoleOK" proved
