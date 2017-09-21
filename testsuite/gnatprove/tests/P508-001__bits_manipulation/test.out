@@ -336,26 +336,26 @@ bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC4: 2 VC),
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.ads:303:26: info: postcondition proved (CVC4: 2 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
-bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
+bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
+bits_manipulation_unsigned.ads:42:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
-bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
+bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
+bits_manipulation_unsigned.ads:43:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
-bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
+bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
+bits_manipulation_unsigned.ads:44:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: info: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
-bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" may not return)
+bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
+bits_manipulation_unsigned.ads:45:04: info: function contract not available for proof ("MSB_Index_Fast_Inline_Always" might not return)
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:104
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at bits_manipulation-functions.adb:110
 bits_manipulation_unsigned.ads:45:04: info: in instantiation at line 20

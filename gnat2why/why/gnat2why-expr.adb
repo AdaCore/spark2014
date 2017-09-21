@@ -12539,7 +12539,7 @@ package body Gnat2Why.Expr is
                   String_For_Reason   : constant String :=
                     (if Subp_Recursive
                      then "is recursive"
-                     else "may not return");
+                     else "might not return");
                begin
                   Error_Msg_NE
                     ("info: ?" & String_For_Implicit
@@ -12554,7 +12554,7 @@ package body Gnat2Why.Expr is
             then
                Error_Msg_NE
                  ("info: expression function body not available for "
-                  & "proof (& may not return)", Expr, Subp);
+                  & "proof (& might not return)", Expr, Subp);
             end if;
          end;
       end if;

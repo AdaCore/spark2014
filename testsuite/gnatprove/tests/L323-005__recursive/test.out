@@ -1,11 +1,11 @@
-p.adb:6:23: info: expression function body not available for proof ("Bad" may not return)
+p.adb:6:23: info: expression function body not available for proof ("Bad" might not return)
 p.adb:6:23: medium: assertion might fail, cannot prove (Bad)
 p.ads:3:15: medium: postcondition might fail, cannot prove Id'Result = (if N = 0 then 0 else (Id (N - 1)) + 1 (e.g. when Id'Result = 1 and N = 1)
-p.ads:3:49: info: expression function body not available for proof ("Id" may not return)
+p.ads:3:49: info: expression function body not available for proof ("Id" might not return)
 p.ads:3:49: info: function contract not available for proof ("Id" is recursive)
 p.ads:3:53: info: range check proved (CVC4: 1 VC)
 p.ads:3:56: info: overflow check proved (CVC4: 1 VC)
-p.ads:5:54: info: expression function body not available for proof ("Bad" may not return)
+p.ads:5:54: info: expression function body not available for proof ("Bad" might not return)
 p.ads:7:15: warning: subprogram "Use_Bad" has no effect
 p.ads:7:36: medium: postcondition might fail, cannot prove false
 p.ads:9:14: medium: subprogram "Down" might not terminate, terminating annotation could be incorrect

@@ -75,7 +75,7 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" proved
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 1 VC)
-deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" may not return)
+deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
 deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: medium: precondition might fail
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved

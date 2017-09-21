@@ -27,6 +27,6 @@ exponentiate.adb:24:18: info: initialization of "Cur_Val" proved
 exponentiate.adb:25:18: info: initialization of "Iter" proved
 exponentiate.adb:25:23: info: range check proved (CVC4: 1 VC)
 exponentiate.adb:28:11: info: initialization of "Result" proved
-test_exponentiate.adb:8:22: info: function contract not available for proof ("Exponentiate" may not return)
+test_exponentiate.adb:8:22: info: function contract not available for proof ("Exponentiate" might not return)
 test_exponentiate.adb:8:22: medium: assertion might fail, cannot prove Exponentiate (Val, Exp) = Val ** Exp
 test_exponentiate.adb:8:36: info: initialization of "Val" proved

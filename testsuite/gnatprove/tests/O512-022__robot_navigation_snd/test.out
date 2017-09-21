@@ -19,7 +19,7 @@ a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
-algorithm.adb:87:44: info: function contract not available for proof ("alDiff" may not return)
+algorithm.adb:87:44: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:92:65: info: division check proved (CVC4: 1 VC)
 algorithm.adb:92:65: info: float overflow check proved (Interval)
 algorithm.adb:108:44: medium: precondition might fail
@@ -31,10 +31,10 @@ algorithm.adb:111:42: info: float overflow check proved (Interval)
 algorithm.adb:111:49: medium: divide by zero might fail
 algorithm.adb:111:49: medium: float overflow check might fail
 algorithm.adb:114:43: info: initialization of "d" proved
-algorithm.adb:143:46: info: function contract not available for proof ("Create" may not return)
+algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:150:63: info: range check proved (Interval)
 algorithm.adb:150:70: medium: float overflow check might fail (e.g. when I = 0 and This = (robot => (scan_Count => 0, speed => 0, goal_reached => False, others => ?), gapVec => 0, others => ?) and risingGap = (iDir => 0, others => ?))
-algorithm.adb:150:72: info: function contract not available for proof ("alDiff" may not return)
+algorithm.adb:150:72: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:154:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:195:36: info: initialization of "rayR.first" proved
@@ -46,7 +46,7 @@ algorithm.adb:195:89: medium: float overflow check might fail
 algorithm.adb:195:95: medium: float overflow check might fail
 algorithm.adb:195:108: medium: float overflow check might fail
 algorithm.adb:195:121: medium: float overflow check might fail
-algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" may not return)
+algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:195:138: info: initialization of "rayR.second" proved
 algorithm.adb:195:151: info: initialization of "rayL.second" proved
 algorithm.adb:198:13: info: precondition proved (CVC4: 1 VC)
@@ -77,7 +77,7 @@ algorithm.adb:231:89: medium: float overflow check might fail
 algorithm.adb:231:95: medium: float overflow check might fail
 algorithm.adb:231:108: medium: float overflow check might fail
 algorithm.adb:231:121: medium: float overflow check might fail
-algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" may not return)
+algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:231:138: info: initialization of "rayR.second" proved
 algorithm.adb:231:151: info: initialization of "rayL.second" proved
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)

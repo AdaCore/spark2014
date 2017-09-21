@@ -81,22 +81,22 @@ ada_real_time.ads:192:50: medium: divide by zero might fail
 ada_real_time.ads:192:50: medium: overflow check might fail
 ada_real_time.ads:253:23: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:256:25: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:256:37: info: implicit function contract not available for proof ("TS_SC" may not return)
+ada_real_time.ads:256:37: info: implicit function contract not available for proof ("TS_SC" might not return)
 ada_real_time.ads:256:37: medium: range check might fail
 ada_real_time.ads:259:35: medium: overflow check might fail (e.g. when SC = -9223372036854775808)
-ada_real_time.ads:259:37: info: implicit function contract not available for proof ("TS_SC" may not return)
+ada_real_time.ads:259:37: info: implicit function contract not available for proof ("TS_SC" might not return)
 ada_real_time.ads:268:21: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:268:34: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:269:13: info: implicit function contract not available for proof ("Result_SC" may not return)
+ada_real_time.ads:269:13: info: implicit function contract not available for proof ("Result_SC" might not return)
 ada_real_time.ads:269:41: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:269:54: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:270:17: info: implicit function contract not available for proof ("Result_SC" may not return)
-ada_real_time.ads:271:26: info: implicit function contract not available for proof ("Result_SC" may not return)
+ada_real_time.ads:270:17: info: implicit function contract not available for proof ("Result_SC" might not return)
+ada_real_time.ads:271:26: info: implicit function contract not available for proof ("Result_SC" might not return)
 ada_real_time.ads:271:45: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:271:45: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:271:54: medium: overflow check might fail
 ada_real_time.ads:272:30: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:274:26: info: implicit function contract not available for proof ("Result_SC" may not return)
+ada_real_time.ads:274:26: info: implicit function contract not available for proof ("Result_SC" might not return)
 ada_real_time.ads:274:45: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:274:45: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:274:54: medium: overflow check might fail
