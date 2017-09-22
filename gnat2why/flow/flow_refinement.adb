@@ -137,37 +137,27 @@ package body Flow_Refinement is
          end if;
       end loop Climbing;
 
-      --  Check if Target_Scope is generally visible from anywhere (we know
-      --  this if we reach the null flow scope) or if are dealing with a nested
-      --  package where we happen to have visibility of its spec (we know this
-      --  if we find a scope that is visible from origin scope while going up
-      --  the spec parts of the target scope).
+      --  Check if Target_Scope is generally visible
       Context := Target_Scope;
-      while Present (Context) and then Context /= S loop
-         case Context.Part is
+      while Context /= Null_Flow_Scope loop
+         case Declarative_Part'(Context.Part) is
             when Visible_Part =>
                Context := Get_Enclosing_Flow_Scope (Context);
-               if Present (Context) and then Context.Part = Private_Part
-               then
-                  --  Deal with visibility of private children. A package body
-                  --  can see a private child's spec (and test for this if the
-                  --  enclosing flow scope of the private child's, i.e. the
-                  --  parents private part, can be seen from S).
-                  return Is_Visible (Context, S);
-               end if;
 
-            when Private_Part | Body_Part =>
+            when Body_Part | Private_Part =>
                exit;
-
-            when Null_Part =>
-               raise Program_Error;
-
          end case;
       end loop;
 
-      return No (Context)
-        or else Context = S
-        or else (Context /= Target_Scope and then Is_Visible (Context, S));
+      if Context = Null_Flow_Scope then
+         return True;
+      end if;
+
+      --  Check if Target_Scope is nested within S
+      pragma Assert (Target_Scope /= Null_Flow_Scope);
+
+      return Target_Scope.Part = Visible_Part
+         and then Is_Visible (Get_Enclosing_Flow_Scope (Target_Scope), S);
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;
